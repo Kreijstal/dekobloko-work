@@ -159,6 +159,64 @@ bad labels to zero. The useful static assumption there was:
 client.A:Z=false
 ```
 
+### Tools Used
+
+Local repos and tools used during this investigation:
+
+- `dekobloko-work`: this harness repo. It owns gamepack retrieval, dependency
+  stubs, the fake/real AWT launcher, trace assertions, and experiment notes. It
+  intentionally does not track downloaded jars, transformed classes, or CFR
+  output.
+- `java-tools` (`https://github.com/Kreijstal/java-tools`): primary
+  bytecode/deobfuscation workbench. Useful pieces include Jasmin
+  assemble/disassemble commands, rename/reflection analysis, call graph
+  metadata, peephole cleanup, exception trap cleanup, and ASM transforms under
+  `tools/asm/`.
+- CFR 0.152 (`https://www.benf.org/other/cfr/` and
+  `https://github.com/leibnitz27/cfr`): the main decompiler target. All bytecode
+  cleanup has been measured against CFR output because the current goal is
+  compilable CFR Java.
+- Recaf (`https://github.com/Col-E/Recaf`): useful for inspection and
+  interactive bytecode/class browsing. It wants a modern JDK, while the gamepack
+  itself is Java 6/7 era bytecode.
+- Diobfuscator / `Deobfuscator` (`https://github.com/Diobf/Deobfuscator`):
+  useful as a reference implementation for peephole ideas. The important
+  portable idea was keeping bare handler `athrow` sentinels while removing
+  useless try/catch entries.
+- Garlic (`https://github.com/neocanable/garlic`) and other decompilers: useful
+  comparison points, but CFR remained the main target because its output and
+  failure modes were easy to batch-scan.
+- ASM (`https://asm.ow2.io/`, Maven artifacts `org.ow2.asm:asm`,
+  `org.ow2.asm:asm-tree`, and `org.ow2.asm:asm-analysis`): used for actual class
+  rewrites. `java-tools` currently builds `run-join-block-splitter` and
+  `run-replace-method-body`.
+- `javap` / `javac` from the JDK (`https://openjdk.org/`): `javap` was used to
+  check real bytecode offsets and control-flow shapes. `javac -source 7 -target
+  7` was used to produce structured donor bytecode for the `td.c(Lvl;)V` proof.
+  This is a proof/testcase, not the final generic deobfuscator pass.
+- `rg` / ripgrep (`https://github.com/BurntSushi/ripgrep`): used for marker
+  scans, string/reflection searches, and quick output audits.
+- fake AWT launcher: used as a boundary harness for applet/AWT/cache/network
+  calls without Xvfb or pixel comparisons.
+
+Supporting repos cloned during exploration:
+
+- `katana-project/slicer`: `https://github.com/katana-project/slicer`
+- `Kreijstal/java-tools`: `https://github.com/Kreijstal/java-tools`
+- `alterorb/launcher`: `https://github.com/alterorb/launcher`
+- `alterorb/deobfuscator`: `https://github.com/alterorb/deobfuscator`
+- `neocanable/garlic`: `https://github.com/neocanable/garlic`
+- `Diobf/Deobfuscator`: `https://github.com/Diobf/Deobfuscator`
+
+Reference reading:
+
+- Self-improving decompiler notes:
+  `https://shanyu.juneja.net/thoughts/self-improving-decompiler/`
+
+Not every cloned tool became part of the pipeline. The pieces that materially
+changed the result were the `java-tools` ASM/peephole work, the Diobfuscator
+peephole lesson, CFR marker scans, and the fake-AWT boundary harness.
+
 ### CFR Marker Tracking
 
 The useful success metric is not class count or whether names moved around. The
