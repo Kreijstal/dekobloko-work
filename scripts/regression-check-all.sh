@@ -12,8 +12,8 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEKOB_DIR="$(dirname "$SCRIPT_DIR")"
-JT_DIR=/home/kreijstal/git/java-tools
-ASM_LIB="$JT_DIR/lib"
+JAVA_TOOLS_DIR="${JAVA_TOOLS_DIR:-${JT_DIR:-/home/kreijstal/git/java-tools}}"
+ASM_LIB="$JAVA_TOOLS_DIR/lib"
 ASM_CP_BASE="$ASM_LIB/asm-9.9.1.jar:$ASM_LIB/asm-tree-9.9.1.jar:$ASM_LIB/asm-analysis-9.9.1.jar"
 CFR_JAR="$DEKOB_DIR/lib/cfr.jar"
 CLASSES_DIR="$DEKOB_DIR/classes-original"
@@ -36,7 +36,12 @@ trap "rm -rf $WORK" EXIT
 # Stage 1: bulk pipeline (single Node process for speed)
 echo "[*] Bulk pipeline (343 classes)..."
 mkdir -p "$WORK/out"
-node "$JT_DIR/scripts/bulk-pipeline.js" "$CLASSES_DIR" "$WORK/out" 2>&1 | tail -1
+pipeline_log="$WORK/pipeline.log"
+if ! JAVA_TOOLS_DIR="$JAVA_TOOLS_DIR" node "$DEKOB_DIR/scripts/pipeline/bulk-pipeline.js" "$CLASSES_DIR" "$WORK/out" >"$pipeline_log" 2>&1; then
+    tail -20 "$pipeline_log"
+    exit 1
+fi
+tail -1 "$pipeline_log"
 
 # Stage 2: CFR all classes (single JVM)
 echo "[*] CFR..."

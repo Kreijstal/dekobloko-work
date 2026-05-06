@@ -133,34 +133,24 @@ Known gamepack:
 dekobloko.jar sha256=a22410ad930334f54672ce8acdf25d88c31e380550e8f88a5618bb730f3cf06e
 ```
 
-After the deobfuscation pipeline below, **339 of 343 classes** decompile under
+After the deobfuscation pipeline below, **343 of 343 classes** decompile under
 CFR with zero structure markers, and **343/343 verify clean** under ASM
-`BasicVerifier`. Remaining: 13 markers across 4 classes (`ck=5, qk=4, kh=3,
-qc=1`) — all genuine residual structural patterns the existing passes don't
-yet recognize. No CFR or other decompiler is used as an oracle inside the
+`BasicVerifier`. No CFR or other decompiler is used as an oracle inside the
 pipeline; CFR is for dev-time validation only.
 
-The pipeline (each pass implemented in [`java-tools`](https://github.com/Kreijstal/java-tools)):
-
-```bash
-node "$JT/scripts/jvm-cli.js" peephole-clean         input.class --out input.class
-node "$JT/scripts/jvm-cli.js" strip-rethrow-handlers input.class --keep-handler-code --out input.class
-node "$JT/scripts/jvm-cli.js" multi-entry-normalize  input.class --out input.class
-node "$JT/scripts/jvm-cli.js" coalesce-loop-load     input.class --out input.class
-node "$JT/scripts/jvm-cli.js" dead-flag-eliminate    input.class --out input.class
-node "$JT/scripts/jvm-cli.js" inline-shared-exit-goto input.class --max-body-insns 50 --out input.class
-node "$JT/scripts/jvm-cli.js" peephole-clean         input.class --out input.class
-```
-
-For batch use:
+The reproducible pipeline is owned by this repo. It uses
+[`java-tools`](https://github.com/Kreijstal/java-tools) only for generic
+bytecode parsing, serialization, and reusable transforms; Dekobloko-specific
+pass ordering, targeted CFG fixes, and hardcoded source-conflict renames live
+under `scripts/pipeline/`.
 
 ```bash
 # Bulk-mode: single Node.js process, ~25 seconds for the full 343-class gamepack
-node "$JT/scripts/bulk-pipeline.js" classes-original/ deobfuscated-out/
+./scripts/pipeline/bulk-pipeline.js classes-original/ deobfuscated-out/
 ```
 
-The IMPORTANT detail is that `scripts/bulk-pipeline.js` round-trips the AST through
-the bytecode serializer between every pass — the round-trip normalizes
+The IMPORTANT detail is that `scripts/pipeline/bulk-pipeline.js` round-trips the
+AST through the bytecode serializer between every pass — the round-trip normalizes
 stack-map frames, label aliases, and constant-pool ordering, and several
 passes (notably `inline-shared-exit-goto`) only fire correctly on the
 normalized state. The CLI form does this round-trip implicitly because every
@@ -176,6 +166,8 @@ invocation reads and writes a `.class`.
 | `coalesce-loop-load` | Folds `LOAD X; goto T2; T1: LOAD X; T2: <use X>` into `goto T1`. Cleans up the duplicate prefix that multi-entry normalization tends to leave behind. |
 | `dead-flag-eliminate` | Eliminates dead conditionals on always-false static boolean flags (allowlist of 14 fields, built from clinit / self-toggle analysis). The single most important static assumption is `client.A = false`. |
 | `inline-shared-exit-goto` | The crux. Tail-duplicates a shared exit/merge body at the goto-site reached as the fallthrough of a conditional jump. The obfuscator collapsed javac's natural inline-exit prologues into shared `goto EXIT` chains; this pass puts them back where it matters. Drove `td` from 2 markers → 0 and `lk` from 3 → 0. |
+| `compile-conflict-renames` | Exact owner/name/descriptor renames for Java source conflicts where CFR emits short class names that collide with inherited fields or override-family methods. |
+| `ei-tail-clone`, `qc-doloop-tail-clone` | Targeted tail-cloning passes for the remaining CFG shapes that CFR needs to structure `ei` and `qc` cleanly. |
 
 #### The discovery story for `inline-shared-exit-goto`
 
@@ -227,8 +219,17 @@ mode):
 ./scripts/regression-check-all.sh --update    # write current state to EXPECTED-ALL.txt
 ```
 
-Both pass at 0 regressions; the locked baseline is `13 markers across 4
-classes`. The frozen list is in `scripts/EXPECTED-ALL.txt`.
+Both pass at 0 regressions; the locked baseline is zero markers across all 343
+classes. The frozen list is in `scripts/EXPECTED-ALL.txt`.
+
+To reproduce the CFR-source javac count:
+
+```bash
+./scripts/compile-check-cfr.sh
+```
+
+Current result with `lib/dekobloko-stubs.jar` is `285/343` source files
+compilable.
 
 ### Tools Used
 
