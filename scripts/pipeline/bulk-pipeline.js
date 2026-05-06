@@ -125,15 +125,11 @@ const deadFlagFields = [
   'client.A', 'fa.n', 'hn.j', 'ii.q', 'jd.Qb', 'la.d',
   'of.c', 'on.d', 'sh.j', 'uh.b', 've.ac', 'wg.f',
 ].join(',');
-const shadowedExceptionHandlerMethods = new Set([
-  'el.a(IBILjava/awt/Component;)Leh;',
-  'kc.a(ZIIZZZ)Lji;',
-]);
 
 const passes = [
   { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a) },
   { name: 'peephole', fn: (a) => runPeepholeClean(a) },
-  { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a, { methodKeys: shadowedExceptionHandlerMethods }) },
+  { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a) },
   { name: 'dekobloko-exception-handler-drops', fn: (a) => runDekoblokoExceptionHandlerDrops(a) },
   { name: 'strip-rethrow', fn: (a) => removeTrivialRethrowHandlers(a, { keepHandlerCode: true }) },
   { name: 'normalizer', fn: (a) => runMultiEntryLoopNormalizer(a) },
