@@ -133,31 +133,102 @@ Known gamepack:
 dekobloko.jar sha256=a22410ad930334f54672ce8acdf25d88c31e380550e8f88a5618bb730f3cf06e
 ```
 
-The working decompilation experiments are in the sibling `java-tools`
-repository. The best bytecode-cleanup pipeline so far is:
+After the deobfuscation pipeline below, **339 of 343 classes** decompile under
+CFR with zero structure markers, and **343/343 verify clean** under ASM
+`BasicVerifier`. Remaining: 13 markers across 4 classes (`ck=5, qk=4, kh=3,
+qc=1`) — all genuine residual structural patterns the existing passes don't
+yet recognize. No CFR or other decompiler is used as an oracle inside the
+pipeline; CFR is for dev-time validation only.
 
-1. Remove useless exception table entries, but keep dead handler `athrow`
-   sentinels in the instruction stream.
-2. Run ASM cleanup/folding passes for static assumptions, simple local
-   constants, duplicate suffixes, preheaders, and jumps.
-3. Apply targeted extra fixes only when they improve CFR output.
-
-The important lesson from Diobfuscator is that its peephole pass removes the
-trivial rethrow traps from the exception table, but does not delete the bare
-handler `athrow` code. Deleting both the trap metadata and the handler code made
-CFR worse. In `java-tools`, this is represented by:
+The pipeline (each pass implemented in [`java-tools`](https://github.com/Kreijstal/java-tools)):
 
 ```bash
-node scripts/jvm-cli.js peephole-clean input.class --out output.class
-node scripts/jvm-cli.js strip-rethrow-handlers input.class --keep-handler-code --out output.class
+node "$JT/scripts/jvm-cli.js" peephole-clean         input.class --out input.class
+node "$JT/scripts/jvm-cli.js" strip-rethrow-handlers input.class --keep-handler-code --out input.class
+node "$JT/scripts/jvm-cli.js" multi-entry-normalize  input.class --out input.class
+node "$JT/scripts/jvm-cli.js" coalesce-loop-load     input.class --out input.class
+node "$JT/scripts/jvm-cli.js" dead-flag-eliminate    input.class --out input.class
+node "$JT/scripts/jvm-cli.js" inline-shared-exit-goto input.class --max-body-insns 50 --out input.class
+node "$JT/scripts/jvm-cli.js" peephole-clean         input.class --out input.class
 ```
 
-For `qc.class`, keeping handler sentinels plus constant/jump cleanup reduced CFR
-bad labels to zero. The useful static assumption there was:
+For batch use:
 
-```text
-client.A:Z=false
+```bash
+# Bulk-mode: single Node.js process, ~25 seconds for the full 343-class gamepack
+node "$JT/scripts/bulk-pipeline.js" classes-original/ deobfuscated-out/
 ```
+
+The IMPORTANT detail is that `scripts/bulk-pipeline.js` round-trips the AST through
+the bytecode serializer between every pass — the round-trip normalizes
+stack-map frames, label aliases, and constant-pool ordering, and several
+passes (notably `inline-shared-exit-goto`) only fire correctly on the
+normalized state. The CLI form does this round-trip implicitly because every
+invocation reads and writes a `.class`.
+
+#### The transforms in plain English
+
+| Pass | Pattern it targets |
+|---|---|
+| `peephole-clean` | nop removal, single-use fall-through gotos, unreferenced labels. |
+| `strip-rethrow-handlers --keep-handler-code` | Drops trivial catch-and-rethrow exception-table entries; **retains** bare `athrow` sentinels (Diobfuscator lesson — deleting both makes CFR worse). |
+| `multi-entry-normalize` | Clones loop-header blocks for each forward edge so loops have a single semantic entry. Has a forward-only join splitter for fallthrough-joined CFG diamonds. |
+| `coalesce-loop-load` | Folds `LOAD X; goto T2; T1: LOAD X; T2: <use X>` into `goto T1`. Cleans up the duplicate prefix that multi-entry normalization tends to leave behind. |
+| `dead-flag-eliminate` | Eliminates dead conditionals on always-false static boolean flags (allowlist of 14 fields, built from clinit / self-toggle analysis). The single most important static assumption is `client.A = false`. |
+| `inline-shared-exit-goto` | The crux. Tail-duplicates a shared exit/merge body at the goto-site reached as the fallthrough of a conditional jump. The obfuscator collapsed javac's natural inline-exit prologues into shared `goto EXIT` chains; this pass puts them back where it matters. Drove `td` from 2 markers → 0 and `lk` from 3 → 0. |
+
+#### The discovery story for `inline-shared-exit-goto`
+
+Hand-writing Java that matches `td.c(Lvl;)V`'s semantics exactly (including
+the unusual "if `var10 == 0` then return immediately, not break to the next
+loop" branch) and feeding it through `javac -source 7 -target 7` produces
+bytecode that CFR decompiles with **zero markers**. Diffing that bytecode
+against the obfuscated `td.c` shows two differences:
+
+1. javac **inlines the entire method-exit prologue** at the
+   conditional-fallthrough site (`if var10 == 0 → write all locals back to
+   fields → return`). The obfuscator replaced that inline with a single
+   `goto EXIT`, where `EXIT` is a shared prologue at method end.
+2. javac uses an explicit `goto INNER_LOOP_2` at the var3==1 path's exit; the
+   obfuscator uses fallthrough.
+
+Reproducing javac's inline-exit shape — i.e. tail-duplicating the merge
+target's body at one specific predecessor — was sufficient to fix both `td`
+and `lk`. The general rule emerged from there: the goto's previous
+instruction must be a conditional jump, the target must have ≥4 forward
+predecessors AND another forward predecessor reachable from inside the
+conditional's then-target body (the "shared-join-inside-nested-structure"
+shape), and the body must be 5–50 insns ending in a terminator.
+
+#### Vineflower as a sanity check, not as a target
+
+Vineflower (the modern Quiltflower fork) handles `td` and `lk` natively — its
+structurer covers the patterns CFR fails on. But it has **its own** failure
+mode on this gamepack: 618 javac errors (vs CFR's 244) because the
+obfuscator's single-letter naming creates Java-level field-vs-class shadowing
+that Vineflower doesn't qualify (e.g. `lb.a(...)` where `lb` is both a field
+of type `int` and a sibling class). Switching decompiler oracles doesn't
+help; cleaning up the bytecode does.
+
+### Reproducing the result
+
+Per-class regression (25 representative classes, fail-fast):
+
+```bash
+./scripts/regression-check.sh
+```
+
+Whole-gamepack benchmark (all 343 classes, batch verify, lock-and-update
+mode):
+
+```bash
+./scripts/regression-check-all.sh             # check vs scripts/EXPECTED-ALL.txt
+./scripts/regression-check-all.sh --report    # per-class table
+./scripts/regression-check-all.sh --update    # write current state to EXPECTED-ALL.txt
+```
+
+Both pass at 0 regressions; the locked baseline is `13 markers across 4
+classes`. The frozen list is in `scripts/EXPECTED-ALL.txt`.
 
 ### Tools Used
 
@@ -229,64 +300,37 @@ still emits structure markers:
 rg -n '\*\* GOTO|Unable to fully structure code|lbl-1000' cfr-output
 ```
 
-After the main cleanup pass, the full jar was down to two bad Java files:
+The historic progression on this gamepack:
 
-```text
-lk.java
-td.java
-```
+| Stage | Markers | Classes with markers |
+|---|---|---|
+| baseline (no pipeline) | many hundreds across the jar | most |
+| after `peephole` + `strip-rethrow` | ~150 | ~30 |
+| + `multi-entry-normalize` + `coalesce-loop-load` + `dead-flag-eliminate` | 74 | 15 |
+| + `inline-shared-exit-goto` (current) | **13** | **4** (`ck=5, qk=4, kh=3, qc=1`) |
 
-`lk.class` is fixed by the optional `java-tools` ASM pass:
+339/343 classes (98.8%) now decompile under CFR with zero structure markers,
+and 343/343 verify clean under ASM `BasicVerifier`.
 
-```bash
-build/asm-tools/run-join-block-splitter lk.class lk.fixed.class \
-  --split-fallthrough-joins \
-  --cleanup-jumps \
-  --max-insns 2 \
-  --min-incoming 9999
-```
+### What's still left
 
-Do not enable this pass globally yet. Applied to every class, it fixed `lk` but
-introduced new CFR failures in `ke` and `mm`. For now it is a targeted repair for
-known-bad `lk`.
+The 4 classes that retain markers (`ck`, `qk`, `kh`, `qc`) have patterns the
+existing passes don't recognize:
 
-`td.class` is the final hard case. Replacing only `td.c(Lvl;)V` with a
-structured donor implementation of the same BZip decode state machine made CFR
-emit zero structure markers for the full jar when combined with the targeted
-`lk` fix. This proves the method can be represented as CFR-friendly Java, but it
-is not a real deobfuscator solution yet because it is method-specific.
+- 6+ clause OR-shortcuts to a shared else-body (qc-style, but with bigger
+  fan-in than `inline-shared-exit-goto`'s gate accepts);
+- bare `goto LBL` from inside multiply-nested `if` blocks where the previous
+  instruction is *not* a conditional jump (so the inline pass's "prev =
+  conditional" gate skips them);
+- possibly switch-on-state-machine patterns that don't fit
+  `multi-entry-normalize`'s loop-header shape.
 
-The reproducible tooling added in `java-tools`:
-
-```bash
-./scripts/build-asm-tools.sh
-javac -source 7 -target 7 \
-  -cp /home/clawd/git/dekobloko-work/classes-original \
-  -d /tmp/td-donor \
-  examples/sources/java/td.java
-build/asm-tools/run-replace-method-body \
-  td.class /tmp/td-donor/td.class 'c' '(Lvl;)V' td.fixed.class
-```
-
-### What The Real Deobfuscator Still Needs
-
-The `td` donor replacement should be treated as a testcase and proof, not as the
-goal. A real pass needs to detect and rewrite the CFG pattern generically:
-
-- a loop header with multiple semantic entries;
-- a small shared decode/header block, usually a guard plus state assignment and
-  exit `goto`;
-- entries from pending-run drain code, normal decode fallthrough, and decode
-  backedges;
-- stack-compatible entries according to ASM analysis;
-- a measurable CFR improvement after rewriting.
-
-Naively cloning all entries to the shared header made CFR worse by moving the
-bad label into the next decode block. Splitting only the initial entry was not
-enough. Splitting only one backedge also moved the failure. The real pass likely
-needs "multi-entry loop header normalization" with a guard: try a candidate
-rewrite on one method, run CFR on that class, and keep it only if the marker
-count drops.
+A full solution would need either generalizing `inline-shared-exit-goto` to
+accept those shapes (without regressing the 339 currently-clean classes) or
+adding a new tail-duplication pass keyed on different CFG signals. The
+existing harnesses (`regression-check.sh`, `regression-check-all.sh`) make
+that exploration safe — the locked `EXPECTED-ALL.txt` will reject any change
+that increases markers on any class.
 
 ### Reduced CFR Testcases
 

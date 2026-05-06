@@ -22,7 +22,7 @@ if [[ ! -f "$SCRIPT_DIR/Verify.class" ]] || [[ "$SCRIPT_DIR/Verify.java" -nt "$S
     javac -cp "$ASM_CP_BASE" -d "$SCRIPT_DIR" "$SCRIPT_DIR/Verify.java"
 fi
 
-PIPELINE="peephole strip-rethrow normalizer"
+PIPELINE="peephole strip-rethrow normalizer coalesce-loop-load dead-flag inline-exit-goto peephole"
 SKIP=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -36,31 +36,31 @@ done
 # baseline: every class verifies (no stack imbalance) and CFR markers are
 # at most this count. Improvements welcome, regressions fail the harness.
 EXPECTED=(
-    "client 13"
-    "qc 18"
-    "mn 3"
-    "le 9"
-    "pl 8"
-    "ke 10"
-    "me 3"
-    "bl 3"
-    "uk 7"
-    "bb 6"
-    "ad 10"
-    "wf 3"
-    "ug 2"
-    "on 2"
-    "mf 3"
+    "client 0"
+    "qc 1"
+    "mn 0"
+    "le 0"
+    "pl 0"
+    "ke 0"
+    "me 0"
+    "bl 0"
+    "uk 0"
+    "bb 0"
+    "ad 0"
+    "wf 0"
+    "ug 0"
+    "on 0"
+    "mf 0"
     "im 0"
-    "de 3"
-    "ui 3"
-    "td 5"
-    "oe 2"
-    "ne 3"
-    "lk 4"
+    "de 0"
+    "ui 0"
+    "td 0"
+    "oe 0"
+    "ne 0"
+    "lk 0"
     "kf 0"
-    "db 2"
-    "cm 3"
+    "db 0"
+    "cm 0"
 )
 
 apply_pass() {
@@ -70,6 +70,9 @@ apply_pass() {
         strip-rethrow)    node "$JT_DIR/scripts/jvm-cli.js" strip-rethrow-handlers "$file" --keep-handler-code --out "$file" >/dev/null 2>&1 ;;
         condition-invert) node "$JT_DIR/scripts/jvm-cli.js" condition-invert "$file" --out "$file" >/dev/null 2>&1 ;;
         normalizer)       node "$JT_DIR/scripts/jvm-cli.js" multi-entry-normalize "$file" --out "$file" >/dev/null 2>&1 ;;
+        coalesce-loop-load) node "$JT_DIR/scripts/jvm-cli.js" coalesce-loop-load "$file" --out "$file" >/dev/null 2>&1 ;;
+        dead-flag)        node "$JT_DIR/scripts/jvm-cli.js" dead-flag-eliminate "$file" --out "$file" >/dev/null 2>&1 ;;
+        inline-exit-goto) node "$JT_DIR/scripts/jvm-cli.js" inline-shared-exit-goto "$file" --max-body-insns 50 --out "$file" >/dev/null 2>&1 ;;
         *) echo "Unknown pass: $pass" >&2; return 1 ;;
     esac
 }
@@ -86,7 +89,7 @@ count_markers() {
 # Run ASM BasicVerifier; print failure count to stdout (0 = clean).
 verify_class() {
     local cls="$1"
-    java -cp "$VERIFY_CP" Verify "$cls" 2>&1 | awk -F'Failed: ' '/Failed:/ {print $2}'
+    java -cp "$VERIFY_CP" Verify "$cls" 2>&1 | awk '/Failed:/ {for (i=1;i<=NF;i++) if ($i=="Failed:") {print $(i+1); exit}}'
 }
 
 echo "[*] pipeline: $PIPELINE"
