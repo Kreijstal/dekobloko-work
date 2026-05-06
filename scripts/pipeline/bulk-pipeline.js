@@ -41,13 +41,14 @@ const { runCoalesceLoopLoad } = require(path.join(JT, 'src/coalesceLoopLoad'));
 const { runDeadStaticBoolFlag } = require(path.join(JT, 'src/deadStaticBoolFlag'));
 const { runInlineSharedExitGoto } = require(path.join(JT, 'src/inlineSharedExitGoto'));
 const { runInlineSharedReturn } = require(path.join(JT, 'src/inlineSharedReturn'));
+const { runRemoveShadowedExceptionHandlers } = require(path.join(JT, 'src/removeShadowedExceptionHandlers'));
 
 const { runEiTailClone } = require('./eiTailClone');
 const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
 const { runCkClipFlag } = require('./ckClipFlag');
 const { runQkExceptionSplit } = require('./qkExceptionSplit');
 const { FIELD_RENAMES, runCompileConflictRenames } = require('./compileConflictRenames');
-const { runRemoveShadowedExceptionHandlers } = require('./removeShadowedExceptionHandlers');
+const { runDekoblokoExceptionHandlerDrops } = require('./removeShadowedExceptionHandlers');
 
 const inDir = process.argv[2];
 const outDir = process.argv[3];
@@ -124,11 +125,16 @@ const deadFlagFields = [
   'client.A', 'fa.n', 'hn.j', 'ii.q', 'jd.Qb', 'la.d',
   'of.c', 'on.d', 'sh.j', 'uh.b', 've.ac', 'wg.f',
 ].join(',');
+const shadowedExceptionHandlerMethods = new Set([
+  'el.a(IBILjava/awt/Component;)Leh;',
+  'kc.a(ZIIZZZ)Lji;',
+]);
 
 const passes = [
   { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a) },
   { name: 'peephole', fn: (a) => runPeepholeClean(a) },
-  { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a) },
+  { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a, { methodKeys: shadowedExceptionHandlerMethods }) },
+  { name: 'dekobloko-exception-handler-drops', fn: (a) => runDekoblokoExceptionHandlerDrops(a) },
   { name: 'strip-rethrow', fn: (a) => removeTrivialRethrowHandlers(a, { keepHandlerCode: true }) },
   { name: 'normalizer', fn: (a) => runMultiEntryLoopNormalizer(a) },
   { name: 'coalesce', fn: (a) => runCoalesceLoopLoad(a) },

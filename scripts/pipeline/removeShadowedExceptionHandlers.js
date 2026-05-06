@@ -1,10 +1,5 @@
 'use strict';
 
-const DEFAULT_TARGETS = new Set([
-  'el.a(IBILjava/awt/Component;)Leh;',
-  'kc.a(ZIIZZZ)Lji;',
-]);
-
 const DEFAULT_DROP_HANDLERS = new Map([
   ['pn.b(Z)I', new Set(['L23'])],
   ['pn.k(I)Z', new Set(['L100'])],
@@ -14,18 +9,7 @@ const DEFAULT_DROP_HANDLERS = new Map([
 const DEFAULT_DROP_RANGES = new Map([
 ]);
 
-function handlerTypeKey(entry) {
-  return entry.catch_type || entry.catchType || entry.type || 'any';
-}
-
-function rangeKey(entry) {
-  const start = entry.startLbl || entry.startLabel || entry.start || entry.from || entry.start_pc;
-  const end = entry.endLbl || entry.endLabel || entry.end || entry.to || entry.end_pc;
-  return `${start}->${end}:${handlerTypeKey(entry)}`;
-}
-
-function runRemoveShadowedExceptionHandlers(ast, options = {}) {
-  const targets = options.targets || DEFAULT_TARGETS;
+function runDekoblokoExceptionHandlerDrops(ast, options = {}) {
   const dropHandlers = options.dropHandlers || DEFAULT_DROP_HANDLERS;
   const dropRanges = options.dropRanges || DEFAULT_DROP_RANGES;
   let removed = 0;
@@ -52,23 +36,10 @@ function runRemoveShadowedExceptionHandlers(ast, options = {}) {
           });
           removed += before - attr.code.exceptionTable.length;
         }
-        if (!targets.has(methodKey)) continue;
-        const seen = new Set();
-        const kept = [];
-        for (const entry of attr.code.exceptionTable) {
-          const key = rangeKey(entry);
-          if (seen.has(key)) {
-            removed += 1;
-            continue;
-          }
-          seen.add(key);
-          kept.push(entry);
-        }
-        attr.code.exceptionTable = kept;
       }
     }
   }
   return removed;
 }
 
-module.exports = { runRemoveShadowedExceptionHandlers };
+module.exports = { runDekoblokoExceptionHandlerDrops };
