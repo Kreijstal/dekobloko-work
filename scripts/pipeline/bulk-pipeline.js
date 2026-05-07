@@ -51,6 +51,8 @@ const { runCastObjectFieldStores } = require(path.join(JT, 'src/castObjectFieldS
 const { runPrimitiveArrayCopyLoops } = require(path.join(JT, 'src/primitiveArrayCopyLoops'));
 const { runInlineGotoReturnIsland } = require(path.join(JT, 'src/inlineGotoReturnIsland'));
 const { runSplitArrayReachingLocal } = require(path.join(JT, 'src/splitArrayReachingLocal'));
+const { runSplitArrayStoreLocalAssignment } = require(path.join(JT, 'src/splitArrayStoreLocalAssignment'));
+const { runInlineSingleUseBooleanBranch } = require(path.join(JT, 'src/inlineSingleUseBooleanBranch'));
 
 const { runEiTailClone } = require('./eiTailClone');
 const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
@@ -152,6 +154,8 @@ const passes = [
   { name: 'cast-object-field-stores', fn: (a) => runCastObjectFieldStores(a) },
   { name: 'primitive-array-copy-loops', fn: (a) => runPrimitiveArrayCopyLoops(a) },
   { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a) },
+  { name: 'split-array-store-local-assignment', fn: (a) => runSplitArrayStoreLocalAssignment(a) },
+  { name: 'inline-single-use-boolean-branch', fn: (a) => runInlineSingleUseBooleanBranch(a) },
   { name: 'inline-goto-return-island', fn: (a) => runInlineGotoReturnIsland(a) },
   ...(skipInline ? [] : [{ name: 'inline-exit', fn: (a) => runInlineSharedExitGoto(a, { maxBodyInsns: 50 }) }]),
   { name: 'inline-return', fn: (a) => runInlineSharedReturn(a, { oncePerMethod: false }) },
