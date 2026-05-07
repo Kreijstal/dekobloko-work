@@ -49,6 +49,7 @@ const { runNarrowCharArrayStores } = require(path.join(JT, 'src/narrowCharArrayS
 const { runNarrowByteArrayStores } = require(path.join(JT, 'src/narrowByteArrayStores'));
 const { runCastObjectFieldStores } = require(path.join(JT, 'src/castObjectFieldStores'));
 const { runPrimitiveArrayCopyLoops } = require(path.join(JT, 'src/primitiveArrayCopyLoops'));
+const { runInlineGotoReturnIsland } = require(path.join(JT, 'src/inlineGotoReturnIsland'));
 
 const { runEiTailClone } = require('./eiTailClone');
 const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
@@ -149,6 +150,7 @@ const passes = [
   { name: 'narrow-byte-array-stores', fn: (a) => runNarrowByteArrayStores(a) },
   { name: 'cast-object-field-stores', fn: (a) => runCastObjectFieldStores(a) },
   { name: 'primitive-array-copy-loops', fn: (a) => runPrimitiveArrayCopyLoops(a) },
+  { name: 'inline-goto-return-island', fn: (a) => runInlineGotoReturnIsland(a) },
   ...(skipInline ? [] : [{ name: 'inline-exit', fn: (a) => runInlineSharedExitGoto(a, { maxBodyInsns: 50 }) }]),
   { name: 'inline-return', fn: (a) => runInlineSharedReturn(a, { oncePerMethod: false }) },
   { name: 'ck-clip-flag', fn: (a) => runCkClipFlag(a) },
