@@ -169,6 +169,7 @@ invocation reads and writes a `.class`.
 | `remove-shadowing-trivial-rethrow-handlers` | Removes duplicate exception-table entries where a pure rethrow handler shadows a later useful handler for the same protected range. |
 | `inline-shared-exit-goto` | The crux. Tail-duplicates a shared exit/merge body at the goto-site reached as the fallthrough of a conditional jump. The obfuscator collapsed javac's natural inline-exit prologues into shared `goto EXIT` chains; this pass puts them back where it matters. Drove `td` from 2 markers → 0 and `lk` from 3 → 0. |
 | `cast-object-field-stores` | Inserts a field-descriptor `checkcast` before storing a locally constructed object into an object field, preserving CFR's source type for reused `Object` locals. |
+| `primitive-array-copy-loops` | Rewrites exact primitive array copy loops to `System.arraycopy` where CFR otherwise emits malformed enhanced-for assignments. |
 | `compile-conflict-renames` | Exact owner/name/descriptor renames for Java source conflicts where CFR emits short class names that collide with inherited fields or override-family methods. |
 | `ei-tail-clone`, `qc-doloop-tail-clone` | Targeted tail-cloning passes for the remaining CFG shapes that CFR needs to structure `ei` and `qc` cleanly. |
 
@@ -231,7 +232,7 @@ To reproduce the CFR-source javac count:
 ./scripts/compile-check-cfr.sh
 ```
 
-Current result with `lib/dekobloko-stubs.jar` is `304/343` source files
+Current result with `lib/dekobloko-stubs.jar` is `307/343` source files
 compilable.
 
 ### Tools Used
@@ -320,7 +321,7 @@ clean under ASM `BasicVerifier`.
 ### What's still left
 
 The remaining work is Java-source compilability, not CFR structure markers. The
-current source compile harness reports 39 failing classes; the largest buckets
+current source compile harness reports 36 failing classes; the largest buckets
 are unreachable statements, ambiguous/reused `Object` locals, constructor
 structuring, definite-assignment splits, and dependency-stub signature issues.
 The existing harnesses (`compile-check-cfr.sh`, `regression-check.sh`, and
