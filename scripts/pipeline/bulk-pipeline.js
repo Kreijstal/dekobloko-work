@@ -52,6 +52,7 @@ const { runPrimitiveArrayCopyLoops } = require(path.join(JT, 'src/primitiveArray
 const { runInlineGotoReturnIsland } = require(path.join(JT, 'src/inlineGotoReturnIsland'));
 const { runSplitArrayReachingLocal } = require(path.join(JT, 'src/splitArrayReachingLocal'));
 const { runSplitArrayStoreLocalAssignment } = require(path.join(JT, 'src/splitArrayStoreLocalAssignment'));
+const { runSplitCastedLocalRange } = require(path.join(JT, 'src/splitCastedLocalRange'));
 const { runInlineSingleUseBooleanBranch } = require(path.join(JT, 'src/inlineSingleUseBooleanBranch'));
 
 const { runEiTailClone } = require('./eiTailClone');
@@ -155,6 +156,7 @@ const passes = [
   { name: 'primitive-array-copy-loops', fn: (a) => runPrimitiveArrayCopyLoops(a) },
   { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a) },
   { name: 'split-array-store-local-assignment', fn: (a) => runSplitArrayStoreLocalAssignment(a) },
+  { name: 'split-casted-local-range', fn: (a) => runSplitCastedLocalRange(a) },
   { name: 'inline-single-use-boolean-branch', fn: (a) => runInlineSingleUseBooleanBranch(a) },
   { name: 'inline-goto-return-island', fn: (a) => runInlineGotoReturnIsland(a) },
   ...(skipInline ? [] : [{ name: 'inline-exit', fn: (a) => runInlineSharedExitGoto(a, { maxBodyInsns: 50 }) }]),

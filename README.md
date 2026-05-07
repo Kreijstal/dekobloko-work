@@ -232,7 +232,7 @@ To reproduce the CFR-source javac count:
 ./scripts/compile-check-cfr.sh
 ```
 
-Current result with `lib/dekobloko-stubs.jar` is `322/343` source files
+Current result with `lib/dekobloko-stubs.jar` is `326/343` source files
 compilable.
 
 ### Tools Used
@@ -321,7 +321,7 @@ clean under ASM `BasicVerifier`.
 ### What's still left
 
 The remaining work is Java-source compilability, not CFR structure markers. The
-current source compile harness reports 21 failing classes; the largest buckets
+current source compile harness reports 17 failing classes; the largest buckets
 are unreachable statements, ambiguous/reused `Object` locals, constructor
 structuring, definite-assignment splits, and dependency-stub signature issues.
 The existing harnesses (`compile-check-cfr.sh`, `regression-check.sh`, and
