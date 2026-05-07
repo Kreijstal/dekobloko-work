@@ -165,6 +165,8 @@ invocation reads and writes a `.class`.
 | `multi-entry-normalize` | Clones loop-header blocks for each forward edge so loops have a single semantic entry. Has a forward-only join splitter for fallthrough-joined CFG diamonds. |
 | `coalesce-loop-load` | Folds `LOAD X; goto T2; T1: LOAD X; T2: <use X>` into `goto T1`. Cleans up the duplicate prefix that multi-entry normalization tends to leave behind. |
 | `dead-flag-eliminate` | Eliminates dead conditionals on always-false static boolean flags (allowlist of 14 fields, built from clinit / self-toggle analysis). The single most important static assumption is `client.A = false`. |
+| `constructor-pre-super-cleanup` | Deletes unused static boolean snapshots before constructor `super(...)` calls so CFR emits legal Java constructors. |
+| `remove-shadowing-trivial-rethrow-handlers` | Removes duplicate exception-table entries where a pure rethrow handler shadows a later useful handler for the same protected range. |
 | `inline-shared-exit-goto` | The crux. Tail-duplicates a shared exit/merge body at the goto-site reached as the fallthrough of a conditional jump. The obfuscator collapsed javac's natural inline-exit prologues into shared `goto EXIT` chains; this pass puts them back where it matters. Drove `td` from 2 markers → 0 and `lk` from 3 → 0. |
 | `cast-object-field-stores` | Inserts a field-descriptor `checkcast` before storing a locally constructed object into an object field, preserving CFR's source type for reused `Object` locals. |
 | `compile-conflict-renames` | Exact owner/name/descriptor renames for Java source conflicts where CFR emits short class names that collide with inherited fields or override-family methods. |
@@ -229,7 +231,7 @@ To reproduce the CFR-source javac count:
 ./scripts/compile-check-cfr.sh
 ```
 
-Current result with `lib/dekobloko-stubs.jar` is `300/343` source files
+Current result with `lib/dekobloko-stubs.jar` is `304/343` source files
 compilable.
 
 ### Tools Used
@@ -318,7 +320,7 @@ clean under ASM `BasicVerifier`.
 ### What's still left
 
 The remaining work is Java-source compilability, not CFR structure markers. The
-current source compile harness reports 43 failing classes; the largest buckets
+current source compile harness reports 39 failing classes; the largest buckets
 are unreachable statements, ambiguous/reused `Object` locals, constructor
 structuring, definite-assignment splits, and dependency-stub signature issues.
 The existing harnesses (`compile-check-cfr.sh`, `regression-check.sh`, and
