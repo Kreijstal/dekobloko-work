@@ -166,6 +166,7 @@ invocation reads and writes a `.class`.
 | `coalesce-loop-load` | Folds `LOAD X; goto T2; T1: LOAD X; T2: <use X>` into `goto T1`. Cleans up the duplicate prefix that multi-entry normalization tends to leave behind. |
 | `dead-flag-eliminate` | Eliminates dead conditionals on always-false static boolean flags (allowlist of 14 fields, built from clinit / self-toggle analysis). The single most important static assumption is `client.A = false`. |
 | `inline-shared-exit-goto` | The crux. Tail-duplicates a shared exit/merge body at the goto-site reached as the fallthrough of a conditional jump. The obfuscator collapsed javac's natural inline-exit prologues into shared `goto EXIT` chains; this pass puts them back where it matters. Drove `td` from 2 markers → 0 and `lk` from 3 → 0. |
+| `cast-object-field-stores` | Inserts a field-descriptor `checkcast` before storing a locally constructed object into an object field, preserving CFR's source type for reused `Object` locals. |
 | `compile-conflict-renames` | Exact owner/name/descriptor renames for Java source conflicts where CFR emits short class names that collide with inherited fields or override-family methods. |
 | `ei-tail-clone`, `qc-doloop-tail-clone` | Targeted tail-cloning passes for the remaining CFG shapes that CFR needs to structure `ei` and `qc` cleanly. |
 
@@ -228,7 +229,7 @@ To reproduce the CFR-source javac count:
 ./scripts/compile-check-cfr.sh
 ```
 
-Current result with `lib/dekobloko-stubs.jar` is `299/343` source files
+Current result with `lib/dekobloko-stubs.jar` is `300/343` source files
 compilable.
 
 ### Tools Used
@@ -308,30 +309,22 @@ The historic progression on this gamepack:
 | baseline (no pipeline) | many hundreds across the jar | most |
 | after `peephole` + `strip-rethrow` | ~150 | ~30 |
 | + `multi-entry-normalize` + `coalesce-loop-load` + `dead-flag-eliminate` | 74 | 15 |
-| + `inline-shared-exit-goto` (current) | **13** | **4** (`ck=5, qk=4, kh=3, qc=1`) |
+| + `inline-shared-exit-goto` | 13 | 4 (`ck=5, qk=4, kh=3, qc=1`) |
+| + focused tail clones and exception-table cleanup (current) | **0** | **0** |
 
-339/343 classes (98.8%) now decompile under CFR with zero structure markers,
-and 343/343 verify clean under ASM `BasicVerifier`.
+343/343 classes now decompile under CFR with zero structure markers and verify
+clean under ASM `BasicVerifier`.
 
 ### What's still left
 
-The 4 classes that retain markers (`ck`, `qk`, `kh`, `qc`) have patterns the
-existing passes don't recognize:
-
-- 6+ clause OR-shortcuts to a shared else-body (qc-style, but with bigger
-  fan-in than `inline-shared-exit-goto`'s gate accepts);
-- bare `goto LBL` from inside multiply-nested `if` blocks where the previous
-  instruction is *not* a conditional jump (so the inline pass's "prev =
-  conditional" gate skips them);
-- possibly switch-on-state-machine patterns that don't fit
-  `multi-entry-normalize`'s loop-header shape.
-
-A full solution would need either generalizing `inline-shared-exit-goto` to
-accept those shapes (without regressing the 339 currently-clean classes) or
-adding a new tail-duplication pass keyed on different CFG signals. The
-existing harnesses (`regression-check.sh`, `regression-check-all.sh`) make
-that exploration safe — the locked `EXPECTED-ALL.txt` will reject any change
-that increases markers on any class.
+The remaining work is Java-source compilability, not CFR structure markers. The
+current source compile harness reports 43 failing classes; the largest buckets
+are unreachable statements, ambiguous/reused `Object` locals, constructor
+structuring, definite-assignment splits, and dependency-stub signature issues.
+The existing harnesses (`compile-check-cfr.sh`, `regression-check.sh`, and
+`regression-check-all.sh`) keep the next source-compile transforms reproducible:
+the compile harness measures javac progress, and the locked marker baseline
+rejects any change that makes CFR structure worse.
 
 ### Reduced CFR Testcases
 
