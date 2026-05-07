@@ -228,7 +228,7 @@ To reproduce the CFR-source javac count:
 ./scripts/compile-check-cfr.sh
 ```
 
-Current result with `lib/dekobloko-stubs.jar` is `293/343` source files
+Current result with `lib/dekobloko-stubs.jar` is `294/343` source files
 compilable.
 
 ### Tools Used

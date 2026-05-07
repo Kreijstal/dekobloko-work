@@ -43,6 +43,7 @@ const { runInlineSharedExitGoto } = require(path.join(JT, 'src/inlineSharedExitG
 const { runInlineSharedReturn } = require(path.join(JT, 'src/inlineSharedReturn'));
 const { runRemoveShadowedExceptionHandlers } = require(path.join(JT, 'src/removeShadowedExceptionHandlers'));
 const { runSimplifyNotCompare } = require(path.join(JT, 'src/simplifyNotCompare'));
+const { runNarrowCharArrayStores } = require(path.join(JT, 'src/narrowCharArrayStores'));
 
 const { runEiTailClone } = require('./eiTailClone');
 const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
@@ -137,6 +138,7 @@ const passes = [
   { name: 'coalesce', fn: (a) => runCoalesceLoopLoad(a) },
   { name: 'dead-flag', fn: (a) => runDeadStaticBoolFlag(a, { flags: deadFlagFields }) },
   { name: 'simplify-not-compare', fn: (a) => runSimplifyNotCompare(a, { charLocalsOnly: true }) },
+  { name: 'narrow-char-array-stores', fn: (a) => runNarrowCharArrayStores(a) },
   ...(skipInline ? [] : [{ name: 'inline-exit', fn: (a) => runInlineSharedExitGoto(a, { maxBodyInsns: 50 }) }]),
   { name: 'inline-return', fn: (a) => runInlineSharedReturn(a, { oncePerMethod: false }) },
   { name: 'ck-clip-flag', fn: (a) => runCkClipFlag(a) },
