@@ -41,7 +41,9 @@ public final class DekoblokoLauncher {
         if (options.fakeAwt) {
             System.setProperty("java.awt.headless", "false");
             System.setProperty("awt.toolkit", "local.awt.FakeToolkit");
-            System.setProperty("java.awt.graphicsenv", "local.awt.FakeGraphicsEnvironment");
+            if (!options.offscreen) {
+                System.setProperty("java.awt.graphicsenv", "local.awt.FakeGraphicsEnvironment");
+            }
             Trace.log("launcher.fakeAwt enabled");
         } else {
             System.setProperty("java.awt.headless", "false");
@@ -151,27 +153,40 @@ public final class DekoblokoLauncher {
         applet.start();
         Trace.log("applet.start.return");
 
+        Thread replayThread = null;
+        if (options.replayAwtFile != null) {
+            replayThread = AwtInteractionLog.replayFrom(applet, options.replayAwtFile, options.replaySpeed, false);
+        }
+
         for (int i = 0; i < options.frames; i++) {
-            Trace.log("offscreen.frame.begin " + i);
-            BufferedImage image = new BufferedImage(options.width, options.height, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = image.createGraphics();
-            try {
-                applet.update(graphics);
-                Trace.log("applet.update.return frame=" + i);
-            } finally {
-                graphics.dispose();
-            }
-            ImageIO.write(image, "png", new File(outputDir, String.format("frame-%03d.png", i)));
-            Trace.log("offscreen.frame.write " + i);
+            captureFrame(applet, options, outputDir, i);
             Thread.sleep(options.frameDelayMillis);
         }
 
+        if (replayThread != null) {
+            replayThread.join(Math.max(1000L, options.frameDelayMillis));
+            Trace.log("offscreen.replay.join alive=" + replayThread.isAlive());
+        }
         applet.stop();
         Trace.log("applet.stop.return");
         applet.destroy();
         Trace.log("applet.destroy.return");
         Trace.close();
         System.exit(0);
+    }
+
+    private static void captureFrame(Applet applet, Options options, File outputDir, int index) throws IOException {
+        Trace.log("offscreen.frame.begin " + index);
+        BufferedImage image = new BufferedImage(options.width, options.height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = image.createGraphics();
+        try {
+            applet.update(graphics);
+            Trace.log("applet.update.return frame=" + index);
+        } finally {
+            graphics.dispose();
+        }
+        ImageIO.write(image, "png", new File(outputDir, String.format("frame-%03d.png", index)));
+        Trace.log("offscreen.frame.write " + index);
     }
 
     private static URL normalizeUrl(String value) throws MalformedURLException {

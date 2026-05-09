@@ -11,5 +11,6 @@ fi
 ./build-launcher.sh >/dev/null
 exec java -Djava.awt.headless=false -jar dekobloko-launcher.jar \
   --awt real \
+  --gamepack dekobloko.jar \
   --trace-file traces/real-awt.log \
   "$@"

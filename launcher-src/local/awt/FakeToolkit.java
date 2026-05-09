@@ -79,7 +79,7 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.Properties;
 
-public class FakeToolkit extends Toolkit implements sun.awt.KeyboardFocusManagerPeerProvider {
+public class FakeToolkit extends Toolkit implements sun.awt.ComponentFactory, sun.awt.KeyboardFocusManagerPeerProvider {
     private final EventQueue eventQueue = new EventQueue();
     private final Clipboard clipboard = new Clipboard("fake-system-clipboard");
     private final java.awt.peer.KeyboardFocusManagerPeer keyboardFocusManagerPeer = new FakeKeyboardFocusManagerPeer();
@@ -90,133 +90,133 @@ public class FakeToolkit extends Toolkit implements sun.awt.KeyboardFocusManager
     }
 
     @Override
-    protected DesktopPeer createDesktopPeer(Desktop target) {
+    public DesktopPeer createDesktopPeer(Desktop target) {
         Trace.log("fakeToolkit.createDesktopPeer");
         return null;
     }
 
     @Override
-    protected ButtonPeer createButton(Button target) {
+    public ButtonPeer createButton(Button target) {
         Trace.log("fakeToolkit.createButton");
         return peer(ButtonPeer.class, "Button");
     }
 
     @Override
-    protected TextFieldPeer createTextField(TextField target) {
+    public TextFieldPeer createTextField(TextField target) {
         Trace.log("fakeToolkit.createTextField");
         return peer(TextFieldPeer.class, "TextField");
     }
 
     @Override
-    protected LabelPeer createLabel(Label target) {
+    public LabelPeer createLabel(Label target) {
         Trace.log("fakeToolkit.createLabel");
         return peer(LabelPeer.class, "Label");
     }
 
     @Override
-    protected ListPeer createList(List target) {
+    public ListPeer createList(List target) {
         Trace.log("fakeToolkit.createList");
         return peer(ListPeer.class, "List");
     }
 
     @Override
-    protected CheckboxPeer createCheckbox(Checkbox target) {
+    public CheckboxPeer createCheckbox(Checkbox target) {
         Trace.log("fakeToolkit.createCheckbox");
         return peer(CheckboxPeer.class, "Checkbox");
     }
 
     @Override
-    protected ScrollbarPeer createScrollbar(Scrollbar target) {
+    public ScrollbarPeer createScrollbar(Scrollbar target) {
         Trace.log("fakeToolkit.createScrollbar");
         return peer(ScrollbarPeer.class, "Scrollbar");
     }
 
     @Override
-    protected ScrollPanePeer createScrollPane(ScrollPane target) {
+    public ScrollPanePeer createScrollPane(ScrollPane target) {
         Trace.log("fakeToolkit.createScrollPane");
         return peer(ScrollPanePeer.class, "ScrollPane");
     }
 
     @Override
-    protected TextAreaPeer createTextArea(TextArea target) {
+    public TextAreaPeer createTextArea(TextArea target) {
         Trace.log("fakeToolkit.createTextArea");
         return peer(TextAreaPeer.class, "TextArea");
     }
 
     @Override
-    protected ChoicePeer createChoice(Choice target) {
+    public ChoicePeer createChoice(Choice target) {
         Trace.log("fakeToolkit.createChoice");
         return peer(ChoicePeer.class, "Choice");
     }
 
     @Override
-    protected FramePeer createFrame(Frame target) {
+    public FramePeer createFrame(Frame target) {
         Trace.log("fakeToolkit.createFrame title=" + target.getTitle());
         return peer(FramePeer.class, "Frame");
     }
 
     @Override
-    protected CanvasPeer createCanvas(Canvas target) {
+    public CanvasPeer createCanvas(Canvas target) {
         Trace.log("fakeToolkit.createCanvas");
         return peer(CanvasPeer.class, "Canvas");
     }
 
     @Override
-    protected PanelPeer createPanel(Panel target) {
+    public PanelPeer createPanel(Panel target) {
         Trace.log("fakeToolkit.createPanel");
         return peer(PanelPeer.class, "Panel");
     }
 
     @Override
-    protected WindowPeer createWindow(Window target) {
+    public WindowPeer createWindow(Window target) {
         Trace.log("fakeToolkit.createWindow");
         return peer(WindowPeer.class, "Window");
     }
 
     @Override
-    protected DialogPeer createDialog(Dialog target) {
+    public DialogPeer createDialog(Dialog target) {
         Trace.log("fakeToolkit.createDialog");
         return peer(DialogPeer.class, "Dialog");
     }
 
     @Override
-    protected MenuBarPeer createMenuBar(MenuBar target) {
+    public MenuBarPeer createMenuBar(MenuBar target) {
         Trace.log("fakeToolkit.createMenuBar");
         return peer(MenuBarPeer.class, "MenuBar");
     }
 
     @Override
-    protected MenuPeer createMenu(Menu target) {
+    public MenuPeer createMenu(Menu target) {
         Trace.log("fakeToolkit.createMenu");
         return peer(MenuPeer.class, "Menu");
     }
 
     @Override
-    protected PopupMenuPeer createPopupMenu(PopupMenu target) {
+    public PopupMenuPeer createPopupMenu(PopupMenu target) {
         Trace.log("fakeToolkit.createPopupMenu");
         return peer(PopupMenuPeer.class, "PopupMenu");
     }
 
     @Override
-    protected MenuItemPeer createMenuItem(MenuItem target) {
+    public MenuItemPeer createMenuItem(MenuItem target) {
         Trace.log("fakeToolkit.createMenuItem");
         return peer(MenuItemPeer.class, "MenuItem");
     }
 
     @Override
-    protected FileDialogPeer createFileDialog(FileDialog target) {
+    public FileDialogPeer createFileDialog(FileDialog target) {
         Trace.log("fakeToolkit.createFileDialog");
         return peer(FileDialogPeer.class, "FileDialog");
     }
 
     @Override
-    protected CheckboxMenuItemPeer createCheckboxMenuItem(CheckboxMenuItem target) {
+    public CheckboxMenuItemPeer createCheckboxMenuItem(CheckboxMenuItem target) {
         Trace.log("fakeToolkit.createCheckboxMenuItem");
         return peer(CheckboxMenuItemPeer.class, "CheckboxMenuItem");
     }
 
     @Override
-    protected FontPeer getFontPeer(String name, int style) {
+    public FontPeer getFontPeer(String name, int style) {
         Trace.log("fakeToolkit.getFontPeer name=" + name + " style=" + style);
         return null;
     }

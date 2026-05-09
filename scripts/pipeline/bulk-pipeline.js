@@ -44,15 +44,26 @@ const { runConstructorPreSuperCleanup } = require(path.join(JT, 'src/constructor
 const { runInlineSharedExitGoto } = require(path.join(JT, 'src/inlineSharedExitGoto'));
 const { runInlineSharedReturn } = require(path.join(JT, 'src/inlineSharedReturn'));
 const { runRemoveShadowedExceptionHandlers } = require(path.join(JT, 'src/removeShadowedExceptionHandlers'));
+const { runControlFlowDce } = require(path.join(JT, 'src/controlFlowDce'));
 const { runSimplifyNotCompare } = require(path.join(JT, 'src/simplifyNotCompare'));
+const { runSimplifyStringLengthNotCompare } = require(path.join(JT, 'src/simplifyStringLengthNotCompare'));
 const { runNarrowCharArrayStores } = require(path.join(JT, 'src/narrowCharArrayStores'));
 const { runNarrowByteArrayStores } = require(path.join(JT, 'src/narrowByteArrayStores'));
 const { runCastObjectFieldStores } = require(path.join(JT, 'src/castObjectFieldStores'));
+const { runCastPrivateFieldReceivers } = require(path.join(JT, 'src/castPrivateFieldReceivers'));
+const { runCastObjectLocalStoreFromUses } = require(path.join(JT, 'src/castObjectLocalStoreFromUses'));
+const { runMaterializeTypedNullArgs } = require(path.join(JT, 'src/materializeTypedNullArgs'));
+const { runMaterializeCheckedFieldInitializers } = require(path.join(JT, 'src/materializeCheckedFieldInitializers'));
+const { runMaterializeStackJoinStores } = require(path.join(JT, 'src/materializeStackJoinStores'));
 const { runPrimitiveArrayCopyLoops } = require(path.join(JT, 'src/primitiveArrayCopyLoops'));
+const { runRemoveDeadDupStore } = require(path.join(JT, 'src/removeDeadDupStore'));
 const { runInlineGotoReturnIsland } = require(path.join(JT, 'src/inlineGotoReturnIsland'));
 const { runSplitArrayReachingLocal } = require(path.join(JT, 'src/splitArrayReachingLocal'));
 const { runSplitArrayStoreLocalAssignment } = require(path.join(JT, 'src/splitArrayStoreLocalAssignment'));
 const { runSplitCastedLocalRange } = require(path.join(JT, 'src/splitCastedLocalRange'));
+const { runSplitReferenceArrayReachingLocal } = require(path.join(JT, 'src/splitReferenceArrayReachingLocal'));
+const { runSplitConcreteObjectReachingLocal } = require(path.join(JT, 'src/splitConcreteObjectReachingLocal'));
+const { runSplitPrimitiveIntBranchLocal } = require(path.join(JT, 'src/splitPrimitiveIntBranchLocal'));
 const { runInlineSingleUseBooleanBranch } = require(path.join(JT, 'src/inlineSingleUseBooleanBranch'));
 
 const { runEiTailClone } = require('./eiTailClone');
@@ -150,13 +161,24 @@ const passes = [
   { name: 'dead-flag', fn: (a) => runDeadStaticBoolFlag(a, { flags: deadFlagFields }) },
   { name: 'constructor-pre-super-cleanup', fn: (a) => runConstructorPreSuperCleanup(a, { deleteUnusedSnapshots: true }) },
   { name: 'simplify-not-compare', fn: (a) => runSimplifyNotCompare(a, { charLocalsOnly: true }) },
+  { name: 'simplify-string-length-not-compare', fn: (a) => runSimplifyStringLengthNotCompare(a) },
   { name: 'narrow-char-array-stores', fn: (a) => runNarrowCharArrayStores(a) },
   { name: 'narrow-byte-array-stores', fn: (a) => runNarrowByteArrayStores(a) },
   { name: 'cast-object-field-stores', fn: (a) => runCastObjectFieldStores(a) },
+  { name: 'cast-private-field-receivers', fn: (a) => runCastPrivateFieldReceivers(a) },
+  { name: 'materialize-typed-null-args', fn: (a) => runMaterializeTypedNullArgs(a) },
+  { name: 'materialize-checked-field-initializers', fn: (a) => runMaterializeCheckedFieldInitializers(a) },
+  { name: 'materialize-stack-join-stores', fn: (a) => runMaterializeStackJoinStores(a) },
   { name: 'primitive-array-copy-loops', fn: (a) => runPrimitiveArrayCopyLoops(a) },
   { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a) },
+  { name: 'split-reference-array-reaching-local', fn: (a) => runSplitReferenceArrayReachingLocal(a) },
   { name: 'split-array-store-local-assignment', fn: (a) => runSplitArrayStoreLocalAssignment(a) },
+  { name: 'split-primitive-int-branch-local', fn: (a) => runSplitPrimitiveIntBranchLocal(a) },
   { name: 'split-casted-local-range', fn: (a) => runSplitCastedLocalRange(a) },
+  { name: 'split-concrete-object-reaching-local', fn: (a) => runSplitConcreteObjectReachingLocal(a) },
+  { name: 'cast-object-local-store-from-uses', fn: (a) => runCastObjectLocalStoreFromUses(a) },
+  { name: 'split-concrete-object-reaching-local2', fn: (a) => runSplitConcreteObjectReachingLocal(a) },
+  { name: 'remove-dead-dup-store', fn: (a) => runRemoveDeadDupStore(a) },
   { name: 'inline-single-use-boolean-branch', fn: (a) => runInlineSingleUseBooleanBranch(a) },
   { name: 'inline-goto-return-island', fn: (a) => runInlineGotoReturnIsland(a) },
   ...(skipInline ? [] : [{ name: 'inline-exit', fn: (a) => runInlineSharedExitGoto(a, { maxBodyInsns: 50 }) }]),
@@ -165,8 +187,10 @@ const passes = [
   { name: 'qk-exception-split', fn: (a) => runQkExceptionSplit(a) },
   { name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) },
   { name: 'peephole2', fn: (a) => runPeepholeClean(a) },
+  { name: 'control-flow-dce', fn: (a) => runControlFlowDce(a) },
   { name: 'qc-doloop-tail-clone', fn: (a) => runQcDoLoopTailClone(a) },
   { name: 'compile-conflict-renames', fn: (a) => runCompileConflictRenames(a, { fieldRenames }) },
+  { name: 'inline-single-use-boolean-branch2', fn: (a) => runInlineSingleUseBooleanBranch(a) },
 ];
 
 let processed = 0;
@@ -180,6 +204,7 @@ for (const f of files) {
       p.fn(ast);
       ({ ast, cp } = saveAndReload(ast, cp));
     }
+    runInlineSingleUseBooleanBranch(ast);
     writeClassAstToClassFile(ast, outPath, cp);
     processed += 1;
   } catch (err) {

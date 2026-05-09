@@ -9,6 +9,7 @@ shift || true
 ./build-launcher.sh >/dev/null
 exec java -Djava.awt.headless=false -jar dekobloko-launcher.jar \
   --awt fake \
+  --gamepack dekobloko.jar \
   --trace-file traces/replay-awt.log \
   --replay-awt "$record_file" \
   "$@"

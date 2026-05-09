@@ -36,6 +36,7 @@ const METHOD_RENAMES = [
   { owner: 'me', name: 'a', descriptor: '(BLjava/applet/Applet;)V', to: 'me_a_applet' },
   { owner: 'me', name: 'a', descriptor: '(BLwl;)V', to: 'me_a_wl' },
   { owner: 'cn', name: 'a', descriptor: '(Ljl;B)Z', to: 'cn_a_jl' },
+  { owner: 'qc', name: 'a', descriptor: '(Llk;IIIIIIIIILck;Luk;Z)V', to: 'qc_a_uk' },
 ];
 
 const FIELD_OPS = new Set(['getfield', 'putfield', 'getstatic', 'putstatic']);
