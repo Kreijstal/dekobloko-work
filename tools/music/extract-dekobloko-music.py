@@ -121,6 +121,14 @@ TETRALINK_ARCHIVES = {
     },
 }
 
+BRICKABRAC_ARCHIVES = {
+    7: "dr synth sample archive used by wp",
+    8: "bk Vorbis sample archive stored as sparse files in group 0",
+    9: "pq instrument patch archive",
+    10: "vm MIDI-like song descriptors",
+    13: "music label/test metadata observed in warmed caches",
+}
+
 
 class Buffer:
     def __init__(self, data: bytes):
@@ -482,6 +490,26 @@ def write_split(out_dir: Path, archive: int, files: list[bytes]) -> list[dict]:
     return entries
 
 
+def write_brickabrac_tracks(out_dir: Path, files: list[bytes]) -> list[dict]:
+    split_dir = out_dir / "split" / "archive10"
+    split_dir.mkdir(parents=True, exist_ok=True)
+    entries = []
+    for index, data in enumerate(files):
+        name = f"brickabrac_track_{index:02d}"
+        path = split_dir / f"{name}.vm.bin"
+        path.write_bytes(data)
+        entries.append(
+            {
+                "index": index,
+                "name": name,
+                "path": str(path.relative_to(out_dir)),
+                "bytes": len(data),
+                "head": data[:16].hex(" "),
+            }
+        )
+    return entries
+
+
 def write_named_group(
     out_dir: Path,
     archive: int,
@@ -719,11 +747,78 @@ def extract_tetralink(cache_dir: Path, out_dir: Path, game: str) -> dict:
     return manifest
 
 
+def extract_brickabrac(cache_dir: Path, out_dir: Path, game: str) -> dict:
+    manifest = {
+        "game": game,
+        "source_cache": str(cache_dir),
+        "profile": "brickabrac",
+        "format": {f"archive{archive}": role for archive, role in BRICKABRAC_ARCHIVES.items()},
+        "archives": {},
+        "tracks": [],
+        "missing": [],
+    }
+
+    for archive, role in BRICKABRAC_ARCHIVES.items():
+        idx_path = cache_dir / f"main_file_cache.idx{archive}"
+        archive_manifest = {
+            "role": role,
+            "groups": [],
+        }
+        if not idx_path.exists():
+            manifest["missing"].append(
+                {
+                    "archive": archive,
+                    "reason": "index file not present in cache",
+                }
+            )
+            manifest["archives"][str(archive)] = archive_manifest
+            continue
+
+        group_count = len(idx_path.read_bytes()) // 6
+        for group in range(group_count):
+            if not has_group(cache_dir, archive, group):
+                continue
+            raw = read_group(cache_dir, archive, group)
+            decoded = decode_container(raw)
+            raw_name = f"archive{archive:02d}_group{group:03d}"
+            (out_dir / "raw" / f"{raw_name}.container.bin").write_bytes(raw)
+            (out_dir / "raw" / f"{raw_name}.payload.bin").write_bytes(decoded)
+
+            group_manifest = {
+                "group": group,
+                "container_bytes": len(raw),
+                "payload_bytes": len(decoded),
+                "head": decoded[:16].hex(" "),
+            }
+            if archive == 10 and group == 0:
+                file_count = choose_split_count(decoded)
+                files = split_group(decoded, file_count)
+                tracks = write_brickabrac_tracks(out_dir, files)
+                manifest["tracks"] = tracks
+                group_manifest["file_count"] = file_count
+                group_manifest["files"] = tracks
+            archive_manifest["groups"].append(group_manifest)
+
+        if not archive_manifest["groups"]:
+            manifest["missing"].append(
+                {
+                    "archive": archive,
+                    "reason": "no populated groups found in cache",
+                }
+            )
+        manifest["archives"][str(archive)] = archive_manifest
+    return manifest
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Extract FunOrb music-related JS5 archives.")
     parser.add_argument("cache_dir", nargs="?", default=str(Path.home() / ".alterorb/caches/dekobloko"))
     parser.add_argument("out_dir", nargs="?", default=".work/music/dekobloko")
-    parser.add_argument("--game", choices=("dekobloko", "tetralink"), help="extraction profile; defaults to output directory name")
+    parser.add_argument(
+        "--game",
+        choices=("dekobloko", "tetralink", "brickabrac"),
+        help="extraction profile; defaults to output directory name",
+    )
     args = parser.parse_args()
 
     cache_dir = Path(args.cache_dir)
@@ -735,6 +830,8 @@ def main() -> int:
 
     if game == "tetralink":
         manifest = extract_tetralink(cache_dir, out_dir, game)
+    elif game == "brickabrac":
+        manifest = extract_brickabrac(cache_dir, out_dir, game)
     else:
         manifest = extract_dekobloko(cache_dir, out_dir, game)
 
@@ -744,8 +841,10 @@ def main() -> int:
         if "file_count" in entry:
             print(f"archive {archive}: {entry['file_count']} files")
         else:
-            file_count = sum(group["file_count"] for group in entry["groups"])
+            file_count = sum(group.get("file_count", 1) for group in entry["groups"])
             print(f"archive {archive}: {len(entry['groups'])} groups, {file_count} files")
+    if manifest.get("tracks"):
+        print(f"tracks: {len(manifest['tracks'])}")
     if manifest.get("missing"):
         print(f"missing: {len(manifest['missing'])}")
     return 0

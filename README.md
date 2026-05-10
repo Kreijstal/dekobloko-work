@@ -74,6 +74,7 @@ AlterOrb gamepacks validate with:
 
 ```text
 aceofskies        13
+brickabrac        17
 chess             15
 dekobloko         32
 tetralink         17
@@ -236,6 +237,40 @@ java -cp .work/music-tools:classes-original MusicSampleBankExporter .work/music/
 `MusicTrackRenderer` decodes archive 8/9 samples with the original `bi` and
 `va` classes, hydrates each `ui`, and renders through the original
 `ia -> mi -> ei` chain at 22050 Hz mono.
+
+Brickabrac follows the same split: Python prepares the cache data, Java uses the
+original game classes for music conversion/rendering.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game brickabrac \
+  --builds tools/js5/js5-builds-validated.json \
+  --output .work/js5-caches
+
+python3 tools/music/extract-dekobloko-music.py \
+  .work/js5-caches/brickabrac \
+  .work/music/brickabrac \
+  --game brickabrac
+
+javac -cp .work/gamepack-classes/brickabrac -d .work/brickabrac-music-tools \
+  tools/music/BrickabracMusicDumper.java \
+  tools/music/BrickabracNativeMusicRenderer.java
+
+java -cp .work/brickabrac-music-tools:.work/gamepack-classes/brickabrac \
+  BrickabracMusicDumper .work/music/brickabrac
+
+java -cp .work/brickabrac-music-tools:.work/gamepack-classes/brickabrac \
+  BrickabracNativeMusicRenderer .work/music/brickabrac .work/js5-caches/brickabrac
+```
+
+The Python extractor writes archive 7/8/9/10/13 raw groups and splits archive 10
+into 4 `vm` tracks. `BrickabracMusicDumper` emits repaired MIDI files from those
+tracks. `BrickabracNativeMusicRenderer` hydrates archive 9 `pq` patches with
+archive 7 `dr` samples plus archive 8 `bk` Vorbis samples, then renders through
+the original `ie` mixer at 22050 Hz mono. Brickabrac build `17` stores the
+archive 8 Vorbis samples as sparse files inside group `0`, so the renderer reads
+the JS5 index metadata and feeds the original classes the same packed-group
+layout the client sees.
 
 TetraLink uses a different music path. Archive 7/8 are sample banks, archive 9
 is instrument patches, and archive 10 contains `ri` song descriptors that the

@@ -1,5 +1,6 @@
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
 
 public final class BrickabracNativeMusicRenderer {
     private static final int SAMPLE_RATE = 22050;
@@ -36,16 +38,15 @@ public final class BrickabracNativeMusicRenderer {
         List<Path> trackFiles = sorted(root.resolve("split/archive10"), ".vm.bin");
         Set<Integer> patchIds = collectPatchIds(trackCtor, trackFiles);
         mf archive9 = archive(root, 9, patchIds);
-        SampleIds sampleIds = collectSampleIds(archive9, patchIds);
+        SampleIds sampleIds = collectSampleIds(trackCtor, trackFiles, archive9);
         mf archive7 = archive(root, 7, sampleIds.archive7);
-        mf archive8 = vorbisArchive(root, archive8SampleCache, sampleIds.archive8);
-        wp samples = new wp(archive7, archive8);
-
         System.err.printf(
             "patches=%d samples7=%d samples8=%d%n",
             patchIds.size(),
             sampleIds.archive7.size(),
             sampleIds.archive8.size());
+        mf archive8 = vorbisArchive(root, archive8SampleCache, sampleIds.archive8);
+        wp samples = new wp(archive7, archive8);
 
         for (Path file : trackFiles) {
             vm track = trackCtor.newInstance(new wq(Files.readAllBytes(file)));
@@ -74,30 +75,59 @@ public final class BrickabracNativeMusicRenderer {
         return ids;
     }
 
-    private static SampleIds collectSampleIds(mf patchArchive, Set<Integer> patchIds) throws Exception {
+    private static SampleIds collectSampleIds(
+        Constructor<vm> trackCtor,
+        List<Path> trackFiles,
+        mf patchArchive
+    ) throws Exception {
         Field sampleMapField = pq.class.getDeclaredField("s");
         sampleMapField.setAccessible(true);
+        Field noteMaskField = se.class.getDeclaredField("i");
+        noteMaskField.setAccessible(true);
         TreeSet<Integer> archive7 = new TreeSet<>();
         TreeSet<Integer> archive8 = new TreeSet<>();
-        for (int patchId : patchIds) {
-            pq patch = mi.a(patchArchive, patchId, 8);
-            if (patch == null) {
-                throw new IllegalStateException("missing patch " + patchId);
-            }
-            int[] sampleMap = (int[]) sampleMapField.get(patch);
-            for (int encoded : sampleMap) {
-                if (encoded == 0) {
-                    continue;
+        Map<Integer, pq> patches = new HashMap<>();
+
+        for (Path file : trackFiles) {
+            vm track = trackCtor.newInstance(new wq(Files.readAllBytes(file)));
+            track.b();
+            for (se entry = (se) track.i.b(-15519); entry != null; entry = (se) track.i.a(true)) {
+                int patchId = (int) entry.g;
+                pq patch = patches.get(patchId);
+                if (patch == null) {
+                    patch = mi.a(patchArchive, patchId, 8);
+                    if (patch == null) {
+                        throw new IllegalStateException("missing patch " + patchId);
+                    }
+                    patches.put(patchId, patch);
                 }
-                int sample = encoded - 1;
-                if ((sample & 1) == 0) {
-                    archive7.add(sample >> 2);
-                } else {
-                    archive8.add(sample >> 2);
-                }
+                collectSampleIds((int[]) sampleMapField.get(patch), (byte[]) noteMaskField.get(entry), archive7, archive8);
             }
         }
         return new SampleIds(archive7, archive8);
+    }
+
+    private static void collectSampleIds(
+        int[] sampleMap,
+        byte[] noteMask,
+        Set<Integer> archive7,
+        Set<Integer> archive8
+    ) {
+        for (int note = 0; note < sampleMap.length; note++) {
+            if (noteMask != null && noteMask[note] == 0) {
+                continue;
+            }
+            int encoded = sampleMap[note];
+            if (encoded == 0) {
+                continue;
+            }
+            int sample = encoded - 1;
+            if ((sample & 1) == 0) {
+                archive7.add(sample >> 2);
+            } else {
+                archive8.add(sample >> 2);
+            }
+        }
     }
 
     private static mf archive(Path root, int archive, Set<Integer> fileIds) throws IOException {
@@ -114,8 +144,17 @@ public final class BrickabracNativeMusicRenderer {
     }
 
     private static mf vorbisArchive(Path root, Path sampleCache, Set<Integer> groupIds) throws IOException {
+        byte[] group0 = Files.readAllBytes(root.resolve("raw/archive08_group000.container.bin"));
+        if (usesPackedGroup(sampleCache, groupIds)) {
+            Set<Integer> fileIds = readIndexFileIds(sampleCache, 8, 0);
+            if (fileIds.isEmpty()) {
+                fileIds = groupIds;
+            }
+            return new mf(new SingleGroupArchive(group0, fileIds), true, 1);
+        }
+
         Map<Integer, byte[]> groups = new HashMap<>();
-        groups.put(0, Files.readAllBytes(root.resolve("raw/archive08_group000.container.bin")));
+        groups.put(0, group0);
 
         if (!Files.exists(sampleCache.resolve("main_file_cache.dat2"))) {
             throw new IOException("archive 8 sample cache not found: " + sampleCache);
@@ -137,6 +176,15 @@ public final class BrickabracNativeMusicRenderer {
             throw new IOException("missing archive 8 Vorbis sample groups in " + sampleCache + ": " + missing);
         }
         return new mf(new MultiGroupArchive(groups), true, 1);
+    }
+
+    private static boolean usesPackedGroup(Path sampleCache, Set<Integer> groupIds) throws IOException {
+        for (int groupId : groupIds) {
+            if (groupId != 0 && readCacheGroup(sampleCache, 8, groupId) != null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static byte[] readCacheGroup(Path cache, int archive, int group) throws IOException {
@@ -181,6 +229,87 @@ public final class BrickabracNativeMusicRenderer {
             chunk++;
         }
         return out;
+    }
+
+    private static Set<Integer> readIndexFileIds(Path cache, int archive, int group) throws IOException {
+        byte[] raw = readCacheGroup(cache, 255, archive);
+        if (raw == null) {
+            return Set.of();
+        }
+        Buffer index = new Buffer(decodeContainer(raw));
+        int version = index.u8();
+        if (version < 5 || version > 7) {
+            throw new IOException("unsupported JS5 index version " + version + " for archive " + archive);
+        }
+        if (version >= 6) {
+            index.u32();
+        }
+        int flags = index.u8();
+        boolean hasNames = (flags & 1) != 0;
+        boolean hasWhirlpool = (flags & 2) != 0;
+        int groupCount = version >= 7 ? index.largeSmart() : index.u16();
+
+        int[] groupIds = new int[groupCount];
+        int previous = 0;
+        for (int i = 0; i < groupCount; i++) {
+            previous += version >= 7 ? index.largeSmart() : index.u16();
+            groupIds[i] = previous;
+        }
+        if (hasNames) {
+            index.skip(4 * groupCount);
+        }
+        index.skip(4 * groupCount);
+        if (hasWhirlpool) {
+            index.skip(64 * groupCount);
+        }
+        index.skip(4 * groupCount);
+
+        int[] fileCounts = new int[groupCount];
+        for (int i = 0; i < groupCount; i++) {
+            fileCounts[i] = version >= 7 ? index.largeSmart() : index.u16();
+        }
+        for (int i = 0; i < groupCount; i++) {
+            int fileId = 0;
+            TreeSet<Integer> fileIds = new TreeSet<>();
+            for (int j = 0; j < fileCounts[i]; j++) {
+                fileId += version >= 7 ? index.largeSmart() : index.u16();
+                fileIds.add(fileId);
+            }
+            if (groupIds[i] == group) {
+                return fileIds;
+            }
+        }
+        return Set.of();
+    }
+
+    private static byte[] decodeContainer(byte[] raw) throws IOException {
+        int kind = raw[0] & 0xff;
+        int compressedSize = readBe32(raw, 1);
+        if (kind == 0) {
+            return Arrays.copyOfRange(raw, 5, 5 + compressedSize);
+        }
+
+        int expectedSize = readBe32(raw, 5);
+        byte[] compressed = Arrays.copyOfRange(raw, 9, 9 + compressedSize);
+        byte[] decoded;
+        if (kind == 2) {
+            try (GZIPInputStream gzip = new GZIPInputStream(new ByteArrayInputStream(compressed))) {
+                decoded = gzip.readAllBytes();
+            }
+        } else {
+            throw new IOException("unsupported bzip2 JS5 index container for archive metadata");
+        }
+        if (decoded.length != expectedSize) {
+            throw new IOException("bad JS5 container length: expected " + expectedSize + ", got " + decoded.length);
+        }
+        return decoded;
+    }
+
+    private static int readBe32(byte[] data, int offset) {
+        return ((data[offset] & 0xff) << 24)
+            | ((data[offset + 1] & 0xff) << 16)
+            | ((data[offset + 2] & 0xff) << 8)
+            | (data[offset + 3] & 0xff);
     }
 
     private static byte[] renderPcm(ie player) throws IOException {
@@ -268,6 +397,42 @@ public final class BrickabracNativeMusicRenderer {
                 .filter(path -> path.getFileName().toString().endsWith(suffix))
                 .sorted(Comparator.comparing(path -> path.getFileName().toString()))
                 .collect(Collectors.toList());
+        }
+    }
+
+    private static final class Buffer {
+        private final byte[] data;
+        private int offset;
+
+        Buffer(byte[] data) {
+            this.data = data;
+        }
+
+        int u8() {
+            return data[offset++] & 0xff;
+        }
+
+        int u16() {
+            int value = ((data[offset] & 0xff) << 8) | (data[offset + 1] & 0xff);
+            offset += 2;
+            return value;
+        }
+
+        int u32() {
+            int value = readBe32(data, offset);
+            offset += 4;
+            return value;
+        }
+
+        int largeSmart() {
+            if ((data[offset] & 0x80) != 0) {
+                return u32() & 0x7fffffff;
+            }
+            return u16();
+        }
+
+        void skip(int bytes) {
+            offset += bytes;
         }
     }
 
