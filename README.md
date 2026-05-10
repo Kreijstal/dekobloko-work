@@ -77,6 +77,7 @@ in `tools/js5/js5-builds-validated.json`; examples from the current mirror:
 | `brickabrac` | 65 | 16 tracks extracted/rendered. |
 | `pixelate` | 55 | 18 tracks extracted/rendered. Build 13 handshakes but has the wrong archive 10 shape. |
 | `tetralink` | 17 | 4 tracks plus sample banks, SFZ/SF2/native-bank exports. |
+| `virogrid` | 77 | 4 tracks extracted/rendered. Build 15 handshakes but has the wrong archive 10 shape. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
 
 Download one cache with the build table:
@@ -132,6 +133,7 @@ Known archive roles:
 | Brickabrac | 7 `dr` samples, 8 `bk` Vorbis samples, 9 `pq` patches, 10 `vm` songs, 13 labels | `vm -> ie` | `.work/music/brickabrac/wav-native/archive10_tracks` |
 | Pixelate | 7/8 sound banks, 9 `sn` patches, 10 `ua` songs | `ua -> ti` | `.work/music/pixelate-build55/wav-native/archive10_tracks` |
 | TetraLink | 7/8 `wf` samples, 9 `ng` patches, 10 `ri` songs | `ri -> g/go/ng/fa` | `.work/music/tetralink-build17/wav/archive10_tracks` |
+| Virogrid | 7/8 sound banks, 9 `rc` patches, 10 `sc` songs | `sc -> i/rc/jg` | `.work/music/virogrid-build77/wav-native/archive10_tracks` |
 
 Archive 10 names must come from JS5 file-name hashes or client load strings, not
 from split position. Dekobloko build 31/32, for example, maps sparse file IDs to
@@ -187,6 +189,24 @@ java -cp .work/pixelate-music-tools:.work/deob-pixelate-profile/out \
   PixelateNativeMusicRenderer \
   .work/music/pixelate-build55 \
   .work/js5-caches-pixelate-build55/pixelate
+```
+
+Virogrid uses the TetraLink-style archive layout, but its working cache is
+build 77:
+
+```bash
+python3 tools/music/extract-dekobloko-music.py \
+  .work/js5-caches-virogrid-build77/virogrid \
+  .work/music/virogrid-build77 \
+  --game virogrid
+
+javac -cp .work/deob-virogrid-profile/out -d .work/virogrid-music-tools \
+  tools/music/VirogridNativeMusicRenderer.java
+
+java -cp .work/virogrid-music-tools:.work/deob-virogrid-profile/out \
+  VirogridNativeMusicRenderer \
+  .work/music/virogrid-build77 \
+  .work/js5-caches-virogrid-build77/virogrid
 ```
 
 TetraLink has the richest export path:

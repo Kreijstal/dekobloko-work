@@ -121,6 +121,27 @@ TETRALINK_ARCHIVES = {
     },
 }
 
+VIROGRID_ARCHIVES = {
+    7: {
+        "role": "synth/sample archive used by jg/vn",
+    },
+    8: {
+        "role": "Vorbis/sample archive used by jg/gj",
+    },
+    9: {
+        "role": "instrument patch archive used by i/rc",
+    },
+    10: {
+        "role": "sc MIDI-like song descriptors",
+        "tracks": [
+            "ataxx titlescreen",
+            "tetralink ingame 1",
+            "tetralink ingame 2",
+            "tetralink ingame 3",
+        ],
+    },
+}
+
 BRICKABRAC_ARCHIVES = {
     7: "dr synth sample archive used by wp",
     8: "bk Vorbis sample archive stored as sparse files in group 0",
@@ -453,6 +474,8 @@ def logical_name_for_file(archive: int, group_id: int, file_id: int, index: int,
 
 def file_suffix_for_archive(archive: int, group_name: str | None, profile: str) -> str:
     if archive == 10:
+        if profile == "virogrid":
+            return ".sc.bin"
         return ".ri.bin"
     if group_name and group_name.endswith(".packvorbis"):
         return ".packvorbis.bin"
@@ -586,6 +609,7 @@ def write_selected_named_files(
     group_name: str,
     decoded: bytes,
     names: list[str],
+    profile: str = "tetralink",
 ) -> dict:
     files = split_group(decoded, group["file_count"])
     file_by_hash = {
@@ -617,7 +641,7 @@ def write_selected_named_files(
             )
             continue
         data = file_by_id[file_id]
-        path = archive_dir / f"{safe_name(name)}{file_suffix_for_archive(archive, name, 'tetralink')}"
+        path = archive_dir / f"{safe_name(name)}{file_suffix_for_archive(archive, name, profile)}"
         path.write_bytes(data)
         file_entries.append(
             {
@@ -671,22 +695,22 @@ def extract_dekobloko(cache_dir: Path, out_dir: Path, game: str) -> dict:
     return manifest
 
 
-def extract_tetralink(cache_dir: Path, out_dir: Path, game: str) -> dict:
+def extract_tetralink_like(cache_dir: Path, out_dir: Path, game: str, archives: dict[int, dict], profile: str) -> dict:
     manifest = {
         "game": game,
         "source_cache": str(cache_dir),
-        "profile": "tetralink",
+        "profile": profile,
         "format": {
-            "archive7": TETRALINK_ARCHIVES[7]["role"],
-            "archive8": TETRALINK_ARCHIVES[8]["role"],
-            "archive9": TETRALINK_ARCHIVES[9]["role"],
-            "archive10": TETRALINK_ARCHIVES[10]["role"],
+            "archive7": archives[7]["role"],
+            "archive8": archives[8]["role"],
+            "archive9": archives[9]["role"],
+            "archive10": archives[10]["role"],
         },
         "archives": {},
         "missing": [],
     }
 
-    for archive, spec in TETRALINK_ARCHIVES.items():
+    for archive, spec in archives.items():
         index = parse_index(cache_dir, archive)
         archive_manifest = {
             "role": spec["role"],
@@ -725,7 +749,7 @@ def extract_tetralink(cache_dir: Path, out_dir: Path, game: str) -> dict:
                 raw_name = f"archive{archive:02d}_group{group['id']:03d}"
                 (out_dir / "raw" / f"{raw_name}.container.bin").write_bytes(raw)
                 (out_dir / "raw" / f"{raw_name}.payload.bin").write_bytes(decoded)
-                selected = write_selected_named_files(out_dir, archive, group, group_name, decoded, requested_names)
+                selected = write_selected_named_files(out_dir, archive, group, group_name, decoded, requested_names, profile)
                 archive_manifest["groups"].append(selected["entry"])
                 manifest["missing"].extend(selected["missing"])
             manifest["archives"][str(archive)] = archive_manifest
@@ -765,10 +789,18 @@ def extract_tetralink(cache_dir: Path, out_dir: Path, game: str) -> dict:
                 raw_name += f"_{safe_name(group_name)}"
             (out_dir / "raw" / f"{raw_name}.container.bin").write_bytes(raw)
             (out_dir / "raw" / f"{raw_name}.payload.bin").write_bytes(decoded)
-            archive_manifest["groups"].append(write_named_group(out_dir, archive, group, group_name, decoded, "tetralink"))
+            archive_manifest["groups"].append(write_named_group(out_dir, archive, group, group_name, decoded, profile))
 
         manifest["archives"][str(archive)] = archive_manifest
     return manifest
+
+
+def extract_tetralink(cache_dir: Path, out_dir: Path, game: str) -> dict:
+    return extract_tetralink_like(cache_dir, out_dir, game, TETRALINK_ARCHIVES, "tetralink")
+
+
+def extract_virogrid(cache_dir: Path, out_dir: Path, game: str) -> dict:
+    return extract_tetralink_like(cache_dir, out_dir, game, VIROGRID_ARCHIVES, "virogrid")
 
 
 def extract_brickabrac(cache_dir: Path, out_dir: Path, game: str) -> dict:
@@ -847,7 +879,7 @@ def main() -> int:
     parser.add_argument("out_dir", nargs="?", default=".work/music/dekobloko")
     parser.add_argument(
         "--game",
-        choices=("dekobloko", "tetralink", "brickabrac"),
+        choices=("dekobloko", "tetralink", "brickabrac", "virogrid"),
         help="extraction profile; defaults to output directory name",
     )
     args = parser.parse_args()
@@ -861,6 +893,8 @@ def main() -> int:
 
     if game == "tetralink":
         manifest = extract_tetralink(cache_dir, out_dir, game)
+    elif game == "virogrid":
+        manifest = extract_virogrid(cache_dir, out_dir, game)
     elif game == "brickabrac":
         manifest = extract_brickabrac(cache_dir, out_dir, game)
     else:
