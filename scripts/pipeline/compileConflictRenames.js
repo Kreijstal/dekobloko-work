@@ -3,41 +3,9 @@
 // Exact field renames for javac source conflicts introduced by CFR's choice to
 // emit short class names. These are semantic no-ops at bytecode level: every
 // definition and every exact owner/name/descriptor reference is renamed.
-const FIELD_RENAMES = [
-  { owner: 'uh', name: 'a', descriptor: 'Lbe;', to: 'uh_a' },
-  { owner: 'kl', name: 'u', descriptor: '[I', to: 'kl_u' },
-  { owner: 'on', name: 'b', descriptor: 'I', to: 'on_b' },
-  { owner: 'on', name: 'd', descriptor: 'Z', to: 'on_d' },
-  { owner: 'on', name: 'j', descriptor: 'Lmm;', to: 'on_j' },
-  { owner: 'wk', name: 'h', descriptor: 'Ljava/lang/String;', to: 'wk_h' },
-  { owner: 'wk', name: 'i', descriptor: 'Z', to: 'wk_i' },
-  { owner: 'la', name: 'a', descriptor: 'I', to: 'la_a' },
-  { owner: 'fn', name: 'g', descriptor: 'Lw;', to: 'fn_g' },
-  { owner: 'mk', name: 'c', descriptor: '[I', to: 'mk_c' },
-  { owner: 'db', name: 'f', descriptor: 'Lck;', to: 'db_f' },
-  { owner: 'ba', name: 'e', descriptor: 'Ljava/lang/String;', to: 'ba_e' },
-  { owner: 'ba', name: 'f', descriptor: 'Lum;', to: 'ba_f' },
-  { owner: 'bh', name: 'd', descriptor: '[[Lck;', to: 'bh_d' },
-  { owner: 'bh', name: 'i', descriptor: 'J', to: 'bh_i' },
-  { owner: 'wm', name: 'i', descriptor: 'Ljava/lang/String;', to: 'wm_i' },
-];
+const FIELD_RENAMES = [];
 
-const METHOD_RENAMES = [
-  // Complete wm.a(String, byte) override family. Renaming only te breaks the
-  // abstract contract, so keep the family together.
-  { owner: 'wm', name: 'a', descriptor: '(Ljava/lang/String;B)Ljava/lang/String;', to: 'wm_a_string' },
-  { owner: 'ii', name: 'a', descriptor: '(Ljava/lang/String;B)Ljava/lang/String;', to: 'wm_a_string' },
-  { owner: 'jm', name: 'a', descriptor: '(Ljava/lang/String;B)Ljava/lang/String;', to: 'wm_a_string' },
-  { owner: 'kd', name: 'a', descriptor: '(Ljava/lang/String;B)Ljava/lang/String;', to: 'wm_a_string' },
-  { owner: 're', name: 'a', descriptor: '(Ljava/lang/String;B)Ljava/lang/String;', to: 'wm_a_string' },
-  { owner: 'te', name: 'a', descriptor: '(Ljava/lang/String;B)Ljava/lang/String;', to: 'wm_a_string' },
-  { owner: 'tl', name: 'a', descriptor: '(Ljava/lang/String;B)Ljava/lang/String;', to: 'wm_a_string' },
-  { owner: 'jb', name: 'a', descriptor: '(Ljava/lang/String;B)V', to: 'jb_a_string' },
-  { owner: 'me', name: 'a', descriptor: '(BLjava/applet/Applet;)V', to: 'me_a_applet' },
-  { owner: 'me', name: 'a', descriptor: '(BLwl;)V', to: 'me_a_wl' },
-  { owner: 'cn', name: 'a', descriptor: '(Ljl;B)Z', to: 'cn_a_jl' },
-  { owner: 'qc', name: 'a', descriptor: '(Llk;IIIIIIIIILck;Luk;Z)V', to: 'qc_a_uk' },
-];
+const METHOD_RENAMES = [];
 
 const FIELD_OPS = new Set(['getfield', 'putfield', 'getstatic', 'putstatic']);
 const METHOD_OPS = new Set(['invokevirtual', 'invokespecial', 'invokestatic', 'invokeinterface']);
@@ -48,6 +16,79 @@ function symbolKey(owner, name, descriptor) {
 
 function classesOf(ast) {
   return ast && Array.isArray(ast.classes) ? ast.classes : [];
+}
+
+function methodKey(name, descriptor) {
+  return `${name}:${descriptor}`;
+}
+
+function collectClassInfo(ast) {
+  const classes = new Map();
+  for (const cls of classesOf(ast)) {
+    const methods = new Set();
+    for (const item of cls.items || []) {
+      if (item && item.type === 'method' && item.method) {
+        methods.add(methodKey(item.method.name, item.method.descriptor));
+      }
+    }
+    classes.set(cls.className, {
+      name: cls.className,
+      superName: cls.superClassName || null,
+      interfaces: Array.isArray(cls.interfaces) ? cls.interfaces.slice() : [],
+      methods,
+    });
+  }
+  return classes;
+}
+
+function classLinks(info) {
+  const links = new Map();
+  function add(a, b) {
+    if (!a || !b || !info.has(a) || !info.has(b)) return;
+    if (!links.has(a)) links.set(a, new Set());
+    if (!links.has(b)) links.set(b, new Set());
+    links.get(a).add(b);
+    links.get(b).add(a);
+  }
+  for (const cls of info.values()) {
+    add(cls.name, cls.superName);
+    for (const itf of cls.interfaces) add(cls.name, itf);
+  }
+  return links;
+}
+
+function expandMethodRenames(ast, methodRenames) {
+  const info = collectClassInfo(ast);
+  const links = classLinks(info);
+  const expanded = new Map();
+
+  for (const rename of methodRenames) {
+    const wanted = methodKey(rename.name, rename.descriptor);
+    const queue = [rename.owner];
+    const seen = new Set();
+
+    while (queue.length > 0) {
+      const owner = queue.shift();
+      if (seen.has(owner)) continue;
+      seen.add(owner);
+
+      const cls = info.get(owner);
+      if (cls && cls.methods.has(wanted)) {
+        const key = symbolKey(owner, rename.name, rename.descriptor);
+        const previous = expanded.get(key);
+        if (previous && previous.to !== rename.to) {
+          throw new Error(`Conflicting method rename for ${key}: ${previous.to} vs ${rename.to}`);
+        }
+        expanded.set(key, { ...rename, owner });
+      }
+
+      for (const next of links.get(owner) || []) {
+        if (!seen.has(next)) queue.push(next);
+      }
+    }
+  }
+
+  return [...expanded.values()];
 }
 
 function renameFieldDefinitions(cls, byKey) {
@@ -148,7 +189,9 @@ function walkInstructions(node, fieldRenames, methodRenames) {
 
 function runCompileConflictRenames(ast, options = {}) {
   const fieldRenames = options.fieldRenames || FIELD_RENAMES;
-  const methodRenames = options.methodRenames || METHOD_RENAMES;
+  const methodRenames = options.methodRenames
+    ? options.methodRenames
+    : expandMethodRenames(ast, METHOD_RENAMES);
   const fieldsByKey = new Map();
   for (const rename of fieldRenames) {
     fieldsByKey.set(symbolKey(rename.owner, rename.name, rename.descriptor), rename);
@@ -167,4 +210,4 @@ function runCompileConflictRenames(ast, options = {}) {
   return changed;
 }
 
-module.exports = { FIELD_RENAMES, METHOD_RENAMES, runCompileConflictRenames };
+module.exports = { FIELD_RENAMES, METHOD_RENAMES, expandMethodRenames, runCompileConflictRenames };

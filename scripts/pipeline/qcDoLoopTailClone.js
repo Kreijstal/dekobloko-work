@@ -7,56 +7,65 @@
 // where L3746 is just the same "mb += delta; goto L3760" tail. Cloning that
 // tail for the normal exit gives CFR separate exits and removes the marker.
 
-function runQcDoLoopTailClone(astRoot) {
+function runQcDoLoopTailClone(astRoot, options = {}) {
   let fired = 0;
+  const targets = options.targets || [];
+  if (targets.length === 0) return { changed: false, fired: 0 };
   for (const cls of astRoot.classes || []) {
-    if (!cls || cls.className !== 'qc') continue;
+    if (!cls) continue;
     for (const item of cls.items || []) {
       if (!item || item.type !== 'method' || !item.method) continue;
-      if (item.method.name !== 'b' || item.method.descriptor !== '(IZ)Z') continue;
+      const target = targets.find((spec) =>
+        cls.className === spec.className &&
+        item.method.name === spec.methodName &&
+        item.method.descriptor === spec.descriptor);
+      if (!target) continue;
       const codeAttr = (item.method.attributes || []).find((attr) => attr && attr.type === 'code');
       if (!codeAttr || !codeAttr.code) continue;
-      fired += transformMethod(codeAttr.code.codeItems || []);
+      fired += transformMethod(codeAttr.code.codeItems || [], target);
     }
   }
   return { changed: fired > 0, fired };
 }
 
-function transformMethod(codeItems) {
-  const branchIdx = findLabelIndex(codeItems, 'L3706');
-  const tailIdx = findLabelIndex(codeItems, 'L3746');
-  const joinIdx = findLabelIndex(codeItems, 'L3760');
+function transformMethod(codeItems, target) {
+  const branchIdx = findLabelIndex(codeItems, target.branchLabel);
+  const tailIdx = findLabelIndex(codeItems, target.tailStart);
+  const joinIdx = findLabelIndex(codeItems, target.joinLabel);
   if (branchIdx < 0 || tailIdx < 0 || joinIdx < 0 || tailIdx >= joinIdx) return 0;
 
   const branch = codeItems[branchIdx] && codeItems[branchIdx].instruction;
-  if (!branch || typeof branch !== 'object' || branch.op !== 'if_icmpeq' || trim(branch.arg) !== 'L3746') {
+  if (!branch || typeof branch !== 'object' || branch.op !== 'if_icmpeq' || trim(branch.arg) !== target.tailStart) {
     return 0;
   }
 
   const tail = codeItems.slice(tailIdx, joinIdx);
-  if (!matchesMbDeltaTail(tail)) return 0;
+  if (!matchesMbDeltaTail(tail, target)) return 0;
 
-  codeItems[branchIdx].instruction = { ...branch, arg: 'L3746A' };
+  const prefix = target.clonePrefix || target.tailStart;
+  const field = target.field;
+  codeItems[branchIdx].instruction = { ...branch, arg: `${prefix}A` };
   const clone = [
-    itemWith('L3746A', 'aload_0'),
-    itemWith('L3746B', 'dup'),
-    itemWith('L3746C', { op: 'getfield', arg: ['Field', 'qc', ['mb', 'I']] }),
-    itemWith('L3746D', { op: 'iload', arg: '10' }),
-    itemWith('L3746E', 'iadd'),
-    itemWith('L3746F', { op: 'putfield', arg: ['Field', 'qc', ['mb', 'I']] }),
-    itemWith('L3746G', { op: 'goto', arg: 'L3760' }),
+    itemWith(`${prefix}A`, 'aload_0'),
+    itemWith(`${prefix}B`, 'dup'),
+    itemWith(`${prefix}C`, { op: 'getfield', arg: ['Field', field.owner, [field.name, field.descriptor]] }),
+    itemWith(`${prefix}D`, { op: 'iload', arg: target.local }),
+    itemWith(`${prefix}E`, 'iadd'),
+    itemWith(`${prefix}F`, { op: 'putfield', arg: ['Field', field.owner, [field.name, field.descriptor]] }),
+    itemWith(`${prefix}G`, { op: 'goto', arg: target.joinLabel }),
   ];
   codeItems.splice(tailIdx, 0, ...clone);
   return 1;
 }
 
-function matchesMbDeltaTail(tail) {
+function matchesMbDeltaTail(tail, target) {
+  const field = target.field;
   const ops = tail.map((item) => getOp(item && item.instruction));
   return ops.join(' ') === 'aload_0 dup getfield iload iadd putfield goto' &&
-    hasField(tail[2], 'qc', 'mb', 'I') &&
-    hasLocal(tail[3], '10') &&
-    hasField(tail[5], 'qc', 'mb', 'I') &&
-    trim(tail[6] && tail[6].instruction && tail[6].instruction.arg) === 'L3760';
+    hasField(tail[2], field.owner, field.name, field.descriptor) &&
+    hasLocal(tail[3], target.local) &&
+    hasField(tail[5], field.owner, field.name, field.descriptor) &&
+    trim(tail[6] && tail[6].instruction && tail[6].instruction.arg) === target.joinLabel;
 }
 
 function hasField(item, owner, name, desc) {

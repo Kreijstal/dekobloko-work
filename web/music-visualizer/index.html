@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dekobloko Music Visualizer</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f6f2;
+      --panel: #ffffff;
+      --ink: #1f2328;
+      --muted: #68717a;
+      --line: #d8ddd2;
+      --accent: #2e7d6f;
+      --hot: #bf4a3f;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    main {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    header {
+      padding: 18px 24px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfbf7;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 21px;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) auto auto auto auto auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    select, button, input {
+      height: 36px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 0 10px;
+      font: inherit;
+    }
+
+    button {
+      min-width: 74px;
+      cursor: pointer;
+      background: #f8faf7;
+    }
+
+    button.primary {
+      color: #fff;
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .channel-menu {
+      position: relative;
+    }
+
+    .channel-menu summary {
+      display: inline-flex;
+      align-items: center;
+      height: 36px;
+      min-width: 112px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 6px;
+      padding: 0 10px;
+      cursor: pointer;
+      list-style: none;
+      font-size: 14px;
+    }
+
+    .channel-menu summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .channel-options {
+      position: absolute;
+      right: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(86px, 1fr));
+      gap: 6px;
+      min-width: 210px;
+      max-height: 320px;
+      overflow: auto;
+      margin-top: 6px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(31, 35, 40, 0.15);
+    }
+
+    .channel-options label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 26px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .channel-options input {
+      width: 14px;
+      height: 14px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex: 0 0 auto;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(90px, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stat {
+      background: #fbfbf7;
+      padding: 10px 14px;
+      min-width: 0;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .value {
+      margin-top: 3px;
+      font-variant-numeric: tabular-nums;
+      font-size: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      min-height: 0;
+    }
+
+    .stage {
+      min-width: 0;
+      padding: 18px 24px 24px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .timeline-panel {
+      height: min(64vh, 620px);
+      overflow: auto;
+    }
+
+    svg {
+      display: block;
+      width: auto;
+      height: auto;
+      background: #fff;
+    }
+
+    aside {
+      border-left: 1px solid var(--line);
+      background: #fbfbf7;
+      padding: 18px 16px;
+      min-width: 0;
+      overflow: auto;
+    }
+
+    .side-title {
+      font-weight: 650;
+      margin-bottom: 10px;
+    }
+
+    .event-list {
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 8px;
+      align-items: baseline;
+      padding: 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .event.active {
+      border-color: var(--accent);
+      background: #eaf4f1;
+    }
+
+    .empty {
+      padding: 24px;
+      color: var(--muted);
+    }
+
+    .tooltip {
+      position: fixed;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      min-width: 220px;
+      max-width: 320px;
+      padding: 9px 10px;
+      border: 1px solid #b8c7bd;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 0 8px 24px rgba(31, 35, 40, 0.14);
+      font-size: 12px;
+      line-height: 1.45;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tooltip b {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 880px) {
+      .toolbar { grid-template-columns: 1fr 1fr 1fr; }
+      .toolbar select { grid-column: 1 / -1; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .workspace { grid-template-columns: 1fr; }
+      aside { border-left: 0; border-top: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Dekobloko Music Visualizer</h1>
+    </header>
+    <section class="toolbar">
+      <select id="trackSelect"></select>
+      <details class="channel-menu" id="channelMenu">
+        <summary id="channelSummary">Channels</summary>
+        <div class="channel-options" id="channelOptions"></div>
+      </details>
+      <button id="reloadButton">Reload</button>
+      <button id="playButton" class="primary">Play</button>
+      <button id="stepButton">Step</button>
+      <input id="speedInput" type="range" min="1" max="120" value="36" title="Rows per second">
+    </section>
+    <section class="stats">
+      <div class="stat"><div class="label">Track</div><div class="value" id="trackName">-</div></div>
+      <div class="stat"><div class="label">Rows</div><div class="value" id="rowCount">-</div></div>
+      <div class="stat"><div class="label">Events</div><div class="value" id="eventCount">-</div></div>
+      <div class="stat"><div class="label">Samples</div><div class="value" id="sampleCount">-</div></div>
+      <div class="stat"><div class="label">Progress</div><div class="value" id="progressText">-</div></div>
+    </section>
+    <section class="workspace">
+      <div class="stage">
+        <div class="panel timeline-panel">
+          <svg id="chart" role="img" aria-label="Music event timeline"></svg>
+        </div>
+      </div>
+      <aside>
+        <div class="side-title">Events Being Created</div>
+        <div class="event-list" id="eventList"></div>
+      </aside>
+    </section>
+    <div class="tooltip" id="tooltip"></div>
+  </main>
+
+  <script type="module">
+    import * as d3 from "https://esm.sh/d3@7.9.0";
+    import { hydrateSampleBank, renderTrack } from "./audio.js";
+
+    const root = "../../.work/music/dekobloko";
+    const els = {
+      trackSelect: document.querySelector("#trackSelect"),
+      channelSummary: document.querySelector("#channelSummary"),
+      channelOptions: document.querySelector("#channelOptions"),
+      reloadButton: document.querySelector("#reloadButton"),
+      playButton: document.querySelector("#playButton"),
+      stepButton: document.querySelector("#stepButton"),
+      speedInput: document.querySelector("#speedInput"),
+      trackName: document.querySelector("#trackName"),
+      rowCount: document.querySelector("#rowCount"),
+      eventCount: document.querySelector("#eventCount"),
+      sampleCount: document.querySelector("#sampleCount"),
+      progressText: document.querySelector("#progressText"),
+      chart: d3.select("#chart"),
+      eventList: document.querySelector("#eventList"),
+      tooltip: document.querySelector("#tooltip")
+    };
+
+    const state = {
+      manifest: null,
+      sampleBank: null,
+      track: null,
+      row: 0,
+      playing: false,
+      timer: null,
+      audioContext: null,
+      audioSource: null,
+      rendered: new Map(),
+      enabledChannels: new Set()
+    };
+
+    const color = d3.scaleOrdinal(d3.schemeTableau10);
+
+    els.reloadButton.addEventListener("click", load);
+    els.trackSelect.addEventListener("change", () => loadTrack(els.trackSelect.value));
+    els.channelOptions.addEventListener("change", updateChannelFilter);
+    els.playButton.addEventListener("click", toggleAudio);
+    els.stepButton.addEventListener("click", () => advance(1));
+    els.speedInput.addEventListener("input", restartTimer);
+    window.addEventListener("resize", () => state.track && draw());
+
+    await load();
+
+    async function load() {
+      stop();
+      state.manifest = await fetchJson(`${root}/manifest.json`);
+      state.sampleBank = hydrateSampleBank(await fetchJson(`${root}/json/sample-bank.json`));
+      const tracks = state.manifest.archives["10"].files
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      els.trackSelect.replaceChildren(...tracks.map((track) => {
+        const option = document.createElement("option");
+        option.value = track.path.replace("split/archive10_group000/", "").replace(".ui.bin", ".json");
+        option.textContent = track.name.replace("music/", "");
+        return option;
+      }));
+
+      await loadTrack(els.trackSelect.value || tracks[0].path);
+    }
+
+    async function loadTrack(jsonName) {
+      stop();
+      const path = jsonName.endsWith(".json")
+        ? `${root}/json/archive10_ui/${jsonName}`
+        : `${root}/json/archive10_ui/${jsonName.replace("split/archive10_group000/", "").replace(".ui.bin", ".json")}`;
+      state.track = normalizeTrack(await fetchJson(path));
+      state.row = 0;
+      state.enabledChannels = new Set(d3.range(state.track.H));
+      renderChannelOptions();
+      updateStats();
+      draw();
+      renderEventList([]);
+    }
+
+    function normalizeTrack(track) {
+      const events = enrichEvents(track);
+      const maxRow = d3.max(track.events, (event) => event.absoluteRow) ?? 0;
+      const sampleIds = new Set(track.y);
+      return {
+        ...track,
+        events,
+        noteSpans: buildNoteSpans(events, maxRow),
+        maxRow,
+        sampleIds,
+        eventsByRow: d3.group(events, (event) => event.absoluteRow)
+      };
+    }
+
+    function enrichEvents(track) {
+      const channelInstrument = Array(track.H).fill(-1);
+      const noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+      return track.events
+        .slice()
+        .sort((a, b) => a.absoluteRow - b.absoluteRow || a.channel - b.channel || a.offset - b.offset)
+        .map((event) => {
+          const enriched = { ...event };
+          if (event.instrument >= 0) channelInstrument[event.channel] = event.instrument;
+          const rawInstrument = event.instrument >= 0 ? event.instrument : channelInstrument[event.channel];
+          const playable = event.note >= 0 && event.note <= 96 && rawInstrument >= 0;
+          const resolved = playable ? track.p[rawInstrument][Math.min(event.note, 95)] : -1;
+          const m = resolved >= 0 ? track.M[resolved] : 0;
+          const pitchIndex = resolved >= 0 && event.note <= 96
+            ? Math.max(0, Math.min(7999, 7680 - (event.note + track.b[resolved]) * 64 - Math.trunc(track.l[resolved] / 2)))
+            : -1;
+          enriched.rawInstrument = rawInstrument;
+          enriched.resolvedInstrument = resolved;
+          enriched.bank = resolved >= 0 && (m >> 4) !== 0 ? "vorbis" : "synth";
+          enriched.sampleId = resolved >= 0 ? track.y[resolved] : -1;
+          enriched.pitchIndex = pitchIndex;
+          enriched.noteName = event.note >= 0 && event.note <= 96
+            ? `${noteNames[event.note % 12]}${Math.floor(event.note / 12) - 1}`
+            : event.note > 96 ? "off" : "-";
+          return enriched;
+        });
+    }
+
+    function buildNoteSpans(events, maxRow) {
+      const active = new Map();
+      const spans = [];
+      for (const event of events) {
+        const channel = event.channel;
+        if (event.note > 96) {
+          closeSpan(channel, event.absoluteRow, event);
+          continue;
+        }
+        if (event.note < 0 || event.note > 96 || event.resolvedInstrument < 0) continue;
+        closeSpan(channel, event.absoluteRow, event);
+        active.set(channel, { ...event, startRow: event.absoluteRow });
+      }
+      for (const [channel, event] of active) {
+        closeSpan(channel, maxRow + 1, null);
+      }
+      return spans;
+
+      function closeSpan(channel, endRow, closeEvent) {
+        const prior = active.get(channel);
+        if (!prior) return;
+        active.delete(channel);
+        spans.push({
+          ...prior,
+          endRow: Math.max(prior.startRow + 1, endRow),
+          closeEffect: closeEvent ? closeEvent.effect : -1
+        });
+      }
+    }
+
+    function renderChannelOptions() {
+      const track = state.track;
+      els.channelOptions.replaceChildren();
+      if (!track) return;
+      const all = document.createElement("label");
+      all.innerHTML = `<input type="checkbox" data-channel="all" checked> all`;
+      els.channelOptions.append(all);
+      for (let channel = 0; channel < track.H; channel++) {
+        const label = document.createElement("label");
+        const swatch = document.createElement("span");
+        swatch.className = "swatch";
+        swatch.style.background = color(channel);
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.dataset.channel = String(channel);
+        input.checked = true;
+        label.append(input, swatch, document.createTextNode(`ch ${channel + 1}`));
+        els.channelOptions.append(label);
+      }
+      updateChannelSummary();
+    }
+
+    function updateChannelFilter(event) {
+      const track = state.track;
+      if (!track) return;
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      const inputs = [...els.channelOptions.querySelectorAll('input[data-channel]:not([data-channel="all"])')];
+      const all = els.channelOptions.querySelector('input[data-channel="all"]');
+      if (target.dataset.channel === "all") {
+        for (const input of inputs) input.checked = target.checked;
+      } else if (all) {
+        all.checked = inputs.every((input) => input.checked);
+      }
+      state.enabledChannels = new Set(
+        inputs
+          .filter((input) => input.checked)
+          .map((input) => Number(input.dataset.channel))
+      );
+      updateChannelSummary();
+      draw();
+    }
+
+    function updateChannelSummary() {
+      const total = state.track ? state.track.H : 0;
+      const count = state.enabledChannels.size;
+      els.channelSummary.textContent = count === total ? "All channels" : `${count}/${total} channels`;
+    }
+
+    async function toggleAudio() {
+      if (state.playing) {
+        stop();
+      } else {
+        await playCurrentTrack();
+        state.playing = true;
+        els.playButton.textContent = "Stop";
+        restartTimer();
+      }
+    }
+
+    function restartTimer() {
+      if (!state.playing) return;
+      if (state.timer) clearInterval(state.timer);
+      const rowsPerSecond = Number(els.speedInput.value);
+      state.timer = setInterval(() => advance(1), Math.max(8, 1000 / rowsPerSecond));
+    }
+
+    function stop() {
+      state.playing = false;
+      els.playButton.textContent = "Play";
+      if (state.timer) clearInterval(state.timer);
+      state.timer = null;
+      if (state.audioSource) {
+        try { state.audioSource.stop(); } catch {}
+        state.audioSource.disconnect();
+        state.audioSource = null;
+      }
+    }
+
+    async function playCurrentTrack() {
+      const track = state.track;
+      if (!track) return;
+      if (!state.audioContext) {
+        state.audioContext = new AudioContext({ sampleRate: 22050 });
+      }
+      const key = track.source;
+      let pcm = state.rendered.get(key);
+      if (!pcm) {
+        els.progressText.textContent = "rendering...";
+        pcm = await renderTrack(track, state.sampleBank, (progress) => {
+          els.progressText.textContent = `${Math.round(progress * 100)}% render`;
+        });
+        state.rendered.set(key, pcm);
+      }
+      const buffer = state.audioContext.createBuffer(1, pcm.length, 22050);
+      buffer.copyToChannel(pcm, 0);
+      const source = state.audioContext.createBufferSource();
+      source.buffer = buffer;
+      source.connect(state.audioContext.destination);
+      source.onended = () => {
+        if (state.audioSource === source) stop();
+      };
+      state.audioSource = source;
+      await state.audioContext.resume();
+      source.start();
+      state.row = 0;
+    }
+
+    function advance(rows) {
+      if (!state.track) return;
+      state.row += rows;
+      if (state.row > state.track.maxRow + 1) {
+        state.row = 0;
+      }
+      updateStats();
+      draw();
+      renderEventList(state.track.eventsByRow.get(state.row) || []);
+    }
+
+    function updateStats() {
+      const track = state.track;
+      if (!track) return;
+      els.trackName.textContent = track.source.replace(".ui.bin", "");
+      els.rowCount.textContent = String(track.maxRow + 1);
+      els.eventCount.textContent = String(track.events.length);
+      els.sampleCount.textContent = String(track.sampleIds.size);
+      els.progressText.textContent = `${Math.min(state.row, track.maxRow + 1)} / ${track.maxRow + 1}`;
+    }
+
+    function draw() {
+      const track = state.track;
+      if (!track) {
+        els.chart.html(`<text x="24" y="40" fill="#68717a">Load a track to visualize it.</text>`);
+        return;
+      }
+
+      const panel = document.querySelector(".timeline-panel");
+      const viewportW = panel.clientWidth || 960;
+      const viewportH = panel.clientHeight || 520;
+      const rowWidth = 9;
+      const pitchHeight = 14;
+      const margin = { top: 24, right: 24, bottom: 36, left: 54 };
+      const width = Math.max(viewportW, margin.left + margin.right + (track.maxRow + 1) * rowWidth);
+      const notes = d3.range(97);
+      const height = Math.max(viewportH, margin.top + margin.bottom + notes.length * pitchHeight);
+      const innerW = width - margin.left - margin.right;
+      const innerH = height - margin.top - margin.bottom;
+      const visible = track.noteSpans.filter((event) => event.startRow <= state.row && state.enabledChannels.has(event.channel));
+
+      const x = d3.scaleLinear().domain([0, track.maxRow + 1]).range([0, innerW]);
+      const y = d3.scaleLinear().domain([96, 0]).range([0, innerH]);
+
+      els.chart
+        .attr("width", width)
+        .attr("height", height)
+        .html("");
+
+      const svg = els.chart.append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      svg.append("g")
+        .attr("stroke", "#e7e9e2")
+        .selectAll("line")
+        .data(x.ticks(12))
+        .join("line")
+        .attr("x1", (d) => x(d))
+        .attr("x2", (d) => x(d))
+        .attr("y1", 0)
+        .attr("y2", innerH);
+
+      svg.append("g")
+        .attr("stroke", "#eef0ea")
+        .selectAll("line")
+        .data(d3.range(0, 97, 12))
+        .join("line")
+        .attr("x1", 0)
+        .attr("x2", innerW)
+        .attr("y1", (d) => y(d))
+        .attr("y2", (d) => y(d));
+
+      svg.append("g")
+        .attr("transform", `translate(0,${innerH})`)
+        .call(d3.axisBottom(x).ticks(12).tickFormat((d) => `${d}`));
+
+      svg.append("g")
+        .call(d3.axisLeft(y).tickValues(d3.range(0, 97, 12)).tickFormat(noteName));
+
+      svg.append("g")
+        .selectAll("rect")
+        .data(visible, (event) => `${event.startRow}:${event.channel}:${event.offset}`)
+        .join("rect")
+        .attr("x", (event) => x(event.startRow))
+        .attr("y", (event) => y(event.note) - pitchHeight / 2)
+        .attr("width", (event) => Math.max(rowWidth - 1, x(Math.min(event.endRow, state.row + 1)) - x(event.startRow) - 1))
+        .attr("height", pitchHeight - 2)
+        .attr("rx", 2)
+        .attr("fill", (event) => color(event.channel))
+        .attr("opacity", 0.9)
+        .on("mousemove", (pointerEvent, event) => showTooltip(pointerEvent, event))
+        .on("mouseleave", hideTooltip);
+
+      svg.append("line")
+        .attr("x1", x(state.row))
+        .attr("x2", x(state.row))
+        .attr("y1", 0)
+        .attr("y2", innerH)
+        .attr("stroke", "#bf4a3f")
+        .attr("stroke-width", 2);
+
+      const playheadX = margin.left + x(state.row);
+      const left = panel.scrollLeft;
+      const right = left + panel.clientWidth;
+      if (playheadX > right - 96) {
+        panel.scrollLeft = Math.max(0, playheadX - panel.clientWidth * 0.35);
+      } else if (playheadX < left + 64) {
+        panel.scrollLeft = Math.max(0, playheadX - 64);
+      }
+    }
+
+    function showTooltip(pointerEvent, event) {
+      const pitchHz = event.pitchIndex >= 0
+        ? Math.trunc(8363.0 * Math.pow(2.0, (4608 - event.pitchIndex) / 768.0))
+        : null;
+      els.tooltip.innerHTML = [
+        `<b>${escapeHtml(event.noteName)} ${event.note >= 0 ? `(note ${event.note})` : ""}</b>`,
+        `row ${event.absoluteRow}, pattern ${event.pattern}, channel ${event.channel + 1}`,
+        event.endRow ? `span: ${event.startRow} -> ${event.endRow} (${event.endRow - event.startRow} rows)` : null,
+        `raw instrument: ${event.rawInstrument >= 0 ? event.rawInstrument : "-"}`,
+        `resolved instrument: ${event.resolvedInstrument >= 0 ? event.resolvedInstrument : "-"}`,
+        `sample: ${event.sampleId >= 0 ? `${event.bank}:${event.sampleId}` : "-"}`,
+        `pitch index: ${event.pitchIndex >= 0 ? event.pitchIndex : "-"}`,
+        `pitch table: ${pitchHz == null ? "-" : pitchHz}`,
+        event.effect >= 0 ? `effect: ${event.effect}:${event.param}` : null
+      ].filter(Boolean).join("<br>");
+      els.tooltip.style.display = "block";
+      els.tooltip.style.left = `${Math.min(window.innerWidth - 340, pointerEvent.clientX + 14)}px`;
+      els.tooltip.style.top = `${Math.min(window.innerHeight - 180, pointerEvent.clientY + 14)}px`;
+    }
+
+    function noteName(note) {
+      const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+      return `${names[note % 12]}${Math.floor(note / 12) - 1}`;
+    }
+
+    function hideTooltip() {
+      els.tooltip.style.display = "none";
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      }[ch]));
+    }
+
+    function renderEventList(events) {
+      els.eventList.replaceChildren();
+      if (!events.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "No event on this row.";
+        els.eventList.append(empty);
+        return;
+      }
+      for (const event of events.slice(0, 28)) {
+        const row = document.createElement("div");
+        row.className = "event active";
+        const left = document.createElement("div");
+        left.textContent = `ch ${event.channel + 1}`;
+        const right = document.createElement("div");
+        right.textContent = [
+          event.note >= 0 ? `note ${event.note}` : null,
+          event.instrument >= 0 ? `inst ${event.instrument}` : null,
+          event.effect >= 0 ? `fx ${event.effect}:${event.param}` : null
+        ].filter(Boolean).join("  ");
+        row.append(left, right);
+        els.eventList.append(row);
+      }
+    }
+
+    async function fetchJson(url) {
+      const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) throw new Error(`Failed to load ${url}: ${response.status}`);
+      return response.json();
+    }
+  </script>
+</body>
+</html>

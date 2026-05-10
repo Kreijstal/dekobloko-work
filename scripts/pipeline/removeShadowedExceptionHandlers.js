@@ -1,17 +1,11 @@
 'use strict';
 
-const DEFAULT_DROP_HANDLERS = new Map([
-  ['pn.b(Z)I', new Set(['L23'])],
-  ['pn.k(I)Z', new Set(['L100'])],
-  ['t.k(I)Lhm;', new Set(['L26'])],
-]);
-
-const DEFAULT_DROP_RANGES = new Map([
-]);
+const DEFAULT_DROP_HANDLERS = new Map();
+const DEFAULT_DROP_RANGES = new Map();
 
 function runDekoblokoExceptionHandlerDrops(ast, options = {}) {
-  const dropHandlers = options.dropHandlers || DEFAULT_DROP_HANDLERS;
-  const dropRanges = options.dropRanges || DEFAULT_DROP_RANGES;
+  const dropHandlers = options.dropHandlers || toHandlerMap(options.handlers) || DEFAULT_DROP_HANDLERS;
+  const dropRanges = options.dropRanges || toRangeMap(options.ranges) || DEFAULT_DROP_RANGES;
   let removed = 0;
   for (const cls of ast.classes || []) {
     for (const item of cls.items || []) {
@@ -40,6 +34,24 @@ function runDekoblokoExceptionHandlerDrops(ast, options = {}) {
     }
   }
   return removed;
+}
+
+function toHandlerMap(entries) {
+  if (!Array.isArray(entries) || entries.length === 0) return null;
+  const out = new Map();
+  for (const entry of entries) {
+    out.set(entry.method, new Set(entry.handlers || []));
+  }
+  return out;
+}
+
+function toRangeMap(entries) {
+  if (!Array.isArray(entries) || entries.length === 0) return null;
+  const out = new Map();
+  for (const entry of entries) {
+    out.set(entry.method, new Set(entry.ranges || []));
+  }
+  return out;
 }
 
 module.exports = { runDekoblokoExceptionHandlerDrops };

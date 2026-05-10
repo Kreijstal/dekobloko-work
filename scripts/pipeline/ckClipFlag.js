@@ -1,15 +1,15 @@
 'use strict';
 
-// Targeted transform for Dekobloko ck.a(IIIIII)V.
+// Targeted transform for raster clip-pair CFGs.
 //
-// The four rotated raster quadrants contain the same clip-pair CFG:
+// The rotated raster quadrants contain the same clip-pair shape:
 //   x-bound shortcut -> shared y-clip continuation
 //   y-bound shortcut -> shared scanline continuation
 //
 // CFR rejects those shared continuations. The reduction in dekobloko-work
 // shows that javac's flag-shaped CFG is accepted, so this pass rewrites the
-// exact clip-pair skeletons into that shape using local 40 as a synthetic int
-// boolean. No decompiler output is inspected.
+// detected clip-pair skeletons into that shape using local 40 as a synthetic
+// int boolean. No decompiler output is inspected.
 
 const INVERSE = {
   iflt: 'ifge',
@@ -26,68 +26,160 @@ const INVERSE = {
   if_icmpne: 'if_icmpeq',
 };
 
-const QUADRANTS = [
-  {
-    xStart: 'L710', xDup: 'L720', xCond: 'L723', xOp: 'iflt',
-    yStart: 'L785', xAdjust: 'L726', xZeroGoto: 'L738',
-    yDup: 'L795', yCond: 'L798', yOp: 'iflt',
-    scan: 'L860', yAdjust: 'L801', yZeroGoto: 'L813', rowDone: 'L945',
-  },
-  {
-    xStart: 'L1012', xDup: 'L1022', xCond: 'L1025', xOp: 'iflt',
-    yStart: 'L1087', xAdjust: 'L1028', xZeroGoto: 'L1040',
-    yDup: 'L1093', yCond: 'L1096', yOp: 'ifge',
-    scan: 'L1160', yAdjust: 'L1099', yZeroGoto: 'L1111', rowDone: 'L1245',
-  },
-  {
-    xStart: 'L1317', xDup: 'L1323', xCond: 'L1326', xOp: 'ifge',
-    yStart: 'L1390', xAdjust: 'L1329', xZeroGoto: 'L1341',
-    yDup: 'L1400', yCond: 'L1403', yOp: 'iflt',
-    scan: 'L1465', yAdjust: 'L1406', yZeroGoto: 'L1418', rowDone: 'L1550',
-  },
-  {
-    xStart: 'L1617', xDup: 'L1623', xCond: 'L1626', xOp: 'ifge',
-    yStart: 'L1690', xAdjust: 'L1629', xZeroGoto: 'L1641',
-    yDup: 'L1696', yCond: 'L1699', yOp: 'ifge',
-    scan: 'L1763', yAdjust: 'L1702', yZeroGoto: 'L1714', rowDone: 'L1848',
-  },
-];
-
 function runCkClipFlag(astRoot, options = {}) {
   let fired = 0;
+  const targets = new Set((options.targets || []).map((target) => `${target.className}.${target.methodName}:${target.descriptor}`));
+  const inferTargets = options.inferTargets !== false;
   for (const cls of astRoot.classes || []) {
-    if (!cls || cls.className !== 'ck') continue;
+    if (!cls) continue;
     for (const item of cls.items || []) {
       if (!item || item.type !== 'method' || !item.method) continue;
-      if (item.method.name !== 'a' || item.method.descriptor !== '(IIIIII)V') continue;
+      const explicit = targets.has(`${cls.className}.${item.method.name}:${item.method.descriptor}`);
+      if (!explicit && !inferTargets) continue;
       const codeAttr = (item.method.attributes || []).find((attr) => attr.type === 'code');
       if (!codeAttr || !codeAttr.code) continue;
-      fired += transformMethod(codeAttr.code.codeItems || [], codeAttr.code, options);
+      fired += transformMethod(codeAttr.code.codeItems || [], codeAttr.code, {
+        ...options,
+        requireFullRaster: !explicit,
+      });
     }
   }
   return { changed: fired > 0, fired };
 }
 
 function transformMethod(codeItems, code, options) {
-  if (!QUADRANTS.every((q) => hasLabel(codeItems, q.xStart) && hasLabel(codeItems, q.scan))) {
+  const quadrants = options.quadrants && options.quadrants.length > 0
+    ? options.quadrants
+    : inferQuadrants(codeItems);
+  if (quadrants.length === 0) return 0;
+  if (options.requireFullRaster && quadrants.length !== 4) return 0;
+  if (!quadrants.every((q) => hasLabel(codeItems, q.xStart) && hasLabel(codeItems, q.scan))) {
     return 0;
   }
-  if ((code.localsSize || 0) < 41) code.localsSize = 41;
+  const flagLocal = String(code.localsSize || 0);
+  code.localsSize = Number(flagLocal) + 1;
 
-  const state = { nextLabel: 71000, verbose: !!options.verbose };
+  const state = { nextLabel: 71000, flagLocal, verbose: !!options.verbose };
   let fired = 0;
-  for (const q of QUADRANTS) {
+  for (const q of quadrants) {
     initFlagBefore(codeItems, q.xStart, state);
     deleteInstructionAtLabel(codeItems, q.xDup, 'dup');
-    replaceClipCond(codeItems, q.xCond, q.xOp, q.yStart, q.xAdjust, q.rowDone, false, q.xZeroGoto, state);
+    replaceClipCond(codeItems, q.xCond, q.xOp, q.yStart, q.xAdjust, q.rowDone, false, q.xZeroGoto, q.xLocal, state);
     deleteInstructionAtLabel(codeItems, q.yDup, 'dup');
-    replaceClipCond(codeItems, q.yCond, q.yOp, q.scan, q.yAdjust, q.rowDone, true, q.yZeroGoto, state);
+    replaceClipCond(codeItems, q.yCond, q.yOp, q.scan, q.yAdjust, q.rowDone, true, q.yZeroGoto, q.yLocal, state);
     fired += 1;
   }
   return fired;
 }
 
-function replaceClipCond(codeItems, label, expectedOp, oldTarget, outsideLabel, rowDone, isY, zeroGoto, state) {
+function inferQuadrants(codeItems) {
+  const clips = [];
+  for (let i = 0; i < codeItems.length; i += 1) {
+    const item = codeItems[i];
+    if (getOp(item && item.instruction) !== 'dup') continue;
+    const store = nextReal(codeItems, i);
+    const cond = store && nextReal(codeItems, store.idx);
+    const storeInsn = store && store.item.instruction;
+    const condInsn = cond && cond.item.instruction;
+    if (!storeInsn || getOp(storeInsn) !== 'istore') continue;
+    if (!condInsn || !INVERSE[condInsn.op]) continue;
+    const target = trim(condInsn.arg);
+    const start = expressionStartLabel(codeItems, i);
+    if (!start) continue;
+    clips.push({
+      start,
+      dup: trim(item.labelDef),
+      cond: trim(cond.item.labelDef),
+      op: condInsn.op,
+      target,
+      local: String(storeInsn.arg),
+      condIdx: cond.idx,
+      targetIdx: findLabelIndex(codeItems, target),
+    });
+  }
+
+  const quadrants = [];
+  for (let i = 0; i < clips.length - 1; i += 1) {
+    const x = clips[i];
+    const y = clips[i + 1];
+    if (x.targetIdx < 0 || y.targetIdx < 0) continue;
+    if (x.condIdx >= y.condIdx || x.targetIdx >= y.condIdx) continue;
+    const xGoto = firstGotoBetween(codeItems, x.condIdx + 1, x.targetIdx);
+    const yGoto = firstGotoBetween(codeItems, y.condIdx + 1, y.targetIdx);
+    if (!xGoto || !yGoto) continue;
+    if (trim(xGoto.instruction.arg) !== trim(yGoto.instruction.arg)) continue;
+    quadrants.push({
+      xStart: x.start,
+      xDup: x.dup,
+      xCond: x.cond,
+      xOp: x.op,
+      xLocal: x.local,
+      yStart: x.target,
+      xAdjust: nextLabelAfter(codeItems, x.condIdx),
+      xZeroGoto: trim(xGoto.labelDef),
+      yDup: y.dup,
+      yCond: y.cond,
+      yOp: y.op,
+      yLocal: y.local,
+      scan: y.target,
+      yAdjust: nextLabelAfter(codeItems, y.condIdx),
+      yZeroGoto: trim(yGoto.labelDef),
+      rowDone: trim(yGoto.instruction.arg),
+    });
+    i += 1;
+  }
+  return quadrants;
+}
+
+function expressionStartLabel(codeItems, dupIdx) {
+  for (let i = dupIdx - 1; i >= 0; i -= 1) {
+    const item = codeItems[i];
+    if (!item || !item.instruction) continue;
+    if (isStackBoundary(item.instruction)) {
+      const next = nextReal(codeItems, i);
+      return next ? trim(next.item.labelDef) : null;
+    }
+  }
+  const first = nextReal(codeItems, -1);
+  return first ? trim(first.item.labelDef) : null;
+}
+
+function isStackBoundary(insn) {
+  const op = getOp(insn);
+  return typeof op === 'string' && (
+    op.endsWith('store') ||
+    /^([aifdl]?store_[0-3])$/.test(op) ||
+    op === 'goto' ||
+    op === 'athrow' ||
+    op === 'return' ||
+    op.endsWith('return') ||
+    op.startsWith('if')
+  );
+}
+
+function firstGotoBetween(codeItems, startIdx, endIdx) {
+  for (let i = endIdx - 1; i >= startIdx; i -= 1) {
+    const item = codeItems[i];
+    const insn = item && item.instruction;
+    if (getOp(insn) === 'goto' && trim(item.labelDef)) return item;
+  }
+  return null;
+}
+
+function nextLabelAfter(codeItems, idx) {
+  const next = nextReal(codeItems, idx);
+  return next ? trim(next.item.labelDef) : null;
+}
+
+function nextReal(codeItems, idx) {
+  for (let i = idx + 1; i < codeItems.length; i += 1) {
+    const item = codeItems[i];
+    if (item && item.instruction) return { idx: i, item };
+  }
+  return null;
+}
+
+function replaceClipCond(codeItems, label, expectedOp, oldTarget, outsideLabel, rowDone, isY, zeroGoto, compareLocal, state) {
   const idx = findLabelIndex(codeItems, label);
   if (idx < 0) throw new Error(`ck-clip-flag: missing ${label}`);
   const item = codeItems[idx];
@@ -100,21 +192,21 @@ function replaceClipCond(codeItems, label, expectedOp, oldTarget, outsideLabel, 
   retargetGoto(codeItems, zeroGoto, rowDone, after);
 
   codeItems.splice(idx, 1,
-    itemWith(label, { op: 'iload', arg: '35' }),
+    itemWith(label, { op: 'iload', arg: compareLocal }),
     itemWith(fresh(state), { op: INVERSE[expectedOp], arg: outsideLabel }),
     itemWith(fresh(state), 'iconst_1'),
-    itemWith(fresh(state), { op: 'istore', arg: '40' }),
+    itemWith(fresh(state), { op: 'istore', arg: state.flagLocal }),
     itemWith(fresh(state), { op: 'goto', arg: after }),
   );
 
   insertBefore(codeItems, oldTarget, [
     itemWith(fresh(state), 'iconst_1'),
-    itemWith(fresh(state), { op: 'istore', arg: '40' }),
-    itemWith(after, { op: 'iload', arg: '40' }),
+    itemWith(fresh(state), { op: 'istore', arg: state.flagLocal }),
+    itemWith(after, { op: 'iload', arg: state.flagLocal }),
     itemWith(fresh(state), { op: 'ifeq', arg: rowDone }),
     ...(isY ? [] : [
       itemWith(fresh(state), 'iconst_0'),
-      itemWith(fresh(state), { op: 'istore', arg: '40' }),
+      itemWith(fresh(state), { op: 'istore', arg: state.flagLocal }),
     ]),
   ]);
 }
@@ -122,7 +214,7 @@ function replaceClipCond(codeItems, label, expectedOp, oldTarget, outsideLabel, 
 function initFlagBefore(codeItems, label, state) {
   insertBefore(codeItems, label, [
     itemWith(fresh(state), 'iconst_0'),
-    itemWith(fresh(state), { op: 'istore', arg: '40' }),
+    itemWith(fresh(state), { op: 'istore', arg: state.flagLocal }),
   ]);
 }
 

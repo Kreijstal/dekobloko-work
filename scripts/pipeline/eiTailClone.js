@@ -7,29 +7,36 @@
 // L902->L933. The bytecode-reduction fix is to duplicate that tail at both
 // exits. This keeps the same behavior but gives CFR separate loop exits.
 
-function runEiTailClone(astRoot) {
+function runEiTailClone(astRoot, options = {}) {
   let fired = 0;
+  const targets = options.targets || [];
+  if (targets.length === 0) return { changed: false, fired: 0 };
   for (const cls of astRoot.classes || []) {
-    if (!cls || cls.className !== 'ei') continue;
+    if (!cls) continue;
     for (const item of cls.items || []) {
       if (!item || item.type !== 'method' || !item.method) continue;
-      if (item.method.name !== 'b' || item.method.descriptor !== '([III)V') continue;
+      const target = targets.find((spec) =>
+        cls.className === spec.className &&
+        item.method.name === spec.methodName &&
+        item.method.descriptor === spec.descriptor);
+      if (!target) continue;
       const codeAttr = (item.method.attributes || []).find((attr) => attr && attr.type === 'code');
       if (!codeAttr || !codeAttr.code) continue;
-      fired += transformMethod(codeAttr.code.codeItems || []);
+      fired += transformMethod(codeAttr.code.codeItems || [], target);
     }
   }
   return { changed: fired > 0, fired };
 }
 
-function transformMethod(codeItems) {
-  const tail = extractTail(codeItems, 'L933', 'L1013');
+function transformMethod(codeItems, target) {
+  const tail = extractTail(codeItems, target.tailStart, target.tailEnd);
   if (!tail) return 0;
 
   let fired = 0;
-  fired += replaceGotoWithTail(codeItems, 'L797', 'L933', tail, 'L800X');
-  fired += replaceGotoWithTail(codeItems, 'L902', 'L933', tail, 'L900X');
-  return fired === 2 ? fired : 0;
+  for (const site of target.sites || []) {
+    fired += replaceGotoWithTail(codeItems, site.label, site.target, tail, site.prefix);
+  }
+  return fired === (target.sites || []).length ? fired : 0;
 }
 
 function extractTail(codeItems, startLabel, endLabel) {

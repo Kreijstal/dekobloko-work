@@ -1,0 +1,31 @@
+@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix midi: <http://lv2plug.in/ns/ext/midi#> .
+@prefix urid: <http://lv2plug.in/ns/ext/urid#> .
+
+<https://funorb.local/lv2/funorb-native>
+    a lv2:InstrumentPlugin ;
+    doap:name "FunOrb TetraLink Native" ;
+    lv2:requiredFeature urid:map ;
+    lv2:port [
+        a atom:AtomPort ,
+          lv2:InputPort ;
+        atom:bufferType atom:Sequence ;
+        atom:supports midi:MidiEvent ;
+        lv2:index 0 ;
+        lv2:symbol "midi_in" ;
+        lv2:name "MIDI In"
+    ] , [
+        a lv2:AudioPort ,
+          lv2:OutputPort ;
+        lv2:index 1 ;
+        lv2:symbol "out_l" ;
+        lv2:name "Out L"
+    ] , [
+        a lv2:AudioPort ,
+          lv2:OutputPort ;
+        lv2:index 2 ;
+        lv2:symbol "out_r" ;
+        lv2:name "Out R"
+    ] .

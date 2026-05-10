@@ -8,43 +8,30 @@
 // are split around that cleanup island. This rewrites only the verified qk
 // exception-table shape; it does not inspect CFR output.
 
-const RUN_DESC = '()V';
-
-const REWRITE = [
-  {
-    from: { startLbl: 'L5', endLbl: 'L240', handlerLbl: 'L243' },
-    to: [
-      { startLbl: 'L5', endLbl: 'L177', handlerLbl: 'L243' },
-      { startLbl: 'L235', endLbl: 'L240', handlerLbl: 'L243' },
-    ],
-  },
-  {
-    from: { startLbl: 'L5', endLbl: 'L252', handlerLbl: 'L255' },
-    to: [
-      { startLbl: 'L5', endLbl: 'L177', handlerLbl: 'L255' },
-      { startLbl: 'L235', endLbl: 'L243', handlerLbl: 'L255' },
-    ],
-  },
-];
-
-function runQkExceptionSplit(astRoot) {
+function runQkExceptionSplit(astRoot, options = {}) {
   let fired = 0;
+  const targets = options.targets || [];
+  if (targets.length === 0) return { changed: false, fired: 0 };
   for (const cls of astRoot.classes || []) {
-    if (!cls || cls.className !== 'qk') continue;
+    if (!cls) continue;
     for (const item of cls.items || []) {
       if (!item || item.type !== 'method' || !item.method) continue;
-      if (item.method.name !== 'run' || item.method.descriptor !== RUN_DESC) continue;
+      const target = targets.find((spec) =>
+        cls.className === spec.className &&
+        item.method.name === spec.methodName &&
+        item.method.descriptor === spec.descriptor);
+      if (!target) continue;
       const codeAttr = (item.method.attributes || []).find((attr) => attr && attr.type === 'code');
       if (!codeAttr || !codeAttr.code || !Array.isArray(codeAttr.code.exceptionTable)) continue;
-      fired += rewriteExceptionTable(codeAttr.code.exceptionTable);
+      fired += rewriteExceptionTable(codeAttr.code.exceptionTable, target.rewrite || []);
     }
   }
   return { changed: fired > 0, fired };
 }
 
-function rewriteExceptionTable(exceptionTable) {
+function rewriteExceptionTable(exceptionTable, rewrite) {
   let fired = 0;
-  for (const spec of REWRITE) {
+  for (const spec of rewrite) {
     const idx = exceptionTable.findIndex((entry) => matches(entry, spec.from));
     if (idx < 0) continue;
     const original = exceptionTable[idx];

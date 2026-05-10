@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -24,13 +25,17 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public final class DekoblokoLauncher {
-    private static final String MAIN_CLASS = "client";
     private static final String DEFAULT_SERVER = "https://mgg-server.alterorb.net";
-    private static final int GAME_CRC = 2147312574;
 
     private DekoblokoLauncher() {
     }
@@ -58,8 +63,8 @@ public final class DekoblokoLauncher {
                 DekoblokoLauncher.class.getClassLoader()
         );
 
-        Class<?> appletClass = classLoader.loadClass(MAIN_CLASS);
-        Trace.log("launcher.loadClass " + MAIN_CLASS);
+        Class<?> appletClass = classLoader.loadClass(options.mainClass);
+        Trace.log("launcher.loadClass " + options.mainClass);
         Applet applet = (Applet) appletClass.getConstructor().newInstance();
         Trace.log("launcher.newApplet " + applet.getClass().getName());
 
@@ -71,9 +76,10 @@ public final class DekoblokoLauncher {
         params.put("gameport2", "43594");
         params.put("servernum", "8003");
         params.put("instanceid", Long.toString(new Random().nextLong()));
-        params.put("gamecrc", Integer.toString(GAME_CRC));
+        params.put("gamecrc", Integer.toString(options.gameCrc));
 
-        applet.setStub(new BasicAppletStub(new BasicAppletContext(), params, serverUrl, serverUrl));
+        BasicAppletContext context = new BasicAppletContext();
+        applet.setStub(new BasicAppletStub(context, params, serverUrl, serverUrl));
         Trace.log("applet.setStub");
 
         applet.setSize(options.width, options.height);
@@ -114,17 +120,22 @@ public final class DekoblokoLauncher {
                     Trace.close();
                 }
             });
+            context.setShutdownHook(() -> {
+                Trace.log("context.shutdown");
+                frame.dispose();
+            });
             frame.setLayout(new BorderLayout());
+            applet.init();
+            Trace.log("applet.init.return");
+            applet.start();
+            Trace.log("applet.start.return");
             frame.add(applet, BorderLayout.CENTER);
+            frame.setMinimumSize(new Dimension(640 + 16, 480 + 39));
             frame.setPreferredSize(new Dimension(options.width, options.height));
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
             Trace.log("frame.setVisible true");
-            applet.init();
-            Trace.log("applet.init.return");
-            applet.start();
-            Trace.log("applet.start.return");
             if (options.recordAwtFile != null) {
                 try {
                     recorder[0] = AwtInteractionLog.recordTo(applet, options.recordAwtFile);
@@ -195,6 +206,8 @@ public final class DekoblokoLauncher {
 
     private static final class Options {
         private File gamepack = new File(System.getProperty("user.home"), ".alterorb/gamepacks/dekobloko.jar");
+        private String mainClass = "client";
+        private int gameCrc = 2147312574;
         private String server = DEFAULT_SERVER;
         private int width = 765;
         private int height = 503;
@@ -217,6 +230,10 @@ public final class DekoblokoLauncher {
                 String arg = args[i];
                 if ("--gamepack".equals(arg)) {
                     options.gamepack = new File(args[++i]);
+                } else if ("--main-class".equals(arg)) {
+                    options.mainClass = args[++i];
+                } else if ("--gamecrc".equals(arg)) {
+                    options.gameCrc = Integer.parseInt(args[++i]);
                 } else if ("--server".equals(arg)) {
                     options.server = args[++i];
                 } else if ("--width".equals(arg)) {
@@ -320,10 +337,17 @@ public final class DekoblokoLauncher {
     }
 
     private static final class BasicAppletContext implements AppletContext {
+        private static final String QUIT_APPLET_PATH = "/quit.ws";
+        private Runnable shutdownHook;
+
+        void setShutdownHook(Runnable shutdownHook) {
+            this.shutdownHook = shutdownHook;
+        }
+
         @Override
         public AudioClip getAudioClip(URL url) {
             Trace.log("context.getAudioClip " + url);
-            return null;
+            return new UrlAudioClip(url);
         }
 
         @Override
@@ -352,6 +376,9 @@ public final class DekoblokoLauncher {
         @Override
         public void showDocument(URL url, String target) {
             Trace.log("context.showDocument " + url + " target=" + target);
+            if (url != null && QUIT_APPLET_PATH.equals(url.getPath()) && shutdownHook != null) {
+                shutdownHook.run();
+            }
         }
 
         @Override
@@ -374,6 +401,67 @@ public final class DekoblokoLauncher {
         public Iterator<String> getStreamKeys() {
             Trace.log("context.getStreamKeys");
             return Collections.emptyIterator();
+        }
+    }
+
+    private static final class UrlAudioClip implements AudioClip {
+        private final URL url;
+        private Clip clip;
+
+        private UrlAudioClip(URL url) {
+            this.url = url;
+        }
+
+        @Override
+        public synchronized void play() {
+            Trace.log("audio.play " + url);
+            Clip loaded = loadClip();
+            if (loaded == null) return;
+            loaded.stop();
+            loaded.setFramePosition(0);
+            loaded.start();
+        }
+
+        @Override
+        public synchronized void loop() {
+            Trace.log("audio.loop " + url);
+            Clip loaded = loadClip();
+            if (loaded == null) return;
+            loaded.stop();
+            loaded.setFramePosition(0);
+            loaded.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+
+        @Override
+        public synchronized void stop() {
+            Trace.log("audio.stop " + url);
+            if (clip != null) {
+                clip.stop();
+                clip.setFramePosition(0);
+            }
+        }
+
+        private Clip loadClip() {
+            if (clip != null) return clip;
+            try {
+                URLConnection connection = url.openConnection();
+                connection.setUseCaches(true);
+                try (AudioInputStream audio = AudioSystem.getAudioInputStream(connection.getInputStream())) {
+                    Clip loaded = AudioSystem.getClip();
+                    loaded.open(audio);
+                    loaded.addLineListener((event) -> {
+                        if (event.getType() == LineEvent.Type.STOP && loaded.getFramePosition() >= loaded.getFrameLength()) {
+                            loaded.setFramePosition(0);
+                        }
+                    });
+                    clip = loaded;
+                    Trace.log("audio.load.return " + url);
+                    return clip;
+                }
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException | IllegalArgumentException ex) {
+                Trace.log("audio.load.error " + url + " " + ex.getClass().getName() + ": " + ex.getMessage());
+                return null;
+            }
         }
     }
 }

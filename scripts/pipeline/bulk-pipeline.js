@@ -32,50 +32,86 @@ function requireToolModule(name) {
 }
 
 const { getAST } = requireToolModule('jvm_parser');
-const { convertJson } = require(path.join(JT, 'src/convert_tree'));
-const { writeClassAstToClassFile } = require(path.join(JT, 'src/classAstToClassFile'));
-const { runPeepholeClean } = require(path.join(JT, 'src/peepholeClean'));
-const { removeTrivialRethrowHandlers } = require(path.join(JT, 'src/removeTrivialRethrowHandlers'));
-const { runRemoveShadowingTrivialRethrowHandlers } = require(path.join(JT, 'src/removeShadowingTrivialRethrowHandlers'));
-const { runMultiEntryLoopNormalizer } = require(path.join(JT, 'src/multiEntryLoopNormalizer'));
-const { runCoalesceLoopLoad } = require(path.join(JT, 'src/coalesceLoopLoad'));
-const { runDeadStaticBoolFlag } = require(path.join(JT, 'src/deadStaticBoolFlag'));
-const { runConstructorPreSuperCleanup } = require(path.join(JT, 'src/constructorPreSuperCleanup'));
-const { runInlineSharedExitGoto } = require(path.join(JT, 'src/inlineSharedExitGoto'));
-const { runInlineSharedReturn } = require(path.join(JT, 'src/inlineSharedReturn'));
-const { runRemoveShadowedExceptionHandlers } = require(path.join(JT, 'src/removeShadowedExceptionHandlers'));
-const { runControlFlowDce } = require(path.join(JT, 'src/controlFlowDce'));
-const { runSimplifyNotCompare } = require(path.join(JT, 'src/simplifyNotCompare'));
-const { runSimplifyStringLengthNotCompare } = require(path.join(JT, 'src/simplifyStringLengthNotCompare'));
-const { runNarrowCharArrayStores } = require(path.join(JT, 'src/narrowCharArrayStores'));
-const { runNarrowByteArrayStores } = require(path.join(JT, 'src/narrowByteArrayStores'));
-const { runCastObjectFieldStores } = require(path.join(JT, 'src/castObjectFieldStores'));
-const { runCastPrivateFieldReceivers } = require(path.join(JT, 'src/castPrivateFieldReceivers'));
-const { runCastObjectLocalStoreFromUses } = require(path.join(JT, 'src/castObjectLocalStoreFromUses'));
-const { runMaterializeTypedNullArgs } = require(path.join(JT, 'src/materializeTypedNullArgs'));
-const { runMaterializeCheckedFieldInitializers } = require(path.join(JT, 'src/materializeCheckedFieldInitializers'));
-const { runMaterializeStackJoinStores } = require(path.join(JT, 'src/materializeStackJoinStores'));
-const { runPrimitiveArrayCopyLoops } = require(path.join(JT, 'src/primitiveArrayCopyLoops'));
-const { runRemoveDeadDupStore } = require(path.join(JT, 'src/removeDeadDupStore'));
-const { runInlineGotoReturnIsland } = require(path.join(JT, 'src/inlineGotoReturnIsland'));
-const { runSplitArrayReachingLocal } = require(path.join(JT, 'src/splitArrayReachingLocal'));
-const { runSplitArrayStoreLocalAssignment } = require(path.join(JT, 'src/splitArrayStoreLocalAssignment'));
-const { runSplitCastedLocalRange } = require(path.join(JT, 'src/splitCastedLocalRange'));
-const { runSplitReferenceArrayReachingLocal } = require(path.join(JT, 'src/splitReferenceArrayReachingLocal'));
-const { runSplitConcreteObjectReachingLocal } = require(path.join(JT, 'src/splitConcreteObjectReachingLocal'));
-const { runSplitPrimitiveIntBranchLocal } = require(path.join(JT, 'src/splitPrimitiveIntBranchLocal'));
-const { runInlineSingleUseBooleanBranch } = require(path.join(JT, 'src/inlineSingleUseBooleanBranch'));
+
+function requireJavaTools(...relPaths) {
+  const tried = [];
+  for (const rel of relPaths) {
+    const abs = path.join(JT, rel);
+    tried.push(abs);
+    let resolved;
+    try {
+      resolved = require.resolve(abs);
+    } catch (err) {
+      if (!err || err.code !== 'MODULE_NOT_FOUND') throw err;
+      continue;
+    }
+    return require(resolved);
+  }
+  throw new Error(`Unable to load java-tools module; tried:\n${tried.join('\n')}`);
+}
+
+const { convertJson } = requireJavaTools('src/parsing/convert_tree', 'src/convert_tree');
+const { writeClassAstToClassFile } = requireJavaTools('src/parsing/classAstToClassFile', 'src/classAstToClassFile');
+const { runPeepholeClean } = requireJavaTools('src/passes/peepholeClean', 'src/peepholeClean');
+const { removeTrivialRethrowHandlers } = requireJavaTools('src/passes/removeTrivialRethrowHandlers', 'src/removeTrivialRethrowHandlers');
+const { removeRuntimeExceptionHandlers } = requireJavaTools('src/passes/removeRuntimeExceptionHandlers', 'src/removeRuntimeExceptionHandlers');
+const { runRemoveShadowingTrivialRethrowHandlers } = requireJavaTools('src/passes/removeShadowingTrivialRethrowHandlers', 'src/removeShadowingTrivialRethrowHandlers');
+const { runMultiEntryLoopNormalizer } = requireJavaTools('src/passes/multiEntryLoopNormalizer', 'src/multiEntryLoopNormalizer');
+const { runCoalesceLoopLoad } = requireJavaTools('src/passes/coalesceLoopLoad', 'src/coalesceLoopLoad');
+const { runDeadStaticBoolFlag, discoverDeadStaticFlags } = requireJavaTools('src/passes/deadStaticBoolFlag', 'src/deadStaticBoolFlag');
+const { runConstructorPreSuperCleanup } = requireJavaTools('src/passes/constructorPreSuperCleanup', 'src/constructorPreSuperCleanup');
+const { runInlineSharedExitGoto } = requireJavaTools('src/passes/inlineSharedExitGoto', 'src/inlineSharedExitGoto');
+const { runInlineSharedReturn } = requireJavaTools('src/passes/inlineSharedReturn', 'src/inlineSharedReturn');
+const { runRemoveShadowedExceptionHandlers } = requireJavaTools('src/passes/removeShadowedExceptionHandlers', 'src/removeShadowedExceptionHandlers');
+const { runControlFlowDce } = requireJavaTools('src/passes/controlFlowDce', 'src/controlFlowDce');
+const { runSimplifyNotCompare } = requireJavaTools('src/passes/simplifyNotCompare', 'src/simplifyNotCompare');
+const { runSimplifyStringLengthNotCompare } = requireJavaTools('src/passes/simplifyStringLengthNotCompare', 'src/simplifyStringLengthNotCompare');
+const { runNarrowCharArrayStores } = requireJavaTools('src/passes/narrowCharArrayStores', 'src/narrowCharArrayStores');
+const { runNarrowByteArrayStores } = requireJavaTools('src/passes/narrowByteArrayStores', 'src/narrowByteArrayStores');
+const { runCastObjectFieldStores } = requireJavaTools('src/passes/castObjectFieldStores', 'src/castObjectFieldStores');
+const { runCastPrivateFieldReceivers } = requireJavaTools('src/passes/castPrivateFieldReceivers', 'src/castPrivateFieldReceivers');
+const { runCastObjectLocalStoreFromUses } = requireJavaTools('src/passes/castObjectLocalStoreFromUses', 'src/castObjectLocalStoreFromUses');
+const { runMaterializeTypedNullArgs } = requireJavaTools('src/passes/materializeTypedNullArgs', 'src/materializeTypedNullArgs');
+const { runMaterializeCheckedFieldInitializers } = requireJavaTools('src/passes/materializeCheckedFieldInitializers', 'src/materializeCheckedFieldInitializers');
+const { runMaterializeStackJoinStores } = requireJavaTools('src/passes/materializeStackJoinStores', 'src/materializeStackJoinStores');
+const { runPrimitiveArrayCopyLoops } = requireJavaTools('src/passes/primitiveArrayCopyLoops', 'src/primitiveArrayCopyLoops');
+const { runRemoveDeadDupStore } = requireJavaTools('src/passes/removeDeadDupStore', 'src/removeDeadDupStore');
+const { runInlineGotoReturnIsland } = requireJavaTools('src/passes/inlineGotoReturnIsland', 'src/inlineGotoReturnIsland');
+const { runSplitArrayReachingLocal } = requireJavaTools('src/passes/splitArrayReachingLocal', 'src/splitArrayReachingLocal');
+const { runSplitArrayStoreLocalAssignment } = requireJavaTools('src/passes/splitArrayStoreLocalAssignment', 'src/splitArrayStoreLocalAssignment');
+const { runSplitCastedLocalRange } = requireJavaTools('src/passes/splitCastedLocalRange', 'src/splitCastedLocalRange');
+const { runSplitReferenceArrayReachingLocal } = requireJavaTools('src/passes/splitReferenceArrayReachingLocal', 'src/splitReferenceArrayReachingLocal');
+const { runSplitConcreteObjectReachingLocal } = requireJavaTools('src/passes/splitConcreteObjectReachingLocal', 'src/splitConcreteObjectReachingLocal');
+const { runSplitPrimitiveIntBranchLocal } = requireJavaTools('src/passes/splitPrimitiveIntBranchLocal', 'src/splitPrimitiveIntBranchLocal');
+const { runInlineSingleUseBooleanBranch } = requireJavaTools('src/passes/inlineSingleUseBooleanBranch', 'src/inlineSingleUseBooleanBranch');
 
 const { runEiTailClone } = require('./eiTailClone');
 const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
 const { runCkClipFlag } = require('./ckClipFlag');
 const { runQkExceptionSplit } = require('./qkExceptionSplit');
-const { FIELD_RENAMES, runCompileConflictRenames } = require('./compileConflictRenames');
+const { runVlCacheJoin } = require('./vlCacheJoin');
+const { runBParserLoopHeader } = require('./bParserLoopHeader');
+const { runRasterScanlineEntryClone } = require('./rasterScanlineEntryClone');
+const { runSourceScopeLocalInit } = require('./sourceScopeLocalInit');
+const { runStackReceiverTailClone } = require('./stackReceiverTailClone');
+const { expandMethodRenames, runCompileConflictRenames } = require('./compileConflictRenames');
 const { runDekoblokoExceptionHandlerDrops } = require('./removeShadowedExceptionHandlers');
 
 const inDir = process.argv[2];
 const outDir = process.argv[3];
 const skipInline = process.argv.includes('--skip-inline');
+const skipControlFlowDce = process.argv.includes('--skip-cfdce');
+const keepRuntimeHandlers = process.argv.includes('--keep-runtime-handlers');
+const runtimeSafe = process.argv.includes('--runtime-safe');
+const profileArg = readOptionValue('--profile') || readOptionValue('--profiles') || process.env.PIPELINE_PROFILES || '';
+const selectedProfiles = profileArg
+  .split(',')
+  .map((name) => name.trim())
+  .filter(Boolean);
+const skipPassNames = new Set((process.env.SKIP_PIPELINE_PASSES || '')
+  .split(',')
+  .map((name) => name.trim())
+  .filter(Boolean));
 
 if (!inDir || !outDir) {
   console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--skip-inline]');
@@ -84,6 +120,10 @@ if (!inDir || !outDir) {
 
 fs.mkdirSync(outDir, { recursive: true });
 const files = fs.readdirSync(inDir).filter((f) => f.endsWith('.class'));
+const profiles = loadProfiles(path.join(__dirname, 'profiles'), selectedProfiles);
+for (const passName of profiles.skipPasses) {
+  skipPassNames.add(passName);
+}
 
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'dekob-bulkpipe-'));
 const tmpFile = path.join(tmpDir, 'tmp.class');
@@ -91,7 +131,43 @@ const tmpFile = path.join(tmpDir, 'tmp.class');
 function loadAst(filePath) {
   const buf = fs.readFileSync(filePath);
   const parsed = getAST(new Uint8Array(buf));
+  parsed.constantPool.rawUtf8BytesByValue = parseRawUtf8BytesByValue(buf, parsed.constantPool);
   return { ast: convertJson(parsed.ast, parsed.constantPool), cp: parsed.constantPool };
+}
+
+function parseRawUtf8BytesByValue(buf, constantPool) {
+  const out = new Map();
+  let offset = 8;
+  const count = buf.readUInt16BE(offset);
+  offset += 2;
+  for (let index = 1; index < count; index += 1) {
+    const tag = buf.readUInt8(offset);
+    offset += 1;
+    if (tag === 1) {
+      const len = buf.readUInt16BE(offset);
+      offset += 2;
+      const raw = Buffer.from(buf.subarray(offset, offset + len));
+      offset += len;
+      const value = constantPool[index] && constantPool[index].info && constantPool[index].info.bytes;
+      if (typeof value === 'string' && !out.has(value)) {
+        out.set(value, raw);
+      }
+      continue;
+    }
+    if (tag === 3 || tag === 4 || tag === 9 || tag === 10 || tag === 11 || tag === 12 || tag === 18) {
+      offset += 4;
+    } else if (tag === 5 || tag === 6) {
+      offset += 8;
+      index += 1;
+    } else if (tag === 7 || tag === 8 || tag === 16) {
+      offset += 2;
+    } else if (tag === 15) {
+      offset += 3;
+    } else {
+      throw new Error(`Unsupported constant pool tag ${tag} at index ${index}`);
+    }
+  }
+  return out;
 }
 
 function saveAndReload(ast, cp) {
@@ -99,11 +175,87 @@ function saveAndReload(ast, cp) {
   return loadAst(tmpFile);
 }
 
+function readOptionValue(name) {
+  const prefixed = `${name}=`;
+  for (let i = 0; i < process.argv.length; i += 1) {
+    const arg = process.argv[i];
+    if (arg === name) return process.argv[i + 1] || '';
+    if (arg && arg.startsWith(prefixed)) return arg.slice(prefixed.length);
+  }
+  return '';
+}
+
+function loadProfiles(dir, selected = []) {
+  const merged = {
+    deadFlagFields: [],
+    compileConflictRenames: { fields: [], methods: [] },
+    exceptionHandlerDrops: { handlers: [], ranges: [] },
+    eiTailClone: [],
+    qkExceptionSplit: [],
+    qcDoLoopTailClone: [],
+    ckClipFlag: [],
+    ckClipFlagQuadrants: [],
+    vlCacheJoin: [],
+    bParserLoopHeader: [],
+    rasterScanlineEntryClone: [],
+    sourceScopeLocalInit: [],
+    stackReceiverTailClone: [],
+    skipPasses: [],
+  };
+  if (!fs.existsSync(dir)) return merged;
+  const selectedSet = new Set(selected.map((name) => name.endsWith('.json') ? name : `${name}.json`));
+  const files = fs.readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .filter((f) => selectedSet.size === 0 || selectedSet.has(f))
+    .sort();
+  for (const file of files) {
+    const profile = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+    for (const key of Object.keys(merged)) {
+      if (!profile[key]) continue;
+      if (Array.isArray(merged[key])) {
+        merged[key].push(...profile[key]);
+      } else if (key === 'compileConflictRenames') {
+        merged[key].fields.push(...(profile[key].fields || []));
+        merged[key].methods.push(...(profile[key].methods || []));
+      } else if (key === 'exceptionHandlerDrops') {
+        merged[key].handlers.push(...(profile[key].handlers || []));
+        merged[key].ranges.push(...(profile[key].ranges || []));
+      }
+    }
+  }
+  for (const key of ['ckClipFlagQuadrants']) {
+    const seen = new Set();
+    merged[key] = merged[key].filter((entry) => {
+      const text = JSON.stringify(entry);
+      if (seen.has(text)) return false;
+      seen.add(text);
+      return true;
+    });
+  }
+  return merged;
+}
+
+function raiseMaxStackFloor(ast, floor = 64) {
+  for (const cls of ast.classes || []) {
+    for (const item of cls.items || []) {
+      if (!item || item.type !== 'method' || !item.method) continue;
+      for (const attr of item.method.attributes || []) {
+        const code = attr && attr.type === 'code' && attr.code;
+        if (!code) continue;
+        const current = Number(code.stackSize || 0);
+        if (!Number.isFinite(current) || current < floor) {
+          code.stackSize = String(floor);
+        }
+      }
+    }
+  }
+}
+
 function collectClassShadowFieldRenames() {
   const classNames = new Set(files.map((f) => path.basename(f, '.class')));
   const byKey = new Map();
   const parents = new Map();
-  for (const rename of FIELD_RENAMES) {
+  for (const rename of profiles.compileConflictRenames.fields) {
     byKey.set(`${rename.owner}.${rename.name}:${rename.descriptor}`, rename);
   }
   for (const f of files) {
@@ -142,23 +294,45 @@ function collectClassShadowFieldRenames() {
   return [...byKey.values()];
 }
 
+function collectMethodOverrideRenames() {
+  const classes = [];
+  for (const f of files) {
+    const { ast } = loadAst(path.join(inDir, f));
+    classes.push(...(ast.classes || []));
+  }
+  return expandMethodRenames({ classes }, profiles.compileConflictRenames.methods);
+}
+
+function collectAutoDeadFlagFields() {
+  const classes = [];
+  for (const f of files) {
+    const { ast } = loadAst(path.join(inDir, f));
+    classes.push(...(ast.classes || []));
+  }
+  return discoverDeadStaticFlags({ classes }, { allowIntFlags: true }).fields;
+}
+
 const fieldRenames = collectClassShadowFieldRenames();
+const methodRenames = collectMethodOverrideRenames();
+const autoDeadFlagFields = collectAutoDeadFlagFields();
 const deadFlagFields = [
-  'jn.u', 'ta.f',
-  'client.A', 'fa.n', 'hn.j', 'ii.q', 'jd.Qb', 'la.d',
-  'of.c', 'on.d', 'sh.j', 'uh.b', 've.ac', 'wg.f',
+  ...profiles.deadFlagFields,
+  ...autoDeadFlagFields,
 ].join(',');
 
 const passes = [
-  { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a) },
-  { name: 'peephole', fn: (a) => runPeepholeClean(a) },
-  { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a) },
-  { name: 'remove-shadowing-trivial-rethrow-handlers', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) },
-  { name: 'dekobloko-exception-handler-drops', fn: (a) => runDekoblokoExceptionHandlerDrops(a) },
-  { name: 'strip-rethrow', fn: (a) => removeTrivialRethrowHandlers(a, { keepHandlerCode: true }) },
+  { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a, { targets: profiles.eiTailClone }) },
+  { name: 'peephole', fn: (a) => runPeepholeClean(a, runtimeSafe ? { removeRethrowHandlers: false } : {}) },
+  ...(keepRuntimeHandlers || runtimeSafe ? [] : [{ name: 'runtime-exception-handlers', fn: (a) => removeRuntimeExceptionHandlers(a, { keepHandlerCode: true }) }]),
+  ...(runtimeSafe ? [] : [
+    { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a) },
+    { name: 'remove-shadowing-trivial-rethrow-handlers', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) },
+    { name: 'dekobloko-exception-handler-drops', fn: (a) => runDekoblokoExceptionHandlerDrops(a, profiles.exceptionHandlerDrops) },
+    { name: 'strip-rethrow', fn: (a) => removeTrivialRethrowHandlers(a, { keepHandlerCode: true }) },
+  ]),
   { name: 'normalizer', fn: (a) => runMultiEntryLoopNormalizer(a) },
   { name: 'coalesce', fn: (a) => runCoalesceLoopLoad(a) },
-  { name: 'dead-flag', fn: (a) => runDeadStaticBoolFlag(a, { flags: deadFlagFields }) },
+  { name: 'dead-flag', fn: (a) => runDeadStaticBoolFlag(a, { flags: deadFlagFields, allowIntFlags: true }) },
   { name: 'constructor-pre-super-cleanup', fn: (a) => runConstructorPreSuperCleanup(a, { deleteUnusedSnapshots: true }) },
   { name: 'simplify-not-compare', fn: (a) => runSimplifyNotCompare(a, { charLocalsOnly: true }) },
   { name: 'simplify-string-length-not-compare', fn: (a) => runSimplifyStringLengthNotCompare(a) },
@@ -183,13 +357,18 @@ const passes = [
   { name: 'inline-goto-return-island', fn: (a) => runInlineGotoReturnIsland(a) },
   ...(skipInline ? [] : [{ name: 'inline-exit', fn: (a) => runInlineSharedExitGoto(a, { maxBodyInsns: 50 }) }]),
   { name: 'inline-return', fn: (a) => runInlineSharedReturn(a, { oncePerMethod: false }) },
-  { name: 'ck-clip-flag', fn: (a) => runCkClipFlag(a) },
-  { name: 'qk-exception-split', fn: (a) => runQkExceptionSplit(a) },
-  { name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) },
-  { name: 'peephole2', fn: (a) => runPeepholeClean(a) },
-  { name: 'control-flow-dce', fn: (a) => runControlFlowDce(a) },
-  { name: 'qc-doloop-tail-clone', fn: (a) => runQcDoLoopTailClone(a) },
-  { name: 'compile-conflict-renames', fn: (a) => runCompileConflictRenames(a, { fieldRenames }) },
+  { name: 'ck-clip-flag', fn: (a) => runCkClipFlag(a, { targets: profiles.ckClipFlag, quadrants: profiles.ckClipFlagQuadrants }) },
+  ...(runtimeSafe ? [] : [{ name: 'qk-exception-split', fn: (a) => runQkExceptionSplit(a, { targets: profiles.qkExceptionSplit }) }]),
+  { name: 'vl-cache-join', fn: (a) => runVlCacheJoin(a, { targets: profiles.vlCacheJoin }) },
+  { name: 'b-parser-loop-header', fn: (a) => runBParserLoopHeader(a, { targets: profiles.bParserLoopHeader }) },
+  { name: 'raster-scanline-entry-clone', fn: (a) => runRasterScanlineEntryClone(a, { targets: profiles.rasterScanlineEntryClone }) },
+  { name: 'source-scope-local-init', fn: (a) => runSourceScopeLocalInit(a, { targets: profiles.sourceScopeLocalInit }) },
+  { name: 'stack-receiver-tail-clone', fn: (a) => runStackReceiverTailClone(a, { targets: profiles.stackReceiverTailClone }) },
+  ...(runtimeSafe ? [] : [{ name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) }]),
+  { name: 'peephole2', fn: (a) => runPeepholeClean(a, runtimeSafe ? { removeRethrowHandlers: false } : {}) },
+  ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a) }]),
+  { name: 'qc-doloop-tail-clone', fn: (a) => runQcDoLoopTailClone(a, { targets: profiles.qcDoLoopTailClone }) },
+  ...(runtimeSafe ? [] : [{ name: 'compile-conflict-renames', fn: (a) => runCompileConflictRenames(a, { fieldRenames, methodRenames }) }]),
   { name: 'inline-single-use-boolean-branch2', fn: (a) => runInlineSingleUseBooleanBranch(a) },
 ];
 
@@ -201,14 +380,25 @@ for (const f of files) {
   try {
     let { ast, cp } = loadAst(inPath);
     for (const p of passes) {
-      p.fn(ast);
-      ({ ast, cp } = saveAndReload(ast, cp));
+      if (skipPassNames.has(p.name)) continue;
+      try {
+        p.fn(ast);
+        ({ ast, cp } = saveAndReload(ast, cp));
+      } catch (err) {
+        err.pipelinePass = p.name;
+        throw err;
+      }
     }
     runInlineSingleUseBooleanBranch(ast);
+    raiseMaxStackFloor(ast);
     writeClassAstToClassFile(ast, outPath, cp);
     processed += 1;
   } catch (err) {
     failed += 1;
+    if (process.env.BULK_PIPELINE_LOG_FAILURES) {
+      const pass = err && err.pipelinePass ? ` pass=${err.pipelinePass}` : '';
+      console.error(`Failed ${f}${pass}: ${err && err.stack ? err.stack : err}`);
+    }
     fs.copyFileSync(inPath, outPath);
   }
 }
