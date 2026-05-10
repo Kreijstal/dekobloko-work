@@ -55,175 +55,100 @@ DEKOBLOKO_SHA256=<sha256> \
 
 ## JS5 Cache and Music
 
-Dekobloko and the other AlterOrb gamepacks use the FunOrb/Jagex JS5 cache
-protocol. The applet parameters used by the local launcher are enough to talk
-to the same cache server without running the gamepack:
+AlterOrb/FunOrb gamepacks fetch assets through the Jagex JS5 protocol. The
+launcher parameters are enough to mirror a cache without running the applet:
 
 ```text
 host=mgg-server.alterorb.net
 port=43594
 servernum=8003
 lang=0
-gamecrc=2147312574 / 0x7ffd63be
+gamecrc=from .work/upstream-alterorb-launcher/config.json
 build=per gamepack
 ```
 
-The important footgun is the JS5 build. It is not a global launcher value. It
-comes from the gamepack init path and differs by game. For example, the current
-AlterOrb gamepacks validate with:
+The build is the main trap. It is not global, and a wrong build can still pass
+the handshake while exposing a different archive layout. Keep the canonical map
+in `tools/js5/js5-builds-validated.json`; examples from the current mirror:
 
-```text
-aceofskies        13
-brickabrac        65
-chess             15
-dekobloko         32
-pixelate          55
-tetralink         17
-torchallenge      12
-voidhunters       26
-```
+| Game | JS5 build | Music status |
+|---|---:|---|
+| `dekobloko` | 32 | 39 tracks extracted/rendered. |
+| `brickabrac` | 65 | 16 tracks extracted/rendered. |
+| `pixelate` | 55 | 18 tracks extracted/rendered. Build 13 handshakes but has the wrong archive 10 shape. |
+| `tetralink` | 17 | 4 tracks plus sample banks, SFZ/SF2/native-bank exports. |
+| `chess` | 15 | Deob profile exists; no dedicated music renderer. |
 
-The validated build table for all 44 mirrored gamepacks was generated under:
-
-```text
-tools/js5/js5-builds-validated.json
-```
-
-Do not reuse one build for every game. A single build can pass the protocol
-handshake but point at a different master/index layout. That is why the first
-all-game JS5 downloader attempt produced plausible-looking cache directories
-with repeated `idx255` sizes while not matching the gamepack-specific cache
-metadata.
-
-For one game, pass the build explicitly:
+Download one cache with the build table:
 
 ```bash
 python3 tools/js5/download-caches.py \
-  --game dekobloko \
-  --build 32 \
+  --game pixelate \
+  --builds tools/js5/js5-builds-validated.json \
   --output .work/js5-caches
 ```
 
-For bulk mirroring, use a per-game build map:
+For bulk metadata or payload mirroring:
 
 ```bash
-# Only fetch master/index metadata.
 python3 tools/js5/download-caches.py \
   --builds tools/js5/js5-builds-validated.json \
   --output .work/js5-caches-metadata \
   --metadata-only
 
-# Fetch archive payloads too.
 python3 tools/js5/download-caches.py \
   --builds tools/js5/js5-builds-validated.json \
   --output .work/js5-caches
 ```
 
-### JS5 Request Shape
+### JS5 Protocol
 
-After the setup packet and one-byte `0x00` server ack, the client sends cache
-mode/control packets and then archive requests. A request is six bytes:
+After setup and the one-byte `0x00` ack, archive requests are six bytes:
 
 ```text
 priority archive-id group-id
+01 ff 00 00 00 ff  -> archive 255, group 255: master index
+01 ff 00 00 00 0a  -> archive 255, group 10:  archive-10 index
+01 0a 00 00 00 00  -> archive 10,  group 0:   music group
 ```
 
-For example:
+Responses are JS5 containers. Archive `255` contains index metadata; normal
+archives are cached as `main_file_cache.idxN` plus `main_file_cache.dat2`
+sectors. `tools/js5/download-caches.py` writes that sector format, so the music
+tools can read either a warmed AlterOrb cache or a freshly downloaded mirror.
 
-```text
-01 ff 00 00 00 ff  -> priority request, archive 255, group 255 (master index)
-01 ff 00 00 00 0a  -> priority request, archive 255, group 10  (archive index)
-01 0a 00 00 00 00  -> priority request, archive 10,  group 0   (music bank)
-```
+### Music Model
 
-Responses are JS5 containers. Archive `255` contains index metadata. The normal
-game archives are stored in the local cache as `main_file_cache.idxN` plus
-`main_file_cache.dat2` sectors. The downloader writes that same sector format so
-the extraction tools can read either a warmed AlterOrb cache or a freshly
-downloaded JS5 cache.
+FunOrb music is not stored as finished songs. It is a compact tracker/MIDI-like
+format: sample banks plus instrument patches plus song descriptors, mixed to PCM
+by the client at runtime. Rendered WAVs are therefore generated artifacts; keep
+the JS5/music-format data and regenerate WAVs when needed.
 
-### Music Archive Layout
+Known archive roles:
 
-The game does **not** store complete songs as standalone Ogg/Vorbis files. It
-stores small sample banks and custom song descriptors, then mixes the final PCM
-at runtime:
+| Game | Archives | Song class/path | Renderer output |
+|---|---|---|---|
+| Dekobloko | 8 synth samples, 9 packvorbis samples, 10 `ui` descriptors | `ui -> ia -> mi -> ei` | `.work/music/dekobloko/wav/archive10_tracks` |
+| Brickabrac | 7 `dr` samples, 8 `bk` Vorbis samples, 9 `pq` patches, 10 `vm` songs, 13 labels | `vm -> ie` | `.work/music/brickabrac/wav-native/archive10_tracks` |
+| Pixelate | 7/8 sound banks, 9 `sn` patches, 10 `ua` songs | `ua -> ti` | `.work/music/pixelate-build55/wav-native/archive10_tracks` |
+| TetraLink | 7/8 `wf` samples, 9 `ng` patches, 10 `ri` songs | `ri -> g/go/ng/fa` | `.work/music/tetralink-build17/wav/archive10_tracks` |
 
-```text
-archive 8,  group 0 -> synth sample bank, 38 split files
-archive 9,  group 0 -> packvorbis sample bank, 56 split files
-                         file 0 is shared Vorbis headers
-                         files 1..55 are compressed sample payloads
-archive 10, group 0 -> ui music descriptors, 39 split files
-```
+Archive 10 names must come from JS5 file-name hashes or client load strings, not
+from split position. Dekobloko build 31/32, for example, maps sparse file IDs to
+names such as `music/Deko Bloko Titlescreen`; Pixelate build 55 maps
+`pix_title`, `pix_end_game`, and `skin1` through `skin16`. This is why files
+named only `track_XX` are suspect.
 
-Current source-data sizes are small:
+### Music Commands
 
-```text
-156K  split/archive08_group000
-520K  split/archive09_group000
-1.1M  split/archive10_group000
-1.9M  raw JS5 containers/payloads
-```
-
-Rendered full-track WAVs are much larger because they are uncompressed PCM:
-
-```text
-169M  wav/archive10_tracks
-```
-
-So the right artifact to keep is the original JS5/music-format data, not
-rendered WAVs. The full songs can be regenerated on demand.
-
-### Track Names
-
-Do not name archive 10 files by split position. The split order is sparse JS5
-file-id order, not the order in `client.java` where the tracks are loaded. The
-correct mapping comes from build-31 archive-10 metadata: file name hashes map
-client strings like `music/Deko Bloko Titlescreen` to sparse file IDs.
-
-Examples:
-
-```text
-music/Ant_and_Deko_remix_NORMAL  -> file_id=2,  split index=0
-music/Deko Bloko Titlescreen     -> file_id=10, split index=6
-music/Swab the Deks!_remix_FINISH_THEM -> file_id=62, split index=38
-```
-
-The extractor has the build-31 mapping baked in and refuses to apply it unless
-archive 10 splits into the expected 39 files:
+Dekobloko and Brickabrac use the Python extractor before Java rendering:
 
 ```bash
 python3 tools/music/extract-dekobloko-music.py \
-  ~/.alterorb/caches/dekobloko \
-  .work/music/dekobloko
-```
+  .work/js5-caches/dekobloko \
+  .work/music/dekobloko \
+  --game dekobloko
 
-Generated files:
-
-```text
-.work/music/dekobloko/manifest.json
-.work/music/dekobloko/raw/
-.work/music/dekobloko/split/archive08_group000/
-.work/music/dekobloko/split/archive09_group000/
-.work/music/dekobloko/split/archive10_group000/
-```
-
-### Rendering and Visualization
-
-The runtime music path is:
-
-```text
-ui descriptor
-  -> hydrate samples from archive 8/9
-  -> ia pattern/effect sequencer
-  -> mi mixer/scheduler
-  -> ei sample voice/resampler/loop/envelope
-  -> PCM
-```
-
-The Java renderer uses the original classes for correctness:
-
-```bash
 javac -cp classes-original -d .work/music-tools \
   tools/music/MusicSampleDecoder.java \
   tools/music/MusicUiJsonDumper.java \
@@ -235,19 +160,7 @@ java -cp .work/music-tools:classes-original MusicTrackRenderer .work/music/dekob
 java -cp .work/music-tools:classes-original MusicSampleBankExporter .work/music/dekobloko
 ```
 
-`MusicTrackRenderer` decodes archive 8/9 samples with the original `bi` and
-`va` classes, hydrates each `ui`, and renders through the original
-`ia -> mi -> ei` chain at 22050 Hz mono.
-
-Brickabrac follows the same split: Python prepares the cache data, Java uses the
-original game classes for music conversion/rendering.
-
 ```bash
-python3 tools/js5/download-caches.py \
-  --game brickabrac \
-  --builds tools/js5/js5-builds-validated.json \
-  --output .work/js5-caches
-
 python3 tools/music/extract-dekobloko-music.py \
   .work/js5-caches/brickabrac \
   .work/music/brickabrac \
@@ -259,35 +172,14 @@ javac -cp .work/gamepack-classes/brickabrac -d .work/brickabrac-music-tools \
 
 java -cp .work/brickabrac-music-tools:.work/gamepack-classes/brickabrac \
   BrickabracMusicDumper .work/music/brickabrac
-
 java -cp .work/brickabrac-music-tools:.work/gamepack-classes/brickabrac \
   BrickabracNativeMusicRenderer .work/music/brickabrac .work/js5-caches/brickabrac
 ```
 
-The Python extractor writes archive 7/8/9/10/13 raw groups and splits archive 10
-into 16 named `vm` tracks. `BrickabracMusicDumper` emits repaired MIDI files from those
-tracks. `BrickabracNativeMusicRenderer` hydrates archive 9 `pq` patches with
-archive 7 `dr` samples plus archive 8 `bk` Vorbis samples, then renders through
-the original `ie` mixer at 22050 Hz mono. Brickabrac build `65` stores the
-archive 8 Vorbis samples as sparse files inside group `0`, so the renderer reads
-the JS5 index metadata and feeds the original classes the same packed-group
-layout the client sees.
-
-Pixelate also uses the MIDI-like FunOrb music path, but its matching JS5 build
-is `55`; build `13` handshakes but exposes an unrelated archive 10 shape. The
-client loads archive 7/8 sound banks, archive 9 instrument patches, and archive
-10 tracks named `pix_title`, `pix_end_game`, and `skin1` through `skin16`.
+Pixelate renders directly from its build-55 JS5 cache through deobfuscated
+classes:
 
 ```bash
-python3 tools/js5/download-caches.py \
-  --game pixelate \
-  --builds tools/js5/js5-builds-validated.json \
-  --output .work/js5-caches-pixelate-build55 \
-  --index-limit 11 \
-  --skip-missing-archives \
-  --reconnect-per-index \
-  --keep-going
-
 javac -cp .work/deob-pixelate-profile/out -d .work/pixelate-music-tools \
   tools/music/PixelateNativeMusicRenderer.java
 
@@ -297,141 +189,69 @@ java -cp .work/pixelate-music-tools:.work/deob-pixelate-profile/out \
   .work/js5-caches-pixelate-build55/pixelate
 ```
 
-This writes MIDI files to `.work/music/pixelate-build55/midi/archive10_tracks`
-and native 22050 Hz mono WAVs to
-`.work/music/pixelate-build55/wav-native/archive10_tracks`.
-
-TetraLink uses a different music path. Archive 7/8 are sample banks, archive 9
-is instrument patches, and archive 10 contains `ri` song descriptors that the
-client converts to MIDI-like bytes before playing through `g -> go/ng/fa`. The
-direct preprocessing step is:
+TetraLink has the richest export path:
 
 ```bash
 javac -cp .work/gamepack-classes/tetralink -d .work/tetralink-music-tools \
-  tools/music/TetraLinkMusicPreprocessor.java
+  tools/music/TetraLinkMusicPreprocessor.java \
+  tools/music/TetraLinkSfzExporter.java \
+  tools/music/TetraLinkSf2Exporter.java \
+  tools/music/TetraLinkNativeBankExporter.java \
+  tools/music/TetraLinkFunOrbMidiRenderer.java
 
 java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
   TetraLinkMusicPreprocessor .work/music/tetralink-build17
-```
-
-This writes archive 7/8 sample WAVs under `.work/music/tetralink-build17/wav`,
-archive 10 MIDI files under `.work/music/tetralink-build17/midi`, and native
-song WAVs under `.work/music/tetralink-build17/wav/archive10_tracks`. The native
-WAVs do not use an external `.sf2`; the preprocessor hydrates `ng` patches from
-archive 9 with `wf` samples decoded from archives 7/8, then renders through the
-original `g` sequencer/mixer at 22050 Hz mono.
-
-For DAW import, export the same FunOrb sample/patch bank to SFZ:
-
-```bash
-javac -cp .work/gamepack-classes/tetralink -d .work/tetralink-music-tools \
-  tools/music/TetraLinkSfzExporter.java
-
 java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
   TetraLinkSfzExporter .work/music/tetralink-build17
-```
-
-This writes `.work/music/tetralink-build17/sfz/patches/*.sfz` plus decoded WAV
-samples under `.work/music/tetralink-build17/sfz/samples`. The SFZ export is an
-interchange format: it preserves sample choice, key mapping, loop points, pitch
-offset, per-note volume, pan, and exclusive-class hints, but the native renderer
-remains the reference for exact playback.
-
-For a compact single-file bank, export SoundFont 2:
-
-```bash
-javac -cp .work/gamepack-classes/tetralink -d .work/tetralink-music-tools \
-  tools/music/TetraLinkSf2Exporter.java
-
 java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
   TetraLinkSf2Exporter .work/music/tetralink-build17
-```
-
-This writes `.work/music/tetralink-build17/sf2/funorb_tetralink.sf2`. It is a
-single SF2 bank with one preset per archive 9 patch, including the percussion
-patch as bank 128 program 0 so standard MIDI renderers can resolve channel 10.
-
-There is also a first LV2 instrument wrapper around that generated SF2:
-
-```bash
-tools/lv2/build-funorb-fluidsynth-lv2.sh
-
-LV2_PATH="$PWD/.work/lv2" lv2ls | grep funorb
-LV2_PATH="$PWD/.work/lv2" lv2bench https://funorb.local/lv2/funorb-fluidsynth
-```
-
-The bundle is written to `.work/lv2/funorb-fluidsynth.lv2`. This is useful for
-testing DAW/plugin-host plumbing, but it still renders through FluidSynth and the
-generated SF2 bank. Exact playback still requires a future LV2 plugin that ports
-the native FunOrb `g/ng/wf` renderer instead of using SF2.
-
-The native LV2 port uses a generated `.fobank` file instead of SF2:
-
-```bash
-javac -cp .work/gamepack-classes/tetralink -d .work/tetralink-music-tools \
-  tools/music/TetraLinkNativeBankExporter.java
-
 java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
   TetraLinkNativeBankExporter .work/music/tetralink-build17
-
-tools/lv2/build-funorb-native-lv2.sh
-
-LV2_PATH="$PWD/.work/lv2" lv2ls | grep funorb-native
-LV2_PATH="$PWD/.work/lv2" lv2bench https://funorb.local/lv2/funorb-native
-```
-
-The bundle is written to `.work/lv2/funorb-native.lv2`. It loads
-`.work/music/tetralink-build17/native/funorb_tetralink.fobank`, receives MIDI,
-and mixes the decoded FunOrb samples directly in the LV2 `.so`. The current
-native port includes interpolated sample playback, loop direction, channel
-volume/expression/pan, sustain, pitch bend, percussion exclusivity, and note
-release ramps. The `.fobank` format is versioned; version 2 carries each
-region's `lm` envelope/modulation record so the LV2 side can follow the original
-amplitude, release, decay, and vibrato progression. The audio hot loop now uses
-the same Q8 sample-position/interpolation shape as `ee`, updates envelopes on
-the original 10 ms control cadence, ramps gain across each control block, and
-implements the CC81 stream-restart path used by `wn`. The remaining work is
-empirical: compare native LV2/offline renders against the Java reference and
-close any residual mixer constants or controller edge cases that show up there.
-
-To test editable-MIDI playback through the actual FunOrb mixer, render the
-generated MIDI files back through `g` directly:
-
-```bash
-javac -cp .work/gamepack-classes/tetralink -d .work/tetralink-music-tools \
-  tools/music/TetraLinkFunOrbMidiRenderer.java
-
 java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
   TetraLinkFunOrbMidiRenderer .work/music/tetralink-build17
 ```
 
-This writes `.work/music/tetralink-build17/wav/funorb-midi-rendered/*.wav`. It
-does not use SF2, SFZ, or FluidSynth: it hydrates archive 9 `ng` patches with
-archive 7/8 `wf` samples, feeds MIDI events into the original `g` event handler,
-and renders through the original mixer.
+### Editable Formats
 
-There is also a browser visualizer:
+SFZ and SF2 are interchange formats, not byte-exact FunOrb renderers. SFZ keeps
+sample choice, key mapping, loop points, pitch offset, per-note volume, pan, and
+exclusive-class hints. SF2 is compact and DAW-friendly, with one preset per
+archive-9 patch and the percussion patch at bank 128 program 0. Both lose some
+native mixer behavior.
+
+The native LV2 route is closer to the client: `TetraLinkNativeBankExporter`
+writes `.work/music/tetralink-build17/native/funorb_tetralink.fobank`, and
+`tools/lv2/build-funorb-native-lv2.sh` builds `.work/lv2/funorb-native.lv2`.
+That plugin mixes decoded FunOrb samples directly in its `.so`, with
+interpolated playback, loop direction, volume/expression/pan, sustain, pitch
+bend, percussion exclusivity, release ramps, envelope/modulation records, Q8
+sample-position interpolation, 10 ms control cadence, gain ramps, and the CC81
+stream-restart path. Remaining LV2 work is empirical parity against the Java
+reference.
+
+There is also a FluidSynth LV2 wrapper around the generated SF2:
+`tools/lv2/build-funorb-fluidsynth-lv2.sh`. It is useful for host plumbing, not
+for exact playback.
+
+### Browser Visualizer
+
+Serve the repo and open the standalone visualizer:
 
 ```bash
 python3 -m http.server 8765
 ```
 
-Open:
-
 ```text
 http://127.0.0.1:8765/web/music-visualizer/index.html
 ```
 
-The page imports D3 from `esm.sh` instead of bundling it locally. It loads
-`json/sample-bank.json`, renders the selected track through browser-side
-`Ia`, `Mi`, and `Ei` classes in `web/music-visualizer/audio.js`, and plays the
-result through WebAudio while animating the decoded `ui` pattern events. This
-JS port uses decoded `ud` sample PCM exported by `MusicSampleBankExporter`; it
+The page imports D3 from `esm.sh`, loads `json/sample-bank.json`, plays decoded
+sample PCM through browser-side `Ia`, `Mi`, and `Ei` classes in
+`web/music-visualizer/audio.js`, and animates decoded `ui` pattern events. It
 does not yet port the custom `bi`/`va` sample decoders to the browser.
 
-When tightening mixer parity, port from the **current deobfuscated** `ia/mi/ei`,
-not from the stale raw CFR source. Running the current pipeline on the mixer
-slice:
+When porting mixer code, use the current deobfuscated mixer slice, not stale raw
+CFR source:
 
 ```bash
 mkdir -p .work/mixer-pipeline/in .work/mixer-pipeline/out .work/mixer-pipeline/tmp
@@ -451,8 +271,8 @@ java -jar lib/cfr.jar \
 ```
 
 With the current transforms, `ei.b(int[], int, int)` decompiles cleanly. The
-raw `src/ei.java` copy predates those transforms and still contains a CFR
-failure stub, so do not use it as the basis for a JS mixer port.
+old raw `src/ei.java` copy predates those transforms and still contains a CFR
+failure stub.
 
 ## Build
 
@@ -614,7 +434,9 @@ described in a profile under:
 
 ```text
 scripts/pipeline/profiles/dekobloko.json
+scripts/pipeline/profiles/brickabrac.json
 scripts/pipeline/profiles/chess.json
+scripts/pipeline/profiles/pixelate.json
 scripts/pipeline/profiles/tetralink.json
 ```
 
