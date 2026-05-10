@@ -77,6 +77,7 @@ aceofskies        13
 brickabrac        65
 chess             15
 dekobloko         32
+pixelate          55
 tetralink         17
 torchallenge      12
 voidhunters       26
@@ -271,6 +272,34 @@ the original `ie` mixer at 22050 Hz mono. Brickabrac build `65` stores the
 archive 8 Vorbis samples as sparse files inside group `0`, so the renderer reads
 the JS5 index metadata and feeds the original classes the same packed-group
 layout the client sees.
+
+Pixelate also uses the MIDI-like FunOrb music path, but its matching JS5 build
+is `55`; build `13` handshakes but exposes an unrelated archive 10 shape. The
+client loads archive 7/8 sound banks, archive 9 instrument patches, and archive
+10 tracks named `pix_title`, `pix_end_game`, and `skin1` through `skin16`.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game pixelate \
+  --builds tools/js5/js5-builds-validated.json \
+  --output .work/js5-caches-pixelate-build55 \
+  --index-limit 11 \
+  --skip-missing-archives \
+  --reconnect-per-index \
+  --keep-going
+
+javac -cp .work/deob-pixelate-profile/out -d .work/pixelate-music-tools \
+  tools/music/PixelateNativeMusicRenderer.java
+
+java -cp .work/pixelate-music-tools:.work/deob-pixelate-profile/out \
+  PixelateNativeMusicRenderer \
+  .work/music/pixelate-build55 \
+  .work/js5-caches-pixelate-build55/pixelate
+```
+
+This writes MIDI files to `.work/music/pixelate-build55/midi/archive10_tracks`
+and native 22050 Hz mono WAVs to
+`.work/music/pixelate-build55/wav-native/archive10_tracks`.
 
 TetraLink uses a different music path. Archive 7/8 are sample banks, archive 9
 is instrument patches, and archive 10 contains `ri` song descriptors that the
