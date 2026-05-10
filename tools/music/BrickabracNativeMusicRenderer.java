@@ -37,9 +37,9 @@ public final class BrickabracNativeMusicRenderer {
 
         List<Path> trackFiles = sorted(root.resolve("split/archive10"), ".vm.bin");
         Set<Integer> patchIds = collectPatchIds(trackCtor, trackFiles);
-        mf archive9 = archive(root, 9, patchIds);
+        mf archive9 = archive(root, archive8SampleCache, 9, patchIds);
         SampleIds sampleIds = collectSampleIds(trackCtor, trackFiles, archive9);
-        mf archive7 = archive(root, 7, sampleIds.archive7);
+        mf archive7 = archive(root, archive8SampleCache, 7, sampleIds.archive7);
         System.err.printf(
             "patches=%d samples7=%d samples8=%d%n",
             patchIds.size(),
@@ -130,8 +130,12 @@ public final class BrickabracNativeMusicRenderer {
         }
     }
 
-    private static mf archive(Path root, int archive, Set<Integer> fileIds) throws IOException {
+    private static mf archive(Path root, Path cache, int archive, Set<Integer> fallbackFileIds) throws IOException {
         Path raw = root.resolve(String.format("raw/archive%02d_group000.container.bin", archive));
+        Set<Integer> fileIds = readIndexFileIds(cache, archive, 0);
+        if (fileIds.isEmpty()) {
+            fileIds = fallbackFileIds;
+        }
         return new mf(new SingleGroupArchive(Files.readAllBytes(raw), fileIds), true, 1);
     }
 

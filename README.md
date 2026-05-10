@@ -74,7 +74,7 @@ AlterOrb gamepacks validate with:
 
 ```text
 aceofskies        13
-brickabrac        17
+brickabrac        65
 chess             15
 dekobloko         32
 tetralink         17
@@ -264,10 +264,10 @@ java -cp .work/brickabrac-music-tools:.work/gamepack-classes/brickabrac \
 ```
 
 The Python extractor writes archive 7/8/9/10/13 raw groups and splits archive 10
-into 4 `vm` tracks. `BrickabracMusicDumper` emits repaired MIDI files from those
+into 16 named `vm` tracks. `BrickabracMusicDumper` emits repaired MIDI files from those
 tracks. `BrickabracNativeMusicRenderer` hydrates archive 9 `pq` patches with
 archive 7 `dr` samples plus archive 8 `bk` Vorbis samples, then renders through
-the original `ie` mixer at 22050 Hz mono. Brickabrac build `17` stores the
+the original `ie` mixer at 22050 Hz mono. Brickabrac build `65` stores the
 archive 8 Vorbis samples as sparse files inside group `0`, so the renderer reads
 the JS5 index metadata and feeds the original classes the same packed-group
 layout the client sees.

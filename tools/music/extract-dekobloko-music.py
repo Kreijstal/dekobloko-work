@@ -129,6 +129,25 @@ BRICKABRAC_ARCHIVES = {
     13: "music label/test metadata observed in warmed caches",
 }
 
+BRICKABRAC_TRACK_NAMES = [
+    "BaB_panic",
+    "BaB_desert",
+    "BaB_underthesea",
+    "BaB_arctic",
+    "BaB_chocolate",
+    "BaB_jungle",
+    "BaB_volcano",
+    "BaB_city_paris",
+    "BaB_podium",
+    "BaB_game_completed",
+    "BaB_farmyard",
+    "BaB_title_music",
+    "BaB_construction",
+    "BaB_space",
+    "BaB_halloween",
+    "BAB_ninja",
+]
+
 
 class Buffer:
     def __init__(self, data: bytes):
@@ -490,17 +509,22 @@ def write_split(out_dir: Path, archive: int, files: list[bytes]) -> list[dict]:
     return entries
 
 
-def write_brickabrac_tracks(out_dir: Path, files: list[bytes]) -> list[dict]:
+def write_brickabrac_tracks(out_dir: Path, files: list[bytes], group: dict | None = None) -> list[dict]:
     split_dir = out_dir / "split" / "archive10"
     split_dir.mkdir(parents=True, exist_ok=True)
     entries = []
+    names_by_hash = {name_hash(name): name for name in BRICKABRAC_TRACK_NAMES}
+    file_ids = group["file_ids"] if group else list(range(len(files)))
+    file_hashes = group["file_name_hashes"] if group else {}
     for index, data in enumerate(files):
-        name = f"brickabrac_track_{index:02d}"
+        file_id = file_ids[index] if index < len(file_ids) else index
+        name = names_by_hash.get(file_hashes.get(file_id), f"brickabrac_track_{index:02d}")
         path = split_dir / f"{name}.vm.bin"
         path.write_bytes(data)
         entries.append(
             {
                 "index": index,
+                "file_id": file_id,
                 "name": name,
                 "path": str(path.relative_to(out_dir)),
                 "bytes": len(data),
@@ -759,9 +783,15 @@ def extract_brickabrac(cache_dir: Path, out_dir: Path, game: str) -> dict:
     }
 
     for archive, role in BRICKABRAC_ARCHIVES.items():
+        try:
+            index = parse_index(cache_dir, archive)
+        except Exception:
+            index = None
         idx_path = cache_dir / f"main_file_cache.idx{archive}"
         archive_manifest = {
             "role": role,
+            "index_version": index["version"] if index else None,
+            "index_revision": index["revision"] if index else None,
             "groups": [],
         }
         if not idx_path.exists():
@@ -791,9 +821,10 @@ def extract_brickabrac(cache_dir: Path, out_dir: Path, game: str) -> dict:
                 "head": decoded[:16].hex(" "),
             }
             if archive == 10 and group == 0:
+                index_group = index["groups"].get(group) if index else None
                 file_count = choose_split_count(decoded)
                 files = split_group(decoded, file_count)
-                tracks = write_brickabrac_tracks(out_dir, files)
+                tracks = write_brickabrac_tracks(out_dir, files, index_group)
                 manifest["tracks"] = tracks
                 group_manifest["file_count"] = file_count
                 group_manifest["files"] = tracks
