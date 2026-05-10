@@ -141,6 +141,23 @@ names such as `music/Deko Bloko Titlescreen`; Pixelate build 55 maps
 `pix_title`, `pix_end_game`, and `skin1` through `skin16`. This is why files
 named only `track_XX` are suspect.
 
+Virogrid is a good example of why the build table has to be validated against
+the client's load strings, not just the JS5 handshake. Build 15 connects, but
+its archive 10 does not contain the Virogrid music group/file-name layout.
+Build 77 has archive 10 group hash `0` (the empty group name) with the four
+client-requested file hashes:
+
+| Virogrid archive 10 file ID | Client load string |
+|---:|---|
+| 2 | `ataxx titlescreen` |
+| 0 | `tetralink ingame 1` |
+| 1 | `tetralink ingame 2` |
+| 5 | `tetralink ingame 3` |
+
+Those names are loaded directly by `Virogrid` through `sc.a(wm.w, "", name)`.
+Archive 9 supplies `rc` instrument patches, archive 7 supplies `vn` synth
+samples, and archive 8 supplies `gj` packvorbis samples through `jg`.
+
 ### Music Commands
 
 Dekobloko and Brickabrac use the Python extractor before Java rendering:
@@ -208,6 +225,25 @@ java -cp .work/virogrid-music-tools:.work/deob-virogrid-profile/out \
   .work/music/virogrid-build77 \
   .work/js5-caches-virogrid-build77/virogrid
 ```
+
+Expected Virogrid native render output is four repaired MIDI files under
+`.work/music/virogrid-build77/midi/archive10_tracks` and four WAVs under
+`.work/music/virogrid-build77/wav-native/archive10_tracks`:
+
+| Track | Approx rendered length |
+|---|---:|
+| `ataxx_titlescreen.wav` | 217.243s |
+| `tetralink_ingame_1.wav` | 278.497s |
+| `tetralink_ingame_2.wav` | 240.091s |
+| `tetralink_ingame_3.wav` | 244.875s |
+
+The native renderer intentionally drives Virogrid's own music classes instead
+of a generic MIDI engine: `sc` holds the repaired MIDI bytes, `i` is the
+sequencer/mixer, `rc` is the patch/instrument class, and `jg` resolves samples
+from archives 7 and 8. The cache adapter detail is easy to get wrong:
+Virogrid's `eh` archive wrapper calls the backend as `b(group, magic)`, and the
+archive index constructor `sj(byte[], crc, whirlpool)` expects the real CRC
+(`na.a(false, raw.length, raw)`) rather than zero.
 
 TetraLink has the richest export path:
 
@@ -415,6 +451,46 @@ stack-map frames, label aliases, and constant-pool ordering, and several
 passes (notably `inline-shared-exit-goto`) only fire correctly on the
 normalized state. The CLI form does this round-trip implicitly because every
 invocation reads and writes a `.class`.
+
+### Other Gamepack Baselines
+
+The same generic pipeline can be run over other AlterOrb/FunOrb jars. These
+baselines are not all expected to be zero-marker yet; they are useful because
+each game exposes a slightly different obfuscator corner case.
+
+Virogrid currently uses the generic runtime-safe pipeline, without a dedicated
+profile:
+
+```bash
+JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
+node scripts/pipeline/bulk-pipeline.js \
+  .work/gamepack-classes/virogrid \
+  .work/deob-virogrid-profile/out \
+  --runtime-safe
+```
+
+Current Virogrid baseline:
+
+| Metric | Result |
+|---|---:|
+| Input classes | 347 |
+| Pipeline passthrough failures | 0 |
+| ASM `BasicVerifier` failures | 0 methods / 0 classes |
+| CFR Java files emitted | 347 |
+| CFR structure marker lines | 166 |
+| CFR classes with markers | 17 |
+
+The Virogrid marker classes observed at this baseline are:
+
+```text
+bn c co d ha hm ic jc km nm oa pl qk rc sb sj tk
+```
+
+Running the existing Brickabrac or Pixelate profiles against Virogrid did not
+improve this marker set, and skipping CFG DCE did not change it either. That
+means the current Virogrid deob result is mechanically valid bytecode and a
+useful inspection baseline, but not yet a clean CFR-structuring result like
+Dekobloko.
 
 #### The transforms in plain English
 
