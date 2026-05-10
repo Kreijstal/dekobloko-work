@@ -3,7 +3,7 @@
 
 const fs = require('fs');
 
-const traceFile = process.argv[2] || 'traces/headless-init.log';
+const traceFile = process.argv[2] || '.work/traces/headless-init.log';
 const text = fs.readFileSync(traceFile, 'utf8');
 const lines = text.split(/\r?\n/).filter(Boolean);
 

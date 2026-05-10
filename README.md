@@ -12,10 +12,11 @@ are ignored.
 Source and tooling are grouped by job:
 
 ```text
-launcher-src/             local fake/real AWT launcher
+apps/launcher/            local fake/real AWT launcher source and trace checker
+scripts/launcher/         launcher build/run wrappers
 scripts/                  regression, compile, deobfuscation, and stub scripts
 scripts/pipeline/         Dekobloko/FunOrb deobfuscation pipeline and profiles
-stubs-src/                legacy JDK/browser dependency stubs
+stubs/src/                legacy JDK/browser dependency stubs
 tools/js5/                JS5 cache download and cache-warming helpers
 tools/music/              music cache extraction, JSON export, and Java renderer
 web/music-visualizer/     standalone browser visualizer and JS mixer port
@@ -30,7 +31,7 @@ work and should survive a cleanup, it belongs under `tools/`, `scripts/`, or
 
 - JDK 8 or newer
 - Bash
-- Node.js for `assert-trace.js`
+- Node.js for `apps/launcher/assert-trace.js`
 - `curl` for fetching the gamepack
 
 ## Fetch the Gamepack
@@ -333,10 +334,11 @@ failure stub.
 ## Build
 
 ```bash
-./build-launcher.sh
+./scripts/launcher/build.sh
 ```
 
-This builds `dekobloko-launcher.jar` from `launcher-src/`.
+This builds `.work/launcher/dekobloko-launcher.jar` from
+`apps/launcher/src/`.
 
 To build dependency stubs for decompilation/compiler linking:
 
@@ -351,7 +353,7 @@ This writes `lib/dekobloko-stubs.jar`.
 Automated fake-AWT boundary check:
 
 ```bash
-./run-fake-awt-check.sh
+./scripts/launcher/run-fake-awt-check.sh
 ```
 
 This uses `local.awt.FakeToolkit` and `local.awt.FakeGraphicsEnvironment` as an
@@ -362,7 +364,7 @@ discovery, frame peer creation/layout, and lifecycle calls.
 Human-in-loop real AWT window:
 
 ```bash
-./run-real-awt.sh
+./scripts/launcher/run-real-awt.sh
 ```
 
 This requires `DISPLAY` or `WAYLAND_DISPLAY`.
@@ -370,19 +372,19 @@ This requires `DISPLAY` or `WAYLAND_DISPLAY`.
 Record real AWT interaction:
 
 ```bash
-./run-record-awt.sh traces/interaction.awtlog
+./scripts/launcher/run-record-awt.sh .work/traces/interaction.awtlog
 ```
 
 Replay interaction through fake AWT:
 
 ```bash
-./run-replay-awt.sh traces/interaction.awtlog
+./scripts/launcher/run-replay-awt.sh .work/traces/interaction.awtlog
 ```
 
 Replay accepts launcher args, for example:
 
 ```bash
-./run-replay-awt.sh traces/interaction.awtlog --replay-speed 4
+./scripts/launcher/run-replay-awt.sh .work/traces/interaction.awtlog --replay-speed 4
 ```
 
 ## Launcher Options
@@ -402,7 +404,7 @@ Useful options:
 
 ## Decompilation Notes
 
-The stubs under `stubs-src/` resolve legacy dependencies referenced by the
+The stubs under `stubs/src/` resolve legacy dependencies referenced by the
 gamepack:
 
 - `com.ms.awt.WComponentPeer`
@@ -771,7 +773,7 @@ timeout 20 java -Djava.awt.headless=false -jar dekobloko-launcher.jar \
   --trace-file .work/traces/headless.log \
   --gamepack /path/to/patched.jar
 
-node assert-trace.js .work/traces/headless.log
+node apps/launcher/assert-trace.js .work/traces/headless.log
 ```
 
 The quick class-only experiment jars can reach `error_game_crash` under this

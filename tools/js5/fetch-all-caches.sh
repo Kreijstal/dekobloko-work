@@ -26,7 +26,7 @@ if [[ ! -f "$CONFIG" ]]; then
 fi
 
 cd "$ROOT"
-./build-launcher.sh >/dev/null
+"$ROOT/scripts/launcher/build.sh" >/dev/null
 mkdir -p "$GAMEPACK_DIR" "$TRACE_DIR"
 
 python3 - "$CONFIG" "$GAME_FILTER" <<'PY' |
@@ -67,7 +67,7 @@ while IFS=$'\t' read -r internal main_class gamecrc hash; do
 
   echo "warm cache $internal"
   set +e
-  java -Djava.awt.headless=false -jar dekobloko-launcher.jar \
+  java -Djava.awt.headless=false -jar "$ROOT/.work/launcher/dekobloko-launcher.jar" \
     --awt fake \
     --gamepack "$jar" \
     --main-class "$main_class" \
