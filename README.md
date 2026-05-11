@@ -423,7 +423,7 @@ java -jar lib/cfr.jar dekobloko.jar \
   --outputdir src
 ```
 
-### Current State
+### Deobfuscation Status
 
 Known gamepack:
 
@@ -433,8 +433,10 @@ dekobloko.jar sha256=a22410ad930334f54672ce8acdf25d88c31e380550e8f88a5618bb730f3
 
 After the deobfuscation pipeline below, **343 of 343 classes** decompile under
 CFR with zero structure markers, and **343/343 verify clean** under ASM
-`BasicVerifier`. No CFR or other decompiler is used as an oracle inside the
-pipeline; CFR is for dev-time validation only.
+`BasicVerifier`. The CFR sources also compile cleanly: **343/343** Java files
+compile with `javac` against `lib/dekobloko-stubs.jar`. No CFR or other
+decompiler is used as an oracle inside the pipeline; CFR is for dev-time
+validation only.
 
 The reproducible pipeline is owned by this repo. It uses
 [`java-tools`](https://github.com/Kreijstal/java-tools) only for generic
@@ -444,15 +446,18 @@ under `scripts/pipeline/`.
 
 ```bash
 # Bulk-mode: single Node.js process, ~25 seconds for the full 343-class gamepack
-./scripts/pipeline/bulk-pipeline.js classes-original/ deobfuscated-out/
+JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
+node scripts/pipeline/bulk-pipeline.js classes-original/ deobfuscated-out/
 ```
 
-The IMPORTANT detail is that `scripts/pipeline/bulk-pipeline.js` round-trips the
-AST through the bytecode serializer between every pass — the round-trip normalizes
-stack-map frames, label aliases, and constant-pool ordering, and several
-passes (notably `inline-shared-exit-goto`) only fire correctly on the
-normalized state. The CLI form does this round-trip implicitly because every
-invocation reads and writes a `.class`.
+`scripts/pipeline/bulk-pipeline.js` round-trips the AST through the bytecode
+serializer between every pass. This normalizes stack-map frames, label aliases,
+and constant-pool ordering. The CLI form does this round-trip implicitly because
+each invocation reads and writes a `.class`.
+
+The default profile is `dekobloko`. Use `--profile none` for a generic
+runtime-safe run that should not load any game profile, and use `--profile all`
+only when deliberately checking profile leakage.
 
 ### Other Gamepack Baselines
 
@@ -460,18 +465,18 @@ The same generic pipeline can be run over other AlterOrb/FunOrb jars. These
 baselines are not all expected to be zero-marker yet; they are useful because
 each game exposes a slightly different obfuscator corner case.
 
-Virogrid currently uses the generic runtime-safe pipeline, without a dedicated
-profile:
+Virogrid uses the generic runtime-safe pipeline, without a dedicated profile:
 
 ```bash
 JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
 node scripts/pipeline/bulk-pipeline.js \
   .work/gamepack-classes/virogrid \
   .work/deob-virogrid-profile/out \
+  --profile none \
   --runtime-safe
 ```
 
-Current Virogrid baseline:
+Virogrid baseline:
 
 | Metric | Result |
 |---|---:|
@@ -482,32 +487,31 @@ Current Virogrid baseline:
 | CFR structure marker lines | 166 |
 | CFR classes with markers | 17 |
 
-The Virogrid marker classes observed at this baseline are:
+Virogrid marker classes:
 
 ```text
 bn c co d ha hm ic jc km nm oa pl qk rc sb sj tk
 ```
 
-Running the existing Brickabrac or Pixelate profiles against Virogrid did not
-improve this marker set, and skipping CFG DCE did not change it either. That
-means the current Virogrid deob result is mechanically valid bytecode and a
-useful inspection baseline, but not yet a clean CFR-structuring result like
-Dekobloko.
+This is a mechanically valid bytecode baseline, not a clean CFR-structuring
+baseline like Dekobloko.
 
-#### The transforms in plain English
+#### Transform Catalog
 
 | Pass | Pattern it targets |
 |---|---|
-| `peephole-clean` | nop removal, single-use fall-through gotos, unreferenced labels. |
-| `strip-rethrow-handlers --keep-handler-code` | Drops trivial catch-and-rethrow exception-table entries; **retains** bare `athrow` sentinels (Diobfuscator lesson — deleting both makes CFR worse). |
+| `peephole-clean` | nop removal, single-use fall-through gotos, unreferenced labels, constructor-only `if body; goto exit; body:` inversion, and constructor-only unreachable dead-handler tail cleanup. |
+| `strip-rethrow-handlers --keep-handler-code` | Drops trivial catch-and-rethrow exception-table entries while retaining bare `athrow` sentinels. |
 | `multi-entry-normalize` | Clones loop-header blocks for each forward edge so loops have a single semantic entry. Has a forward-only join splitter for fallthrough-joined CFG diamonds. |
 | `coalesce-loop-load` | Folds `LOAD X; goto T2; T1: LOAD X; T2: <use X>` into `goto T1`. Cleans up the duplicate prefix that multi-entry normalization tends to leave behind. |
-| `dead-flag-eliminate` | Eliminates dead conditionals on proven always-false static boolean/int flags. Auto-discovery rejects fields whose writes depend on their own previous value; Dekobloko's `client.A` is live and must not be treated as an always-false oracle. |
+| `dead-flag-eliminate` | Eliminates dead conditionals on proven always-false static boolean/int flags. It handles both local snapshots (`getstatic flag; istore n; iload n; ifeq/ifne`) and direct tests (`getstatic flag; ifeq/ifne`). Full-jar discovery now models guarded self-toggle writes as dependencies, so Dekobloko's `client.A` is discovered automatically instead of hardcoded in `dekobloko.json`. |
 | `constructor-pre-super-cleanup` | Deletes unused static boolean snapshots before constructor `super(...)` calls so CFR emits legal Java constructors. |
 | `remove-shadowing-trivial-rethrow-handlers` | Removes duplicate exception-table entries where a pure rethrow handler shadows a later useful handler for the same protected range. |
-| `inline-shared-exit-goto` | The crux. Tail-duplicates a shared exit/merge body at the goto-site reached as the fallthrough of a conditional jump. The obfuscator collapsed javac's natural inline-exit prologues into shared `goto EXIT` chains; this pass puts them back where it matters. Drove `td` from 2 markers → 0 and `lk` from 3 → 0. |
+| `inline-shared-exit-goto` | Tail-duplicates a shared exit/merge body at a goto-site reached as the fallthrough of a conditional jump. |
 | `cast-object-field-stores` | Inserts a field-descriptor `checkcast` before storing a locally constructed object into an object field, preserving CFR's source type for reused `Object` locals. |
 | `primitive-array-copy-loops` | Rewrites exact primitive array copy loops to `System.arraycopy` where CFR otherwise emits malformed enhanced-for assignments. |
+| `simplify-string-length-not-compare` | Rewrites `~String.length()` comparisons only when the moved instructions are a real String receiver chain. |
+| `split-primitive-int-branch-local` | Splits polluted int loop locals only when no earlier branch can bypass the fresh-local initialization. The split copies the fresh value back to the original local so non-rewritten paths remain initialized. |
 | `compile-conflict-renames` | Exact owner/name/descriptor renames for Java source conflicts where CFR emits short class names that collide with inherited fields or override-family methods. |
 | `ei-tail-clone`, `qc-doloop-tail-clone` | Targeted tail-cloning passes for the remaining CFG shapes that CFR needs to structure `ei` and `qc` cleanly. |
 | `stack-receiver-tail-clone` | Clones a tiny stack-carrying receiver tail such as `iconst_1; invokevirtual X.c(Z)V` when an earlier loop branches into another loop's call site with the receiver already on the operand stack. This preserves bytecode semantics while removing a cross-loop stack join CFR cannot structure. |
@@ -556,57 +560,66 @@ Examples:
 - `compileConflictRenames` is profile/data driven. It renames only exact
   owner/name/descriptor conflicts and expands method renames across override
   families so call sites and hierarchy members stay consistent.
-- `deadFlagFields` began as explicit profile data and is supplemented by
-  automatic discovery from zero-valued sentinel fields. Discovery is
-  conservative: self-dependent toggle writes are rejected rather than used as
-  evidence that a flag is dead.
 
-The useful discipline is:
+#### Transform Development Rules
 
-1. First build a reduced Krakatau/Jasmin or javac-produced example that CFR
-   accepts.
+1. Build a reduced Krakatau/Jasmin or javac-produced example that CFR accepts.
 2. Compare that bytecode shape to the obfuscated bytecode.
-3. Implement the smallest bytecode rewrite that reproduces the accepted shape.
-4. Put any class/offset selectors in JSON profile data.
-5. Re-run the all-class marker and verifier harnesses.
+3. Implement the smallest semantic-preserving bytecode rewrite.
+4. Put class/offset selectors in JSON profile data when a fully general gate is
+   too risky.
+5. Re-run the all-class marker, verifier, and compile harnesses.
 
-This is why the pipeline can support multiple FunOrb games without putting
-`if (className === "...")` checks throughout `java-tools`.
-
-#### The discovery story for `inline-shared-exit-goto`
-
-Hand-writing Java that matches `td.c(Lvl;)V`'s semantics exactly (including
-the unusual "if `var10 == 0` then return immediately, not break to the next
-loop" branch) and feeding it through `javac -source 7 -target 7` produces
-bytecode that CFR decompiles with **zero markers**. Diffing that bytecode
-against the obfuscated `td.c` shows two differences:
-
-1. javac **inlines the entire method-exit prologue** at the
-   conditional-fallthrough site (`if var10 == 0 → write all locals back to
-   fields → return`). The obfuscator replaced that inline with a single
-   `goto EXIT`, where `EXIT` is a shared prologue at method end.
-2. javac uses an explicit `goto INNER_LOOP_2` at the var3==1 path's exit; the
-   obfuscator uses fallthrough.
-
-Reproducing javac's inline-exit shape — i.e. tail-duplicating the merge
-target's body at one specific predecessor — was sufficient to fix both `td`
-and `lk`. The general rule emerged from there: the goto's previous
-instruction must be a conditional jump, the target must have ≥4 forward
-predecessors AND another forward predecessor reachable from inside the
-conditional's then-target body (the "shared-join-inside-nested-structure"
-shape), and the body must be 5–50 insns ending in a terminator.
-
-#### Vineflower as a sanity check, not as a target
-
-Vineflower (the modern Quiltflower fork) handles `td` and `lk` natively — its
-structurer covers the patterns CFR fails on. But it has **its own** failure
-mode on this gamepack: 618 javac errors (vs CFR's 244) because the
-obfuscator's single-letter naming creates Java-level field-vs-class shadowing
-that Vineflower doesn't qualify (e.g. `lb.a(...)` where `lb` is both a field
-of type `int` and a sibling class). Switching decompiler oracles doesn't
-help; cleaning up the bytecode does.
+`java-tools` stays generic. Game-specific selectors stay in
+`scripts/pipeline/profiles/*.json`.
 
 ### Reproducing the result
+
+These commands run the real Dekobloko bulk pipeline. ASM is used only by
+`Verify.java` after the transform, and CFR is used only for validation.
+
+One explicit deobfuscation run:
+
+```bash
+rm -rf .work/roundtrip
+mkdir -p .work/roundtrip/out .work/roundtrip/cfr
+
+JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
+node scripts/pipeline/bulk-pipeline.js \
+  classes-original \
+  .work/roundtrip/out \
+  --profile dekobloko
+```
+
+Decompile that output with CFR and scan for structure markers:
+
+```bash
+java -jar lib/cfr.jar \
+  .work/roundtrip/out/*.class \
+  --outputdir .work/roundtrip/cfr
+
+rg -n '\*\* GOTO|Unable to fully structure code|lbl-1000' \
+  .work/roundtrip/cfr
+```
+
+An empty `rg` result is expected.
+
+Batch verifier check for the transformed class files:
+
+```bash
+javac -cp /home/kreijstal/git/java-tools/lib/asm-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-tree-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-analysis-9.9.1.jar \
+  -d scripts \
+  scripts/Verify.java
+
+java -cp /home/kreijstal/git/java-tools/lib/asm-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-tree-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-analysis-9.9.1.jar:scripts \
+  Verify .work/roundtrip/out/*.class
+```
+
+Expected verifier summary:
+
+```text
+ClassesWithFails: 0
+```
 
 Per-class regression (25 representative classes, fail-fast):
 
@@ -632,12 +645,51 @@ To reproduce the CFR-source javac count:
 ./scripts/compile-check-cfr.sh
 ```
 
-Current result with `lib/dekobloko-stubs.jar` is `326/343` source files
-compilable.
+Expected result with `lib/dekobloko-stubs.jar`:
 
-### Tools Used
+```text
+total=343 ok=343 fail=0
+```
 
-Local repos and tools used during this investigation:
+The compile harness performs the full roundtrip:
+
+1. `bulk-pipeline.js classes-original "$WORK/out"` with the default
+   `dekobloko` profile.
+2. `java -jar lib/cfr.jar "$WORK/out"/*.class --outputdir "$WORK/cfr"`.
+3. Per-class `javac -source 7 -target 7 -Xbootclasspath/p:lib/dekobloko-stubs.jar
+   -proc:none -cp "$WORK/out:lib/dekobloko-stubs.jar" -sourcepath ''`.
+
+To inspect a specific transformed class using the java-tools disassembler:
+
+```bash
+node /home/kreijstal/git/java-tools/scripts/jvm-cli.js disassemble \
+  .work/roundtrip/out/client.class \
+  --out .work/roundtrip/client.j
+```
+
+That disassembly path is preferred for pipeline debugging because it uses the
+same parser/serializer conventions as the transforms.
+
+Runtime boundary smoke check:
+
+```bash
+./scripts/launcher/run-fake-awt-check.sh
+```
+
+Expected result: the launcher rebuilds, starts `dekobloko.jar` with fake AWT,
+records applet parameters, cache redirects, fake graphics/toolkit calls, frame
+peer lifecycle, and applet lifecycle, then exits with:
+
+```text
+Trace OK: .../.work/traces/headless-init.log
+```
+
+This is not part of the CFR oracle. It is a separate runtime boundary check
+that catches launcher/AWT/cache regressions after bytecode or harness changes.
+
+### Tool Roles
+
+Local repos and tools:
 
 - `dekobloko-work`: this harness repo. It owns gamepack retrieval, dependency
   stubs, the fake/real AWT launcher, trace assertions, and experiment notes. It
@@ -649,33 +701,27 @@ Local repos and tools used during this investigation:
   metadata, peephole cleanup, exception trap cleanup, and ASM transforms under
   `tools/asm/`.
 - CFR 0.152 (`https://www.benf.org/other/cfr/` and
-  `https://github.com/leibnitz27/cfr`): the main decompiler target. All bytecode
-  cleanup has been measured against CFR output because the current goal is
-  compilable CFR Java.
+  `https://github.com/leibnitz27/cfr`): the main decompiler target and
+  validation tool.
 - Recaf (`https://github.com/Col-E/Recaf`): useful for inspection and
   interactive bytecode/class browsing. It wants a modern JDK, while the gamepack
   itself is Java 6/7 era bytecode.
 - Diobfuscator / `Deobfuscator` (`https://github.com/Diobf/Deobfuscator`):
-  useful as a reference implementation for peephole ideas. The important
-  portable idea was keeping bare handler `athrow` sentinels while removing
-  useless try/catch entries.
-- Garlic (`https://github.com/neocanable/garlic`) and other decompilers: useful
-  comparison points, but CFR remained the main target because its output and
-  failure modes were easy to batch-scan.
+  reference implementation for peephole ideas.
+- Garlic (`https://github.com/neocanable/garlic`) and other decompilers:
+  comparison points.
 - ASM (`https://asm.ow2.io/`, Maven artifacts `org.ow2.asm:asm`,
   `org.ow2.asm:asm-tree`, and `org.ow2.asm:asm-analysis`): used for actual class
   rewrites. `java-tools` currently builds `run-join-block-splitter` and
   `run-replace-method-body`.
-- `javap` / `javac` from the JDK (`https://openjdk.org/`): `javap` was used to
-  check real bytecode offsets and control-flow shapes. `javac -source 7 -target
-  7` was used to produce structured donor bytecode for the `td.c(Lvl;)V` proof.
-  This is a proof/testcase, not the final generic deobfuscator pass.
+- `javap` / `javac` from the JDK (`https://openjdk.org/`): bytecode inspection,
+  reduced testcase compilation, and final CFR-source compilation.
 - `rg` / ripgrep (`https://github.com/BurntSushi/ripgrep`): used for marker
   scans, string/reflection searches, and quick output audits.
 - fake AWT launcher: used as a boundary harness for applet/AWT/cache/network
   calls without Xvfb or pixel comparisons.
 
-Supporting repos cloned during exploration:
+Supporting repos:
 
 - `katana-project/slicer`: `https://github.com/katana-project/slicer`
 - `Kreijstal/java-tools`: `https://github.com/Kreijstal/java-tools`
@@ -684,50 +730,37 @@ Supporting repos cloned during exploration:
 - `neocanable/garlic`: `https://github.com/neocanable/garlic`
 - `Diobf/Deobfuscator`: `https://github.com/Diobf/Deobfuscator`
 
-Reference reading:
+### Validation Metrics
 
-- Self-improving decompiler notes:
-  `https://shanyu.juneja.net/thoughts/self-improving-decompiler/`
-
-Not every cloned tool became part of the pipeline. The pieces that materially
-changed the result were the `java-tools` ASM/peephole work, the Diobfuscator
-peephole lesson, CFR marker scans, and the fake-AWT boundary harness.
-
-### CFR Marker Tracking
-
-The useful success metric is not class count or whether names moved around. The
-code may be renamed, inlined, duplicated, or restructured. The boundary signals
-that matter are network behavior, AWT calls, filesystem/cache behavior, and JVM
-verification. For decompiler work, the local mechanical metric is whether CFR
-still emits structure markers:
+The decompiler metric is whether CFR still emits structure markers:
 
 ```bash
 rg -n '\*\* GOTO|Unable to fully structure code|lbl-1000' cfr-output
 ```
 
-The historic progression on this gamepack:
+Dekobloko baseline:
 
 | Stage | Markers | Classes with markers |
 |---|---|---|
-| baseline (no pipeline) | many hundreds across the jar | most |
-| after `peephole` + `strip-rethrow` | ~150 | ~30 |
-| + `multi-entry-normalize` + `coalesce-loop-load` + `dead-flag-eliminate` | 74 | 15 |
-| + `inline-shared-exit-goto` | 13 | 4 (`ck=5, qk=4, kh=3, qc=1`) |
-| + focused tail clones and exception-table cleanup (current) | **0** | **0** |
+| current pipeline | **0** | **0** |
 
-343/343 classes now decompile under CFR with zero structure markers and verify
-clean under ASM `BasicVerifier`.
+343/343 classes decompile under CFR with zero structure markers, verify clean
+under ASM `BasicVerifier`, and compile as CFR Java against
+`lib/dekobloko-stubs.jar`.
 
-### What's still left
+### Maintenance Checks
 
-The remaining work is Java-source compilability, not CFR structure markers. The
-current source compile harness reports 17 failing classes; the largest buckets
-are unreachable statements, ambiguous/reused `Object` locals, constructor
-structuring, definite-assignment splits, and dependency-stub signature issues.
-The existing harnesses (`compile-check-cfr.sh`, `regression-check.sh`, and
-`regression-check-all.sh`) keep the next source-compile transforms reproducible:
-the compile harness measures javac progress, and the locked marker baseline
-rejects any change that makes CFR structure worse.
+Keep these checks green after bytecode, profile, launcher, cache, or music
+changes:
+
+```bash
+./scripts/regression-check.sh
+./scripts/regression-check-all.sh
+./scripts/compile-check-cfr.sh
+./scripts/launcher/run-fake-awt-check.sh
+```
+
+New FunOrb game profiles must not change the default Dekobloko baseline.
 
 ### Reduced CFR Testcases
 

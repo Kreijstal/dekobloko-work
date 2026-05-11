@@ -104,7 +104,7 @@ const skipControlFlowDce = process.argv.includes('--skip-cfdce');
 const keepRuntimeHandlers = process.argv.includes('--keep-runtime-handlers');
 const runtimeSafe = process.argv.includes('--runtime-safe');
 const profileArg = readOptionValue('--profile') || readOptionValue('--profiles') || process.env.PIPELINE_PROFILES || '';
-const selectedProfiles = profileArg
+const selectedProfiles = (profileArg || 'dekobloko')
   .split(',')
   .map((name) => name.trim())
   .filter(Boolean);
@@ -114,7 +114,7 @@ const skipPassNames = new Set((process.env.SKIP_PIPELINE_PASSES || '')
   .filter(Boolean));
 
 if (!inDir || !outDir) {
-  console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--skip-inline]');
+  console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--profile dekobloko|none|all|name[,name...]] [--skip-inline]');
   process.exit(2);
 }
 
@@ -203,10 +203,12 @@ function loadProfiles(dir, selected = []) {
     skipPasses: [],
   };
   if (!fs.existsSync(dir)) return merged;
+  if (selected.some((name) => name === 'none' || name === 'none.json')) return merged;
+  const loadAll = selected.some((name) => name === 'all' || name === 'all.json');
   const selectedSet = new Set(selected.map((name) => name.endsWith('.json') ? name : `${name}.json`));
   const files = fs.readdirSync(dir)
     .filter((f) => f.endsWith('.json'))
-    .filter((f) => selectedSet.size === 0 || selectedSet.has(f))
+    .filter((f) => loadAll || selectedSet.has(f))
     .sort();
   for (const file of files) {
     const profile = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
