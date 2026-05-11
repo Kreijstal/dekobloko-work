@@ -575,20 +575,32 @@ Steel Sentinels baseline:
 | Pipeline passthrough failures | 0 |
 | ASM `BasicVerifier` failures | 0 methods / 0 classes |
 | CFR Java files emitted | 347 |
-| CFR structure marker lines | 5 |
-| CFR classes with markers | 2 |
+| CFR structure marker lines | 0 |
+| CFR classes with markers | 0 |
 | CFR-source javac | 314/347 |
 
 Steel Sentinels marker classes:
 
 ```text
-hb nb
+(none)
 ```
 
 The former `ao` marker was a protected-entry bridge: an unprotected
 `aload_0; goto join` duplicated the first load of a protected retry block.
 `peephole-clean` now rewrites that bridge to jump to the protected copy of the
 same load, so the stack shape is unchanged while CFR sees a single entry.
+
+The former `hb` marker was a javac-shaped labeled-block loop where a
+stack-neutral conditional fallthrough jumped to a shared forward loop entry.
+`peephole-clean` now clones the bounded loop-entry range only when the
+conditional/goto block is stack-neutral, the shared entry has exactly two
+instruction references, and there is no fallthrough predecessor.
+
+The former `nb` marker was a duplicated loop-tail update before a `continue`.
+The duplicated suffix (`mask <<= k; ++index; goto loopHead`) matched a later
+canonical loop tail. `peephole-clean` now coalesces only such suffixes when they
+are immediately after a conditional, contain an `iinc`, and exactly match a
+later tail that jumps to the same loop head.
 
 The per-class javac failures are still source-shape/type-pollution work, not
 bytecode verifier failures. The most common categories at this baseline are
@@ -599,7 +611,7 @@ structure (`illegal start of expression`), and object/array type pollution.
 
 | Pass | Pattern it targets |
 |---|---|
-| `peephole-clean` | nop removal, single-use fall-through gotos, unreferenced labels, protected load-bridge coalescing, constructor-only `if body; goto exit; body:` inversion, and constructor-only unreachable dead-handler tail cleanup. |
+| `peephole-clean` | nop removal, single-use fall-through gotos, unreferenced labels, protected load-bridge coalescing, stack-neutral shared forward loop-entry cloning, duplicate loop-tail suffix coalescing, constructor-only `if body; goto exit; body:` inversion, and constructor-only unreachable dead-handler tail cleanup. |
 | `strip-rethrow-handlers --keep-handler-code` | Drops trivial catch-and-rethrow exception-table entries while retaining bare `athrow` sentinels. |
 | `multi-entry-normalize` | Clones loop-header blocks for each forward edge so loops have a single semantic entry. Has a forward-only join splitter for fallthrough-joined CFG diamonds. |
 | `coalesce-loop-load` | Folds `LOAD X; goto T2; T1: LOAD X; T2: <use X>` into `goto T1`. Cleans up the duplicate prefix that multi-entry normalization tends to leave behind. |
@@ -852,6 +864,19 @@ Dekobloko baseline:
 343/343 classes decompile under CFR with zero structure markers, verify clean
 under ASM `BasicVerifier`, and compile as CFR Java against
 `lib/dekobloko-stubs.jar`.
+
+Steel Sentinels baseline:
+
+| Stage | Markers | Classes with markers |
+|---|---|---|
+| `--profile none --safe-bytecode` | **0** | **0** |
+
+Vertigo2 baseline with the same generic safe pipeline is verifier-clean but not
+yet marker-clean:
+
+| Stage | Marker lines | Classes with markers |
+|---|---:|---|
+| `--profile none --safe-bytecode` | 9 | `bh`, `dk`, `pm`, `pq`, `up` |
 
 ### Maintenance Checks
 
