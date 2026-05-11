@@ -459,6 +459,13 @@ The default profile is `dekobloko`. Use `--profile none` for a generic
 runtime-safe run that should not load any game profile, and use `--profile all`
 only when deliberately checking profile leakage.
 
+`--safe-bytecode` enables stricter variants of a few local-splitting and
+boolean-return cleanup passes. It is useful for new gamepacks where the normal
+CFR-oriented shape can accidentally create verifier-invalid bytecode. The flag
+does not load game-specific selectors; it only asks generic passes to use extra
+dominance and original-local-preservation gates. Keep the default Dekobloko run
+without this flag unless a guardrail shows a verifier/runtime need.
+
 ### Other Gamepack Baselines
 
 The same generic pipeline can be run over other AlterOrb/FunOrb jars. These
@@ -496,6 +503,93 @@ bn c co d ha hm ic jc km nm oa pl qk rc sb sj tk
 This is a mechanically valid bytecode baseline, not a clean CFR-structuring
 baseline like Dekobloko.
 
+Steel Sentinels currently needs the stricter bytecode-safety mode. The generic
+run without `--safe-bytecode` initially produced very low CFR markers, but it
+also created verifier-invalid bytecode in six classes (`be`, `bh`, `ee`, `nb`,
+`nk`, and `qb`). The failing shapes were not Steel-specific hardcodes:
+
+- array/reference split passes moved only selected loads to a fresh local while
+  leaving other paths that still read the original local;
+- some split stores were branch targets, so inserting `dup; astore fresh`
+  before the target left branch entrants without the fresh local initialized;
+- concrete-object splitting rewrote uses after a conditional reassignment even
+  when the reassignment did not dominate the later use;
+- boolean-return DCE retargeted an identical `iconst_0; ireturn` label to an
+  earlier block that had a fallthrough predecessor with another value still on
+  the stack.
+
+The `--safe-bytecode` mode fixes those mechanically by requiring dominance for
+fresh-local uses, preserving the original local when non-rewritten loads remain
+or a store is a branch target, and refusing const-return merge targets that have
+fallthrough predecessors.
+
+Reproduce the current Steel Sentinels baseline:
+
+```bash
+rm -rf .work/steelsentinels-deob-safe
+mkdir -p \
+  .work/steelsentinels-deob-safe/classes \
+  .work/steelsentinels-deob-safe/out \
+  .work/steelsentinels-deob-safe/cfr \
+  .work/steelsentinels-deob-safe/logs
+
+(cd .work/steelsentinels-deob-safe/classes && \
+  jar xf ../../gamepacks/steelsentinels.jar)
+
+JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
+node scripts/pipeline/bulk-pipeline.js \
+  .work/steelsentinels-deob-safe/classes \
+  .work/steelsentinels-deob-safe/out \
+  --profile none \
+  --safe-bytecode
+```
+
+Verifier check:
+
+```bash
+javac -cp /home/kreijstal/git/java-tools/lib/asm-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-tree-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-analysis-9.9.1.jar \
+  -d .work/verify-tools \
+  scripts/Verify.java
+
+java -cp .work/verify-tools:/home/kreijstal/git/java-tools/lib/asm-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-tree-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-analysis-9.9.1.jar \
+  Verify .work/steelsentinels-deob-safe/out/*.class
+```
+
+CFR marker scan:
+
+```bash
+java -jar lib/cfr.jar \
+  .work/steelsentinels-deob-safe/out/*.class \
+  --outputdir .work/steelsentinels-deob-safe/cfr
+
+rg -n '\*\* GOTO|Unable to fully structure code|lbl-1000' \
+  .work/steelsentinels-deob-safe/cfr \
+  > .work/steelsentinels-deob-safe/logs/cfr-markers.txt
+```
+
+Steel Sentinels baseline:
+
+| Metric | Result |
+|---|---:|
+| Input classes | 347 |
+| Pipeline passthrough failures | 0 |
+| ASM `BasicVerifier` failures | 0 methods / 0 classes |
+| CFR Java files emitted | 347 |
+| CFR structure marker lines | 8 |
+| CFR classes with markers | 3 |
+| CFR-source javac | 314/347 |
+
+Steel Sentinels marker classes:
+
+```text
+ao hb nb
+```
+
+The per-class javac failures are still source-shape/type-pollution work, not
+bytecode verifier failures. The most common categories at this baseline are
+ambiguous short-name references, constructor/super placement, residual CFR
+structure (`illegal start of expression`), and object/array type pollution.
+
 #### Transform Catalog
 
 | Pass | Pattern it targets |
@@ -511,7 +605,10 @@ baseline like Dekobloko.
 | `cast-object-field-stores` | Inserts a field-descriptor `checkcast` before storing a locally constructed object into an object field, preserving CFR's source type for reused `Object` locals. |
 | `primitive-array-copy-loops` | Rewrites exact primitive array copy loops to `System.arraycopy` where CFR otherwise emits malformed enhanced-for assignments. |
 | `simplify-string-length-not-compare` | Rewrites `~String.length()` comparisons only when the moved instructions are a real String receiver chain. |
+| `split-array-reaching-local` | Splits polluted array locals. In `--safe-bytecode` mode it requires the source store to dominate every rewritten load and preserves the original local when another path can still read it or the store itself is a branch target. |
+| `split-concrete-object-reaching-local` | Splits polluted concrete object locals. In `--safe-bytecode` mode it uses the same dominance/original-local preservation as array splitting, which keeps verifier state valid around conditional reassignments. |
 | `split-primitive-int-branch-local` | Splits polluted int loop locals only when no earlier branch can bypass the fresh-local initialization. The split copies the fresh value back to the original local so non-rewritten paths remain initialized. |
+| `control-flow-dce` | Collapses simple goto/const-return clutter. In `--safe-bytecode` mode it refuses to merge a const-return label into an earlier const-return block when the earlier block has a fallthrough predecessor that could leave a value on the stack. |
 | `compile-conflict-renames` | Exact owner/name/descriptor renames for Java source conflicts where CFR emits short class names that collide with inherited fields or override-family methods. |
 | `ei-tail-clone`, `qc-doloop-tail-clone` | Targeted tail-cloning passes for the remaining CFG shapes that CFR needs to structure `ei` and `qc` cleanly. |
 | `stack-receiver-tail-clone` | Clones a tiny stack-carrying receiver tail such as `iconst_1; invokevirtual X.c(Z)V` when an earlier loop branches into another loop's call site with the receiver already on the operand stack. This preserves bytecode semantics while removing a cross-loop stack join CFR cannot structure. |
@@ -569,6 +666,9 @@ Examples:
 4. Put class/offset selectors in JSON profile data when a fully general gate is
    too risky.
 5. Re-run the all-class marker, verifier, and compile harnesses.
+6. For new gamepacks, first check `--profile none`; if CFR improves while the
+   verifier fails, rerun with `--safe-bytecode` and inspect the bytecode diff
+   before accepting the result.
 
 `java-tools` stays generic. Game-specific selectors stay in
 `scripts/pipeline/profiles/*.json`.

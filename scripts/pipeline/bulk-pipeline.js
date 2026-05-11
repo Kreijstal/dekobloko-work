@@ -103,6 +103,7 @@ const skipInline = process.argv.includes('--skip-inline');
 const skipControlFlowDce = process.argv.includes('--skip-cfdce');
 const keepRuntimeHandlers = process.argv.includes('--keep-runtime-handlers');
 const runtimeSafe = process.argv.includes('--runtime-safe');
+const safeBytecode = process.argv.includes('--safe-bytecode');
 const profileArg = readOptionValue('--profile') || readOptionValue('--profiles') || process.env.PIPELINE_PROFILES || '';
 const selectedProfiles = (profileArg || 'dekobloko')
   .split(',')
@@ -114,7 +115,7 @@ const skipPassNames = new Set((process.env.SKIP_PIPELINE_PASSES || '')
   .filter(Boolean));
 
 if (!inDir || !outDir) {
-  console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--profile dekobloko|none|all|name[,name...]] [--skip-inline]');
+  console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--profile dekobloko|none|all|name[,name...]] [--skip-inline] [--safe-bytecode]');
   process.exit(2);
 }
 
@@ -346,14 +347,14 @@ const passes = [
   { name: 'materialize-checked-field-initializers', fn: (a) => runMaterializeCheckedFieldInitializers(a) },
   { name: 'materialize-stack-join-stores', fn: (a) => runMaterializeStackJoinStores(a) },
   { name: 'primitive-array-copy-loops', fn: (a) => runPrimitiveArrayCopyLoops(a) },
-  { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a) },
+  { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
   { name: 'split-reference-array-reaching-local', fn: (a) => runSplitReferenceArrayReachingLocal(a) },
   { name: 'split-array-store-local-assignment', fn: (a) => runSplitArrayStoreLocalAssignment(a) },
   { name: 'split-primitive-int-branch-local', fn: (a) => runSplitPrimitiveIntBranchLocal(a) },
   { name: 'split-casted-local-range', fn: (a) => runSplitCastedLocalRange(a) },
-  { name: 'split-concrete-object-reaching-local', fn: (a) => runSplitConcreteObjectReachingLocal(a) },
+  { name: 'split-concrete-object-reaching-local', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
   { name: 'cast-object-local-store-from-uses', fn: (a) => runCastObjectLocalStoreFromUses(a) },
-  { name: 'split-concrete-object-reaching-local2', fn: (a) => runSplitConcreteObjectReachingLocal(a) },
+  { name: 'split-concrete-object-reaching-local2', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
   { name: 'remove-dead-dup-store', fn: (a) => runRemoveDeadDupStore(a) },
   { name: 'inline-single-use-boolean-branch', fn: (a) => runInlineSingleUseBooleanBranch(a) },
   { name: 'inline-goto-return-island', fn: (a) => runInlineGotoReturnIsland(a) },
@@ -368,7 +369,7 @@ const passes = [
   { name: 'stack-receiver-tail-clone', fn: (a) => runStackReceiverTailClone(a, { targets: profiles.stackReceiverTailClone }) },
   ...(runtimeSafe ? [] : [{ name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) }]),
   { name: 'peephole2', fn: (a) => runPeepholeClean(a, runtimeSafe ? { removeRethrowHandlers: false } : {}) },
-  ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a) }]),
+  ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a, safeBytecode ? { requireIsolatedMergeTarget: true } : {}) }]),
   { name: 'qc-doloop-tail-clone', fn: (a) => runQcDoLoopTailClone(a, { targets: profiles.qcDoLoopTailClone }) },
   ...(runtimeSafe ? [] : [{ name: 'compile-conflict-renames', fn: (a) => runCompileConflictRenames(a, { fieldRenames, methodRenames }) }]),
   { name: 'inline-single-use-boolean-branch2', fn: (a) => runInlineSingleUseBooleanBranch(a) },
