@@ -876,7 +876,7 @@ yet marker-clean:
 
 | Stage | Marker lines | Classes with markers |
 |---|---:|---|
-| `--profile none --safe-bytecode` | 9 | `bh`, `dk`, `pm`, `pq`, `up` |
+| `--profile none --safe-bytecode` | 10 | `bh`, `pm`, `pq`, `up` |
 
 ### Maintenance Checks
 
