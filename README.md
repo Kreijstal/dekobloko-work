@@ -575,15 +575,20 @@ Steel Sentinels baseline:
 | Pipeline passthrough failures | 0 |
 | ASM `BasicVerifier` failures | 0 methods / 0 classes |
 | CFR Java files emitted | 347 |
-| CFR structure marker lines | 8 |
-| CFR classes with markers | 3 |
+| CFR structure marker lines | 5 |
+| CFR classes with markers | 2 |
 | CFR-source javac | 314/347 |
 
 Steel Sentinels marker classes:
 
 ```text
-ao hb nb
+hb nb
 ```
+
+The former `ao` marker was a protected-entry bridge: an unprotected
+`aload_0; goto join` duplicated the first load of a protected retry block.
+`peephole-clean` now rewrites that bridge to jump to the protected copy of the
+same load, so the stack shape is unchanged while CFR sees a single entry.
 
 The per-class javac failures are still source-shape/type-pollution work, not
 bytecode verifier failures. The most common categories at this baseline are
@@ -594,7 +599,7 @@ structure (`illegal start of expression`), and object/array type pollution.
 
 | Pass | Pattern it targets |
 |---|---|
-| `peephole-clean` | nop removal, single-use fall-through gotos, unreferenced labels, constructor-only `if body; goto exit; body:` inversion, and constructor-only unreachable dead-handler tail cleanup. |
+| `peephole-clean` | nop removal, single-use fall-through gotos, unreferenced labels, protected load-bridge coalescing, constructor-only `if body; goto exit; body:` inversion, and constructor-only unreachable dead-handler tail cleanup. |
 | `strip-rethrow-handlers --keep-handler-code` | Drops trivial catch-and-rethrow exception-table entries while retaining bare `athrow` sentinels. |
 | `multi-entry-normalize` | Clones loop-header blocks for each forward edge so loops have a single semantic entry. Has a forward-only join splitter for fallthrough-joined CFG diamonds. |
 | `coalesce-loop-load` | Folds `LOAD X; goto T2; T1: LOAD X; T2: <use X>` into `goto T1`. Cleans up the duplicate prefix that multi-entry normalization tends to leave behind. |
