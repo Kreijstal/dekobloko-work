@@ -20,12 +20,31 @@ stubs/src/                legacy JDK/browser dependency stubs
 tools/js5/                JS5 cache download and cache-warming helpers
 tools/music/              music cache extraction, JSON export, and Java renderer
 web/music-visualizer/     standalone browser visualizer and JS mixer port
-.work/                    generated caches, extracted data, compiled helpers, WAVs
+.work/                    ignored generated caches, extracted data, compiled
+                          helpers, traces, CFR output, and WAVs
 ```
 
 Anything under `.work/` is disposable generated state. If a helper performs real
 work and should survive a cleanup, it belongs under `tools/`, `scripts/`, or
 `web/`, not `.work/`.
+
+Suggested `.work/` organization:
+
+```text
+.work/games/<game>/gamepack.jar        downloaded gamepack jar
+.work/games/<game>/classes/            extracted original class files
+.work/games/<game>/js5-cache/          best/current downloaded JS5 cache
+.work/games/<game>/music/              generated music JSON, MIDI, and WAV data
+.work/games/<game>/deob-<purpose>/     transformed bytecode, CFR output, logs
+.work/games/<game>/compile-<purpose>/  javac/CFR compile-check output
+.work/games/<game>/launcher/           game-specific launcher build output
+```
+
+Do not create root-level `.work/*-probe`, `.work/*-check`,
+`.work/*-buildNN`, or `.work/*-final` directories. Keep the latest useful
+variant under the owning game directory and delete stale probes. Do not keep the
+only copy of source code, patches, or scripts in `.work/`; promote those to
+tracked repository paths.
 
 ## Requirements
 
@@ -64,7 +83,7 @@ host=mgg-server.alterorb.net
 port=43594
 servernum=8003
 lang=0
-gamecrc=from .work/upstream-alterorb-launcher/config.json
+gamecrc=from .work/games/dekobloko/upstream-alterorb-launcher/config.json
 build=per gamepack
 ```
 
@@ -87,20 +106,25 @@ Download one cache with the build table:
 python3 tools/js5/download-caches.py \
   --game pixelate \
   --builds tools/js5/js5-builds-validated.json \
-  --output .work/js5-caches
+  --output .work/games/pixelate/download
+rm -rf .work/games/pixelate/js5-cache
+mv .work/games/pixelate/download/pixelate .work/games/pixelate/js5-cache
+rmdir .work/games/pixelate/download
 ```
 
-For bulk metadata or payload mirroring:
+For bulk payload mirroring, run the same pattern per game so the normalized
+result remains `.work/games/<game>/js5-cache`. Do not leave downloader output
+as root-level `.work/js5-*` directories.
+
+For metadata-only discovery, use a game-owned scratch directory and delete it
+after extracting the data you need:
 
 ```bash
 python3 tools/js5/download-caches.py \
+  --game pixelate \
   --builds tools/js5/js5-builds-validated.json \
-  --output .work/js5-caches-metadata \
+  --output .work/games/pixelate/js5-metadata \
   --metadata-only
-
-python3 tools/js5/download-caches.py \
-  --builds tools/js5/js5-builds-validated.json \
-  --output .work/js5-caches
 ```
 
 ### JS5 Protocol
@@ -130,11 +154,11 @@ Known archive roles:
 
 | Game | Archives | Song class/path | Renderer output |
 |---|---|---|---|
-| Dekobloko | 8 synth samples, 9 packvorbis samples, 10 `ui` descriptors | `ui -> ia -> mi -> ei` | `.work/music/dekobloko/wav/archive10_tracks` |
-| Brickabrac | 7 `dr` samples, 8 `bk` Vorbis samples, 9 `pq` patches, 10 `vm` songs, 13 labels | `vm -> ie` | `.work/music/brickabrac/wav-native/archive10_tracks` |
-| Pixelate | 7/8 sound banks, 9 `sn` patches, 10 `ua` songs | `ua -> ti` | `.work/music/pixelate-build55/wav-native/archive10_tracks` |
-| TetraLink | 7/8 `wf` samples, 9 `ng` patches, 10 `ri` songs | `ri -> g/go/ng/fa` | `.work/music/tetralink-build17/wav/archive10_tracks` |
-| Virogrid | 7/8 sound banks, 9 `rc` patches, 10 `sc` songs | `sc -> i/rc/jg` | `.work/music/virogrid-build77/wav-native/archive10_tracks` |
+| Dekobloko | 8 synth samples, 9 packvorbis samples, 10 `ui` descriptors | `ui -> ia -> mi -> ei` | `.work/games/dekobloko/music/wav/archive10_tracks` |
+| Brickabrac | 7 `dr` samples, 8 `bk` Vorbis samples, 9 `pq` patches, 10 `vm` songs, 13 labels | `vm -> ie` | `.work/games/brickabrac/music/wav/archive10_tracks` |
+| Pixelate | 7/8 sound banks, 9 `sn` patches, 10 `ua` songs | `ua -> ti` | `.work/games/pixelate/music/wav-native/archive10_tracks` |
+| TetraLink | 7/8 `wf` samples, 9 `ng` patches, 10 `ri` songs | `ri -> g/go/ng/fa` | `.work/games/tetralink/music/wav/archive10_tracks` |
+| Virogrid | 7/8 sound banks, 9 `rc` patches, 10 `sc` songs | `sc -> i/rc/jg` | `.work/games/virogrid/music/wav-native/archive10_tracks` |
 
 Archive 10 names must come from JS5 file-name hashes or client load strings, not
 from split position. Dekobloko build 31/32, for example, maps sparse file IDs to
@@ -165,48 +189,48 @@ Dekobloko and Brickabrac use the Python extractor before Java rendering:
 
 ```bash
 python3 tools/music/extract-dekobloko-music.py \
-  .work/js5-caches/dekobloko \
-  .work/music/dekobloko \
+  .work/games/dekobloko/js5-cache \
+  .work/games/dekobloko/music \
   --game dekobloko
 
-javac -cp classes-original -d .work/music-tools \
+javac -cp classes-original -d .work/games/dekobloko/music-tools \
   tools/music/MusicSampleDecoder.java \
   tools/music/MusicUiJsonDumper.java \
   tools/music/MusicTrackRenderer.java \
   tools/music/MusicSampleBankExporter.java
 
-java -cp .work/music-tools:classes-original MusicUiJsonDumper .work/music/dekobloko
-java -cp .work/music-tools:classes-original MusicTrackRenderer .work/music/dekobloko
-java -cp .work/music-tools:classes-original MusicSampleBankExporter .work/music/dekobloko
+java -cp .work/games/dekobloko/music-tools:classes-original MusicUiJsonDumper .work/games/dekobloko/music
+java -cp .work/games/dekobloko/music-tools:classes-original MusicTrackRenderer .work/games/dekobloko/music
+java -cp .work/games/dekobloko/music-tools:classes-original MusicSampleBankExporter .work/games/dekobloko/music
 ```
 
 ```bash
 python3 tools/music/extract-dekobloko-music.py \
-  .work/js5-caches/brickabrac \
-  .work/music/brickabrac \
+  .work/games/brickabrac/js5-cache \
+  .work/games/brickabrac/music \
   --game brickabrac
 
-javac -cp .work/gamepack-classes/brickabrac -d .work/brickabrac-music-tools \
+javac -cp .work/games/brickabrac/classes -d .work/games/brickabrac/music-tools \
   tools/music/BrickabracMusicDumper.java \
   tools/music/BrickabracNativeMusicRenderer.java
 
-java -cp .work/brickabrac-music-tools:.work/gamepack-classes/brickabrac \
-  BrickabracMusicDumper .work/music/brickabrac
-java -cp .work/brickabrac-music-tools:.work/gamepack-classes/brickabrac \
-  BrickabracNativeMusicRenderer .work/music/brickabrac .work/js5-caches/brickabrac
+java -cp .work/games/brickabrac/music-tools:.work/games/brickabrac/classes \
+  BrickabracMusicDumper .work/games/brickabrac/music
+java -cp .work/games/brickabrac/music-tools:.work/games/brickabrac/classes \
+  BrickabracNativeMusicRenderer .work/games/brickabrac/music .work/games/brickabrac/js5-cache
 ```
 
 Pixelate renders directly from its build-55 JS5 cache through deobfuscated
 classes:
 
 ```bash
-javac -cp .work/deob-pixelate-profile/out -d .work/pixelate-music-tools \
+javac -cp .work/games/pixelate/deob-profile/out -d .work/games/pixelate/music-tools \
   tools/music/PixelateNativeMusicRenderer.java
 
-java -cp .work/pixelate-music-tools:.work/deob-pixelate-profile/out \
+java -cp .work/games/pixelate/music-tools:.work/games/pixelate/deob-profile/out \
   PixelateNativeMusicRenderer \
-  .work/music/pixelate-build55 \
-  .work/js5-caches-pixelate-build55/pixelate
+  .work/games/pixelate/music \
+  .work/games/pixelate/js5-cache
 ```
 
 Virogrid uses the TetraLink-style archive layout, but its working cache is
@@ -214,22 +238,22 @@ build 77:
 
 ```bash
 python3 tools/music/extract-dekobloko-music.py \
-  .work/js5-caches-virogrid-build77/virogrid \
-  .work/music/virogrid-build77 \
+  .work/games/virogrid/js5-cache \
+  .work/games/virogrid/music \
   --game virogrid
 
-javac -cp .work/deob-virogrid-profile/out -d .work/virogrid-music-tools \
+javac -cp .work/games/virogrid/deob-profile/out -d .work/games/virogrid/music-tools \
   tools/music/VirogridNativeMusicRenderer.java
 
-java -cp .work/virogrid-music-tools:.work/deob-virogrid-profile/out \
+java -cp .work/games/virogrid/music-tools:.work/games/virogrid/deob-profile/out \
   VirogridNativeMusicRenderer \
-  .work/music/virogrid-build77 \
-  .work/js5-caches-virogrid-build77/virogrid
+  .work/games/virogrid/music \
+  .work/games/virogrid/js5-cache
 ```
 
 Expected Virogrid native render output is four repaired MIDI files under
-`.work/music/virogrid-build77/midi/archive10_tracks` and four WAVs under
-`.work/music/virogrid-build77/wav-native/archive10_tracks`:
+`.work/games/virogrid/music/midi/archive10_tracks` and four WAVs under
+`.work/games/virogrid/music/wav-native/archive10_tracks`:
 
 | Track | Approx rendered length |
 |---|---:|
@@ -249,23 +273,23 @@ archive index constructor `sj(byte[], crc, whirlpool)` expects the real CRC
 TetraLink has the richest export path:
 
 ```bash
-javac -cp .work/gamepack-classes/tetralink -d .work/tetralink-music-tools \
+javac -cp .work/games/tetralink/classes -d .work/games/tetralink/music-tools \
   tools/music/TetraLinkMusicPreprocessor.java \
   tools/music/TetraLinkSfzExporter.java \
   tools/music/TetraLinkSf2Exporter.java \
   tools/music/TetraLinkNativeBankExporter.java \
   tools/music/TetraLinkFunOrbMidiRenderer.java
 
-java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
-  TetraLinkMusicPreprocessor .work/music/tetralink-build17
-java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
-  TetraLinkSfzExporter .work/music/tetralink-build17
-java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
-  TetraLinkSf2Exporter .work/music/tetralink-build17
-java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
-  TetraLinkNativeBankExporter .work/music/tetralink-build17
-java -cp .work/tetralink-music-tools:.work/gamepack-classes/tetralink \
-  TetraLinkFunOrbMidiRenderer .work/music/tetralink-build17
+java -cp .work/games/tetralink/music-tools:.work/games/tetralink/classes \
+  TetraLinkMusicPreprocessor .work/games/tetralink/music
+java -cp .work/games/tetralink/music-tools:.work/games/tetralink/classes \
+  TetraLinkSfzExporter .work/games/tetralink/music
+java -cp .work/games/tetralink/music-tools:.work/games/tetralink/classes \
+  TetraLinkSf2Exporter .work/games/tetralink/music
+java -cp .work/games/tetralink/music-tools:.work/games/tetralink/classes \
+  TetraLinkNativeBankExporter .work/games/tetralink/music
+java -cp .work/games/tetralink/music-tools:.work/games/tetralink/classes \
+  TetraLinkFunOrbMidiRenderer .work/games/tetralink/music
 ```
 
 ### Editable Formats
@@ -277,8 +301,8 @@ archive-9 patch and the percussion patch at bank 128 program 0. Both lose some
 native mixer behavior.
 
 The native LV2 route is closer to the client: `TetraLinkNativeBankExporter`
-writes `.work/music/tetralink-build17/native/funorb_tetralink.fobank`, and
-`tools/lv2/build-funorb-native-lv2.sh` builds `.work/lv2/funorb-native.lv2`.
+writes `.work/games/tetralink/music/native/funorb_tetralink.fobank`, and
+`tools/lv2/build-funorb-native-lv2.sh` builds `.work/games/dekobloko/lv2/funorb-native.lv2`.
 That plugin mixes decoded FunOrb samples directly in its `.so`, with
 interpolated playback, loop direction, volume/expression/pan, sustain, pitch
 bend, percussion exclusivity, release ramps, envelope/modulation records, Q8
@@ -311,20 +335,20 @@ When porting mixer code, use the current deobfuscated mixer slice, not stale raw
 CFR source:
 
 ```bash
-mkdir -p .work/mixer-pipeline/in .work/mixer-pipeline/out .work/mixer-pipeline/tmp
-cp classes-original/{ei,ia,mi,ui,ud,va,bi,en}.class .work/mixer-pipeline/in/
+mkdir -p .work/games/dekobloko/mixer-pipeline/in .work/games/dekobloko/mixer-pipeline/out .work/games/dekobloko/mixer-pipeline/tmp
+cp classes-original/{ei,ia,mi,ui,ud,va,bi,en}.class .work/games/dekobloko/mixer-pipeline/in/
 
-TMPDIR=$PWD/.work/mixer-pipeline/tmp \
+TMPDIR=$PWD/.work/games/dekobloko/mixer-pipeline/tmp \
 JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
 node scripts/pipeline/bulk-pipeline.js \
-  .work/mixer-pipeline/in \
-  .work/mixer-pipeline/out
+  .work/games/dekobloko/mixer-pipeline/in \
+  .work/games/dekobloko/mixer-pipeline/out
 
 java -jar lib/cfr.jar \
-  --outputdir .work/mixer-pipeline/cfr \
-  .work/mixer-pipeline/out/ei.class \
-  .work/mixer-pipeline/out/ia.class \
-  .work/mixer-pipeline/out/mi.class
+  --outputdir .work/games/dekobloko/mixer-pipeline/cfr \
+  .work/games/dekobloko/mixer-pipeline/out/ei.class \
+  .work/games/dekobloko/mixer-pipeline/out/ia.class \
+  .work/games/dekobloko/mixer-pipeline/out/mi.class
 ```
 
 With the current transforms, `ei.b(int[], int, int)` decompiles cleanly. The
@@ -337,7 +361,7 @@ failure stub.
 ./scripts/launcher/build.sh
 ```
 
-This builds `.work/launcher/dekobloko-launcher.jar` from
+This builds `.work/games/dekobloko/launcher/dekobloko-launcher.jar` from
 `apps/launcher/src/`.
 
 To build dependency stubs for decompilation/compiler linking:
@@ -372,19 +396,19 @@ This requires `DISPLAY` or `WAYLAND_DISPLAY`.
 Record real AWT interaction:
 
 ```bash
-./scripts/launcher/run-record-awt.sh .work/traces/interaction.awtlog
+./scripts/launcher/run-record-awt.sh .work/games/dekobloko/traces/interaction.awtlog
 ```
 
 Replay interaction through fake AWT:
 
 ```bash
-./scripts/launcher/run-replay-awt.sh .work/traces/interaction.awtlog
+./scripts/launcher/run-replay-awt.sh .work/games/dekobloko/traces/interaction.awtlog
 ```
 
 Replay accepts launcher args, for example:
 
 ```bash
-./scripts/launcher/run-replay-awt.sh .work/traces/interaction.awtlog --replay-speed 4
+./scripts/launcher/run-replay-awt.sh .work/games/dekobloko/traces/interaction.awtlog --replay-speed 4
 ```
 
 ## Launcher Options
@@ -477,8 +501,8 @@ Virogrid uses the generic runtime-safe pipeline, without a dedicated profile:
 ```bash
 JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
 node scripts/pipeline/bulk-pipeline.js \
-  .work/gamepack-classes/virogrid \
-  .work/deob-virogrid-profile/out \
+  .work/games/virogrid/classes \
+  .work/games/virogrid/deob-profile/out \
   --profile none \
   --runtime-safe
 ```
@@ -526,20 +550,20 @@ fallthrough predecessors.
 Reproduce the current Steel Sentinels baseline:
 
 ```bash
-rm -rf .work/steelsentinels-deob-safe
+rm -rf .work/games/steelsentinels/deob-safe
 mkdir -p \
-  .work/steelsentinels-deob-safe/classes \
-  .work/steelsentinels-deob-safe/out \
-  .work/steelsentinels-deob-safe/cfr \
-  .work/steelsentinels-deob-safe/logs
+  .work/games/steelsentinels/deob-safe/classes \
+  .work/games/steelsentinels/deob-safe/out \
+  .work/games/steelsentinels/deob-safe/cfr \
+  .work/games/steelsentinels/deob-safe/logs
 
-(cd .work/steelsentinels-deob-safe/classes && \
+(cd .work/games/steelsentinels/deob-safe/classes && \
   jar xf ../../gamepacks/steelsentinels.jar)
 
 JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
 node scripts/pipeline/bulk-pipeline.js \
-  .work/steelsentinels-deob-safe/classes \
-  .work/steelsentinels-deob-safe/out \
+  .work/games/steelsentinels/deob-safe/classes \
+  .work/games/steelsentinels/deob-safe/out \
   --profile none \
   --safe-bytecode
 ```
@@ -548,23 +572,23 @@ Verifier check:
 
 ```bash
 javac -cp /home/kreijstal/git/java-tools/lib/asm-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-tree-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-analysis-9.9.1.jar \
-  -d .work/verify-tools \
+  -d .work/games/steelsentinels/verify-tools \
   scripts/Verify.java
 
-java -cp .work/verify-tools:/home/kreijstal/git/java-tools/lib/asm-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-tree-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-analysis-9.9.1.jar \
-  Verify .work/steelsentinels-deob-safe/out/*.class
+java -cp .work/games/steelsentinels/verify-tools:/home/kreijstal/git/java-tools/lib/asm-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-tree-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-analysis-9.9.1.jar \
+  Verify .work/games/steelsentinels/deob-safe/out/*.class
 ```
 
 CFR marker scan:
 
 ```bash
 java -jar lib/cfr.jar \
-  .work/steelsentinels-deob-safe/out/*.class \
-  --outputdir .work/steelsentinels-deob-safe/cfr
+  .work/games/steelsentinels/deob-safe/out/*.class \
+  --outputdir .work/games/steelsentinels/deob-safe/cfr
 
 rg -n '\*\* GOTO|Unable to fully structure code|lbl-1000' \
-  .work/steelsentinels-deob-safe/cfr \
-  > .work/steelsentinels-deob-safe/logs/cfr-markers.txt
+  .work/games/steelsentinels/deob-safe/cfr \
+  > .work/games/steelsentinels/deob-safe/logs/cfr-markers.txt
 ```
 
 Steel Sentinels baseline:
@@ -698,13 +722,13 @@ These commands run the real Dekobloko bulk pipeline. ASM is used only by
 One explicit deobfuscation run:
 
 ```bash
-rm -rf .work/roundtrip
-mkdir -p .work/roundtrip/out .work/roundtrip/cfr
+rm -rf .work/games/dekobloko/roundtrip
+mkdir -p .work/games/dekobloko/roundtrip/out .work/games/dekobloko/roundtrip/cfr
 
 JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
 node scripts/pipeline/bulk-pipeline.js \
   classes-original \
-  .work/roundtrip/out \
+  .work/games/dekobloko/roundtrip/out \
   --profile dekobloko
 ```
 
@@ -712,11 +736,11 @@ Decompile that output with CFR and scan for structure markers:
 
 ```bash
 java -jar lib/cfr.jar \
-  .work/roundtrip/out/*.class \
-  --outputdir .work/roundtrip/cfr
+  .work/games/dekobloko/roundtrip/out/*.class \
+  --outputdir .work/games/dekobloko/roundtrip/cfr
 
 rg -n '\*\* GOTO|Unable to fully structure code|lbl-1000' \
-  .work/roundtrip/cfr
+  .work/games/dekobloko/roundtrip/cfr
 ```
 
 An empty `rg` result is expected.
@@ -729,7 +753,7 @@ javac -cp /home/kreijstal/git/java-tools/lib/asm-9.9.1.jar:/home/kreijstal/git/j
   scripts/Verify.java
 
 java -cp /home/kreijstal/git/java-tools/lib/asm-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-tree-9.9.1.jar:/home/kreijstal/git/java-tools/lib/asm-analysis-9.9.1.jar:scripts \
-  Verify .work/roundtrip/out/*.class
+  Verify .work/games/dekobloko/roundtrip/out/*.class
 ```
 
 Expected verifier summary:
@@ -780,8 +804,8 @@ To inspect a specific transformed class using the java-tools disassembler:
 
 ```bash
 node /home/kreijstal/git/java-tools/scripts/jvm-cli.js disassemble \
-  .work/roundtrip/out/client.class \
-  --out .work/roundtrip/client.j
+  .work/games/dekobloko/roundtrip/out/client.class \
+  --out .work/games/dekobloko/roundtrip/client.j
 ```
 
 That disassembly path is preferred for pipeline debugging because it uses the
@@ -798,7 +822,7 @@ records applet parameters, cache redirects, fake graphics/toolkit calls, frame
 peer lifecycle, and applet lifecycle, then exits with:
 
 ```text
-Trace OK: .../.work/traces/headless-init.log
+Trace OK: .../.work/games/dekobloko/traces/headless-init.log
 ```
 
 This is not part of the CFR oracle. It is a separate runtime boundary check
@@ -876,7 +900,17 @@ yet marker-clean:
 
 | Stage | Marker lines | Classes with markers |
 |---|---:|---|
-| `--profile none --safe-bytecode` | 10 | `bh`, `pm`, `pq`, `up` |
+| `--profile none --safe-bytecode` | 8 | `bh`, `pm`, `up` |
+
+The former `pq` marker was a conditional forward jump into a loop preheader
+that also had a fallthrough clamp entry. The bytecode rewrite that CFR accepts
+clones the loop for the forward conditional path, leaves a guard `goto` so the
+clamp fallthrough still reaches the original loop, and retargets only the
+conditional branch to the clone. The java-tools implementation is shape-based:
+it requires a forward conditional loop entry, a fallthrough predecessor at the
+loop label, a skip-to-exit branch in the fallthrough region, stack-neutral
+region analysis, no protected exception labels, and no unrelated external
+branch entries into the cloned loop.
 
 ### Maintenance Checks
 
@@ -933,10 +967,10 @@ timeout 20 java -Djava.awt.headless=false -jar dekobloko-launcher.jar \
   --awt fake \
   --headless-init \
   --sleep-ms 500 \
-  --trace-file .work/traces/headless.log \
+  --trace-file .work/games/dekobloko/traces/headless.log \
   --gamepack /path/to/patched.jar
 
-node apps/launcher/assert-trace.js .work/traces/headless.log
+node apps/launcher/assert-trace.js .work/games/dekobloko/traces/headless.log
 ```
 
 The quick class-only experiment jars can reach `error_game_crash` under this
