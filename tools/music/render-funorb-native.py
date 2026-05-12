@@ -596,8 +596,8 @@ public final class GeneratedFunOrbMusicRenderer {{
     public static void main(String[] args) throws Exception {{
         Path outRoot = Path.of(args.length > 0 ? args[0] : ".work/music");
         Path cache = args.length > 1 ? Path.of(args[1]) : Path.of(".work/js5-cache");
-        Files.createDirectories(outRoot.resolve("midi/archive10_tracks"));
-        Files.createDirectories(outRoot.resolve("wav-native/archive10_tracks"));
+        Files.createDirectories(outRoot.resolve("midi"));
+        Files.createDirectories(outRoot.resolve("wav"));
 
         {profile["init"]}
 
@@ -613,7 +613,7 @@ public final class GeneratedFunOrbMusicRenderer {{
                 throw new IllegalStateException("missing music track " + name);
             }}
 
-            Path midi = outRoot.resolve("midi/archive10_tracks/" + safeName(name) + ".mid");
+            Path midi = outRoot.resolve("midi/" + safeName(name) + ".mid");
             Files.write(midi, repairMidi({profile["midi_expr"]}));
             MidiSystem.getSequence(midi.toFile());
 
@@ -624,7 +624,7 @@ public final class GeneratedFunOrbMusicRenderer {{
             {profile["start"]}
 
             byte[] pcm = renderPcm(player);
-            Path wav = outRoot.resolve("wav-native/archive10_tracks/" + safeName(name) + ".wav");
+            Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
             writeMonoWav(wav, pcm);
             System.out.printf("%s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * CHANNELS * 2));
         }}

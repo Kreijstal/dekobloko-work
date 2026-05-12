@@ -27,8 +27,8 @@ public final class TetraLinkFunOrbMidiRenderer {
 
     public static void main(String[] args) throws Exception {
         Path root = Path.of(args.length > 0 ? args[0] : ".work/music/tetralink-build17");
-        Path midiDir = root.resolve("midi/archive10_tracks");
-        Path outDir = root.resolve("wav/funorb-midi-rendered");
+        Path midiDir = root.resolve("midi");
+        Path outDir = root.resolve("wav-funorb");
         Files.createDirectories(outDir);
 
         nk.k = SAMPLE_RATE;

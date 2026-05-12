@@ -12,7 +12,7 @@ import javax.sound.midi.Track;
 
 public final class MidiUsageDumper {
     public static void main(String[] args) throws Exception {
-        Path dir = Path.of(args.length > 0 ? args[0] : ".work/music/tetralink-build17/midi/archive10_tracks");
+        Path dir = Path.of(args.length > 0 ? args[0] : ".work/games/tetralink/music/midi");
         try (var stream = Files.list(dir)) {
             List<Path> files = stream
                 .filter(path -> path.getFileName().toString().endsWith(".mid"))

@@ -11,7 +11,7 @@ public final class MusicUiJsonDumper {
     public static void main(String[] args) throws Exception {
         Path root = Path.of(args.length > 0 ? args[0] : ".work/music/dekobloko");
         Path inDir = root.resolve("split/archive10_group000");
-        Path outDir = root.resolve("json/archive10_ui");
+        Path outDir = root.resolve("json/ui");
         Files.createDirectories(outDir);
         for (Path file : sortedBins(inDir)) {
             ui descriptor = new ui(new wl(Files.readAllBytes(file)), null);

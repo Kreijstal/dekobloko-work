@@ -19,7 +19,7 @@ public final class HostileSpawnAudioDumper {
         Path gameRoot = Path.of(args.length > 0 ? args[0] : ".work/games/hostilespawn_vengeance");
         Path outRoot = args.length > 1 ? Path.of(args[1]) : gameRoot.resolve("music");
         Path cache = args.length > 2 ? Path.of(args[2]) : gameRoot.resolve("js5-cache");
-        Files.createDirectories(outRoot.resolve("wav-source/named"));
+        Files.createDirectories(outRoot.resolve("samples"));
 
         gb synthArchive = archive(cache, 1);
         gb vorbisArchive = archive(cache, 2);
@@ -57,7 +57,7 @@ public final class HostileSpawnAudioDumper {
                     sample = clip.c();
                 }
 
-                Path wav = outRoot.resolve("wav-source/named/" + safeName(group + "_" + name) + ".wav");
+                Path wav = outRoot.resolve("samples/" + safeName(group + "_" + name) + ".wav");
                 writeSampleWav(wav, sample);
                 written++;
                 System.out.printf("%s %s %.3fs%n", loader, wav.getFileName(), sample.k.length / (double)sample.j);

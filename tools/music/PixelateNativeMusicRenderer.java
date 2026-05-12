@@ -38,8 +38,8 @@ public final class PixelateNativeMusicRenderer {
         Path cache = args.length > 1
             ? Path.of(args[1])
             : Path.of(".work/js5-caches-pixelate-build55/pixelate");
-        Files.createDirectories(outRoot.resolve("midi/archive10_tracks"));
-        Files.createDirectories(outRoot.resolve("wav-native/archive10_tracks"));
+        Files.createDirectories(outRoot.resolve("midi"));
+        Files.createDirectories(outRoot.resolve("wav"));
 
         mm.h = SAMPLE_RATE;
         mm.o = false;
@@ -56,7 +56,7 @@ public final class PixelateNativeMusicRenderer {
                 throw new IllegalStateException("missing Pixelate music track " + name);
             }
 
-            Files.write(outRoot.resolve("midi/archive10_tracks/" + name + ".mid"), repairMidi(track.k));
+            Files.write(outRoot.resolve("midi/" + name + ".mid"), repairMidi(track.k));
 
             ti player = new ti();
             if (!player.a(track, samples, archive9, 109, 1 << 28)) {
@@ -65,7 +65,7 @@ public final class PixelateNativeMusicRenderer {
             player.a(track, -39, false);
 
             byte[] pcm = renderPcm(player);
-            Path wav = outRoot.resolve("wav-native/archive10_tracks/" + name + ".wav");
+            Path wav = outRoot.resolve("wav/" + name + ".wav");
             writeMonoWav(wav, pcm);
             System.out.printf("%s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * 2));
         }

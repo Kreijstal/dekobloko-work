@@ -106,7 +106,31 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `zombiedawn` | 41 | 14 tracks extracted/rendered. Build 12 handshakes but does not contain the single-player music names in archive 7. |
 | `zombiedawnmulti` | 72 | 11 tracks extracted/rendered. Build 14 handshakes but does not contain the multiplayer music names in archive 7. |
 | `minerdisturbance` | 5 | 7 native music tracks and 62 `jd` effects extracted/rendered. Build 13 handshakes but exposes a different archive layout. |
+| `trackcontroller` | 12 | 4 native music tracks plus 12 named SFX extracted/rendered. |
+| `dungeonassault` | 32 | 9 `vh` MIDI/WAV tracks plus 16 named PCM samples extracted/rendered. |
+| `starcannon` | 10 | 20 SFX plus 14 voice WAVs extracted/rendered; no music renderer yet (no native-MIDI loader found in CFR). |
+| `bouncedown` | 11 | 13 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
+| `crazycrystals` | 14 | 56 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
+| `escapevector` | 12 | 52 decoded sample WAVs extracted. No music tracks (CFR failed on this gamepack). |
+| `fleacircus` | 12 | 22 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
+| `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
+| `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |
+| `arcanistsmulti` | 15 | Profile drafted but `samples/` is empty; load-string scrape did not match the dumper regex on the current CFR output. |
+| `aceofskies` | 13 | One `aos_main_title.mid` from a draft profile; auto-discovery latched onto font names (`font`, `bigfont`, `titlefont`) so WAVs are not yet rendered. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
+
+The remaining AlterOrb games — `36cardtrick`, `armiesofgielinor`,
+`bachelorfridge`, `confined`, `drphlogistonsavestheearth`, `geoblox`,
+`holdtheline`, `kickabout`, `lexicominos`, `monkeypuzzle2`, `pool`,
+`shatteredplans`, `solknight`, `stellarshard`, `sumoblitz`, `terraphoenix`,
+`tombracer`, `torchallenge`, `torquing`, `transmogrify`, `voidhunters`, and
+`wizardrun` — have no music output yet. `tools/music/profile-funorb-music.py`
+reports `discover=ok` for several of them (`confined`, `geoblox`, `kickabout`,
+`lexicominos`, `pool`, `shatteredplans`, `tombracer`, `transmogrify`,
+`voidhunters`), but the candidate names are UI/font assets such as `arezzo14`,
+`chatfont`, or `smallfont` rather than music tracks, so the validation step
+rejects the profile (see `music-profile-validation-summary.json`). The rest
+either have no native-MIDI loader in CFR Java or fail CFR entirely.
 
 Download one cache with the build table:
 
@@ -300,9 +324,9 @@ java -cp .work/games/minerdisturbance/classes:.work/games/minerdisturbance/music
   .work/games/minerdisturbance/js5-cache-audio/minerdisturbance
 ```
 
-Expected output is 76 files: 7 repaired `.mid` files, 7 stereo native-rendered
-music WAVs under `wav-native/named`, and 62 mono `jd` effect WAVs under
-`wav-effects/named`.
+Expected output is 76 files: 7 repaired `.mid` files under `midi/`, 7 stereo
+native-rendered music WAVs under `wav/`, and 62 mono `jd` effect WAVs under
+`samples/effects/`.
 
 ### JS5 Protocol
 
@@ -327,20 +351,40 @@ format: sample banks plus instrument patches plus song descriptors, mixed to PCM
 by the client at runtime. Rendered WAVs are therefore generated artifacts; keep
 the JS5/music-format data and regenerate WAVs when needed.
 
+Music output layout per game (`.work/games/<game>/music/`):
+
+```text
+midi/<name>.mid          repaired MIDI per rendered music track
+wav/<name>.wav           rendered music tracks (the headline audio)
+samples/<name>.wav       decoded PCM sample bank assets
+samples/effects/<n>.wav  decoded PCM sound effects (when distinguished)
+samples/voices/<n>.wav   decoded PCM voice lines (when distinguished)
+json/                    extractor JSON (Dekobloko ui descriptors, sample banks)
+raw/                     raw JS5 container/payload bytes per archive group
+split/                   per-archive split blobs used by the renderers
+sfz/   sf2/   native/    optional interchange exports (TetraLink)
+wav-funorb/              alternate FunOrb-MIDI renderer output (TetraLink)
+```
+
+The audio archive sometimes is not archive 10; e.g. Dungeon Assault renders
+from archive 16 and Zombie Dawn from archive 7. The filename inside `midi/` and
+`wav/` is the named track from the JS5 hash or client load string, so the
+source archive does not need to appear in the path.
+
 Known archive roles:
 
-| Game | Archives | Song class/path | Renderer output |
-|---|---|---|---|
-| Dekobloko | 8 synth samples, 9 packvorbis samples, 10 `ui` descriptors | `ui -> ia -> mi -> ei` | `.work/games/dekobloko/music/wav/archive10_tracks` |
-| Brickabrac | 7 `dr` samples, 8 `bk` Vorbis samples, 9 `pq` patches, 10 `vm` songs, 13 labels | `vm -> ie` | `.work/games/brickabrac/music/wav/archive10_tracks` |
-| Pixelate | 7/8 sound banks, 9 `sn` patches, 10 `ua` songs | `ua -> ti` | `.work/games/pixelate/music/wav-native/archive10_tracks` |
-| TetraLink | 7/8 `wf` samples, 9 `ng` patches, 10 `ri` songs | `ri -> g/go/ng/fa` | `.work/games/tetralink/music/wav/archive10_tracks` |
-| Virogrid | 7/8 sound banks, 9 `rc` patches, 10 `sc` songs | `sc -> i/rc/jg` | `.work/games/virogrid/music/wav-native/archive10_tracks` |
-| Steel Sentinels | 7/8 sound banks, 9 `ca` patches, 10 `tg` songs | `tg -> ic/ca/ub` | `.work/games/steelsentinels/music/wav-native/archive10_tracks` |
-| Orb Defence | 6/7 sound banks, 8 `ik` patches, 9 `fj` songs | `fj -> lj/ik/vd` | `.work/games/orbdefence/music/wav-native/archive10_tracks` |
-| Zombie Dawn | 4/5 sound banks, 6 `dj` patches, 7 `wj` songs | `wj -> rj/dj/ka` | `.work/games/zombiedawn/music/wav-native/archive10_tracks` |
-| Zombie Dawn Multi | 4/5 sound banks, 6 `ul` patches, 7 `ug` songs | `ug -> gd/ul/me` | `.work/games/zombiedawnmulti/music/wav-native/archive10_tracks` |
-| Dungeon Assault | 13/14 `va` samples, 15 `kk` patches, 16 `vh` songs | `vh -> ug/tc`, samples via `lc -> va` | `.work/games/dungeonassault/music/wav-native/archive16_tracks` |
+| Game | Archives | Song class/path |
+|---|---|---|
+| Dekobloko | 8 synth samples, 9 packvorbis samples, 10 `ui` descriptors | `ui -> ia -> mi -> ei` |
+| Brickabrac | 7 `dr` samples, 8 `bk` Vorbis samples, 9 `pq` patches, 10 `vm` songs, 13 labels | `vm -> ie` |
+| Pixelate | 7/8 sound banks, 9 `sn` patches, 10 `ua` songs | `ua -> ti` |
+| TetraLink | 7/8 `wf` samples, 9 `ng` patches, 10 `ri` songs | `ri -> g/go/ng/fa` |
+| Virogrid | 7/8 sound banks, 9 `rc` patches, 10 `sc` songs | `sc -> i/rc/jg` |
+| Steel Sentinels | 7/8 sound banks, 9 `ca` patches, 10 `tg` songs | `tg -> ic/ca/ub` |
+| Orb Defence | 6/7 sound banks, 8 `ik` patches, 9 `fj` songs | `fj -> lj/ik/vd` |
+| Zombie Dawn | 4/5 sound banks, 6 `dj` patches, 7 `wj` songs | `wj -> rj/dj/ka` |
+| Zombie Dawn Multi | 4/5 sound banks, 6 `ul` patches, 7 `ug` songs | `ug -> gd/ul/me` |
+| Dungeon Assault | 13/14 `va` samples, 15 `kk` patches, 16 `vh` songs | `vh -> ug/tc`, samples via `lc -> va` |
 
 Archive 10 names must come from JS5 file-name hashes or client load strings, not
 from split position. Dekobloko build 31/32, for example, maps sparse file IDs to
@@ -602,7 +646,7 @@ public final class ValidateMidi {
 EOF
 javac -d .work/games/pixelate/music-tools .work/games/pixelate/music-tools/ValidateMidi.java
 java -cp .work/games/pixelate/music-tools ValidateMidi \
-  .work/games/pixelate/music/midi/archive10_tracks/*.mid
+  .work/games/pixelate/music/midi/*.mid
 ```
 
 Virogrid uses the TetraLink-style archive layout, but its working cache is
@@ -624,8 +668,8 @@ java -cp .work/games/virogrid/music-tools:.work/games/virogrid/deob-profile/out 
 ```
 
 Expected Virogrid native render output is four repaired MIDI files under
-`.work/games/virogrid/music/midi/archive10_tracks` and four WAVs under
-`.work/games/virogrid/music/wav-native/archive10_tracks`:
+`.work/games/virogrid/music/midi/` and four WAVs under
+`.work/games/virogrid/music/wav/`:
 
 | Track | Approx rendered length |
 |---|---:|

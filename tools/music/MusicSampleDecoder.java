@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 public final class MusicSampleDecoder {
     public static void main(String[] args) throws Exception {
         Path root = Path.of(args.length > 0 ? args[0] : ".work/music/dekobloko");
-        Path wavRoot = root.resolve("wav");
-        Files.createDirectories(wavRoot.resolve("archive08_synth"));
-        Files.createDirectories(wavRoot.resolve("archive09_packvorbis"));
+        Path samplesRoot = root.resolve("samples");
+        Files.createDirectories(samplesRoot.resolve("synth"));
+        Files.createDirectories(samplesRoot.resolve("packvorbis"));
 
-        decodeSynth(root.resolve("split/archive08_group000"), wavRoot.resolve("archive08_synth"));
-        decodeVorbis(root.resolve("split/archive09_group000"), wavRoot.resolve("archive09_packvorbis"));
+        decodeSynth(root.resolve("split/archive08_group000"), samplesRoot.resolve("synth"));
+        decodeVorbis(root.resolve("split/archive09_group000"), samplesRoot.resolve("packvorbis"));
     }
 
     private static void decodeSynth(Path inDir, Path outDir) throws Exception {

@@ -74,8 +74,8 @@ public final class StarCannonAudioDumper {
         Path cache = args.length > 1
             ? Path.of(args[1])
             : Path.of(".work/games/starcannon/js5-cache");
-        Files.createDirectories(outRoot.resolve("wav-effects/named"));
-        Files.createDirectories(outRoot.resolve("wav-voices/named"));
+        Files.createDirectories(outRoot.resolve("samples/effects"));
+        Files.createDirectories(outRoot.resolve("samples/voices"));
 
         ue effects = archive(cache, 2);
         ue voices = archive(cache, 2);
@@ -88,7 +88,7 @@ public final class StarCannonAudioDumper {
                 continue;
             }
             ud sample = effect.a();
-            Path wav = outRoot.resolve("wav-effects/named/" + safeName(name) + ".wav");
+            Path wav = outRoot.resolve("samples/effects/" + safeName(name) + ".wav");
             writeSampleWav(wav, sample);
             System.out.printf("effect %s %.3fs%n", wav.getFileName(), sample.i.length / (double)sample.j);
         }
@@ -108,7 +108,7 @@ public final class StarCannonAudioDumper {
                 continue;
             }
             ud sample = voice.c();
-            Path wav = outRoot.resolve("wav-voices/named/" + safeName(name) + ".wav");
+            Path wav = outRoot.resolve("samples/voices/" + safeName(name) + ".wav");
             writeSampleWav(wav, sample);
             System.out.printf("voice %s %.3fs%n", wav.getFileName(), sample.i.length / (double)sample.j);
         }

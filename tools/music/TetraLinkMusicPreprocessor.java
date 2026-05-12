@@ -21,15 +21,16 @@ public final class TetraLinkMusicPreprocessor {
 
     public static void main(String[] args) throws Exception {
         Path root = Path.of(args.length > 0 ? args[0] : ".work/music/tetralink-build17");
-        Path wavRoot = root.resolve("wav");
-        Files.createDirectories(wavRoot.resolve("archive07_synth"));
-        Files.createDirectories(wavRoot.resolve("archive08_packvorbis"));
-        Files.createDirectories(root.resolve("midi/archive10_tracks"));
+        Path samplesRoot = root.resolve("samples");
+        Files.createDirectories(samplesRoot.resolve("synth"));
+        Files.createDirectories(samplesRoot.resolve("packvorbis"));
+        Files.createDirectories(root.resolve("midi"));
+        Files.createDirectories(root.resolve("wav"));
 
-        decodeSynth(root.resolve("split/archive07"), wavRoot.resolve("archive07_synth"));
-        decodeVorbis(root.resolve("split/archive08"), wavRoot.resolve("archive08_packvorbis"));
-        dumpMidi(root.resolve("split/archive10"), root.resolve("midi/archive10_tracks"));
-        renderNativeTracks(root, wavRoot.resolve("archive10_tracks"));
+        decodeSynth(root.resolve("split/archive07"), samplesRoot.resolve("synth"));
+        decodeVorbis(root.resolve("split/archive08"), samplesRoot.resolve("packvorbis"));
+        dumpMidi(root.resolve("split/archive10"), root.resolve("midi"));
+        renderNativeTracks(root, root.resolve("wav"));
     }
 
     private static void decodeSynth(Path inDir, Path outDir) throws Exception {

@@ -19,7 +19,7 @@ public final class ArcanistsMultiSourceAudioDumper {
         Path outRoot = args.length > 1 ? Path.of(args[1]) : gameRoot.resolve("music");
         Path cache = args.length > 2 ? Path.of(args[2]) : gameRoot.resolve("js5-cache");
         Path source = gameRoot.resolve("cfr/ArcanistsMulti.java");
-        Files.createDirectories(outRoot.resolve("wav-source/named"));
+        Files.createDirectories(outRoot.resolve("samples"));
 
         eg vorbisArchive = archive(cache, 10);
         eg synthArchive = archive(cache, 12);
@@ -51,7 +51,7 @@ public final class ArcanistsMultiSourceAudioDumper {
                 }
                 sample = clip.a();
             }
-            Path wav = outRoot.resolve("wav-source/named/" + safeName(group + "_" + name) + ".wav");
+            Path wav = outRoot.resolve("samples/" + safeName(group + "_" + name) + ".wav");
             writeSampleWav(wav, sample);
             written++;
             System.out.printf("%s %s %.3fs%n", loader, wav.getFileName(), sample.i.length / (double)sample.l);

@@ -17,7 +17,7 @@ public final class FleaCircusAudioDumper {
         Path gameRoot = Path.of(args.length > 0 ? args[0] : ".work/games/fleacircus");
         Path outRoot = args.length > 1 ? Path.of(args[1]) : gameRoot.resolve("music");
         Path cache = args.length > 2 ? Path.of(args[2]) : gameRoot.resolve("js5-cache");
-        Files.createDirectories(outRoot.resolve("wav-source/named"));
+        Files.createDirectories(outRoot.resolve("samples"));
 
         rh archive2 = archive(cache, 2);
         Set<String> seen = new LinkedHashSet<>();
@@ -37,7 +37,7 @@ public final class FleaCircusAudioDumper {
                     continue;
                 }
                 sf sample = clip.b();
-                Path wav = outRoot.resolve("wav-source/named/" + safeName(group + "_" + name) + ".wav");
+                Path wav = outRoot.resolve("samples/" + safeName(group + "_" + name) + ".wav");
                 writeSampleWav(wav, sample);
                 written++;
                 System.out.printf("qf %s %.3fs%n", wav.getFileName(), sample.l.length / (double)sample.k);

@@ -92,9 +92,9 @@ public final class MinerDisturbanceAudioDumper {
         Path cache = args.length > 1
             ? Path.of(args[1])
             : Path.of(".work/games/minerdisturbance/js5-cache");
-        Files.createDirectories(outRoot.resolve("midi/named"));
-        Files.createDirectories(outRoot.resolve("wav-native/named"));
-        Files.createDirectories(outRoot.resolve("wav-effects/named"));
+        Files.createDirectories(outRoot.resolve("midi"));
+        Files.createDirectories(outRoot.resolve("wav"));
+        Files.createDirectories(outRoot.resolve("samples/effects"));
 
         fj.a(SAMPLE_RATE, true, 10);
 
@@ -112,7 +112,7 @@ public final class MinerDisturbanceAudioDumper {
                 throw new IllegalStateException("missing music file " + name);
             }
             wh track = trackCtor.newInstance(new sb(raw));
-            Files.write(outRoot.resolve("midi/named/" + name + ".mid"), repairMidi(track.o));
+            Files.write(outRoot.resolve("midi/" + name + ".mid"), repairMidi(track.o));
 
             di player = new di();
             player.a(128, -6242, 9);
@@ -122,7 +122,7 @@ public final class MinerDisturbanceAudioDumper {
             track.b();
             player.a(false, track, (byte)2);
             byte[] pcm = renderMusic(player);
-            Path wav = outRoot.resolve("wav-native/named/" + name + ".wav");
+            Path wav = outRoot.resolve("wav/" + name + ".wav");
             writePcm16Wav(wav, pcm, CHANNELS);
             System.out.printf("music %s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * CHANNELS * 2));
         }
@@ -135,7 +135,7 @@ public final class MinerDisturbanceAudioDumper {
                 continue;
             }
             ji sample = effect.a();
-            Path wav = outRoot.resolve("wav-effects/named/" + name + ".wav");
+            Path wav = outRoot.resolve("samples/effects/" + name + ".wav");
             writeEffectWav(wav, sample);
             System.out.printf("effect %s %.3fs%n", wav.getFileName(), sample.r.length / (double)sample.s);
         }

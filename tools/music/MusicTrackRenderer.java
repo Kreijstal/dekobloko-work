@@ -26,7 +26,7 @@ public final class MusicTrackRenderer {
         TreeMap<Integer, ud> synthSamples = decodeSynth(root.resolve("split/archive08_group000"), synthRequired);
         TreeMap<Integer, ud> vorbisSamples = decodeVorbis(root.resolve("split/archive09_group000"), vorbisRequired);
 
-        Path outDir = root.resolve("wav/archive10_tracks");
+        Path outDir = root.resolve("wav");
         Files.createDirectories(outDir);
         for (Track track : tracks) {
             hydrate(track.ui, synthSamples, vorbisSamples);

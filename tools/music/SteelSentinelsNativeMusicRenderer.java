@@ -26,8 +26,8 @@ public final class SteelSentinelsNativeMusicRenderer {
         Path cache = args.length > 1
             ? Path.of(args[1])
             : Path.of(".work/games/steelsentinels/js5-cache");
-        Files.createDirectories(outRoot.resolve("midi/archive10_tracks"));
-        Files.createDirectories(outRoot.resolve("wav-native/archive10_tracks"));
+        Files.createDirectories(outRoot.resolve("midi"));
+        Files.createDirectories(outRoot.resolve("wav"));
 
         tb.a(SAMPLE_RATE, false, 10);
 
@@ -43,7 +43,7 @@ public final class SteelSentinelsNativeMusicRenderer {
                 throw new IllegalStateException("missing Steel Sentinels music track " + name);
             }
 
-            Files.write(outRoot.resolve("midi/archive10_tracks/" + safeName(name) + ".mid"), repairMidi(track.tg_p));
+            Files.write(outRoot.resolve("midi/" + safeName(name) + ".mid"), repairMidi(track.tg_p));
 
             ic player = new ic();
             player.a(256, 1000000);
@@ -55,7 +55,7 @@ public final class SteelSentinelsNativeMusicRenderer {
             player.a(true, false, track);
 
             byte[] pcm = renderPcm(player);
-            Path wav = outRoot.resolve("wav-native/archive10_tracks/" + safeName(name) + ".wav");
+            Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
             writeMonoWav(wav, pcm);
             System.out.printf("%s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * 2));
         }

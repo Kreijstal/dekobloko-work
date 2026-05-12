@@ -50,9 +50,9 @@ public final class DungeonAssaultAudioDumper {
     public static void main(String[] args) throws Exception {
         Path cache = Path.of(args.length > 0 ? args[0] : ".work/games/dungeonassault/js5-cache");
         Path outRoot = Path.of(args.length > 1 ? args[1] : ".work/games/dungeonassault/music");
-        Files.createDirectories(outRoot.resolve("midi/archive16_tracks"));
-        Files.createDirectories(outRoot.resolve("wav-native/archive16_tracks"));
-        Files.createDirectories(outRoot.resolve("samples-wav"));
+        Files.createDirectories(outRoot.resolve("midi"));
+        Files.createDirectories(outRoot.resolve("wav"));
+        Files.createDirectories(outRoot.resolve("samples"));
 
         vn.a(SAMPLE_RATE, false, 10);
 
@@ -79,7 +79,7 @@ public final class DungeonAssaultAudioDumper {
             throw new IllegalStateException("missing song " + name);
         }
 
-        Path midi = outRoot.resolve("midi/archive16_tracks/" + safeName(name) + ".mid");
+        Path midi = outRoot.resolve("midi/" + safeName(name) + ".mid");
         Files.write(midi, repairMidi(song.vh_i));
         MidiSystem.getSequence(midi.toFile());
 
@@ -90,7 +90,7 @@ public final class DungeonAssaultAudioDumper {
         mixer.a(22199, 1000000, 64, song, volume, false);
 
         byte[] pcm = renderPcm(mixer);
-        Path wav = outRoot.resolve("wav-native/archive16_tracks/" + safeName(name) + ".wav");
+        Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
         writeWav(wav, pcm, SAMPLE_RATE);
         System.out.printf("song %s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * 2));
     }
@@ -100,7 +100,7 @@ public final class DungeonAssaultAudioDumper {
         if (sample == null || sample.cf_e == null) {
             throw new IllegalStateException("missing sample " + name);
         }
-        Path wav = outRoot.resolve("samples-wav/" + safeName(name) + ".wav");
+        Path wav = outRoot.resolve("samples/" + safeName(name) + ".wav");
         writeSampleWav(wav, sample.cf_e);
         System.out.printf("sample %s rate=%d samples=%d loop=%d..%d%n",
             wav.getFileName(), sample.cf_e.va_n, sample.cf_e.va_k.length, sample.cf_e.va_l, sample.cf_e.va_m);

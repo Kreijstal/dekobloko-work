@@ -20,7 +20,7 @@ public final class EscapeVectorAudioDumper {
         Path outRoot = args.length > 1 ? Path.of(args[1]) : gameRoot.resolve("music");
         Path cache = args.length > 2 ? Path.of(args[2]) : gameRoot.resolve("js5-cache");
         Path sourceRoot = gameRoot.resolve("cfr");
-        Files.createDirectories(outRoot.resolve("wav-source/named"));
+        Files.createDirectories(outRoot.resolve("samples"));
 
         mf synthArchive = archive(cache, 2);
         mf vorbisArchive = archive(cache, 3);
@@ -63,7 +63,7 @@ public final class EscapeVectorAudioDumper {
                     }
                 }
 
-                Path wav = outRoot.resolve("wav-source/named/" + safeName(group + "_" + name) + ".wav");
+                Path wav = outRoot.resolve("samples/" + safeName(group + "_" + name) + ".wav");
                 writeSampleWav(wav, sample);
                 written++;
                 System.out.printf("%s %s %.3fs%n", loader, wav.getFileName(), sample.h.length / (double)sample.j);

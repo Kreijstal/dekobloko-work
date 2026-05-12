@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public final class BrickabracMusicDumper {
     public static void main(String[] args) throws Exception {
         Path root = Path.of(args.length > 0 ? args[0] : ".work/music/brickabrac");
-        Path midiRoot = root.resolve("midi/archive10_tracks");
+        Path midiRoot = root.resolve("midi");
         Files.createDirectories(midiRoot);
 
         Constructor<vm> ctor = vm.class.getDeclaredConstructor(wq.class);

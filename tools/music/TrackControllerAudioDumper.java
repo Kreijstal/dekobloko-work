@@ -40,9 +40,9 @@ public final class TrackControllerAudioDumper {
         Path cache = args.length > 1
             ? Path.of(args[1])
             : Path.of(".work/games/trackcontroller/js5-cache");
-        Files.createDirectories(outRoot.resolve("midi/named"));
-        Files.createDirectories(outRoot.resolve("wav-native/named"));
-        Files.createDirectories(outRoot.resolve("wav-effects/named"));
+        Files.createDirectories(outRoot.resolve("midi"));
+        Files.createDirectories(outRoot.resolve("wav"));
+        Files.createDirectories(outRoot.resolve("samples/effects"));
 
         oa.a(SAMPLE_RATE, true, 10);
 
@@ -57,7 +57,7 @@ public final class TrackControllerAudioDumper {
             if (track == null) {
                 throw new IllegalStateException("missing music file " + name);
             }
-            Path midi = outRoot.resolve("midi/named/" + safeName(name) + ".mid");
+            Path midi = outRoot.resolve("midi/" + safeName(name) + ".mid");
             Files.write(midi, repairMidi(track.j));
             MidiSystem.getSequence(midi.toFile());
 
@@ -70,7 +70,7 @@ public final class TrackControllerAudioDumper {
             player.a(track, 14526, false);
 
             byte[] pcm = renderMusic(player);
-            Path wav = outRoot.resolve("wav-native/named/" + safeName(name) + ".wav");
+            Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
             writePcm16Wav(wav, pcm, CHANNELS);
             System.out.printf("music %s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * CHANNELS * 2));
         }
@@ -82,7 +82,7 @@ public final class TrackControllerAudioDumper {
                 continue;
             }
             ik sample = effect.b();
-            Path wav = outRoot.resolve("wav-effects/named/" + safeName(name) + ".wav");
+            Path wav = outRoot.resolve("samples/effects/" + safeName(name) + ".wav");
             writeEffectWav(wav, sample);
             System.out.printf("effect %s %.3fs%n", wav.getFileName(), sample.j.length / (double)sample.l);
         }

@@ -26,7 +26,7 @@ public final class BrickabracNativeMusicRenderer {
     public static void main(String[] args) throws Exception {
         Path root = Path.of(args.length > 0 ? args[0] : ".work/music/brickabrac");
         Path archive8SampleCache = args.length > 1 ? Path.of(args[1]) : defaultArchive8SampleCache();
-        Path outRoot = root.resolve("wav-native/archive10_tracks");
+        Path outRoot = root.resolve("wav");
         Files.createDirectories(outRoot);
 
         tj.q = SAMPLE_RATE;

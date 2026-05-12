@@ -20,7 +20,7 @@ public final class CrazyCrystalsAudioDumper {
         Path outRoot = args.length > 1 ? Path.of(args[1]) : gameRoot.resolve("music");
         Path cache = args.length > 2 ? Path.of(args[2]) : gameRoot.resolve("js5-cache");
         Path sourceRoot = gameRoot.resolve("cfr");
-        Files.createDirectories(outRoot.resolve("wav-source/named"));
+        Files.createDirectories(outRoot.resolve("samples"));
 
         db synthArchive = archive(cache, 2);
         db vorbisArchive = archive(cache, 4);
@@ -57,7 +57,7 @@ public final class CrazyCrystalsAudioDumper {
                     }
                     sample = clip.b();
                 }
-                Path wav = outRoot.resolve("wav-source/named/" + safeName(group + "_" + name) + ".wav");
+                Path wav = outRoot.resolve("samples/" + safeName(group + "_" + name) + ".wav");
                 writeSampleWav(wav, sample);
                 written++;
                 System.out.printf("%s %s %.3fs%n", loader, wav.getFileName(), sample.k.length / (double)sample.j);

@@ -24,8 +24,8 @@ public final class VirogridNativeMusicRenderer {
         Path cache = args.length > 1
             ? Path.of(args[1])
             : Path.of(".work/js5-caches-virogrid-build77/virogrid");
-        Files.createDirectories(outRoot.resolve("midi/archive10_tracks"));
-        Files.createDirectories(outRoot.resolve("wav-native/archive10_tracks"));
+        Files.createDirectories(outRoot.resolve("midi"));
+        Files.createDirectories(outRoot.resolve("wav"));
 
         ua.p = SAMPLE_RATE;
         ua.q = false;
@@ -42,7 +42,7 @@ public final class VirogridNativeMusicRenderer {
                 throw new IllegalStateException("missing Virogrid music track " + name);
             }
 
-            Files.write(outRoot.resolve("midi/archive10_tracks/" + safeName(name) + ".mid"), repairMidi(track.g));
+            Files.write(outRoot.resolve("midi/" + safeName(name) + ".mid"), repairMidi(track.g));
 
             i player = new i();
             if (!player.a(archive9, 0, samples, track, 0)) {
@@ -52,7 +52,7 @@ public final class VirogridNativeMusicRenderer {
             player.a(false, 37, track);
 
             byte[] pcm = renderPcm(player);
-            Path wav = outRoot.resolve("wav-native/archive10_tracks/" + safeName(name) + ".wav");
+            Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
             writeMonoWav(wav, pcm);
             System.out.printf("%s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * 2));
         }
