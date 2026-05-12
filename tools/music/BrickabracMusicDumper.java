@@ -45,36 +45,17 @@ public final class BrickabracMusicDumper {
         while (pos < midi.length) {
             if (pos + 8 <= midi.length
                 && midi[pos] == 'M'
-                && midi[pos + 1] == 'T'
-                && midi[pos + 2] == 'r'
-                && midi[pos + 3] == 'k') {
+                    && midi[pos + 1] == 'T'
+                    && midi[pos + 2] == 'r'
+                    && midi[pos + 3] == 'k') {
                 out.write(midi, pos, 4);
+                int originalLength = readInt(midi, pos + 4);
                 int lenPos = bytes.size();
                 out.writeInt(0);
                 pos += 8;
-                int dataStart = bytes.size();
-                ByteArrayOutputStream track = new ByteArrayOutputStream();
-                while (pos < midi.length) {
-                    if (pos + 8 <= midi.length
-                        && midi[pos] == 'M'
-                        && midi[pos + 1] == 'T'
-                        && midi[pos + 2] == 'r'
-                        && midi[pos + 3] == 'k') {
-                        break;
-                    }
-                    if (pos + 3 <= midi.length
-                        && midi[pos] == 0
-                        && midi[pos + 1] == 0x2f
-                        && midi[pos + 2] == 0) {
-                        track.write(0);
-                        track.write(0xff);
-                        track.write(0x2f);
-                        track.write(0);
-                        pos += 3;
-                        continue;
-                    }
-                    track.write(midi[pos++]);
-                }
+                int end = Math.min(midi.length, pos + originalLength);
+                ByteArrayOutputStream track = repairTrack(midi, pos, end);
+                pos = end;
                 byte[] trackBytes = track.toByteArray();
                 out.write(trackBytes);
                 byte[] arr = bytes.toByteArray();
@@ -90,5 +71,98 @@ public final class BrickabracMusicDumper {
             out.write(midi[pos++]);
         }
         return bytes.toByteArray();
+    }
+
+    private static int readInt(byte[] data, int pos) {
+        return ((data[pos] & 0xff) << 24)
+            | ((data[pos + 1] & 0xff) << 16)
+            | ((data[pos + 2] & 0xff) << 8)
+            | (data[pos + 3] & 0xff);
+    }
+
+    private static ByteArrayOutputStream repairTrack(byte[] midi, int pos, int end) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int runningStatus = -1;
+        while (pos < end) {
+            pos = copyVarInt(midi, pos, out);
+            if (pos >= end) {
+                break;
+            }
+            int status = midi[pos] & 0xff;
+            if (status == 0x2f && pos + 2 == end && midi[pos + 1] == 0) {
+                out.write(0xff);
+                out.write(0x2f);
+                out.write(0);
+                pos += 2;
+                continue;
+            }
+            if (status < 0x80) {
+                if (runningStatus < 0) {
+                    out.write(midi[pos++]);
+                    continue;
+                }
+                int dataBytes = channelDataBytes(runningStatus);
+                for (int i = 0; i < dataBytes && pos < end; i++) {
+                    out.write(midi[pos++]);
+                }
+                continue;
+            }
+            out.write(midi[pos++]);
+            if (status == 0xff) {
+                if (pos >= midi.length) {
+                    break;
+                }
+                out.write(midi[pos++]);
+                long parsed = copyVarIntWithValue(midi, pos, out);
+                pos = (int) (parsed >>> 32);
+                int length = (int) parsed;
+                for (int i = 0; i < length && pos < end; i++) {
+                    out.write(midi[pos++]);
+                }
+            } else if (status == 0xf0 || status == 0xf7) {
+                long parsed = copyVarIntWithValue(midi, pos, out);
+                pos = (int) (parsed >>> 32);
+                int length = (int) parsed;
+                for (int i = 0; i < length && pos < end; i++) {
+                    out.write(midi[pos++]);
+                }
+            } else {
+                runningStatus = status;
+                int dataBytes = channelDataBytes(status);
+                for (int i = 0; i < dataBytes && pos < end; i++) {
+                    out.write(midi[pos++]);
+                }
+            }
+        }
+        return out;
+    }
+
+    private static int copyVarInt(byte[] data, int pos, ByteArrayOutputStream out) {
+        for (int i = 0; i < 4 && pos < data.length; i++) {
+            int value = data[pos++] & 0xff;
+            out.write(value);
+            if ((value & 0x80) == 0) {
+                break;
+            }
+        }
+        return pos;
+    }
+
+    private static long copyVarIntWithValue(byte[] data, int pos, ByteArrayOutputStream out) {
+        int value = 0;
+        for (int i = 0; i < 4 && pos < data.length; i++) {
+            int part = data[pos++] & 0xff;
+            out.write(part);
+            value = (value << 7) | (part & 0x7f);
+            if ((part & 0x80) == 0) {
+                break;
+            }
+        }
+        return ((long) pos << 32) | (value & 0xffffffffL);
+    }
+
+    private static int channelDataBytes(int status) {
+        int command = status & 0xf0;
+        return command == 0xc0 || command == 0xd0 ? 1 : 2;
     }
 }

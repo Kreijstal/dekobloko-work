@@ -74,6 +74,7 @@ const { runCastObjectLocalStoreFromUses } = requireJavaTools('src/passes/castObj
 const { runMaterializeTypedNullArgs } = requireJavaTools('src/passes/materializeTypedNullArgs', 'src/materializeTypedNullArgs');
 const { runMaterializeCheckedFieldInitializers } = requireJavaTools('src/passes/materializeCheckedFieldInitializers', 'src/materializeCheckedFieldInitializers');
 const { runMaterializeStackJoinStores } = requireJavaTools('src/passes/materializeStackJoinStores', 'src/materializeStackJoinStores');
+const { runMaterializeBooleanInvokeArgs } = requireJavaTools('src/passes/materializeBooleanInvokeArgs', 'src/materializeBooleanInvokeArgs');
 const { runPrimitiveArrayCopyLoops } = requireJavaTools('src/passes/primitiveArrayCopyLoops', 'src/primitiveArrayCopyLoops');
 const { runRemoveDeadDupStore } = requireJavaTools('src/passes/removeDeadDupStore', 'src/removeDeadDupStore');
 const { runInlineGotoReturnIsland } = requireJavaTools('src/passes/inlineGotoReturnIsland', 'src/inlineGotoReturnIsland');
@@ -201,6 +202,9 @@ function loadProfiles(dir, selected = []) {
     rasterScanlineEntryClone: [],
     sourceScopeLocalInit: [],
     stackReceiverTailClone: [],
+    materializeBooleanInvokeArgs: [],
+    splitArrayReachingLocalOptions: {},
+    controlFlowDceOptions: {},
     skipPasses: [],
   };
   if (!fs.existsSync(dir)) return merged;
@@ -217,6 +221,8 @@ function loadProfiles(dir, selected = []) {
       if (!profile[key]) continue;
       if (Array.isArray(merged[key])) {
         merged[key].push(...profile[key]);
+      } else if (key === 'splitArrayReachingLocalOptions' || key === 'controlFlowDceOptions') {
+        Object.assign(merged[key], profile[key]);
       } else if (key === 'compileConflictRenames') {
         merged[key].fields.push(...(profile[key].fields || []));
         merged[key].methods.push(...(profile[key].methods || []));
@@ -347,7 +353,10 @@ const passes = [
   { name: 'materialize-checked-field-initializers', fn: (a) => runMaterializeCheckedFieldInitializers(a) },
   { name: 'materialize-stack-join-stores', fn: (a) => runMaterializeStackJoinStores(a) },
   { name: 'primitive-array-copy-loops', fn: (a) => runPrimitiveArrayCopyLoops(a) },
-  { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
+  { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a, {
+    ...(safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}),
+    ...profiles.splitArrayReachingLocalOptions,
+  }) },
   { name: 'split-reference-array-reaching-local', fn: (a) => runSplitReferenceArrayReachingLocal(a) },
   { name: 'split-array-store-local-assignment', fn: (a) => runSplitArrayStoreLocalAssignment(a) },
   { name: 'split-primitive-int-branch-local', fn: (a) => runSplitPrimitiveIntBranchLocal(a) },
@@ -369,9 +378,13 @@ const passes = [
   { name: 'stack-receiver-tail-clone', fn: (a) => runStackReceiverTailClone(a, { targets: profiles.stackReceiverTailClone }) },
   ...(runtimeSafe ? [] : [{ name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) }]),
   { name: 'peephole2', fn: (a) => runPeepholeClean(a, runtimeSafe ? { removeRethrowHandlers: false } : {}) },
-  ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a, safeBytecode ? { requireIsolatedMergeTarget: true } : {}) }]),
+  ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a, {
+    ...(safeBytecode ? { requireIsolatedMergeTarget: true, guardStackGotos: true } : {}),
+    ...profiles.controlFlowDceOptions,
+  }) }]),
   { name: 'qc-doloop-tail-clone', fn: (a) => runQcDoLoopTailClone(a, { targets: profiles.qcDoLoopTailClone }) },
   ...(runtimeSafe ? [] : [{ name: 'compile-conflict-renames', fn: (a) => runCompileConflictRenames(a, { fieldRenames, methodRenames }) }]),
+  { name: 'materialize-boolean-invoke-args', fn: (a) => runMaterializeBooleanInvokeArgs(a, { targets: profiles.materializeBooleanInvokeArgs }) },
   { name: 'inline-single-use-boolean-branch2', fn: (a) => runInlineSingleUseBooleanBranch(a) },
 ];
 

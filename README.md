@@ -87,9 +87,12 @@ gamecrc=from .work/games/dekobloko/upstream-alterorb-launcher/config.json
 build=per gamepack
 ```
 
-The build is the main trap. It is not global, and a wrong build can still pass
-the handshake while exposing a different archive layout. Keep the canonical map
-in `tools/js5/js5-builds-validated.json`; examples from the current mirror:
+The first thing to check for a new game is the JS5 build. The build is not
+global, and a wrong build can still pass the handshake while exposing a
+different archive layout. Do not trust "connects successfully" as validation:
+verify the archive indexes against client load strings or against expected
+archive roles before extracting/rendering assets. Keep the canonical map in
+`tools/js5/js5-builds-validated.json`; examples from the current mirror:
 
 | Game | JS5 build | Music status |
 |---|---:|---|
@@ -98,6 +101,11 @@ in `tools/js5/js5-builds-validated.json`; examples from the current mirror:
 | `pixelate` | 55 | 18 tracks extracted/rendered. Build 13 handshakes but has the wrong archive 10 shape. |
 | `tetralink` | 17 | 4 tracks plus sample banks, SFZ/SF2/native-bank exports. |
 | `virogrid` | 77 | 4 tracks extracted/rendered. Build 15 handshakes but has the wrong archive 10 shape. |
+| `steelsentinels` | 71 | 6 tracks extracted/rendered. Build 15 handshakes but exposes font/UI data in archive 10. |
+| `orbdefence` | 60 | 14 tracks extracted/rendered. Build 11 handshakes but does not contain the music file-name hashes in archive 9. |
+| `zombiedawn` | 41 | 14 tracks extracted/rendered. Build 12 handshakes but does not contain the single-player music names in archive 7. |
+| `zombiedawnmulti` | 72 | 11 tracks extracted/rendered. Build 14 handshakes but does not contain the multiplayer music names in archive 7. |
+| `minerdisturbance` | 5 | 7 native music tracks and 62 `jd` effects extracted/rendered. Build 13 handshakes but exposes a different archive layout. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
 
 Download one cache with the build table:
@@ -126,6 +134,175 @@ python3 tools/js5/download-caches.py \
   --output .work/games/pixelate/js5-metadata \
   --metadata-only
 ```
+
+For an unknown build, scan candidate build numbers by fetching only the master
+index and the specific archive index you care about. For music, archive 10 is
+the usual first check: parse archive 255 group 10, then compare its group/file
+name hashes with strings loaded by the client, such as calls to `tg.a(...)`,
+`sc.a(...)`, `ua.a(...)`, or the equivalent song-loader class. A build is
+accepted only when the archive shape and names match the client.
+
+Steel Sentinels is the concrete example. The client loads:
+
+```java
+tg.a(g.g_i, "", "md_title_music");
+tg.a(g.g_i, "", "war_zone");
+tg.a(g.g_i, "", "lost_world");
+tg.a(g.g_i, "", "cityscape");
+tg.a(g.g_i, "", "thats_no_moon");
+tg.a(g.g_i, "", "star_fleet");
+```
+
+Build 15 handshakes, but archive 10 contains font/UI names such as `login`,
+`benefits`, `commonui`, `arialish12`, and `roman20`, so it is the wrong cache
+for Steel music. Scanning builds found build 71: archive 10 has one empty-named
+group whose file-name hashes resolve to the six client track names, with file
+IDs `1`, `3`, `4`, `5`, `6`, and `7`.
+
+The build scan used the same JS5 protocol downloader classes, but stopped after
+metadata:
+
+```bash
+python3 - <<'PY'
+import importlib.util, json
+
+def load(path, name):
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+dl = load("tools/js5/download-caches.py", "download_caches")
+music = load("tools/music/extract-dekobloko-music.py", "music_extract")
+
+game = next(
+    g for g in json.load(open(".work/upstream-alterorb-launcher/config.json"))["games"]
+    if g["internalName"] == "steelsentinels"
+)
+targets = {
+    music.name_hash(name): name
+    for name in [
+        "md_title_music",
+        "war_zone",
+        "lost_world",
+        "cityscape",
+        "thats_no_moon",
+        "star_fleet",
+    ]
+}
+
+def parse_index_body(raw):
+    body = dl.decompress_container(raw)
+    buf = music.Buffer(body)
+    version = buf.u8()
+    if version >= 6:
+        buf.u32()
+    flags = buf.u8()
+    has_names = bool(flags & 1)
+    has_whirlpool = bool(flags & 2)
+    group_count = buf.large_smart() if version >= 7 else buf.u16()
+    group_ids = []
+    last = 0
+    for _ in range(group_count):
+        last += buf.large_smart() if version >= 7 else buf.u16()
+        group_ids.append(last)
+    group_hashes = {}
+    if has_names:
+        for group_id in group_ids:
+            group_hashes[group_id] = buf.i32()
+    for _ in group_ids:
+        buf.u32()
+    if has_whirlpool:
+        for _ in group_ids:
+            buf.bytes(64)
+    for _ in group_ids:
+        buf.u32()
+    file_counts = {
+        group_id: (buf.large_smart() if version >= 7 else buf.u16())
+        for group_id in group_ids
+    }
+    file_ids = {}
+    for group_id in group_ids:
+        last = 0
+        ids = []
+        for _ in range(file_counts[group_id]):
+            last += buf.large_smart() if version >= 7 else buf.u16()
+            ids.append(last)
+        file_ids[group_id] = ids
+    file_hashes = {}
+    if has_names:
+        for group_id in group_ids:
+            file_hashes[group_id] = {file_id: buf.i32() for file_id in file_ids[group_id]}
+    return group_hashes, file_hashes
+
+for build in range(1, 161):
+    try:
+        with dl.Js5Client(
+            dl.DEFAULT_HOST,
+            dl.DEFAULT_PORT,
+            game["gamecrc"],
+            build,
+            dl.DEFAULT_SERVER_NUM,
+            dl.DEFAULT_LANG,
+            1.2,
+        ) as client:
+            master = client.fetch(255, 255)[2]
+            indexes = dl.parse_master(master)
+            if len(indexes) <= 10 or indexes[10]["crc"] == 0:
+                continue
+            group_hashes, file_hashes = parse_index_body(client.fetch(255, 10)[2])
+            hits = []
+            for group_id, group_hash in group_hashes.items():
+                if group_hash in targets:
+                    hits.append(("group", group_id, targets[group_hash]))
+                for file_id, file_hash in file_hashes.get(group_id, {}).items():
+                    if file_hash in targets:
+                        hits.append(("file", group_id, file_id, targets[file_hash]))
+            if hits:
+                print(build, hits)
+    except Exception:
+        pass
+PY
+```
+
+For Steel Sentinels this prints build `71` with the six archive-10 file hits.
+
+Miner Disturbance is another concrete failure mode: build 13 connects and
+downloads cleanly, but the indexes do not contain the hashes for
+`md_title_music`, `md_menu`, or the other `md_*` strings loaded by the client.
+Build 5 is the matching cache: archive 2 holds the named `jd` sound effects,
+archive 3 is the second sample archive, archive 4 holds the named `wh` songs,
+and archive 5 holds the instrument patches. Redo the local audio cache and WAVs
+with:
+
+```bash
+rm -rf .work/games/minerdisturbance/js5-cache-audio
+python3 tools/js5/download-caches.py \
+  --game minerdisturbance \
+  --config .work/upstream-alterorb-launcher/config.json \
+  --output .work/games/minerdisturbance/js5-cache-audio \
+  --build 5 \
+  --indexes 2,3,4,5 \
+  --skip-missing-archives \
+  --archive-batch-size 50 \
+  --archive-idle-timeout 5 \
+  --timeout 30
+
+mkdir -p .work/games/minerdisturbance/music-tools
+javac -cp .work/games/minerdisturbance/classes \
+  -d .work/games/minerdisturbance/music-tools \
+  tools/music/MinerDisturbanceAudioDumper.java
+
+rm -rf .work/games/minerdisturbance/music
+java -cp .work/games/minerdisturbance/classes:.work/games/minerdisturbance/music-tools \
+  MinerDisturbanceAudioDumper \
+  .work/games/minerdisturbance/music \
+  .work/games/minerdisturbance/js5-cache-audio/minerdisturbance
+```
+
+Expected output is 76 files: 7 repaired `.mid` files, 7 stereo native-rendered
+music WAVs under `wav-native/named`, and 62 mono `jd` effect WAVs under
+`wav-effects/named`.
 
 ### JS5 Protocol
 
@@ -159,12 +336,25 @@ Known archive roles:
 | Pixelate | 7/8 sound banks, 9 `sn` patches, 10 `ua` songs | `ua -> ti` | `.work/games/pixelate/music/wav-native/archive10_tracks` |
 | TetraLink | 7/8 `wf` samples, 9 `ng` patches, 10 `ri` songs | `ri -> g/go/ng/fa` | `.work/games/tetralink/music/wav/archive10_tracks` |
 | Virogrid | 7/8 sound banks, 9 `rc` patches, 10 `sc` songs | `sc -> i/rc/jg` | `.work/games/virogrid/music/wav-native/archive10_tracks` |
+| Steel Sentinels | 7/8 sound banks, 9 `ca` patches, 10 `tg` songs | `tg -> ic/ca/ub` | `.work/games/steelsentinels/music/wav-native/archive10_tracks` |
+| Orb Defence | 6/7 sound banks, 8 `ik` patches, 9 `fj` songs | `fj -> lj/ik/vd` | `.work/games/orbdefence/music/wav-native/archive10_tracks` |
+| Zombie Dawn | 4/5 sound banks, 6 `dj` patches, 7 `wj` songs | `wj -> rj/dj/ka` | `.work/games/zombiedawn/music/wav-native/archive10_tracks` |
+| Zombie Dawn Multi | 4/5 sound banks, 6 `ul` patches, 7 `ug` songs | `ug -> gd/ul/me` | `.work/games/zombiedawnmulti/music/wav-native/archive10_tracks` |
+| Dungeon Assault | 13/14 `va` samples, 15 `kk` patches, 16 `vh` songs | `vh -> ug/tc`, samples via `lc -> va` | `.work/games/dungeonassault/music/wav-native/archive16_tracks` |
 
 Archive 10 names must come from JS5 file-name hashes or client load strings, not
 from split position. Dekobloko build 31/32, for example, maps sparse file IDs to
 names such as `music/Deko Bloko Titlescreen`; Pixelate build 55 maps
 `pix_title`, `pix_end_game`, and `skin1` through `skin16`. This is why files
 named only `track_XX` are suspect.
+
+Raw client MIDI bytes are also suspect. Several FunOrb song classes build
+mostly-standard MIDI but omit the `0xff` byte in end-of-track events, leaving
+track tails as `delta, 2f 00` instead of `delta, ff 2f 00`. The Unix `file`
+command can still identify these as Standard MIDI, so validate exported `.mid`
+files with a real parser such as Java's `MidiSystem.getSequence(...)`. The
+renderers that write MIDI should pass client bytes through `repairMidi(...)`
+before writing them.
 
 Virogrid is a good example of why the build table has to be validated against
 the client's load strings, not just the JS5 handshake. Build 15 connects, but
@@ -206,7 +396,7 @@ java -cp .work/games/dekobloko/music-tools:classes-original MusicSampleBankExpor
 
 ```bash
 python3 tools/music/extract-dekobloko-music.py \
-  .work/games/brickabrac/js5-cache \
+  .work/games/brickabrac/download-build65-full/brickabrac \
   .work/games/brickabrac/music \
   --game brickabrac
 
@@ -217,20 +407,202 @@ javac -cp .work/games/brickabrac/classes -d .work/games/brickabrac/music-tools \
 java -cp .work/games/brickabrac/music-tools:.work/games/brickabrac/classes \
   BrickabracMusicDumper .work/games/brickabrac/music
 java -cp .work/games/brickabrac/music-tools:.work/games/brickabrac/classes \
-  BrickabracNativeMusicRenderer .work/games/brickabrac/music .work/games/brickabrac/js5-cache
+  BrickabracNativeMusicRenderer .work/games/brickabrac/music \
+  .work/games/brickabrac/download-build65-full/brickabrac
 ```
 
-Pixelate renders directly from its build-55 JS5 cache through deobfuscated
-classes:
+Brickabrac is the odd case here: the warmed cache that contains archive 10 may
+not contain enough archive-255 metadata to recover the archive-10 file-name
+hashes. The extractor therefore uses the decompiled client load strings
+(`BaB_panic`, `BaB_desert`, ..., `BAB_ninja`) when archive 10 splits into the
+known 16-track shape, instead of emitting anonymous `brickabrac_track_NN` names.
+
+For the native-MIDI family, prefer the generic generator. It owns the repeated
+cache adapter, MIDI repair, `MidiSystem` validation, render loop, and WAV
+writer, then compiles a small game-specific adapter against the target classes.
+The adapter still uses profile data because obfuscated class names and archive
+backend superclasses differ by game.
+
+Use `tools/music/profile-funorb-music.py` to draft those profiles from CFR Java
+instead of writing them by hand. The profiler scans known native-MIDI loader
+families, follows wrapper methods such as `tl.a("track", ...) -> wj.a(...)`,
+traces the archive expression used by the loader, validates candidate track
+names against JS5 name hashes, and writes a JSON profile that
+`render-funorb-native.py --profile-file` can run:
 
 ```bash
-javac -cp .work/games/pixelate/deob-profile/out -d .work/games/pixelate/music-tools \
+python3 tools/music/profile-funorb-music.py \
+  --game zombiedawn \
+  --java .work/games/zombiedawn/cfr \
+  --classes .work/games/zombiedawn/classes \
+  --cache .work/games/zombiedawn/js5-cache \
+  --out .work/games/zombiedawn/music-profile/zombiedawn.json
+
+python3 tools/music/render-funorb-native.py \
+  --profile-file .work/games/zombiedawn/music-profile/zombiedawn.json \
+  --classes .work/games/zombiedawn/classes \
+  --cache .work/games/zombiedawn/js5-cache \
+  --out .work/games/zombiedawn/music
+```
+
+The generated profile records `_discovery` evidence: selected renderer family,
+loader class, source files, inferred archive IDs, candidate archive-name scores,
+and final song-archive scores. Treat a profile as accepted only after the
+generated renderer compiles and renders at least one track; `--validate` runs
+that compile/render step directly.
+
+Supported profiles currently cover the normalized native renderers for
+Pixelate, Virogrid, Steel Sentinels, Orb Defence, Zombie Dawn, and Zombie Dawn
+Multi:
+
+```bash
+python3 tools/music/render-funorb-native.py \
+  --game pixelate \
+  --classes .work/games/pixelate/classes \
+  --cache .work/games/pixelate/js5-cache \
+  --out .work/games/pixelate/music
+
+python3 tools/music/render-funorb-native.py \
+  --game virogrid \
+  --classes .work/games/virogrid/classes \
+  --cache .work/games/virogrid/js5-cache \
+  --out .work/games/virogrid/music
+
+python3 tools/music/render-funorb-native.py \
+  --game steelsentinels \
+  --classes .work/games/steelsentinels/regression-tailgate-out \
+  --cache .work/games/steelsentinels/js5-cache \
+  --out .work/games/steelsentinels/music
+
+python3 tools/music/render-funorb-native.py \
+  --game orbdefence \
+  --classes .work/games/orbdefence/deob-safe/out \
+  --cache .work/games/orbdefence/js5-cache \
+  --out .work/games/orbdefence/music
+
+python3 tools/music/render-funorb-native.py \
+  --game zombiedawn \
+  --classes .work/games/zombiedawn/classes \
+  --cache .work/games/zombiedawn/js5-cache \
+  --out .work/games/zombiedawn/music
+
+python3 tools/music/render-funorb-native.py \
+  --game zombiedawnmulti \
+  --classes .work/games/zombiedawnmulti/classes \
+  --cache .work/games/zombiedawnmulti/js5-cache \
+  --out .work/games/zombiedawnmulti/music
+```
+
+The same tool can scan every game directory and render the profiles that match
+the current cache and class API:
+
+```bash
+python3 tools/music/render-funorb-native.py --all --root .work/games
+```
+
+This is intentionally conservative. It only treats archive 10 group `0` names
+that also appear in the class constant pool as candidate tracks, then requires
+the generated adapter to compile and run against the target classes. With the
+current cache set, the native-MIDI family renders:
+
+| Game | Profile |
+|---|---|
+| `orbdefence` | `orbdefence` |
+| `pixelate` | `pixelate` |
+| `steelsentinels` | `steelsentinels` |
+| `virogrid` | `virogrid` |
+| `zombiedawn` | `zombiedawn` |
+| `zombiedawnmulti` | `zombiedawnmulti` |
+
+For archive-10 profiles, auto-discovery only treats archive 10 group `0` names
+that also appear in the class constant pool as candidate tracks. Orb Defence is
+an older shape: CFR source shows `lg.lg_c = qk.a(9, ...)`, then fourteen
+`fj.a(lg.lg_c, "", name)` loads. Build 60 is accepted because archive 9 group
+0 resolves those fourteen file-name hashes. The offline renderer uses a larger
+instrument hydration budget than the game's per-frame `176400` budget so the
+native `lj` player can hydrate all patches in one pass.
+
+Most other games either have no matching music group in the current cache, or
+their candidate archive names are UI/font assets such as `arezzo14`, `chatfont`,
+or `smallfont`. Those are reported as unsupported rather than rendered.
+Dekobloko, Brickabrac, and TetraLink still use their dedicated
+extractor/preprocessor paths below because their formats are not this direct
+native-MIDI profile.
+
+Dungeon Assault is another dedicated path. CFR source shows `bo` initializing
+archives 13, 14, 15, and 16; `mi` loads nine `vh` songs from archive 16 by
+name (`da_title3`, `da_intro`, `da_ingame_battle`, and the other `da_*`
+tracks), and `vh` converts the compact song format into MIDI bytes in
+`vh_i`. Those MIDI bytes need the same end-of-track repair as other FunOrb
+MIDI exports. Offline WAV rendering can use the client's own `ug/tc` mixer
+after hydrating `kk` patches from archive 15 against `lc(archive13, archive14)`.
+Archives 13 and 14 also contain standalone `va` sample assets such as
+`menu_select`, `da_menu_fire`, the ambience loops, and the nine numbered
+Dungaria assets; those can be written directly as PCM WAVs.
+
+```bash
+javac -cp .work/games/dungeonassault/music-profile-validate/out \
+  -d .work/games/dungeonassault/music-tools \
+  tools/music/DungeonAssaultAudioDumper.java
+
+java -cp .work/games/dungeonassault/music-tools:.work/games/dungeonassault/music-profile-validate/out \
+  DungeonAssaultAudioDumper \
+  .work/games/dungeonassault/js5-cache \
+  .work/games/dungeonassault/music
+```
+
+Zombie Dawn is an older native-MIDI profile where the song archive is 7, not
+10. The single-player client uses build 41 and loads fourteen `wj` songs through
+`wj.a(archive7, name, "")`; the multiplayer client uses build 72 and loads
+eleven `ug` songs through `ug.a(archive7, "", name)`. Both use archives 4 and 5
+as sample banks and archive 6 as patch/instrument data. The single-player
+renderer initializes `qf` with stereo enabled, so generated offline renderers
+must allocate `BUFFER_SAMPLES * 2` mix slots and write a stereo WAV header even
+though most newer profiles are mono. A mono-sized buffer fails inside the native
+`rj` mixer with an array-bounds error.
+
+Pixelate renders directly from its build-55 JS5 cache through deobfuscated
+classes. Its local cache must include archive 10 from build 55; an incomplete
+cache can still leave stale old MIDI files on disk. `PixelateNativeMusicRenderer`
+repairs `ua.k` before writing `.mid` files because the raw bytes have the same
+missing end-of-track marker shape as Virogrid, TetraLink, Brickabrac, and Steel
+Sentinels.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game pixelate \
+  --builds tools/js5/js5-builds-validated.json \
+  --output .work/games/pixelate/download \
+  --skip-missing-archives \
+  --archive-workers 8
+rm -rf .work/games/pixelate/js5-cache
+mv .work/games/pixelate/download/pixelate .work/games/pixelate/js5-cache
+rmdir .work/games/pixelate/download
+
+javac -cp .work/games/pixelate/classes -d .work/games/pixelate/music-tools \
   tools/music/PixelateNativeMusicRenderer.java
 
-java -cp .work/games/pixelate/music-tools:.work/games/pixelate/deob-profile/out \
+java -cp .work/games/pixelate/music-tools:.work/games/pixelate/classes \
   PixelateNativeMusicRenderer \
   .work/games/pixelate/music \
   .work/games/pixelate/js5-cache
+
+cat > .work/games/pixelate/music-tools/ValidateMidi.java <<'EOF'
+import java.io.File;
+import javax.sound.midi.MidiSystem;
+
+public final class ValidateMidi {
+    public static void main(String[] args) throws Exception {
+        for (String arg : args) {
+            MidiSystem.getSequence(new File(arg));
+            System.out.println("ok " + arg);
+        }
+    }
+}
+EOF
+javac -d .work/games/pixelate/music-tools .work/games/pixelate/music-tools/ValidateMidi.java
+java -cp .work/games/pixelate/music-tools ValidateMidi \
+  .work/games/pixelate/music/midi/archive10_tracks/*.mid
 ```
 
 Virogrid uses the TetraLink-style archive layout, but its working cache is
@@ -269,6 +641,33 @@ from archives 7 and 8. The cache adapter detail is easy to get wrong:
 Virogrid's `eh` archive wrapper calls the backend as `b(group, magic)`, and the
 archive index constructor `sj(byte[], crc, whirlpool)` expects the real CRC
 (`na.a(false, raw.length, raw)`) rather than zero.
+
+Steel Sentinels uses the same native-client rendering pattern, but its usable
+music cache is build 71. Build 15 still handshakes and downloads, but archive
+10 there is a font/UI layout and does not contain the client load strings
+`md_title_music`, `war_zone`, `lost_world`, `cityscape`, `thats_no_moon`, or
+`star_fleet`.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game steelsentinels \
+  --builds tools/js5/js5-builds-validated.json \
+  --output .work/games/steelsentinels/download \
+  --skip-missing-archives \
+  --archive-workers 8
+rm -rf .work/games/steelsentinels/js5-cache
+mv .work/games/steelsentinels/download/steelsentinels .work/games/steelsentinels/js5-cache
+rmdir .work/games/steelsentinels/download
+
+javac -cp .work/games/steelsentinels/regression-tailgate-out \
+  -d .work/games/steelsentinels/music-tools \
+  tools/music/SteelSentinelsNativeMusicRenderer.java
+
+java -cp .work/games/steelsentinels/music-tools:.work/games/steelsentinels/regression-tailgate-out \
+  SteelSentinelsNativeMusicRenderer \
+  .work/games/steelsentinels/music \
+  .work/games/steelsentinels/js5-cache
+```
 
 TetraLink has the richest export path:
 
@@ -392,6 +791,50 @@ Human-in-loop real AWT window:
 ```
 
 This requires `DISPLAY` or `WAYLAND_DISPLAY`.
+
+Some gamepacks open Java Sound through ALSA. On systems where plain ALSA maps to
+hardware, that bypasses PipeWire and can either produce no mixed desktop audio
+or lock `/dev/snd/pcm*` directly. Force the ALSA PipeWire plugin explicitly when
+launching these clients:
+
+```bash
+mkdir -p .work/alsa
+printf '%s\n' \
+  '@hooks [' \
+  '  {' \
+  '    func load' \
+  '    files [' \
+  '      "/usr/share/alsa/alsa.conf"' \
+  '      "/usr/share/alsa/alsa.conf.d/50-pipewire.conf"' \
+  '      "/usr/share/alsa/alsa.conf.d/99-pipewire-default.conf"' \
+  '    ]' \
+  '    errors false' \
+  '  }' \
+  ']' > .work/alsa/pipewire-java.conf
+
+DISPLAY=:10.0 ALSA_CONFIG_PATH="$PWD/.work/alsa/pipewire-java.conf" \
+  java -Djava.awt.headless=false -jar .work/launcher/dekobloko-launcher.jar \
+    --awt real \
+    --gamepack .work/games/minerdisturbance/gamepack.jar \
+    --main-class MinerDisturbance \
+    --gamecrc 1412183595 \
+    --server https://mgg-server.alterorb.net \
+    --trace-file .work/games/minerdisturbance/logs/real-awt-pipewire.trace
+```
+
+Verify that the process is using PipeWire rather than direct ALSA hardware:
+
+```bash
+pid=<java-pid>
+ls -l /proc/$pid/fd | grep -E 'snd|pipewire|pcm' || true
+grep -E 'pipewire|libasound_module_pcm_pipewire|/dev/snd' /proc/$pid/maps || true
+pactl list sink-inputs short
+```
+
+A direct-ALSA launch shows open fds such as `/dev/snd/pcmC0D0p`,
+`/dev/snd/controlC0`, and `/dev/snd/timer`. A PipeWire-routed launch loads
+`libasound_module_pcm_pipewire.so`, has `pipewire-memfd` fds, and appears in
+`pactl list sink-inputs`.
 
 Record real AWT interaction:
 

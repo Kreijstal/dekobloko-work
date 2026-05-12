@@ -340,6 +340,9 @@ def download_game(args, game):
             print(f"{game['internalName']}: fetch master build={build}", flush=True)
             master = client.fetch(255, 255)[2]
             indexes = [entry for entry in parse_master(master) if entry["crc"] != 0]
+            if args.indexes:
+                selected = parse_int_set(args.indexes)
+                indexes = [entry for entry in indexes if entry["archive"] in selected]
 
             if args.index_limit is not None:
                 indexes = indexes[:args.index_limit]
@@ -467,6 +470,20 @@ def fetch_one_archive(args, game, index, archive):
         return client.fetch(index, archive)[2]
 
 
+def parse_int_set(value):
+    out = set()
+    for part in value.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        if "-" in part:
+            lo, hi = part.split("-", 1)
+            out.update(range(int(lo), int(hi) + 1))
+        else:
+            out.add(int(part))
+    return out
+
+
 def main(argv):
     parser = argparse.ArgumentParser(description="Download AlterOrb/FunOrb JS5 caches without loading gamepacks.")
     parser.add_argument("--config", default=DEFAULT_CONFIG)
@@ -480,6 +497,7 @@ def main(argv):
     parser.add_argument("--lang", type=int, default=DEFAULT_LANG)
     parser.add_argument("--timeout", type=float, default=30.0)
     parser.add_argument("--index-limit", type=int)
+    parser.add_argument("--indexes", help="comma-separated JS5 indexes to download, e.g. 2,3,4,5 or 0-8")
     parser.add_argument("--archive-limit", type=int)
     parser.add_argument("--metadata-only", action="store_true", help="download only the master/index metadata")
     parser.add_argument("--keep-going", action="store_true", help="continue with the next game after a JS5 error")

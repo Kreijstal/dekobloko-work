@@ -539,9 +539,17 @@ def write_brickabrac_tracks(out_dir: Path, files: list[bytes], group: dict | Non
     names_by_hash = {name_hash(name): name for name in BRICKABRAC_TRACK_NAMES}
     file_ids = group["file_ids"] if group else list(range(len(files)))
     file_hashes = group["file_name_hashes"] if group else {}
+    # Runtime-warmed Brickabrac caches can contain archive 10 without the
+    # archive-255 metadata needed to recover file-name hashes. In that exact
+    # 16-track shape, use the client load strings recovered from decompiled
+    # sources instead of writing anonymous brickabrac_track_NN files.
+    fallback_names = BRICKABRAC_TRACK_NAMES if len(files) == len(BRICKABRAC_TRACK_NAMES) else []
     for index, data in enumerate(files):
         file_id = file_ids[index] if index < len(file_ids) else index
-        name = names_by_hash.get(file_hashes.get(file_id), f"brickabrac_track_{index:02d}")
+        name = names_by_hash.get(
+            file_hashes.get(file_id),
+            fallback_names[index] if index < len(fallback_names) else f"brickabrac_track_{index:02d}",
+        )
         path = split_dir / f"{name}.vm.bin"
         path.write_bytes(data)
         entries.append(
