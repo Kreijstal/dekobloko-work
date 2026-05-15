@@ -68,6 +68,7 @@ const { runSimplifyNotCompare } = requireJavaTools('src/passes/simplifyNotCompar
 const { runSimplifyStringLengthNotCompare } = requireJavaTools('src/passes/simplifyStringLengthNotCompare', 'src/simplifyStringLengthNotCompare');
 const { runNarrowCharArrayStores } = requireJavaTools('src/passes/narrowCharArrayStores', 'src/narrowCharArrayStores');
 const { runNarrowByteArrayStores } = requireJavaTools('src/passes/narrowByteArrayStores', 'src/narrowByteArrayStores');
+const { runNarrowShortArrayStores } = requireJavaTools('src/passes/narrowShortArrayStores', 'src/narrowShortArrayStores');
 const { runCastObjectFieldStores } = requireJavaTools('src/passes/castObjectFieldStores', 'src/castObjectFieldStores');
 const { runCastPrivateFieldReceivers } = requireJavaTools('src/passes/castPrivateFieldReceivers', 'src/castPrivateFieldReceivers');
 const { runCastObjectLocalStoreFromUses } = requireJavaTools('src/passes/castObjectLocalStoreFromUses', 'src/castObjectLocalStoreFromUses');
@@ -75,6 +76,8 @@ const { runMaterializeTypedNullArgs } = requireJavaTools('src/passes/materialize
 const { runMaterializeCheckedFieldInitializers } = requireJavaTools('src/passes/materializeCheckedFieldInitializers', 'src/materializeCheckedFieldInitializers');
 const { runMaterializeStackJoinStores } = requireJavaTools('src/passes/materializeStackJoinStores', 'src/materializeStackJoinStores');
 const { runMaterializeBooleanInvokeArgs } = requireJavaTools('src/passes/materializeBooleanInvokeArgs', 'src/materializeBooleanInvokeArgs');
+const { runNormalizeBooleanFieldOr } = requireJavaTools('src/passes/normalizeBooleanFieldOr', 'src/normalizeBooleanFieldOr');
+const { runNormalizeDupStoreLoad } = requireJavaTools('src/passes/normalizeDupStoreLoad', 'src/normalizeDupStoreLoad');
 const { runPrimitiveArrayCopyLoops } = requireJavaTools('src/passes/primitiveArrayCopyLoops', 'src/primitiveArrayCopyLoops');
 const { runRemoveDeadDupStore } = requireJavaTools('src/passes/removeDeadDupStore', 'src/removeDeadDupStore');
 const { runInlineGotoReturnIsland } = requireJavaTools('src/passes/inlineGotoReturnIsland', 'src/inlineGotoReturnIsland');
@@ -85,6 +88,7 @@ const { runSplitReferenceArrayReachingLocal } = requireJavaTools('src/passes/spl
 const { runSplitConcreteObjectReachingLocal } = requireJavaTools('src/passes/splitConcreteObjectReachingLocal', 'src/splitConcreteObjectReachingLocal');
 const { runSplitPrimitiveIntBranchLocal } = requireJavaTools('src/passes/splitPrimitiveIntBranchLocal', 'src/splitPrimitiveIntBranchLocal');
 const { runInlineSingleUseBooleanBranch } = requireJavaTools('src/passes/inlineSingleUseBooleanBranch', 'src/inlineSingleUseBooleanBranch');
+const { runSplitTypedReusedLocals } = requireJavaTools('src/passes/splitTypedReusedLocals', 'src/splitTypedReusedLocals');
 
 const { runEiTailClone } = require('./eiTailClone');
 const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
@@ -95,6 +99,7 @@ const { runBParserLoopHeader } = require('./bParserLoopHeader');
 const { runRasterScanlineEntryClone } = require('./rasterScanlineEntryClone');
 const { runSourceScopeLocalInit } = require('./sourceScopeLocalInit');
 const { runStackReceiverTailClone } = require('./stackReceiverTailClone');
+const { runRetargetBranches } = require('./retargetBranches');
 const { expandMethodRenames, runCompileConflictRenames } = require('./compileConflictRenames');
 const { runDekoblokoExceptionHandlerDrops } = require('./removeShadowedExceptionHandlers');
 
@@ -202,6 +207,7 @@ function loadProfiles(dir, selected = []) {
     rasterScanlineEntryClone: [],
     sourceScopeLocalInit: [],
     stackReceiverTailClone: [],
+    retargetBranches: [],
     materializeBooleanInvokeArgs: [],
     splitArrayReachingLocalOptions: {},
     controlFlowDceOptions: {},
@@ -318,7 +324,10 @@ function collectAutoDeadFlagFields() {
     const { ast } = loadAst(path.join(inDir, f));
     classes.push(...(ast.classes || []));
   }
-  return discoverDeadStaticFlags({ classes }, { allowIntFlags: true }).fields;
+  return discoverDeadStaticFlags({ classes }, {
+    allowIntFlags: true,
+    allowTerminalSelfIncrementFlags: true,
+  }).fields;
 }
 
 const fieldRenames = collectClassShadowFieldRenames();
@@ -347,11 +356,14 @@ const passes = [
   { name: 'simplify-string-length-not-compare', fn: (a) => runSimplifyStringLengthNotCompare(a) },
   { name: 'narrow-char-array-stores', fn: (a) => runNarrowCharArrayStores(a) },
   { name: 'narrow-byte-array-stores', fn: (a) => runNarrowByteArrayStores(a) },
+  { name: 'narrow-short-array-stores', fn: (a) => runNarrowShortArrayStores(a) },
   { name: 'cast-object-field-stores', fn: (a) => runCastObjectFieldStores(a) },
   { name: 'cast-private-field-receivers', fn: (a) => runCastPrivateFieldReceivers(a) },
   { name: 'materialize-typed-null-args', fn: (a) => runMaterializeTypedNullArgs(a) },
   { name: 'materialize-checked-field-initializers', fn: (a) => runMaterializeCheckedFieldInitializers(a) },
   { name: 'materialize-stack-join-stores', fn: (a) => runMaterializeStackJoinStores(a) },
+  { name: 'normalize-boolean-field-or', fn: (a) => runNormalizeBooleanFieldOr(a) },
+  { name: 'normalize-dup-store-load', fn: (a) => runNormalizeDupStoreLoad(a) },
   { name: 'primitive-array-copy-loops', fn: (a) => runPrimitiveArrayCopyLoops(a) },
   { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a, {
     ...(safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}),
@@ -364,6 +376,9 @@ const passes = [
   { name: 'split-concrete-object-reaching-local', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
   { name: 'cast-object-local-store-from-uses', fn: (a) => runCastObjectLocalStoreFromUses(a) },
   { name: 'split-concrete-object-reaching-local2', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
+  { name: 'split-typed-reused-locals', fn: (a) => safeBytecode
+    ? runSplitTypedReusedLocals(a, { preserveOriginalLocals: true, minMethodItems: 500 })
+    : { changed: false, rewrites: 0 } },
   { name: 'remove-dead-dup-store', fn: (a) => runRemoveDeadDupStore(a) },
   { name: 'inline-single-use-boolean-branch', fn: (a) => runInlineSingleUseBooleanBranch(a) },
   { name: 'inline-goto-return-island', fn: (a) => runInlineGotoReturnIsland(a) },
@@ -386,6 +401,7 @@ const passes = [
   ...(runtimeSafe ? [] : [{ name: 'compile-conflict-renames', fn: (a) => runCompileConflictRenames(a, { fieldRenames, methodRenames }) }]),
   { name: 'materialize-boolean-invoke-args', fn: (a) => runMaterializeBooleanInvokeArgs(a, { targets: profiles.materializeBooleanInvokeArgs }) },
   { name: 'inline-single-use-boolean-branch2', fn: (a) => runInlineSingleUseBooleanBranch(a) },
+  { name: 'retarget-branches', fn: (a) => runRetargetBranches(a, { targets: profiles.retargetBranches }) },
 ];
 
 let processed = 0;

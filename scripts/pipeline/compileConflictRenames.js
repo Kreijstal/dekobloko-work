@@ -67,6 +67,11 @@ function expandMethodRenames(ast, methodRenames) {
     const queue = [rename.owner];
     const seen = new Set();
 
+    if (info.has(rename.owner)) {
+      const key = symbolKey(rename.owner, rename.name, rename.descriptor);
+      expanded.set(key, { ...rename });
+    }
+
     while (queue.length > 0) {
       const owner = queue.shift();
       if (seen.has(owner)) continue;

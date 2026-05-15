@@ -43,6 +43,10 @@ public class Component implements ImageObserver {
     public void setSize(int width, int height) {
     }
 
+    public Dimension getSize() {
+        return new Dimension();
+    }
+
     public void setLocation(int x, int y) {
     }
 
