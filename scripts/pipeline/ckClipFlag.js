@@ -1,6 +1,6 @@
 'use strict';
 
-// Targeted transform for raster clip-pair CFGs.
+// Generic transform for raster clip-pair CFGs.
 //
 // The rotated raster quadrants contain the same clip-pair shape:
 //   x-bound shortcut -> shared y-clip continuation
@@ -8,8 +8,9 @@
 //
 // CFR rejects those shared continuations. The reduction in dekobloko-work
 // shows that javac's flag-shaped CFG is accepted, so this pass rewrites the
-// detected clip-pair skeletons into that shape using local 40 as a synthetic
-// int boolean. No decompiler output is inspected.
+// detected clip-pair skeletons into that shape using a fresh synthetic int
+// boolean local. No decompiler output is inspected and no class name is
+// required: inferred targets must contain all four raster quadrants.
 
 const INVERSE = {
   iflt: 'ifge',
@@ -26,7 +27,7 @@ const INVERSE = {
   if_icmpne: 'if_icmpeq',
 };
 
-function runCkClipFlag(astRoot, options = {}) {
+function runRasterClipContinuation(astRoot, options = {}) {
   let fired = 0;
   const targets = new Set((options.targets || []).map((target) => `${target.className}.${target.methodName}:${target.descriptor}`));
   const inferTargets = options.inferTargets !== false;
@@ -181,11 +182,11 @@ function nextReal(codeItems, idx) {
 
 function replaceClipCond(codeItems, label, expectedOp, oldTarget, outsideLabel, rowDone, isY, zeroGoto, compareLocal, state) {
   const idx = findLabelIndex(codeItems, label);
-  if (idx < 0) throw new Error(`ck-clip-flag: missing ${label}`);
+  if (idx < 0) throw new Error(`raster-clip-continuation: missing ${label}`);
   const item = codeItems[idx];
   const insn = item && item.instruction;
   if (!insn || typeof insn !== 'object' || insn.op !== expectedOp || trim(insn.arg) !== oldTarget) {
-    throw new Error(`ck-clip-flag: unexpected condition at ${label}`);
+    throw new Error(`raster-clip-continuation: unexpected condition at ${label}`);
   }
 
   const after = fresh(state);
@@ -220,26 +221,26 @@ function initFlagBefore(codeItems, label, state) {
 
 function retargetGoto(codeItems, label, fromTarget, toTarget) {
   const idx = findLabelIndex(codeItems, label);
-  if (idx < 0) throw new Error(`ck-clip-flag: missing goto ${label}`);
+  if (idx < 0) throw new Error(`raster-clip-continuation: missing goto ${label}`);
   const insn = codeItems[idx] && codeItems[idx].instruction;
   if (!insn || typeof insn !== 'object' || insn.op !== 'goto' || trim(insn.arg) !== fromTarget) {
-    throw new Error(`ck-clip-flag: unexpected goto at ${label}`);
+    throw new Error(`raster-clip-continuation: unexpected goto at ${label}`);
   }
   codeItems[idx].instruction = { ...insn, arg: toTarget };
 }
 
 function deleteInstructionAtLabel(codeItems, label, expectedOp) {
   const idx = findLabelIndex(codeItems, label);
-  if (idx < 0) throw new Error(`ck-clip-flag: missing ${label}`);
+  if (idx < 0) throw new Error(`raster-clip-continuation: missing ${label}`);
   if (getOp(codeItems[idx].instruction) !== expectedOp) {
-    throw new Error(`ck-clip-flag: unexpected op at ${label}`);
+    throw new Error(`raster-clip-continuation: unexpected op at ${label}`);
   }
   codeItems.splice(idx, 1);
 }
 
 function insertBefore(codeItems, label, items) {
   const idx = findLabelIndex(codeItems, label);
-  if (idx < 0) throw new Error(`ck-clip-flag: missing insertion target ${label}`);
+  if (idx < 0) throw new Error(`raster-clip-continuation: missing insertion target ${label}`);
   codeItems.splice(idx, 0, ...items);
 }
 
@@ -268,4 +269,8 @@ function getOp(insn) {
   return typeof insn === 'string' ? insn : insn && insn.op;
 }
 
-module.exports = { runCkClipFlag };
+module.exports = {
+  runRasterClipContinuation,
+  runCkClipFlag: runRasterClipContinuation,
+  inferQuadrants,
+};

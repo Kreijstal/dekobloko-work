@@ -92,7 +92,7 @@ const { runSplitTypedReusedLocals } = requireJavaTools('src/passes/splitTypedReu
 
 const { runEiTailClone } = require('./eiTailClone');
 const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
-const { runCkClipFlag } = require('./ckClipFlag');
+const { runRasterClipContinuation } = require('./ckClipFlag');
 const { runQkExceptionSplit } = require('./qkExceptionSplit');
 const { runVlCacheJoin } = require('./vlCacheJoin');
 const { runBParserLoopHeader } = require('./bParserLoopHeader');
@@ -119,6 +119,9 @@ const skipPassNames = new Set((process.env.SKIP_PIPELINE_PASSES || '')
   .split(',')
   .map((name) => name.trim())
   .filter(Boolean));
+if (skipPassNames.has('ck-clip-flag')) {
+  skipPassNames.add('raster-clip-continuation');
+}
 
 if (!inDir || !outDir) {
   console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--profile dekobloko|none|all|name[,name...]] [--skip-inline] [--safe-bytecode]');
@@ -384,7 +387,7 @@ const passes = [
   { name: 'inline-goto-return-island', fn: (a) => runInlineGotoReturnIsland(a) },
   ...(skipInline ? [] : [{ name: 'inline-exit', fn: (a) => runInlineSharedExitGoto(a, { maxBodyInsns: 50 }) }]),
   { name: 'inline-return', fn: (a) => runInlineSharedReturn(a, { oncePerMethod: false }) },
-  { name: 'ck-clip-flag', fn: (a) => runCkClipFlag(a, { targets: profiles.ckClipFlag, quadrants: profiles.ckClipFlagQuadrants }) },
+  { name: 'raster-clip-continuation', fn: (a) => runRasterClipContinuation(a, { targets: profiles.ckClipFlag, quadrants: profiles.ckClipFlagQuadrants }) },
   ...(runtimeSafe ? [] : [{ name: 'qk-exception-split', fn: (a) => runQkExceptionSplit(a, { targets: profiles.qkExceptionSplit }) }]),
   { name: 'vl-cache-join', fn: (a) => runVlCacheJoin(a, { targets: profiles.vlCacheJoin }) },
   { name: 'b-parser-loop-header', fn: (a) => runBParserLoopHeader(a, { targets: profiles.bParserLoopHeader }) },
