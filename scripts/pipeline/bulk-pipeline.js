@@ -77,6 +77,7 @@ const { runMaterializeTypedNullArgs } = requireJavaTools('src/passes/materialize
 const { runMaterializeCheckedFieldInitializers } = requireJavaTools('src/passes/materializeCheckedFieldInitializers', 'src/materializeCheckedFieldInitializers');
 const { runMaterializeStackJoinStores } = requireJavaTools('src/passes/materializeStackJoinStores', 'src/materializeStackJoinStores');
 const { runMaterializeBooleanInvokeArgs } = requireJavaTools('src/passes/materializeBooleanInvokeArgs', 'src/materializeBooleanInvokeArgs');
+const { runMaterializeSkippedStringLocals } = requireJavaTools('src/passes/materializeSkippedStringLocals', 'src/materializeSkippedStringLocals');
 const { runNormalizeBooleanFieldOr } = requireJavaTools('src/passes/normalizeBooleanFieldOr', 'src/normalizeBooleanFieldOr');
 const { runNormalizeDupStoreLoad } = requireJavaTools('src/passes/normalizeDupStoreLoad', 'src/normalizeDupStoreLoad');
 const { runPrimitiveArrayCopyLoops } = requireJavaTools('src/passes/primitiveArrayCopyLoops', 'src/primitiveArrayCopyLoops');
@@ -418,6 +419,12 @@ const passes = [
   { name: 'retarget-branches', fn: (a) => runRetargetBranches(a, { targets: profiles.retargetBranches }) },
   { name: 'split-typed-reused-locals-late', fn: (a) => safeBytecode
     ? runSplitTypedReusedLocals(a, { preserveOriginalLocals: true, minMethodItems: 100, maxIterations: 2 })
+    : { changed: false, rewrites: 0 } },
+  { name: 'split-reference-array-reaching-local-late', fn: (a) => safeBytecode
+    ? runSplitReferenceArrayReachingLocal(a)
+    : { changed: false, rewrites: 0 } },
+  { name: 'materialize-skipped-string-locals', fn: (a) => safeBytecode
+    ? runMaterializeSkippedStringLocals(a)
     : { changed: false, rewrites: 0 } },
   { name: 'lift-source-scope-locals', fn: (a) => safeBytecode ? runLiftSourceScopeLocals(a) : { changed: false, rewrites: 0 } },
 ];
