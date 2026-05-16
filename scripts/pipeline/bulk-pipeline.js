@@ -89,6 +89,7 @@ const { runSplitConcreteObjectReachingLocal } = requireJavaTools('src/passes/spl
 const { runSplitPrimitiveIntBranchLocal } = requireJavaTools('src/passes/splitPrimitiveIntBranchLocal', 'src/splitPrimitiveIntBranchLocal');
 const { runInlineSingleUseBooleanBranch } = requireJavaTools('src/passes/inlineSingleUseBooleanBranch', 'src/inlineSingleUseBooleanBranch');
 const { runIntizeBooleanParameters } = requireJavaTools('src/passes/intizeBooleanParameters', 'src/intizeBooleanParameters');
+const { runLiftSourceScopeLocals } = requireJavaTools('src/passes/liftSourceScopeLocals', 'src/liftSourceScopeLocals');
 const { runSplitTypedReusedLocals } = requireJavaTools('src/passes/splitTypedReusedLocals', 'src/splitTypedReusedLocals');
 
 const { runEiTailClone } = require('./eiTailClone');
@@ -410,6 +411,7 @@ const passes = [
   { name: 'split-typed-reused-locals-late', fn: (a) => safeBytecode
     ? runSplitTypedReusedLocals(a, { preserveOriginalLocals: true, minMethodItems: 300, maxIterations: 2 })
     : { changed: false, rewrites: 0 } },
+  { name: 'lift-source-scope-locals', fn: (a) => safeBytecode ? runLiftSourceScopeLocals(a) : { changed: false, rewrites: 0 } },
 ];
 
 let processed = 0;
