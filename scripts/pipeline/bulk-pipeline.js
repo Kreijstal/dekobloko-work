@@ -88,6 +88,7 @@ const { runSplitReferenceArrayReachingLocal } = requireJavaTools('src/passes/spl
 const { runSplitConcreteObjectReachingLocal } = requireJavaTools('src/passes/splitConcreteObjectReachingLocal', 'src/splitConcreteObjectReachingLocal');
 const { runSplitPrimitiveIntBranchLocal } = requireJavaTools('src/passes/splitPrimitiveIntBranchLocal', 'src/splitPrimitiveIntBranchLocal');
 const { runInlineSingleUseBooleanBranch } = requireJavaTools('src/passes/inlineSingleUseBooleanBranch', 'src/inlineSingleUseBooleanBranch');
+const { runIntizeBooleanParameters } = requireJavaTools('src/passes/intizeBooleanParameters', 'src/intizeBooleanParameters');
 const { runSplitTypedReusedLocals } = requireJavaTools('src/passes/splitTypedReusedLocals', 'src/splitTypedReusedLocals');
 
 const { runEiTailClone } = require('./eiTailClone');
@@ -366,6 +367,7 @@ const passes = [
   { name: 'materialize-checked-field-initializers', fn: (a) => runMaterializeCheckedFieldInitializers(a) },
   { name: 'materialize-stack-join-stores', fn: (a) => runMaterializeStackJoinStores(a) },
   { name: 'normalize-boolean-field-or', fn: (a) => runNormalizeBooleanFieldOr(a) },
+  { name: 'intize-boolean-parameters', fn: (a) => safeBytecode ? runIntizeBooleanParameters(a) : { changed: false, rewrites: 0 } },
   { name: 'normalize-dup-store-load', fn: (a) => runNormalizeDupStoreLoad(a) },
   { name: 'primitive-array-copy-loops', fn: (a) => runPrimitiveArrayCopyLoops(a) },
   { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a, {
