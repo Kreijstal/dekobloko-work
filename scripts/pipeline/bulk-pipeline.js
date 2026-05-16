@@ -377,7 +377,7 @@ const passes = [
   { name: 'cast-object-local-store-from-uses', fn: (a) => runCastObjectLocalStoreFromUses(a) },
   { name: 'split-concrete-object-reaching-local2', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
   { name: 'split-typed-reused-locals', fn: (a) => safeBytecode
-    ? runSplitTypedReusedLocals(a, { preserveOriginalLocals: true, minMethodItems: 500 })
+    ? runSplitTypedReusedLocals(a, { preserveOriginalLocals: true, minMethodItems: 300, maxIterations: 2 })
     : { changed: false, rewrites: 0 } },
   { name: 'remove-dead-dup-store', fn: (a) => runRemoveDeadDupStore(a) },
   { name: 'inline-single-use-boolean-branch', fn: (a) => runInlineSingleUseBooleanBranch(a) },
@@ -402,6 +402,9 @@ const passes = [
   { name: 'materialize-boolean-invoke-args', fn: (a) => runMaterializeBooleanInvokeArgs(a, { targets: profiles.materializeBooleanInvokeArgs }) },
   { name: 'inline-single-use-boolean-branch2', fn: (a) => runInlineSingleUseBooleanBranch(a) },
   { name: 'retarget-branches', fn: (a) => runRetargetBranches(a, { targets: profiles.retargetBranches }) },
+  { name: 'split-typed-reused-locals-late', fn: (a) => safeBytecode
+    ? runSplitTypedReusedLocals(a, { preserveOriginalLocals: true, minMethodItems: 300, maxIterations: 2 })
+    : { changed: false, rewrites: 0 } },
 ];
 
 let processed = 0;
