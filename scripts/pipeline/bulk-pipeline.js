@@ -80,6 +80,8 @@ const { runMaterializeStackJoinStores } = requireJavaTools('src/passes/materiali
 const { runMaterializeBooleanInvokeArgs } = requireJavaTools('src/passes/materializeBooleanInvokeArgs', 'src/materializeBooleanInvokeArgs');
 const { runMaterializeSkippedStringLocals } = requireJavaTools('src/passes/materializeSkippedStringLocals', 'src/materializeSkippedStringLocals');
 const { runMaterializeBranchJoinReferenceLocals } = requireJavaTools('src/passes/materializeBranchJoinReferenceLocals', 'src/materializeBranchJoinReferenceLocals');
+const { runCastReferenceArrayAssignmentsToDeclaredTypes } = requireJavaTools('src/passes/castReferenceArrayAssignmentsToDeclaredTypes', 'src/castReferenceArrayAssignmentsToDeclaredTypes');
+const { runInitializeUnassignedReferenceLocalsFromParameters } = requireJavaTools('src/passes/initializeUnassignedReferenceLocalsFromParameters', 'src/initializeUnassignedReferenceLocalsFromParameters');
 const { runNormalizeBooleanFieldOr } = requireJavaTools('src/passes/normalizeBooleanFieldOr', 'src/normalizeBooleanFieldOr');
 const { runNormalizeDupStoreLoad } = requireJavaTools('src/passes/normalizeDupStoreLoad', 'src/normalizeDupStoreLoad');
 const { runPrimitiveArrayCopyLoops } = requireJavaTools('src/passes/primitiveArrayCopyLoops', 'src/primitiveArrayCopyLoops');
@@ -434,7 +436,16 @@ const passes = [
   { name: 'materialize-branch-join-reference-locals', fn: (a) => safeBytecode
     ? runMaterializeBranchJoinReferenceLocals(a)
     : { changed: false, rewrites: 0 } },
+  { name: 'cast-reference-array-assignments-to-declared-types', fn: (a) => safeBytecode
+    ? runCastReferenceArrayAssignmentsToDeclaredTypes(a)
+    : { changed: false, rewrites: 0 } },
   { name: 'lift-source-scope-locals', fn: (a) => safeBytecode ? runLiftSourceScopeLocals(a) : { changed: false, rewrites: 0 } },
+  { name: 'cast-reference-array-assignments-to-declared-types-late', fn: (a) => safeBytecode
+    ? runCastReferenceArrayAssignmentsToDeclaredTypes(a)
+    : { changed: false, rewrites: 0 } },
+  { name: 'initialize-unassigned-reference-locals-from-parameters', fn: (a) => safeBytecode
+    ? runInitializeUnassignedReferenceLocalsFromParameters(a)
+    : { changed: false, rewrites: 0 } },
 ];
 
 let processed = 0;
