@@ -72,12 +72,14 @@ const { runNarrowShortArrayStores } = requireJavaTools('src/passes/narrowShortAr
 const { runCastObjectFieldStores } = requireJavaTools('src/passes/castObjectFieldStores', 'src/castObjectFieldStores');
 const { runCastPrivateFieldReceivers } = requireJavaTools('src/passes/castPrivateFieldReceivers', 'src/castPrivateFieldReceivers');
 const { runCastInvokeReceiversToOwners } = requireJavaTools('src/passes/castInvokeReceiversToOwners', 'src/castInvokeReceiversToOwners');
+const { runCastStaticInvokeArgsToDeclaredTypes } = requireJavaTools('src/passes/castStaticInvokeArgsToDeclaredTypes', 'src/castStaticInvokeArgsToDeclaredTypes');
 const { runCastObjectLocalStoreFromUses } = requireJavaTools('src/passes/castObjectLocalStoreFromUses', 'src/castObjectLocalStoreFromUses');
 const { runMaterializeTypedNullArgs } = requireJavaTools('src/passes/materializeTypedNullArgs', 'src/materializeTypedNullArgs');
 const { runMaterializeCheckedFieldInitializers } = requireJavaTools('src/passes/materializeCheckedFieldInitializers', 'src/materializeCheckedFieldInitializers');
 const { runMaterializeStackJoinStores } = requireJavaTools('src/passes/materializeStackJoinStores', 'src/materializeStackJoinStores');
 const { runMaterializeBooleanInvokeArgs } = requireJavaTools('src/passes/materializeBooleanInvokeArgs', 'src/materializeBooleanInvokeArgs');
 const { runMaterializeSkippedStringLocals } = requireJavaTools('src/passes/materializeSkippedStringLocals', 'src/materializeSkippedStringLocals');
+const { runMaterializeBranchJoinReferenceLocals } = requireJavaTools('src/passes/materializeBranchJoinReferenceLocals', 'src/materializeBranchJoinReferenceLocals');
 const { runNormalizeBooleanFieldOr } = requireJavaTools('src/passes/normalizeBooleanFieldOr', 'src/normalizeBooleanFieldOr');
 const { runNormalizeDupStoreLoad } = requireJavaTools('src/passes/normalizeDupStoreLoad', 'src/normalizeDupStoreLoad');
 const { runPrimitiveArrayCopyLoops } = requireJavaTools('src/passes/primitiveArrayCopyLoops', 'src/primitiveArrayCopyLoops');
@@ -425,6 +427,12 @@ const passes = [
     : { changed: false, rewrites: 0 } },
   { name: 'materialize-skipped-string-locals', fn: (a) => safeBytecode
     ? runMaterializeSkippedStringLocals(a)
+    : { changed: false, rewrites: 0 } },
+  { name: 'cast-static-invoke-args-to-declared-types', fn: (a) => safeBytecode
+    ? runCastStaticInvokeArgsToDeclaredTypes(a)
+    : { changed: false, rewrites: 0 } },
+  { name: 'materialize-branch-join-reference-locals', fn: (a) => safeBytecode
+    ? runMaterializeBranchJoinReferenceLocals(a)
     : { changed: false, rewrites: 0 } },
   { name: 'lift-source-scope-locals', fn: (a) => safeBytecode ? runLiftSourceScopeLocals(a) : { changed: false, rewrites: 0 } },
 ];
