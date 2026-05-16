@@ -71,6 +71,7 @@ const { runNarrowByteArrayStores } = requireJavaTools('src/passes/narrowByteArra
 const { runNarrowShortArrayStores } = requireJavaTools('src/passes/narrowShortArrayStores', 'src/narrowShortArrayStores');
 const { runCastObjectFieldStores } = requireJavaTools('src/passes/castObjectFieldStores', 'src/castObjectFieldStores');
 const { runCastPrivateFieldReceivers } = requireJavaTools('src/passes/castPrivateFieldReceivers', 'src/castPrivateFieldReceivers');
+const { runCastInvokeReceiversToOwners } = requireJavaTools('src/passes/castInvokeReceiversToOwners', 'src/castInvokeReceiversToOwners');
 const { runCastObjectLocalStoreFromUses } = requireJavaTools('src/passes/castObjectLocalStoreFromUses', 'src/castObjectLocalStoreFromUses');
 const { runMaterializeTypedNullArgs } = requireJavaTools('src/passes/materializeTypedNullArgs', 'src/materializeTypedNullArgs');
 const { runMaterializeCheckedFieldInitializers } = requireJavaTools('src/passes/materializeCheckedFieldInitializers', 'src/materializeCheckedFieldInitializers');
@@ -86,6 +87,7 @@ const { runSplitArrayStoreLocalAssignment } = requireJavaTools('src/passes/split
 const { runSplitCastedLocalRange } = requireJavaTools('src/passes/splitCastedLocalRange', 'src/splitCastedLocalRange');
 const { runSplitReferenceArrayReachingLocal } = requireJavaTools('src/passes/splitReferenceArrayReachingLocal', 'src/splitReferenceArrayReachingLocal');
 const { runSplitConcreteObjectReachingLocal } = requireJavaTools('src/passes/splitConcreteObjectReachingLocal', 'src/splitConcreteObjectReachingLocal');
+const { runSplitTypedAliasCopyLocals } = requireJavaTools('src/passes/splitTypedAliasCopyLocals', 'src/splitTypedAliasCopyLocals');
 const { runSplitPrimitiveIntBranchLocal } = requireJavaTools('src/passes/splitPrimitiveIntBranchLocal', 'src/splitPrimitiveIntBranchLocal');
 const { runInlineSingleUseBooleanBranch } = requireJavaTools('src/passes/inlineSingleUseBooleanBranch', 'src/inlineSingleUseBooleanBranch');
 const { runIntizeBooleanParameters } = requireJavaTools('src/passes/intizeBooleanParameters', 'src/intizeBooleanParameters');
@@ -364,6 +366,9 @@ const passes = [
   { name: 'narrow-short-array-stores', fn: (a) => runNarrowShortArrayStores(a) },
   { name: 'cast-object-field-stores', fn: (a) => runCastObjectFieldStores(a) },
   { name: 'cast-private-field-receivers', fn: (a) => runCastPrivateFieldReceivers(a) },
+  { name: 'cast-invoke-receivers-to-owners', fn: (a) => safeBytecode
+    ? runCastInvokeReceiversToOwners(a)
+    : { changed: false, rewrites: 0 } },
   { name: 'materialize-typed-null-args', fn: (a) => runMaterializeTypedNullArgs(a) },
   { name: 'materialize-checked-field-initializers', fn: (a) => runMaterializeCheckedFieldInitializers(a) },
   { name: 'materialize-stack-join-stores', fn: (a) => runMaterializeStackJoinStores(a) },
@@ -382,6 +387,9 @@ const passes = [
   { name: 'split-concrete-object-reaching-local', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
   { name: 'cast-object-local-store-from-uses', fn: (a) => runCastObjectLocalStoreFromUses(a) },
   { name: 'split-concrete-object-reaching-local2', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
+  { name: 'split-typed-alias-copy-locals', fn: (a) => safeBytecode
+    ? runSplitTypedAliasCopyLocals(a)
+    : { changed: false, rewrites: 0 } },
   { name: 'split-typed-reused-locals', fn: (a) => safeBytecode
     ? runSplitTypedReusedLocals(a, { preserveOriginalLocals: true, minMethodItems: 100, maxIterations: 2 })
     : { changed: false, rewrites: 0 } },
