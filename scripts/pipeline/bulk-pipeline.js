@@ -60,6 +60,10 @@ const { runMultiEntryLoopNormalizer } = requireJavaTools('src/passes/multiEntryL
 const { runCoalesceLoopLoad } = requireJavaTools('src/passes/coalesceLoopLoad', 'src/coalesceLoopLoad');
 const { runDeadStaticBoolFlag, discoverDeadStaticFlags } = requireJavaTools('src/passes/deadStaticBoolFlag', 'src/deadStaticBoolFlag');
 const { runConstructorPreSuperCleanup } = requireJavaTools('src/passes/constructorPreSuperCleanup', 'src/constructorPreSuperCleanup');
+const {
+  runAddDefaultConstructorsForImplicitSupers,
+  discoverAddableConstructorSupers,
+} = requireJavaTools('src/passes/addDefaultConstructorsForImplicitSupers', 'src/addDefaultConstructorsForImplicitSupers');
 const { runInlineSharedExitGoto } = requireJavaTools('src/passes/inlineSharedExitGoto', 'src/inlineSharedExitGoto');
 const { runInlineSharedReturn } = requireJavaTools('src/passes/inlineSharedReturn', 'src/inlineSharedReturn');
 const { runRemoveShadowedExceptionHandlers } = requireJavaTools('src/passes/removeShadowedExceptionHandlers', 'src/removeShadowedExceptionHandlers');
@@ -345,6 +349,16 @@ function collectAutoDeadFlagFields() {
   }).fields;
 }
 
+function collectImplicitSuperCtorClasses() {
+  const classes = [];
+  for (const f of files) {
+    const { ast } = loadAst(path.join(inDir, f));
+    classes.push(...(ast.classes || []));
+  }
+  const byName = new Map(classes.map((cls) => [cls.className, cls]));
+  return discoverAddableConstructorSupers(classes, byName);
+}
+
 const fieldRenames = collectClassShadowFieldRenames();
 const methodRenames = collectMethodOverrideRenames();
 const autoDeadFlagFields = collectAutoDeadFlagFields();
@@ -352,8 +366,10 @@ const deadFlagFields = [
   ...profiles.deadFlagFields,
   ...autoDeadFlagFields,
 ].join(',');
+const implicitSuperCtorClasses = collectImplicitSuperCtorClasses();
 
 const passes = [
+  { name: 'add-default-constructors-for-implicit-supers', fn: (a) => runAddDefaultConstructorsForImplicitSupers(a, { classesToAdd: implicitSuperCtorClasses }) },
   { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a, { targets: profiles.eiTailClone }) },
   { name: 'peephole', fn: (a) => runPeepholeClean(a, {
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
