@@ -148,7 +148,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `pool` | 20 | Native `cg -> vk` renderer scaffolded from the deobfuscated client. The build-20 mirror exposes only one archive-11 music group and no archive 10 instrument index, so no Pool WAVs are verified yet. |
 | `aceofskies` | 13 | One `aos_main_title.mid` from a draft profile; auto-discovery latched onto font names (`font`, `bigfont`, `titlefont`) so WAVs are not yet rendered. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
-| `36cardtrick` | 10 | Source-audio music path identified: `music/36 Card Trick - Title Screen Music`, `music/36 Card Trick - In-game Music`, and `music/36 Card Trick - Pause Screen`; no native-MIDI loader. |
+| `36cardtrick` | 7 | 3 source-audio music tracks rendered through the client `uf`/`qj` mixer. Build 10 handshakes but lacks the named music table. |
 | `armiesofgielinor` | 31 | No named music load site found. The generic native-MIDI profile only found UI strings such as `lobby`. |
 | `confined` | 15 | One source-audio music load site found at `music/music`; no native-MIDI loader. |
 | `drphlogistonsavestheearth` | 12 | Native-style `ok` loader has three music/jingle names: `Dr_Phlogiston_Boss_Break`, `Dr_Phlogiston_GameOver_jingle`, and `Dr_Phlogiston_GameComplete_jingle`; no renderer yet. |
@@ -750,6 +750,28 @@ java -cp .work/games/torquing/classes:.work/games/torquing/music-tools \
   TorquingAudioDumper \
   .work/games/torquing/music \
   .work/games/torquing/js5-cache-build11/torquing
+```
+
+36 Card Trick uses a source-audio path. Build 7 exposes the named archive-4
+music table and archives 2/3 provide the synth and Vorbis sample data.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game 36cardtrick \
+  --config .work/upstream-alterorb-launcher/config.json \
+  --output .work/games/36cardtrick/js5-cache-build7 \
+  --build 7 \
+  --indexes 2,3,4 \
+  --skip-missing-archives
+
+javac -cp .work/games/36cardtrick/classes \
+  -d .work/games/36cardtrick/music-tools \
+  tools/music/CardTrick36AudioRenderer.java
+
+java -cp .work/games/36cardtrick/classes:.work/games/36cardtrick/music-tools \
+  CardTrick36AudioRenderer \
+  .work/games/36cardtrick/js5-cache-build7/36cardtrick \
+  .work/games/36cardtrick/music
 ```
 
 Hold the Line uses the native `vi -> kf` MIDI path. Build 8 matches the
