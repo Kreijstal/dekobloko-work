@@ -502,6 +502,9 @@ const passes = [
   { name: 'retarget-undefined-typed-alias-loads-final', fn: (a) => safeBytecode
     ? runRetargetUndefinedTypedAliasLoads(a)
     : { changed: false, rewrites: 0 } },
+  { name: 'constructor-pre-super-cleanup-final', fn: (a) => safeBytecode
+    ? runConstructorPreSuperCleanup(a, { deleteUnusedSnapshots: true })
+    : { changed: false, rewrites: 0 } },
 ];
 
 let processed = 0;
