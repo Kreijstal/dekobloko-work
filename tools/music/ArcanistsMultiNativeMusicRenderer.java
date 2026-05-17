@@ -13,7 +13,15 @@ public final class ArcanistsMultiNativeMusicRenderer {
     private static final int TAIL_SILENCE_SAMPLES = SAMPLE_RATE * 3;
     private static final String[] TRACKS = {
         "arcanists_titlescreen",
+        "arcanists_giant_mountains",
+        "arcanists_elven",
+        "arcanists_goblin_caves",
         "arcanists_grassland",
+        "arcanists_swamp",
+        "arcanists_graveyard",
+        "arcanists_skycastles",
+        "arcanists_beach_cove",
+        "arcanists_arcane_crystal_cavern",
     };
 
     public static void main(String[] args) throws Exception {
