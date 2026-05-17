@@ -139,7 +139,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `fleacircus` | 12 | 22 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |
-| `arcanistsmulti` | 19 | 2 `ha` MIDI tracks extracted and rendered from archive 5: `arcanists_titlescreen`, `arcanists_grassland`. Build 15 handshakes but has the wrong archive 5 song-name layout. |
+| `arcanistsmulti` | 19 | 2 `ha` tracks extracted and rendered through the client `gh` mixer: `arcanists_titlescreen`, `arcanists_grassland`. Build 15 handshakes but has the wrong archive 5 song-name layout. |
 | `aceofskies` | 13 | One `aos_main_title.mid` from a draft profile; auto-discovery latched onto font names (`font`, `bigfont`, `titlefont`) so WAVs are not yet rendered. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
 
@@ -596,6 +596,29 @@ or `smallfont`. Those are reported as unsupported rather than rendered.
 Dekobloko, Brickabrac, and TetraLink still use their dedicated
 extractor/preprocessor paths below because their formats are not this direct
 native-MIDI profile.
+
+Arcanists Multi is a dedicated `ha -> gh` path. The client initializes archive
+2 and 3 sample banks through `gi`, archive 4 patches, and archive 5 `ha` songs.
+Build 19 is required for the two named song hashes; build 15 handshakes but
+does not expose the matching archive-5 layout.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game arcanistsmulti \
+  --config .work/upstream-alterorb-launcher/config.json \
+  --output .work/games/arcanistsmulti/js5-cache-build19 \
+  --build 19 \
+  --indexes 2,3,4,5
+
+javac -cp .work/games/arcanistsmulti/classes \
+  -d .work/games/arcanistsmulti/music-tools \
+  tools/music/ArcanistsMultiNativeMusicRenderer.java
+
+java -cp .work/games/arcanistsmulti/classes:.work/games/arcanistsmulti/music-tools \
+  ArcanistsMultiNativeMusicRenderer \
+  .work/games/arcanistsmulti/js5-cache-build19/arcanistsmulti \
+  .work/games/arcanistsmulti/music
+```
 
 Dungeon Assault is another dedicated path. CFR source shows `bo` initializing
 archives 13, 14, 15, and 16; `mi` loads nine `vh` songs from archive 16 by

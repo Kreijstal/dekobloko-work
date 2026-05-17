@@ -1,11 +1,16 @@
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import javax.sound.midi.MidiSystem;
 
-public final class ArcanistsMultiMidiDumper {
+public final class ArcanistsMultiNativeMusicRenderer {
+    private static final int SAMPLE_RATE = 22050;
+    private static final int BUFFER_SAMPLES = SAMPLE_RATE;
+    private static final int MAX_SECONDS = 180;
+    private static final int TAIL_SILENCE_SAMPLES = SAMPLE_RATE * 3;
     private static final String[] TRACKS = {
         "arcanists_titlescreen",
         "arcanists_grassland",
@@ -15,24 +20,72 @@ public final class ArcanistsMultiMidiDumper {
         Path cache = Path.of(args.length > 0 ? args[0] : ".work/games/arcanistsmulti/js5-cache");
         Path outRoot = Path.of(args.length > 1 ? args[1] : ".work/games/arcanistsmulti/music");
         Files.createDirectories(outRoot.resolve("midi"));
+        Files.createDirectories(outRoot.resolve("wav"));
 
-        eg songs = archive(cache, 5);
+        lb.a(SAMPLE_RATE, false, 0);
+        eg sampleArchive2 = archive(cache, 2);
+        eg sampleArchive3 = archive(cache, 3);
+        eg patchArchive = archive(cache, 4);
+        eg songArchive = archive(cache, 5);
+        gi samples = new gi(sampleArchive2, sampleArchive3);
+
         int written = 0;
         for (String name : TRACKS) {
-            ha track = ha.a(songs, "", name);
+            ha track = ha.a(songArchive, "", name);
             if (track == null) {
                 System.out.printf("missing %s%n", name);
                 continue;
             }
 
             byte[] midi = repairMidi(track.g);
-            Path out = outRoot.resolve("midi/" + name + ".mid");
-            Files.write(out, midi);
-            MidiSystem.getSequence(out.toFile());
-            System.out.printf("midi %s bytes=%d%n", out.getFileName(), midi.length);
+            Path midiOut = outRoot.resolve("midi/" + name + ".mid");
+            Files.write(midiOut, midi);
+            MidiSystem.getSequence(midiOut.toFile());
+
+            gh player = new gh();
+            player.b(128, 68, 9);
+            if (!player.a(0, samples, patchArchive, track, -123)) {
+                throw new IllegalStateException("could not hydrate instruments for " + name);
+            }
+            player.a((byte)-96, false, track);
+            byte[] pcm = renderPcm(player);
+            Path wavOut = outRoot.resolve("wav/" + name + ".wav");
+            writeMonoWav(wavOut, pcm);
+            System.out.printf("track %s midi=%d wav=%d%n", name, midi.length, pcm.length);
             written++;
         }
-        System.out.printf("wrote %d midi files%n", written);
+        System.out.printf("wrote %d tracks%n", written);
+    }
+
+    private static byte[] renderPcm(gh player) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int[] mix = new int[BUFFER_SAMPLES];
+        int silentTail = 0;
+        int total = 0;
+        int maxSamples = MAX_SECONDS * SAMPLE_RATE;
+        while (total < maxSamples) {
+            Arrays.fill(mix, 0);
+            player.a(mix, 0, mix.length);
+            boolean silent = true;
+            for (int value : mix) {
+                int sample = value >> 8;
+                if (sample < -32768) sample = -32768;
+                if (sample > 32767) sample = 32767;
+                if (sample != 0) silent = false;
+                out.write(sample & 0xff);
+                out.write((sample >>> 8) & 0xff);
+            }
+            total += mix.length;
+            if (silent) {
+                silentTail += mix.length;
+            } else {
+                silentTail = 0;
+            }
+            if (!player.e((byte)-8) && silentTail >= TAIL_SILENCE_SAMPLES) {
+                break;
+            }
+        }
+        return out.toByteArray();
     }
 
     private static eg archive(Path cache, int archive) {
@@ -162,6 +215,36 @@ public final class ArcanistsMultiMidiDumper {
         out.write((value >>> 16) & 0xff);
         out.write((value >>> 8) & 0xff);
         out.write(value & 0xff);
+    }
+
+    private static void writeMonoWav(Path out, byte[] pcm) throws IOException {
+        try (DataOutputStream data = new DataOutputStream(Files.newOutputStream(out))) {
+            data.writeBytes("RIFF");
+            writeLe32(data, 36 + pcm.length);
+            data.writeBytes("WAVEfmt ");
+            writeLe32(data, 16);
+            writeLe16(data, 1);
+            writeLe16(data, 1);
+            writeLe32(data, SAMPLE_RATE);
+            writeLe32(data, SAMPLE_RATE * 2);
+            writeLe16(data, 2);
+            writeLe16(data, 16);
+            data.writeBytes("data");
+            writeLe32(data, pcm.length);
+            data.write(pcm);
+        }
+    }
+
+    private static void writeLe16(DataOutputStream out, int value) throws IOException {
+        out.writeByte(value & 0xff);
+        out.writeByte((value >>> 8) & 0xff);
+    }
+
+    private static void writeLe32(DataOutputStream out, int value) throws IOException {
+        out.writeByte(value & 0xff);
+        out.writeByte((value >>> 8) & 0xff);
+        out.writeByte((value >>> 16) & 0xff);
+        out.writeByte((value >>> 24) & 0xff);
     }
 
     private static final class CacheBackend extends tl {
