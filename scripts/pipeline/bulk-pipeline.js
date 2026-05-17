@@ -100,6 +100,7 @@ const { runInlineSingleUseBooleanBranch } = requireJavaTools('src/passes/inlineS
 const { runIntizeBooleanParameters } = requireJavaTools('src/passes/intizeBooleanParameters', 'src/intizeBooleanParameters');
 const { runLiftSourceScopeLocals } = requireJavaTools('src/passes/liftSourceScopeLocals', 'src/liftSourceScopeLocals');
 const { runSplitTypedReusedLocals } = requireJavaTools('src/passes/splitTypedReusedLocals', 'src/splitTypedReusedLocals');
+const { runRetargetUndefinedTypedAliasLoads } = requireJavaTools('src/passes/retargetUndefinedTypedAliasLoads', 'src/retargetUndefinedTypedAliasLoads');
 
 const { runEiTailClone } = require('./eiTailClone');
 const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
@@ -453,6 +454,9 @@ const passes = [
   { name: 'retarget-branches', fn: (a) => runRetargetBranches(a, { targets: profiles.retargetBranches }) },
   { name: 'split-typed-reused-locals-late', fn: (a) => safeBytecode
     ? runSplitTypedReusedLocals(a, { preserveOriginalLocals: true, minMethodItems: 100, maxIterations: 2 })
+    : { changed: false, rewrites: 0 } },
+  { name: 'retarget-undefined-typed-alias-loads', fn: (a) => safeBytecode
+    ? runRetargetUndefinedTypedAliasLoads(a)
     : { changed: false, rewrites: 0 } },
   { name: 'split-reference-array-reaching-local-late', fn: (a) => safeBytecode
     ? runSplitReferenceArrayReachingLocal(a)
