@@ -1,8 +1,10 @@
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,7 +14,7 @@ import javax.sound.midi.MidiSystem;
 public final class DungeonAssaultAudioDumper {
     private static final int SAMPLE_RATE = 22050;
     private static final int BUFFER_SAMPLES = 1024;
-    private static final int MAX_SECONDS = 420;
+    private static final int MAX_RENDER_SECONDS = 420;
     private static final int TAIL_SILENCE_SAMPLES = SAMPLE_RATE * 2;
 
     private static final Map<String, Integer> SONGS = new LinkedHashMap<String, Integer>();
@@ -48,8 +50,8 @@ public final class DungeonAssaultAudioDumper {
     }
 
     public static void main(String[] args) throws Exception {
-        Path cache = Path.of(args.length > 0 ? args[0] : ".work/games/dungeonassault/js5-cache");
-        Path outRoot = Path.of(args.length > 1 ? args[1] : ".work/games/dungeonassault/music");
+        Path cache = Paths.get(args.length > 0 ? args[0] : ".work/games/dungeonassault/js5-cache");
+        Path outRoot = Paths.get(args.length > 1 ? args[1] : ".work/games/dungeonassault/music");
         Files.createDirectories(outRoot.resolve("midi"));
         Files.createDirectories(outRoot.resolve("wav"));
         Files.createDirectories(outRoot.resolve("samples"));
@@ -62,8 +64,8 @@ public final class DungeonAssaultAudioDumper {
         nh archive16 = archive(cache, 16);
         lc sampleBank = new lc(archive13, archive14);
         ia.W = archive13;
-        ll.ll_r = archive14;
-        ha.ha_k = sampleBank;
+        setStaticField(ll.class, archive14, "ll_r", "r");
+        setStaticField(ha.class, sampleBank, "ha_k", "k");
 
         for (Map.Entry<String, Integer> song : SONGS.entrySet()) {
             renderSong(outRoot, archive15, archive16, sampleBank, song.getKey(), song.getValue());
@@ -80,14 +82,14 @@ public final class DungeonAssaultAudioDumper {
         }
 
         Path midi = outRoot.resolve("midi/" + safeName(name) + ".mid");
-        Files.write(midi, repairMidi(song.vh_i));
+        Files.write(midi, repairMidi(byteArrayField(song, "vh_i", "i")));
         MidiSystem.getSequence(midi.toFile());
 
         tc mixer = new tc();
         if (!mixer.A.a(false, sampleBank, patchArchive, 0, song)) {
             throw new IllegalStateException("failed to hydrate song " + name);
         }
-        mixer.a(22199, 1000000, 64, song, volume, false);
+        mixer.a(22199, 1000000, 64, song, volume, true);
 
         byte[] pcm = renderPcm(mixer);
         Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
@@ -97,13 +99,15 @@ public final class DungeonAssaultAudioDumper {
 
     private static void dumpSample(Path outRoot, String name) throws IOException {
         cf sample = hd.a(false, 256, name);
-        if (sample == null || sample.cf_e == null) {
+        va pcm = sample == null ? null : (va)objectField(sample, "cf_e", "e");
+        if (pcm == null) {
             throw new IllegalStateException("missing sample " + name);
         }
         Path wav = outRoot.resolve("samples/" + safeName(name) + ".wav");
-        writeSampleWav(wav, sample.cf_e);
+        writeSampleWav(wav, pcm);
         System.out.printf("sample %s rate=%d samples=%d loop=%d..%d%n",
-            wav.getFileName(), sample.cf_e.va_n, sample.cf_e.va_k.length, sample.cf_e.va_l, sample.cf_e.va_m);
+            wav.getFileName(), intField(pcm, "va_n", "n"), byteArrayField(pcm, "va_k", "k").length,
+            intField(pcm, "va_l", "l"), intField(pcm, "va_m", "m"));
     }
 
     private static nh archive(Path cache, int archive) {
@@ -115,7 +119,7 @@ public final class DungeonAssaultAudioDumper {
         int[] mix = new int[BUFFER_SAMPLES];
         int silentTail = 0;
         int rendered = 0;
-        int maxSamples = SAMPLE_RATE * MAX_SECONDS;
+        int maxSamples = SAMPLE_RATE * MAX_RENDER_SECONDS;
         while (rendered < maxSamples) {
             Arrays.fill(mix, 0);
             mixer.b(mix, 0, BUFFER_SAMPLES);
@@ -141,15 +145,57 @@ public final class DungeonAssaultAudioDumper {
         if (trim > 0 && trim < bytes.length) {
             return Arrays.copyOf(bytes, bytes.length - trim);
         }
+        if (rendered >= maxSamples) {
+            throw new IOException("render did not finish within " + MAX_RENDER_SECONDS + " seconds");
+        }
         return bytes;
     }
 
     private static void writeSampleWav(Path out, va sample) throws IOException {
-        ByteArrayOutputStream pcm = new ByteArrayOutputStream(sample.va_k.length * 2);
-        for (byte value : sample.va_k) {
+        byte[] data = byteArrayField(sample, "va_k", "k");
+        ByteArrayOutputStream pcm = new ByteArrayOutputStream(data.length * 2);
+        for (byte value : data) {
             writePcm16(pcm, value << 8);
         }
-        writeWav(out, pcm.toByteArray(), sample.va_n);
+        writeWav(out, pcm.toByteArray(), intField(sample, "va_n", "n"));
+    }
+
+    private static void setStaticField(Class<?> owner, Object value, String... names) {
+        try {
+            Field field = field(owner, names);
+            field.set(null, value);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Object objectField(Object target, String... names) {
+        try {
+            return field(target.getClass(), names).get(target);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static byte[] byteArrayField(Object target, String... names) {
+        return (byte[])objectField(target, names);
+    }
+
+    private static int intField(Object target, String... names) {
+        return ((Integer)objectField(target, names)).intValue();
+    }
+
+    private static Field field(Class<?> owner, String... names) throws NoSuchFieldException {
+        for (String name : names) {
+            try {
+                Field field = owner.getDeclaredField(name);
+                field.setAccessible(true);
+                return field;
+            } catch (NoSuchFieldException ignored) {
+                // Try the next known obfuscated/deobfuscated spelling.
+            }
+        }
+        throw new NoSuchFieldException(owner.getName() + "." + Arrays.toString(names));
     }
 
     private static void writePcm16(ByteArrayOutputStream out, int value) {
