@@ -136,23 +136,26 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `bouncedown` | 11 | 13 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `crazycrystals` | 15 | 11 `rm` tracks extracted and rendered through the client `wg` mixer; build 14 has SFX but not the named music archive layout. |
 | `escapevector` | 21 | 8 native music tracks plus 52 decoded sample WAVs extracted/rendered. Build 12 handshakes but archive 4 lacks the music file-name table. |
+| `geoblox` | 1 | 4 `rf` tracks extracted and rendered through the client `kj` mixer. Build 11 handshakes but has the wrong archive 5 song-name layout. |
 | `fleacircus` | 12 | 22 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
+| `holdtheline` | 8 | Native `vi -> kf` renderer added. The build-8 mirror exposes 3 of the 7 named music groups (`title`, `victory_jingle`, `classic`); the other four are missing from the cache mirror. |
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |
 | `arcanistsmulti` | 19 | 10 `ha` tracks extracted and rendered through the client `gh` mixer. Build 15 handshakes but has the wrong archive 5 song-name layout. |
 | `bachelorfridge` | 70 | 11 `kia` tracks extracted and rendered through the client `jp` mixer. Build 21 handshakes but does not expose the 8/9 music indexes used by this gamepack. |
 | `tombracer` | 81 | 4 `qua` tracks extracted and rendered through the client `l` mixer. Build 31 handshakes but does not expose the 26-29 music indexes used by this gamepack. |
+| `torquing` | 11 | 13 source-audio music tracks extracted and rendered through the client `wl` mixer. Build 16 handshakes but lacks the named archive-4 music table used by this gamepack. |
 | `pool` | 20 | Native `cg -> vk` renderer scaffolded from the deobfuscated client. The build-20 mirror exposes only one archive-11 music group and no archive 10 instrument index, so no Pool WAVs are verified yet. |
 | `aceofskies` | 13 | One `aos_main_title.mid` from a draft profile; auto-discovery latched onto font names (`font`, `bigfont`, `titlefont`) so WAVs are not yet rendered. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
 
 The remaining AlterOrb games — `36cardtrick`, `armiesofgielinor`,
-`confined`, `drphlogistonsavestheearth`, `geoblox`,
-`holdtheline`, `kickabout`, `lexicominos`, `monkeypuzzle2`, `shatteredplans`,
+`confined`, `drphlogistonsavestheearth`,
+`kickabout`, `lexicominos`, `monkeypuzzle2`, `shatteredplans`,
 `solknight`, `stellarshard`, `sumoblitz`, `terraphoenix`,
-`torchallenge`, `torquing`, `transmogrify`, `voidhunters`, and `wizardrun` —
+`torchallenge`, `transmogrify`, `voidhunters`, and `wizardrun` —
 have no music output yet. `tools/music/profile-funorb-music.py`
-reports `discover=ok` for several of them (`confined`, `geoblox`, `kickabout`,
+reports `discover=ok` for several of them (`confined`, `kickabout`,
 `lexicominos`, `shatteredplans`, `transmogrify`, `voidhunters`),
 but the candidate names are UI/font assets such as `arezzo14`, `chatfont`, or
 `smallfont` rather than music tracks, so the validation step rejects the profile
@@ -695,6 +698,74 @@ java -cp .work/games/tombracer/classes:.work/games/tombracer/music-tools \
   TombRacerNativeMusicRenderer \
   .work/games/tombracer/js5-cache-build81/tombracer \
   .work/games/tombracer/music
+```
+
+Geoblox uses the native `rf -> kj` MIDI path with archives 2/3 as sample banks,
+archive 4 as patches, and archive 5 as songs. Build 1 is the matching cache for
+the four named tracks in this gamepack.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game geoblox \
+  --config .work/upstream-alterorb-launcher/config.json \
+  --output .work/games/geoblox/js5-cache-build1 \
+  --build 1 \
+  --indexes 2,3,4,5
+
+javac -cp .work/games/geoblox/classes \
+  -d .work/games/geoblox/music-tools \
+  tools/music/GeobloxAudioDumper.java
+
+java -cp .work/games/geoblox/classes:.work/games/geoblox/music-tools \
+  GeobloxAudioDumper \
+  .work/games/geoblox/js5-cache-build1/geoblox \
+  .work/games/geoblox/music
+```
+
+Torquing uses a source-audio path rather than native MIDI. Build 11 exposes the
+archive-4 music names loaded by the client; archives 5 and 6 provide the Vorbis
+and synth sample data.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game torquing \
+  --config .work/upstream-alterorb-launcher/config.json \
+  --output .work/games/torquing/js5-cache-build11 \
+  --build 11 \
+  --indexes 4,5,6
+
+javac -cp .work/games/torquing/classes \
+  -d .work/games/torquing/music-tools \
+  tools/music/TorquingAudioDumper.java
+
+java -cp .work/games/torquing/classes:.work/games/torquing/music-tools \
+  TorquingAudioDumper \
+  .work/games/torquing/music \
+  .work/games/torquing/js5-cache-build11/torquing
+```
+
+Hold the Line uses the native `vi -> kf` MIDI path. Build 8 matches the
+gamepack's song table, but the current mirror only returns three of the seven
+named song groups; the renderer logs the missing groups and renders the
+available `title`, `victory_jingle`, and `classic` tracks.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game holdtheline \
+  --config .work/upstream-alterorb-launcher/config.json \
+  --output .work/games/holdtheline/js5-cache-build8 \
+  --build 8 \
+  --indexes 5,6,7,8 \
+  --skip-missing-archives
+
+javac -cp .work/games/holdtheline/classes \
+  -d .work/games/holdtheline/music-tools \
+  tools/music/HoldTheLineNativeMusicRenderer.java
+
+java -cp .work/games/holdtheline/classes:.work/games/holdtheline/music-tools \
+  HoldTheLineNativeMusicRenderer \
+  .work/games/holdtheline/js5-cache-build8/holdtheline \
+  .work/games/holdtheline/music-native
 ```
 
 Pool uses the native `cg -> vk` MIDI path rather than the generic archive-10
