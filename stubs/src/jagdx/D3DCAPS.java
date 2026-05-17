@@ -10,4 +10,5 @@ public class D3DCAPS {
     public int MaxSimultaneousTextures;
     public int MaxStreams;
     public int DevCaps;
+    public int VertexShaderVersion;
 }

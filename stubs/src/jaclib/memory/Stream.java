@@ -7,6 +7,7 @@ public class Stream extends Buffer {
     public void a(Buffer buffer) {}
     public void a(float value) {}
     public void a(int value) {}
+    public void b() {}
     public void b(int value) {}
     public void b(float value) {}
 }

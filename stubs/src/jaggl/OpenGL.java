@@ -143,6 +143,7 @@ public class OpenGL {
     public void b() {}
     public long init(Canvas canvas, int r, int g, int b, int depth, int stencil, Object heap) { return 0L; }
     public long prepareSurface(Canvas canvas) { return 0L; }
+    public long createPbuffer(int width, int height) { return 0L; }
     public void release() {}
     public void releasePbuffer(long pbuffer) {}
     public void releaseSurface(Canvas canvas, long surface) {}

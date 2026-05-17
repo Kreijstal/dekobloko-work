@@ -30,8 +30,14 @@ public class IDirect3DDevice {
     public int SetLight(int index, D3DLIGHT light) { return 0; }
     public int SetPixelShader(IDirect3DPixelShader shader) { return 0; }
     public int SetVertexShader(IDirect3DVertexShader shader) { return 0; }
-    public IDirect3DVertexShader a(int[] data) { return new IDirect3DVertexShader(); }
-    public IDirect3DPixelShader b(int[] data) { return new IDirect3DPixelShader(); }
+    public int SetVertexShaderConstantF(int register, float[] values, int count) { return 0; }
+    public IDirect3DPixelShader a(int[] data) { return new IDirect3DPixelShader(); }
+    public IDirect3DPixelShader a(Object data) { return new IDirect3DPixelShader(); }
+    public IDirect3DVertexShader b(int[] data) { return new IDirect3DVertexShader(); }
+    public IDirect3DVertexShader b(Object data) { return new IDirect3DVertexShader(); }
+    public IDirect3DVertexBuffer a(int size, int usage, int fvf, int pool, IDirect3DVertexBuffer oldBuffer) { return new IDirect3DVertexBuffer(); }
+    public IDirect3DIndexBuffer a(int size, int usage, int format, int pool, IDirect3DIndexBuffer oldBuffer) { return new IDirect3DIndexBuffer(); }
+    public IDirect3DVolumeTexture a(int width, int height, int depth, int levels, int usage, int format, int pool) { return new IDirect3DVolumeTexture(); }
     public int a(Object... args) { return 0; }
     public int b(Object... args) { return 0; }
 }

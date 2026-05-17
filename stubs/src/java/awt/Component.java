@@ -17,6 +17,14 @@ public class Component implements ImageObserver {
         return Toolkit.getDefaultToolkit();
     }
 
+    public Object getTreeLock() {
+        return this;
+    }
+
+    public Point getLocationOnScreen() {
+        return new Point();
+    }
+
     public void setCursor(Cursor cursor) {
     }
 
