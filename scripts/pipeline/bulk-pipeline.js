@@ -499,6 +499,9 @@ const passes = [
   { name: 'materialize-skipped-string-locals-final', fn: (a) => safeBytecode
     ? runMaterializeSkippedStringLocals(a)
     : { changed: false, rewrites: 0 } },
+  { name: 'retarget-undefined-typed-alias-loads-final', fn: (a) => safeBytecode
+    ? runRetargetUndefinedTypedAliasLoads(a)
+    : { changed: false, rewrites: 0 } },
 ];
 
 let processed = 0;
