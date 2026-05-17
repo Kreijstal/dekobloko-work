@@ -53,6 +53,30 @@ tracked repository paths.
 - Node.js for `apps/launcher/assert-trace.js`
 - `curl` for fetching the gamepack
 
+For launcher-only work, this repository is otherwise self-contained. For the
+deobfuscation pipeline, also clone
+[`java-tools`](https://github.com/Kreijstal/java-tools); the pipeline uses it
+for generic bytecode parsing, serialization, and reusable transforms.
+
+## Checkout Setup
+
+The repository can live anywhere. The examples below use `~/git`:
+
+```bash
+mkdir -p ~/git
+cd ~/git
+git clone https://github.com/Kreijstal/dekobloko-work.git
+git clone https://github.com/Kreijstal/java-tools.git
+
+cd dekobloko-work
+export JAVA_TOOLS_DIR="$HOME/git/java-tools"
+```
+
+`JAVA_TOOLS_DIR` is only required for scripts that call into `java-tools`, such
+as `scripts/pipeline/bulk-pipeline.js`. If `JAVA_TOOLS_DIR` is unset, those
+scripts fall back to the author's local path, `/home/kreijstal/git/java-tools`,
+which is not expected to exist on other machines.
+
 ## Fetch the Gamepack
 
 ```bash
@@ -115,7 +139,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `fleacircus` | 12 | 22 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |
-| `arcanistsmulti` | 15 | Profile drafted but `samples/` is empty; load-string scrape did not match the dumper regex on the current CFR output. |
+| `arcanistsmulti` | 19 | 2 `ha` MIDI tracks extracted and rendered from archive 5: `arcanists_titlescreen`, `arcanists_grassland`. Build 15 handshakes but has the wrong archive 5 song-name layout. |
 | `aceofskies` | 13 | One `aos_main_title.mid` from a draft profile; auto-discovery latched onto font names (`font`, `bigfont`, `titlefont`) so WAVs are not yet rendered. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
 
