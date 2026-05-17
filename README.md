@@ -135,7 +135,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `starcannon` | 10 | 20 SFX plus 14 voice WAVs extracted/rendered; no music renderer yet (no native-MIDI loader found in CFR). |
 | `bouncedown` | 11 | 13 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `crazycrystals` | 14 | 56 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
-| `escapevector` | 12 | 52 decoded sample WAVs extracted. No music tracks (CFR failed on this gamepack). |
+| `escapevector` | 21 | 8 native music tracks plus 52 decoded sample WAVs extracted/rendered. Build 12 handshakes but archive 4 lacks the music file-name table. |
 | `fleacircus` | 12 | 22 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |

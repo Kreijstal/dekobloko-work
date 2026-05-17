@@ -1,8 +1,11 @@
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,19 +14,58 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class EscapeVectorAudioDumper {
+    private static final int SAMPLE_RATE = 22050;
+    private static final int BUFFER_SAMPLES = 1024;
+    private static final int CHANNELS = 2;
+    private static final int MAX_RENDER_SECONDS = 420;
+    private static final int TAIL_SILENCE_SAMPLES = SAMPLE_RATE * 2;
+
     private static final Pattern LOAD = Pattern.compile(
         "\\b(kj|in)\\.a\\([^,]+,\\s*\"([^\"]*)\",\\s*\"([^\"]*)\"\\)\\.(a|b)\\(\\)"
     );
+    private static final String[] MUSIC = {
+        "music/menu",
+        "music/briefing",
+        "music/panic",
+        "music/oss_area_1",
+        "music/oss_area_2",
+        "music/oss_area_3",
+        "music/oss_area_4",
+        "music/simulator",
+    };
 
     public static void main(String[] args) throws Exception {
-        Path gameRoot = Path.of(args.length > 0 ? args[0] : ".work/games/escapevector");
-        Path outRoot = args.length > 1 ? Path.of(args[1]) : gameRoot.resolve("music");
-        Path cache = args.length > 2 ? Path.of(args[2]) : gameRoot.resolve("js5-cache");
+        Path gameRoot = Paths.get(args.length > 0 ? args[0] : ".work/games/escapevector");
+        Path outRoot = args.length > 1 ? Paths.get(args[1]) : gameRoot.resolve("music");
+        Path cache = args.length > 2 ? Paths.get(args[2]) : gameRoot.resolve("js5-cache-audio");
         Path sourceRoot = gameRoot.resolve("cfr");
+        Files.createDirectories(outRoot.resolve("wav"));
         Files.createDirectories(outRoot.resolve("samples"));
 
+        ie.a(SAMPLE_RATE, true, 10);
         mf synthArchive = archive(cache, 2);
         mf vorbisArchive = archive(cache, 3);
+        mf musicArchive = archive(cache, 4);
+        ec samples = new ec(synthArchive, vorbisArchive);
+
+        for (String name : MUSIC) {
+            ce track = nm.a(2, "", samples, musicArchive, name);
+            if (track == null) {
+                throw new IllegalStateException("missing music " + name);
+            }
+            loadTrackSamples(track);
+            o player = new o(track);
+            player.d(64);
+            player.a(false);
+
+            hj mixer = new hj();
+            mixer.c(player);
+            byte[] pcm = renderMusic(mixer);
+            Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
+            writePcm16Wav(wav, pcm, SAMPLE_RATE, CHANNELS);
+            System.out.printf("music %s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * CHANNELS * 2));
+        }
+
         Set<String> seen = new LinkedHashSet<>();
         int written = 0;
 
@@ -32,7 +74,7 @@ public final class EscapeVectorAudioDumper {
             .sorted()
             .collect(Collectors.toList());
         for (Path source : sources) {
-            Matcher matcher = LOAD.matcher(Files.readString(source));
+            Matcher matcher = LOAD.matcher(new String(Files.readAllBytes(source), "UTF-8"));
             while (matcher.find()) {
                 String loader = matcher.group(1);
                 String group = matcher.group(2);
@@ -87,21 +129,83 @@ public final class EscapeVectorAudioDumper {
     }
 
     private static void writePcm16Wav(Path out, byte[] pcm, int sampleRate) throws IOException {
+        writePcm16Wav(out, pcm, sampleRate, 1);
+    }
+
+    private static void writePcm16Wav(Path out, byte[] pcm, int sampleRate, int channels) throws IOException {
         try (DataOutputStream data = new DataOutputStream(Files.newOutputStream(out))) {
             data.writeBytes("RIFF");
             writeLe32(data, 36 + pcm.length);
             data.writeBytes("WAVEfmt ");
             writeLe32(data, 16);
             writeLe16(data, 1);
-            writeLe16(data, 1);
+            writeLe16(data, channels);
             writeLe32(data, sampleRate);
-            writeLe32(data, sampleRate * 2);
-            writeLe16(data, 2);
+            writeLe32(data, sampleRate * channels * 2);
+            writeLe16(data, channels * 2);
             writeLe16(data, 16);
             data.writeBytes("data");
             writeLe32(data, pcm.length);
             data.write(pcm);
         }
+    }
+
+    private static void loadTrackSamples(ce track) {
+        try {
+            Method method = ce.class.getDeclaredMethod("a", int.class);
+            method.setAccessible(true);
+            method.invoke(track, 260404420);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static byte[] renderMusic(hj mixer) throws IOException {
+        ByteArrayOutputStream pcm = new ByteArrayOutputStream();
+        int[] mix = new int[BUFFER_SAMPLES * CHANNELS];
+        int silentTail = 0;
+        int rendered = 0;
+        int maxSamples = SAMPLE_RATE * MAX_RENDER_SECONDS;
+        while (rendered < maxSamples) {
+            Arrays.fill(mix, 0);
+            mixer.b(mix, 0, BUFFER_SAMPLES);
+            boolean silent = true;
+            for (int sample : mix) {
+                if (sample != 0) {
+                    silent = false;
+                }
+                writePcm16(pcm, sample >> 8);
+            }
+            rendered += BUFFER_SAMPLES;
+            if (silent) {
+                silentTail += BUFFER_SAMPLES;
+            } else {
+                silentTail = 0;
+            }
+            if (silentTail >= TAIL_SILENCE_SAMPLES) {
+                break;
+            }
+        }
+        byte[] bytes = pcm.toByteArray();
+        int trim = Math.min(silentTail, TAIL_SILENCE_SAMPLES) * CHANNELS * 2;
+        if (trim > 0 && trim < bytes.length) {
+            return Arrays.copyOf(bytes, bytes.length - trim);
+        }
+        if (rendered >= maxSamples) {
+            throw new IOException("render did not finish within " + MAX_RENDER_SECONDS + " seconds");
+        }
+        return bytes;
+    }
+
+    private static void writePcm16(ByteArrayOutputStream out, int value) {
+        int s = value;
+        if (s < Short.MIN_VALUE) {
+            s = Short.MIN_VALUE;
+        } else if (s > Short.MAX_VALUE) {
+            s = Short.MAX_VALUE;
+        }
+        out.write(s & 0xff);
+        out.write((s >>> 8) & 0xff);
     }
 
     private static String safeName(String name) {
@@ -149,7 +253,12 @@ public final class EscapeVectorAudioDumper {
                 if (raw == null) {
                     return null;
                 }
-                index = new f(raw, ji.a(255, raw.length, raw), null);
+                try {
+                    index = new f(raw, ji.a(255, raw.length, raw), null);
+                } catch (RuntimeException ex) {
+                    byte[] stripped = Arrays.copyOf(raw, raw.length - 2);
+                    index = new f(stripped, ji.a(255, stripped.length, stripped), null);
+                }
                 return index;
             } catch (IOException e) {
                 throw new RuntimeException(e);
