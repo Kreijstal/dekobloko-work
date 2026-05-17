@@ -446,6 +446,9 @@ const passes = [
   { name: 'initialize-unassigned-reference-locals-from-parameters', fn: (a) => safeBytecode
     ? runInitializeUnassignedReferenceLocalsFromParameters(a)
     : { changed: false, rewrites: 0 } },
+  { name: 'materialize-skipped-string-locals-final', fn: (a) => safeBytecode
+    ? runMaterializeSkippedStringLocals(a)
+    : { changed: false, rewrites: 0 } },
 ];
 
 let processed = 0;
