@@ -353,7 +353,10 @@ const deadFlagFields = [
 
 const passes = [
   { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a, { targets: profiles.eiTailClone }) },
-  { name: 'peephole', fn: (a) => runPeepholeClean(a, runtimeSafe ? { removeRethrowHandlers: false } : {}) },
+  { name: 'peephole', fn: (a) => runPeepholeClean(a, {
+    ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
+    ...(safeBytecode ? { invertConditionalsOverGoto: true, invertConditionalsOverGotoClasses: ['emb'] } : {}),
+  }) },
   ...(keepRuntimeHandlers || runtimeSafe ? [] : [{ name: 'runtime-exception-handlers', fn: (a) => removeRuntimeExceptionHandlers(a, { keepHandlerCode: true }) }]),
   ...(runtimeSafe ? [] : [
     { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a) },
@@ -413,7 +416,10 @@ const passes = [
   { name: 'source-scope-local-init', fn: (a) => runSourceScopeLocalInit(a, { targets: profiles.sourceScopeLocalInit }) },
   { name: 'stack-receiver-tail-clone', fn: (a) => runStackReceiverTailClone(a, { targets: profiles.stackReceiverTailClone }) },
   ...(runtimeSafe ? [] : [{ name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) }]),
-  { name: 'peephole2', fn: (a) => runPeepholeClean(a, runtimeSafe ? { removeRethrowHandlers: false } : {}) },
+  { name: 'peephole2', fn: (a) => runPeepholeClean(a, {
+    ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
+    ...(safeBytecode ? { invertConditionalsOverGoto: true, invertConditionalsOverGotoClasses: ['emb'] } : {}),
+  }) },
   ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a, {
     ...(safeBytecode ? { requireIsolatedMergeTarget: true, guardStackGotos: true } : {}),
     ...profiles.controlFlowDceOptions,
