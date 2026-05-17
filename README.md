@@ -140,21 +140,23 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |
 | `arcanistsmulti` | 19 | 10 `ha` tracks extracted and rendered through the client `gh` mixer. Build 15 handshakes but has the wrong archive 5 song-name layout. |
+| `pool` | 20 | Native `cg -> vk` renderer scaffolded from the deobfuscated client. The build-20 mirror exposes only one archive-11 music group and no archive 10 instrument index, so no Pool WAVs are verified yet. |
 | `aceofskies` | 13 | One `aos_main_title.mid` from a draft profile; auto-discovery latched onto font names (`font`, `bigfont`, `titlefont`) so WAVs are not yet rendered. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
 
 The remaining AlterOrb games — `36cardtrick`, `armiesofgielinor`,
 `bachelorfridge`, `confined`, `drphlogistonsavestheearth`, `geoblox`,
-`holdtheline`, `kickabout`, `lexicominos`, `monkeypuzzle2`, `pool`,
-`shatteredplans`, `solknight`, `stellarshard`, `sumoblitz`, `terraphoenix`,
+`holdtheline`, `kickabout`, `lexicominos`, `monkeypuzzle2`, `shatteredplans`,
+`solknight`, `stellarshard`, `sumoblitz`, `terraphoenix`,
 `tombracer`, `torchallenge`, `torquing`, `transmogrify`, `voidhunters`, and
 `wizardrun` — have no music output yet. `tools/music/profile-funorb-music.py`
 reports `discover=ok` for several of them (`confined`, `geoblox`, `kickabout`,
-`lexicominos`, `pool`, `shatteredplans`, `tombracer`, `transmogrify`,
-`voidhunters`), but the candidate names are UI/font assets such as `arezzo14`,
-`chatfont`, or `smallfont` rather than music tracks, so the validation step
-rejects the profile (see `music-profile-validation-summary.json`). The rest
-either have no native-MIDI loader in CFR Java or fail CFR entirely.
+`lexicominos`, `shatteredplans`, `tombracer`, `transmogrify`, `voidhunters`),
+but the candidate names are UI/font assets such as `arezzo14`, `chatfont`, or
+`smallfont` rather than music tracks, so the validation step rejects the profile
+(see `music-profile-validation-summary.json`). Pool is a separate native
+`cg -> vk` case; CFR source confirms its music strings, but the current build-20
+cache mirror is incomplete for rendering.
 
 Download one cache with the build table:
 
@@ -618,6 +620,41 @@ java -cp .work/games/arcanistsmulti/classes:.work/games/arcanistsmulti/music-too
   ArcanistsMultiNativeMusicRenderer \
   .work/games/arcanistsmulti/js5-cache-build19/arcanistsmulti \
   .work/games/arcanistsmulti/music
+```
+
+Pool uses the native `cg -> vk` MIDI path rather than the generic archive-10
+profile. Deobfuscated CFR source shows the client loading `title`,
+`title_next_door`, `pool_modern`, `pool_jungle`, `pool_plasma`, `pool_polar`,
+`pool_space`, and the associated win/lose jingles through `cg.a(...)`.
+The renderer below follows the client setup: archives 8 and 9 feed `cf`, archive
+10 is the instrument archive passed to `vk.a(...)`, and archive 11 holds the
+`cg` tracks.
+
+The current validated build 20 handshakes, but the protocol mirror has not yet
+produced the complete audio cache: archive 11 only returned group 21 locally and
+archive 10 was absent from the master table. The renderer is kept as the client
+path to use once a warmed or corrected Pool cache includes archives 10 and 11.
+
+```bash
+JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
+node scripts/pipeline/bulk-pipeline.js \
+  .work/games/pool/classes \
+  .work/games/pool/deob-profile/out \
+  --profile none \
+  --runtime-safe
+
+java -jar /home/kreijstal/git/java-tools/lib/cfr.jar \
+  .work/games/pool/deob-profile/out/*.class \
+  --outputdir .work/games/pool/deob-profile/cfr
+
+javac -cp .work/games/pool/classes \
+  -d .work/games/pool/music-tools \
+  tools/music/PoolNativeMusicRenderer.java
+
+java -cp .work/games/pool/classes:.work/games/pool/music-tools \
+  PoolNativeMusicRenderer \
+  .work/games/pool/js5-cache/pool \
+  .work/games/pool/music
 ```
 
 Dungeon Assault is another dedicated path. CFR source shows `bo` initializing
