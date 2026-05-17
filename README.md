@@ -134,7 +134,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `dungeonassault` | 32 | 9 `vh` MIDI/WAV tracks plus 16 named PCM samples extracted/rendered. |
 | `starcannon` | 10 | 20 SFX plus 14 voice WAVs extracted/rendered; no music renderer yet (no native-MIDI loader found in CFR). |
 | `bouncedown` | 11 | 13 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
-| `crazycrystals` | 14 | 56 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
+| `crazycrystals` | 15 | 11 `rm` tracks extracted and rendered through the client `wg` mixer; build 14 has SFX but not the named music archive layout. |
 | `escapevector` | 21 | 8 native music tracks plus 52 decoded sample WAVs extracted/rendered. Build 12 handshakes but archive 4 lacks the music file-name table. |
 | `fleacircus` | 12 | 22 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
@@ -622,6 +622,30 @@ java -cp .work/games/arcanistsmulti/classes:.work/games/arcanistsmulti/music-too
   ArcanistsMultiNativeMusicRenderer \
   .work/games/arcanistsmulti/js5-cache-build19/arcanistsmulti \
   .work/games/arcanistsmulti/music
+```
+
+Crazy Crystals uses the native `rm -> wg` music path. The client loads `menu`
+plus the 10 `hf.b` tracks from archive 3, hydrates patches from archive 8, and
+uses `bn(archive2, archive4)` for the generated and Vorbis sample banks. Build
+14 contains the sample-effect layout used by the older dumper, but build 15 is
+the matching cache for the named music groups.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game crazycrystals \
+  --config .work/upstream-alterorb-launcher/config.json \
+  --output .work/games/crazycrystals/js5-cache-build15 \
+  --build 15 \
+  --indexes 2,3,4,8
+
+javac -cp .work/games/crazycrystals/classes \
+  -d .work/games/crazycrystals/music-tools \
+  tools/music/CrazyCrystalsNativeMusicRenderer.java
+
+java -cp .work/games/crazycrystals/classes:.work/games/crazycrystals/music-tools \
+  CrazyCrystalsNativeMusicRenderer \
+  .work/games/crazycrystals/js5-cache-build15/crazycrystals \
+  .work/games/crazycrystals/music
 ```
 
 Bachelor Fridge uses the native `kia -> jp` music path. The client wires archive
