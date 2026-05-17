@@ -355,7 +355,12 @@ const passes = [
   { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a, { targets: profiles.eiTailClone }) },
   { name: 'peephole', fn: (a) => runPeepholeClean(a, {
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
-    ...(safeBytecode ? { invertConditionalsOverGoto: true, invertConditionalsOverGotoClasses: ['emb'] } : {}),
+    ...(safeBytecode ? {
+      invertConditionalsOverGoto: true,
+      invertConditionalsOverGotoClasses: ['emb'],
+      cloneSharedFallthroughJoins: true,
+      cloneSharedFallthroughJoinClasses: ['hbb'],
+    } : {}),
   }) },
   ...(keepRuntimeHandlers || runtimeSafe ? [] : [{ name: 'runtime-exception-handlers', fn: (a) => removeRuntimeExceptionHandlers(a, { keepHandlerCode: true }) }]),
   ...(runtimeSafe ? [] : [
@@ -418,7 +423,12 @@ const passes = [
   ...(runtimeSafe ? [] : [{ name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) }]),
   { name: 'peephole2', fn: (a) => runPeepholeClean(a, {
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
-    ...(safeBytecode ? { invertConditionalsOverGoto: true, invertConditionalsOverGotoClasses: ['emb'] } : {}),
+    ...(safeBytecode ? {
+      invertConditionalsOverGoto: true,
+      invertConditionalsOverGotoClasses: ['emb'],
+      cloneSharedFallthroughJoins: true,
+      cloneSharedFallthroughJoinClasses: ['hbb'],
+    } : {}),
   }) },
   ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a, {
     ...(safeBytecode ? { requireIsolatedMergeTarget: true, guardStackGotos: true } : {}),
