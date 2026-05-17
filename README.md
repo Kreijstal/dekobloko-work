@@ -148,20 +148,28 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `pool` | 20 | Native `cg -> vk` renderer scaffolded from the deobfuscated client. The build-20 mirror exposes only one archive-11 music group and no archive 10 instrument index, so no Pool WAVs are verified yet. |
 | `aceofskies` | 13 | One `aos_main_title.mid` from a draft profile; auto-discovery latched onto font names (`font`, `bigfont`, `titlefont`) so WAVs are not yet rendered. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
+| `36cardtrick` | 10 | Source-audio music path identified: `music/36 Card Trick - Title Screen Music`, `music/36 Card Trick - In-game Music`, and `music/36 Card Trick - Pause Screen`; no native-MIDI loader. |
+| `armiesofgielinor` | 31 | No named music load site found. The generic native-MIDI profile only found UI strings such as `lobby`. |
+| `confined` | 15 | One source-audio music load site found at `music/music`; no native-MIDI loader. |
+| `drphlogistonsavestheearth` | 12 | Native-style `ok` loader has three music/jingle names: `Dr_Phlogiston_Boss_Break`, `Dr_Phlogiston_GameOver_jingle`, and `Dr_Phlogiston_GameComplete_jingle`; no renderer yet. |
+| `kickabout` | 19 | No named music load site found; `MThd` markers are present only in the generic audio classes and profiler candidates are UI/font assets. |
+| `lexicominos` | 14 | Music-like sample loops found (`ingameleft`, `ingameright`, `score_increase_loop`), but no native-MIDI soundtrack profile validates. |
+| `monkeypuzzle2` | 12 | Ten source-audio music loads found under `music/Monkey Puzzle ...`; no native-MIDI loader. |
+| `shatteredplans` | 15 | No named music load site found; generic profile candidates are UI/font assets. |
+| `solknight` | 11 | No named music load site found; generic profile candidates are UI/font assets. |
+| `stellarshard` | 11 | Two source-audio music loads found: `music/Stellar_Shard_ingame` and `music/Stellar_Shard_Halloween`; no native-MIDI loader. |
+| `sumoblitz` | 13 | Native-style `tv` loader has `titlescreen_track` and `win_track`, but no complete soundtrack profile validates from the current cache. |
+| `terraphoenix` | 32 | No named music load site found; visible `INGAME` strings are UI/help text. |
+| `torchallenge` | 12 | `TOR_Boss_Fight` and boss sound-effect names found, but no native-MIDI soundtrack profile validates from the current cache. |
+| `transmogrify` | 12 | Ten `pl -> lc` native-MIDI track names found, but the current cache mirror does not expose a matching name table and numeric song loading fails patch hydration. |
+| `voidhunters` | 26 | No named music load site found; generic profile candidates are UI/font assets. |
+| `wizardrun` | 12 | Ten `ji` source-audio music loads found (`wizard_run_forest` through `wizard_run_endscene`); no native-MIDI loader. |
 
-The remaining AlterOrb games — `36cardtrick`, `armiesofgielinor`,
-`confined`, `drphlogistonsavestheearth`,
-`kickabout`, `lexicominos`, `monkeypuzzle2`, `shatteredplans`,
-`solknight`, `stellarshard`, `sumoblitz`, `terraphoenix`,
-`torchallenge`, `transmogrify`, `voidhunters`, and `wizardrun` —
-have no music output yet. `tools/music/profile-funorb-music.py`
-reports `discover=ok` for several of them (`confined`, `kickabout`,
-`lexicominos`, `shatteredplans`, `transmogrify`, `voidhunters`),
-but the candidate names are UI/font assets such as `arezzo14`, `chatfont`, or
-`smallfont` rather than music tracks, so the validation step rejects the profile
-(see `music-profile-validation-summary.json`). Pool is a separate native
-`cg -> vk` case; CFR source confirms its music strings, but the current build-20
-cache mirror is incomplete for rendering.
+For the games above, the remaining work is not more profile examples. The
+native-MIDI family is exhausted where it validates; the unresolved cases are
+either older source-audio engines that need game-specific stream renderers, or
+cache mirror gaps where the client has track names but the mirrored JS5 index
+does not provide the matching groups/patches.
 
 Download one cache with the build table:
 
