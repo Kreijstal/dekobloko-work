@@ -72,6 +72,7 @@ const { runNarrowShortArrayStores } = requireJavaTools('src/passes/narrowShortAr
 const { runCastObjectFieldStores } = requireJavaTools('src/passes/castObjectFieldStores', 'src/castObjectFieldStores');
 const { runCastPrivateFieldReceivers } = requireJavaTools('src/passes/castPrivateFieldReceivers', 'src/castPrivateFieldReceivers');
 const { runCastInvokeReceiversToOwners } = requireJavaTools('src/passes/castInvokeReceiversToOwners', 'src/castInvokeReceiversToOwners');
+const { runCastFieldReceiversToOwners } = requireJavaTools('src/passes/castFieldReceiversToOwners', 'src/castFieldReceiversToOwners');
 const { runCastStaticInvokeArgsToDeclaredTypes } = requireJavaTools('src/passes/castStaticInvokeArgsToDeclaredTypes', 'src/castStaticInvokeArgsToDeclaredTypes');
 const { runCastObjectLocalStoreFromUses } = requireJavaTools('src/passes/castObjectLocalStoreFromUses', 'src/castObjectLocalStoreFromUses');
 const { runMaterializeTypedNullArgs } = requireJavaTools('src/passes/materializeTypedNullArgs', 'src/materializeTypedNullArgs');
@@ -360,6 +361,10 @@ const passes = [
       invertConditionalsOverGotoClasses: ['emb'],
       cloneSharedFallthroughJoins: true,
       cloneSharedFallthroughJoinClasses: ['hbb'],
+      cloneConditionalSharedJoins: true,
+      cloneConditionalSharedJoinClasses: ['vn'],
+      cloneConditionalSharedLoopTails: true,
+      cloneConditionalSharedLoopTailClasses: ['roa'],
     } : {}),
   }) },
   ...(keepRuntimeHandlers || runtimeSafe ? [] : [{ name: 'runtime-exception-handlers', fn: (a) => removeRuntimeExceptionHandlers(a, { keepHandlerCode: true }) }]),
@@ -382,6 +387,9 @@ const passes = [
   { name: 'cast-private-field-receivers', fn: (a) => runCastPrivateFieldReceivers(a) },
   { name: 'cast-invoke-receivers-to-owners', fn: (a) => safeBytecode
     ? runCastInvokeReceiversToOwners(a)
+    : { changed: false, rewrites: 0 } },
+  { name: 'cast-field-receivers-to-owners', fn: (a) => safeBytecode
+    ? runCastFieldReceiversToOwners(a, { classes: ['roa'], maxCasts: 512 })
     : { changed: false, rewrites: 0 } },
   { name: 'materialize-typed-null-args', fn: (a) => runMaterializeTypedNullArgs(a) },
   { name: 'materialize-checked-field-initializers', fn: (a) => runMaterializeCheckedFieldInitializers(a) },
@@ -428,6 +436,10 @@ const passes = [
       invertConditionalsOverGotoClasses: ['emb'],
       cloneSharedFallthroughJoins: true,
       cloneSharedFallthroughJoinClasses: ['hbb'],
+      cloneConditionalSharedJoins: true,
+      cloneConditionalSharedJoinClasses: ['vn'],
+      cloneConditionalSharedLoopTails: true,
+      cloneConditionalSharedLoopTailClasses: ['roa'],
     } : {}),
   }) },
   ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a, {
