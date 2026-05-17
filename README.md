@@ -140,18 +140,20 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |
 | `arcanistsmulti` | 19 | 10 `ha` tracks extracted and rendered through the client `gh` mixer. Build 15 handshakes but has the wrong archive 5 song-name layout. |
+| `bachelorfridge` | 70 | 11 `kia` tracks extracted and rendered through the client `jp` mixer. Build 21 handshakes but does not expose the 8/9 music indexes used by this gamepack. |
+| `tombracer` | 81 | 4 `qua` tracks extracted and rendered through the client `l` mixer. Build 31 handshakes but does not expose the 26-29 music indexes used by this gamepack. |
 | `pool` | 20 | Native `cg -> vk` renderer scaffolded from the deobfuscated client. The build-20 mirror exposes only one archive-11 music group and no archive 10 instrument index, so no Pool WAVs are verified yet. |
 | `aceofskies` | 13 | One `aos_main_title.mid` from a draft profile; auto-discovery latched onto font names (`font`, `bigfont`, `titlefont`) so WAVs are not yet rendered. |
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
 
 The remaining AlterOrb games — `36cardtrick`, `armiesofgielinor`,
-`bachelorfridge`, `confined`, `drphlogistonsavestheearth`, `geoblox`,
+`confined`, `drphlogistonsavestheearth`, `geoblox`,
 `holdtheline`, `kickabout`, `lexicominos`, `monkeypuzzle2`, `shatteredplans`,
 `solknight`, `stellarshard`, `sumoblitz`, `terraphoenix`,
-`tombracer`, `torchallenge`, `torquing`, `transmogrify`, `voidhunters`, and
-`wizardrun` — have no music output yet. `tools/music/profile-funorb-music.py`
+`torchallenge`, `torquing`, `transmogrify`, `voidhunters`, and `wizardrun` —
+have no music output yet. `tools/music/profile-funorb-music.py`
 reports `discover=ok` for several of them (`confined`, `geoblox`, `kickabout`,
-`lexicominos`, `shatteredplans`, `tombracer`, `transmogrify`, `voidhunters`),
+`lexicominos`, `shatteredplans`, `transmogrify`, `voidhunters`),
 but the candidate names are UI/font assets such as `arezzo14`, `chatfont`, or
 `smallfont` rather than music tracks, so the validation step rejects the profile
 (see `music-profile-validation-summary.json`). Pool is a separate native
@@ -620,6 +622,55 @@ java -cp .work/games/arcanistsmulti/classes:.work/games/arcanistsmulti/music-too
   ArcanistsMultiNativeMusicRenderer \
   .work/games/arcanistsmulti/js5-cache-build19/arcanistsmulti \
   .work/games/arcanistsmulti/music
+```
+
+Bachelor Fridge uses the native `kia -> jp` music path. The client wires archive
+10 as songs, archive 9 as patches, and archives 7/8 as the two sample banks via
+`i(archive7, archive8)`. Build 21 handshakes, but that master omits archives 8
+and 9; build 70 contains the file-name hashes for all 11 `bf_*` tracks loaded by
+the game.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game bachelorfridge \
+  --config .work/upstream-alterorb-launcher/config.json \
+  --output .work/games/bachelorfridge/js5-cache-build70 \
+  --build 70 \
+  --indexes 7,8,9,10
+
+javac -cp .work/games/bachelorfridge/classes \
+  -d .work/games/bachelorfridge/music-tools \
+  tools/music/BachelorFridgeNativeMusicRenderer.java
+
+java -cp .work/games/bachelorfridge/classes:.work/games/bachelorfridge/music-tools \
+  BachelorFridgeNativeMusicRenderer \
+  .work/games/bachelorfridge/js5-cache-build70/bachelorfridge \
+  .work/games/bachelorfridge/music
+```
+
+Tomb Racer uses the native `qua -> l` music path. The deobfuscated client loads
+`TR_theme`, `TR_temple_music`, `TR_win_jingle_long`, and
+`TR_lose_jingle_long` from archive 29, uses archive 28 for patches, and hydrates
+samples through `nda(archive26, archive27)`. The launcher build table currently
+lists build 31, but that master does not contain the 26-29 indexes used by this
+gamepack; build 81 matches the deobfuscated loader layout.
+
+```bash
+python3 tools/js5/download-caches.py \
+  --game tombracer \
+  --config .work/upstream-alterorb-launcher/config.json \
+  --output .work/games/tombracer/js5-cache-build81 \
+  --build 81 \
+  --indexes 26-29
+
+javac -cp .work/games/tombracer/classes \
+  -d .work/games/tombracer/music-tools \
+  tools/music/TombRacerNativeMusicRenderer.java
+
+java -cp .work/games/tombracer/classes:.work/games/tombracer/music-tools \
+  TombRacerNativeMusicRenderer \
+  .work/games/tombracer/js5-cache-build81/tombracer \
+  .work/games/tombracer/music
 ```
 
 Pool uses the native `cg -> vk` MIDI path rather than the generic archive-10
