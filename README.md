@@ -146,7 +146,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `tombracer` | 81 | 4 `qua` tracks extracted and rendered through the client `l` mixer at the stored MIDI sequence lengths. Build 31 handshakes but does not expose the 26-29 music indexes used by this gamepack. |
 | `torquing` | 11 | 13 source-audio music tracks extracted and rendered through the client `wl` mixer. Build 16 handshakes but lacks the named archive-4 music table used by this gamepack. |
 | `pool` | 20 | Native `cg -> vk` renderer scaffolded from the deobfuscated client. The build-20 mirror exposes only one archive-11 music group and no archive 10 instrument index, so no Pool WAVs are verified yet. |
-| `aceofskies` | 13 | Three `ap` native music loads found: `aos_main_title`, `aos level_channels_v2`, and `aos boss level`. Build 13 exposes indexes 0-8/11, but none contain those name hashes, and archive 8 payload download stalls before sample hydration. |
+| `aceofskies` | 18 | 3 `ap` tracks extracted and rendered through the client `hk` mixer as stereo WAVs at the stored MIDI sequence lengths. Build 13 handshakes but lacks the named archive-9 song hashes. |
 | `chess` | 15 | No client soundtrack loader found in CFR; game audio hits are piece/SFX names. No renderer-generated soundtrack is available. |
 | `36cardtrick` | 7 | 3 source-audio music tracks rendered through the client `uf`/`qj` mixer. Build 10 handshakes but lacks the named music table. |
 | `armiesofgielinor` | 31 | No named music load site found. The generic native-MIDI profile only found UI strings such as `lobby`. |
