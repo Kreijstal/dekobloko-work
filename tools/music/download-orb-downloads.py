@@ -80,12 +80,19 @@ def page_tracks(page_slug):
         cells = re.findall(r"<td[^>]*>(.*?)</td>", row, re.S)
         if len(cells) < 6:
             continue
+        file_link = None
+        match = re.search(r'href="(/wiki/File:[^"]+?\.ogg)"', cells[0], re.I)
+        if match:
+            file_link = urllib.parse.unquote(match.group(1).removeprefix("/wiki/")).replace("_", " ")
         title = re.sub(r"<[^>]+>", " ", cells[0])
         title = re.sub(r"\s+", " ", html_module_unescape(title)).strip()
         size = re.sub(r"<[^>]+>", " ", cells[3]).strip()
         length = re.sub(r"<[^>]+>", " ", cells[4]).strip()
         if re.fullmatch(r"\d+(?:\.\d+)?MB", size) and re.fullmatch(r"\d{2}:\d{2}", length):
-            tracks.append({"title": title, "size": size, "length": length})
+            track = {"title": title, "size": size, "length": length}
+            if file_link:
+                track["file"] = file_link
+            tracks.append(track)
     return tracks
 
 
@@ -120,8 +127,12 @@ def run_game(game, out_root):
     ogg_root.mkdir(parents=True, exist_ok=True)
     wav_root.mkdir(parents=True, exist_ok=True)
 
+    listed_tracks = page_tracks(page_slug)
+    titles = set(category_files(category))
+    titles.update(track["file"] for track in listed_tracks if track.get("file"))
+
     entries = []
-    for title in category_files(category):
+    for title in sorted(titles):
         info = image_info(title)
         url = info.get("url")
         if not url:
@@ -143,7 +154,7 @@ def run_game(game, out_root):
         "game": game,
         "page": "Orb Downloads/Music/" + page_slug,
         "category": category,
-        "listed_tracks": page_tracks(page_slug),
+        "listed_tracks": listed_tracks,
         "downloaded_files": entries,
     }
     manifest_path = game_root / "manifest.json"
