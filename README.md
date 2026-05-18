@@ -147,23 +147,23 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `torquing` | 11 | 13 source-audio music tracks extracted and rendered through the client `wl` mixer. Build 16 handshakes but lacks the named archive-4 music table used by this gamepack. |
 | `pool` | 20 | Native `cg -> vk` renderer scaffolded from the deobfuscated client. The build-20 mirror exposes only one archive-11 music group and no archive 10 instrument index, so no Pool WAVs are verified yet. |
 | `aceofskies` | 13 | Three `ap` native music loads found: `aos_main_title`, `aos level_channels_v2`, and `aos boss level`. Build 13 exposes indexes 0-8/11, but none contain those name hashes, and archive 8 payload download stalls before sample hydration. |
-| `chess` | 15 | No client soundtrack loader found in CFR; game audio hits are piece/SFX names. One official Orb Downloads OGG (`Tactical Manoeuvres`, mirrored as `Funorb_chess_in-game.ogg`) is downloadable through `tools/music/download-orb-downloads.py`. |
+| `chess` | 15 | No client soundtrack loader found in CFR; game audio hits are piece/SFX names. No renderer-generated soundtrack is available. |
 | `36cardtrick` | 7 | 3 source-audio music tracks rendered through the client `uf`/`qj` mixer. Build 10 handshakes but lacks the named music table. |
 | `armiesofgielinor` | 31 | No named music load site found. The generic native-MIDI profile only found UI strings such as `lobby`. |
 | `confined` | 15 | One native/custom music load site found at `music/music`: `gi.a(new m(jd.b, v.Bb), ..., mn.b, "music/music", "")`, then playback through `new dd(te.c)`. Build 15 exposes indexes 0-10/13, but none contain the `music/music` name hash, so no WAV is verified. |
-| `drphlogistonsavestheearth` | 12 | Native-style `ok` loader has seven music/jingle names: `Dr_Phlogiston_Title`, `Dr_Phlogiston_Earth`, `Dr_Phlogiston_Space`, `Dr_Phlogiston_Alien`, `Dr_Phlogiston_Boss_Break`, `Dr_Phlogiston_GameOver_jingle`, and `Dr_Phlogiston_GameComplete_jingle`. Builds 12 and 17 expose only partial/mismatched cache data with no matching name hashes; the Orb Downloads fallback currently provides one WAV (`Funorb_dr_phlogiston_titlescreen.wav`). |
+| `drphlogistonsavestheearth` | 12 | Native-style `ok` loader has seven music/jingle names: `Dr_Phlogiston_Title`, `Dr_Phlogiston_Earth`, `Dr_Phlogiston_Space`, `Dr_Phlogiston_Alien`, `Dr_Phlogiston_Boss_Break`, `Dr_Phlogiston_GameOver_jingle`, and `Dr_Phlogiston_GameComplete_jingle`. Builds 12 and 17 expose only partial/mismatched cache data with no matching name hashes, so no renderer-generated WAVs are verified. |
 | `kickabout` | 19 | No named soundtrack load site found. The deobfuscated `"music"` load is a wordpack/string table assigned to `kd.A` and later exposed as menu text, not a playable sequence; `MThd` markers are present only in generic audio classes. |
 | `lexicominos` | 14 | No soundtrack loader found. `ingameleft` and `ingameright` are image/sprite resources, not music; the only music-like audio is the `score_increase_loop`/`score_increase_stop` sound-effect pair loaded through the Vorbis `sd` path. |
-| `monkeypuzzle2` | 24 | Ten source-audio music loads found: `music/Monkey Puzzle water`, `music/Monkey Puzzle jungle`, `music/Monkey_Puzzle_world_Complete_Jingle`, `music/monkey_puzzle_level_complete_jingle`, `music/Monkey Puzzle countryside`, `music/Monkey Puzzle aztec`, `music/Monkey Puzzle Panic`, `music/Monkey_Puzzle_game_over_Jingle`, `music/Monkey Puzzle TitleScreen`, and `music/Monkey_Puzzle_Game_Complete_Jingle`. Build 24 exposes all ten in archive 5; direct song splitting reaches the client `lg` constructor, but sample hydration through `ud`/`sf` throws before WAV rendering. The Orb Downloads fallback provides one title WAV. |
-| `shatteredplans` | 15 | No named music load site found; generic profile candidates are UI/font assets. The Orb Downloads fallback provides two WAVs (`Funorb_shattered_plans_titlescreen.wav` and `Funorb_shattered_plans_in-game.wav`); `Virtual Reality Activated` is listed without an uploaded OGG. |
-| `solknight` | 11 | No named music load site found; generic profile candidates are UI/font assets. The Orb Downloads fallback provides two WAVs (`Funorb_sol_knight_titlescreen.wav` and `Funorb_sol_knight_level_2.wav`). |
-| `stellarshard` | 11 | Two native/custom `jj` music loads found: `music/Stellar_Shard_ingame` and `music/Stellar_Shard_Halloween`, played through `new d(oe.a)`. Build 11 exposes indexes 0-6/8/9/12-15, but none contain those name hashes; the Orb Downloads fallback provides one title WAV. |
+| `monkeypuzzle2` | 24 | Ten source-audio music loads found: `music/Monkey Puzzle water`, `music/Monkey Puzzle jungle`, `music/Monkey_Puzzle_world_Complete_Jingle`, `music/monkey_puzzle_level_complete_jingle`, `music/Monkey Puzzle countryside`, `music/Monkey Puzzle aztec`, `music/Monkey Puzzle Panic`, `music/Monkey_Puzzle_game_over_Jingle`, `music/Monkey Puzzle TitleScreen`, and `music/Monkey_Puzzle_Game_Complete_Jingle`. Build 24 exposes all ten in archive 5; direct song splitting reaches the client `lg` constructor, but sample hydration through `ud`/`sf` throws before WAV rendering. |
+| `shatteredplans` | 15 | No named music load site found; generic profile candidates are UI/font assets. No renderer-generated soundtrack is available. |
+| `solknight` | 11 | No named music load site found; generic profile candidates are UI/font assets. No renderer-generated soundtrack is available. |
+| `stellarshard` | 11 | Two native/custom `jj` music loads found: `music/Stellar_Shard_ingame` and `music/Stellar_Shard_Halloween`, played through `new d(oe.a)`. Build 11 exposes indexes 0-6/8/9/12-15, but none contain those name hashes, so no renderer-generated WAVs are verified. |
 | `sumoblitz` | 13 | Native-style `tv` loader has nine track names: `titlescreen_track`, `track2`, `track3`, `track5`, `track6`, `track7`, `win_track`, `defeat_track`, and `challenge_mode_track`. The gamepack loads songs from `be.s` (archive 9) and hydrates samples from `gg.r` (archive 8), but build 13 lacks archive 9 and probed Sumo Blitz builds 1-26 do not expose these name hashes in their JS5 metadata. |
-| `terraphoenix` | 32 | Eight `tk` native sequence loads found: `terraphoenix_music_title`, `terraphoenix_music_title(no voices)`, `terraphoenix_music_ingame_rural`, `terraphoenix_music_ingame_urban`, `terraphoenix_music_ingame_alienbase`, `terraphoenix_jingle_success_high_scores`, `terraphoenix_jingle_fail_high_scores`, and `terraphoenix_jingle_mission_completed`. The client expects archive 5 songs hydrated against archives 3/4/6, but build 32 exposes no index 5/6 and no matching name hashes; the Orb Downloads fallback provides title and rural WAVs. |
-| `torchallenge` | 12 | Fourteen `ej` native-MIDI music loads found: `TOR_Lvl_1` through `TOR_Lvl_6`, `TOR_Boss_Fight`, `TOR_Title`, `TOR_Menu`, `TOR_lvl_start_jingle`, `TOR_lvl_complete_jingle`, `TOR_boss_complete_jingle`, `TOR_game_over_jingle`, and `TOR_Complete`. Build 12 exposes indexes 0-8/11, but none contain those name hashes; the Orb Downloads fallback provides one level-2 WAV. |
+| `terraphoenix` | 32 | Eight `tk` native sequence loads found: `terraphoenix_music_title`, `terraphoenix_music_title(no voices)`, `terraphoenix_music_ingame_rural`, `terraphoenix_music_ingame_urban`, `terraphoenix_music_ingame_alienbase`, `terraphoenix_jingle_success_high_scores`, `terraphoenix_jingle_fail_high_scores`, and `terraphoenix_jingle_mission_completed`. The client expects archive 5 songs hydrated against archives 3/4/6, but build 32 exposes no index 5/6 and no matching name hashes, so no renderer-generated WAVs are verified. |
+| `torchallenge` | 12 | Fourteen `ej` native-MIDI music loads found: `TOR_Lvl_1` through `TOR_Lvl_6`, `TOR_Boss_Fight`, `TOR_Title`, `TOR_Menu`, `TOR_lvl_start_jingle`, `TOR_lvl_complete_jingle`, `TOR_boss_complete_jingle`, `TOR_game_over_jingle`, and `TOR_Complete`. Build 12 exposes indexes 0-8/11, but none contain those name hashes, so no renderer-generated WAVs are verified. |
 | `transmogrify` | 12 | Ten `pl -> lc` native-MIDI track names found, but the current cache mirror does not expose a matching name table and numeric song loading fails patch hydration. |
 | `voidhunters` | 26 | Four `kka` native sequence loads found: `VH_Title_Music`, `VH_Ingame_Music`, `VH_Jingle_Win`, and `VH_Jingle_Lose`. The client expects MIDI archive 21 and patch archive 20, but build 26 exposes only indexes 0-8/11 and no matching name hashes. |
-| `wizardrun` | 12 | Ten `ji` MIDI-style music loads found (`wizard_run_forest`, `wizard_run_swamp`, `wizard_run_caves`, `wizard_run_mountains`, `wizard_run_volcano`, `wizard_run_lair`, `wizard_run_boss`, `wizard_run_intro`, `wizard_run_cutscene`, and `wizard_run_endscene`). Build 12 exposes indexes 0-8/11, but none contain those name hashes; the Orb Downloads page lists four tracks with no uploaded OGGs. |
+| `wizardrun` | 12 | Ten `ji` MIDI-style music loads found (`wizard_run_forest`, `wizard_run_swamp`, `wizard_run_caves`, `wizard_run_mountains`, `wizard_run_volcano`, `wizard_run_lair`, `wizard_run_boss`, `wizard_run_intro`, `wizard_run_cutscene`, and `wizard_run_endscene`). Build 12 exposes indexes 0-8/11, but none contain those name hashes, so no renderer-generated WAVs are verified. |
 
 For the games above, the remaining work is not more profile examples. The
 native-MIDI family is exhausted where it validates; the unresolved cases are
@@ -171,18 +171,8 @@ either older source-audio engines that need game-specific stream renderers, or
 cache mirror gaps where the client has track names but the mirrored JS5 index
 does not provide the matching groups/patches.
 
-Some games also have official Orb Downloads music mirrored on the FunOrb Wiki as
-OGG files. That path is a fallback source, not a replacement for cache/native
-rendering: the downloader checks both category members and direct page file links,
-keeps those outputs under
-`.work/games/<game>/music-orb-downloads/` and writes a manifest that records both
-downloaded files and page-listed tracks with no uploaded audio.
-
-```bash
-python3 tools/music/download-orb-downloads.py \
-  --game aceofskies,armiesofgielinor,chess,drphlogistonsavestheearth,kickabout,lexicominos,monkeypuzzle2,pool,shatteredplans,solknight,stellarshard,sumoblitz,terraphoenix,torchallenge,voidhunters,wizardrun \
-  --out-root .work/games
-```
+Do not count web-downloaded OGGs as extracted soundtracks. Soundtrack WAVs must
+come from the game cache and the matching FunOrb/client renderer path.
 
 Download one cache with the build table:
 
