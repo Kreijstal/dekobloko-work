@@ -30,7 +30,7 @@ public final class PoolNativeMusicRenderer {
     };
 
     public static void main(String[] args) throws Exception {
-        Path cache = Path.of(args.length > 0 ? args[0] : ".work/games/pool/js5-cache/pool");
+        Path cache = Path.of(args.length > 0 ? args[0] : ".work/games/pool/js5-index10-11/build61/pool");
         Path outRoot = Path.of(args.length > 1 ? args[1] : ".work/games/pool/music-native");
         Files.createDirectories(outRoot.resolve("midi"));
         Files.createDirectories(outRoot.resolve("wav"));
