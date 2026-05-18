@@ -52,7 +52,10 @@ function requireJavaTools(...relPaths) {
 
 const { convertJson } = requireJavaTools('src/parsing/convert_tree', 'src/convert_tree');
 const { writeClassAstToClassFile } = requireJavaTools('src/parsing/classAstToClassFile', 'src/classAstToClassFile');
-const { runPeepholeClean } = requireJavaTools('src/passes/peepholeClean', 'src/peepholeClean');
+const {
+  runPeepholeClean,
+  threadBranchesThroughGoto,
+} = requireJavaTools('src/passes/peepholeClean', 'src/peepholeClean');
 const { removeTrivialRethrowHandlers } = requireJavaTools('src/passes/removeTrivialRethrowHandlers', 'src/removeTrivialRethrowHandlers');
 const { removeRuntimeExceptionHandlers } = requireJavaTools('src/passes/removeRuntimeExceptionHandlers', 'src/removeRuntimeExceptionHandlers');
 const { runRemoveShadowingTrivialRethrowHandlers } = requireJavaTools('src/passes/removeShadowingTrivialRethrowHandlers', 'src/removeShadowingTrivialRethrowHandlers');
@@ -285,6 +288,103 @@ function raiseMaxStackFloor(ast, floor = 64) {
   }
 }
 
+function runConstructorBranchThreading(ast) {
+  let rewrites = 0;
+  for (const cls of ast.classes || []) {
+    for (const item of cls.items || []) {
+      if (!item || item.type !== 'method' || !item.method || item.method.name !== '<init>') continue;
+      for (const attr of item.method.attributes || []) {
+        const code = attr && attr.type === 'code' && attr.code;
+        if (!code || !Array.isArray(code.codeItems)) continue;
+        rewrites += threadBranchesThroughGoto(code.codeItems);
+        rewrites += removeUnreferencedExceptionEndGotoReturns(code);
+      }
+    }
+  }
+  return { changed: rewrites > 0, rewrites };
+}
+
+function removeUnreferencedExceptionEndGotoReturns(code) {
+  const codeItems = code.codeItems || [];
+  const endLabels = new Set((code.exceptionTable || [])
+    .map((entry) => trimLabel(entry.endLbl || entry.endLabel || entry.end))
+    .filter(Boolean));
+  if (endLabels.size === 0) return 0;
+  const referenced = collectInstructionReferencedLabels(codeItems);
+  let removed = 0;
+  for (let i = 0; i < codeItems.length; i += 1) {
+    const item = codeItems[i];
+    const label = trimLabel(item && item.labelDef);
+    if (!label || !endLabels.has(label) || referenced.has(label)) continue;
+    const insn = item && item.instruction;
+    if (!insn || instructionOp(insn) !== 'goto') continue;
+    const previous = previousInstruction(codeItems, i - 1);
+    if (!previous || !isTerminalInstruction(previous.instruction)) continue;
+    const targetIndex = findLabelIndex(codeItems, instructionArg(insn));
+    const targetInstruction = targetIndex >= 0 ? nextInstruction(codeItems, targetIndex) : null;
+    if (!targetInstruction || instructionOp(targetInstruction.instruction) !== 'return') continue;
+    item.instruction = 'nop';
+    delete item.pc;
+    removed += 1;
+  }
+  return removed;
+}
+
+function collectInstructionReferencedLabels(codeItems) {
+  const out = new Set();
+  for (const item of codeItems) collectLabelsFromValue(item && item.instruction, out);
+  return out;
+}
+
+function collectLabelsFromValue(value, out) {
+  if (!value) return;
+  if (typeof value === 'string') return;
+  if (Array.isArray(value)) {
+    for (const entry of value) collectLabelsFromValue(entry, out);
+    return;
+  }
+  if (typeof value !== 'object') return;
+  if (typeof value.arg === 'string' && /^L\\d+/.test(trimLabel(value.arg))) out.add(trimLabel(value.arg));
+  collectLabelsFromValue(value.arg, out);
+}
+
+function previousInstruction(codeItems, start) {
+  for (let i = start; i >= 0; i -= 1) {
+    if (codeItems[i] && codeItems[i].instruction) return codeItems[i];
+  }
+  return null;
+}
+
+function nextInstruction(codeItems, start) {
+  for (let i = start; i < codeItems.length; i += 1) {
+    if (codeItems[i] && codeItems[i].instruction) return codeItems[i];
+  }
+  return null;
+}
+
+function findLabelIndex(codeItems, label) {
+  const target = trimLabel(label);
+  return codeItems.findIndex((item) => trimLabel(item && item.labelDef) === target);
+}
+
+function isTerminalInstruction(insn) {
+  const op = instructionOp(insn);
+  return op === 'athrow' || op === 'return' || op === 'areturn' || op === 'ireturn' ||
+    op === 'lreturn' || op === 'freturn' || op === 'dreturn';
+}
+
+function instructionOp(insn) {
+  return typeof insn === 'string' ? insn : insn && insn.op;
+}
+
+function instructionArg(insn) {
+  return insn && typeof insn === 'object' ? insn.arg : null;
+}
+
+function trimLabel(label) {
+  return typeof label === 'string' && label.endsWith(':') ? label.slice(0, -1) : label;
+}
+
 function collectClassShadowFieldRenames() {
   const classNames = new Set(files.map((f) => path.basename(f, '.class')));
   const byKey = new Map();
@@ -504,6 +604,9 @@ const passes = [
     : { changed: false, rewrites: 0 } },
   { name: 'constructor-pre-super-cleanup-final', fn: (a) => safeBytecode
     ? runConstructorPreSuperCleanup(a, { deleteUnusedSnapshots: true })
+    : { changed: false, rewrites: 0 } },
+  { name: 'constructor-branch-threading-final', fn: (a) => safeBytecode
+    ? runConstructorBranchThreading(a)
     : { changed: false, rewrites: 0 } },
 ];
 
