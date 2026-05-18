@@ -150,14 +150,14 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `chess` | 15 | Deob profile exists; no dedicated music renderer. |
 | `36cardtrick` | 7 | 3 source-audio music tracks rendered through the client `uf`/`qj` mixer. Build 10 handshakes but lacks the named music table. |
 | `armiesofgielinor` | 31 | No named music load site found. The generic native-MIDI profile only found UI strings such as `lobby`. |
-| `confined` | 15 | One source-audio music load site found at `music/music`; no native-MIDI loader. |
+| `confined` | 15 | One native/custom music load site found at `music/music`: `gi.a(new m(jd.b, v.Bb), ..., mn.b, "music/music", "")`, then playback through `new dd(te.c)`. Current cache/name lookup does not hydrate a valid `vk` sequence. |
 | `drphlogistonsavestheearth` | 12 | Native-style `ok` loader has seven music/jingle names: `Dr_Phlogiston_Title`, `Dr_Phlogiston_Earth`, `Dr_Phlogiston_Space`, `Dr_Phlogiston_Alien`, `Dr_Phlogiston_Boss_Break`, `Dr_Phlogiston_GameOver_jingle`, and `Dr_Phlogiston_GameComplete_jingle`. Builds 12 and 17 expose only partial/mismatched cache data, so named and numeric song loading do not currently hydrate. |
 | `kickabout` | 19 | No named music load site found; `MThd` markers are present only in the generic audio classes and profiler candidates are UI/font assets. |
 | `lexicominos` | 14 | No soundtrack loader found. `ingameleft` and `ingameright` are image/sprite resources, not music; the only music-like audio is the `score_increase_loop`/`score_increase_stop` sound-effect pair loaded through the Vorbis `sd` path. |
 | `monkeypuzzle2` | 24 | Ten source-audio music loads found under `music/Monkey Puzzle ...`. Build 24 exposes the matching archive-5 name table as one group with ten files; builds 1-23 do not expose the complete table. Direct song splitting reaches the client `lg` constructor, but sample hydration through `ud`/`sf` still fails before WAV rendering. |
 | `shatteredplans` | 15 | No named music load site found; generic profile candidates are UI/font assets. |
 | `solknight` | 11 | No named music load site found; generic profile candidates are UI/font assets. |
-| `stellarshard` | 11 | Two source-audio music loads found: `music/Stellar_Shard_ingame` and `music/Stellar_Shard_Halloween`; no native-MIDI loader. |
+| `stellarshard` | 11 | Two native/custom `jj` music loads found: `music/Stellar_Shard_ingame` and `music/Stellar_Shard_Halloween`, played through `new d(oe.a)`. Current cache/name lookup does not hydrate a valid `jj` sequence. |
 | `sumoblitz` | 13 | Native-style `tv` loader has nine track names: `titlescreen_track`, `track2`, `track3`, `track5`, `track6`, `track7`, `win_track`, `defeat_track`, and `challenge_mode_track`. The gamepack loads songs from `be.s` (archive 9) and hydrates samples from `gg.r` (archive 8), but build 13 lacks archive 9 and probed Sumo Blitz builds 1-26 do not expose these name hashes in their JS5 metadata. |
 | `terraphoenix` | 32 | No named music load site found; visible `INGAME` strings are UI/help text. |
 | `torchallenge` | 12 | Eleven `ej` native-MIDI music loads found: `TOR_Lvl_1` through `TOR_Lvl_6`, `TOR_Boss_Fight`, `TOR_Title`, `TOR_Menu`, `TOR_lvl_start_jingle`, and `TOR_lvl_complete_jingle`. Boss `q`/`wg` names are sound effects. A dedicated `ej` renderer is still needed. |
