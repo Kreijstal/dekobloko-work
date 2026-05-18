@@ -7,12 +7,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 
 public final class GeobloxAudioDumper {
     private static final int SAMPLE_RATE = 22050;
     private static final int BUFFER_SAMPLES = 1024;
-    private static final int MAX_RENDER_SECONDS = 420;
-    private static final int TAIL_SILENCE_SAMPLES = SAMPLE_RATE * 2;
 
     private static final String[] TRACKS = {
         "title_music_loop",
@@ -43,7 +42,8 @@ public final class GeobloxAudioDumper {
 
             Path midi = outRoot.resolve("midi/" + safeName(name) + ".mid");
             Files.write(midi, repairMidi(byteArrayField(track, "rf_f", "f")));
-            MidiSystem.getSequence(midi.toFile());
+            Sequence sequence = MidiSystem.getSequence(midi.toFile());
+            int storedSamples = storedSamples(sequence);
 
             kj player = new kj();
             if (!player.a(samples, 0, -1, track, patchArchive)) {
@@ -51,7 +51,7 @@ public final class GeobloxAudioDumper {
             }
             player.a(false, track, -1706);
 
-            byte[] pcm = renderPcm(player);
+            byte[] pcm = renderPcm(player, storedSamples);
             Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
             writeWav(wav, pcm, SAMPLE_RATE);
             System.out.printf("track %s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * 2));
@@ -62,41 +62,28 @@ public final class GeobloxAudioDumper {
         return new rh(new CacheBackend(cache, archive), true, 1);
     }
 
-    private static byte[] renderPcm(kj player) throws IOException {
+    private static int storedSamples(Sequence sequence) {
+        return (int)Math.min(
+            Integer.MAX_VALUE,
+            (sequence.getMicrosecondLength() * (long)SAMPLE_RATE + 999_999L) / 1_000_000L
+        );
+    }
+
+    private static byte[] renderPcm(kj player, int storedSamples) throws IOException {
         ByteArrayOutputStream pcm = new ByteArrayOutputStream();
         int[] mix = new int[BUFFER_SAMPLES];
-        int silentTail = 0;
         int rendered = 0;
-        int maxSamples = SAMPLE_RATE * MAX_RENDER_SECONDS;
-        while (rendered < maxSamples) {
+        while (rendered < storedSamples) {
             Arrays.fill(mix, 0);
-            player.a(mix, 0, BUFFER_SAMPLES);
-            boolean silent = true;
-            for (int sample : mix) {
-                if (sample != 0) {
-                    silent = false;
-                }
+            int count = Math.min(BUFFER_SAMPLES, storedSamples - rendered);
+            player.a(mix, 0, count);
+            for (int i = 0; i < count; i++) {
+                int sample = mix[i];
                 writePcm16(pcm, sample >> 8);
             }
-            rendered += BUFFER_SAMPLES;
-            if (silent) {
-                silentTail += BUFFER_SAMPLES;
-            } else {
-                silentTail = 0;
-            }
-            if (silentTail >= TAIL_SILENCE_SAMPLES) {
-                break;
-            }
+            rendered += count;
         }
-        byte[] bytes = pcm.toByteArray();
-        int trim = Math.min(silentTail, TAIL_SILENCE_SAMPLES) * 2;
-        if (trim > 0 && trim < bytes.length) {
-            return Arrays.copyOf(bytes, bytes.length - trim);
-        }
-        if (rendered >= maxSamples) {
-            throw new IOException("render did not finish within " + MAX_RENDER_SECONDS + " seconds");
-        }
-        return bytes;
+        return pcm.toByteArray();
     }
 
     private static void writePcm16(ByteArrayOutputStream out, int value) {

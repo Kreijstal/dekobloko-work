@@ -136,9 +136,9 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `bouncedown` | 11 | 13 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `crazycrystals` | 15 | 11 `rm` tracks extracted and rendered through the client `wg` mixer at the stored MIDI sequence lengths; build 14 has SFX but not the named music archive layout. |
 | `escapevector` | 21 | 8 native music tracks plus 52 decoded sample WAVs extracted/rendered. Build 12 handshakes but archive 4 lacks the music file-name table. |
-| `geoblox` | 1 | 4 `rf` tracks extracted and rendered through the client `kj` mixer. Build 11 handshakes but has the wrong archive 5 song-name layout. |
+| `geoblox` | 1 | 4 `rf` tracks extracted and rendered through the client `kj` mixer at the stored MIDI sequence lengths. Build 11 handshakes but has the wrong archive 5 song-name layout. |
 | `fleacircus` | 12 | 22 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
-| `holdtheline` | 8 | Native `vi -> kf` renderer added. The build-8 mirror exposes 3 of the 7 named music groups (`title`, `victory_jingle`, `classic`); the other four are missing from the cache mirror. |
+| `holdtheline` | 8 | Native `vi -> kf` renderer added and renders the available tracks at stored MIDI sequence lengths. The build-8 mirror exposes 3 of the 7 named music groups (`title`, `victory_jingle`, `classic`); the other four are missing from the cache mirror. |
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |
 | `arcanistsmulti` | 19 | 10 `ha` tracks extracted and rendered through the client `gh` mixer at the stored MIDI sequence lengths. Build 15 handshakes but has the wrong archive 5 song-name layout. |
