@@ -77,7 +77,6 @@ function parseArgs(argv) {
     else throw new Error(`Unknown argument: ${arg}`);
   }
   out.db = path.resolve(out.db || DEFAULT_DB);
-  out.game = out.game || 'voidhunters';
   out.classesDir = path.resolve(out.classesDir || DEFAULT_CLASSES);
   out.work = out.work ? path.resolve(out.work) : out.work;
   out.classes = [...new Set(out.classes.filter(Boolean))].sort();
@@ -182,7 +181,7 @@ function ingest(work, args) {
       schema: 1,
       id: stableId(context, cls, enriched),
       createdAt: new Date().toISOString(),
-      game: args.game,
+      game: args.game || 'voidhunters',
       className: cls,
       tag: args.tag || null,
       workDir: work,
@@ -329,7 +328,7 @@ function summarize(args) {
   if (args.game) records = records.filter((record) => record.game === args.game);
   if (args.latest) {
     const byClass = new Map();
-    for (const record of records) byClass.set(record.className, record);
+    for (const record of records) byClass.set(`${record.game}:${record.className}`, record);
     records = [...byClass.values()];
   }
   console.log(`records=${records.length} db=${args.db}`);
