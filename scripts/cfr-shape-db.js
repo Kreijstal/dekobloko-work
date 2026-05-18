@@ -18,6 +18,8 @@ function usage() {
   node scripts/cfr-shape-db.js ingest --work <work-dir> [--game voidhunters] [--class a,b] [--db <records.jsonl>] [--tag name]
   node scripts/cfr-shape-db.js collect [--classes-dir <dir>] [--game voidhunters] [--class a,b] [--work <dir>] [--db <records.jsonl>] [--tag name]
   node scripts/cfr-shape-db.js summarize [--db <records.jsonl>] [--game voidhunters] [--latest]
+  node scripts/cfr-shape-db.js clusters --kind missing-variable [--db <records.jsonl>] [--game voidhunters] [--latest] [--limit 20]
+  node scripts/cfr-shape-db.js examples --kind missing-variable [--db <records.jsonl>] [--game voidhunters] [--latest] [--limit 20]
 
 Work dirs must have cfr/*.java, logs/*.log, and ideally out/*.class.
 collect runs the full pipeline/CFR/Javac once, then ingests failures.`);
@@ -52,6 +54,14 @@ function main(argv) {
     summarize(args);
     return;
   }
+  if (cmd === 'clusters') {
+    clusters(args);
+    return;
+  }
+  if (cmd === 'examples') {
+    examples(args);
+    return;
+  }
   usage();
   process.exit(2);
 }
@@ -66,12 +76,16 @@ function parseArgs(argv) {
     else if (arg === '--db') out.db = argv[++i];
     else if (arg === '--game') out.game = argv[++i];
     else if (arg === '--tag') out.tag = argv[++i];
+    else if (arg === '--kind') out.kind = argv[++i];
+    else if (arg === '--limit') out.limit = Number(argv[++i]);
     else if (arg === '--classes-dir') out.classesDir = argv[++i];
     else if (arg === '--class' || arg === '--classes') out.classes.push(...splitList(argv[++i]));
     else if (arg.startsWith('--work=')) out.work = arg.slice('--work='.length);
     else if (arg.startsWith('--db=')) out.db = arg.slice('--db='.length);
     else if (arg.startsWith('--game=')) out.game = arg.slice('--game='.length);
     else if (arg.startsWith('--tag=')) out.tag = arg.slice('--tag='.length);
+    else if (arg.startsWith('--kind=')) out.kind = arg.slice('--kind='.length);
+    else if (arg.startsWith('--limit=')) out.limit = Number(arg.slice('--limit='.length));
     else if (arg.startsWith('--classes-dir=')) out.classesDir = arg.slice('--classes-dir='.length);
     else if (arg.startsWith('--class=')) out.classes.push(...splitList(arg.slice('--class='.length)));
     else throw new Error(`Unknown argument: ${arg}`);
@@ -80,6 +94,7 @@ function parseArgs(argv) {
   out.classesDir = path.resolve(out.classesDir || DEFAULT_CLASSES);
   out.work = out.work ? path.resolve(out.work) : out.work;
   out.classes = [...new Set(out.classes.filter(Boolean))].sort();
+  out.limit = Number.isFinite(out.limit) && out.limit > 0 ? out.limit : 20;
   return out;
 }
 
@@ -317,20 +332,7 @@ function printCategorySummary(records) {
 }
 
 function summarize(args) {
-  if (!fs.existsSync(args.db)) {
-    console.log(`No database at ${args.db}`);
-    return;
-  }
-  let records = fs.readFileSync(args.db, 'utf8')
-    .split(/\r?\n/)
-    .filter(Boolean)
-    .map((line) => JSON.parse(line));
-  if (args.game) records = records.filter((record) => record.game === args.game);
-  if (args.latest) {
-    const byClass = new Map();
-    for (const record of records) byClass.set(`${record.game}:${record.className}`, record);
-    records = [...byClass.values()];
-  }
+  const records = loadRecords(args);
   console.log(`records=${records.length} db=${args.db}`);
   printCategorySummary(records);
   const classCounts = countBy(records.map((record) => record.className));
@@ -339,6 +341,165 @@ function summarize(args) {
     console.log('\nRepeated classes:');
     for (const [cls, count] of repeated.slice(0, 20)) console.log(`${String(count).padStart(5)} ${cls}`);
   }
+}
+
+function clusters(args) {
+  const rows = errorRows(loadRecords(args), args.kind);
+  const byKey = new Map();
+  for (const row of rows) {
+    const key = clusterKey(row.error);
+    let cluster = byKey.get(key);
+    if (!cluster) {
+      cluster = { key, rows: [], games: new Set(), classes: new Set() };
+      byKey.set(key, cluster);
+    }
+    cluster.rows.push(row);
+    cluster.games.add(row.record.game);
+    cluster.classes.add(`${row.record.game}:${row.record.className}`);
+  }
+  const sorted = [...byKey.values()].sort((a, b) =>
+    b.rows.length - a.rows.length || b.games.size - a.games.size || a.key.localeCompare(b.key));
+  console.log(`errors=${rows.length} clusters=${sorted.length} kind=${args.kind || 'all'} db=${args.db}`);
+  for (const cluster of sorted.slice(0, args.limit)) {
+    const sample = cluster.rows[0];
+    console.log(`\n${String(cluster.rows.length).padStart(5)} errors ${String(cluster.classes.size).padStart(4)} classes ${String(cluster.games.size).padStart(3)} games`);
+    console.log(`  key: ${cluster.key}`);
+    console.log(`  sample: ${sample.record.game}/${sample.record.className}:L${sample.error.line} ${sample.error.message}`);
+    console.log(`  source: ${sample.error.sourceLine.trim()}`);
+    const detail = usefulDetails(sample.error).join(' | ');
+    if (detail) console.log(`  detail: ${detail}`);
+  }
+}
+
+function examples(args) {
+  const rows = errorRows(loadRecords(args), args.kind);
+  console.log(`errors=${rows.length} kind=${args.kind || 'all'} db=${args.db}`);
+  for (const row of rows.slice(0, args.limit)) {
+    const err = row.error;
+    console.log(`\n${row.record.game}/${row.record.className}:L${err.line} ${err.kind}`);
+    console.log(`  ${err.message}`);
+    const detail = usefulDetails(err).join(' | ');
+    if (detail) console.log(`  ${detail}`);
+    for (const line of err.snippet || []) {
+      const marker = line.line === err.line ? '>' : ' ';
+      console.log(`${marker}${String(line.line).padStart(5)} ${line.text}`);
+    }
+  }
+}
+
+function loadRecords(args) {
+  if (!fs.existsSync(args.db)) return [];
+  let records = fs.readFileSync(args.db, 'utf8')
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .map((line) => JSON.parse(line));
+  if (args.game) records = records.filter((record) => record.game === args.game);
+  if (args.classes.length) {
+    const classes = new Set(args.classes);
+    records = records.filter((record) => classes.has(record.className));
+  }
+  if (args.latest) {
+    const byClass = new Map();
+    for (const record of records) byClass.set(`${record.game}:${record.className}`, record);
+    records = [...byClass.values()];
+  }
+  return records;
+}
+
+function errorRows(records, kind) {
+  const rows = [];
+  for (const record of records) {
+    for (const error of record.errors || []) {
+      if (kind && error.kind !== kind && !record.categories[kind]) continue;
+      if (kind && error.kind !== kind) continue;
+      rows.push({ record, error });
+    }
+  }
+  return rows.sort((a, b) =>
+    a.record.game.localeCompare(b.record.game) ||
+    a.record.className.localeCompare(b.record.className) ||
+    Number(a.error.line || 0) - Number(b.error.line || 0));
+}
+
+function clusterKey(error) {
+  const kind = error.kind || 'unknown';
+  if (kind === 'missing-variable' || kind === 'missing-symbol') {
+    return `${kind}:${symbolKind(error)}:${sourceShape(error.sourceLine)}:${detailShape(error)}`;
+  }
+  if (kind === 'syntax-break') {
+    return `${kind}:${error.message}:${sourceShape(error.sourceLine)}`;
+  }
+  if (kind === 'definite-assignment') {
+    return `${kind}:${definiteAssignmentType(error)}:${sourceShape(error.sourceLine)}`;
+  }
+  if (kind === 'incompatible-types') {
+    return `${kind}:${normalizeIncompatibleMessage(error.message)}:${sourceShape(error.sourceLine)}`;
+  }
+  return `${kind}:${normalizeMessage(error.message)}:${sourceShape(error.sourceLine)}`;
+}
+
+function sourceShape(line) {
+  return String(line || '')
+    .trim()
+    .replace(/"([^"\\]|\\.)*"/g, '""')
+    .replace(/'([^'\\]|\\.)*'/g, "''")
+    .replace(/\b\d+\b/g, '#')
+    .replace(/\b[A-Za-z_$][\w$]*\b/g, (word) => reservedShapeWords.has(word) ? word : idShape(word))
+    .replace(/\s+/g, ' ')
+    .slice(0, 220);
+}
+
+function idShape(word) {
+  if (/^(?:n|i|j|k)\d*$/.test(word)) return 'n';
+  if (/^(?:bl|bool)\d*$/.test(word)) return 'bl';
+  if (/.*Array\d*$/.test(word)) return 'array';
+  if (/.*String.*\d*$/.test(word)) return 'string';
+  if (/object\d*$/i.test(word)) return 'object';
+  return 'id';
+}
+
+const reservedShapeWords = new Set([
+  'new', 'return', 'throw', 'if', 'else', 'while', 'for', 'do', 'try', 'catch', 'finally',
+  'switch', 'case', 'default', 'break', 'continue', 'this', 'super', 'null', 'true', 'false',
+  'int', 'long', 'float', 'double', 'boolean', 'byte', 'char', 'short', 'void', 'Object',
+]);
+
+function symbolKind(error) {
+  const detail = (error.details || []).find((line) => line.includes('symbol:'));
+  if (!detail) return 'unknown';
+  const match = /symbol:\s+(class|variable|method|constructor)\s+(.+)$/.exec(detail.trim());
+  return match ? match[1] : detail.trim().replace(/\s+/g, ' ');
+}
+
+function detailShape(error) {
+  return usefulDetails(error)
+    .join(' ')
+    .replace(/\b[A-Za-z_$][\w$]*\b/g, (word) => reservedShapeWords.has(word) ? word : idShape(word))
+    .replace(/\s+/g, ' ')
+    .slice(0, 180);
+}
+
+function usefulDetails(error) {
+  return (error.details || [])
+    .map((line) => line.trim())
+    .filter((line) => /^(symbol:|location:|both method|method .* is not applicable|class file|bad class file)/.test(line));
+}
+
+function definiteAssignmentType(error) {
+  const match = /^variable\s+([A-Za-z_$][\w$]*)\s+might not have been initialized$/.exec(error.message || '');
+  return match ? idShape(match[1]) : normalizeMessage(error.message);
+}
+
+function normalizeIncompatibleMessage(message) {
+  return String(message || '')
+    .replace(/\b[A-Za-z_$][\w$]*\b/g, (word) => reservedShapeWords.has(word) ? word : idShape(word))
+    .replace(/\s+/g, ' ');
+}
+
+function normalizeMessage(message) {
+  return String(message || '')
+    .replace(/\b\d+\b/g, '#')
+    .replace(/\s+/g, ' ');
 }
 
 main(process.argv.slice(2));
