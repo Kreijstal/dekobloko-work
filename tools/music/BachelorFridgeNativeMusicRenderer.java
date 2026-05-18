@@ -6,12 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 
 public final class BachelorFridgeNativeMusicRenderer {
     private static final int SAMPLE_RATE = 22050;
     private static final int BUFFER_SAMPLES = SAMPLE_RATE;
-    private static final int MAX_SECONDS = 180;
-    private static final int TAIL_SILENCE_SAMPLES = SAMPLE_RATE * 3;
     private static final String[] TRACKS = {
         "bf_titlescreen_version2",
         "bf_shopping_screen",
@@ -55,7 +54,8 @@ public final class BachelorFridgeNativeMusicRenderer {
             byte[] midi = repairMidi(track.g);
             Path midiOut = outRoot.resolve("midi/" + name + ".mid");
             Files.write(midiOut, midi);
-            MidiSystem.getSequence(midiOut.toFile());
+            Sequence sequence = MidiSystem.getSequence(midiOut.toFile());
+            int storedSamples = storedSamples(sequence);
 
             jp player = new jp();
             if (!player.a(patches, track, sampleLoader, (byte)1, 0)) {
@@ -63,10 +63,10 @@ public final class BachelorFridgeNativeMusicRenderer {
             }
             player.a(track, (byte)-109, false);
 
-            byte[] pcm = renderPcm(player);
+            byte[] pcm = renderPcm(player, storedSamples);
             Path wavOut = outRoot.resolve("wav/" + name + ".wav");
             writeMonoWav(wavOut, pcm);
-            System.out.printf("track %s midi=%d wav=%d%n", name, midi.length, pcm.length);
+            System.out.printf("track %s midi=%d stored=%.3fs wav=%d%n", name, midi.length, storedSamples / (double)SAMPLE_RATE, pcm.length);
             written++;
         }
         System.out.printf("wrote %d tracks%n", written);
@@ -88,33 +88,30 @@ public final class BachelorFridgeNativeMusicRenderer {
         return constructor.newInstance(new lu(file));
     }
 
-    private static byte[] renderPcm(jp player) throws IOException {
+    private static int storedSamples(Sequence sequence) {
+        return (int)Math.min(
+            Integer.MAX_VALUE,
+            (sequence.getMicrosecondLength() * (long)SAMPLE_RATE + 999_999L) / 1_000_000L
+        );
+    }
+
+    private static byte[] renderPcm(jp player, int storedSamples) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int[] mix = new int[BUFFER_SAMPLES];
-        int silentTail = 0;
         int total = 0;
-        int maxSamples = MAX_SECONDS * SAMPLE_RATE;
-        while (total < maxSamples) {
+        while (total < storedSamples) {
             Arrays.fill(mix, 0);
-            player.a(mix, 0, mix.length);
-            boolean silent = true;
-            for (int value : mix) {
+            int count = Math.min(mix.length, storedSamples - total);
+            player.a(mix, 0, count);
+            for (int i = 0; i < count; i++) {
+                int value = mix[i];
                 int sample = value >> 8;
                 if (sample < -32768) sample = -32768;
                 if (sample > 32767) sample = 32767;
-                if (sample != 0) silent = false;
                 out.write(sample & 0xff);
                 out.write((sample >>> 8) & 0xff);
             }
-            total += mix.length;
-            if (silent) {
-                silentTail += mix.length;
-            } else {
-                silentTail = 0;
-            }
-            if (!player.c(28607) && silentTail >= TAIL_SILENCE_SAMPLES) {
-                break;
-            }
+            total += count;
         }
         return out.toByteArray();
     }

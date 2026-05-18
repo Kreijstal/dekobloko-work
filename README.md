@@ -134,16 +134,16 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `dungeonassault` | 32 | 9 `vh` MIDI/WAV tracks plus 16 named PCM samples extracted/rendered. |
 | `starcannon` | 10 | 20 SFX plus 14 voice WAVs extracted/rendered; no music renderer yet (no native-MIDI loader found in CFR). |
 | `bouncedown` | 11 | 13 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
-| `crazycrystals` | 15 | 11 `rm` tracks extracted and rendered through the client `wg` mixer; build 14 has SFX but not the named music archive layout. |
+| `crazycrystals` | 15 | 11 `rm` tracks extracted and rendered through the client `wg` mixer at the stored MIDI sequence lengths; build 14 has SFX but not the named music archive layout. |
 | `escapevector` | 21 | 8 native music tracks plus 52 decoded sample WAVs extracted/rendered. Build 12 handshakes but archive 4 lacks the music file-name table. |
 | `geoblox` | 1 | 4 `rf` tracks extracted and rendered through the client `kj` mixer. Build 11 handshakes but has the wrong archive 5 song-name layout. |
 | `fleacircus` | 12 | 22 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `holdtheline` | 8 | Native `vi -> kf` renderer added. The build-8 mirror exposes 3 of the 7 named music groups (`title`, `victory_jingle`, `classic`); the other four are missing from the cache mirror. |
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |
-| `arcanistsmulti` | 19 | 10 `ha` tracks extracted and rendered through the client `gh` mixer. Build 15 handshakes but has the wrong archive 5 song-name layout. |
-| `bachelorfridge` | 70 | 11 `kia` tracks extracted and rendered through the client `jp` mixer. Build 21 handshakes but does not expose the 8/9 music indexes used by this gamepack. |
-| `tombracer` | 81 | 4 `qua` tracks extracted and rendered through the client `l` mixer. Build 31 handshakes but does not expose the 26-29 music indexes used by this gamepack. |
+| `arcanistsmulti` | 19 | 10 `ha` tracks extracted and rendered through the client `gh` mixer at the stored MIDI sequence lengths. Build 15 handshakes but has the wrong archive 5 song-name layout. |
+| `bachelorfridge` | 70 | 11 `kia` tracks extracted and rendered through the client `jp` mixer at the stored MIDI sequence lengths. Build 21 handshakes but does not expose the 8/9 music indexes used by this gamepack. |
+| `tombracer` | 81 | 4 `qua` tracks extracted and rendered through the client `l` mixer at the stored MIDI sequence lengths. Build 31 handshakes but does not expose the 26-29 music indexes used by this gamepack. |
 | `torquing` | 11 | 13 source-audio music tracks extracted and rendered through the client `wl` mixer. Build 16 handshakes but lacks the named archive-4 music table used by this gamepack. |
 | `pool` | 20 | Native `cg -> vk` renderer scaffolded from the deobfuscated client. The build-20 mirror exposes only one archive-11 music group and no archive 10 instrument index, so no Pool WAVs are verified yet. |
 | `aceofskies` | 13 | Three `ap` native music loads found: `aos_main_title`, `aos level_channels_v2`, and `aos boss level`. Build 13 exposes indexes 0-8/11, but none contain those name hashes, and archive 8 payload download stalls before sample hydration. |

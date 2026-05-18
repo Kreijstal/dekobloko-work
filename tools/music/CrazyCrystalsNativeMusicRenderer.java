@@ -5,12 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 
 public final class CrazyCrystalsNativeMusicRenderer {
     private static final int SAMPLE_RATE = 22050;
     private static final int BUFFER_FRAMES = SAMPLE_RATE;
-    private static final int MAX_SECONDS = 180;
-    private static final int TAIL_SILENCE_FRAMES = SAMPLE_RATE * 3;
     private static final String[] TRACKS = {
         "menu",
         "crystalrocknroll",
@@ -49,7 +48,8 @@ public final class CrazyCrystalsNativeMusicRenderer {
             byte[] midi = repairMidi(track.g);
             Path midiOut = outRoot.resolve("midi/" + name + ".mid");
             Files.write(midiOut, midi);
-            MidiSystem.getSequence(midiOut.toFile());
+            Sequence sequence = MidiSystem.getSequence(midiOut.toFile());
+            int storedFrames = storedFrames(sequence);
 
             wg player = new wg();
             if (!player.a(patches, sampleLoader, track, -128, 0)) {
@@ -57,10 +57,10 @@ public final class CrazyCrystalsNativeMusicRenderer {
             }
             player.a(88, track, false);
 
-            byte[] pcm = renderPcm(player);
+            byte[] pcm = renderPcm(player, storedFrames);
             Path wavOut = outRoot.resolve("wav/" + name + ".wav");
             writeStereoWav(wavOut, pcm);
-            System.out.printf("track %s midi=%d wav=%d%n", name, midi.length, pcm.length);
+            System.out.printf("track %s midi=%d stored=%.3fs wav=%d%n", name, midi.length, storedFrames / (double)SAMPLE_RATE, pcm.length);
             written++;
         }
         System.out.printf("wrote %d tracks%n", written);
@@ -70,33 +70,30 @@ public final class CrazyCrystalsNativeMusicRenderer {
         return new db(new CacheBackend(cache, archive), true, 1);
     }
 
-    private static byte[] renderPcm(wg player) throws IOException {
+    private static int storedFrames(Sequence sequence) {
+        return (int)Math.min(
+            Integer.MAX_VALUE,
+            (sequence.getMicrosecondLength() * (long)SAMPLE_RATE + 999_999L) / 1_000_000L
+        );
+    }
+
+    private static byte[] renderPcm(wg player, int storedFrames) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int[] mix = new int[BUFFER_FRAMES * 2];
-        int silentTail = 0;
         int total = 0;
-        int maxFrames = MAX_SECONDS * SAMPLE_RATE;
-        while (total < maxFrames) {
+        while (total < storedFrames) {
             Arrays.fill(mix, 0);
-            player.a(mix, 0, BUFFER_FRAMES);
-            boolean silent = true;
-            for (int value : mix) {
+            int count = Math.min(BUFFER_FRAMES, storedFrames - total);
+            player.a(mix, 0, count);
+            for (int i = 0; i < count * 2; i++) {
+                int value = mix[i];
                 int sample = value >> 8;
                 if (sample < -32768) sample = -32768;
                 if (sample > 32767) sample = 32767;
-                if (sample != 0) silent = false;
                 out.write(sample & 0xff);
                 out.write((sample >>> 8) & 0xff);
             }
-            total += BUFFER_FRAMES;
-            if (silent) {
-                silentTail += BUFFER_FRAMES;
-            } else {
-                silentTail = 0;
-            }
-            if (silentTail >= TAIL_SILENCE_FRAMES) {
-                break;
-            }
+            total += count;
         }
         return out.toByteArray();
     }

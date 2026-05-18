@@ -6,12 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 
 public final class TombRacerNativeMusicRenderer {
     private static final int SAMPLE_RATE = 22050;
     private static final int BUFFER_SAMPLES = SAMPLE_RATE;
-    private static final int MAX_SECONDS = 180;
-    private static final int TAIL_SILENCE_SAMPLES = SAMPLE_RATE * 3;
     private static final String[] TRACKS = {
         "TR_theme",
         "TR_temple_music",
@@ -48,7 +47,8 @@ public final class TombRacerNativeMusicRenderer {
             byte[] midi = repairMidi(track.g);
             Path midiOut = outRoot.resolve("midi/" + name + ".mid");
             Files.write(midiOut, midi);
-            MidiSystem.getSequence(midiOut.toFile());
+            Sequence sequence = MidiSystem.getSequence(midiOut.toFile());
+            int storedSamples = storedSamples(sequence);
 
             l player = new l();
             if (!player.a(0, track, patches, sampleLoader, 0)) {
@@ -56,10 +56,10 @@ public final class TombRacerNativeMusicRenderer {
             }
             player.a(track, false, (byte)80);
 
-            byte[] pcm = renderPcm(player);
+            byte[] pcm = renderPcm(player, storedSamples);
             Path wavOut = outRoot.resolve("wav/" + name + ".wav");
             writeMonoWav(wavOut, pcm);
-            System.out.printf("track %s midi=%d wav=%d%n", name, midi.length, pcm.length);
+            System.out.printf("track %s midi=%d stored=%.3fs wav=%d%n", name, midi.length, storedSamples / (double)SAMPLE_RATE, pcm.length);
             written++;
         }
         System.out.printf("wrote %d tracks%n", written);
@@ -81,33 +81,30 @@ public final class TombRacerNativeMusicRenderer {
         return constructor.newInstance(new uia(file));
     }
 
-    private static byte[] renderPcm(l player) throws IOException {
+    private static int storedSamples(Sequence sequence) {
+        return (int)Math.min(
+            Integer.MAX_VALUE,
+            (sequence.getMicrosecondLength() * (long)SAMPLE_RATE + 999_999L) / 1_000_000L
+        );
+    }
+
+    private static byte[] renderPcm(l player, int storedSamples) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int[] mix = new int[BUFFER_SAMPLES];
-        int silentTail = 0;
         int total = 0;
-        int maxSamples = MAX_SECONDS * SAMPLE_RATE;
-        while (total < maxSamples) {
+        while (total < storedSamples) {
             Arrays.fill(mix, 0);
-            player.b(mix, 0, mix.length);
-            boolean silent = true;
-            for (int value : mix) {
+            int count = Math.min(mix.length, storedSamples - total);
+            player.b(mix, 0, count);
+            for (int i = 0; i < count; i++) {
+                int value = mix[i];
                 int sample = value >> 8;
                 if (sample < -32768) sample = -32768;
                 if (sample > 32767) sample = 32767;
-                if (sample != 0) silent = false;
                 out.write(sample & 0xff);
                 out.write((sample >>> 8) & 0xff);
             }
-            total += mix.length;
-            if (silent) {
-                silentTail += mix.length;
-            } else {
-                silentTail = 0;
-            }
-            if (!player.a((byte)-72) && silentTail >= TAIL_SILENCE_SAMPLES) {
-                break;
-            }
+            total += count;
         }
         return out.toByteArray();
     }
