@@ -83,6 +83,7 @@ const { runCastFieldReceiversToOwners } = requireJavaTools('src/passes/castField
 const { runCastStaticInvokeArgsToDeclaredTypes } = requireJavaTools('src/passes/castStaticInvokeArgsToDeclaredTypes', 'src/castStaticInvokeArgsToDeclaredTypes');
 const { runCastObjectLocalStoreFromUses } = requireJavaTools('src/passes/castObjectLocalStoreFromUses', 'src/castObjectLocalStoreFromUses');
 const { runMaterializeTypedNullArgs } = requireJavaTools('src/passes/materializeTypedNullArgs', 'src/materializeTypedNullArgs');
+const { runStripArrayNullLocalCheckcasts } = requireJavaTools('src/passes/stripArrayNullLocalCheckcasts', 'src/stripArrayNullLocalCheckcasts');
 const { runMaterializeCheckedFieldInitializers } = requireJavaTools('src/passes/materializeCheckedFieldInitializers', 'src/materializeCheckedFieldInitializers');
 const { runMaterializeStackJoinStores } = requireJavaTools('src/passes/materializeStackJoinStores', 'src/materializeStackJoinStores');
 const { runMaterializeBooleanInvokeArgs } = requireJavaTools('src/passes/materializeBooleanInvokeArgs', 'src/materializeBooleanInvokeArgs');
@@ -509,6 +510,9 @@ const passes = [
     ? runCastFieldReceiversToOwners(a, { classes: ['roa'], maxCasts: 512 })
     : { changed: false, rewrites: 0 } },
   { name: 'materialize-typed-null-args', fn: (a) => runMaterializeTypedNullArgs(a) },
+  { name: 'strip-array-null-local-checkcasts', fn: (a) => safeBytecode
+    ? runStripArrayNullLocalCheckcasts(a)
+    : { changed: false, rewrites: 0 } },
   { name: 'materialize-checked-field-initializers', fn: (a) => runMaterializeCheckedFieldInitializers(a) },
   { name: 'materialize-stack-join-stores', fn: (a) => runMaterializeStackJoinStores(a) },
   { name: 'normalize-boolean-field-or', fn: (a) => runNormalizeBooleanFieldOr(a) },
