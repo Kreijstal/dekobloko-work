@@ -163,7 +163,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `torchallenge` | 12 | `TOR_Boss_Fight` and boss sound-effect names found, but no native-MIDI soundtrack profile validates from the current cache. |
 | `transmogrify` | 12 | Ten `pl -> lc` native-MIDI track names found, but the current cache mirror does not expose a matching name table and numeric song loading fails patch hydration. |
 | `voidhunters` | 26 | No named music load site found; generic profile candidates are UI/font assets. |
-| `wizardrun` | 12 | Ten `ji` source-audio music loads found (`wizard_run_forest` through `wizard_run_endscene`); no native-MIDI loader. |
+| `wizardrun` | 12 | Ten `ji` MIDI-style music loads found (`wizard_run_forest`, `wizard_run_swamp`, `wizard_run_caves`, `wizard_run_mountains`, `wizard_run_volcano`, `wizard_run_lair`, `wizard_run_boss`, `wizard_run_intro`, `wizard_run_cutscene`, and `wizard_run_endscene`). The client hydrates them through the native `fl` instrument loader (`mi.D.a(...)`), so this still needs a dedicated native renderer rather than a raw source-audio dump. |
 
 For the games above, the remaining work is not more profile examples. The
 native-MIDI family is exhausted where it validates; the unresolved cases are
