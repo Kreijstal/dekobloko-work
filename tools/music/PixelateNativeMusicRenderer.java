@@ -5,12 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 
 public final class PixelateNativeMusicRenderer {
     private static final int SAMPLE_RATE = 22050;
     private static final int BUFFER_SAMPLES = 1024;
-    private static final int MAX_SECONDS = 420;
-    private static final int TAIL_SILENCE_SAMPLES = SAMPLE_RATE * 2;
 
     private static final List<String> TRACK_NAMES = List.of(
         "pix_title",
@@ -56,7 +56,10 @@ public final class PixelateNativeMusicRenderer {
                 throw new IllegalStateException("missing Pixelate music track " + name);
             }
 
-            Files.write(outRoot.resolve("midi/" + name + ".mid"), repairMidi(track.k));
+            Path midi = outRoot.resolve("midi/" + name + ".mid");
+            Files.write(midi, repairMidi(track.k));
+            Sequence sequence = MidiSystem.getSequence(midi.toFile());
+            int storedSamples = storedSamples(sequence);
 
             ti player = new ti();
             if (!player.a(track, samples, archive9, 109, 1 << 28)) {
@@ -64,7 +67,7 @@ public final class PixelateNativeMusicRenderer {
             }
             player.a(track, -39, false);
 
-            byte[] pcm = renderPcm(player);
+            byte[] pcm = renderPcm(player, storedSamples);
             Path wav = outRoot.resolve("wav/" + name + ".wav");
             writeMonoWav(wav, pcm);
             System.out.printf("%s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * 2));
@@ -75,22 +78,25 @@ public final class PixelateNativeMusicRenderer {
         return new fm(new CacheArchive(cache, archive), true, 1);
     }
 
-    private static byte[] renderPcm(ti player) throws IOException {
+    private static int storedSamples(Sequence sequence) {
+        return (int)Math.min(
+            Integer.MAX_VALUE,
+            (sequence.getMicrosecondLength() * (long)SAMPLE_RATE + 999_999L) / 1_000_000L
+        );
+    }
+
+    private static byte[] renderPcm(ti player, int storedSamples) throws IOException {
         ByteArrayOutputStream pcm = new ByteArrayOutputStream();
         int[] mix = new int[BUFFER_SAMPLES];
-        int silentTail = 0;
-        int maxSamples = SAMPLE_RATE * MAX_SECONDS;
         int rendered = 0;
 
-        while (rendered < maxSamples) {
+        while (rendered < storedSamples) {
             Arrays.fill(mix, 0);
-            player.b(mix, 0, mix.length);
+            int count = Math.min(mix.length, storedSamples - rendered);
+            player.b(mix, 0, count);
 
-            boolean silent = true;
-            for (int sample : mix) {
-                if (sample != 0) {
-                    silent = false;
-                }
+            for (int i = 0; i < count; i++) {
+                int sample = mix[i];
                 int s = sample >> 8;
                 if (s < Short.MIN_VALUE) {
                     s = Short.MIN_VALUE;
@@ -101,23 +107,10 @@ public final class PixelateNativeMusicRenderer {
                 pcm.write((s >>> 8) & 0xff);
             }
 
-            rendered += mix.length;
-            if (silent) {
-                silentTail += mix.length;
-            } else {
-                silentTail = 0;
-            }
-            if (!player.a((byte)82) && silentTail >= TAIL_SILENCE_SAMPLES) {
-                break;
-            }
+            rendered += count;
         }
 
-        byte[] bytes = pcm.toByteArray();
-        int trim = Math.min(silentTail, TAIL_SILENCE_SAMPLES) * 2;
-        if (trim > 0 && trim < bytes.length) {
-            return Arrays.copyOf(bytes, bytes.length - trim);
-        }
-        return bytes;
+        return pcm.toByteArray();
     }
 
     private static void writeMonoWav(Path out, byte[] pcm) throws IOException {

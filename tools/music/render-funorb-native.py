@@ -564,7 +564,7 @@ def render_source(profile):
     backend_methods = backend_methods.replace("INDEX_NEW", profile["index_new"])
     archive_ids = profile.get("archives", [7, 8, 9, 10])
     channels = profile.get("channels", 1)
-    render_call = profile["render_call"].replace("mix.length", "BUFFER_SAMPLES")
+    render_call = profile["render_call"].replace("mix.length", "count")
     player_setup = profile["player_setup"]
     if player_setup:
         player_setup = "\n            " + player_setup
@@ -581,13 +581,12 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 
 public final class GeneratedFunOrbMusicRenderer {{
     private static final int SAMPLE_RATE = {SAMPLE_RATE};
     private static final int BUFFER_SAMPLES = 1024;
     private static final int CHANNELS = {channels};
-    private static final int MAX_SECONDS = 420;
-    private static final int TAIL_SILENCE_SAMPLES = SAMPLE_RATE * 2;
 
     private static final List<String> TRACK_NAMES = List.of(
         {java_list(profile["tracks"])}
@@ -615,7 +614,8 @@ public final class GeneratedFunOrbMusicRenderer {{
 
             Path midi = outRoot.resolve("midi/" + safeName(name) + ".mid");
             Files.write(midi, repairMidi({profile["midi_expr"]}));
-            MidiSystem.getSequence(midi.toFile());
+            Sequence sequence = MidiSystem.getSequence(midi.toFile());
+            int storedSamples = storedSamples(sequence);
 
             {profile["player_type"]} player = new {profile["player_type"]}();{player_setup}
             if (!({profile["hydrate_condition"]})) {{
@@ -623,7 +623,7 @@ public final class GeneratedFunOrbMusicRenderer {{
             }}{track_prepare}
             {profile["start"]}
 
-            byte[] pcm = renderPcm(player);
+            byte[] pcm = renderPcm(player, storedSamples);
             Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
             writeMonoWav(wav, pcm);
             System.out.printf("%s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * CHANNELS * 2));
@@ -634,22 +634,25 @@ public final class GeneratedFunOrbMusicRenderer {{
         return {profile["archive_new"]};
     }}
 
-    private static byte[] renderPcm({profile["player_type"]} player) throws IOException {{
+    private static int storedSamples(Sequence sequence) {{
+        return (int)Math.min(
+            Integer.MAX_VALUE,
+            (sequence.getMicrosecondLength() * (long)SAMPLE_RATE + 999_999L) / 1_000_000L
+        );
+    }}
+
+    private static byte[] renderPcm({profile["player_type"]} player, int storedSamples) throws IOException {{
         ByteArrayOutputStream pcm = new ByteArrayOutputStream();
         int[] mix = new int[BUFFER_SAMPLES * CHANNELS];
-        int silentTail = 0;
-        int maxSamples = SAMPLE_RATE * MAX_SECONDS;
         int rendered = 0;
 
-        while (rendered < maxSamples) {{
+        while (rendered < storedSamples) {{
             Arrays.fill(mix, 0);
+            int count = Math.min(BUFFER_SAMPLES, storedSamples - rendered);
             {render_call}
 
-            boolean silent = true;
-            for (int sample : mix) {{
-                if (sample != 0) {{
-                    silent = false;
-                }}
+            for (int i = 0; i < count * CHANNELS; i++) {{
+                int sample = mix[i];
                 int s = sample >> 8;
                 if (s < Short.MIN_VALUE) {{
                     s = Short.MIN_VALUE;
@@ -660,23 +663,10 @@ public final class GeneratedFunOrbMusicRenderer {{
                 pcm.write((s >>> 8) & 0xff);
             }}
 
-            rendered += BUFFER_SAMPLES;
-            if (silent) {{
-                silentTail += BUFFER_SAMPLES;
-            }} else {{
-                silentTail = 0;
-            }}
-            if (!({profile["active_expr"]}) && silentTail >= TAIL_SILENCE_SAMPLES) {{
-                break;
-            }}
+            rendered += count;
         }}
 
-        byte[] bytes = pcm.toByteArray();
-        int trim = Math.min(silentTail, TAIL_SILENCE_SAMPLES) * CHANNELS * 2;
-        if (trim > 0 && trim < bytes.length) {{
-            return Arrays.copyOf(bytes, bytes.length - trim);
-        }}
-        return bytes;
+        return pcm.toByteArray();
     }}
 
     private static String safeName(String name) {{
