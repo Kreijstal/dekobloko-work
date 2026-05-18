@@ -154,7 +154,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `drphlogistonsavestheearth` | 12 | Native-style `ok` loader has seven music/jingle names: `Dr_Phlogiston_Title`, `Dr_Phlogiston_Earth`, `Dr_Phlogiston_Space`, `Dr_Phlogiston_Alien`, `Dr_Phlogiston_Boss_Break`, `Dr_Phlogiston_GameOver_jingle`, and `Dr_Phlogiston_GameComplete_jingle`. Builds 12 and 17 expose only partial/mismatched cache data, so named and numeric song loading do not currently hydrate. |
 | `kickabout` | 19 | No named music load site found; `MThd` markers are present only in the generic audio classes and profiler candidates are UI/font assets. |
 | `lexicominos` | 14 | Music-like sample loops found (`ingameleft`, `ingameright`, `score_increase_loop`), but no native-MIDI soundtrack profile validates. |
-| `monkeypuzzle2` | 12 | Ten source-audio music loads found under `music/Monkey Puzzle ...`; no native-MIDI loader. |
+| `monkeypuzzle2` | 24 | Ten source-audio music loads found under `music/Monkey Puzzle ...`. Build 24 exposes the matching archive-5 name table as one group with ten files; builds 1-23 do not expose the complete table. Direct song splitting reaches the client `lg` constructor, but sample hydration through `ud`/`sf` still fails before WAV rendering. |
 | `shatteredplans` | 15 | No named music load site found; generic profile candidates are UI/font assets. |
 | `solknight` | 11 | No named music load site found; generic profile candidates are UI/font assets. |
 | `stellarshard` | 11 | Two source-audio music loads found: `music/Stellar_Shard_ingame` and `music/Stellar_Shard_Halloween`; no native-MIDI loader. |
