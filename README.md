@@ -163,7 +163,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `torchallenge` | 39 | 14 `ej` tracks extracted and rendered through the client `kb` mixer as stereo WAVs at the stored MIDI sequence lengths. Build 12 handshakes but lacks the named archive-9 song hashes. |
 | `transmogrify` | 13 | 10 source-audio music tracks extracted from archive 5 and rendered through the client `pl`/`lc` mixer. The renderer derives each WAV length from the stored sequence duration instead of using silence trimming or a fixed capture limit. |
 | `voidhunters` | 26 | Four `kka` native sequence loads found: `VH_Title_Music`, `VH_Ingame_Music`, `VH_Jingle_Win`, and `VH_Jingle_Lose`. The client expects MIDI archive 21 and patch archive 20, but build 26 exposes only indexes 0-8/11 and no matching name hashes. |
-| `wizardrun` | 12 | Ten `ji` MIDI-style music loads found (`wizard_run_forest`, `wizard_run_swamp`, `wizard_run_caves`, `wizard_run_mountains`, `wizard_run_volcano`, `wizard_run_lair`, `wizard_run_boss`, `wizard_run_intro`, `wizard_run_cutscene`, and `wizard_run_endscene`). Build 12 exposes indexes 0-8/11, but none contain those name hashes, so no renderer-generated WAVs are verified. |
+| `wizardrun` | 6 | 10 `ji` tracks extracted and rendered through the client `fl` mixer at the stored MIDI sequence lengths. Build 12 handshakes but lacks the named archive-5 song hashes. |
 
 For the games above, the remaining work is not more profile examples. The
 native-MIDI family is exhausted where it validates; the unresolved cases are
