@@ -171,6 +171,18 @@ either older source-audio engines that need game-specific stream renderers, or
 cache mirror gaps where the client has track names but the mirrored JS5 index
 does not provide the matching groups/patches.
 
+Some games also have official Orb Downloads music mirrored on the FunOrb Wiki as
+OGG files. That path is a fallback source, not a replacement for cache/native
+rendering: the downloader keeps those outputs under
+`.work/games/<game>/music-orb-downloads/` and writes a manifest that records both
+downloaded files and page-listed tracks with no uploaded audio.
+
+```bash
+python3 tools/music/download-orb-downloads.py \
+  --game terraphoenix,torchallenge,drphlogistonsavestheearth,monkeypuzzle2,stellarshard,chess,lexicominos,shatteredplans,solknight \
+  --out-root .work/games
+```
+
 Download one cache with the build table:
 
 ```bash
