@@ -501,6 +501,9 @@ const passes = [
       cloneForwardTerminalGotoTails: true,
       cloneForwardTerminalGotoTailMaxInsns: 520,
       cloneForwardTerminalGotoTailMaxClones: 6,
+      cloneConditionalTerminalTails: true,
+      cloneConditionalTerminalTailMaxInsns: 520,
+      cloneConditionalTerminalTailMaxClones: 2,
       nullableSharedJoinGuardMinMethodInsns: 80,
       nullableSharedJoinGuardRequireNoExceptions: false,
       nullableSharedJoinGuardMaxLocalIndex: 200,
@@ -620,6 +623,9 @@ const passes = [
       cloneForwardTerminalGotoTails: true,
       cloneForwardTerminalGotoTailMaxInsns: 520,
       cloneForwardTerminalGotoTailMaxClones: 6,
+      cloneConditionalTerminalTails: true,
+      cloneConditionalTerminalTailMaxInsns: 520,
+      cloneConditionalTerminalTailMaxClones: 2,
       nullableSharedJoinGuardMinMethodInsns: 80,
       nullableSharedJoinGuardRequireNoExceptions: false,
       nullableSharedJoinGuardMaxLocalIndex: 200,
@@ -685,6 +691,9 @@ const passes = [
       cloneForwardTerminalGotoTails: true,
       cloneForwardTerminalGotoTailMaxInsns: 520,
       cloneForwardTerminalGotoTailMaxClones: 6,
+      cloneConditionalTerminalTails: true,
+      cloneConditionalTerminalTailMaxInsns: 520,
+      cloneConditionalTerminalTailMaxClones: 2,
     })
     : { changed: false, rewrites: 0 } },
 ];
@@ -716,6 +725,9 @@ for (const f of files) {
         cloneForwardTerminalGotoTails: true,
         cloneForwardTerminalGotoTailMaxInsns: 520,
         cloneForwardTerminalGotoTailMaxClones: 6,
+        cloneConditionalTerminalTails: true,
+        cloneConditionalTerminalTailMaxInsns: 520,
+        cloneConditionalTerminalTailMaxClones: 2,
       });
       ({ ast, cp } = saveAndReload(ast, cp));
     }
