@@ -496,6 +496,11 @@ const passes = [
       materializeNullableSharedJoinGuards: true,
       removeDeadGotoIslands: true,
       coalesceProtectedLoopProducerBridges: true,
+      cloneStackConditionalTargets: true,
+      removeUnreachableUntilUsedLabels: true,
+      cloneForwardTerminalGotoTails: true,
+      cloneForwardTerminalGotoTailMaxInsns: 520,
+      cloneForwardTerminalGotoTailMaxClones: 6,
       nullableSharedJoinGuardMinMethodInsns: 80,
       nullableSharedJoinGuardRequireNoExceptions: false,
       nullableSharedJoinGuardMaxLocalIndex: 200,
@@ -610,6 +615,11 @@ const passes = [
       materializeNullableSharedJoinGuards: true,
       removeDeadGotoIslands: true,
       coalesceProtectedLoopProducerBridges: true,
+      cloneStackConditionalTargets: true,
+      removeUnreachableUntilUsedLabels: true,
+      cloneForwardTerminalGotoTails: true,
+      cloneForwardTerminalGotoTailMaxInsns: 520,
+      cloneForwardTerminalGotoTailMaxClones: 6,
       nullableSharedJoinGuardMinMethodInsns: 80,
       nullableSharedJoinGuardRequireNoExceptions: false,
       nullableSharedJoinGuardMaxLocalIndex: 200,
@@ -667,6 +677,16 @@ const passes = [
   { name: 'constructor-branch-threading-final', fn: (a) => safeBytecode
     ? runConstructorBranchThreading(a)
     : { changed: false, rewrites: 0 } },
+  { name: 'peephole-final', fn: (a) => safeBytecode
+    ? runPeepholeClean(a, {
+      removeRethrowHandlers: false,
+      removeDeadGotoIslands: true,
+      removeUnreachableUntilUsedLabels: true,
+      cloneForwardTerminalGotoTails: true,
+      cloneForwardTerminalGotoTailMaxInsns: 520,
+      cloneForwardTerminalGotoTailMaxClones: 6,
+    })
+    : { changed: false, rewrites: 0 } },
 ];
 
 let processed = 0;
@@ -687,6 +707,18 @@ for (const f of files) {
       }
     }
     runInlineSingleUseBooleanBranch(ast);
+    if (safeBytecode) {
+      ({ ast, cp } = saveAndReload(ast, cp));
+      runPeepholeClean(ast, {
+        removeRethrowHandlers: false,
+        removeDeadGotoIslands: true,
+        removeUnreachableUntilUsedLabels: true,
+        cloneForwardTerminalGotoTails: true,
+        cloneForwardTerminalGotoTailMaxInsns: 520,
+        cloneForwardTerminalGotoTailMaxClones: 6,
+      });
+      ({ ast, cp } = saveAndReload(ast, cp));
+    }
     raiseMaxStackFloor(ast);
     writeClassAstToClassFile(ast, outPath, cp);
     processed += 1;
