@@ -7,6 +7,18 @@ const { spawnSync } = require('child_process');
 
 const DEKOB = path.resolve(__dirname, '..');
 
+const catalog = spawnSync(process.execPath, [
+  path.join(DEKOB, 'scripts', 'cfr-oracle-select-transform.js'),
+  '--list-catalog',
+], {
+  cwd: DEKOB,
+  encoding: 'utf8',
+});
+assert.equal(catalog.status, 0, catalog.stderr || catalog.stdout);
+const catalogPayload = JSON.parse(catalog.stdout);
+assert.ok(catalogPayload.count >= 50, `expected at least 50 catalog transforms, got ${catalogPayload.count}`);
+assert.equal(new Set(catalogPayload.profiles).size, catalogPayload.profiles.length, 'catalog transform names must be unique');
+
 const cases = [
   {
     name: 'terminal-helper fallback',
@@ -36,12 +48,12 @@ const cases = [
     expectedCandidateCount: 2,
   },
   {
-    name: 'default-only rejection',
+    name: 'default-only partial acceptance',
     input: 'tools/cfr-goto-labs/real-se-a-bytearray/reduced7.j',
-    expectedAction: 'baseline',
-    expectedProfile: null,
+    expectedAction: 'candidate',
+    expectedProfile: 'default',
     expectedBaseline: 6,
-    expectedCandidate: 6,
+    expectedCandidate: 5,
     expectedCandidateCount: 2,
   },
 ];

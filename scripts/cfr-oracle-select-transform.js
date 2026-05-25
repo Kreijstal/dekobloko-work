@@ -20,14 +20,22 @@ const MARKER_RE = /\*\* GOTO|Unable to fully structure code|lbl-1000|\*\* while/
 const BAD_RE = /Exception decompiling|Invisible function parameters|uninitialised local|uninitialized local|if \(true\) \*\* GOTO|if \([0-9]+ == [0-9]+\) \*\* GOTO/;
 
 function usage() {
-  console.error('usage: node scripts/cfr-oracle-select-transform.js <input.j|input.class> <out.class> [--disasm <out.j>]');
+  console.error(`usage:
+  node scripts/cfr-oracle-select-transform.js <input.j|input.class> <out.class> [--disasm <out.j>] [--catalog] [--catalog-limit N]
+  node scripts/cfr-oracle-select-transform.js --list-catalog`);
 }
 
-const input = process.argv[2] && path.resolve(process.argv[2]);
-const outClass = process.argv[3] && path.resolve(process.argv[3]);
-const disasmIndex = process.argv.indexOf('--disasm');
-const outJ = disasmIndex >= 0 ? path.resolve(process.argv[disasmIndex + 1] || '') : null;
-if (!input || !outClass || (disasmIndex >= 0 && !process.argv[disasmIndex + 1])) {
+const args = parseCli(process.argv.slice(2));
+if (args.listCatalog) {
+  const profiles = catalogProfiles();
+  console.log(JSON.stringify({ count: profiles.length, profiles: profiles.map((profile) => profile.name) }, null, 2));
+  process.exit(0);
+}
+
+const input = args.input && path.resolve(args.input);
+const outClass = args.outClass && path.resolve(args.outClass);
+const outJ = args.disasm ? path.resolve(args.disasm) : null;
+if (!input || !outClass) {
   usage();
   process.exit(2);
 }
@@ -55,7 +63,7 @@ try {
   }
 
   const baseline = countMarkers(baselineClass);
-  const candidates = runCandidates(baselineDir, candidateDir, className, baselineClass);
+  const candidates = runCandidates(baselineDir, candidateDir, className, baselineClass, args);
   const best = chooseBestCandidate(baseline, candidates);
   const accept = !!best;
   const selected = accept ? best.classFile : baselineClass;
@@ -83,14 +91,52 @@ try {
   fs.rmSync(work, { recursive: true, force: true });
 }
 
-function runCandidates(inputDir, candidateRoot, className, baselineClass) {
+function parseCli(argv) {
+  const out = {
+    catalog: process.env.CFR_ORACLE_CATALOG === '1',
+    catalogLimit: Number(process.env.CFR_ORACLE_CATALOG_LIMIT || 0),
+  };
+  const positional = [];
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (arg === '--list-catalog') out.listCatalog = true;
+    else if (arg === '--catalog') out.catalog = true;
+    else if (arg === '--catalog-limit') out.catalogLimit = Number(argv[++i]);
+    else if (arg.startsWith('--catalog-limit=')) out.catalogLimit = Number(arg.slice('--catalog-limit='.length));
+    else if (arg === '--disasm') out.disasm = argv[++i];
+    else if (arg.startsWith('--disasm=')) out.disasm = arg.slice('--disasm='.length);
+    else positional.push(arg);
+  }
+  out.input = positional[0];
+  out.outClass = positional[1];
+  out.catalogLimit = Number.isFinite(out.catalogLimit) && out.catalogLimit > 0 ? out.catalogLimit : 0;
+  return out;
+}
+
+function runCandidates(inputDir, candidateRoot, className, baselineClass, args = {}) {
   const candidates = [];
-  const defaultCandidate = runCandidate(inputDir, candidateRoot, className, candidateProfile('default'));
+  const seen = new Set();
+  const defaultProfile = candidateProfile('default');
+  const defaultCandidate = runCandidate(inputDir, candidateRoot, className, defaultProfile);
   candidates.push(defaultCandidate);
-  candidates.push(runCandidate(inputDir, candidateRoot, className, candidateProfile('loop-entry')));
+  seen.add(defaultProfile.name);
+  const loopEntry = candidateProfile('loop-entry');
+  candidates.push(runCandidate(inputDir, candidateRoot, className, loopEntry));
+  seen.add(loopEntry.name);
 
   for (const profile of fallbackProfilesFor(defaultCandidate.count)) {
+    if (seen.has(profile.name)) continue;
     candidates.push(runCandidate(inputDir, candidateRoot, className, profile));
+    seen.add(profile.name);
+  }
+
+  if (args.catalog) {
+    const profiles = args.catalogLimit ? catalogProfiles().slice(0, args.catalogLimit) : catalogProfiles();
+    for (const profile of profiles) {
+      if (seen.has(profile.name)) continue;
+      candidates.push(runCandidate(inputDir, candidateRoot, className, profile));
+      seen.add(profile.name);
+    }
   }
   return candidates;
 }
@@ -177,6 +223,120 @@ function candidateProfile(name) {
     };
   }
   throw new Error(`unknown oracle profile: ${name}`);
+}
+
+function catalogProfiles() {
+  const profiles = [];
+  const push = (profile) => profiles.push(profile);
+
+  for (const maxInsns of [4, 8, 12, 16, 24, 32]) {
+    for (const maxRefs of [2, 3, 4, 6, 8]) {
+      push({
+        name: `shared-side-effect-i${maxInsns}-r${maxRefs}`,
+        peepholeOptions: {
+          cloneSharedSideEffectJoins: true,
+          cloneSharedSideEffectJoinMaxInsns: maxInsns,
+          cloneSharedSideEffectJoinMaxRefs: maxRefs,
+        },
+      });
+    }
+  }
+
+  for (const maxInsns of [2, 3, 4, 5, 6]) {
+    for (const maxRefs of [1, 2, 4, 8]) {
+      push({
+        name: `shared-loop-increment-i${maxInsns}-r${maxRefs}`,
+        peepholeOptions: {
+          cloneSharedLoopIncrementTails: true,
+          cloneSharedLoopIncrementTailMaxInsns: maxInsns,
+          cloneSharedLoopIncrementTailMaxRefs: maxRefs,
+        },
+      });
+    }
+  }
+
+  for (const maxInsns of [80, 160, 260, 520]) {
+    for (const maxClones of [1, 2, 4, 6]) {
+      push({
+        name: `forward-terminal-tail-i${maxInsns}-c${maxClones}`,
+        peepholeOptions: {
+          cloneForwardTerminalGotoTails: true,
+          cloneForwardTerminalGotoTailMaxInsns: maxInsns,
+          cloneForwardTerminalGotoTailMaxClones: maxClones,
+        },
+      });
+    }
+  }
+
+  for (const maxInsns of [80, 160, 260, 520]) {
+    for (const maxClones of [1, 2, 4]) {
+      push({
+        name: `conditional-terminal-tail-i${maxInsns}-c${maxClones}`,
+        peepholeOptions: {
+          cloneConditionalTerminalTails: true,
+          cloneConditionalTerminalTailMaxInsns: maxInsns,
+          cloneConditionalTerminalTailMaxClones: maxClones,
+        },
+      });
+    }
+  }
+
+  for (const maxInsns of [2, 4, 6, 8, 12]) {
+    for (const maxRefs of [2, 4, 8]) {
+      push({
+        name: `pure-forward-join-i${maxInsns}-r${maxRefs}`,
+        peepholeOptions: {
+          cloneSharedPureForwardJoins: true,
+          cloneSharedPureForwardJoinMaxInsns: maxInsns,
+          cloneSharedPureForwardJoinMaxRefs: maxRefs,
+        },
+      });
+    }
+  }
+
+  push({
+    name: 'thread-multi-use-goto-bridges',
+    peepholeOptions: { threadMultiUseGotoBridges: true },
+  });
+  push({
+    name: 'loop-entry-with-shared-side-effect',
+    env: {
+      STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY: '1',
+      STRUCTURED_GOTO_CLONE_SHORT: '0',
+      STRUCTURED_GOTO_CLONE_ZERO: '0',
+      STRUCTURED_GOTO_CLONE_RETURN: '0',
+      STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
+      STRUCTURED_GOTO_ONESHOT_PREHEADER: '0',
+    },
+    peepholeOptions: {
+      cloneSharedSideEffectJoins: true,
+      cloneSharedSideEffectJoinMaxInsns: 16,
+      cloneSharedSideEffectJoinMaxRefs: 4,
+    },
+  });
+  push({
+    name: 'loop-entry-with-increment-tail',
+    env: {
+      STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY: '1',
+      STRUCTURED_GOTO_CLONE_SHORT: '0',
+      STRUCTURED_GOTO_CLONE_ZERO: '0',
+      STRUCTURED_GOTO_CLONE_RETURN: '0',
+      STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
+      STRUCTURED_GOTO_ONESHOT_PREHEADER: '0',
+    },
+    peepholeOptions: {
+      cloneSharedLoopIncrementTails: true,
+      cloneSharedLoopIncrementTailMaxInsns: 4,
+      cloneSharedLoopIncrementTailMaxRefs: 4,
+    },
+  });
+
+  const names = new Set();
+  for (const profile of profiles) {
+    if (names.has(profile.name)) throw new Error(`duplicate catalog transform: ${profile.name}`);
+    names.add(profile.name);
+  }
+  return profiles;
 }
 
 function candidateEnv(profile) {
