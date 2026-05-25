@@ -120,6 +120,11 @@ const { runRasterScanlineEntryClone } = require('./rasterScanlineEntryClone');
 const { runSourceScopeLocalInit } = require('./sourceScopeLocalInit');
 const { runStackReceiverTailClone } = require('./stackReceiverTailClone');
 const { runRetargetBranches } = require('./retargetBranches');
+const { runTerminalIteratorExtract } = require('./terminalIteratorExtract');
+const { runTerminalActionExtract } = require('./terminalActionExtract');
+const { runTerminalCleanupExtract } = require('./terminalCleanupExtract');
+const { runStructuredGotoClone } = require('./structuredGotoClone');
+const { runPollLoopReturnNormalize } = require('./pollLoopReturnNormalize');
 const { expandMethodRenames, runCompileConflictRenames } = require('./compileConflictRenames');
 const { runDekoblokoExceptionHandlerDrops } = require('./removeShadowedExceptionHandlers');
 
@@ -139,6 +144,8 @@ const skipPassNames = new Set((process.env.SKIP_PIPELINE_PASSES || '')
   .split(',')
   .map((name) => name.trim())
   .filter(Boolean));
+const experimentalPeepholeOptions = readJsonEnv('PIPELINE_EXPERIMENTAL_PEEPHOLE_OPTIONS');
+const tracePassTimes = process.env.BULK_PIPELINE_TRACE_PASS_TIMES === '1';
 if (skipPassNames.has('ck-clip-flag')) {
   skipPassNames.add('raster-clip-continuation');
 }
@@ -213,6 +220,43 @@ function readOptionValue(name) {
     if (arg && arg.startsWith(prefixed)) return arg.slice(prefixed.length);
   }
   return '';
+}
+
+function readJsonEnv(name) {
+  const value = process.env[name];
+  if (!value) return {};
+  try {
+    const parsed = JSON.parse(value);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      throw new Error('expected a JSON object');
+    }
+    return parsed;
+  } catch (err) {
+    console.error(`Invalid ${name}: ${err && err.message ? err.message : err}`);
+    process.exit(2);
+  }
+}
+
+function tracePassTime(classFile, passName, startMs) {
+  if (!tracePassTimes) return;
+  const elapsed = Date.now() - startMs;
+  console.error(`TRACE ${classFile} ${passName} ${elapsed}ms`);
+}
+
+function passChanged(result) {
+  if (result == null) return true;
+  if (typeof result !== 'object') return true;
+  if (Object.prototype.hasOwnProperty.call(result, 'changed')) return !!result.changed;
+  if (Object.prototype.hasOwnProperty.call(result, 'changes')) return Number(result.changes) > 0;
+  if (Object.prototype.hasOwnProperty.call(result, 'rewrites')) return Number(result.rewrites) > 0;
+  return true;
+}
+
+function safePeepholeOptions(options) {
+  return {
+    ...options,
+    ...experimentalPeepholeOptions,
+  };
 }
 
 function loadProfiles(dir, selected = []) {
@@ -472,7 +516,7 @@ const implicitSuperCtorClasses = collectImplicitSuperCtorClasses();
 const passes = [
   { name: 'add-default-constructors-for-implicit-supers', fn: (a) => runAddDefaultConstructorsForImplicitSupers(a, { classesToAdd: implicitSuperCtorClasses }) },
   { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a, { targets: profiles.eiTailClone }) },
-  { name: 'peephole', fn: (a) => runPeepholeClean(a, {
+  { name: 'peephole', fn: (a) => runPeepholeClean(a, safePeepholeOptions({
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
     ...(safeBytecode ? {
       invertConditionalsOverGoto: true,
@@ -483,6 +527,10 @@ const passes = [
       cloneSmallTerminalSharedForwardBlockMinMethodInsns: 80,
       cloneSmallTerminalSharedForwardBlockMaxLocalIndex: 200,
       cloneConditionalSharedJoins: true,
+      cloneSharedPureForwardJoins: true,
+      cloneSharedPureForwardJoinMinMethodInsns: 400,
+      cloneSharedPureForwardJoinMaxInsns: 6,
+      cloneSharedPureForwardJoinMaxRefs: 8,
       cloneLongCompareSharedJoins: true,
       cloneConditionalSharedJoinClasses: [],
       cloneConditionalSharedJoinMinMethodInsns: 400,
@@ -493,6 +541,7 @@ const passes = [
       cloneConditionalSharedJoinRequireIntArrayParameter: true,
       removeConditionalFallthroughGotoBridges: true,
       materializeDupStoreCompareBranches: true,
+      simplifyNullCompareBranches: true,
       materializeNullableSharedJoinGuards: true,
       removeDeadGotoIslands: true,
       coalesceProtectedLoopProducerBridges: true,
@@ -501,6 +550,11 @@ const passes = [
       cloneForwardTerminalGotoTails: true,
       cloneForwardTerminalGotoTailMaxInsns: 520,
       cloneForwardTerminalGotoTailMaxClones: 6,
+      cloneBoundedTerminalGotoTails: true,
+      cloneBoundedTerminalGotoTailMaxInsns: 260,
+      cloneBoundedTerminalGotoTailMaxClones: 2,
+      cloneLoopValueContinuations: true,
+      cloneLoopValueContinuationMaxClones: 4,
       cloneConditionalTerminalTails: true,
       cloneConditionalTerminalTailMaxInsns: 520,
       cloneConditionalTerminalTailMaxClones: 2,
@@ -511,7 +565,7 @@ const passes = [
       cloneConditionalSharedLoopTails: true,
       cloneConditionalSharedLoopTailClasses: ['roa'],
     } : {}),
-  }) },
+  })) },
   ...(keepRuntimeHandlers || runtimeSafe ? [] : [{ name: 'runtime-exception-handlers', fn: (a) => removeRuntimeExceptionHandlers(a, { keepHandlerCode: true }) }]),
   ...(runtimeSafe ? [] : [
     { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a) },
@@ -541,6 +595,9 @@ const passes = [
     generalIntNotCompareMaxLocalIndex: 200,
     generalIntNotCompareRequireIntArrayParameter: true,
   }) },
+  { name: 'poll-loop-return-normalize', fn: (a) => safeBytecode
+    ? runPollLoopReturnNormalize(a)
+    : { changed: false, rewrites: 0 } },
   { name: 'simplify-string-length-not-compare', fn: (a) => runSimplifyStringLengthNotCompare(a) },
   { name: 'narrow-char-array-stores', fn: (a) => runNarrowCharArrayStores(a) },
   { name: 'narrow-byte-array-stores', fn: (a) => runNarrowByteArrayStores(a) },
@@ -594,7 +651,7 @@ const passes = [
   { name: 'source-scope-local-init', fn: (a) => runSourceScopeLocalInit(a, { targets: profiles.sourceScopeLocalInit }) },
   { name: 'stack-receiver-tail-clone', fn: (a) => runStackReceiverTailClone(a, { targets: profiles.stackReceiverTailClone }) },
   ...(runtimeSafe ? [] : [{ name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) }]),
-  { name: 'peephole2', fn: (a) => runPeepholeClean(a, {
+  { name: 'peephole2', fn: (a) => runPeepholeClean(a, safePeepholeOptions({
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
     ...(safeBytecode ? {
       invertConditionalsOverGoto: true,
@@ -605,6 +662,10 @@ const passes = [
       cloneSmallTerminalSharedForwardBlockMinMethodInsns: 80,
       cloneSmallTerminalSharedForwardBlockMaxLocalIndex: 200,
       cloneConditionalSharedJoins: true,
+      cloneSharedPureForwardJoins: true,
+      cloneSharedPureForwardJoinMinMethodInsns: 400,
+      cloneSharedPureForwardJoinMaxInsns: 6,
+      cloneSharedPureForwardJoinMaxRefs: 8,
       cloneLongCompareSharedJoins: true,
       cloneConditionalSharedJoinClasses: [],
       cloneConditionalSharedJoinMinMethodInsns: 400,
@@ -615,14 +676,24 @@ const passes = [
       cloneConditionalSharedJoinRequireIntArrayParameter: true,
       removeConditionalFallthroughGotoBridges: true,
       materializeDupStoreCompareBranches: true,
+      simplifyNullCompareBranches: true,
       materializeNullableSharedJoinGuards: true,
       removeDeadGotoIslands: true,
       coalesceProtectedLoopProducerBridges: true,
       cloneStackConditionalTargets: true,
       removeUnreachableUntilUsedLabels: true,
+      cloneSharedPureForwardJoins: true,
+      cloneSharedPureForwardJoinMinMethodInsns: 400,
+      cloneSharedPureForwardJoinMaxInsns: 6,
+      cloneSharedPureForwardJoinMaxRefs: 8,
       cloneForwardTerminalGotoTails: true,
       cloneForwardTerminalGotoTailMaxInsns: 520,
       cloneForwardTerminalGotoTailMaxClones: 6,
+      cloneBoundedTerminalGotoTails: true,
+      cloneBoundedTerminalGotoTailMaxInsns: 260,
+      cloneBoundedTerminalGotoTailMaxClones: 2,
+      cloneLoopValueContinuations: true,
+      cloneLoopValueContinuationMaxClones: 4,
       cloneConditionalTerminalTails: true,
       cloneConditionalTerminalTailMaxInsns: 520,
       cloneConditionalTerminalTailMaxClones: 2,
@@ -633,7 +704,7 @@ const passes = [
       cloneConditionalSharedLoopTails: true,
       cloneConditionalSharedLoopTailClasses: ['roa'],
     } : {}),
-  }) },
+  })) },
   ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a, {
     ...(safeBytecode ? { requireIsolatedMergeTarget: true, guardStackGotos: true } : {}),
     ...profiles.controlFlowDceOptions,
@@ -684,17 +755,22 @@ const passes = [
     ? runConstructorBranchThreading(a)
     : { changed: false, rewrites: 0 } },
   { name: 'peephole-final', fn: (a) => safeBytecode
-    ? runPeepholeClean(a, {
+    ? runPeepholeClean(a, safePeepholeOptions({
       removeRethrowHandlers: false,
       removeDeadGotoIslands: true,
       removeUnreachableUntilUsedLabels: true,
       cloneForwardTerminalGotoTails: true,
       cloneForwardTerminalGotoTailMaxInsns: 520,
       cloneForwardTerminalGotoTailMaxClones: 6,
+      cloneBoundedTerminalGotoTails: true,
+      cloneBoundedTerminalGotoTailMaxInsns: 260,
+      cloneBoundedTerminalGotoTailMaxClones: 2,
+      cloneLoopValueContinuations: true,
+      cloneLoopValueContinuationMaxClones: 4,
       cloneConditionalTerminalTails: true,
       cloneConditionalTerminalTailMaxInsns: 520,
       cloneConditionalTerminalTailMaxClones: 2,
-    })
+    }))
     : { changed: false, rewrites: 0 } },
 ];
 
@@ -708,28 +784,100 @@ for (const f of files) {
     for (const p of passes) {
       if (skipPassNames.has(p.name)) continue;
       try {
-        p.fn(ast);
-        ({ ast, cp } = saveAndReload(ast, cp));
+        const passStart = Date.now();
+        const result = p.fn(ast);
+        tracePassTime(f, p.name, passStart);
+        if (passChanged(result)) {
+          const saveStart = Date.now();
+          ({ ast, cp } = saveAndReload(ast, cp));
+          tracePassTime(f, `${p.name}:save`, saveStart);
+        }
       } catch (err) {
         err.pipelinePass = p.name;
         throw err;
       }
     }
-    runInlineSingleUseBooleanBranch(ast);
+    const inlineStart = Date.now();
+    const inlineResult = runInlineSingleUseBooleanBranch(ast);
+    tracePassTime(f, 'inline-single-use-boolean-branch-post', inlineStart);
     if (safeBytecode) {
-      ({ ast, cp } = saveAndReload(ast, cp));
-      runPeepholeClean(ast, {
+      if (passChanged(inlineResult)) {
+        const saveBeforeFinalStart = Date.now();
+        ({ ast, cp } = saveAndReload(ast, cp));
+        tracePassTime(f, 'post-final:save-before-peephole', saveBeforeFinalStart);
+      }
+      const peepholePostStart = Date.now();
+      const peepholePostResult = runPeepholeClean(ast, safePeepholeOptions({
         removeRethrowHandlers: false,
         removeDeadGotoIslands: true,
         removeUnreachableUntilUsedLabels: true,
+        simplifyNullCompareBranches: true,
+        cloneSharedPureForwardJoins: true,
+        cloneSharedPureForwardJoinMinMethodInsns: 400,
+        cloneSharedPureForwardJoinMaxInsns: 6,
+        cloneSharedPureForwardJoinMaxRefs: 8,
         cloneForwardTerminalGotoTails: true,
         cloneForwardTerminalGotoTailMaxInsns: 520,
         cloneForwardTerminalGotoTailMaxClones: 6,
+        cloneBoundedTerminalGotoTails: true,
+        cloneBoundedTerminalGotoTailMaxInsns: 260,
+        cloneBoundedTerminalGotoTailMaxClones: 2,
+        cloneLoopValueContinuations: true,
+        cloneLoopValueContinuationMaxClones: 4,
         cloneConditionalTerminalTails: true,
         cloneConditionalTerminalTailMaxInsns: 520,
         cloneConditionalTerminalTailMaxClones: 2,
-      });
-      ({ ast, cp } = saveAndReload(ast, cp));
+      }));
+      tracePassTime(f, 'post-final:peephole', peepholePostStart);
+      if (passChanged(peepholePostResult)) {
+        const saveAfterPeepholeStart = Date.now();
+        ({ ast, cp } = saveAndReload(ast, cp));
+        tracePassTime(f, 'post-final:save-after-peephole', saveAfterPeepholeStart);
+      }
+      if (!skipPassNames.has('terminal-iterator-extract')) {
+        const terminalStart = Date.now();
+        const terminalResult = runTerminalIteratorExtract(ast);
+        tracePassTime(f, 'post-final:terminal-iterator-extract', terminalStart);
+        if (passChanged(terminalResult)) {
+          const terminalSaveStart = Date.now();
+          ({ ast, cp } = saveAndReload(ast, cp));
+          tracePassTime(f, 'post-final:save-after-terminal-iterator-extract', terminalSaveStart);
+        }
+      }
+      if (!skipPassNames.has('terminal-action-extract')) {
+        const terminalActionStart = Date.now();
+        const terminalActionResult = runTerminalActionExtract(ast);
+        tracePassTime(f, 'post-final:terminal-action-extract', terminalActionStart);
+        if (terminalActionResult && terminalActionResult.changed) {
+          const terminalActionSaveStart = Date.now();
+          ({ ast, cp } = saveAndReload(ast, cp));
+          tracePassTime(f, 'post-final:save-after-terminal-action-extract', terminalActionSaveStart);
+        }
+      }
+      if (!skipPassNames.has('terminal-cleanup-extract')) {
+        const terminalCleanupStart = Date.now();
+        const terminalCleanupResult = runTerminalCleanupExtract(ast);
+        tracePassTime(f, 'post-final:terminal-cleanup-extract', terminalCleanupStart);
+        if (terminalCleanupResult && terminalCleanupResult.changed) {
+          const terminalCleanupSaveStart = Date.now();
+          ({ ast, cp } = saveAndReload(ast, cp));
+          tracePassTime(f, 'post-final:save-after-terminal-cleanup-extract', terminalCleanupSaveStart);
+        }
+      }
+      if (!skipPassNames.has('structured-goto-clone')) {
+        const structuredGotoIterations = process.env.STRUCTURED_GOTO_ITERATIVE === '1'
+          ? Number(process.env.STRUCTURED_GOTO_MAX_ITERATIONS || 6)
+          : 1;
+        for (let structuredGotoIteration = 0; structuredGotoIteration < structuredGotoIterations; structuredGotoIteration += 1) {
+          const structuredGotoStart = Date.now();
+          const structuredGotoResult = runStructuredGotoClone(ast);
+          tracePassTime(f, `post-final:structured-goto-clone:${structuredGotoIteration}`, structuredGotoStart);
+          if (!structuredGotoResult || !structuredGotoResult.changed) break;
+          const structuredGotoSaveStart = Date.now();
+          ({ ast, cp } = saveAndReload(ast, cp));
+          tracePassTime(f, `post-final:save-after-structured-goto-clone:${structuredGotoIteration}`, structuredGotoSaveStart);
+        }
+      }
     }
     raiseMaxStackFloor(ast);
     writeClassAstToClassFile(ast, outPath, cp);

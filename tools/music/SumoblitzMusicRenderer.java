@@ -102,8 +102,8 @@ public final class SumoblitzMusicRenderer {
         if (t instanceof su) {
             System.err.println(indent + "context: " + su.class.getDeclaredField("a").get(t));
             Object cause = su.class.getDeclaredField("b").get(t);
-            if (cause instanceof Throwable nested) {
-                printThrowable(nested, indent + "  ");
+            if (cause instanceof Throwable) {
+                printThrowable((Throwable)cause, indent + "  ");
             }
         } else if (t.getCause() != null) {
             printThrowable(t.getCause(), indent + "  ");
