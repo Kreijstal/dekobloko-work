@@ -88,6 +88,14 @@ const scenarios = [
     expectChanged: true,
   },
   {
+    name: 'steelsentinels/se duplicate backedge tails merge',
+    classFile: '.work/current-goto-scan/steelsentinels/out/se.class',
+    pass: 'structured-backedge-tail-merge',
+    expectedBaseline: { markers: 36, bad: false },
+    expectedCandidate: { markers: 31, bad: false },
+    expectChanged: true,
+  },
+  {
     name: 'aceofskies/fg terminal iterator does not synthesize invisible locals',
     classFile: '.work/current-goto-scan/aceofskies/out/fg.class',
     pass: 'terminal-iterator',
@@ -171,6 +179,7 @@ function applyPass(ast, pass) {
       STRUCTURED_GOTO_CLONE_ARRAY_JOIN: '0',
       STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
       STRUCTURED_GOTO_MERGE_IINC_TAILS: '0',
+      STRUCTURED_GOTO_MERGE_BACKEDGE_TAILS: '0',
       STRUCTURED_GOTO_ONESHOT_PREHEADER: '0',
     }, () => runStructuredGotoClone(ast));
   }
@@ -183,6 +192,20 @@ function applyPass(ast, pass) {
       STRUCTURED_GOTO_CLONE_ARRAY_JOIN: '0',
       STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
       STRUCTURED_GOTO_MERGE_IINC_TAILS: '1',
+      STRUCTURED_GOTO_MERGE_BACKEDGE_TAILS: '0',
+      STRUCTURED_GOTO_ONESHOT_PREHEADER: '0',
+    }, () => runStructuredGotoClone(ast));
+  }
+  if (pass === 'structured-backedge-tail-merge') {
+    return withEnv({
+      STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY: '0',
+      STRUCTURED_GOTO_CLONE_SHORT: '0',
+      STRUCTURED_GOTO_CLONE_ZERO: '0',
+      STRUCTURED_GOTO_CLONE_RETURN: '0',
+      STRUCTURED_GOTO_CLONE_ARRAY_JOIN: '0',
+      STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
+      STRUCTURED_GOTO_MERGE_IINC_TAILS: '1',
+      STRUCTURED_GOTO_MERGE_BACKEDGE_TAILS: '1',
       STRUCTURED_GOTO_ONESHOT_PREHEADER: '0',
     }, () => runStructuredGotoClone(ast));
   }

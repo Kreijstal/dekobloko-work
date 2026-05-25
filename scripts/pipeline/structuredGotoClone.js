@@ -15,7 +15,10 @@ function runStructuredGotoClone(astRoot) {
       if (process.env.STRUCTURED_GOTO_CLONE_RETURN !== '0') rewrites += cloneForwardReturnCleanupGotos(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_ARRAY_JOIN === '1') rewrites += cloneArrayLoadStoreJoins(codeItems);
       if (process.env.STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL !== '0') rewrites += mergeDuplicateArrayPretails(codeItems);
-      if (process.env.STRUCTURED_GOTO_MERGE_IINC_TAILS !== '0') rewrites += mergeDuplicateLoopIncrementTails(codeItems);
+      let loopTailMerges = 0;
+      if (process.env.STRUCTURED_GOTO_MERGE_IINC_TAILS !== '0') loopTailMerges += mergeDuplicateLoopIncrementTails(codeItems);
+      if (loopTailMerges === 0 && process.env.STRUCTURED_GOTO_MERGE_BACKEDGE_TAILS !== '0') loopTailMerges += mergeDuplicateLoopBackedgeTails(codeItems);
+      rewrites += loopTailMerges;
       if (process.env.STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY === '1') rewrites += cloneForwardLoopBodyEntries(codeItems, item.method);
       if (process.env.STRUCTURED_GOTO_ONESHOT_PREHEADER === '1') rewrites += rewriteOneShotPreheaderUpdateEntries(codeItems, codeAttr.code);
     }
@@ -515,6 +518,119 @@ function mergeDuplicateLoopIncrementTails(codeItems) {
     }
   }
   return rewrites;
+}
+
+function mergeDuplicateLoopBackedgeTails(codeItems) {
+  let rewrites = 0;
+  const maxRewrites = 80;
+  const groups = new Map();
+  const refs = collectLabelReferencesByLabel(codeItems);
+  for (let i = 0; i < codeItems.length; i += 1) {
+    const label = labelName(codeItems[i] && codeItems[i].labelDef);
+    if (!label) continue;
+    const incoming = refs.get(label) || [];
+    if (incoming.length === 0) continue;
+    if (!incoming.every((ref) => isBranchOp(op(codeItems[ref] && codeItems[ref].instruction)))) continue;
+    const tail = readBackedgeTail(codeItems, i, refs);
+    if (!tail) continue;
+    const key = tail.signature;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push({ index: i, label, incoming, tail, hasFallthrough: hasFallthroughPredecessor(codeItems, i) });
+  }
+
+  for (const tails of groups.values()) {
+    if (rewrites >= maxRewrites || tails.length < 2) continue;
+    tails.sort((a, b) => Number(b.hasFallthrough) - Number(a.hasFallthrough) || a.index - b.index);
+    const canonical = tails[0];
+    for (const tail of tails.slice(1)) {
+      if (rewrites >= maxRewrites) break;
+      if (tail.hasFallthrough) continue;
+      if (!tail.incoming.every((ref) => ref !== tail.index && isBranchOp(op(codeItems[ref] && codeItems[ref].instruction)))) continue;
+      for (const ref of tail.incoming) {
+        const insn = codeItems[ref] && codeItems[ref].instruction;
+        if (insn && typeof insn === 'object' && labelName(insn.arg) === tail.label) insn.arg = canonical.label;
+      }
+      rewrites += 1;
+    }
+  }
+  return rewrites;
+}
+
+function readBackedgeTail(codeItems, index, refs) {
+  if (looksLikeLoopValueContinuationTail(codeItems, index)) return null;
+  const signature = [];
+  let real = 0;
+  for (let i = index; i < Math.min(codeItems.length, index + 8); i += 1) {
+    const insn = codeItems[i] && codeItems[i].instruction;
+    const cur = op(insn);
+    if (!cur) continue;
+    const label = labelName(codeItems[i] && codeItems[i].labelDef);
+    if (i > index && label && (refs.get(label) || []).length > 0) return null;
+    real += 1;
+    signature.push(instructionSignature(insn));
+    if (cur === 'goto') {
+      const targetIndex = findLabelIndex(codeItems, insn.arg);
+      if (targetIndex >= 0 && targetIndex < index && real >= 2) {
+        if (!looksLikeLoopHeader(codeItems, targetIndex)) return null;
+        return { end: i, signature: signature.join('|') };
+      }
+      return null;
+    }
+    if (real > 1 && isBranchOp(cur)) return null;
+  }
+  return null;
+}
+
+function looksLikeLoopValueContinuationTail(codeItems, index) {
+  const ops = [];
+  for (let i = index; i < Math.min(codeItems.length, index + 8); i += 1) {
+    const insn = codeItems[i] && codeItems[i].instruction;
+    if (insn) ops.push(op(insn));
+    if (op(insn) === 'goto') break;
+  }
+  return ops.join(' ') === 'aload_0 getfield iconst_0 invokevirtual checkcast astore goto' ||
+    ops.join(' ') === 'aload_0 getfield iconst_0 invokevirtual astore goto';
+}
+
+function collectLabelReferencesByLabel(codeItems) {
+  const out = new Map();
+  for (let i = 0; i < codeItems.length; i += 1) {
+    for (const label of collectInstructionLabels(codeItems[i] && codeItems[i].instruction)) {
+      const normalized = labelName(label);
+      if (!normalized) continue;
+      if (!out.has(normalized)) out.set(normalized, []);
+      out.get(normalized).push(i);
+    }
+  }
+  return out;
+}
+
+function instructionSignature(insn) {
+  return JSON.stringify([op(insn), normalizeSignatureValue(instructionArg(insn))]);
+}
+
+function instructionArg(insn) {
+  if (!insn) return null;
+  if (typeof insn === 'string') {
+    const parts = insn.trim().split(/\s+/);
+    return parts.slice(1).join(' ') || null;
+  }
+  if (insn.varnum !== undefined) return [insn.varnum, insn.incr];
+  return insn.arg;
+}
+
+function normalizeSignatureValue(value) {
+  if (typeof value === 'bigint') return value.toString();
+  if (Array.isArray(value)) return value.map(normalizeSignatureValue);
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [key, entry] of Object.entries(value)) {
+      if (key === 'pc' || key === 'cp_index') continue;
+      out[key] = normalizeSignatureValue(entry);
+    }
+    return out;
+  }
+  return value;
 }
 
 function findForwardBranchBefore(codeItems, start, before, maxDistance) {
