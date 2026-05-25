@@ -15,6 +15,7 @@ function runStructuredGotoClone(astRoot) {
       if (process.env.STRUCTURED_GOTO_CLONE_RETURN !== '0') rewrites += cloneForwardReturnCleanupGotos(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_ARRAY_JOIN === '1') rewrites += cloneArrayLoadStoreJoins(codeItems);
       if (process.env.STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL !== '0') rewrites += mergeDuplicateArrayPretails(codeItems);
+      if (process.env.STRUCTURED_GOTO_MERGE_IINC_TAILS !== '0') rewrites += mergeDuplicateLoopIncrementTails(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY === '1') rewrites += cloneForwardLoopBodyEntries(codeItems, item.method);
       if (process.env.STRUCTURED_GOTO_ONESHOT_PREHEADER === '1') rewrites += rewriteOneShotPreheaderUpdateEntries(codeItems, codeAttr.code);
     }
@@ -471,6 +472,51 @@ function mergeDuplicateArrayPretails(codeItems) {
   return rewrites;
 }
 
+function mergeDuplicateLoopIncrementTails(codeItems) {
+  let rewrites = 0;
+  const maxRewrites = 80;
+  const groups = new Map();
+  const refs = new Map();
+  for (let i = 0; i + 1 < codeItems.length; i += 1) {
+    const label = labelName(codeItems[i] && codeItems[i].labelDef);
+    if (!label) continue;
+    const iinc = readIincInstruction(codeItems[i] && codeItems[i].instruction);
+    if (!iinc) continue;
+    const jump = codeItems[i + 1] && codeItems[i + 1].instruction;
+    if (op(jump) !== 'goto') continue;
+    const header = labelName(jump.arg);
+    const headerIndex = findLabelIndex(codeItems, header);
+    if (headerIndex < 0 || headerIndex >= i) continue;
+    if (!looksLikeLoopHeader(codeItems, headerIndex)) continue;
+    const labelRefs = collectLabelReferencesDetailed(codeItems, label);
+    if (labelRefs.length === 0) continue;
+    if (!labelRefs.every((ref) => isBranchOp(op(codeItems[ref] && codeItems[ref].instruction)))) continue;
+    const key = `${iinc.local}:${iinc.incr}->${header}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push({ index: i, label, iinc, header, headerIndex, hasFallthrough: hasFallthroughPredecessor(codeItems, i) });
+    refs.set(label, labelRefs);
+  }
+
+  for (const tails of groups.values()) {
+    if (rewrites >= maxRewrites || tails.length < 2) continue;
+    tails.sort((a, b) => Number(b.hasFallthrough) - Number(a.hasFallthrough) || a.index - b.index);
+    const canonical = tails[0];
+    for (const tail of tails.slice(1)) {
+      if (rewrites >= maxRewrites) break;
+      if (tail.hasFallthrough) continue;
+      const incoming = refs.get(tail.label) || [];
+      if (incoming.length === 0) continue;
+      if (!incoming.every((ref) => ref !== tail.index && isBranchOp(op(codeItems[ref] && codeItems[ref].instruction)))) continue;
+      for (const ref of incoming) {
+        const insn = codeItems[ref] && codeItems[ref].instruction;
+        if (insn && typeof insn === 'object' && labelName(insn.arg) === tail.label) insn.arg = canonical.label;
+      }
+      rewrites += 1;
+    }
+  }
+  return rewrites;
+}
+
 function findForwardBranchBefore(codeItems, start, before, maxDistance) {
   const end = Math.min(before, start + maxDistance);
   for (let i = start; i < end; i += 1) {
@@ -803,10 +849,30 @@ function writtenLocalIndexes(insn) {
   if (store && store.local != null && !out.includes(store.local)) out.push(store.local);
   const cur = op(insn);
   if (cur === 'iinc') {
-    const local = Array.isArray(insn.arg) ? Number(insn.arg[0]) : Number(String(insn.arg).split(/\s+/)[0]);
+    const iinc = readIincInstruction(insn);
+    const local = iinc && iinc.local;
     if (Number.isFinite(local) && !out.includes(local)) out.push(local);
   }
   return out;
+}
+
+function readIincInstruction(insn) {
+  if (op(insn) !== 'iinc') return null;
+  let local;
+  let incr;
+  if (insn && insn.varnum !== undefined) {
+    local = Number(insn.varnum);
+    incr = Number(insn.incr);
+  } else if (Array.isArray(insn && insn.arg)) {
+    local = Number(insn.arg[0]);
+    incr = Number(insn.arg[1]);
+  } else {
+    const parts = String(insn && insn.arg || '').split(/\s+/);
+    local = Number(parts[0]);
+    incr = Number(parts[1]);
+  }
+  if (!Number.isFinite(local) || !Number.isFinite(incr)) return null;
+  return { local, incr };
 }
 
 function intStoreLocal(insn) {
