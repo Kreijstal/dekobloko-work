@@ -252,6 +252,8 @@ function passChanged(result) {
   return true;
 }
 
+const terminalTailCloneMaxMethodInsns = Number(process.env.TERMINAL_TAIL_CLONE_MAX_METHOD_INSNS || 2500);
+
 function safePeepholeOptions(options) {
   return {
     ...options,
@@ -549,6 +551,7 @@ const passes = [
       removeUnreachableUntilUsedLabels: true,
       cloneForwardTerminalGotoTails: true,
       cloneForwardTerminalGotoTailMaxInsns: 520,
+      cloneForwardTerminalGotoTailMaxMethodInsns: terminalTailCloneMaxMethodInsns,
       cloneForwardTerminalGotoTailMaxClones: 6,
       cloneSharedLoopIncrementTails: true,
       cloneSharedLoopIncrementTailMaxInsns: 4,
@@ -563,6 +566,7 @@ const passes = [
       cloneLoopValueContinuationMaxClones: 4,
       cloneConditionalTerminalTails: true,
       cloneConditionalTerminalTailMaxInsns: 520,
+      cloneConditionalTerminalTailMaxMethodInsns: terminalTailCloneMaxMethodInsns,
       cloneConditionalTerminalTailMaxClones: 2,
       nullableSharedJoinGuardMinMethodInsns: 80,
       nullableSharedJoinGuardRequireNoExceptions: false,
@@ -694,6 +698,7 @@ const passes = [
       cloneSharedPureForwardJoinMaxRefs: 8,
       cloneForwardTerminalGotoTails: true,
       cloneForwardTerminalGotoTailMaxInsns: 520,
+      cloneForwardTerminalGotoTailMaxMethodInsns: terminalTailCloneMaxMethodInsns,
       cloneForwardTerminalGotoTailMaxClones: 6,
       cloneSharedLoopIncrementTails: true,
       cloneSharedLoopIncrementTailMaxInsns: 4,
@@ -708,6 +713,7 @@ const passes = [
       cloneLoopValueContinuationMaxClones: 4,
       cloneConditionalTerminalTails: true,
       cloneConditionalTerminalTailMaxInsns: 520,
+      cloneConditionalTerminalTailMaxMethodInsns: terminalTailCloneMaxMethodInsns,
       cloneConditionalTerminalTailMaxClones: 2,
       nullableSharedJoinGuardMinMethodInsns: 80,
       nullableSharedJoinGuardRequireNoExceptions: false,
@@ -773,6 +779,7 @@ const passes = [
       removeUnreachableUntilUsedLabels: true,
       cloneForwardTerminalGotoTails: true,
       cloneForwardTerminalGotoTailMaxInsns: 520,
+      cloneForwardTerminalGotoTailMaxMethodInsns: terminalTailCloneMaxMethodInsns,
       cloneForwardTerminalGotoTailMaxClones: 6,
       cloneSharedLoopIncrementTails: true,
       cloneSharedLoopIncrementTailMaxInsns: 4,
@@ -787,6 +794,7 @@ const passes = [
       cloneLoopValueContinuationMaxClones: 4,
       cloneConditionalTerminalTails: true,
       cloneConditionalTerminalTailMaxInsns: 520,
+      cloneConditionalTerminalTailMaxMethodInsns: terminalTailCloneMaxMethodInsns,
       cloneConditionalTerminalTailMaxClones: 2,
     }))
     : { changed: false, rewrites: 0 } },
@@ -836,6 +844,7 @@ for (const f of files) {
         cloneSharedPureForwardJoinMaxRefs: 8,
         cloneForwardTerminalGotoTails: true,
         cloneForwardTerminalGotoTailMaxInsns: 520,
+        cloneForwardTerminalGotoTailMaxMethodInsns: terminalTailCloneMaxMethodInsns,
         cloneForwardTerminalGotoTailMaxClones: 6,
         cloneSharedLoopIncrementTails: true,
         cloneSharedLoopIncrementTailMaxInsns: 4,
@@ -850,6 +859,7 @@ for (const f of files) {
         cloneLoopValueContinuationMaxClones: 4,
         cloneConditionalTerminalTails: true,
         cloneConditionalTerminalTailMaxInsns: 520,
+        cloneConditionalTerminalTailMaxMethodInsns: terminalTailCloneMaxMethodInsns,
         cloneConditionalTerminalTailMaxClones: 2,
       }));
       tracePassTime(f, 'post-final:peephole', peepholePostStart);
