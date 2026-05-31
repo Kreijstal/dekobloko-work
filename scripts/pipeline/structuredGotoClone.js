@@ -29,7 +29,8 @@ function runStructuredGotoClone(astRoot) {
 function rewriteOneShotPreheaderUpdateEntries(codeItems, code) {
   let rewrites = 0;
   const refCounts = collectLabelReferenceCounts(codeItems);
-  for (let i = 0; i < codeItems.length && rewrites < 4; i += 1) {
+  const maxRewrites = Number(process.env.STRUCTURED_GOTO_ONESHOT_PREHEADER_MAX_REWRITES || 4);
+  for (let i = 0; i < codeItems.length && rewrites < maxRewrites; i += 1) {
     const jump = codeItems[i] && codeItems[i].instruction;
     if (op(jump) !== 'goto') continue;
     const update = findLabelIndex(codeItems, jump.arg);
