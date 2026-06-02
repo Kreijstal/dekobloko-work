@@ -5,6 +5,8 @@ import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 
 public final class Vertigo2MusicRenderer {
     private static final int SAMPLE_RATE = 22050;
@@ -29,13 +31,16 @@ public final class Vertigo2MusicRenderer {
         Path gameRoot = Path.of(args.length > 0 ? args[0] : ".work/games/vertigo2");
         Path outRoot = args.length > 1 ? Path.of(args[1]) : gameRoot.resolve("music");
         Path cache = args.length > 2 ? Path.of(args[2]) : gameRoot.resolve("download-build19/vertigo2");
-        int patchIndex = args.length > 3 ? Integer.parseInt(args[3]) : 9;
-        int musicIndex = args.length > 4 ? Integer.parseInt(args[4]) : 10;
+        int synthIndex = args.length > 3 ? Integer.parseInt(args[3]) : 7;
+        int vorbisIndex = args.length > 4 ? Integer.parseInt(args[4]) : 8;
+        int patchIndex = args.length > 5 ? Integer.parseInt(args[5]) : 9;
+        int musicIndex = args.length > 6 ? Integer.parseInt(args[6]) : 10;
+        Files.createDirectories(outRoot.resolve("midi"));
         Files.createDirectories(outRoot.resolve("wav"));
 
         dd.a(SAMPLE_RATE, true, 10);
-        r synthArchive = archive(cache, 7);
-        r vorbisArchive = archive(cache, 8);
+        r synthArchive = archive(cache, synthIndex);
+        r vorbisArchive = archive(cache, vorbisIndex);
         r patchArchive = archive(cache, patchIndex);
         r musicArchive = archive(cache, musicIndex);
         id samples = new id(synthArchive, vorbisArchive);
@@ -56,78 +61,328 @@ public final class Vertigo2MusicRenderer {
             constructor.setAccessible(true);
             int groups = musicArchive.c(-1);
             for (int group = 0; group < groups; group++) {
-                byte[] raw;
+                int[] files;
                 try {
-                    raw = musicArchive.a(false, group);
+                    files = musicArchive.a(0, group);
                 } catch (RuntimeException ex) {
-                    System.out.printf("skip archive%d_%02d: %s%n", musicIndex, group, ex.getClass().getName());
+                    System.out.printf("skip archive%d_%02d metadata: %s%n", musicIndex, group, ex.getClass().getName());
                     continue;
                 }
-                if (raw == null) {
+                if (files == null) {
                     continue;
                 }
-                si song = constructor.newInstance(new ed(raw));
-                String name = String.format("archive%d_%02d", musicIndex, group);
-                try {
-                    renderSong(outRoot, samples, patchArchive, name, song);
-                } catch (RuntimeException ex) {
-                    System.out.printf("skip %s: %s%n", name, ex.getClass().getName());
+                for (int file : files) {
+                    byte[] raw;
+                    try {
+                        raw = musicArchive.a(group, file, (byte)-72);
+                    } catch (RuntimeException ex) {
+                        System.out.printf("skip archive%d_%02d file%02d raw: %s%n", musicIndex, group, file, ex.getClass().getName());
+                        continue;
+                    }
+                    if (raw == null) {
+                        continue;
+                    }
+                    si song;
+                    try {
+                        song = constructor.newInstance(new ed(raw));
+                    } catch (ReflectiveOperationException | RuntimeException ex) {
+                        System.out.printf("skip archive%d_%02d file%02d song: %s (%s)%n", musicIndex, group, file, ex.getClass().getName(), rootSummary(ex));
+                        continue;
+                    }
+                    String autoName = String.format("archive%d_%02d_file%02d", musicIndex, group, file);
+                    try {
+                        renderSong(outRoot, samples, patchArchive, autoName, song);
+                        rendered++;
+                    } catch (RuntimeException ex) {
+                        System.out.printf("skip %s render: %s (%s)%n", autoName, ex.getClass().getName(), rootSummary(ex));
+                    }
                 }
             }
         }
     }
 
-    private static void renderSong(Path outRoot, id samples, r patchArchive, String name, si song) throws IOException {
+    private static void renderSong(Path outRoot, id samples, r patchArchive, String name, si song) throws Exception {
+        byte[] midi = repairMidi(song.n);
+        Path midiOut = outRoot.resolve("midi/" + safeName(name) + ".mid");
+        Files.write(midiOut, midi);
+        Sequence sequence = MidiSystem.getSequence(midiOut.toFile());
+        int storedSamples = storedSamples(sequence);
+        System.out.printf("track %s programs=%s stored=%.3fs%n", name, midiPrograms(sequence), storedSamples / (double)SAMPLE_RATE);
+
         db player = new db();
         player.a(9, true, 128);
         if (!player.a(0, samples, song, patchArchive, (byte)-52)) {
             throw new IllegalStateException("could not hydrate instruments for " + name);
         }
-        player.c((byte)43, 256);
+        player.a(256, -1, (byte)-61);
+        player.a(true);
         player.a(-15, song, false);
 
-        byte[] pcm = render(player);
+        byte[] pcm = render(player, storedSamples);
         Path wav = outRoot.resolve("wav/" + safeName(name) + ".wav");
         writePcm16Wav(wav, pcm);
-        System.out.printf("music %s %.3fs%n", wav.getFileName(), pcm.length / (double)(SAMPLE_RATE * CHANNELS * 2));
+        System.out.printf(
+            "music %s stored=%.3fs rendered=%.3fs%n",
+            wav.getFileName(),
+            storedSamples / (double)SAMPLE_RATE,
+            pcm.length / (double)(SAMPLE_RATE * CHANNELS * 2)
+        );
     }
 
     private static r archive(Path cache, int archive) {
         return new r(new CacheBackend(cache, archive), true, 1);
     }
 
-    private static byte[] render(db player) throws IOException {
+    private static int[] detectSamplePair(Path cache) {
+        int[] archives = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for (int a : archives) {
+            for (int b : archives) {
+                if (a == b) {
+                    continue;
+                }
+                if (!hasIndex(cache, a) || !hasIndex(cache, b)) {
+                    continue;
+                }
+                try {
+                    id samples = new id(archive(cache, a), archive(cache, b));
+                    ae sample = samples.a((int[])null, 64, 0);
+                    if (sample != null) {
+                        System.out.printf("sample archives %d/%d%n", a, b);
+                        return new int[]{a, b};
+                    }
+                } catch (RuntimeException ignored) {
+                }
+            }
+        }
+        return new int[]{7, 8};
+    }
+
+    private static boolean hasIndex(Path cache, int archive) {
+        return Files.exists(cache.resolve("main_file_cache.idx" + archive));
+    }
+
+    private static int storedSamples(Sequence sequence) {
+        return (int)Math.min(
+            Integer.MAX_VALUE,
+            (sequence.getMicrosecondLength() * (long)SAMPLE_RATE + 999_999L) / 1_000_000L
+        );
+    }
+
+    private static byte[] render(db player, int storedSamples) throws IOException {
         ByteArrayOutputStream pcm = new ByteArrayOutputStream();
         int[] mix = new int[BUFFER_SAMPLES * CHANNELS];
-        int silentTail = 0;
         int rendered = 0;
-        int maxSamples = SAMPLE_RATE * MAX_RENDER_SECONDS;
-        while (rendered < maxSamples) {
+        while (rendered < storedSamples) {
             Arrays.fill(mix, 0);
-            player.b(mix, 0, BUFFER_SAMPLES);
-            boolean silent = true;
-            for (int sample : mix) {
-                if (sample != 0) {
-                    silent = false;
+            int count = Math.min(BUFFER_SAMPLES, storedSamples - rendered);
+            player.b(mix, 0, count);
+            for (int i = 0; i < count * CHANNELS; i++) {
+                writePcm16(pcm, mix[i] >> 8);
+            }
+            rendered += count;
+        }
+        return pcm.toByteArray();
+    }
+
+    private static String midiPrograms(Sequence sequence) {
+        java.util.TreeSet<String> programs = new java.util.TreeSet<String>();
+        for (javax.sound.midi.Track track : sequence.getTracks()) {
+            for (int i = 0; i < track.size(); i++) {
+                javax.sound.midi.MidiMessage message = track.get(i).getMessage();
+                if (message instanceof javax.sound.midi.ShortMessage) {
+                    javax.sound.midi.ShortMessage sm = (javax.sound.midi.ShortMessage)message;
+                    if (sm.getCommand() == javax.sound.midi.ShortMessage.PROGRAM_CHANGE) {
+                        programs.add(sm.getChannel() + ":" + sm.getData1());
+                    }
                 }
-                writePcm16(pcm, sample >> 8);
             }
-            rendered += BUFFER_SAMPLES;
-            if (silent) {
-                silentTail += BUFFER_SAMPLES;
+        }
+        return programs.toString();
+    }
+
+    private static String patchSampleSummary(si song, r patchArchive) {
+        song.b();
+        java.util.ArrayList<String> parts = new java.util.ArrayList<String>();
+        for (li entry = song.o.b(0); entry != null; entry = song.o.c(-115)) {
+            int patchId = (int)entry.k;
+            al patch = ap.a(patchId, patchArchive, -125);
+            if (patch == null) {
+                parts.add(patchId + ":missing");
+                continue;
+            }
+            if (patch.r == null) {
+                parts.add(patchId + ":null");
+                continue;
+            }
+            int count = 0;
+            for (int i = 0; i < patch.r.length; i++) {
+                if (patch.r[i] != null) {
+                    count++;
+                }
+            }
+            parts.add(patchId + ":" + count);
+        }
+        return parts.toString();
+    }
+
+    private static String patchUsageSummary(si song, r patchArchive) {
+        song.b();
+        java.util.ArrayList<String> parts = new java.util.ArrayList<String>();
+        for (li entry = song.o.b(0); entry != null; entry = song.o.c(-115)) {
+            int patchId = (int)entry.k;
+            ph usage = (ph)entry;
+            al patch = ap.a(patchId, patchArchive, -125);
+            if (patch == null) {
+                parts.add(patchId + ":missing");
+                continue;
+            }
+            int used = 0;
+            int mapped = 0;
+            int empty = 0;
+            java.util.ArrayList<String> notes = new java.util.ArrayList<String>();
+            for (int i = 0; i < 128; i++) {
+                if (usage.n[i] == 0) {
+                    continue;
+                }
+                used++;
+                ae sample = patch.r != null ? patch.r[i] : null;
+                int len = sample == null || sample.s == null ? -1 : sample.s.length;
+                if (len > 0) {
+                    mapped++;
+                } else {
+                    empty++;
+                }
+                if (notes.size() < 12) {
+                    notes.add(i + "=" + len + "/root" + (patch.n[i] & 0xffff) + "/vol" + (patch.p[i] & 0xff) + "/pan" + (patch.B[i] & 0xff));
+                }
+            }
+            parts.add(patchId + ":used=" + used + ",mapped=" + mapped + ",empty=" + empty + ",notes=" + notes);
+        }
+        return parts.toString();
+    }
+
+    private static byte[] repairMidi(byte[] midi) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream(midi.length + 64);
+        out.write(midi, 0, 14);
+        int pos = 14;
+        while (pos < midi.length) {
+            if (pos + 8 > midi.length
+                    || midi[pos] != 'M'
+                    || midi[pos + 1] != 'T'
+                    || midi[pos + 2] != 'r'
+                    || midi[pos + 3] != 'k') {
+                throw new IOException("bad MIDI track header at " + pos);
+            }
+            int originalLength = readBe32(midi, pos + 4);
+            int dataStart = pos + 8;
+            int dataEnd = Math.min(midi.length, dataStart + originalLength);
+            byte[] track = repairTrack(midi, dataStart, dataEnd);
+            out.write(new byte[] {'M', 'T', 'r', 'k'});
+            writeBe32(out, track.length);
+            out.write(track);
+            pos = dataEnd;
+        }
+        return out.toByteArray();
+    }
+
+    private static byte[] repairTrack(byte[] midi, int pos, int end) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int runningStatus = -1;
+        while (pos < end) {
+            pos = copyVarInt(midi, pos, out);
+            if (pos >= end) {
+                break;
+            }
+            int status = midi[pos] & 0xff;
+            if (status == 0x2f && pos + 2 == end && midi[pos + 1] == 0) {
+                out.write(0xff);
+                out.write(0x2f);
+                out.write(0);
+                pos += 2;
+                continue;
+            }
+            if (status < 0x80) {
+                if (runningStatus < 0) {
+                    out.write(midi[pos++]);
+                    continue;
+                }
+                int dataBytes = channelDataBytes(runningStatus);
+                for (int i = 0; i < dataBytes && pos < end; i++) {
+                    out.write(midi[pos++]);
+                }
+                continue;
+            }
+            out.write(midi[pos++]);
+            if (status == 0xff) {
+                if (pos >= end) {
+                    break;
+                }
+                out.write(midi[pos++]);
+                long parsed = copyVarIntWithValue(midi, pos, out);
+                pos = (int)(parsed >>> 32);
+                int length = (int)parsed;
+                for (int i = 0; i < length && pos < end; i++) {
+                    out.write(midi[pos++]);
+                }
+            } else if (status == 0xf0 || status == 0xf7) {
+                long parsed = copyVarIntWithValue(midi, pos, out);
+                pos = (int)(parsed >>> 32);
+                int length = (int)parsed;
+                for (int i = 0; i < length && pos < end; i++) {
+                    out.write(midi[pos++]);
+                }
             } else {
-                silentTail = 0;
+                runningStatus = status;
+                int dataBytes = channelDataBytes(status);
+                for (int i = 0; i < dataBytes && pos < end; i++) {
+                    out.write(midi[pos++]);
+                }
             }
-            if (silentTail >= TAIL_SILENCE_SAMPLES) {
+        }
+        return out.toByteArray();
+    }
+
+    private static int copyVarInt(byte[] data, int pos, ByteArrayOutputStream out) {
+        for (int i = 0; i < 4 && pos < data.length; i++) {
+            int value = data[pos++] & 0xff;
+            out.write(value);
+            if ((value & 0x80) == 0) {
                 break;
             }
         }
-        byte[] bytes = pcm.toByteArray();
-        int trim = Math.min(silentTail, TAIL_SILENCE_SAMPLES) * CHANNELS * 2;
-        if (trim > 0 && trim < bytes.length) {
-            return Arrays.copyOf(bytes, bytes.length - trim);
+        return pos;
+    }
+
+    private static long copyVarIntWithValue(byte[] data, int pos, ByteArrayOutputStream out) {
+        int value = 0;
+        for (int i = 0; i < 4 && pos < data.length; i++) {
+            int part = data[pos++] & 0xff;
+            out.write(part);
+            value = (value << 7) | (part & 0x7f);
+            if ((part & 0x80) == 0) {
+                break;
+            }
         }
-        return bytes;
+        return ((long)pos << 32) | (value & 0xffffffffL);
+    }
+
+    private static int channelDataBytes(int status) {
+        int command = status & 0xf0;
+        return command == 0xc0 || command == 0xd0 ? 1 : 2;
+    }
+
+    private static int readBe32(byte[] data, int pos) {
+        return ((data[pos] & 0xff) << 24)
+            | ((data[pos + 1] & 0xff) << 16)
+            | ((data[pos + 2] & 0xff) << 8)
+            | (data[pos + 3] & 0xff);
+    }
+
+    private static void writeBe32(ByteArrayOutputStream out, int value) {
+        out.write((value >>> 24) & 0xff);
+        out.write((value >>> 16) & 0xff);
+        out.write((value >>> 8) & 0xff);
+        out.write(value & 0xff);
     }
 
     private static void writePcm16(ByteArrayOutputStream out, int sample) {
@@ -161,6 +416,15 @@ public final class Vertigo2MusicRenderer {
 
     private static String safeName(String name) {
         return name.replaceAll("[^A-Za-z0-9._-]+", "_").replaceAll("^_+|_+$", "");
+    }
+
+    private static String rootSummary(Throwable ex) {
+        Throwable t = ex;
+        while (t.getCause() != null) {
+            t = t.getCause();
+        }
+        String message = t.getMessage();
+        return t.getClass().getName() + (message == null ? "" : ": " + message);
     }
 
     private static void writeLe16(DataOutputStream out, int value) throws IOException {

@@ -140,7 +140,7 @@ archive roles before extracting/rendering assets. Keep the canonical map in
 | `fleacircus` | 12 | 22 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
 | `holdtheline` | 8 | Native `vi -> kf` renderer added and renders the available tracks at stored MIDI sequence lengths. The build-8 mirror exposes 3 of the 7 named music groups (`title`, `victory_jingle`, `classic`); the other four are missing from the cache mirror. |
 | `hostilespawn_vengeance` | 14 | 126 decoded sample WAVs extracted. No music tracks (no native-MIDI loader). |
-| `vertigo2` | 20 | 33 decoded sample WAVs extracted. No music tracks (CFR markers remain in `bh`, `pm`, `up`). |
+| `vertigo2` | 20 | 33 decoded sample WAVs extracted. The deobfuscated client loads named archive-10 songs (`vertigo2_theme`, `vertigo2_level_1`/`2`/`3`, and jingles) with archive 7/8 samples and archive 9 patches. If a local cache has no music, the mirror is incomplete rather than the game lacking a soundtrack. |
 | `arcanistsmulti` | 19 | 10 `ha` tracks extracted and rendered through the client `gh` mixer at the stored MIDI sequence lengths. Build 15 handshakes but has the wrong archive 5 song-name layout. |
 | `bachelorfridge` | 70 | 11 `kia` tracks extracted and rendered through the client `jp` mixer at the stored MIDI sequence lengths. Build 21 handshakes but does not expose the 8/9 music indexes used by this gamepack. |
 | `tombracer` | 81 | 4 `qua` tracks extracted and rendered through the client `l` mixer at the stored MIDI sequence lengths. Build 31 handshakes but does not expose the 26-29 music indexes used by this gamepack. |
@@ -188,7 +188,9 @@ rmdir .work/games/pixelate/download
 
 For bulk payload mirroring, run the same pattern per game so the normalized
 result remains `.work/games/<game>/js5-cache`. Do not leave downloader output
-as root-level `.work/js5-*` directories.
+as root-level `.work/js5-*` directories. When using `--skip-missing-archives`,
+keep the downloader retries enabled so a temporarily idle mirror does not leave
+holes such as a missing music index in an otherwise usable cache.
 
 For metadata-only discovery, use a game-owned scratch directory and delete it
 after extracting the data you need:

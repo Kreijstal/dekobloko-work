@@ -14,6 +14,7 @@ function runStructuredGotoClone(astRoot) {
       if (process.env.STRUCTURED_GOTO_CLONE_ZERO !== '0') rewrites += cloneZeroInitLoopPrefixes(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_RETURN !== '0') rewrites += cloneForwardReturnCleanupGotos(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_ARRAY_JOIN === '1') rewrites += cloneArrayLoadStoreJoins(codeItems);
+      if (process.env.STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN !== '0') rewrites += cloneConditionalSmallIincJoins(codeItems);
       if (process.env.STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL !== '0') rewrites += mergeDuplicateArrayPretails(codeItems);
       let loopTailMerges = 0;
       if (process.env.STRUCTURED_GOTO_MERGE_IINC_TAILS !== '0') loopTailMerges += mergeDuplicateLoopIncrementTails(codeItems);
@@ -441,6 +442,59 @@ function cloneArrayLoadStoreJoins(codeItems) {
   return rewrites;
 }
 
+function cloneConditionalSmallIincJoins(codeItems) {
+  let rewrites = 0;
+  const maxRewrites = Number(process.env.STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN_MAX_REWRITES || 64);
+  const maxRefs = Number(process.env.STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN_MAX_REFS || 8);
+  const refCounts = collectLabelReferenceCounts(codeItems);
+  for (let i = codeItems.length - 1; i >= 0 && rewrites < maxRewrites; i -= 1) {
+    const insn = codeItems[i] && codeItems[i].instruction;
+    const cur = op(insn);
+    if (!isConditionalBranch(cur)) continue;
+    const target = findLabelIndex(codeItems, insn.arg);
+    if (target <= i) continue;
+    const targetLabel = labelName(insn.arg);
+    const targetRefs = refCounts.get(targetLabel) || 0;
+    if (targetRefs < 1 || targetRefs > maxRefs) continue;
+    if (!hasImmediateFallthroughPredecessor(codeItems, target)) continue;
+    const tail = readSmallIincJoinTail(codeItems, target, refCounts);
+    if (!tail) continue;
+
+    const clone = cloneItems(codeItems.slice(target, tail.end + 1));
+    renameInternalLabels(clone, `LCKIJC_${rewrites}_`);
+    const cloneEntry = `LCKIJ_${rewrites}`;
+    clone[0].labelDef = `${cloneEntry}:`;
+    insn.arg = cloneEntry;
+    codeItems.splice(i + 1, 0, ...clone);
+    rewrites += 1;
+  }
+  return rewrites;
+}
+
+function readSmallIincJoinTail(codeItems, target, refCounts) {
+  let iincs = 0;
+  for (let i = target; i < Math.min(codeItems.length, target + 6); i += 1) {
+    if (i > target) {
+      const label = labelName(codeItems[i] && codeItems[i].labelDef);
+      if (label && (refCounts.get(label) || 0) > 0) return null;
+    }
+    const insn = codeItems[i] && codeItems[i].instruction;
+    const cur = op(insn);
+    if (cur === 'iinc') {
+      iincs += 1;
+      if (iincs > 3) return null;
+      continue;
+    }
+    if (cur === 'goto' && iincs > 0) {
+      const targetIndex = findLabelIndex(codeItems, insn.arg);
+      if (targetIndex < 0 || targetIndex === target) return null;
+      return { end: i };
+    }
+    return null;
+  }
+  return null;
+}
+
 function mergeDuplicateArrayPretails(codeItems) {
   let rewrites = 0;
   const maxRewrites = 12;
@@ -746,6 +800,11 @@ function hasReferencedLabelsInside(codeItems, start, end, refCounts) {
 function hasFallthroughPredecessor(codeItems, target) {
   const prev = previousInstructionIndex(codeItems, target - 1);
   return prev >= 0 && !isUnconditionalTerminal(op(codeItems[prev] && codeItems[prev].instruction));
+}
+
+function hasImmediateFallthroughPredecessor(codeItems, target) {
+  const prev = previousInstructionIndex(codeItems, target - 1);
+  return prev === target - 1 && !isUnconditionalTerminal(op(codeItems[prev] && codeItems[prev].instruction));
 }
 
 function previousInstructionIndex(codeItems, start) {

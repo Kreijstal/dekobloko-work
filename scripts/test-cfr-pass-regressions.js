@@ -56,11 +56,19 @@ const { runPollLoopReturnNormalize } = require('./pipeline/pollLoopReturnNormali
 
 const scenarios = [
   {
+    name: 'steelsentinels/oi small iinc join clone stays valid on raw bytecode',
+    classFile: '.work/games/steelsentinels/classes/oi.class',
+    pass: 'structured-small-iinc-join',
+    expectedBaseline: { markers: 2, bad: false },
+    expectedCandidate: { markers: 2, bad: false },
+    expectChanged: true,
+  },
+  {
     name: 'aceofskies/fg loop-entry rejects multi-backedge header',
     classFile: '.work/current-goto-scan/aceofskies/out/fg.class',
     pass: 'structured-loop-entry',
-    expectedBaseline: { markers: 15, bad: false },
-    expectedCandidate: { markers: 15, bad: false },
+    expectedBaseline: { markers: 2, bad: false },
+    expectedCandidate: { markers: 2, bad: false },
     expectChanged: false,
   },
   {
@@ -99,7 +107,7 @@ const scenarios = [
     name: 'aceofskies/fg terminal iterator does not synthesize invisible locals',
     classFile: '.work/current-goto-scan/aceofskies/out/fg.class',
     pass: 'terminal-iterator',
-    expectedBaseline: { markers: 15, bad: false },
+    expectedBaseline: { markers: 2, bad: false },
     expectedCandidate: { bad: false },
   },
   {
@@ -177,6 +185,7 @@ function applyPass(ast, pass) {
       STRUCTURED_GOTO_CLONE_ZERO: '0',
       STRUCTURED_GOTO_CLONE_RETURN: '0',
       STRUCTURED_GOTO_CLONE_ARRAY_JOIN: '0',
+      STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN: '0',
       STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
       STRUCTURED_GOTO_MERGE_IINC_TAILS: '0',
       STRUCTURED_GOTO_MERGE_BACKEDGE_TAILS: '0',
@@ -190,6 +199,7 @@ function applyPass(ast, pass) {
       STRUCTURED_GOTO_CLONE_ZERO: '0',
       STRUCTURED_GOTO_CLONE_RETURN: '0',
       STRUCTURED_GOTO_CLONE_ARRAY_JOIN: '0',
+      STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN: '0',
       STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
       STRUCTURED_GOTO_MERGE_IINC_TAILS: '1',
       STRUCTURED_GOTO_MERGE_BACKEDGE_TAILS: '0',
@@ -203,9 +213,24 @@ function applyPass(ast, pass) {
       STRUCTURED_GOTO_CLONE_ZERO: '0',
       STRUCTURED_GOTO_CLONE_RETURN: '0',
       STRUCTURED_GOTO_CLONE_ARRAY_JOIN: '0',
+      STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN: '0',
       STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
       STRUCTURED_GOTO_MERGE_IINC_TAILS: '1',
       STRUCTURED_GOTO_MERGE_BACKEDGE_TAILS: '1',
+      STRUCTURED_GOTO_ONESHOT_PREHEADER: '0',
+    }, () => runStructuredGotoClone(ast));
+  }
+  if (pass === 'structured-small-iinc-join') {
+    return withEnv({
+      STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY: '0',
+      STRUCTURED_GOTO_CLONE_SHORT: '0',
+      STRUCTURED_GOTO_CLONE_ZERO: '0',
+      STRUCTURED_GOTO_CLONE_RETURN: '0',
+      STRUCTURED_GOTO_CLONE_ARRAY_JOIN: '0',
+      STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN: '1',
+      STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
+      STRUCTURED_GOTO_MERGE_IINC_TAILS: '0',
+      STRUCTURED_GOTO_MERGE_BACKEDGE_TAILS: '0',
       STRUCTURED_GOTO_ONESHOT_PREHEADER: '0',
     }, () => runStructuredGotoClone(ast));
   }

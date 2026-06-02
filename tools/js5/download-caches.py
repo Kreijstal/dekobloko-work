@@ -131,27 +131,37 @@ class Js5Client:
                 block_pos = 1
         return got_index, got_archive, bytes(raw)
 
-    def fetch_available(self, index, archives, idle_timeout, batch_size):
+    def fetch_available(self, index, archives, idle_timeout, batch_size, retries):
         pending = list(archives)
         known = {archive["archive"] for archive in pending}
         yielded = set()
         for offset in range(0, len(pending), batch_size):
             batch = pending[offset:offset + batch_size]
-            wanted = {(index, archive["archive"]) for archive in batch}
+            wanted = {archive["archive"] for archive in batch}
+            attempts = {archive["archive"]: 0 for archive in batch}
             for archive in batch:
                 self.request(index, archive["archive"])
             while wanted:
                 ready, _, _ = select.select([self.sock], [], [], idle_timeout)
                 if not ready:
-                    break
+                    exhausted = []
+                    for archive in sorted(wanted):
+                        if attempts[archive] >= retries:
+                            exhausted.append(archive)
+                            continue
+                        attempts[archive] += 1
+                        self.request(index, archive)
+                    for archive in exhausted:
+                        wanted.discard(archive)
+                    continue
                 got_index, got_archive, raw = self.read_response()
-                key = (got_index, got_archive)
                 if got_index != index or got_archive not in known:
                     raise Js5Error(f"unexpected batched response: {got_index}:{got_archive}")
-                wanted.discard(key)
-                if got_archive not in yielded:
-                    yielded.add(got_archive)
-                    yield got_archive, raw
+                if got_archive in yielded:
+                    continue
+                wanted.discard(got_archive)
+                yielded.add(got_archive)
+                yield got_archive, raw
 
     def _read_exact(self, size):
         data = bytearray()
@@ -424,6 +434,7 @@ def download_index(args, game, store, client, index_entry):
             archives,
             args.archive_idle_timeout,
             args.archive_batch_size,
+            args.archive_retries,
         ):
             received[archive] = raw
         missing += len(archives) - len(received)
@@ -504,6 +515,7 @@ def main(argv):
     parser.add_argument("--skip-missing-archives", action="store_true", help="continue when an archive request times out")
     parser.add_argument("--archive-idle-timeout", type=float, default=3.0)
     parser.add_argument("--archive-batch-size", type=int, default=20)
+    parser.add_argument("--archive-retries", type=int, default=2, help="re-request missing archives per batch before giving up")
     parser.add_argument("--archive-workers", type=int, default=1)
     parser.add_argument("--reconnect-per-index", action="store_true", help="open a fresh JS5 connection for each index")
     args = parser.parse_args(argv)
