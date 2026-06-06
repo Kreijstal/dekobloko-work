@@ -15,10 +15,13 @@ regressions.
 
 ## Current Baseline
 
-The current all-game baseline is stored in `.work/current-goto-scan`. Steel
-Sentinels has 114 total structure markers: 97 actual `** GOTO` markers, 16
+The all-game baseline is generated in place under each game directory:
+`.work/games/<game>/deob-safe/{out,cfr,logs}`. Run
+`scripts/regenerate-goto-baseline.sh .work/games`, then
+`scripts/check-goto-baseline.sh .work/games`. Historical Steel Sentinels runs
+had 114 total structure markers: 97 actual `** GOTO` markers, 16
 `Unable to fully structure code` markers, and one `lbl-1000` GOTO marker. The
-largest marker sources are:
+largest historical marker sources were:
 
 | Class | Markers |
 | --- | ---: |
@@ -85,7 +88,7 @@ New bytecode-window evidence:
 
 ```bash
 node scripts/cfr-shape-db.js bytecode-windows \
-  --class-file .work/current-goto-scan/steelsentinels/out/se.class \
+  --class-file .work/games/steelsentinels/deob-safe/out/se.class \
   --limit 6
 ```
 
@@ -207,7 +210,7 @@ its smaller slices keep or clear markers.
 
 ```bash
 node scripts/cfr-shape-db.js goto-ingest \
-  --scan .work/current-goto-scan \
+  --scan .work/games \
   --game steelsentinels \
   --tag baseline-374
 

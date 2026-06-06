@@ -8,13 +8,13 @@ const Module = require('module');
 const DEKOB = path.resolve(__dirname, '..');
 const JAVA_TOOLS_DIR = path.resolve(process.env.JAVA_TOOLS_DIR || process.env.JT_DIR || '/home/kreijstal/git/java-tools');
 const DEFAULT_DB = path.join(DEKOB, '.work', 'cfr-goto-casebook', 'records.jsonl');
-const DEFAULT_SCAN = path.join(DEKOB, '.work', 'current-goto-scan');
+const DEFAULT_SCAN = path.join(DEKOB, '.work', 'games');
 
 function usage() {
   console.error(`usage:
-  node scripts/cfr-goto-topology.js collect [--db <records.jsonl>] [--scan .work/current-goto-scan] [--tag <tag>] [--out <jsonl>] [--limit N]
+  node scripts/cfr-goto-topology.js collect [--db <records.jsonl>] [--scan .work/games] [--tag <tag>] [--out <jsonl>] [--limit N]
   node scripts/cfr-goto-topology.js clusters [--in <jsonl>] [--limit N]
-  node scripts/cfr-goto-topology.js loop-entry-scan [--scan .work/current-goto-scan] [--out <jsonl>] [--limit N]
+  node scripts/cfr-goto-topology.js loop-entry-scan [--scan .work/games] [--out <jsonl>] [--limit N]
   node scripts/cfr-goto-topology.js loop-entry-candidates --class-file <file.class> [--method <name>] [--summary] [--limit N]
 
 collect builds method-level bytecode topology records for CFR GOTO markers.
@@ -78,7 +78,7 @@ function collect(args) {
   const classCache = new Map();
   const out = [];
   for (const site of grouped.values()) {
-    const classFile = path.join(args.scan, site.game, 'out', `${site.className}.class`);
+    const classFile = path.join(args.scan, site.game, 'deob-safe', 'out', `${site.className}.class`);
     const methodFacts = methodFactsForSite(classCache, classFile, site);
     out.push({
       schema: 1,

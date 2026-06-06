@@ -593,7 +593,7 @@ const passes = [
     preserveBranchShapeRequireNoExceptions: true,
     preserveBranchShapeRequireStatic: true,
     preserveBranchShapeMaxLocalIndex: 200,
-    preserveBranchShapeRequireIntArrayParameter: true,
+    preserveBranchShapeRequireArrayParameter: true,
   }) },
   { name: 'constructor-pre-super-cleanup', fn: (a) => runConstructorPreSuperCleanup(a, { deleteUnusedSnapshots: true }) },
   { name: 'simplify-not-compare', fn: (a) => runSimplifyNotCompare(a, {

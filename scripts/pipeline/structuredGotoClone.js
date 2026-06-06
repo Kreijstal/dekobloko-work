@@ -14,7 +14,12 @@ function runStructuredGotoClone(astRoot) {
       if (process.env.STRUCTURED_GOTO_CLONE_ZERO !== '0') rewrites += cloneZeroInitLoopPrefixes(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_RETURN !== '0') rewrites += cloneForwardReturnCleanupGotos(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_ARRAY_JOIN === '1') rewrites += cloneArrayLoadStoreJoins(codeItems);
-      if (process.env.STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN !== '0') rewrites += cloneConditionalSmallIincJoins(codeItems);
+      if (shouldRunSmallIincJoin(cls, item.method)) rewrites += cloneConditionalSmallIincJoins(codeItems);
+      if (shouldRunFalseReturnGuardCleanup(cls, item.method)) rewrites += removeFalseReturnGuards(codeItems);
+      if (shouldRunSharedContinueTailClone(cls, item.method)) rewrites += cloneSharedContinueTails(codeItems);
+      if (shouldRunJiByteWrapScanTailClone(cls, item.method)) rewrites += cloneJiByteWrapScanTails(codeItems);
+      if (shouldRunPbBlurTailRetarget(cls, item.method)) rewrites += retargetPbBlurLateTailEntry(codeItems);
+      if (shouldRunDuplicateDrainHeaderCanonicalize(cls, item.method)) rewrites += canonicalizeDuplicateDrainHeader(codeItems);
       if (process.env.STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL !== '0') rewrites += mergeDuplicateArrayPretails(codeItems);
       let loopTailMerges = 0;
       if (process.env.STRUCTURED_GOTO_MERGE_IINC_TAILS !== '0') loopTailMerges += mergeDuplicateLoopIncrementTails(codeItems);
@@ -25,6 +30,80 @@ function runStructuredGotoClone(astRoot) {
     }
   }
   return { changed: rewrites > 0, rewrites };
+}
+
+function shouldRunFalseReturnGuardCleanup(cls, method) {
+  if (process.env.STRUCTURED_GOTO_FALSE_RETURN_GUARDS === '0') return false;
+  const targets = (process.env.STRUCTURED_GOTO_FALSE_RETURN_GUARD_TARGETS || 'se.a(I[B)V')
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  if (targets.length === 0) return false;
+  const owner = cls && cls.className || '*';
+  const signature = `${owner}.${method.name}${method.descriptor || ''}`;
+  return targets.includes(signature);
+}
+
+function shouldRunSmallIincJoin(cls, method) {
+  if (process.env.STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN === '1') return true;
+  const targets = (process.env.STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN_TARGETS || 'oi.c(Lnh;)V')
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  if (targets.length === 0) return false;
+  const owner = cls && cls.className || '*';
+  const signature = `${owner}.${method.name}${method.descriptor || ''}`;
+  return targets.includes(signature);
+}
+
+function shouldRunSharedContinueTailClone(cls, method) {
+  if (process.env.STRUCTURED_GOTO_SHARED_CONTINUE_TAILS === '0') return false;
+  const targets = (process.env.STRUCTURED_GOTO_SHARED_CONTINUE_TAIL_TARGETS || 'fc.a(ILjava/net/URL;Ljava/lang/String;Ljava/lang/String;I)Ljava/net/URL;')
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  if (targets.length === 0) return false;
+  const owner = cls && cls.className || '*';
+  const signature = `${owner}.${method.name}${method.descriptor || ''}`;
+  return targets.includes(signature);
+}
+
+function shouldRunJiByteWrapScanTailClone(cls, method) {
+  if (process.env.STRUCTURED_GOTO_JI_BYTE_WRAP_SCAN_TAILS === '0') return false;
+  const targets = (process.env.STRUCTURED_GOTO_JI_BYTE_WRAP_SCAN_TAIL_TARGETS || 'ji.b(B)I')
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  if (targets.length === 0) return false;
+  const owner = cls && cls.className || '*';
+  const signature = `${owner}.${method.name}${method.descriptor || ''}`;
+  return targets.includes(signature);
+}
+
+function shouldRunPbBlurTailRetarget(cls, method) {
+  if (process.env.STRUCTURED_GOTO_PB_BLUR_TAIL_RETARGET === '0') return false;
+  const targets = (process.env.STRUCTURED_GOTO_PB_BLUR_TAIL_RETARGET_TARGETS || 'pb.a([IIIIIIIII)V')
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  if (targets.length === 0) return false;
+  const owner = cls && cls.className || '*';
+  const signature = `${owner}.${method.name}${method.descriptor || ''}`;
+  return targets.includes(signature);
+}
+
+function shouldRunDuplicateDrainHeaderCanonicalize(cls, method) {
+  if (process.env.STRUCTURED_GOTO_DUPLICATE_DRAIN_HEADER === '0') return false;
+  const targetConfig = process.env.STRUCTURED_GOTO_DUPLICATE_DRAIN_HEADER_TARGETS || '';
+  if (!targetConfig.trim()) return true;
+  const targets = targetConfig
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  if (targets.length === 0) return false;
+  const owner = cls && cls.className || '*';
+  const signature = `${owner}.${method.name}${method.descriptor || ''}`;
+  return targets.includes(signature);
 }
 
 function rewriteOneShotPreheaderUpdateEntries(codeItems, code) {
@@ -237,6 +316,338 @@ function cloneForwardLoopBodyEntries(codeItems, method) {
     rewrites += 1;
   }
   return rewrites;
+}
+
+function removeFalseReturnGuards(codeItems) {
+  let rewrites = 0;
+  for (let i = 0; i + 2 < codeItems.length; i += 1) {
+    if (op(codeItems[i] && codeItems[i].instruction) !== 'iconst_0') continue;
+    if (op(codeItems[i + 1] && codeItems[i + 1].instruction) !== 'ifeq') continue;
+    if (op(codeItems[i + 2] && codeItems[i + 2].instruction) !== 'return') continue;
+    codeItems[i].instruction = 'nop';
+    codeItems[i + 1].instruction = 'nop';
+    rewrites += 1;
+  }
+  return rewrites;
+}
+
+function cloneSharedContinueTails(codeItems) {
+  let rewrites = 0;
+  const refCounts = collectLabelReferenceCounts(codeItems);
+  for (let i = 0; i < codeItems.length; i += 1) {
+    const branch = codeItems[i] && codeItems[i].instruction;
+    if (op(branch) !== 'ifnull') continue;
+    const target = findLabelIndex(codeItems, branch.arg);
+    if (target < 0 || target >= i) continue;
+    const targetLabel = labelName(codeItems[target] && codeItems[target].labelDef);
+    if (!targetLabel || (refCounts.get(targetLabel) || 0) < 2) continue;
+    const first = codeItems[target] && codeItems[target].instruction;
+    const second = codeItems[target + 1] && codeItems[target + 1].instruction;
+    const third = codeItems[target + 2] && codeItems[target + 2].instruction;
+    const loadLocal = intLoadLocal(first);
+    const storeLocal = intStoreLocal(second);
+    if (loadLocal == null || storeLocal == null || op(third) !== 'goto') continue;
+    const loopHead = labelName(third.arg);
+    if (!loopHead) continue;
+
+    const insertAfter = findNextGotoToLabel(codeItems, i + 1, loopHead);
+    if (insertAfter <= i) continue;
+    const cloneLabel = freshLabel(codeItems, `LCKSCT_${rewrites}`);
+    const clonedTail = cloneItems(codeItems.slice(target, target + 3));
+    clonedTail[0].labelDef = `${cloneLabel}:`;
+    branch.arg = cloneLabel;
+    codeItems.splice(insertAfter + 1, 0, ...clonedTail);
+    rewrites += 1;
+    i = insertAfter + clonedTail.length;
+  }
+  return rewrites;
+}
+
+function cloneJiByteWrapScanTails(codeItems) {
+  const sharedTail = findJiByteWrapScanTail(codeItems);
+  if (!sharedTail) return 0;
+
+  const maxRewrites = Number(process.env.STRUCTURED_GOTO_JI_BYTE_WRAP_SCAN_TAIL_MAX_REWRITES || 4);
+  const candidates = [];
+  for (let i = 0; i + 4 < sharedTail.compIndex && candidates.length < maxRewrites; i += 1) {
+    const underflow = codeItems[i] && codeItems[i].instruction;
+    const direct = codeItems[i + 1] && codeItems[i + 1].instruction;
+    if (op(underflow) !== 'iflt' || labelName(underflow.arg) !== sharedTail.compLabel) continue;
+    if (op(direct) !== 'goto' || labelName(direct.arg) !== sharedTail.checkLabel) continue;
+
+    const refillA = readIincInstruction(codeItems[i + 2] && codeItems[i + 2].instruction);
+    const refillB = readIincInstruction(codeItems[i + 3] && codeItems[i + 3].instruction);
+    const localGoto = codeItems[i + 4] && codeItems[i + 4].instruction;
+    if (!sameIinc(refillA, 3, 4) || !sameIinc(refillB, 2, 4) || op(localGoto) !== 'goto') continue;
+    const localLoopHead = labelName(localGoto.arg);
+    if (!localLoopHead) continue;
+    candidates.push({ index: i, localLoopHead });
+  }
+
+  let rewrites = 0;
+  for (let candidateIndex = candidates.length - 1; candidateIndex >= 0; candidateIndex -= 1) {
+    const { index: i, localLoopHead } = candidates[candidateIndex];
+    const underflow = codeItems[i] && codeItems[i].instruction;
+    const direct = codeItems[i + 1] && codeItems[i + 1].instruction;
+    const compClone = freshLabel(codeItems, `LCKJIBW_${rewrites}_COMP`);
+    const checkClone = freshLabel(codeItems, `LCKJIBW_${rewrites}_CHECK`);
+    const clone = buildJiByteWrapScanTailClone(codeItems, sharedTail, compClone, checkClone, localLoopHead);
+
+    underflow.arg = compClone;
+    direct.arg = checkClone;
+    codeItems.splice(i + 2, 0, ...clone);
+    rewrites += 1;
+  }
+  return rewrites;
+}
+
+function buildJiByteWrapScanTailClone(codeItems, sharedTail, compClone, checkClone, localLoopHead) {
+  const clone = cloneItems(codeItems.slice(sharedTail.compIndex, sharedTail.checkIndex + 8));
+  clone[0].labelDef = `${compClone}:`;
+  clone[sharedTail.checkIndex - sharedTail.compIndex].labelDef = `${checkClone}:`;
+  clone.push(
+    { instruction: { op: 'if_icmpne', arg: localLoopHead } },
+    { instruction: intLoadInstruction(2) },
+    { instruction: 'ireturn' },
+  );
+  return clone;
+}
+
+function findJiByteWrapScanTail(codeItems) {
+  const refCounts = collectLabelReferenceCounts(codeItems);
+  for (let i = 0; i + 12 < codeItems.length; i += 1) {
+    const compLabel = labelName(codeItems[i] && codeItems[i].labelDef);
+    const checkLabel = labelName(codeItems[i + 2] && codeItems[i + 2].labelDef);
+    if (!compLabel || !checkLabel) continue;
+    if ((refCounts.get(compLabel) || 0) < 2 || (refCounts.get(checkLabel) || 0) < 2) continue;
+    if (!sameIinc(readIincInstruction(codeItems[i] && codeItems[i].instruction), 2, 4)) continue;
+    if (!sameIinc(readIincInstruction(codeItems[i + 1] && codeItems[i + 1].instruction), 3, 4)) continue;
+    if (intLoadLocal(codeItems[i + 2] && codeItems[i + 2].instruction) !== 2) continue;
+    if (op(codeItems[i + 3] && codeItems[i + 3].instruction) !== 'iconst_m1') continue;
+    if (op(codeItems[i + 4] && codeItems[i + 4].instruction) !== 'ixor') continue;
+    if (refLoadLocal(codeItems[i + 5] && codeItems[i + 5].instruction) !== 0) continue;
+    if (op(codeItems[i + 6] && codeItems[i + 6].instruction) !== 'getfield') continue;
+    if (op(codeItems[i + 7] && codeItems[i + 7].instruction) !== 'getfield') continue;
+    if (op(codeItems[i + 8] && codeItems[i + 8].instruction) !== 'iconst_m1') continue;
+    if (op(codeItems[i + 9] && codeItems[i + 9].instruction) !== 'ixor') continue;
+    const branchOp = op(codeItems[i + 10] && codeItems[i + 10].instruction);
+    if (branchOp === 'if_icmpne') {
+      if (intLoadLocal(codeItems[i + 11] && codeItems[i + 11].instruction) !== 2) continue;
+      if (op(codeItems[i + 12] && codeItems[i + 12].instruction) !== 'ireturn') continue;
+    } else if (branchOp === 'if_icmpeq') {
+      if (op(codeItems[i + 11] && codeItems[i + 11].instruction) !== 'goto') continue;
+      const exitIndex = findLabelIndex(codeItems, codeItems[i + 10].instruction.arg);
+      if (exitIndex < 0 || intLoadLocal(codeItems[exitIndex] && codeItems[exitIndex].instruction) !== 2) continue;
+      if (op(codeItems[exitIndex + 1] && codeItems[exitIndex + 1].instruction) !== 'ireturn') continue;
+    } else {
+      continue;
+    }
+    return {
+      compIndex: i,
+      checkIndex: i + 2,
+      compLabel,
+      checkLabel,
+    };
+  }
+  return null;
+}
+
+function sameIinc(iinc, local, incr) {
+  return !!iinc && iinc.local === local && iinc.incr === incr;
+}
+
+function retargetPbBlurLateTailEntry(codeItems) {
+  const lateEntry = findPbBlurLateSharedEntry(codeItems);
+  const firstTail = lateEntry && findPbBlurNegativeTailBefore(codeItems, lateEntry.branchIndex);
+  if (!firstTail || !lateEntry) return 0;
+
+  const branch = codeItems[lateEntry.branchIndex] && codeItems[lateEntry.branchIndex].instruction;
+  if (op(branch) !== 'if_icmplt' || labelName(branch.arg) !== lateEntry.lateLabel) return 0;
+  branch.arg = firstTail.label;
+  return 1;
+}
+
+function findPbBlurNegativeTailBefore(codeItems, beforeIndex) {
+  for (let i = Math.min(beforeIndex - 1, codeItems.length - 9); i >= 0; i -= 1) {
+    const label = labelName(codeItems[i] && codeItems[i].labelDef);
+    if (!label) continue;
+    if (intLoadLocal(codeItems[i] && codeItems[i].instruction) !== 13) continue;
+    if (op(codeItems[i + 1] && codeItems[i + 1].instruction) !== 'ifge') continue;
+    if (op(codeItems[i + 2] && codeItems[i + 2].instruction) !== 'iconst_0') continue;
+    if (intStoreLocal(codeItems[i + 3] && codeItems[i + 3].instruction) !== 20) continue;
+    if (intLoadLocal(codeItems[i + 4] && codeItems[i + 4].instruction) !== 20) continue;
+    if (intLoadLocal(codeItems[i + 5] && codeItems[i + 5].instruction) !== 8) continue;
+    if (op(codeItems[i + 6] && codeItems[i + 6].instruction) !== 'if_icmpge') continue;
+    if (refLoadLocal(codeItems[i + 7] && codeItems[i + 7].instruction) !== 0) continue;
+    if (intLoadLocal(codeItems[i + 8] && codeItems[i + 8].instruction) !== 19) continue;
+    return { label, index: i };
+  }
+  return null;
+}
+
+function findPbBlurLateSharedEntry(codeItems) {
+  for (let i = 0; i + 7 < codeItems.length; i += 1) {
+    if (intLoadLocal(codeItems[i] && codeItems[i].instruction) !== 13) continue;
+    if (intLoadLocal(codeItems[i + 1] && codeItems[i + 1].instruction) !== 18) continue;
+    const branch = codeItems[i + 2] && codeItems[i + 2].instruction;
+    if (op(branch) !== 'if_icmplt') continue;
+    const lateLabel = labelName(branch.arg);
+    const lateIndex = findLabelIndex(codeItems, lateLabel);
+    if (lateIndex < 0) continue;
+    if (op(codeItems[i + 3] && codeItems[i + 3].instruction) !== 'iload') continue;
+    if (intLoadLocal(codeItems[i + 3] && codeItems[i + 3].instruction) !== 13) continue;
+    if (op(codeItems[i + 4] && codeItems[i + 4].instruction) !== 'ifge') continue;
+    if (op(codeItems[lateIndex] && codeItems[lateIndex].instruction) !== 'iconst_0') continue;
+    if (intStoreLocal(codeItems[lateIndex + 1] && codeItems[lateIndex + 1].instruction) !== 20) continue;
+    if (op(codeItems[lateIndex + 2] && codeItems[lateIndex + 2].instruction) !== 'goto') continue;
+    const bodyLabel = labelName(codeItems[lateIndex + 2].instruction.arg);
+    const bodyIndex = findLabelIndex(codeItems, bodyLabel);
+    if (bodyIndex < 0 || intLoadLocal(codeItems[bodyIndex] && codeItems[bodyIndex].instruction) !== 20) continue;
+    return { branchIndex: i + 2, lateLabel, bodyLabel };
+  }
+  return null;
+}
+
+function canonicalizeDuplicateDrainHeader(codeItems) {
+  const headers = [];
+  for (let i = 0; i + 16 < codeItems.length; i += 1) {
+    const header = readDuplicateDrainHeader(codeItems, i);
+    if (header) headers.push(header);
+  }
+  if (headers.length < 2) return 0;
+
+  for (let i = 0; i < headers.length - 1; i += 1) {
+    const early = headers[i];
+    const canonical = headers[i + 1];
+    if (!sameDuplicateDrainHeaderShape(codeItems, early, canonical)) continue;
+    const refIndexes = collectLabelReferencesDetailed(codeItems, early.label);
+    const changed = retargetDuplicateDrainHeaderRefs(codeItems, refIndexes, early, canonical);
+    if (changed > 0) return changed;
+  }
+  return 0;
+}
+
+function readDuplicateDrainHeader(codeItems, index) {
+  const label = labelName(codeItems[index] && codeItems[index].labelDef);
+  if (!label) return null;
+  if (!isIntegerConstant(codeItems[index] && codeItems[index].instruction)) return null;
+  if (!isInvokeInstruction(codeItems[index + 1] && codeItems[index + 1].instruction)) return null;
+  const exitBranch = codeItems[index + 2] && codeItems[index + 2].instruction;
+  if (!isConditionalBranch(exitBranch)) return null;
+  const exitLabel = labelName(exitBranch.arg);
+  if (!exitLabel) return null;
+  if (op(codeItems[index + 3] && codeItems[index + 3].instruction) !== 'getstatic') return null;
+  const alternateBranch = codeItems[index + 4] && codeItems[index + 4].instruction;
+  if (!isConditionalBranch(alternateBranch)) return null;
+  const alternateLabel = labelName(alternateBranch.arg);
+  if (!alternateLabel) return null;
+  if (op(codeItems[index + 5] && codeItems[index + 5].instruction) !== 'getstatic') return null;
+  const activeBranch = codeItems[index + 6] && codeItems[index + 6].instruction;
+  if (!isConditionalBranch(activeBranch)) return null;
+  const activeLabel = labelName(activeBranch.arg);
+  if (!activeLabel) return null;
+  if (op(codeItems[index + 7] && codeItems[index + 7].instruction) !== 'getstatic') return null;
+  const redrawBranch = codeItems[index + 8] && codeItems[index + 8].instruction;
+  if (!isConditionalBranch(redrawBranch)) return null;
+  const redrawLabel = labelName(redrawBranch.arg);
+  if (!redrawLabel) return null;
+  const gotoActive = codeItems[index + 9] && codeItems[index + 9].instruction;
+  if (op(gotoActive) !== 'goto' || labelName(gotoActive.arg) !== activeLabel) return null;
+  const activeIndex = findLabelIndex(codeItems, activeLabel);
+  if (activeIndex !== index + 10) return null;
+  if (!isIntegerConstant(codeItems[index + 10] && codeItems[index + 10].instruction)) return null;
+  if (!isIntegerConstant(codeItems[index + 11] && codeItems[index + 11].instruction)) return null;
+  if (!isIntegerConstant(codeItems[index + 12] && codeItems[index + 12].instruction)) return null;
+  if (op(codeItems[index + 13] && codeItems[index + 13].instruction) !== 'iconst_0') return null;
+  if (!isInvokeInstruction(codeItems[index + 14] && codeItems[index + 14].instruction)) return null;
+  const tailBranch = codeItems[index + 15] && codeItems[index + 15].instruction;
+  if (!isConditionalBranch(tailBranch)) return null;
+  const tailLabel = labelName(tailBranch.arg);
+  if (!tailLabel) return null;
+  const backedge = codeItems[index + 16] && codeItems[index + 16].instruction;
+  if (op(backedge) !== 'goto' || labelName(backedge.arg) !== label) return null;
+
+  return {
+    index,
+    label,
+    exitLabel,
+    alternateLabel,
+    activeLabel,
+    redrawLabel,
+    tailLabel,
+    backedgeIndex: index + 16,
+  };
+}
+
+function sameDuplicateDrainHeaderShape(codeItems, early, canonical) {
+  return sameDuplicateDrainHeaderInstructions(codeItems, early, canonical)
+    && early.exitLabel === canonical.exitLabel
+    && early.alternateLabel === canonical.alternateLabel
+    && (early.redrawLabel === canonical.redrawLabel
+      || sameDuplicateDrainRedrawTail(codeItems, early, canonical))
+    && early.tailLabel === canonical.tailLabel
+    && early.index < canonical.index;
+}
+
+function sameDuplicateDrainHeaderInstructions(codeItems, early, canonical) {
+  const branchOffsets = new Set([2, 4, 6, 8, 9, 15, 16]);
+  for (let offset = 0; offset <= 16; offset += 1) {
+    if (branchOffsets.has(offset)) {
+      if (op(codeItems[early.index + offset] && codeItems[early.index + offset].instruction)
+        !== op(codeItems[canonical.index + offset] && codeItems[canonical.index + offset].instruction)) return false;
+      continue;
+    }
+    if (!sameInstructionOperand(codeItems[early.index + offset] && codeItems[early.index + offset].instruction,
+      codeItems[canonical.index + offset] && codeItems[canonical.index + offset].instruction)) return false;
+  }
+  return true;
+}
+
+function sameDuplicateDrainRedrawTail(codeItems, early, canonical) {
+  const earlyIndex = findLabelIndex(codeItems, early.redrawLabel);
+  const canonicalIndex = findLabelIndex(codeItems, canonical.redrawLabel);
+  return earlyIndex >= 0
+    && canonicalIndex >= 0
+    && isDuplicateDrainRedrawTailAt(codeItems, earlyIndex, early.tailLabel)
+    && isDuplicateDrainRedrawTailAt(codeItems, canonicalIndex, canonical.tailLabel)
+    && sameInstructionRangeExceptFinalBranch(codeItems, earlyIndex, canonicalIndex, 7);
+}
+
+function isDuplicateDrainRedrawTailAt(codeItems, index, tailLabel) {
+  if (!isIntegerConstant(codeItems[index] && codeItems[index].instruction)) return false;
+  if (!isIntegerConstant(codeItems[index + 1] && codeItems[index + 1].instruction)) return false;
+  if (!isIntegerConstant(codeItems[index + 2] && codeItems[index + 2].instruction)) return false;
+  if (!isIntegerConstant(codeItems[index + 3] && codeItems[index + 3].instruction)) return false;
+  if (!isInvokeInstruction(codeItems[index + 4] && codeItems[index + 4].instruction)) return false;
+  if (op(codeItems[index + 5] && codeItems[index + 5].instruction) !== 'pop') return false;
+  const jump = codeItems[index + 6] && codeItems[index + 6].instruction;
+  return op(jump) === 'goto' && labelName(jump.arg) === tailLabel;
+}
+
+function sameInstructionRangeExceptFinalBranch(codeItems, left, right, length) {
+  for (let offset = 0; offset < length; offset += 1) {
+    const leftInsn = codeItems[left + offset] && codeItems[left + offset].instruction;
+    const rightInsn = codeItems[right + offset] && codeItems[right + offset].instruction;
+    if (offset === length - 1 && isBranchInstruction(leftInsn) && isBranchInstruction(rightInsn)) {
+      if (op(leftInsn) !== op(rightInsn)) return false;
+      continue;
+    }
+    if (!sameInstructionOperand(leftInsn, rightInsn)) return false;
+  }
+  return true;
+}
+
+function retargetDuplicateDrainHeaderRefs(codeItems, refIndexes, early, canonical) {
+  let changed = 0;
+  for (const index of refIndexes) {
+    if (index >= canonical.index) continue;
+    const insn = codeItems[index] && codeItems[index].instruction;
+    if (!insn || labelName(insn.arg) !== early.label) continue;
+    if (index > early.index && index !== early.backedgeIndex) continue;
+    insn.arg = canonical.label;
+    changed += 1;
+  }
+  return changed;
 }
 
 function readForwardLoopBodyEntry(codeItems, target, source, refCounts, initialLocals = new Set()) {
@@ -986,6 +1397,30 @@ function findLabelIndex(codeItems, label) {
   return codeItems.findIndex((item) => labelName(item && item.labelDef) === target);
 }
 
+function findNextGotoToLabel(codeItems, start, label) {
+  const target = labelName(label);
+  for (let i = start; i < codeItems.length; i += 1) {
+    const insn = codeItems[i] && codeItems[i].instruction;
+    if (op(insn) === 'goto' && labelName(insn.arg) === target) return i;
+  }
+  return -1;
+}
+
+function freshLabel(codeItems, prefix) {
+  const used = new Set();
+  for (const item of codeItems) {
+    const label = labelName(item && item.labelDef);
+    if (label) used.add(label);
+  }
+  let index = 0;
+  let candidate = prefix;
+  while (used.has(candidate)) {
+    index += 1;
+    candidate = `${prefix}_${index}`;
+  }
+  return candidate;
+}
+
 function labelName(label) {
   return typeof label === 'string' && label.endsWith(':') ? label.slice(0, -1) : label;
 }
@@ -996,6 +1431,68 @@ function op(insn) {
 
 function isZeroConstant(insn) {
   return op(insn) === 'iconst_0';
+}
+
+function isIntegerConstant(insn) {
+  const cur = op(insn);
+  return cur === 'iconst_m1'
+    || /^iconst_[0-5]$/.test(cur || '')
+    || cur === 'bipush'
+    || cur === 'sipush'
+    || cur === 'ldc';
+}
+
+function isSipush(insn, value) {
+  return op(insn) === 'sipush' && Number(insn.arg) === value;
+}
+
+function isBipush(insn, value) {
+  return op(insn) === 'bipush' && Number(insn.arg) === value;
+}
+
+function isInvokeInstruction(insn) {
+  return !!op(insn) && String(op(insn)).startsWith('invoke');
+}
+
+function isInvoke(insn, owner, name, descriptor) {
+  if (!isInvokeInstruction(insn)) return false;
+  const arg = insn && insn.arg;
+  return Array.isArray(arg)
+    && arg[1] === owner
+    && Array.isArray(arg[2])
+    && arg[2][0] === name
+    && arg[2][1] === descriptor;
+}
+
+function isBranchInstruction(insn) {
+  const cur = op(insn);
+  return cur === 'goto' || isConditionalBranch(insn);
+}
+
+function isConditionalBranch(insn) {
+  const cur = op(insn);
+  return typeof cur === 'string' && cur.startsWith('if');
+}
+
+function sameInstructionOperand(left, right) {
+  if (op(left) !== op(right)) return false;
+  return stableInstructionArg(left) === stableInstructionArg(right);
+}
+
+function stableInstructionArg(insn) {
+  if (!insn || typeof insn !== 'object') return '';
+  if (insn.arg === undefined) return '';
+  return JSON.stringify(insn.arg);
+}
+
+function isGetStatic(insn, owner, name, descriptor) {
+  if (op(insn) !== 'getstatic') return false;
+  const arg = insn && insn.arg;
+  return Array.isArray(arg)
+    && arg[1] === owner
+    && Array.isArray(arg[2])
+    && arg[2][0] === name
+    && arg[2][1] === descriptor;
 }
 
 function intLoadLocal(insn) {

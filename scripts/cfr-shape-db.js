@@ -22,10 +22,10 @@ function usage() {
   node scripts/cfr-shape-db.js summarize [--db <records.jsonl>] [--game voidhunters] [--latest]
   node scripts/cfr-shape-db.js clusters --kind missing-variable [--db <records.jsonl>] [--game voidhunters] [--latest] [--limit 20]
   node scripts/cfr-shape-db.js examples --kind missing-variable [--db <records.jsonl>] [--game voidhunters] [--latest] [--limit 20]
-  node scripts/cfr-shape-db.js goto-ingest --scan .work/current-goto-scan [--game steelsentinels] [--db <records.jsonl>] [--tag name]
+  node scripts/cfr-shape-db.js goto-ingest --scan .work/games [--game steelsentinels] [--db <records.jsonl>] [--tag name]
   node scripts/cfr-shape-db.js goto-clusters [--db <records.jsonl>] [--game steelsentinels] [--type goto] [--latest] [--limit 20]
   node scripts/cfr-shape-db.js goto-examples [--db <records.jsonl>] [--game steelsentinels] [--type goto] [--latest] [--limit 20]
-  node scripts/cfr-shape-db.js bytecode-windows --class-file .work/current-goto-scan/steelsentinels/out/se.class [--limit 20]
+  node scripts/cfr-shape-db.js bytecode-windows --class-file .work/games/steelsentinels/deob-safe/out/se.class [--limit 20]
 
 Work dirs must have cfr/*.java, logs/*.log, and ideally out/*.class.
 collect runs the full pipeline/CFR/Javac once, then ingests failures.`);
@@ -124,7 +124,7 @@ function parseArgs(argv) {
   }
   out.classesDir = path.resolve(out.classesDir || DEFAULT_CLASSES);
   out.work = out.work ? path.resolve(out.work) : out.work;
-  out.scan = out.scan ? path.resolve(out.scan) : path.join(DEKOB, '.work', 'current-goto-scan');
+  out.scan = out.scan ? path.resolve(out.scan) : path.join(DEKOB, '.work', 'games');
   out.classes = [...new Set(out.classes.filter(Boolean))].sort();
   out.limit = Number.isFinite(out.limit) && out.limit > 0 ? out.limit : 20;
   return out;
@@ -540,12 +540,13 @@ function gotoIngest(args) {
   }
   fs.mkdirSync(path.dirname(args.db), { recursive: true });
   const games = args.game ? [args.game] : fs.readdirSync(args.scan)
-    .filter((name) => fs.existsSync(path.join(args.scan, name, 'markers.txt')))
+    .filter((name) => fs.existsSync(path.join(args.scan, name, 'deob-safe', 'logs', 'cfr-markers.txt')))
     .sort();
   const records = [];
   for (const game of games) {
-    const gameDir = path.join(args.scan, game);
-    const markerPath = path.join(gameDir, 'markers.txt');
+    const gameRoot = path.join(args.scan, game);
+    const gameDir = path.join(gameRoot, 'deob-safe');
+    const markerPath = path.join(gameDir, 'logs', 'cfr-markers.txt');
     if (!fs.existsSync(markerPath)) continue;
     const markerLines = fs.readFileSync(markerPath, 'utf8').split(/\r?\n/).filter(Boolean);
     const factsByClass = new Map();

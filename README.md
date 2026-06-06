@@ -1378,6 +1378,14 @@ canonical loop tail. `peephole-clean` now coalesces only such suffixes when they
 are immediately after a conditional, contain an `iinc`, and exactly match a
 later tail that jumps to the same loop head.
 
+The former `SteelSentinels.b(IZ)V` markers were a duplicate drain-header shape:
+two equivalent loop headers tested the same predicate/call sequence and fed the
+same exit, alternate path, and shared tail, while one redraw sub-tail used a
+separate but byte-for-byte equivalent block. `structured-goto-clone` now has a
+generic duplicate drain-header canonicalization pass. It detects the shape by
+instruction-window equivalence, not by class or member names, and retargets only
+the earlier header's incoming/backedge references to the later canonical header.
+
 The per-class javac failures are still source-shape/type-pollution work, not
 bytecode verifier failures. The most common categories at this baseline are
 ambiguous short-name references, constructor/super placement, residual CFR
@@ -1402,6 +1410,7 @@ structure (`illegal start of expression`), and object/array type pollution.
 | `split-concrete-object-reaching-local` | Splits polluted concrete object locals. In `--safe-bytecode` mode it uses the same dominance/original-local preservation as array splitting, which keeps verifier state valid around conditional reassignments. |
 | `split-primitive-int-branch-local` | Splits polluted int loop locals only when no earlier branch can bypass the fresh-local initialization. The split copies the fresh value back to the original local so non-rewritten paths remain initialized. |
 | `control-flow-dce` | Collapses simple goto/const-return clutter. In `--safe-bytecode` mode it refuses to merge a const-return label into an earlier const-return block when the earlier block has a fallthrough predecessor that could leave a value on the stack. |
+| `structured-goto-clone` duplicate drain-header canonicalization | Retargets an earlier duplicate loop/drain header to a later canonical header when the runtime bytecode recognizer proves both headers have equivalent opcode/operand windows, the same exit/alternate/tail roles, and any separate redraw tail is instruction-equivalent. This decision is made from bytecode shape only; CFR is used later for validation, not for pass selection. `STRUCTURED_GOTO_DUPLICATE_DRAIN_HEADER=0` is only a debug/kill switch. |
 | `compile-conflict-renames` | Exact owner/name/descriptor renames for Java source conflicts where CFR emits short class names that collide with inherited fields or override-family methods. |
 | `ei-tail-clone`, `qc-doloop-tail-clone` | Targeted tail-cloning passes for the remaining CFG shapes that CFR needs to structure `ei` and `qc` cleanly. |
 | `stack-receiver-tail-clone` | Clones a tiny stack-carrying receiver tail such as `iconst_1; invokevirtual X.c(Z)V` when an earlier loop branches into another loop's call site with the receiver already on the operand stack. This preserves bytecode semantics while removing a cross-loop stack join CFR cannot structure. |
