@@ -146,6 +146,7 @@ const skipPassNames = new Set((process.env.SKIP_PIPELINE_PASSES || '')
   .filter(Boolean));
 const experimentalPeepholeOptions = readJsonEnv('PIPELINE_EXPERIMENTAL_PEEPHOLE_OPTIONS');
 const tracePassTimes = process.env.BULK_PIPELINE_TRACE_PASS_TIMES === '1';
+const tracePassGating = process.env.BULK_PIPELINE_TRACE_PASS_GATING === '1';
 if (skipPassNames.has('ck-clip-flag')) {
   skipPassNames.add('raster-clip-continuation');
 }
@@ -271,6 +272,194 @@ function passChanged(result) {
 }
 
 const terminalTailCloneMaxMethodInsns = Number(process.env.TERMINAL_TAIL_CLONE_MAX_METHOD_INSNS || 2500);
+const smartPassGating = process.env.BULK_PIPELINE_SMART_PASS_GATING !== '0';
+
+function passAllowsRun(passName) {
+  const key = `PIPELINE_ALLOW_${passName.replace(/[^a-zA-Z0-9]/g, '_')}`;
+  return process.env[key] === '1';
+}
+
+function shouldRunPass(pass, astRoot, classFile) {
+  if (!smartPassGating) return true;
+  if (!pass || !pass.canRun) return true;
+  if (passAllowsRun(pass.name)) return true;
+  const allowed = !!pass.canRun(astRoot);
+  if (!allowed && tracePassGating) {
+    const label = `${classFile || 'class'}:${pass.name}`;
+    console.error(`SKIP PASS ${label} (gated)`);
+  }
+  return allowed;
+}
+
+function catchTypeFromEntry(entry) {
+  const value = entry && (entry.catch_type || entry.catchType || entry.type || entry.catchClass);
+  if (typeof value === 'string') return value;
+  if (Array.isArray(value)) return value[value.length - 1];
+  if (value && typeof value === 'object') return value.name || value.className || null;
+  return null;
+}
+
+function hasLikelyObfuscatedRuntimeExceptionHandlers(astRoot) {
+  let totalRuntimeHandlers = 0;
+  let runtimeOnlyMethods = 0;
+  let runtimeMethodsWithSmallHandlers = 0;
+
+  for (const classItem of astRoot.classes || []) {
+    for (const item of classItem.items || []) {
+      if (!item || item.type !== 'method' || !item.method) continue;
+      const codeAttr = (item.method.attributes || []).find((attr) => attr && attr.type === 'code');
+      const code = codeAttr && codeAttr.code;
+      if (!code || !Array.isArray(code.exceptionTable) || code.exceptionTable.length === 0) continue;
+
+      let runtimeHandlers = 0;
+      let totalHandlers = 0;
+      let minSpan = Infinity;
+
+      for (const entry of code.exceptionTable) {
+        if (catchTypeFromEntry(entry) === 'java/lang/RuntimeException') {
+          runtimeHandlers += 1;
+          totalRuntimeHandlers += 1;
+          const span = (code.codeItems || []).length;
+          if (span < minSpan) minSpan = span;
+        }
+        totalHandlers += 1;
+      }
+
+      if (runtimeHandlers === 0) continue;
+      if (totalHandlers > 0 && runtimeHandlers === totalHandlers) {
+        runtimeOnlyMethods += 1;
+        if (minSpan <= 220) {
+          runtimeMethodsWithSmallHandlers += 1;
+        }
+      }
+    }
+  }
+
+  if (totalRuntimeHandlers === 0) return false;
+  return runtimeMethodsWithSmallHandlers > 0 || runtimeOnlyMethods >= 3;
+}
+
+function hasLikelyRuntimeExceptionHandlerCandidates(astRoot) {
+  return hasLikelyObfuscatedRuntimeExceptionHandlers(astRoot);
+}
+
+const NORMALIZER_JUMP_OPS = new Set([
+  'goto', 'jsr', 'goto_w',
+  'ifeq', 'ifne', 'iflt', 'ifge', 'ifgt', 'ifle',
+  'if_icmpeq', 'if_icmpne', 'if_icmplt', 'if_icmpge', 'if_icmpgt', 'if_icmple',
+  'if_acmpeq', 'if_acmpne',
+  'ifnull', 'ifnonnull',
+]);
+const NORMALIZER_TERMINALS = new Set([
+  'ret', 'return', 'ireturn', 'lreturn', 'freturn', 'dreturn', 'areturn', 'athrow',
+  'goto', 'tableswitch', 'lookupswitch',
+]);
+
+function normalizeCandidateCountForCode(codeItems, exceptionTable, opts) {
+  const maxCloneInsns = opts.maxCloneInsns || 64;
+  const minIncoming = opts.minIncoming || 2;
+
+  if (!Array.isArray(codeItems) || codeItems.length === 0) {
+    return 0;
+  }
+
+  const handlerLabels = new Set();
+  for (const entry of exceptionTable || []) {
+    const handler = trimLabel(entry.handlerLbl || entry.handlerLabel || entry.handler);
+    if (handler) handlerLabels.add(handler);
+  }
+
+  const labelIndex = new Map();
+  codeItems.forEach((entry, idx) => {
+    const label = trimLabel(entry && entry.labelDef);
+    if (label) labelIndex.set(label, idx);
+  });
+
+  const incoming = new Map();
+  for (let idx = 0; idx < codeItems.length; idx += 1) {
+    const item = codeItems[idx];
+    const insn = item && item.instruction;
+    const op = instructionOp(insn);
+    if (!op) continue;
+
+    const targets = [];
+    if (op === 'tableswitch' || op === 'lookupswitch') {
+      const value = instructionArg(insn);
+      if (value && typeof value === 'string') {
+        targets.push(value);
+      }
+      if (insn && Array.isArray(insn.labels)) {
+        for (const label of insn.labels) {
+          targets.push(label);
+        }
+      }
+      if (insn && typeof insn.defaultLbl === 'string') {
+        targets.push(insn.defaultLbl);
+      }
+    } else if (NORMALIZER_JUMP_OPS.has(op) || op === 'invokedynamic') {
+      const arg = instructionArg(insn);
+      if (arg) targets.push(arg);
+    }
+
+    for (const rawTarget of targets) {
+      const target = trimLabel(rawTarget);
+      if (!target) continue;
+      if (!labelIndex.has(target)) continue;
+      const list = incoming.get(target) || [];
+      list.push(idx);
+      incoming.set(target, list);
+    }
+  }
+
+  let candidateCount = 0;
+  for (const [target, jumps] of incoming.entries()) {
+    if (!target || handlerLabels.has(target) || jumps.length < minIncoming) continue;
+    const targetIdx = labelIndex.get(target);
+    if (targetIdx == null) continue;
+
+    let forward = 0;
+    let back = 0;
+    for (const srcIdx of jumps) {
+      if (srcIdx >= targetIdx) back += 1;
+      else forward += 1;
+    }
+    if (forward === 0 || back === 0) continue;
+
+    let blockInsns = 0;
+    let terminal = false;
+    for (let i = targetIdx; i < codeItems.length && blockInsns <= maxCloneInsns + 1; i += 1) {
+      const insn = codeItems[i] && codeItems[i].instruction;
+      if (!insn) continue;
+      blockInsns += 1;
+      const opCode = instructionOp(insn);
+      if (NORMALIZER_TERMINALS.has(opCode)) {
+        terminal = true;
+        break;
+      }
+    }
+    if (terminal && blockInsns <= maxCloneInsns + 1) {
+      candidateCount += 1;
+    }
+  }
+  return candidateCount;
+}
+
+function hasLikelyLoopNormalizationCandidates(astRoot, options = {}) {
+  let candidates = 0;
+  for (const classItem of astRoot.classes || []) {
+    for (const item of classItem.items || []) {
+      if (!item || item.type !== 'method' || !item.method) continue;
+      const codeAttr = (item.method.attributes || []).find((attr) => attr && attr.type === 'code');
+      const code = codeAttr && codeAttr.code;
+      if (!code || !Array.isArray(code.codeItems) || code.codeItems.length === 0) continue;
+      candidates += normalizeCandidateCountForCode(code.codeItems, code.exceptionTable || [], options);
+      if (candidates > 32) {
+        return true;
+      }
+    }
+  }
+  return candidates >= 1;
+}
 
 function safePeepholeOptions(options) {
   return {
@@ -594,14 +783,22 @@ const passes = [
       cloneConditionalSharedLoopTailClasses: ['roa'],
     } : {}),
   })) },
-  ...(keepRuntimeHandlers || runtimeSafe ? [] : [{ name: 'runtime-exception-handlers', fn: (a) => removeRuntimeExceptionHandlers(a, { keepHandlerCode: true }) }]),
+  ...(keepRuntimeHandlers || runtimeSafe ? [] : [{
+    name: 'runtime-exception-handlers',
+    canRun: hasLikelyRuntimeExceptionHandlerCandidates,
+    fn: (a) => removeRuntimeExceptionHandlers(a, { keepHandlerCode: true }),
+  }]),
   ...(runtimeSafe ? [] : [
     { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a) },
     { name: 'remove-shadowing-trivial-rethrow-handlers', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) },
     { name: 'dekobloko-exception-handler-drops', fn: (a) => runDekoblokoExceptionHandlerDrops(a, profiles.exceptionHandlerDrops) },
     { name: 'strip-rethrow', fn: (a) => removeTrivialRethrowHandlers(a, { keepHandlerCode: true }) },
   ]),
-  { name: 'normalizer', fn: (a) => runMultiEntryLoopNormalizer(a) },
+  {
+    name: 'normalizer',
+    canRun: (astRoot) => hasLikelyLoopNormalizationCandidates(astRoot),
+    fn: (a) => runMultiEntryLoopNormalizer(a),
+  },
   { name: 'coalesce', fn: (a) => runCoalesceLoopLoad(a) },
   { name: 'dead-flag', fn: (a) => runDeadStaticBoolFlag(a, {
     flags: deadFlagFields,
@@ -827,6 +1024,7 @@ for (const f of files) {
     let { ast, cp } = loadAst(inPath);
     for (const p of passes) {
       if (skipPassNames.has(p.name)) continue;
+      if (!shouldRunPass(p, ast, f)) continue;
       try {
         const passStart = Date.now();
         const result = p.fn(ast);
