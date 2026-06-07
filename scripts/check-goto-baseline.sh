@@ -5,20 +5,115 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEKOB_DIR="$(dirname "$SCRIPT_DIR")"
 BASELINE_ALL="$SCRIPT_DIR/EXPECTED-GOTO-ALL-GAMES.tsv"
 BASELINE_FREE="$SCRIPT_DIR/EXPECTED-GOTO-FREE-GAMES.txt"
-GAMES_DIR="${1:-$DEKOB_DIR/.work/games}"
 
-if [[ ! -d "$GAMES_DIR" ]]; then
-  echo "FATAL: missing games directory: $GAMES_DIR" >&2
+RAW_INPUT="${1:-$DEKOB_DIR/.work/games}"
+
+if [[ -z "${RAW_INPUT:-}" ]]; then
+  echo "FATAL: empty games argument" >&2
   exit 2
 fi
+
+resolve_target() {
+  local input="$1"
+  local candidate="$input"
+  local game_name=""
+
+  # Direct game directory with extracted classes
+  if [[ -d "$candidate/classes" ]]; then
+    if [[ -z "${candidate##*/}" ]]; then
+      return 1
+    fi
+    games_dir="$(dirname "$candidate")"
+    game_name="$(basename "$candidate")"
+    echo "$games_dir|$game_name"
+    return 0
+  fi
+
+  # Direct game directory with prior run output
+  if [[ -f "$candidate/deob-safe/logs/cfr-markers.txt" ]]; then
+    games_dir="$(dirname "$candidate")"
+    game_name="$(basename "$candidate")"
+    echo "$games_dir|$game_name"
+    return 0
+  fi
+
+  # Directly on deob-safe/logs output directories
+  if [[ -f "$candidate/logs/cfr-markers.txt" ]]; then
+    local game_dir
+    game_dir="$(dirname "$candidate")"
+    if [[ -d "$game_dir" ]]; then
+      games_dir="$(dirname "$game_dir")"
+      game_name="$(basename "$game_dir")"
+      echo "$games_dir|$game_name"
+      return 0
+    fi
+  fi
+  if [[ -f "$candidate/cfr-markers.txt" ]]; then
+    local game_dir
+    game_dir="$(dirname "$candidate")"
+    if [[ -d "$game_dir" ]]; then
+      games_dir="$(dirname "$game_dir")"
+      game_name="$(basename "$game_dir")"
+      echo "$games_dir|$game_name"
+      return 0
+    fi
+  fi
+
+  # Shorthand: a single game name under .work/games
+  if [[ -d "$DEKOB_DIR/.work/games/$input" ]]; then
+    candidate="$DEKOB_DIR/.work/games/$input"
+    if [[ -d "$candidate/classes" ]]; then
+      games_dir="$DEKOB_DIR/.work/games"
+      game_name="$(basename "$candidate")"
+      echo "$games_dir|$game_name"
+      return 0
+    fi
+    if [[ -f "$candidate/deob-safe/logs/cfr-markers.txt" ]]; then
+      games_dir="$DEKOB_DIR/.work/games"
+      game_name="$(basename "$candidate")"
+      echo "$games_dir|$game_name"
+      return 0
+    fi
+  fi
+
+  # Games root
+  if [[ -d "$candidate" ]]; then
+    games_dir="$candidate"
+    game_name=""
+    echo "$games_dir|$game_name"
+    return 0
+  fi
+
+  echo ""
+  return 1
+}
+
+resolved="$(resolve_target "$RAW_INPUT" || true)"
+if [[ -z "$resolved" ]]; then
+  echo "FATAL: missing games directory or game: $RAW_INPUT" >&2
+  exit 2
+fi
+GAMES_DIR="${resolved%%|*}"
+TARGET_GAME="${resolved#*|}"
 
 tmp_all="$(mktemp)"
 tmp_free="$(mktemp)"
 tmp_summary="$(mktemp)"
-trap 'rm -f "$tmp_all" "$tmp_free" "$tmp_summary"' EXIT
+tmp_filter_all=""
+tmp_filter_free=""
+trap 'rm -f "$tmp_all" "$tmp_free" "$tmp_summary" "$tmp_filter_all" "$tmp_filter_free"' EXIT
 
 awk '!/^#/ && NF {print}' "$BASELINE_ALL" > "$tmp_all"
 awk '!/^#/ && NF {print}' "$BASELINE_FREE" > "$tmp_free"
+
+if [[ -n "$TARGET_GAME" ]]; then
+  tmp_filter_all="$(mktemp)"
+  tmp_filter_free="$(mktemp)"
+  awk -v target="$TARGET_GAME" '$1 == target' "$tmp_all" > "$tmp_filter_all"
+  awk -v target="$TARGET_GAME" '$1 == target' "$tmp_free" > "$tmp_filter_free"
+  tmp_all="$tmp_filter_all"
+  tmp_free="$tmp_filter_free"
+fi
 
 while IFS=$'\t' read -r game _expected_gotos _expected_unable _expected_classes; do
   marker_file="$GAMES_DIR/$game/deob-safe/logs/cfr-markers.txt"
@@ -26,8 +121,8 @@ while IFS=$'\t' read -r game _expected_gotos _expected_unable _expected_classes;
     printf '%s\tMISSING\tMISSING\tMISSING\n' "$game" >> "$tmp_summary"
     continue
   fi
-  gotos="$(grep -c '\*\* GOTO' "$marker_file" || true)"
-  unable="$(grep -c 'Unable to fully structure code\|lbl-1000' "$marker_file" || true)"
+  gotos="$(grep -c '\\*\\* GOTO' "$marker_file" || true)"
+  unable="$(grep -c 'Unable to fully structure code\\|lbl-1000' "$marker_file" || true)"
   classes="$(cut -d: -f1 "$marker_file" | sort -u | wc -l)"
   printf '%s\t%s\t%s\t%s\n' "$game" "$gotos" "$unable" "$classes" >> "$tmp_summary"
 done < "$tmp_all"
@@ -68,7 +163,7 @@ while read -r game; do
     regressions=$((regressions + 1))
     continue
   fi
-  gotos="$(grep -c '\*\* GOTO' "$marker_file" || true)"
+  gotos="$(grep -c '\\*\\* GOTO' "$marker_file" || true)"
   if (( gotos != 0 )); then
     printf "%-28s expected 0 GOTO markers, got %s REGRESSION\n" "$game" "$gotos"
     regressions=$((regressions + 1))

@@ -7,6 +7,9 @@ The repository intentionally tracks source and retrieval scripts only. Downloade
 gamepacks, decompiler jars, class files, traces, and generated decompiler output
 are ignored.
 
+For the full GOTO baseline workflow (generation, validation, expected baselines, and
+latest run status), see: [GOTO baseline runbook](docs/goto-baseline-runbook.md).
+
 ## Repository Layout
 
 Source and tooling are grouped by job:

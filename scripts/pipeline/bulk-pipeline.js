@@ -156,7 +156,25 @@ if (!inDir || !outDir) {
 }
 
 fs.mkdirSync(outDir, { recursive: true });
-const files = fs.readdirSync(inDir).filter((f) => f.endsWith('.class'));
+
+function listClassFiles(dir, root = dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const out = [];
+  for (const entry of entries) {
+    const absPath = path.join(dir, entry.name);
+    const relPath = path.relative(root, absPath);
+    if (entry.isDirectory()) {
+      out.push(...listClassFiles(absPath, root));
+      continue;
+    }
+    if (entry.isFile() && entry.name.endsWith('.class')) {
+      out.push(relPath);
+    }
+  }
+  return out;
+}
+
+const files = listClassFiles(inDir);
 const profiles = loadProfiles(path.join(__dirname, 'profiles'), selectedProfiles);
 for (const passName of profiles.skipPasses) {
   skipPassNames.add(passName);
@@ -922,6 +940,7 @@ for (const f of files) {
       const pass = err && err.pipelinePass ? ` pass=${err.pipelinePass}` : '';
       console.error(`Failed ${f}${pass}: ${err && err.stack ? err.stack : err}`);
     }
+    fs.mkdirSync(path.dirname(outPath), { recursive: true });
     fs.copyFileSync(inPath, outPath);
   }
 }

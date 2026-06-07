@@ -7,14 +7,22 @@ GAMES_DIR="${1:-$DEKOB_DIR/.work/games}"
 PIPELINE_TIMEOUT_SECONDS="${PIPELINE_TIMEOUT_SECONDS:-900}"
 CFR_TIMEOUT_SECONDS="${CFR_TIMEOUT_SECONDS:-300}"
 
-if [[ ! -d "$GAMES_DIR" ]]; then
+if [[ ! -d "$GAMES_DIR/classes" && ! -d "$GAMES_DIR" ]]; then
   echo "FATAL: missing games directory: $GAMES_DIR" >&2
   exit 2
 fi
 
-for classes_dir in "$GAMES_DIR"/*/classes; do
+if [[ -d "$GAMES_DIR/classes" ]]; then
+  GAME_DIRS=("$GAMES_DIR")
+else
+  shopt -s nullglob
+  GAME_DIRS=("$GAMES_DIR"/*)
+  shopt -u nullglob
+fi
+
+for game_dir in "${GAME_DIRS[@]}"; do
+  classes_dir="$game_dir/classes"
   [[ -d "$classes_dir" ]] || continue
-  game_dir="$(dirname "$classes_dir")"
   game="$(basename "$game_dir")"
   work="$game_dir/deob-safe"
   out="$work/out"
@@ -34,8 +42,13 @@ for classes_dir in "$GAMES_DIR"/*/classes; do
     exit 1
   fi
 
+  mapfile -d '' class_files < <(find "$out" -type f -name '*.class' -print0)
+  if (( ${#class_files[@]} == 0 )); then
+    echo "FATAL: $game produced no .class files" >&2
+    exit 1
+  fi
   timeout "$CFR_TIMEOUT_SECONDS" \
-    java -jar "$DEKOB_DIR/lib/cfr.jar" "$out"/*.class \
+    java -jar "$DEKOB_DIR/lib/cfr.jar" "${class_files[@]}" \
     --outputdir "$cfr" --silent true --caseinsensitivefs false \
     > "$logs/cfr.log" 2>&1 || true
 
