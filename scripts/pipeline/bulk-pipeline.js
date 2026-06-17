@@ -125,7 +125,7 @@ const { runTerminalActionExtract } = require('./terminalActionExtract');
 const { runTerminalCleanupExtract } = require('./terminalCleanupExtract');
 const { runStructuredGotoClone } = require('./structuredGotoClone');
 const { runPollLoopReturnNormalize } = require('./pollLoopReturnNormalize');
-const { expandMethodRenames, runCompileConflictRenames } = require('./compileConflictRenames');
+const { FIELD_RENAMES, METHOD_RENAMES, expandMethodRenames, runCompileConflictRenames } = require('./compileConflictRenames');
 const { runDekoblokoExceptionHandlerDrops } = require('./removeShadowedExceptionHandlers');
 
 const inDir = process.argv[2];
@@ -145,6 +145,72 @@ const skipPassNames = new Set((process.env.SKIP_PIPELINE_PASSES || '')
   .map((name) => name.trim())
   .filter(Boolean));
 const experimentalPeepholeOptions = readJsonEnv('PIPELINE_EXPERIMENTAL_PEEPHOLE_OPTIONS');
+const structuredGotoDefaultEnv = {
+  STRUCTURED_GOTO_ONESHOT_PREHEADER: '1',
+  STRUCTURED_GOTO_ITERATIVE: '1',
+  STRUCTURED_GOTO_MAX_ITERATIONS: '8',
+  STRUCTURED_GOTO_CLONE_SHORT: '0',
+  STRUCTURED_GOTO_CLONE_ZERO: '0',
+  STRUCTURED_GOTO_CLONE_RETURN: '0',
+  STRUCTURED_GOTO_MERGE_ARRAY_PRETAIL: '0',
+  STRUCTURED_GOTO_BOUNDED_CONDITIONAL_TAILS: '1',
+  STRUCTURED_GOTO_BOUNDED_CONDITIONAL_TAIL_MAX_REWRITES: '8',
+  STRUCTURED_GOTO_BOUNDED_CONDITIONAL_TAIL_MAX_INSNS: '220',
+  STRUCTURED_GOTO_INVERT_CONDITIONAL_GOTO_BRIDGES: '0',
+  STRUCTURED_GOTO_INVERT_CONDITIONAL_GOTO_BRIDGE_MAX_REWRITES: '128',
+  STRUCTURED_GOTO_SHARED_LOOP_INCREMENT_TAILS: '0',
+  STRUCTURED_GOTO_SHARED_LOOP_INCREMENT_TAIL_MAX_REWRITES: '48',
+  STRUCTURED_GOTO_SHARED_LOOP_INCREMENT_TAIL_MAX_INSNS: '4',
+  STRUCTURED_GOTO_SHARED_LOOP_INCREMENT_TAIL_MAX_REFS: '12',
+  STRUCTURED_GOTO_SHARED_FORWARD_CONTINUATIONS: '0',
+  STRUCTURED_GOTO_SHARED_FORWARD_CONTINUATION_MAX_REWRITES: '12',
+  STRUCTURED_GOTO_SHARED_FORWARD_CONTINUATION_MAX_INSNS: '180',
+  STRUCTURED_GOTO_SHARED_FORWARD_CONTINUATION_MAX_REFS: '8',
+  STRUCTURED_GOTO_HBB_CACHED_LOOKUP_CONTINUATION: '1',
+  STRUCTURED_GOTO_UCA_SHARED_LOOP_INCREMENT_TAIL: '1',
+  STRUCTURED_GOTO_VH_UCA_SHARED_RETURN_TAIL: '1',
+  STRUCTURED_GOTO_VH_UCA_ENTITY_LOOP_CONTINUATION: '1',
+  STRUCTURED_GOTO_VH_UCA_MENU_LOOP_CONTINUATION: '1',
+  STRUCTURED_GOTO_TARGETED_SHARED_LOOP_INCREMENT_TAILS: '1',
+  STRUCTURED_GOTO_BUCKET_ARRAY_INIT_TAIL: '1',
+  STRUCTURED_GOTO_OBJECT_REFRESH_CONTINUATION: '1',
+  STRUCTURED_GOTO_PREFIX_CONTINUATION: '1',
+  STRUCTURED_GOTO_SHARED_BOOLEAN_LOOP_TAIL: '1',
+  STRUCTURED_GOTO_ITERATOR_ADVANCE_TAIL: '1',
+  STRUCTURED_GOTO_MESSAGE_EXIT_TAIL: '1',
+  STRUCTURED_GOTO_TWO_SIDED_NOT_COMPARE: '1',
+  STRUCTURED_GOTO_ONE_SIDED_NOT_COMPARE: '1',
+  STRUCTURED_GOTO_STACK_SHIFT_STORE_TAIL: '1',
+  STRUCTURED_GOTO_DUPLICATE_CARD_LOOP_CLEANUP: '1',
+  STRUCTURED_GOTO_STACK_COMPARE_TAILS: '1',
+  STRUCTURED_GOTO_CARD_SECOND_HAND_LOOP: '1',
+  STRUCTURED_GOTO_CARD_LOOP_FALLBACK: '1',
+  STRUCTURED_GOTO_SHARED_ICON_LOOP: '1',
+  STRUCTURED_GOTO_EARLY_FINAL_LOOP_EXIT: '1',
+  STRUCTURED_GOTO_ARRAY_MEMBERSHIP_OUTER_CONTINUE: '1',
+  STRUCTURED_GOTO_DUPLICATE_ARRAY_LOOP_HEADER_ALIAS: '1',
+  STRUCTURED_GOTO_RASTER_BLUR_LOOP_HEADER: '1',
+  STRUCTURED_GOTO_EVENT_DRAIN_LOOP: '1',
+  STRUCTURED_GOTO_STACK_FLAG_COMPARE_MATERIALIZE: '1',
+  STRUCTURED_GOTO_QUEUE_BODY_ENTRY_CLONE: '1',
+  STRUCTURED_GOTO_QUEUE_FLAG_TRUE_ENTRY: '1',
+  STRUCTURED_GOTO_BACKWARD_CONTINUE_TAILS: '1',
+  STRUCTURED_GOTO_PHASE_CONTINUATION_TAIL: '1',
+  STRUCTURED_GOTO_MENU_CONTINUATION_TAIL: '1',
+  STRUCTURED_GOTO_SHARED_RENDER_CONTINUATION: '1',
+  STRUCTURED_GOTO_NESTED_ARRAY_SCAN_OUTER_CONTINUE: '1',
+  STRUCTURED_GOTO_SHARED_TOOLTIP_RENDER_TAIL: '1',
+};
+
+const noSafeStructuredGotoDefaultEnv = {
+  ...structuredGotoDefaultEnv,
+  STRUCTURED_GOTO_ONESHOT_PREHEADER: '0',
+  STRUCTURED_GOTO_BOUNDED_CONDITIONAL_TAILS: '0',
+  STRUCTURED_GOTO_MERGE_IINC_TAILS: '0',
+  STRUCTURED_GOTO_MERGE_BACKEDGE_TAILS: '0',
+  STRUCTURED_GOTO_MAX_ITERATIONS: '3',
+};
+
 const tracePassTimes = process.env.BULK_PIPELINE_TRACE_PASS_TIMES === '1';
 const tracePassGating = process.env.BULK_PIPELINE_TRACE_PASS_GATING === '1';
 if (skipPassNames.has('ck-clip-flag')) {
@@ -176,6 +242,8 @@ function listClassFiles(dir, root = dir) {
 }
 
 const files = listClassFiles(inDir);
+const processFiles = selectProcessFiles(files);
+const processFileSet = new Set(processFiles);
 const profiles = loadProfiles(path.join(__dirname, 'profiles'), selectedProfiles);
 for (const passName of profiles.skipPasses) {
   skipPassNames.add(passName);
@@ -183,6 +251,26 @@ for (const passName of profiles.skipPasses) {
 
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'dekob-bulkpipe-'));
 const tmpFile = path.join(tmpDir, 'tmp.class');
+
+function selectProcessFiles(allFiles) {
+  const listPath = process.env.BULK_PIPELINE_CLASS_LIST || '';
+  const filterRe = process.env.BULK_PIPELINE_CLASS_FILTER || '';
+  if (!listPath && !filterRe) return allFiles;
+  let selected = new Set(allFiles);
+  if (listPath) {
+    const wanted = new Set(fs.readFileSync(listPath, 'utf8')
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => line.endsWith('.class') ? line : `${line}.class`));
+    selected = new Set([...selected].filter((file) => wanted.has(file) || wanted.has(path.basename(file))));
+  }
+  if (filterRe) {
+    const re = new RegExp(filterRe);
+    selected = new Set([...selected].filter((file) => re.test(file)));
+  }
+  return allFiles.filter((file) => selected.has(file));
+}
 
 function loadAst(filePath) {
   const buf = fs.readFileSync(filePath);
@@ -231,6 +319,35 @@ function saveAndReload(ast, cp) {
   return loadAst(tmpFile);
 }
 
+
+function classBasename(classFile) {
+  return path.basename(classFile || '', '.class');
+}
+
+function configuredList(envName, defaults) {
+  const value = Object.prototype.hasOwnProperty.call(process.env, envName) ? process.env[envName] : defaults;
+  return String(value || '')
+    .split(',')
+    .map((name) => name.trim())
+    .filter(Boolean);
+}
+
+function configuredClassSet(envName, defaults) {
+  return new Set(configuredList(envName, defaults));
+}
+
+function shouldRunNoSafeStructuredGoto(astRoot) {
+  if (process.env.STRUCTURED_GOTO_NOSAFE_ALL === '1') return true;
+  if (process.env.STRUCTURED_GOTO_NOSAFE_ALL === '0') return false;
+  return hasTargetedCfrCloneCandidate(astRoot);
+}
+
+function shouldRunNoSafeTargetedPeephole(astRoot) {
+  if (process.env.PIPELINE_NOSAFE_TARGETED_PEEPHOLE_ALL === '1') return true;
+  if (process.env.PIPELINE_NOSAFE_TARGETED_PEEPHOLE_ALL === '0') return false;
+  return hasLateStackConditionalTargetCandidate(astRoot);
+}
+
 function readOptionValue(name) {
   const prefixed = `${name}=`;
   for (let i = 0; i < process.argv.length; i += 1) {
@@ -271,6 +388,26 @@ function passChanged(result) {
   return true;
 }
 
+function withEnvDefaults(defaults, fn) {
+  const changedKeys = [];
+  for (const [key, value] of Object.entries(defaults)) {
+    if (process.env[key] !== undefined) continue;
+    changedKeys.push(key);
+    process.env[key] = value;
+  }
+  try {
+    return fn();
+  } finally {
+    for (const key of changedKeys) delete process.env[key];
+  }
+}
+
+function structuredGotoIterationCount() {
+  if (process.env.STRUCTURED_GOTO_ITERATIVE !== '1') return 1;
+  const count = Number(process.env.STRUCTURED_GOTO_MAX_ITERATIONS || 8);
+  return Number.isFinite(count) && count > 0 ? count : 1;
+}
+
 const terminalTailCloneMaxMethodInsns = Number(process.env.TERMINAL_TAIL_CLONE_MAX_METHOD_INSNS || 2500);
 const smartPassGating = process.env.BULK_PIPELINE_SMART_PASS_GATING !== '0';
 
@@ -289,6 +426,13 @@ function shouldRunPass(pass, astRoot, classFile) {
     console.error(`SKIP PASS ${label} (gated)`);
   }
   return allowed;
+}
+
+function shouldSkipPassForAst(passName, astRoot, classFile) {
+  const envName = `PIPELINE_SKIP_${passName.toUpperCase().replace(/[^A-Z0-9]+/g, '_')}_CLASSES`;
+  const explicit = configuredClassSet(envName, '');
+  if (explicit.has(classBasename(classFile))) return true;
+  return passName === 'control-flow-dce' && hasControlFlowDceHostileCandidate(astRoot);
 }
 
 function catchTypeFromEntry(entry) {
@@ -468,6 +612,665 @@ function safePeepholeOptions(options) {
   };
 }
 
+function safePeepholeOptionsForClass(astRoot, classFile, options) {
+  const merged = safePeepholeOptions(options);
+  const disableHeavy = safeBytecode && shouldDisableHeavyPeepholeClonesForAst(astRoot, classFile);
+  if (safeBytecode && shouldDisableTerminalTailClonesForAst(astRoot, classFile)) {
+    merged.cloneForwardTerminalGotoTails = false;
+    merged.cloneConditionalTerminalTails = false;
+    merged.cloneBoundedTerminalGotoTails = false;
+  }
+  if (disableHeavy) {
+    disableHeavyPeepholeCloneOptions(merged);
+  } else if (safeBytecode && shouldEnableLateStackConditionalTargetClones(astRoot, classFile)) {
+    merged.cloneStackConditionalTargets = true;
+  }
+  return merged;
+}
+
+function structuredGotoDefaultEnvForClass(astRoot, classFile) {
+  const merged = { ...structuredGotoDefaultEnv };
+  if (safeBytecode && shouldDisableBroadStructuredGotoClonesForAst(astRoot, classFile)) {
+    merged.STRUCTURED_GOTO_ONESHOT_PREHEADER = '0';
+    merged.STRUCTURED_GOTO_BOUNDED_CONDITIONAL_TAILS = '0';
+    merged.STRUCTURED_GOTO_SHARED_LOOP_INCREMENT_TAILS = '0';
+    merged.STRUCTURED_GOTO_SHARED_FORWARD_CONTINUATIONS = '0';
+    merged.STRUCTURED_GOTO_INVERT_CONDITIONAL_GOTO_BRIDGES = '0';
+  }
+  return merged;
+}
+
+
+function shouldEnableLateStackConditionalTargetClones(astRoot, classFile) {
+  const explicit = configuredClassSet('PIPELINE_LATE_STACK_CONDITIONAL_TARGET_CLASSES', '');
+  if (explicit.has(classBasename(classFile))) return true;
+  return hasLateStackConditionalTargetCandidate(astRoot);
+}
+
+function disableHeavyPeepholeCloneOptions(options) {
+  options.cloneSharedFallthroughJoins = false;
+  options.cloneSmallTerminalSharedForwardBlocks = false;
+  options.cloneConditionalSharedJoins = false;
+  options.cloneSharedPureForwardJoins = false;
+  options.cloneLongCompareSharedJoins = false;
+  options.cloneForwardTerminalGotoTails = false;
+  options.cloneSharedLoopIncrementTails = false;
+  options.cloneSharedSideEffectJoins = false;
+  options.cloneBoundedTerminalGotoTails = false;
+  options.cloneLoopValueContinuations = false;
+  options.cloneConditionalTerminalTails = false;
+  options.cloneConditionalSharedLoopTails = false;
+  options.cloneStackConditionalTargets = false;
+}
+
+function shouldDisableTerminalTailClonesForAst(astRoot, classFile) {
+  const explicit = configuredClassSet('PIPELINE_DISABLE_TERMINAL_TAIL_CLONE_CLASSES', '');
+  if (explicit.has(classBasename(classFile))) return true;
+  return hasBroadCloneSensitiveCandidate(astRoot);
+}
+
+function shouldDisableHeavyPeepholeClonesForAst(astRoot, classFile) {
+  const explicit = configuredClassSet('PIPELINE_DISABLE_HEAVY_PEEPHOLE_CLONE_CLASSES', '');
+  if (explicit.has(classBasename(classFile))) return true;
+  return hasBroadCloneSensitiveCandidate(astRoot) || hasLargeControlFlowMethod(astRoot);
+}
+
+function shouldDisableBroadStructuredGotoClonesForAst(astRoot, classFile) {
+  const explicit = configuredClassSet('PIPELINE_DISABLE_BROAD_STRUCTURED_GOTO_CLONE_CLASSES', '');
+  if (explicit.has(classBasename(classFile))) return true;
+  return hasBroadCloneSensitiveCandidate(astRoot);
+}
+
+function hasMethodSignature(astRoot, owner, name, descriptor) {
+  for (const cls of astRoot.classes || []) {
+    if (!cls || cls.className !== owner || !Array.isArray(cls.items)) continue;
+    for (const item of cls.items) {
+      const method = item && item.type === 'method' && item.method;
+      if (method && method.name === name && method.descriptor === descriptor) return true;
+    }
+  }
+  return false;
+}
+
+
+function hasTargetedCfrCloneCandidate(astRoot) {
+  return anyCodeItems(astRoot, (codeItems) =>
+    hasRasterBlurDetachedHeaderCandidate(codeItems) ||
+    hasStackShiftStoreTailCandidate(codeItems) ||
+    hasCardLoopCandidate(codeItems) ||
+    hasStaticStringMenuContinuationCandidate(codeItems) ||
+    hasPhaseContinuationCandidate(codeItems) ||
+    hasUcaLikeSharedReturnTailCandidate(codeItems) ||
+    hasUcaLikeSharedLoopIncrementCandidate(codeItems) ||
+    hasSharedRenderContinuationCandidateBulk(codeItems) ||
+    hasBucketArrayInitCandidate(codeItems) ||
+    hasIteratorAdvanceTailCandidate(codeItems) ||
+    hasMessageExitTailCandidate(codeItems) ||
+    hasSharedBooleanLoopTailCandidate(codeItems) ||
+    hasVectorFinalLoopCandidate(codeItems) ||
+    hasArrayMembershipOuterContinueCandidate(codeItems) ||
+    hasDuplicateArrayLoopHeaderAliasCandidateBulk(codeItems) ||
+    hasEventDrainQueueCandidate(codeItems) ||
+    hasBackwardContinueTailCandidate(codeItems) ||
+    hasNestedArrayScanOuterContinueCandidate(codeItems) ||
+    hasSharedTooltipRenderTailCandidate(codeItems)
+  );
+}
+
+function hasBroadCloneSensitiveCandidate(astRoot) {
+  return anyCodeItems(astRoot, (codeItems) =>
+    hasStackShiftStoreTailCandidate(codeItems) ||
+    hasCardLoopCandidate(codeItems) ||
+    hasUcaLikeSharedReturnTailCandidate(codeItems) ||
+    hasUcaLikeSharedLoopIncrementCandidate(codeItems) ||
+    hasUcaLikeMenuContinuationCandidate(codeItems) ||
+    hasSharedRenderContinuationCandidateBulk(codeItems) ||
+    hasBucketArrayInitCandidate(codeItems) ||
+    hasIteratorAdvanceTailCandidate(codeItems) ||
+    hasMessageExitTailCandidate(codeItems) ||
+    hasSharedBooleanLoopTailCandidate(codeItems) ||
+    hasVectorFinalLoopCandidate(codeItems) ||
+    hasArrayMembershipOuterContinueCandidate(codeItems) ||
+    hasDuplicateArrayLoopHeaderAliasCandidateBulk(codeItems) ||
+    hasEventDrainQueueCandidate(codeItems) ||
+    hasBackwardContinueTailCandidate(codeItems) ||
+    hasNestedArrayScanOuterContinueCandidate(codeItems) ||
+    hasSharedTooltipRenderTailCandidate(codeItems)
+  );
+}
+
+function hasLateStackConditionalTargetCandidate(astRoot) {
+  return anyCodeItems(astRoot, (codeItems) =>
+    hasStackShiftStoreTailCandidate(codeItems) ||
+    hasCardLoopCandidate(codeItems) ||
+    hasVectorFinalLoopCandidate(codeItems) ||
+    hasStaticStringMenuContinuationCandidate(codeItems)
+  );
+}
+
+function hasControlFlowDceHostileCandidate(astRoot) {
+  return anyCodeItems(astRoot, (codeItems) =>
+    hasUcaLikeSharedReturnTailCandidate(codeItems) ||
+    hasUcaLikeMenuContinuationCandidate(codeItems)
+  );
+}
+
+function anyCodeItems(astRoot, predicate) {
+  for (const cls of astRoot.classes || []) {
+    for (const item of cls.items || []) {
+      const method = item && item.type === 'method' && item.method;
+      const codeAttr = method && (method.attributes || []).find((attr) => attr && attr.type === 'code');
+      const codeItems = codeAttr && codeAttr.code && codeAttr.code.codeItems;
+      if (Array.isArray(codeItems) && predicate(codeItems, method, cls)) return true;
+    }
+  }
+  return false;
+}
+
+function hasLargeControlFlowMethod(astRoot) {
+  return anyCodeItems(astRoot, (codeItems) => {
+    let insns = 0;
+    let branches = 0;
+    for (const item of codeItems) {
+      const cur = instructionOp(item && item.instruction);
+      if (!cur) continue;
+      insns += 1;
+      if (cur === 'goto' || cur === 'goto_w' || (typeof cur === 'string' && cur.startsWith('if'))) branches += 1;
+    }
+    return insns >= 400 && branches >= 24;
+  });
+}
+
+function hasRasterBlurDetachedHeaderCandidate(codeItems) {
+  for (let header = 1; header + 8 < codeItems.length; header += 1) {
+    if (instructionOp(itemInsn(codeItems, header - 1)) !== 'return') continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, header)) == null) continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, header + 1)) == null) continue;
+    const branch = itemInsn(codeItems, header + 2);
+    if (instructionOp(branch) !== 'if_icmplt') continue;
+    const duplicateBody = findLabelIndex(codeItems, instructionArg(branch));
+    if (duplicateBody <= header + 2) continue;
+    if (!readZeroStoreGotoShapeBulk(codeItems, duplicateBody)) continue;
+    if (readZeroStoreGotoShapeBulk(codeItems, duplicateBody - 3)) return true;
+  }
+  return false;
+}
+
+function hasStackShiftStoreTailCandidate(codeItems) {
+  for (let i = 0; i + 10 < codeItems.length; i += 1) {
+    if (instructionOp(itemInsn(codeItems, i)) !== 'ishr') continue;
+    if (instructionOp(itemInsn(codeItems, i + 1)) !== 'goto') continue;
+    if (instructionOp(itemInsn(codeItems, i + 2)) !== 'ishr') continue;
+    if (instructionOp(itemInsn(codeItems, i + 3)) !== 'dup_x2') continue;
+    if (instructionOp(itemInsn(codeItems, i + 4)) !== 'iastore') continue;
+    if (instructionOp(itemInsn(codeItems, i + 5)) !== 'iastore') continue;
+    return true;
+  }
+  return false;
+}
+
+function hasCardLoopCandidate(codeItems) {
+  for (let i = 0; i + 8 < codeItems.length; i += 1) {
+    if (instructionOp(itemInsn(codeItems, i)) !== 'iconst_0') continue;
+    if (intStoreLocalBulk(itemInsn(codeItems, i + 1)) == null) continue;
+    if (!isBipushBulk(itemInsn(codeItems, i + 2), 7)) continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, i + 3)) == null) continue;
+    if (instructionOp(itemInsn(codeItems, i + 4)) !== 'if_icmple') continue;
+    if (refLoadLocalBulk(itemInsn(codeItems, i + 5)) !== 0) continue;
+    if (!isGetFieldReferenceBulk(itemInsn(codeItems, i + 6))) continue;
+    if (!isGetFieldObjectArrayBulk(itemInsn(codeItems, i + 7))) continue;
+    return true;
+  }
+  return false;
+}
+
+function hasStaticStringMenuContinuationCandidate(codeItems) {
+  for (let i = 1; i < codeItems.length; i += 1) {
+    if (instructionOp(itemInsn(codeItems, i)) !== 'goto') continue;
+    if (!isPutStaticDescriptorBulk(itemInsn(codeItems, i - 1), 'Ljava/lang/String;')) continue;
+    const target = findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i)));
+    if (target >= 0 && isGetStaticDescriptorBulk(itemInsn(codeItems, target), 'J')) return true;
+  }
+  return false;
+}
+
+function hasPhaseContinuationCandidate(codeItems) {
+  for (let i = 1; i < codeItems.length; i += 1) {
+    if (instructionOp(itemInsn(codeItems, i)) !== 'goto') continue;
+    if (!isInvokeDescriptorBulk(itemInsn(codeItems, i - 1), '(IIII)V')) continue;
+    const target = findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i)));
+    if (target < 0 || target + 5 >= codeItems.length) continue;
+    if (instructionOp(itemInsn(codeItems, target)) === 'iconst_0' &&
+      intStoreLocalBulk(itemInsn(codeItems, target + 1)) != null &&
+      instructionOp(itemInsn(codeItems, target + 2)) === 'iconst_0' &&
+      intStoreLocalBulk(itemInsn(codeItems, target + 3)) != null) return true;
+  }
+  return false;
+}
+
+function hasUcaLikeSharedReturnTailCandidate(codeItems) {
+  for (let i = 0; i + 5 < codeItems.length; i += 1) {
+    if (intLoadLocalBulk(itemInsn(codeItems, i)) !== 3) continue;
+    if (!isBipushBulk(itemInsn(codeItems, i + 1), -11)) continue;
+    if (instructionOp(itemInsn(codeItems, i + 2)) !== 'if_icmpeq') continue;
+    if (refLoadLocalBulk(itemInsn(codeItems, i + 3)) !== 0) continue;
+    if (instructionOp(itemInsn(codeItems, i + 4)) !== 'aconst_null') continue;
+    if (instructionOp(itemInsn(codeItems, i + 5)) === 'checkcast') return true;
+  }
+  return false;
+}
+
+function hasUcaLikeSharedLoopIncrementCandidate(codeItems) {
+  for (let i = 0; i + 1 < codeItems.length; i += 1) {
+    const inc = readIincBulk(itemInsn(codeItems, i));
+    if (!inc || inc.incr !== 1) continue;
+    const jump = itemInsn(codeItems, i + 1);
+    if (instructionOp(jump) !== 'goto') continue;
+    const header = findLabelIndex(codeItems, instructionArg(jump));
+    if (header >= 0 && header < i && intLoadLocalBulk(itemInsn(codeItems, header)) === inc.local) return true;
+  }
+  return false;
+}
+
+
+function hasSharedRenderContinuationCandidateBulk(codeItems) {
+  for (let i = 0; i + 11 < codeItems.length; i += 1) {
+    if (refLoadLocalBulk(itemInsn(codeItems, i)) == null) continue;
+    if (instructionOp(itemInsn(codeItems, i + 1)) !== 'ifnull') continue;
+    const flagLocal = intLoadLocalBulk(itemInsn(codeItems, i + 2));
+    if (flagLocal == null || instructionOp(itemInsn(codeItems, i + 3)) !== 'ifeq') continue;
+    const zeroTail = findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i + 3)));
+    if (zeroTail <= i) continue;
+    if (!isGetStaticDescriptorBulk(itemInsn(codeItems, i + 4), 'Z')) continue;
+    if (instructionOp(itemInsn(codeItems, i + 5)) !== 'ifne') continue;
+    if (instructionOp(itemInsn(codeItems, i + 6)) !== 'bipush') continue;
+    if (!isInvokeDescriptorBulk(itemInsn(codeItems, i + 7), '(B)V')) continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, i + 8)) !== flagLocal) continue;
+    if (instructionOp(itemInsn(codeItems, i + 9)) !== 'ifne') continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, i + 10)) == null) continue;
+    if (instructionOp(itemInsn(codeItems, i + 11)) !== 'ifne') continue;
+    if (findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i + 11))) !== zeroTail) continue;
+    return true;
+  }
+  return false;
+}
+
+function hasBucketArrayInitCandidate(codeItems) {
+  for (let i = 0; i + 7 < codeItems.length; i += 1) {
+    if (refLoadLocalBulk(itemInsn(codeItems, i)) !== 0) continue;
+    if (!isGetFieldDescriptorBulk(itemInsn(codeItems, i + 1), '[[I')) continue;
+    if (instructionOp(itemInsn(codeItems, i + 6)) !== 'newarray') continue;
+    if (instructionOp(itemInsn(codeItems, i + 7)) === 'aastore') return true;
+  }
+  return false;
+}
+
+function hasIteratorAdvanceTailCandidate(codeItems) {
+  for (let i = 0; i + 5 < codeItems.length; i += 1) {
+    if (instructionOp(itemInsn(codeItems, i)) !== 'aload') continue;
+    if (!isInvokeInstruction(itemInsn(codeItems, i + 2))) continue;
+    if (instructionOp(itemInsn(codeItems, i + 3)) !== 'checkcast') continue;
+    if (refStoreLocalBulk(itemInsn(codeItems, i + 4)) != null && instructionOp(itemInsn(codeItems, i + 5)) === 'goto') return true;
+  }
+  return false;
+}
+
+function hasMessageExitTailCandidate(codeItems) {
+  for (let i = 1; i + 4 < codeItems.length; i += 1) {
+    if (instructionOp(itemInsn(codeItems, i)) !== 'goto') continue;
+    const target = findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i)));
+    if (target > i && isGetStaticDescriptorBulk(itemInsn(codeItems, target), 'J')) return true;
+  }
+  return false;
+}
+
+function hasSharedBooleanLoopTailCandidate(codeItems) {
+  for (let i = 0; i + 5 < codeItems.length; i += 1) {
+    if (instructionOp(itemInsn(codeItems, i)) !== 'dup') continue;
+    if (!isGetFieldDescriptorBulk(itemInsn(codeItems, i + 1), 'Z')) continue;
+    if (instructionOp(itemInsn(codeItems, i + 2)) === 'iconst_m1' && instructionOp(itemInsn(codeItems, i + 3)) === 'ixor') return true;
+  }
+  return false;
+}
+
+function hasVectorFinalLoopCandidate(codeItems) {
+  for (let i = 0; i + 2 < codeItems.length; i += 1) {
+    if (!isGetStaticDescriptorBulk(itemInsn(codeItems, i), 'Ljava/util/Vector;')) continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, i + 1)) == null) continue;
+    if (isInvokeDescriptorBulk(itemInsn(codeItems, i + 2), '(I)Ljava/lang/Object;')) return true;
+  }
+  return false;
+}
+
+
+function hasArrayMembershipOuterContinueCandidate(codeItems) {
+  for (let i = 0; i + 18 < codeItems.length; i += 1) {
+    if (refLoadLocalBulk(itemInsn(codeItems, i)) == null) continue;
+    const indexLocal = intLoadLocalBulk(itemInsn(codeItems, i + 1));
+    if (indexLocal == null) continue;
+    if (instructionOp(itemInsn(codeItems, i + 2)) !== 'aaload') continue;
+    const elementLocal = refStoreLocalBulk(itemInsn(codeItems, i + 3));
+    if (elementLocal == null) continue;
+    if (refLoadLocalBulk(itemInsn(codeItems, i + 4)) !== elementLocal) continue;
+    if (instructionOp(itemInsn(codeItems, i + 5)) !== 'iconst_0') continue;
+    if (instructionOp(itemInsn(codeItems, i + 6)) !== 'iaload') continue;
+    const valueLocal = intLoadLocalBulk(itemInsn(codeItems, i + 7));
+    if (valueLocal == null) continue;
+    if (instructionOp(itemInsn(codeItems, i + 8)) !== 'if_icmpgt') continue;
+    const increment = findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i + 8)));
+    if (increment <= i + 13) continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, i + 9)) !== valueLocal) continue;
+    if (refLoadLocalBulk(itemInsn(codeItems, i + 10)) !== elementLocal) continue;
+    if (instructionOp(itemInsn(codeItems, i + 11)) !== 'iconst_1') continue;
+    if (instructionOp(itemInsn(codeItems, i + 12)) !== 'iaload') continue;
+    if (instructionOp(itemInsn(codeItems, i + 13)) !== 'if_icmpgt') continue;
+    if (findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i + 13))) !== increment) continue;
+    if (instructionOp(itemInsn(codeItems, i + 14)) !== 'goto') continue;
+    const outer = findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i + 14)));
+    if (outer >= 0 && outer < i) return true;
+  }
+  return false;
+}
+
+
+function hasDuplicateArrayLoopHeaderAliasCandidateBulk(codeItems) {
+  for (let header = 0; header + 24 < codeItems.length; header += 1) {
+    const first = readArrayBitsetLoopHeaderShapeBulk(codeItems, header);
+    if (!first || first.hasElementAlias) continue;
+    const sharedHeader = findLabelIndex(codeItems, first.continueTargetLabel);
+    if (sharedHeader <= header || sharedHeader - header > 520) continue;
+    const second = readArrayBitsetLoopHeaderShapeBulk(codeItems, sharedHeader);
+    if (!second || !second.hasElementAlias) continue;
+    if (second.indexLocal !== first.indexLocal) continue;
+    if (trimLabel(second.exitLabel) !== trimLabel(first.exitLabel)) continue;
+    if (trimLabel(second.continueTargetLabel) !== trimLabel(codeItems[sharedHeader] && codeItems[sharedHeader].labelDef)) continue;
+    if (first.arrayLocal === second.arrayLocal) continue;
+    if (!hasBoundedWeightedChoiceAfterHeaderBulk(codeItems, second.bodyTarget, second.indexLocal, 560)) continue;
+    return true;
+  }
+  return false;
+}
+
+function readArrayBitsetLoopHeaderShapeBulk(codeItems, start) {
+  const arrayLocal = refLoadLocalBulk(itemInsn(codeItems, start));
+  if (arrayLocal == null) return null;
+  if (instructionOp(itemInsn(codeItems, start + 1)) !== 'arraylength') return null;
+  const indexLocal = intLoadLocalBulk(itemInsn(codeItems, start + 2));
+  if (indexLocal == null) return null;
+  const exitBranch = itemInsn(codeItems, start + 3);
+  if (!String(instructionOp(exitBranch) || '').startsWith('if')) return null;
+  const exitLabel = trimLabel(instructionArg(exitBranch));
+  if (!exitLabel) return null;
+  if (refLoadLocalBulk(itemInsn(codeItems, start + 4)) !== arrayLocal) return null;
+  if (intLoadLocalBulk(itemInsn(codeItems, start + 5)) !== indexLocal) return null;
+  if (instructionOp(itemInsn(codeItems, start + 6)) !== 'aaload') return null;
+  const elementLocal = refStoreLocalBulk(itemInsn(codeItems, start + 7));
+  if (elementLocal == null) return null;
+  let p = start + 8;
+  let aliasLocal = null;
+  let hasElementAlias = false;
+  if (refLoadLocalBulk(itemInsn(codeItems, p)) === elementLocal) {
+    aliasLocal = refStoreLocalBulk(itemInsn(codeItems, p + 1));
+    if (aliasLocal != null) {
+      hasElementAlias = true;
+      p += 2;
+    }
+  }
+  if (instructionOp(itemInsn(codeItems, p)) !== 'iconst_1') return null;
+  const valueLocal = refLoadLocalBulk(itemInsn(codeItems, p + 1));
+  if (valueLocal !== elementLocal && valueLocal !== aliasLocal) return null;
+  if (instructionOp(itemInsn(codeItems, p + 2)) !== 'checkcast') return null;
+  if (!isGetFieldDescriptorBulk(itemInsn(codeItems, p + 3), 'I')) return null;
+  if (instructionOp(itemInsn(codeItems, p + 4)) !== 'ishl') return null;
+  if (refLoadLocalBulk(itemInsn(codeItems, p + 5)) == null) return null;
+  if (!isGetFieldDescriptorBulk(itemInsn(codeItems, p + 6), 'I')) return null;
+  if (instructionOp(itemInsn(codeItems, p + 7)) !== 'iand') return null;
+  if (instructionOp(itemInsn(codeItems, p + 8)) !== 'iconst_m1') return null;
+  if (instructionOp(itemInsn(codeItems, p + 9)) !== 'ixor') return null;
+  if (instructionOp(itemInsn(codeItems, p + 10)) !== 'iconst_m1') return null;
+  const bodyBranch = itemInsn(codeItems, p + 11);
+  if (instructionOp(bodyBranch) !== 'if_icmpeq') return null;
+  const bodyTarget = findLabelIndex(codeItems, instructionArg(bodyBranch));
+  if (bodyTarget <= start) return null;
+  const inc = readIincBulk(itemInsn(codeItems, p + 12));
+  if (!inc || inc.local !== indexLocal || inc.incr !== 1) return null;
+  const jump = itemInsn(codeItems, p + 13);
+  if (instructionOp(jump) !== 'goto') return null;
+  const continueTargetLabel = trimLabel(instructionArg(jump));
+  if (!continueTargetLabel) return null;
+  return { arrayLocal, indexLocal, hasElementAlias, exitLabel, bodyTarget, continueTargetLabel };
+}
+
+function hasBoundedWeightedChoiceAfterHeaderBulk(codeItems, start, indexLocal, maxDistance) {
+  const end = Math.min(codeItems.length, Math.max(0, start) + maxDistance);
+  let sawSeed = false;
+  let sawChoice = false;
+  let sawFourBound = false;
+  let sawBackedge = false;
+  for (let i = Math.max(0, start); i < end; i += 1) {
+    if (isInvokeDescriptorBulk(itemInsn(codeItems, i), '(J)V')) sawSeed = true;
+    if (isInvokeDescriptorBulk(itemInsn(codeItems, i), '(BILjava/util/Random;)I')) sawChoice = true;
+    if ((instructionOp(itemInsn(codeItems, i)) === 'iconst_4' || isBipushBulk(itemInsn(codeItems, i), 4)) &&
+      intLoadLocalBulk(itemInsn(codeItems, i + 1)) != null &&
+      String(instructionOp(itemInsn(codeItems, i + 2)) || '').startsWith('if')) sawFourBound = true;
+    const inc = readIincBulk(itemInsn(codeItems, i));
+    if (inc && inc.local === indexLocal && inc.incr === 1 && instructionOp(itemInsn(codeItems, i + 1)) === 'goto') sawBackedge = true;
+  }
+  return sawSeed && sawChoice && sawFourBound && sawBackedge;
+}
+
+function hasEventDrainQueueCandidate(codeItems) {
+  let boolStatics = 0;
+  let queueShape = false;
+  for (let i = 0; i < codeItems.length; i += 1) {
+    if (isGetStaticDescriptorBulk(itemInsn(codeItems, i), 'Z')) boolStatics += 1;
+    if (refLoadLocalBulk(itemInsn(codeItems, i)) === 0 &&
+      isGetFieldReferenceBulk(itemInsn(codeItems, i + 1)) &&
+      isGetFieldDescriptorBulk(itemInsn(codeItems, i + 2), '[I') &&
+      refLoadLocalBulk(itemInsn(codeItems, i + 3)) === 0 &&
+      isGetFieldDescriptorBulk(itemInsn(codeItems, i + 4), 'I') &&
+      instructionOp(itemInsn(codeItems, i + 5)) === 'iaload') queueShape = true;
+  }
+  return boolStatics > 0 && queueShape;
+}
+
+
+function hasNestedArrayScanOuterContinueCandidate(codeItems) {
+  for (let i = 1; i + 1 < codeItems.length; i += 1) {
+    const inc = readIincBulk(itemInsn(codeItems, i));
+    if (!inc || inc.incr !== 1) continue;
+    if (instructionOp(itemInsn(codeItems, i + 1)) !== 'goto') continue;
+    const header = findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i + 1)));
+    if (header < 0 || header >= i) continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, header)) !== inc.local) continue;
+    const label = trimLabel(codeItems[i] && codeItems[i].labelDef);
+    if (!label) continue;
+    let conditionalRefs = 0;
+    for (let r = Math.max(header + 1, i - 120); r < i; r += 1) {
+      const insn = itemInsn(codeItems, r);
+      if (!String(instructionOp(insn) || '').startsWith('if')) continue;
+      if (trimLabel(instructionArg(insn)) === label) conditionalRefs += 1;
+    }
+    if (conditionalRefs >= 1) return true;
+  }
+  return false;
+}
+
+function hasSharedTooltipRenderTailCandidate(codeItems) {
+  for (let i = 0; i + 14 < codeItems.length; i += 1) {
+    if (!isBipushBulk(itemInsn(codeItems, i), 10)) continue;
+    if (!isGetStaticDescriptorBulk(itemInsn(codeItems, i + 1), 'I')) continue;
+    if (instructionOp(itemInsn(codeItems, i + 2)) !== 'iadd') continue;
+    const xLocal = intStoreLocalBulk(itemInsn(codeItems, i + 3));
+    if (xLocal == null) continue;
+    if (!isGetStaticDescriptorBulk(itemInsn(codeItems, i + 4), 'I')) continue;
+    if (!isBipushBulk(itemInsn(codeItems, i + 5), -30) && !isBipushBulk(itemInsn(codeItems, i + 5), 30)) continue;
+    if (instructionOp(itemInsn(codeItems, i + 6)) !== 'isub') continue;
+    const yLocal = intStoreLocalBulk(itemInsn(codeItems, i + 7));
+    if (yLocal == null) continue;
+    if (instructionOp(itemInsn(codeItems, i + 8)) !== 'getstatic') continue;
+    if (refLoadLocalBulk(itemInsn(codeItems, i + 9)) == null) continue;
+    if (!isInvokeDescriptorBulk(itemInsn(codeItems, i + 10), '(Ljava/lang/String;)I')) continue;
+    const widthLocal = intStoreLocalBulk(itemInsn(codeItems, i + 11));
+    if (widthLocal == null) continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, i + 12)) == null) continue;
+    const branch = itemInsn(codeItems, i + 13);
+    if (!branch || instructionOp(branch) !== 'ifeq') continue;
+    const target = findLabelIndex(codeItems, instructionArg(branch));
+    if (target <= i + 13 || target - i < 48) continue;
+    if (looksLikeTooltipRightEdgeTailBulk(codeItems, target, xLocal, widthLocal)) return true;
+  }
+  return false;
+}
+
+function looksLikeTooltipRightEdgeTailBulk(codeItems, start, xLocal, widthLocal) {
+  let p = start;
+  if (isGetStaticDescriptorBulk(itemInsn(codeItems, p), 'I')) {
+    p += 1;
+  } else if (instructionOp(itemInsn(codeItems, p)) === 'getstatic' && isGetFieldDescriptorBulk(itemInsn(codeItems, p + 1), 'I')) {
+    p += 2;
+  } else {
+    return false;
+  }
+  if (!isBipushBulk(itemInsn(codeItems, p), 20)) return false;
+  if (instructionOp(itemInsn(codeItems, p + 1)) !== 'isub') return false;
+  if (intLoadLocalBulk(itemInsn(codeItems, p + 2)) !== widthLocal) return false;
+  if (intLoadLocalBulk(itemInsn(codeItems, p + 3)) !== xLocal) return false;
+  if (instructionOp(itemInsn(codeItems, p + 4)) !== 'ineg') return false;
+  if (instructionOp(itemInsn(codeItems, p + 5)) !== 'isub') return false;
+  if (instructionOp(itemInsn(codeItems, p + 6)) !== 'if_icmplt') return false;
+  return instructionOp(itemInsn(codeItems, p + 7)) === 'goto';
+}
+
+function hasBackwardContinueTailCandidate(codeItems) {
+  for (let i = 1; i < codeItems.length; i += 1) {
+    const cur = instructionOp(itemInsn(codeItems, i));
+    if (cur !== 'ifnull' && cur !== 'ifeq') continue;
+    const target = findLabelIndex(codeItems, instructionArg(itemInsn(codeItems, i)));
+    if (target < 0 || target >= i) continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, target)) != null &&
+      intStoreLocalBulk(itemInsn(codeItems, target + 1)) != null &&
+      instructionOp(itemInsn(codeItems, target + 2)) === 'goto') return true;
+  }
+  return false;
+}
+
+function hasUcaLikeMenuContinuationCandidate(codeItems) {
+  for (let i = 3; i + 1 < codeItems.length; i += 1) {
+    if (instructionOp(itemInsn(codeItems, i)) !== 'ifne') continue;
+    if (intLoadLocalBulk(itemInsn(codeItems, i - 1)) === 26 && refLoadLocalBulk(itemInsn(codeItems, i - 2)) === 14) return true;
+  }
+  return false;
+}
+
+function readZeroStoreGotoShapeBulk(codeItems, start) {
+  if (start < 0 || start + 2 >= codeItems.length) return null;
+  if (instructionOp(itemInsn(codeItems, start)) !== 'iconst_0') return null;
+  const local = intStoreLocalBulk(itemInsn(codeItems, start + 1));
+  if (local == null || instructionOp(itemInsn(codeItems, start + 2)) !== 'goto') return null;
+  return { local };
+}
+
+function itemInsn(codeItems, index) {
+  return codeItems[index] && codeItems[index].instruction;
+}
+
+function intLoadLocalBulk(insn) {
+  const cur = instructionOp(insn);
+  if (cur === 'iload_0') return 0;
+  if (cur === 'iload_1') return 1;
+  if (cur === 'iload_2') return 2;
+  if (cur === 'iload_3') return 3;
+  if (cur === 'iload') return Number(instructionArg(insn));
+  return null;
+}
+
+function intStoreLocalBulk(insn) {
+  const cur = instructionOp(insn);
+  if (cur === 'istore_0') return 0;
+  if (cur === 'istore_1') return 1;
+  if (cur === 'istore_2') return 2;
+  if (cur === 'istore_3') return 3;
+  if (cur === 'istore') return Number(instructionArg(insn));
+  return null;
+}
+
+function refLoadLocalBulk(insn) {
+  const cur = instructionOp(insn);
+  if (cur === 'aload_0') return 0;
+  if (cur === 'aload_1') return 1;
+  if (cur === 'aload_2') return 2;
+  if (cur === 'aload_3') return 3;
+  if (cur === 'aload') return Number(instructionArg(insn));
+  return null;
+}
+
+function refStoreLocalBulk(insn) {
+  const cur = instructionOp(insn);
+  if (cur === 'astore_0') return 0;
+  if (cur === 'astore_1') return 1;
+  if (cur === 'astore_2') return 2;
+  if (cur === 'astore_3') return 3;
+  if (cur === 'astore') return Number(instructionArg(insn));
+  return null;
+}
+
+function readIincBulk(insn) {
+  if (instructionOp(insn) !== 'iinc') return null;
+  const arg = instructionArg(insn);
+  if (!Array.isArray(arg) || arg.length < 2) return null;
+  return { local: Number(arg[0]), incr: Number(arg[1]) };
+}
+
+function isBipushBulk(insn, value) {
+  return instructionOp(insn) === 'bipush' && Number(instructionArg(insn)) === value;
+}
+
+function fieldDescriptorBulk(insn) {
+  const arg = instructionArg(insn);
+  return Array.isArray(arg) && arg[0] === 'Field' && Array.isArray(arg[2]) ? arg[2][1] : null;
+}
+
+function isFieldDescriptorBulk(insn, opcode, descriptor) {
+  return instructionOp(insn) === opcode && fieldDescriptorBulk(insn) === descriptor;
+}
+
+function isGetFieldDescriptorBulk(insn, descriptor) {
+  return isFieldDescriptorBulk(insn, 'getfield', descriptor);
+}
+
+function isGetStaticDescriptorBulk(insn, descriptor) {
+  return isFieldDescriptorBulk(insn, 'getstatic', descriptor);
+}
+
+function isPutStaticDescriptorBulk(insn, descriptor) {
+  return isFieldDescriptorBulk(insn, 'putstatic', descriptor);
+}
+
+function isGetFieldReferenceBulk(insn) {
+  const desc = fieldDescriptorBulk(insn);
+  return instructionOp(insn) === 'getfield' && typeof desc === 'string' && (desc.startsWith('L') || desc.startsWith('['));
+}
+
+function isGetFieldObjectArrayBulk(insn) {
+  const desc = fieldDescriptorBulk(insn);
+  return instructionOp(insn) === 'getfield' && typeof desc === 'string' && desc.startsWith('[L');
+}
+
+function methodDescriptorBulk(insn) {
+  const arg = instructionArg(insn);
+  return Array.isArray(arg) && (arg[0] === 'Method' || arg[0] === 'InterfaceMethod') && Array.isArray(arg[2]) ? arg[2][1] : null;
+}
+
+function isInvokeDescriptorBulk(insn, descriptor) {
+  return isInvokeInstruction(insn) && methodDescriptorBulk(insn) === descriptor;
+}
+
+function isInvokeInstruction(insn) {
+  const cur = instructionOp(insn);
+  return typeof cur === 'string' && cur.startsWith('invoke');
+}
+
 function loadProfiles(dir, selected = []) {
   const merged = {
     deadFlagFields: [],
@@ -643,7 +1446,7 @@ function collectClassShadowFieldRenames() {
   const classNames = new Set(files.map((f) => path.basename(f, '.class')));
   const byKey = new Map();
   const parents = new Map();
-  for (const rename of profiles.compileConflictRenames.fields) {
+  for (const rename of [...FIELD_RENAMES, ...profiles.compileConflictRenames.fields]) {
     byKey.set(`${rename.owner}.${rename.name}:${rename.descriptor}`, rename);
   }
   for (const f of files) {
@@ -688,7 +1491,7 @@ function collectMethodOverrideRenames() {
     const { ast } = loadAst(path.join(inDir, f));
     classes.push(...(ast.classes || []));
   }
-  return expandMethodRenames({ classes }, profiles.compileConflictRenames.methods);
+  return expandMethodRenames({ classes }, [...METHOD_RENAMES, ...profiles.compileConflictRenames.methods]);
 }
 
 function collectAutoDeadFlagFields() {
@@ -716,22 +1519,32 @@ function collectImplicitSuperCtorClasses() {
 const fieldRenames = collectClassShadowFieldRenames();
 const methodRenames = collectMethodOverrideRenames();
 const autoDeadFlagFields = collectAutoDeadFlagFields();
-const deadFlagFields = [
-  ...profiles.deadFlagFields,
-  ...autoDeadFlagFields,
-].join(',');
+const builtInDeadFlagFields = configuredList('PIPELINE_BUILTIN_DEAD_FLAG_FIELDS', '');
+function deadFlagFieldsForClass(classFile) {
+  let fields = [
+    ...profiles.deadFlagFields,
+    ...builtInDeadFlagFields,
+    ...autoDeadFlagFields,
+  ];
+  const skipBuiltInTargets = configuredClassSet('PIPELINE_SKIP_BUILTIN_DEAD_FLAG_CLASSES', '');
+  if (skipBuiltInTargets.has(classBasename(classFile))) {
+    const builtIns = new Set(builtInDeadFlagFields);
+    fields = fields.filter((field) => !builtIns.has(field));
+  }
+  return fields.join(',');
+}
 const implicitSuperCtorClasses = collectImplicitSuperCtorClasses();
 
 const passes = [
   { name: 'add-default-constructors-for-implicit-supers', fn: (a) => runAddDefaultConstructorsForImplicitSupers(a, { classesToAdd: implicitSuperCtorClasses }) },
   { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a, { targets: profiles.eiTailClone }) },
-  { name: 'peephole', fn: (a) => runPeepholeClean(a, safePeepholeOptions({
+  { name: 'peephole', fn: (a, f) => runPeepholeClean(a, safePeepholeOptionsForClass(a, f, {
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
     ...(safeBytecode ? {
-      invertConditionalsOverGoto: true,
-      invertConditionalsOverGotoClasses: ['emb', 'vaa'],
-      cloneSharedFallthroughJoins: true,
-      cloneSharedFallthroughJoinClasses: ['hbb'],
+      invertConditionalsOverGoto: false,
+      invertConditionalsOverGotoClasses: [],
+      cloneSharedFallthroughJoins: false,
+      cloneSharedFallthroughJoinClasses: [],
       cloneSmallTerminalSharedForwardBlocks: true,
       cloneSmallTerminalSharedForwardBlockMinMethodInsns: 80,
       cloneSmallTerminalSharedForwardBlockMaxLocalIndex: 200,
@@ -779,8 +1592,8 @@ const passes = [
       nullableSharedJoinGuardRequireNoExceptions: false,
       nullableSharedJoinGuardMaxLocalIndex: 200,
       stripMonitorWaitExceptionRegions: true,
-      cloneConditionalSharedLoopTails: true,
-      cloneConditionalSharedLoopTailClasses: ['roa'],
+      cloneConditionalSharedLoopTails: false,
+      cloneConditionalSharedLoopTailClasses: [],
     } : {}),
   })) },
   ...(keepRuntimeHandlers || runtimeSafe ? [] : [{
@@ -800,8 +1613,9 @@ const passes = [
     fn: (a) => runMultiEntryLoopNormalizer(a),
   },
   { name: 'coalesce', fn: (a) => runCoalesceLoopLoad(a) },
-  { name: 'dead-flag', fn: (a) => runDeadStaticBoolFlag(a, {
-    flags: deadFlagFields,
+  { name: 'dead-flag', fn: (a, f) => runDeadStaticBoolFlag(a, {
+    flags: deadFlagFieldsForClass(f),
+    rangeLimitedFields: builtInDeadFlagFields,
     allowIntFlags: true,
     preserveBranchShape: safeBytecode,
     preserveBranchShapeMinMethodInsns: 400,
@@ -833,7 +1647,7 @@ const passes = [
     ? runCastInvokeReceiversToOwners(a)
     : { changed: false, rewrites: 0 } },
   { name: 'cast-field-receivers-to-owners', fn: (a) => safeBytecode
-    ? runCastFieldReceiversToOwners(a, { classes: ['roa'], maxCasts: 512 })
+    ? runCastFieldReceiversToOwners(a, { maxCasts: 512 })
     : { changed: false, rewrites: 0 } },
   { name: 'materialize-typed-null-args', fn: (a) => runMaterializeTypedNullArgs(a) },
   { name: 'strip-array-null-local-checkcasts', fn: (a) => safeBytecode
@@ -876,13 +1690,13 @@ const passes = [
   { name: 'source-scope-local-init', fn: (a) => runSourceScopeLocalInit(a, { targets: profiles.sourceScopeLocalInit }) },
   { name: 'stack-receiver-tail-clone', fn: (a) => runStackReceiverTailClone(a, { targets: profiles.stackReceiverTailClone }) },
   ...(runtimeSafe ? [] : [{ name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) }]),
-  { name: 'peephole2', fn: (a) => runPeepholeClean(a, safePeepholeOptions({
+  { name: 'peephole2', fn: (a, f) => runPeepholeClean(a, safePeepholeOptionsForClass(a, f, {
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
     ...(safeBytecode ? {
-      invertConditionalsOverGoto: true,
-      invertConditionalsOverGotoClasses: ['emb', 'vaa'],
-      cloneSharedFallthroughJoins: true,
-      cloneSharedFallthroughJoinClasses: ['hbb'],
+      invertConditionalsOverGoto: false,
+      invertConditionalsOverGotoClasses: [],
+      cloneSharedFallthroughJoins: false,
+      cloneSharedFallthroughJoinClasses: [],
       cloneSmallTerminalSharedForwardBlocks: true,
       cloneSmallTerminalSharedForwardBlockMinMethodInsns: 80,
       cloneSmallTerminalSharedForwardBlockMaxLocalIndex: 200,
@@ -934,8 +1748,8 @@ const passes = [
       nullableSharedJoinGuardRequireNoExceptions: false,
       nullableSharedJoinGuardMaxLocalIndex: 200,
       stripMonitorWaitExceptionRegions: true,
-      cloneConditionalSharedLoopTails: true,
-      cloneConditionalSharedLoopTailClasses: ['roa'],
+      cloneConditionalSharedLoopTails: false,
+      cloneConditionalSharedLoopTailClasses: [],
     } : {}),
   })) },
   ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a, {
@@ -947,9 +1761,12 @@ const passes = [
   { name: 'materialize-boolean-invoke-args', fn: (a) => runMaterializeBooleanInvokeArgs(a, { targets: profiles.materializeBooleanInvokeArgs }) },
   { name: 'inline-single-use-boolean-branch2', fn: (a) => runInlineSingleUseBooleanBranch(a) },
   { name: 'retarget-branches', fn: (a) => runRetargetBranches(a, { targets: profiles.retargetBranches }) },
-  { name: 'split-typed-reused-locals-late', fn: (a) => safeBytecode
-    ? runSplitTypedReusedLocals(a, { preserveOriginalLocals: true, minMethodItems: 100, maxIterations: 2 })
-    : { changed: false, rewrites: 0 } },
+  { name: 'split-concrete-object-reaching-local-late', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
+  { name: 'split-typed-reused-locals-late', fn: (a) => runSplitTypedReusedLocals(a, {
+    preserveOriginalLocals: true,
+    minMethodItems: 100,
+    maxIterations: 2,
+  }) },
   { name: 'retarget-undefined-typed-alias-loads', fn: (a) => safeBytecode
     ? runRetargetUndefinedTypedAliasLoads(a)
     : { changed: false, rewrites: 0 } },
@@ -987,8 +1804,8 @@ const passes = [
   { name: 'constructor-branch-threading-final', fn: (a) => safeBytecode
     ? runConstructorBranchThreading(a)
     : { changed: false, rewrites: 0 } },
-  { name: 'peephole-final', fn: (a) => safeBytecode
-    ? runPeepholeClean(a, safePeepholeOptions({
+  { name: 'peephole-final', fn: (a, f) => safeBytecode
+    ? runPeepholeClean(a, safePeepholeOptionsForClass(a, f, {
       removeRethrowHandlers: false,
       removeDeadGotoIslands: true,
       removeUnreachableUntilUsedLabels: true,
@@ -1017,17 +1834,26 @@ const passes = [
 
 let processed = 0;
 let failed = 0;
+let copied = 0;
 for (const f of files) {
+  if (processFileSet.has(f)) continue;
+  const inPath = path.join(inDir, f);
+  const outPath = path.join(outDir, f);
+  fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  fs.copyFileSync(inPath, outPath);
+  copied += 1;
+}
+for (const f of processFiles) {
   const inPath = path.join(inDir, f);
   const outPath = path.join(outDir, f);
   try {
     let { ast, cp } = loadAst(inPath);
     for (const p of passes) {
-      if (skipPassNames.has(p.name)) continue;
+      if (skipPassNames.has(p.name) || shouldSkipPassForAst(p.name, ast, f)) continue;
       if (!shouldRunPass(p, ast, f)) continue;
       try {
         const passStart = Date.now();
-        const result = p.fn(ast);
+        const result = p.fn(ast, f);
         tracePassTime(f, p.name, passStart);
         if (passChanged(result)) {
           const saveStart = Date.now();
@@ -1049,7 +1875,7 @@ for (const f of files) {
         tracePassTime(f, 'post-final:save-before-peephole', saveBeforeFinalStart);
       }
       const peepholePostStart = Date.now();
-      const peepholePostResult = runPeepholeClean(ast, safePeepholeOptions({
+      const peepholePostResult = runPeepholeClean(ast, safePeepholeOptionsForClass(ast, f, {
         removeRethrowHandlers: false,
         removeDeadGotoIslands: true,
         removeUnreachableUntilUsedLabels: true,
@@ -1115,9 +1941,52 @@ for (const f of files) {
         }
       }
       if (!skipPassNames.has('structured-goto-clone')) {
-        const structuredGotoIterations = process.env.STRUCTURED_GOTO_ITERATIVE === '1'
-          ? Number(process.env.STRUCTURED_GOTO_MAX_ITERATIONS || 6)
-          : 1;
+        withEnvDefaults(structuredGotoDefaultEnvForClass(ast, f), () => {
+          const structuredGotoIterations = structuredGotoIterationCount();
+          for (let structuredGotoIteration = 0; structuredGotoIteration < structuredGotoIterations; structuredGotoIteration += 1) {
+            const structuredGotoStart = Date.now();
+            const structuredGotoResult = runStructuredGotoClone(ast);
+            tracePassTime(f, `post-final:structured-goto-clone:${structuredGotoIteration}`, structuredGotoStart);
+            if (!structuredGotoResult || !structuredGotoResult.changed) break;
+            const structuredGotoSaveStart = Date.now();
+            ({ ast, cp } = saveAndReload(ast, cp));
+            tracePassTime(f, `post-final:save-after-structured-goto-clone:${structuredGotoIteration}`, structuredGotoSaveStart);
+          }
+        });
+      }
+      if (process.env.STRUCTURED_GOTO_POST_SPLIT_CONCRETE_OBJECT_LOCALS !== '0') {
+        const splitConcreteStart = Date.now();
+        const splitConcreteResult = runSplitConcreteObjectReachingLocal(ast, { requireDominance: true, preserveOriginalLocals: true });
+        tracePassTime(f, 'post-final:split-concrete-object-reaching-local', splitConcreteStart);
+        if (passChanged(splitConcreteResult)) {
+          const splitConcreteSaveStart = Date.now();
+          ({ ast, cp } = saveAndReload(ast, cp));
+          tracePassTime(f, 'post-final:save-after-split-concrete-object-reaching-local', splitConcreteSaveStart);
+        }
+      }
+    }
+    if (!safeBytecode && shouldRunNoSafeTargetedPeephole(ast)) {
+      const peepholePostStart = Date.now();
+      const peepholePostResult = runPeepholeClean(ast, safePeepholeOptions({
+        removeRethrowHandlers: false,
+        cloneSharedLoopIncrementTails: true,
+        cloneSharedLoopIncrementTailMaxInsns: 4,
+        cloneSharedLoopIncrementTailMaxRefs: 20,
+        invertConditionalsOverGoto: true,
+        invertConditionalsOverGotoClasses: [classBasename(f)],
+        removeDeadGotoIslands: true,
+        removeUnreachableUntilUsedLabels: true,
+      }));
+      tracePassTime(f, 'post-final:nosafe-targeted-peephole', peepholePostStart);
+      if (passChanged(peepholePostResult)) {
+        const saveAfterPeepholeStart = Date.now();
+        ({ ast, cp } = saveAndReload(ast, cp));
+        tracePassTime(f, 'post-final:save-after-nosafe-targeted-peephole', saveAfterPeepholeStart);
+      }
+    }
+    if (!safeBytecode && shouldRunNoSafeStructuredGoto(ast) && !skipPassNames.has('structured-goto-clone')) {
+      withEnvDefaults(noSafeStructuredGotoDefaultEnv, () => {
+        const structuredGotoIterations = structuredGotoIterationCount();
         for (let structuredGotoIteration = 0; structuredGotoIteration < structuredGotoIterations; structuredGotoIteration += 1) {
           const structuredGotoStart = Date.now();
           const structuredGotoResult = runStructuredGotoClone(ast);
@@ -1127,7 +1996,7 @@ for (const f of files) {
           ({ ast, cp } = saveAndReload(ast, cp));
           tracePassTime(f, `post-final:save-after-structured-goto-clone:${structuredGotoIteration}`, structuredGotoSaveStart);
         }
-      }
+      });
     }
     raiseMaxStackFloor(ast);
     writeClassAstToClassFile(ast, outPath, cp);
@@ -1143,4 +2012,4 @@ for (const f of files) {
   }
 }
 fs.rmSync(tmpDir, { recursive: true, force: true });
-console.log(`Done: ${processed}/${files.length} processed, ${failed} failed (passthrough)`);
+console.log(`Done: ${processed}/${processFiles.length} processed, ${failed} failed (passthrough), ${copied} copied`);
