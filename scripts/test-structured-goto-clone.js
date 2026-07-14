@@ -2,7 +2,11 @@
 'use strict';
 
 const assert = require('assert');
-const { runStructuredGotoClone } = require('./pipeline/structuredGotoClone');
+const {
+  runStructuredGotoClone,
+  countIntComplements,
+  restoreDroppedIntComplements,
+} = require('./pipeline/structuredGotoClone');
 
 function item(label, instruction) {
   const out = {};
@@ -44,6 +48,24 @@ function targetAstFrom(className, methodName, descriptor, codeItems, codeOptions
 function padded(codeItems) {
   while (codeItems.length < 20) codeItems.push(item(`LPAD${codeItems.length}`, null));
   return codeItems;
+}
+
+{
+  const original = [
+    item('LLOAD', { op: 'iload', arg: '2' }),
+    item('LNOT', 'iconst_m1'),
+    item(null, 'ixor'),
+    item(null, { op: 'bipush', arg: '-3' }),
+    item(null, { op: 'if_icmpeq', arg: 'LMATCH' }),
+  ];
+  const rewritten = cloneItems(original);
+  rewritten.splice(1, 2);
+  assert.equal(countIntComplements(original), 1);
+  assert.equal(restoreDroppedIntComplements(rewritten, original), true, 'dropped integer complement should roll back the method');
+  assert.deepEqual(rewritten, original);
+  const equivalent = cloneItems(original);
+  equivalent.splice(1, 3, item(null, 'iconst_2'));
+  assert.equal(restoreDroppedIntComplements(equivalent, original), false, 'equivalent folded comparison should be retained');
 }
 
 function withLoopEntry(fn) {
