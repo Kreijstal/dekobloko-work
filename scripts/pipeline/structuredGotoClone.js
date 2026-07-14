@@ -14,6 +14,8 @@ function runStructuredGotoClone(astRoot) {
       const codeAttr = (item.method.attributes || []).find((attr) => attr && attr.type === 'code');
       const codeItems = codeAttr && codeAttr.code && codeAttr.code.codeItems;
       if (!Array.isArray(codeItems) || codeItems.length < 20) continue;
+      const rewritesBeforeMethod = rewrites;
+      const codeItemsBeforeMethod = cloneItems(codeItems);
       if (process.env.STRUCTURED_GOTO_INVERT_CONDITIONAL_GOTO_BRIDGES === '1') {
         rewrites += invertConditionalGotoBridges(codeItems);
       }
@@ -131,7 +133,12 @@ function runStructuredGotoClone(astRoot) {
       if (shouldRunVertigo2GjMenuContinuationClone(cls, item.method)) {
         rewrites += cloneVertigo2GjMenuContinuationTail(codeItems, codeAttr.code);
       }
-      if (item.method.name === '<init>' || item.method.name === '<clinit>') continue;
+      if (item.method.name === '<init>' || item.method.name === '<clinit>') {
+        if (restoreDroppedIntComplements(codeItems, codeItemsBeforeMethod)) {
+          rewrites = rewritesBeforeMethod;
+        }
+        continue;
+      }
       if (process.env.STRUCTURED_GOTO_CLONE_SHORT !== '0') rewrites += cloneShortLoopContinues(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_ZERO !== '0') rewrites += cloneZeroInitLoopPrefixes(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_RETURN !== '0') rewrites += cloneForwardReturnCleanupGotos(codeItems);
@@ -150,9 +157,52 @@ function runStructuredGotoClone(astRoot) {
       if (process.env.STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY === '1') rewrites += cloneForwardLoopBodyEntries(codeItems, item.method);
       if (process.env.STRUCTURED_GOTO_BOUNDED_CONDITIONAL_TAILS === '1') rewrites += cloneBoundedConditionalTerminalTails(codeItems, codeAttr.code);
       if (process.env.STRUCTURED_GOTO_ONESHOT_PREHEADER === '1') rewrites += rewriteOneShotPreheaderUpdateEntries(codeItems, codeAttr.code);
+      if (restoreDroppedIntComplements(codeItems, codeItemsBeforeMethod)) {
+        rewrites = rewritesBeforeMethod;
+      }
     }
   }
   return { changed: rewrites > 0, rewrites };
+}
+
+function countIntComplements(codeItems) {
+  let count = 0;
+  for (let i = 0; i + 1 < codeItems.length; i += 1) {
+    if (op(codeItems[i] && codeItems[i].instruction) === 'iconst_m1' &&
+      op(codeItems[i + 1] && codeItems[i + 1].instruction) === 'ixor') count += 1;
+  }
+  return count;
+}
+
+function restoreDroppedIntComplements(codeItems, original) {
+  const comparisons = intComplementComparisons(original);
+  if (!comparisons.some((comparison) => hasIncorrectUncomplementedComparison(codeItems, comparison))) return false;
+  codeItems.splice(0, codeItems.length, ...cloneItems(original));
+  return true;
+}
+
+function intComplementComparisons(codeItems) {
+  const out = [];
+  for (let i = 0; i + 4 < codeItems.length; i += 1) {
+    const local = intLoadLocal(codeItems[i] && codeItems[i].instruction);
+    const constant = integerConstantValue(codeItems[i + 3] && codeItems[i + 3].instruction);
+    const branchOp = op(codeItems[i + 4] && codeItems[i + 4].instruction);
+    if (local == null || constant == null || !isIntCompareBranch(branchOp)) continue;
+    if (op(codeItems[i + 1] && codeItems[i + 1].instruction) !== 'iconst_m1' ||
+      op(codeItems[i + 2] && codeItems[i + 2].instruction) !== 'ixor') continue;
+    out.push({ local, constant, branchOp });
+  }
+  return out;
+}
+
+function hasIncorrectUncomplementedComparison(codeItems, comparison) {
+  for (let i = 0; i + 2 < codeItems.length; i += 1) {
+    const local = intLoadLocal(codeItems[i] && codeItems[i].instruction);
+    if (local !== comparison.local) continue;
+    if (integerConstantValue(codeItems[i + 1] && codeItems[i + 1].instruction) === comparison.constant &&
+      op(codeItems[i + 2] && codeItems[i + 2].instruction) === comparison.branchOp) return true;
+  }
+  return false;
 }
 
 
@@ -4515,4 +4565,4 @@ function cloneInstruction(insn) {
   return out;
 }
 
-module.exports = { runStructuredGotoClone };
+module.exports = { runStructuredGotoClone, countIntComplements, restoreDroppedIntComplements };
