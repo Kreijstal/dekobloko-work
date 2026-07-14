@@ -75,7 +75,73 @@ node scripts/analyze-goto-pass-impact.js classes-original --sample-classes 12 --
 
 Exit code is non-zero if any regression exists.
 
-## Latest all-games rerun (2026-06-07)
+## Repair phases
+
+`regenerate-goto-baseline.sh` runs three oracle-gated repair phases after the
+initial pipeline+CFR pass, each re-running only the classes that still carry
+markers and accepting a candidate only when the CFR marker oracle confirms it
+improves (`accept_repair_candidates`: direct gotos must not increase, total
+markers must decrease, and the candidate must not trip the bad-output detector
+in `scripts/cfr-marker-count.js` — e.g. `Exception decompiling`):
+
+1. **Source-scope round** (`GOTO_SOURCE_SCOPE_REPAIR_PHASE`): per-class rerun
+   with `BULK_PIPELINE_SCOPE_ANALYSIS_TO_SELECTED=1`.
+2. **Early-CFR-oracle round** (`BULK_PIPELINE_EARLY_CFR_ORACLE_*`): batch rerun
+   over the current output.
+3. **Gates-off round** (`GOTO_GATES_OFF_REPAIR_PHASE`): per-class rerun from raw
+   classes with the broad structured-goto preserve/skip shape gates disabled
+   (`BULK_PIPELINE_DISABLE_BROAD_PRESERVE_GATE=1`,
+   `BULK_PIPELINE_DISABLE_SKIP_BROAD_GATE=1`) and full analysis scope. The gates
+   trade transform quality for speed and can false-match classes the full
+   pipeline decompiles far better; this round recovers those classes while the
+   oracle rejects any candidate that merely trades goto markers for methods CFR
+   cannot decompile at all.
+
+## Bytecode validity: exceptions are tracked, not just markers
+
+The `** GOTO` / `Unable to fully structure code` markers only count methods CFR
+decompiled *badly*. A method CFR cannot decompile *at all* is emitted as an
+`Exception decompiling` stub carrying **zero** GOTO markers, so a goto-only
+budget silently rewards leaving a class undecompilable. Some transforms could
+lower a class's goto count precisely by producing bytecode CFR (and the real JVM
+verifier) reject — an invisible regression under the old metric.
+
+The baseline now measures real decompile breakage as well:
+
+- `regenerate-goto-baseline.sh` writes `.work/games/<game>/deob-safe/logs/cfr-exceptions.txt`
+  (grep of `Exception decompiling` over the CFR output).
+- `check-goto-baseline.sh` reads it as a fourth per-game count and treats an
+  increase as a `REGRESSION`. `EXPECTED-GOTO-ALL-GAMES.tsv` carries a fifth
+  column, `exc`; rows without it (older baselines) are not enforced on exceptions.
+- Check lines and the summary now print `gotos/unable/classes/exc`.
+
+### Transform stack-safety (why exception counts stopped drifting)
+
+Three mechanisms keep goto-eliminating transforms from producing bytecode CFR
+cannot decompile. All are shape-gated (no class/game hardcoding) and only act on
+*new* problems relative to the class as loaded, so pre-existing analysis quirks
+never trigger a false revert:
+
+- **Orphan-load guard** (`bulk-pipeline.js`, `BULK_PIPELINE_ORPHAN_LOAD_GUARD`):
+  reverts a pass whose save introduces an `aload` of a slot that is never stored
+  and is `>=` the parameter count — a use-before-assignment the JVM verifier
+  rejects and CFR reports as `IllegalStateException` (uninitialised local read).
+- **Stack-underflow guard** (same chokepoint): CFG stack-depth abstract
+  interpretation; reverts a save that makes a reachable instruction pop below the
+  available depth (`ConfusedCFRException: … Stack underflow`).
+- **`removeUnreachableCodeCfg`** (java-tools pass, post-final): nops JVM-unreachable
+  instruction islands that earlier passes can strand; CFR simulates them and dies
+  on their stack underflow even though the verifier ignores them.
+
+The root cause of most orphan loads was fixed at source in the
+`castReferenceArrayAssignmentsToDeclaredTypes` alias-collapse (liveness gates so
+it never orphans an off-window reference). `materializeConditionalIntConstantCompareBounds`
+now declines shared multi-way selector joins it does not solely own (rewriting
+one branch of a shared join left the other paths a stack short). Cases the
+transforms still cannot make valid are left untouched by the guards — a preserved
+goto is strictly better than an undecompilable method.
+
+## Latest all-games rerun (2026-07-09, authoritative)
 
 Ran with:
 
@@ -86,77 +152,124 @@ PIPELINE_TIMEOUT_SECONDS=1800 CFR_TIMEOUT_SECONDS=600 ./scripts/regenerate-goto-
 
 Result:
 
-- `FAIL: 53 regression(s), 3 improvement(s), 360 GOTO markers across 43 games, 440 unable markers`
-- 3 games improved versus baseline: `holdtheline`, `steelsentinels`, `tetralink`
+- **23 GOTO markers across 12 games, 23 unable markers, 186 decompile exceptions.**
+- `scripts/EXPECTED-GOTO-ALL-GAMES.tsv` (now 5 columns incl. `exc`) and
+  `scripts/EXPECTED-GOTO-FREE-GAMES.txt` were regenerated from this run's
+  `cfr-markers.txt` / `cfr-exceptions.txt`, so expected == got by construction.
+- 32 of 44 games are GOTO-free.
 
-Top remaining GOTO-heavy games from this run:
+Residual GOTO-bearing games from this run (goto / unable / classes / exc):
 
-1. `voidhunters` — gotos=58 unable=93 classes=16
-2. `shatteredplans` — gotos=28 unable=31 classes=16
-3. `brickabrac` — gotos=24 unable=13 classes=8
-4. `bachelorfridge` — gotos=18 unable=13 classes=6
-5. `torchallenge` — gotos=16 unable=13 classes=8
+| game | gotos | unable | classes | exc |
+|---|---|---|---|---|
+| voidhunters | 5 | 3 | 1 | 9 |
+| orbdefence | 4 | 3 | 1 | 3 |
+| dekobloko | 2 | 3 | 1 | 3 |
+| starcannon | 2 | 1 | 1 | 3 |
+| steelsentinels | 2 | 1 | 1 | 2 |
+| wizardrun | 2 | 1 | 1 | 3 |
+| arcanistsmulti | 1 | 1 | 1 | 8 |
+| minerdisturbance | 1 | 1 | 1 | 3 |
+| terraphoenix | 1 | 3 | 1 | 6 |
+| vertigo2 | 1 | 1 | 1 | 8 |
+| virogrid | 1 | 3 | 1 | 5 |
+| zombiedawn | 1 | 1 | 1 | 3 |
 
-Full regression lines captured from check output are listed below:
+### Verified against the committed baseline: gotos AND exceptions both dropped
 
-```text
-36cardtrick                  expected<=0/1/1 got=1/2/2 REGRESSION
-aceofskies                   expected<=10/2/2 got=2/3/3 REGRESSION
-arcanistsmulti               expected<=8/6/5 got=9/14/7 REGRESSION
-armiesofgielinor             expected<=12/5/5 got=8/12/4 REGRESSION
-bachelorfridge               expected<=0/2/2 got=18/13/6 REGRESSION
-bouncedown                   expected<=0/1/1 got=2/4/4 REGRESSION
-brickabrac                   expected<=24/8/7 got=24/13/8 REGRESSION
-chess                        expected<=4/3/3 got=3/8/4 REGRESSION
-confined                     expected<=2/2/2 got=1/3/3 REGRESSION
-crazycrystals                expected<=0/1/1 got=1/2/2 REGRESSION
-drphlogistonsavestheearth    expected<=3/2/2 got=7/14/6 REGRESSION
-dungeonassault               expected<=3/4/2 got=5/5/4 REGRESSION
-escapevector                 expected<=3/2/2 got=5/6/6 REGRESSION
-fleacircus                   expected<=8/2/2 got=4/4/4 REGRESSION
-geoblox                      expected<=9/4/2 got=13/14/5 REGRESSION
-holdtheline                  expected<=5/5/5 got=4/5/5 improved
-hostilespawn_vengeance       expected<=8/5/5 got=14/11/7 REGRESSION
-kickabout                    expected<=14/7/7 got=15/16/7 REGRESSION
-lexicominos                  expected<=0/1/1 got=1/2/2 REGRESSION
-minerdisturbance             expected<=3/3/3 got=5/10/6 REGRESSION
-monkeypuzzle2                expected<=4/4/4 got=7/9/5 REGRESSION
-orbdefence                   expected<=2/2/2 got=4/4/4 REGRESSION
-pixelate                     expected<=7/4/4 got=11/12/6 REGRESSION
-pool                         expected<=2/2/2 got=7/5/5 REGRESSION
-shatteredplans               expected<=21/13/12 got=28/31/16 REGRESSION
-solknight                    expected<=0/1/1 got=2/4/4 REGRESSION
-starcannon                   expected<=0/1/1 got=6/9/4 REGRESSION
-steelsentinels               expected<=98/16/5 got=7/4/3 improved
-stellarshard                 expected<=0/1/1 got=3/5/3 REGRESSION
-sumoblitz                    expected<=0/1/1 got=4/4/4 REGRESSION
-terraphoenix                 expected<=5/4/4 got=13/17/9 REGRESSION
-tetralink                    expected<=3/3/3 got=1/2/2 improved
-tombracer                    expected<=6/7/7 got=7/12/9 REGRESSION
-torchallenge                 expected<=8/3/3 got=16/13/8 REGRESSION
-torquing                     expected<=0/1/1 got=4/7/5 REGRESSION
-trackcontroller              expected<=0/1/1 got=3/4/4 REGRESSION
-transmogrify                 expected<=4/2/2 got=6/11/5 REGRESSION
-vertigo2                     expected<=0/1/1 got=5/7/5 REGRESSION
-virogrid                     expected<=11/5/5 got=9/8/6 REGRESSION
-voidhunters                  expected<=63/20/18 got=58/93/16 REGRESSION
-wizardrun                    expected<=22/3/3 got=4/6/5 REGRESSION
-zombiedawn                   expected<=2/3/3 got=8/6/6 REGRESSION
-zombiedawnmulti              expected<=0/1/1 got=5/6/4 REGRESSION
-36cardtrick                  expected 0 GOTO markers, got 1 REGRESSION
-bachelorfridge               expected 0 GOTO markers, got 18 REGRESSION
-bouncedown                   expected 0 GOTO markers, got 2 REGRESSION
-crazycrystals                expected 0 GOTO markers, got 1 REGRESSION
-lexicominos                  expected 0 GOTO markers, got 1 REGRESSION
-solknight                    expected 0 GOTO markers, got 2 REGRESSION
-starcannon                   expected 0 GOTO markers, got 6 REGRESSION
-stellarshard                 expected 0 GOTO markers, got 3 REGRESSION
-sumoblitz                    expected 0 GOTO markers, got 4 REGRESSION
-torquing                     expected 0 GOTO markers, got 4 REGRESSION
-trackcontroller              expected 0 GOTO markers, got 3 REGRESSION
-vertigo2                     expected 0 GOTO markers, got 5 REGRESSION
-zombiedawnmulti              expected 0 GOTO markers, got 5 REGRESSION
-```
+The prior committed `EXPECTED-GOTO-ALL-GAMES.tsv` (216 gotos, no `exc` column)
+was stale. To prove this run is not trading gotos for undecompilable methods, the
+true committed HEAD pipeline (all transform + regen scripts at `HEAD`) was rerun
+on the decision-critical games and compared to this run on **both** axes:
+
+| game | HEAD goto/exc | this run goto/exc | Δgoto | Δexc |
+|---|---|---|---|---|
+| steelsentinels | 44 / 9 | 2 / 2 | −42 | −7 |
+| armiesofgielinor | 58 / 11 | 0 / 4 | −58 | −7 |
+| holdtheline | 20 / 12 | 0 / 7 | −20 | −5 |
+| zombiedawn | 19 / 7 | 1 / 3 | −18 | −4 |
+| voidhunters | 5 / 21 | 5 / 9 | 0 | −12 |
+| orbdefence | 5 / 6 | 4 / 3 | −1 | −3 |
+| minerdisturbance | 2 / 2 | 1 / 3 | −1 | +1 |
+| arcanistsmulti | 0 / 12 | 1 / 8 | +1 | −4 |
+| starcannon | 0 / 8 | 2 / 3 | +2 | −5 |
+| terraphoenix | 0 / 7 | 1 / 6 | +1 | −1 |
+| dekobloko | 0 / 8 | 2 / 3 | +2 | −5 |
+| **total** | **153 / 103** | **19 / 54** | **−134** | **−49** |
+
+Across these games the pipeline removes **134 gotos and 49 exceptions** — strictly
+better on both metrics. The four games that gained a goto (`arcanistsmulti`,
+`starcannon`, `terraphoenix`, `dekobloko`) each *shed* exceptions: the transforms
+now emit a readable `** GOTO` in place of an `Exception decompiling` stub, which
+is the correct trade (a goto is readable; a stub is a lost method). A separate
+`HEAD`-vs-working transform-only A/B (same regen script, only the two transform
+files varied) confirmed the transform changes alone reduce exceptions in 4 of 5
+sampled games, so the goto reduction does not come from hiding methods as
+exceptions.
+
+Sampling **goto-free** games (no gotos to eliminate, so the delta is pure
+decompile quality) shows the same direction — working-tree emits fewer
+`Exception decompiling` stubs than `HEAD`: aceofskies 8→7, tombracer 17→8,
+kickabout 14→7, brickabrac 13→6. The 186-exception total is therefore not an
+artifact of this run; the prior committed pipeline produced *more* undecompilable
+methods — they were simply never measured before the `exc` column existed.
+
+## Incremental update (2026-07-10): node-splitting repair phases clear 3 games
+
+Three new shape-based, oracle-gated repair phases drive the total from
+**23→19 GOTO markers** and **12→9 residual games** — starcannon, virogrid, and
+zombiedawn now decompile GOTO-free, each with exceptions unchanged (no
+goto→undecompilable trade). `EXPECTED-GOTO-ALL-GAMES.tsv` /
+`EXPECTED-GOTO-FREE-GAMES.txt` were regenerated for those three; all other games
+are unchanged.
+
+| game | before (g/u/c/e) | after |
+|---|---|---|
+| starcannon | 2/1/1/3 | 0/0/0/3 |
+| virogrid | 1/3/1/5 | 0/0/0/5 |
+| zombiedawn | 1/1/1/3 | 0/0/0/3 |
+
+The common principle is **node splitting (tail duplication)**: redirecting a
+control-flow edge to a byte-identical copy of its target block can never change
+semantics (the clone is entered by the same jump, with the same stack state), so
+it is always sound; it only removes a join/multi-entry so the decompiler can
+find structure. Every phase below is gated by the existing
+`accept_repair_candidates` CFR oracle, so a split is kept only when it strictly
+reduces markers, and a class it does not help is left untouched.
+
+- **`loop-guard-entry-split`** (java-tools `src/passes/loopGuardEntrySplit.js`,
+  CLI `jvm-cli.js loop-guard-entry-split`; phase
+  `GOTO_LOOP_GUARD_ENTRY_SPLIT_REPAIR_PHASE`). A loop entered at its guard test
+  from outside by an unconditional `goto`; tail-duplicates the guard block so the
+  loop becomes single-entry. The provably-sound form of the rotation path
+  `multiEntryLoopNormalizer` leaves disabled (`isSmallGuard = false`). Clears
+  **starcannon**.
+- **`multi-entry-normalize` repair phase** (`GOTO_MULTI_ENTRY_NORMALIZE_REPAIR_PHASE`):
+  re-runs the existing multi-entry loop-header cloner standalone on residual
+  classes. It over-splits most classes (oracle rejects those) but clears
+  **virogrid**.
+- **`goto-oracle-split`** (dekobloko `scripts/goto-oracle-split.js` driving
+  java-tools `src/passes/tailDuplicateJoin.js`; phase
+  `GOTO_ORACLE_SPLIT_REPAIR_PHASE`, `GOTO_ORACLE_SPLIT_MAX_ITERS`). A
+  CFR-oracle-guided greedy search: enumerate every join/loop-guard with a
+  jump predecessor, tail-duplicate one, ask CFR whether markers dropped, keep the
+  best, repeat. Candidates are confined to the methods CFR actually marks (parsed
+  from CFR output) to stay tractable. Clears **zombiedawn**. Runs last (it is the
+  slowest phase — CFR is in its loop).
+
+### Remaining 9 residual games and why they resist
+
+arcanistsmulti, dekobloko, minerdisturbance, orbdefence, steelsentinels,
+terraphoenix, vertigo2, voidhunters, wizardrun. The node-splitting phases only
+clone **straight-line** join bodies (optionally with a single leading guard
+conditional). The residuals in these games are joins whose bodies contain
+**internal control flow** (nested `if`/loops — e.g. minerdisturbance `lbl718` is a
+4-source join whose body is a nested `if`), or irreducible loops needing rotation
+rather than join duplication. Cloning those correctly needs a region cloner with
+dominator analysis (clone a multi-block single-entry region, rename internal
+labels, preserve external exits) — a larger, correctness-sensitive transform not
+yet built. `goto-oracle-split` is the right driver for it once that region-clone
+primitive exists.
 
 ## Notes
 

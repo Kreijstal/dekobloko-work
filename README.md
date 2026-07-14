@@ -10,6 +10,19 @@ are ignored.
 For the full GOTO baseline workflow (generation, validation, expected baselines, and
 latest run status), see: [GOTO baseline runbook](docs/goto-baseline-runbook.md).
 
+The authoritative owned-decompiler workflow is:
+
+```bash
+JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
+  ./scripts/decompile-all-games.sh .work/games
+```
+
+It runs the verifier-safe generic bytecode pipeline, the JavaScript decompiler
+from `java-tools/src/decompiler`, strict fallback diagnostics, ASM verification,
+and whole-game `javac` compilation. Generated sources and reports live under
+`.work/games/<game>/decompile-owned/`; the target zero-failure baseline is
+`scripts/EXPECTED-OWN-DECOMPILER-ALL-GAMES.tsv`.
+
 ## Repository Layout
 
 Source and tooling are grouped by job:
@@ -1346,7 +1359,7 @@ rg -n '\*\* GOTO|Unable to fully structure code|lbl-1000' \
   > .work/games/steelsentinels/deob-safe/logs/cfr-markers.txt
 ```
 
-Steel Sentinels baseline:
+Steel Sentinels baseline (2026-07-08 authoritative rerun):
 
 | Metric | Result |
 |---|---:|
@@ -1354,15 +1367,24 @@ Steel Sentinels baseline:
 | Pipeline passthrough failures | 0 |
 | ASM `BasicVerifier` failures | 0 methods / 0 classes |
 | CFR Java files emitted | 347 |
-| CFR structure marker lines | 0 |
-| CFR classes with markers | 0 |
-| CFR-source javac | 314/347 |
+| CFR `** GOTO` marker lines | 45 |
+| CFR unable/lbl marker lines | 3 |
+| CFR classes with markers | 3 |
 
 Steel Sentinels marker classes:
 
 ```text
-(none)
+ee ji wl
 ```
+
+The residual `ee`/`ji`/`wl` markers are genuine open work: the gates-off
+repair round in `scripts/regenerate-goto-baseline.sh` produces candidates for
+them with far fewer gotos, but those candidates introduce
+`Exception decompiling` methods (CFR falls back to a raw bytecode dump), so
+the marker oracle rejects them. (An earlier revision of this section claimed a
+zero-marker Steel Sentinels baseline with CFR-source javac 314/347; that state
+is not reproducible with the committed pipeline and the javac count has not
+been re-measured.)
 
 The former `ao` marker was a protected-entry bridge: an unprotected
 `aload_0; goto join` duplicated the first load of a protected retry block.
@@ -1390,9 +1412,10 @@ instruction-window equivalence, not by class or member names, and retargets only
 the earlier header's incoming/backedge references to the later canonical header.
 
 The per-class javac failures are still source-shape/type-pollution work, not
-bytecode verifier failures. The most common categories at this baseline are
-ambiguous short-name references, constructor/super placement, residual CFR
-structure (`illegal start of expression`), and object/array type pollution.
+bytecode verifier failures. The most common categories at the last measured
+baseline were ambiguous short-name references, constructor/super placement,
+residual CFR structure (`illegal start of expression`), and object/array type
+pollution.
 
 #### Transform Catalog
 
@@ -1653,18 +1676,19 @@ Dekobloko baseline:
 under ASM `BasicVerifier`, and compile as CFR Java against
 `lib/dekobloko-stubs.jar`.
 
-Steel Sentinels baseline:
-
-| Stage | Markers | Classes with markers |
-|---|---|---|
-| `--profile none --safe-bytecode` | **0** | **0** |
-
-Vertigo2 baseline with the same generic safe pipeline is verifier-clean but not
-yet marker-clean:
+Steel Sentinels baseline (2026-07-08 rerun; see the Steel Sentinels section
+above for the residual-marker analysis):
 
 | Stage | Marker lines | Classes with markers |
 |---|---:|---|
-| `--profile none --safe-bytecode` | 8 | `bh`, `pm`, `up` |
+| `--profile none --safe-bytecode` | 48 | `ee`, `ji`, `wl` |
+
+Vertigo2 baseline with the same generic safe pipeline is verifier-clean but not
+yet marker-clean (2026-07-08 rerun):
+
+| Stage | Marker lines | Classes with markers |
+|---|---:|---|
+| `--profile none --safe-bytecode` | 13 | `am`, `bh`, `qc`, `Vertigo2` |
 
 The former `pq` marker was a conditional forward jump into a loop preheader
 that also had a fallthrough clamp entry. The bytecode rewrite that CFR accepts

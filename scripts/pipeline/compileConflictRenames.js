@@ -3,7 +3,12 @@
 // Exact field renames for javac source conflicts introduced by CFR's choice to
 // emit short class names. These are semantic no-ops at bytecode level: every
 // definition and every exact owner/name/descriptor reference is renamed.
-const FIELD_RENAMES = [];
+const FIELD_RENAMES = [
+  { owner: 'wi', name: 'g', descriptor: 'Z', to: 'wi_g' },
+  { owner: 'wi', name: 'k', descriptor: 'Z', to: 'wi_k' },
+  { owner: 'wi', name: 'm', descriptor: 'I', to: 'wi_m' },
+  { owner: 'ms', name: 'u', descriptor: 'Ljava/lang/String;', to: 'ms_u' },
+];
 
 const METHOD_RENAMES = [];
 
