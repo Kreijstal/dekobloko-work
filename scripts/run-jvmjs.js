@@ -113,6 +113,24 @@ async function main() {
     appletParameters,
   });
 
+  const progressMs = Number(process.env.JVM_DEBUG_PROGRESS_MS);
+  if (Number.isFinite(progressMs) && progressMs > 0) {
+    const timer = setInterval(() => {
+      console.error('--- JVM progress ---');
+      for (const thread of jvm.threads) {
+        const frames = thread.callStack && thread.callStack.items;
+        const frame = frames && frames[frames.length - 1];
+        const method = frame && frame.method;
+        const location = frame
+          ? `${frame.className}.${method && method.name}${(method && method.descriptor) || ''} pc=${frame.pc}`
+          : '<no frame>';
+        console.error(`thread ${thread.id} (${thread.name}) status=${thread.status}: ${location}`);
+      }
+      jvm.dumpSoftCanvases();
+    }, progressMs);
+    timer.unref();
+  }
+
   console.error(`jvmjs: booting ${path.basename(options.jar)} class=${options.mainClass}` +
     (options.maxInsns ? ` (stopping after ${options.maxInsns} instructions)` : ''));
   await jvm.run(options.mainClass, { args: [] });
