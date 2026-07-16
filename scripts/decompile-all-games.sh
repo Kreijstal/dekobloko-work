@@ -81,8 +81,6 @@ for game_dir in "${GAME_DIRS[@]}"; do
   pipeline_fail=0 cli_fail=0 verify_fail=0 javac_fail=0
 
   pipeline_skip_passes="${SKIP_PIPELINE_PASSES:+$SKIP_PIPELINE_PASSES,}intize-boolean-parameters,compile-conflict-renames"
-  BULK_PIPELINE_ASM_GUARD_CP="$VERIFY_TOOLS:$ASM_CP" \
-  BULK_PIPELINE_ASM_GUARD_CLASSES="bg,aj,ej,sb,lk,Main,uf,uc" \
   SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
     "$game_dir/classes" "$work/out" --profile none --safe-bytecode \
     >"$work/logs/pipeline.log" 2>&1 || pipeline_fail=1
@@ -92,15 +90,43 @@ for game_dir in "${GAME_DIRS[@]}"; do
   if ((pipeline_fail == 0)) && ((${#class_files[@]})); then
     if ! java -cp "$VERIFY_TOOLS:$ASM_CP" Verify "${class_files[@]}" \
       >"$work/logs/transform-verify.log" 2>&1; then
+      # Guard retry: re-run the pipeline for just the classes a pass broke,
+      # with per-pass ASM verification enabled for them so only the breaking
+      # pass is reverted. The guard set is derived from the verification
+      # failures — no game-specific class names.
+      retry_in="$work/guard-retry-in" retry_out="$work/guard-retry-out" guard_names=""
+      rm -rf "$retry_in" "$retry_out"
       while IFS= read -r invalid_class; do
         relative_class="${invalid_class#"$work/out/"}"
         original_class="$game_dir/classes/$relative_class"
         if [[ -f "$original_class" ]]; then
-          cp "$original_class" "$invalid_class"
-          printf '[bytecode-guard] restored original %s after final ASM verification failure\n' \
-            "$relative_class" >>"$work/logs/pipeline.log"
+          mkdir -p "$retry_in/$(dirname "$relative_class")" "$retry_out"
+          cp "$original_class" "$retry_in/$relative_class"
+          guard_names+="${guard_names:+,}$(basename "$relative_class" .class)"
         fi
       done < <(awk '/^FAIL_CLASS: / { print $2 }' "$work/logs/transform-verify.log")
+      if [[ -n "$guard_names" ]]; then
+        printf '[bytecode-guard] per-pass retry for: %s\n' "$guard_names" >>"$work/logs/pipeline.log"
+        BULK_PIPELINE_ASM_GUARD_CP="$VERIFY_TOOLS:$ASM_CP" \
+        BULK_PIPELINE_ASM_GUARD_CLASSES="$guard_names" \
+        SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
+          "$retry_in" "$retry_out" --profile none --safe-bytecode \
+          >>"$work/logs/pipeline.log" 2>&1 \
+          && (cd "$retry_out" && find . -type f -name '*.class' -exec cp --parents {} "$work/out/" \;)
+      fi
+      # Anything still failing falls back to its untransformed original.
+      if ! java -cp "$VERIFY_TOOLS:$ASM_CP" Verify "${class_files[@]}" \
+        >"$work/logs/guard-verify.log" 2>&1; then
+        while IFS= read -r invalid_class; do
+          relative_class="${invalid_class#"$work/out/"}"
+          original_class="$game_dir/classes/$relative_class"
+          if [[ -f "$original_class" ]]; then
+            cp "$original_class" "$invalid_class"
+            printf '[bytecode-guard] restored original %s after final ASM verification failure\n' \
+              "$relative_class" >>"$work/logs/pipeline.log"
+          fi
+        done < <(awk '/^FAIL_CLASS: / { print $2 }' "$work/logs/guard-verify.log")
+      fi
       mapfile -d '' class_files < <(find "$work/out" -type f -name '*.class' -print0)
     fi
     java -cp "$VERIFY_TOOLS:$ASM_CP" Verify "${class_files[@]}" \

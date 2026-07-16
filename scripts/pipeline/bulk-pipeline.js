@@ -139,7 +139,7 @@ const keepRuntimeHandlers = process.argv.includes('--keep-runtime-handlers');
 const runtimeSafe = process.argv.includes('--runtime-safe');
 const safeBytecode = process.argv.includes('--safe-bytecode');
 const profileArg = readOptionValue('--profile') || readOptionValue('--profiles') || process.env.PIPELINE_PROFILES || '';
-const selectedProfiles = (profileArg || 'dekobloko')
+const selectedProfiles = (profileArg || 'none')
   .split(',')
   .map((name) => name.trim())
   .filter(Boolean);
@@ -672,12 +672,55 @@ function collectStackUnderflowKeys(astRoot) {
   return keys;
 }
 
+// Control-flow tail merging must not collapse opposite iinc arms onto one
+// another.  The Huffman length decoder in dekobloko td.d, for example, uses
+// `curr++` and `curr--` sibling branches.  Losing either direction leaves
+// verifier-valid bytecode with catastrophically different runtime semantics.
+// Track locals that currently use both directions and reject a pass that leaves
+// the same local with only one of them. A local whose iincs disappear entirely
+// is ignored because a pass may legitimately lower them to load/add/store.
+function collectIincDirectionSets(astRoot) {
+  const directions = new Map();
+  for (const cls of astRoot.classes || []) {
+    for (const item of cls.items || []) {
+      const method = item && item.type === 'method' && item.method;
+      if (!method) continue;
+      const codeAttr = (method.attributes || []).find((attr) => attr && attr.type === 'code');
+      const codeItems = codeAttr && codeAttr.code && codeAttr.code.codeItems;
+      if (!Array.isArray(codeItems)) continue;
+      for (const codeItem of codeItems) {
+        const iinc = readIincBulk(codeItem && codeItem.instruction);
+        if (!iinc || !Number.isFinite(iinc.incr) || iinc.incr === 0) continue;
+        const key = `${cls.className}.${method.name}${method.descriptor}#${iinc.local}`;
+        if (!directions.has(key)) directions.set(key, new Set());
+        directions.get(key).add(Math.sign(iinc.incr));
+      }
+    }
+  }
+  return directions;
+}
+
+function lostIincDirectionKeys(previous, next) {
+  const lost = [];
+  for (const [key, before] of previous || []) {
+    if (!(before.has(-1) && before.has(1))) continue;
+    const after = next.get(key);
+    if (!after || after.size === 0) continue;
+    const missing = [...before].filter((direction) => !after.has(direction));
+    if (missing.length) {
+      lost.push(`${key} (${missing.map((direction) => direction > 0 ? '+' : '-').join('')})`);
+    }
+  }
+  return lost;
+}
+
 function resetOrphanGuard(ast, inputBytes, classFile = '') {
   orphanGuardClassName = classBasename(classFile);
   orphanGuardState = orphanLoadGuardEnabled
     ? {
       baseline: new Set(collectOrphanLoadKeys(ast)),
       stackBaseline: new Set(collectStackUnderflowKeys(ast)),
+      iincDirections: collectIincDirectionSets(ast),
       snapshot: inputBytes,
     }
     : null;
@@ -691,10 +734,14 @@ function saveAndReload(ast, cp) {
       .filter((key) => !orphanGuardState.baseline.has(key));
     const freshUnderflows = collectStackUnderflowKeys(reloaded.ast)
       .filter((key) => !orphanGuardState.stackBaseline.has(key));
-    if (freshOrphans.length > 0 || freshUnderflows.length > 0) {
+    const freshIincDirections = collectIincDirectionSets(reloaded.ast);
+    const lostIincDirections = lostIincDirectionKeys(orphanGuardState.iincDirections, freshIincDirections);
+    if (freshOrphans.length > 0 || freshUnderflows.length > 0 || lostIincDirections.length > 0) {
       const reason = freshOrphans.length > 0
         ? `uninitialized local reads at ${freshOrphans.join(', ')}`
-        : `stack underflow in ${freshUnderflows.join(', ')}`;
+        : freshUnderflows.length > 0
+          ? `stack underflow in ${freshUnderflows.join(', ')}`
+          : `lost iinc direction at ${lostIincDirections.join(', ')}`;
       console.warn(`[bytecode-guard] reverted ${orphanGuardPassLabel || 'pass'}: ${reason}`);
       fs.writeFileSync(tmpFile, orphanGuardState.snapshot);
       return loadAst(tmpFile);
@@ -710,6 +757,7 @@ function saveAndReload(ast, cp) {
         return loadAst(tmpFile);
       }
     }
+    orphanGuardState.iincDirections = freshIincDirections;
     orphanGuardState.snapshot = fs.readFileSync(tmpFile);
     return reloaded;
   }
@@ -1133,6 +1181,13 @@ function safePeepholeOptionsForClass(astRoot, classFile, options) {
 
 function structuredGotoDefaultEnvForClass(astRoot, classFile) {
   const merged = { ...structuredGotoDefaultEnv };
+  if (classBasename(classFile) === 'ca') {
+    // ca.a leaves two comparison operands below the client.A sentinel. The
+    // dominated-boolean rewrite can thread them into the inverse outer-loop
+    // condition, resetting the inner index instead of executing its guarded
+    // stores and increment.
+    merged.STRUCTURED_GOTO_DOMINATED_BOOLEAN_LOCAL_BRANCHES = '0';
+  }
   if (safeBytecode && shouldDisableBroadStructuredGotoClonesForAst(astRoot, classFile)) {
     merged.STRUCTURED_GOTO_ONESHOT_PREHEADER = '0';
     merged.STRUCTURED_GOTO_BOUNDED_CONDITIONAL_TAILS = '0';
@@ -3337,7 +3392,10 @@ const passes = [
       nullableSharedJoinGuardMinMethodInsns: 80,
       nullableSharedJoinGuardRequireNoExceptions: false,
       nullableSharedJoinGuardMaxLocalIndex: 200,
-      stripMonitorWaitExceptionRegions: true,
+      // Preserve monitorenter/monitorexit and their catch-all release handler.
+      // CFR-JS reconstructs these as synchronized blocks; stripping them makes
+      // wait()/notify() compile successfully but fail at runtime.
+      stripMonitorWaitExceptionRegions: false,
       cloneConditionalSharedLoopTails: false,
       cloneConditionalSharedLoopTailClasses: [],
     } : {}),
@@ -3345,7 +3403,12 @@ const passes = [
   ...(keepRuntimeHandlers || runtimeSafe ? [] : [{
     name: 'runtime-exception-handlers',
     canRun: hasLikelyRuntimeExceptionHandlerCandidates,
-    fn: (a) => removeRuntimeExceptionHandlers(a, { keepHandlerCode: true }),
+    // Obfuscator wrappers only rethrow. Keep handlers that branch/return:
+    // those contain real retry and cleanup behavior (for example le.a).
+    fn: (a) => removeRuntimeExceptionHandlers(a, {
+      keepHandlerCode: true,
+      preserveRecoveryHandlers: true,
+    }),
   }]),
   ...(runtimeSafe ? [] : [
     { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a) },
@@ -3483,7 +3546,8 @@ const passes = [
       nullableSharedJoinGuardMinMethodInsns: 80,
       nullableSharedJoinGuardRequireNoExceptions: false,
       nullableSharedJoinGuardMaxLocalIndex: 200,
-      stripMonitorWaitExceptionRegions: true,
+      // Keep synchronization semantics for the owned decompiler.
+      stripMonitorWaitExceptionRegions: false,
       cloneConditionalSharedLoopTails: false,
       cloneConditionalSharedLoopTailClasses: [],
     } : {}),
@@ -3586,7 +3650,11 @@ for (const f of processFiles) {
   try {
     let { ast, cp } = loadAst(inPath);
     resetOrphanGuard(ast, fs.readFileSync(inPath), f);
-    const initialSkipBroadStructuredGoto = safeBytecode && shouldSkipBroadStructuredGoto(ast);
+    // ca.a carries two comparison operands underneath a dead client.A flag.
+    // Broad goto structuring can reuse the inverse outer-loop comparison for
+    // that stack-carrying edge, deleting the guarded stores and index advance.
+    const initialSkipBroadStructuredGoto = safeBytecode &&
+      (classBasename(f) === 'ca' || shouldSkipBroadStructuredGoto(ast));
     const initialDisableSharedForwardGotoContinuations = safeBytecode && hasSharedForwardGotoSensitiveBitsetTail(ast);
     const runDefaultEarlyCfrOracle = safeBytecode && shouldRunEarlyCfrOracleDefaultPasses();
     if (runDefaultEarlyCfrOracle) {

@@ -26,6 +26,7 @@ function parseArgs(argv) {
   const options = {
     jar: path.join(ROOT, 'dekobloko.jar'),
     mainClass: 'client',
+    codeBase: null,
     maxInsns: null,
     trace: false,
     params: {},
@@ -34,6 +35,8 @@ function parseArgs(argv) {
     const arg = argv[i];
     if (arg === '--class') {
       options.mainClass = argv[++i];
+    } else if (arg === '--codebase') {
+      options.codeBase = argv[++i];
     } else if (arg === '--max-insns') {
       options.maxInsns = Number(argv[++i]);
     } else if (arg === '--trace') {
@@ -49,6 +52,8 @@ function parseArgs(argv) {
 }
 
 function extractJar(jarPath) {
+  // A directory of .class files can be used directly as the classpath entry.
+  if (fs.statSync(jarPath).isDirectory()) return jarPath;
   const name = path.basename(jarPath).replace(/\.jar$/i, '');
   const classesDir = path.join(ROOT, '.work', 'jvmjs', name, 'classes');
   const stamp = path.join(classesDir, '.extracted');
@@ -92,6 +97,41 @@ async function main() {
     process.env.JVM_TRACE_EXIT = String(options.maxInsns);
   }
 
+  // These profiled Dekobloko DSP helpers contain obfuscator recovery handlers
+  // ending in athrow. Keep exception-bearing methods conservative by default,
+  // while allowing the measured hot call graph to remain compiled.
+  if (!process.env.JVM_JIT_EXCEPTION_METHODS) {
+    process.env.JVM_JIT_EXCEPTION_METHODS = [
+      's.b(BI)I',
+      'mm.a([B)V',
+      'ck.a([I[IIIIIIII)V',
+      'ck.a([I[IIIIIII)V',
+      'cf.a(IB[III)V',
+      'em.a(Lvg;ZIBI)V',
+      'ih.a()Z',
+      'ih.a([FI)V',
+      'ih.b([II)I',
+      'ih.a([II)I',
+      'ih.a(IIIII)I',
+      'ih.a(II)V',
+      'ih.a(IIII[FI)V',
+      'kh.a(IB)[B',
+      'kh.a(I)V',
+      'lb.a(II)I',
+      'oj.a(IIIIIIIBIIII[IIIII)V',
+      'on.a(Z[IZ[IZZLvg;)V',
+      'rd.c(I)V',
+      'ug.a(Lvg;IIIZIII)V',
+      've.a(IIIIIII[III)V',
+    ].join(',');
+  }
+  if (!process.env.JVM_JIT_MONITOR_METHODS) {
+    process.env.JVM_JIT_MONITOR_METHODS = 'kh.a(IB)[B';
+  }
+  if (!process.env.JVM_JIT_RESUME_METHODS) {
+    process.env.JVM_JIT_RESUME_METHODS = 'kh.a(IB)[B';
+  }
+
   const classesDir = extractJar(options.jar);
   const hookDir = buildHookStub();
   const { JVM } = require(path.join(JAVA_TOOLS_DIR, 'src', 'core', 'jvm'));
@@ -111,6 +151,7 @@ async function main() {
   const jvm = new JVM({
     classpath: [classesDir, hookDir],
     appletParameters,
+    appletCodeBase: options.codeBase || undefined,
   });
 
   const progressMs = Number(process.env.JVM_DEBUG_PROGRESS_MS);
@@ -125,6 +166,13 @@ async function main() {
           ? `${frame.className}.${method && method.name}${(method && method.descriptor) || ''} pc=${frame.pc}`
           : '<no frame>';
         console.error(`thread ${thread.id} (${thread.name}) status=${thread.status}: ${location}`);
+      }
+      if (process.env.JVM_PROFILE_HOT_METHODS === '1' ||
+          process.env.JVM_PROFILE_HOT_METHODS_WITH_JIT === '1') {
+        jvm.dumpHotMethods(Number(process.env.JVM_PROFILE_HOT_METHODS_LIMIT || 10));
+      }
+      if (process.env.JVM_DEBUG_JIT === '1' && jvm.jit) {
+        jvm.jit.dumpStats(Number(process.env.JVM_DEBUG_JIT_LIMIT || 10));
       }
       jvm.dumpSoftCanvases();
     }, progressMs);

@@ -508,26 +508,79 @@ function restoreDroppedIntComplements(codeItems, original) {
   return true;
 }
 
+// Value operand of a bitwise-complement comparison. The obfuscator idiom is
+// `~x <cmp> C`, where `x` is a single self-contained int producer: an int local
+// load (`iload*`) or an int-like static/instance field read (`getstatic`/
+// `getfield` of I/Z/B/S/C). Returns the instruction so callers can match it
+// structurally with sameInstructionOperand, else null.
+function complementValueOperand(insn) {
+  if (!insn) return null;
+  if (intLoadLocal(insn) != null) return insn;
+  const cur = op(insn);
+  if (cur === 'getstatic' || cur === 'getfield') {
+    const arg = insn.arg;
+    const descriptor = Array.isArray(arg) && Array.isArray(arg[2]) ? arg[2][1] : null;
+    if (descriptor === 'I' || descriptor === 'Z' || descriptor === 'B' ||
+      descriptor === 'S' || descriptor === 'C') return insn;
+  }
+  return null;
+}
+
+// Collect every `~value <cmp> C` comparison in the original method, in BOTH
+// operand orderings the compiler can emit:
+//   value-first: value ; iconst_m1 ; ixor ; const ; branch   (`~value <cmp> C`)
+//   const-first: const ; value ; iconst_m1 ; ixor ; branch   (`C <cmp> ~value`)
+// The prior detector only handled the value-first ordering with an int LOCAL
+// operand, so complement idioms on a getstatic field and/or with the constant
+// pushed first (e.g. oj.b: `bipush -4; getstatic hd.n; iconst_m1; ixor;
+// if_icmpeq`) were never registered and silently corrupted by cloning.
 function intComplementComparisons(codeItems) {
   const out = [];
   for (let i = 0; i + 4 < codeItems.length; i += 1) {
-    const local = intLoadLocal(codeItems[i] && codeItems[i].instruction);
-    const constant = integerConstantValue(codeItems[i + 3] && codeItems[i + 3].instruction);
-    const branchOp = op(codeItems[i + 4] && codeItems[i + 4].instruction);
-    if (local == null || constant == null || !isIntCompareBranch(branchOp)) continue;
-    if (op(codeItems[i + 1] && codeItems[i + 1].instruction) !== 'iconst_m1' ||
-      op(codeItems[i + 2] && codeItems[i + 2].instruction) !== 'ixor') continue;
-    out.push({ local, constant, branchOp });
+    const insn0 = codeItems[i] && codeItems[i].instruction;
+    const insn1 = codeItems[i + 1] && codeItems[i + 1].instruction;
+    const insn2 = codeItems[i + 2] && codeItems[i + 2].instruction;
+    const insn3 = codeItems[i + 3] && codeItems[i + 3].instruction;
+    const insn4 = codeItems[i + 4] && codeItems[i + 4].instruction;
+    // value-first: value ; iconst_m1 ; ixor ; const ; branch
+    if (complementValueOperand(insn0) && op(insn1) === 'iconst_m1' && op(insn2) === 'ixor') {
+      const constant = integerConstantValue(insn3);
+      const branchOp = op(insn4);
+      if (constant != null && isIntCompareBranch(branchOp)) {
+        out.push({ value: insn0, constant, branchOp });
+      }
+    }
+    // const-first: const ; value ; iconst_m1 ; ixor ; branch
+    const leadingConstant = integerConstantValue(insn0);
+    if (leadingConstant != null && complementValueOperand(insn1) &&
+      op(insn2) === 'iconst_m1' && op(insn3) === 'ixor') {
+      const branchOp = op(insn4);
+      if (isIntCompareBranch(branchOp)) {
+        out.push({ value: insn1, constant: leadingConstant, branchOp });
+      }
+    }
   }
   return out;
 }
 
+// Detect a comparison that lost its complement: the same value operand compared
+// directly against the same (un-complemented) constant with the same branch op,
+// in either operand ordering, with no intervening `iconst_m1; ixor`. A correct
+// fold would either keep the `iconst_m1; ixor` or complement the constant, so
+// this only fires on genuine corruption.
 function hasIncorrectUncomplementedComparison(codeItems, comparison) {
   for (let i = 0; i + 2 < codeItems.length; i += 1) {
-    const local = intLoadLocal(codeItems[i] && codeItems[i].instruction);
-    if (local !== comparison.local) continue;
-    if (integerConstantValue(codeItems[i + 1] && codeItems[i + 1].instruction) === comparison.constant &&
-      op(codeItems[i + 2] && codeItems[i + 2].instruction) === comparison.branchOp) return true;
+    const insn0 = codeItems[i] && codeItems[i].instruction;
+    const insn1 = codeItems[i + 1] && codeItems[i + 1].instruction;
+    const insn2 = codeItems[i + 2] && codeItems[i + 2].instruction;
+    // value-first: value ; const ; branch
+    if (sameInstructionOperand(insn0, comparison.value) &&
+      integerConstantValue(insn1) === comparison.constant &&
+      op(insn2) === comparison.branchOp) return true;
+    // const-first: const ; value ; branch
+    if (integerConstantValue(insn0) === comparison.constant &&
+      sameInstructionOperand(insn1, comparison.value) &&
+      op(insn2) === comparison.branchOp) return true;
   }
   return false;
 }
@@ -5531,6 +5584,7 @@ function invertConditionalGotoBridges(codeItems) {
 function removeDominatedBooleanLocalBranches(codeItems) {
   let rewrites = 0;
   const maxRewrites = Number(process.env.STRUCTURED_GOTO_DOMINATED_BOOLEAN_LOCAL_MAX_REWRITES || 12);
+  const refCounts = collectLabelReferenceCounts(codeItems);
   for (let i = 2; i < codeItems.length && rewrites < maxRewrites; i += 1) {
     const branch = codeItems[i] && codeItems[i].instruction;
     const branchOp = op(branch);
@@ -5542,7 +5596,7 @@ function removeDominatedBooleanLocalBranches(codeItems) {
     if (hasAnyLabelReference(codeItems, codeItems[loadIndex] && codeItems[loadIndex].labelDef)) continue;
     if (hasAnyLabelReference(codeItems, codeItems[i] && codeItems[i].labelDef)) continue;
 
-    const dominator = findDominatingBooleanBranch(codeItems, local, loadIndex);
+    const dominator = findDominatingBooleanBranch(codeItems, local, loadIndex, refCounts);
     if (!dominator) continue;
     const knownFalse = dominator.op === 'ifne';
     const knownTrue = dominator.op === 'ifeq';
@@ -5555,7 +5609,7 @@ function removeDominatedBooleanLocalBranches(codeItems) {
   return rewrites;
 }
 
-function findDominatingBooleanBranch(codeItems, local, before) {
+function findDominatingBooleanBranch(codeItems, local, before, refCounts) {
   for (let i = before - 1; i >= 1 && i >= before - 220; i -= 1) {
     const branch = codeItems[i] && codeItems[i].instruction;
     const branchOp = op(branch);
@@ -5565,6 +5619,11 @@ function findDominatingBooleanBranch(codeItems, local, before) {
     if (intLoadLocal(codeItems[loadIndex] && codeItems[loadIndex].instruction) !== local) continue;
     const target = findLabelIndex(codeItems, branch.arg);
     if (target <= before) continue;
+    // The fallthrough value is only known when every route to the later test
+    // passes through this branch. A jump into the intervening range bypasses
+    // the supposed dominator (qk.run has exactly this shape), so conservatively
+    // retain the later test whenever that range contains a referenced label.
+    if (hasReferencedLabelsInside(codeItems, i + 1, before + 1, refCounts)) continue;
     if (rangeWritesLocal(codeItems, i + 1, before, local)) continue;
     return { index: i, op: branchOp, target };
   }

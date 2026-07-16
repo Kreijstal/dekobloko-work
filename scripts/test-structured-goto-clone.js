@@ -68,6 +68,33 @@ function padded(codeItems) {
   assert.equal(restoreDroppedIntComplements(equivalent, original), false, 'equivalent folded comparison should be retained');
 }
 
+// Regression for oj.b (issue #12): the complement idiom on a getstatic field
+// with the constant pushed FIRST (`bipush -4; getstatic hd.n:I; iconst_m1;
+// ixor; if_icmpeq`). The prior detector only handled value-first int-local
+// shapes, so this corruption slipped through.
+{
+  const original = [
+    item('LCONST', { op: 'bipush', arg: '-4' }),
+    item(null, { op: 'getstatic', arg: ['Field', 'hd', ['n', 'I']] }),
+    item(null, 'iconst_m1'),
+    item(null, 'ixor'),
+    item(null, { op: 'if_icmpeq', arg: 'LMATCH' }),
+  ];
+  const rewritten = cloneItems(original);
+  rewritten.splice(2, 2); // drop iconst_m1; ixor -> `-4 == n` (wrong)
+  assert.equal(countIntComplements(original), 1);
+  assert.equal(restoreDroppedIntComplements(rewritten, original), true,
+    'const-first getstatic complement drop should roll back the method');
+  assert.deepEqual(rewritten, original);
+  // Correctly folded to `n == 3` (constant complemented) must be retained.
+  const equivalent = cloneItems(original);
+  equivalent.splice(0, 4,
+    item('LCONST', { op: 'getstatic', arg: ['Field', 'hd', ['n', 'I']] }),
+    item(null, 'iconst_3'));
+  assert.equal(restoreDroppedIntComplements(equivalent, original), false,
+    'equivalent folded const-first comparison should be retained');
+}
+
 function withLoopEntry(fn) {
   const old = process.env.STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY;
   process.env.STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY = '1';
@@ -3347,6 +3374,27 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
   assert.equal(result.changed, true, 'same boolean branch in false-dominated region should be removed');
   assert.equal(codeItems.find((entry) => entry.labelDef === 'LLOAD2:').instruction, 'nop');
   assert.equal(codeItems.find((entry) => entry.labelDef === 'LIF2:').instruction, 'nop');
+}
+
+{
+  const codeItems = padded([
+    item('LBYPASS', { op: 'goto', arg: 'LJOIN' }),
+    item('LLOAD1', { op: 'iload', arg: '1' }),
+    item('LIF1', { op: 'ifeq', arg: 'LTRUE' }),
+    item('LWORK', { op: 'iinc', arg: ['2', '1'] }),
+    item('LJOIN', { op: 'iinc', arg: ['2', '1'] }),
+    item('LLOAD2', { op: 'iload', arg: '1' }),
+    item('LIF2', { op: 'ifeq', arg: 'LTRUE' }),
+    item('LFALSE', { op: 'iinc', arg: ['2', '1'] }),
+    item('LTRUE', 'return'),
+  ]);
+  const result = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_DOMINATED_BOOLEAN_LOCAL_BRANCHES: '1',
+  }, () => runStructuredGotoClone(targetAstFrom('renamedOwner', 'renamedMethod', '(ZI)V', codeItems)));
+  assert.equal(result.changed, false,
+    'a boolean test must not be removed when another branch bypasses its supposed dominator');
+  assert.deepEqual(codeItems.find((entry) => entry.labelDef === 'LIF2:').instruction,
+    { op: 'ifeq', arg: 'LTRUE' });
 }
 
 {
