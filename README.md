@@ -10,6 +10,19 @@ are ignored.
 For the full GOTO baseline workflow (generation, validation, expected baselines, and
 latest run status), see: [GOTO baseline runbook](docs/goto-baseline-runbook.md).
 
+The authoritative owned-decompiler workflow is:
+
+```bash
+JAVA_TOOLS_DIR=/home/kreijstal/git/java-tools \
+  ./scripts/decompile-all-games.sh .work/games
+```
+
+It runs the verifier-safe generic bytecode pipeline, the JavaScript decompiler
+from `java-tools/src/decompiler`, strict fallback diagnostics, ASM verification,
+and whole-game `javac` compilation. Generated sources and reports live under
+`.work/games/<game>/decompile-owned/`; the target zero-failure baseline is
+`scripts/EXPECTED-OWN-DECOMPILER-ALL-GAMES.tsv`.
+
 ## Repository Layout
 
 Source and tooling are grouped by job:
@@ -1245,6 +1258,62 @@ does not load game-specific selectors; it only asks generic passes to use extra
 dominance and original-local-preservation gates. Keep the default Dekobloko run
 without this flag unless a guardrail shows a verifier/runtime need.
 
+`--experimental-interclass-dce` enables closed-world constant evaluation across
+classes. It specializes any integer-like method parameter only when CFG stack
+analysis proves that every reachable direct call site supplies the same
+constant; parameters modified by a store or `iinc` are excluded. The analysis
+repeats specialization, constant folding, branch DCE,
+and unreachable-code removal to a fixed point, so deleting a dummy call can
+expose a constant argument in one of its callees. It stops after 16 iterations
+by default; `PIPELINE_INTERCLASS_DCE_MAX_ITERATIONS` changes that safety cap.
+`PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION=1` adds a separate, stronger
+closed-world step. It removes only a contiguous trailing run of already
+specialized integer-like parameters from private or internal static methods,
+then rewrites every proven direct call site. Argument evaluation is preserved
+at bytecode level. Set `PIPELINE_SIGNATURE_MAP_OUT` to retain a deterministic
+JSON dictionary from each old owner/name/descriptor to its new signature and
+the removed parameter indexes, types, and constant values. Inherited call-site
+owners are recorded as aliases and resolved through the complete class
+hierarchy during both proof collection and rewriting. Keep this gate off
+when processing an incomplete class set or while investigating runtime bugs.
+This gate does not currently shrink virtual or interface method families. An
+internal interface can be compacted safely only as one coordinated family: the
+parameter must be removable from the interface declaration and every
+implementation, and every `invokeinterface`/`invokevirtual` call must be
+rewritten with them. One live implementation, or any public/platform/callback
+entry, keeps the original family signature. That family-wide extension is not
+part of the generated snapshot yet.
+Under the same gate, a typed local
+pass folds literal `int`/`long` arithmetic, conversions, and comparisons before
+decompilation, removes neutral integer operations, combines adjacent additive
+constants, normalizes JVM-masked shift distances, and reruns immediate
+constant-branch DCE. Decompiled `x ^ -1` expressions use `~x`, and comparisons
+against constants are complemented and direction-adjusted. Integer overflow
+follows JVM semantics; division or remainder by zero and expressions with
+alternate control-flow entries are left
+untouched. The mode also permits mutually guarded default-false static-field
+cycles. Non-private members of public classes
+remain open, as do instance methods on non-public classes implementing platform
+interfaces or extending platform callback classes. Private methods, static
+methods on non-public classes, and members of ordinary non-public gamepack
+classes are treated as internal. Network-, OS-, and callback-derived arguments
+remain unknown. This mode is off by default because reflection, native
+integration, or an omitted external caller can invalidate a closed-world proof.
+Set
+`PIPELINE_EXPERIMENTAL_INTERCLASS_DCE=1` as an equivalent opt-in for runtime A/B
+experiments.
+
+`PIPELINE_EXPERIMENTAL_UNTHROWABLE_CATCH_DCE=1` enables a second, independently
+gated source cleanup. After control-flow reconstruction, a catch of a specific
+checked type is retained only when the emitted try body contains a call whose
+source declaration throws that type. Otherwise the catch and its synthetic
+`if (false) throw (CheckedException) null;` javac-reachability anchor are both
+removed. Broad `Throwable`, `Exception`, `RuntimeException`, and `Error`
+families remain conservative because ordinary JVM instructions can produce
+them. This policy intentionally favors readable, self-consistent Java source
+over preserving an undeclared checked exception propagated by arbitrary
+bytecode, so it remains opt-in for runtime A/B testing.
+
 ### Other Gamepack Baselines
 
 The same generic pipeline can be run over other AlterOrb/FunOrb jars. These
@@ -1346,7 +1415,7 @@ rg -n '\*\* GOTO|Unable to fully structure code|lbl-1000' \
   > .work/games/steelsentinels/deob-safe/logs/cfr-markers.txt
 ```
 
-Steel Sentinels baseline:
+Steel Sentinels baseline (2026-07-08 authoritative rerun):
 
 | Metric | Result |
 |---|---:|
@@ -1354,15 +1423,24 @@ Steel Sentinels baseline:
 | Pipeline passthrough failures | 0 |
 | ASM `BasicVerifier` failures | 0 methods / 0 classes |
 | CFR Java files emitted | 347 |
-| CFR structure marker lines | 0 |
-| CFR classes with markers | 0 |
-| CFR-source javac | 314/347 |
+| CFR `** GOTO` marker lines | 45 |
+| CFR unable/lbl marker lines | 3 |
+| CFR classes with markers | 3 |
 
 Steel Sentinels marker classes:
 
 ```text
-(none)
+ee ji wl
 ```
+
+The residual `ee`/`ji`/`wl` markers are genuine open work: the gates-off
+repair round in `scripts/regenerate-goto-baseline.sh` produces candidates for
+them with far fewer gotos, but those candidates introduce
+`Exception decompiling` methods (CFR falls back to a raw bytecode dump), so
+the marker oracle rejects them. (An earlier revision of this section claimed a
+zero-marker Steel Sentinels baseline with CFR-source javac 314/347; that state
+is not reproducible with the committed pipeline and the javac count has not
+been re-measured.)
 
 The former `ao` marker was a protected-entry bridge: an unprotected
 `aload_0; goto join` duplicated the first load of a protected retry block.
@@ -1390,9 +1468,10 @@ instruction-window equivalence, not by class or member names, and retargets only
 the earlier header's incoming/backedge references to the later canonical header.
 
 The per-class javac failures are still source-shape/type-pollution work, not
-bytecode verifier failures. The most common categories at this baseline are
-ambiguous short-name references, constructor/super placement, residual CFR
-structure (`illegal start of expression`), and object/array type pollution.
+bytecode verifier failures. The most common categories at the last measured
+baseline were ambiguous short-name references, constructor/super placement,
+residual CFR structure (`illegal start of expression`), and object/array type
+pollution.
 
 #### Transform Catalog
 
@@ -1653,18 +1732,19 @@ Dekobloko baseline:
 under ASM `BasicVerifier`, and compile as CFR Java against
 `lib/dekobloko-stubs.jar`.
 
-Steel Sentinels baseline:
-
-| Stage | Markers | Classes with markers |
-|---|---|---|
-| `--profile none --safe-bytecode` | **0** | **0** |
-
-Vertigo2 baseline with the same generic safe pipeline is verifier-clean but not
-yet marker-clean:
+Steel Sentinels baseline (2026-07-08 rerun; see the Steel Sentinels section
+above for the residual-marker analysis):
 
 | Stage | Marker lines | Classes with markers |
 |---|---:|---|
-| `--profile none --safe-bytecode` | 8 | `bh`, `pm`, `up` |
+| `--profile none --safe-bytecode` | 48 | `ee`, `ji`, `wl` |
+
+Vertigo2 baseline with the same generic safe pipeline is verifier-clean but not
+yet marker-clean (2026-07-08 rerun):
+
+| Stage | Marker lines | Classes with markers |
+|---|---:|---|
+| `--profile none --safe-bytecode` | 13 | `am`, `bh`, `qc`, `Vertigo2` |
 
 The former `pq` marker was a conditional forward jump into a loop preheader
 that also had a fallthrough clamp entry. The bytecode rewrite that CFR accepts

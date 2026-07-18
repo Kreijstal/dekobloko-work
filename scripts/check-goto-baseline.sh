@@ -115,22 +115,27 @@ if [[ -n "$TARGET_GAME" ]]; then
   tmp_free="$tmp_filter_free"
 fi
 
-while IFS=$'\t' read -r game _expected_gotos _expected_unable _expected_classes; do
+while IFS=$'\t' read -r game _expected_gotos _expected_unable _expected_classes _expected_exc; do
   marker_file="$GAMES_DIR/$game/deob-safe/logs/cfr-markers.txt"
   if [[ ! -f "$marker_file" ]]; then
-    printf '%s\tMISSING\tMISSING\tMISSING\n' "$game" >> "$tmp_summary"
+    printf '%s\tMISSING\tMISSING\tMISSING\tMISSING\n' "$game" >> "$tmp_summary"
     continue
   fi
-  gotos="$(grep -c '\\*\\* GOTO' "$marker_file" || true)"
-  unable="$(grep -c 'Unable to fully structure code\\|lbl-1000' "$marker_file" || true)"
+  gotos="$(grep -c '\*\* GOTO' "$marker_file" || true)"
+  unable="$(grep -c 'Unable to fully structure code\|lbl-1000' "$marker_file" || true)"
   classes="$(cut -d: -f1 "$marker_file" | sort -u | wc -l)"
-  printf '%s\t%s\t%s\t%s\n' "$game" "$gotos" "$unable" "$classes" >> "$tmp_summary"
+  exc_file="$GAMES_DIR/$game/deob-safe/logs/cfr-exceptions.txt"
+  exc=0
+  if [[ -f "$exc_file" ]]; then
+    exc="$(grep -c 'Exception decompiling' "$exc_file" || true)"
+  fi
+  printf '%s\t%s\t%s\t%s\t%s\n' "$game" "$gotos" "$unable" "$classes" "$exc" >> "$tmp_summary"
 done < "$tmp_all"
 
 regressions=0
 improvements=0
 
-while IFS=$'\t' read -r game gotos unable classes; do
+while IFS=$'\t' read -r game gotos unable classes exc; do
   [[ -z "${game:-}" ]] && continue
   if [[ "$gotos" == "MISSING" ]]; then
     printf "%-28s missing deob-safe/logs/cfr-markers.txt\n" "$game"
@@ -139,18 +144,21 @@ while IFS=$'\t' read -r game gotos unable classes; do
   fi
   expected_line="$(awk -F'\t' -v game="$game" '$1 == game {print; found=1} END {if (!found) exit 1}' "$tmp_all" || true)"
   if [[ -z "$expected_line" ]]; then
-    printf "%-28s gotos=%s unable=%s classes=%s NEW-GAME\n" "$game" "$gotos" "$unable" "$classes"
+    printf "%-28s gotos=%s unable=%s classes=%s exc=%s NEW-GAME\n" "$game" "$gotos" "$unable" "$classes" "$exc"
     regressions=$((regressions + 1))
     continue
   fi
-  IFS=$'\t' read -r _ expected_gotos expected_unable expected_classes <<< "$expected_line"
-  if (( gotos > expected_gotos || unable > expected_unable || classes > expected_classes )); then
-    printf "%-28s expected<=%s/%s/%s got=%s/%s/%s REGRESSION\n" \
-      "$game" "$expected_gotos" "$expected_unable" "$expected_classes" "$gotos" "$unable" "$classes"
+  IFS=$'\t' read -r _ expected_gotos expected_unable expected_classes expected_exc <<< "$expected_line"
+  # Baselines predating the exception column omit the 5th field; treat a missing
+  # expectation as "no worse than current" so old rows never spuriously fail.
+  [[ -z "${expected_exc:-}" ]] && expected_exc="$exc"
+  if (( gotos > expected_gotos || unable > expected_unable || classes > expected_classes || exc > expected_exc )); then
+    printf "%-28s expected<=%s/%s/%s/%s got=%s/%s/%s/%s REGRESSION\n" \
+      "$game" "$expected_gotos" "$expected_unable" "$expected_classes" "$expected_exc" "$gotos" "$unable" "$classes" "$exc"
     regressions=$((regressions + 1))
-  elif (( gotos < expected_gotos || unable < expected_unable || classes < expected_classes )); then
-    printf "%-28s expected<=%s/%s/%s got=%s/%s/%s improved\n" \
-      "$game" "$expected_gotos" "$expected_unable" "$expected_classes" "$gotos" "$unable" "$classes"
+  elif (( gotos < expected_gotos || unable < expected_unable || classes < expected_classes || exc < expected_exc )); then
+    printf "%-28s expected<=%s/%s/%s/%s got=%s/%s/%s/%s improved\n" \
+      "$game" "$expected_gotos" "$expected_unable" "$expected_classes" "$expected_exc" "$gotos" "$unable" "$classes" "$exc"
     improvements=$((improvements + 1))
   fi
 done < "$tmp_summary"
@@ -163,7 +171,7 @@ while read -r game; do
     regressions=$((regressions + 1))
     continue
   fi
-  gotos="$(grep -c '\\*\\* GOTO' "$marker_file" || true)"
+  gotos="$(grep -c '\*\* GOTO' "$marker_file" || true)"
   if (( gotos != 0 )); then
     printf "%-28s expected 0 GOTO markers, got %s REGRESSION\n" "$game" "$gotos"
     regressions=$((regressions + 1))
@@ -172,11 +180,12 @@ done < "$tmp_free"
 
 total_gotos="$(awk -F'\t' '$2 != "MISSING" {s += $2} END {print s + 0}' "$tmp_summary")"
 total_unable="$(awk -F'\t' '$3 != "MISSING" {s += $3} END {print s + 0}' "$tmp_summary")"
+total_exc="$(awk -F'\t' '$5 != "MISSING" && $5 != "" {s += $5} END {print s + 0}' "$tmp_summary")"
 goto_games="$(awk -F'\t' '$2 != "MISSING" && $2 > 0 {c++} END {print c + 0}' "$tmp_summary")"
 
 if (( regressions > 0 )); then
-  echo "FAIL: $regressions regression(s), $improvements improvement(s), $total_gotos GOTO markers across $goto_games games, $total_unable unable markers"
+  echo "FAIL: $regressions regression(s), $improvements improvement(s), $total_gotos GOTO markers across $goto_games games, $total_unable unable markers, $total_exc decompile exceptions"
   exit 1
 fi
 
-echo "PASS: no GOTO baseline regressions, $improvements improvement(s), $total_gotos GOTO markers across $goto_games games, $total_unable unable markers"
+echo "PASS: no GOTO baseline regressions, $improvements improvement(s), $total_gotos GOTO markers across $goto_games games, $total_unable unable markers, $total_exc decompile exceptions"

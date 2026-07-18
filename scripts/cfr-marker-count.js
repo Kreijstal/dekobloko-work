@@ -39,13 +39,22 @@ try {
 
   const cfrDir = path.join(work, 'cfr');
   fs.mkdirSync(cfrDir, { recursive: true });
+  // CFR can blow up on pathological control flow; a candidate that CFR cannot
+  // decompile inside the budget counts as bad instead of hanging the caller.
+  const timeoutMs = Number(process.env.CFR_MARKER_COUNT_TIMEOUT_SECONDS || 180) * 1000;
   const cfr = spawnSync('java', ['-jar', CFR_JAR, classFile, '--outputdir', cfrDir, '--silent', 'true', '--caseinsensitivefs', 'false'], {
     cwd: DEKOB,
     encoding: 'utf8',
+    timeout: timeoutMs,
+    killSignal: 'SIGKILL',
+    // CFR can spew megabytes of warnings on pathological classes; the default
+    // 1MB maxBuffer turns that into ENOBUFS, which reads as a bad candidate.
+    maxBuffer: 64 * 1024 * 1024,
   });
+  const timedOut = !!(cfr.error && cfr.error.code === 'ETIMEDOUT');
   let markers = 0;
   const javaFiles = fs.readdirSync(cfrDir).filter((name) => name.endsWith('.java'));
-  let bad = cfr.status !== 0 || javaFiles.length === 0 || BAD_RE.test(`${cfr.stdout || ''}\n${cfr.stderr || ''}`);
+  let bad = timedOut || cfr.status !== 0 || javaFiles.length === 0 || BAD_RE.test(`${cfr.stdout || ''}\n${cfr.stderr || ''}`);
   for (const file of javaFiles) {
     const text = fs.readFileSync(path.join(cfrDir, file), 'utf8');
     markers += (text.match(MARKER_RE) || []).length;

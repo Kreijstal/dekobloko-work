@@ -37,7 +37,7 @@ trap "rm -rf $WORK" EXIT
 echo "[*] Bulk pipeline (343 classes)..."
 mkdir -p "$WORK/out"
 pipeline_log="$WORK/pipeline.log"
-if ! JAVA_TOOLS_DIR="$JAVA_TOOLS_DIR" node "$DEKOB_DIR/scripts/pipeline/bulk-pipeline.js" "$CLASSES_DIR" "$WORK/out" >"$pipeline_log" 2>&1; then
+if ! JAVA_TOOLS_DIR="$JAVA_TOOLS_DIR" node "$DEKOB_DIR/scripts/pipeline/bulk-pipeline.js" "$CLASSES_DIR" "$WORK/out" --profile dekobloko >"$pipeline_log" 2>&1; then
     tail -20 "$pipeline_log"
     exit 1
 fi
