@@ -176,6 +176,7 @@ NODE
     mkdir -p "$work/out" "$work/java" "$work/classes" "$work/logs"
   fi
   pipeline_fail=0 cli_fail=0 verify_fail=0 javac_fail=0
+  retried_without_signature_compaction=0
   pipeline_skip_passes="${SKIP_PIPELINE_PASSES:+$SKIP_PIPELINE_PASSES,}intize-boolean-parameters,compile-conflict-renames"
 
   if ((!REUSE_PIPELINE)); then
@@ -219,6 +220,7 @@ NODE
           printf '[bytecode-guard] signature compaction rejected; retrying the complete gamepack without it\n' \
             >>"$work/logs/pipeline.log"
           rm -rf "$retry_out"
+          retried_without_signature_compaction=1
           PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION=0 \
           SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
             "$game_dir/classes" "$retry_out" --profile none --safe-bytecode \
@@ -238,7 +240,8 @@ NODE
             && (cd "$retry_out" && find . -type f -name '*.class' -exec cp --parents {} "$final_out/" \;)
         fi
       fi
-      if [[ "${PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION:-0}" != 1 ]]; then
+      if [[ "${PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION:-0}" != 1 ]] ||
+          ((retried_without_signature_compaction)); then
         # Anything still failing falls back to its untransformed original.
         if ! java -cp "$VERIFY_TOOLS:$ASM_CP" Verify "${class_files[@]}" \
           >"$work/logs/guard-verify.log" 2>&1; then
