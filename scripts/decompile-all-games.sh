@@ -244,6 +244,23 @@ NODE
             && mv "$retry_out" "$final_out" \
             && rm -f "$work/logs/signature-map.json" \
             || pipeline_fail=1
+        elif [[ "${PIPELINE_EXPERIMENTAL_INTERCLASS_DCE:-0}" == 1 ]]; then
+          # Interclass specialization needs to analyze the complete gamepack,
+          # but only the invalid classes need to be emitted again. Keep analysis
+          # global while selecting the verifier failures for guarded processing;
+          # then overlay those repaired classes onto the otherwise-valid output.
+          rm -rf "$retry_out"
+          PIPELINE_EXPERIMENTAL_INTERCLASS_DCE=1 \
+          PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION=0 \
+          BULK_PIPELINE_ASM_GUARD_CP="$VERIFY_TOOLS:$ASM_CP" \
+          BULK_PIPELINE_ASM_GUARD_CLASSES="$guard_names" \
+          BULK_PIPELINE_CLASS_LIST="$retry_class_list" \
+          BULK_PIPELINE_SKIP_UNSELECTED_COPY=1 \
+          SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
+            "$game_dir/classes" "$retry_out" --profile none --safe-bytecode \
+            >>"$work/logs/pipeline.log" 2>&1 \
+            && (cd "$retry_out" && find . -type f -name '*.class' -exec cp --parents {} "$final_out/" \;) \
+            || pipeline_fail=1
         else
           PIPELINE_EXPERIMENTAL_INTERCLASS_DCE=0 \
           PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION=0 \
