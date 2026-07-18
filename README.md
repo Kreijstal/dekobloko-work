@@ -93,6 +93,25 @@ as `scripts/pipeline/bulk-pipeline.js`. If `JAVA_TOOLS_DIR` is unset, those
 scripts fall back to the author's local path, `/home/kreijstal/git/java-tools`,
 which is not expected to exist on other machines.
 
+### JVM.js save states
+
+The headless runner can checkpoint the complete portable Java state after a
+wall-clock delay and resume it in a fresh process. This is useful for skipping
+the cache load and Jagex animation during repeated runtime experiments:
+
+```bash
+node scripts/run-jvmjs.js .work/games/dekobloko/classes \
+  --save-state .work/games/dekobloko/login.state.json \
+  --save-after-ms 58000 --exit-after-save
+
+node scripts/run-jvmjs.js .work/games/dekobloko/classes \
+  --load-state .work/games/dekobloko/login.state.json
+```
+
+The state stores Java heap/thread/frame/static data, not generated JIT machine
+code. Cache files reopen on load; sockets, audio outputs, and canvas handles are
+host resources and are omitted from the portable payload.
+
 ## Fetch the Gamepack
 
 ```bash
