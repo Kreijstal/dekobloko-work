@@ -75,7 +75,9 @@ function parseArgs(argv) {
     } else if (arg === '--replay-extra-delay-ms') {
       options.replayExtraDelayMs = Number(argv[++i]);
     } else if (arg === '--replay-wait-static-null') {
-      options.replayWaitStaticNull = argv[++i].split(',').filter(Boolean);
+      const value = argv[++i];
+      if (value === undefined) throw new Error('--replay-wait-static-null requires a value');
+      options.replayWaitStaticNull = value.split(',').filter(Boolean);
     } else if (arg.includes('=')) {
       const eq = arg.indexOf('=');
       options.params[arg.slice(0, eq)] = arg.slice(eq + 1);
@@ -138,16 +140,20 @@ function readStaticField(jvm, specification) {
   return { found: false, value: undefined };
 }
 
-async function waitForStaticNulls(jvm, specifications) {
+async function waitForStaticNulls(jvm, specifications, timeoutMillis = 300000) {
   if (!specifications.length) return;
   const initial = specifications.map((specification) => {
     const state = readStaticField(jvm, specification);
     return `${specification}=${!state.found ? 'missing' : (state.value === null ? 'null' : 'non-null')}`;
   });
   console.error(`jvmjs: AWT replay waiting for static nulls ${initial.join(',')}`);
+  const deadline = Date.now() + timeoutMillis;
   while (true) {
     const states = specifications.map((specification) => readStaticField(jvm, specification));
     if (states.every((state) => state.found && state.value === null)) break;
+    if (Date.now() >= deadline) {
+      throw new Error(`Timeout waiting for static nulls: ${specifications.join(',')}`);
+    }
     await delay(100);
   }
   console.error(`jvmjs: AWT replay static nulls reached ${specifications.join(',')}`);
@@ -169,11 +175,7 @@ function deepestComponentAt(component, x, y) {
     const height = Number(child._height) || 0;
     if (width > 0 && height > 0 &&
         x >= childX && y >= childY && x < childX + width && y < childY + height) {
-      return deepestComponentAt(child, x - childX, y - childY) || {
-        component: child,
-        x: x - childX,
-        y: y - childY,
-      };
+      return deepestComponentAt(child, x - childX, y - childY);
     }
   }
   return { component, x, y };
@@ -252,7 +254,8 @@ async function invokeReplayListener(jvm, thread, listener, methodName, descripto
   if (!listenerType) return false;
   const method = await jvm.findMethodInHierarchy(listenerType, methodName, descriptor);
   if (!method) return false;
-  const Frame = require(path.join(JAVA_TOOLS_DIR, 'src', 'core', 'frame'));
+  const Frame = invokeReplayListener.Frame ||
+    (invokeReplayListener.Frame = require(path.join(JAVA_TOOLS_DIR, 'src', 'core', 'frame')));
   const frame = new Frame(method);
   frame.className = listenerType;
   frame.locals[0] = listener;
@@ -309,9 +312,10 @@ async function runAwtReplay(jvm, applet, entries, options) {
     const [listenerKind, methodName] = callback;
     let located;
     if (entry.kind === 'key') {
-      const target = allComponents(applet).find((component) =>
+      const keyComponents = allComponents(applet);
+      const target = keyComponents.find((component) =>
         component._focused && component._listeners && component._listeners.key && component._listeners.key.length) ||
-        allComponents(applet).find((component) =>
+        keyComponents.find((component) =>
           component._listeners && component._listeners.key && component._listeners.key.length) || applet;
       located = { component: target, x: 0, y: 0 };
     } else {
@@ -519,7 +523,20 @@ async function main() {
   const runPromise = jvm.run(options.mainClass, { args: [] });
   if (options.replayAwt) {
     const entries = parseAwtReplay(fs.readFileSync(options.replayAwt, 'utf8'));
-    while (!appletInstance) await delay(1);
+    let runFinished = false;
+    let runFailure = null;
+    runPromise.then(
+      () => { runFinished = true; },
+      (error) => { runFailure = error; runFinished = true; },
+    );
+    const appletDeadline = Date.now() + 300000;
+    while (!appletInstance && !runFinished && Date.now() < appletDeadline) await delay(1);
+    if (runFailure) throw runFailure;
+    if (!appletInstance) {
+      throw new Error(runFinished
+        ? 'JVM exited before creating the applet instance'
+        : 'Timeout waiting for the applet instance');
+    }
     runAwtReplay(jvm, appletInstance, entries, options).catch((error) => {
       console.error(`jvmjs: AWT replay failed: ${error.stack || error}`);
       setImmediate(() => process.exit(1));
