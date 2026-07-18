@@ -7,6 +7,9 @@
 //   node scripts/run-jvmjs.js [gamepack.jar] [--class client] [--max-insns N] [--trace]
 //     [--load-state file.json]
 //     [--save-state file.json --save-after-ms N [--exit-after-save]] [key=value ...]
+//     [--replay-awt file.awtlog] [--replay-speed N] [--replay-start-after-ms N]
+//     [--replay-delay-after-ms N --replay-extra-delay-ms N]
+//     [--replay-wait-static-null class.field[,class.field...]]
 //
 // Defaults to the repo-root dekobloko.jar and entry class `client`.
 // key=value pairs override/extend the applet parameters.
@@ -35,6 +38,12 @@ function parseArgs(argv) {
     saveState: null,
     saveAfterMs: null,
     exitAfterSave: false,
+    replayAwt: null,
+    replaySpeed: 1,
+    replayStartAfterMs: 0,
+    replayDelayAfterMs: null,
+    replayExtraDelayMs: 0,
+    replayWaitStaticNull: [],
     params: {},
   };
   for (let i = 0; i < argv.length; i += 1) {
@@ -55,6 +64,20 @@ function parseArgs(argv) {
       options.saveAfterMs = Number(argv[++i]);
     } else if (arg === '--exit-after-save') {
       options.exitAfterSave = true;
+    } else if (arg === '--replay-awt') {
+      options.replayAwt = path.resolve(argv[++i]);
+    } else if (arg === '--replay-speed') {
+      options.replaySpeed = Number(argv[++i]);
+    } else if (arg === '--replay-start-after-ms') {
+      options.replayStartAfterMs = Number(argv[++i]);
+    } else if (arg === '--replay-delay-after-ms') {
+      options.replayDelayAfterMs = Number(argv[++i]);
+    } else if (arg === '--replay-extra-delay-ms') {
+      options.replayExtraDelayMs = Number(argv[++i]);
+    } else if (arg === '--replay-wait-static-null') {
+      const value = argv[++i];
+      if (value === undefined) throw new Error('--replay-wait-static-null requires a value');
+      options.replayWaitStaticNull = value.split(',').filter(Boolean);
     } else if (arg.includes('=')) {
       const eq = arg.indexOf('=');
       options.params[arg.slice(0, eq)] = arg.slice(eq + 1);
@@ -63,6 +86,262 @@ function parseArgs(argv) {
     }
   }
   return options;
+}
+
+function parseAwtReplay(contents) {
+  const entries = [];
+  for (const [index, rawLine] of String(contents).split(/\r?\n/).entries()) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith('#')) continue;
+    const columns = line.split('\t');
+    if (columns.length !== 13) {
+      throw new Error(`Invalid AWT replay line ${index + 1}: expected 13 tab-separated columns`);
+    }
+    const values = columns.slice(2).map(Number);
+    const timeMillis = Number(columns[0]);
+    if (!Number.isFinite(timeMillis) || values.some((value) => !Number.isFinite(value))) {
+      throw new Error(`Invalid numeric value on AWT replay line ${index + 1}`);
+    }
+    entries.push({
+      timeMillis,
+      kind: columns[1],
+      id: values[0],
+      modifiers: values[1],
+      x: values[2],
+      y: values[3],
+      button: values[4],
+      clickCount: values[5],
+      keyCode: values[6],
+      keyChar: values[7],
+      keyLocation: values[8],
+      scrollAmount: values[9],
+      wheelRotation: values[10],
+    });
+  }
+  return entries;
+}
+
+function delay(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, Math.max(0, milliseconds)));
+}
+
+function readStaticField(jvm, specification) {
+  const separator = specification.lastIndexOf('.');
+  if (separator <= 0 || separator === specification.length - 1) {
+    throw new Error(`Invalid static field specification: ${specification}`);
+  }
+  const className = specification.slice(0, separator).replace(/\./g, '/');
+  const fieldName = specification.slice(separator + 1);
+  const classData = jvm.classes && jvm.classes[className];
+  if (!classData || !classData.staticFields) return { found: false, value: undefined };
+  for (const [key, value] of classData.staticFields) {
+    if (key.startsWith(`${fieldName}:`)) return { found: true, value };
+  }
+  return { found: false, value: undefined };
+}
+
+async function waitForStaticNulls(jvm, specifications, timeoutMillis = 300000) {
+  if (!specifications.length) return;
+  const initial = specifications.map((specification) => {
+    const state = readStaticField(jvm, specification);
+    return `${specification}=${!state.found ? 'missing' : (state.value === null ? 'null' : 'non-null')}`;
+  });
+  console.error(`jvmjs: AWT replay waiting for static nulls ${initial.join(',')}`);
+  const deadline = Date.now() + timeoutMillis;
+  while (true) {
+    const states = specifications.map((specification) => readStaticField(jvm, specification));
+    if (states.every((state) => state.found && state.value === null)) break;
+    if (Date.now() >= deadline) {
+      throw new Error(`Timeout waiting for static nulls: ${specifications.join(',')}`);
+    }
+    await delay(100);
+  }
+  console.error(`jvmjs: AWT replay static nulls reached ${specifications.join(',')}`);
+}
+
+function componentChildren(component) {
+  return component && Array.isArray(component._components) ? component._components : [];
+}
+
+function deepestComponentAt(component, x, y) {
+  if (!component) return null;
+  const children = componentChildren(component);
+  for (let i = children.length - 1; i >= 0; i -= 1) {
+    const child = children[i];
+    if (!child || child._visible === false) continue;
+    const childX = Number(child._x) || 0;
+    const childY = Number(child._y) || 0;
+    const width = Number(child._width) || 0;
+    const height = Number(child._height) || 0;
+    if (width > 0 && height > 0 &&
+        x >= childX && y >= childY && x < childX + width && y < childY + height) {
+      return deepestComponentAt(child, x - childX, y - childY);
+    }
+  }
+  return { component, x, y };
+}
+
+function allComponents(root) {
+  const result = [];
+  const visit = (component) => {
+    if (!component || result.includes(component)) return;
+    result.push(component);
+    for (const child of componentChildren(component)) visit(child);
+  };
+  visit(root);
+  return result;
+}
+
+function callbackForEntry(entry) {
+  const mouseCallbacks = new Map([
+    [500, ['mouse', 'mouseClicked']],
+    [501, ['mouse', 'mousePressed']],
+    [502, ['mouse', 'mouseReleased']],
+    [503, ['mouseMotion', 'mouseMoved']],
+    [504, ['mouse', 'mouseEntered']],
+    [505, ['mouse', 'mouseExited']],
+    [506, ['mouseMotion', 'mouseDragged']],
+  ]);
+  const keyCallbacks = new Map([
+    [400, ['key', 'keyTyped']],
+    [401, ['key', 'keyPressed']],
+    [402, ['key', 'keyReleased']],
+  ]);
+  if (entry.kind === 'key') return keyCallbacks.get(entry.id) || null;
+  if (entry.kind === 'wheel') return ['mouseWheel', 'mouseWheelMoved'];
+  return mouseCallbacks.get(entry.id) || null;
+}
+
+function replayEvent(entry, source, localX, localY) {
+  const isKey = entry.kind === 'key';
+  const isWheel = entry.kind === 'wheel';
+  return {
+    type: isKey
+      ? 'java/awt/event/KeyEvent'
+      : (isWheel ? 'java/awt/event/MouseWheelEvent' : 'java/awt/event/MouseEvent'),
+    source,
+    component: source,
+    id: entry.id,
+    when: Date.now(),
+    modifiers: entry.modifiers,
+    x: localX,
+    y: localY,
+    button: entry.button,
+    clickCount: entry.clickCount,
+    keyCode: entry.keyCode,
+    keyChar: entry.keyChar,
+    keyLocation: entry.keyLocation,
+    scrollAmount: entry.scrollAmount,
+    wheelRotation: entry.wheelRotation,
+    popupTrigger: false,
+    consumed: false,
+    fields: {},
+  };
+}
+
+async function waitForReplayThread(thread, timeoutMillis = 30000) {
+  const deadline = Date.now() + timeoutMillis;
+  while (thread.status !== 'terminated') {
+    if (Date.now() >= deadline) {
+      throw new Error(`AWT replay callback timed out on thread ${thread.id}`);
+    }
+    await delay(1);
+  }
+}
+
+async function invokeReplayListener(jvm, thread, listener, methodName, descriptor, event) {
+  const listenerType = listener && (listener._className || listener.type);
+  if (!listenerType) return false;
+  const method = await jvm.findMethodInHierarchy(listenerType, methodName, descriptor);
+  if (!method) return false;
+  const Frame = invokeReplayListener.Frame ||
+    (invokeReplayListener.Frame = require(path.join(JAVA_TOOLS_DIR, 'src', 'core', 'frame')));
+  const frame = new Frame(method);
+  frame.className = listenerType;
+  frame.locals[0] = listener;
+  frame.locals[1] = event;
+  thread.callStack.push(frame);
+  thread.status = 'runnable';
+  await waitForReplayThread(thread);
+  return true;
+}
+
+async function runAwtReplay(jvm, applet, entries, options) {
+  if (!entries.length) throw new Error('AWT replay contains no events');
+  const Stack = require(path.join(JAVA_TOOLS_DIR, 'src', 'core', 'stack'));
+  const replayThread = {
+    id: 1000000,
+    name: 'awt-replay',
+    callStack: new Stack(),
+    status: 'terminated',
+    pendingException: null,
+  };
+  jvm.threads.push(replayThread);
+
+  const speed = options.replaySpeed;
+  await delay(options.replayStartAfterMs);
+  const components = allComponents(applet);
+  const listenerSummary = components.map((component) => {
+    const listeners = component._listeners || {};
+    return Object.entries(listeners)
+      .filter(([, values]) => Array.isArray(values) && values.length)
+      .map(([kind, values]) => `${kind}=${values.length}`)
+      .join(',');
+  }).filter(Boolean);
+  console.error(`jvmjs: AWT replay start events=${entries.length} speed=${speed}` +
+    ` startAfterMs=${options.replayStartAfterMs} listeners=${listenerSummary.join(';') || 'none'}`);
+
+  let previousMillis = 0;
+  let extraDelayApplied = false;
+  let dispatched = 0;
+  let callbacks = 0;
+  for (const entry of entries) {
+    if (!extraDelayApplied && options.replayDelayAfterMs !== null &&
+        previousMillis <= options.replayDelayAfterMs &&
+        entry.timeMillis > options.replayDelayAfterMs) {
+      console.error(`jvmjs: AWT replay extra delay=${options.replayExtraDelayMs}ms` +
+        ` after recorded t=${options.replayDelayAfterMs}ms`);
+      await delay(options.replayExtraDelayMs);
+      await waitForStaticNulls(jvm, options.replayWaitStaticNull);
+      extraDelayApplied = true;
+    }
+    await delay((entry.timeMillis - previousMillis) / speed);
+    previousMillis = entry.timeMillis;
+    const callback = callbackForEntry(entry);
+    if (!callback) continue;
+    const [listenerKind, methodName] = callback;
+    let located;
+    if (entry.kind === 'key') {
+      const keyComponents = allComponents(applet);
+      const target = keyComponents.find((component) =>
+        component._focused && component._listeners && component._listeners.key && component._listeners.key.length) ||
+        keyComponents.find((component) =>
+          component._listeners && component._listeners.key && component._listeners.key.length) || applet;
+      located = { component: target, x: 0, y: 0 };
+    } else {
+      located = deepestComponentAt(applet, entry.x, entry.y) || { component: applet, x: entry.x, y: entry.y };
+    }
+    const target = located.component;
+    const event = replayEvent(entry, target, located.x, located.y);
+    const listeners = target && target._listeners && target._listeners[listenerKind] || [];
+    for (const listener of listeners) {
+      const descriptor = entry.kind === 'key'
+        ? '(Ljava/awt/event/KeyEvent;)V'
+        : (entry.kind === 'wheel'
+          ? '(Ljava/awt/event/MouseWheelEvent;)V'
+          : '(Ljava/awt/event/MouseEvent;)V');
+      if (await invokeReplayListener(jvm, replayThread, listener, methodName, descriptor, event)) {
+        callbacks += 1;
+      }
+    }
+    dispatched += 1;
+    if (entry.id === 500 || entry.id === 501 || entry.id === 502 || dispatched % 100 === 0) {
+      console.error(`jvmjs: AWT replay event=${dispatched}/${entries.length}` +
+        ` t=${entry.timeMillis}ms kind=${entry.kind} id=${entry.id}` +
+        ` x=${entry.x} y=${entry.y} callbacks=${callbacks}`);
+    }
+  }
+  console.error(`jvmjs: AWT replay done dispatched=${dispatched} callbacks=${callbacks}`);
 }
 
 function extractJar(jarPath) {
@@ -101,6 +380,28 @@ async function main() {
   }
   if (options.exitAfterSave && !options.saveState) {
     throw new Error('--exit-after-save requires --save-state file.json');
+  }
+  if (!Number.isFinite(options.replaySpeed) || options.replaySpeed <= 0) {
+    throw new Error('--replay-speed must be a positive number');
+  }
+  if (!Number.isFinite(options.replayStartAfterMs) || options.replayStartAfterMs < 0) {
+    throw new Error('--replay-start-after-ms must be a non-negative number');
+  }
+  if (options.replayDelayAfterMs !== null &&
+      (!Number.isFinite(options.replayDelayAfterMs) || options.replayDelayAfterMs < 0)) {
+    throw new Error('--replay-delay-after-ms must be a non-negative number');
+  }
+  if (!Number.isFinite(options.replayExtraDelayMs) || options.replayExtraDelayMs < 0) {
+    throw new Error('--replay-extra-delay-ms must be a non-negative number');
+  }
+  if (options.replayExtraDelayMs > 0 && options.replayDelayAfterMs === null) {
+    throw new Error('--replay-extra-delay-ms requires --replay-delay-after-ms N');
+  }
+  if (options.replayWaitStaticNull.length && options.replayDelayAfterMs === null) {
+    throw new Error('--replay-wait-static-null requires --replay-delay-after-ms N');
+  }
+  if (options.replayAwt && !fs.existsSync(options.replayAwt)) {
+    throw new Error(`AWT replay not found: ${options.replayAwt}`);
   }
   if (!fs.existsSync(JAVA_TOOLS_DIR)) {
     throw new Error(`java-tools not found at ${JAVA_TOOLS_DIR} (set JAVA_TOOLS_DIR)`);
@@ -148,6 +449,15 @@ async function main() {
     appletParameters,
     appletCodeBase: options.codeBase || undefined,
   });
+
+  let appletInstance = null;
+  if (options.replayAwt) {
+    const createAppletInstance = jvm.createAppletInstance.bind(jvm);
+    jvm.createAppletInstance = async (...args) => {
+      appletInstance = await createAppletInstance(...args);
+      return appletInstance;
+    };
+  }
 
   if (options.loadState) {
     let state;
@@ -210,10 +520,36 @@ async function main() {
 
   console.error(`jvmjs: booting ${path.basename(options.jar)} class=${options.mainClass}` +
     (options.maxInsns ? ` (stopping after ${options.maxInsns} instructions)` : ''));
-  await jvm.run(options.mainClass, { args: [] });
+  const runPromise = jvm.run(options.mainClass, { args: [] });
+  if (options.replayAwt) {
+    const entries = parseAwtReplay(fs.readFileSync(options.replayAwt, 'utf8'));
+    let runFinished = false;
+    let runFailure = null;
+    runPromise.then(
+      () => { runFinished = true; },
+      (error) => { runFailure = error; runFinished = true; },
+    );
+    const appletDeadline = Date.now() + 300000;
+    while (!appletInstance && !runFinished && Date.now() < appletDeadline) await delay(1);
+    if (runFailure) throw runFailure;
+    if (!appletInstance) {
+      throw new Error(runFinished
+        ? 'JVM exited before creating the applet instance'
+        : 'Timeout waiting for the applet instance');
+    }
+    runAwtReplay(jvm, appletInstance, entries, options).catch((error) => {
+      console.error(`jvmjs: AWT replay failed: ${error.stack || error}`);
+      setImmediate(() => process.exit(1));
+    });
+  }
+  await runPromise;
 }
 
-main().catch((error) => {
-  console.error(error && error.stack ? error.stack : String(error));
-  process.exit(1);
-});
+module.exports = { callbackForEntry, parseAwtReplay, readStaticField, replayEvent };
+
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error && error.stack ? error.stack : String(error));
+    process.exit(1);
+  });
+}

@@ -95,6 +95,38 @@ function padded(codeItems) {
     'equivalent folded const-first comparison should be retained');
 }
 
+// Regression for issue #21: in.<init> compares -1 against the complement of a
+// computed int[] element. Losing only `iconst_m1; ixor` changes the test from
+// `cell == 0` to `cell == -1`, so field_q is never initialized.
+{
+  const original = [
+    item('LCONST', 'iconst_m1'),
+    item(null, 'aload_0'),
+    item(null, { op: 'getfield', arg: ['Field', 'in', ['q', '[I']] }),
+    item(null, { op: 'iload', arg: '10' }),
+    item(null, { op: 'iload', arg: '4' }),
+    item(null, 'imul'),
+    item(null, { op: 'iload', arg: '11' }),
+    item(null, 'iadd'),
+    item(null, 'iaload'),
+    item(null, 'iconst_m1'),
+    item(null, 'ixor'),
+    item(null, { op: 'if_icmpeq', arg: 'LPROCESS' }),
+  ];
+  const rewritten = cloneItems(original);
+  rewritten.splice(9, 2);
+  assert.equal(restoreDroppedIntComplements(rewritten, original), true,
+    'computed int-array complement drop should roll back the method');
+  assert.deepEqual(rewritten, original);
+
+  // `-1 == ~cell` is exactly `0 == cell`; retaining that fold is safe.
+  const equivalent = cloneItems(original);
+  equivalent.splice(0, 1, item('LCONST', 'iconst_0'));
+  equivalent.splice(9, 2);
+  assert.equal(restoreDroppedIntComplements(equivalent, original), false,
+    'equivalent computed int-array comparison should be retained');
+}
+
 function withLoopEntry(fn) {
   const old = process.env.STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY;
   process.env.STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY = '1';
