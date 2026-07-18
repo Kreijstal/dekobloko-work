@@ -1,5 +1,6 @@
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
@@ -143,13 +144,18 @@ public final class AbiTools {
         return map;
     }
 
-    /** Per-class ABI equality: restored field {name,desc} set == original's. */
+    /** Per-class ABI equality: restored field {name,desc,staticness} set == original's. */
     private static int verifyAbi(Path restoredDir, Path origDir) throws IOException {
-        int mismatches = 0, checked = 0;
+        int mismatches = 0, checked = 0, missing = 0;
         for (Path p : listClasses(restoredDir)) {
             ClassNode r = read(p);
             Path o = origDir.resolve(restoredDir.relativize(p));
-            if (!Files.exists(o)) continue;
+            if (!Files.exists(o)) {
+                mismatches++;
+                missing++;
+                System.err.printf("ABI MISMATCH %s: original class is missing: %s%n", r.name, o);
+                continue;
+            }
             ClassNode orig = read(o);
             Set<String> rf = fieldSig(r), of = fieldSig(orig);
             checked++;
@@ -161,13 +167,21 @@ public final class AbiTools {
                         r.name, onlyRestored, onlyOrig);
             }
         }
-        System.out.printf("verify-against: %d classes checked, %d ABI mismatches%n", checked, mismatches);
+        if (checked == 0) {
+            System.err.println("ABI MISMATCH: no restored class had a corresponding original class");
+            if (mismatches == 0) mismatches++;
+        }
+        System.out.printf("verify-against: %d classes checked, %d originals missing, %d ABI mismatches%n",
+                checked, missing, mismatches);
         return mismatches == 0 ? 0 : 1;
     }
 
     private static Set<String> fieldSig(ClassNode cn) {
         Set<String> s = new HashSet<>();
-        if (cn.fields != null) for (FieldNode f : cn.fields) s.add(f.name + " " + f.desc);
+        if (cn.fields != null) for (FieldNode f : cn.fields) {
+            String kind = (f.access & Opcodes.ACC_STATIC) != 0 ? "static" : "instance";
+            s.add(kind + " " + f.name + " " + f.desc);
+        }
         return s;
     }
 
@@ -195,10 +209,11 @@ public final class AbiTools {
                     // Only judge owners we actually have in the set; refs into the
                     // JRE/stubs are assumed resolvable (not our concern here).
                     if (!byName.containsKey(fin.owner)) continue;
-                    if (!resolves(byName, fin.owner, fin.name, fin.desc, new HashSet<>())) {
+                    boolean expectsStatic = fin.getOpcode() == Opcodes.GETSTATIC || fin.getOpcode() == Opcodes.PUTSTATIC;
+                    if (!resolves(byName, fin.owner, fin.name, fin.desc, expectsStatic, new HashSet<>())) {
                         unresolved++;
-                        System.err.printf("UNRESOLVED %s.%s: getfield/putfield %s.%s %s%n",
-                                cn.name, m.name, fin.owner, fin.name, fin.desc);
+                        System.err.printf("UNRESOLVED %s.%s: %s %s.%s %s%n",
+                                cn.name, m.name, opcodeName(fin.getOpcode()), fin.owner, fin.name, fin.desc);
                     }
                 }
             }
@@ -207,7 +222,18 @@ public final class AbiTools {
         return unresolved == 0 ? 0 : 1;
     }
 
-    private static boolean resolves(Map<String, ClassNode> set, String owner, String name, String desc, Set<String> seen) {
+    private static String opcodeName(int opcode) {
+        switch (opcode) {
+            case Opcodes.GETSTATIC: return "getstatic";
+            case Opcodes.PUTSTATIC: return "putstatic";
+            case Opcodes.GETFIELD: return "getfield";
+            case Opcodes.PUTFIELD: return "putfield";
+            default: return "field-opcode-" + opcode;
+        }
+    }
+
+    private static boolean resolves(Map<String, ClassNode> set, String owner, String name, String desc,
+                                    boolean expectsStatic, Set<String> seen) {
         if (owner == null || !seen.add(owner)) return false;
         ClassNode cn = set.get(owner);
         // Outside the visible set (JRE/stub/other-game class we weren't given):
@@ -217,11 +243,19 @@ public final class AbiTools {
         // every game hierarchy eventually reaches java/lang/Object.
         if (cn == null) return false;
         if (cn.fields != null) {
-            for (FieldNode f : cn.fields) if (f.name.equals(name) && f.desc.equals(desc)) return true;
+            for (FieldNode f : cn.fields) {
+                boolean isStatic = (f.access & Opcodes.ACC_STATIC) != 0;
+                // Field resolution stops at the first matching declaration;
+                // an opcode/staticness mismatch is an ICCE, not permission to
+                // continue searching a superclass for another declaration.
+                if (f.name.equals(name) && f.desc.equals(desc)) return isStatic == expectsStatic;
+            }
         }
-        if (cn.superName != null && resolves(set, cn.superName, name, desc, seen)) return true;
+        if (cn.superName != null && resolves(set, cn.superName, name, desc, expectsStatic, seen)) return true;
         if (cn.interfaces != null) {
-            for (String itf : cn.interfaces) if (resolves(set, itf, name, desc, seen)) return true;
+            for (String itf : cn.interfaces) {
+                if (resolves(set, itf, name, desc, expectsStatic, seen)) return true;
+            }
         }
         return false;
     }

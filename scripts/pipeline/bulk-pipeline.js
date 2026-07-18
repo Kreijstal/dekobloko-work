@@ -148,7 +148,7 @@ const runtimeSafe = process.argv.includes('--runtime-safe');
 const safeBytecode = process.argv.includes('--safe-bytecode');
 const experimentalInterclassDce = process.argv.includes('--experimental-interclass-dce')
   || process.env.PIPELINE_EXPERIMENTAL_INTERCLASS_DCE === '1';
-const experimentalSignatureCompaction = experimentalInterclassDce
+let experimentalSignatureCompaction = experimentalInterclassDce
   && (process.argv.includes('--experimental-signature-compaction')
     || process.env.PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION === '1');
 const configuredInterclassDceIterations = Number.parseInt(
@@ -468,6 +468,13 @@ const files = listClassFiles(inDir);
 const processFiles = selectProcessFiles(files);
 const processFileSet = new Set(processFiles);
 const analysisFiles = process.env.BULK_PIPELINE_SCOPE_ANALYSIS_TO_SELECTED === '1' ? processFiles : files;
+if (experimentalSignatureCompaction
+    && (processFiles.length !== files.length || analysisFiles.length !== files.length)) {
+  console.error(
+    '[experimental-signature-compaction] disabled: descriptor rewrites require an unscoped all-class run',
+  );
+  experimentalSignatureCompaction = false;
+}
 const profiles = loadProfiles(path.join(__dirname, 'profiles'), selectedProfiles);
 for (const passName of profiles.skipPasses) {
   skipPassNames.add(passName);
@@ -2831,6 +2838,50 @@ const interproceduralConstantArgumentDiscovery = collectInterproceduralConstantA
 const interproceduralConstantArgumentFacts = interproceduralConstantArgumentDiscovery.facts;
 const interproceduralSignatureCompactions =
   (interproceduralConstantArgumentDiscovery.signatureCompaction || {}).compactions || [];
+let effectiveInputDir = inDir;
+if (experimentalSignatureCompaction) {
+  const stagedDir = path.join(tmpDir, 'signature-compaction-stage');
+  let stageFailed = null;
+  try {
+    for (const f of files) {
+      const sourcePath = path.join(inDir, f);
+      const sourceBytes = fs.readFileSync(sourcePath);
+      const { ast, cp } = loadAst(sourcePath);
+      resetOrphanGuard(ast, sourceBytes, f);
+      const result = runExperimentalInterclassDce(ast);
+      const stagedPath = path.join(stagedDir, f);
+      fs.mkdirSync(path.dirname(stagedPath), { recursive: true });
+      if (!passChanged(result)) {
+        fs.copyFileSync(sourcePath, stagedPath);
+        continue;
+      }
+      orphanGuardPassLabel = 'experimental-signature-compaction-stage';
+      saveAndReload(ast, cp);
+      orphanGuardPassLabel = '';
+      if (lastSaveAndReloadRejected) {
+        throw new Error(`guard rejected descriptor staging for ${f}`);
+      }
+      fs.copyFileSync(tmpFile, stagedPath);
+    }
+  } catch (err) {
+    stageFailed = err;
+  } finally {
+    orphanGuardState = null;
+    orphanGuardPassLabel = '';
+  }
+  if (stageFailed) {
+    fs.rmSync(stagedDir, { recursive: true, force: true });
+    experimentalSignatureCompaction = false;
+    console.error(
+      `[experimental-signature-compaction] disabled atomically: ${stageFailed.message || stageFailed}`,
+    );
+  } else {
+    // No output is written until every definition and call site has survived
+    // serialization. From here on, even a later per-class fallback copies the
+    // staged class, so the output cannot mix old and compacted descriptors.
+    effectiveInputDir = stagedDir;
+  }
+}
 if (experimentalInterclassDce) {
   if (process.env.PIPELINE_INTERCLASS_DCE_FACTS_OUT) {
     const factsOut = path.resolve(process.env.PIPELINE_INTERCLASS_DCE_FACTS_OUT);
@@ -3789,14 +3840,14 @@ let copied = 0;
 for (const f of files) {
   if (process.env.BULK_PIPELINE_SKIP_UNSELECTED_COPY === '1') break;
   if (processFileSet.has(f)) continue;
-  const inPath = path.join(inDir, f);
+  const inPath = path.join(effectiveInputDir, f);
   const outPath = path.join(outDir, f);
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.copyFileSync(inPath, outPath);
   copied += 1;
 }
 for (const f of processFiles) {
-  const inPath = path.join(inDir, f);
+  const inPath = path.join(effectiveInputDir, f);
   const outPath = path.join(outDir, f);
   try {
     let { ast, cp } = loadAst(inPath);

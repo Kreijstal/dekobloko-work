@@ -8,7 +8,7 @@
 # Uses ASM (asm-tree) to strip the CFR-JS `field_` prefix from field
 # declarations and references. Field-name-only edits leave frames/maxs intact,
 # so no StackMapTable recomputation is needed.
-set -uo pipefail
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO="$(dirname "$SCRIPT_DIR")"

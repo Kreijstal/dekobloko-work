@@ -38,7 +38,11 @@ function parseArgs(argv) {
     else if (arg === '--work') options.work = path.resolve(argv[++i]);
     else if (arg === '--variant') {
       const spec = argv[++i];
+      if (typeof spec !== 'string') throw new Error('--variant requires safe-label=classesDir');
       const eq = spec.indexOf('=');
+      if (eq <= 0 || eq === spec.length - 1) {
+        throw new Error(`Invalid --variant '${spec}'; expected safe-label=classesDir`);
+      }
       options.variants.push({ label: spec.slice(0, eq), dir: path.resolve(spec.slice(eq + 1)) });
     } else {
       throw new Error(`Unknown argument: ${arg}`);
@@ -53,6 +57,14 @@ function parseArgs(argv) {
     ];
   }
   if (!options.work) options.work = path.join(ROOT, '.work', 'runtime-compare', options.game);
+  const labels = new Set();
+  for (const variant of options.variants) {
+    if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(variant.label)) {
+      throw new Error(`Unsafe variant label '${variant.label}'; use letters, digits, '.', '_' or '-'`);
+    }
+    if (labels.has(variant.label)) throw new Error(`Duplicate variant label '${variant.label}'`);
+    labels.add(variant.label);
+  }
   return options;
 }
 
@@ -75,6 +87,16 @@ function runOnce(variant, iteration, options) {
   });
   fs.writeFileSync(path.join(runDir, 'stdout.log'), result.stdout || '');
   fs.writeFileSync(path.join(runDir, 'stderr.log'), result.stderr || '');
+  if (result.error || result.signal || result.status === null || result.status !== 0) {
+    const reason = result.error
+      ? result.error.message
+      : result.signal
+        ? `terminated by ${result.signal}`
+        : result.status === null
+          ? 'terminated without an exit status'
+          : `exited with status ${result.status}`;
+    throw new Error(`Runtime variant '${variant.label}' run ${iteration} failed: ${reason}`);
+  }
   return { runDir, exitCode: result.status, signature: extractSignature(runDir, result) };
 }
 
