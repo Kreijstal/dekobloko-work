@@ -191,6 +191,18 @@ NODE
 
   input_count=$(find "$game_dir/classes" -type f -name '*.class' | wc -l)
   mapfile -d '' class_files < <(find "$work/out" -type f -name '*.class' -print0)
+  if ((REUSE_PIPELINE)) && ((${#class_files[@]} != input_count)); then
+    printf '[bytecode-guard] cached pipeline output incomplete: expected %d classes, found %d; rebuilding\n' \
+      "$input_count" "${#class_files[@]}" >>"$work/logs/pipeline.log"
+    rm -rf "$work/out"
+    mkdir -p "$work/out"
+    rm -f "$work/logs/signature-map.json"
+    PIPELINE_SIGNATURE_MAP_OUT="$work/logs/signature-map.json" \
+    SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
+      "$game_dir/classes" "$work/out" --profile none --safe-bytecode \
+      >>"$work/logs/pipeline.log" 2>&1 || pipeline_fail=1
+    mapfile -d '' class_files < <(find "$work/out" -type f -name '*.class' -print0)
+  fi
   if ((pipeline_fail == 0)) && ((${#class_files[@]})); then
     if ! java -cp "$VERIFY_TOOLS:$ASM_CP" Verify "${class_files[@]}" \
       >"$work/logs/transform-verify.log" 2>&1; then
