@@ -93,6 +93,15 @@ function buildHookStub() {
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
+  if (options.loadState && options.saveState) {
+    throw new Error('--load-state and --save-state cannot be used together');
+  }
+  if (options.saveAfterMs !== null && !options.saveState) {
+    throw new Error('--save-after-ms requires --save-state file.json');
+  }
+  if (options.exitAfterSave && !options.saveState) {
+    throw new Error('--exit-after-save requires --save-state file.json');
+  }
   if (!fs.existsSync(JAVA_TOOLS_DIR)) {
     throw new Error(`java-tools not found at ${JAVA_TOOLS_DIR} (set JAVA_TOOLS_DIR)`);
   }
@@ -141,7 +150,12 @@ async function main() {
   });
 
   if (options.loadState) {
-    const state = JSON.parse(fs.readFileSync(options.loadState, 'utf8'));
+    let state;
+    try {
+      state = JSON.parse(fs.readFileSync(options.loadState, 'utf8'));
+    } catch (error) {
+      throw new Error(`Cannot load save state ${options.loadState}: ${error.message}`);
+    }
     const restored = await jvm.loadState(state);
     console.error(`jvmjs: loaded save state ${options.loadState}` +
       (restored.externalResources.length
@@ -164,7 +178,7 @@ async function main() {
         if (options.exitAfterSave) setImmediate(() => process.exit(0));
       } catch (error) {
         console.error(`jvmjs: save state failed: ${error.stack || error}`);
-        if (options.exitAfterSave) process.exitCode = 1;
+        if (options.exitAfterSave) setImmediate(() => process.exit(1));
       }
     }, options.saveAfterMs);
   }
