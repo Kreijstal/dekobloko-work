@@ -63,6 +63,14 @@ const { runRemoveShadowingTrivialRethrowHandlers } = requireJavaTools('src/passe
 const { runMultiEntryLoopNormalizer } = requireJavaTools('src/passes/multiEntryLoopNormalizer', 'src/multiEntryLoopNormalizer');
 const { runCoalesceLoopLoad } = requireJavaTools('src/passes/coalesceLoopLoad', 'src/coalesceLoopLoad');
 const { runDeadStaticBoolFlag, discoverDeadStaticFlags } = requireJavaTools('src/passes/deadStaticBoolFlag', 'src/deadStaticBoolFlag');
+const {
+  discoverInterproceduralSignatureCompactions,
+  runConstantExpressionFold,
+  runImmediateConstantBranchDce,
+  runInterproceduralConstantArgumentFixedPoint,
+  runInterproceduralConstantArguments,
+  runInterproceduralSignatureCompaction,
+} = requireJavaTools('src/passes/interproceduralConstantArguments', 'src/interproceduralConstantArguments');
 const { runConstructorPreSuperCleanup } = requireJavaTools('src/passes/constructorPreSuperCleanup', 'src/constructorPreSuperCleanup');
 const {
   runAddDefaultConstructorsForImplicitSupers,
@@ -138,6 +146,17 @@ const skipControlFlowDce = process.argv.includes('--skip-cfdce');
 const keepRuntimeHandlers = process.argv.includes('--keep-runtime-handlers');
 const runtimeSafe = process.argv.includes('--runtime-safe');
 const safeBytecode = process.argv.includes('--safe-bytecode');
+const experimentalInterclassDce = process.argv.includes('--experimental-interclass-dce')
+  || process.env.PIPELINE_EXPERIMENTAL_INTERCLASS_DCE === '1';
+const experimentalSignatureCompaction = experimentalInterclassDce
+  && (process.argv.includes('--experimental-signature-compaction')
+    || process.env.PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION === '1');
+const configuredInterclassDceIterations = Number.parseInt(
+  process.env.PIPELINE_INTERCLASS_DCE_MAX_ITERATIONS || '16', 10,
+);
+const interclassDceMaxIterations = Number.isInteger(configuredInterclassDceIterations)
+  && configuredInterclassDceIterations > 0
+  ? configuredInterclassDceIterations : 16;
 const profileArg = readOptionValue('--profile') || readOptionValue('--profiles') || process.env.PIPELINE_PROFILES || '';
 const selectedProfiles = (profileArg || 'none')
   .split(',')
@@ -422,7 +441,7 @@ if (skipPassNames.has('ck-clip-flag')) {
 }
 
 if (!inDir || !outDir) {
-  console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--profile dekobloko|none|all|name[,name...]] [--skip-inline] [--safe-bytecode]');
+  console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--profile dekobloko|none|all|name[,name...]] [--skip-inline] [--safe-bytecode] [--experimental-interclass-dce]');
   process.exit(2);
 }
 
@@ -535,6 +554,7 @@ const asmGuardClasses = new Set((process.env.BULK_PIPELINE_ASM_GUARD_CLASSES || 
 let orphanGuardState = null;
 let orphanGuardPassLabel = '';
 let orphanGuardClassName = '';
+let lastSaveAndReloadRejected = false;
 
 function methodParamSlotCount(descriptor, isStatic) {
   let slots = isStatic ? 0 : 1;
@@ -624,7 +644,14 @@ function methodStackUnderflowKey(cls, method, codeItems, code) {
 
   const inDepth = new Map();
   const work = [];
-  const seed = (id, d) => { if (id != null && !inDepth.has(id)) { inDepth.set(id, d); work.push(id); } };
+  const seed = (id, d) => {
+    if (id == null) return;
+    const previous = inDepth.get(id);
+    if (previous === undefined || d < previous) {
+      inDepth.set(id, d);
+      work.push(id);
+    }
+  };
   seed(entry, 0);
   for (const entryTable of code.exceptionTable || []) {
     const hi = labelToIndex.get(String(entryTable.handlerLbl || '').replace(/:$/, ''));
@@ -727,6 +754,7 @@ function resetOrphanGuard(ast, inputBytes, classFile = '') {
 }
 
 function saveAndReload(ast, cp) {
+  lastSaveAndReloadRejected = false;
   writeClassAstToClassFile(ast, tmpFile, cp);
   if (orphanGuardState) {
     const reloaded = loadAst(tmpFile);
@@ -744,6 +772,7 @@ function saveAndReload(ast, cp) {
           : `lost iinc direction at ${lostIincDirections.join(', ')}`;
       console.warn(`[bytecode-guard] reverted ${orphanGuardPassLabel || 'pass'}: ${reason}`);
       fs.writeFileSync(tmpFile, orphanGuardState.snapshot);
+      lastSaveAndReloadRejected = true;
       return loadAst(tmpFile);
     }
     if (asmGuardClasspath && asmGuardClasses.has(orphanGuardClassName)) {
@@ -754,6 +783,7 @@ function saveAndReload(ast, cp) {
       if (verified.status !== 0) {
         console.warn(`[bytecode-guard] reverted ${orphanGuardPassLabel || 'pass'}: ASM verification failed for ${orphanGuardClassName}`);
         fs.writeFileSync(tmpFile, orphanGuardState.snapshot);
+        lastSaveAndReloadRejected = true;
         return loadAst(tmpFile);
       }
     }
@@ -2749,7 +2779,33 @@ function collectAutoDeadFlagFields() {
   return discoverDeadStaticFlags({ classes }, {
     allowIntFlags: true,
     allowTerminalSelfIncrementFlags: true,
-  }).fields;
+    allowMutuallyGuardedFalseCycles: experimentalInterclassDce,
+  });
+}
+
+function collectInterproceduralConstantArgumentFacts(alwaysFalseFields) {
+  if (!experimentalInterclassDce) return { facts: [], candidateCount: 0 };
+  const classes = [];
+  for (const f of analysisFiles) {
+    const { ast } = loadAst(path.join(inDir, f));
+    classes.push(...(ast.classes || []));
+  }
+  const analysisAst = { classes };
+  // Establish field-derived reachability first. Obfuscator trap calls often
+  // use a different dummy argument only on a branch guarded by an always-false
+  // interclass sentinel; counting that dead call would hide the constant fact.
+  runDeadStaticBoolFlag(analysisAst, {
+    flags: alwaysFalseFields.join(','),
+    allowIntFlags: true,
+  });
+  runRemoveUnreachableCodeCfg(analysisAst);
+  const discovery = runInterproceduralConstantArgumentFixedPoint(analysisAst, {
+    maxIterations: interclassDceMaxIterations,
+  });
+  discovery.signatureCompaction = experimentalSignatureCompaction
+    ? discoverInterproceduralSignatureCompactions(analysisAst, { facts: discovery.facts })
+    : { compactions: [], candidateCount: 0 };
+  return discovery;
 }
 
 function collectImplicitSuperCtorClasses() {
@@ -2764,8 +2820,59 @@ function collectImplicitSuperCtorClasses() {
 
 const fieldRenames = collectClassShadowFieldRenames();
 const methodRenames = collectMethodOverrideRenames();
-const autoDeadFlagFields = collectAutoDeadFlagFields();
 const builtInDeadFlagFields = configuredList('PIPELINE_BUILTIN_DEAD_FLAG_FIELDS', '');
+const autoDeadFlagDiscovery = collectAutoDeadFlagFields();
+const autoDeadFlagFields = autoDeadFlagDiscovery.fields;
+const interproceduralConstantArgumentDiscovery = collectInterproceduralConstantArgumentFacts([
+  ...profiles.deadFlagFields,
+  ...builtInDeadFlagFields,
+  ...autoDeadFlagFields,
+]);
+const interproceduralConstantArgumentFacts = interproceduralConstantArgumentDiscovery.facts;
+const interproceduralSignatureCompactions =
+  (interproceduralConstantArgumentDiscovery.signatureCompaction || {}).compactions || [];
+if (experimentalInterclassDce) {
+  if (process.env.PIPELINE_INTERCLASS_DCE_FACTS_OUT) {
+    const factsOut = path.resolve(process.env.PIPELINE_INTERCLASS_DCE_FACTS_OUT);
+    fs.mkdirSync(path.dirname(factsOut), { recursive: true });
+    fs.writeFileSync(factsOut, `${JSON.stringify(interproceduralConstantArgumentDiscovery, null, 2)}\n`);
+  }
+  const enabledCycleFields = autoDeadFlagDiscovery.cyclicDependencies
+    .filter((field) => autoDeadFlagFields.includes(field));
+  console.error(
+    `[experimental-interclass-dce] ${interproceduralConstantArgumentFacts.length} constant parameter(s), `
+    + `${enabledCycleFields.length} mutually guarded false field(s), `
+    + `${interproceduralConstantArgumentDiscovery.iterations}/${interclassDceMaxIterations} analysis iteration(s)`,
+  );
+  if (!interproceduralConstantArgumentDiscovery.converged) {
+    console.error(
+      `[experimental-interclass-dce] warning: analysis reached its ${interclassDceMaxIterations}-iteration cap; `
+      + 'using the conservative facts found so far',
+    );
+  }
+  if (experimentalSignatureCompaction) {
+    console.error(
+      `[experimental-signature-compaction] ${interproceduralSignatureCompactions.length} method descriptor(s) compacted`,
+    );
+    if (process.env.PIPELINE_SIGNATURE_MAP_OUT) {
+      const mapOut = path.resolve(process.env.PIPELINE_SIGNATURE_MAP_OUT);
+      const signatures = {};
+      for (const compaction of interproceduralSignatureCompactions) {
+        signatures[compaction.oldSignature] = {
+          newSignature: compaction.newSignature,
+          owner: compaction.owner,
+          name: compaction.name,
+          oldDescriptor: compaction.oldDescriptor,
+          newDescriptor: compaction.newDescriptor,
+          callSiteSignatures: compaction.callSiteSignatures,
+          removedParameters: compaction.removedParameters,
+        };
+      }
+      fs.mkdirSync(path.dirname(mapOut), { recursive: true });
+      fs.writeFileSync(mapOut, `${JSON.stringify({ formatVersion: 1, signatures }, null, 2)}\n`);
+    }
+  }
+}
 function deadFlagFieldsForClass(classFile) {
   let fields = [
     ...profiles.deadFlagFields,
@@ -2792,14 +2899,38 @@ function runConfiguredDeadFlag(astRoot, classFile) {
     preserveBranchShapeRequireArrayParameter: true,
   });
 }
+function runExperimentalInterclassDce(astRoot) {
+  const specialization = runInterproceduralConstantArguments(astRoot, {
+    facts: interproceduralConstantArgumentFacts,
+  });
+  if (!experimentalSignatureCompaction) return specialization;
+  const compaction = runInterproceduralSignatureCompaction(astRoot, {
+    compactions: interproceduralSignatureCompactions,
+  });
+  return {
+    changed: specialization.changed || compaction.changed,
+    specialization,
+    compaction,
+  };
+}
 function writePreservedClassWithDeadFlagCleanup(astRoot, constantPool, inPath, outPath, classFile) {
+  let preservedBaselinePath = inPath;
+  let preservedBaselineDir = null;
+  if (experimentalInterclassDce) {
+    preservedBaselineDir = fs.mkdtempSync(path.join(os.tmpdir(), 'dekob-preserve-constant-baseline-'));
+    preservedBaselinePath = path.join(preservedBaselineDir, path.basename(classFile));
+    raiseMaxStackFloor(astRoot);
+    writeClassAstToClassFile(astRoot, preservedBaselinePath, constantPool);
+  }
   if (skipPassNames.has('dead-flag')) {
-    fs.copyFileSync(inPath, outPath);
+    fs.copyFileSync(preservedBaselinePath, outPath);
+    if (preservedBaselineDir) fs.rmSync(preservedBaselineDir, { recursive: true, force: true });
     return false;
   }
   const result = runConfiguredDeadFlag(astRoot, classFile);
   if (!passChanged(result)) {
-    fs.copyFileSync(inPath, outPath);
+    fs.copyFileSync(preservedBaselinePath, outPath);
+    if (preservedBaselineDir) fs.rmSync(preservedBaselineDir, { recursive: true, force: true });
     return false;
   }
   const candidateDir = fs.mkdtempSync(path.join(os.tmpdir(), 'dekob-preserve-deadflag-'));
@@ -2807,14 +2938,15 @@ function writePreservedClassWithDeadFlagCleanup(astRoot, constantPool, inPath, o
   try {
     raiseMaxStackFloor(astRoot);
     writeClassAstToClassFile(astRoot, candidatePath, constantPool);
-    if (!cfrMarkerCountImproves(inPath, candidatePath)) {
-      fs.copyFileSync(inPath, outPath);
+    if (!cfrMarkerCountImproves(preservedBaselinePath, candidatePath)) {
+      fs.copyFileSync(preservedBaselinePath, outPath);
       return false;
     }
     fs.copyFileSync(candidatePath, outPath);
     return true;
   } finally {
     fs.rmSync(candidateDir, { recursive: true, force: true });
+    if (preservedBaselineDir) fs.rmSync(preservedBaselineDir, { recursive: true, force: true });
   }
 }
 
@@ -3318,7 +3450,18 @@ function cfrMarkerCountImproves(baselinePath, candidatePath) {
   if (!baseline || baseline.markers <= 0) return false;
   const candidate = cfrMarkerCount(candidatePath);
   if (!candidate || candidate.bad) return false;
-  return candidate.markers < baseline.markers;
+  if (candidate.markers >= baseline.markers) return false;
+  if (safeBytecode) {
+    const candidateClass = loadAst(candidatePath);
+    orphanGuardPassLabel = 'cfr-oracle-candidate';
+    saveAndReload(candidateClass.ast, candidateClass.cp);
+    orphanGuardPassLabel = '';
+    if (lastSaveAndReloadRejected) return false;
+    // The guarded serialization, not the unchecked trial file, is the only
+    // candidate that may leave an oracle helper.
+    fs.copyFileSync(tmpFile, candidatePath);
+  }
+  return true;
 }
 
 function cfrMarkerCount(classFile) {
@@ -3338,6 +3481,13 @@ const implicitSuperCtorClasses = collectImplicitSuperCtorClasses();
 
 const passes = [
   { name: 'add-default-constructors-for-implicit-supers', fn: (a) => runAddDefaultConstructorsForImplicitSupers(a, { classesToAdd: implicitSuperCtorClasses }) },
+  ...(experimentalInterclassDce ? [{
+    name: 'experimental-interclass-constant-arguments',
+    fn: runExperimentalInterclassDce,
+  }, {
+    name: 'experimental-constant-expressions',
+    fn: runConstantExpressionFold,
+  }] : []),
   { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a, { targets: profiles.eiTailClone }) },
   { name: 'peephole', fn: (a, f) => runPeepholeClean(a, safePeepholeOptionsForClass(a, f, {
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
@@ -3408,6 +3558,7 @@ const passes = [
     fn: (a) => removeRuntimeExceptionHandlers(a, {
       keepHandlerCode: true,
       preserveRecoveryHandlers: true,
+      preserveStaticPrimitiveLoopHandlers: true,
     }),
   }]),
   ...(runtimeSafe ? [] : [
@@ -3650,6 +3801,40 @@ for (const f of processFiles) {
   try {
     let { ast, cp } = loadAst(inPath);
     resetOrphanGuard(ast, fs.readFileSync(inPath), f);
+    // Descriptor changes must be applied to every class before any of the
+    // verifier-sensitive preserve paths can leave the ordinary pass list.
+    // This keeps definitions and their direct call sites globally coherent.
+    if (experimentalSignatureCompaction) {
+      const signatureStart = Date.now();
+      const signatureResult = runExperimentalInterclassDce(ast);
+      tracePassTime(f, 'experimental-signature-compaction-prepass', signatureStart);
+      if (passChanged(signatureResult)) {
+        const signatureSaveStart = Date.now();
+        orphanGuardPassLabel = 'experimental-signature-compaction-prepass';
+        ({ ast, cp } = saveAndReload(ast, cp));
+        orphanGuardPassLabel = '';
+        tracePassTime(f, 'experimental-signature-compaction-prepass:save', signatureSaveStart);
+      }
+    }
+    // Some verifier-sensitive classes intentionally leave through one of the
+    // preserve/narrow pipelines below before reaching the ordinary pass list.
+    // Run the local, semantics-preserving part of the experimental cleanup
+    // here as well so literal arithmetic and JVM-masked shift counts are
+    // normalized consistently for every class. The regular pass still runs
+    // later, after interclass parameter specialization exposes more literals.
+    if (experimentalInterclassDce) {
+      const constantPrepassStart = Date.now();
+      const constantPrepassResult = runConstantExpressionFold(ast);
+      const constantBranchPrepassResult = runImmediateConstantBranchDce(ast);
+      tracePassTime(f, 'experimental-constant-expression-prepass', constantPrepassStart);
+      if (passChanged(constantPrepassResult) || passChanged(constantBranchPrepassResult)) {
+        const constantPrepassSaveStart = Date.now();
+        orphanGuardPassLabel = 'experimental-constant-expression-prepass';
+        ({ ast, cp } = saveAndReload(ast, cp));
+        orphanGuardPassLabel = '';
+        tracePassTime(f, 'experimental-constant-expression-prepass:save', constantPrepassSaveStart);
+      }
+    }
     // ca.a carries two comparison operands underneath a dead client.A flag.
     // Broad goto structuring can reuse the inverse outer-loop comparison for
     // that stack-carrying edge, deleting the guarded stores and index advance.
@@ -3747,7 +3932,10 @@ for (const f of processFiles) {
       narrowEnv.STRUCTURED_GOTO_STATIC_INT_LOOP_FLAG_MIN_BRANCHES = '3';
       withEnvOverrides(narrowEnv, () => runStructuredGotoClone(ast));
       raiseMaxStackFloor(ast);
-      writeClassAstToClassFile(ast, outPath, cp);
+      orphanGuardPassLabel = 'narrow-static-int-grid-loop-flag';
+      ({ ast, cp } = saveAndReload(ast, cp));
+      orphanGuardPassLabel = '';
+      fs.copyFileSync(tmpFile, outPath);
       processed += 1;
       continue;
     }
@@ -3758,7 +3946,10 @@ for (const f of processFiles) {
       narrowEnv.STRUCTURED_GOTO_DUPLICATE_GRID_SCAN_CONTINUE_MAX_RANGE = '260';
       withEnvOverrides(narrowEnv, () => runStructuredGotoClone(ast));
       raiseMaxStackFloor(ast);
-      writeClassAstToClassFile(ast, outPath, cp);
+      orphanGuardPassLabel = 'narrow-duplicate-grid-scan-continue';
+      ({ ast, cp } = saveAndReload(ast, cp));
+      orphanGuardPassLabel = '';
+      fs.copyFileSync(tmpFile, outPath);
       processed += 1;
       continue;
     }
@@ -3768,7 +3959,10 @@ for (const f of processFiles) {
       narrowEnv.STRUCTURED_GOTO_ITERATOR_PROCESS_GUARD_MAX_REWRITES = '2';
       withEnvOverrides(narrowEnv, () => runStructuredGotoClone(ast));
       raiseMaxStackFloor(ast);
-      writeClassAstToClassFile(ast, outPath, cp);
+      orphanGuardPassLabel = 'narrow-iterator-process-guard';
+      ({ ast, cp } = saveAndReload(ast, cp));
+      orphanGuardPassLabel = '';
+      fs.copyFileSync(tmpFile, outPath);
       processed += 1;
       continue;
     }
@@ -3904,6 +4098,19 @@ for (const f of processFiles) {
           tracePassTime(f, 'post-final:save-after-dead-flag', deadFlagLateSaveStart);
         }
       }
+      if (experimentalInterclassDce) {
+        const constantBranchLateStart = Date.now();
+        const constantExpressionLateResult = runConstantExpressionFold(ast);
+        const constantBranchLateResult = runImmediateConstantBranchDce(ast);
+        tracePassTime(f, 'post-final:experimental-constant-expressions-and-branches', constantBranchLateStart);
+        if (passChanged(constantExpressionLateResult) || passChanged(constantBranchLateResult)) {
+          const constantBranchLateSaveStart = Date.now();
+          orphanGuardPassLabel = 'post-final:experimental-constant-expressions-and-branches';
+          ({ ast, cp } = saveAndReload(ast, cp));
+          orphanGuardPassLabel = '';
+          tracePassTime(f, 'post-final:save-after-experimental-constant-expressions-and-branches', constantBranchLateSaveStart);
+        }
+      }
       if (!skipPassNames.has('remove-unreachable-code-cfg')) {
         // Last transform: earlier passes can strand mutually-referencing dead
         // instruction islands that the JVM verifier ignores but CFR simulates
@@ -3986,7 +4193,14 @@ for (const f of processFiles) {
       }
     }
     raiseMaxStackFloor(ast);
-    writeClassAstToClassFile(ast, outPath, cp);
+    if (safeBytecode) {
+      orphanGuardPassLabel = 'final-output';
+      ({ ast, cp } = saveAndReload(ast, cp));
+      orphanGuardPassLabel = '';
+      fs.copyFileSync(tmpFile, outPath);
+    } else {
+      writeClassAstToClassFile(ast, outPath, cp);
+    }
     processed += 1;
   } catch (err) {
     failed += 1;

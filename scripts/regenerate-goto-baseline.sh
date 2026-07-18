@@ -86,10 +86,14 @@ for game_dir in "${GAME_DIRS[@]}"; do
     rm -rf "$cfr"
     mkdir -p "$cfr"
     mapfile -d '' class_files < <(find "$out" -type f -name '*.class' -print0)
-    timeout "$CFR_TIMEOUT_SECONDS" \
+    if ! timeout "$CFR_TIMEOUT_SECONDS" \
       java -jar "$DEKOB_DIR/lib/cfr.jar" "${class_files[@]}" \
       --outputdir "$cfr" --silent true --caseinsensitivefs false \
-      > "$logs/cfr.log" 2>&1 || true
+      > "$logs/cfr.log" 2>&1; then
+      rm -rf "$cfr"
+      echo "FATAL: $game CFR failed or timed out after ${CFR_TIMEOUT_SECONDS}s" >&2
+      return 1
+    fi
 
     rg -n '\*\* GOTO|Unable to fully structure code|lbl-1000' "$cfr" \
       > "$logs/cfr-markers.txt" || true

@@ -1,5 +1,7 @@
 'use strict';
 
+const v8 = require('v8');
+
 let boundedConditionalTailCloneId = 0;
 let sharedForwardContinuationCloneId = 0;
 let sharedLoopIncrementCloneId = 0;
@@ -145,7 +147,7 @@ function runStructuredGotoClone(astRoot) {
         rewrites += cloneStackCompareTails(codeItems, codeAttr.code);
       }
       if (shouldRunStaticZeroFlagBranchCleanup(cls, item.method)) {
-        rewrites += removeStaticZeroFlagLocalBranches(codeItems);
+        rewrites += removeAnyStaticZeroFlagLocalBranches(codeItems);
       }
       if (shouldRunStaticZeroFlagBranchCleanupForAlternateShape(cls, item.method)) {
         rewrites += removeAlternateStaticZeroFlagLocalBranches(codeItems);
@@ -1121,7 +1123,7 @@ function cloneItemMetadata(item) {
 }
 
 function cloneValue(value) {
-  return JSON.parse(JSON.stringify(value));
+  return v8.deserialize(v8.serialize(value));
 }
 
 function readOneShotUpdateTail(codeItems, index) {
@@ -4210,12 +4212,15 @@ function removeDuplicateCardLoopGoto(codeItems) {
 
 
 
-function removeStaticZeroFlagLocalBranches(codeItems) {
-  return removeStaticZeroFlagLocalBranches(codeItems);
+function removeAnyStaticZeroFlagLocalBranches(codeItems) {
+  const candidate = findStaticZeroFlagLocalBinding(codeItems);
+  return candidate
+    ? removeStaticZeroFlagLocalBranches(codeItems, candidate.owner, candidate.name)
+    : 0;
 }
 
 function removeAlternateStaticZeroFlagLocalBranches(codeItems) {
-  return removeStaticZeroFlagLocalBranches(codeItems);
+  return removeAnyStaticZeroFlagLocalBranches(codeItems);
 }
 
 function removeStaticZeroFlagLocalBranches(codeItems, owner, name) {
@@ -4349,7 +4354,14 @@ function findStaticZeroFlagLocalBinding(codeItems, owner, name) {
     const store = codeItems[storeIndex] && codeItems[storeIndex].instruction;
     const local = intStoreLocal(store);
     if (local == null) continue;
-    return { local, getIndex: index, storeIndex };
+    const field = staticFieldRef(get);
+    return {
+      local,
+      getIndex: index,
+      storeIndex,
+      owner: field && field.owner,
+      name: field && field.name,
+    };
   }
   return null;
 }

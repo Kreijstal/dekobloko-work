@@ -11,14 +11,16 @@ JAVAC_TIMEOUT_SECONDS="${JAVAC_TIMEOUT_SECONDS:-600}"
 GAME=""
 RESUME=0
 UPDATE_BASELINE=0
+REUSE_PIPELINE=0
 
 while (($#)); do
   case "$1" in
     --game) GAME="$2"; shift 2 ;;
     --resume) RESUME=1; shift ;;
+    --reuse-pipeline) REUSE_PIPELINE=1; shift ;;
     --update-baseline) UPDATE_BASELINE=1; shift ;;
     --help|-h)
-      echo "Usage: $0 [games-root] [--game NAME] [--resume] [--update-baseline]"
+      echo "Usage: $0 [games-root] [--game NAME] [--resume] [--reuse-pipeline] [--update-baseline]"
       exit 0
       ;;
     --*) echo "Unknown option: $1" >&2; exit 2 ;;
@@ -28,7 +30,7 @@ done
 
 DECOMPILER="$JAVA_TOOLS_DIR/scripts/runCfr.js"
 EXPECTED="$SCRIPT_DIR/EXPECTED-OWN-DECOMPILER-ALL-GAMES.tsv"
-SUMMARY="$ROOT/owned-decompiler-all-games.tsv"
+SUMMARY="${OWNED_DECOMPILER_SUMMARY:-$ROOT/owned-decompiler-all-games.tsv}"
 STUBS="$REPO/lib/dekobloko-stubs.jar"
 ASM_LIB="$JAVA_TOOLS_DIR/lib"
 VERIFY_TOOLS="$ROOT/.owned-decompiler-tools"
@@ -62,6 +64,7 @@ else
   shopt -u nullglob
 fi
 
+mkdir -p "$(dirname "$SUMMARY")"
 : > "$SUMMARY.tmp"
 printf '# game\tclasses\tsources\thard\tcli\tverify\tjavac\tstatus\n' >> "$SUMMARY.tmp"
 overall=0
@@ -72,18 +75,47 @@ for game_dir in "${GAME_DIRS[@]}"; do
   work="$game_dir/decompile-owned"
   report="$work/logs/report.json"
   if ((RESUME)) && [[ -f "$report" ]] && rg -q '"status": "pass"' "$report"; then
+    prior_row="$(awk -F'\t' -v game="$game" '$1 == game { print; exit }' "$SUMMARY" 2>/dev/null || true)"
+    if [[ -n "$prior_row" ]]; then
+      printf '%s\n' "$prior_row" >> "$SUMMARY.tmp"
+    else
+      node - "$report" >> "$SUMMARY.tmp" <<'NODE'
+const fs = require('fs');
+const report = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const values = [
+  report.game,
+  report.classes,
+  report.sources,
+  report.hardFailures,
+  report.failures && report.failures.cli,
+  report.failures && report.failures.verify,
+  report.failures && report.failures.javac,
+  report.status,
+];
+process.stdout.write(`${values.map((value) => value ?? 0).join('\t')}\n`);
+NODE
+    fi
     printf '%s\tresume-pass\n' "$game" >&2
     continue
   fi
 
-  rm -rf "$work"
-  mkdir -p "$work/out" "$work/java" "$work/classes" "$work/logs"
+  if ((REUSE_PIPELINE)); then
+    [[ -d "$work/out" ]] || { echo "FATAL: no reusable pipeline output for $game" >&2; exit 2; }
+    rm -rf "$work/java" "$work/classes"
+    mkdir -p "$work/java" "$work/classes" "$work/logs"
+  else
+    rm -rf "$work"
+    mkdir -p "$work/out" "$work/java" "$work/classes" "$work/logs"
+  fi
   pipeline_fail=0 cli_fail=0 verify_fail=0 javac_fail=0
-
   pipeline_skip_passes="${SKIP_PIPELINE_PASSES:+$SKIP_PIPELINE_PASSES,}intize-boolean-parameters,compile-conflict-renames"
-  SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
-    "$game_dir/classes" "$work/out" --profile none --safe-bytecode \
-    >"$work/logs/pipeline.log" 2>&1 || pipeline_fail=1
+
+  if ((!REUSE_PIPELINE)); then
+    PIPELINE_SIGNATURE_MAP_OUT="$work/logs/signature-map.json" \
+    SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
+      "$game_dir/classes" "$work/out" --profile none --safe-bytecode \
+      >"$work/logs/pipeline.log" 2>&1 || pipeline_fail=1
+  fi
 
   input_count=$(find "$game_dir/classes" -type f -name '*.class' | wc -l)
   mapfile -d '' class_files < <(find "$work/out" -type f -name '*.class' -print0)
@@ -95,37 +127,59 @@ for game_dir in "${GAME_DIRS[@]}"; do
       # pass is reverted. The guard set is derived from the verification
       # failures — no game-specific class names.
       retry_in="$work/guard-retry-in" retry_out="$work/guard-retry-out" guard_names=""
+      retry_class_list="$work/logs/guard-retry-classes.txt"
       rm -rf "$retry_in" "$retry_out"
+      : > "$retry_class_list"
       while IFS= read -r invalid_class; do
         relative_class="${invalid_class#"$work/out/"}"
         original_class="$game_dir/classes/$relative_class"
         if [[ -f "$original_class" ]]; then
+          printf '%s\n' "$relative_class" >> "$retry_class_list"
           mkdir -p "$retry_in/$(dirname "$relative_class")" "$retry_out"
           cp "$original_class" "$retry_in/$relative_class"
           guard_names+="${guard_names:+,}$(basename "$relative_class" .class)"
         fi
       done < <(awk '/^FAIL_CLASS: / { print $2 }' "$work/logs/transform-verify.log")
       if [[ -n "$guard_names" ]]; then
+        final_out="$(cd "$work/out" && pwd)"
         printf '[bytecode-guard] per-pass retry for: %s\n' "$guard_names" >>"$work/logs/pipeline.log"
-        BULK_PIPELINE_ASM_GUARD_CP="$VERIFY_TOOLS:$ASM_CP" \
-        BULK_PIPELINE_ASM_GUARD_CLASSES="$guard_names" \
-        SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
-          "$retry_in" "$retry_out" --profile none --safe-bytecode \
-          >>"$work/logs/pipeline.log" 2>&1 \
-          && (cd "$retry_out" && find . -type f -name '*.class' -exec cp --parents {} "$work/out/" \;)
+        if [[ "${PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION:-0}" == 1 ]]; then
+          # Analyze the complete gamepack again so descriptor proofs and all
+          # rewritten calls stay coherent, but emit only the failed classes.
+          PIPELINE_SIGNATURE_MAP_OUT="$work/logs/signature-map.json" \
+          BULK_PIPELINE_CLASS_LIST="$retry_class_list" \
+          BULK_PIPELINE_SKIP_UNSELECTED_COPY=1 \
+          BULK_PIPELINE_ASM_GUARD_CP="$VERIFY_TOOLS:$ASM_CP" \
+          BULK_PIPELINE_ASM_GUARD_CLASSES="$guard_names" \
+          SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
+            "$game_dir/classes" "$retry_out" --profile none --safe-bytecode \
+            >>"$work/logs/pipeline.log" 2>&1 \
+            && (cd "$retry_out" && find . -type f -name '*.class' -exec cp --parents {} "$final_out/" \;)
+        else
+          PIPELINE_EXPERIMENTAL_INTERCLASS_DCE=0 \
+          PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION=0 \
+          BULK_PIPELINE_ASM_GUARD_CP="$VERIFY_TOOLS:$ASM_CP" \
+          BULK_PIPELINE_ASM_GUARD_CLASSES="$guard_names" \
+          SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
+            "$retry_in" "$retry_out" --profile none --safe-bytecode \
+            >>"$work/logs/pipeline.log" 2>&1 \
+            && (cd "$retry_out" && find . -type f -name '*.class' -exec cp --parents {} "$final_out/" \;)
+        fi
       fi
-      # Anything still failing falls back to its untransformed original.
-      if ! java -cp "$VERIFY_TOOLS:$ASM_CP" Verify "${class_files[@]}" \
-        >"$work/logs/guard-verify.log" 2>&1; then
-        while IFS= read -r invalid_class; do
-          relative_class="${invalid_class#"$work/out/"}"
-          original_class="$game_dir/classes/$relative_class"
-          if [[ -f "$original_class" ]]; then
-            cp "$original_class" "$invalid_class"
-            printf '[bytecode-guard] restored original %s after final ASM verification failure\n' \
-              "$relative_class" >>"$work/logs/pipeline.log"
-          fi
-        done < <(awk '/^FAIL_CLASS: / { print $2 }' "$work/logs/guard-verify.log")
+      if [[ "${PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION:-0}" != 1 ]]; then
+        # Anything still failing falls back to its untransformed original.
+        if ! java -cp "$VERIFY_TOOLS:$ASM_CP" Verify "${class_files[@]}" \
+          >"$work/logs/guard-verify.log" 2>&1; then
+          while IFS= read -r invalid_class; do
+            relative_class="${invalid_class#"$work/out/"}"
+            original_class="$game_dir/classes/$relative_class"
+            if [[ -f "$original_class" ]]; then
+              cp "$original_class" "$invalid_class"
+              printf '[bytecode-guard] restored original %s after final ASM verification failure\n' \
+                "$relative_class" >>"$work/logs/pipeline.log"
+            fi
+          done < <(awk '/^FAIL_CLASS: / { print $2 }' "$work/logs/guard-verify.log")
+        fi
       fi
       mapfile -d '' class_files < <(find "$work/out" -type f -name '*.class' -print0)
     fi
@@ -150,7 +204,7 @@ for game_dir in "${GAME_DIRS[@]}"; do
   source_count=$(find "$work/java" -type f -name '*.java' | wc -l)
   hard=0
   if [[ -f "$work/logs/diagnostics.json" ]]; then
-    hard=$(node -e 'const fs=require("fs"); const r=JSON.parse(fs.readFileSync(process.argv[1], "utf8")); console.log(r.hardFailures || 0)' "$work/logs/diagnostics.json")
+    hard=$(node -e 'const fs=require("fs"); const r=JSON.parse(fs.readFileSync(process.argv[1], "utf8")); console.log(r.hardFailures || 0)' "$work/logs/diagnostics.json" 2>/dev/null || echo 0)
   fi
 
   if ((source_count > 0)); then

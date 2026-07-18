@@ -6,7 +6,12 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
-const JAVA_TOOLS_DIR = path.resolve(process.env.JAVA_TOOLS_DIR || process.env.JT_DIR || '/home/kreijstal/git/java-tools');
+const JAVA_TOOLS_DIR_RAW = process.env.JAVA_TOOLS_DIR || process.env.JT_DIR;
+if (!JAVA_TOOLS_DIR_RAW) {
+  console.error('JAVA_TOOLS_DIR (or JT_DIR) must point to the java-tools checkout');
+  process.exit(2);
+}
+const JAVA_TOOLS_DIR = path.resolve(JAVA_TOOLS_DIR_RAW);
 const JVM_CLI = path.join(JAVA_TOOLS_DIR, 'scripts', 'jvm-cli.js');
 
 const input = process.argv[2] && path.resolve(process.argv[2]);

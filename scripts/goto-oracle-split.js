@@ -23,6 +23,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const v8 = require('v8');
 const { spawnSync } = require('child_process');
 
 const JAVA_TOOLS_DIR = path.resolve(process.env.JAVA_TOOLS_DIR || '/home/kreijstal/git/java-tools');
@@ -66,7 +67,7 @@ function cfrMarkers(classFile, work) {
     const res = spawnSync('java', ['-jar', CFR_JAR, classFile, '--outputdir', dir,
       '--silent', 'true', '--caseinsensitivefs', 'false'],
       { encoding: 'utf8', timeout: 180000, killSignal: 'SIGKILL', maxBuffer: 64 * 1024 * 1024 });
-    if (res.error) return null;
+    if (res.error || res.status !== 0) return null;
     let gotos = 0, unable = 0, exc = 0;
     let files = [];
     try { files = fs.readdirSync(dir); } catch { return null; }
@@ -115,8 +116,6 @@ function markerMethodNames(text) {
   }
   return names;
 }
-
-function bigintSafe(_k, v) { return typeof v === 'bigint' ? v.toString() : v; }
 
 /** Find the code attribute of the method a candidate targets, so its codeItems
  * can be snapshotted/restored around a trial split. */
@@ -183,13 +182,13 @@ function main() {
         // candidate on large classes.
         const code = findMethodCode(ast, cand);
         if (!code) continue;
-        const saved = JSON.stringify(code.codeItems, bigintSafe);
+        const saved = v8.serialize(code.codeItems);
         const r = applyJoinSplit(ast, cand);
         let mk = null;
         if (r.changed) {
           try { writeAst(ast, tmpClass); mk = cfrMarkers(tmpClass, work); } catch { mk = null; }
         }
-        code.codeItems = JSON.parse(saved); // revert
+        code.codeItems = v8.deserialize(saved); // revert without changing BigInt operands
         if (mk && better(mk, current) && (best === null || better(mk, best))) {
           best = mk; bestCand = cand;
         }

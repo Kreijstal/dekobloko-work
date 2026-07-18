@@ -125,7 +125,10 @@ while IFS=$'\t' read -r game _expected_gotos _expected_unable _expected_classes 
   unable="$(grep -c 'Unable to fully structure code\|lbl-1000' "$marker_file" || true)"
   classes="$(cut -d: -f1 "$marker_file" | sort -u | wc -l)"
   exc_file="$GAMES_DIR/$game/deob-safe/logs/cfr-exceptions.txt"
-  exc="$([[ -f "$exc_file" ]] && grep -c 'Exception decompiling' "$exc_file" || echo 0)"
+  exc=0
+  if [[ -f "$exc_file" ]]; then
+    exc="$(grep -c 'Exception decompiling' "$exc_file" || true)"
+  fi
   printf '%s\t%s\t%s\t%s\t%s\n' "$game" "$gotos" "$unable" "$classes" "$exc" >> "$tmp_summary"
 done < "$tmp_all"
 

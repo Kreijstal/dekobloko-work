@@ -97,39 +97,11 @@ async function main() {
     process.env.JVM_TRACE_EXIT = String(options.maxInsns);
   }
 
-  // These profiled Dekobloko DSP helpers contain obfuscator recovery handlers
-  // ending in athrow. Keep exception-bearing methods conservative by default,
-  // while allowing the measured hot call graph to remain compiled.
-  if (!process.env.JVM_JIT_EXCEPTION_METHODS) {
-    process.env.JVM_JIT_EXCEPTION_METHODS = [
-      's.b(BI)I',
-      'mm.a([B)V',
-      'ck.a([I[IIIIIIII)V',
-      'ck.a([I[IIIIIII)V',
-      'cf.a(IB[III)V',
-      'em.a(Lvg;ZIBI)V',
-      'ih.a()Z',
-      'ih.a([FI)V',
-      'ih.b([II)I',
-      'ih.a([II)I',
-      'ih.a(IIIII)I',
-      'ih.a(II)V',
-      'ih.a(IIII[FI)V',
-      'kh.a(IB)[B',
-      'kh.a(I)V',
-      'lb.a(II)I',
-      'oj.a(IIIIIIIBIIII[IIIII)V',
-      'on.a(Z[IZ[IZZLvg;)V',
-      'rd.c(I)V',
-      'ug.a(Lvg;IIIZIII)V',
-      've.a(IIIIIII[III)V',
-    ].join(',');
-  }
-  if (!process.env.JVM_JIT_MONITOR_METHODS) {
-    process.env.JVM_JIT_MONITOR_METHODS = 'kh.a(IB)[B';
-  }
-  if (!process.env.JVM_JIT_RESUME_METHODS) {
-    process.env.JVM_JIT_RESUME_METHODS = 'kh.a(IB)[B';
+  // Dekobloko's startup is dominated by numeric table construction, archive
+  // decoding, and software rendering loops. Use the validated WebAssembly
+  // tier by default while retaining JVM_WASM_JIT=0 as an explicit opt-out.
+  if (process.env.JVM_WASM_JIT === undefined) {
+    process.env.JVM_WASM_JIT = '1';
   }
 
   const classesDir = extractJar(options.jar);

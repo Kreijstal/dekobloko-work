@@ -11,7 +11,7 @@ panic is a *hard* failure: the class is skipped, never emitted wrong.
 
 Measured with:
 
-```
+```text
 node scripts/runCfr.js --silent --diagnostics-json <out> <game>/classes
 # then read .panics.length + .hardFailures from the JSON
 ```

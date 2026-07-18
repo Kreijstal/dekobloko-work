@@ -1258,6 +1258,62 @@ does not load game-specific selectors; it only asks generic passes to use extra
 dominance and original-local-preservation gates. Keep the default Dekobloko run
 without this flag unless a guardrail shows a verifier/runtime need.
 
+`--experimental-interclass-dce` enables closed-world constant evaluation across
+classes. It specializes any integer-like method parameter only when CFG stack
+analysis proves that every reachable direct call site supplies the same
+constant; parameters modified by a store or `iinc` are excluded. The analysis
+repeats specialization, constant folding, branch DCE,
+and unreachable-code removal to a fixed point, so deleting a dummy call can
+expose a constant argument in one of its callees. It stops after 16 iterations
+by default; `PIPELINE_INTERCLASS_DCE_MAX_ITERATIONS` changes that safety cap.
+`PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION=1` adds a separate, stronger
+closed-world step. It removes only a contiguous trailing run of already
+specialized integer-like parameters from private or internal static methods,
+then rewrites every proven direct call site. Argument evaluation is preserved
+at bytecode level. Set `PIPELINE_SIGNATURE_MAP_OUT` to retain a deterministic
+JSON dictionary from each old owner/name/descriptor to its new signature and
+the removed parameter indexes, types, and constant values. Inherited call-site
+owners are recorded as aliases and resolved through the complete class
+hierarchy during both proof collection and rewriting. Keep this gate off
+when processing an incomplete class set or while investigating runtime bugs.
+This gate does not currently shrink virtual or interface method families. An
+internal interface can be compacted safely only as one coordinated family: the
+parameter must be removable from the interface declaration and every
+implementation, and every `invokeinterface`/`invokevirtual` call must be
+rewritten with them. One live implementation, or any public/platform/callback
+entry, keeps the original family signature. That family-wide extension is not
+part of the generated snapshot yet.
+Under the same gate, a typed local
+pass folds literal `int`/`long` arithmetic, conversions, and comparisons before
+decompilation, removes neutral integer operations, combines adjacent additive
+constants, normalizes JVM-masked shift distances, and reruns immediate
+constant-branch DCE. Decompiled `x ^ -1` expressions use `~x`, and comparisons
+against constants are complemented and direction-adjusted. Integer overflow
+follows JVM semantics; division or remainder by zero and expressions with
+alternate control-flow entries are left
+untouched. The mode also permits mutually guarded default-false static-field
+cycles. Non-private members of public classes
+remain open, as do instance methods on non-public classes implementing platform
+interfaces or extending platform callback classes. Private methods, static
+methods on non-public classes, and members of ordinary non-public gamepack
+classes are treated as internal. Network-, OS-, and callback-derived arguments
+remain unknown. This mode is off by default because reflection, native
+integration, or an omitted external caller can invalidate a closed-world proof.
+Set
+`PIPELINE_EXPERIMENTAL_INTERCLASS_DCE=1` as an equivalent opt-in for runtime A/B
+experiments.
+
+`PIPELINE_EXPERIMENTAL_UNTHROWABLE_CATCH_DCE=1` enables a second, independently
+gated source cleanup. After control-flow reconstruction, a catch of a specific
+checked type is retained only when the emitted try body contains a call whose
+source declaration throws that type. Otherwise the catch and its synthetic
+`if (false) throw (CheckedException) null;` javac-reachability anchor are both
+removed. Broad `Throwable`, `Exception`, `RuntimeException`, and `Error`
+families remain conservative because ordinary JVM instructions can produce
+them. This policy intentionally favors readable, self-consistent Java source
+over preserving an undeclared checked exception propagated by arbitrary
+bytecode, so it remains opt-in for runtime A/B testing.
+
 ### Other Gamepack Baselines
 
 The same generic pipeline can be run over other AlterOrb/FunOrb jars. These

@@ -314,6 +314,62 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     STRUCTURED_GOTO_FORWARD_IINC_CONTINUES: '0',
     STRUCTURED_GOTO_DUPLICATE_INT_GUARD_ALIAS: '0',
     STRUCTURED_GOTO_DUPLICATE_FORWARD_TAIL_RETARGET: '0',
+    STRUCTURED_GOTO_CHECKED_LOOP_BODY_SUFFIX_ENTRIES: '0',
+    STRUCTURED_GOTO_CONDITIONAL_BOOLEAN_LOCAL_CONSTANT_TAIL: '0',
+    STRUCTURED_GOTO_CONDITIONAL_BOOLEAN_LOCAL_STORE_TARGET: '0',
+    STRUCTURED_GOTO_CONDITIONAL_INT_CONSTANT_COMPARE_BOUND: '0',
+    STRUCTURED_GOTO_CONDITIONAL_INT_LOCAL_COPY_TARGET: '0',
+    STRUCTURED_GOTO_CONST_FALSE_COMPARE_INTERRUPTERS: '0',
+    STRUCTURED_GOTO_DISABLE_OPTION_CONTINUE_TAIL: '0',
+    STRUCTURED_GOTO_DUPLICATE_DUMMY_GUARD_BODY: '0',
+    STRUCTURED_GOTO_DUPLICATE_GRID_SCAN_CONTINUES: '0',
+    STRUCTURED_GOTO_DUPLICATE_HALVE_SETUP_TAIL: '0',
+    STRUCTURED_GOTO_DUPLICATE_RADIX_PARSER_LOOP: '0',
+    STRUCTURED_GOTO_DUPLICATE_SELECTOR_PARTIAL_SETUP: '0',
+    STRUCTURED_GOTO_EVENT_LOOP_ACTION_TAIL_CLONE: '0',
+    STRUCTURED_GOTO_FORWARD_GOTO_LOOP_BODY: '0',
+    STRUCTURED_GOTO_FORWARD_LOOP_SUFFIX_ENTRY: '0',
+    STRUCTURED_GOTO_INVARIANT_FLAG_FORWARD_EXIT: '0',
+    STRUCTURED_GOTO_ITERATOR_PROCESS_GUARD: '0',
+    STRUCTURED_GOTO_ITERATOR_PROCESS_GUARD_DEBUG: '0',
+    STRUCTURED_GOTO_NULL_GUARD_INVARIANT_FLAG_FORWARD_EXIT: '0',
+    STRUCTURED_GOTO_ONESHOT_DEBUG: '0',
+    STRUCTURED_GOTO_PAIRED_PREDICATE_RESULT_TAIL: '0',
+    STRUCTURED_GOTO_QUEUE_DRAIN_CONTINUATION: '0',
+    STRUCTURED_GOTO_RASTER_ROW_SCAN_HEADER_CLONE: '0',
+    STRUCTURED_GOTO_REMOVE_DEAD_ATHROW_PADDING: '0',
+    STRUCTURED_GOTO_RETARGET_GOTO_TRAMPOLINES: '0',
+    STRUCTURED_GOTO_SHARED_BOOLEAN_CONSTANT_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_BOOLEAN_PREDICATE_SELECTOR_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_BOOLEAN_SELECTOR_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_CONDITIONAL_RENDER_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_CONDITIONAL_SIDE_EFFECT_EXIT_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_FALLTHROUGH_CONTINUATION_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_GUARDED_SIDE_EFFECT_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_INSTANCE_ASSIGNMENT_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_INT_ADVANCE_SELECTOR_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_INT_GUARDED_SIDE_EFFECT_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_INT_PAIR_CONTINUATION: '0',
+    STRUCTURED_GOTO_SHARED_INT_SELECTOR_INVOKE_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_NULL_ARRAY_ELEMENT_ASSIGNMENT_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_NULL_FIELD_INVOKE_CONTINUATION: '0',
+    STRUCTURED_GOTO_SHARED_NULL_STATIC_BOOLEAN_ASSIGNMENT_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_RENDERER_BOOLEAN_SELECTOR: '0',
+    STRUCTURED_GOTO_SHARED_RENDER_CHOICE_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_SIDE_EFFECT_GOTO_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_SIMPLE_INVOKE_GOTO_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_STATIC_ASSIGNMENTS_GOTO_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_STATIC_ASSIGNMENT_FALLTHROUGH_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_STATIC_ASSIGNMENT_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_STATIC_OBJECT_CLEAR_TAIL: '0',
+    STRUCTURED_GOTO_SHARED_TERMINAL_TAIL: '0',
+    STRUCTURED_GOTO_SIMPLIFY_CONSTANT_BRANCHES: '0',
+    STRUCTURED_GOTO_SIMPLIFY_DOMINATED_INT_EQUALITY_BRANCHES: '0',
+    STRUCTURED_GOTO_STACK_BOOLEAN_RASTER_BODY: '0',
+    STRUCTURED_GOTO_STACK_CARRIED_INVARIANT_FLAG_FORWARD_EXIT: '0',
+    STRUCTURED_GOTO_STACK_COMPARE_CONTINUATION: '0',
+    STRUCTURED_GOTO_STATE_ARRAY_ALLOCATION_TAIL: '0',
+    STRUCTURED_GOTO_STRING_BASE38_SPLIT_TAIL: '0',
   };
   const merged = { ...disabled, ...overrides };
   const keys = Object.keys(merged);
@@ -1977,7 +2033,7 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
 
 {
   const source = item('LENTRY', { op: 'goto', arg: 'LUPDATE' });
-  source.stackMapFrame = { frameType: 'same' };
+  source.stackMapFrame = { frameType: 'same', longOperand: 1n };
   const codeItems = padded([
     source,
     item('LBEFORE', 'iconst_0'),
@@ -2003,7 +2059,7 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
   assert.equal(result.rewrites, 1);
   assert.equal(code.localsSize, '5', 'fresh one-shot guard local must extend localsSize instead of reusing a live local');
   assert.equal(codeItems[0].instruction, 'iconst_1');
-  assert.deepEqual(codeItems[0].stackMapFrame, { frameType: 'same' });
+  assert.deepEqual(codeItems[0].stackMapFrame, { frameType: 'same', longOperand: 1n });
   assert.deepEqual(codeItems[1].instruction, { op: 'istore', arg: '4' });
   assert.deepEqual(codeItems[2].instruction, { op: 'goto', arg: 'LOUTER' });
   const outerIndex = codeItems.findIndex((entry) => entry.labelDef === 'LOUTER:');
@@ -2381,7 +2437,6 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
   ]);
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_MESSAGE_EXIT_TAIL: '1',
-    STRUCTURED_GOTO_MESSAGE_EXIT_TAIL: '1',
   }, () => runStructuredGotoClone(targetAstFrom('renamedOwner', 'renamedMethod', '()V', codeItems)));
   assert.equal(result.changed, true, 'message-exit tail should be cloned by descriptor shape, not class-name gates');
   assert.notDeepEqual(codeItems.find((entry) => entry.labelDef === 'L2:').instruction, { op: 'goto', arg: 'LEXIT' });
@@ -2460,7 +2515,6 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
   ]);
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_RASTER_BLUR_LOOP_HEADER: '1',
-    STRUCTURED_GOTO_RASTER_BLUR_LOOP_HEADER: '1',
   }, () => runStructuredGotoClone(targetAstFrom('renamedOwner', 'renamedMethod', '([IIIIIIIII)V', codeItems)));
   assert.equal(result.changed, true, 'generic raster blur loop should not depend on class or method name');
   assert.deepEqual(codeItems.find((entry) => entry.labelDef === 'LENTRYIF:').instruction, { op: 'if_icmplt', arg: 'LHEAD' });
@@ -2523,7 +2577,6 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LDONE', 'return'),
   ]);
   const result = withOnlyStructuredGotoEnv({
-    STRUCTURED_GOTO_TARGETED_SHARED_LOOP_INCREMENT_TAILS: '1',
     STRUCTURED_GOTO_TARGETED_SHARED_LOOP_INCREMENT_TAILS: '1',
   }, () => runStructuredGotoClone(targetAstFrom('renamedOwner', 'renamedMethod', '()V', codeItems)));
   assert.equal(result.changed, true, 'shared loop-increment cloning should preserve labels on replaced gotos');
