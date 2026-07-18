@@ -510,11 +510,11 @@ function restoreDroppedIntComplements(codeItems, original) {
   return true;
 }
 
-// Value operand of a bitwise-complement comparison. The obfuscator idiom is
-// `~x <cmp> C`, where `x` is a single self-contained int producer: an int local
-// load (`iload*`) or an int-like static/instance field read (`getstatic`/
-// `getfield` of I/Z/B/S/C). Returns the instruction so callers can match it
-// structurally with sameInstructionOperand, else null.
+// Value operand of a bitwise-complement comparison. The common obfuscator
+// idiom uses one int producer, but some constructors compare a computed int[]
+// element (for example `this.q[row * width + column]`). Return the complete
+// expression so the safety check cannot mistake a dropped `iconst_m1; ixor`
+// for a valid fold merely because the producer spans several instructions.
 function complementValueOperand(insn) {
   if (!insn) return null;
   if (intLoadLocal(insn) != null) return insn;
@@ -528,6 +528,66 @@ function complementValueOperand(insn) {
   return null;
 }
 
+function complementValueItemsEndingAt(codeItems, end) {
+  const single = complementValueOperand(codeItems[end] && codeItems[end].instruction);
+  if (single) return [codeItems[end]];
+  if (op(codeItems[end] && codeItems[end].instruction) !== 'iaload') return null;
+
+  // Look only for a short, side-effect-free expression. This deliberately does
+  // not accept invokes, stores, array loads nested in the index, or arbitrary
+  // object graphs: the rollback guard should be conservative.
+  const first = Math.max(0, end - 16);
+  for (let start = first; start <= end; start += 1) {
+    const stack = [];
+    let sawIntArray = false;
+    let valid = true;
+    for (let i = start; i <= end && valid; i += 1) {
+      const insn = codeItems[i] && codeItems[i].instruction;
+      const cur = op(insn);
+      if (refLoadLocal(insn) != null) {
+        stack.push('ref');
+      } else if (intLoadLocal(insn) != null || integerConstantValue(insn) != null) {
+        stack.push('int');
+      } else if (cur === 'getstatic' && instructionDescriptor(insn) === '[I') {
+        stack.push('int-array');
+        sawIntArray = true;
+      } else if (cur === 'getfield' && instructionDescriptor(insn) === '[I') {
+        if (stack.pop() !== 'ref') valid = false;
+        else {
+          stack.push('int-array');
+          sawIntArray = true;
+        }
+      } else if (cur === 'ineg') {
+        if (stack.pop() !== 'int') valid = false;
+        else stack.push('int');
+      } else if (isPureIntBinaryOp(cur)) {
+        if (stack.pop() !== 'int' || stack.pop() !== 'int') valid = false;
+        else stack.push('int');
+      } else if (cur === 'iaload') {
+        if (stack.pop() !== 'int' || stack.pop() !== 'int-array') valid = false;
+        else stack.push('int');
+      } else {
+        valid = false;
+      }
+    }
+    if (valid && sawIntArray && stack.length === 1 && stack[0] === 'int') {
+      return codeItems.slice(start, end + 1);
+    }
+  }
+  return null;
+}
+
+function instructionDescriptor(insn) {
+  const arg = insn && insn.arg;
+  return Array.isArray(arg) && Array.isArray(arg[2]) ? arg[2][1] : null;
+}
+
+function isPureIntBinaryOp(cur) {
+  return cur === 'iadd' || cur === 'isub' || cur === 'imul' || cur === 'idiv' ||
+    cur === 'irem' || cur === 'ishl' || cur === 'ishr' || cur === 'iushr' ||
+    cur === 'iand' || cur === 'ior' || cur === 'ixor';
+}
+
 // Collect every `~value <cmp> C` comparison in the original method, in BOTH
 // operand orderings the compiler can emit:
 //   value-first: value ; iconst_m1 ; ixor ; const ; branch   (`~value <cmp> C`)
@@ -538,27 +598,28 @@ function complementValueOperand(insn) {
 // if_icmpeq`) were never registered and silently corrupted by cloning.
 function intComplementComparisons(codeItems) {
   const out = [];
-  for (let i = 0; i + 4 < codeItems.length; i += 1) {
-    const insn0 = codeItems[i] && codeItems[i].instruction;
-    const insn1 = codeItems[i + 1] && codeItems[i + 1].instruction;
-    const insn2 = codeItems[i + 2] && codeItems[i + 2].instruction;
-    const insn3 = codeItems[i + 3] && codeItems[i + 3].instruction;
-    const insn4 = codeItems[i + 4] && codeItems[i + 4].instruction;
-    // value-first: value ; iconst_m1 ; ixor ; const ; branch
-    if (complementValueOperand(insn0) && op(insn1) === 'iconst_m1' && op(insn2) === 'ixor') {
-      const constant = integerConstantValue(insn3);
-      const branchOp = op(insn4);
+  for (let i = 1; i + 2 < codeItems.length; i += 1) {
+    const complementConstant = codeItems[i] && codeItems[i].instruction;
+    const complementXor = codeItems[i + 1] && codeItems[i + 1].instruction;
+    if (op(complementConstant) !== 'iconst_m1' || op(complementXor) !== 'ixor') continue;
+    const valueItems = complementValueItemsEndingAt(codeItems, i - 1);
+    if (!valueItems) continue;
+    const valueStart = i - valueItems.length;
+
+    // value-first: value... ; iconst_m1 ; ixor ; const ; branch
+    {
+      const constant = integerConstantValue(codeItems[i + 2] && codeItems[i + 2].instruction);
+      const branchOp = op(codeItems[i + 3] && codeItems[i + 3].instruction);
       if (constant != null && isIntCompareBranch(branchOp)) {
-        out.push({ value: insn0, constant, branchOp });
+        out.push({ valueItems, constant, branchOp });
       }
     }
-    // const-first: const ; value ; iconst_m1 ; ixor ; branch
-    const leadingConstant = integerConstantValue(insn0);
-    if (leadingConstant != null && complementValueOperand(insn1) &&
-      op(insn2) === 'iconst_m1' && op(insn3) === 'ixor') {
-      const branchOp = op(insn4);
+    // const-first: const ; value... ; iconst_m1 ; ixor ; branch
+    const leadingConstant = integerConstantValue(codeItems[valueStart - 1] && codeItems[valueStart - 1].instruction);
+    if (leadingConstant != null) {
+      const branchOp = op(codeItems[i + 2] && codeItems[i + 2].instruction);
       if (isIntCompareBranch(branchOp)) {
-        out.push({ value: insn1, constant: leadingConstant, branchOp });
+        out.push({ valueItems, constant: leadingConstant, branchOp });
       }
     }
   }
@@ -571,20 +632,27 @@ function intComplementComparisons(codeItems) {
 // fold would either keep the `iconst_m1; ixor` or complement the constant, so
 // this only fires on genuine corruption.
 function hasIncorrectUncomplementedComparison(codeItems, comparison) {
-  for (let i = 0; i + 2 < codeItems.length; i += 1) {
-    const insn0 = codeItems[i] && codeItems[i].instruction;
-    const insn1 = codeItems[i + 1] && codeItems[i + 1].instruction;
-    const insn2 = codeItems[i + 2] && codeItems[i + 2].instruction;
-    // value-first: value ; const ; branch
-    if (sameInstructionOperand(insn0, comparison.value) &&
-      integerConstantValue(insn1) === comparison.constant &&
-      op(insn2) === comparison.branchOp) return true;
-    // const-first: const ; value ; branch
-    if (integerConstantValue(insn0) === comparison.constant &&
-      sameInstructionOperand(insn1, comparison.value) &&
-      op(insn2) === comparison.branchOp) return true;
+  const width = comparison.valueItems.length;
+  for (let i = 0; i + width + 1 < codeItems.length; i += 1) {
+    // value-first: value... ; const ; branch
+    if (sameInstructionSequence(codeItems, i, comparison.valueItems) &&
+      integerConstantValue(codeItems[i + width] && codeItems[i + width].instruction) === comparison.constant &&
+      op(codeItems[i + width + 1] && codeItems[i + width + 1].instruction) === comparison.branchOp) return true;
+    // const-first: const ; value... ; branch
+    if (integerConstantValue(codeItems[i] && codeItems[i].instruction) === comparison.constant &&
+      sameInstructionSequence(codeItems, i + 1, comparison.valueItems) &&
+      op(codeItems[i + width + 1] && codeItems[i + width + 1].instruction) === comparison.branchOp) return true;
   }
   return false;
+}
+
+function sameInstructionSequence(codeItems, start, expectedItems) {
+  for (let offset = 0; offset < expectedItems.length; offset += 1) {
+    if (!sameInstructionOperand(
+      codeItems[start + offset] && codeItems[start + offset].instruction,
+      expectedItems[offset] && expectedItems[offset].instruction)) return false;
+  }
+  return true;
 }
 
 
