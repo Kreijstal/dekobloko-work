@@ -4,7 +4,9 @@
 // Boot a FunOrb gamepack on the java-tools JavaScript JVM (headless).
 //
 // Usage:
-//   node scripts/run-jvmjs.js [gamepack.jar] [--class client] [--max-insns N] [--trace] [key=value ...]
+//   node scripts/run-jvmjs.js [gamepack.jar] [--class client] [--max-insns N] [--trace]
+//     [--load-state file.json]
+//     [--save-state file.json --save-after-ms N [--exit-after-save]] [key=value ...]
 //
 // Defaults to the repo-root dekobloko.jar and entry class `client`.
 // key=value pairs override/extend the applet parameters.
@@ -29,6 +31,10 @@ function parseArgs(argv) {
     codeBase: null,
     maxInsns: null,
     trace: false,
+    loadState: null,
+    saveState: null,
+    saveAfterMs: null,
+    exitAfterSave: false,
     params: {},
   };
   for (let i = 0; i < argv.length; i += 1) {
@@ -41,6 +47,14 @@ function parseArgs(argv) {
       options.maxInsns = Number(argv[++i]);
     } else if (arg === '--trace') {
       options.trace = true;
+    } else if (arg === '--load-state') {
+      options.loadState = path.resolve(argv[++i]);
+    } else if (arg === '--save-state') {
+      options.saveState = path.resolve(argv[++i]);
+    } else if (arg === '--save-after-ms') {
+      options.saveAfterMs = Number(argv[++i]);
+    } else if (arg === '--exit-after-save') {
+      options.exitAfterSave = true;
     } else if (arg.includes('=')) {
       const eq = arg.indexOf('=');
       options.params[arg.slice(0, eq)] = arg.slice(eq + 1);
@@ -79,6 +93,15 @@ function buildHookStub() {
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
+  if (options.loadState && options.saveState) {
+    throw new Error('--load-state and --save-state cannot be used together');
+  }
+  if (options.saveAfterMs !== null && !options.saveState) {
+    throw new Error('--save-after-ms requires --save-state file.json');
+  }
+  if (options.exitAfterSave && !options.saveState) {
+    throw new Error('--exit-after-save requires --save-state file.json');
+  }
   if (!fs.existsSync(JAVA_TOOLS_DIR)) {
     throw new Error(`java-tools not found at ${JAVA_TOOLS_DIR} (set JAVA_TOOLS_DIR)`);
   }
@@ -125,6 +148,40 @@ async function main() {
     appletParameters,
     appletCodeBase: options.codeBase || undefined,
   });
+
+  if (options.loadState) {
+    let state;
+    try {
+      state = JSON.parse(fs.readFileSync(options.loadState, 'utf8'));
+    } catch (error) {
+      throw new Error(`Cannot load save state ${options.loadState}: ${error.message}`);
+    }
+    const restored = await jvm.loadState(state);
+    console.error(`jvmjs: loaded save state ${options.loadState}` +
+      (restored.externalResources.length
+        ? ` (${restored.externalResources.length} host resources omitted or reopened)` : ''));
+    await jvm.execute();
+    return;
+  }
+
+  if (options.saveState) {
+    if (!Number.isFinite(options.saveAfterMs) || options.saveAfterMs < 0) {
+      throw new Error('--save-state requires --save-after-ms N');
+    }
+    setTimeout(() => {
+      try {
+        const state = jvm.saveState();
+        fs.mkdirSync(path.dirname(options.saveState), { recursive: true });
+        fs.writeFileSync(options.saveState, JSON.stringify(state));
+        console.error(`jvmjs: saved state ${options.saveState} ` +
+          `(${state.graph.nodes.length} heap nodes, ${state.externalResources.length} external resources)`);
+        if (options.exitAfterSave) setImmediate(() => process.exit(0));
+      } catch (error) {
+        console.error(`jvmjs: save state failed: ${error.stack || error}`);
+        if (options.exitAfterSave) setImmediate(() => process.exit(1));
+      }
+    }, options.saveAfterMs);
+  }
 
   const progressMs = Number(process.env.JVM_DEBUG_PROGRESS_MS);
   if (Number.isFinite(progressMs) && progressMs > 0) {
