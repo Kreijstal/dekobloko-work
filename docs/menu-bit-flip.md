@@ -23,6 +23,18 @@ Legitimately it is written only by `bd.a(boolean, int, boolean)`:
 `bd.java:124` sets it true when `var5 == 4 && !ce.field_w`; `bd.java:108` sets
 it false. Forcing it skips that path entirely.
 
+**This treats the symptom, not the cause.** `v.field_d` sits at the end of a
+local state machine that never advances: `da.field_e` is null, so the `tf`
+object is never built, so `sh.field_d` is never pointed at `pa.field_V`, so
+`qm.a` returns `-1` instead of `2`. Forcing the bit produces the *effect* while
+the cause remains wrong, which is why the resulting UI is only half-live — the
+lobby's "RETURN TO MAIN MENU" button, for instance, does nothing. The chain and
+the real blocker are in
+[`loading-and-menu-investigation.md`](loading-and-menu-investigation.md#the-real-chain).
+
+Nothing here is server-driven: `var5` comes from `qm.a((byte) 57)` via a wrapper
+that discards its arguments, and is computed purely from local state.
+
 ## Recipe
 
 Agents live in the session scratch dir. `SetAgent2` writes boolean/int/long

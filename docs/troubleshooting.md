@@ -112,6 +112,35 @@ never asks. Force a cold start by moving `~/.alterorb/caches/dekobloko` aside
 (the launcher ignores `HOME`), then expect ~31 requests:
 `grep -oP 'sent archive=\K[0-9]+ group=[0-9]+' srv.log | grep -v '^255'`.
 
+## Client shows "CRC mismatch - unable to get a valid download"
+
+A served group does not match the CRC recorded for it in its archive's group
+table. Expected for any synthesised substitute. Confirm with
+`grep -c net-validate-failed client.log`.
+
+Fix by forging the substitute's CRC to the recorded value, not by rewriting the
+recorded CRC — see [`crc-reconciliation.md`](crc-reconciliation.md).
+
+Note `cache-validate-failed` is a **different, benign** line: on a cold cache the
+client checks its empty local store, misses, and fetches from the network. Dozens
+of those at startup are normal. Only `net-validate-failed` is the CRC error.
+
+## Client dies instantly with `error_game_crash` after a js5 change
+
+```
+Error: null| java.lang.RuntimeException
+error_game_crash
+```
+
+The master index (archive 255 group 255) is **signed**, and it records a CRC over
+every group table. Editing a group table forces an edit to the master index,
+which invalidates the signature; the client verifies it and throws before the
+login screen.
+
+The server log prints `loaded signed master index` on every run. Never rewrite
+the contents of a signed index. Details in
+[`crc-reconciliation.md`](crc-reconciliation.md).
+
 ## Server prints its banner, then dies
 
 ```
@@ -210,6 +239,8 @@ JVM. Get the real one with `jps -l | grep DekoblokoLauncher`.
 | --- | --- | --- |
 | `bh.field_k` | the game state | the inbound packet **opcode register**; the values `client.java` tests it against are the server opcode table |
 | `ph.field_xb` | the game state | the **login handshake** state; completes in ~95ms, `wf.field_u` is its normal terminal state |
+| `var5` at `bd.java:40` | a server response code | computed from **local state** — `ne.a` discards its arguments and returns `qm.a((byte) 57)`. No server message sets `v.field_d` |
+| `ASSET ... ok` in the client log | the group was accepted | only that the **name lookup** resolved; CRC validation is a separate check (`net-validate-failed`) |
 | `cb.field_a` | the current wait reason | a **stale label** — reads "Waiting for sound effects" while archives 8/9 are finished |
 | `ji.a(int, byte)` returning ready | the data is present | only that the **index asserts the group exists** (`field_k[groupId] != 0`) |
 | `vb.field_S` / `ii.field_t` / `eg.field_e` non-null | archives 4/6/11 unfinished | **nothing** — those three have no null-assignment site and stay live for the client's whole run |
