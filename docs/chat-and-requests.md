@@ -107,8 +107,11 @@ changing any byte -- it states the rules outright:
 
 ```java
 var2 = null;
-if (field_p != null && field_l == 1) var2 = "<img=0>" + field_p;
-if (field_l == 2)                    var2 = "<img=1>" + var2;
+if (field_p != null) {
+    var2 = field_p;
+    if (field_l == 1) var2 = "<img=0>" + var2;
+    if (field_l == 2) var2 = "<img=1>" + var2;
+}
 ...
 if (field_m == 0 && ii.field_q) var3 = "[" + uc.field_b + "] ";   // "[Lobby] "
 if (field_m == 1)               var3 = "[<owner>'s game] ";
@@ -121,23 +124,24 @@ A working lobby player line therefore needs **three** things:
 
 | field | source | value | why |
 | --- | --- | --- | --- |
-| `field_l` | `tg.field_c` (byte 1) | **1** | the name is built ONLY on this branch |
+| `field_l` | `tg.field_c` (byte 1) | **0**, **1**, or **2** | rank tier: no icon, `<img=0>`, or `<img=1>`; all retain the name |
 | `field_m` | flags & 127 | **0** | the only channel giving "[Lobby] " |
 | `field_j` | flags & 0x80 | **clear** | the name is appended under `if (!field_j)` |
 
-So the flags byte is `0x00` and the second byte is `1`.
+So the flags byte is `0x00`; the second byte selects the intended rank tier.
 
-**`tg.field_c` was the real bug, not the channel.** With it at 0, `var2` stays
-null and the line reads "null: text" on *every* channel. Five envelope
-revisions were spent moving the channel byte in response to that symptom before
-reading the formatter. The `<img=0>` is the rank icon drawn before the name.
+The earlier conclusion that `tg.field_c=0` caused a null name came from a
+pipeline miscompile that split the shared local and dropped its `field_p` seed.
+In the original bytecode, tiers 0, 1, and 2 all retain the sender name; only the
+rank icon differs. A null speaker instead means `field_p` itself was null.
 
 Channel behaviour observed while getting there:
 
 | flags | result |
 | --- | --- |
-| `0x00` + `tg.field_c=1` | `[Lobby] <name>: text` -- correct |
-| `0x00` + `tg.field_c=0` | `[Lobby] null: text` |
+| `0x00` + `tg.field_c=0` | `[Lobby] <name>: text` |
+| `0x00` + `tg.field_c=1` | `[Lobby] <img=0><name>: text` |
+| `0x00` + `tg.field_c=2` | `[Lobby] <img=1><name>: text` |
 | `0x01` | in-game channel, `[<owner>'s game] ` |
 | `0x02` | renderer `NullPointerException` |
 | `0x82` | server message / status channel, no speaker |

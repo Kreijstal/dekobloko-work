@@ -171,14 +171,16 @@ handler, no length entry, silently dropped) and opcode 10 (return to main menu).
 The flags byte in server opcode 11 selects the rendering, not just which fields
 are present:
 
-A null speaker name is usually NOT the channel: the rendered name is built only
-when `hl.field_l == 1`, and `field_l` comes from the packet's SECOND byte
-(`tg.field_c`). With it at 0 the line reads "null: text" on every channel.
+A null speaker name is usually NOT the channel or rank tier. `field_l` comes
+from the packet's SECOND byte (`tg.field_c`) and selects no icon, `<img=0>`, or
+`<img=1>` for values 0, 1, and 2. All three retain `hl.field_p`; a null speaker
+means that name field was null.
 
 | flags | tg.field_c | result |
 | --- | --- | --- |
-| `0x00` | 1 | `[Lobby] <name>: text` -- correct |
-| `0x00` | 0 | `[Lobby] null: text` |
+| `0x00` | 0 | `[Lobby] <name>: text` |
+| `0x00` | 1 | `[Lobby] <img=0><name>: text` |
+| `0x00` | 2 | `[Lobby] <img=1><name>: text` |
 | `0x01` | any | in-game channel |
 | `0x02` | any | renderer NPE, client dies |
 | `0x82` | any | server message / status channel |

@@ -3821,6 +3821,7 @@ const passes = [
   { name: 'split-concrete-object-reaching-local-late', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
   { name: 'split-typed-reused-locals-late', fn: (a) => runSplitTypedReusedLocals(a, {
     preserveOriginalLocals: true,
+    skipIfReachesUnrewrittenLoad: true,
     minMethodItems: 100,
     maxIterations: 2,
   }) },

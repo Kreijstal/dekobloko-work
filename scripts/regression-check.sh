@@ -53,6 +53,7 @@ EXPECTED=(
     "kf 0"
     "db 0"
     "cm 0"
+    "mb 0"
 )
 
 WORK=$(mktemp -d -t dekobench-focused-XXXXXX)
@@ -82,6 +83,9 @@ if [[ "$verify_failed" -gt 0 ]]; then
     echo "FAIL: $verify_failed verifier failure(s)"
     exit 1
 fi
+
+echo "[*] Semantic checks..."
+JAVA_TOOLS_DIR="$JAVA_TOOLS_DIR" node "$SCRIPT_DIR/check-mb-chat-name-seed.js" "$WORK/out/mb.class" || exit 1
 
 PASSED=0
 echo
