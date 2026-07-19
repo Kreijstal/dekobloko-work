@@ -71,8 +71,13 @@ The server sent the lobby bootstrap before the client finished loading.
 drives the client into the lobby branch while it is still on stage 1.
 
 Fixed in `lobby.py`/`game.py`: `Lobby.join()` only registers the session, and
-`Lobby.send_bootstrap()` runs on the client's first opcode 4/5 heartbeat. Do not
+the bootstrap is sent only when the client asks for it (opcode 9 or 58). Do not
 "simplify" that back into `join()`.
+
+Do **not** re-add a readiness gate on `_lobby_ready`. That flag is
+per-connection, and the lobby request arrives on a connection that never sent
+the 4/5 heartbeat — gating on it rejects every real request and breaks lobby
+entry. The request is its own readiness proof.
 
 ## Client reconnects every ~30 seconds, forever
 
@@ -88,15 +93,22 @@ failed fetch and re-requested.
 
 **First: dump the canvas and look at the progress bar.**
 
-If the bar is **full**, nothing is loading. Loading finished and the client is
-gated on `v.field_d`, which is false. That gate — not missing cache data — is
-the outstanding blocker; see
-[`loading-and-menu-investigation.md`](loading-and-menu-investigation.md#the-gate-vfield_d).
-Confirm with `pickagent.jar`:
+If the bar is **full**, nothing is loading. Loading finished and the render gate
+`se.i(-1)` is shut — not missing cache data.
+
+**This is solved.** `se.i(-1)` opens when `nm.field_Qb && qj.field_k` are both
+true, and each is set by a server reply the client is waiting for: opcode 5 must
+be answered with opcode 4, and opcode 4 with opcode 3. See
+[`chat-and-requests.md`](chat-and-requests.md). If the stall reappears, check
+those replies are being sent before anything else.
+
+Confirm the gate state with `pickagent2.jar`:
 
 ```sh
-java -cp $JAVA_HOME/lib/tools.jar:. Attacher <pid> $PWD/pickagent.jar "$PWD/out.txt,v;sh"
-# v.field_d = false  and  sh.field_j = true  ->  loading done, gate shut
+java -cp $JAVA_HOME/lib/tools.jar:. Attacher <pid> $PWD/pickagent2.jar "$PWD/out.txt,nm;qj;v;sh"
+# sh.field_j = true          -> loading finished
+# nm.field_Qb / qj.field_k   -> both must be true to open se.i(-1)
+# v.field_d = true           -> the simplemode bypass, NOT the multiplayer path
 ```
 
 Do **not** read anything into archives 4, 6 and 11 having non-null handles.
@@ -140,6 +152,79 @@ login screen.
 The server log prints `loaded signed master index` on every run. Never rewrite
 the contents of a signed index. Details in
 [`crc-reconciliation.md`](crc-reconciliation.md).
+
+## A client feature silently does nothing
+
+Almost always an unanswered request. Most client opcodes register an object on a
+queue and block that feature until a reply pops it; `bd.g` re-drains the queue
+every tick, so the request repeats forever and the server sees a storm.
+
+Group outbound packets by CALL SITE, not opcode: a request from feature code
+that fires once is satisfied, one repeating via `bd.g` is not. The request/reply
+table is in [`chat-and-requests.md`](chat-and-requests.md).
+
+Known unanswered as of writing: client opcode 3 (scores/achievements -- no
+handler, no length entry, silently dropped) and opcode 10 (return to main menu).
+
+## Chat shows the wrong sender, wrong channel, or crashes the client
+
+The flags byte in server opcode 11 selects the rendering, not just which fields
+are present:
+
+| flags | result |
+| --- | --- |
+| `0x00` | `null: text` |
+| `0x01` | `[<name>'s game] null: text` -- in-game channel |
+| `0x02` | renderer NPE, client dies |
+| `0x82` | server message / status channel |
+
+Details and the still-unsolved player-line case in
+[`chat-and-requests.md`](chat-and-requests.md).
+
+## A packet parses in a harness but crashes the live client
+
+`ChatProbe` covers `ki.a` (the parser) only. Rendering happens later in `cl.a`,
+which can still throw -- the `0x02` chat payload parsed cleanly and then NPEd a
+live client. A green probe means the fields decode, not that the client will
+draw them.
+
+## Server-side edits do not need the client restarted
+
+The client reconnects on its own. Only rebuild and relaunch it when the gamepack
+changes (new probes, a new `instr-serverkey-vNN.jar`). Restarting it for a
+Python-only change throws away the user's session and login for nothing.
+
+## Tracing decompiled control flow keeps giving wrong answers
+
+It does. Three conclusions drawn by reading `bd.f` / `he` / `lg` / `cm` were each
+contradicted by a probe: `var5` is not a server response code, opcode 12 does not
+route to `cm.a(53)`, and the login button does not reach `lg.a(8927)`.
+
+The nesting is deep enough that brace-walking picks the wrong branch and the
+result still reads as plausible. **Probe first.** The instrumentation pipeline
+turns a question into an answer in one build cycle; reading has a poor record
+here. Useful probe points already wired: `Instr.dispatch` (bd.f entry),
+`Instr.reachedCm`, `Instr.disconnect` (si.a), `Instr.aiWrite` (the sole writer of
+`ai.field_P`, with stack trace).
+
+## Agent reads a field as null/absent that clearly exists
+
+`InstAgent` v1 calls `getDeclaredFields()` on the concrete class only, so
+inherited fields are silently missing -- `de.field_V.field_n` is declared on `wl`,
+not `uf`, and looked absent. Use `InstAgent2`, which walks the hierarchy.
+
+Related: a rebuilt agent jar whose class name matches one already loaded in the
+target VM is ignored; the old class is reused. Version agent class names.
+
+## A build script silently patched the wrong jar
+
+`serverkey-v8.py` had its input jar hardcoded, so it kept re-patching a stale
+build after the version moved on -- only the output filename revealed it. Use
+`serverkey2.py`, which takes src/dst as arguments and exits non-zero if the
+modulus is not found.
+
+Also: `javac ... | head && echo OK` reports success on a failed build, because
+`&&` chains off `head`. Check the exit status separately.
 
 ## Client reaches the menu but never asked for a password
 

@@ -4,149 +4,151 @@ How the Dekobloko client loads its resources, why it parks on "Loading extra
 data", and what is actually blocking the menu. Companion docs:
 [`client-runtime-state.md`](client-runtime-state.md) (state variables, live
 inspection), [`troubleshooting.md`](troubleshooting.md) (symptom index),
-[`js5-sprite-format.md`](js5-sprite-format.md) (cache encoding).
+[`js5-sprite-format.md`](js5-sprite-format.md) (cache encoding),
+[`chat-and-requests.md`](chat-and-requests.md) (post-login protocol, chat,
+Huffman, and using the client as a library).
 
-## Status
+## Status: SOLVED
 
-Resource loading **completes** and login **succeeds**. The client authenticates,
-finishes all five loader stages, resolves every asset, and then parks on the
-"Loading extra data" screen at 100% — nothing is loading at that point.
+The client reaches the main menu with multiplayer intact. Confirmed live:
 
-Two independent routes can open the UI. One of them works and disables
-multiplayer; the other is the real one and is still blocked.
+```
+nm.field_Qb = true      qj.field_k = true
+v.field_d   = false     om.field_f = false     (simplemode OFF)
+```
 
-Working: JS5 handshake, login handshake, RSA, ISAAC, data-group fetching, the
-resource-assembly chain, and gameplay itself — single player plays correctly,
-with pieces spawning, rotating, locking, groups clearing and levels advancing.
+The fix is two server replies. Client opcodes 4 and 5 are **requests**, not a
+heartbeat pair, and both must be answered:
+
+| client sends | server must reply | reaches | sets |
+| --- | --- | --- | --- |
+| opcode 5 | **opcode 4**, payload `[0,0,0,0,0,0]` | `cm.a((byte) 53)` | `qj.field_k` |
+| opcode 4 | **opcode 3**, payload `[2]` | `dk.a` | `nm.field_Qb` |
+
+Both are needed. `se.i(-1)` checks `if (!nm.field_Qb) return v.field_d` first, so
+`qj.field_k` alone changes nothing.
+
+## The root cause: two requests mislabelled as heartbeats
+
+`CLIENT_PACKET_LENGTHS` recorded opcodes 4 and 5 as a "lobby heartbeat pair,
+sent together every ~120ms". The sizes were right; the description was wrong and
+cost most of the investigation. Both are requests that register an object on a
+queue and then block until a reply arrives:
+
+```
+opcode 5   oi.java:272   writes [5][2][0][sb.field_r]
+                         after ub.java:76 registers an `sb` on ef.field_S
+opcode 4   gm.java:90    writes [4][1][2]
+                         after cc.java:14 registers an `f` on rc.field_e
+```
+
+The `01 02` payload logged for hours as "half a heartbeat" is opcode 4's body.
+A server that swallows these leaves both queues permanently occupied, so
+neither flag can ever flip and the client parks on "Loading extra data" at 100%.
+
+### Reply formats
+
+**Opcode 4 -> `cm.a((byte) 53)`** (`cm.java:42`). Reads a discriminator byte
+(`0` selects the `sb` path), a second byte into `var3`, then little-endian bytes
+into `sb.field_q`, capped at `field_q.length << 2` = 4 bytes. Sets
+`sb.field_s = true`; `dc.java:370` then flips `qj.field_k`. Payload: six zero
+bytes. `mk.field_c[4] = -1`, so one length byte.
+
+**Opcode 3 -> `dk.a`** (`dk.java:40`). Reads a discriminator byte:
+
+| value | behaviour |
+| --- | --- |
+| 0 | reads an int[] via `b.h`, then a u8 count, then a loop |
+| 1 | pops `cg.field_c` (a different queue) |
+| **2** | pops `rc.field_e`, sets `field_t = b.h(...)`, `field_u = true` |
+| other | error `"A1:"` then `si.a(90)` |
+
+Discriminator 2 is the short path. `b.h(int)` (`b.java:42`) is
+`return new int[8]` -- it reads **nothing** from the wire -- so the payload is a
+single byte, `[2]`. `dc.java:335` then walks those 8 entries and sets
+`nm.field_Qb`. `mk.field_c[3] = -1`, so one length byte.
+
+## Read the bytecode, not the decompiled source
+
+Three separate CFR-derived traces of `bd.f`'s dispatch were wrong (opcode 12,
+then 6, then 12 again). The cause is an obfuscator opaque predicate, not
+carelessness:
+
+Every handler in `bd.f` ends with `iload 4; ifeq 481`, where slot 4 is
+`client.A`. That field has exactly one `putstatic` in the whole jar, guarded by
+`hn.j`; `hn.j` has exactly one `putstatic`, guarded by `hn.j` -- a
+self-referential flip that never fires. Neither is initialised true in any
+`static {}`. So `client.A` is permanently false, every `ifeq` is always taken,
+and each opcode runs exactly one handler. CFR reconstructs the never-executed
+fall-throughs as real nesting, and a wrong branch then reads as plausible.
+
+There is also **no `tableswitch`/`lookupswitch`** -- the dispatch is a linear
+`if_icmp` chain, so any tooling or reasoning that assumes a switch misreads it.
+
+`javap -p -c bd.class` settles it in minutes. Follow `if_icmp` targets from the
+`getstatic bh.field_k`.
+
+## `bd.f` dispatch table (from bytecode)
+
+| opcode | handler |
+| --- | --- |
+| 0 | `return` (no-op) |
+| 1 | `ua.i(-21)` |
+| 2 | `ke.e(48)` |
+| 3 | `dk.a(69)` -- pops `rc.field_e`, sets `nm.field_Qb` |
+| 4 | `cm.a(53)` -- pops `ef.field_S`, sets `qj.field_k` |
+| 5 | `pe.b(14750)` |
+| 6 | `ul.a(112)` -- **causes an immediate reconnect storm; never send this** |
+| 7 | `this.i(0)` |
+| 8 | `qn.a(sm.field_e, lf.field_e, 4210752, de.field_V)` |
+| 11 | `cl.a(ki.a(0, false), true)` |
+| 12 | `cl.a(ki.a(0, true), true)` -- accepted and effectively discarded |
+| 13 | `oe.c(false)` |
+| 16 | `wm.d(140)` |
+| 17 | `this.l(-33)` |
+| 18 | `ne.c(27721)` |
+| other | logs `"MGS1:"`, `qb.a(...)`, `si.a(65)` |
+
+Opcodes 9, 10, 14, 15 and 19-63 are not handled and reach the error path.
+Whether they can occur depends on the runtime contents of `te.field_v[]`.
 
 ## The render gate: `se.i(-1)`
 
-`client.java:2476` and `:415` both gate the real UI on `se.i(-1)`. When it is
-false the client draws `qi.a(100.0f, -81, bg.field_c)` — "Loading extra data" at
-**100%**. A full progress bar is the tell: this is a finished loading screen, not
-a stalled one.
-
-`se.i(-1)` (`se.java:156-162`) has **two** ways to return true:
+`client.java:2476` and `:415` gate the real UI on `se.i(-1)`. When false the
+client draws `qi.a(100.0f, -81, bg.field_c)` -- "Loading extra data" at **100%**.
+A full progress bar means loading finished and this gate is shut.
 
 ```java
-if (!nm.field_Qb)      return v.field_d;   // route A -- offline / simplemode
+if (!nm.field_Qb)      return v.field_d;   // route A
 else if (!qj.field_k)  return v.field_d;
-else                   return true;        // route B -- nm.field_Qb && qj.field_k
+else                   return true;        // route B -- the multiplayer path
 ```
 
-Route B renders the UI **without** `v.field_d`. Chasing `v.field_d` alone misses
-half the picture.
+**Route B is the correct path** and is what the two replies above open.
 
-## Route A: `v.field_d` (works, kills multiplayer)
+## Route A: `v.field_d` -- the simplemode bypass
 
-`v.field_d` is written only by `bd.a(boolean, int, boolean)` — set true at
-`bd.java:124` when `var5 == 4 && !ce.field_w`, false at `bd.java:108`.
+`v.field_d` is written only by `bd.a(...)`, true at `bd.java:124` when
+`var5 == 4`. `var5` is local, not from the network: `ne.a` (`ne.java:22`)
+discards its arguments and returns `qm.a((byte) 57)`, which can only yield 4 via
+`ai.field_P`. `ai.field_P`'s sole writer is `hm.a(int, byte)` (`hm.java:209`),
+reached in practice only from `bd.java:769` via `om.field_f` -- the `simplemode`
+applet parameter.
 
-`var5` is **not** a server response code. `ne.a` discards all four arguments and
-returns `qm.a((byte) 57)` (`ne.java:22`), which is computed entirely from local
-state. No server message can set `v.field_d`.
-
-`qm.a` (`qm.java:1043`) returns `ai.field_P`, `3`, `1`, `2`, or `-1`. It can only
-ever yield **4** through its first line, `if (ai.field_P != -1) return
-ai.field_P`, and it resets `ai.field_P` to `-1` immediately after
-(`qm.java:1070`) — so reading `-1` afterwards is expected, not a failure.
-
-`ai.field_P` has one writer, `hm.a(int, byte)` (`hm.java:212`), reached from
-exactly three places:
-
-| site | trigger | multiplayer? |
-| --- | --- | --- |
-| `bd.java:769` | `om.field_f` — the `simplemode` applet parameter | **no** |
-| `he.java:1442` | `lg.a(8927)` from a button on the `he` login screen | yes |
-| `lg.java:387` | `rk.c(false)` from a widget on `lg` | yes |
-
-### `simplemode` is a bypass, not a fix
-
-`om.field_f` has one writer:
-
-```java
-// bd.java:1340
-om.field_f = Boolean.valueOf(this.getParameter("simplemode")).booleanValue();
-```
-
-Passing `simplemode=true` reaches the main menu instantly — and **skips the
-login prompt and disables multiplayer**. Use it to exercise the menu and
-single-player, never as the fix.
+`simplemode=true` reaches the menu instantly but **skips login and disables
+multiplayer**. Instrumenting `hm.a` across a full login showed it is never
+called, so the other two call sites (`he.java:1442`, `lg.java:387`) are not
+reachable from the screens this client presents. Use route B.
 
 The launcher hardcodes its applet parameters and never fetches them over HTTP,
-so the server's own `--simplemode` flag (`config.py:applet_params`) is inert with
-this launcher. The parameter has to come from the launcher; it is exposed there
-as an opt-in `--simplemode` argument.
+so the server's own `--simplemode` flag is inert; the launcher exposes it as an
+opt-in `--simplemode` argument.
 
-## Route B: `nm.field_Qb && qj.field_k` (the multiplayer path)
+## Lobby chat and post-login requests
 
-This is the route that matters, and it is where the client is actually stuck.
-Both flags are set in `dc.java`, and both are **data-driven** — no widget click
-is involved, so nothing is missing from user interaction:
-
-| flag | set at | waits on |
-| --- | --- | --- |
-| `nm.field_Qb` | `dc.java:335` | `dm.field_b`, after an 8-entry loop over `field_t` |
-| `qj.field_k` | `dc.java:370` | `mf.field_N = ub.a(1, 5, 0, 107)` reporting `field_s` ready |
-
-Observed live on a stalled, logged-in client:
-
-```
-dm.field_b  = f@6036f36b     non-null -- request outstanding
-mf.field_N  = sb@eb05ef8     non-null -- field_s not ready
-nm.field_Qb = false
-qj.field_k  = false
-```
-
-Both request objects exist and neither completes. The client asked for something
-and is never answered, which matches the server log exactly: after login it sends
-only heartbeats (opcodes 0/4/5) and idles.
-
-Identifying what those two are waiting for is the open problem. `ub.a`'s
-arguments should name the resource; dumping the instance fields of `mf.field_N`
-and `dm.field_b` with `InstAgent` says what each is blocked on.
-
-## Login is not the problem
-
-The client remembers credentials and logs in on its own. A stalled run still
-shows a completed handshake server-side:
-
-```
-[auth] username='Hello' password_len=5 login_mode=0
-[game] login success display_name='Hello'
-[game] client ready (heartbeat 4)
-```
-
-Do not read the missing login prompt as a fault — by the time the stall is
-visible, authentication has already succeeded.
-
-## Dead end: the `tf` / account-registration chain
-
-`da.field_e` is null on a stalled client, and it is tempting to chase: `ha.e(0)`
-(`he.java:1428`, `lg.java:391`) constructs `da.field_e = new tf()`, and
-`tf.f(byte)` calls `nk.a`, which sets `sh.field_d = pa.field_V`
-(`nk.java:500`) — the condition `qm.a` tests at `qm.java:1094`.
-
-**This is the wrong branch.** The button that starts it is `i.field_f` =
-*"Create a free Account"*, so the whole chain is account registration. It makes
-`qm.a` return **2**, never 4, so it can never set `v.field_d`.
-
-For reference if that path is ever needed: `tf.i(int)` (`tf.java:760`) gates on
-six fields — `field_fb`, `field_Y`, `field_eb`, `field_hb`, `field_S`,
-`field_T` — which are resource handles, not text inputs. `tf.a(jl, int)`
-(`tf.java:658`) passes a field only if its resource is absent or its status is
-none of `vm.field_u`, `le.field_o`, `ki.field_t`.
-
-## Forcing the gate by reflection
-
-Setting `v.field_d = true` on a live client immediately renders the real UI —
-the main menu, when the lobby bootstrap is withheld. Useful for proving the
-assets are all present.
-
-It is route A forced by hand, so it carries route A's limitation: the
-surrounding state machine never runs, the UI is only half-live, and the stall
-returns on the next launch. Recipe and attach-agent traps in
-[`menu-bit-flip.md`](menu-bit-flip.md).
+Moved to [`chat-and-requests.md`](chat-and-requests.md): the request/reply
+table, Huffman encoding, the opcode 11 channel byte, and the harness technique
+for validating packets against the client's own classes.
 
 ## Where the cache lives
 
@@ -340,22 +342,27 @@ not found or no Agent-Class attribute" on a relative one.
 | `agent5.jar` | `CbAgent` | the `cb` loader instance |
 | `pickagent2.jar` | `PickAgent2` | statics for classes named in args (`out,v;nm;qj`) |
 | `setagent2.jar` | `SetAgent2` | **write** boolean/int/long statics (`out,v.field_d=true`) |
-| `instagent.jar` | `InstAgent` | instance fields of a static-held object (`out,da.field_e`) |
+| `instagent2.jar` | `InstAgent2` | instance fields incl. **inherited** (`out,de.field_V`) |
+| `queueagent.jar` | `QueueAgent` | walks a `vj` circular list and reports its length |
+| `arragent.jar` / `arragent2.jar` | `ArrAgent`/`ArrAgent2` | boolean-array true indices / full int-array dump |
+
+`InstAgent` (v1) only reads `getDeclaredFields()` on the concrete class, so it
+silently omits inherited fields -- `de.field_V.field_n` lives on `wl` and was
+missed that way. Use `InstAgent2`.
 
 The canvas dump is the fastest way to establish what the UI is doing, with no
 X11 involvement. `jdb` does not work against this client.
 
 ## Open questions
 
-- **What are `dm.field_b` and `mf.field_N` waiting for?** This is the blocker.
-  Both are outstanding requests that never complete, so route B never opens.
-  Decode `ub.a(1, 5, 0, 107)` to name the resource, and dump both objects'
-  instance fields with `InstAgent`.
-- Is that data something the server should send? If so this becomes a real
-  server-side fix rather than another bypass.
+- **What legitimately writes `ai.field_P = 4`?** This is the whole problem.
+  `hm.a(int, byte)` is the sole writer and is now probed with a stack trace
+  (`Instr.aiWrite`), so any real path announces itself. Run a session, exercise
+  the UI, and read the traces. Do not trace this by reading; three attempts to
+  do so were wrong.
+- What reaches `cm.a(53)`? Nothing observed so far. Until something does, route
+  B cannot open and `build_sb_reply()` is untestable.
+- What opens the repeated connections? Not `si.a` -- its probe never fires.
 - What must the server reply to client opcode 10 to return to the main menu?
-- Does the forged-CRC substitute render correctly once the client requests it?
-  Delivery has not yet been observed — absence of `net-validate-failed` is not
-  the same as confirmed acceptance.
-- Five of 128 file names in archive 6 group 0 are unrecovered (ids 0, 1, 3, 45,
-  46).
+- Does the forged-CRC substitute render once requested? Delivery has not been
+  observed; absence of `net-validate-failed` is not confirmation.
