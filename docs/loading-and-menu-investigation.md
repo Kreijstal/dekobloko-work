@@ -8,131 +8,145 @@ inspection), [`troubleshooting.md`](troubleshooting.md) (symptom index),
 
 ## Status
 
-Resource loading **completes**. The client logs in, finishes all five loader
-stages, resolves every asset it needs, and then parks on the "Loading extra
-data" screen because a single boolean gate is false. It is not loading anything
-at that point — the progress bar is at 100%.
+Resource loading **completes** and login **succeeds**. The client authenticates,
+finishes all five loader stages, resolves every asset, and then parks on the
+"Loading extra data" screen at 100% — nothing is loading at that point.
+
+Two independent routes can open the UI. One of them works and disables
+multiplayer; the other is the real one and is still blocked.
 
 Working: JS5 handshake, login handshake, RSA, ISAAC, data-group fetching, the
-whole resource-assembly chain, and gameplay itself — single player plays
-correctly, with pieces spawning, rotating, locking, groups clearing and levels
-advancing.
+resource-assembly chain, and gameplay itself — single player plays correctly,
+with pieces spawning, rotating, locking, groups clearing and levels advancing.
 
-## The gate: `v.field_d`
+## The render gate: `se.i(-1)`
 
-This is the blocker. One static boolean decides whether the client renders its
-real UI or keeps painting the loading screen:
+`client.java:2476` and `:415` both gate the real UI on `se.i(-1)`. When it is
+false the client draws `qi.a(100.0f, -81, bg.field_c)` — "Loading extra data" at
+**100%**. A full progress bar is the tell: this is a finished loading screen, not
+a stalled one.
 
-```
-v.field_d = false
-  -> ph.n(-30146)   returns v.field_d verbatim (ph.java:81-87)
-  -> se.i(-1)       returns ph.n(...) when !nm.field_Qb (se.java:156-162)
-  -> client.java:2476  qi.a(100.0f, -81, bg.field_c)
-  -> "Loading extra data" drawn at 100%
-```
-
-The same gate guards the update path at `client.java:415`. `bg.field_c` is the
-string `"Loading extra data"` (`bg.java:548`), and the `100.0f` is why the bar
-is **full** — a completed loading screen, not a stalled one. A full progress bar
-is the tell that this gate, and not resource loading, is the problem.
-
-`se.i(-1)` reduces to `v.field_d` only while `nm.field_Qb` is false; if
-`nm.field_Qb` is true it consults `qj.field_k` first. Observed live: both false.
-
-### Who writes it
-
-Exactly two sites, both in `bd.a(boolean, int, boolean)`:
-
-| site | value | condition |
-| --- | --- | --- |
-| `bd.java:124` | `true` | `var5 == 4` and `!ce.field_w` |
-| `bd.java:108` | `false` | `var5 == 0` branch |
-
-`var5` comes from `ne.a(255, kd.field_p, param0, jk.field_c)` at `bd.java:40`.
-
-**`var5` is not a server response code.** `ne.a` discards all four arguments:
+`se.i(-1)` (`se.java:156-162`) has **two** ways to return true:
 
 ```java
-final static int a(int param0, int param1, boolean param2, int param3) {
-    return qm.a((byte) 57);
-}
+if (!nm.field_Qb)      return v.field_d;   // route A -- offline / simplemode
+else if (!qj.field_k)  return v.field_d;
+else                   return true;        // route B -- nm.field_Qb && qj.field_k
 ```
 
-`qm.a(byte)` (`qm.java:1043`) computes its result entirely from local state —
-nothing is read from the socket. No server message can set `v.field_d`. Treating
-this as a protocol gap is a dead end.
+Route B renders the UI **without** `v.field_d`. Chasing `v.field_d` alone misses
+half the picture.
 
-## The real chain
+## Route A: `v.field_d` (works, kills multiplayer)
 
-`qm.a` walks a series of state tests. Live values on a stalled client:
+`v.field_d` is written only by `bd.a(boolean, int, boolean)` — set true at
+`bd.java:124` when `var5 == 4 && !ce.field_w`, false at `bd.java:108`.
 
-| test | live | outcome |
+`var5` is **not** a server response code. `ne.a` discards all four arguments and
+returns `qm.a((byte) 57)` (`ne.java:22`), which is computed entirely from local
+state. No server message can set `v.field_d`.
+
+`qm.a` (`qm.java:1043`) returns `ai.field_P`, `3`, `1`, `2`, or `-1`. It can only
+ever yield **4** through its first line, `if (ai.field_P != -1) return
+ai.field_P`, and it resets `ai.field_P` to `-1` immediately after
+(`qm.java:1070`) — so reading `-1` afterwards is expected, not a failure.
+
+`ai.field_P` has one writer, `hm.a(int, byte)` (`hm.java:212`), reached from
+exactly three places:
+
+| site | trigger | multiplayer? |
 | --- | --- | --- |
-| `ai.field_P != -1` | `-1` | falls through |
-| `mg.field_Nb` | `false` | falls through |
-| `ka.field_P != pa.field_V` | `af@66a0694f` vs `af@71d2000b` | enters branch |
-| `pa.field_V == sh.field_d` | not equal | **`return -1`** (`qm.java:1099`) |
+| `bd.java:769` | `om.field_f` — the `simplemode` applet parameter | **no** |
+| `he.java:1442` | `lg.a(8927)` from a button on the `he` login screen | yes |
+| `lg.java:387` | `rk.c(false)` from a widget on `lg` | yes |
 
-`var5 == -1` matches none of the 1/2/4/5/7/11 branches in `bd.a()`, so
-`v.field_d` is never set and the loading screen is painted forever.
+### `simplemode` is a bypass, not a fix
 
-`pa.field_V` is a singleton created once at `pa.java:603` and never reassigned,
-so the test is really asking whether `sh.field_d` has been pointed at it. Exactly
-one site does that — `nk.java:500` — and the full path to it is:
+`om.field_f` has one writer:
 
-```
-a menu widget is activated
-  -> ha.e(0)         (he.java:1428 / lg.java:391)  da.field_e = new tf()
-  -> tf.f(byte)      (tf.java:95)   validates six resources, calls nk.a
-  -> nk.java:500     sh.field_d = pa.field_V
-  -> qm.a((byte)57)  returns 2 instead of -1
-  -> bd.a()          var5 == 2 ... sets v.field_d = true
-  -> se.i(-1) passes, the real UI renders
+```java
+// bd.java:1340
+om.field_f = Boolean.valueOf(this.getParameter("simplemode")).booleanValue();
 ```
 
-### Where it actually breaks
+Passing `simplemode=true` reaches the main menu instantly — and **skips the
+login prompt and disables multiplayer**. Use it to exercise the menu and
+single-player, never as the fix.
 
-**`da.field_e` is null.** The `tf` object is never constructed, so nothing below
-it can run. Every symptom above is downstream of that single fact.
+The launcher hardcodes its applet parameters and never fetches them over HTTP,
+so the server's own `--simplemode` flag (`config.py:applet_params`) is inert with
+this launcher. The parameter has to come from the launcher; it is exposed there
+as an opt-in `--simplemode` argument.
 
-`ha.e(0)` is called from only two places (`he.java:1428`, `lg.java:391`), both
-inside UI event handlers that dispatch on a widget argument (`param2` against
-`this.field_ib` / `this.field_X`). So the object is built only when a particular
-widget is activated, and that activation never happens.
+## Route B: `nm.field_Qb && qj.field_k` (the multiplayer path)
 
-Two candidates, not yet separated:
+This is the route that matters, and it is where the client is actually stuck.
+Both flags are set in `dc.java`, and both are **data-driven** — no widget click
+is involved, so nothing is missing from user interaction:
 
-1. The widget genuinely needs a click nothing has issued — plausible, since the
-   pre-menu screen shows no controls, implying an earlier transition should have
-   put us on a screen that has them.
-2. The handler does run but `param2` never matches, i.e. the widget fields are
-   unset — which moves the problem one level further back again.
+| flag | set at | waits on |
+| --- | --- | --- |
+| `nm.field_Qb` | `dc.java:335` | `dm.field_b`, after an 8-entry loop over `field_t` |
+| `qj.field_k` | `dc.java:370` | `mf.field_N = ub.a(1, 5, 0, 107)` reporting `field_s` ready |
 
-Logging `param2` and the widget fields at both call sites distinguishes them.
+Observed live on a stalled, logged-in client:
 
-### `tf` is six resource handles, not a form
+```
+dm.field_b  = f@6036f36b     non-null -- request outstanding
+mf.field_N  = sb@eb05ef8     non-null -- field_s not ready
+nm.field_Qb = false
+qj.field_k  = false
+```
 
-`tf.i(int)` (`tf.java:760`) gates `tf.f` on six fields — `field_fb`, `field_Y`,
-`field_eb`, `field_hb`, `field_S`, `field_T`. Despite the
-`Integer.parseInt(this.field_T.field_E)` in `f`, these are not text inputs:
-`tf.a(jl, int)` (`tf.java:658`) fetches a resource from the field and passes only
-if the resource is absent, or its status is none of `vm.field_u`, `le.field_o`,
-`ki.field_t`. Worth re-checking once `da.field_e` is non-null — a stuck resource
-here would be the next blocker.
+Both request objects exist and neither completes. The client asked for something
+and is never answered, which matches the server log exactly: after login it sends
+only heartbeats (opcodes 0/4/5) and idles.
 
-### Forcing it
+Identifying what those two are waiting for is the open problem. `ub.a`'s
+arguments should name the resource; dumping the instance fields of `mf.field_N`
+and `dm.field_b` with `InstAgent` says what each is blocked on.
 
-Setting `v.field_d = true` by reflection on a live client immediately renders
-the real UI. With the lobby bootstrap withheld, that UI is the **main menu**.
-This confirms the gate is the only thing standing between the client and a
-working screen, and that every asset it needs is present.
+## Login is not the problem
 
-Full recipe, caveats and the attach-agent traps:
+The client remembers credentials and logs in on its own. A stalled run still
+shows a completed handshake server-side:
+
+```
+[auth] username='Hello' password_len=5 login_mode=0
+[game] login success display_name='Hello'
+[game] client ready (heartbeat 4)
+```
+
+Do not read the missing login prompt as a fault — by the time the stall is
+visible, authentication has already succeeded.
+
+## Dead end: the `tf` / account-registration chain
+
+`da.field_e` is null on a stalled client, and it is tempting to chase: `ha.e(0)`
+(`he.java:1428`, `lg.java:391`) constructs `da.field_e = new tf()`, and
+`tf.f(byte)` calls `nk.a`, which sets `sh.field_d = pa.field_V`
+(`nk.java:500`) — the condition `qm.a` tests at `qm.java:1094`.
+
+**This is the wrong branch.** The button that starts it is `i.field_f` =
+*"Create a free Account"*, so the whole chain is account registration. It makes
+`qm.a` return **2**, never 4, so it can never set `v.field_d`.
+
+For reference if that path is ever needed: `tf.i(int)` (`tf.java:760`) gates on
+six fields — `field_fb`, `field_Y`, `field_eb`, `field_hb`, `field_S`,
+`field_T` — which are resource handles, not text inputs. `tf.a(jl, int)`
+(`tf.java:658`) passes a field only if its resource is absent or its status is
+none of `vm.field_u`, `le.field_o`, `ki.field_t`.
+
+## Forcing the gate by reflection
+
+Setting `v.field_d = true` on a live client immediately renders the real UI —
+the main menu, when the lobby bootstrap is withheld. Useful for proving the
+assets are all present.
+
+It is route A forced by hand, so it carries route A's limitation: the
+surrounding state machine never runs, the UI is only half-live, and the stall
+returns on the next launch. Recipe and attach-agent traps in
 [`menu-bit-flip.md`](menu-bit-flip.md).
-
-It is a diagnostic, not a fix — it bypasses the legitimate transition in
-`bd.a()`, so the surrounding state machine never runs, and the stall returns on
-the next launch.
 
 ## Where the cache lives
 
@@ -333,11 +347,12 @@ X11 involvement. `jdb` does not work against this client.
 
 ## Open questions
 
-- Why is the widget that calls `ha.e(0)` never activated? Log `param2` and the
-  widget fields at `he.java:1428` and `lg.java:391` to see whether the handler
-  runs at all.
-- Once `da.field_e` is non-null, do all six `tf` resource handles validate, or
-  is one of them the next blocker?
+- **What are `dm.field_b` and `mf.field_N` waiting for?** This is the blocker.
+  Both are outstanding requests that never complete, so route B never opens.
+  Decode `ub.a(1, 5, 0, 107)` to name the resource, and dump both objects'
+  instance fields with `InstAgent`.
+- Is that data something the server should send? If so this becomes a real
+  server-side fix rather than another bypass.
 - What must the server reply to client opcode 10 to return to the main menu?
 - Does the forged-CRC substitute render correctly once the client requests it?
   Delivery has not yet been observed — absence of `net-validate-failed` is not

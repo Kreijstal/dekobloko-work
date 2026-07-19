@@ -23,17 +23,23 @@ Legitimately it is written only by `bd.a(boolean, int, boolean)`:
 `bd.java:124` sets it true when `var5 == 4 && !ce.field_w`; `bd.java:108` sets
 it false. Forcing it skips that path entirely.
 
-**This treats the symptom, not the cause.** `v.field_d` sits at the end of a
-local state machine that never advances: `da.field_e` is null, so the `tf`
-object is never built, so `sh.field_d` is never pointed at `pa.field_V`, so
-`qm.a` returns `-1` instead of `2`. Forcing the bit produces the *effect* while
-the cause remains wrong, which is why the resulting UI is only half-live — the
-lobby's "RETURN TO MAIN MENU" button, for instance, does nothing. The chain and
-the real blocker are in
-[`loading-and-menu-investigation.md`](loading-and-menu-investigation.md#the-real-chain).
+**This forces the offline route and treats the symptom.** `se.i(-1)` can open the
+UI two ways: `v.field_d` (route A, offline/`simplemode`) or
+`nm.field_Qb && qj.field_k` (route B, multiplayer). Forcing `v.field_d` takes
+route A by hand, so the surrounding state machine never runs and the UI is only
+half-live — the lobby's "RETURN TO MAIN MENU" button, for instance, does nothing.
+
+**Multiplayer needs route B**, which is blocked on two requests that never
+complete (`dm.field_b`, `mf.field_N`). Neither this hack nor `simplemode`
+unblocks it. See
+[`loading-and-menu-investigation.md`](loading-and-menu-investigation.md#route-b-nmfield_qb--qjfield_k-the-multiplayer-path).
 
 Nothing here is server-driven: `var5` comes from `qm.a((byte) 57)` via a wrapper
 that discards its arguments, and is computed purely from local state.
+
+`simplemode=true` reaches the same screen without an attach agent, and is the
+better tool when you only need the menu or single-player — but it likewise
+disables multiplayer.
 
 ## Recipe
 

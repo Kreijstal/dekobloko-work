@@ -77,6 +77,19 @@ public final class DekoblokoLauncher {
         params.put("servernum", "8003");
         params.put("instanceid", Long.toString(new Random().nextLong()));
         params.put("gamecrc", Integer.toString(options.gameCrc));
+        // Opt-in only (--simplemode). This is a BYPASS, not a fix: it skips the
+        // login prompt and disables multiplayer.
+        //
+        // bd.java:1340 is the only writer of om.field_f and it reads this
+        // parameter. om.field_f gates rk.c(false) at bd.java:769, which sets
+        // ai.field_P = 4 -- the only value that makes qm.a return 4, which is in
+        // turn the only value that sets v.field_d and lets the real UI draw.
+        // Every other qm.a path yields 3, 1, 2 or -1.
+        //
+        // The multiplayer route to the same flag is the login screen's own
+        // button: he.java:1442 -> lg.a(8927) -> hm.a(4, ...). Use that, not
+        // this, when multiplayer is wanted.
+        params.put("simplemode", options.simpleMode ? "true" : "false");
 
         BasicAppletContext context = new BasicAppletContext();
         applet.setStub(new BasicAppletStub(context, params, serverUrl, serverUrl));
@@ -219,6 +232,7 @@ public final class DekoblokoLauncher {
         private File outputDir = new File("frames");
         private File traceFile = new File("awt-trace.log");
         private boolean fakeAwt = true;
+        private boolean simpleMode = false;
         private File recordAwtFile;
         private File replayAwtFile;
         private double replaySpeed = 1.0d;
@@ -278,6 +292,8 @@ public final class DekoblokoLauncher {
                     options.fakeAwt = false;
                 } else if ("--fake-awt".equals(arg)) {
                     options.fakeAwt = true;
+                } else if ("--simplemode".equals(arg)) {
+                    options.simpleMode = true;
                 } else {
                     throw new IllegalArgumentException("Unknown argument: " + arg);
                 }

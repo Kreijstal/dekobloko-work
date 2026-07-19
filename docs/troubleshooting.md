@@ -141,6 +141,35 @@ The server log prints `loaded signed master index` on every run. Never rewrite
 the contents of a signed index. Details in
 [`crc-reconciliation.md`](crc-reconciliation.md).
 
+## Client reaches the menu but never asked for a password
+
+You passed `--simplemode` (or the launcher hardcodes it). That parameter skips
+the login prompt and **disables multiplayer** — it is a bypass for exercising the
+menu and single-player, not a fix. Drop the flag to get the normal flow back.
+
+## Launcher build exits 1 but the jar still works
+
+```
+src/local/awt/FakeToolkit.java:82: error: FakeToolkit is not abstract and does
+not override abstract method getDataTransferer() in ComponentFactory
+```
+
+Pre-existing and unrelated to any launcher change: `FakeToolkit` implements a
+`sun.awt` internal interface that varies between JDK builds. `javac` exits 1 but
+still emits every class that compiled, including `DekoblokoLauncher.class`, and
+the jar runs — the failure is confined to the `--fake-awt` path.
+
+Beware `javac ... | head && echo OK`: the `&&` chains off `head`, so it prints
+success on a failed build. Check the exit status separately.
+
+## Applet parameters do not reach the client
+
+The launcher **hardcodes** its parameter map and never fetches it over HTTP, so
+server-side parameter flags (including the server's own `--simplemode` in
+`config.py:applet_params`) are inert. A run that never logs an `[http]` request
+confirms it. Parameters have to be added in
+`apps/launcher/src/local/DekoblokoLauncher.java`.
+
 ## Server prints its banner, then dies
 
 ```
@@ -240,6 +269,9 @@ JVM. Get the real one with `jps -l | grep DekoblokoLauncher`.
 | `bh.field_k` | the game state | the inbound packet **opcode register**; the values `client.java` tests it against are the server opcode table |
 | `ph.field_xb` | the game state | the **login handshake** state; completes in ~95ms, `wf.field_u` is its normal terminal state |
 | `var5` at `bd.java:40` | a server response code | computed from **local state** — `ne.a` discards its arguments and returns `qm.a((byte) 57)`. No server message sets `v.field_d` |
+| `v.field_d` | the only render gate | one of **two** — `se.i(-1)` also opens on `nm.field_Qb && qj.field_k`, which is the multiplayer route |
+| no login prompt appearing | login is broken | the client remembers credentials and auto-logs-in; check `[auth] ... login success` in the server log |
+| `ai.field_P == -1` | the trigger never fired | `qm.a` resets it to `-1` right after consuming it (`qm.java:1070`) |
 | `ASSET ... ok` in the client log | the group was accepted | only that the **name lookup** resolved; CRC validation is a separate check (`net-validate-failed`) |
 | `cb.field_a` | the current wait reason | a **stale label** — reads "Waiting for sound effects" while archives 8/9 are finished |
 | `ji.a(int, byte)` returning ready | the data is present | only that the **index asserts the group exists** (`field_k[groupId] != 0`) |
