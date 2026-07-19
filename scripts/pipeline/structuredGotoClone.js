@@ -1517,8 +1517,22 @@ function simplifyTwoSidedNotCompares(codeItems) {
     if (op(codeItems[i - 1] && codeItems[i - 1].instruction) !== 'ixor') continue;
     if (op(codeItems[i - 2] && codeItems[i - 2].instruction) !== 'iconst_m1') continue;
     if (!plainUnreferencedItems(codeItems, i - 2, i - 1)) continue;
-    const leftPair = findPreviousNotPair(codeItems, i - 3, 18);
-    if (leftPair < 0 || !plainUnreferencedItems(codeItems, leftPair, leftPair + 1)) continue;
+    // Take the nearest complement pair that is both rewritable and provably the
+    // branch's left operand; a nearer pair failing the stack check belongs to a
+    // different expression, so keep looking rather than corrupting it.
+    let leftPair = -1;
+    for (let candidate = findPreviousNotPair(codeItems, i - 3, 18);
+      candidate >= 0;
+      candidate = findPreviousNotPair(codeItems, candidate, 18 - (i - 3 - candidate))) {
+      // Stack check first: it is local and cheap, while plainUnreferencedItems
+      // rebuilds label counts across the whole method on every call.
+      if (complementProducesBranchLeftOperand(codeItems, candidate, i)
+        && plainUnreferencedItems(codeItems, candidate, candidate + 1)) {
+        leftPair = candidate;
+        break;
+      }
+    }
+    if (leftPair < 0) continue;
     branch.op = ops[branchOp];
     codeItems.splice(i - 2, 2);
     codeItems.splice(leftPair, 2);
@@ -1534,6 +1548,123 @@ function findPreviousNotPair(codeItems, before, maxDistance) {
     if (op(codeItems[i] && codeItems[i].instruction) === 'iconst_m1' && op(codeItems[i + 1] && codeItems[i + 1].instruction) === 'ixor') return i;
   }
   return -1;
+}
+
+// Stack width of a field/return descriptor: 2 for long and double, 0 for void,
+// 1 for every reference, array, and narrow primitive.
+function descriptorStackWidth(descriptor) {
+  if (typeof descriptor !== 'string' || !descriptor) return null;
+  const c = descriptor[0];
+  if (c === '[' || c === 'L') return 1;
+  if (c === 'V') return 0;
+  if (c === 'J' || c === 'D') return 2;
+  if ('BCFISZ'.includes(c)) return 1;
+  return null;
+}
+
+// Combined stack width of a method descriptor's parameters.
+function methodArgumentStackWidth(descriptor) {
+  if (typeof descriptor !== 'string' || descriptor[0] !== '(') return null;
+  const close = descriptor.indexOf(')');
+  if (close < 0) return null;
+  let width = 0;
+  let i = 1;
+  while (i < close) {
+    let isArray = false;
+    while (descriptor[i] === '[') { isArray = true; i += 1; }
+    const c = descriptor[i];
+    if (c === 'L') {
+      const end = descriptor.indexOf(';', i);
+      if (end < 0 || end > close) return null;
+      i = end + 1;
+      width += 1;
+      continue;
+    }
+    if (!'BCDFIJSZ'.includes(c)) return null;
+    i += 1;
+    width += (!isArray && (c === 'J' || c === 'D')) ? 2 : 1;
+  }
+  return width;
+}
+
+const SIMPLE_STACK_DELTAS = new Map(Object.entries({
+  nop: 0, goto: 0, goto_w: 0, iinc: 0, swap: 0, arraylength: 0,
+  checkcast: 0, instanceof: 0, ineg: 0, fneg: 0, lneg: 0, dneg: 0,
+  i2f: 0, l2d: 0, f2i: 0, d2l: 0, i2b: 0, i2c: 0, i2s: 0,
+  aconst_null: 1, new: 1, newarray: 0, anewarray: 0,
+  bipush: 1, sipush: 1, ldc: 1, ldc_w: 1, ldc2_w: 2,
+  lconst_0: 2, lconst_1: 2, dconst_0: 2, dconst_1: 2,
+  fconst_0: 1, fconst_1: 1, fconst_2: 1,
+  pop: -1, pop2: -2, dup: 1, dup_x1: 1, dup_x2: 1,
+  dup2: 2, dup2_x1: 2, dup2_x2: 2,
+  monitorenter: -1, monitorexit: -1,
+  i2l: 1, i2d: 1, f2l: 1, f2d: 1, l2i: -1, l2f: -1, d2i: -1, d2f: -1,
+  lcmp: -3, dcmpl: -3, dcmpg: -3, fcmpl: -1, fcmpg: -1,
+  laload: 0, daload: 0,
+  iastore: -3, fastore: -3, aastore: -3, bastore: -3, castore: -3, sastore: -3,
+  lastore: -4, dastore: -4,
+  lshl: -1, lshr: -1, lushr: -1,
+}));
+
+// Net operand-stack effect of one instruction, or null when the effect is not
+// modelled. Callers must treat null as "unknown" and refuse to transform.
+function instructionStackDelta(insn) {
+  const opcode = op(insn);
+  if (!opcode) return null;
+  if (SIMPLE_STACK_DELTAS.has(opcode)) return SIMPLE_STACK_DELTAS.get(opcode);
+  if (/^iconst_/.test(opcode)) return 1;
+  if (/^[ifa]load(_\d)?$/.test(opcode)) return 1;
+  if (/^[ld]load(_\d)?$/.test(opcode)) return 2;
+  if (/^[ifa]store(_\d)?$/.test(opcode)) return -1;
+  if (/^[ld]store(_\d)?$/.test(opcode)) return -2;
+  if (/^[ifab cs]aload$/.test(opcode)) return -1;
+  if (/^[if](add|sub|mul|div|rem|and|or|xor|shl|shr|ushr)$/.test(opcode)) return -1;
+  if (/^[ld](add|sub|mul|div|rem|and|or|xor)$/.test(opcode)) return -2;
+
+  if (opcode === 'getstatic' || opcode === 'putstatic'
+    || opcode === 'getfield' || opcode === 'putfield') {
+    const width = descriptorStackWidth(fieldDescriptor(insn));
+    if (width === null) return null;
+    if (opcode === 'getstatic') return width;
+    if (opcode === 'putstatic') return -width;
+    if (opcode === 'getfield') return width - 1;
+    return -width - 1;
+  }
+
+  if (/^invoke(virtual|special|static|interface|dynamic)$/.test(opcode)) {
+    const descriptor = methodDescriptor(insn);
+    const args = methodArgumentStackWidth(descriptor);
+    const close = typeof descriptor === 'string' ? descriptor.indexOf(')') : -1;
+    const ret = close < 0 ? null : descriptorStackWidth(descriptor.slice(close + 1));
+    if (args === null || ret === null) return null;
+    const receiver = (opcode === 'invokestatic' || opcode === 'invokedynamic') ? 0 : 1;
+    return ret - args - receiver;
+  }
+
+  return null;
+}
+
+// `~left OP ~right` may only be folded when the candidate left `iconst_m1; ixor`
+// actually produces the branch's left operand. Simulate the operand stack from
+// just after that `ixor` to just before the branch: the intervening code must
+// push exactly one value (the right operand) and must never consume the left
+// one. Without this, the backward scan happily latches onto an unrelated `~x`
+// from a neighbouring expression and deletes it — silently turning, for example,
+// `~this.A & param0` into `this.A & param0`.
+function complementProducesBranchLeftOperand(codeItems, leftPairStart, branchIndex) {
+  let depth = 0;
+  for (let i = leftPairStart + 2; i <= branchIndex - 3; i += 1) {
+    const item = codeItems[i];
+    if (!item) return false;
+    // A label or frame here means another path can join with a different stack.
+    if (item.labelDef || item.stackMapFrame) return false;
+    if (!item.instruction) continue;
+    const delta = instructionStackDelta(item.instruction);
+    if (delta === null) return false;
+    depth += delta;
+    if (depth < 0) return false;
+  }
+  return depth === 1;
 }
 
 
