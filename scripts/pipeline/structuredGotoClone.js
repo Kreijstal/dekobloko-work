@@ -13085,11 +13085,18 @@ function cloneConditionalSmallIincJoins(codeItems) {
     const tail = readSmallIincJoinTail(codeItems, target, refCounts);
     if (!tail) continue;
 
+    // The clone is inserted immediately after the conditional. Invert the
+    // branch so its original fallthrough skips the clone; otherwise both
+    // outcomes enter the cloned iinc tail and the fallthrough body becomes
+    // unreachable. That body can contain loop-carried stores consumed after
+    // the loop (dekobloko ad.a([BI)V updates its running maximum there).
+    const fallthrough = ensureLabel(codeItems[i + 1], `LCKIJF_${rewrites}`);
     const clone = cloneItems(codeItems.slice(target, tail.end + 1));
     renameInternalLabels(clone, `LCKIJC_${rewrites}_`);
     const cloneEntry = `LCKIJ_${rewrites}`;
     clone[0].labelDef = `${cloneEntry}:`;
-    insn.arg = cloneEntry;
+    insn.op = invertConditionalBranch(cur);
+    insn.arg = fallthrough;
     codeItems.splice(i + 1, 0, ...clone);
     rewrites += 1;
   }

@@ -50,6 +50,37 @@ function padded(codeItems) {
   return codeItems;
 }
 
+// Regression for issue #24: cloning a small iinc join immediately after its
+// conditional must preserve the conditional's original fallthrough. The
+// fallthrough store is loop-carried and consumed after the loop; making it
+// unreachable leaves the running maximum at its -1 seed value.
+{
+  const codeItems = padded([
+    item('LHEAD', { op: 'iload', arg: '1' }),
+    item(null, { op: 'iload', arg: '2' }),
+    item(null, { op: 'if_icmple', arg: 'LINC' }),
+    item('LASSIGN', { op: 'iload', arg: '3' }),
+    item(null, { op: 'istore', arg: '2' }),
+    item('LINC', { op: 'iinc', arg: ['1', '1'] }),
+    item(null, { op: 'goto', arg: 'LHEAD' }),
+  ]);
+  const result = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_CLONE_SMALL_IINC_JOIN: '1',
+  }, () => runStructuredGotoClone(astFrom(codeItems)));
+
+  assert.equal(result.rewrites, 1, 'the small iinc join is cloned once');
+  assert.equal(op(codeItems[2].instruction), 'if_icmpgt',
+    'the branch is inverted so its old fallthrough jumps over the clone');
+  assert.equal(codeItems[2].instruction.arg, 'LASSIGN',
+    'the inverted branch targets the original fallthrough body');
+  assert.equal(op(codeItems[3].instruction), 'iinc',
+    'the original taken edge falls through into the cloned increment tail');
+  assert.equal(op(codeItems[5].instruction), 'iload',
+    'the loop-carried assignment remains reachable after the clone');
+  assert.equal(op(codeItems[6].instruction), 'istore',
+    'the loop-carried store is preserved');
+}
+
 {
   const original = [
     item('LLOAD', { op: 'iload', arg: '2' }),
