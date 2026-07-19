@@ -171,14 +171,19 @@ handler, no length entry, silently dropped) and opcode 10 (return to main menu).
 The flags byte in server opcode 11 selects the rendering, not just which fields
 are present:
 
-| flags | result |
-| --- | --- |
-| `0x00` | `null: text` |
-| `0x01` | `[<name>'s game] null: text` -- in-game channel |
-| `0x02` | renderer NPE, client dies |
-| `0x82` | server message / status channel |
+A null speaker name is usually NOT the channel: the rendered name is built only
+when `hl.field_l == 1`, and `field_l` comes from the packet's SECOND byte
+(`tg.field_c`). With it at 0 the line reads "null: text" on every channel.
 
-Details and the still-unsolved player-line case in
+| flags | tg.field_c | result |
+| --- | --- | --- |
+| `0x00` | 1 | `[Lobby] <name>: text` -- correct |
+| `0x00` | 0 | `[Lobby] null: text` |
+| `0x01` | any | in-game channel |
+| `0x02` | any | renderer NPE, client dies |
+| `0x82` | any | server message / status channel |
+
+Read `mb.java:118-215` before changing bytes; it states the rules. Details in
 [`chat-and-requests.md`](chat-and-requests.md).
 
 ## A packet parses in a harness but crashes the live client

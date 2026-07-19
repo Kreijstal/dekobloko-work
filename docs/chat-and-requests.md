@@ -100,39 +100,58 @@ converts via `un.a`. The server can relay the client's compressed blob
 **verbatim** -- the receiving client decompresses with the same table, so no
 encoder is needed server-side.
 
-### The channel byte selects the rendering, not just the fields
+### The formatter decides everything: mb.java:118-215
 
-Established by sending each and observing:
+`ki.a` fills an `hl`; `mb.a` turns it into a line. Read that function before
+changing any byte -- it states the rules outright:
 
-| flags | renders as |
+```java
+var2 = null;
+if (field_p != null && field_l == 1) var2 = "<img=0>" + field_p;
+if (field_l == 2)                    var2 = "<img=1>" + var2;
+...
+if (field_m == 0 && ii.field_q) var3 = "[" + uc.field_b + "] ";   // "[Lobby] "
+if (field_m == 1)               var3 = "[<owner>'s game] ";
+if (field_m == 4 && f.field_q)  var3 = "[" + f.field_q + "] ";
+if (field_m == 3)               var3 = "[#" + field_g + "] ";
+if (!field_j)                   var3 = var3 + var2 + ": ";        // the NAME
+```
+
+A working lobby player line therefore needs **three** things:
+
+| field | source | value | why |
+| --- | --- | --- | --- |
+| `field_l` | `tg.field_c` (byte 1) | **1** | the name is built ONLY on this branch |
+| `field_m` | flags & 127 | **0** | the only channel giving "[Lobby] " |
+| `field_j` | flags & 0x80 | **clear** | the name is appended under `if (!field_j)` |
+
+So the flags byte is `0x00` and the second byte is `1`.
+
+**`tg.field_c` was the real bug, not the channel.** With it at 0, `var2` stays
+null and the line reads "null: text" on *every* channel. Five envelope
+revisions were spent moving the channel byte in response to that symptom before
+reading the formatter. The `<img=0>` is the rank icon drawn before the name.
+
+Channel behaviour observed while getting there:
+
+| flags | result |
 | --- | --- |
-| `0x00` | lobby line, but `qm.field_e = null` -> `null: text` |
-| `0x01` | `[<name>'s game] null: text` -- the in-game channel; `qm.field_e` is the game-OWNER label, not the speaker |
-| `0x02` | renderer throws `NullPointerException` |
-| `0x82` | **server message / status channel** -- works, correct text, but not a player line |
+| `0x00` + `tg.field_c=1` | `[Lobby] <name>: text` -- correct |
+| `0x00` + `tg.field_c=0` | `[Lobby] null: text` |
+| `0x01` | in-game channel, `[<owner>'s game] ` |
+| `0x02` | renderer `NullPointerException` |
+| `0x82` | server message / status channel, no speaker |
+| `0x84` | named line, wrong channel and colour |
 
-`0x82` is channel 2 with `fm.field_f` set. That matches `ca.a`, which builds
-system lines as `new hl(2, name, 0, null, message)` -- `field_m == 2`,
-`field_g == null`, `field_j == true`. Clearing the `0x80` bit gives
-`field_j == false` and the renderer NPEs.
+The prefix also depends on client UI state (`ii.field_q`, `f.field_q`,
+`pk.field_r`, `cd.field_m` at `nm.java:255`) -- which screen the player is on.
+It is not purely a function of the packet.
 
-### Still unsolved: a free-text player line in the lobby
+### Server -> client opcode 12 is quickchat
 
-Constraints established:
-
-- **Opcode 12 (server -> client) cannot carry free text.** Its branch reads a
-  `u16` id and looks the message up with `wj.field_Qb.a(127, var5)`; the text
-  comes from that object. It is quickchat.
-- **Free text must therefore use opcode 11's `li.a` path**, leaving the channel
-  byte as the only variable.
-- `hl(boolean)` hard-nulls `field_q` when its argument is false, which is always
-  the case for opcode 11. If the player-line renderer dereferences `field_q`
-  -- which the `0x02` NPE suggests -- then opcode 11 may be unable to produce a
-  player line at all, and lobby chat arrives by some path not yet found.
-
-Next step is to read `cl.a` (`cl.java:1260`) properly: it branches on
-`field_h`, `field_i` and `field_n` before anything else, and those three decide
-which kind of line is drawn.
+Its branch reads a `u16` id and looks the message up with
+`wj.field_Qb.a(127, var5)`; the text comes from that object, not the wire. Free
+text must use opcode 11's `li.a` Huffman path.
 
 ## Use the client as a library
 
