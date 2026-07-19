@@ -182,8 +182,11 @@ NODE
   fi
   pipeline_skip_passes="${SKIP_PIPELINE_PASSES:+$SKIP_PIPELINE_PASSES,}intize-boolean-parameters,compile-conflict-renames"
 
+  compaction_stage="$work/compaction-stage"
+
   if ((!REUSE_PIPELINE)); then
     PIPELINE_SIGNATURE_MAP_OUT="$work/logs/signature-map.json" \
+    PIPELINE_SIGNATURE_COMPACTION_STAGE_OUT="$compaction_stage" \
     SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
       "$game_dir/classes" "$work/out" --profile none --safe-bytecode \
       >"$work/logs/pipeline.log" 2>&1 || pipeline_fail=1
@@ -198,6 +201,7 @@ NODE
     mkdir -p "$work/out"
     rm -f "$work/logs/signature-map.json"
     PIPELINE_SIGNATURE_MAP_OUT="$work/logs/signature-map.json" \
+    PIPELINE_SIGNATURE_COMPACTION_STAGE_OUT="$compaction_stage" \
     SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
       "$game_dir/classes" "$work/out" --profile none --safe-bytecode \
       >>"$work/logs/pipeline.log" 2>&1 || pipeline_fail=1
@@ -228,22 +232,69 @@ NODE
         final_out="$(cd "$work/out" && pwd)"
         printf '[bytecode-guard] per-pass retry for: %s\n' "$guard_names" >>"$work/logs/pipeline.log"
         if [[ "${PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION:-0}" == 1 ]]; then
-          # Descriptor rewrites are atomic across the gamepack. If any class
-          # fails final verification, discard the complete compacted output and
-          # rerun every class with signature compaction disabled; a per-class
-          # retry would mix old and new descriptors.
-          printf '[bytecode-guard] signature compaction rejected; retrying the complete gamepack without it\n' \
-            >>"$work/logs/pipeline.log"
-          rm -rf "$retry_out"
-          run_original_bytecode_fallback=1
-          PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION=0 \
-          SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
-            "$game_dir/classes" "$retry_out" --profile none --safe-bytecode \
-            >>"$work/logs/pipeline.log" 2>&1 \
-            && rm -rf "$final_out" \
-            && mv "$retry_out" "$final_out" \
-            && rm -f "$work/logs/signature-map.json" \
-            || pipeline_fail=1
+          # Descriptor rewrites are atomic across the gamepack, so a failing
+          # class cannot be rerun with compaction disabled and it cannot be
+          # restored from its untransformed original: either would leave a
+          # pre-compaction descriptor behind while every call site elsewhere
+          # already uses the compacted one. The staging set is the correct
+          # baseline instead — it carries the compacted descriptors and nothing
+          # but the descriptor rewrite, so reverting a class to it undoes only
+          # the later pass that broke it. Compaction is abandoned wholesale only
+          # if that staged baseline is unavailable.
+          compaction_stage_restored=0
+          if [[ -d "$compaction_stage" ]]; then
+            # First try the same guarded per-pass retry the other experimental
+            # configurations use. Analysis still spans the whole gamepack, so
+            # the compaction set is identical to the one already baked into the
+            # output; only the broken classes are emitted and overlaid.
+            rm -rf "$retry_out"
+            if PIPELINE_EXPERIMENTAL_INTERCLASS_DCE="${PIPELINE_EXPERIMENTAL_INTERCLASS_DCE:-0}" \
+              PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION=1 \
+              BULK_PIPELINE_ASM_GUARD_CP="$VERIFY_TOOLS:$ASM_CP" \
+              BULK_PIPELINE_ASM_GUARD_CLASSES="$guard_names" \
+              BULK_PIPELINE_CLASS_LIST="$retry_class_list" \
+              BULK_PIPELINE_SKIP_UNSELECTED_COPY=1 \
+              SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
+                "$game_dir/classes" "$retry_out" --profile none --safe-bytecode \
+                >>"$work/logs/pipeline.log" 2>&1
+            then
+              (cd "$retry_out" && find . -type f -name '*.class' -exec cp --parents {} "$final_out/" \;)
+              compaction_stage_restored=1
+            fi
+            # Anything the guarded retry could not repair reverts to its staged
+            # class rather than its original, so the descriptor stays compacted.
+            while IFS= read -r relative_class; do
+              if [[ -f "$final_out/$relative_class" ]] \
+                && java -cp "$VERIFY_TOOLS:$ASM_CP" Verify "$final_out/$relative_class" >/dev/null 2>&1; then
+                continue
+              fi
+              if [[ -f "$compaction_stage/$relative_class" ]]; then
+                cp "$compaction_stage/$relative_class" "$final_out/$relative_class"
+                printf '[bytecode-guard] restored staged compacted %s after pipeline ASM verification failure\n' \
+                  "$relative_class" >>"$work/logs/pipeline.log"
+                compaction_stage_restored=1
+              else
+                compaction_stage_restored=0
+                break
+              fi
+            done < "$retry_class_list"
+          fi
+          if ((compaction_stage_restored)); then
+            rm -rf "$retry_out"
+          else
+            printf '[bytecode-guard] signature compaction rejected; retrying the complete gamepack without it\n' \
+              >>"$work/logs/pipeline.log"
+            rm -rf "$retry_out"
+            run_original_bytecode_fallback=1
+            PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION=0 \
+            SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
+              "$game_dir/classes" "$retry_out" --profile none --safe-bytecode \
+              >>"$work/logs/pipeline.log" 2>&1 \
+              && rm -rf "$final_out" \
+              && mv "$retry_out" "$final_out" \
+              && rm -f "$work/logs/signature-map.json" \
+              || pipeline_fail=1
+          fi
         elif [[ "${PIPELINE_EXPERIMENTAL_INTERCLASS_DCE:-0}" == 1 ]]; then
           # Interclass specialization needs to analyze the complete gamepack,
           # but only the invalid classes need to be emitted again. Keep analysis

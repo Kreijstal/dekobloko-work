@@ -468,10 +468,20 @@ const files = listClassFiles(inDir);
 const processFiles = selectProcessFiles(files);
 const processFileSet = new Set(processFiles);
 const analysisFiles = process.env.BULK_PIPELINE_SCOPE_ANALYSIS_TO_SELECTED === '1' ? processFiles : files;
+// What makes a descriptor rewrite safe is that the compaction set is derived
+// from every class in the gamepack, so a scoped ANALYSIS is fatal to it. A
+// scoped emission is not: staging still runs over the full class set, so the
+// selected classes are compacted against the same global facts. That is only
+// sound when the caller is overlaying the result onto an already-compacted
+// output rather than treating it as a complete gamepack, which is exactly what
+// BULK_PIPELINE_SKIP_UNSELECTED_COPY signals. Without that signal a scoped run
+// would silently emit a partial gamepack, so compaction stays disabled.
+const compactionOverlayRun = process.env.BULK_PIPELINE_SKIP_UNSELECTED_COPY === '1';
 if (experimentalSignatureCompaction
-    && (processFiles.length !== files.length || analysisFiles.length !== files.length)) {
+    && (analysisFiles.length !== files.length
+      || (processFiles.length !== files.length && !compactionOverlayRun))) {
   console.error(
-    '[experimental-signature-compaction] disabled: descriptor rewrites require an unscoped all-class run',
+    '[experimental-signature-compaction] disabled: descriptor rewrites require gamepack-wide analysis',
   );
   experimentalSignatureCompaction = false;
 }
@@ -562,6 +572,36 @@ let orphanGuardState = null;
 let orphanGuardPassLabel = '';
 let orphanGuardClassName = '';
 let lastSaveAndReloadRejected = false;
+
+// Every guard baseline is keyed by `owner.name(descriptor)`, which silently
+// assumes a pass never rewrites a method descriptor. Signature compaction does
+// exactly that, so each compacted method loses its baseline entry and every
+// finding the input already had reappears as "fresh" — the guard then reverts
+// bytecode that is in fact verifier-clean. Translating baseline keys into the
+// identities the pass is about to produce keeps the comparison honest without
+// weakening it: a genuinely new finding still has no baseline counterpart.
+let guardMethodKeyRemap = null;
+function remapGuardKey(key) {
+  if (!guardMethodKeyRemap || guardMethodKeyRemap.size === 0) return key;
+  const hash = key.indexOf('#');
+  const head = hash >= 0 ? key.slice(0, hash) : key;
+  const mapped = guardMethodKeyRemap.get(head);
+  return mapped ? mapped + (hash >= 0 ? key.slice(hash) : '') : key;
+}
+function remapGuardKeys(keys) {
+  return guardMethodKeyRemap && guardMethodKeyRemap.size > 0 ? keys.map(remapGuardKey) : keys;
+}
+function remapGuardDirectionKeys(directions) {
+  if (!guardMethodKeyRemap || guardMethodKeyRemap.size === 0) return directions;
+  const remapped = new Map();
+  for (const [key, value] of directions) {
+    const mappedKey = remapGuardKey(key);
+    const existing = remapped.get(mappedKey);
+    if (existing) for (const direction of value) existing.add(direction);
+    else remapped.set(mappedKey, new Set(value));
+  }
+  return remapped;
+}
 
 function methodParamSlotCount(descriptor, isStatic) {
   let slots = isStatic ? 0 : 1;
@@ -752,9 +792,9 @@ function resetOrphanGuard(ast, inputBytes, classFile = '') {
   orphanGuardClassName = classBasename(classFile);
   orphanGuardState = orphanLoadGuardEnabled
     ? {
-      baseline: new Set(collectOrphanLoadKeys(ast)),
-      stackBaseline: new Set(collectStackUnderflowKeys(ast)),
-      iincDirections: collectIincDirectionSets(ast),
+      baseline: new Set(remapGuardKeys(collectOrphanLoadKeys(ast))),
+      stackBaseline: new Set(remapGuardKeys(collectStackUnderflowKeys(ast))),
+      iincDirections: remapGuardDirectionKeys(collectIincDirectionSets(ast)),
       snapshot: inputBytes,
     }
     : null;
@@ -2842,6 +2882,10 @@ let effectiveInputDir = inDir;
 if (experimentalSignatureCompaction) {
   const stagedDir = path.join(tmpDir, 'signature-compaction-stage');
   let stageFailed = null;
+  guardMethodKeyRemap = new Map(interproceduralSignatureCompactions.map((compaction) => [
+    `${compaction.owner}.${compaction.name}${compaction.oldDescriptor}`,
+    `${compaction.owner}.${compaction.name}${compaction.newDescriptor}`,
+  ]));
   try {
     for (const f of files) {
       const sourcePath = path.join(inDir, f);
@@ -2868,6 +2912,7 @@ if (experimentalSignatureCompaction) {
   } finally {
     orphanGuardState = null;
     orphanGuardPassLabel = '';
+    guardMethodKeyRemap = null;
   }
   if (stageFailed) {
     fs.rmSync(stagedDir, { recursive: true, force: true });
@@ -2880,6 +2925,16 @@ if (experimentalSignatureCompaction) {
     // serialization. From here on, even a later per-class fallback copies the
     // staged class, so the output cannot mix old and compacted descriptors.
     effectiveInputDir = stagedDir;
+    // Publish the staged set so a later guard failure has a descriptor-consistent
+    // baseline to fall back to. Restoring the untransformed original there would
+    // reintroduce the pre-compaction descriptor while every call site in the rest
+    // of the gamepack already uses the compacted one.
+    const stageOut = process.env.PIPELINE_SIGNATURE_COMPACTION_STAGE_OUT;
+    if (stageOut) {
+      const stageOutDir = path.resolve(stageOut);
+      fs.rmSync(stageOutDir, { recursive: true, force: true });
+      fs.cpSync(stagedDir, stageOutDir, { recursive: true });
+    }
   }
 }
 if (experimentalInterclassDce) {
