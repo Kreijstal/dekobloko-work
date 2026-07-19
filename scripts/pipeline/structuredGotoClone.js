@@ -1521,12 +1521,13 @@ function simplifyTwoSidedNotCompares(codeItems) {
     // branch's left operand; a nearer pair failing the stack check belongs to a
     // different expression, so keep looking rather than corrupting it.
     let leftPair = -1;
+    const labelRefs = collectLabelReferenceCounts(codeItems);
     for (let candidate = findPreviousNotPair(codeItems, i - 3, 18);
       candidate >= 0;
       candidate = findPreviousNotPair(codeItems, candidate, 18 - (i - 3 - candidate))) {
       // Stack check first: it is local and cheap, while plainUnreferencedItems
       // rebuilds label counts across the whole method on every call.
-      if (complementProducesBranchLeftOperand(codeItems, candidate, i)
+      if (complementProducesBranchLeftOperand(codeItems, candidate, i, labelRefs)
         && plainUnreferencedItems(codeItems, candidate, candidate + 1)) {
         leftPair = candidate;
         break;
@@ -1651,13 +1652,18 @@ function instructionStackDelta(insn) {
 // one. Without this, the backward scan happily latches onto an unrelated `~x`
 // from a neighbouring expression and deletes it — silently turning, for example,
 // `~this.A & param0` into `this.A & param0`.
-function complementProducesBranchLeftOperand(codeItems, leftPairStart, branchIndex) {
+function complementProducesBranchLeftOperand(codeItems, leftPairStart, branchIndex, labelRefs) {
   let depth = 0;
   for (let i = leftPairStart + 2; i <= branchIndex - 3; i += 1) {
     const item = codeItems[i];
     if (!item) return false;
-    // A label or frame here means another path can join with a different stack.
-    if (item.labelDef || item.stackMapFrame) return false;
+    // Only a label another instruction actually targets can join a different
+    // stack here. Rejecting on a label merely being present would disable this
+    // fold on real input, where the disassembler labels nearly every
+    // instruction. A frame implies a join point regardless.
+    const label = labelName(item.labelDef);
+    if (label && (labelRefs.get(label) || 0) > 0) return false;
+    if (item.stackMapFrame) return false;
     if (!item.instruction) continue;
     const delta = instructionStackDelta(item.instruction);
     if (delta === null) return false;

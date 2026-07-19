@@ -127,6 +127,83 @@ function padded(codeItems) {
     'equivalent computed int-array comparison should be retained');
 }
 
+// Regressions for the two-sided complement fold (8004973).
+//
+// simplifyTwoSidedNotCompares finds the `iconst_m1; ixor` pair feeding a
+// comparison by scanning backwards up to 18 instructions. With no stack-depth
+// or expression-boundary check it latched onto complements belonging to a
+// completely different expression and deleted them, dropping a live `~`.
+//
+// lk.d(int,int) is the input rising-edge detector: `edges = ~this.A & param0`
+// became `edges = this.A & param0`, so "newly pressed" turned into "still
+// held" and holding a key rotated the piece every frame instead of once.
+{
+  const codeItems = padded([
+    item('LENTRY', 'aload_0'),
+    item(null, { op: 'getfield', arg: ['Field', 'lk', ['A', 'I']] }),
+    item(null, 'iconst_m1'),
+    item(null, 'ixor'),
+    item(null, { op: 'iload', arg: '1' }),
+    item(null, 'iand'),
+    item(null, { op: 'istore', arg: '2' }),
+    // Unrelated two-sided comparison. Its own complement is at i-2/i-1; the
+    // backward scan used to reach past `iand`/`istore` and claim the `~this.A`
+    // pair above as the branch's left operand.
+    item(null, { op: 'iload', arg: '2' }),
+    item(null, { op: 'iload', arg: '3' }),
+    item(null, 'iconst_m1'),
+    item(null, 'ixor'),
+    item(null, { op: 'if_icmpgt', arg: 'LTGT' }),
+    item(null, 'return'),
+    item('LTGT', 'return'),
+  ]);
+  const result = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_TWO_SIDED_NOT_COMPARE: '1',
+  }, () => runStructuredGotoClone(targetAstFrom('lk', 'd', '(II)I', codeItems)));
+  assert.equal(result.changed, false,
+    'a complement from a neighbouring expression must not be folded away');
+  assert.equal(countIntComplements(codeItems), 2,
+    'both complements survive: the ~this.A operand and the comparison operand');
+  assert.equal(opsOf(codeItems).slice(0, 6).join(','),
+    'aload_0,getfield,iconst_m1,ixor,iload,iand',
+    'the rising-edge detector still computes ~this.A & param0');
+  assert.equal(codeItems.some((entry) => op(entry.instruction) === 'if_icmplt'), false,
+    'the comparison is not inverted when the fold is declined');
+}
+
+// Positive direction: a genuine `~a OP ~b` must still fold, so the guard above
+// cannot be satisfied by simply disabling the pass.
+{
+  const codeItems = padded([
+    item('LENTRY', { op: 'iload', arg: '2' }),
+    item(null, 'iconst_m1'),
+    item(null, 'ixor'),
+    item(null, { op: 'getstatic', arg: ['Field', 'hd', ['n', 'I']] }),
+    item(null, 'iconst_m1'),
+    item(null, 'ixor'),
+    item(null, { op: 'if_icmpgt', arg: 'LTGT' }),
+    item(null, 'return'),
+    item('LTGT', 'return'),
+  ]);
+  const result = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_TWO_SIDED_NOT_COMPARE: '1',
+  }, () => runStructuredGotoClone(targetAstFrom('sk', 'a', '(II)I', codeItems)));
+  assert.equal(result.changed, true,
+    'a two-sided complement comparison is still simplified');
+  assert.equal(countIntComplements(codeItems), 0, 'both complements are folded away');
+  assert.equal(opsOf(codeItems).slice(0, 3).join(','), 'iload,getstatic,if_icmplt',
+    'folding ~a > ~b inverts the comparison to a < b');
+}
+
+function op(instruction) {
+  if (typeof instruction === 'string') return instruction;
+  return instruction && instruction.op;
+}
+
+function opsOf(codeItems) {
+  return codeItems.map((entry) => op(entry.instruction)).filter(Boolean);
+}
+
 function withLoopEntry(fn) {
   const old = process.env.STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY;
   process.env.STRUCTURED_GOTO_CLONE_LOOP_BODY_ENTRY = '1';
