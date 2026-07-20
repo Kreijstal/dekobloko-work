@@ -46,6 +46,41 @@ class AccountStore:
             json.dump({"accounts": self.accounts}, handle, indent=2, sort_keys=True)
             handle.write("\n")
 
+    def player_id(self, username: str) -> int:
+        """Stable per-account id sent to the client at login.
+
+        This used to be a hardcoded 1 for every account, which caused real
+        identity corruption: the client stores the id and sends it back in the
+        USERNAME SLOT on every reconnect. Base37-decoding 1 yields "A", so any
+        player who reconnected -- which happens on every return-to-main-menu --
+        silently became account "a" and had their scores filed there.
+
+        Deriving it from the account name makes the value round-trip to the
+        right player, and is deterministic so it survives a restart without
+        needing to be persisted.
+
+        The offset keeps ids clear of the small integers a stray field might
+        hold. It is NOT a guarantee of non-collision with a real packed name --
+        username_for_player_id() only matches ids of accounts that exist, which
+        is what actually makes the lookup safe.
+        """
+        normalized = self._normalize(username)
+        digest = hashlib.sha256(normalized.encode("utf-8")).digest()
+        return 0x1000_0000 | (int.from_bytes(digest[:4], "big") & 0x0FFF_FFFF)
+
+    def username_for_player_id(self, player_id: int) -> str | None:
+        """Reverse player_id() -- which account was this id issued to?
+
+        Returns None when the value is not a known account's id, in which case
+        the caller should treat the slot as a packed username as before.
+        """
+        if player_id <= 0:
+            return None
+        for name in self.accounts:
+            if self.player_id(name) == player_id:
+                return name
+        return None
+
     @staticmethod
     def _normalize(username: str) -> str:
         return username.strip().lower()

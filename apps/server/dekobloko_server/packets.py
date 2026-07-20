@@ -33,8 +33,29 @@ CLIENT_PACKET_LENGTHS: dict[int, int] = {
     # right, that description is not: opcode 5 is a request written by
     # oi.java:272 and it expects a reply. See the opcode 5 handler in game.py.
     # Whether opcode 4 is also a request has not been checked.
-    4: 2,
-    5: 3,
+    # WAS `4: 2`, which is wrong and was actively dangerous. Opcode 4 also
+    # carries the achievement record, and MEASURED by running the client's own
+    # writer (kk.a at kk.java:39, invoked by reflection with a synthetic `ki`)
+    # that packet is:
+    #
+    #   [opcode 4][u8 length = 23][
+    #     u8 count=1 | u8 field_v ACHIEVEMENT INDEX | u8 field_p |
+    #     i32 field_s | i32 field_r | i32 field_o | i32 field_q | i32 checksum ]
+    #
+    # Observed emission: 17 01 02 11 22222222 33333333 44444444 55555555 ff3adbba
+    #
+    # Reading that as fixed-2 consumes 2 of 25 bytes and leaves 23 in the
+    # stream -- a permanent ISAAC keystream desync, i.e. garbage opcodes and a
+    # crash shortly after earning an achievement.
+    #
+    # -1 also stays correct for the short form the old note recorded
+    # (`fd 01 02`): as [len=1][payload 02] it consumes the same 2 bytes. So -1
+    # is right for both observations and fixed-2 is right for only one.
+    4: -1,
+    # Opcode 5 is NOT in this table on purpose: it has two producers with
+    # different framing and no single length describes it. See _read_opcode_5,
+    # which is dispatched before this table is consulted. It was `5: 3`, which
+    # framed the request form correctly and desynced on every progress record.
     9: 0,
     10: 0,
     # Written by ce.a (ce.java:435), which reserves a byte after the opcode and
@@ -42,6 +63,15 @@ CLIENT_PACKET_LENGTHS: dict[int, int] = {
     # listed explicitly rather than left to the assumed-variable fallback --
     # the fallback happened to guess right here, which is not a guarantee.
     # Observed payload on a lobby chat send: 00 04 e7 bc (4 bytes).
+    # LOBBY actions (create/join/leave room, play rated, etc). Named from the
+    # shattered-plans deobfuscation of the same framework: C2S 0x0b = LOBBY,
+    # VARIABLE_BYTE. Previously absent from this table, so it fell to the
+    # assumed-variable fallback -- which guessed right, but was never recorded
+    # as a fact and had no handler, so every room action was silently dropped.
+    #
+    # OBSERVED from a real client: `04 08 80 00 00 02 01 01` (create) and `00`
+    # (play rated).
+    11: -1,
     12: -1,  # lobby message / chat send -- payload layout NOT yet decoded
     14: -1,  # chat: u64 target + cstring text + u8 channel + u8 quickchat
     # Create/join a game room. PROVEN by running the client's own writer:
@@ -86,6 +116,32 @@ CLIENT_PACKET_LENGTHS: dict[int, int] = {
 # length byte and that fixed sizes cannot exist -- that reading is wrong, and it
 # cost a working table once already. The producer is vi.java:304; the consumer
 # is fh.java:94. Check both.
+# Client LOBBY action codes (client opcode 11, first payload byte).
+#
+# Names taken from a deobfuscated client for the same FunOrb framework
+# (lexi-lambda/shattered-plans, C2SPacket.LobbyAction). The action codes are
+# framework-level and two of them are already corroborated here: this server's
+# roster "mode 5" and "mode 23" line up with that project's server-side
+# PLAYER_ENTERED_LOBBY (5) and PLAYER_ID (23).
+#
+# Used for logging only. Naming an opcode is not the same as knowing Dekobloko's
+# payload for it, so nothing here should be treated as a verified wire layout.
+LOBBY_ACTION_NAMES: dict[int, str] = {
+    0: "PLAY_RATED_GAME",
+    1: "RETURN_TO_LOBBY",
+    2: "SET_RATED_OPTIONS",
+    3: "ACK_RATED_ROOM_INFO",
+    4: "CREATE_UNRATED_GAME",
+    5: "SET_ROOM_OPTIONS",
+    6: "INVITE_PLAYER_TO_GAME",
+    7: "KICK_PLAYER_FROM_GAME",
+    8: "JOIN_ROOM",
+    9: "LEAVE_ROOM",
+    10: "SPECTATE_GAME",
+    11: "SHOW_PLAYERS_IN_GAME",
+}
+
+
 SERVER_PACKET_LENGTHS: dict[int, int] = {
     1: 16,
     2: -2,
@@ -100,9 +156,22 @@ SERVER_PACKET_LENGTHS: dict[int, int] = {
     11: -1,
     12: -1,   # reply to client opcode 5; see build_sb_reply()
     13: -1,
+    # 14 and 15 are MEASURED, not assumed. mk.c is `new int[256]` (mk.<clinit>)
+    # and neither index is ever written by any iastore in the gamepack, so both
+    # keep the array default 0 = fixed size, NO length byte.
+    #
+    # Recorded explicitly because "absent from this table" previously got
+    # misread as "we never measured it", which led to opcode 15 being removed on
+    # a wrong desync theory -- that broke return-to-menu, since the client
+    # storms opcode 10 forever without the ack. An explicit 0 states the fact.
+    14: 0,    # lobby bootstrap (empty payload is CORRECT, not just untested)
+    15: 0,    # return-to-menu ack, answers client opcode 10
     16: -1,
     17: -1,
     18: 1,
+    # Achievement mask push. MEASURED from the client's own table, not assumed:
+    # client.java:3010 is `mk.field_c[75] = -1`, i.e. a u8 length byte.
+    75: -1,
     58: -2,   # start own multiplayer game
     59: -2,   # start spectator multiplayer game
     # Game teardown / game over. Fixed EMPTY payload -- no length byte.
@@ -165,6 +234,9 @@ class PacketCodec:
         if opcode == 3:
             return self._read_opcode_3(sock)
 
+        if opcode == 5:
+            return self._read_opcode_5(sock)
+
         length = CLIENT_PACKET_LENGTHS.get(opcode)
         assumed_variable = False
 
@@ -217,6 +289,43 @@ class PacketCodec:
         payload = read_exact(sock, first) if first else b""
         return GamePacket(3, payload, False)
 
+    def _read_opcode_5(self, sock: socket.socket) -> GamePacket:
+        """Frame client opcode 5, which -- like opcode 3 -- has TWO producers.
+
+        Both were MEASURED by running the client's own writers by reflection:
+
+          oi.a   saved-value request   NO length byte, fixed 3-byte body.
+                 (oi.java:272)         Writes a literal 2, a literal 0, then
+                                       sb.field_r (0). Proven: 05 02 00 00
+          mc.a   progress record       ONE u8 length byte, then the body.
+                 (mc.java:12)          Proven emissions (length | body):
+                                         17 | 01 00 43 ... (field_r = 3)
+                                         18 | 01 00 c0 40 ... (field_r = 64)
+
+        So, exactly as with opcode 3, the byte after the opcode is payload in
+        one case and a LENGTH in the other. Peek it:
+
+          == 0x02  -> request: that byte is payload[0], read 2 more (3 total)
+          otherwise -> progress record: that byte is the length
+
+        Why the peek is safe: for it to misfire, a progress record would have to
+        declare a length of exactly 2. Its body is count + field_q + a varint
+        field_r + four i32 + a 4-byte checksum, measured at 23-24 bytes and
+        never below 23. The two spaces cannot overlap.
+
+        This replaces a `5: 3` fixed entry, which was wrong and actively
+        harmful: a progress record read as 3 bytes leaves ~22 bytes in the
+        stream and permanently desynchronises the ISAAC opcode keystream. It
+        fired exactly when a stamina stage was cleared, which is the moment the
+        client queues the record.
+        """
+        first = read_u8(sock)
+        if first == 0x02:
+            payload = bytes([first]) + read_exact(sock, 2)
+            return GamePacket(5, payload, False)
+        payload = read_exact(sock, first) if first else b""
+        return GamePacket(5, payload, False)
+
     def encode_server_packet(self, opcode: int, payload: bytes = b"") -> bytes:
         """Encode one server packet, framed per SERVER_PACKET_LENGTHS.
 
@@ -228,8 +337,22 @@ class PacketCodec:
         An opcode missing from the table falls back to the payload's own length,
         i.e. fixed-size. That is a guess for anything the table does not cover;
         prefer adding a real entry over relying on it.
+
+        That fallback is now LOUD. It once framed a guessed opcode 15 as bare
+        fixed-size and crashed a real client: the client's own length table
+        disagreed, so it read the next packet's bytes as a length and desynced.
+        The failure surfaced as an unrelated-looking NullPointerException far
+        from the cause, which is exactly the silent damage described above.
+        Our table lacking an entry tells us nothing about the client's table.
         """
         raw_opcode = (opcode + self.outbound.next()) & 0xFF
+        if opcode not in SERVER_PACKET_LENGTHS:
+            print(
+                f"[packets] WARNING opcode {opcode} has no measured length entry; "
+                f"guessing fixed {len(payload)}-byte framing. If the client's "
+                f"mk.field_c[{opcode}] disagrees, this DESYNCS the stream and "
+                f"the client will die somewhere unrelated."
+            )
         length_kind = SERVER_PACKET_LENGTHS.get(opcode, len(payload))
         out = bytearray([raw_opcode])
         if length_kind == -1:
@@ -349,27 +472,125 @@ def pack_5bit(values: list[int] | tuple[int, ...]) -> bytes:
 
 
 def build_sb_reply(value: int) -> bytes:
-    """Payload for server opcode 12. THE CLIENT DISCARDS THIS PACKET.
+    """Payload for SERVER opcode 4, answering the client's opcode-5 request.
 
-    Do not spend time tuning these bytes. Instrumentation showed opcode 12 is
-    received, framed correctly, and dispatched -- and then dropped at
-    bd.java:974, `if (var2 == 12) { break L3; }`, a branch that does nothing.
-    cm.a((byte) 53), which would parse this payload, is never reached. See the
-    opcode 5 handler in game.py for the full measurement.
+    This docstring previously said "opcode 12" and "THE CLIENT DISCARDS THIS
+    PACKET". Both were wrong. bd.f's dispatch, read from BYTECODE rather than
+    CFR output (which had already produced three different wrong answers), is a
+    chain of compares on bh.field_k:
 
-    The layout below was read off cm.a and is therefore UNTESTED, since nothing
-    has ever parsed it:
+        opcode 1 -> ua.i     opcode 2 -> ke.e
+        opcode 3 -> dk.a     opcode 4 -> cm.a((byte) 53)   <-- this packet
 
-        byte 0        discriminator; 0 believed to select the `sb` path
-        byte 1        read into var3; appears unused on the sb path
+    So cm.a IS reached, and it parses this payload:
+
+        byte 0        discriminator; 0 selects the `sb` path
+        byte 1        read into var3; unused on the sb path
         remaining     little-endian into sb.field_q, capped at
                       field_q.length << 2 (field_q is int[1], so 4 bytes)
 
-    The intent was to set sb.field_s, which dc.java:370 needs to flip
-    qj.field_k. That path is real; reaching it via opcode 12 is not. Find what
-    actually reaches cm.a(53) before reworking this.
+    cm.java:134 then sets sb.field_s = true, which is exactly what dc.java:370
+    waits on before folding field_q[0] into id.field_P -- the stamina progress
+    that vk.java:671 tests as `>= 3` to enable the Master Challenge.
+
+    So `value` here is the player's highest stamina stage index, and passing a
+    hardcoded 0 kept that button grey no matter how far the player had got.
     """
     return bytes([0, 0]) + int(value).to_bytes(4, "little")
+
+
+def build_achievements_reply(indices: list[int]) -> bytes:
+    """Payload for server opcode 3 -- the reply to a client ACHIEVEMENTS request.
+
+    Layout confirmed against a deobfuscated client for the same FunOrb
+    framework (lexi-lambda/shattered-plans, JagexApplet.handleAchievementsPacket
+    and its reference server ClientHandler):
+
+        u8 status   0 = OK: u8 count, then count x i32 bitmap words
+                    1 = shut the connection down
+                    2 = achievements offline/unavailable
+
+    That project names the opcodes: C2S 0x04 = ACHIEVEMENTS, S2C 0x03 =
+    ACHIEVEMENTS. Both match what we had reverse-engineered here as "opcode 4"
+    and "the dk.a path".
+
+    THIS REPLACES A STATUS-2 REPLY. build_f_reply() sent a bare `2`, which the
+    reference names `areAchievementsOffline` -- i.e. we were answering every
+    request with "the Achievements system is currently unavailable", which is
+    why the screen stayed empty no matter how many records we had stored.
+
+    MUST ONLY BE SENT AS A REPLY. The client pops a pending request queue and
+    tears the connection down if nothing is waiting (`achievementRequests.poll()
+    ... ifPresentOrElse(..., JagexApplet::shutdownServerConnection)`), which is
+    the same disconnect we observed here as si.a(127) out of dk.a.
+
+    Bit placement matches rb.a (rb.java:184): word = index >> 5, bit = index &
+    31. All 31 Dekobloko achievements fit in word 0.
+    """
+    words = [0] * 8
+    for index in indices:
+        if 0 <= index < 31:
+            words[index >> 5] |= 1 << (index & 31)
+
+    count = 1
+    while count < 8 and any(words[count:]):
+        count += 1
+
+    payload = bytearray([0, count])  # status 0 = OK
+    for word in words[:count]:
+        payload.extend((word & 0xFFFFFFFF).to_bytes(4, "big"))
+    return bytes(payload)
+
+
+def build_achievement_mask(indices: list[int]) -> bytes:
+    """Payload for server opcode 75 -- the earned-achievement mask.
+
+    UNUSED / NOT SENT. Kept only as a record of a measurement.
+
+    This was written to push the mask unsolicited at bootstrap, which is wrong:
+    the achievements reply belongs on opcode 3 as an answer to a request (see
+    build_achievements_reply). Sending it unsolicited would hit the same
+    empty-pending-queue disconnect that dk.a takes.
+
+    Layout READ FROM THE HANDLER, client.java:761-841:
+
+        u8            count
+        count x i32   mask words, big-endian
+
+    The handler allocates a scratch int[8] (`b.h(-123)`, b.java:42 returns
+    new int[8]), reads `count` ints into it (client.java:838, `i(7553)`), then
+    bitwise-ORs them into the two persistent masks: j.field_d
+    (client.java:802-812) and o.field_g (client.java:824-834). It then walks the
+    31 indices and raises a toast per newly-set bit (client.java:788-790).
+
+    Bit placement matches rb.a (rb.java:184): word = index >> 5, bit = index &
+    31. All 31 achievements therefore live in word 0, so one word suffices --
+    but the scratch array is int[8] and a count above 8 would overrun it, so
+    this refuses to emit more than 8 words.
+
+    NOT YET CONFIRMED AGAINST A LIVE CLIENT. Two specific risks:
+      - The merge is an OR, so this can only ever ADD achievements. It cannot
+        take one away, which is the safe direction to be wrong in.
+      - client.java:768-778 has an AND-NOT branch taken when nm.field_Qb is
+        set. Sending after that latch flips could CLEAR bits instead of setting
+        them, so this is sent during bootstrap, before the initial sync
+        completes.
+    """
+    words = [0] * 8
+    for index in indices:
+        if 0 <= index < 31:
+            words[index >> 5] |= 1 << (index & 31)
+
+    # Trailing zero words carry no information; sending only what is needed
+    # keeps the packet minimal and stays well inside the int[8] scratch.
+    count = 1
+    while count < 8 and any(words[count:]):
+        count += 1
+
+    payload = bytearray([count])
+    for word in words[:count]:
+        payload.extend((word & 0xFFFFFFFF).to_bytes(4, "big"))
+    return bytes(payload)
 
 
 def build_f_reply() -> bytes:
@@ -640,6 +861,101 @@ def build_friend_entry(name: str, display_name: str | None = None, world: str = 
     else:
         builder.u8(1).cstring(name).cstring(display_name)
     return builder.cstring(world).finish()
+
+
+def build_local_player_id(uid: int) -> bytes:
+    """Server frame 10, mode 23 -- tell the client which player it is.
+
+    Same connection channel and framing as build_lobby_player(); see that
+    docstring for the transport.
+
+      [u8 23][u64 BE uid]
+
+    The client identifies its own roster row by comparing tj.field_cc against
+    uc.field_g (cl.java:645). nk.a initialises uc.field_g to the sentinel -1L
+    on frame 14, so until this packet arrives NO row matches and the client
+    cannot tell which entry is itself.
+
+    PROVEN by execution: driven through the real connection path into ke.a
+    with uc.field_g pre-set to the -1L sentinel; it came back 42, consuming
+    exactly 9 bytes and returning cleanly (no `jb` -- unlike mode 5, this
+    branch reads a fixed body and returns rather than looping).
+
+    Mode 23 was identified from the dispatch chain in ke.a
+    (`bipush 23; iload_3; if_icmpeq 1230`), not guessed.
+
+    Send AFTER frame 14 and, for the local player's row to resolve, the uid
+    here must match the uid given to build_lobby_player() for that player.
+    """
+    if not 0 <= uid <= 0xFFFFFFFFFFFFFFFF:
+        raise ValueError(f"uid must fit in u64, got {uid}")
+    return PacketBuilder().u8(23).u64(uid).finish()
+
+
+def build_lobby_player(
+    uid: int,
+    name: str,
+    rating: int,
+    rated_games: int = 0,
+    flag: bool = False,
+    display_name: str | None = None,
+    previous_name: str = "",
+    seconds_ago: int = 0,
+    icon: int = 0,
+    options: int = 0,
+) -> bytes:
+    """Server frame 10, mode 5 -- add-or-update ONE lobby roster row.
+
+    This is NOT a bd.f game-channel opcode. It arrives on the login/connection
+    channel read by qb.a, which writes the frame code straight into bh.field_k
+    (qb.a offset 1160-1162); client.i then sees bh.field_k == 10 && uh.field_b
+    and calls ke.a to parse it. That is why 10 never appears in te.field_v --
+    the enable table gates bd.f dispatch, and this is a different reader.
+    Framing is [u8 frameCode][u8 length][body], per fh.a (-1 => u8 length),
+    which independently agrees with mk.field_c[10] == -1.
+
+      [u8 5][u64 BE uid][cstring name][cstring previousName]
+      [cstring displayName][u32 BE secondsAgo][u16 BE rating]
+      [u8 (ratedGames << 1) | flag][u8 icon][u8 options]
+
+    PROVEN by execution: driven through the real connection path (stubbed qk
+    socket) into ke.a, every field round-tripped exactly -- tj.field_cc=42,
+    field_Rb/field_Yb="Alice", field_Ub=1487 (the rating), field_Xb=37,
+    field_ec=True, field_dc=3, field_Sb=0 -- consuming exactly 31 bytes.
+
+    ORDERING: the roster hashtable ob.field_i is allocated by nk.a from the
+    frame-14 branch (client.java:730). Send frame 14 (send_lobby_bootstrap)
+    BEFORE any frame 10, or there is no table to insert into.
+
+    ke.a reads records until the buffer is exhausted and then throws `jb`.
+    That is normal loop termination, not an error -- the same shape already
+    documented for oe.c. One record per packet is the tested shape.
+
+    rating lands in tj.field_Ub and is rendered as Integer.toString into the
+    Rating column widget tj.field_Tb. The column is always present: pd.field_a
+    is a hardcoded true (iconst_1 in pd.<clinit>, zero cross-class writes), so
+    the server cannot gate it -- every row must carry a rating.
+    """
+    if not 0 <= rating <= 0xFFFF:
+        raise ValueError(f"rating must fit in u16, got {rating}")
+    if not 0 <= rated_games <= 0x7F:
+        raise ValueError(
+            f"rated_games must fit in 7 bits (packed as games << 1 | flag), got {rated_games}"
+        )
+    return (
+        PacketBuilder()
+        .u8(5)
+        .u64(uid)
+        .cstring(name)
+        .cstring(previous_name)
+        .cstring(name if display_name is None else display_name)
+        .u32(seconds_ago)
+        .u16(rating)
+        .u8((rated_games << 1) | (1 if flag else 0))
+        .u8(icon)
+        .u8(options)
+        .finish()
+    )
 
 
 def build_social_list_complete(mode: int = 2) -> bytes:

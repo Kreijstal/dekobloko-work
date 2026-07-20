@@ -15,11 +15,15 @@ from .packets import (
     PacketBuilder,
     PacketCodec,
     build_achievement_ack,
+    LOBBY_ACTION_NAMES,
+    build_achievements_reply,
     build_chat_broadcast,
     build_f_reply,
     build_friend_entry,
     build_hiscore_table,
     build_ignore_entry,
+    build_lobby_player,
+    build_local_player_id,
     build_room_membership,
     build_sb_reply,
     build_social_list_complete,
@@ -35,6 +39,9 @@ class GameSession:
         self.accounts = AccountStore(config.accounts_path, config.auto_register)
         self.codec: PacketCodec | None = None
         self.display_name = config.display_name
+        # Account key this session authenticated as. Set at login; the default
+        # only matters for a session that never gets that far.
+        self.account_name = config.display_name
         self.current_game: HostedGame | None = None
         self.player_slot: int | None = None
         self._send_lock = threading.Lock()
@@ -127,13 +134,34 @@ class GameSession:
             self._send_login_error(3, "Login seed challenge mismatch.")
             return
 
-        auth = self.accounts.authenticate(parsed.credentials.username, parsed.credentials.password)
+        # The username slot may hold a RECONNECT ID rather than a packed name.
+        # The client stores the player id we issue at login and sends it back
+        # here on every reconnect -- and return-to-main-menu reconnects. Decode
+        # it as base37 and you get a bogus name (the old hardcoded id 1 decoded
+        # to "A"), logging the player into someone else's account mid-session.
+        # Resolve a known id back to its account BEFORE authenticating.
+        login_name = parsed.credentials.username
+        reconnect_as = self.accounts.username_for_player_id(
+            parsed.credentials.username_raw
+        )
+        if reconnect_as is not None:
+            print(
+                f"[auth] {self.peer} reconnect id={parsed.credentials.username_raw} "
+                f"-> account {reconnect_as!r} (slot held an id, not a name)"
+            )
+            login_name = reconnect_as
+
+        auth = self.accounts.authenticate(login_name, parsed.credentials.password)
         if not auth.ok:
             print(f"[auth] {self.peer} denied username={parsed.credentials.username!r} reason={auth.reason}")
             self._send_login_error(3, "Invalid username or password.")
             return
 
         self.display_name = auth.display_name or self.config.display_name
+        # Remember which ACCOUNT this session belongs to, not just its display
+        # name -- the player id must be derived from the account key so the
+        # reconnect lookup above finds it again.
+        self.account_name = login_name
         self.codec = PacketCodec(parsed.client_seed)
         self._send_login_success()
         LOBBY.join(self)
@@ -165,10 +193,29 @@ class GameSession:
 
     def _send_login_success(self) -> None:
         payload = bytearray()
-        payload.extend((self.config.player_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big"))
+        # Per-account id, NOT config.player_id. The client echoes this back in
+        # the username slot on reconnect, so a constant here (it defaulted to 1)
+        # makes every reconnecting player resolve to the same wrong account.
+        player_id = self.accounts.player_id(self.account_name)
+        payload.extend((player_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big"))
         payload.append(0)  # moderator/staff level
         payload.append(0)  # account state byte
-        payload.extend(b"\x00\x00")  # eh.eh_a membership/subscription field
+        # eh.field_a -- read as a u16 by sn.a (sn.java:675, `de.field_V.e(3)`;
+        # e(int) advances field_n by 2 and assembles two bytes, so the width
+        # here is correct).
+        #
+        # This is the Master Challenge gate, and sending 0 kept that button grey
+        # no matter how much stamina progress the player had. The render at
+        # ke.java:2988 greys item id 2 when `id.field_P < 3 || h.a(false)`, and
+        # h.java:232 is `return ph.n(-30146) || eh.field_a <= 0`. So progress is
+        # necessary but NOT sufficient -- this field has to be positive too.
+        #
+        # Every read of eh.field_a in the client is a `> 0` test (f.java:255,
+        # jk.java:18, mc.java:900/939/967, qm.java:438, rb.java:338), so it acts
+        # as a boolean gate and the magnitude is not known to mean anything.
+        # 365 is a plausible "days remaining" and is only chosen for being
+        # positive; do not read significance into it.
+        payload.extend((365).to_bytes(2, "big"))
         payload.append(0)  # empty optional browser/system message string
         payload.append(0)  # login flags
         payload.extend(self.display_name.encode("cp1252", errors="replace"))
@@ -194,6 +241,49 @@ class GameSession:
         # client dispatched the packet, not that it read a well-formed one.
         self._send_packet(14)
         print(f"[game] {self.peer} sent lobby bootstrap")
+
+    def send_local_player_id(self, uid: int) -> None:
+        """Frame 10 / mode 23 -- tell the client which roster row is itself.
+
+        DISABLED BY DEFAULT -- THIS PACKET BREAKS RETURN-TO-MAIN-MENU.
+
+        A/B tested against a real client: sending the mode-5 rows alone renders
+        the roster AND leaves return-to-main-menu working; adding this packet
+        keeps the roster rendering but makes the menu button crash the client
+        (client.java:1598, kf.field_I null while am.field_c is still true).
+
+        The packet itself is not malformed -- execution against the client's own
+        ke.a handler shows it sets uc.field_g exactly as intended, consuming all
+        9 bytes and returning cleanly. So the damage is a downstream consequence
+        of uc.field_g being set, not a parse failure, and it is NOT understood.
+        Do not re-enable without finding that mechanism first.
+
+        Without this uc.field_g stays at nk.a's -1L sentinel and no row ever
+        matches, so the list renders but the client cannot identify the local
+        player. Must follow frame 14 and use the same uid as that player's
+        build_lobby_player() row.
+        """
+        self._send_packet(10, build_local_player_id(uid))
+        print(f"[game] {self.peer} sent local player id uid={uid}")
+
+    def send_lobby_roster(self, rows: list[tuple[int, str, int, int]]) -> None:
+        """Populate the lobby player list -- one frame-10/mode-5 packet per row.
+
+        MUST follow send_lobby_bootstrap(): the roster hashtable ob.field_i is
+        allocated by nk.a from the frame-14 branch, so a frame 10 sent first has
+        no table to insert into. Verified headless -- with the table absent the
+        row is simply dropped.
+
+        One record per packet is the tested shape. ke.a keeps reading records
+        until the buffer runs dry and then throws `jb`, which is normal loop
+        termination rather than an error, so batching several rows into one
+        packet is plausible but UNTESTED -- do not do it without proving it.
+        """
+        for uid, name, rating, rated_games in rows:
+            self._send_packet(10, build_lobby_player(
+                uid=uid, name=name, rating=rating, rated_games=rated_games,
+            ))
+        print(f"[game] {self.peer} sent lobby roster ({len(rows)} row(s))")
 
     # ---------------------------------------------------------------------
     # Everything below is UNEXERCISED. No client has ever been observed
@@ -337,6 +427,54 @@ class GameSession:
             self.sock.sendall(packet)
         print(f"[game] {self.peer} sent server message: {text!r}")
 
+    def _decode_progress_record(self, payload: bytes) -> int | None:
+        """Extract the stage index from an opcode-5 progress record, or None.
+
+        Returns None rather than a guess whenever the record does not match the
+        measured layout: a mismatch means the framing assumption is wrong, and
+        an invented stage would silently unlock (or fail to unlock) content.
+        """
+        if len(payload) < 3:
+            print(f"[prog] {self.peer} record too short: {payload.hex(' ')}")
+            return None
+
+        count, field_q = payload[0], payload[1]
+        if count != 1:
+            # Every measured emission writes a literal 1 (mc.java:21).
+            print(
+                f"[prog] {self.peer} count={count} != 1 -- layout NOT proven "
+                f"for this record: {payload.hex(' ')}"
+            )
+            return None
+
+        tag = payload[2]
+        if tag & 0xC0 == 0x40:
+            stage, rest = tag & 0x3F, payload[3:]
+        elif tag & 0xC0 == 0xC0:
+            if len(payload) < 4:
+                print(f"[prog] {self.peer} truncated 2-byte field_r: {payload.hex(' ')}")
+                return None
+            stage, rest = ((tag & 0x3F) << 8) | payload[3], payload[4:]
+        else:
+            # Only the 01 and 11 tags were ever produced across the measured
+            # range. A 00/10 tag means the encoding is wider than proven, so
+            # refuse it instead of decoding it as if the rule held.
+            print(
+                f"[prog] {self.peer} unknown field_r tag {tag:#04x} -- varint "
+                f"rule not proven for this value: {payload.hex(' ')}"
+            )
+            return None
+
+        ctx = [
+            int.from_bytes(rest[o : o + 4], "big", signed=True)
+            for o in range(0, min(16, len(rest) - len(rest) % 4), 4)
+        ]
+        print(
+            f"[prog] {self.peer} progress record field_q={field_q} "
+            f"stage_index={stage} ctx={ctx[:4]}"
+        )
+        return stage
+
     def _send_packet(self, opcode: int, payload: bytes = b"") -> None:
         if self.codec is None:
             raise RuntimeError("packet codec is not initialized")
@@ -416,8 +554,35 @@ class GameSession:
             # wrong answers (12, then 6). Get it from bytecode, not from the CFR
             # output, before touching this again.
             if packet.opcode == 5:
-                self._send_packet(4, build_sb_reply(0))
-                print(f"[game] {self.peer} opcode 5 -> sent opcode 4 (cm.a path, from bytecode)")
+                # Two forms, separated in _read_opcode_5. The 3-byte `02 00 00`
+                # is the saved-value request (oi.a); anything else is a progress
+                # record (mc.a), MEASURED as:
+                #
+                #   [u8 count=1][u8 field_q][varint field_r STAGE INDEX]
+                #   [i32 field_p][i32 field_n][i32 field_s][i32 field_t]
+                #   [i32 checksum]
+                #
+                # field_r uses a 2-bit-tagged varint, proven at the boundary:
+                #   3 -> 43, 63 -> 7f, 64 -> c0 40, 119 -> c0 77
+                # i.e. v < 64 is one byte 0x40|v, else two bytes 0xC000|v.
+                if packet.payload[:1] != b"\x02":
+                    stage = self._decode_progress_record(packet.payload)
+                    if stage is not None:
+                        LOBBY.record_progress(self.display_name, stage)
+                    continue
+
+                # The request. Its answer becomes sb.field_q[0] via cm.a, which
+                # dc.java:371 folds into id.field_P -- the value vk.java:671
+                # tests as `>= 3` to enable Master Challenge. Sending a
+                # hardcoded 0 here is why that button was always grey.
+                progress = LOBBY.progress_for(self.display_name)
+                self._send_packet(4, build_sb_reply(progress))
+                print(
+                    f"[game] {self.peer} opcode 5 saved-value request -> "
+                    f"replied progress={progress} (stage {progress + 1}; "
+                    f"Master Challenge "
+                    f"{'unlocked' if progress >= LOBBY.MASTER_CHALLENGE_STAGE else 'locked'})"
+                )
                 continue
 
             # Opcode 4 is a request, not a heartbeat. gm.b(4, 65) (gm.java:90)
@@ -433,8 +598,78 @@ class GameSession:
             # `if (!nm.field_Qb) return v.field_d` first, so qj.field_k alone
             # does nothing. Both are needed to open the UI without v.field_d.
             if packet.opcode == 4:
-                self._send_packet(3, build_f_reply())
-                print(f"[game] {self.peer} opcode 4 -> sent opcode 3 (dk.a path)")
+                # Opcode 4 has TWO forms. The 23-byte body is an achievement
+                # record (`ki`), built by kk.a (kk.java:39) and reached via
+                # qc.c -> si.field_e queue -> client.java:537 drain -> ce.a.
+                # Layout MEASURED by invoking kk.a on a synthetic ki:
+                #
+                #   [u8 count][u8 field_v INDEX][u8 field_p]
+                #   [i32 field_s][i32 field_r][i32 field_o][i32 field_q]
+                #   [i32 checksum]
+                #
+                # Anything else is the short request form that the dk.a reply
+                # below serves; do not decode that as a record.
+                if len(packet.payload) == 23:
+                    count = packet.payload[0]
+                    index = packet.payload[1]
+                    field_p = packet.payload[2]
+                    ctx = [
+                        int.from_bytes(packet.payload[o : o + 4], "big", signed=True)
+                        for o in (3, 7, 11, 15)
+                    ]
+                    checksum = int.from_bytes(packet.payload[19:23], "big")
+                    name = (
+                        LOBBY.ACHIEVEMENT_NAMES[index]
+                        if 0 <= index < len(LOBBY.ACHIEVEMENT_NAMES)
+                        else "?"
+                    )
+                    print(
+                        f"[achv] {self.peer} record count={count} "
+                        f"index={index} ({name}) field_p={field_p} "
+                        f"ctx={ctx} checksum={checksum:#010x}"
+                    )
+                    if count != 1:
+                        # Every observed emission writes a literal 1. A different
+                        # count means the framing assumption is wrong; say so
+                        # rather than decode the rest as if it held.
+                        print(
+                            f"[achv] {self.peer}   count != 1 -- layout NOT proven "
+                            f"for this record: {packet.payload.hex(' ')}"
+                        )
+                    else:
+                        LOBBY.record_earned_achievement(self.display_name, index)
+                    # Do NOT reply. This used to fall through to the dk.a reply
+                    # below on the theory that an unanswered record re-drains
+                    # forever. That was wrong, and it was the single largest
+                    # cause of dropped connections: 11266 of the disconnects in
+                    # srv.log occur immediately after "sent opcode 3 (dk.a
+                    # path)".
+                    #
+                    # dk.a pops the pending request queue rc.field_e and calls
+                    # si.a(127) / si.a(115) -- a hard disconnect -- when it is
+                    # empty (dk.java). A record is not a request, so nothing is
+                    # ever pending for it, so the reply always hit that path.
+                    # Only the short request form below may be answered.
+                    continue
+
+                # The short form is an ACHIEVEMENTS request. Named in the
+                # shattered-plans deobfuscation: C2SPacket.a093bo writes
+                # [len=1][type=2], and the reference server answers on S2C
+                # opcode 3 with a status byte.
+                #
+                # We used to answer build_f_reply(), a bare status 2 -- which
+                # that project names `areAchievementsOffline`. So every request
+                # was answered "Achievements system unavailable", and the screen
+                # stayed empty regardless of what we had stored.
+                earned = LOBBY.achievements_for(self.display_name)
+                self._send_packet(3, build_achievements_reply(earned))
+                names = ", ".join(
+                    LOBBY.ACHIEVEMENT_NAMES[i] for i in earned if 0 <= i < 31
+                )
+                print(
+                    f"[achv] {self.peer} achievements request -> replied "
+                    f"status=0 mask={earned} ({names or 'none'})"
+                )
                 continue
 
             # Client opcode 7: create/join a game room. Written by fh.a as
@@ -454,6 +689,32 @@ class GameSession:
             # it finalizes the room (cl.field_A = true, cl.b()) with no occupant
             # list. Real occupants need the pn.a per-occupant record, which is
             # not reversed -- see build_room_membership.
+            # Client opcode 11: LOBBY actions -- this is where create/join room
+            # actually arrives. Named from the shattered-plans deobfuscation of
+            # the same FunOrb framework (C2SPacket.LobbyAction).
+            #
+            # This was silently dropped until now. Note opcode 7, which this
+            # server has long treated as "create/join a game room", has NEVER
+            # been received in any session in srv.log -- in that framework 0x07
+            # is RANKING (fixed 2 bytes) and its reply S2C 0x06 is RATINGS, so
+            # that handler is misidentified, not merely unused.
+            if packet.opcode == 11:
+                if not packet.payload:
+                    print(f"[lobby] {self.peer} LOBBY action with empty payload")
+                    continue
+                action = packet.payload[0]
+                name = LOBBY_ACTION_NAMES.get(action, "UNKNOWN")
+                print(
+                    f"[lobby] {self.peer} action={action} ({name}) "
+                    f"body={packet.payload[1:].hex(' ') or '<empty>'}"
+                )
+                # Deliberately no reply yet. The action codes are shared across
+                # the framework, but Dekobloko's room payloads are not the same
+                # as that game's, and an unsolicited or wrong-shaped reply is
+                # exactly what caused the disconnect storm via dk.a. Capture
+                # first, answer once the shape is known.
+                continue
+
             if packet.opcode == 7:
                 if len(packet.payload) < 2:
                     print(f"[game] {self.peer} opcode 7 too short: {packet.payload!r}")
@@ -483,12 +744,30 @@ class GameSession:
                     key = int.from_bytes(packet.payload[2:4], "big")
                     rows = packet.payload[4]
                     vcols = packet.payload[5]
-                    entries = LOBBY.hiscore_rows(key, rows, vcols)
+                    # Pass the requester: every row renders under the local
+                    # player's name (column 0), so the table is theirs.
+                    entries = LOBBY.hiscore_rows(
+                        key, rows, vcols, player=self.display_name
+                    )
                     self._send_packet(2, build_hiscore_table(key, entries, vcols))
                     print(
-                        f"[game] {self.peer} hiscore request key={key} rows={rows} "
+                        f"[hiscore] {self.peer} request key={key} rows={rows} "
                         f"vcols={vcols} -> sent {len(entries)} entries"
                     )
+                    for column, score, values in entries:
+                        print(
+                            f"[hiscore]   col={column} score={score} values={values}"
+                        )
+                    if not entries:
+                        # Empty is a PROVEN-valid response, so this is not an
+                        # error. Scores ARE stored now, so an empty table means
+                        # this player has none yet -- most often because they
+                        # logged in under a different account than the one the
+                        # scores were filed under.
+                        print(
+                            f"[hiscore]   (no stored scores for "
+                            f"{self.display_name!r} yet)"
+                        )
                     continue
 
                 if packet.payload[0] == 0x01 and len(packet.payload) >= 3:
@@ -593,19 +872,64 @@ class GameSession:
             # leave_game() alone answers nothing, which is why the button looked
             # dead.
             #
-            # Reply candidate: server opcode 15. client.java has a second
-            # dispatcher (separate from bd.f) covering 9, 10, 14, 15 and 58-77;
-            # at :747 opcode 15 gets its own branch, checked before 10. It has no
-            # mk.field_c entry, so it is fixed zero-length. UNVERIFIED beyond the
-            # test that follows -- if the client storms or ignores it, try the
-            # opcode 10 branch (guarded by uh.field_b -> ke.a(113)) instead, and
-            # read the bytecode rather than the CFR output.
+            # Reply: server opcode 15, bare (no length byte, no body).
+            #
+            # The framing is now MEASURED, not a candidate: mk.c is int[256] and
+            # index 15 is never written by any iastore in the gamepack, so it is
+            # 0 = fixed zero-length. A bare enciphered opcode byte is right.
+            #
+            # This ack is REQUIRED. It was briefly removed on a theory that its
+            # framing desynced the stream; that theory was wrong, and without
+            # the ack the client re-sends opcode 10 forever and the
+            # return-to-menu button does nothing.
+            #
+            # NOTE: a real client still NPE'd (client.b(int,boolean), from the
+            # client.i tick loop) shortly after a 15 went out. Since the framing
+            # is now proven correct, that crash has some OTHER cause and 15 is
+            # not it. Leading suspect: the zero-occupant room this server builds
+            # in reply to client opcode 7 -- tearing down a room the local
+            # player never appeared in. Do not "fix" that by re-guessing this
+            # packet again.
+            # Client opcode 10. Deliberately a NO-OP: no reply, no state change.
+            #
+            # This was previously read as "return to main menu" and answered by
+            # tearing down lobby state and sending opcode 15. That CRASHED the
+            # client, proven by reflection: the NPE is client.java:1598,
+            #   kf.field_I.b(2, true)
+            # reached with kf.field_I == null while am.field_c is still true.
+            # Every other teardown in the client clears am.field_c BEFORE
+            # nulling kf.field_I; driving a teardown from here broke that
+            # invariant. Reproduced headlessly -- the harness's trap trail
+            # `client.O(30661,false)` matches the live crash string exactly.
+            #
+            # It is also the wrong reading of the button. The ranking/hiscore UI
+            # navigates the BROWSER: wb/bh/sm/pk build a codebase-relative URL
+            # ("reload.ws", "tosupport.ws", ...) and call
+            # AppletContext.showDocument themselves. Those links are constructed
+            # client-side and need no server packet at all, so there is nothing
+            # for us to answer here.
+            #
+            # No-reply is safe. An earlier log showed repeated opcode 10s that I
+            # mistook for a retry storm; they were interleaved with chat packets,
+            # i.e. a user clicking a dead button, not the client re-requesting.
+            # Nothing blocks on this opcode.
             if packet.opcode == 10:
                 print(f"[game] {self.peer} client requested return to main menu (10)")
                 LOBBY.leave_game(self)
-                self._lobby_bootstrapped = False
+                # DO NOT clear _lobby_bootstrapped here.
+                #
+                # Clearing it made the next lobby entry send frame 14 a SECOND
+                # time on the same connection, which re-runs nk.a and
+                # reallocates the lobby tables. Observed effect: the first
+                # return-to-main-menu works, then re-entering the lobby and
+                # leaving again crashes the client at client.java:1598
+                # (kf.field_I null while am.field_c is still true).
+                #
+                # The bootstrap is per-CONNECTION, not per-lobby-visit. The
+                # client keeps its lobby state across a menu round trip, so
+                # re-bootstrapping is both unnecessary and destructive.
                 self._send_packet(15)
-                print(f"[game] {self.peer} -> sent opcode 15 (return-to-menu candidate)")
+                print(f"[game] {self.peer} -> sent opcode 15 return-to-menu ack")
                 continue
 
             if packet.opcode == 59:

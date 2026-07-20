@@ -2,9 +2,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import itertools
+import json
+import os
 import random
+from pathlib import Path
 import threading
 import time
+import zlib
 from typing import Protocol
 
 from .packets import PacketBuilder, pack_5bit
@@ -19,6 +23,12 @@ class LobbySession(Protocol):
         ...
 
     def send_lobby_bootstrap(self) -> None:
+        ...
+
+    def send_lobby_roster(self, rows: list[tuple[int, str, int, int]]) -> None:
+        ...
+
+    def send_local_player_id(self, uid: int) -> None:
         ...
 
     def send_match_start(self, game: "HostedGame", local_slot: int) -> None:
@@ -293,55 +303,454 @@ class HostedGame:
         )
 
 
+# How many scores to keep per player per board. The client's request asked for
+# rows=10, so anything beyond that can never be displayed.
+MAX_SCORES_PER_BOARD = 10
+
+
 class Lobby:
     def __init__(self) -> None:
         self._lock = threading.RLock()
         self._sessions: set[LobbySession] = set()
         self._games: dict[int, HostedGame] = {}
         self._game_ids = itertools.count(1)
-        # key -> list of (column_index, score, values). In-memory only; nothing
-        # here survives a restart yet.
-        self._hiscores: dict[int, list[tuple[int, int, list[int]]]] = {}
+        # board -> {player_name: best_score}. Persisted, so scores survive a
+        # restart. Kept as best-per-player rather than an append log because the
+        # client asks for a top-N table, not a history.
+        self._scores: dict[str, list[int]] = {}
+        self._scores_path = Path("hiscores.json")
+        self._load_scores()
+        # player -> sorted list of earned achievement indices (0..30).
+        #
+        # The server is the authority here, not a mirror: the client shows a
+        # popup locally the moment you earn one, then expects the server to hand
+        # the confirmed mask back at login (server opcode 75, client.java:761).
+        # Without this file achievements vanish on every restart.
+        self._achievements: dict[str, list[int]] = {}
+        self._achievements_path = Path("achievements.json")
+        self._load_achievements()
+        # player -> highest stamina stage index reached (0-based).
+        #
+        # This is what gates the Master Challenge button. The client zeroes its
+        # own copy on logout (s.java:359) and asks us for it at login
+        # (dc.java:359 -> ub.a -> client opcode 5 request), so if we do not
+        # store and return it, the button is grey every session.
+        self._progress: dict[str, int] = {}
+        self._progress_path = Path("progress.json")
+        self._load_progress()
+
+    # Achievement display names, qk.java:586 (qk.field_s). Index order IS the
+    # wire order -- index 0 is the one the client sends as field_v.
+    ACHIEVEMENT_NAMES = [
+        "Deko Bloko", "Double Deko", "Triple Deko", "Mega Deko", "Double Bloko",
+        "Triple Bloko", "Mini Bombo", "Maxi Bombo", "Tower Bloko",
+        "Massive Attako", "Clean Sweepo", "Uh-Oh Bloko", "Floral Bloko",
+        "Urban Bloko", "Retro Bloko", "Bronze Blokker", "Silver Blokker",
+        "Gold Blokker", "Blok of Beginning", "Blok of Victory",
+        "Blok of Supremacy", "Deko Pwnage", "Ultimate Pwnage", "Quick Deko",
+        "Safe Deko", "Deko Modo", "Shape Mover", "Shape Sender",
+        "Shape Dispatcher", "Shape Consigner", "Shape Shifter",
+    ]
+
+    # Master Challenge unlocks at stage index >= 3 (vk.java:671), which the
+    # in-game hint calls "Stage 4" because the index is 0-based.
+    MASTER_CHALLENGE_STAGE = 3
+
+    def _load_progress(self) -> None:
+        """Load persisted stamina progress. A missing or corrupt file is not fatal."""
+        try:
+            raw = json.loads(self._progress_path.read_text("utf-8"))
+        except FileNotFoundError:
+            return
+        except (OSError, ValueError) as exc:
+            print(f"[prog] could not read {self._progress_path}: {exc}")
+            return
+        if isinstance(raw, dict):
+            for name, stage in raw.items():
+                if isinstance(stage, int) and stage >= 0:
+                    self._progress[name] = stage
+
+    def _save_progress(self) -> None:
+        try:
+            self._progress_path.write_text(
+                json.dumps(self._progress, indent=2, sort_keys=True) + "\n", "utf-8"
+            )
+        except OSError as exc:
+            print(f"[prog] could not write {self._progress_path}: {exc}")
+
+    def progress_for(self, player: str) -> int:
+        """Highest stamina stage index this player has reached."""
+        with self._lock:
+            return self._progress.get(player, 0)
+
+    def record_progress(self, player: str, stage: int) -> None:
+        """Store progress as the client's own COUNTER, not the stage index.
+
+        id.field_P is a count of confirmed progress records, not a stage index.
+        The client's guard (qc.java:638-645) is:
+
+            if (field_ab >= 3)          skip     <- stages 3+ NEVER upload
+            if (field_ab != id.field_P) skip     <- strictly sequential
+            upload ff(0, field_ab); id.field_P++
+
+        So clearing stages 0,1,2 walks the counter 0 -> 1 -> 2 -> 3, and 3 is
+        exactly what vk.java:671 tests for. We must therefore store stage + 1:
+        storing the raw index caps us at 2 and the Master Challenge can never
+        unlock, no matter how far the player actually gets. Stage 12 looks the
+        same as stage 3 here, because the client stops reporting after index 2.
+
+        Max rather than last-write because the client itself restores with
+        `if (id.field_P < var1_int) id.field_P = var1_int` (dc.java:371) -- it
+        never lowers progress, so neither do we.
+        """
+        if stage < 0:
+            print(f"[prog] {player} negative stage {stage} -- ignored")
+            return
+        counter = stage + 1
+        with self._lock:
+            previous = self._progress.get(player, 0)
+            if counter <= previous:
+                print(
+                    f"[prog] {player} stage {stage} -> counter {counter} "
+                    f"<= stored {previous} -- kept {previous}"
+                )
+                return
+            self._progress[player] = counter
+            self._save_progress()
+        unlocked = counter >= self.MASTER_CHALLENGE_STAGE
+        if unlocked and previous < self.MASTER_CHALLENGE_STAGE:
+            note = "Master Challenge UNLOCKED"
+        elif unlocked:
+            note = "Master Challenge unlocked"
+        else:
+            need = self.MASTER_CHALLENGE_STAGE - counter
+            note = f"still locked -- {need} more stage(s) to report"
+        print(
+            f"[prog] {player} cleared stage index {stage} -> counter {counter} "
+            f"(was {previous}) -- {note}"
+        )
+
+    def _load_achievements(self) -> None:
+        """Load persisted achievements. A missing or corrupt file is not fatal."""
+        try:
+            raw = json.loads(self._achievements_path.read_text("utf-8"))
+        except FileNotFoundError:
+            return
+        except (OSError, ValueError) as exc:
+            print(f"[achv] could not read {self._achievements_path}: {exc}")
+            return
+        if isinstance(raw, dict):
+            for name, earned in raw.items():
+                if isinstance(earned, list):
+                    self._achievements[name] = sorted(
+                        {i for i in earned if isinstance(i, int) and 0 <= i < 31}
+                    )
+
+    def _save_achievements(self) -> None:
+        try:
+            self._achievements_path.write_text(
+                json.dumps(self._achievements, indent=2, sort_keys=True) + "\n",
+                "utf-8",
+            )
+        except OSError as exc:
+            print(f"[achv] could not write {self._achievements_path}: {exc}")
+
+    def achievements_for(self, player: str) -> list[int]:
+        with self._lock:
+            return list(self._achievements.get(player, []))
+
+    def record_earned_achievement(self, player: str, index: int) -> bool:
+        """Persist one achievement index. True if it was newly earned.
+
+        Sent by the client as opcode 4 carrying a `ki` record; the index is
+        field_v. Duplicates are expected and harmless -- the client re-sends
+        from its queue until acked -- so this is idempotent by construction.
+        """
+        if not 0 <= index < 31:
+            print(f"[achv] {player} index {index} out of range 0..30 -- ignored")
+            return False
+        name = self.ACHIEVEMENT_NAMES[index]
+        with self._lock:
+            earned = self._achievements.setdefault(player, [])
+            if index in earned:
+                print(f"[achv] {player} re-sent {index} ({name}) -- already held")
+                return False
+            earned.append(index)
+            earned.sort()
+            self._save_achievements()
+        print(f"[achv] {player} EARNED {index} ({name}) -- {len(earned)}/31 total")
+        return True
+
+    def _load_scores(self) -> None:
+        """Load persisted scores. A missing or corrupt file is not fatal."""
+        try:
+            raw = json.loads(self._scores_path.read_text("utf-8"))
+        except FileNotFoundError:
+            return
+        except (OSError, ValueError) as exc:
+            print(f"[hiscore] could not read {self._scores_path}: {exc}; starting empty")
+            return
+        def entry(item: object) -> list[int]:
+            # Accept the older forms so scores written before the wire value was
+            # kept are not discarded. Where the raw value was never stored, it is
+            # reconstructed as (score << 8) -- that is the observed packing, and
+            # a reconstructed raw beats a 0 that would render the score as 0.
+            if isinstance(item, (list, tuple)):
+                score = int(item[0])
+                raw = int(item[1]) if len(item) > 1 else 0
+                return [score, raw if raw > 0xFF else score << 8]
+            score = int(item)  # type: ignore[arg-type]
+            return [score, score << 8]
+
+        try:
+            self._scores = {
+                str(player): [entry(s) for s in scores] for player, scores in raw.items()
+            }
+        except (AttributeError, TypeError, ValueError) as exc:
+            print(f"[hiscore] {self._scores_path} is malformed: {exc}; starting empty")
+            self._scores = {}
+            return
+        total = sum(len(s) for s in self._scores.values())
+        print(f"[hiscore] loaded {total} score(s) for {len(self._scores)} player(s)")
+
+    def _save_scores(self) -> None:
+        """Write scores out. Caller must hold the lock."""
+        try:
+            self._scores_path.write_text(json.dumps(self._scores, indent=2), "utf-8")
+        except OSError as exc:
+            # Never let a disk problem kill the session -- the in-memory table
+            # is still correct and the client is waiting on an ack.
+            print(f"[hiscore] WARNING could not write {self._scores_path}: {exc}")
+
+    def record_score(self, player: str, score: int, raw: int) -> None:
+        """Append one score to this player's table.
+
+        DELIBERATELY NOT PER-BOARD. The submitted record carries no field that
+        has been identified as a board id, so there is nothing to key on.
+        The low byte of values[0] was tried and REFUTED by testing: two stamina
+        games produced flag=1 and flag=0, so it varies within a single game mode
+        and cannot be the board. Filing scores under it sent them to board 0
+        while the client was reading board 1, and they never appeared.
+
+        Until a real board field is identified, one table per player is served
+        for every requested key. The cost is that different game modes would
+        share a table; the benefit is that scores actually show up. That trade
+        is deliberate and should be revisited once the board field is known --
+        a Master Challenge score is the sample that would reveal it.
+
+        A LIST per player, not a single best, because of how the client renders
+        the table. Entry names are not on the wire: ke.java:136 reads a u8
+        columnIndex and takes the name from rc.field_c[columnIndex].field_i,
+        and ke.java:105 sets column 0's name to oa.field_f -- the local player.
+        With the single-column table (count == 1) that is the only valid column,
+        so EVERY row displays the requesting player's own name. The table is
+        therefore "your top N scores", not a cross-player leaderboard.
+        """
+        entry = [score, raw]
+        with self._lock:
+            scores = self._scores.setdefault(player, [])
+            scores.append(entry)
+            scores.sort(key=lambda e: e[0], reverse=True)
+            del scores[MAX_SCORES_PER_BOARD:]
+            rank = scores.index(entry) + 1 if entry in scores else None
+            self._save_scores()
+        where = f"rank {rank}" if rank else f"below the top {MAX_SCORES_PER_BOARD}"
+        print(f"[hiscore] {player} scored {score} (raw {raw}) -- stored ({where})")
 
     def hiscore_rows(
-        self, key: int, rows: int, vcols: int
+        self, key: int, rows: int, vcols: int, player: str | None = None
     ) -> list[tuple[int, int, list[int]]]:
         """Rows for a hiscore table request (client opcode 3, sub-command 5).
 
         Returns (column_index, score, values) tuples for build_hiscore_table.
-        Column 0 is the local player.
+
+        EVERY row uses column index 0. That is not a simplification: with the
+        single-column table the client takes each row's name from
+        rc.field_c[columnIndex].field_i, and column 0's name is set to
+        oa.field_f -- the local player. Any other index would read an unset
+        column. So the table shows the requesting player's own scores, which is
+        why `player` selects whose list to serve.
 
         Only the single-board shape is execution-proven, so this deliberately
         never returns extra columns: the count > 1 path adds per-column name
         strings that were read from the handler but never actually run. Serving
         an empty table is a valid, proven response -- the client accepts
         entryCount = 0 -- so an unknown board yields no rows rather than a guess.
+
+        THE SCORE THE PLAYER SEES COMES FROM values[0], NOT THE i64 score.
+        The i64 is never rendered; sending a bare 0 in values made a stored
+        1090 render as "0".
+
+        values[0] is ECHOED BACK VERBATIM, exactly as the client submitted it.
+        That is deliberate: the field is packed, carrying at least a score and
+        a stage, and the packing is only partly understood. Decoding it and
+        re-encoding it means every unknown bit gets destroyed -- an attempt to
+        re-pack as (score * 8 + label) turned a real 1090 into "stage 57,
+        score 34", because both the divisor and the extra fields were guessed
+        wrong.
+
+        Echoing needs no knowledge of the layout and cannot corrupt fields we
+        have not identified. The client packed it; the client unpacks it.
+
+        The score IS decoded (values[0] >> 8), but only to sort and log --
+        never to rebuild the wire value.
+
+        The requested `key` is echoed back by the caller but does NOT select a
+        table: see record_score for why scores are not stored per board yet.
+        Every board therefore shows the same list.
         """
+        if player is None:
+            return []
         with self._lock:
-            stored = list(self._hiscores.get(key, ()))
-        trimmed = stored[: max(0, rows)]
-        return [
-            (column, score, list(values[:vcols]) + [0] * max(0, vcols - len(values)))
-            for column, score, values in trimmed
-        ]
+            stored = list(self._scores.get(player, ()))
+        out: list[tuple[int, int, list[int]]] = []
+        for score, raw in stored[: max(0, rows)]:
+            values = [0] * max(0, vcols)
+            if values:
+                values[0] = raw          # verbatim; see the docstring
+            out.append((0, score, values))
+        return out
 
     def record_achievement(self, session: LobbySession, payload: bytes) -> None:
-        """Record one achievement/stat push (client opcode 3, sub-command 1).
+        """Record one SCORE submission (client opcode 3, sub-command 1).
 
-        The record's field layout is proven -- sub-command, a u16 correlation
-        id, three more u16, an i32, flags, a counted array and a 4-byte checksum
-        tail -- but what those numbers MEAN is not. So this stores the raw bytes
-        rather than inventing a schema for them.
+        NOT an achievement record, despite the name kept here for its callers.
+        This carries a `kn`, built by qc.c(boolean) from
+        `this.field_g.field_p[0].a(0)` -- the end-of-game score. Achievements
+        are a different record type (`ki`) on a different opcode: see
+        record_earned_achievement().
+
+        The field LAYOUT is proven by execution (fm.a, 38-byte frame):
+
+            [u8 sub=1][u16 field_u][u16 field_x][u16 field_q]
+            [i32 field_t][i32 field_v][i32 field_w][i32 field_y]
+            [u8 count][count x i32 field_s[i]][i32 checksum]
+
+        What those numbers MEAN is NOT proven, so they are printed under their
+        obfuscated `kn.field_*` names rather than being given invented labels
+        like "achievement id" or "score". Naming them would turn a guess into
+        something that reads like a fact in the log.
 
         The ack is what actually matters for client liveness and is sent by the
         caller regardless of what happens here: the client blocks on the ack,
         not on us understanding the contents. Persisting is a separate problem
         and this is deliberately in-memory.
         """
+        who = session.display_name
+        fields = self._decode_achievement(payload)
+        if fields is None:
+            print(
+                f"[stats] {who} achievement record {len(payload)} bytes "
+                f"-- TOO SHORT to decode: {payload.hex(' ')}"
+            )
+            return
+
         print(
-            f"[stats] {session.display_name} achievement record "
-            f"{len(payload)} bytes (contents not decoded)"
+            f"[stats] {who} achievement record ({len(payload)} bytes)"
+            f"  id(field_u)={fields['u']}"
+            f" field_x={fields['x']} field_q={fields['q']}"
         )
+        print(
+            f"[stats] {who}   field_t={fields['t']} field_v={fields['v']}"
+            f" field_w={fields['w']} field_y={fields['y']}"
+        )
+        # values[0] packs the score together with a small counter, but there are
+        # TWO packings and field_x selects between them. Proven by reading the
+        # client's own builder, qc.c(boolean) at qc.java:3038-3050:
+        #
+        #   field_x == 0 (field_q 65535):  values[0] = 8 * score + field_bb
+        #   field_x == 1 (field_q 65534):  values[0] = score * 256 + field_ab
+        #
+        # kn's constructor (kn.java:157-169) maps param0 -> field_x and
+        # param1 -> field_q, so the two `new kn(0, 65535, ...)` and
+        # `new kn(1, 65534, ...)` call sites are exactly these two variants.
+        #
+        # Applying the >> 8 variant to EVERY record was a real bug: a variant-A
+        # record decoded as 384443 >> 8 = 1501 with a low byte of 187, which the
+        # client would render as "stage 188" -- impossible for stamina. Read as
+        # variant A the same bytes give 8 * 48055 + 3, an in-range counter.
+        # A wrong-but-plausible score is worse than none, so branch on field_x
+        # and refuse to guess when it is neither known value.
+        if fields["values"]:
+            raw = fields["values"][0]
+            variant = fields["x"]
+            if variant == 1:
+                score, extra = raw >> 8, raw & 0xFF
+                shape = "score * 256 + field_ab"
+                extra_name = "field_ab (stage index, rendered stage+1)"
+            elif variant == 0:
+                score, extra = divmod(raw, 8)
+                shape = "8 * score + field_bb"
+                extra_name = "field_bb (0..7 counter, rendered N+1/8)"
+            else:
+                score = extra = None
+                shape = extra_name = ""
+
+            if score is None:
+                # An unknown discriminator means an unproven packing. Log the
+                # raw value and store nothing rather than invent a score.
+                print(
+                    f"[stats] {who}   NOT stored: unknown field_x={variant} "
+                    f"-- packing of values[0]={raw} is not proven"
+                )
+            else:
+                print(
+                    f"[stats] {who}   -> score={score} {extra_name}={extra} "
+                    f"(field_x={variant}: values[0]={raw} = {shape})"
+                )
+                if score >= 0:
+                    self.record_score(who, score, raw)
+                else:
+                    # Negative would mean the packing interpretation is wrong.
+                    # Say so instead of storing nonsense.
+                    print(f"[stats] {who}   NOT stored: negative score from {raw}")
+
+        print(
+            f"[stats] {who}   values[{len(fields['values'])}]={fields['values']}"
+            f" checksum={fields['checksum']:#010x}"
+        )
+        if fields["trailing"]:
+            # Not an error -- just the honest signal that the proven layout did
+            # not account for every byte the client sent.
+            print(f"[stats] {who}   UNPARSED TAIL: {fields['trailing'].hex(' ')}")
+
+    @staticmethod
+    def _decode_achievement(payload: bytes) -> dict | None:
+        """Split an opcode-3/sub-1 record into its proven fields, or None.
+
+        Returns None rather than raising or padding when the buffer is short:
+        a truncated record means the framing assumption is wrong, and that is
+        worth seeing in the log as-is instead of as a plausible-looking
+        half-decode.
+        """
+        if len(payload) < 24:  # sub + 3xu16 + 4xi32 + count
+            return None
+
+        def u16(o: int) -> int:
+            return int.from_bytes(payload[o : o + 2], "big")
+
+        def i32(o: int) -> int:
+            return int.from_bytes(payload[o : o + 4], "big", signed=True)
+
+        count = payload[23]
+        need = 24 + count * 4 + 4
+        if len(payload) < need:
+            return None
+
+        values = [i32(24 + i * 4) for i in range(count)]
+        csum_at = 24 + count * 4
+        return {
+            "u": u16(1),
+            "x": u16(3),
+            "q": u16(5),
+            "t": i32(7),
+            "v": i32(11),
+            "w": i32(15),
+            "y": i32(19),
+            "values": values,
+            "checksum": int.from_bytes(payload[csum_at : csum_at + 4], "big"),
+            "trailing": payload[csum_at + 4 :],
+        }
 
     def join(self, session: LobbySession) -> None:
         """Register the session only. The bootstrap is deliberately NOT sent here.
@@ -389,8 +798,76 @@ class Lobby:
         framing this docstring inherited is itself only half right.
         """
         session.send_lobby_bootstrap()
+        # The roster (frame 10 / modes 23 and 5) is OPT-IN and OFF by default.
+        #
+        # It is the only genuinely new thing added in this session, and
+        # return-to-main-menu was reported working BEFORE it and broken after.
+        # Its packets are verified against the client's own parsers, but the
+        # teardown path walks the same lobby structures these populate, and the
+        # crash there (client.java:1598) fires when kf.field_I is null while
+        # am.field_c is still true. Suspicious, not proven -- so it defaults off
+        # rather than staying on by default and breaking a working button.
+        #
+        # Roster mode, ISOLATED BY A/B TEST against a real client:
+        #
+        #   both (mode 23 + mode 5)  -> roster renders, return-to-main-menu CRASHES
+        #   mode 5 alone ("rows")    -> roster renders, return-to-main-menu WORKS
+        #   neither                  -> no roster,      return-to-main-menu works
+        #
+        # So mode 5 is innocent and mode 23 (local-player id -> uc.field_g) is
+        # what breaks the teardown. Default is therefore "rows": the half that
+        # actually draws name and rating, without the half that crashes.
+        #
+        # Mode 23's only job is telling the client which roster row is itself.
+        # Nothing visible depends on it today, so dropping it costs nothing
+        # currently -- but it WILL matter for any feature that must distinguish
+        # the local player, so this is a deferral, not a deletion.
+        #
+        # The crash it causes is client.java:1598, `kf.field_I.b(2, true)` with
+        # kf.field_I == null while am.field_c is still true (proven by
+        # reflection; the harness trap trail matches the live crash string).
+        # Why setting uc.field_g leads there is NOT yet understood -- do not
+        # re-enable mode 23 until it is.
+        #
+        #   DEKOBLOKO_ROSTER=id   mode 23 only   (for investigating the crash)
+        #   DEKOBLOKO_ROSTER=1    both           (KNOWN CRASHING)
+        #   DEKOBLOKO_ROSTER=off  neither
+        mode = os.environ.get("DEKOBLOKO_ROSTER", "rows")
+        if mode in ("1", "id"):
+            session.send_local_player_id(self.uid_for(session.display_name))
+        if mode in ("1", "rows"):
+            session.send_lobby_roster(self.roster_rows())
         session.send_server_message("Lobby ready. Type ::help for server commands.")
         self.send_games(session)
+
+    def roster_rows(self) -> list[tuple[int, str, int, int]]:
+        """Rows for the lobby player list: (uid, name, rating, rated_games).
+
+        The uid is a stable hash of the display name. The client uses it only
+        as the roster hashtable key and to spot the local player (cl.java:645
+        compares it against uc.field_g), so any stable non-colliding value
+        works -- but note nothing here yet SETS uc.field_g, so the client has
+        no way to tell which row is itself. That is a separate packet and is
+        not implemented.
+
+        rating and rated_games are 0 because the server does not track them.
+        They cannot simply be omitted: pd.field_a is hardcoded true, so the
+        Rating column always renders, and a row must carry the field. 0 is an
+        honest placeholder, not a measured value.
+        """
+        with self._lock:
+            sessions = list(self._sessions)
+        return [(self.uid_for(o.display_name), o.display_name, 0, 0) for o in sessions]
+
+    @staticmethod
+    def uid_for(display_name: str) -> int:
+        """Stable roster uid for a player name.
+
+        Used for BOTH the roster row and the mode-23 local-player id. They must
+        agree or the client never matches its own row, so they share this one
+        derivation rather than computing it twice.
+        """
+        return zlib.crc32(display_name.encode("utf-8")) & 0xFFFFFFFF
 
     def leave(self, session: LobbySession) -> None:
         self.leave_game(session, announce=False)
