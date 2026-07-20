@@ -248,6 +248,50 @@ class HostedGame:
         for player in players:
             _safe_call(lambda p=player: p.send_player_removed(slot, result_code))
 
+    def end_game(self, winner: LobbySession | None, result_code: int = 0) -> None:
+        """Finish the game: per-player results first, then teardown.
+
+        ORDER IS LOAD-BEARING and is the whole reason this is one method:
+
+          1. opcode 62 for every loser  (removes the slot, fires the defeat UI)
+          2. opcode 69 to the winner    (sets qc.field_r, pushes the win UI)
+          3. opcode 60 to everyone      (tears the game down)
+
+        Opcode 60 clears the state the other two refer to, so sending it first
+        strands the results and the client shows nothing.
+
+        Proven vs not: the BYTE LAYOUTS of 62/69/60 are execution-proven, and 60
+        genuinely carries no body. The handler EFFECTS -- slot nulling, the
+        active-count decrement, the defeat/win UI, the teardown clearing
+        fm.field_b / am.field_c / fa.field_n -- were read from bytecode but never
+        run, because driving them needs AWT. So this ordering is reasoned from a
+        static read, not measured. If the end-of-game screen misbehaves, suspect
+        this ordering first.
+        """
+        with self._lock:
+            if self.state != "playing":
+                return
+            players = list(self.players)
+            self.state = "finished"
+
+        for player in players:
+            if player is winner:
+                continue
+            slot = player.player_slot
+            if slot is not None:
+                self._broadcast_player_removed(slot, result_code)
+
+        if winner is not None:
+            _safe_call(lambda: winner.send_winner(result_code))
+
+        for player in players:
+            _safe_call(lambda p=player: p.send_game_over())
+
+        print(
+            f"[game] game {self.game_id} ended; winner="
+            f"{winner.display_name if winner else 'none'}"
+        )
+
 
 class Lobby:
     def __init__(self) -> None:
@@ -255,6 +299,49 @@ class Lobby:
         self._sessions: set[LobbySession] = set()
         self._games: dict[int, HostedGame] = {}
         self._game_ids = itertools.count(1)
+        # key -> list of (column_index, score, values). In-memory only; nothing
+        # here survives a restart yet.
+        self._hiscores: dict[int, list[tuple[int, int, list[int]]]] = {}
+
+    def hiscore_rows(
+        self, key: int, rows: int, vcols: int
+    ) -> list[tuple[int, int, list[int]]]:
+        """Rows for a hiscore table request (client opcode 3, sub-command 5).
+
+        Returns (column_index, score, values) tuples for build_hiscore_table.
+        Column 0 is the local player.
+
+        Only the single-board shape is execution-proven, so this deliberately
+        never returns extra columns: the count > 1 path adds per-column name
+        strings that were read from the handler but never actually run. Serving
+        an empty table is a valid, proven response -- the client accepts
+        entryCount = 0 -- so an unknown board yields no rows rather than a guess.
+        """
+        with self._lock:
+            stored = list(self._hiscores.get(key, ()))
+        trimmed = stored[: max(0, rows)]
+        return [
+            (column, score, list(values[:vcols]) + [0] * max(0, vcols - len(values)))
+            for column, score, values in trimmed
+        ]
+
+    def record_achievement(self, session: LobbySession, payload: bytes) -> None:
+        """Record one achievement/stat push (client opcode 3, sub-command 1).
+
+        The record's field layout is proven -- sub-command, a u16 correlation
+        id, three more u16, an i32, flags, a counted array and a 4-byte checksum
+        tail -- but what those numbers MEAN is not. So this stores the raw bytes
+        rather than inventing a schema for them.
+
+        The ack is what actually matters for client liveness and is sent by the
+        caller regardless of what happens here: the client blocks on the ack,
+        not on us understanding the contents. Persisting is a separate problem
+        and this is deliberately in-memory.
+        """
+        print(
+            f"[stats] {session.display_name} achievement record "
+            f"{len(payload)} bytes (contents not decoded)"
+        )
 
     def join(self, session: LobbySession) -> None:
         """Register the session only. The bootstrap is deliberately NOT sent here.
@@ -376,7 +463,19 @@ class Lobby:
         if game is None:
             return
         was_host = game.host is session
+        was_playing = game.state == "playing"
         game.remove_player(session)
+
+        # A resign that leaves exactly one player standing is a WIN for them,
+        # not just a departure. Routing it through end_game is what sends the
+        # winner their opcode 69 and then tears the game down in the right
+        # order; without this the last player sits in a finished game that
+        # never resolves.
+        if was_playing:
+            with self._lock:
+                remaining = list(game.players)
+            if len(remaining) == 1:
+                game.end_game(remaining[0])
         if announce:
             game.broadcast_message(f"{session.display_name} left game {game.game_id}.")
             session.send_server_message(f"Left game {game.game_id}.")

@@ -14,9 +14,15 @@ from .huffman import decode as huffman_decode
 from .packets import (
     PacketBuilder,
     PacketCodec,
+    build_achievement_ack,
     build_chat_broadcast,
     build_f_reply,
+    build_friend_entry,
+    build_hiscore_table,
+    build_ignore_entry,
+    build_room_membership,
     build_sb_reply,
+    build_social_list_complete,
 )
 
 
@@ -280,6 +286,49 @@ class GameSession:
         self._send_packet(62, PacketBuilder().u8(player_slot).u8(result_code).finish())
         print(f"[game] {self.peer} sent player removed slot={player_slot} result={result_code}")
 
+    def send_winner(self, result_code: int) -> None:
+        """Server opcode 69 -- tell THIS session it won.
+
+        Fixed one-byte payload, no length byte. The client stores the byte in
+        qc.field_T, sets qc.field_r and pushes the win UI resource.
+
+        Send this only to the winner. The result-code vocabulary is not decoded:
+        qc.field_T feeds a text lookup that was never driven (it needs AWT), so
+        which byte renders "you win" versus a placement line is unknown. 0 is
+        what we send until someone maps it.
+        """
+        self._send_packet(69, PacketBuilder().u8(result_code).finish())
+        print(f"[game] {self.peer} sent winner result={result_code}")
+
+    def send_game_over(self) -> None:
+        """Server opcode 60 -- tear the game down.
+
+        Fixed EMPTY payload. Ordering is load-bearing: send the per-player
+        results (62 to each loser, 69 to the winner) BEFORE this. Opcode 60
+        clears the game state the result packets refer to, so a 60 that arrives
+        first strands them.
+
+        The teardown effects (clearing fm.field_b / am.field_c / fa.field_n)
+        were read from bytecode, NOT executed -- only the empty framing is
+        execution-proven.
+        """
+        self._send_packet(60)
+        print(f"[game] {self.peer} sent game over (60)")
+
+    def send_friend_list(self, friends: list[str]) -> None:
+        """Push the friend list as opcode 13 mode-0 entries, then the marker."""
+        for name in friends:
+            self._send_packet(13, build_friend_entry(name))
+        self._send_packet(13, build_social_list_complete())
+        print(f"[game] {self.peer} sent friend list ({len(friends)} entries)")
+
+    def send_ignore_list(self, ignored: list[str]) -> None:
+        """Push the ignore list as opcode 13 mode-1 entries, then the marker."""
+        for name in ignored:
+            self._send_packet(13, build_ignore_entry(name))
+        self._send_packet(13, build_social_list_complete())
+        print(f"[game] {self.peer} sent ignore list ({len(ignored)} entries)")
+
     def _send_server_message(self, text: str) -> None:
         if self.codec is None:
             raise RuntimeError("packet codec is not initialized")
@@ -386,6 +435,84 @@ class GameSession:
             if packet.opcode == 4:
                 self._send_packet(3, build_f_reply())
                 print(f"[game] {self.peer} opcode 4 -> sent opcode 3 (dk.a path)")
+                continue
+
+            # Client opcode 7: create/join a game room. Written by fh.a as
+            # [7][u8 q][u8 z] -- proven by running the client's own writer.
+            #
+            # This is a BLOCKING request: ai.a registers a pending `cl` on the
+            # oe.I queue keyed by field_q BEFORE sending, so the room stays
+            # unfinalized until a reply pops it. Unanswered, it re-drains forever
+            # through bd.g like every other unanswered request.
+            #
+            # The reply's first byte MUST echo `q`. A mismatch is not tolerated:
+            # the client calls si.a(122) and drops the connection. Verified with
+            # a deliberate mismatch control, so do not "normalise" this to a
+            # room id of our own choosing.
+            #
+            # We answer with an EMPTY room (N=0), which is the proven early-out:
+            # it finalizes the room (cl.field_A = true, cl.b()) with no occupant
+            # list. Real occupants need the pn.a per-occupant record, which is
+            # not reversed -- see build_room_membership.
+            if packet.opcode == 7:
+                if len(packet.payload) < 2:
+                    print(f"[game] {self.peer} opcode 7 too short: {packet.payload!r}")
+                    continue
+                q, z = packet.payload[0], packet.payload[1]
+                self._ensure_lobby_bootstrap("room request (7)")
+                self._send_packet(6, build_room_membership(q, 0))
+                print(f"[game] {self.peer} opcode 7 q={q} z={z} -> sent opcode 6 empty room")
+                continue
+
+            # Client opcode 3 has TWO producers with different framing; the codec
+            # disambiguates by peeking the sub-command (see _read_opcode_3).
+            #
+            #   payload[0] == 0x05  hiscore table request  (wb.a, fixed 6 bytes)
+            #   payload[0] == 0x01  achievement record     (fm.a, u8-length body)
+            #
+            # Both are blocking requests answered on server opcode 2, which is a
+            # shared handler (ke.e) discriminated by ITS own leading sub byte:
+            # 0 = hiscore table, 1 = achievement ack. Do not cross them.
+            if packet.opcode == 3:
+                if not packet.payload:
+                    print(f"[game] {self.peer} opcode 3 with empty payload")
+                    continue
+
+                if packet.payload[0] == 0x05 and len(packet.payload) >= 6:
+                    # [05][00][u16 key][u8 rows][u8 vcols]
+                    key = int.from_bytes(packet.payload[2:4], "big")
+                    rows = packet.payload[4]
+                    vcols = packet.payload[5]
+                    entries = LOBBY.hiscore_rows(key, rows, vcols)
+                    self._send_packet(2, build_hiscore_table(key, entries, vcols))
+                    print(
+                        f"[game] {self.peer} hiscore request key={key} rows={rows} "
+                        f"vcols={vcols} -> sent {len(entries)} entries"
+                    )
+                    continue
+
+                if packet.payload[0] == 0x01 and len(packet.payload) >= 3:
+                    # The ack must echo the client's own correlation id
+                    # (kn.field_u, a u16 at payload[1..3]) VERBATIM. The client
+                    # matches acks against its pending queue by that id; an
+                    # unmatched ack leaves the record queued and re-draining.
+                    # Ack 1:1 and in order.
+                    seq = int.from_bytes(packet.payload[1:3], "big")
+                    LOBBY.record_achievement(self, packet.payload)
+                    self._send_packet(2, build_achievement_ack(seq, 0))
+                    print(f"[game] {self.peer} achievement record seq={seq} -> acked")
+                    continue
+
+                print(
+                    f"[game] {self.peer} opcode 3 unrecognised sub-command "
+                    f"{packet.payload[0]:#04x}: {hex_preview(packet.payload, 64)}"
+                )
+                continue
+
+            # Bare game-control packet. Explicitly ignored so it does not fall
+            # through to the text-parsing fallback at the bottom of the loop,
+            # which would try to read an empty payload as chat.
+            if packet.opcode == 61:
                 continue
 
             # Client opcode 12: what the lobby chat box actually sends. Written
@@ -500,10 +627,58 @@ class GameSession:
                     self.current_game.handle_piece_request(self)
                 continue
 
+            # The social add/remove opcodes (friend add, ignore add, remove) are
+            # written by sn.a, which takes the opcode as a runtime menu-action
+            # parameter -- there is no literal anywhere in the traced chains, so
+            # the NUMBER is still unknown even though the PAYLOAD is proven:
+            #
+            #   [u64 targetId][cstring name][u8][u8]
+            #
+            # Log anything matching that shape. One click in a live client turns
+            # this into the missing opcode number. Framing is already safe: an
+            # unlisted opcode falls back to a u8 length, which is exactly sn.a's
+            # framing, so these do NOT desync the stream while unidentified.
+            #
+            # This check runs BEFORE the text fallback deliberately -- a social
+            # add otherwise gets misread as a chat line.
+            social = self._match_social_signature(packet.payload)
+            if social is not None:
+                target_id, name = social
+                print(
+                    f"[social] {self.peer} UNIDENTIFIED social opcode {packet.opcode} "
+                    f"target_id={target_id:#018x} name={name!r} "
+                    f"payload={hex_preview(packet.payload, 64)} "
+                    f"-- add this opcode to CLIENT_PACKET_LENGTHS as -1 and route it"
+                )
+                continue
+
             message = self._try_parse_client_text_packet(packet.payload)
             if message:
                 print(f"[chat] {self.peer} {self.display_name}: {message}")
                 LOBBY.handle_chat_or_command(self, message)
+
+    def _match_social_signature(self, payload: bytes) -> tuple[int, str] | None:
+        """Recognise sn.a's proven wire shape: u64 + cstring + exactly 2 bytes.
+
+        Deliberately strict -- it must not swallow chat. Returns None unless the
+        payload is exactly a u64, a NUL-terminated name, and two trailing bytes,
+        with a plausible printable name.
+        """
+        if len(payload) < 11:
+            return None
+        terminator = payload.find(b"\x00", 8)
+        if terminator == -1 or len(payload) - terminator != 3:
+            return None
+        raw_name = payload[8:terminator]
+        if not raw_name or len(raw_name) > 32:
+            return None
+        try:
+            name = raw_name.decode("cp1252")
+        except UnicodeDecodeError:
+            return None
+        if not all(ch.isprintable() for ch in name):
+            return None
+        return int.from_bytes(payload[:8], "big"), name
 
     def _parse_client_chat_packet(self, payload: bytes) -> str | None:
         if len(payload) < 11:
