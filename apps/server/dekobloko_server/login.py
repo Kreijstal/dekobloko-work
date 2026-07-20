@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import os
 
 from .crypto import RsaPrivateKey, signed32, u32, xtea_decrypt_dekobloko
 
@@ -75,6 +76,14 @@ class LoginCredentials:
     password: str
     login_mode: int
     credential_kind: str
+    # The RAW u64 from the username slot, before base37 decoding.
+    #
+    # Needed because that slot does NOT always hold a packed name: on a
+    # reconnect the client sends back the player id the server issued at login.
+    # Base37-decoding that id produces a bogus "name" (id 1 decodes to "A"),
+    # which silently logs the player into a different account. Callers must be
+    # able to recognise an issued id before trusting `username`.
+    username_raw: int = 0
 
 
 @dataclass(frozen=True)
@@ -131,6 +140,28 @@ def decode_base38_pair(data: bytes) -> str:
 
 
 def _parse_credentials(plain: bytes, offset: int, login_mode: int) -> LoginCredentials:
+    # Opt-in because this dumps the decrypted login block, which contains
+    # credential material. Set DEKOBLOKO_DEBUG_LOGIN=1 only on a local server
+    # you own, and turn it off afterwards.
+    if os.environ.get("DEKOBLOKO_DEBUG_LOGIN") == "1":
+        print(f"[login-debug] plain={len(plain)}B offset={offset} mode={login_mode}")
+        print(f"[login-debug]   full : {plain.hex(' ')}")
+        print(f"[login-debug]   creds: {plain[offset:].hex(' ')}")
+        # Show where a base37-packed name would appear, so a mismatch between
+        # "what we read" and "where the name actually is" is visible directly.
+        for name in ("a", "hello"):
+            packed = 0
+            for ch in name:
+                packed = packed * 37 + _BASE37.find(ch)
+            needle = packed.to_bytes(8, "big")
+            found = plain.find(needle.lstrip(b"\x00") or b"\x00")
+            print(
+                f"[login-debug]   base37({name!r})={packed} "
+                f"bytes={needle.hex(' ')} first-seen-at={found}"
+            )
+        ascii_at = plain.find(b"hello")
+        print(f"[login-debug]   literal b'hello' at offset {ascii_at}")
+
     if offset >= len(plain):
         return LoginCredentials("Player", "", login_mode, "empty")
 
@@ -160,7 +191,10 @@ def _parse_credentials(plain: bytes, offset: int, login_mode: int) -> LoginCrede
     if reader.remaining() >= 22:
         username_long = reader.read_u64()
         password = decode_base38_pair(reader.read_bytes(14))
-        return LoginCredentials(decode_base37(username_long), password, login_mode, "base37/base38")
+        return LoginCredentials(
+            decode_base37(username_long), password, login_mode, "base37/base38",
+            username_raw=username_long,
+        )
 
     return LoginCredentials("Player", plain[offset:].hex(), login_mode, "raw")
 
