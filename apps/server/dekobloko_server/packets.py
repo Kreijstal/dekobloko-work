@@ -44,6 +44,15 @@ CLIENT_PACKET_LENGTHS: dict[int, int] = {
     # Observed payload on a lobby chat send: 00 04 e7 bc (4 bytes).
     12: -1,  # lobby message / chat send -- payload layout NOT yet decoded
     14: -1,  # chat: u64 target + cstring text + u8 channel + u8 quickchat
+    # Create/join a game room. PROVEN by running the client's own writer:
+    # fh.a((byte) 8, cl, 7) assembles [opcode][u8 q][u8 z] with NO length byte,
+    # observed as 45 00 0a for q=0, z=10.
+    #
+    # This entry is load-bearing. Without it opcode 7 hits the `length is None`
+    # fallback, which reads the q byte (0x00) as a LENGTH, consumes no payload,
+    # and leaves z (0x0a) to be deciphered as the next opcode -- a permanent
+    # ISAAC keystream desync that surfaces later as garbage opcodes.
+    7: 2,
     17: 0,
     18: -1,
     58: 0,   # lobby selected-game/start button in the Dekobloko UI path
@@ -96,6 +105,18 @@ SERVER_PACKET_LENGTHS: dict[int, int] = {
     18: 1,
     58: -2,   # start own multiplayer game
     59: -2,   # start spectator multiplayer game
+    # Game teardown / game over. Fixed EMPTY payload -- no length byte.
+    #
+    # Listed explicitly even though the missing-entry fallback (len(payload) ==
+    # 0) frames it identically today. The fallback is a guess that happens to
+    # agree; this is the measured value, so a future non-empty payload fails
+    # loudly here instead of silently desynchronising the client.
+    #
+    # Note 58/59/60 all exist in BOTH directions with DIFFERENT framing. The
+    # client sends 60 as -1 (a move batch) while the server sends 60 as fixed
+    # empty. The two tables are separate, so this is not a conflict -- but do
+    # not "reconcile" them.
+    60: 0,
     61: -2,   # full board/state update for one player
     62: 2,    # remove/defeat one player and result/status byte
     63: -1,   # compressed controls/event stream for one player
@@ -140,6 +161,10 @@ class PacketCodec:
     def read_client_packet(self, sock: socket.socket) -> GamePacket:
         raw_opcode = read_u8(sock)
         opcode = (raw_opcode - self.inbound.next()) & 0xFF
+
+        if opcode == 3:
+            return self._read_opcode_3(sock)
+
         length = CLIENT_PACKET_LENGTHS.get(opcode)
         assumed_variable = False
 
@@ -153,6 +178,44 @@ class PacketCodec:
 
         payload = read_exact(sock, length) if length else b""
         return GamePacket(opcode, payload, assumed_variable)
+
+    def _read_opcode_3(self, sock: socket.socket) -> GamePacket:
+        """Frame client opcode 3, which has TWO producers with DIFFERENT framing.
+
+        This is the one opcode a static length table cannot describe. Both
+        writers were confirmed by running the client's own code:
+
+          wb.a  hiscore request      NO length byte, fixed 6-byte body,
+                                     always starting 0x05 0x00.
+                                     Proven: 03 05 00 00 00 0A 01
+          fm.a  achievement record   ONE u8 length byte, then sub-command 0x01.
+                                     Proven: 03 24 01 ...  (0x24 = 36 body bytes)
+
+        So the byte after the opcode is a sub-command in one case and a LENGTH
+        in the other. We disambiguate by peeking it:
+
+          == 0x05  -> hiscore: that byte is payload[0], read 5 more (6 total)
+          otherwise -> achievement: that byte is the length
+
+        Why the peek is safe rather than merely convenient: for it to misfire,
+        an achievement record would have to declare a length of exactly 5. The
+        achievement body is sub-command + three u16 + an i32 + flags + a counted
+        array + a 4-byte checksum tail -- it cannot fit in 5 bytes. The observed
+        length is 36. The two spaces do not overlap.
+
+        This disambiguation is the one piece of opcode-3 handling NOT proven by
+        running the client -- both framings are proven individually, but nothing
+        yet confirms both writers fire in a single session. If opcode 3 ever
+        starts desynchronising the stream, suspect this first: capture the
+        decrypted bytes of a hiscore-screen open and a stat-generation event and
+        check the peek actually separates them.
+        """
+        first = read_u8(sock)
+        if first == 0x05:
+            payload = bytes([first]) + read_exact(sock, 5)
+            return GamePacket(3, payload, False)
+        payload = read_exact(sock, first) if first else b""
+        return GamePacket(3, payload, False)
 
     def encode_server_packet(self, opcode: int, payload: bytes = b"") -> bytes:
         """Encode one server packet, framed per SERVER_PACKET_LENGTHS.
@@ -431,3 +494,194 @@ def build_chat_broadcast(name: str, count: int, body: bytes) -> bytes:
     out.append(count & 0xFF)             # li.a character count
     out.extend(body)
     return bytes(out)
+
+
+# ---------------------------------------------------------------------------
+# Multiplayer feature builders.
+#
+# Every layout below was proven by EXECUTING the client's own classes headless
+# (harnesses under the session scratch dir, driven against the compiled client)
+# rather than by reading decompiled source. That distinction matters here: in
+# this project every wire format derived by reading was wrong at least once --
+# the bd.f dispatch three times, the Huffman table twice, the chat envelope
+# four. Where a field below is NOT execution-proven it says so explicitly.
+#
+# A caveat that applies to all of them: these proofs are field-decode proofs.
+# The harnesses drove the client's parsers and asserted the resulting state
+# fields, but no renderer was driven (painting needs AWT). A packet that decodes
+# is not automatically a packet that paints.
+# ---------------------------------------------------------------------------
+
+
+def build_room_membership(disc: int, occupants: int = 0) -> bytes:
+    """Server opcode 6 -- the reply to a client opcode 7 room request.
+
+    PROVEN by running the client's ul.a handler:
+
+      [u8 disc][u8 N]  and, only when N > 0, occupant data.
+
+    `disc` MUST equal the `q` byte the client sent in its opcode 7 request (the
+    pending cl.field_q). A mismatch is not ignored: the client calls si.a(122)
+    and DISCONNECTS. This was verified with a deliberate mismatch control.
+
+    N == 0 is the proven early-out. It still finalizes the room -- cl.field_A
+    becomes true and cl.b() runs -- it just yields an empty occupant list.
+
+    N >= 1 is NOT shipped because the per-occupant record is not reversed: the
+    host name is not on the wire (it comes from oa.f), then (N-1) NUL-terminated
+    names, then N bit-packed pn.a(63, wl) records whose layout is unknown.
+    Sending a guessed occupant blob would desynchronise the room state. Reverse
+    pn.a before raising this above 0.
+    """
+    if occupants != 0:
+        raise ValueError(
+            "occupant records (N >= 1) are not reversed yet; see build_room_membership"
+        )
+    return PacketBuilder().u8(disc).u8(occupants).finish()
+
+
+def build_achievement_ack(key: int, value: int = 0) -> bytes:
+    """Server opcode 2, sub-command 1 -- acknowledge one achievement record.
+
+    PROVEN by feeding `01 ab cd 11 22 33 44 55 66 77 88` to the client's real
+    ke.e: it set kn.field_o to 0x1122334455667788 exactly and popped the pending
+    kn (field_u == 0xABCD) off pb.field_c.
+
+      [u8 1][u16 BE key][i64 BE value]      = 11 bytes
+
+    `key` MUST echo the kn.field_u correlation id from the client's opcode 3
+    push, verbatim. The client matches the ack against its pending queue by that
+    id; an unmatched ack leaves the record queued and the request re-draining
+    forever (the governing rule).
+
+    Sub-command 1 is mandatory. Sub-command 0 on opcode 2 is the unrelated
+    hiscore/roster branch -- see build_hiscore_table.
+    """
+    return PacketBuilder().u8(1).u16(key).u64(value).finish()
+
+
+def build_hiscore_table(
+    key: int,
+    entries: list[tuple[int, int, list[int]]],
+    vcols: int = 1,
+    columns: list[tuple[str, str | None]] | None = None,
+) -> bytes:
+    """Server opcode 2, sub-command 0 -- the hiscore table.
+
+    PROVEN accepted by the client's real ke.e; it set kc.field_p and populated
+    field_t / field_u.
+
+      u8      subtype = 0
+      u16 BE  key            MUST equal the request's field_n
+      u8      count          columns including col 0 (the local player)
+      per extra column:  cstring name, u8 flag, cstring second only if flag == 1
+      u8      entryCount
+      per entry:  u8 columnIndex, i64 BE score, vcols x i32 BE value
+
+    `entries` is a list of (column_index, score, values) with len(values) == vcols.
+
+    Only the count == 1 single-board case is execution-proven; the extra-column
+    path and vcols > 1 are read from the handler but were never run. The proven
+    minimal payload is:
+
+      00 00 00 01 01 00 00 00 00 00 00 00 03 E7 00 00 00 05
+    """
+    builder = PacketBuilder().u8(0).u16(key)
+    count = 1 + (len(columns) if columns else 0)
+    builder.u8(count)
+    for name, second in columns or []:
+        builder.cstring(name)
+        if second is None:
+            builder.u8(0)
+        else:
+            builder.u8(1).cstring(second)
+    builder.u8(len(entries))
+    for column_index, score, values in entries:
+        if len(values) != vcols:
+            raise ValueError(f"entry needs exactly {vcols} values, got {len(values)}")
+        builder.u8(column_index).u64(score)
+        for value in values:
+            builder.u32(value)
+    return builder.finish()
+
+
+def build_ignore_entry(name: str, previous: str = "", world: str = "") -> bytes:
+    """Server opcode 13, mode 1 -- one ignore-list entry.
+
+    PROVEN by running the client's oe.c(false) on
+    `01 00 46 6F 6F 00 57 6F 72 6C 64 31 00`: md.field_Z became 1, mc.field_a a
+    fresh nk(128), and the wb was enqueued on qi.field_S.
+
+      [u8 1][cstring previous][cstring name][cstring world]
+
+    An empty `previous` (a bare NUL) is stored as null, which is the normal case
+    for an entry that was not renamed.
+
+    Note the ignore branch has NO flag byte -- the friend branch does. They are
+    genuinely different shapes on the same opcode; see build_friend_entry.
+    """
+    return PacketBuilder().u8(1).cstring(previous).cstring(name).cstring(world).finish()
+
+
+def build_friend_entry(name: str, display_name: str | None = None, world: str = "") -> bytes:
+    """Server opcode 13, mode 0 -- one friend-list entry.
+
+    PROVEN by running oe.c on the same tail as the ignore case. Note the extra
+    flag byte, which the ignore branch does not have:
+
+      [u8 0][u8 flag][cstring name][cstring displayName only if flag == 1][cstring world]
+
+    Populates hg.field_e / ed.field_g / uf.field_z, with wb.field_Pb holding the
+    display name.
+    """
+    builder = PacketBuilder().u8(0)
+    if display_name is None:
+        builder.u8(0).cstring(name)
+    else:
+        builder.u8(1).cstring(name).cstring(display_name)
+    return builder.cstring(world).finish()
+
+
+def build_social_list_complete(mode: int = 2) -> bytes:
+    """Server opcode 13, mode 2/3 -- the social-list transfer-complete marker.
+
+    Toggles the static jj.field_b list-complete / dirty flags. Send it after the
+    entries so the client stops treating the list as still arriving.
+
+    Mode 4 is deliberately rejected: it reads an extra cstring into f.field_w
+    plus a u8 and then calls nh.a(12, x). That path was read from bytecode but
+    never executed, so building it here would be a guess.
+    """
+    if mode not in (2, 3):
+        raise ValueError("only the proven list-complete modes 2 and 3 are supported")
+    return PacketBuilder().u8(mode).finish()
+
+
+def build_quickchat_broadcast(name: str, quickchat_id: int, channel: int = 0) -> bytes:
+    """Server opcode 12 -- a canned quick-chat line from `name`.
+
+    Opcode 12 is quickchat, dispatched to ki.a(0, true); opcode 11 is free text,
+    ki.a(0, false). Confirmed from bd.f bytecode. The text is NOT on the wire --
+    the client looks it up by id via wj.field_Qb.a(127, id).
+
+      [u8 flags][u8 tg.field_c][u64 fc.field_h][u8 var4][cstring name][u16 BE id]
+
+    Two fields decide whether this renders at all, both learned the hard way on
+    the free-text path (see build_chat_broadcast):
+
+      flags  = channel, with bit 0x80 CLEAR, or the name is suppressed
+      tg.field_c = 1, or the name renders as the literal string "null"
+
+    Only channel 0 with var4 = 0 (a single reused name) is execution-proven. The
+    channel 2 branch additionally reads a u16 and a u24, and channels 1 and 4
+    read a further u16 + cstring; those were read from bytecode, never run.
+
+    The id is relayed verbatim. Ids from the F10 menu path arrive with bit 0x8000
+    set (ig.a: Nb[idx] | 0x8000) and ki.a does not mask it on read, so passing it
+    through is the behaviour-preserving choice -- but that the renderer tolerates
+    the high bit is UNPROVEN. If quickchat lines come out blank, strip it here.
+    """
+    if channel != 0:
+        raise ValueError("only channel 0 is execution-proven for quickchat")
+    builder = PacketBuilder().u8(channel).u8(1).u64(0).u8(0)
+    return builder.cstring(name).u16(quickchat_id).finish()
