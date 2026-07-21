@@ -87,7 +87,10 @@ function runOnce(variant, iteration, options) {
   });
   fs.writeFileSync(path.join(runDir, 'stdout.log'), result.stdout || '');
   fs.writeFileSync(path.join(runDir, 'stderr.log'), result.stderr || '');
-  if (result.error || result.signal || result.status === null || result.status !== 0) {
+  // exit 3 is run-jvmjs's instruction-budget cutoff marker (JVM_TRACE_EXIT
+  // in jvm.js), i.e. the healthy outcome for a bounded comparison run
+  const acceptable = result.status === 0 || result.status === 3;
+  if (result.error || result.signal || !acceptable) {
     const reason = result.error
       ? result.error.message
       : result.signal
