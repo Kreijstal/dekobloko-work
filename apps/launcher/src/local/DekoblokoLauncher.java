@@ -33,6 +33,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import local.awt.FrameProfiler;
 
 public final class DekoblokoLauncher {
     private static final String DEFAULT_SERVER = "https://mgg-server.alterorb.net";
@@ -62,6 +63,7 @@ public final class DekoblokoLauncher {
                 new URL[] { gamepackUrl },
                 DekoblokoLauncher.class.getClassLoader()
         );
+        FrameProfiler.registerGameClassLoader(classLoader);
 
         Class<?> appletClass = classLoader.loadClass(options.mainClass);
         Trace.log("launcher.loadClass " + options.mainClass);

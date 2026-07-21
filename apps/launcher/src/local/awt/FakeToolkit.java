@@ -31,6 +31,7 @@ import java.awt.Panel;
 import java.awt.Point;
 import java.awt.PopupMenu;
 import java.awt.PrintJob;
+import java.awt.Robot;
 import java.awt.ScrollPane;
 import java.awt.Scrollbar;
 import java.awt.TextArea;
@@ -67,17 +68,22 @@ import java.awt.peer.MenuItemPeer;
 import java.awt.peer.MenuPeer;
 import java.awt.peer.PanelPeer;
 import java.awt.peer.PopupMenuPeer;
+import java.awt.peer.RobotPeer;
 import java.awt.peer.ScrollPanePeer;
 import java.awt.peer.ScrollbarPeer;
 import java.awt.peer.TextAreaPeer;
 import java.awt.peer.TextFieldPeer;
 import java.awt.peer.WindowPeer;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.Properties;
+import javax.imageio.ImageIO;
+import sun.awt.datatransfer.DataTransferer;
 
 public class FakeToolkit extends Toolkit implements sun.awt.ComponentFactory, sun.awt.KeyboardFocusManagerPeerProvider {
     private final EventQueue eventQueue = new EventQueue();
@@ -301,7 +307,13 @@ public class FakeToolkit extends Toolkit implements sun.awt.ComponentFactory, su
     @Override
     public Image createImage(byte[] data, int offset, int length) {
         Trace.log("fakeToolkit.createImage bytes length=" + length);
-        return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        try {
+            BufferedImage decoded = ImageIO.read(new ByteArrayInputStream(data, offset, length));
+            return decoded != null ? decoded : new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        } catch (IOException ex) {
+            Trace.log("fakeToolkit.createImage decode error " + ex.getMessage());
+            return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        }
     }
 
     @Override
@@ -366,6 +378,22 @@ public class FakeToolkit extends Toolkit implements sun.awt.ComponentFactory, su
         throw new InvalidDnDOperationException("FakeToolkit does not support drag and drop");
     }
 
+    // ComponentFactory changed this signature after Java 8. Keep both forms so
+    // the fake toolkit can be built by the runtime being benchmarked as well as
+    // by current JDKs.
+    public RobotPeer createRobot(Robot target, java.awt.GraphicsDevice screen) throws AWTException {
+        throw new AWTException("FakeToolkit does not support Robot");
+    }
+
+    public RobotPeer createRobot(java.awt.GraphicsDevice screen) throws AWTException {
+        throw new AWTException("FakeToolkit does not support Robot");
+    }
+
+    @Override
+    public DataTransferer getDataTransferer() {
+        return null;
+    }
+
     @Override
     public <T extends DragGestureRecognizer> T createDragGestureRecognizer(Class<T> recognizerClass, DragSource dragSource,
                                                                            java.awt.Component component, int actions,
@@ -419,6 +447,12 @@ public class FakeToolkit extends Toolkit implements sun.awt.ComponentFactory, su
             }
 
             Trace.log("fakePeer." + label + "." + name);
+            if ("prepareImage".equals(name)) {
+                return Boolean.TRUE;
+            }
+            if ("checkImage".equals(name)) {
+                return Integer.valueOf(ImageObserver.ALLBITS);
+            }
             Class<?> returnType = method.getReturnType();
             if (returnType == Void.TYPE) {
                 return null;
@@ -460,7 +494,8 @@ public class FakeToolkit extends Toolkit implements sun.awt.ComponentFactory, su
                 return ColorModel.getRGBdefault();
             }
             if (returnType == java.awt.Graphics.class) {
-                return new BufferedImage(1024, 768, BufferedImage.TYPE_INT_ARGB).getGraphics();
+                if ("Canvas".equals(label)) return FrameProfiler.beginGameFrame();
+                return FrameProfiler.wrap(new BufferedImage(1024, 768, BufferedImage.TYPE_INT_ARGB).getGraphics());
             }
             if (returnType == FontMetrics.class) {
                 return new Canvas().getFontMetrics(new Font("Dialog", Font.PLAIN, 12));

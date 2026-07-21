@@ -16,6 +16,7 @@ javac_exports=(
   --add-exports java.desktop/sun.awt=ALL-UNNAMED
   --add-exports java.desktop/java.awt.peer=ALL-UNNAMED
   --add-exports java.desktop/java.awt.dnd.peer=ALL-UNNAMED
+  --add-exports java.desktop/sun.awt.datatransfer=ALL-UNNAMED
 )
 
 if [[ -f "$JAR" || -f "$BOOTSTRAP_JAR" ]]; then
@@ -30,6 +31,7 @@ if [[ -f "$JAR" || -f "$BOOTSTRAP_JAR" ]]; then
   javac -cp "$CLASSES_DIR" -d "$CLASSES_DIR" \
     "$SRC_DIR/local/Trace.java" \
     "$SRC_DIR/local/AwtInteractionLog.java" \
+    "$SRC_DIR/local/awt/FrameProfiler.java" \
     "$SRC_DIR/local/DekoblokoLauncher.java"
   javac "${javac_exports[@]}" -cp "$CLASSES_DIR" -d "$CLASSES_DIR" \
     "$SRC_DIR/local/awt/FakeToolkit.java"
