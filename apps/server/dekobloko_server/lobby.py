@@ -233,18 +233,19 @@ class HostedGame:
         for player in players:
             _safe_call(lambda p=player: p.send_action_stream(slot, payload))
 
-        # GUESSWORK, and the weakest thing in this file. The claim is that
-        # packet 60 arrives either after 20 input samples or when the local
-        # piece locks, so a short payload means a lock and warrants handing out
-        # a new piece. Nothing verifies that: no client has ever sent packet 60
-        # to this server. The "< 20" threshold in particular is a heuristic
-        # standing in for a lock signal we have not located in the client.
+        # DISABLED: this used to hand out a new piece whenever payload[0] < 20,
+        # a heuristic for "the piece locked". It was wrong and broke play. The
+        # opcode-60 count byte is just the number of buffered 5-bit input
+        # samples (qc.java:2005, field_w -- forced out at 20, flushed earlier on
+        # events), NOT a lock signal. Small counts arrive constantly during
+        # normal keyboard input, so the server fed a new piece almost every
+        # frame -- the reported "I keep getting pieces and my piece never
+        # releases": the active piece was replaced before it could settle.
         #
-        # If pieces ever duplicate, vanish, or arrive at the wrong time in a
-        # real match, suspect this branch first rather than the piece encoding.
-        if payload and payload[0] < 20:
-            self.broadcast_piece_event(slot, self.next_piece())
-            self.broadcast_queued_piece(slot, self.next_piece())
+        # A real lock is one of the 5-bit control codes INSIDE the stream, not
+        # the count, so detecting it needs the control vocabulary decoded (not
+        # done yet). Until then feed nothing on input -- an idle stream beats a
+        # corrupted board. Multiplayer gameplay is unverified end to end.
 
     def handle_piece_request(self, sender: LobbySession) -> None:
         slot = sender.player_slot
