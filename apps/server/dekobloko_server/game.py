@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import secrets
 import socket
 import threading
@@ -17,6 +18,8 @@ from .packets import (
     build_achievement_ack,
     LOBBY_ACTION_NAMES,
     build_achievements_reply,
+    build_create_room_reply,
+    build_leave_room_reply,
     build_chat_broadcast,
     build_f_reply,
     build_friend_entry,
@@ -47,6 +50,7 @@ class GameSession:
         self._send_lock = threading.Lock()
         self._lobby_ready = False
         self._lobby_bootstrapped = False
+        self._stop_keepalive = threading.Event()
 
     def _ensure_lobby_bootstrap(self, trigger: str) -> None:
         """Send the lobby state the first time the client actually asks for it.
@@ -165,11 +169,13 @@ class GameSession:
         self.codec = PacketCodec(parsed.client_seed)
         self._send_login_success()
         LOBBY.join(self)
+        self._start_keepalive()
         try:
             # Welcome text is deferred with the bootstrap; anything sent before
             # the client finishes loading crashes it. See Lobby.join().
             self._run_packet_loop()
         finally:
+            self._stop_keepalive.set()
             LOBBY.leave(self)
 
     def _handle_direct_login(self, opcode: int) -> None:
@@ -478,9 +484,39 @@ class GameSession:
     def _send_packet(self, opcode: int, payload: bytes = b"") -> None:
         if self.codec is None:
             raise RuntimeError("packet codec is not initialized")
-        packet = self.codec.encode_server_packet(opcode, payload)
+        # encode() advances the outbound ISAAC opcode cipher, so it MUST run
+        # under the same lock as the send -- otherwise the keepalive thread and
+        # the packet loop can interleave encodes and desync the keystream, which
+        # corrupts every subsequent opcode byte. Encode and send are one atomic
+        # step per packet.
         with self._send_lock:
+            packet = self.codec.encode_server_packet(opcode, payload)
             self.sock.sendall(packet)
+
+    # How often to send an unsolicited keepalive. The client disconnects after
+    # SERVER_TIMEOUT_MILLIS = 30s of silence from the server (JagexApplet), and
+    # the reference server ticks its idle keepalive at 10s. 10s stays well
+    # under the deadline with margin for a slow send.
+    KEEPALIVE_INTERVAL_S = 10.0
+
+    def _start_keepalive(self) -> None:
+        """Send server opcode 0 periodically so the client's 30s read timeout
+        never fires.
+
+        The packet loop blocks on recv and only writes in response to a client
+        packet, so an idle client hears nothing and times out -- observed as a
+        reconnect roughly every minute. A daemon thread writes keepalives on an
+        interval instead; _send_lock serialises them against the loop's own
+        sends, and the codec's ISAAC output stream is only advanced from here
+        and the loop (both under the lock), so the opcode cipher stays in sync.
+        """
+        def tick() -> None:
+            while not self._stop_keepalive.wait(self.KEEPALIVE_INTERVAL_S):
+                try:
+                    self._send_packet(0)
+                except OSError:
+                    return  # connection gone; the loop's finally handles cleanup
+        threading.Thread(target=tick, name=f"keepalive-{self.peer}", daemon=True).start()
 
     def _run_packet_loop(self) -> None:
         if self.codec is None:
@@ -504,6 +540,14 @@ class GameSession:
             # service behaved -- after login you get the main menu, and the
             # lobby only once you ask for multiplayer. So mark ready and wait
             # for the client to ask. See _ensure_lobby_bootstrap().
+            # Client KEEPALIVE. The reference server echoes S2C KEEPALIVE on
+            # receipt (ClientHandler); mirror that. The proactive timer is what
+            # actually prevents the client's read timeout, but echoing keeps the
+            # exchange symmetric and cheap.
+            if packet.opcode == 0:
+                self._send_packet(0)
+                continue
+
             if packet.opcode in (4, 5) and not self._lobby_ready:
                 self._lobby_ready = True
                 print(f"[game] {self.peer} client ready (heartbeat {packet.opcode}); "
@@ -708,11 +752,33 @@ class GameSession:
                     f"[lobby] {self.peer} action={action} ({name}) "
                     f"body={packet.payload[1:].hex(' ') or '<empty>'}"
                 )
-                # Deliberately no reply yet. The action codes are shared across
-                # the framework, but Dekobloko's room payloads are not the same
-                # as that game's, and an unsolicited or wrong-shaped reply is
-                # exactly what caused the disconnect storm via dk.a. Capture
-                # first, answer once the shape is known.
+                # CREATE_UNRATED_GAME (action 4). OPT-IN and OFF by default:
+                # set DEKOBLOKO_ROOMS=1 to try it. The room body was measured
+                # (build_create_room_reply) but the full mode-4 path was not run
+                # end to end, and a wrong room packet disconnects -- so this must
+                # not be on by default and regress the working server.
+                if action == 4 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
+                    room_id = LOBBY.allocate_room_id()
+                    self._send_packet(10, build_create_room_reply(room_id))
+                    print(
+                        f"[lobby] {self.peer} CREATE_UNRATED_GAME -> sent mode 4 "
+                        f"YOU_JOINED_ROOM id={room_id} (empty room)"
+                    )
+                elif action == 9 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
+                    # LEAVE_ROOM [u16 room_id] -- the "return to lobby" button.
+                    # The client stays in the room view until we confirm with
+                    # mode 0 (YOU_LEFT_ROOM), which clears cd.field_m back to the
+                    # lobby. Without this reply the button does nothing.
+                    room_id = (
+                        int.from_bytes(packet.payload[1:3], "big")
+                        if len(packet.payload) >= 3
+                        else None
+                    )
+                    self._send_packet(10, build_leave_room_reply())
+                    print(
+                        f"[lobby] {self.peer} LEAVE_ROOM id={room_id} "
+                        f"-> sent mode 0 YOU_LEFT_ROOM"
+                    )
                 continue
 
             if packet.opcode == 7:

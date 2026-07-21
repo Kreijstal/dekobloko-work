@@ -314,6 +314,9 @@ class Lobby:
         self._sessions: set[LobbySession] = set()
         self._games: dict[int, HostedGame] = {}
         self._game_ids = itertools.count(1)
+        # Room ids for the experimental CREATE_UNRATED_GAME path. u16 on the
+        # wire (build_create_room_reply), so keep it in range.
+        self._room_ids = itertools.count(1)
         # board -> {player_name: best_score}. Persisted, so scores survive a
         # restart. Kept as best-per-player rather than an append log because the
         # client asks for a top-N table, not a history.
@@ -454,6 +457,11 @@ class Lobby:
             )
         except OSError as exc:
             print(f"[achv] could not write {self._achievements_path}: {exc}")
+
+    def allocate_room_id(self) -> int:
+        """Next room id for the experimental create-room path (u16, wraps)."""
+        with self._lock:
+            return (next(self._room_ids) & 0xFFFF) or 1
 
     def achievements_for(self, player: str) -> list[int]:
         with self._lock:

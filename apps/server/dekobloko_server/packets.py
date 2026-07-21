@@ -143,6 +143,12 @@ LOBBY_ACTION_NAMES: dict[int, str] = {
 
 
 SERVER_PACKET_LENGTHS: dict[int, int] = {
+    # KEEPALIVE. Fixed empty payload. The client (JagexApplet, S2CPacket) leaves
+    # index 0 at the array default, i.e. length 0. The reference server sends
+    # this on write-idle to hold the connection open; without it the client's
+    # 30s read timeout (SERVER_TIMEOUT_MILLIS) fires and it reconnects "every
+    # minute or so".
+    0: 0,
     1: 16,
     2: -2,
     3: -1,
@@ -861,6 +867,48 @@ def build_friend_entry(name: str, display_name: str | None = None, world: str = 
     else:
         builder.u8(1).cstring(name).cstring(display_name)
     return builder.cstring(world).finish()
+
+
+def build_leave_room_reply() -> bytes:
+    """Server opcode 10, mode 0 (YOU_LEFT_ROOM) -- confirm a LEAVE_ROOM.
+
+    The "return to lobby" button sends client LOBBY action 9 (LEAVE_ROOM). The
+    client does not drop the room view until the server confirms with mode 0;
+    the reference does this in removeClient (YOU_LEFT_ROOM).
+
+    Verified from Dekobloko's own parser: in the frame-10 dispatcher ke.b, mode
+    0 falls through the shared tail to `cd.field_m = null` (ke.java:2465) --
+    clearing the current room, i.e. back to the lobby -- and reads NO further
+    bytes. So the payload is just the mode byte.
+    """
+    return bytes([0])
+
+
+def build_create_room_reply(room_id: int) -> bytes:
+    """Server opcode 10, mode 4 (YOU_JOINED_ROOM) -- answer CREATE_UNRATED_GAME.
+
+    Mode name from the shattered-plans deobfuscation (S2C LobbyAction 4). The
+    Dekobloko wire layout was MEASURED by running the client's own parsers:
+
+      - The frame-10 dispatcher ke.b handles mode 4 in its shared tail
+        (ke.java:2457): read a u16 room id via e(3), then parse the room body
+        with wg.a(false, stream, room, (byte) -49).
+      - wg.a was driven by reflection with an all-zero buffer and consumed
+        exactly 18 bytes with no error at param3 == -49 (the real call site's
+        value; other param3 values take a 9-byte path, so -49 is the one that
+        matters). An all-zero body is therefore a parser-valid EMPTY room --
+        the same "N == 0 early-out" shape used for build_room_membership.
+
+      payload = [u8 mode=4][u16 room_id][18 zero bytes]
+
+    NOT VERIFIED END TO END. Only wg.a in isolation was measured; the full mode-4
+    path in ke.b (the list walks before it, cd.field_m assignment) was not run,
+    and the surrounding lobby actions the reference sends alongside this
+    (ROOM_STATUS, PLAYER_JOINED_ROOM) are not sent. This is why the caller keeps
+    it behind an opt-in flag: a wrong room packet disconnects, and the committed
+    server works without it.
+    """
+    return bytes([4]) + (room_id & 0xFFFF).to_bytes(2, "big") + bytes(18)
 
 
 def build_local_player_id(uid: int) -> bytes:
