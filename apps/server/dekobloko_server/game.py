@@ -27,6 +27,8 @@ from .packets import (
     build_ignore_entry,
     build_lobby_player,
     build_local_player_id,
+    build_player_joined_room,
+    build_player_left_room,
     build_room_membership,
     build_sb_reply,
     build_social_list_complete,
@@ -51,6 +53,7 @@ class GameSession:
         self._lobby_ready = False
         self._lobby_bootstrapped = False
         self._stop_keepalive = threading.Event()
+        self._local_id_sent = False
 
     def _ensure_lobby_bootstrap(self, trigger: str) -> None:
         """Send the lobby state the first time the client actually asks for it.
@@ -759,10 +762,32 @@ class GameSession:
                 # not be on by default and regress the working server.
                 if action == 4 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
                     room_id = LOBBY.allocate_room_id()
-                    self._send_packet(10, build_create_room_reply(room_id))
+                    owner_id = self.accounts.player_id(self.account_name)
+                    # The host check is `uc.field_g == room.ownerId`
+                    # (ig.java:773). uc.field_g is the LOCAL player id, set only
+                    # by the mode-23 PLAYER_ID packet; without it uc.field_g
+                    # stays at nk.a's -1 sentinel and never matches, so the
+                    # client is never the host. Send mode 23 with the same id we
+                    # use for ownerId so the two are equal.
+                    if not self._local_id_sent:
+                        self._send_packet(10, build_local_player_id(owner_id))
+                        self._local_id_sent = True
+                        print(f"[lobby] {self.peer} sent PLAYER_ID (mode 23) uc.field_g={owner_id}")
+                    self._send_packet(
+                        10,
+                        build_create_room_reply(room_id, owner_id, self.display_name),
+                    )
+                    # Add the host to the room's player list. Without this the
+                    # room has an owner but zero players, so the client shows an
+                    # empty slot list and never places you into the game.
+                    self._send_packet(
+                        10,
+                        build_player_joined_room(owner_id, self.display_name),
+                    )
                     print(
                         f"[lobby] {self.peer} CREATE_UNRATED_GAME -> sent mode 4 "
-                        f"YOU_JOINED_ROOM id={room_id} (empty room)"
+                        f"YOU_JOINED_ROOM id={room_id} + mode 18 PLAYER_JOINED "
+                        f"owner={self.display_name!r} owner_id={owner_id}"
                     )
                 elif action == 9 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
                     # LEAVE_ROOM [u16 room_id] -- the "return to lobby" button.
@@ -779,6 +804,48 @@ class GameSession:
                         f"[lobby] {self.peer} LEAVE_ROOM id={room_id} "
                         f"-> sent mode 0 YOU_LEFT_ROOM"
                     )
+                elif action == 6 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
+                    # INVITE_PLAYER_TO_GAME [u64 userId] (reference reads a long).
+                    # For a bot invitee there is no real client to accept, so
+                    # the server accepts on its behalf: send the host a
+                    # PLAYER_JOINED_ROOM (mode 18) for the bot, which makes the
+                    # bot appear in the host's room player list.
+                    invited_uid = (
+                        int.from_bytes(packet.payload[1:9], "big")
+                        if len(packet.payload) >= 9
+                        else None
+                    )
+                    bot = LOBBY.bot_for_uid(invited_uid) if invited_uid else None
+                    if bot is not None:
+                        bot_id = self.accounts.player_id(bot)
+                        self._send_packet(10, build_player_joined_room(bot_id, bot))
+                        print(
+                            f"[lobby] {self.peer} INVITE uid={invited_uid} -> bot "
+                            f"{bot!r} auto-joined (mode 18)"
+                        )
+                    else:
+                        print(f"[lobby] {self.peer} INVITE uid={invited_uid} (no bot match)")
+                elif action == 7 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
+                    # KICK_PLAYER_FROM_GAME [u64 userId]. Remove the player from
+                    # the host's room list with PLAYER_LEFT_ROOM (mode 19).
+                    kicked_uid = (
+                        int.from_bytes(packet.payload[1:9], "big")
+                        if len(packet.payload) >= 9
+                        else None
+                    )
+                    bot = LOBBY.bot_for_uid(kicked_uid) if kicked_uid else None
+                    if bot is not None:
+                        bot_id = self.accounts.player_id(bot)
+                        # reason 12 = KICKED. Value 1 (which I used first) is
+                        # ENTERED_GAME in the status enum (LobbyPlayer.Status),
+                        # so it rendered "Player has entered a game" on a kick.
+                        self._send_packet(10, build_player_left_room(bot_id, 12))
+                        print(
+                            f"[lobby] {self.peer} KICK uid={kicked_uid} -> bot "
+                            f"{bot!r} removed (mode 19)"
+                        )
+                    else:
+                        print(f"[lobby] {self.peer} KICK uid={kicked_uid} (no bot match)")
                 continue
 
             if packet.opcode == 7:
@@ -885,6 +952,10 @@ class GameSession:
             # packet is why typed messages never appeared.
             if packet.opcode == 12:
                 text = None
+                # payload[0] is the channel the sender chose: 0 = LOBBY, 1 =
+                # ROOM. Echo it so a message typed in a room lands in the game
+                # channel, not the lobby.
+                channel = packet.payload[0] if packet.payload else 0
                 if len(packet.payload) >= 2:
                     count = packet.payload[1]
                     try:
@@ -892,7 +963,7 @@ class GameSession:
                     except Exception as exc:
                         print(f"[chat] {self.peer} huffman decode failed: {exc}")
                 print(
-                    f"[chat] {self.peer} <{self.display_name}> {text!r}"
+                    f"[chat] {self.peer} <{self.display_name}> ch={channel} {text!r}"
                     f"  (raw={packet.payload.hex(' ')})"
                 )
                 if text:
@@ -902,7 +973,7 @@ class GameSession:
                     # payload is [discriminator][count][huffman]; relay the
                     # compressed bytes and the count separately.
                     broadcast = build_chat_broadcast(
-                        self.display_name, count, packet.payload[2:]
+                        self.display_name, count, packet.payload[2:], channel
                     )
                     for peer in LOBBY.sessions_snapshot():
                         try:
