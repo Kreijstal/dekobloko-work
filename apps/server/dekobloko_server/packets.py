@@ -621,7 +621,7 @@ def build_f_reply() -> bytes:
     return bytes([2])
 
 
-def build_chat_broadcast(name: str, count: int, body: bytes) -> bytes:
+def build_chat_broadcast(name: str, count: int, body: bytes, channel: int = 0) -> bytes:
     """Payload for server opcode 11 -- a lobby chat line from a player.
 
     The server does not compress anything. `body` is the client's own Huffman
@@ -697,7 +697,11 @@ def build_chat_broadcast(name: str, count: int, body: bytes) -> bytes:
     # field_l==2 branch that would give a lone gold crown nulls the name.
     encoded = name.encode("cp1252", errors="replace")
     out = bytearray()
-    out.append(0x00)                     # channel 0 -> "[Lobby] "; 0x80 clear -> name appended
+    # Channel comes from the sender's own C2S chat packet (payload[0]): 0 =
+    # LOBBY -> "[Lobby] ", 1 = ROOM -> "[<owner>'s game] ". Echo it so a message
+    # typed in a room shows in the game channel instead of the lobby. The 0x80
+    # bit is forced CLEAR -- it sets field_j, which suppresses the speaker name.
+    out.append(channel & 0x7F)
     # tg.field_c -> hl.field_l, the rank-icon selector in mb.a:
     #   1 -> "<img=0>" + name   (moderator crown)
     #   2 -> "<img=1>" + name   (jagex moderator crown)
@@ -869,6 +873,69 @@ def build_friend_entry(name: str, display_name: str | None = None, world: str = 
     return builder.cstring(world).finish()
 
 
+def build_player_joined_room(
+    player_id: int,
+    name: str,
+    display_name: str | None = None,
+    rating: int = 0,
+    rated_games: int = 0,
+    crown: int = 0,
+    options: int = 0,
+) -> bytes:
+    """Server opcode 10, mode 18 (PLAYER_JOINED_ROOM) -- add a player to a room.
+
+    Read layout from Dekobloko's dispatcher ke.b (mode 18, ke.java:2186):
+      f((byte)) u64 player id -> new tj(name, displayName, id)
+      c((byte)) cstring name
+      c((byte)) cstring displayName
+      cd.field_m.field_rc++            (room player count bumped)
+      e(3)  u16   -> field_Ub (rating)
+      a(-69) varint -> field_Xb = v>>1 (rated games), field_ec = v&1
+      d((byte)) u8 -> field_dc (crown)
+      d((byte)) u8 -> field_Sb (options)
+
+    This matches the reference createPlayerJoinedPacket field-for-field. The
+    varint is the reference's writeVariableInt (base-128, low 7 bits per byte);
+    for the values here it stays under 128, so it is a single byte.
+
+    Sent after YOU_JOINED_ROOM so cd.field_m (the room) already exists; the
+    parser increments that room's player count and appends the player, which is
+    what makes the host actually appear in the room's player list.
+    """
+    disp = display_name if display_name is not None else name
+    packet = bytearray([18])
+    packet.extend((player_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big"))
+    packet.extend(name.encode("cp1252", errors="replace"))
+    packet.append(0)
+    packet.extend(disp.encode("cp1252", errors="replace"))
+    packet.append(0)
+    packet.extend((rating & 0xFFFF).to_bytes(2, "big"))
+    # rated-games varint: (rated_games << 1) | rated_flag; base-128, single byte
+    # while under 128, which covers 0 and small counts.
+    rated_field = (rated_games << 1) & 0x7F
+    packet.append(rated_field)
+    packet.append(crown & 0xFF)
+    packet.append(options & 0xFF)
+    return bytes(packet)
+
+
+def build_player_left_room(player_id: int, reason: int = 0) -> bytes:
+    """Server opcode 10, mode 19 (PLAYER_LEFT_ROOM) -- remove a player from a room.
+
+    Read layout from ke.b (mode 19, ke.java:2228):
+      f((byte)) u64 player id
+      d((byte)) u8 reason  (0 = plain leave; nonzero -> field_hc, e.g. kicked)
+      cd.field_m.field_rc--            (room player count decremented)
+
+    Matches the reference removeClient's PLAYER_LEFT_ROOM packet. Used to make a
+    kicked or departed player disappear from the other members' room lists.
+    """
+    packet = bytearray([19])
+    packet.extend((player_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big"))
+    packet.append(reason & 0xFF)
+    return bytes(packet)
+
+
 def build_leave_room_reply() -> bytes:
     """Server opcode 10, mode 0 (YOU_LEFT_ROOM) -- confirm a LEAVE_ROOM.
 
@@ -884,31 +951,60 @@ def build_leave_room_reply() -> bytes:
     return bytes([0])
 
 
-def build_create_room_reply(room_id: int) -> bytes:
+def build_create_room_reply(
+    room_id: int, owner_id: int, owner_name: str, max_players: int = 2
+) -> bytes:
     """Server opcode 10, mode 4 (YOU_JOINED_ROOM) -- answer CREATE_UNRATED_GAME.
 
     Mode name from the shattered-plans deobfuscation (S2C LobbyAction 4). The
-    Dekobloko wire layout was MEASURED by running the client's own parsers:
+    room-body field layout was MEASURED two ways that agree:
 
-      - The frame-10 dispatcher ke.b handles mode 4 in its shared tail
-        (ke.java:2457): read a u16 room id via e(3), then parse the room body
-        with wg.a(false, stream, room, (byte) -49).
-      - wg.a was driven by reflection with an all-zero buffer and consumed
-        exactly 18 bytes with no error at param3 == -49 (the real call site's
-        value; other param3 values take a 9-byte path, so -49 is the one that
-        matters). An all-zero body is therefore a parser-valid EMPTY room --
-        the same "N == 0 early-out" shape used for build_room_membership.
+      - Dekobloko's own wg.a was driven by reflection with a byte probe (flip
+        each body byte, watch which ve field and length changes). That mapped
+        the 18-byte all-zero body to: u8@0, u8@1, flags@2, u16@3-4, u32@5-8,
+        u64@9-16, cstring@17.
+      - The reference client's initializeFromServer parses the same order:
+        maxPlayerCount(u8), whoCanJoin(u8), flags(u8), gameSpecificOptions(0
+        here), averageRating(u16), startedAt(u32), ownerId(u64), ownerName
+        (cstring). The offsets line up exactly with the probe.
 
-      payload = [u8 mode=4][u16 room_id][18 zero bytes]
+      payload = [u8 mode=4][u16 room_id][
+        u8 maxPlayerCount | u8 whoCanJoin | u8 flags | u16 avgRating |
+        u32 startedAgo | u64 ownerId | cstring ownerName ]
 
-    NOT VERIFIED END TO END. Only wg.a in isolation was measured; the full mode-4
-    path in ke.b (the list walks before it, cd.field_m assignment) was not run,
-    and the surrounding lobby actions the reference sends alongside this
-    (ROOM_STATUS, PLAYER_JOINED_ROOM) are not sent. This is why the caller keeps
-    it behind an opt-in flag: a wrong room packet disconnects, and the committed
-    server works without it.
+    THE HOST is ownerId: the client is the host when room.ownerId equals its own
+    player id (ShatteredPlansClient: `room.ownerId == localPlayerId`). So the
+    owner must be the local player's login id, and the name its display name,
+    or the client shows a guest waiting for a stranger.
+
+    flags = 0x80 sets youAreAllowedToJoin and leaves concluded(4)/started(64)
+    clear, so no extra trailing reads are triggered (the probe showed those bits
+    add bytes). whoCanJoin = 0 is the most permissive ordinal.
+
+    STILL not the full reference flow: the reference also sends ROOM_STATUS and a
+    PLAYER_JOINED_ROOM per member. This gives the room an owner (fixes host vs
+    guest); populating the joined-player list may still need PLAYER_JOINED_ROOM.
     """
-    return bytes([4]) + (room_id & 0xFFFF).to_bytes(2, "big") + bytes(18)
+    body = bytearray()
+    body.append(max_players & 0xFF)          # maxPlayerCount
+    body.append(0)                           # whoCanJoin (0 = most permissive)
+    body.append(0x80)                        # flags: youAreAllowedToJoin only
+    # gameSpecificOptions: a 5-byte field in Dekobloko. The client reads
+    # field_kc.length bytes here, and the live mode-4 path builds new ve(j.field_b)
+    # with j.field_b == 5. MEASURED FROM THE LIVE CLIENT, not the probe (which
+    # used ve(1) and aliased): the client always reads ownerName at absolute
+    # offset 22, and the fixed fields before it total 17 (1+1+1 + 2 + 4 + 8), so
+    # gameSpecificOptions = 22 - 17 = 5. Two live data points confirm it: 1 byte
+    # here showed the name as "o" (4 short), 4 bytes showed "ello" (1 short); 5
+    # lands it exactly. (ve.c renders ".../4", which is a display string, NOT the
+    # array length -- that was the red herring.)
+    body.extend(bytes(5))                    # gameSpecificOptions[0..4]
+    body.extend((0).to_bytes(2, "big"))      # averageRating
+    body.extend((0).to_bytes(4, "big"))      # startedAgo (now - 0)
+    body.extend((owner_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big"))  # ownerId
+    body.extend(owner_name.encode("cp1252", errors="replace"))       # ownerName
+    body.append(0)                           # cstring terminator
+    return bytes([4]) + (room_id & 0xFFFF).to_bytes(2, "big") + bytes(body)
 
 
 def build_local_player_id(uid: int) -> bytes:

@@ -8,6 +8,7 @@ import random
 from pathlib import Path
 import threading
 import time
+import hashlib
 import zlib
 from typing import Protocol
 
@@ -317,6 +318,15 @@ class Lobby:
         # Room ids for the experimental CREATE_UNRATED_GAME path. u16 on the
         # wire (build_create_room_reply), so keep it in range.
         self._room_ids = itertools.count(1)
+        # Bot presences: fake lobby players so a single real client has someone
+        # to see and invite. Enabled with DEKOBLOKO_BOTS=1. They appear in the
+        # roster and auto-accept an invite to the host's room. Names must have
+        # accounts so uid_for/player_id line up with what the client compares.
+        self._bots: list[str] = (
+            ["Player1", "Player2", "Player3"]
+            if os.environ.get("DEKOBLOKO_BOTS") == "1"
+            else []
+        )
         # board -> {player_name: best_score}. Persisted, so scores survive a
         # restart. Kept as best-per-player rather than an append log because the
         # client asks for a top-N table, not a history.
@@ -865,17 +875,34 @@ class Lobby:
         """
         with self._lock:
             sessions = list(self._sessions)
-        return [(self.uid_for(o.display_name), o.display_name, 0, 0) for o in sessions]
+        rows = [(self.uid_for(o.display_name), o.display_name, 0, 0) for o in sessions]
+        # Append bot presences so a lone real client has players to invite.
+        rows.extend((self.uid_for(name), name, 0, 0) for name in self._bots)
+        return rows
+
+    def bot_for_uid(self, uid: int) -> str | None:
+        """Return the bot display name whose roster uid matches, or None."""
+        for name in self._bots:
+            if self.uid_for(name) == uid:
+                return name
+        return None
 
     @staticmethod
     def uid_for(display_name: str) -> int:
         """Stable roster uid for a player name.
 
-        Used for BOTH the roster row and the mode-23 local-player id. They must
-        agree or the client never matches its own row, so they share this one
-        derivation rather than computing it twice.
+        MUST equal AccountStore.player_id for the same player. The client
+        identifies its own lobby row -- and excludes itself from the invite
+        list -- by comparing each row's id against uc.field_g, which is the
+        login player id (AccountStore.player_id). This used to be a crc32 of the
+        display name, a DIFFERENT value, so the client never recognised its own
+        row: you could invite yourself, and your own row was treated as another
+        player. Replicating player_id's derivation here (normalize, then
+        sha256[:4] with the 0x10000000 tag) makes the two agree.
         """
-        return zlib.crc32(display_name.encode("utf-8")) & 0xFFFFFFFF
+        normalized = display_name.strip().lower()
+        digest = hashlib.sha256(normalized.encode("utf-8")).digest()
+        return 0x1000_0000 | (int.from_bytes(digest[:4], "big") & 0x0FFF_FFFF)
 
     def leave(self, session: LobbySession) -> None:
         self.leave_game(session, announce=False)
