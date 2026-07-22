@@ -4,10 +4,12 @@ import ast
 from pathlib import Path
 import random
 import subprocess
+import tempfile
 import time
 import unittest
 
 from dekobloko_demo import LobbyDemo
+from dekobloko_server.accounts import AccountStore
 from dekobloko_server.game import GameSession
 from dekobloko_server.lobby import CookedShape, GameOptions, HostedGame, Lobby, Piece
 from dekobloko_server.engine import (
@@ -19,6 +21,7 @@ from dekobloko_server.engine import (
 from dekobloko_server.packets import (
     CLIENT_PACKET_LENGTHS,
     build_chat_broadcast,
+    build_local_player_id,
     build_quickchat_broadcast,
     decode_control_batch,
     pack_5bit,
@@ -745,6 +748,88 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertEqual([0], [slot for slot, _payload in peer.full_states])
         self.assertEqual(0, game.ticks_since_snapshot[0])
         self._assert_original_decodes_snapshot(game, 0, host.full_states[0][1])
+
+    def test_player_id_packet_sets_and_resets_uc_field_g(self) -> None:
+        # CONFIRMED against a real client on 2026-07-22: the room creator is
+        # shown as HOST only when this mode-23 PLAYER_ID packet sets uc.field_g.
+        # The authoritative-engine merge dropped the send and the creator
+        # regressed to "guest"; this pins the send and the leave-time reset.
+        #
+        # _send_local_player_id must emit server frame 10 (lobby) carrying
+        # [u8 23][u64 uid] on entering a room, and the client's -1L sentinel
+        # (0xFFFFFFFFFFFFFFFF) on leaving so return-to-main-menu teardown runs
+        # with uc.field_g cleared.
+        class Sink:
+            peer = "test"
+            _local_id_sent = False
+            _LOCAL_ID_RESET = GameSession._LOCAL_ID_RESET
+
+            def __init__(self) -> None:
+                self.sent: list[tuple[int, bytes]] = []
+
+            def _send_packet(self, opcode: int, payload: bytes) -> None:
+                self.sent.append((opcode, payload))
+
+        sink = Sink()
+        owner_id = 485641658
+        GameSession._send_local_player_id(sink, owner_id)
+        self.assertEqual((10, build_local_player_id(owner_id)), sink.sent[-1])
+        self.assertTrue(sink._local_id_sent)
+
+        GameSession._send_local_player_id(sink, GameSession._LOCAL_ID_RESET)
+        self.assertEqual(
+            (10, build_local_player_id(0xFFFFFFFFFFFFFFFF)), sink.sent[-1]
+        )
+        self.assertFalse(sink._local_id_sent)
+
+    def test_host_identity_invariant_player_id_equals_uid_for(self) -> None:
+        # The client is host iff uc.field_g == room.ownerId (ig.java:773).
+        # uc.field_g is AccountStore.player_id(account) delivered via mode-23;
+        # the room ownerId is Lobby.uid_for(display_name). Host recognition
+        # breaks the instant these two derivations diverge, so pin them equal.
+        lobby = Lobby()
+        accounts = AccountStore(Path(tempfile.mktemp()), True)
+        for name in ("Hello", "Player1", "A", "MixedCase User", "  spaced  "):
+            self.assertEqual(
+                accounts.player_id(name),
+                lobby.uid_for(name),
+                f"player_id/uid_for diverged for {name!r}; host check would break",
+            )
+
+    def test_context_channel_zero_routes_to_room_when_sender_in_game(self) -> None:
+        # CONFIRMED 2026-07-22: the client's text send (nm.java -> ce.a) writes
+        # pk.field_r as the channel byte, which is 0 for the default tab even
+        # while in a room. So a channel-0 message from a sender who is in a room
+        # MUST be routed as ROOM chat; otherwise every in-room message the user
+        # types lands in the lobby channel (the reported bug).
+        lobby = Lobby()
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        outsider = FakeSession("outsider")
+        for session in (host, peer, outsider):
+            lobby.join(session)
+        game = lobby.create_game(host)
+        lobby.join_game(peer, game.game_id)
+        for session in (host, peer, outsider):
+            session.chat_payloads.clear()
+
+        # Sender is in the room, default tab (channel 0) -> must reach the room
+        # (channel 1) and NOT the lobby outsider.
+        lobby.relay_chat_payload(host, 3, b"abc", channel=0)
+        expected_room = build_chat_broadcast(
+            "host", 3, b"abc", 1, room_id=game.game_id, room_owner="host"
+        )
+        self.assertEqual([(11, expected_room)], host.chat_payloads)
+        self.assertEqual([(11, expected_room)], peer.chat_payloads)
+        self.assertEqual([], outsider.chat_payloads)
+
+        # Sender NOT in a room, channel 0 -> lobby, reaching everyone.
+        for session in (host, peer, outsider):
+            session.chat_payloads.clear()
+        lobby.relay_chat_payload(outsider, 2, b"hi", channel=0)
+        expected_lobby = build_chat_broadcast("outsider", 2, b"hi", 0)
+        self.assertEqual((11, expected_lobby), outsider.chat_payloads[-1])
+        self.assertEqual((11, expected_lobby), host.chat_payloads[-1])
 
     def _assert_original_decodes_snapshot(
         self, game: HostedGame, slot: int, payload: bytes

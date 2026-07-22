@@ -507,6 +507,41 @@ class GameSession:
             packet = self.codec.encode_server_packet(opcode, payload)
             self.sock.sendall(packet)
 
+    # Sentinel written to uc.field_g to mean "no local player" -- the client's
+    # own nk.a reset value (-1L), as an unsigned u64.
+    _LOCAL_ID_RESET = 0xFFFFFFFFFFFFFFFF
+
+    def _send_local_player_id(self, uid: int) -> None:
+        """Set the client's uc.field_g via the mode-23 PLAYER_ID packet.
+
+        CONFIRMED against a real client on 2026-07-22: with this packet the
+        client shows the room creator as HOST; without it the creator appears as
+        a guest. This is a REGRESSION-PRONE path -- the authoritative-engine
+        merge silently dropped the mode-23 send and reintroduced the "not host"
+        bug, which is why it is now covered by tests (see
+        test_multiplayer_gameplay_protocol.py:
+        test_player_id_packet_sets_and_resets_uc_field_g and
+        test_host_identity_invariant_player_id_equals_uid_for). Do not remove or
+        gate the create/join/leave calls to this helper without updating those.
+
+        The host check is `uc.field_g == room.ownerId` (ig.java:773): the client
+        only sees itself as host when its LOCAL id equals the room's owner id.
+        So we send the local player's own id on ENTERING a room (create/join)
+        and RESET to the -1L sentinel on LEAVING.
+
+        Resetting on leave is the safety valve for the return-to-main-menu crash
+        (client.java:1598, kf.field_I null while am.field_c true). The prior
+        A/B test crashed with uc.field_g left SET at login for the whole lobby
+        session. Here it is set only for the lifetime of the room and cleared
+        the instant the user returns to the lobby, so the teardown always runs
+        with uc.field_g == -1 -- the same state as never sending mode-23, which
+        is known to work -- while host recognition still holds inside the room.
+        """
+        self._send_packet(10, build_local_player_id(uid))
+        self._local_id_sent = uid != self._LOCAL_ID_RESET
+        shown = "-1" if uid == self._LOCAL_ID_RESET else str(uid)
+        print(f"[lobby] {self.peer} PLAYER_ID (mode 23) uc.field_g={shown}")
+
     # How often to send an unsolicited keepalive. The client disconnects after
     # SERVER_TIMEOUT_MILLIS = 30s of silence from the server (JagexApplet), and
     # the reference server ticks its idle keepalive at 10s. 10s stays well
@@ -794,21 +829,14 @@ class GameSession:
                     # Use the authoritative HostedGame id as the room id. A
                     # separate counter left SPECTATE_GAME pointing at a room
                     # with no corresponding simulation.
-                    room_id = LOBBY.create_game(self).game_id
                     owner_id = self.accounts.player_id(self.account_name)
-                    # The host check is `uc.field_g == room.ownerId`
-                    # (ig.java:773). uc.field_g is the LOCAL player id, set only
-                    # by the mode-23 PLAYER_ID packet; without it uc.field_g
-                    # stays at nk.a's -1 sentinel and never matches, so the
-                    # client is never the host. Send mode 23 with the same id we
-                    # use for ownerId so the two are equal.
-                    if (
-                        os.environ.get("DEKOBLOKO_ROSTER") in ("1", "id")
-                        and not self._local_id_sent
-                    ):
-                        self._send_packet(10, build_local_player_id(owner_id))
-                        self._local_id_sent = True
-                        print(f"[lobby] {self.peer} sent PLAYER_ID (mode 23) uc.field_g={owner_id}")
+                    # Set uc.field_g = our id BEFORE the YOU_JOINED_ROOM reply so
+                    # the host check (uc.field_g == room.ownerId, ig.java:773)
+                    # holds when the room view first renders. create_game's reply
+                    # carries the same owner id, so the two match and the client
+                    # sees itself as host.
+                    self._send_local_player_id(owner_id)
+                    room_id = LOBBY.create_game(self).game_id
                     print(
                         f"[lobby] {self.peer} CREATE_UNRATED_GAME -> room id={room_id} "
                         f"owner={self.display_name!r} owner_id={owner_id}"
@@ -820,6 +848,12 @@ class GameSession:
                         else None
                     )
                     if room_id is not None:
+                        # Our own id -> uc.field_g. In someone else's room this
+                        # will NOT equal the owner id, so the client correctly
+                        # shows us as a guest, not the host.
+                        self._send_local_player_id(
+                            self.accounts.player_id(self.account_name)
+                        )
                         LOBBY.join_game(self, room_id)
                     print(f"[lobby] {self.peer} JOIN_ROOM id={room_id}")
                 elif action == 9 and os.environ.get("DEKOBLOKO_ROOMS", "1") != "0":
@@ -834,6 +868,11 @@ class GameSession:
                     )
                     LOBBY.leave_game(self, announce=False)
                     self._send_packet(10, build_leave_room_reply())
+                    # Clear uc.field_g back to the -1 sentinel now that we are
+                    # returning to the lobby, so a later return-to-main-menu
+                    # teardown never runs with a live local id set (the
+                    # client.java:1598 crash condition).
+                    self._send_local_player_id(self._LOCAL_ID_RESET)
                     print(
                         f"[lobby] {self.peer} LEAVE_ROOM id={room_id} "
                         f"-> sent mode 0 YOU_LEFT_ROOM"

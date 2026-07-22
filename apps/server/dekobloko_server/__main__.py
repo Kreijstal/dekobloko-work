@@ -5,9 +5,11 @@ import shutil
 import threading
 from pathlib import Path
 
+from .bots import BotManager, bot_names_from_env, bots_enabled
 from .cache import CacheStore
 from .config import ServerConfig
 from .http import DekoblokoHTTPServer
+from .lobby import LOBBY
 from .tcp import DekoblokoTCPServer
 
 
@@ -84,6 +86,7 @@ class ServerRuntime:
         self.config = config
         self.http_server: DekoblokoHTTPServer | None = None
         self.tcp_servers: list[DekoblokoTCPServer] = []
+        self.bot_manager: BotManager | None = None
 
     def start(self) -> None:
         config = self.config
@@ -118,11 +121,17 @@ class ServerRuntime:
         print(f"[main] http://{config.host}:{config.http_port}/")
         print(f"[main] tcp ports {config.game_port1}, {config.game_port2}")
 
+        if bots_enabled():
+            self.bot_manager = BotManager(LOBBY, bot_names_from_env())
+            self.bot_manager.start()
+
     @staticmethod
     def wait() -> None:
         threading.Event().wait()
 
     def close(self) -> None:
+        if self.bot_manager is not None:
+            self.bot_manager.stop()
         servers = [server for server in [self.http_server, *self.tcp_servers] if server]
         for server in servers:
             server.shutdown()

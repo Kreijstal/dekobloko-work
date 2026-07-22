@@ -41,9 +41,42 @@ public final class DekoblokoLauncher {
     private DekoblokoLauncher() {
     }
 
+    /**
+     * Pin JavaSound playback to the ALSA {@code default} PCM, which on this host
+     * is PipeWire's ALSA plugin (pipewire-alsa), rather than a raw hardware
+     * device such as {@code plughw:0,0}.
+     *
+     * OpenJDK's ALSA provider enumerates the {@code default} device first, so it
+     * is normally chosen. The hazard is fallthrough: if opening {@code default}
+     * ever hiccups, {@code AudioSystem.getSourceDataLine()/getClip()} keep
+     * scanning mixers and the next playback-capable one is a hardware device,
+     * which the JVM then opens exclusively and locks the whole card out from
+     * PipeWire. Naming the mixer explicitly stops that scan -- if the pinned
+     * mixer can't open, the line simply fails (no sound) instead of grabbing
+     * hardware.
+     *
+     * The token {@code #default} matches the ALSA {@code [default]} device
+     * suffix and can never match a {@code [plughw:...]} mixer (verified against
+     * this box's JDK 8 mixer list). An explicit -D on the command line still
+     * wins -- we only set a default.
+     */
+    private static void pinSoundToAlsaDefault() {
+        for (String key : new String[] {
+                "javax.sound.sampled.SourceDataLine",
+                "javax.sound.sampled.Clip" }) {
+            if (System.getProperty(key) == null) {
+                System.setProperty(key, "#default");
+            }
+        }
+        Trace.log("launcher.sound pinned to ALSA default (pipewire-alsa); "
+                + "SourceDataLine=" + System.getProperty("javax.sound.sampled.SourceDataLine")
+                + " Clip=" + System.getProperty("javax.sound.sampled.Clip"));
+    }
+
     public static void main(String[] args) throws Exception {
         Options options = Options.parse(args);
         Trace.open(options.traceFile);
+        pinSoundToAlsaDefault();
         if (options.fakeAwt) {
             System.setProperty("java.awt.headless", "false");
             System.setProperty("awt.toolkit", "local.awt.FakeToolkit");

@@ -1452,10 +1452,29 @@ class Lobby:
         for peer in peers:
             _safe_send_message(peer, text)
 
+    @staticmethod
+    def _effective_chat_channel(sender: LobbySession, channel: int) -> int:
+        """Resolve the client's context channel to a concrete route.
+
+        CONFIRMED against the client's own send path (nm.java text chat and
+        ig.java quickchat both call ce.a, which writes `pk.field_r` as the
+        channel byte): the sent byte is the SELECTED TAB, which is 0 for the
+        default tab EVEN WHILE IN A ROOM. The client never upgrades the byte to
+        1 -- the room-aware value it computes (nm.java var5) is only used for a
+        local mute check, not the wire. So channel 0 means "my current context":
+        the server must route it to the sender's ROOM when they are in one, and
+        to the lobby otherwise. Without this, every in-room message the user
+        types lands in the lobby channel (the reported bug).
+        """
+        if channel == 0 and sender.current_game is not None:
+            return 1
+        return channel
+
     def relay_chat_payload(
         self, sender: LobbySession, count: int, body: bytes, channel: int
     ) -> None:
         """Route a client's already-compressed chat without decoding/re-encoding it."""
+        channel = self._effective_chat_channel(sender, channel)
         if channel == 0:
             recipients = self.sessions_snapshot()
             payload = build_chat_broadcast(sender.display_name, count, body, 0)
@@ -1479,6 +1498,7 @@ class Lobby:
         self, sender: LobbySession, quickchat_id: int, channel: int
     ) -> None:
         """Apply the same lobby/room boundary to canned quick-chat messages."""
+        channel = self._effective_chat_channel(sender, channel)
         if channel == 0:
             recipients = self.sessions_snapshot()
             payload = build_quickchat_broadcast(
@@ -1531,6 +1551,15 @@ class Lobby:
     def create_game(
         self, host: LobbySession, options: GameOptions | None = None
     ) -> HostedGame:
+        # Spectating attaches the viewer to someone else's match
+        # (add_spectator sets current_game). If we do not detach first, the
+        # guard below hands back the SPECTATED room -- owned by another player
+        # -- with no YOU_JOINED_ROOM reply, so "create game" silently drops the
+        # user into that room as a non-host. Leaving is the right resolution:
+        # you cannot host a new game while glued to another one as an observer.
+        current = host.current_game
+        if current is not None and current.is_spectator(host):
+            self.leave_game(host, announce=False)
         with self._lock:
             if host.current_game is not None:
                 return host.current_game
