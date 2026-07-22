@@ -5,8 +5,15 @@ client, and from starting to debug in-match gameplay. Cross-references the
 deobfuscated reference client `lexi-lambda/shattered-plans` (same FunOrb
 framework), whose packet enums name what we had reverse-engineered by number.
 
-All room features are behind `DEKOBLOKO_ROOMS=1`; bot test players behind
-`DEKOBLOKO_BOTS=1`.
+For the audited local rules, Master Challenge progression, special-item
+semantics, and the distinction between single-player recycling and multiplayer
+sending, see [Single-player and Master Challenge gameplay audit](single-player-master-challenge-gameplay.md).
+
+Native room actions are enabled by default; `DEKOBLOKO_ROOMS=0` disables them
+for protocol debugging. The protocol server contains no roster-placeholder or
+demo players. The optional `dekobloko_demo` launcher owns its socket-free
+sessions and registers them through the `dekobloko_server.api` surface and the
+same `Lobby.join()` operation as connections.
 
 ## Packet name map (from shattered-plans)
 
@@ -25,9 +32,41 @@ C2S LOBBY actions (client opcode 11, first payload byte):
 6 INVITE_PLAYER_TO_GAME, 7 KICK_PLAYER_FROM_GAME, 8 JOIN_ROOM, 9 LEAVE_ROOM,
 10 SPECTATE_GAME, 11 SHOW_PLAYERS_IN_GAME`.
 
+`SPECTATE_GAME` carries a big-endian `u16 game_id`, matching the framework's
+writer and server handler. ID zero stops spectating. The Python server now wires
+this action for running hosted games: it sends the spectator-start packet,
+hydrates every live bucket with full-state snapshots, relays subsequent
+gameplay to the observer, and removes the observer without consuming a player
+slot or affecting the winner.
+
 S2C LOBBY modes (server opcode 10, first payload byte): `0 YOU_LEFT_ROOM,
-4 YOU_JOINED_ROOM, 5 PLAYER_ENTERED_LOBBY, 18 PLAYER_JOINED_ROOM,
+4 YOU_JOINED_ROOM, 5 PLAYER_ENTERED_LOBBY, 8 ADD_ROOM, 9 REMOVE_ROOM,
+11 YOU_ARE_INVITED, 14 ADD_PLAYER_INVITE, 18 PLAYER_JOINED_ROOM,
 19 PLAYER_LEFT_ROOM, 23 PLAYER_ID`. The frame-10 dispatcher is `ke.b`.
+
+## Lobby lifecycle now implemented
+
+The Python lobby follows the reference room lifecycle rather than hiding active
+players from other users:
+
+1. Creating sends YOU_JOINED_ROOM and PLAYER_JOINED_ROOM to the host, then an
+   ADD_ROOM record to every initialized lobby connection.
+2. Inviting sends YOU_ARE_INVITED to the target and ADD_PLAYER_INVITE to the
+   host. Joining hydrates the joiner's member list, broadcasts the new member,
+   and refreshes the global ADD_ROOM player count.
+3. Starting retains the room in the lobby list and changes its flags to running;
+   the spectator bit reflects `GameOptions.allow_spectators`. A denied spectate
+   request has no side effects on the caller's current attachment.
+4. Conclusion is published once, result/game-over packets return players and
+   spectators to the lobby, then REMOVE_ROOM retires the listing.
+
+When explicitly launched with `python -m dekobloko_demo`, Player5 repeats this
+flow: create and invite immediately, Player6 joins after 10 seconds, and
+Player5 starts after another 10 seconds. Settings are randomized; spectator
+permission alternates so observers can test both outcomes. The two participants
+drive the authoritative engine with normal controls, and a 60-second safety
+result prevents a demo room from lingering. The ordinary
+`python -m dekobloko_server` process starts no fixture.
 
 ## KEEPALIVE — the foundational fix
 
@@ -57,8 +96,11 @@ advances. This unblocked every room/gameplay symptom that had really been the
   string, not the array length — a red herring that cost two iterations.
 - Host detection: `ig.java:773` — `uc.field_g == cd.field_m.field_Xb`. The client
   is host when its own player id (`uc.field_g`) equals the room's `ownerId`.
-  `uc.field_g` is set only by the mode-23 PLAYER_ID packet, so we now send that
-  (with the login player id) before the room reply. `ownerId` = same id.
+  `uc.field_g` is set only by the mode-23 PLAYER_ID packet. That packet remains
+  opt-in (`DEKOBLOKO_ROSTER=id` or `1`) because a live A/B run tied it to a
+  return-to-main-menu crash. Room owner ids still use the same account-id
+  derivation, but native host controls must be retested before declaring the
+  mode-23 tradeoff resolved.
 
 ## Player list, invite, kick
 
@@ -89,29 +131,34 @@ the game channel ("[<owner>'s game] "). The client picks the channel itself:
 a specific chat tab (`pk.field_r`) is selected. Observed messages were `ch=0`,
 i.e. sent from the lobby context.
 
-## In-match gameplay (IN PROGRESS, not working)
+The room envelope also requires `u16 roomId + cstring ownerName` after the
+speaker. The old builder omitted those fields even when it set channel 1; the
+client therefore could not associate the line with a game. Both free-text and
+quick-chat builders now include that context. C2S opcode 15 is the length-byte
+quick-chat packet (`u8 channel + u16 id` for lobby/room); the server relays its
+id verbatim on S2C opcode 12. Room traffic is sent to live players plus
+spectators, never unrelated lobby users, so an observer sees future game chat
+without becoming a player.
 
-Model, confirmed by the user: **each board runs single-player physics locally**
-(gravity, lock, line clears); the only multiplayer coupling is completed pieces
-sent to the next player (bombardment). The server feeds the piece *sequence*
-(same piece on both buckets confirms this), not the physics.
+## In-match gameplay
 
-- Piece flood fixed: `handle_controls` fed a new piece whenever opcode-60's
-  count byte was `< 20`. That byte is just the number of buffered 5-bit input
-  samples (`qc.java:2005`, field_w), not a lock signal — small counts arrive
-  constantly, so the active piece was replaced many times a second and never
-  settled. Disabled; pieces now render.
-- Remaining bug: piece spins but never falls/locks; bucket stays empty.
-  Gravity is `lk.d`'s `field_Ab` countdown; a new piece resets it via
-  `field_Ab = l(123)` (lk.java:1381). `lk.d` throws `IllegalStateException`
-  when `field_C == 0` (board width unset). Suspect our opcode-64 piece event
-  installs a piece without the board width/gravity the single-player spawn path
-  sets up.
-- Full board-state wire format is `lk.a(boolean, wl, byte)` (lk.java:2950):
-  width, height, the full cell grid (twice), then `field_q, field_L, field_e,
-  field_Ab (gravity), field_A (buttons), field_Cb, field_yb`, …
-- Control bitmask (from `lk.d`): bit 1 = left, bit 2 = right, bit 4 = rotate,
-  bit 16 = drop. `~field_A & param0` = newly-pressed edges.
+The live protocol is now decoded and exercised against the untouched original
+board engine. See [Multiplayer gameplay protocol](multiplayer-gameplay-protocol.md)
+for the packet layouts, deterministic board-replica model, state resync,
+feedback queues, immutable player slots, defeat/removal flow, and remaining
+unknowns.
+
+Corrections to these earlier session notes:
+
+- C2S-60 batches flush at 20 ticks **or when the piece lands**. A short batch is
+  a lock boundary, but can repeat until the transition is acknowledged.
+- S2C 64 finalizes/corrects the old piece and spawns the next one; C2S 59
+  acknowledges its update counter.
+- S2C 67 queues an incoming feedback/bombardment shape, not a normal next piece.
+- Full S2C-61 state does not transmit dimensions or the grid twice.
+- C2S 63 is rematch negotiation, not a piece request.
+- S2C 62 tombstones a defeated board's original slot; survivors are never
+  renumbered.
 
 ## Client instrumentation pipeline (works)
 
@@ -134,7 +181,8 @@ runs with no `NoSuchFieldError`. Gamepack backup kept at
 
 ## Test scaffolding
 
-`DEKOBLOKO_BOTS=1` adds Player1/2/3 as roster presences that auto-accept invites
-and can be kicked, so a single real client can exercise the invite/join/kick
-flow. Accounts player1/2/3 are registered. Bots are UI placeholders — they never
-send input, so real multiplayer gameplay cannot be exercised against them.
+Fake players live outside the protocol package in `apps/server/dekobloko_demo.py`.
+They implement the `LobbySession` surface and register normally, so invite and
+kick resolution sees ordinary sessions rather than name-based bot exceptions.
+Focused tests additionally assert that `dekobloko_server/__main__.py`,
+`game.py`, and `lobby.py` contain no demo player names or fixture dependency.

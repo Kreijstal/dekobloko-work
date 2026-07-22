@@ -10,9 +10,30 @@ import threading
 import time
 import hashlib
 import zlib
-from typing import Protocol
+from typing import Callable, Protocol
 
-from .packets import PacketBuilder, pack_5bit
+from .engine import AuthoritativeMatch, LockResult, Outcome
+from .packets import (
+    PacketBuilder,
+    build_add_room,
+    build_chat_broadcast,
+    build_create_room_reply,
+    build_host_invitation_added,
+    build_host_invitation_removed,
+    build_kicked_room_reply,
+    build_player_joined_room,
+    build_player_left_room,
+    build_quickchat_broadcast,
+    build_remove_room,
+    build_room_invitation,
+    decode_control_batch,
+    pack_5bit,
+)
+
+
+LOGIC_TICKS_PER_SECOND = 50.0
+CONTROL_BURST_TICKS = 40.0
+PROACTIVE_SNAPSHOT_TICKS = 500
 
 
 class LobbySession(Protocol):
@@ -32,19 +53,43 @@ class LobbySession(Protocol):
     def send_local_player_id(self, uid: int) -> None:
         ...
 
+    def send_lobby_event(self, payload: bytes) -> None:
+        ...
+
+    def send_chat_payload(self, opcode: int, payload: bytes) -> None:
+        ...
+
     def send_match_start(self, game: "HostedGame", local_slot: int) -> None:
         ...
 
-    def send_piece_event(self, player_slot: int, piece: "Piece", speed_index: int) -> None:
+    def send_piece_event(
+        self,
+        player_slot: int,
+        piece: "Piece",
+        speed_index: int,
+        final_x: int = 0,
+        final_y: int = 0,
+        final_orientation: int = 0,
+        finalize_argument: int = 0,
+    ) -> None:
         ...
 
-    def send_queued_piece(self, player_slot: int, piece: "Piece") -> None:
+    def send_cooked_shape(self, player_slot: int, shape: "CookedShape") -> None:
         ...
 
     def send_action_stream(self, player_slot: int, controls_payload: bytes) -> None:
         ...
 
     def send_player_removed(self, player_slot: int, result_code: int) -> None:
+        ...
+
+    def send_full_state(self, player_slot: int, state_payload: bytes) -> None:
+        ...
+
+    def send_winner(self, result_code: int) -> None:
+        ...
+
+    def send_game_over(self) -> None:
         ...
 
 
@@ -56,6 +101,7 @@ class GameOptions:
     colours: int = 4
     special_level: int = 0
     allow_spectators: bool = True
+    invite_only: bool = False
     rated: bool = False
     theme: int = 0
 
@@ -72,6 +118,23 @@ class GameOptions:
             word |= 0x8000
         return word & 0xFFFF
 
+    def room_bytes(self) -> bytes:
+        """The five lobby selectors in ``si.field_f`` / ``tg.field_d`` order.
+
+        They are selector indices, not the packed S2C-58 settings word:
+        bucket, speed, colours (3..7), special items, feedback (1..3/off).
+        """
+        feedback_index = 3 if self.bombardment_level == 0 else self.bombardment_level - 1
+        return bytes(
+            (
+                1 if self.bucket_large else 0,
+                max(0, min(4, self.speed_index)),
+                max(0, min(4, self.colours - 3)),
+                max(0, min(4, self.special_level)),
+                max(0, min(3, feedback_index)),
+            )
+        )
+
 
 @dataclass(frozen=True)
 class Piece:
@@ -82,16 +145,67 @@ class Piece:
     descriptor: int
 
     def encode_rf(self) -> bytes:
-        if len(self.cells) != self.width * self.height:
-            raise ValueError("piece cell count does not match piece dimensions")
-        return (
-            PacketBuilder()
-            .varint7(self.piece_id)
-            .u8(self.width)
-            .u8(self.height)
-            .raw(pack_5bit(list(self.cells)))
-            .finish()
+        return _encode_rf(
+            self.piece_id, self.width, self.height, self.cells, "piece"
         )
+
+
+@dataclass(frozen=True)
+class CookedShape:
+    """A returned solid shape encoded exactly as the original `rf` geometry."""
+
+    shape_id: int
+    colour: int
+    width: int
+    height: int
+    occupied: tuple[bool, ...]
+
+    def __post_init__(self) -> None:
+        if not 0 <= self.colour <= 6:
+            raise ValueError("cooked shape colour must be 0..6")
+        if not 1 <= self.width <= 255 or not 1 <= self.height <= 255:
+            raise ValueError("cooked shape dimensions must fit unsigned bytes")
+        if len(self.occupied) != self.width * self.height:
+            raise ValueError("cooked shape occupancy does not match its dimensions")
+        if not any(self.occupied):
+            raise ValueError("cooked shape must contain at least one occupied cell")
+
+    @property
+    def cells(self) -> tuple[int, ...]:
+        # The original resolver writes param2 after converting a completed
+        # group to `8 | colour`. Zero is retained for holes in the bounding box.
+        cooked_cell = 8 | self.colour
+        return tuple(cooked_cell if present else 0 for present in self.occupied)
+
+    def encode_rf(self) -> bytes:
+        return _encode_rf(
+            self.shape_id, self.width, self.height, self.cells, "cooked shape"
+        )
+
+
+def _encode_rf(
+    shape_id: int,
+    width: int,
+    height: int,
+    cells: tuple[int, ...],
+    label: str,
+) -> bytes:
+    if shape_id < 0:
+        raise ValueError(f"{label} id cannot be negative")
+    if not 1 <= width <= 255 or not 1 <= height <= 255:
+        raise ValueError(f"{label} dimensions must fit unsigned bytes")
+    if len(cells) != width * height:
+        raise ValueError(f"{label} cell count does not match dimensions")
+    if any(cell < 0 or cell > 31 for cell in cells):
+        raise ValueError(f"{label} cells must fit the 5-bit rf vocabulary")
+    return (
+        PacketBuilder()
+        .varint7(shape_id)
+        .u8(width)
+        .u8(height)
+        .raw(pack_5bit(cells))
+        .finish()
+    )
 
 
 @dataclass
@@ -100,10 +214,25 @@ class HostedGame:
     host: LobbySession
     options: GameOptions = field(default_factory=GameOptions)
     players: list[LobbySession] = field(default_factory=list)
+    spectators: list[LobbySession] = field(default_factory=list)
+    invitations: set[int] = field(default_factory=set)
+    inactive_slots: set[int] = field(default_factory=set)
     state: str = "waiting"
     created_at: float = field(default_factory=time.time)
-    piece_counter: int = 0
+    shape_counter: int = 0
     rng: random.Random = field(default_factory=random.Random)
+    engine: AuthoritativeMatch | None = field(default=None, init=False, repr=False)
+    transition_counters: list[int] = field(default_factory=list, init=False, repr=False)
+    awaiting_transition_ack: dict[int, int] = field(
+        default_factory=dict, init=False, repr=False
+    )
+    feedback_cursor: list[int] = field(default_factory=list, init=False, repr=False)
+    control_credit: list[float] = field(default_factory=list, init=False, repr=False)
+    control_refill_at: list[float] = field(default_factory=list, init=False, repr=False)
+    ticks_since_snapshot: list[int] = field(default_factory=list, init=False, repr=False)
+    on_finished: Callable[["HostedGame"], None] | None = field(
+        default=None, repr=False, compare=False
+    )
     _lock: threading.RLock = field(default_factory=threading.RLock, repr=False)
 
     def __post_init__(self) -> None:
@@ -118,8 +247,36 @@ class HostedGame:
     def active_mask(self) -> int:
         mask = 0
         for index, _player in enumerate(self.players[:8]):
-            mask |= 1 << index
+            if index not in self.inactive_slots:
+                mask |= 1 << index
         return mask
+
+    def active_players(self) -> list[LobbySession]:
+        """Return live sessions without changing their immutable match slots."""
+        with self._lock:
+            return [
+                player
+                for slot, player in enumerate(self.players)
+                if slot not in self.inactive_slots
+            ]
+
+    def replication_recipients(self) -> list[LobbySession]:
+        """Live players plus observers, without assigning spectators slots."""
+        with self._lock:
+            return self.active_players() + [
+                spectator
+                for spectator in self.spectators
+                if spectator.current_game is self
+            ]
+
+    def attached_sessions(self) -> list[LobbySession]:
+        """Every connected participant or observer, including defeated slots."""
+        with self._lock:
+            return [
+                session
+                for session in self.players + self.spectators
+                if session.current_game is self
+            ]
 
     def add_player(self, session: LobbySession) -> int:
         with self._lock:
@@ -135,18 +292,70 @@ class HostedGame:
             session.player_slot = slot
             return slot
 
-    def remove_player(self, session: LobbySession) -> None:
+    def add_spectator(self, session: LobbySession) -> None:
+        """Attach an observer to a running match and send its complete state."""
         with self._lock:
-            if session not in self.players:
+            if self.state != "playing":
+                raise ValueError("only running games can be spectated")
+            if not self.options.allow_spectators:
+                raise ValueError("this game does not allow spectators")
+            if session in self.players:
+                raise ValueError("a player in the match cannot also spectate it")
+            if session in self.spectators:
                 return
-            slot = self.players.index(session)
-            self.players.remove(session)
-            session.current_game = None
+            if session.current_game is not None and session.current_game is not self:
+                raise ValueError("session is already attached to another game")
+
+            # Hold the simulation lock until initialization and subscription
+            # are both complete. Otherwise a control/transition could arrive
+            # before S2C 59 or in the gap after the final snapshot.
+            session.send_match_start(self, -1)
+            self.send_all_authoritative_snapshots(session)
+            self.spectators.append(session)
+            session.current_game = self
             session.player_slot = None
-            for index, player in enumerate(self.players):
-                player.player_slot = index
-            if self.state == "playing":
-                self._broadcast_player_removed(slot, 0)
+
+    def is_spectator(self, session: LobbySession) -> bool:
+        with self._lock:
+            return session in self.spectators
+
+    def remove_player(self, session: LobbySession) -> bool:
+        """Detach a session and return whether it occupied a player slot."""
+        with self._lock:
+            if session in self.spectators:
+                self.spectators.remove(session)
+                session.current_game = None
+                session.player_slot = None
+                detached_spectator = True
+            elif session not in self.players:
+                return False
+            else:
+                detached_spectator = False
+                slot = self.players.index(session)
+                if self.state == "playing":
+                    if slot in self.inactive_slots:
+                        return False
+                    # S2C 62 targets a stable board-array index. Broadcast while
+                    # the departing session is still active, then tombstone that
+                    # slot; compacting/reindexing would redirect every later packet.
+                    self._broadcast_player_removed(slot, 0)
+                    if self.engine is not None:
+                        self.engine.eliminate(slot)
+                    self.inactive_slots.add(slot)
+                    session.current_game = None
+                    session.player_slot = None
+                    return True
+
+                self.players.remove(session)
+                session.current_game = None
+                session.player_slot = None
+                for index, player in enumerate(self.players):
+                    player.player_slot = index
+                return True
+
+        if detached_spectator:
+            _safe_call(session.send_game_over)
+            return False
 
     def start(self) -> None:
         with self._lock:
@@ -154,111 +363,450 @@ class HostedGame:
                 return
             if not self.players:
                 raise ValueError("cannot start a game with no players")
+            if len(self.players) < 2:
+                raise ValueError("authoritative multiplayer requires at least two players")
             self.state = "playing"
-            players = list(self.players)
+            players = self.active_players()
+            width, height = ((12, 27) if self.options.bucket_large else (8, 18))
+            self.engine = AuthoritativeMatch(
+                len(self.players),
+                width,
+                height,
+                self.options.speed_index,
+                self.options.colours,
+                self.options.bombardment_level,
+            )
+            self.transition_counters = [-1] * len(self.players)
+            self.awaiting_transition_ack.clear()
+            self.feedback_cursor = list(range(len(self.players)))
+            now = time.monotonic()
+            self.control_credit = [CONTROL_BURST_TICKS] * len(self.players)
+            self.control_refill_at = [now] * len(self.players)
+            self.ticks_since_snapshot = [0] * len(self.players)
 
         for index, player in enumerate(players):
             player.send_match_start(self, index)
 
         self.broadcast_message(f"Game {self.game_id} started with {len(players)} player(s).")
 
-        # Send one active piece and one queued piece for every player. Packet 64
-        # is BELIEVED to start the currently falling piece and 67 to fill the
-        # client's queue -- read off the decompiled client, never observed. No
-        # match has ever started, so this loop has never run against a client.
-        # If multiplayer is ever reached, expect to debug this from scratch:
-        # the piece counts, the ordering, and whether every player should see
-        # every other player's pieces are all assumptions.
+        # Packet 64 is a transition: correct/finalize the prior active piece,
+        # then spawn this one. At match start there is no prior piece, so the
+        # zero correction fields in GameSession.send_piece_event are benign.
+        # Packet 67 is not a normal "next piece": it fills the incoming
+        # bombardment/feedback-shape queue. Sending a second ordinary domino
+        # there at startup falsely attacks every board, so startup sends only
+        # the transition packet. It is broadcast because every client maintains
+        # a deterministic replica of every live board.
         for slot, _player in enumerate(players):
             active = self.next_piece()
-            queued = self.next_piece()
+            with self._lock:
+                self.engine.spawn(slot, (active.cells[0], active.cells[1]))
+                self._mark_transition_pending(slot)
             self.broadcast_piece_event(slot, active)
-            self.broadcast_queued_piece(slot, queued)
 
     def next_piece(self) -> Piece:
-        with self._lock:
-            piece_id = self.piece_counter
-            self.piece_counter += 1
+        piece_id = self._next_shape_id()
 
         colour_count = max(1, min(7, self.options.colours))
-        colour_a = self.rng.randrange(colour_count)
-        colour_b = self.rng.randrange(colour_count)
-        if colour_a == colour_count:
-            colour_a = 7
-        if colour_b == colour_count:
-            colour_b = 7
-        descriptor = ((colour_a & 0x7) << 4) | (colour_b & 0x7)
+        cell_a, nibble_a = self._next_piece_cell(colour_count)
+        cell_b, nibble_b = self._next_piece_cell(colour_count)
+        descriptor = ((nibble_a & 0xF) << 4) | (nibble_b & 0xF)
 
-        shape = self.rng.choice(
-            [
-                (2, 2, (1, 1, 1, 1)),
-                (3, 2, (2, 0, 0, 2, 2, 2)),
-                (3, 2, (0, 3, 0, 3, 3, 3)),
-                (3, 2, (0, 4, 4, 4, 4, 0)),
-                (3, 2, (5, 5, 0, 0, 5, 5)),
-                (4, 1, (6, 6, 6, 6)),
-            ]
+        # lc.b constructs an ordinary piece from two descriptor nibbles as a
+        # 2x1 domino. Ordinary cells use 16+colour; 24+kind is reserved for
+        # special items. The former tetromino generator violated both rules.
+        return Piece(
+            piece_id=piece_id,
+            width=2,
+            height=1,
+            cells=(cell_a, cell_b),
+            descriptor=descriptor,
         )
-        width, height, cells = shape
-        remapped = tuple(0 if cell == 0 else 1 + ((cell - 1) % colour_count) for cell in cells)
-        return Piece(piece_id=piece_id, width=width, height=height, cells=remapped, descriptor=descriptor)
+
+    def _next_piece_cell(self, colour_count: int) -> tuple[int, int]:
+        """Generate one cell using an explicit server-side item frequency.
+
+        The client defines which item kinds each option level enables, but the
+        historical server's frequency is unavailable. One enabled item chance
+        per twelve cells is therefore our documented server policy.
+        """
+        level = max(0, min(4, self.options.special_level))
+        enabled: list[tuple[int, int]] = []
+        if level >= 1:
+            enabled.append((23, 7))       # Wildcard is loose colour slot 7.
+        if level >= 2:
+            enabled.extend(((24, 8), (25, 9)))
+        if level >= 3:
+            enabled.extend(((26, 10), (27, 11)))
+        if level >= 4:
+            enabled.extend(((28, 12), (29, 13)))
+        if enabled and self.rng.randrange(12) == 0:
+            return enabled[self.rng.randrange(len(enabled))]
+        colour = self.rng.randrange(colour_count)
+        return 16 + colour, colour
+
+    def _next_shape_id(self) -> int:
+        # Ordinary pieces and cooked feedback share the connection's oi/rf
+        # cache, so their ids must come from one namespace.
+        with self._lock:
+            shape_id = self.shape_counter
+            self.shape_counter += 1
+            return shape_id
+
+    def send_cooked_feedback(
+        self,
+        player_slot: int,
+        colour: int,
+        width: int,
+        height: int,
+        occupied: tuple[bool, ...] | list[bool],
+    ) -> CookedShape:
+        """Serialize and broadcast one engine-returned shape to a target board."""
+        with self._lock:
+            if not 0 <= player_slot < len(self.players):
+                raise ValueError(f"invalid feedback target slot: {player_slot}")
+            if player_slot in self.inactive_slots:
+                raise ValueError(f"feedback target slot is inactive: {player_slot}")
+        shape = CookedShape(
+            shape_id=self._next_shape_id(),
+            colour=colour,
+            width=width,
+            height=height,
+            occupied=tuple(occupied),
+        )
+        self.broadcast_cooked_shape(player_slot, shape)
+        return shape
 
     def broadcast_message(self, message: str) -> None:
         with self._lock:
-            players = list(self.players)
-        for player in players:
-            _safe_send_message(player, message)
+            recipients = self.replication_recipients()
+        for recipient in recipients:
+            _safe_send_message(recipient, message)
 
     def broadcast_chat(self, sender: LobbySession, message: str) -> None:
         self.broadcast_message(f"[game {self.game_id}] {sender.display_name}: {message}")
 
-    def broadcast_piece_event(self, player_slot: int, piece: Piece) -> None:
+    def broadcast_piece_event(
+        self,
+        player_slot: int,
+        piece: Piece,
+        lock: LockResult | None = None,
+    ) -> None:
         with self._lock:
-            players = list(self.players)
-        for player in players:
-            _safe_call(lambda p=player: p.send_piece_event(player_slot, piece, self.options.speed_index))
+            recipients = self.replication_recipients()
+        for player in recipients:
+            _safe_call(
+                lambda p=player: p.send_piece_event(
+                    player_slot,
+                    piece,
+                    self.options.speed_index,
+                    0 if lock is None else lock.x,
+                    0 if lock is None else lock.y,
+                    0 if lock is None else lock.orientation,
+                    0,
+                )
+            )
 
-    def broadcast_queued_piece(self, player_slot: int, piece: Piece) -> None:
+    def broadcast_cooked_shape(self, player_slot: int, shape: CookedShape) -> None:
         with self._lock:
-            players = list(self.players)
-        for player in players:
-            _safe_call(lambda p=player: p.send_queued_piece(player_slot, piece))
+            recipients = self.replication_recipients()
+        for player in recipients:
+            _safe_call(lambda p=player: p.send_cooked_shape(player_slot, shape))
 
     def handle_controls(self, sender: LobbySession, payload: bytes) -> None:
+        """Ingest the client's only live world contribution: per-tick actions."""
         slot = sender.player_slot
         if slot is None:
             return
+        try:
+            controls = decode_control_batch(payload)
+        except ValueError as exc:
+            print(f"[game] rejected malformed controls slot={slot}: {exc}")
+            return
+
         with self._lock:
-            players = [player for player in self.players if player is not sender]
-        for player in players:
-            _safe_call(lambda p=player: p.send_action_stream(slot, payload))
+            if self.state != "playing":
+                print(f"[game] ignored controls slot={slot} while state={self.state}")
+                return
+            engine = self.engine
+            awaiting = self.awaiting_transition_ack.get(slot)
+            authoritative = engine is not None
+        if authoritative and awaiting is not None:
+            print(
+                f"[game] ignored controls slot={slot} while awaiting "
+                f"transition ack={awaiting}"
+            )
+            return
 
-        # DISABLED: this used to hand out a new piece whenever payload[0] < 20,
-        # a heuristic for "the piece locked". It was wrong and broke play. The
-        # opcode-60 count byte is just the number of buffered 5-bit input
-        # samples (qc.java:2005, field_w -- forced out at 20, flushed earlier on
-        # events), NOT a lock signal. Small counts arrive constantly during
-        # normal keyboard input, so the server fed a new piece almost every
-        # frame -- the reported "I keep getting pieces and my piece never
-        # releases": the active piece was replaced before it could settle.
-        #
-        # A real lock is one of the 5-bit control codes INSIDE the stream, not
-        # the count, so detecting it needs the control vocabulary decoded (not
-        # done yet). Until then feed nothing on input -- an idle stream beats a
-        # corrupted board. Multiplayer gameplay is unverified end to end.
+        needs_sender_resync = False
+        if authoritative:
+            with self._lock:
+                allowed = self._admit_control_ticks(slot, len(controls), time.monotonic())
+            if allowed == 0 and controls:
+                print(f"[game] rate-limited all {len(controls)} controls from slot={slot}")
+                self.send_authoritative_snapshot(sender, slot)
+                return
+            if allowed < len(controls):
+                needs_sender_resync = True
+                print(
+                    f"[game] rate-limited {len(controls) - allowed} "
+                    f"control sample(s) from slot={slot}"
+                )
+                controls = controls[:allowed]
+                payload = bytes([allowed]) + pack_5bit(controls)
 
-    def handle_piece_request(self, sender: LobbySession) -> None:
+        landed = False
+        accepted_controls = controls
+        if authoritative:
+            try:
+                with self._lock:
+                    if self.state != "playing" or slot in self.inactive_slots:
+                        return
+                    accepted: list[int] = []
+                    for control in controls:
+                        accepted.append(control)
+                        if engine.apply_controls(slot, (control,)):
+                            landed = True
+                            break
+                    accepted_controls = tuple(accepted)
+            except (IndexError, RuntimeError, ValueError) as exc:
+                print(f"[game] rejected controls for authoritative slot={slot}: {exc}")
+                return
+
+        relay_payload = payload
+        if len(accepted_controls) != len(controls):
+            relay_payload = bytes([len(accepted_controls)]) + pack_5bit(accepted_controls)
+            print(
+                f"[game] trimmed {len(controls) - len(accepted_controls)} "
+                f"post-landing control sample(s) from slot={slot}"
+            )
+
+        with self._lock:
+            recipients = [
+                recipient
+                for recipient in self.replication_recipients()
+                if recipient is not sender
+            ]
+        for recipient in recipients:
+            _safe_call(lambda p=recipient: p.send_action_stream(slot, relay_payload))
+
+        print(
+            f"[game] controls slot={slot} samples={len(accepted_controls)} "
+            f"client_short_batch={len(accepted_controls) < 20} "
+            f"authoritative_landed={landed} masks={accepted_controls!r}"
+        )
+        if authoritative:
+            with self._lock:
+                self.ticks_since_snapshot[slot] += len(accepted_controls)
+                proactive = (
+                    not landed
+                    and self.ticks_since_snapshot[slot] >= PROACTIVE_SNAPSHOT_TICKS
+                )
+                if proactive:
+                    self.ticks_since_snapshot[slot] = 0
+            if proactive:
+                self.broadcast_authoritative_snapshot(slot)
+                needs_sender_resync = False
+        if landed and engine is not None:
+            self._finish_authoritative_piece(slot)
+        if needs_sender_resync:
+            with self._lock:
+                can_resync = self.state == "playing" and slot not in self.inactive_slots
+            if can_resync:
+                self.send_authoritative_snapshot(sender, slot)
+
+    def handle_transition_ack(self, sender: LobbySession, counter: int) -> None:
+        """Accept C2S 59 only when it acknowledges this slot's last S2C 64."""
         slot = sender.player_slot
         if slot is None:
             return
-        self.broadcast_piece_event(slot, self.next_piece())
-        self.broadcast_queued_piece(slot, self.next_piece())
+        counter &= 0xFF
+        mismatch = False
+        with self._lock:
+            expected = self.awaiting_transition_ack.get(slot)
+            if expected is None:
+                if (
+                    slot < len(self.transition_counters)
+                    and counter == self.transition_counters[slot]
+                ):
+                    print(f"[game] accepted snapshot ack slot={slot} value={counter}")
+                else:
+                    print(
+                        f"[game] duplicate/unexpected transition ack "
+                        f"slot={slot} value={counter}"
+                    )
+                return
+            if counter != expected:
+                print(
+                    f"[game] rejected transition ack slot={slot} "
+                    f"expected={expected} got={counter}"
+                )
+                mismatch = True
+            else:
+                del self.awaiting_transition_ack[slot]
+        if mismatch:
+            self.send_authoritative_snapshot(sender, slot)
+            return
+        print(f"[game] accepted transition ack slot={slot} value={counter}")
+
+    def _mark_transition_pending(self, slot: int) -> int:
+        counter = (self.transition_counters[slot] + 1) & 0xFF
+        self.transition_counters[slot] = counter
+        self.awaiting_transition_ack[slot] = counter
+        return counter
+
+    def _admit_control_ticks(self, slot: int, requested: int, now: float) -> int:
+        elapsed = max(0.0, now - self.control_refill_at[slot])
+        self.control_refill_at[slot] = now
+        self.control_credit[slot] = min(
+            CONTROL_BURST_TICKS,
+            self.control_credit[slot] + elapsed * LOGIC_TICKS_PER_SECOND,
+        )
+        allowed = min(requested, int(self.control_credit[slot] + 1.0e-9))
+        self.control_credit[slot] -= allowed
+        return allowed
+
+    def send_authoritative_snapshot(self, recipient: LobbySession, slot: int) -> None:
+        """Serialize the server-owned slot using the exact S2C 61 field order."""
+        with self._lock:
+            engine = self.engine
+            if engine is None or not 0 <= slot < len(engine.players):
+                return
+            player = engine.players[slot]
+            active = player.active
+            if active is None:
+                return
+            flags = 32  # field_ib == 0 in the normal active-board state.
+            flags |= (active.orientation & 3) << 9
+            flags |= (active.vertical_parity & 3) << 3
+            flags |= (active.horizontal_parity & 3) << 1
+            if active.grounded:
+                flags |= 64
+            builder = PacketBuilder().u16(flags).u8(player.lives)
+            for row in player.board.cells:
+                for cell in row:
+                    builder.varint7(cell & 31)
+            width, height = active.dimensions
+            builder.u8(self.transition_counters[slot]).u8(width).u8(height)
+            for cell in active.bitmap:
+                builder.u8(cell)
+            builder.i8(active.x).i8(active.y)
+            builder.u8(active.drop_countdown).u16(active.forced_drop_countdown)
+            builder.u8(active.previous_controls).i8(active.horizontal_repeat)
+            builder.u8(active.descriptor).u8(0).u8(0)
+            payload = builder.finish()
+        recipient.send_full_state(slot, payload)
+        print(
+            f"[game] sent authoritative snapshot slot={slot} "
+            f"update={self.transition_counters[slot]} bytes={len(payload)}"
+        )
+
+    def broadcast_authoritative_snapshot(self, slot: int) -> None:
+        with self._lock:
+            recipients = self.replication_recipients()
+        for recipient in recipients:
+            _safe_call(lambda target=recipient: self.send_authoritative_snapshot(target, slot))
+
+    def send_all_authoritative_snapshots(self, recipient: LobbySession) -> None:
+        """Recovery/spectator hook: replace every live stable-slot replica."""
+        with self._lock:
+            slots = [
+                slot for slot in range(len(self.players))
+                if slot not in self.inactive_slots
+            ]
+        for slot in slots:
+            self.send_authoritative_snapshot(recipient, slot)
+
+    def _finish_authoritative_piece(self, slot: int) -> None:
+        with self._lock:
+            engine = self.engine
+            if engine is None or slot in self.inactive_slots:
+                return
+            lock = engine.finalize_landed(slot)
+
+        if lock.eliminated:
+            self._complete_authoritative_elimination(slot, "final life")
+            return
+
+        if self._dispatch_returned_shapes(slot, lock):
+            return
+
+        next_piece = self.next_piece()
+        with self._lock:
+            engine.spawn(slot, (next_piece.cells[0], next_piece.cells[1]))
+            self._mark_transition_pending(slot)
+        self.broadcast_piece_event(slot, next_piece, lock)
+        print(
+            f"[game] authoritative transition slot={slot} "
+            f"final=({lock.x},{lock.y}) rotation={lock.orientation} "
+            f"lives={lock.lives_remaining} next={next_piece.piece_id}"
+        )
+
+    def _dispatch_returned_shapes(self, source_slot: int, lock: LockResult) -> bool:
+        """Target cooked shapes round-robin across the remaining live opponents."""
+        engine = self.engine
+        if engine is None:
+            return False
+        for returned in lock.returned_shapes:
+            target = self._next_feedback_target(source_slot)
+            if target is None:
+                return False
+            cooked = self.send_cooked_feedback(
+                target,
+                returned.colour,
+                returned.width,
+                returned.height,
+                returned.occupied,
+            )
+            with self._lock:
+                eliminated = engine.receive_feedback(target, returned, cooked.shape_id)
+            print(
+                f"[game] feedback source={source_slot} target={target} "
+                f"shape={cooked.shape_id} {cooked.width}x{cooked.height}"
+            )
+            if eliminated:
+                self._complete_authoritative_elimination(target, "incoming feedback")
+                return self.state != "playing"
+        return False
+
+    def _next_feedback_target(self, source_slot: int) -> int | None:
+        with self._lock:
+            player_count = len(self.players)
+            cursor = self.feedback_cursor[source_slot]
+            for offset in range(1, player_count + 1):
+                candidate = (cursor + offset) % player_count
+                if candidate != source_slot and candidate not in self.inactive_slots:
+                    self.feedback_cursor[source_slot] = candidate
+                    return candidate
+        return None
+
+    def _complete_authoritative_elimination(self, slot: int, reason: str) -> None:
+        engine = self.engine
+        if engine is None:
+            return
+        # Broadcast while the slot is still addressable, then tombstone it.
+        self._broadcast_player_removed(slot, 0)
+        with self._lock:
+            self.inactive_slots.add(slot)
+            winner_slot = engine.winner_slot if engine.outcome is Outcome.WON else None
+            winner = self.players[winner_slot] if winner_slot is not None else None
+        print(f"[game] authoritative slot={slot} eliminated by {reason}")
+        if winner is not None:
+            self.end_game(winner)
+        elif engine.outcome is Outcome.DRAW:
+            self.end_game(None)
+
+    def debug_advance_piece(self, sender: LobbySession) -> None:
+        """Refuse the old manual transition path now that state is authoritative."""
+        sender.send_server_message(
+            "Pieces advance only when the server-owned bucket reaches its lock boundary."
+        )
 
     def _broadcast_player_removed(self, slot: int, result_code: int) -> None:
         with self._lock:
-            players = list(self.players)
-        for player in players:
-            _safe_call(lambda p=player: p.send_player_removed(slot, result_code))
+            recipients = self.replication_recipients()
+        for recipient in recipients:
+            _safe_call(lambda p=recipient: p.send_player_removed(slot, result_code))
 
     def end_game(self, winner: LobbySession | None, result_code: int = 0) -> None:
         """Finish the game: per-player results first, then teardown.
@@ -273,7 +821,6 @@ class HostedGame:
         strands the results and the client shows nothing.
 
         Proven vs not: the BYTE LAYOUTS of 62/69/60 are execution-proven, and 60
-        genuinely carries no body. The handler EFFECTS -- slot nulling, the
         active-count decrement, the defeat/win UI, the teardown clearing
         fm.field_b / am.field_c / fa.field_n -- were read from bytecode but never
         run, because driving them needs AWT. So this ordering is reasoned from a
@@ -283,10 +830,14 @@ class HostedGame:
         with self._lock:
             if self.state != "playing":
                 return
-            players = list(self.players)
+            active_players = self.active_players()
+            # A just-defeated slot is already tombstoned but still needs the
+            # final opcode 60 teardown. A disconnected session has cleared its
+            # current_game and must not be called.
+            recipients = self.attached_sessions()
             self.state = "finished"
 
-        for player in players:
+        for player in active_players:
             if player is winner:
                 continue
             slot = player.player_slot
@@ -296,13 +847,15 @@ class HostedGame:
         if winner is not None:
             _safe_call(lambda: winner.send_winner(result_code))
 
-        for player in players:
+        for player in recipients:
             _safe_call(lambda p=player: p.send_game_over())
 
         print(
             f"[game] game {self.game_id} ended; winner="
             f"{winner.display_name if winner else 'none'}"
         )
+        if self.on_finished is not None:
+            self.on_finished(self)
 
 
 # How many scores to keep per player per board. The client's request asked for
@@ -316,18 +869,6 @@ class Lobby:
         self._sessions: set[LobbySession] = set()
         self._games: dict[int, HostedGame] = {}
         self._game_ids = itertools.count(1)
-        # Room ids for the experimental CREATE_UNRATED_GAME path. u16 on the
-        # wire (build_create_room_reply), so keep it in range.
-        self._room_ids = itertools.count(1)
-        # Bot presences: fake lobby players so a single real client has someone
-        # to see and invite. Enabled with DEKOBLOKO_BOTS=1. They appear in the
-        # roster and auto-accept an invite to the host's room. Names must have
-        # accounts so uid_for/player_id line up with what the client compares.
-        self._bots: list[str] = (
-            ["Player1", "Player2", "Player3"]
-            if os.environ.get("DEKOBLOKO_BOTS") == "1"
-            else []
-        )
         # board -> {player_name: best_score}. Persisted, so scores survive a
         # restart. Kept as best-per-player rather than an append log because the
         # client asks for a top-N table, not a history.
@@ -468,11 +1009,6 @@ class Lobby:
             )
         except OSError as exc:
             print(f"[achv] could not write {self._achievements_path}: {exc}")
-
-    def allocate_room_id(self) -> int:
-        """Next room id for the experimental create-room path (u16, wraps)."""
-        with self._lock:
-            return (next(self._room_ids) & 0xFFFF) or 1
 
     def achievements_for(self, player: str) -> list[int]:
         with self._lock:
@@ -856,6 +1392,7 @@ class Lobby:
             session.send_local_player_id(self.uid_for(session.display_name))
         if mode in ("1", "rows"):
             session.send_lobby_roster(self.roster_rows())
+        self._send_all_room_updates(session)
         session.send_server_message("Lobby ready. Type ::help for server commands.")
         self.send_games(session)
 
@@ -876,17 +1413,10 @@ class Lobby:
         """
         with self._lock:
             sessions = list(self._sessions)
-        rows = [(self.uid_for(o.display_name), o.display_name, 0, 0) for o in sessions]
-        # Append bot presences so a lone real client has players to invite.
-        rows.extend((self.uid_for(name), name, 0, 0) for name in self._bots)
-        return rows
-
-    def bot_for_uid(self, uid: int) -> str | None:
-        """Return the bot display name whose roster uid matches, or None."""
-        for name in self._bots:
-            if self.uid_for(name) == uid:
-                return name
-        return None
+        return [
+            (self.uid_for(session.display_name), session.display_name, 0, 0)
+            for session in sessions
+        ]
 
     @staticmethod
     def uid_for(display_name: str) -> int:
@@ -922,6 +1452,53 @@ class Lobby:
         for peer in peers:
             _safe_send_message(peer, text)
 
+    def relay_chat_payload(
+        self, sender: LobbySession, count: int, body: bytes, channel: int
+    ) -> None:
+        """Route a client's already-compressed chat without decoding/re-encoding it."""
+        if channel == 0:
+            recipients = self.sessions_snapshot()
+            payload = build_chat_broadcast(sender.display_name, count, body, 0)
+        elif channel == 1 and sender.current_game is not None:
+            game = sender.current_game
+            recipients = game.replication_recipients()
+            payload = build_chat_broadcast(
+                sender.display_name,
+                count,
+                body,
+                1,
+                room_id=game.game_id,
+                room_owner=game.host.display_name,
+            )
+        else:
+            return
+        for recipient in recipients:
+            _safe_call(lambda peer=recipient: peer.send_chat_payload(11, payload))
+
+    def relay_quickchat(
+        self, sender: LobbySession, quickchat_id: int, channel: int
+    ) -> None:
+        """Apply the same lobby/room boundary to canned quick-chat messages."""
+        if channel == 0:
+            recipients = self.sessions_snapshot()
+            payload = build_quickchat_broadcast(
+                sender.display_name, quickchat_id, channel=0
+            )
+        elif channel == 1 and sender.current_game is not None:
+            game = sender.current_game
+            recipients = game.replication_recipients()
+            payload = build_quickchat_broadcast(
+                sender.display_name,
+                quickchat_id,
+                channel=1,
+                room_id=game.game_id,
+                room_owner=game.host.display_name,
+            )
+        else:
+            return
+        for recipient in recipients:
+            _safe_call(lambda peer=recipient: peer.send_chat_payload(12, payload))
+
     def handle_chat_or_command(self, sender: LobbySession, message: str) -> None:
         if message.startswith("::"):
             self._handle_command(sender, message[2:].strip())
@@ -939,37 +1516,182 @@ class Lobby:
                 game = self.create_game(sender)
                 sender.send_server_message(f"Created game {game.game_id}. Type ::start to start it.")
             else:
-                slot = waiting.add_player(sender)
-                waiting.broadcast_message(f"{sender.display_name} joined game {waiting.game_id} as slot {slot}.")
+                self.join_game(sender, waiting.game_id)
             return
         if game.host is sender and game.state == "waiting":
-            game.start()
+            self.start_game(sender)
             return
         if game.state == "playing":
-            game.handle_piece_request(sender)
+            sender.send_server_message(
+                "The game button is not a piece request; transitions are server-driven."
+            )
             return
         sender.send_server_message("Only the host can start this game. Type ::leave to leave it.")
 
-    def create_game(self, host: LobbySession) -> HostedGame:
+    def create_game(
+        self, host: LobbySession, options: GameOptions | None = None
+    ) -> HostedGame:
         with self._lock:
             if host.current_game is not None:
                 return host.current_game
             game_id = next(self._game_ids)
-            game = HostedGame(game_id=game_id, host=host)
+            game = HostedGame(
+                game_id=game_id,
+                host=host,
+                options=options or GameOptions(),
+                on_finished=self._on_game_finished,
+            )
             self._games[game_id] = game
+        owner_id = self.uid_for(host.display_name)
+        self._send_lobby_event(
+            host,
+            build_create_room_reply(
+                game.game_id,
+                owner_id,
+                host.display_name,
+                options=game.options.room_bytes(),
+                allow_spectators=game.options.allow_spectators,
+                invite_only=game.options.invite_only,
+            ),
+        )
+        self._send_lobby_event(
+            host, build_player_joined_room(owner_id, host.display_name)
+        )
+        self._broadcast_room_update(game)
         self._broadcast_lobby_status(f"{host.display_name} created game {game_id}.", exclude=host)
         return game
 
-    def join_game(self, session: LobbySession, game_id: int) -> None:
+    def invite_player(self, host: LobbySession, invited_uid: int) -> bool:
+        game = host.current_game
+        if game is None or game.host is not host or game.state != "waiting":
+            return False
+        invitee = self._session_for_uid(invited_uid)
+        if invitee is None or invitee is host:
+            return False
+        game.invitations.add(invited_uid)
+        self._send_lobby_event(invitee, build_room_invitation(game.game_id))
+        self._send_lobby_event(host, build_host_invitation_added(invited_uid))
+        self._broadcast_room_update(game)
+        return True
+
+    def kick_player(self, host: LobbySession, target_uid: int) -> bool:
+        """Remove a real waiting-room participant selected by lobby uid."""
+        game = host.current_game
+        target = self._session_for_uid(target_uid)
+        if (
+            game is None
+            or game.host is not host
+            or game.state != "waiting"
+            or target is None
+            or target is host
+            or target not in game.players
+        ):
+            return False
+        if not game.remove_player(target):
+            return False
+        self._send_lobby_event(target, build_kicked_room_reply())
+        left = build_player_left_room(target_uid, reason=12)
+        for player in game.players:
+            self._send_lobby_event(player, left)
+        self._broadcast_room_update(game)
+        return True
+
+    def join_game(self, session: LobbySession, game_id: int) -> HostedGame | None:
+        with self._lock:
+            game = self._games.get(game_id)
+        if game is None:
+            session.send_server_message(f"No game {game_id} exists.")
+            return None
+        if session.current_game is not None and session.current_game is not game:
+            self.leave_game(session, announce=False)
+        if game.state == "playing":
+            self.spectate_game(session, game_id)
+            return game
+        session_uid = self.uid_for(session.display_name)
+        if game.options.invite_only and session_uid not in game.invitations:
+            session.send_server_message("This room is invitation-only.")
+            return None
+        existing = list(game.players)
+        try:
+            slot = game.add_player(session)
+        except ValueError as exc:
+            session.send_server_message(str(exc))
+            return None
+        self._send_lobby_event(
+            session,
+            build_create_room_reply(
+                game.game_id,
+                self.uid_for(game.host.display_name),
+                game.host.display_name,
+                options=game.options.room_bytes(),
+                allow_spectators=game.options.allow_spectators,
+                invite_only=game.options.invite_only,
+            ),
+        )
+        for player in existing:
+            self._send_lobby_event(
+                session,
+                build_player_joined_room(
+                    self.uid_for(player.display_name), player.display_name
+                ),
+            )
+        joined_packet = build_player_joined_room(
+            self.uid_for(session.display_name), session.display_name
+        )
+        for player in game.players:
+            self._send_lobby_event(player, joined_packet)
+        if session_uid in game.invitations:
+            game.invitations.discard(session_uid)
+            self._send_lobby_event(
+                game.host,
+                build_host_invitation_removed(session_uid, status=2),
+            )
+        self._broadcast_room_update(game)
+        game.broadcast_message(
+            f"{session.display_name} joined game {game.game_id} as slot {slot}."
+        )
+        return game
+
+    def spectate_game(self, session: LobbySession, game_id: int) -> None:
         with self._lock:
             game = self._games.get(game_id)
         if game is None:
             session.send_server_message(f"No game {game_id} exists.")
             return
-        if session.current_game is not None and session.current_game is not game:
+        if game.state != "playing":
+            session.send_server_message("Only running games can be spectated.")
+            return
+        if not game.options.allow_spectators:
+            session.send_server_message("This game does not allow spectators.")
+            return
+        if session.current_game is game:
+            if game.is_spectator(session):
+                game.send_all_authoritative_snapshots(session)
+                session.send_server_message(
+                    f"Already spectating game {game_id}; snapshots refreshed."
+                )
+            else:
+                session.send_server_message("Players cannot spectate their own match.")
+            return
+        if session.current_game is not None:
             self.leave_game(session, announce=False)
-        slot = game.add_player(session)
-        game.broadcast_message(f"{session.display_name} joined game {game.game_id} as slot {slot}.")
+        try:
+            game.add_spectator(session)
+        except ValueError as exc:
+            session.send_server_message(str(exc))
+            return
+        game.broadcast_message(
+            f"{session.display_name} is now spectating game {game.game_id}."
+        )
+
+    def stop_spectating(self, session: LobbySession) -> None:
+        game = session.current_game
+        if game is None or not game.is_spectator(session):
+            return
+        game.remove_player(session)
+        game.broadcast_message(
+            f"{session.display_name} stopped spectating game {game.game_id}."
+        )
 
     def leave_game(self, session: LobbySession, announce: bool = True) -> None:
         game = session.current_game
@@ -977,28 +1699,57 @@ class Lobby:
             return
         was_host = game.host is session
         was_playing = game.state == "playing"
-        game.remove_player(session)
+        was_spectator = game.is_spectator(session)
+        departed_uid = self.uid_for(session.display_name)
+        removed_player = game.remove_player(session)
+
+        if removed_player and not was_playing:
+            left = build_player_left_room(departed_uid, reason=13)
+            for player in game.players:
+                self._send_lobby_event(player, left)
 
         # A resign that leaves exactly one player standing is a WIN for them,
         # not just a departure. Routing it through end_game is what sends the
         # winner their opcode 69 and then tears the game down in the right
         # order; without this the last player sits in a finished game that
         # never resolves.
-        if was_playing:
-            with self._lock:
-                remaining = list(game.players)
+        if was_playing and removed_player:
+            remaining = game.active_players()
             if len(remaining) == 1:
                 game.end_game(remaining[0])
+        if game.state == "finished":
+            if announce:
+                session.send_server_message(f"Left game {game.game_id}.")
+            return
         if announce:
-            game.broadcast_message(f"{session.display_name} left game {game.game_id}.")
-            session.send_server_message(f"Left game {game.game_id}.")
+            action = "stopped spectating" if was_spectator else "left"
+            game.broadcast_message(
+                f"{session.display_name} {action} game {game.game_id}."
+            )
+            session.send_server_message(
+                f"{'Stopped spectating' if was_spectator else 'Left'} game {game.game_id}."
+            )
         with self._lock:
-            if was_host or not game.players:
+            active_players = game.active_players()
+            if was_host or not active_players:
                 self._games.pop(game.game_id, None)
-                for player in list(game.players):
-                    player.current_game = None
-                    player.player_slot = None
-                    _safe_send_message(player, f"Game {game.game_id} closed because the host left.")
+                attached = game.attached_sessions()
+                needs_teardown = game.state != "finished"
+                game.spectators.clear()
+                for recipient in attached:
+                    recipient.current_game = None
+                    recipient.player_slot = None
+                    if needs_teardown:
+                        _safe_call(recipient.send_game_over)
+                    _safe_send_message(
+                        recipient,
+                        f"Game {game.game_id} closed because the host left.",
+                    )
+                remove = build_remove_room(game.game_id, reason=0)
+                for peer in list(self._sessions):
+                    self._send_lobby_event(peer, remove)
+            elif not was_playing and removed_player:
+                self._broadcast_room_update(game)
 
     def start_game(self, session: LobbySession) -> None:
         game = session.current_game
@@ -1008,6 +1759,7 @@ class Lobby:
             session.send_server_message("Only the game host can start the match.")
             return
         game.start()
+        self._broadcast_room_update(game)
 
     def send_games(self, session: LobbySession) -> None:
         with self._lock:
@@ -1019,9 +1771,89 @@ class Lobby:
         for game in games:
             rows.append(
                 f"#{game.game_id} {game.state}, host={game.host.display_name}, "
-                f"players={len(game.players)}/8"
+                f"players={len(game.players)}/8, spectators={len(game.spectators)}"
             )
         session.send_server_message("Hosted games: " + " | ".join(rows))
+
+    def games_snapshot(self) -> list[HostedGame]:
+        with self._lock:
+            return list(self._games.values())
+
+    def _session_for_uid(self, uid: int) -> LobbySession | None:
+        with self._lock:
+            sessions: list[LobbySession] = list(self._sessions)
+        return next(
+            (session for session in sessions if self.uid_for(session.display_name) == uid),
+            None,
+        )
+
+    @staticmethod
+    def _send_lobby_event(session: LobbySession, payload: bytes) -> None:
+        callback = getattr(session, "send_lobby_event", None)
+        if callback is not None:
+            _safe_call(lambda: callback(payload))
+
+    def _room_packet(
+        self,
+        game: HostedGame,
+        recipient: LobbySession | None = None,
+        *,
+        concluded: bool = False,
+    ) -> bytes:
+        elapsed = int(max(0.0, time.time() - game.created_at) * 1000)
+        invited = (
+            recipient is not None
+            and self.uid_for(recipient.display_name) in game.invitations
+        )
+        return build_add_room(
+            game.game_id,
+            self.uid_for(game.host.display_name),
+            game.host.display_name,
+            player_count=len(game.players),
+            max_players=8,
+            who_can_join=0 if game.options.invite_only else 4,
+            options=game.options.room_bytes(),
+            started=game.state in ("playing", "finished"),
+            concluded=concluded or game.state == "finished",
+            allow_spectators=game.options.allow_spectators,
+            rated=game.options.rated,
+            allow_join=(
+                game.state == "waiting"
+                and (not game.options.invite_only or invited)
+            ),
+            elapsed_ms=elapsed,
+        )
+
+    def _broadcast_room_update(self, game: HostedGame, *, concluded: bool = False) -> None:
+        for session in self.sessions_snapshot():
+            self._send_lobby_event(
+                session,
+                self._room_packet(game, session, concluded=concluded),
+            )
+
+    def _send_all_room_updates(self, session: LobbySession) -> None:
+        for game in self.games_snapshot():
+            self._send_lobby_event(session, self._room_packet(game, session))
+
+    def _on_game_finished(self, game: HostedGame) -> None:
+        """Return every participant/observer to the lobby and retire its room."""
+        self._broadcast_room_update(game, concluded=True)
+        with self._lock:
+            if self._games.get(game.game_id) is not game:
+                return
+            self._games.pop(game.game_id, None)
+            attached = game.attached_sessions()
+            game.spectators.clear()
+            game.invitations.clear()
+            for session in attached:
+                session.current_game = None
+                session.player_slot = None
+        remove = build_remove_room(game.game_id, reason=0)
+        for session in self.sessions_snapshot():
+            self._send_lobby_event(session, remove)
+        self._broadcast_lobby_status(
+            f"Game {game.game_id} is over; its players returned to the lobby."
+        )
 
     def _handle_command(self, sender: LobbySession, command_line: str) -> None:
         parts = command_line.split()
@@ -1029,7 +1861,8 @@ class Lobby:
 
         if command in {"help", "?"}:
             sender.send_server_message(
-                "Commands: ::create, ::games, ::join <id>, ::start, ::piece, ::leave, ::where"
+                "Commands: ::create, ::games, ::join <id>, ::spectate <id>, "
+                "::start, ::resync, ::leave, ::where"
             )
             return
         if command in {"create", "host"}:
@@ -1045,6 +1878,12 @@ class Lobby:
                 return
             self.join_game(sender, int(parts[1]))
             return
+        if command in {"spectate", "watch"}:
+            if len(parts) != 2:
+                sender.send_server_message("Usage: ::spectate <game-id>")
+                return
+            self.spectate_game(sender, int(parts[1]))
+            return
         if command == "start":
             self.start_game(sender)
             return
@@ -1053,7 +1892,15 @@ class Lobby:
             if game is None or game.state != "playing":
                 sender.send_server_message("You are not in a running game.")
                 return
-            game.handle_piece_request(sender)
+            game.debug_advance_piece(sender)
+            return
+        if command == "resync":
+            game = sender.current_game
+            if game is None or game.state != "playing":
+                sender.send_server_message("You are not in a running game.")
+                return
+            game.send_all_authoritative_snapshots(sender)
+            sender.send_server_message("Authoritative board snapshots sent.")
             return
         if command in {"leave", "quit"}:
             self.leave_game(sender)
@@ -1063,8 +1910,13 @@ class Lobby:
             if game is None:
                 sender.send_server_message("You are in the lobby.")
             else:
+                role = (
+                    "spectator"
+                    if game.is_spectator(sender)
+                    else f"slot {sender.player_slot}"
+                )
                 sender.send_server_message(
-                    f"You are in game {game.game_id}, state={game.state}, slot={sender.player_slot}."
+                    f"You are in game {game.game_id}, state={game.state}, role={role}."
                 )
             return
 

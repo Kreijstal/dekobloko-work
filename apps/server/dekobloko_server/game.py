@@ -9,7 +9,7 @@ from .accounts import AccountStore
 from .config import ServerConfig
 from .crypto import RsaPrivateKey, signed32
 from .io import hex_preview, read_exact, read_u8, read_u16, write_u8, write_u64
-from .lobby import HostedGame, LOBBY, Piece
+from .lobby import CookedShape, HostedGame, LOBBY, Piece
 from .login import PacketReader, ParsedLogin, parse_login_body
 from .huffman import decode as huffman_decode
 from .packets import (
@@ -18,17 +18,13 @@ from .packets import (
     build_achievement_ack,
     LOBBY_ACTION_NAMES,
     build_achievements_reply,
-    build_create_room_reply,
     build_leave_room_reply,
-    build_chat_broadcast,
     build_f_reply,
     build_friend_entry,
     build_hiscore_table,
     build_ignore_entry,
     build_lobby_player,
     build_local_player_id,
-    build_player_joined_room,
-    build_player_left_room,
     build_room_membership,
     build_sb_reply,
     build_social_list_complete,
@@ -275,6 +271,17 @@ class GameSession:
         self._send_packet(10, build_local_player_id(uid))
         print(f"[game] {self.peer} sent local player id uid={uid}")
 
+    def send_lobby_event(self, payload: bytes) -> None:
+        """Deliver one native S2C lobby action after lobby initialization."""
+        if not self._lobby_bootstrapped:
+            return
+        self._send_packet(10, payload)
+
+    def send_chat_payload(self, opcode: int, payload: bytes) -> None:
+        if opcode not in (11, 12):
+            raise ValueError(f"unsupported chat opcode {opcode}")
+        self._send_packet(opcode, payload)
+
     def send_lobby_roster(self, rows: list[tuple[int, str, int, int]]) -> None:
         """Populate the lobby player list -- one frame-10/mode-5 packet per row.
 
@@ -294,31 +301,12 @@ class GameSession:
             ))
         print(f"[game] {self.peer} sent lobby roster ({len(rows)} row(s))")
 
-    # ---------------------------------------------------------------------
-    # Everything below is UNEXERCISED. No client has ever been observed
-    # reaching multiplayer, and none of these appear in any surviving log:
-    # no match start, no piece event, no queued piece, no action stream, no
-    # player removed. Single player was played, but that runs entirely inside
-    # the client and never touches this code.
-    #
-    # So the payload layouts here are reconstructions from reading the
-    # decompiled client, never confirmed against a running one. They may well
-    # be wrong in ways nothing has had a chance to reveal. Two specific
-    # reasons to distrust them:
-    #
-    #   * They were written against the old per-opcode length table, which
-    #     turned out to be invented -- 58/61/64 were marked -2 (u16 length)
-    #     and 62 as fixed-width, and the client supports neither. That table
-    #     is gone now, but these payloads were never re-checked against the
-    #     framing that replaced it.
-    #   * A single u8 length caps any server packet at 255 bytes. A full board
-    #     update (61) or a match start with several long names could exceed
-    #     that, and encode_server_packet will now raise rather than truncate.
-    #     Nobody has tested whether real payloads fit.
-    #
-    # Treat a working-looking call here as unproven until a second client is
-    # actually in a game.
-    # ---------------------------------------------------------------------
+    # In-match framing and receiver behavior are decoded and the S2C-61/input
+    # replica path is exercised against the original board engine. HostedGame
+    # now runs the Python authoritative port for S2C-64 placement, lives,
+    # stable-slot defeat, winner selection, feedback targeting, and S2C-61
+    # recovery. The result-code text vocabulary remains incomplete; see the
+    # protocol document.
 
     def send_match_start(self, game: HostedGame, local_slot: int) -> None:
         payload = (
@@ -332,27 +320,38 @@ class GameSession:
         for name in game.names:
             payload.jagex_string(name)
         payload.u8(game.active_mask())
-        self._send_packet(58, payload.finish())
+        # S2C 58 owns a player slot. S2C 59 has the same body but creates the
+        # spectator session; any negative local slot becomes the client's -2
+        # observer sentinel.
+        opcode = 59 if local_slot < 0 else 58
+        self._send_packet(opcode, payload.finish())
         print(
-            f"[game] {self.peer} sent match start game={game.game_id} "
+            f"[game] {self.peer} sent "
+            f"{'spectator' if opcode == 59 else 'player'} match start "
+            f"game={game.game_id} "
             f"slot={local_slot} names={game.names!r}"
         )
 
-    def send_piece_event(self, player_slot: int, piece: Piece, speed_index: int) -> None:
-        # Packet 64 is BELIEVED to feed a vm event into qc_v[player].lb_g, which
-        # would install the active rf shape for that player's board. That is a
-        # reading of the decompiled client, not an observation -- no client has
-        # ever received this packet. The five leading bytes below (slot, two
-        # zeroed i8s, a speed nibble shifted left 2, a zero) are the shakiest
-        # part: their meaning was guessed from field order, and the two zeros in
-        # particular have no known justification.
+    def send_piece_event(
+        self,
+        player_slot: int,
+        piece: Piece,
+        speed_index: int,
+        final_x: int = 0,
+        final_y: int = 0,
+        final_orientation: int = 0,
+        finalize_argument: int = 0,
+    ) -> None:
+        # S2C 64 corrects/finalizes the prior piece and spawns this one. The
+        # Python authoritative engine supplies all correction fields after the
+        # initial transition; clients never upload them.
         payload = (
             PacketBuilder()
             .u8(player_slot)
-            .i8(0)
-            .i8(0)
-            .u8((speed_index & 0xF) << 2)
-            .u8(0)
+            .i8(final_x)
+            .i8(final_y)
+            .u8(((speed_index & 0x3F) << 2) | (final_orientation & 3))
+            .u8(finalize_argument)
             .raw(piece.encode_rf())
             .u8(piece.descriptor)
             .varint7(0)
@@ -362,15 +361,27 @@ class GameSession:
         self._send_packet(64, payload)
         print(
             f"[game] {self.peer} sent piece event slot={player_slot} "
-            f"piece={piece.piece_id} {piece.width}x{piece.height}"
+            f"piece={piece.piece_id} {piece.width}x{piece.height} "
+            f"final=({final_x},{final_y}) rotation={final_orientation & 3}"
         )
 
-    def send_queued_piece(self, player_slot: int, piece: Piece) -> None:
-        payload = PacketBuilder().u8(player_slot).raw(piece.encode_rf()).finish()
+    def send_cooked_shape(self, player_slot: int, shape: CookedShape) -> None:
+        """S2C 67: send the exact cooked geometry to one replicated board."""
+        payload = PacketBuilder().u8(player_slot).raw(shape.encode_rf()).finish()
         self._send_packet(67, payload)
         print(
-            f"[game] {self.peer} sent queued piece slot={player_slot} "
-            f"piece={piece.piece_id} {piece.width}x{piece.height}"
+            f"[game] {self.peer} sent feedback shape slot={player_slot} "
+            f"shape={shape.shape_id} colour={shape.colour} "
+            f"{shape.width}x{shape.height} cells={sum(shape.occupied)}"
+        )
+
+    def send_full_state(self, player_slot: int, state_payload: bytes) -> None:
+        """S2C 61: replace one replica from the server-owned engine state."""
+        payload = PacketBuilder().u8(player_slot).raw(state_payload).finish()
+        self._send_packet(61, payload)
+        print(
+            f"[game] {self.peer} sent full state slot={player_slot} "
+            f"bytes={len(state_payload)}"
         )
 
     def send_action_stream(self, player_slot: int, controls_payload: bytes) -> None:
@@ -755,13 +766,35 @@ class GameSession:
                     f"[lobby] {self.peer} action={action} ({name}) "
                     f"body={packet.payload[1:].hex(' ') or '<empty>'}"
                 )
-                # CREATE_UNRATED_GAME (action 4). OPT-IN and OFF by default:
-                # set DEKOBLOKO_ROOMS=1 to try it. The room body was measured
-                # (build_create_room_reply) but the full mode-4 path was not run
-                # end to end, and a wrong room packet disconnects -- so this must
-                # not be on by default and regress the working server.
-                if action == 4 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
-                    room_id = LOBBY.allocate_room_id()
+                # SPECTATE_GAME is [action=10][u16 game id]. ID zero leaves the
+                # current spectator session. This layout is shared by the
+                # FunOrb framework's spectateGame writer and is independent of
+                # the still-experimental room-creation path below.
+                if action == 10:
+                    if len(packet.payload) < 3:
+                        print(
+                            f"[lobby] {self.peer} SPECTATE_GAME missing u16 id"
+                        )
+                    else:
+                        game_id = int.from_bytes(packet.payload[1:3], "big")
+                        if game_id == 0:
+                            LOBBY.stop_spectating(self)
+                            print(f"[lobby] {self.peer} stopped spectating")
+                        else:
+                            LOBBY.spectate_game(self, game_id)
+                            print(
+                                f"[lobby] {self.peer} requested spectate "
+                                f"game={game_id}"
+                            )
+                # CREATE_UNRATED_GAME (action 4). Lobby.create_game emits the
+                # reference order: YOU_JOINED_ROOM, PLAYER_JOINED_ROOM, then a
+                # global ADD_ROOM update. Set DEKOBLOKO_ROOMS=0 only to disable
+                # the native room UI while debugging an old client build.
+                elif action == 4 and os.environ.get("DEKOBLOKO_ROOMS", "1") != "0":
+                    # Use the authoritative HostedGame id as the room id. A
+                    # separate counter left SPECTATE_GAME pointing at a room
+                    # with no corresponding simulation.
+                    room_id = LOBBY.create_game(self).game_id
                     owner_id = self.accounts.player_id(self.account_name)
                     # The host check is `uc.field_g == room.ownerId`
                     # (ig.java:773). uc.field_g is the LOCAL player id, set only
@@ -769,27 +802,27 @@ class GameSession:
                     # stays at nk.a's -1 sentinel and never matches, so the
                     # client is never the host. Send mode 23 with the same id we
                     # use for ownerId so the two are equal.
-                    if not self._local_id_sent:
+                    if (
+                        os.environ.get("DEKOBLOKO_ROSTER") in ("1", "id")
+                        and not self._local_id_sent
+                    ):
                         self._send_packet(10, build_local_player_id(owner_id))
                         self._local_id_sent = True
                         print(f"[lobby] {self.peer} sent PLAYER_ID (mode 23) uc.field_g={owner_id}")
-                    self._send_packet(
-                        10,
-                        build_create_room_reply(room_id, owner_id, self.display_name),
-                    )
-                    # Add the host to the room's player list. Without this the
-                    # room has an owner but zero players, so the client shows an
-                    # empty slot list and never places you into the game.
-                    self._send_packet(
-                        10,
-                        build_player_joined_room(owner_id, self.display_name),
-                    )
                     print(
-                        f"[lobby] {self.peer} CREATE_UNRATED_GAME -> sent mode 4 "
-                        f"YOU_JOINED_ROOM id={room_id} + mode 18 PLAYER_JOINED "
+                        f"[lobby] {self.peer} CREATE_UNRATED_GAME -> room id={room_id} "
                         f"owner={self.display_name!r} owner_id={owner_id}"
                     )
-                elif action == 9 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
+                elif action == 8 and os.environ.get("DEKOBLOKO_ROOMS", "1") != "0":
+                    room_id = (
+                        int.from_bytes(packet.payload[1:3], "big")
+                        if len(packet.payload) >= 3
+                        else None
+                    )
+                    if room_id is not None:
+                        LOBBY.join_game(self, room_id)
+                    print(f"[lobby] {self.peer} JOIN_ROOM id={room_id}")
+                elif action == 9 and os.environ.get("DEKOBLOKO_ROOMS", "1") != "0":
                     # LEAVE_ROOM [u16 room_id] -- the "return to lobby" button.
                     # The client stays in the room view until we confirm with
                     # mode 0 (YOU_LEFT_ROOM), which clears cd.field_m back to the
@@ -799,33 +832,31 @@ class GameSession:
                         if len(packet.payload) >= 3
                         else None
                     )
+                    LOBBY.leave_game(self, announce=False)
                     self._send_packet(10, build_leave_room_reply())
                     print(
                         f"[lobby] {self.peer} LEAVE_ROOM id={room_id} "
                         f"-> sent mode 0 YOU_LEFT_ROOM"
                     )
-                elif action == 6 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
-                    # INVITE_PLAYER_TO_GAME [u64 userId] (reference reads a long).
-                    # For a bot invitee there is no real client to accept, so
-                    # the server accepts on its behalf: send the host a
-                    # PLAYER_JOINED_ROOM (mode 18) for the bot, which makes the
-                    # bot appear in the host's room player list.
+                elif action == 6 and os.environ.get("DEKOBLOKO_ROOMS", "1") != "0":
+                    # INVITE_PLAYER_TO_GAME [u64 userId] targets an actual
+                    # registered lobby session. Fixtures use the same API from
+                    # outside the protocol server; there is no in-server bot path.
                     invited_uid = (
                         int.from_bytes(packet.payload[1:9], "big")
                         if len(packet.payload) >= 9
                         else None
                     )
-                    bot = LOBBY.bot_for_uid(invited_uid) if invited_uid else None
-                    if bot is not None:
-                        bot_id = self.accounts.player_id(bot)
-                        self._send_packet(10, build_player_joined_room(bot_id, bot))
-                        print(
-                            f"[lobby] {self.peer} INVITE uid={invited_uid} -> bot "
-                            f"{bot!r} auto-joined (mode 18)"
-                        )
-                    else:
-                        print(f"[lobby] {self.peer} INVITE uid={invited_uid} (no bot match)")
-                elif action == 7 and os.environ.get("DEKOBLOKO_ROOMS") == "1":
+                    accepted = (
+                        LOBBY.invite_player(self, invited_uid)
+                        if invited_uid is not None
+                        else False
+                    )
+                    print(
+                        f"[lobby] {self.peer} INVITE uid={invited_uid} "
+                        f"accepted={accepted}"
+                    )
+                elif action == 7 and os.environ.get("DEKOBLOKO_ROOMS", "1") != "0":
                     # KICK_PLAYER_FROM_GAME [u64 userId]. Remove the player from
                     # the host's room list with PLAYER_LEFT_ROOM (mode 19).
                     kicked_uid = (
@@ -833,19 +864,15 @@ class GameSession:
                         if len(packet.payload) >= 9
                         else None
                     )
-                    bot = LOBBY.bot_for_uid(kicked_uid) if kicked_uid else None
-                    if bot is not None:
-                        bot_id = self.accounts.player_id(bot)
-                        # reason 12 = KICKED. Value 1 (which I used first) is
-                        # ENTERED_GAME in the status enum (LobbyPlayer.Status),
-                        # so it rendered "Player has entered a game" on a kick.
-                        self._send_packet(10, build_player_left_room(bot_id, 12))
-                        print(
-                            f"[lobby] {self.peer} KICK uid={kicked_uid} -> bot "
-                            f"{bot!r} removed (mode 19)"
-                        )
-                    else:
-                        print(f"[lobby] {self.peer} KICK uid={kicked_uid} (no bot match)")
+                    kicked = (
+                        LOBBY.kick_player(self, kicked_uid)
+                        if kicked_uid is not None
+                        else False
+                    )
+                    print(
+                        f"[lobby] {self.peer} KICK uid={kicked_uid} "
+                        f"accepted={kicked}"
+                    )
                 continue
 
             if packet.opcode == 7:
@@ -925,6 +952,7 @@ class GameSession:
             # through to the text-parsing fallback at the bottom of the loop,
             # which would try to read an empty payload as chat.
             if packet.opcode == 61:
+                print(f"[game] {self.peer} draw-state action (61)")
                 continue
 
             # Client opcode 12: what the lobby chat box actually sends. Written
@@ -972,14 +1000,30 @@ class GameSession:
                     # same table, so no encoder is needed server-side.
                     # payload is [discriminator][count][huffman]; relay the
                     # compressed bytes and the count separately.
-                    broadcast = build_chat_broadcast(
-                        self.display_name, count, packet.payload[2:], channel
+                    LOBBY.relay_chat_payload(
+                        self, count, packet.payload[2:], channel
                     )
-                    for peer in LOBBY.sessions_snapshot():
-                        try:
-                            peer._send_packet(11, broadcast)
-                        except Exception as exc:
-                            print(f"[chat] relay to {peer.peer} failed: {exc}")
+                continue
+
+            # C2S opcode 15 is the canned quick-chat writer used by the F10
+            # menu (ce.a, reached with a literal 15 in dc.java). Lobby and room
+            # messages have the compact [channel][u16 id] form. The server
+            # returns the id verbatim on S2C opcode 12, including to the sender,
+            # because the client does not locally echo quick-chat.
+            if packet.opcode == 15:
+                if len(packet.payload) == 3 and packet.payload[0] in (0, 1):
+                    channel = packet.payload[0]
+                    quickchat_id = int.from_bytes(packet.payload[1:3], "big")
+                    LOBBY.relay_quickchat(self, quickchat_id, channel)
+                    print(
+                        f"[quickchat] {self.peer} <{self.display_name}> "
+                        f"ch={channel} id={quickchat_id:#06x}"
+                    )
+                else:
+                    print(
+                        f"[quickchat] {self.peer} unsupported payload "
+                        f"{packet.payload.hex(' ')}"
+                    )
                 continue
 
             if packet.opcode == 14:
@@ -1071,7 +1115,10 @@ class GameSession:
 
             if packet.opcode == 59:
                 if packet.payload:
-                    print(f"[game] {self.peer} piece/update ack={packet.payload[0]}")
+                    if self.current_game is not None:
+                        self.current_game.handle_transition_ack(self, packet.payload[0])
+                    else:
+                        print(f"[game] {self.peer} piece/update ack={packet.payload[0]}")
                 continue
 
             if packet.opcode == 60:
@@ -1084,8 +1131,11 @@ class GameSession:
                 continue
 
             if packet.opcode == 63:
-                if self.current_game is not None:
-                    self.current_game.handle_piece_request(self)
+                # Post-game rematch offer/cancel/accept. The exact choice is
+                # selected from the current S2C 71--74 masks. This used to be
+                # treated as a piece request, replacing the active piece when
+                # a UI action fired.
+                print(f"[game] {self.peer} rematch-state action (63)")
                 continue
 
             # The social add/remove opcodes (friend add, ignore add, remove) are

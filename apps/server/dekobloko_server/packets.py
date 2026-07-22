@@ -74,6 +74,9 @@ CLIENT_PACKET_LENGTHS: dict[int, int] = {
     11: -1,
     12: -1,  # lobby message / chat send -- payload layout NOT yet decoded
     14: -1,  # chat: u64 target + cstring text + u8 channel + u8 quickchat
+    # Quick-chat writer ce.a is invoked with opcode 15 (dc.java) and emits a
+    # length-byte packet: [u8 channel][cstring recipient only for private][u16 id].
+    15: -1,
     # Create/join a game room. PROVEN by running the client's own writer:
     # fh.a((byte) 8, cl, 7) assembles [opcode][u8 q][u8 z] with NO length byte,
     # observed as 45 00 0a for q=0, z=10.
@@ -88,9 +91,9 @@ CLIENT_PACKET_LENGTHS: dict[int, int] = {
     58: 0,   # lobby selected-game/start button in the Dekobloko UI path
     59: 1,   # current local piece/update counter acknowledgement
     60: -1,  # gameplay controls: u8 count + bitpacked 5-bit controls
-    61: 0,
+    61: 0,   # draw offer/cancel/accept action (selected by current game masks)
     62: 0,   # resign/leave active game from the game UI path
-    63: 0,   # request/advance style packet in the game UI path
+    63: 0,   # rematch offer/cancel/accept action; NOT a piece request
 }
 
 # Server-to-client packet sizes.
@@ -477,6 +480,40 @@ def pack_5bit(values: list[int] | tuple[int, ...]) -> bytes:
     return bytes(out)
 
 
+def unpack_5bit(data: bytes | bytearray, count: int) -> tuple[int, ...]:
+    """Decode one byte-aligned, MSB-first stream of 5-bit values."""
+    if count < 0:
+        raise ValueError("5-bit value count cannot be negative")
+    expected_length = (count * 5 + 7) // 8
+    if len(data) != expected_length:
+        raise ValueError(
+            f"5-bit stream for {count} values requires {expected_length} bytes, "
+            f"got {len(data)}"
+        )
+
+    values: list[int] = []
+    bit_index = 0
+    for _ in range(count):
+        value = 0
+        for _bit in range(5):
+            byte_index = bit_index >> 3
+            shift = 7 - (bit_index & 7)
+            value = (value << 1) | ((data[byte_index] >> shift) & 1)
+            bit_index += 1
+        values.append(value)
+    return tuple(values)
+
+
+def decode_control_batch(payload: bytes | bytearray) -> tuple[int, ...]:
+    """Decode C2S opcode 60: ``u8 count`` plus packed 5-bit input masks."""
+    if not payload:
+        raise ValueError("control batch is missing its count byte")
+    count = payload[0]
+    if count > 20:
+        raise ValueError(f"control batch count exceeds client buffer: {count}")
+    return unpack_5bit(payload[1:], count)
+
+
 def build_sb_reply(value: int) -> bytes:
     """Payload for SERVER opcode 4, answering the client's opcode-5 request.
 
@@ -621,7 +658,15 @@ def build_f_reply() -> bytes:
     return bytes([2])
 
 
-def build_chat_broadcast(name: str, count: int, body: bytes, channel: int = 0) -> bytes:
+def build_chat_broadcast(
+    name: str,
+    count: int,
+    body: bytes,
+    channel: int = 0,
+    *,
+    room_id: int | None = None,
+    room_owner: str | None = None,
+) -> bytes:
     """Payload for server opcode 11 -- a lobby chat line from a player.
 
     The server does not compress anything. `body` is the client's own Huffman
@@ -722,6 +767,12 @@ def build_chat_broadcast(name: str, count: int, body: bytes, channel: int = 0) -
     out.append(0)                        # var4: single name
     out.extend(encoded)                  # ad.field_x -> field_p -> the NAME
     out.append(0)
+    if (channel & 0x7F) in (1, 4):
+        if room_id is None or room_owner is None:
+            raise ValueError("room chat requires room_id and room_owner")
+        out.extend((room_id & 0xFFFF).to_bytes(2, "big"))
+        out.extend(room_owner.encode("cp1252", errors="replace"))
+        out.append(0)
     out.append(count & 0xFF)             # li.a character count
     out.extend(body)
     return bytes(out)
@@ -951,8 +1002,135 @@ def build_leave_room_reply() -> bytes:
     return bytes([0])
 
 
+def build_kicked_room_reply() -> bytes:
+    """Server opcode 10, mode 1 (YOU_WERE_KICKED)."""
+    return bytes([1])
+
+
+def _build_room_state(
+    owner_id: int,
+    owner_name: str,
+    *,
+    max_players: int,
+    who_can_join: int,
+    player_count: int | None,
+    options: bytes,
+    started: bool,
+    concluded: bool,
+    allow_spectators: bool,
+    rated: bool,
+    allow_join: bool,
+    elapsed_ms: int = 0,
+) -> bytes:
+    """Shared Dekobloko room body used by lobby modes 4, 8, and 20.
+
+    This is the Shattered Plans ``LobbyRoom.writeState`` structure with the
+    game-specific option array fixed to Dekobloko's measured five-byte width.
+    ``player_count`` is present only for ADD_ROOM (mode 8).
+    """
+    if len(options) != 5:
+        raise ValueError("Dekobloko room options must contain exactly five bytes")
+    flags = 0
+    if concluded:
+        flags |= 4
+    if not started or concluded:
+        flags |= 8
+    if allow_spectators:
+        flags |= 16
+    if rated:
+        flags |= 32
+    if started:
+        flags |= 64
+    if allow_join:
+        flags |= 128
+
+    body = bytearray()
+    if player_count is not None:
+        body.append(player_count & 0xFF)
+    body.append(max_players & 0xFF)
+    body.append(who_can_join & 0xFF)  # 0 invite-only, 4 open
+    body.append(flags)
+    body.extend(options)
+    body.extend((0).to_bytes(2, "big"))  # average rating
+    body.extend((max(0, elapsed_ms) & 0xFFFFFFFF).to_bytes(4, "big"))
+    if concluded:
+        body.extend((max(0, elapsed_ms) & 0xFFFFFFFF).to_bytes(4, "big"))
+    body.extend((owner_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big"))
+    body.extend(owner_name.encode("cp1252", errors="replace"))
+    body.append(0)
+    return bytes(body)
+
+
+def build_add_room(
+    room_id: int,
+    owner_id: int,
+    owner_name: str,
+    *,
+    player_count: int,
+    max_players: int = 8,
+    who_can_join: int = 4,
+    options: bytes = bytes(5),
+    started: bool = False,
+    concluded: bool = False,
+    allow_spectators: bool = True,
+    rated: bool = False,
+    allow_join: bool = True,
+    elapsed_ms: int = 0,
+) -> bytes:
+    """Server opcode 10, mode 8 (ADD_ROOM), also used for room updates."""
+    return (
+        bytes([8])
+        + (room_id & 0xFFFF).to_bytes(2, "big")
+        + _build_room_state(
+            owner_id,
+            owner_name,
+            max_players=max_players,
+            who_can_join=who_can_join,
+            player_count=player_count,
+            options=options,
+            started=started,
+            concluded=concluded,
+            allow_spectators=allow_spectators,
+            rated=rated,
+            allow_join=allow_join,
+            elapsed_ms=elapsed_ms,
+        )
+    )
+
+
+def build_remove_room(room_id: int, reason: int = 0) -> bytes:
+    """Server opcode 10, mode 9 (REMOVE_ROOM)."""
+    return bytes([9]) + (room_id & 0xFFFF).to_bytes(2, "big") + bytes([reason & 0xFF])
+
+
+def build_room_invitation(room_id: int) -> bytes:
+    """Server opcode 10, mode 11 (YOU_ARE_INVITED)."""
+    return bytes([11]) + (room_id & 0xFFFF).to_bytes(2, "big")
+
+
+def build_host_invitation_added(player_id: int) -> bytes:
+    """Server opcode 10, mode 14 (ADD_PLAYER_INVITE)."""
+    return bytes([14]) + (player_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big")
+
+
+def build_host_invitation_removed(player_id: int, status: int = 2) -> bytes:
+    """Server opcode 10, mode 15 (REMOVE_PLAYER_INVITE)."""
+    return (
+        bytes([15])
+        + (player_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big")
+        + bytes([status & 0xFF])
+    )
+
+
 def build_create_room_reply(
-    room_id: int, owner_id: int, owner_name: str, max_players: int = 2
+    room_id: int,
+    owner_id: int,
+    owner_name: str,
+    max_players: int = 8,
+    *,
+    options: bytes = bytes(5),
+    allow_spectators: bool = True,
+    invite_only: bool = False,
 ) -> bytes:
     """Server opcode 10, mode 4 (YOU_JOINED_ROOM) -- answer CREATE_UNRATED_GAME.
 
@@ -977,34 +1155,28 @@ def build_create_room_reply(
     owner must be the local player's login id, and the name its display name,
     or the client shows a guest waiting for a stranger.
 
-    flags = 0x80 sets youAreAllowedToJoin and leaves concluded(4)/started(64)
-    clear, so no extra trailing reads are triggered (the probe showed those bits
-    add bytes). whoCanJoin = 0 is the most permissive ordinal.
+    Waiting-room flags include bit 8, the reference's ``session == null`` bit,
+    plus bit 128 when this recipient may join and bit 16 when spectating will be
+    allowed after start. ``whoCanJoin`` is 0 for invitation-only and 4 for open.
 
     STILL not the full reference flow: the reference also sends ROOM_STATUS and a
     PLAYER_JOINED_ROOM per member. This gives the room an owner (fixes host vs
     guest); populating the joined-player list may still need PLAYER_JOINED_ROOM.
     """
-    body = bytearray()
-    body.append(max_players & 0xFF)          # maxPlayerCount
-    body.append(0)                           # whoCanJoin (0 = most permissive)
-    body.append(0x80)                        # flags: youAreAllowedToJoin only
-    # gameSpecificOptions: a 5-byte field in Dekobloko. The client reads
-    # field_kc.length bytes here, and the live mode-4 path builds new ve(j.field_b)
-    # with j.field_b == 5. MEASURED FROM THE LIVE CLIENT, not the probe (which
-    # used ve(1) and aliased): the client always reads ownerName at absolute
-    # offset 22, and the fixed fields before it total 17 (1+1+1 + 2 + 4 + 8), so
-    # gameSpecificOptions = 22 - 17 = 5. Two live data points confirm it: 1 byte
-    # here showed the name as "o" (4 short), 4 bytes showed "ello" (1 short); 5
-    # lands it exactly. (ve.c renders ".../4", which is a display string, NOT the
-    # array length -- that was the red herring.)
-    body.extend(bytes(5))                    # gameSpecificOptions[0..4]
-    body.extend((0).to_bytes(2, "big"))      # averageRating
-    body.extend((0).to_bytes(4, "big"))      # startedAgo (now - 0)
-    body.extend((owner_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big"))  # ownerId
-    body.extend(owner_name.encode("cp1252", errors="replace"))       # ownerName
-    body.append(0)                           # cstring terminator
-    return bytes([4]) + (room_id & 0xFFFF).to_bytes(2, "big") + bytes(body)
+    body = _build_room_state(
+        owner_id,
+        owner_name,
+        max_players=max_players,
+        who_can_join=0 if invite_only else 4,
+        player_count=None,
+        options=options,
+        started=False,
+        concluded=False,
+        allow_spectators=allow_spectators,
+        rated=False,
+        allow_join=True,
+    )
+    return bytes([4]) + (room_id & 0xFFFF).to_bytes(2, "big") + body
 
 
 def build_local_player_id(uid: int) -> bytes:
@@ -1117,7 +1289,14 @@ def build_social_list_complete(mode: int = 2) -> bytes:
     return PacketBuilder().u8(mode).finish()
 
 
-def build_quickchat_broadcast(name: str, quickchat_id: int, channel: int = 0) -> bytes:
+def build_quickchat_broadcast(
+    name: str,
+    quickchat_id: int,
+    channel: int = 0,
+    *,
+    room_id: int | None = None,
+    room_owner: str | None = None,
+) -> bytes:
     """Server opcode 12 -- a canned quick-chat line from `name`.
 
     Opcode 12 is quickchat, dispatched to ki.a(0, true); opcode 11 is free text,
@@ -1141,7 +1320,12 @@ def build_quickchat_broadcast(name: str, quickchat_id: int, channel: int = 0) ->
     through is the behaviour-preserving choice -- but that the renderer tolerates
     the high bit is UNPROVEN. If quickchat lines come out blank, strip it here.
     """
-    if channel != 0:
-        raise ValueError("only channel 0 is execution-proven for quickchat")
     builder = PacketBuilder().u8(channel).u8(1).u64(0).u8(0)
-    return builder.cstring(name).u16(quickchat_id).finish()
+    builder.cstring(name)
+    if channel in (1, 4):
+        if room_id is None or room_owner is None:
+            raise ValueError("room quickchat requires room_id and room_owner")
+        builder.u16(room_id).cstring(room_owner)
+    elif channel != 0:
+        raise ValueError("unsupported quickchat channel")
+    return builder.u16(quickchat_id).finish()

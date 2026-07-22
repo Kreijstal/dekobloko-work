@@ -29,6 +29,7 @@ Source and tooling are grouped by job:
 
 ```text
 apps/launcher/            local fake/real AWT launcher source and trace checker
+game-logic/               standalone renderer-free Java 8 gameplay library
 scripts/launcher/         launcher build/run wrappers
 scripts/                  regression, compile, deobfuscation, and stub scripts
 scripts/pipeline/         Dekobloko/FunOrb deobfuscation pipeline and profiles

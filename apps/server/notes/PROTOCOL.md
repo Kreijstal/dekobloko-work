@@ -1,5 +1,11 @@
 # Dekobloko protocol notes
 
+The decoded in-match state machine and packet layouts are maintained in
+[`docs/multiplayer-gameplay-protocol.md`](../../../docs/multiplayer-gameplay-protocol.md).
+That audit supersedes experimental gameplay notes where they conflict, notably
+for lock-boundary flushing, S2C 64 transitions, S2C 67 feedback shapes, C2S 63
+rematches, and stable player-slot removal.
+
 These notes are based on the decompiled client sources and the current Python server implementation.
 
 ## Startup HTTP

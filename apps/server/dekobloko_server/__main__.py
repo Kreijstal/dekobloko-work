@@ -11,7 +11,7 @@ from .http import DekoblokoHTTPServer
 from .tcp import DekoblokoTCPServer
 
 
-def parse_args() -> argparse.Namespace:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Dekobloko local server with RSA/XTEA/ISAAC login")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--http-port", type=int, default=8080)
@@ -32,7 +32,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--display-name", default="Player")
     parser.add_argument("--player-id", type=int, default=1)
     parser.add_argument("--welcome-message", default="Welcome to the local Dekobloko server.")
-    return parser.parse_args()
+    return parser
+
+
+def parse_args() -> argparse.Namespace:
+    return build_parser().parse_args()
 
 
 def make_config(args: argparse.Namespace) -> ServerConfig:
@@ -73,51 +77,69 @@ def maybe_copy_default_jar(config: ServerConfig) -> None:
     shutil.copy2(bundled, config.jar_path)
 
 
+class ServerRuntime:
+    """Embeddable lifecycle API for the HTTP and TCP protocol servers."""
+
+    def __init__(self, config: ServerConfig) -> None:
+        self.config = config
+        self.http_server: DekoblokoHTTPServer | None = None
+        self.tcp_servers: list[DekoblokoTCPServer] = []
+
+    def start(self) -> None:
+        config = self.config
+        config.cache_dir.mkdir(parents=True, exist_ok=True)
+        maybe_copy_default_jar(config)
+        cache = CacheStore(config.cache_dir)
+        print(
+            f"[main] cache: {config.cache_dir}"
+            if cache.available()
+            else f"[main] cache missing dat2 in {config.cache_dir}; JS5 requests will miss"
+        )
+        print(
+            f"[main] jar: {config.jar_path}"
+            if config.jar_path.is_file()
+            else f"[main] jar missing: {config.jar_path}"
+        )
+        print(
+            f"[main] rsa key: {config.rsa_key_path}"
+            if config.rsa_key_path.is_file()
+            else f"[main] rsa key missing: {config.rsa_key_path}"
+        )
+        print(f"[main] accounts: {config.accounts_path} auto_register={config.auto_register}")
+
+        self.http_server = DekoblokoHTTPServer((config.host, config.http_port), config)
+        self.tcp_servers = [
+            DekoblokoTCPServer((config.host, config.game_port1), config, cache),
+            DekoblokoTCPServer((config.host, config.game_port2), config, cache),
+        ]
+        serve_in_thread(self.http_server, "dekobloko-http")
+        serve_in_thread(self.tcp_servers[0], "dekobloko-game-1")
+        serve_in_thread(self.tcp_servers[1], "dekobloko-game-2")
+        print(f"[main] http://{config.host}:{config.http_port}/")
+        print(f"[main] tcp ports {config.game_port1}, {config.game_port2}")
+
+    @staticmethod
+    def wait() -> None:
+        threading.Event().wait()
+
+    def close(self) -> None:
+        servers = [server for server in [self.http_server, *self.tcp_servers] if server]
+        for server in servers:
+            server.shutdown()
+        for server in servers:
+            server.server_close()
+
+
 def main() -> None:
-    config = make_config(parse_args())
-    config.cache_dir.mkdir(parents=True, exist_ok=True)
-    maybe_copy_default_jar(config)
-
-    cache = CacheStore(config.cache_dir)
-    if cache.available():
-        print(f"[main] cache: {config.cache_dir}")
-    else:
-        print(f"[main] cache missing dat2 in {config.cache_dir}; JS5 requests will miss")
-
-    if config.jar_path.is_file():
-        print(f"[main] jar: {config.jar_path}")
-    else:
-        print(f"[main] jar missing: {config.jar_path}")
-
-    if config.rsa_key_path.is_file():
-        print(f"[main] rsa key: {config.rsa_key_path}")
-    else:
-        print(f"[main] rsa key missing: {config.rsa_key_path}")
-
-    print(f"[main] accounts: {config.accounts_path} auto_register={config.auto_register}")
-
-    http_server = DekoblokoHTTPServer((config.host, config.http_port), config)
-    tcp_server1 = DekoblokoTCPServer((config.host, config.game_port1), config, cache)
-    tcp_server2 = DekoblokoTCPServer((config.host, config.game_port2), config, cache)
-
-    serve_in_thread(http_server, "dekobloko-http")
-    serve_in_thread(tcp_server1, "dekobloko-game-1")
-    serve_in_thread(tcp_server2, "dekobloko-game-2")
-
-    print(f"[main] http://{config.host}:{config.http_port}/")
-    print(f"[main] tcp ports {config.game_port1}, {config.game_port2}")
+    runtime = ServerRuntime(make_config(parse_args()))
+    runtime.start()
 
     try:
-        threading.Event().wait()
+        runtime.wait()
     except KeyboardInterrupt:
         print("\n[main] stopping")
     finally:
-        http_server.shutdown()
-        tcp_server1.shutdown()
-        tcp_server2.shutdown()
-        http_server.server_close()
-        tcp_server1.server_close()
-        tcp_server2.server_close()
+        runtime.close()
 
 
 if __name__ == "__main__":

@@ -184,12 +184,80 @@ match.
 ```
 dekobloko_server/
   __main__.py   argument parsing, HTTP + TCP startup
+  engine.py     authoritative bucket simulation, lives, and winner selection
   game.py       per-connection session: login handshake, packet loop
   lobby.py      lobby state, hosted games, chat/commands
   packets.py    opcode length tables, ISAAC-framed codec, builders
   crypto.py     RSA, XTEA, ISAAC
   io.py         socket read helpers
 ```
+
+## Authoritative gameplay engine
+
+The server does not accept client-uploaded positions or results. `HostedGame`
+creates one Python `AuthoritativeMatch`, feeds it the validated C2S 60 control
+masks for each immutable player slot, and waits for the matching C2S 59 update
+counter before accepting controls for a newly spawned piece. On a lock it sends
+S2C 64 with the engine's final x/y/orientation and next domino.
+
+An above-top lock consumes one of three lives. On the third, the server sends
+S2C 62, tombstones that slot without renumbering later players, derives the
+last surviving slot, sends S2C 69 to that player, and tears down the match for
+all recipients. The Python active-piece trace is compared tick-for-tick with
+the Java engine already differentially verified against original `lk`.
+
+The remaining authoritative paths are also wired. Enabled special cells are
+generated and activated from their packed IDs, returned cooked shapes target
+the next live opponent round-robin, and incoming shapes settle as solid board
+geometry and can consume lives. Submitted controls use a 50-tick/s token bucket
+with a 40-tick burst; rejected or partially admitted batches resynchronize the
+sender. S2C 61 snapshots are also sent for bad transition acks, an explicit
+`::resync`, and proactively every 500 accepted ticks. The snapshot payload is
+decoded field-for-field in tests by untouched original `lk`.
+
+Running matches also admit observers. Lobby action 10 and
+`::spectate <game-id>` send the S2C 59 spectator start followed by an S2C 61
+snapshot for every live stable slot. Spectators own no slot and cannot submit
+controls, but receive controls, transitions, cooked shapes, removals, chat, and
+teardown alongside players. Action 10 with game ID zero, `::leave`, or a
+disconnect detaches only the observer and cannot change the match outcome.
+
+## Optional public-lobby demo
+
+The protocol server has no built-in fake players and starts an empty lobby.
+`apps/server/dekobloko_demo.py` is a separate fixture launcher. It starts the
+same server through `ServerRuntime`, imports the supported surface from
+`dekobloko_server.api`, registers two socket-free sessions through
+`Lobby.join()`, and drives create/invite/join/start/control calls without any
+Player5/Player6 branch in server code.
+
+Run the demo launcher in place of `python -m dekobloko_server`:
+
+```sh
+PYTHONPATH=apps/server python3 -m dekobloko_demo <the same server arguments>
+```
+
+Player5 creates an invitation-only room, Player6 joins after 10 seconds, and the
+match starts after another 10 seconds. Settings are randomized and spectator
+permission alternates. Use `--demo-match-seconds`, `--demo-join-seconds`,
+`--demo-start-seconds`, and `--demo-seed` to control the fixture. Stopping it
+unregisters both dummy sessions; starting the normal server never constructs
+them. Native rooms remain enabled by default and can be disabled for protocol
+debugging with `DEKOBLOKO_ROOMS=0`.
+
+Focused validation:
+
+```sh
+./game-logic/build.sh
+PYTHONPATH=apps/server python3 -m unittest \
+  apps.server.tests.test_authoritative_engine \
+  apps.server.tests.test_multiplayer_gameplay_protocol
+```
+
+The historical server's item frequency, opponent-selection rule, control burst,
+and proactive snapshot cadence were not present in the client. The values above
+are explicit server policies, kept separate from bytecode-proven wire layouts
+and engine behavior.
 
 ### ISAAC
 

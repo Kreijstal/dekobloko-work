@@ -1,5 +1,12 @@
 # Dekobloko Multiplayer Wire Protocol — Consolidated Specification
 
+> The in-match 58--76 findings in this older consolidation have been
+> superseded by the executable-engine audit in
+> [Dekobloko multiplayer gameplay protocol](multiplayer-gameplay-protocol.md).
+> In particular, the match-start body is now decoded, C2S 63 is rematch control
+> rather than a piece request, and S2C 67 carries feedback shapes rather than
+> ordinary next pieces.
+
 Synthesis of seven per-feature investigations (play-rated, create-unrated, lobby-player-list, ignore-list, quick-chat, winning, high-scores, achievement-sync) plus the outbound/inbound opcode inventories. Every claim is tagged **PROVEN** (executed the client's own classes and/or read from ground-truth JAR bytecode) or **HYPOTHESIS** (read-only / inferred). The governing rule throughout: most client opcodes register an object on a `vj` queue and block until a reply pops it; `bd.g` re-drains queues each tick, so an unanswered request repeats forever. Every layout below nails **both** directions where the feature blocks on one.
 
 ---
@@ -27,7 +34,7 @@ Synthesis of seven per-feature investigations (play-rated, create-unrated, lobby
 | 60 | -1 | — | game | gameplay move batch `[u8 count][bitpacked…]` | PROVEN framing (inventory) |
 | 61 | fixed 0 (bare) | — | game | game-control (`qc.b`) | **PROVEN** (bare) |
 | 62 | fixed 0 (bare) | — | winning | resign / leave active game (`qc.f`) | **PROVEN** (bare) |
-| 63 | fixed 0 (bare) | — | game | game-control / piece request (`qc.c`) | **PROVEN** (bare) |
+| 63 | fixed 0 (bare) | — | game | rematch offer/cancel/accept (`qc.c`); not a piece request | **PROVEN** (bare + menu strings) |
 | 14 *(candidate)* | -1 | — | private-messages | PM send `[u64 target][body]` (inventory only) | **HYPOTHESIS** |
 
 ### 1.3 Server → Client
