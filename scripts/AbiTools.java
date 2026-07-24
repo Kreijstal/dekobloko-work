@@ -146,11 +146,20 @@ public final class AbiTools {
 
     /** Per-class ABI equality: restored field {name,desc,staticness} set == original's. */
     private static int verifyAbi(Path restoredDir, Path origDir) throws IOException {
-        int mismatches = 0, checked = 0, missing = 0;
+        int mismatches = 0, checked = 0, missing = 0, generated = 0;
         for (Path p : listClasses(restoredDir)) {
             ClassNode r = read(p);
             Path o = origDir.resolve(restoredDir.relativize(p));
             if (!Files.exists(o)) {
+                // Oversized source methods are split through a method-local
+                // carrier class by CFR-JS. It has no original counterpart by
+                // construction, while its enclosing class is still checked
+                // normally below. Do not treat this compiler-generated support
+                // class as a missing guest ABI.
+                if (r.name.contains("$CfrPartitionedState")) {
+                    generated++;
+                    continue;
+                }
                 mismatches++;
                 missing++;
                 System.err.printf("ABI MISMATCH %s: original class is missing: %s%n", r.name, o);
@@ -171,8 +180,8 @@ public final class AbiTools {
             System.err.println("ABI MISMATCH: no restored class had a corresponding original class");
             if (mismatches == 0) mismatches++;
         }
-        System.out.printf("verify-against: %d classes checked, %d originals missing, %d ABI mismatches%n",
-                checked, missing, mismatches);
+        System.out.printf("verify-against: %d classes checked, %d generated carriers, %d originals missing, %d ABI mismatches%n",
+                checked, generated, missing, mismatches);
         return mismatches == 0 ? 0 : 1;
     }
 

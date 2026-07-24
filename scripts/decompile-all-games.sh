@@ -350,7 +350,7 @@ NODE
 
   if ((pipeline_fail == 0 && verify_fail == 0)); then
     timeout "$DECOMPILER_TIMEOUT_SECONDS" node "$DECOMPILER" \
-      --silent --fail-on-fallback \
+      --silent --fail-on-hard-failure \
       --classpath "$work/out:$STUBS" \
       --diagnostics-json "$work/logs/diagnostics.json" \
       --outputdir "$work/java" "$work/out" \

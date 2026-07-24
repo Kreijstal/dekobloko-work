@@ -5812,6 +5812,18 @@ function removeDominatedBooleanLocalBranches(codeItems) {
     if (local == null) continue;
     if (hasAnyLabelReference(codeItems, codeItems[loadIndex] && codeItems[loadIndex].labelDef)) continue;
     if (hasAnyLabelReference(codeItems, codeItems[i] && codeItems[i].labelDef)) continue;
+    const continuationIndex = nextInstructionIndex(codeItems, i + 1);
+    if (continuationIndex === i + 1 &&
+        isConditionalBranchOp(op(codeItems[continuationIndex] &&
+          codeItems[continuationIndex].instruction))) {
+      // The boolean is the top value, but the following conditional proves
+      // that at least one older comparison value is live beneath it. Removing this
+      // branch is locally stack-neutral, yet later loop-threading passes can
+      // mistake those buried operands for an enclosing loop condition and
+      // redirect the increment edge back into the same iteration. Preserve
+      // the opaque guard so every subsequent CFG pass sees the real boundary.
+      continue;
+    }
 
     const dominator = findDominatingBooleanBranch(codeItems, local, loadIndex, refCounts);
     if (!dominator) continue;

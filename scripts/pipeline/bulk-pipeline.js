@@ -416,7 +416,11 @@ const structuredGotoDefaultEnv = {
   STRUCTURED_GOTO_SHARED_SIMPLE_INVOKE_GOTO_TAIL_MAX_INSNS: '32',
   STRUCTURED_GOTO_STACK_BOOLEAN_TERMINAL_GOTO: '1',
   STRUCTURED_GOTO_STACK_BOOLEAN_RASTER_BODY: '1',
-  STRUCTURED_GOTO_STACK_COMPARE_CONTINUATION: '1',
+  // This transform clones control flow while comparison operands are live
+  // beneath a boolean guard. Until it verifies the complete operand state on
+  // every cloned edge, keep it as an explicit experimental opt-in: otherwise
+  // valid nested numeric loops can lose their body and increment backedge.
+  STRUCTURED_GOTO_STACK_COMPARE_CONTINUATION: '0',
   STRUCTURED_GOTO_EVENT_LOOP_ACTION_TAIL_CLONE: '1',
   STRUCTURED_GOTO_RASTER_ROW_SCAN_HEADER_CLONE: '1',
   STRUCTURED_GOTO_STRING_BASE38_SPLIT_TAIL: '1',
@@ -1258,13 +1262,6 @@ function safePeepholeOptionsForClass(astRoot, classFile, options) {
 
 function structuredGotoDefaultEnvForClass(astRoot, classFile) {
   const merged = { ...structuredGotoDefaultEnv };
-  if (classBasename(classFile) === 'ca') {
-    // ca.a leaves two comparison operands below the client.A sentinel. The
-    // dominated-boolean rewrite can thread them into the inverse outer-loop
-    // condition, resetting the inner index instead of executing its guarded
-    // stores and increment.
-    merged.STRUCTURED_GOTO_DOMINATED_BOOLEAN_LOCAL_BRANCHES = '0';
-  }
   if (safeBytecode && shouldDisableBroadStructuredGotoClonesForAst(astRoot, classFile)) {
     merged.STRUCTURED_GOTO_ONESHOT_PREHEADER = '0';
     merged.STRUCTURED_GOTO_BOUNDED_CONDITIONAL_TAILS = '0';
@@ -3942,11 +3939,11 @@ for (const f of processFiles) {
         tracePassTime(f, 'experimental-constant-expression-prepass:save', constantPrepassSaveStart);
       }
     }
-    // ca.a carries two comparison operands underneath a dead client.A flag.
-    // Broad goto structuring can reuse the inverse outer-loop comparison for
-    // that stack-carrying edge, deleting the guarded stores and index advance.
+    // Broad structuring is withheld for bytecode shapes whose live stack/CFG
+    // topology cannot be represented by the clone passes without changing
+    // which comparison owns a loop edge.
     const initialSkipBroadStructuredGoto = safeBytecode &&
-      (classBasename(f) === 'ca' || shouldSkipBroadStructuredGoto(ast));
+      shouldSkipBroadStructuredGoto(ast);
     const initialDisableSharedForwardGotoContinuations = safeBytecode && hasSharedForwardGotoSensitiveBitsetTail(ast);
     const runDefaultEarlyCfrOracle = safeBytecode && shouldRunEarlyCfrOracleDefaultPasses();
     if (runDefaultEarlyCfrOracle) {

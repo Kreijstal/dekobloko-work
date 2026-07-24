@@ -21,7 +21,10 @@ It runs the verifier-safe generic bytecode pipeline, the JavaScript decompiler
 from `java-tools/src/decompiler`, strict fallback diagnostics, ASM verification,
 and whole-game `javac` compilation. Generated sources and reports live under
 `.work/games/<game>/decompile-owned/`; the target zero-failure baseline is
-`scripts/EXPECTED-OWN-DECOMPILER-ALL-GAMES.tsv`.
+`scripts/EXPECTED-OWN-DECOMPILER-ALL-GAMES.tsv`. Compilation is only the static
+gate; see [recompiled runtime validation](docs/recompiled-runtime-validation.md)
+for the launch-to-main-menu gate and the operand-stack bugs found only at
+runtime.
 
 ## Repository Layout
 

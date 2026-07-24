@@ -3571,6 +3571,59 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
 
 {
   const codeItems = padded([
+    item('LLOAD1', { op: 'iload', arg: '1' }),
+    item('LIF1', { op: 'ifne', arg: 'LTRUE' }),
+    item('LCMP_LEFT', { op: 'iload', arg: '2' }),
+    item('LCMP_RIGHT', { op: 'iload', arg: '3' }),
+    item('LLOAD2', { op: 'iload', arg: '1' }),
+    item('LIF2', { op: 'ifne', arg: 'LTRUE' }),
+    item('LCOMPARE', { op: 'if_icmplt', arg: 'LWORK' }),
+    item('LINCREMENT', { op: 'iinc', arg: ['2', '1'] }),
+    item('LWORK', { op: 'iinc', arg: ['3', '1'] }),
+    item('LTRUE', 'return'),
+  ]);
+  const result = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_DOMINATED_BOOLEAN_LOCAL_BRANCHES: '1',
+  }, () => runStructuredGotoClone(
+    targetAstFrom('renamedOwner', 'renamedMethod', '(ZII)V', codeItems),
+  ));
+  assert.equal(result.changed, false,
+    'a dominated boolean guard is retained when comparison operands are live beneath it');
+  assert.deepEqual(codeItems.find((entry) => entry.labelDef === 'LIF2:').instruction,
+    { op: 'ifne', arg: 'LTRUE' });
+  assert.deepEqual(codeItems.find((entry) => entry.labelDef === 'LCOMPARE:').instruction,
+    { op: 'if_icmplt', arg: 'LWORK' });
+}
+
+{
+  const codeItems = padded([
+    item('LLOAD1', { op: 'iload', arg: '1' }),
+    item('LIF1', { op: 'ifne', arg: 'LTRUE' }),
+    item('LCMP_LEFT', { op: 'dload', arg: '2' }),
+    item('LCMP_RIGHT', 'dconst_1'),
+    item('LDCMP', 'dcmpg'),
+    item('LLOAD2', { op: 'iload', arg: '1' }),
+    item('LIF2', { op: 'ifne', arg: 'LTRUE' }),
+    item('LCOMPARE', { op: 'iflt', arg: 'LWORK' }),
+    item('LINCREMENT', { op: 'iinc', arg: ['4', '1'] }),
+    item('LWORK', { op: 'iinc', arg: ['5', '1'] }),
+    item('LTRUE', 'return'),
+  ]);
+  const result = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_DOMINATED_BOOLEAN_LOCAL_BRANCHES: '1',
+  }, () => runStructuredGotoClone(
+    targetAstFrom('renamedOwner', 'renamedMethod', '(ZDII)V', codeItems),
+  ));
+  assert.equal(result.changed, false,
+    'a dominated guard retains a unary comparison result buried beneath it');
+  assert.deepEqual(codeItems.find((entry) => entry.labelDef === 'LIF2:').instruction,
+    { op: 'ifne', arg: 'LTRUE' });
+  assert.deepEqual(codeItems.find((entry) => entry.labelDef === 'LCOMPARE:').instruction,
+    { op: 'iflt', arg: 'LWORK' });
+}
+
+{
+  const codeItems = padded([
     item('LBYPASS', { op: 'goto', arg: 'LJOIN' }),
     item('LLOAD1', { op: 'iload', arg: '1' }),
     item('LIF1', { op: 'ifeq', arg: 'LTRUE' }),
