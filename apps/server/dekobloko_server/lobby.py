@@ -1273,24 +1273,37 @@ class HostedGame:
         # sets lk.field_y, latches field_Bb, and self-disconnects the human
         # with "T5" over an opponent's bucket.
         #
-        # The staleness that made the old NOTE true is avoided by WHEN this is
-        # sent. A snapshot pushed at an arbitrary moment carries a field_U
-        # below the replica's and reverts cells it is mid-clear on. Sent here,
-        # immediately behind the piece event that advanced the counter, its
-        # field_U is exactly the value the replica has just adopted -- it is
-        # the freshest possible description of the board, not a stale one.
+        # DEFAULT OFF, and the paragraph above is why it looked defensible
+        # rather than why it works. The argument was that a snapshot sent here,
+        # immediately behind the piece event, carries a field_U the replica has
+        # just adopted and so cannot be stale. That reasons about SEND time. The
+        # replica does not stop: lk.d ticks every rendered frame, so by ARRIVAL
+        # the packet always describes a board the replica has already moved on
+        # from. There is no moment at which a snapshot into a live board is
+        # fresh, which is exactly what the "Do NOT push snapshots into a LIVE
+        # remote board" section of docs/multiplayer-gameplay-protocol.md says --
+        # a rule this code overrode, along with the regression test that had
+        # been written to enforce it.
         #
-        # It also subsumes the life resync: lk.field_jb rides in this packet
-        # and nothing else on the wire writes it (lk.java:4964).
+        # Reported 2026-07-26 and consistent with that section's prediction:
+        # opponent buckets showed "pieces teleporting and board changing". S2C
+        # 61 rewrites field_q/field_L/field_ab as well as the grid, so one stale
+        # packet jumps the active piece AND reverts settled cells the replica is
+        # mid clear-animation on -- both halves of the report, in one packet,
+        # on every single landing.
         #
-        # This is a correction, not a cure. The right fix is to make the
-        # engine's clear rules match the client's so replicas never diverge in
-        # the first place; measure them with tools/oracle rather than reading
-        # the decompiled source. Set DEKOBLOKO_RESYNC_ON_TRANSITION=0 to turn
-        # this off and get the old input-driven-replica behaviour back.
-        if os.environ.get("DEKOBLOKO_RESYNC_ON_TRANSITION") != "0":
+        # The divergence measured below is real and still unfixed, but a
+        # correction that fires ~50 times a match is worse than the fault it
+        # was masking. Set DEKOBLOKO_RESYNC_ON_TRANSITION=1 to re-enable for
+        # experiments. The cure remains making the engine's clear rules match
+        # the client's -- measured with tools/oracle, not read off the
+        # decompiled source.
+        if os.environ.get("DEKOBLOKO_RESYNC_ON_TRANSITION") == "1":
             self.broadcast_authoritative_snapshot(slot)
         elif lock.life_lost:
+            # Rare (at most twice a match before elimination), and lk.field_jb
+            # rides only in packet 61 (lk.java:4964), so there is no cheaper
+            # channel for it.
             self.resync_lives(slot, lock.lives_remaining)
 
     def _dispatch_returned_shapes(self, source_slot: int, lock: LockResult) -> bool:

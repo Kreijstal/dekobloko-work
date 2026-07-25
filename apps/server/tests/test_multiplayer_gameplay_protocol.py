@@ -710,7 +710,12 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertEqual(1, len(host.piece_events))
         self.assertEqual(3, game.engine.players[0].lives)
         self.assertEqual([], host.full_states, "the owner is never re-seated")
-        self.assertEqual([0], [slot for slot, _payload in peer.full_states])
+        self.assertEqual(
+            [],
+            [slot for slot, _payload in peer.full_states],
+            "and neither is the replica -- a snapshot is stale by the time it "
+            "arrives, see test_no_ongoing_snapshot_into_live_remote_replica",
+        )
 
     def test_feedback_targets_round_robin_and_queues_without_touching_boards(self) -> None:
         host = FakeSession("host")
@@ -956,28 +961,33 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertEqual(before, game.engine.players[1].board.occupied_count())
         self.assertEqual(0, game.engine.players[1].board.get(3, 17))
 
-    def test_transition_reseats_the_remote_replica(self) -> None:
-        # A live remote replica runs its OWN colour-clear (the lk.field_kb gate
-        # suppresses only the clear's network notification, not the clear), and
-        # that clear does NOT agree with this engine's. Measured 2026-07-25 by
-        # comparing committed cell counts at equal landing indices, a metric
-        # with no phase ambiguity unlike board dumps:
+    def test_no_ongoing_snapshot_into_live_remote_replica(self) -> None:
+        # A live replica needs NO ongoing correction: it runs its own
+        # simulation from the relayed action stream plus the piece events.
+        #
+        # A previous revision inverted this test to re-seat the replica on every
+        # transition, on the theory that a snapshot sent immediately behind the
+        # piece event carries a field_U the replica has just adopted and so
+        # cannot be stale. That reasons about SEND time. lk.d ticks every
+        # rendered frame, so by ARRIVAL the packet always describes a board the
+        # replica has already moved past -- there is no moment at which a
+        # snapshot into a live board is fresh.
+        #
+        # Reported live 2026-07-26: opponent buckets showed "pieces teleporting
+        # and board changing". S2C 61 rewrites field_q/field_L/field_ab as well
+        # as the grid, so one stale packet jumps the active piece AND reverts
+        # settled cells mid clear-animation -- both halves of that report, from
+        # one packet, on every landing.
+        #
+        # The divergence that re-seating was masking is real and still unfixed:
+        # committed cell counts at equal landing indices, measured 2026-07-25,
         #
         #   slot 2   server 10 12 14 16 18 20     client 10 12 14 12 14 16
         #   slot 1   server 24 26 28 25 27        client 24 26 28 26 28
         #
-        # The replica cleared four cells where the engine cleared none, and
-        # elsewhere removed four against the engine's five. Each side then
-        # builds on its own stack, so the divergence is permanent, and it ends
-        # with the replica resting where the engine did not put the piece ->
-        # lk.field_y -> field_Bb -> the "T5" self-disconnect.
-        #
-        # This test previously asserted the opposite, because a snapshot sent
-        # at an ARBITRARY moment carries a field_U below the replica's and
-        # reverts cells it is mid-clear on. Sent here, immediately behind the
-        # piece event that advanced the counter, its field_U is the value the
-        # replica has just adopted -- the freshest description of the board
-        # rather than a stale one. That ordering is the whole difference.
+        # i.e. the ENGINE's colour-clear is wrong, not just out of step. Hiding
+        # that behind ~50 corrections a match cost more than it bought. Fix the
+        # clear rule; do not reinstate the re-seat.
         host = FakeSession("host")
         peer = FakeSession("peer")
         game = HostedGame(game_id=21, host=host)
@@ -995,15 +1005,16 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         game._finish_authoritative_piece(0)
 
         self.assertTrue(peer.piece_events, "remote replica must still get the S2C 64 relay")
-        # The replica is re-seated; the owner never is, since a 61 would reset
-        # the live physics of the board they are playing on.
-        self.assertEqual([0], [slot for slot, _payload in peer.full_states])
+        # NOBODY is re-seated: not the owner, whose live physics a 61 would
+        # reset, and not the replica, which has already ticked past whatever the
+        # packet describes by the time it arrives.
+        self.assertEqual([], [slot for slot, _payload in peer.full_states])
         self.assertEqual([], [slot for slot, _payload in host.full_states])
-        self._assert_original_decodes_snapshot(game, 0, peer.full_states[0][1])
 
-    def test_resync_on_transition_can_be_disabled(self) -> None:
-        # An escape hatch back to input-driven replicas, in case re-seating
-        # every transition turns out to cost more than the drift it fixes.
+    def test_resync_on_transition_can_be_enabled(self) -> None:
+        # Off by default (it teleports pieces and reverts boards, see
+        # test_no_ongoing_snapshot_into_live_remote_replica); kept only as an
+        # experiment hatch for measuring the clear-rule divergence it masks.
         host = FakeSession("host")
         peer = FakeSession("peer")
         game = HostedGame(game_id=28, host=host)
@@ -1012,7 +1023,7 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self._drain_start_seed(host, peer)
 
         previous = os.environ.get("DEKOBLOKO_RESYNC_ON_TRANSITION")
-        os.environ["DEKOBLOKO_RESYNC_ON_TRANSITION"] = "0"
+        os.environ["DEKOBLOKO_RESYNC_ON_TRANSITION"] = "1"
         try:
             for _ in range(40):
                 if game.engine.apply_controls(0, (FAST_DROP,)):
@@ -1025,7 +1036,9 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
                 os.environ["DEKOBLOKO_RESYNC_ON_TRANSITION"] = previous
 
         self.assertTrue(peer.piece_events)
-        self.assertEqual([], [slot for slot, _payload in peer.full_states])
+        # The replica is re-seated only with the hatch open; the owner never is.
+        self.assertEqual([0], [slot for slot, _payload in peer.full_states])
+        self.assertEqual([], [slot for slot, _payload in host.full_states])
 
     def test_large_bucket_snapshot_decodes_in_original_engine(self) -> None:
         host = FakeSession("host")
