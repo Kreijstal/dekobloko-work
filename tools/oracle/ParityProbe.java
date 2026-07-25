@@ -646,11 +646,15 @@ public class ParityProbe {
      * combinations run and what each did to the grid.
      */
     static void clearProbe() throws Exception {
+        // Cell values are the 5-bit vocabulary, NOT raw indices: this file's own
+        // nibble() decoder maps 16-23 to the eight ordinary colours and 24-31 to
+        // powerups, so a cell of 1 is not a coloured block and can never match.
+        final int A = 16, B = 17;
         int[][] cases = {
-            {1, 1, 1, 1, 1, 1},   // a 3x2 block of one colour
-            {1, 1, 1, 1, 1, 0},   // five of a colour
-            {1, 1, 2, 1, 1, 2},   // two colours interleaved
-            {1, 1, 1, 1, 0, 0},   // a 2x2 square
+            {A, A, A, A, A, A},   // a 3x2 block of one colour
+            {A, A, A, A, A, 0},   // five of a colour
+            {A, A, B, A, A, B},   // two colours interleaved
+            {A, A, A, A, 0, 0},   // a 2x2 square
         };
         String[] names = {"3x2-solid", "five", "two-colour", "2x2-square"};
 
@@ -668,11 +672,18 @@ public class ParityProbe {
                         if (cell == 0) continue;
                         grid[(2 + i % 3) + W * (16 + i / 3)] = cell;
                     }
-                    // The clear runs off the back of a COMMITTED piece, so give
-                    // the board one rather than calling into an idle bucket.
-                    install(board, makeShape(1, 2, 1, new int[]{1, 1}));
-                    setInt(board, "field_e", 1 << 20);
-                    setInt(board, "field_Ab", 1 << 20);
+                    // TWO entry guards, both found by reading lk.a's state
+                    // machine rather than by widening the parameter search:
+                    //
+                    //   case 1: if (param1 > 124) go on, ELSE RETURN
+                    //   case 3: if (1 != this.field_ib) skip the scan entirely
+                    //
+                    // states 4-6 are the scan over field_P bounded by
+                    // field_a * field_O -- the clear pass itself. field_ib is 0
+                    // under allocateInstance, so every earlier attempt sailed
+                    // past the clear without touching the grid. param1 > 124 is
+                    // the same magic-threshold idiom as install's param0 > 73.
+                    setInt(board, "field_ib", 1);
                     String before = gridMap(board);
                     try {
                         Method m = Class.forName("lk").getDeclaredMethod(
