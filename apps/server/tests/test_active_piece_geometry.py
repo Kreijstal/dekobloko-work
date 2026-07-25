@@ -77,6 +77,29 @@ def load_rotation_golden():
             }
 
 
+#: The golden tables are ~21MB of generated data and are deliberately NOT in
+#: git -- they are reproducible from the jar in a couple of minutes, so carrying
+#: them in history costs more than it saves. Regenerate with:
+#:
+#:     cd tools/oracle
+#:     J8=/usr/lib/jvm/java-8-openjdk
+#:     $J8/bin/javac -nowarn -cp ../../dekobloko.jar -d . ParityProbe.java
+#:     $J8/bin/java -cp .:../../dekobloko.jar ParityProbe sweep \
+#:         > ../../apps/server/tests/fixtures/golden-active-piece.tsv
+#:     $J8/bin/java -cp stub:.:../../dekobloko.jar ParityProbe rotsweep \
+#:         > ../../apps/server/tests/fixtures/golden-rotation.tsv
+#:
+#: rotsweep needs stub/ FIRST on the classpath or lk.t dies redrawing a sprite.
+MISSING_FIXTURES = [
+    path.name for path in (FIXTURE, ROTATION_FIXTURE) if not path.exists()
+]
+
+
+@unittest.skipIf(
+    MISSING_FIXTURES,
+    f"golden table(s) not generated: {', '.join(MISSING_FIXTURES)} -- see the "
+    "regeneration command in this file's header",
+)
 class ActivePieceMatchesOriginalClient(unittest.TestCase):
     def test_spawn_geometry_matches_every_golden_row(self):
         rows = list(load_golden())
