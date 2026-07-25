@@ -289,8 +289,40 @@ u8 count
 ```
 
 The client calls `board.b()` `count` times. That method selects queued shapes
-and increments their use/reference counter. This is structurally verified, but
-the exact server event that requires the increment remains unresolved.
+and increments their use/reference counter.
+
+**S2C 66 is the queue RELEASE, and it must be DEFERRED (resolved 2026-07-25).**
+Execution-proven against a real client with injected probes:
+
+* S2C 67 appends a shape to `lk.field_X` with its per-shape counter `field_e = 0`.
+  While `field_e == 0` the shape is the *visible* incoming-material warning: the
+  per-tick code (`lk.s`) only advances `field_e` when it is **already > 0**
+  (case 98 decodes as "if `field_e <= 0`, skip the increment"), so a shape at 0
+  sits in the queue indefinitely and never descends.
+* The ONLY thing that lifts `field_e` off 0 is `lk.b(-19939)` (lk.java:1327),
+  invoked by the S2C-66 handler (client.java case 445-449) `count` times.
+* Once released the shape climbs `field_e` 1 → 13 at one step per tick and is
+  then popped and discarded (lk.java:7832) — about **240 ms total**.
+
+So sending the 66 alongside the 67 makes the queue flash past in a quarter
+second and the incoming warning is never seen (measured: queue at 10036 ms,
+release at 10036 ms, discard at 10274 ms). Sending no 66 at all leaves the queue
+permanently stuck. The server therefore holds each queued shape as *pending* and
+releases it on the **target's next finalize**, which yields a ~1.8 s visible
+warning (measured: queue 13193 ms → release 15035 ms). Pending counts are tracked
+per slot in `HostedGame.pending_releases` and flushed exactly: `lk.b(-19939)`
+throws `IllegalStateException` if asked to release more shapes than are pending,
+which would kill the client. Guarded by
+`test_queued_cooked_shape_releases_on_target_next_finalize`.
+
+**The client never cooks its own shapes in this build.** qc.java's local
+cook/stage path (gated on `field_K >= 2` and `eb.field_m >= 2`) was probed and
+fired **zero** times — all cooked shapes arrive over S2C 67. This also settles
+the shared-RNG question: the client's cooked-cell RNG (`tf.field_cb`) is a
+`java.util.Random` constructed once with no seed ever set, and the server's
+gameplay seed is never transmitted, but neither matters because the client does
+not generate cooked geometry — the server's board-derived geometry is
+authoritative.
 
 The authoritative server runs match/special-item resolution after a lock,
 obtains returned shapes for the configured feedback level, chooses their target,
@@ -334,6 +366,68 @@ C2S 59 with the restored update counter. This packet is the mechanism for
 joining/spectating an existing state or repairing divergence; normal movement
 uses the much smaller input relay.
 
+### S2C 61 is what makes an opponent's bucket visible at all (field_U gate)
+
+A freshly constructed board (`lk`) starts with `field_U = -1` (lk.java constructor).
+The carousel render loop in `qc.a(...)` (qc.java:8257 / 8530) draws a board only
+when `field_U >= 0`; a board still at `-1` is silently **culled**. The **local**
+board advances `field_U` through its own gravity tick (`lk.d`), so it always
+renders. A **remote** board never runs local gravity, so the only thing that
+lifts its `field_U` off `-1` is the `active_update_counter` field of an **S2C 61**
+for that slot (client.i case 347 → `lk.a(boolean, wl, byte)`, lk.java:4890). No
+S2C 61 for a remote slot ⇒ that opponent's bucket is invisible for the whole
+match.
+
+Because of this, the server broadcasts one S2C 61 **per slot at match start**
+(after the initial S2C 64 spawns), owner-skipped. Owner-skip matters: applying an
+S2C 61 to a board overwrites its live physics — including the gravity counter
+`field_Ab` — so a player must never receive a snapshot of its **own** board
+(it would stutter local play); only the remote replicas need it. Proactive
+snapshots (after `PROACTIVE_SNAPSHOT_TICKS` accepted ticks) and the mismatch
+resync are broadcast the same owner-skipped way, so opponent buckets keep
+updating as each side plays.
+
+### Do NOT push snapshots into a LIVE remote board (they arrive stale and top it out)
+
+A remote board replica runs its OWN deterministic simulation from the relayed
+action stream (S2C 63) + piece events (S2C 64), and it DOES run the colour-clear
+locally: the `lk.field_kb` gate (lk.java:3438) only suppresses the clear's
+network *notification* (the commit branch, cases 113–119), not the clear itself.
+Verified live 2026-07-25 — a remote replica logged `CLEAR-ZERO field_kb=false`
+emptying groups of 8. So a live replica needs **no** ongoing correction; the
+relayed accepted controls keep it in step with the server.
+
+Pushing an authoritative snapshot into such a live board is actively harmful.
+The client applies whatever snapshot it receives (`lk.a` sets `field_U` from the
+packet unconditionally, lk.java:5045), and the snapshot's `field_U`
+(= `transition_counters[slot]`) is typically **stale** — lower than the value the
+replica has already reached from relayed events. Applying it reverts cells the
+replica is mid clear-animation on, so the next active piece overflows and the
+client sets `lk.field_Bb=true` (lk.java:6379). Processing a later piece packet
+while `field_Bb` is true but the board still has lives makes `qc.b`
+(qc.java:6489) fail its consistency check, log `T5: <slot> <lives> <field_Bb>`,
+and call `si.a(107)` — which nulls `qc.field_s`, i.e. the client **tears down its
+own server connection**. Symptom: a random mid-match disconnect (no game-over
+screen), the surviving side awarded the win, and the player never lost a life.
+
+Rule: snapshots (S2C 61) are for **initial** state only — the match-start seed
+(so `field_U` leaves −1 and the bucket renders) and spectator join. The server
+therefore does NOT broadcast the old proactive (~10 s) snapshot, nor one per
+finalize, into live remote boards. Guarded by
+`test_no_ongoing_snapshot_into_live_remote_replica` and
+`test_reaching_snapshot_tick_interval_does_not_snapshot_live_boards`.
+
+Regression 2026-07-25: the match-start seed was previously gated off
+(`DEKOBLOKO_AUTHORITATIVE_SNAPSHOTS` defaulted off, and `start()` sent no
+snapshot), on a stale belief that the serializer's byte order did not match the
+client's `lk.a` decoder. Re-tracing `lk.a` against the current (regenerated)
+decompilation confirmed the byte order above matches exactly and that
+`field_P = new int[field_O*field_a]` (= `width*height`) cannot overrun. The flag
+now defaults **on** (`=0` disables). Proven live with an instrumented all-original
+client: `OP61 … slot=1 field_U(before)=-1 → after=0 → DRAWABLE`, then
+`RENDER-GATE slot=1 … -> DRAWN`. Guarded by
+`test_match_start_seeds_opponent_snapshots`.
+
 ## Reset, defeat, and match termination
 
 `lk.field_jb` is the remaining-life counter, not merely a participating flag.
@@ -361,6 +455,41 @@ Verified receiver effects:
 
 S2C 62 is specifically how other players' lost buckets disappear. It does not
 move any surviving board to a new index.
+
+### 60 is the teardown, not part of the result display (confirmed 2026-07-25)
+
+The table above says "send only after result packets". That is necessary but
+not sufficient: 60 must not be sent at match end *at all*. Sending 62, 69 and
+60 back to back destroys the result screen in the same breath it is created,
+and the observed behaviour was a finished match flashing nothing and returning
+the player straight to the lobby.
+
+Withholding 60 until the player dismisses the screen makes the defeat UI render
+for real -- an eliminated opponent shows `PLAYER 3 IS OUT` on screen. So:
+
+* **62's defeat UI is now execution-proven**, not merely read from bytecode;
+* **60 is confirmed to be the teardown**, and is now sent per-session when that
+  player leaves the result screen (C2S 62 `leave_game`, or C2S 58, the lobby
+  button). The room is retired only once the last player has dismissed it.
+
+Sessions with no UI -- bots and the demo fixtures -- must dismiss themselves, or
+they pin the room open forever.
+
+### The winner's end screen is still incomplete
+
+S2C 69 is sent and `qc.field_r` is set, but the win menu proper -- final scores,
+the highscore table, the menu buttons -- has never been seen populated. Two
+known gaps, neither yet resolved:
+
+* no score payload accompanies 69, and the client presumably needs one to fill
+  a score/highscore panel;
+* the post-game **S2C 71-74** masks that drive the rematch UI have **no senders
+  anywhere in the server**. C2S 63 (rematch offer/cancel/accept) is received and
+  logged, but since the client's choice is selected from those masks, the
+  exchange cannot complete.
+
+Deferring the teardown is the prerequisite for any of that, and is now in place;
+the score and rematch payloads are the remaining work.
 
 ## Draw and rematch controls
 

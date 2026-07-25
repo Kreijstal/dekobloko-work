@@ -212,6 +212,11 @@ class LobbyDemo:
             if time.monotonic() >= deadline:
                 remaining = game.active_players()
                 game.end_game(self.rng.choice(remaining) if remaining else None)
+                # A finished game HOLDS its result screen until each player
+                # dismisses it. These fixtures have no UI to show, so they must
+                # answer for themselves or the room is pinned open forever.
+                for player in (self.player5, self.player6):
+                    game.dismiss(player)
                 return
             self._stop.wait(0.1)
 

@@ -834,6 +834,10 @@ function saveAndReload(ast, cp) {
       });
       if (verified.status !== 0) {
         console.warn(`[bytecode-guard] reverted ${orphanGuardPassLabel || 'pass'}: ASM verification failed for ${orphanGuardClassName}`);
+        if (process.env.GUARD_TRACE) {
+          console.warn(`[guard-trace] ${verified.stdout || ''}${verified.stderr || ''}`);
+          console.warn(new Error('guard-trace').stack);
+        }
         fs.writeFileSync(tmpFile, orphanGuardState.snapshot);
         lastSaveAndReloadRejected = true;
         return loadAst(tmpFile);
@@ -2836,6 +2840,18 @@ function collectInterproceduralConstantArgumentFacts(alwaysFalseFields) {
     classes.push(...(ast.classes || []));
   }
   const analysisAst = { classes };
+  // A second, deliberately UNPRUNED copy of the same program. The pruning below
+  // is an analysis aid, not something the emitted classes get, so every fact is
+  // re-checked against this copy before it is allowed to specialize a callee.
+  // Without it, a parameter that only looks constant because its varying store
+  // became unreachable is baked in as a literal: cl.a(String,int,int,String,int)
+  // had its second parameter rewritten to 0 while sf still passed a computed
+  // width at a live call site.
+  const verifyAst = { classes: [] };
+  for (const f of analysisFiles) {
+    const { ast } = loadAst(path.join(inDir, f));
+    verifyAst.classes.push(...(ast.classes || []));
+  }
   // Establish field-derived reachability first. Obfuscator trap calls often
   // use a different dummy argument only on a branch guarded by an always-false
   // interclass sentinel; counting that dead call would hide the constant fact.
@@ -2846,6 +2862,7 @@ function collectInterproceduralConstantArgumentFacts(alwaysFalseFields) {
   runRemoveUnreachableCodeCfg(analysisAst);
   const discovery = runInterproceduralConstantArgumentFixedPoint(analysisAst, {
     maxIterations: interclassDceMaxIterations,
+    verifyAstRoot: verifyAst,
   });
   discovery.signatureCompaction = experimentalSignatureCompaction
     ? discoverInterproceduralSignatureCompactions(analysisAst, { facts: discovery.facts })
@@ -4211,8 +4228,15 @@ for (const f of processFiles) {
             const structuredGotoResult = runStructuredGotoClone(ast);
             tracePassTime(f, `post-final:structured-goto-clone:${structuredGotoIteration}`, structuredGotoStart);
             if (!structuredGotoResult || !structuredGotoResult.changed) break;
+            // Cloning blocks can deepen the operand stack, so the floor has to be
+            // raised here exactly as the narrow structured-goto pipelines do above;
+            // without it the guard rejects the class for "Insufficient maximum
+            // stack size" and the whole post-final stage is thrown away.
+            raiseMaxStackFloor(ast);
             const structuredGotoSaveStart = Date.now();
+            orphanGuardPassLabel = `structured-goto-clone:${structuredGotoIteration}`;
             ({ ast, cp } = saveAndReload(ast, cp));
+            orphanGuardPassLabel = '';
             tracePassTime(f, `post-final:save-after-structured-goto-clone:${structuredGotoIteration}`, structuredGotoSaveStart);
           }
         });

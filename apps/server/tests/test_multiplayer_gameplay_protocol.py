@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import os
 from pathlib import Path
 import random
 import subprocess
@@ -40,6 +41,10 @@ class FakeSession:
         self.match_starts: list[tuple[int, int]] = []
         self.piece_events: list[tuple[int, int, int, int, int]] = []
         self.feedback_shapes: list[tuple[int, int]] = []
+        self.cooked_releases: list[tuple[int, int]] = []
+        # Send order, not just contents: the client cares about S2C 66 landing
+        # before S2C 64 on a garbage spawn (see the T5 window).
+        self.ordered_sends: list[str] = []
         self.full_states: list[tuple[int, bytes]] = []
         self.winner_results: list[int] = []
         self.game_over_count = 0
@@ -77,9 +82,15 @@ class FakeSession:
         self.piece_events.append(
             (player_slot, piece.piece_id, final_x, final_y, final_orientation)
         )
+        self.ordered_sends.append("piece")
 
     def send_cooked_shape(self, player_slot: int, shape: CookedShape) -> None:
         self.feedback_shapes.append((player_slot, shape.shape_id))
+        self.ordered_sends.append("cooked")
+
+    def send_cooked_release(self, player_slot: int, count: int) -> None:
+        self.cooked_releases.append((player_slot, count))
+        self.ordered_sends.append("release")
 
     def send_full_state(self, player_slot: int, state_payload: bytes) -> None:
         self.full_states.append((player_slot, state_payload))
@@ -92,6 +103,34 @@ class FakeSession:
 
 
 class MultiplayerGameplayProtocolTest(unittest.TestCase):
+    def setUp(self) -> None:
+        # The authoritative snapshot (opcode 61) is ENABLED by default now
+        # (DEKOBLOKO_AUTHORITATIVE_SNAPSHOTS=0 disables it). Re-traced against the
+        # CURRENT client 2026-07-25: lk.a(boolean, wl, byte) reads exactly the
+        # byte order this serializer emits, and it is the ONLY way a remote board
+        # replica's lk.field_U leaves -1 so the opponent bucket stops being
+        # culled. We pin the flag on explicitly so the suite is independent of
+        # the ambient default.
+        self._prev_snap = os.environ.get("DEKOBLOKO_AUTHORITATIVE_SNAPSHOTS")
+        os.environ["DEKOBLOKO_AUTHORITATIVE_SNAPSHOTS"] = "1"
+
+    def tearDown(self) -> None:
+        if self._prev_snap is None:
+            os.environ.pop("DEKOBLOKO_AUTHORITATIVE_SNAPSHOTS", None)
+        else:
+            os.environ["DEKOBLOKO_AUTHORITATIVE_SNAPSHOTS"] = self._prev_snap
+
+    @staticmethod
+    def _drain_start_seed(*sessions: "FakeSession") -> None:
+        """Discard the per-slot opponent snapshots that HostedGame.start() now
+        broadcasts, so a test can assert only the packets IT triggers.
+
+        start() seeds every board's replica once (owner-skipped) so opponent
+        buckets render from frame 1; that seeding is covered by
+        test_match_start_seeds_opponent_snapshots. Other tests drain it first."""
+        for session in sessions:
+            session.full_states.clear()
+
     def test_in_match_client_surface_is_actions_and_ack_not_world_state(self) -> None:
         self.assertEqual(
             {58: 0, 59: 1, 60: -1, 61: 0, 62: 0, 63: 0},
@@ -198,6 +237,26 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertEqual(255, spectator_payload[6])
 
     def test_enabled_item_generator_uses_original_packed_vocabulary(self) -> None:
+        """Ordinary pieces use colours 16..22 plus the wildcard 23 -- never the
+        item cells 24..31.
+
+        This test previously asserted that cells 23..29 were all generated.
+        That was the server's own invented item policy (its comment conceded
+        the frequency was unknown), and it is not something the client can
+        represent: the next-piece preview indexes a sprite table with the raw
+        descriptor nibble,
+
+            var21 = field_yb & 15
+            fb.field_c[param7][var21]        (qc.java:11480)
+
+        and fb.field_c is new ck[8][8] (fb.java:94) -- the indexed dimension
+        holds 8 entries. lc.b decodes a nibble as (n & 7) + (n & 8 ? 24 : 16),
+        so item cells 24..31 are exactly nibbles 8..15 and run off the end.
+        Emitting one killed the client on its first rendered frame with
+        ArrayIndexOutOfBoundsException: 8 (live, 2026-07-25, special_level=4).
+
+        The wildcard is cell 23 -> nibble 7, inside the table, so it stays.
+        """
         host = FakeSession("host")
         game = HostedGame(
             game_id=43,
@@ -208,9 +267,12 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         seen = set()
         for _index in range(3000):
             seen.update(game.next_piece().cells)
-        self.assertTrue(set(range(16, 23)).issubset(seen))
-        self.assertTrue(set(range(23, 30)).issubset(seen))
-        self.assertTrue(all(16 <= cell <= 29 for cell in seen))
+        self.assertTrue(set(range(16, 23)).issubset(seen), "all colours appear")
+        self.assertIn(23, seen, "the wildcard is still generated")
+        self.assertTrue(
+            all(16 <= cell <= 23 for cell in seen),
+            f"item cells are unrenderable in a piece descriptor; got {sorted(seen)}",
+        )
 
     def test_cooked_shapes_preserve_irregular_and_hollow_geometry(self) -> None:
         fixtures = [
@@ -270,10 +332,16 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         masks = (0, 1, 1, 0, 8, 16)
         payload = bytes([len(masks)]) + pack_5bit(masks)
         game.handle_controls(host, payload)
-        self.assertEqual([(0, payload)], peer.action_streams)
+        # Relayed intact except for the drop bit on the trailing sample, which
+        # is always cleared so a replica that outruns the relay coasts on base
+        # gravity instead of holding fast drop through a landing wait (see
+        # test_last_relayed_sample_drops_the_fast_drop_bit).
+        relayed = (0, 1, 1, 0, 8, 0)
+        expected = bytes([len(relayed)]) + pack_5bit(relayed)
+        self.assertEqual([(0, expected)], peer.action_streams)
 
         game.handle_controls(host, bytes([2, 0]))
-        self.assertEqual([(0, payload)], peer.action_streams)
+        self.assertEqual([(0, expected)], peer.action_streams)
 
     def test_elimination_tombstones_slot_without_renumbering_survivors(self) -> None:
         host = FakeSession("host")
@@ -295,6 +363,23 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertEqual([(1, 0)], last.removals)
 
     def test_match_start_spawns_one_domino_per_board_without_false_attack(self) -> None:
+        # Match start must NOT send a transition (opcode 64). Packet 64 is
+        # "correct the active piece, then finalize it", and by the time it
+        # arrives the client has already spawned a piece on every board.
+        # lk.a(int,int,int,boolean,int,int) assigns
+        #     this.field_L = param5;  this.field_q = param4;
+        # unconditionally (lk.java:1352-1353) and then falls through to the
+        # commit at lk.java:1452 -- there is no "no correction" encoding, so a
+        # transition carrying the zero placeholder teleported that live piece
+        # to the top-left corner and locked it there. Captured live 2026-07-25:
+        #     [game] sent piece event slot=1 piece=1 2x1 final=(0,0)
+        #     [CT] LANDING board=6dec2fc9 final=(0,0) was=(3,0) fillBefore=0
+        # leaving every client board one domino ahead of the engine for the
+        # rest of the match, with nothing to reconcile it.
+        #
+        # The seeding is opcode 61 instead (test_match_start_seeds_snapshots).
+        # Opcode 67 is not an option either: it fills the incoming bombardment
+        # queue, so a domino sent through it would falsely attack every board.
         host = FakeSession("host")
         peer = FakeSession("peer")
         game = HostedGame(game_id=9, host=host)
@@ -304,10 +389,15 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
 
         self.assertEqual([(9, 0)], host.match_starts)
         self.assertEqual([(9, 1)], peer.match_starts)
-        self.assertEqual([(0, 0, 0, 0, 0), (1, 1, 0, 0, 0)], host.piece_events)
-        self.assertEqual([(0, 0, 0, 0, 0), (1, 1, 0, 0, 0)], peer.piece_events)
+        self.assertEqual([], host.piece_events)
+        self.assertEqual([], peer.piece_events)
         self.assertEqual([], host.feedback_shapes)
         self.assertEqual([], peer.feedback_shapes)
+        # Both boards are still spawned and empty server-side, so the only way
+        # a client can gain a cell is by actually playing.
+        for slot in range(2):
+            self.assertIsNotNone(game.engine.players[slot].active)
+            self.assertEqual(0, game.engine.players[slot].board.occupied_count())
 
     def test_authoritative_transition_requires_ack_and_uses_final_coordinates(self) -> None:
         host = FakeSession("host")
@@ -317,28 +407,30 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         game.start()
 
         fast_batch = bytes([20]) + pack_5bit((FAST_DROP,) * 20)
-        game.handle_controls(host, fast_batch)
-        self.assertEqual([], peer.action_streams)
-        self.assertEqual(2, len(host.piece_events))
-
-        game.handle_transition_ack(host, 0)
-        game.handle_transition_ack(peer, 0)
-        for _batch in range(6):
+        # Match start no longer arms awaiting_transition_ack: that latch is
+        # cleared by the ack to a packet 64, and start() sends none. So the
+        # very first batch is live input rather than something to discard.
+        self.assertEqual({}, game.awaiting_transition_ack)
+        for _batch in range(8):
             game.handle_controls(host, fast_batch)
-            if len(host.piece_events) > 2:
+            if host.piece_events:
                 break
 
-        self.assertEqual(3, len(host.piece_events))
+        self.assertEqual(1, len(host.piece_events))
         transition = host.piece_events[-1]
         self.assertEqual((3, 17, 0), (transition[2], transition[3], transition[4]))
         self.assertEqual(1, game.awaiting_transition_ack[0])
-        self.assertEqual(18, len(decode_control_batch(peer.action_streams[-1][1])))
+        # 18 samples were applied to the piece; the replica is relayed 17. The
+        # sample that LANDS a piece is withheld so a replica never lands one
+        # itself -- see test_landing_sample_is_withheld_from_replicas.
+        self.assertEqual(17, len(decode_control_batch(peer.action_streams[-1][1])))
 
         # A repeated short landed batch cannot move the newly spawned piece.
         game.handle_controls(host, bytes([1]) + pack_5bit((FAST_DROP,)))
-        self.assertEqual(3, len(host.piece_events))
+        self.assertEqual(1, len(host.piece_events))
         self.assertEqual(0, game.engine.players[0].active.y)
 
+        self._drain_start_seed(host, peer)
         game.handle_transition_ack(host, 9)
         self.assertEqual(1, game.awaiting_transition_ack[0])
         self.assertEqual(1, len(host.full_states))
@@ -378,10 +470,249 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertEqual([(1, 0)], peer.removals)
         self.assertEqual([0], host.winner_results)
         self.assertEqual([], peer.winner_results)
+        # Opcode 60 is HELD until the player dismisses the result screen. 62 and
+        # 69 raise the defeat/win UI and 60 tears it down, so sending it here
+        # destroyed the screen in the same breath as it was created and dumped
+        # everyone straight back to the lobby with no won/lost screen.
+        self.assertEqual(0, host.game_over_count)
+        self.assertEqual(0, peer.game_over_count)
+
+        game.dismiss(host)
         self.assertEqual(1, host.game_over_count)
+        self.assertEqual(0, peer.game_over_count, "one player leaving must not "
+                         "yank the screen from anyone still reading it")
+        game.dismiss(peer)
         self.assertEqual(1, peer.game_over_count)
 
-    def test_feedback_targets_round_robin_and_settles_on_authoritative_boards(self) -> None:
+    def test_landing_sample_is_withheld_from_replicas(self) -> None:
+        # A relay is queued input the replica works through one sample per
+        # rendered frame, and it cannot apply a pending authoritative landing
+        # (S2C 64) until it reaches the end of that queue. Relay the sample
+        # that LANDS the piece and the replica gets there first, decides the
+        # piece is down, and sets lk.field_y to wait for the confirmation.
+        # lk.c latches field_Bb, and qc turns that into the "T5"
+        # self-disconnect -- killing the HUMAN's connection over an OPPONENT's
+        # bucket. Captured 2026-07-25, with both boards in perfect agreement
+        # either side of the gap, so nothing had actually diverged:
+        #     [CT] LOCK board=502ccf0a at=(3,12) y=true
+        #     Error: T5: 1 3 true
+        #     [CT] LANDING board=502ccf0a final=(3,13)      <- arrived after
+        #
+        # Feeding faster does not fix it: field_e collapses 20 -> 1 in a single
+        # tick, so the replica has a couple of frames and no rate makes that
+        # reliable. Withholding the sample removes the race outright.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=26, host=host)
+        game.add_player(peer)
+        game.start()
+
+        fast_batch = bytes([20]) + pack_5bit((FAST_DROP,) * 20)
+        for _batch in range(8):
+            game.handle_controls(host, fast_batch)
+            if host.piece_events:
+                break
+
+        self.assertEqual(1, len(host.piece_events), "the piece must have landed")
+        relayed = decode_control_batch(peer.action_streams[-1][1])
+        applied = game.engine.players[0].active
+        self.assertIsNotNone(applied, "a replacement piece must have spawned")
+        # One short of what the engine consumed: the replica stops a tick
+        # above the floor and forms no opinion about landing.
+        self.assertEqual(17, len(relayed))
+        self.assertEqual(20, len(decode_control_batch(peer.action_streams[-2][1])))
+
+    def test_last_relayed_sample_drops_the_fast_drop_bit(self) -> None:
+        # Withholding the landing sample is not enough by itself: a replica
+        # HOLDS the last control mask it was given and keeps applying it once
+        # the relay runs out, so it lands on the next frame anyway.
+        #
+        # And the held mask is normally FAST_DROP -- bots hold it permanently.
+        # Fast drop forces the drop countdown to 1 every tick, collapsing the
+        # 20-tick grace lk.c grants a landing into a SINGLE tick. Captured
+        # 2026-07-25 on a bot's replica, which is why none of the earlier
+        # timing work helped:
+        #     [INSTR lk.d] Ab=782 e=20 ctrl=16 y=true   <- grace set to 20
+        #     [INSTR lk.d] Ab=781 e=1  ctrl=16 y=true   <- gone next tick
+        # then field_Bb latched and qc raised the "T5" self-disconnect.
+        #
+        # Clearing the bit makes the replica coast on base gravity, which both
+        # keeps it off the landing and restores the full grace window for the
+        # S2C 64 already in flight.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=29, host=host)
+        game.add_player(peer)
+        game.start()
+
+        fast_batch = bytes([20]) + pack_5bit((FAST_DROP,) * 20)
+        for _batch in range(8):
+            game.handle_controls(host, fast_batch)
+            if host.piece_events:
+                break
+
+        self.assertEqual(1, len(host.piece_events), "the piece must have landed")
+        landing_relay = decode_control_batch(peer.action_streams[-1][1])
+        self.assertEqual(
+            0,
+            landing_relay[-1] & FAST_DROP,
+            "the replica must not be left holding fast drop into a landing",
+        )
+        # EVERY sample of the landing batch is stripped, not just the trailing
+        # one. Stripping only the tail is a tick too late: the replica can land
+        # part-way through a batch, and lk.d clamps field_e to 2 on any sample
+        # carrying the drop bit (lk.java:1241/1270), so a single queued sample
+        # behind the landing spends the whole 20-tick grace before the cleared
+        # one is reached. Observed live with the trailing-sample version
+        # deployed and demonstrably working:
+        #     Ab=786 e=20 ctrl=16 y=true   <- landed, grace 20
+        #     Ab=785 e=1  ctrl=0  y=true   <- cleared, but far too late
+        self.assertTrue(
+            all(mask & FAST_DROP == 0 for mask in landing_relay),
+            "no sample of the landing batch may carry fast drop",
+        )
+        # But the bulk of the fall keeps it. Cutting the bit for the whole
+        # descent drops the replica to base gravity (40 ticks a row against the
+        # authoritative 2), so it barely leaves the spawn before the transition
+        # snaps it to the floor -- every piece teleporting the full height of
+        # the bucket, which is what a live match actually looked like:
+        #     LANDING was=(3,0) -> final=(3,16)
+        # The replica only has to arrive AFTER the server, not be frozen.
+        opening_relay = decode_control_batch(peer.action_streams[0][1])
+        self.assertTrue(
+            any(mask & FAST_DROP for mask in opening_relay),
+            "a piece nowhere near resting must still be relayed fast drop, or "
+            "the replica cannot track the real descent",
+        )
+
+    def test_landing_only_batch_relays_nothing_at_all(self) -> None:
+        # When the FIRST sample of a batch lands the piece there is nothing
+        # left to replay. An empty action stream would be a packet the replica
+        # decodes for no effect; the S2C 64 that follows carries the landing.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=27, host=host)
+        game.add_player(peer)
+        game.start()
+
+        # Start the piece near the floor and feed ONE sample at a time, so the
+        # batch that lands it contains nothing else. Driving it down from the
+        # top is not an option: the control rate limiter grants only
+        # CONTROL_BURST_TICKS of credit, and a tight loop lets no wall clock
+        # pass to refill it.
+        player = game.engine.players[0]
+        # A surface to land on, so this takes a handful of samples rather than
+        # the full height of the bucket.
+        player.board.set(3, 15, 22)
+        player.board.set(4, 15, 22)
+        player.active = ActiveDomino(
+            player.board,
+            (16, 17),
+            game.engine.base_drop_ticks,
+            orientation=3,
+            top_x=3,
+            top_y=12,
+            drop_countdown=2,
+            forced_drop_countdown=30,
+            horizontal_parity=0,
+        )
+
+        single = bytes([1]) + pack_5bit((FAST_DROP,))
+        for _sample in range(30):
+            streams_before = len(peer.action_streams)
+            game.handle_controls(host, single)
+            if host.piece_events:
+                break
+            self.assertEqual(
+                streams_before + 1,
+                len(peer.action_streams),
+                "a non-landing sample must still reach the replica",
+            )
+        else:
+            self.fail("the piece never landed")
+
+        self.assertEqual(
+            streams_before,
+            len(peer.action_streams),
+            "the batch that lands the piece must relay nothing at all",
+        )
+
+    def test_life_loss_resyncs_that_slot_to_every_other_replica(self) -> None:
+        # Lives are lk.field_jb, and a replica keeps its own count: the commit
+        # routine decrements it whenever a piece locks above the top of the
+        # bucket (lk.java:5793-5801). The ONLY thing on the wire that writes
+        # that field is the u8 in a packet-61 snapshot (lk.java:4964) -- there
+        # is no dedicated life packet in this protocol.
+        #
+        # So a replica shows the right number of lives exactly as long as it
+        # agrees with the engine about when a piece overflows, and when it does
+        # not the opponent keeps all three lives on screen while the server
+        # eliminates them. Observed 2026-07-25: slot 1 burned three lives
+        # server-side ("FINALIZE slot=1 placed=0 fill 38->38 life_lost=True")
+        # while the human's replica of that bucket was still at fill=26.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=24, host=host)
+        game.add_player(peer)
+        game.start()
+        game.handle_transition_ack(host, 0)
+        game.handle_transition_ack(peer, 0)
+        self._drain_start_seed(host, peer)
+
+        player = game.engine.players[1]
+        player.lives = 3
+        player.board.set(3, 1, 22)
+        player.active = ActiveDomino(
+            player.board,
+            (16, 17),
+            game.engine.base_drop_ticks,
+            orientation=3,
+            top_x=3,
+            top_y=-1,
+            drop_countdown=2,
+            forced_drop_countdown=30,
+            horizontal_parity=0,
+        )
+        controls = (FAST_DROP,) * 4
+        game.handle_controls(peer, bytes([len(controls)]) + pack_5bit(controls))
+
+        # The life was taken but the slot survives, so the match continues and
+        # the correction is the only thing that tells the other client.
+        self.assertEqual(2, game.engine.players[1].lives)
+        self.assertEqual("playing", game.state)
+        self.assertEqual([1], [slot for slot, _payload in host.full_states])
+        self._assert_original_decodes_snapshot(game, 1, host.full_states[0][1])
+        # Never back to the owner: their own board is live and a 61 would reset
+        # the physics they are mid-drop in.
+        self.assertEqual([], peer.full_states)
+
+    def test_a_landing_never_reseats_the_player_who_made_it(self) -> None:
+        # Every transition now re-seats the REPLICAS of that slot
+        # (test_transition_reseats_the_remote_replica), because a replica's own
+        # colour-clear does not agree with the engine's. The owner is the one
+        # party that must never receive it: opcode 61 overwrites board
+        # dimensions, offsets and the gravity counter field_Ab, so pushing it
+        # into the board somebody is actively playing on would stutter their
+        # own drop on every single piece.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=25, host=host)
+        game.add_player(peer)
+        game.start()
+        self._drain_start_seed(host, peer)
+
+        fast_batch = bytes([20]) + pack_5bit((FAST_DROP,) * 20)
+        for _batch in range(8):
+            game.handle_controls(host, fast_batch)
+            if host.piece_events:
+                break
+
+        self.assertEqual(1, len(host.piece_events))
+        self.assertEqual(3, game.engine.players[0].lives)
+        self.assertEqual([], host.full_states, "the owner is never re-seated")
+        self.assertEqual([0], [slot for slot, _payload in peer.full_states])
+
+    def test_feedback_targets_round_robin_and_queues_without_touching_boards(self) -> None:
         host = FakeSession("host")
         middle = FakeSession("middle")
         last = FakeSession("last")
@@ -393,10 +724,72 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         lock = LockResult(3, 17, 0, 3, False, frozenset(), (shape, shape))
         self.assertFalse(game._dispatch_returned_shapes(0, lock))
         self.assertEqual([(1, 3), (2, 4)], host.feedback_shapes)
-        self.assertEqual(10, game.engine.players[1].board.get(3, 17))
-        self.assertEqual(10, game.engine.players[2].board.get(3, 17))
+        # The release (S2C 66) is DEFERRED, not sent alongside the 67: a shape
+        # must sit in the client's queue at field_e==0 as the visible incoming
+        # warning. It is released at the target's next piece transition, which
+        # is also when it becomes their falling piece.
+        self.assertEqual([], host.cooked_releases)
+        self.assertEqual({1, 2}, set(game.pending_garbage))
+        self.assertEqual(1, len(game.pending_garbage[1]))
+        self.assertEqual(1, len(game.pending_garbage[2]))
+        # Crucially the target boards are UNTOUCHED. Garbage is delivered as a
+        # falling piece, never written into the grid on arrival.
+        self.assertEqual(0, game.engine.players[1].board.get(3, 17))
+        self.assertEqual(0, game.engine.players[2].board.get(3, 17))
 
-    def test_feedback_overflow_finishes_match_for_last_survivor(self) -> None:
+    def test_queued_garbage_becomes_the_targets_next_falling_piece(self) -> None:
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=31, host=host)
+        game.add_player(peer)
+        game.start()
+
+        # An L-shaped blob, so the spawn cannot be mistaken for a domino.
+        shape = ReturnedShape(2, 3, 2, (True, False, False, True, True, True))
+        lock = LockResult(3, 17, 0, 3, False, frozenset(), (shape,))
+        self.assertFalse(game._dispatch_returned_shapes(0, lock))
+        self.assertEqual([1], [slot for slot, _ in host.feedback_shapes])
+
+        # Land the target's current piece so the transition actually runs.
+        for _ in range(40):
+            if game.engine.apply_controls(1, (FAST_DROP,)):
+                break
+        game._finish_authoritative_piece(1)
+
+        active = game.engine.players[1].active
+        self.assertIsNotNone(active)
+        # It is the garbage, airborne, not a fresh domino and not settled.
+        self.assertEqual((3, 2), active.dimensions)
+        self.assertFalse(active.is_domino)
+        self.assertFalse(active.landed)
+        self.assertLess(active.y, 0)
+        # The board holds ONLY the two cells of the domino that just locked.
+        # Had the garbage been settled on arrival there would be four more.
+        self.assertEqual(2, game.engine.players[1].board.occupied_count())
+        # ...and it has left the incoming queue.
+        self.assertEqual([(1, 1)], host.cooked_releases)
+        self.assertEqual({}, game.pending_garbage)
+
+        # The spawned piece must carry a FRESH shape id. The client caches rf
+        # by id and oi.a(rf, int) throws IllegalArgumentException on inserting
+        # an id it already holds (oi.java:283) -- and the S2C 67 that queued
+        # this shape registered its id already. Reusing it crashed the client
+        # on the first garbage spawn.
+        queued_ids = {shape_id for _slot, shape_id in host.feedback_shapes}
+        spawned_ids = {event[1] for event in host.piece_events}
+        self.assertTrue(queued_ids, "expected a queued cooked shape")
+        self.assertTrue(spawned_ids, "expected a spawned piece")
+        self.assertEqual(
+            set(),
+            queued_ids & spawned_ids,
+            "spawned piece reused a queued cooked shape id",
+        )
+
+    def test_feedback_costs_a_life_only_when_the_garbage_piece_lands(self) -> None:
+        # Arrival must not cost anything. The old code settled the shape into
+        # the grid on receipt and deducted a life there, which no client was
+        # ever told about; now the shape falls and a life is lost through the
+        # ordinary finalize path only if it overflows on landing.
         host = FakeSession("host")
         peer = FakeSession("peer")
         game = HostedGame(game_id=16, host=host)
@@ -407,16 +800,19 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         target.board.set(3, 0, 16)
         shape = ReturnedShape(2, 1, 1, (True,))
         lock = LockResult(3, 17, 0, 3, False, frozenset(), (shape,))
+        before = target.board.occupied_count()
 
-        self.assertTrue(game._dispatch_returned_shapes(0, lock))
+        # Arrival is queued only: no cells, no life, no elimination. The old
+        # settle-on-receipt path deducted a life and ended the match right here
+        # -- and did it server-side, where no client was ever told about it.
+        self.assertFalse(game._dispatch_returned_shapes(0, lock))
 
-        self.assertEqual("finished", game.state)
-        self.assertIn(1, game.inactive_slots)
-        self.assertEqual([(1, 0)], host.removals)
-        self.assertEqual([(1, 0)], peer.removals)
-        self.assertEqual([0], host.winner_results)
-        self.assertEqual(1, host.game_over_count)
-        self.assertEqual(1, peer.game_over_count)
+        self.assertEqual("playing", game.state)
+        self.assertNotIn(1, game.inactive_slots)
+        self.assertEqual(1, target.lives)
+        self.assertEqual(before, target.board.occupied_count())
+        self.assertEqual([], host.removals)
+        self.assertEqual(0, host.game_over_count)
 
     def test_control_rate_limiter_refills_from_elapsed_time_and_caps_burst(self) -> None:
         host = FakeSession("host")
@@ -431,6 +827,7 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertEqual(40, game._admit_control_ticks(0, 99, 200.0))
 
         game.handle_transition_ack(host, 0)
+        self._drain_start_seed(host, peer)
         game.control_credit[0] = 0.0
         game.control_refill_at[0] = time.monotonic()
         game.handle_controls(host, bytes([1]) + pack_5bit((0,)))
@@ -444,6 +841,7 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         game.start()
         game.handle_transition_ack(host, 0)
         game.handle_transition_ack(peer, 0)
+        self._drain_start_seed(host, peer)
         game.control_credit[0] = 1.0
         game.control_refill_at[0] = time.monotonic()
 
@@ -459,14 +857,175 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         game = HostedGame(game_id=14, host=host)
         game.add_player(peer)
         game.start()
+        self._drain_start_seed(host, peer)
         game.engine.players[0].board.set_solid(0, 17, 2, 99)
         game.engine.players[0].board.set(1, 17, 29)
         game.broadcast_authoritative_snapshot(0)
-        self.assertEqual([0], [slot for slot, _payload in host.full_states])
+        # Owner-skip: slot 0's own player (host) never receives its own board;
+        # only the remote replica (peer) does. Sending a player their own board
+        # would reset their live physics (gravity counter field_Ab).
+        self.assertEqual([], [slot for slot, _payload in host.full_states])
         self.assertEqual([0], [slot for slot, _payload in peer.full_states])
-        self._assert_original_decodes_snapshot(game, 0, host.full_states[0][1])
+        self._assert_original_decodes_snapshot(game, 0, peer.full_states[0][1])
+        # send_all_authoritative_snapshots is a direct recovery hook (no
+        # owner-skip): the recipient gets every live slot.
         game.send_all_authoritative_snapshots(peer)
         self.assertEqual([0, 0, 1], [slot for slot, _payload in peer.full_states])
+
+    def test_match_start_seeds_opponent_snapshots(self) -> None:
+        # A remote board renders only once its client-side lk.field_U leaves -1,
+        # which an opcode-61 full-state does. start() therefore broadcasts one
+        # snapshot per slot so each player sees its opponents' buckets from the
+        # very first frame instead of a blank space.
+        #
+        # The seed is sent to the OWNER as well, unlike the steady-state
+        # broadcast. The owner-skip exists because a 61 resets live physics
+        # (board dims, offsets, the gravity counter field_Ab) out from under a
+        # player mid-drop; at match start there is no drop in progress. And the
+        # owner now needs it, because match start no longer sends a transition
+        # packet -- see
+        # test_match_start_spawns_one_domino_per_board_without_false_attack.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=20, host=host)
+        game.add_player(peer)
+        game.start()
+        self.assertEqual([0, 1], [slot for slot, _payload in host.full_states])
+        self.assertEqual([0, 1], [slot for slot, _payload in peer.full_states])
+        for slot in range(2):
+            self._assert_original_decodes_snapshot(game, slot, host.full_states[slot][1])
+            self._assert_original_decodes_snapshot(game, slot, peer.full_states[slot][1])
+
+    def test_queued_cooked_shape_releases_on_target_next_finalize(self) -> None:
+        # A cooked shape must stay visible in the target's incoming queue
+        # (client field_e==0) and only descend once S2C 66 arrives. Measured on
+        # a real client: releasing in the same breath as the S2C 67 drained the
+        # shape in ~240ms, so the queue never rendered. The release is therefore
+        # deferred to the target's next finalize. The count must equal exactly
+        # what was queued -- lk.b(-19939) throws if asked to release more.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=22, host=host)
+        game.add_player(peer)
+        game.start()
+        shape = ReturnedShape(2, 1, 1, (True,))
+        lock = LockResult(3, 17, 0, 3, False, frozenset(), (shape,))
+
+        # host clears -> one cooked shape queued on peer (slot 1), NOT released.
+        game._dispatch_returned_shapes(0, lock)
+        self.assertEqual([1], [slot for slot, _shape_id in host.feedback_shapes])
+        self.assertEqual([], host.cooked_releases)
+        self.assertEqual(1, len(game.pending_garbage[1]))
+
+        # The SOURCE finalizing must not flush the target's queue.
+        for _ in range(40):
+            if game.engine.apply_controls(0, (FAST_DROP,)):
+                break
+        game._finish_authoritative_piece(0)
+        self.assertEqual([], host.cooked_releases)
+
+        # The TARGET finalizing flushes it, exactly once, with the queued count.
+        for _ in range(40):
+            if game.engine.apply_controls(1, (FAST_DROP,)):
+                break
+        game._finish_authoritative_piece(1)
+        self.assertEqual([(1, 1)], host.cooked_releases)
+        self.assertEqual([(1, 1)], peer.cooked_releases)
+        self.assertEqual({}, game.pending_garbage)
+
+    def test_garbage_arrival_neither_settles_nor_snapshots(self) -> None:
+        # Garbage is delivered as a falling piece, so arrival changes nothing
+        # that needs pushing: no cells are written and no snapshot is sent. The
+        # earlier code settled the shape into the grid and then pushed the board
+        # to every replica to make them agree -- which is precisely why garbage
+        # appeared already-placed instead of dropping.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=23, host=host)
+        game.add_player(peer)
+        game.start()
+        self._drain_start_seed(host, peer)
+        shape = ReturnedShape(2, 1, 1, (True,))
+        lock = LockResult(3, 17, 0, 3, False, frozenset(), (shape,))
+        before = game.engine.players[1].board.occupied_count()
+
+        game._dispatch_returned_shapes(0, lock)
+
+        self.assertEqual([], [slot for slot, _payload in peer.full_states])
+        self.assertEqual([], [slot for slot, _payload in host.full_states])
+        self.assertEqual(before, game.engine.players[1].board.occupied_count())
+        self.assertEqual(0, game.engine.players[1].board.get(3, 17))
+
+    def test_transition_reseats_the_remote_replica(self) -> None:
+        # A live remote replica runs its OWN colour-clear (the lk.field_kb gate
+        # suppresses only the clear's network notification, not the clear), and
+        # that clear does NOT agree with this engine's. Measured 2026-07-25 by
+        # comparing committed cell counts at equal landing indices, a metric
+        # with no phase ambiguity unlike board dumps:
+        #
+        #   slot 2   server 10 12 14 16 18 20     client 10 12 14 12 14 16
+        #   slot 1   server 24 26 28 25 27        client 24 26 28 26 28
+        #
+        # The replica cleared four cells where the engine cleared none, and
+        # elsewhere removed four against the engine's five. Each side then
+        # builds on its own stack, so the divergence is permanent, and it ends
+        # with the replica resting where the engine did not put the piece ->
+        # lk.field_y -> field_Bb -> the "T5" self-disconnect.
+        #
+        # This test previously asserted the opposite, because a snapshot sent
+        # at an ARBITRARY moment carries a field_U below the replica's and
+        # reverts cells it is mid-clear on. Sent here, immediately behind the
+        # piece event that advanced the counter, its field_U is the value the
+        # replica has just adopted -- the freshest description of the board
+        # rather than a stale one. That ordering is the whole difference.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=21, host=host)
+        game.add_player(peer)
+        game.start()
+        game.handle_transition_ack(host, 0)
+        game.handle_transition_ack(peer, 0)
+        self._drain_start_seed(host, peer)
+        peer.piece_events.clear()
+
+        # Land host's active piece in the engine, then run the finalize path.
+        for _ in range(40):
+            if game.engine.apply_controls(0, (FAST_DROP,)):
+                break
+        game._finish_authoritative_piece(0)
+
+        self.assertTrue(peer.piece_events, "remote replica must still get the S2C 64 relay")
+        # The replica is re-seated; the owner never is, since a 61 would reset
+        # the live physics of the board they are playing on.
+        self.assertEqual([0], [slot for slot, _payload in peer.full_states])
+        self.assertEqual([], [slot for slot, _payload in host.full_states])
+        self._assert_original_decodes_snapshot(game, 0, peer.full_states[0][1])
+
+    def test_resync_on_transition_can_be_disabled(self) -> None:
+        # An escape hatch back to input-driven replicas, in case re-seating
+        # every transition turns out to cost more than the drift it fixes.
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=28, host=host)
+        game.add_player(peer)
+        game.start()
+        self._drain_start_seed(host, peer)
+
+        previous = os.environ.get("DEKOBLOKO_RESYNC_ON_TRANSITION")
+        os.environ["DEKOBLOKO_RESYNC_ON_TRANSITION"] = "0"
+        try:
+            for _ in range(40):
+                if game.engine.apply_controls(0, (FAST_DROP,)):
+                    break
+            game._finish_authoritative_piece(0)
+        finally:
+            if previous is None:
+                os.environ.pop("DEKOBLOKO_RESYNC_ON_TRANSITION", None)
+            else:
+                os.environ["DEKOBLOKO_RESYNC_ON_TRANSITION"] = previous
+
+        self.assertTrue(peer.piece_events)
+        self.assertEqual([], [slot for slot, _payload in peer.full_states])
 
     def test_large_bucket_snapshot_decodes_in_original_engine(self) -> None:
         host = FakeSession("host")
@@ -478,6 +1037,7 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         )
         game.add_player(peer)
         game.start()
+        self._drain_start_seed(host, peer)
 
         game.send_authoritative_snapshot(host, 0)
 
@@ -568,8 +1128,12 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
 
         self.assertEqual([(1, 0)], spectator.removals)
         self.assertEqual([], spectator.winner_results)
-        self.assertEqual(1, spectator.game_over_count)
         self.assertEqual("finished", game.state)
+        # A spectator watches the same held result screen as the players: it
+        # gets the results (62) but not the teardown (60) until it dismisses.
+        self.assertEqual(0, spectator.game_over_count)
+        game.dismiss(spectator)
+        self.assertEqual(1, spectator.game_over_count)
 
     def test_spectator_admission_respects_match_option(self) -> None:
         host = FakeSession("host")
@@ -674,6 +1238,15 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertEqual(0, observer.lobby_events[-1][6] & 0x10)
 
         game.end_game(host)
+        # The room now OUTLIVES the match, holding the won/lost screen. It is
+        # retired only once every player has dismissed it -- retiring it here
+        # is what used to yank people back to the lobby with no result screen.
+        self.assertEqual([game], lobby.games_snapshot())
+        game.dismiss(host)
+        self.assertEqual([game], lobby.games_snapshot(), "the room must survive "
+                         "until the LAST player has dismissed it")
+        game.dismiss(peer)
+
         self.assertIsNone(host.current_game)
         self.assertIsNone(peer.current_game)
         self.assertEqual([], lobby.games_snapshot())
@@ -732,7 +1305,13 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertNotIn("DummyLobbySession", combined)
         self.assertNotIn("start_demo_cycle", combined)
 
-    def test_proactive_snapshot_fires_after_accepted_tick_interval(self) -> None:
+    def test_reaching_snapshot_tick_interval_does_not_snapshot_live_boards(self) -> None:
+        # The old proactive snapshot pushed a full board into every live remote
+        # replica on a tick interval. That reverts a replica that is mid
+        # clear-animation (the snapshot's field_U is stale) and overflows its next
+        # active piece -> lk.field_Bb=true -> the qc.b "T5" self-disconnect.
+        # Reaching the interval must therefore NOT broadcast a snapshot; live
+        # boards stay in sync from the relayed action stream instead.
         host = FakeSession("host")
         peer = FakeSession("peer")
         game = HostedGame(game_id=15, host=host)
@@ -740,14 +1319,14 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         game.start()
         game.handle_transition_ack(host, 0)
         game.handle_transition_ack(peer, 0)
+        self._drain_start_seed(host, peer)
         game.ticks_since_snapshot[0] = 499
 
         game.handle_controls(host, bytes([1]) + pack_5bit((0,)))
 
-        self.assertEqual([0], [slot for slot, _payload in host.full_states])
-        self.assertEqual([0], [slot for slot, _payload in peer.full_states])
-        self.assertEqual(0, game.ticks_since_snapshot[0])
-        self._assert_original_decodes_snapshot(game, 0, host.full_states[0][1])
+        # No snapshot is pushed into either live board.
+        self.assertEqual([], [slot for slot, _payload in host.full_states])
+        self.assertEqual([], [slot for slot, _payload in peer.full_states])
 
     def test_player_id_packet_sets_and_resets_uc_field_g(self) -> None:
         # CONFIRMED against a real client on 2026-07-22: the room creator is
@@ -796,6 +1375,87 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
                 f"player_id/uid_for diverged for {name!r}; host check would break",
             )
 
+    def test_lobby_reentry_resends_bootstrap_after_menu_round_trip(self) -> None:
+        # REGRESSION for the "lobby -> back -> lobby does nothing" bug.
+        #
+        # Commit f9d9d92 removed `self._lobby_bootstrapped = False` from the
+        # opcode-10 (return-to-main-menu) handler, on the theory that the client
+        # keeps its lobby state across a menu round trip. Instrumentation of the
+        # ALL-ORIGINAL client on 2026-07-24 disproved that: the client tears its
+        # lobby down on leave, so the re-entry op=9 received only "No hosted
+        # games" and the lobby never rebuilt (server withheld the bootstrap
+        # because the per-connection gate was still set). The fix restores the
+        # reset. This pins the full enter -> leave -> re-enter cycle: frame 14
+        # (the lobby bootstrap) MUST be sent on BOTH entries.
+        import dekobloko_server.game as game_mod
+
+        class Sink:
+            peer = "test"
+
+            class _cfg:
+                welcome_message = None
+
+            config = _cfg()
+
+            def __init__(self) -> None:
+                self._lobby_bootstrapped = False
+                self.current_game = None
+                self.player_slot = None
+                self.display_name = "Hello"
+                self.sent: list[tuple[object, object]] = []
+
+            # GameSession wire surface the bootstrap/leave paths call:
+            def _send_packet(self, opcode: int, payload: bytes = b"") -> None:
+                self.sent.append((opcode, payload))
+
+            def send_lobby_bootstrap(self) -> None:
+                self._send_packet(14, b"")          # frame 14 == lobby bootstrap
+
+            def send_lobby_roster(self, rows) -> None:
+                for _ in rows:
+                    self._send_packet(10, b"")
+
+            def send_local_player_id(self, uid: int) -> None:
+                self._send_packet(10, b"")
+
+            def send_server_message(self, message: str) -> None:
+                self.sent.append(("msg", message))
+
+        def bootstrap_count(sink: "Sink") -> int:
+            return [op for op, _ in sink.sent].count(14)
+
+        sink = Sink()
+        fresh = Lobby()
+        original = game_mod.LOBBY
+        game_mod.LOBBY = fresh                      # both handlers read game.LOBBY
+        try:
+            fresh.join(sink)                        # session stays registered across the round trip
+
+            # 1) first lobby entry -> bootstrap sent, gate set
+            GameSession._ensure_lobby_bootstrap(sink, "entry-1")
+            self.assertTrue(sink._lobby_bootstrapped)
+            self.assertEqual(bootstrap_count(sink), 1, "first entry must send frame 14")
+
+            # 2) return to main menu -> gate MUST clear (the regression)
+            GameSession._return_to_main_menu(sink)
+            self.assertFalse(
+                sink._lobby_bootstrapped,
+                "return-to-main-menu (opcode 10) must clear the per-connection "
+                "bootstrap gate; f9d9d92 dropped this and broke lobby re-entry",
+            )
+            self.assertIn(15, [op for op, _ in sink.sent], "leave must ack with opcode 15")
+
+            # 3) re-entry -> bootstrap MUST be re-sent, else the lobby never rebuilds
+            GameSession._ensure_lobby_bootstrap(sink, "entry-2")
+            self.assertEqual(
+                bootstrap_count(sink),
+                2,
+                "re-entry after a menu round trip must re-send frame 14; without "
+                "the leave-time reset the client shows only 'No hosted games'",
+            )
+        finally:
+            game_mod.LOBBY = original
+
     def test_context_channel_zero_routes_to_room_when_sender_in_game(self) -> None:
         # CONFIRMED 2026-07-22: the client's text send (nm.java -> ce.a) writes
         # pk.field_r as the channel byte, which is 0 for the default tab even
@@ -830,6 +1490,32 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         expected_lobby = build_chat_broadcast("outsider", 2, b"hi", 0)
         self.assertEqual((11, expected_lobby), outsider.chat_payloads[-1])
         self.assertEqual((11, expected_lobby), host.chat_payloads[-1])
+
+    def test_set_room_options_decodes_gamespecific_and_applies(self) -> None:
+        # Reflection-confirmed 2026-07-23: create (ad.java) and SET_ROOM_OPTIONS
+        # (qa.java) both place the 5-byte gameSpecificOptions at body[2:7] in
+        # room_bytes order [bucket, speed, colours-3, special, feedback];
+        # field_kc[0] != 0 == large bucket. Without a handler the server dropped
+        # this and every match used defaults (small bucket).
+        body = bytes.fromhex("08 84 01 02 01 00 00")  # field_kc = 01 02 01 00 00
+        opts = Lobby.parse_game_specific_options(body)
+        self.assertTrue(opts.bucket_large)
+        self.assertEqual(2, opts.speed_index)
+        self.assertEqual(4, opts.colours)
+        self.assertEqual(0, opts.special_level)
+
+        lobby = Lobby()
+        host = FakeSession("host")
+        lobby.join(host)
+        game = lobby.create_game(host)  # default -> small bucket
+        self.assertFalse(game.options.bucket_large)
+        self.assertTrue(lobby.apply_room_options(host, body))
+        self.assertTrue(game.options.bucket_large)
+        # and start_game would build a 12x27 board rather than 8x18
+        self.assertEqual(
+            (12, 27),
+            (12, 27) if game.options.bucket_large else (8, 18),
+        )
 
     def _assert_original_decodes_snapshot(
         self, game: HostedGame, slot: int, payload: bytes

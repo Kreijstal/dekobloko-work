@@ -92,6 +92,28 @@ class GameSession:
                 self.config.welcome_message.replace("{name}", self.display_name)
             )
 
+    def _return_to_main_menu(self) -> None:
+        """Handle the client's return-to-main-menu request (opcode 10).
+
+        Clears the per-connection bootstrap gate so the NEXT lobby entry re-runs
+        _ensure_lobby_bootstrap and re-sends frame 14 + roster.
+
+        Instrumentation of the ALL-ORIGINAL client (2026-07-24) proved the client
+        tears its lobby state down on leave, so WITHOUT the reset the re-entry
+        op=9 gets only "No hosted games" and the lobby never rebuilds. Commit
+        f9d9d92 had removed this reset ("DO NOT clear") to dodge a crash at
+        client.java:1598 (kf.field_I null while am.field_c true) on the second
+        leave -- but that crash was tied to the recompiled client's client.i
+        state-machine fallback; the original client's leave path (op10 -> op15)
+        traced clean across repeated round trips. Regression-guarded by
+        test_lobby_reentry_resends_bootstrap_after_menu_round_trip.
+        """
+        print(f"[game] {self.peer} client requested return to main menu (10)")
+        LOBBY.leave_game(self)
+        self._lobby_bootstrapped = False
+        self._send_packet(15)
+        print(f"[game] {self.peer} -> sent opcode 15 return-to-menu ack")
+
     def run_after_opcode(self, opcode: int) -> None:
         print(f"[game] {self.peer} opcode={opcode}")
 
@@ -364,6 +386,17 @@ class GameSession:
             f"piece={piece.piece_id} {piece.width}x{piece.height} "
             f"final=({final_x},{final_y}) rotation={final_orientation & 3}"
         )
+        # A non-domino spawn is incoming garbage becoming the falling piece.
+        # Dump the exact bytes: this packet is decoded straight into the
+        # client's rf cache and active piece, so if it disagrees with what the
+        # client renders, the divergence is visible right here.
+        if (piece.width, piece.height) != (2, 1):
+            print(
+                f"[garbage] WIRE S2C64 slot={player_slot} "
+                f"piece={piece.piece_id} {piece.width}x{piece.height} "
+                f"cells={piece.cells} descriptor={piece.descriptor} "
+                f"payload={payload.hex(' ')}"
+            )
 
     def send_cooked_shape(self, player_slot: int, shape: CookedShape) -> None:
         """S2C 67: send the exact cooked geometry to one replicated board."""
@@ -374,6 +407,27 @@ class GameSession:
             f"shape={shape.shape_id} colour={shape.colour} "
             f"{shape.width}x{shape.height} cells={sum(shape.occupied)}"
         )
+
+    def send_cooked_release(self, player_slot: int, count: int) -> None:
+        """S2C 66: release `count` queued cooked shapes on one board.
+
+        S2C 67 only APPENDS a cooked shape to lk.field_X with its per-shape
+        release counter field_e=0 (a pending "incoming" warning). The client
+        never drops a field_e==0 shape; it only starts the descent once field_e
+        leaves 0, and the ONLY thing that does that is lk.b(-19939) -- invoked by
+        this opcode-66 handler `count` times (client.java case 445-449 ->
+        lk.b(int) @ lk.java:1289, field_e++ @ lk.java:1327). Without this packet
+        the garbage queues forever and never releases. Payload: u8 slot, u8 count.
+        """
+        payload = PacketBuilder().u8(player_slot).u8(count & 0xFF).finish()
+        self._send_packet(66, payload)
+        print(f"[game] {self.peer} sent cooked release slot={player_slot} count={count}")
+        # lk.b(-19939) throws IllegalStateException if asked to release more
+        # shapes than the client holds pending at field_e==0 (lk.java:1333),
+        # which kills the client. Releasing exactly what was queued is the
+        # invariant; flag any count that could not possibly be satisfied.
+        if count < 1:
+            print(f"[garbage] BUG: S2C66 release count={count} slot={player_slot}")
 
     def send_full_state(self, player_slot: int, state_payload: bytes) -> None:
         """S2C 61: replace one replica from the server-owned engine state."""
@@ -836,10 +890,27 @@ class GameSession:
                     # carries the same owner id, so the two match and the client
                     # sees itself as host.
                     self._send_local_player_id(owner_id)
-                    room_id = LOBBY.create_game(self).game_id
+                    # Parse the chosen options from the create body. Both create
+                    # (ad.java) and SET_ROOM_OPTIONS (qa.java) place the 5-byte
+                    # gameSpecificOptions at body[2:7]; without this the room used
+                    # GameOptions() defaults (always small bucket).
+                    opts = LOBBY.parse_game_specific_options(packet.payload[1:])
+                    room_id = LOBBY.create_game(self, opts).game_id
                     print(
                         f"[lobby] {self.peer} CREATE_UNRATED_GAME -> room id={room_id} "
-                        f"owner={self.display_name!r} owner_id={owner_id}"
+                        f"owner={self.display_name!r} owner_id={owner_id} "
+                        f"opts={opts}"
+                    )
+                elif action == 5 and os.environ.get("DEKOBLOKO_ROOMS", "1") != "0":
+                    # SET_ROOM_OPTIONS: the host changed a selector in the waiting
+                    # room (bucket/speed/colours/special/feedback). Apply it so
+                    # the match honours it (board dims, engine params).
+                    applied = LOBBY.apply_room_options(self, packet.payload[1:])
+                    game = self.current_game
+                    print(
+                        f"[lobby] {self.peer} SET_ROOM_OPTIONS applied={applied} "
+                        f"kc={packet.payload[3:8].hex(' ')} "
+                        f"-> {game.options if game else None}"
                     )
                 elif action == 8 and os.environ.get("DEKOBLOKO_ROOMS", "1") != "0":
                     room_id = (
@@ -1134,22 +1205,7 @@ class GameSession:
             # i.e. a user clicking a dead button, not the client re-requesting.
             # Nothing blocks on this opcode.
             if packet.opcode == 10:
-                print(f"[game] {self.peer} client requested return to main menu (10)")
-                LOBBY.leave_game(self)
-                # DO NOT clear _lobby_bootstrapped here.
-                #
-                # Clearing it made the next lobby entry send frame 14 a SECOND
-                # time on the same connection, which re-runs nk.a and
-                # reallocates the lobby tables. Observed effect: the first
-                # return-to-main-menu works, then re-entering the lobby and
-                # leaving again crashes the client at client.java:1598
-                # (kf.field_I null while am.field_c is still true).
-                #
-                # The bootstrap is per-CONNECTION, not per-lobby-visit. The
-                # client keeps its lobby state across a menu round trip, so
-                # re-bootstrapping is both unnecessary and destructive.
-                self._send_packet(15)
-                print(f"[game] {self.peer} -> sent opcode 15 return-to-menu ack")
+                self._return_to_main_menu()
                 continue
 
             if packet.opcode == 59:

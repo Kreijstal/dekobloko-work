@@ -34,6 +34,25 @@ from .packets import pack_5bit
 
 DEFAULT_BOT_NAMES = ("Player1", "Player2", "Player3")
 
+#: Frames per second the client renders every bucket at, including the ones it
+#: is only replicating.  A control batch is worth exactly one engine tick per
+#: sample, so a bot must supply one per client frame ELAPSED or the server
+#: advances its board slower than the client draws it.
+#:
+#: Under-feeding is not cosmetic drift, it disconnects the human player: the
+#: replica lands the piece and then waits for the authoritative transition
+#: (S2C 64).  ``lk.c`` gives that wait a 20-tick grace, sets ``field_y`` when it
+#: elapses, and latches ``field_Bb`` on the *next* expiry.  Nothing but a full
+#: board reset clears ``field_Bb``, and ``qc`` reports it as "T5" and closes the
+#: socket -- so a starved bot board kills the real client's connection.
+CLIENT_FPS = 50
+
+#: Ceiling on one catch-up batch.  The server refills control credit at
+#: ``LOGIC_TICKS_PER_SECOND`` up to ``CONTROL_BURST_TICKS`` (40) and silently
+#: drops the excess, so asking for more than that after a long stall would be
+#: trimmed anyway -- and dumping a huge burst into a bucket makes it lurch.
+MAX_CATCHUP_SAMPLES = 40
+
 
 class BotLobbySession:
     """Socket-free :class:`LobbySession` for a lobby-resident bot.
@@ -94,6 +113,9 @@ class BotLobbySession:
     def send_cooked_shape(self, player_slot: int, shape: CookedShape) -> None:
         return
 
+    def send_cooked_release(self, player_slot: int, count: int) -> None:
+        return
+
     def send_action_stream(self, player_slot: int, controls_payload: bytes) -> None:
         return
 
@@ -118,11 +140,33 @@ class BotManager:
         lobby: Lobby,
         names: tuple[str, ...] = DEFAULT_BOT_NAMES,
         *,
-        poll_interval: float = 0.4,
+        # Small on purpose. A relayed batch is buffered input the replica must
+        # chew through one sample per frame, and it cannot apply a pending
+        # authoritative landing (S2C 64) until it gets there. Land before that
+        # packet is available and the replica sets field_y, exhausts its grace
+        # and latches field_Bb -- the "T5" self-disconnect that kills the human
+        # player's connection over an OPPONENT's bucket.
+        #
+        # The grace is far shorter than the 20 ticks lk.c seems to promise.
+        # Measured 2026-07-25, field_e goes 20 -> 1 in a single tick:
+        #     [INSTR lk.d] Ab=774 e=20 ctrl=16 y=true
+        #     [INSTR lk.d] Ab=773 e=1  ctrl=16 y=true
+        # so the window is a couple of frames, not 0.4s. At 0.4s per batch the
+        # replica could be 20 frames of queued input away from the transition;
+        # at 0.08s it is at most 4. Billing against the wall clock
+        # (_samples_owed) keeps the overall rate identical either way, so this
+        # trades nothing for a proportionally narrower window.
+        poll_interval: float = 0.08,
         seed: int | None = None,
     ) -> None:
         self.lobby = lobby
         self.poll_interval = poll_interval
+        # Nominal batch size. The real size is computed per turn from elapsed
+        # wall time (see _play_turn) -- this is only the steady-state value and
+        # what a first turn is worth.
+        self.samples_per_turn = max(1, round(poll_interval * CLIENT_FPS))
+        # Wall-clock instant each bot has supplied control samples up to.
+        self._fed_through: dict[str, float] = {}
         self.rng = random.Random(seed)
         self.bots = [BotLobbySession(name) for name in names]
         self._stop = threading.Event()
@@ -169,6 +213,13 @@ class BotManager:
                 self._maybe_accept_invite(bot, games)
             elif game.state == "playing":
                 self._play_turn(bot, game)
+            elif game.state == "finished":
+                # A finished game now HOLDS its result screen until each player
+                # dismisses it, so somebody has to answer for the bot -- it has
+                # no UI to show and would otherwise pin the room open forever.
+                # Dismissing only this bot's slot leaves the human's screen up.
+                self._fed_through.pop(bot.display_name, None)
+                self.lobby.leave_game(bot, announce=False)
 
     def _maybe_accept_invite(
         self, bot: BotLobbySession, games: list[HostedGame]
@@ -187,10 +238,56 @@ class BotManager:
                 )
                 return
 
+    def _samples_owed(self, bot: BotLobbySession) -> int:
+        """One sample per client frame that has actually elapsed.
+
+        A fixed batch per turn is not enough. The poll loop's sleep is a floor,
+        not a promise -- the GIL, lock contention and scheduling all stretch
+        it -- and a fixed count makes every stretched turn a permanent deficit,
+        because nothing ever makes the missing ticks up. The bucket the client
+        replicates has no such problem: lk.d ticks its gravity every rendered
+        frame whether or not any input arrived, so it tracks real time exactly.
+
+        The two therefore separate, and the replica ends up AHEAD of the
+        authoritative board. That is what disconnects the human. The replica
+        reaches a landing the server has not reached, sets field_y, and waits
+        for the S2C 64 that finalizes it; lk.c allows a 20-tick grace and
+        latches field_Bb on the next expiry, and qc turns that into the "T5"
+        self-disconnect. Captured 2026-07-25 -- the replica of the bot's bucket
+        held fill=22 against the engine's fill=20, and it was the OPPONENT's
+        board that latched while the player's own was healthy:
+            [CT] LOCK board=12845bc9 fill=22 active=1x2 at=(4,7) y=true
+            [CT] LOCK board=34c1ff58 fill=6  active=2x3 at=(4,6) y=false
+            Error: T5: 1 3 true
+        A 20-tick grace is 0.4s, exactly one poll interval, so a single
+        stretched turn was enough to spend the whole budget.
+
+        Billing against a running clock instead keeps the deficit at zero: a
+        turn that arrives late pays for the frames it missed, and the leftover
+        fraction stays on the clock rather than being rounded away.
+        """
+        now = time.monotonic()
+        fed_through = self._fed_through.get(bot.display_name)
+        if fed_through is None:
+            # First turn of a match: bill one nominal interval, not the time
+            # since the process started.
+            fed_through = now - self.poll_interval
+        # The epsilon matters: an interval that is exactly a whole number of
+        # frames lands on either side of it in binary floating point, and
+        # truncating 19.999999999999996 to 19 would leak a frame per turn --
+        # the very deficit this method exists to remove.
+        owed = int((now - fed_through) * CLIENT_FPS + 1e-9)
+        owed = max(1, min(owed, MAX_CATCHUP_SAMPLES))
+        # Advance by what was actually supplied, so the unspent fraction of a
+        # frame carries into the next turn instead of being lost.
+        self._fed_through[bot.display_name] = fed_through + owed / CLIENT_FPS
+        return owed
+
     def _play_turn(self, bot: BotLobbySession, game: HostedGame) -> None:
         if bot not in game.active_players():
+            self._fed_through.pop(bot.display_name, None)
             return
-        controls = [FAST_DROP] * 5
+        controls = [FAST_DROP] * self._samples_owed(bot)
         roll = self.rng.randrange(12)
         if roll == 0:
             controls[0] |= LEFT

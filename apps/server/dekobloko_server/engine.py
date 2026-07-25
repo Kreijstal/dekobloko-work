@@ -153,14 +153,25 @@ class Board:
 
 
 class ActiveDomino:
-    """Exact per-tick active 2x1 piece state used by the original ``lk``."""
+    """Exact per-tick active piece state used by the original ``lk``.
+
+    Handles an arbitrary bitmap, not just the 2x1 domino: a cooked feedback
+    shape is delivered to the target as a real falling piece, and those are
+    whatever blob the clear produced. The two-cell form stays the default so
+    ordinary pieces construct exactly as before.
+
+    Geometry is verified against the unmodified client by ``tools/oracle`` --
+    see ``apps/server/tests/fixtures/golden-active-piece.tsv``.
+    """
 
     def __init__(
         self,
         board: Board,
-        cells: tuple[int, int],
+        cells: tuple[int, ...],
         base_drop_ticks: int,
         *,
+        shape_width: int | None = None,
+        shape_height: int | None = None,
         orientation: int = 0,
         top_x: int | None = None,
         top_y: int | None = None,
@@ -170,15 +181,40 @@ class ActiveDomino:
         forced_drop_countdown: int | None = None,
         grounded: bool = False,
         landed: bool = False,
-        vertical_parity: int = 0,
+        vertical_parity: int | None = None,
         horizontal_parity: int | None = None,
     ) -> None:
-        if len(cells) != 2 or any(cell == 0 for cell in cells):
-            raise ValueError("an active domino requires two occupied cells")
+        if shape_width is None and shape_height is None:
+            # Ordinary piece: two occupied cells laid out as a 2x1 domino.
+            if len(cells) != 2 or any(cell == 0 for cell in cells):
+                raise ValueError("an active domino requires two occupied cells")
+            shape_width, shape_height = 2, 1
+        elif shape_width is None or shape_height is None:
+            raise ValueError("a bitmap piece needs both a width and a height")
+        if shape_width < 1 or shape_height < 1:
+            raise ValueError("piece dimensions must be positive")
+        if len(cells) != shape_width * shape_height:
+            raise ValueError("piece cells do not match its dimensions")
+        if not any(cells):
+            raise ValueError("a piece must contain at least one occupied cell")
         if base_drop_ticks < 0:
             raise ValueError("base drop ticks cannot be negative")
         self.board = board
-        self.cells = cells
+        self.cells = tuple(cells)
+        self.shape_width = shape_width
+        self.shape_height = shape_height
+        # Occupied cells as (dx, dy, value) relative to the first of them, which
+        # is the rotation pivot. For a domino this is exactly ((0,0),(1,0)), so
+        # _offsets below reduces to the original satellite table.
+        occupied = [
+            (index % shape_width, index // shape_width, cell)
+            for index, cell in enumerate(cells)
+            if cell
+        ]
+        pivot_dx, pivot_dy, _ = occupied[0]
+        self._base = tuple(
+            (dx - pivot_dx, dy - pivot_dy, cell) for dx, dy, cell in occupied
+        )
         self.base_drop_ticks = base_drop_ticks
         self.orientation = orientation & 3
         width, height = self.dimensions
@@ -203,17 +239,59 @@ class ActiveDomino:
             raise ValueError("piece countdowns cannot be negative")
         self.grounded = grounded
         self.landed = landed
-        self.vertical_parity = vertical_parity
+        default_h, default_v = self._initial_parities(
+            shape_width, shape_height, cells
+        )
+        self.vertical_parity = (
+            default_v if vertical_parity is None else vertical_parity
+        )
         self.horizontal_parity = (
-            (1 if width == 2 else 0)
-            if horizontal_parity is None
-            else horizontal_parity
+            default_h if horizontal_parity is None else horizontal_parity
         )
         self.finalized = False
+        # Block out: the piece cannot even occupy its spawn cells because the
+        # stack has reached the top. Without this the match spins forever --
+        # an ordinary 2x1 domino spawns at top_y = -height + 1 = 0, so `y < 0`
+        # is never true for it and the old overflow test could not fire. The
+        # board fills, every piece lands on its first tick at y=0, and lives
+        # never decrement. Observed live: piece 473..477 all
+        # "final=(3,0) lives=2" in an unbroken loop.
+        self.blocked_at_spawn = self._collides(
+            self.orientation, self._pivot_x, self._pivot_y
+        )
+
+    @staticmethod
+    def _initial_parities(
+        width: int, height: int, cells: tuple[int, ...]
+    ) -> tuple[int, int]:
+        """Rotation-kick parities the client assigns on install.
+
+        Transcribed from ``lk.a(int, int, rf)``. Shapes whose width and height
+        share a parity skip the test entirely (lk.java:1679) and get (0, 0).
+        Otherwise the occupied-cell centroid is compared against the bounding
+        box centre (lk.java:1691-1960): a dominant vertical offset sets the
+        vertical parity, otherwise the horizontal parity takes the sign of the
+        horizontal offset.
+        """
+        if (width ^ height) & 1 == 0:
+            return 0, 0
+        count = sum(1 for cell in cells if cell)
+        sum_x = sum(index % width for index, cell in enumerate(cells) if cell)
+        sum_y = sum(index // width for index, cell in enumerate(cells) if cell)
+        horizontal = sum_x - (((width - 1) * count) >> 1)
+        vertical = sum_y - ((count * (height - 1)) >> 1)
+        if vertical > abs(horizontal):
+            return 0, 1
+        if vertical < -abs(horizontal):
+            return 0, -1
+        return (1 if horizontal >= 0 else -1), 0
 
     @property
     def dimensions(self) -> tuple[int, int]:
-        return ((2, 1) if self.orientation % 2 == 0 else (1, 2))
+        offsets = self._offsets(self.orientation)
+        xs = [dx for dx, _dy in offsets]
+        ys = [dy for _dx, dy in offsets]
+        return (max(xs) - min(xs) + 1, max(ys) - min(ys) + 1)
 
     @property
     def x(self) -> int:
@@ -228,21 +306,46 @@ class ActiveDomino:
         width, height = self.dimensions
         result = [0] * (width * height)
         min_x, min_y = self._minimum_offsets(self.orientation)
-        for cell, (x, y) in zip(self.cells, self._offsets(self.orientation)):
+        for x, y, cell in self._oriented(self.orientation):
             result[(y - min_y) * width + x - min_x] = cell
         return tuple(result)
 
     @property
+    def is_domino(self) -> bool:
+        """Whether this piece is an ordinary two-cell domino.
+
+        Cell count alone is not enough: a cooked feedback shape can also have
+        exactly two cells. Ordinary cells are loose colours (16..23) or special
+        items (24..31), whereas cooked cells are ``8|colour`` (8..14), so the
+        value range is what actually distinguishes them.
+        """
+        return len(self._base) == 2 and all(
+            16 <= (cell & 31) <= 31 for _dx, _dy, cell in self._base
+        )
+
+    @property
     def descriptor(self) -> int:
+        """The two-nibble domino encoding, or 0 when the piece is not one.
+
+        Only ordinary pieces have a descriptor: the client reads it as exactly
+        two 4-bit cells (qc.java:11480). A cooked feedback shape has neither
+        two cells nor descriptor-encodable values -- its cells are ``8|colour``,
+        which falls in the gap between the loose (16..23) and special (24..31)
+        ranges -- so it reports 0 rather than raising.
+        """
+        if not self.is_domino:
+            return 0
+
         def nibble(cell: int) -> int:
             packed = cell & 31
             if 16 <= packed <= 23:
                 return packed - 16
             if 24 <= packed <= 31:
                 return 8 | (packed - 24)
-            raise ValueError(f"active cell {packed} has no domino descriptor nibble")
+            return 0
 
-        return (nibble(self.cells[0]) << 4) | nibble(self.cells[1])
+        first, second = (cell for _dx, _dy, cell in self._base)
+        return (nibble(first) << 4) | nibble(second)
 
     def tick(self, controls: int) -> bool:
         self._require_mutable()
@@ -285,6 +388,11 @@ class ActiveDomino:
                 self._rotate(clockwise=False)
             if controls & FAST_DROP:
                 accelerate = True
+            # The two directions live in DIFFERENT client methods, which is easy
+            # to misread: bit 4 dispatches to lk.c(boolean) and bit 8 to
+            # lk.i(int) (bytecode offsets 283 and 313 of lk.d). lk.c's boolean
+            # is NOT the direction -- c(true) and c(false) produce identical
+            # geometry (tools/oracle, `ParityProbe rotate`).
             if pressed & ROTATE_CLOCKWISE:
                 self._rotate(clockwise=True)
 
@@ -304,27 +412,35 @@ class ActiveDomino:
             raise RuntimeError("active domino has not landed")
         if lives <= 0:
             raise ValueError("an active player must have at least one life")
-        life_lost = self.y < 0
+        # A life is lost either because the piece locked partly above the
+        # bucket (tall shapes) or because it never had room to spawn at all
+        # (block out). The second case is the only one a 2x1 domino can hit.
+        #
+        # Losing a life deliberately does NOT clear or compact the bucket --
+        # confirmed against the real game 2026-07-25. A topped-out player
+        # therefore burns their remaining lives in quick succession, which is
+        # correct behaviour and not a bug to be "fixed".
+        life_lost = self.y < 0 or self.blocked_at_spawn
         remaining = lives - 1 if life_lost else lives
         placed: set[tuple[int, int]] = set()
+        oriented = self._oriented(self.orientation)
         if not life_lost:
-            for cell, (dx, dy) in zip(self.cells, self._offsets(self.orientation)):
+            for dx, dy, cell in oriented:
                 x, y = self._pivot_x + dx, self._pivot_y + dy
                 self.board.set(x, y, cell)
                 placed.add((x, y))
         elif remaining > 0:
             min_y = self._minimum_offsets(self.orientation)[1]
             _width, height = self.dimensions
-            offsets = self._offsets(self.orientation)
             for row in range(height - 1, -1, -1):
-                for index in range(1, -1, -1):
-                    dx, dy = offsets[index]
+                for index in range(len(oriented) - 1, -1, -1):
+                    dx, dy, cell = oriented[index]
                     if dy - min_y != row:
                         continue
                     x = self._pivot_x + dx
                     y = max(0, self._pivot_y + dy)
                     if y < self.board.height and self.board.get(x, y) == 0:
-                        self.board.set(x, y, self.cells[index])
+                        self.board.set(x, y, cell)
                         placed.add((x, y))
         self.finalized = True
         return LockResult(
@@ -349,6 +465,23 @@ class ActiveDomino:
             self.drop_countdown = self.base_drop_ticks
             if movement_recovery:
                 return
+
+    def clearance_rows(self, limit: int) -> int:
+        """How many further rows this piece could descend, capped at ``limit``.
+
+        Used to decide when a replica must stop being told to fast drop. A
+        replica that is still fast dropping when it reaches its landing has its
+        20-tick grace clamped to 2 (lk.java:1241/1270) and latches field_Bb
+        before the authoritative transition can arrive -- the "T5"
+        self-disconnect. Cutting the bit only for the final approach keeps the
+        replica tracking the real descent for the rest of the fall.
+        """
+        if self.landed or self.grounded:
+            return 0
+        for rows in range(1, limit + 1):
+            if self._collides(self.orientation, self._pivot_x, self._pivot_y + rows):
+                return rows - 1
+        return limit
 
     def _try_move_down(self) -> bool:
         if self._collides(self.orientation, self._pivot_x, self._pivot_y + 1):
@@ -437,14 +570,26 @@ class ActiveDomino:
         if self.finalized:
             raise RuntimeError("active domino was already finalized")
 
-    @staticmethod
-    def _offsets(orientation: int) -> tuple[tuple[int, int], tuple[int, int]]:
-        satellite = ((1, 0), (0, 1), (-1, 0), (0, -1))[orientation & 3]
-        return (0, 0), satellite
+    def _oriented(self, orientation: int) -> tuple[tuple[int, int, int], ...]:
+        """Base cells rotated into ``orientation``, as (dx, dy, value).
 
-    @classmethod
-    def _minimum_offsets(cls, orientation: int) -> tuple[int, int]:
-        offsets = cls._offsets(orientation)
+        The client rotates counter-clockwise and *decrements* its orientation
+        counter (verified with ``tools/oracle`` -- ``ParityProbe rotate`` shows
+        field_ab running 0, -1, -2, ...), so orientation ``o`` is ``(-o) % 4``
+        counter-clockwise steps from the base bitmap. One step is
+        ``(dx, dy) -> (dy, -dx)``, which for a domino reproduces the original
+        satellite table ((1,0), (0,1), (-1,0), (0,-1)) exactly.
+        """
+        cells = self._base
+        for _ in range((-orientation) & 3):
+            cells = tuple((dy, -dx, cell) for dx, dy, cell in cells)
+        return cells
+
+    def _offsets(self, orientation: int) -> tuple[tuple[int, int], ...]:
+        return tuple((dx, dy) for dx, dy, _cell in self._oriented(orientation))
+
+    def _minimum_offsets(self, orientation: int) -> tuple[int, int]:
+        offsets = self._offsets(orientation)
         return min(x for x, _y in offsets), min(y for _x, y in offsets)
 
 
@@ -482,11 +627,31 @@ class AuthoritativeMatch:
         self.outcome = Outcome.RUNNING
         self.winner_slot: int | None = None
 
-    def spawn(self, slot: int, cells: tuple[int, int]) -> ActiveDomino:
+    def spawn(
+        self,
+        slot: int,
+        cells: tuple[int, ...],
+        *,
+        shape_width: int | None = None,
+        shape_height: int | None = None,
+    ) -> ActiveDomino:
+        """Install the next falling piece.
+
+        With no dimensions this is an ordinary two-cell domino. Passing a
+        bitmap spawns a cooked feedback shape as the falling piece instead,
+        which is how incoming garbage reaches a board -- it descends and is
+        steered like any other piece rather than being written into the grid.
+        """
         player = self._live_player(slot)
         if player.active is not None:
             raise RuntimeError("slot already has an active domino")
-        player.active = ActiveDomino(player.board, cells, self.base_drop_ticks)
+        player.active = ActiveDomino(
+            player.board,
+            cells,
+            self.base_drop_ticks,
+            shape_width=shape_width,
+            shape_height=shape_height,
+        )
         return player.active
 
     def apply_controls(self, slot: int, controls: tuple[int, ...]) -> bool:
@@ -539,7 +704,16 @@ class AuthoritativeMatch:
     def receive_feedback(
         self, slot: int, shape: ReturnedShape, shape_id: int
     ) -> bool:
-        """Settle one targeted cooked shape and return whether it eliminated."""
+        """Settle one targeted cooked shape and return whether it eliminated.
+
+        NOT part of incoming-garbage delivery. Feedback reaches a board as a
+        falling piece (see HostedGame._dispatch_returned_shapes), which is what
+        the client actually renders and what lets the receiver steer it.
+        Calling this instead makes garbage appear already-placed, with the life
+        deduction happening server-side where no client is told about it.
+        Retained only as the engine's "drop a shape straight onto a board"
+        primitive for tests and any future non-interactive bombardment.
+        """
         player = self._live_player(slot)
         board = player.board
         origin_x = (board.width - shape.width) >> 1
@@ -579,6 +753,20 @@ class AuthoritativeMatch:
 
     def _resolve_cascades(self, board: Board) -> list[ReturnedShape]:
         returned: list[ReturnedShape] = []
+        # Collapse only AFTER a wave clears, never before the first match test.
+        # A landing that matches nothing leaves an overhanging cell hanging,
+        # and that is correct: the client does the same. Measured 2026-07-25 on
+        # a replica whose board held a 5-cell column plus one cell overhanging
+        # an empty column, still hanging at the next install.
+        #
+        # Do not "fix" this by collapsing up front. The trap is that a client
+        # board signature sampled at an install is NOT the same instant as the
+        # server's at finalize -- the client resolves a clear and the collapse
+        # that follows it over later frames, so a replica routinely shows a
+        # group that has already cleared server-side. Sampled at the wrong
+        # phase that reads as the server leaving cells in mid-air, and adding a
+        # collapse here to "match" it silently changes the physics of every
+        # landing instead.
         while True:
             changed, wave = _resolve_matches_once(
                 board, self.colour_count, self.feedback_level
@@ -596,6 +784,20 @@ class AuthoritativeMatch:
         elif not live:
             self.outcome = Outcome.DRAW
             self.winner_slot = None
+
+    def active_piece(self, slot: int) -> "ActiveDomino | None":
+        """The slot's falling piece, or None if it has none right now.
+
+        Deliberately total: callers use this to decide how to shape the relay,
+        which must not raise merely because a slot has been eliminated or is
+        between pieces awaiting a transition ack.
+        """
+        if slot < 0 or slot >= len(self.players):
+            return None
+        player = self.players[slot]
+        if not player.active_slot or self.outcome is not Outcome.RUNNING:
+            return None
+        return player.active
 
     def _live_player(self, slot: int) -> PlayerBucket:
         player = self._player(slot)
