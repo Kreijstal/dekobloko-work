@@ -1,0 +1,1071 @@
+#!/usr/bin/env node
+'use strict';
+
+// Data-driven AlterOrb smoke launcher for the generic java-tools JVM.
+//
+// The JVM remains unaware of AlterOrb and individual games. This adapter reads
+// AlterOrb's public config, supplies each applet's entry class and parameters,
+// and reports whether it produces a nonblank game-sized software surface.
+
+const crypto = require('crypto');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const net = require('net');
+const os = require('os');
+const path = require('path');
+const {execFileSync, spawn} = require('child_process');
+
+const ROOT = path.resolve(__dirname, '..');
+const JAVA_TOOLS_DIR = process.env.JAVA_TOOLS_DIR ||
+  path.join(os.homedir(), 'git', 'java-tools');
+const CONFIG_URL = 'https://static.alterorb.net/launcher/v3/config.json';
+const TCP_PORT = 43594;
+const HTTP_PROXY_PORT = 18080;
+const RESULT_PREFIX = 'ALTERORB_JVMJS_RESULT ';
+
+function parseArgs(argv) {
+  const options = {
+    games: [],
+    jobs: Math.max(1, Math.min(4, os.cpus().length)),
+    timeoutMs: 180000,
+    report: path.join(ROOT, '.work', 'alterorb-jvmjs', 'report.json'),
+    configUrl: CONFIG_URL,
+    until: 'first-frame',
+    noJit: false,
+    recompiled: false,
+    measureFpsMs: 0,
+    minFps: 30,
+    profileJit: false,
+    cpuProfile: false,
+  };
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === '--game') options.games.push(argv[++index]);
+    else if (arg === '--jobs') options.jobs = Number(argv[++index]);
+    else if (arg === '--timeout-ms') options.timeoutMs = Number(argv[++index]);
+    else if (arg === '--report') options.report = path.resolve(argv[++index]);
+    else if (arg === '--config-url') options.configUrl = argv[++index];
+    else if (arg === '--until-main-menu') options.until = 'main-menu';
+    else if (arg === '--no-jit') options.noJit = true;
+    else if (arg === '--recompiled') options.recompiled = true;
+    else if (arg === '--measure-fps-ms') {
+      options.measureFpsMs = Number(argv[++index]);
+      options.until = 'main-menu';
+    } else if (arg === '--min-fps') {
+      options.minFps = Number(argv[++index]);
+    } else if (arg === '--profile-jit') options.profileJit = true;
+    else if (arg === '--cpu-profile') options.cpuProfile = true;
+    else if (arg === '--help' || arg === '-h') {
+      console.log('Usage: node scripts/launch-alterorb-games-jvmjs.js ' +
+        '[--game internalName] [--jobs N] [--timeout-ms N] [--report file] ' +
+        '[--until-main-menu] [--measure-fps-ms N] [--min-fps N] ' +
+        '[--profile-jit] [--cpu-profile] [--no-jit] [--recompiled]');
+      process.exit(0);
+    } else {
+      throw new Error(`Unknown argument: ${arg}`);
+    }
+  }
+  if (!Number.isInteger(options.jobs) || options.jobs < 1) {
+    throw new Error('--jobs must be a positive integer');
+  }
+  if (!Number.isFinite(options.timeoutMs) || options.timeoutMs < 1000) {
+    throw new Error('--timeout-ms must be at least 1000');
+  }
+  if (!Number.isFinite(options.measureFpsMs) || options.measureFpsMs < 0) {
+    throw new Error('--measure-fps-ms must be zero or a positive number');
+  }
+  if (!Number.isFinite(options.minFps) || options.minFps < 0) {
+    throw new Error('--min-fps must be zero or a positive number');
+  }
+  return options;
+}
+
+function sha256(file) {
+  return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+}
+
+function gamepackPath(game) {
+  return path.join(ROOT, '.work', 'gamepacks', `${game.internalName}.jar`);
+}
+
+function recompiledClassesDir(game) {
+  const owned = path.join(ROOT, '.work', 'games', game.internalName,
+    'decompile-owned');
+  const finalAbiNormalized = path.join(owned, 'classes-abi-final');
+  if (fs.existsSync(finalAbiNormalized)) return finalAbiNormalized;
+  const latestAbiNormalized = path.join(owned, 'classes-abi-latest');
+  if (fs.existsSync(latestAbiNormalized)) return latestAbiNormalized;
+  const nextAbiNormalized = path.join(owned, 'classes-abi-current-next');
+  if (fs.existsSync(nextAbiNormalized)) return nextAbiNormalized;
+  const currentAbiNormalized = path.join(owned, 'classes-abi-current');
+  if (fs.existsSync(currentAbiNormalized)) return currentAbiNormalized;
+  const abiNormalized = path.join(owned, 'classes-abi');
+  return fs.existsSync(abiNormalized) ? abiNormalized : path.join(owned, 'classes');
+}
+
+function validateRecompiledClasses(game, jarPath) {
+  const classesDir = recompiledClassesDir(game);
+  if (!fs.existsSync(classesDir)) {
+    return {ok: false, status: 'missing-recompiled-classes', classesDir};
+  }
+  const expected = execFileSync('unzip', ['-Z1', jarPath], {encoding: 'utf8'})
+    .split(/\r?\n/)
+    .filter(name => name.endsWith('.class'));
+  const missing = expected.filter(relative =>
+    !fs.existsSync(path.join(classesDir, relative)));
+  if (missing.length) {
+    return {
+      ok: false,
+      status: 'incomplete-recompiled-classes',
+      classesDir,
+      expectedClasses: expected.length,
+      missingClasses: missing,
+    };
+  }
+  return {ok: true, classesDir, expectedClasses: expected.length};
+}
+
+async function ensureGamepack(game, configUrl) {
+  const jarPath = gamepackPath(game);
+  if (fs.existsSync(jarPath) && sha256(jarPath) === game.gamepackHash) {
+    return jarPath;
+  }
+
+  console.log(`download ${game.internalName}`);
+  const response = await fetch(new URL(
+    `jars/${game.internalName}.jar`, configUrl,
+  ));
+  if (!response.ok) {
+    throw new Error(`Gamepack download failed for ${game.internalName}: ` +
+      `${response.status}`);
+  }
+  const bytes = Buffer.from(await response.arrayBuffer());
+  const actualHash = crypto.createHash('sha256').update(bytes).digest('hex');
+  if (actualHash !== game.gamepackHash) {
+    throw new Error(`Downloaded gamepack hash mismatch for ` +
+      `${game.internalName}: expected ${game.gamepackHash}, got ${actualHash}`);
+  }
+
+  fs.mkdirSync(path.dirname(jarPath), {recursive: true});
+  const temporaryPath = `${jarPath}.download-${process.pid}`;
+  try {
+    fs.writeFileSync(temporaryPath, bytes);
+    fs.renameSync(temporaryPath, jarPath);
+  } finally {
+    fs.rmSync(temporaryPath, {force: true});
+  }
+  return jarPath;
+}
+
+function extractGamepack(game, jarPath) {
+  const classesDir = path.join(ROOT, '.work', 'alterorb-jvmjs', 'classes',
+    game.internalName);
+  const stamp = path.join(classesDir, '.source.json');
+  const source = {size: fs.statSync(jarPath).size, hash: game.gamepackHash};
+  let current = null;
+  try {
+    current = JSON.parse(fs.readFileSync(stamp, 'utf8'));
+  } catch (_) {
+    // A missing or stale extraction is rebuilt below.
+  }
+  if (!current || current.size !== source.size || current.hash !== source.hash) {
+    fs.rmSync(classesDir, {recursive: true, force: true});
+    fs.mkdirSync(classesDir, {recursive: true});
+    execFileSync('unzip', ['-o', '-q', jarPath, '*.class', '-d', classesDir]);
+    fs.writeFileSync(stamp, JSON.stringify(source));
+  }
+  return classesDir;
+}
+
+function buildHookStub() {
+  const source = path.join(ROOT, 'stubs', 'src', 'net', 'alterorb',
+    'launcher', 'Hook.java');
+  const output = path.join(ROOT, '.work', 'alterorb-jvmjs', 'hookcp');
+  const classFile = path.join(output, 'net', 'alterorb', 'launcher',
+    'Hook.class');
+  if (!fs.existsSync(classFile) ||
+      fs.statSync(classFile).mtimeMs < fs.statSync(source).mtimeMs) {
+    fs.mkdirSync(output, {recursive: true});
+    execFileSync('javac', [
+      '-source', '8', '-target', '8', '-d', output, source,
+    ], {stdio: ['ignore', 'ignore', 'inherit']});
+  }
+  return output;
+}
+
+function largestSurface(jvm) {
+  let best = null;
+  for (const surface of jvm._softCanvases || []) {
+    const pixels = surface && surface._pixels;
+    if (!pixels || pixels.length < 100000) continue;
+    if (!best || pixels.length > best._pixels.length) best = surface;
+  }
+  return best;
+}
+
+function surfaceSnapshot(jvm) {
+  const surface = largestSurface(jvm);
+  if (!surface) return null;
+  const pixels = surface._pixels;
+  {
+    const stride = Math.max(1, Math.floor(pixels.length / 4096));
+    let nonblankSamples = 0;
+    let hash = 2166136261;
+    const colors = new Set();
+    for (let index = 0; index < pixels.length; index += stride) {
+      const pixel = Number(pixels[index]) >>> 0;
+      const rgb = pixel & 0xffffff;
+      if (rgb !== 0 && rgb !== 0xffffff) nonblankSamples += 1;
+      colors.add(rgb);
+      hash ^= pixel;
+      hash = Math.imul(hash, 16777619) >>> 0;
+    }
+    return {
+      pixels: pixels.length,
+      width: Number(surface._width || surface.width || 0),
+      height: Number(surface._height || surface.height || 0),
+      nonblankSamples,
+      uniqueSampleColors: colors.size,
+      sampleHash: hash.toString(16).padStart(8, '0'),
+    };
+  }
+}
+
+function writeSurfacePng(jvm, game, artifactKind) {
+  const surface = largestSurface(jvm);
+  if (!surface) return null;
+  const {encodePng} = require(path.join(
+    JAVA_TOOLS_DIR, 'src', 'io', 'pngEncoder',
+  ));
+  const kind = String(artifactKind || 'surface').replace(/[^a-z0-9_-]+/gi, '-');
+  const output = path.join(ROOT, '.work', 'alterorb-jvmjs', 'screenshots',
+    `${game.internalName}-${kind}-${Date.now()}-${process.pid}.png`);
+  const width = Number(surface._pixelsWidth || surface._width || 0);
+  const height = Number(surface._pixelsHeight || surface._height || 0);
+  if (width <= 0 || height <= 0) return null;
+  fs.mkdirSync(path.dirname(output), {recursive: true});
+  fs.writeFileSync(output, encodePng(surface._pixels, width, height));
+  return output;
+}
+
+function threadSnapshot(jvm) {
+  return jvm.threads.map((thread) => {
+    const frames = thread.callStack && thread.callStack.items;
+    const frame = frames && frames[frames.length - 1];
+    const method = frame && frame.method;
+    return {
+      id: thread.id,
+      status: thread.status,
+      location: frame
+        ? `${frame.className}.${method && method.name}` +
+          `${method && method.descriptor || ''}@${frame.pc}`
+        : null,
+      traceTail: thread._trace ? thread._trace.slice(-200) : undefined,
+    };
+  });
+}
+
+function topEntries(map, limit = 40) {
+  if (!(map instanceof Map)) return [];
+  return [...map.entries()]
+    .sort((left, right) => Number(right[1]) - Number(left[1]))
+    .slice(0, limit);
+}
+
+function resetJitProfile(jvm) {
+  const jit = jvm && jvm.jit;
+  if (!jit) return;
+  jit.profileMethods = true;
+  for (const name of [
+    'generatedMethodRunCounts', 'intrinsicMethodRunCounts',
+    'inlinedMethodRunCounts', 'methodDeoptCounts', 'methodDeoptReasons',
+    'methodDeoptSites',
+    'structuredSsaMethodRunCounts', 'scalarLoopMethodRunCounts',
+  ]) {
+    const value = jit[name];
+    if (value instanceof Map) value.clear();
+  }
+  if (typeof jvm.resetSchedulerTimings === 'function') {
+    jvm.resetSchedulerTimings();
+  }
+}
+
+function jitProfileSnapshot(jvm) {
+  const jit = jvm && jvm.jit;
+  if (!jit) return null;
+  return {
+    counters: {
+      polygonRasterRuns: Number(jit.polygonRasterRunCount || 0),
+      polygonRasterGuardedFallbacks:
+        Number(jit.polygonRasterGuardedFallbackCount || 0),
+      semanticBilinearSamplerRuns:
+        Number(jit.semanticBilinearSamplerRunCount || 0),
+      semanticBilinearSamplerFallbacks:
+        Number(jit.semanticBilinearSamplerFallbackCount || 0),
+      fusedRuns: Number(jit.fusedRunCount || 0),
+      fusedDirectRuns: Number(jit.fusedDirectRunCount || 0),
+      fusedGuardedFallbacks: Number(jit.fusedGuardedFallbackCount || 0),
+      fusedRestoredExceptionFrames:
+        Number(jit.fusedRestoredExceptionFrameCount || 0),
+    },
+    generatedMethods: topEntries(jit.generatedMethodRunCounts),
+    intrinsicMethods: topEntries(jit.intrinsicMethodRunCounts),
+    inlinedMethods: topEntries(jit.inlinedMethodRunCounts),
+    deopts: topEntries(jit.methodDeoptCounts),
+    deoptSites: topEntries(jit.methodDeoptSites),
+    deoptReasons: jit.methodDeoptReasons instanceof Map
+      ? [...jit.methodDeoptReasons.entries()] : [],
+    schedulerTimings: jvm._schedulerTimingProfile
+      ? [...jvm._schedulerTimingProfile.samples.entries()]
+        .sort((left, right) => right[1].totalMs - left[1].totalMs)
+        .slice(0, 40)
+      : [],
+  };
+}
+
+function jitRuntimeCounters(jvm) {
+  const jit = jvm && jvm.jit;
+  if (!jit) return null;
+  return {
+    preferWholeMethodJs: Boolean(jit.preferWholeMethodJs),
+    adaptiveConstructorCallers:
+      Boolean(jit.adaptiveConstructorCallersEnabled),
+    adaptiveEntryPromotions: Number(jit.adaptiveEntryPromotionCount || 0),
+    adaptiveTimePromotions: Number(jit.adaptiveTimePromotionCount || 0),
+    adaptiveTimeSamples: Number(jit.adaptiveTimeSampleCount || 0),
+    polygonRasterRuns: Number(jit.polygonRasterRunCount || 0),
+    polygonRasterGuardedFallbacks:
+      Number(jit.polygonRasterGuardedFallbackCount || 0),
+    polygonRasterFallbackEntry: Number(jit.polygonRasterFallbackEntry || 0),
+    polygonRasterFallbackVertices:
+      Number(jit.polygonRasterFallbackVertices || 0),
+    polygonRasterFallbackCoordinate:
+      Number(jit.polygonRasterFallbackCoordinate || 0),
+    polygonRasterFallbackDegenerate:
+      Number(jit.polygonRasterFallbackDegenerate || 0),
+    polygonRasterFallbackSurface:
+      Number(jit.polygonRasterFallbackSurface || 0),
+    polygonRasterFallbackScratch:
+      Number(jit.polygonRasterFallbackScratch || 0),
+    polygonRasterFallbackSurfaceSample:
+      jit.polygonRasterFallbackSurfaceSample || null,
+    tiledBlitRuns: Number(jit.tiledBlitRunCount || 0),
+    tiledBlitGuardedFallbacks:
+      Number(jit.tiledBlitGuardedFallbackCount || 0),
+    tiledBlitFallbackEntry: Number(jit.tiledBlitFallbackEntry || 0),
+    tiledBlitFallbackTag: Number(jit.tiledBlitFallbackTag || 0),
+    tiledBlitFallbackArrays: Number(jit.tiledBlitFallbackArrays || 0),
+    tiledBlitFallbackLayout: Number(jit.tiledBlitFallbackLayout || 0),
+    tiledBlitFallbackBounds: Number(jit.tiledBlitFallbackBounds || 0),
+    perspectiveSpanRuns: Number(jit.perspectiveSpanRunCount || 0),
+    perspectiveSpanGuardedFallbacks:
+      Number(jit.perspectiveSpanGuardedFallbackCount || 0),
+    semanticBilinearSamplerRuns:
+      Number(jit.semanticBilinearSamplerRunCount || 0),
+    semanticBilinearSamplerFallbacks:
+      Number(jit.semanticBilinearSamplerFallbackCount || 0),
+    fusedRuns: Number(jit.fusedRunCount || 0),
+    fusedDirectRuns: Number(jit.fusedDirectRunCount || 0),
+    fusedGuardedFallbacks: Number(jit.fusedGuardedFallbackCount || 0),
+    fusedRestoredExceptionFrames:
+      Number(jit.fusedRestoredExceptionFrameCount || 0),
+  };
+}
+
+function schedulerTimingSnapshot(jvm) {
+  if (!jvm || !jvm._schedulerTimingProfile) return null;
+  const jit = jvm.jit;
+  return [...jvm._schedulerTimingProfile.samples.entries()]
+    .sort((left, right) => right[1].totalMs - left[1].totalMs)
+    .slice(0, 40)
+    .map(([key, timing]) => {
+      const open = key.indexOf('(');
+      const separator = open < 0 ? -1 : key.lastIndexOf('.', open);
+      const owner = separator < 0 ? null : key.slice(0, separator);
+      const name = separator < 0 || open < 0 ? null : key.slice(separator + 1, open);
+      const descriptor = open < 0 ? null : key.slice(open);
+      const classData = owner && jvm.classes && jvm.classes[owner];
+      const method = classData && name && descriptor
+        ? jvm.findMethod(classData, name, descriptor) : null;
+      const generated = method && jit && jit.codegenCache &&
+        jit.codegenCache.has(method) ? jit.codegenCache.get(method) : null;
+      const code = method && Array.isArray(method.attributes)
+        ? method.attributes.find(attribute =>
+          attribute && attribute.type === 'code' && attribute.code)?.code
+        : null;
+      let tier = generated
+        ? generated.jvmStructuredSsa ? 'structured-ssa'
+          : generated.jvmScalarLoop ? 'scalar-loop'
+            : 'generated-baseline'
+        : 'not-generated';
+      if (generated && generated.jvmResumeBody) tier += '+resume';
+      return [key, {
+        ...timing,
+        tier,
+        generatedCached: Boolean(generated),
+        structuredContinuation:
+          Boolean(generated && generated.jvmStructuredContinuation),
+        codegenSupported: Boolean(method && jit &&
+          jit.isCodegenSupported(method)),
+        adaptiveCodegenSupported: Boolean(method && jit &&
+          jit.isCodegenSupported(method, true)),
+        adaptivePromoted: Boolean(method && jit &&
+          jit.adaptiveCodegenMethods && jit.adaptiveCodegenMethods.has(method)),
+        instructionCount:
+          Array.isArray(code && code.codeItems) ? code.codeItems.length : null,
+        exceptionHandlerCount:
+          Array.isArray(code && code.exceptionTable) ? code.exceptionTable.length : null,
+        compileError: method && jit && jit.codegenCompileErrors &&
+          jit.codegenCompileErrors.get(method)
+          ? String(jit.codegenCompileErrors.get(method).message ||
+            jit.codegenCompileErrors.get(method))
+          : null,
+      }];
+    });
+}
+
+function startCpuProfile() {
+  let inspector;
+  try {
+    inspector = require('inspector');
+  } catch (error) {
+    return Promise.resolve({
+      error: String(error && (error.stack || error.message) || error),
+      stop: async () => null,
+    });
+  }
+  const session = new inspector.Session();
+  session.connect();
+  const post = (method, parameters) => new Promise((resolve, reject) => {
+    session.post(method, parameters || {},
+      (error, value) => error ? reject(error) : resolve(value));
+  });
+  return post('Profiler.enable')
+    .then(() => post('Profiler.setSamplingInterval', {interval: 1000}))
+    .then(() => post('Profiler.start'))
+    .then(() => ({
+      stop: async () => {
+        try {
+          const result = await post('Profiler.stop');
+          return result && result.profile || null;
+        } finally {
+          session.disconnect();
+        }
+      },
+    }))
+    .catch((error) => {
+      session.disconnect();
+      return {
+        error: String(error && (error.stack || error.message) || error),
+        stop: async () => null,
+      };
+    });
+}
+
+function summarizeCpuProfile(profile, error) {
+  if (!profile) return error ? {error} : null;
+  const selfSamples = new Map();
+  for (const id of profile.samples || []) {
+    selfSamples.set(id, (selfSamples.get(id) || 0) + 1);
+  }
+  const totalSamples = (profile.samples || []).length;
+  const topSelf = (profile.nodes || [])
+    .map((node) => {
+      const call = node.callFrame || {};
+      const samples = selfSamples.get(node.id) || 0;
+      return {
+        functionName: call.functionName || '(anonymous)',
+        url: call.url || '',
+        lineNumber: Number(call.lineNumber || 0) + 1,
+        samples,
+        percent: totalSamples > 0 ? samples * 100 / totalSamples : 0,
+      };
+    })
+    .filter((entry) => entry.samples > 0)
+    .sort((left, right) => right.samples - left.samples)
+    .slice(0, 80);
+  return {
+    totalSamples,
+    durationMicros: (profile.timeDeltas || [])
+      .reduce((sum, value) => sum + Number(value || 0), 0),
+    topSelf,
+  };
+}
+
+function emitWorkerResult(result, exitCode) {
+  process.stdout.write(RESULT_PREFIX + JSON.stringify(result) + '\n');
+  setTimeout(() => process.exit(exitCode), 10);
+}
+
+async function runWorker(specification) {
+  const game = specification.game;
+  const cacheDir = path.join(os.homedir(), '.alterorb', 'caches',
+    game.internalName);
+  fs.mkdirSync(cacheDir, {recursive: true});
+  process.chdir(cacheDir);
+
+  const classesDir = specification.classesDir ||
+    extractGamepack(game, specification.jarPath);
+  const hookDir = buildHookStub();
+  const {JVM} = require(path.join(JAVA_TOOLS_DIR, 'src', 'core', 'jvm'));
+  const appletParameters = {
+    overxgames: '45',
+    overxachievements: '1000',
+    member: 'no',
+    gameport1: String(TCP_PORT),
+    gameport2: String(TCP_PORT),
+    servernum: '8003',
+    simplemode: specification.until === 'main-menu' ? 'true' : 'false',
+    instanceid: crypto.randomBytes(8).readBigInt64BE().toString(),
+    gamecrc: String(game.gamecrc),
+  };
+  const jvm = new JVM({
+    classpath: [classesDir, hookDir],
+    appletParameters,
+    appletCodeBase: `http://127.0.0.1:${HTTP_PROXY_PORT}/`,
+    jit: {enabled: !specification.noJit},
+  });
+  const startedAt = Date.now();
+  let firstFrameAt = null;
+  let menuCandidateFrameAt = null;
+  let menuActivityStartAt = null;
+  let menuActivityStartPresented = 0;
+  let menuActivityStartDirtyMarks = 0;
+  let menuActivityLastChangeAt = null;
+  let menuActivityLastPresented = 0;
+  let menuActivityLastDirtyMarks = 0;
+  let fpsStartedAt = null;
+  let fpsStartPresented = 0;
+  let fpsStartDirtyMarks = 0;
+  let cpuProfilePromise = null;
+  let menuScreenshot = null;
+  const seenFrameHashes = new Set();
+  const frameHistory = [];
+  let settled = false;
+  const finish = (status, extra, exitCode) => {
+    if (settled) return;
+    settled = true;
+    if (process.env.JVM_DEBUG_JIT === '1' &&
+        jvm.jit && typeof jvm.jit.dumpStats === 'function') {
+      jvm.jit.dumpStats(Number(process.env.JVM_DEBUG_JIT_LIMIT) || 25);
+    }
+    emitWorkerResult({
+      game: game.internalName,
+      name: game.name,
+      mainClass: game.mainClass,
+      variant: specification.variant || 'original',
+      status,
+      elapsedMs: Date.now() - startedAt,
+      ...extra,
+    }, exitCode);
+  };
+  const timer = setInterval(() => {
+    const observedAt = Date.now();
+    const presentationStats = jvm._awtPresentationStats;
+    const totalPresented = Number(presentationStats && presentationStats.presented || 0);
+    const totalDirtyMarks = Number(presentationStats && presentationStats.dirtyMarks || 0);
+    if (menuActivityStartAt !== null &&
+        (totalPresented !== menuActivityLastPresented ||
+          totalDirtyMarks !== menuActivityLastDirtyMarks)) {
+      menuActivityLastChangeAt = observedAt;
+      menuActivityLastPresented = totalPresented;
+      menuActivityLastDirtyMarks = totalDirtyMarks;
+    }
+    const surface = surfaceSnapshot(jvm);
+    if (surface && surface.nonblankSamples >= 16 && firstFrameAt === null) {
+      firstFrameAt = Date.now();
+    }
+    if (surface && !seenFrameHashes.has(surface.sampleHash)) {
+      seenFrameHashes.add(surface.sampleHash);
+      frameHistory.push({
+        elapsedMs: Date.now() - startedAt,
+        ...surface,
+      });
+      if (frameHistory.length > 200) frameHistory.shift();
+    }
+    const isFirstFrame = specification.until !== 'main-menu' &&
+      firstFrameAt !== null;
+    const denseMenuArtwork = surface &&
+      surface.nonblankSamples >= 2500 &&
+      surface.uniqueSampleColors >= 32;
+    // Some complete menus deliberately use mostly-black artwork. Keep them
+    // distinct from the sparse Jagex progress panel (roughly 470 sampled
+    // nonblank pixels) by requiring a materially larger painted area and a
+    // richer sequence of frame states.
+    const sparseAnimatedMenu = surface &&
+      surface.nonblankSamples >= 800 &&
+      surface.uniqueSampleColors >= 32 &&
+      seenFrameHashes.size >= 10;
+    if (specification.until === 'main-menu' &&
+        (denseMenuArtwork || sparseAnimatedMenu) &&
+        menuCandidateFrameAt === null) {
+      menuCandidateFrameAt = observedAt;
+      menuActivityStartAt = observedAt;
+      menuActivityStartPresented = totalPresented;
+      menuActivityStartDirtyMarks = totalDirtyMarks;
+      menuActivityLastChangeAt = observedAt;
+      menuActivityLastPresented = totalPresented;
+      menuActivityLastDirtyMarks = totalDirtyMarks;
+    }
+    // FunOrb simple mode bypasses login and opens the offline main menu. Its
+    // full-screen artwork is materially denser and more colorful than the
+    // sparse Jagex/loading frames. Require several intervening frame states
+    // and a settling delay so a transient progress redraw cannot pass.
+    const isMenu = specification.until === 'main-menu' &&
+      firstFrameAt !== null &&
+      Date.now() - firstFrameAt >= 5000 &&
+      menuCandidateFrameAt !== null &&
+      Date.now() - menuCandidateFrameAt >= 10000 &&
+      seenFrameHashes.size >= 3 &&
+      (denseMenuArtwork || sparseAnimatedMenu);
+    if (isMenu && specification.measureFpsMs > 0 && fpsStartedAt === null) {
+      fpsStartedAt = Date.now();
+      fpsStartPresented = Number(
+        jvm._awtPresentationStats && jvm._awtPresentationStats.presented || 0);
+      fpsStartDirtyMarks = Number(
+        jvm._awtPresentationStats && jvm._awtPresentationStats.dirtyMarks || 0);
+      menuScreenshot = writeSurfacePng(jvm, game, 'main-menu');
+      if (specification.profileJit) resetJitProfile(jvm);
+      if (specification.cpuProfile) cpuProfilePromise = startCpuProfile();
+    }
+    if (fpsStartedAt !== null &&
+        Date.now() - fpsStartedAt >= specification.measureFpsMs) {
+      clearInterval(timer);
+      const endedAt = Date.now();
+      const durationMs = endedAt - fpsStartedAt;
+      const presented = Number(
+        jvm._awtPresentationStats && jvm._awtPresentationStats.presented || 0) -
+        fpsStartPresented;
+      const dirtyMarks = Number(
+        jvm._awtPresentationStats && jvm._awtPresentationStats.dirtyMarks || 0) -
+        fpsStartDirtyMarks;
+      const fps = durationMs > 0 ? presented * 1000 / durationMs : 0;
+      const activityDurationMs = menuActivityStartAt === null ||
+          menuActivityLastChangeAt === null
+        ? 0 : Math.max(0, menuActivityLastChangeAt - menuActivityStartAt);
+      const activityPresented = Math.max(
+        0, menuActivityLastPresented - menuActivityStartPresented);
+      const activityDirtyMarks = Math.max(
+        0, menuActivityLastDirtyMarks - menuActivityStartDirtyMarks);
+      const activityUseful = activityDurationMs >= 500 &&
+        activityPresented >= 5 && activityDirtyMarks >= 5;
+      const menuActivityFps = activityUseful
+        ? activityPresented * 1000 / activityDurationMs : null;
+      const menuActivityDirtyMarksPerSecond = activityUseful
+        ? activityDirtyMarks * 1000 / activityDurationMs : null;
+      const settledForMs = menuActivityLastChangeAt === null
+        ? null : Math.max(0, endedAt - menuActivityLastChangeAt);
+      // A number of FunOrb menus animate through a finite transition and then
+      // intentionally stop repainting. A delayed fixed window reports 0 FPS
+      // when that transition becomes faster. Use its complete active interval
+      // only after it has settled; continuously animated menus retain the
+      // ordinary fixed-window measurement.
+      const useCompletedActivity = activityUseful && settledForMs >= 500;
+      const effectiveFps = useCompletedActivity ? menuActivityFps : fps;
+      const fpsBasis = useCompletedActivity
+        ? 'completed-menu-activity' : 'fixed-window';
+      const finishMeasurement = async () => {
+        let cpuProfile = null;
+        if (cpuProfilePromise) {
+          const controller = await cpuProfilePromise;
+          const profile = await controller.stop();
+          cpuProfile = summarizeCpuProfile(profile, controller.error);
+        }
+        finish('fps-measured', {
+          surface,
+          screenshot: menuScreenshot,
+          frameHistory,
+          fpsMeasurement: {
+            durationMs,
+            presented,
+            fps,
+            effectiveFps,
+            basis: fpsBasis,
+            dirtyMarks,
+            dirtyMarksPerSecond:
+              durationMs > 0 ? dirtyMarks * 1000 / durationMs : 0,
+          },
+          menuActivityMeasurement: {
+            durationMs: activityDurationMs,
+            presented: activityPresented,
+            fps: menuActivityFps,
+            dirtyMarks: activityDirtyMarks,
+            dirtyMarksPerSecond: menuActivityDirtyMarksPerSecond,
+            settledForMs,
+          },
+          jitProfile: specification.profileJit ? jitProfileSnapshot(jvm) : undefined,
+          jitCounters: jitRuntimeCounters(jvm),
+          schedulerTimings: schedulerTimingSnapshot(jvm),
+          cpuProfile,
+        }, effectiveFps >= specification.minFps ? 0 : 4);
+      };
+      finishMeasurement().catch((error) => {
+        finish('error', {
+          error: String(error && (error.stack || error.message) || error),
+          surface,
+          frameHistory,
+        }, 1);
+      });
+    } else if (isFirstFrame || isMenu && specification.measureFpsMs <= 0) {
+      clearInterval(timer);
+      const screenshot = isMenu ? writeSurfacePng(jvm, game, 'main-menu') : null;
+      finish(isMenu ? 'main-menu' : 'first-frame', {
+        surface,
+        screenshot,
+        frameHistory,
+      }, 0);
+    } else if (fpsStartedAt === null &&
+        Date.now() - startedAt >= specification.timeoutMs) {
+      clearInterval(timer);
+      finish('timeout', {
+        surface,
+        screenshot: writeSurfacePng(jvm, game, 'timeout'),
+        frameHistory,
+        threads: threadSnapshot(jvm),
+      }, 2);
+    }
+  }, 100);
+  const runPromise = jvm.run(game.mainClass, {args: []});
+  runPromise.then(() => {
+    clearInterval(timer);
+    finish('exited', {
+      surface: surfaceSnapshot(jvm),
+      screenshot: writeSurfacePng(jvm, game, 'exited'),
+      frameHistory,
+      threads: threadSnapshot(jvm),
+    }, 3);
+  }, (error) => {
+    clearInterval(timer);
+    finish('error', {
+      error: String(error && (error.stack || error.message) || error),
+      surface: surfaceSnapshot(jvm),
+      screenshot: writeSurfacePng(jvm, game, 'error'),
+      frameHistory,
+      threads: threadSnapshot(jvm),
+    }, 1);
+  });
+}
+
+function startTcpBridge(remoteHost) {
+  const sockets = new Set();
+  const server = net.createServer(client => {
+    const upstream = net.createConnection({host: remoteHost, port: TCP_PORT});
+    sockets.add(client);
+    sockets.add(upstream);
+    client.pipe(upstream).pipe(client);
+    const close = () => {
+      sockets.delete(client);
+      sockets.delete(upstream);
+      client.destroy();
+      upstream.destroy();
+    };
+    client.on('error', close);
+    upstream.on('error', close);
+    client.on('close', close);
+    upstream.on('close', close);
+  });
+  return new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(TCP_PORT, '127.0.0.1', () => resolve({
+      close: () => {
+        for (const socket of sockets) socket.destroy();
+        server.close();
+      },
+    }));
+  });
+}
+
+function startHttpBridge(remoteHost) {
+  const server = http.createServer((request, response) => {
+    const upstream = https.request({
+      hostname: remoteHost,
+      port: 443,
+      method: request.method,
+      path: request.url,
+      headers: {...request.headers, host: remoteHost},
+    }, upstreamResponse => {
+      response.writeHead(upstreamResponse.statusCode || 502,
+        upstreamResponse.headers);
+      upstreamResponse.pipe(response);
+    });
+    upstream.on('error', error => {
+      if (!response.headersSent) response.writeHead(502);
+      response.end(String(error.message || error));
+    });
+    request.pipe(upstream);
+  });
+  return new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(HTTP_PROXY_PORT, '127.0.0.1',
+      () => resolve({close: () => server.close()}));
+  });
+}
+
+async function fetchConfig(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`AlterOrb config request failed: ${response.status}`);
+  }
+  return response.json();
+}
+
+function tailLines(value, count = 300) {
+  return String(value).trim().split(/\r?\n/).slice(-count);
+}
+
+function runChild(game, options) {
+  const jarPath = gamepackPath(game);
+  if (!fs.existsSync(jarPath)) {
+    return Promise.resolve({
+      game: game.internalName,
+      name: game.name,
+      mainClass: game.mainClass,
+      status: 'missing-jar',
+      elapsedMs: 0,
+    });
+  }
+  const actualHash = sha256(jarPath);
+  if (actualHash !== game.gamepackHash) {
+    return Promise.resolve({
+      game: game.internalName,
+      name: game.name,
+      mainClass: game.mainClass,
+      status: 'hash-mismatch',
+      expectedHash: game.gamepackHash,
+      actualHash,
+      elapsedMs: 0,
+    });
+  }
+  let classesDir = null;
+  if (options.recompiled) {
+    const validation = validateRecompiledClasses(game, jarPath);
+    if (!validation.ok) {
+      return Promise.resolve({
+        game: game.internalName,
+        name: game.name,
+        mainClass: game.mainClass,
+        variant: 'recompiled',
+        status: validation.status,
+        classesDir: validation.classesDir,
+        expectedClasses: validation.expectedClasses,
+        missingClasses: validation.missingClasses,
+        elapsedMs: 0,
+      });
+    }
+    classesDir = validation.classesDir;
+  }
+  const specification = Buffer.from(JSON.stringify({
+    game,
+    jarPath,
+    classesDir,
+    variant: options.recompiled ? 'recompiled' : 'original',
+    timeoutMs: options.timeoutMs,
+    until: options.until,
+    noJit: options.noJit,
+    measureFpsMs: options.measureFpsMs,
+    minFps: options.minFps,
+    profileJit: options.profileJit,
+    cpuProfile: options.cpuProfile,
+  })).toString('base64');
+  return new Promise(resolve => {
+    const child = spawn(process.execPath, [__filename], {
+      cwd: ROOT,
+      env: {
+        ...process.env,
+        ALTERORB_JVMJS_WORKER: specification,
+        JAVA_TOOLS_DIR,
+        JVM_WASM_JIT: process.env.JVM_WASM_JIT || '1',
+        JVM_WASM_STRUCTURED: process.env.JVM_WASM_STRUCTURED || '1',
+        JVM_ENABLE_RENDERER_PIPELINE:
+          process.env.JVM_ENABLE_RENDERER_PIPELINE || '1',
+        JVM_FAKE_TIME: process.env.JVM_FAKE_TIME || '1000000000000',
+        JVM_FAKE_TIME_REALTIME:
+          process.env.JVM_FAKE_TIME_REALTIME || '1',
+        JVM_PROFILE_SCHEDULER_TIMES: options.profileJit
+          ? (process.env.JVM_PROFILE_SCHEDULER_TIMES || '64')
+          : (process.env.JVM_PROFILE_SCHEDULER_TIMES || ''),
+        JVM_DEBUG_ARRAY_OOB: process.env.JVM_DEBUG_ARRAY_OOB || '1',
+      },
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    let stdout = '';
+    let stderr = '';
+    child.stdout.on('data', chunk => {
+      stdout += chunk;
+      if (stdout.length > 262144) stdout = stdout.slice(-131072);
+    });
+    child.stderr.on('data', chunk => {
+      stderr += chunk;
+      if (stderr.length > 262144) stderr = stderr.slice(-131072);
+    });
+    child.on('error', error => resolve({
+      game: game.internalName,
+      name: game.name,
+      mainClass: game.mainClass,
+      status: 'spawn-error',
+      error: String(error.stack || error),
+      elapsedMs: 0,
+    }));
+    child.on('exit', (code, signal) => {
+      const resultLine = stdout.split(/\r?\n/)
+        .find(line => line.startsWith(RESULT_PREFIX));
+      if (resultLine) {
+        try {
+          resolve({
+            ...JSON.parse(resultLine.slice(RESULT_PREFIX.length)),
+            exitCode: code,
+            signal,
+            stderrTail: tailLines(stderr),
+          });
+          return;
+        } catch (_) {
+          // Fall through to an invalid-result report.
+        }
+      }
+      resolve({
+        game: game.internalName,
+        name: game.name,
+        mainClass: game.mainClass,
+        status: 'invalid-worker-result',
+        exitCode: code,
+        signal,
+        stdoutTail: tailLines(stdout),
+        stderrTail: tailLines(stderr),
+        elapsedMs: 0,
+      });
+    });
+  });
+}
+
+async function runPool(games, options, onResult) {
+  const results = [];
+  let next = 0;
+  async function worker() {
+    while (true) {
+      const index = next++;
+      if (index >= games.length) return;
+      const game = games[index];
+      const started = Date.now();
+      console.log(`[${index + 1}/${games.length}] launch ${game.internalName}`);
+      const result = await runChild(game, options);
+      results.push(result);
+      if (onResult) onResult(results);
+      console.log(`[${index + 1}/${games.length}] ${game.internalName}: ` +
+        `${result.status} ${(result.elapsedMs / 1000).toFixed(1)}s` +
+        (result.fpsMeasurement
+          ? ` fps=${Number(result.fpsMeasurement.effectiveFps ??
+            result.fpsMeasurement.fps).toFixed(2)}` +
+            (result.fpsMeasurement.basis === 'completed-menu-activity'
+              ? ' (active transition)' : '')
+          : '') +
+        ` wall=${((Date.now() - started) / 1000).toFixed(1)}s`);
+    }
+  }
+  await Promise.all(Array.from({length: Math.min(options.jobs, games.length)},
+    () => worker()));
+  return results;
+}
+
+function buildReport(config, options, results, expectedCount, complete) {
+  const sortedResults = results.slice()
+    .sort((left, right) => left.game.localeCompare(right.game));
+  const counts = {};
+  for (const result of sortedResults) {
+    counts[result.status] = (counts[result.status] || 0) + 1;
+  }
+  return {
+    schema: 1,
+    createdAt: new Date().toISOString(),
+    configUrl: options.configUrl,
+    configVersion: config.version,
+    server: config.server,
+    timeoutMs: options.timeoutMs,
+    until: options.until,
+    noJit: options.noJit,
+    variant: options.recompiled ? 'recompiled' : 'original',
+    measureFpsMs: options.measureFpsMs,
+    minFps: options.minFps,
+    profileJit: options.profileJit,
+    cpuProfile: options.cpuProfile,
+    jobs: options.jobs,
+    complete,
+    completedGames: sortedResults.length,
+    expectedGames: expectedCount,
+    counts,
+    results: sortedResults,
+  };
+}
+
+function writeReportAtomically(reportPath, report) {
+  fs.mkdirSync(path.dirname(reportPath), {recursive: true});
+  const temporaryPath = `${reportPath}.tmp-${process.pid}`;
+  fs.writeFileSync(temporaryPath, JSON.stringify(report, null, 2) + '\n');
+  fs.renameSync(temporaryPath, reportPath);
+}
+
+async function main() {
+  const workerSpec = process.env.ALTERORB_JVMJS_WORKER;
+  if (workerSpec) {
+    const specification = JSON.parse(Buffer.from(workerSpec, 'base64')
+      .toString('utf8'));
+    await runWorker(specification);
+    return;
+  }
+
+  const options = parseArgs(process.argv.slice(2));
+  execFileSync(process.execPath, [
+    path.join(JAVA_TOOLS_DIR, 'scripts', 'generate-jre-index.js'),
+  ], {stdio: 'ignore'});
+  buildHookStub();
+  const config = await fetchConfig(options.configUrl);
+  let games = config.games || [];
+  if (options.games.length) {
+    const selected = new Set(options.games);
+    games = games.filter(game => selected.has(game.internalName));
+    const missing = options.games.filter(name =>
+      !games.some(game => game.internalName === name));
+    if (missing.length) {
+      throw new Error(`Unknown AlterOrb game(s): ${missing.join(', ')}`);
+    }
+  }
+  console.log(`AlterOrb JVM.js smoke launch: games=${games.length} ` +
+    `jobs=${options.jobs} timeout=${options.timeoutMs}ms until=${options.until} ` +
+    `measureFps=${options.measureFpsMs}ms minFps=${options.minFps} ` +
+    `variant=${options.recompiled ? 'recompiled' : 'original'}`);
+  await Promise.all(games.map(game => ensureGamepack(game, options.configUrl)));
+  const remoteHost = new URL(config.server).hostname;
+  const [tcpBridge, httpBridge] = await Promise.all([
+    startTcpBridge(remoteHost),
+    startHttpBridge(remoteHost),
+  ]);
+  let results;
+  try {
+    results = await runPool(games, options, partialResults => {
+      writeReportAtomically(options.report,
+        buildReport(config, options, partialResults, games.length, false));
+    });
+  } finally {
+    tcpBridge.close();
+    httpBridge.close();
+  }
+  const report = buildReport(config, options, results, games.length, true);
+  writeReportAtomically(options.report, report);
+  console.log(`Report: ${options.report}`);
+  console.log(`Summary: ${JSON.stringify(report.counts)}`);
+  const expectedStatus = options.measureFpsMs > 0 ? 'fps-measured'
+    : options.until === 'main-menu' ? 'main-menu' : 'first-frame';
+  if (results.some(result => result.status !== expectedStatus ||
+      options.measureFpsMs > 0 &&
+      Number(result.fpsMeasurement &&
+        (result.fpsMeasurement.effectiveFps ??
+          result.fpsMeasurement.fps)) <
+        options.minFps)) {
+    process.exitCode = 1;
+  }
+}
+
+main().catch(error => {
+  console.error(error && error.stack ? error.stack : String(error));
+  process.exit(1);
+});

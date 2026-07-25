@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 const Module = require('module');
 const { spawnSync } = require('child_process');
 const { createRequire } = Module;
@@ -3567,18 +3568,52 @@ function cfrMarkerCountImproves(baselinePath, candidatePath) {
   return true;
 }
 
+// Marker counting decompiles the whole class with CFR (~8s+ on a large class)
+// and is a pure function of the class *bytes*. The late-structuring oracles each
+// re-emit and re-score the same baseline class across several variants; whenever
+// a prior variant left the AST unchanged, those baseline files are byte-identical
+// and were being re-decompiled from scratch. Memoize by content hash so the
+// baseline is decompiled once. Candidate files differ, so they never collide with
+// a baseline; distinct bytes always miss. Output is unaffected — this only skips
+// recomputing an identical result.
+const cfrMarkerCountCache = new Map();
+let cfrMarkerCountCacheHits = 0;
+let cfrMarkerCountCacheMisses = 0;
+const cfrMarkerCountCacheDisabled = process.env.BULK_PIPELINE_DISABLE_CFR_MARKER_CACHE === '1';
+
 function cfrMarkerCount(classFile) {
+  let key = null;
+  if (!cfrMarkerCountCacheDisabled) {
+    try {
+      key = crypto.createHash('sha256').update(fs.readFileSync(classFile)).digest('hex');
+    } catch {
+      key = null;
+    }
+  }
+  if (key !== null && cfrMarkerCountCache.has(key)) {
+    cfrMarkerCountCacheHits += 1;
+    return cfrMarkerCountCache.get(key);
+  }
   const result = spawnSync(process.execPath, [path.join(DEKOB, 'scripts', 'cfr-marker-count.js'), classFile], {
     cwd: DEKOB,
     encoding: 'utf8',
     maxBuffer: 1024 * 1024 * 8,
   });
-  if (result.status !== 0) return null;
-  try {
-    return JSON.parse(result.stdout);
-  } catch {
-    return null;
+  let parsed = null;
+  if (result.status === 0) {
+    try {
+      parsed = JSON.parse(result.stdout);
+    } catch {
+      parsed = null;
+    }
   }
+  // Cache only clean results; a null (spawn/parse failure) is not a stable
+  // property of the bytes and must be allowed to retry.
+  if (key !== null && parsed !== null) {
+    cfrMarkerCountCache.set(key, parsed);
+    cfrMarkerCountCacheMisses += 1;
+  }
+  return parsed;
 }
 const implicitSuperCtorClasses = collectImplicitSuperCtorClasses();
 
@@ -4317,4 +4352,7 @@ for (const f of processFiles) {
   }
 }
 fs.rmSync(tmpDir, { recursive: true, force: true });
+if (tracePassTimes) {
+  console.error(`TRACE cfr-marker-count-cache hits=${cfrMarkerCountCacheHits} misses=${cfrMarkerCountCacheMisses}`);
+}
 console.log(`Done: ${processed}/${processFiles.length} processed, ${failed} failed (passthrough), ${copied} copied`);
