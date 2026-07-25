@@ -1394,12 +1394,20 @@ class HostedGame:
         on screen. So opcode 62's defeat UI is execution-proven, and 60 is
         confirmed to be the teardown rather than part of the result display.
 
-        Still NOT measured: opcode 69's win screen. The winner gets 69 and
-        qc.field_r is set, but the client's win menu (final scores, highscore
-        table, the menu buttons) has never been seen populated -- the server
-        sends no score payload with it, and the post-game S2C 71-74 masks that
-        the rematch UI reads have no senders at all. Sending 69 is necessary but
-        evidently not sufficient; see docs/multiplayer-gameplay-protocol.md.
+        KNOWN WRONG: opcode 69 shows the winner the "Panic!" screen, not "You
+        win!" (observed 2026-07-26, once the deferred teardown made the screen
+        readable at all). 69 does reach the winner UI -- the screen changes, and
+        it is not the defeat screen -- but it selects the wrong end-of-game
+        resource. Suspect result_code, which is 0 here and has never been passed
+        anything else by any caller; opcodes 68 and 70 carry a similarly
+        unexplained result byte, so they likely share one vocabulary. Settle it
+        by driving qc's 69 handler with each candidate byte, not by guessing
+        against a live match.
+
+        Also missing: no score payload accompanies 69, so the win menu's scores
+        and highscore table cannot populate, and the post-game S2C 71-74 masks
+        that the rematch UI reads have no senders at all. See
+        docs/multiplayer-gameplay-protocol.md.
         """
         with self._lock:
             if self.state != "playing":

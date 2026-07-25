@@ -53,6 +53,12 @@ CLIENT_FPS = 50
 #: trimmed anyway -- and dumping a huge burst into a bucket makes it lurch.
 MAX_CATCHUP_SAMPLES = 40
 
+#: Chance that a bot spends a whole turn holding fast drop. Deliberately well
+#: under 1: holding it permanently (which is what the bot used to do, on 99% of
+#: samples) makes its replica cross the bucket in ~0.7s and look frantic beside
+#: a human board falling at base gravity.
+FAST_DROP_TURN_CHANCE = 0.3
+
 
 class BotLobbySession:
     """Socket-free :class:`LobbySession` for a lobby-resident bot.
@@ -287,8 +293,24 @@ class BotManager:
         if bot not in game.active_players():
             self._fed_through.pop(bot.display_name, None)
             return
-        controls = [FAST_DROP] * self._samples_owed(bot)
-        roll = self.rng.randrange(12)
+        owed = self._samples_owed(bot)
+        # Do NOT hold fast drop for the whole match. The bot used to set it on
+        # every sample -- measured at 99% of them -- and once the relay stopped
+        # swallowing the bit, replicas faithfully reproduced it: an opponent's
+        # piece crossed all 18 rows in about 0.7s (2 ticks a row) for the entire
+        # game. That reads as chaos next to the player's own bucket, which falls
+        # at base gravity (40 ticks a row) unless they press the key.
+        #
+        # Dropping for a whole turn at a time, some of the time, is what a
+        # person actually does: steer for a moment, then commit. At the default
+        # 0.08s turn a dropping turn advances the piece ~2 rows and a coasting
+        # one ~0.1, so roughly a third gives a piece a ~3s descent.
+        dropping = self.rng.random() < FAST_DROP_TURN_CHANCE
+        controls = [FAST_DROP if dropping else 0] * owed
+        # Steer more than before, too. A bot that almost never moves sideways
+        # builds one central tower and tops out -- which is what ended a match
+        # in a couple of ticks, since a lost life does not clear the bucket.
+        roll = self.rng.randrange(6)
         if roll == 0:
             controls[0] |= LEFT
         elif roll == 1:

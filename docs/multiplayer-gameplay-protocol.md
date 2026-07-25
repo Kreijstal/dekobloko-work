@@ -475,11 +475,33 @@ for real -- an eliminated opponent shows `PLAYER 3 IS OUT` on screen. So:
 Sessions with no UI -- bots and the demo fixtures -- must dismiss themselves, or
 they pin the room open forever.
 
-### The winner's end screen is still incomplete
+### The winner gets the "Panic!" screen, not "You win!" (observed 2026-07-26)
 
-S2C 69 is sent and `qc.field_r` is set, but the win menu proper -- final scores,
-the highscore table, the menu buttons -- has never been seen populated. Two
-known gaps, neither yet resolved:
+With the teardown deferred so the end screen survives long enough to be read,
+the winner's screen is now visible -- and it is **wrong**. The client shows the
+**"Panic!"** screen rather than "You win!". So S2C 69 does reach the winner UI
+(the screen changes, and it is not the defeat screen), but it selects the wrong
+end-of-game resource.
+
+The server sends 69 with `result_code = 0`, and 0 is the default that every
+internal caller passes; no call site has ever chosen a different value. The
+obvious reading is that this byte is not a formality but the **selector for
+which end screen is shown**, with 0 landing on panic rather than victory. That
+matches the neighbouring opcodes: the table above already records 68 as "show a
+distinct result resource" and 70 as carrying an `i8 result_or_winner` whose
+"exact byte vocabulary is unresolved" -- three opcodes with an unexplained
+result byte is a strong hint they share one vocabulary.
+
+This is a hypothesis, not a measurement. It should be settled the way the
+rotation question was: drive `qc`'s 69 handler with each candidate byte and see
+which resource each selects, rather than guessing values against a live match.
+Note "Panic!" is plainly a real game state in its own right (a bucket close to
+topping out), so the value space likely encodes several outcomes -- win, loss,
+draw, panic -- not just a win/lose flag.
+
+Beyond picking the right byte, the win menu proper -- final scores, the
+highscore table, the menu buttons -- has never been seen populated. Two further
+gaps, neither yet resolved:
 
 * no score payload accompanies 69, and the client presumably needs one to fill
   a score/highscore panel;
