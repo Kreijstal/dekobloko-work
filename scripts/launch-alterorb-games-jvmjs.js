@@ -334,6 +334,10 @@ function jitRuntimeCounters(jvm) {
     adaptiveEntryPromotions: Number(jit.adaptiveEntryPromotionCount || 0),
     adaptiveTimePromotions: Number(jit.adaptiveTimePromotionCount || 0),
     adaptiveTimeSamples: Number(jit.adaptiveTimeSampleCount || 0),
+    adaptiveWholeMethodPromotions:
+      Number(jit.adaptiveWholeMethodPromotionCount || 0),
+    adaptiveWholeMethodEscalations:
+      Number(jit.adaptiveWholeMethodEscalationCount || 0),
     polygonRasterRuns: Number(jit.polygonRasterRunCount || 0),
     polygonRasterGuardedFallbacks:
       Number(jit.polygonRasterGuardedFallbackCount || 0),
