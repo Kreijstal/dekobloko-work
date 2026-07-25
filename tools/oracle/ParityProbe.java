@@ -604,7 +604,102 @@ public class ParityProbe {
         }
     }
 
+    /** The settled grid, field_P laid out field_O x field_a, as row strings. */
+    static String gridMap(Object board) throws Exception {
+        int w = get(board, "field_O"), h = get(board, "field_a");
+        int[] p = (int[]) field(board.getClass(), "field_P").get(board);
+        StringBuilder sb = new StringBuilder();
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                int cell = p[x + w * y] & 0x0FFFFFFF;
+                sb.append(cell == 0 ? '.' : (char) ('0' + (cell & 31) % 10));
+            }
+            if (y + 1 < h) sb.append('/');
+        }
+        return sb.toString();
+    }
+
+    static void unwrap(Throwable t, String prefix) throws Exception {
+        Throwable cause = t instanceof InvocationTargetException
+                ? ((InvocationTargetException) t).getTargetException() : t;
+        System.out.println(prefix + " FAILED " + cause);
+        for (Field f : cause.getClass().getDeclaredFields()) {
+            if (Modifier.isStatic(f.getModifiers())) continue;
+            f.setAccessible(true);
+            System.out.println("        " + f.getName() + " = " + f.get(cause));
+        }
+        StackTraceElement[] frames = cause.getStackTrace();
+        for (int i = 0; i < Math.min(5, frames.length); i++) {
+            System.out.println("        at " + frames[i]);
+        }
+    }
+
+    /**
+     * Discovery spot-check for the COLOUR CLEAR, which lives inside
+     * lk.a(oi, int, boolean, lk) -- the finalize path whose field_kb gate
+     * (lk.java:3438) suppresses only the clear's network notification.
+     *
+     * The engine's clear provably disagrees with the client's (committed cell
+     * counts at equal landing indices diverge), so this exists to measure the
+     * real rule instead of reading it off a 900-line CFG state machine. The
+     * parameters are unknown, so this tries a spread and reports which
+     * combinations run and what each did to the grid.
+     */
+    static void clearProbe() throws Exception {
+        int[][] cases = {
+            {1, 1, 1, 1, 1, 1},   // a 3x2 block of one colour
+            {1, 1, 1, 1, 1, 0},   // five of a colour
+            {1, 1, 2, 1, 1, 2},   // two colours interleaved
+            {1, 1, 1, 1, 0, 0},   // a 2x2 square
+        };
+        String[] names = {"3x2-solid", "five", "two-colour", "2x2-square"};
+
+        for (int c = 0; c < cases.length; c++) {
+            System.out.println("\nCASE " + names[c]);
+            for (int param1 : new int[]{0, 1, -1, 127}) {
+                for (boolean param2 : new boolean[]{false, true}) {
+                    Object board = makeBoard(false);
+                    int[] grid = (int[]) field(
+                            board.getClass(), "field_P").get(board);
+                    int W = 8;
+                    // Park the pattern on the floor, rows 16-17, x=2..4.
+                    for (int i = 0; i < cases[c].length; i++) {
+                        int cell = cases[c][i];
+                        if (cell == 0) continue;
+                        grid[(2 + i % 3) + W * (16 + i / 3)] = cell;
+                    }
+                    // The clear runs off the back of a COMMITTED piece, so give
+                    // the board one rather than calling into an idle bucket.
+                    install(board, makeShape(1, 2, 1, new int[]{1, 1}));
+                    setInt(board, "field_e", 1 << 20);
+                    setInt(board, "field_Ab", 1 << 20);
+                    String before = gridMap(board);
+                    try {
+                        Method m = Class.forName("lk").getDeclaredMethod(
+                                "a", Class.forName("oi"), int.class,
+                                boolean.class, Class.forName("lk"));
+                        m.setAccessible(true);
+                        m.invoke(board, null, param1, param2, null);
+                        String after = gridMap(board);
+                        System.out.println("  p1=" + param1 + " p2=" + param2
+                                + (after.equals(before) ? "  unchanged" : "  CHANGED"));
+                        if (!after.equals(before)) {
+                            System.out.println("    before " + before.substring(before.length() - 26));
+                            System.out.println("    after  " + after.substring(after.length() - 26));
+                        }
+                    } catch (Throwable t) {
+                        unwrap(t, "  p1=" + param1 + " p2=" + param2);
+                    }
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
+        if (args.length > 0 && args[0].equals("clear")) {
+            clearProbe();
+            return;
+        }
         if (args.length > 0 && args[0].equals("kicksweep")) {
             kickSweep();
             return;
