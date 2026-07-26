@@ -453,12 +453,53 @@ firing in one pass is not fully pinned.
 * the earthquake slide (`field_l != 0`, states 35-53). It shares the gravity
   gate in the decompiled source, so it probably falls for powerups too, but
   the engine's `earthquake()` was left alone rather than changed on a reading;
-* **the ordering of several drills firing in one pass.** Bottom-row-first,
-  left-to-right fits every case shrunk so far and leaves ~1% of
-  drill-saturated boards disagreeing. Two shrunk repros pull in opposite
-  directions on whether a lower-left or lower-right drill acts first, which
-  suggests the real pass is not a simple positional scan. Anything that
-  depends on multiple drills landing in one tick is still approximate;
+* **the ordering of several drills firing in one pass.** The engine's
+  one-shot column clear leaves ~1% of drill-saturated boards disagreeing.
+  Anything that depends on multiple drills landing in one tick is approximate.
+
+  Reading `lk.a` states 157-171 (states 172+ are the `var14` mirror of the
+  same loop, not a second pass) says what the real pass is:
+
+      var7 = (field_a - 1) * field_O - 1   # last cell of row height-2
+      var8 = field_a - 2                   # row, counting DOWN to 0
+      var9 = field_O - 1                   # column, counting DOWN to 0
+      var10 = field_P[var7]
+      if (var10 ^ -1) == -26:              # 25, plain drill
+          a(false, ..., field_O + var7, ...); b(-1, field_O + var7, false)
+      if var10 == 27:                      # power drill
+          a(true,  ..., field_O + var7, ...); b(-1, var7 + field_O, false)
+
+  So: the target is `field_O + var7`, the ONE cell below -- a drill eats a
+  single cell per tick and falls into the hole it made, it does not sweep a
+  column. Rows run bottom-up, columns run RIGHT-TO-LEFT, a drill already on
+  the floor is never scanned, and `a(...)` tags while `b(...)` commits, so
+  targets are computed before anything is removed.
+
+  **That faithful model was implemented and then reverted, because it scores
+  WORSE.** It passes all 16 hand-picked cases including three the one-shot
+  version fails, but on random boards:
+
+      one-shot column clear (shipped)        10/900  = 1.1%
+      per-tick, floor drill removed at once  31/450  = 6.9%
+      per-tick, floor drill removal deferred 21/450  = 4.7%
+      per-tick + match and drill same tick   39/450  = 8.7%
+
+  The hand-case score is biased -- those cases were chosen because the
+  one-shot model failed them. The random-board score is the honest one.
+
+  The reason the faithful model loses is architectural, not a small bug:
+  `_resolve_cascades` resolves to a fixpoint, while the client spreads
+  gravity, a ~13-tick pop animation and the drill pass across many ticks.
+  Reproducing the pass without reproducing the tick schedule gets the
+  *ordering* right and the *interleaving* wrong. Doing this properly means
+  simulating ticks, not patching the cascade -- do not re-attempt it by
+  adjusting the scan order;
+* **when a drill resting on the floor disappears.** That it disappears, and
+  takes nothing with it, IS measured ("PD on floor between two c" leaves both
+  c standing). The pass above never scans it, so something else removes it and
+  the timing is unknown. Removing it eagerly drops the cell above one step
+  early, which in one shrunk board completed a four-group with a wildcard the
+  client's drill had already eaten;
 * what a drill does to a **solid** (8..15) in its path -- solids need
   `solid_ids`, which the char-grid probe format cannot express;
 * earthquake, water and poison reach. Only their *inertness* on a settled
