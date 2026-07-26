@@ -404,6 +404,47 @@ ahead of the first match test, 3800 boards over five seeds agree cell for cell.
 `apps/server/tests/fixtures/golden-clear-settle.tsv` pins 160 of those boards,
 replayed by `apps/server/tests/test_clear_rule.py`.
 
+## Powerups (2026-07-26)
+
+The colour fuzz above only ever generated `. a b c d h`, so **no powerup was
+exercised even once** and the whole family sat unpinned behind a green suite.
+Driving the same `settle` mode with powerups in the alphabet failed on 150 of
+150 boards.
+
+Which powerups act on their own, measured one at a time on a settled board:
+only **25 (drill)** and **27 (power drill)**. Earthquake (24), bomb (26), water
+(28), poison (29), 30 and 31 sit inert until something else triggers them.
+
+Bombs, measured and found to already agree with the engine: a bomb removes the
+matched colour **board-wide** (a distant unconnected cell of that colour dies,
+other colours live), it needs adjacency to a real matched **group** (a bomb
+resting on an isolated same-colour cell never fires), it fires once per
+adjacent matched group, and the blast does **not** take wildcards.
+
+Drills:
+
+* they clear their own cell and everything **below** in the column. Cells
+  ABOVE fall into the hole -- they are not destroyed. The engine cleared the
+  whole column, which ate the rest of the piece whenever a drill settled as
+  the bottom cell of a vertical triple;
+* they fire whenever one comes to **rest**, not only when one is placed. A
+  drill riding on a group that clears falls into the hole and fires there;
+* order within a tick is gravity -> match -> drill. A drill sitting on a group
+  that clears does not pre-empt the clear;
+* a power drill additionally takes each passed cell's colour group with it,
+  where a plain drill takes only its own column;
+* a wildcard hit **directly** by a power drill is a joker: every adjacent
+  colour goes, each taking its own group. A wildcard merely **absorbed** into
+  a colour group does not extend it into a different colour. Re-measured,
+  because this one data point decides the rule;
+* every settled drill fires in **one pass with no collapse between shots**,
+  bottom row first. Collapsing between shots drops a cell into a hole where a
+  later drill's group then eats it; the client keeps it.
+
+Residual: **10 mismatches in 900** drill-saturated boards (six seeds), down
+from 100%. See "Not measured" -- the exact interleaving of several drills
+firing in one pass is not fully pinned.
+
 ## Not measured
 
 * the solid-expansion arm (`param4`) and the powerup triggers reached through
@@ -412,7 +453,16 @@ replayed by `apps/server/tests/test_clear_rule.py`.
 * the earthquake slide (`field_l != 0`, states 35-53). It shares the gravity
   gate in the decompiled source, so it probably falls for powerups too, but
   the engine's `earthquake()` was left alone rather than changed on a reading;
-* the drill and power-drill passes (states 157-188).
+* **the ordering of several drills firing in one pass.** Bottom-row-first,
+  left-to-right fits every case shrunk so far and leaves ~1% of
+  drill-saturated boards disagreeing. Two shrunk repros pull in opposite
+  directions on whether a lower-left or lower-right drill acts first, which
+  suggests the real pass is not a simple positional scan. Anything that
+  depends on multiple drills landing in one tick is still approximate;
+* what a drill does to a **solid** (8..15) in its path -- solids need
+  `solid_ids`, which the char-grid probe format cannot express;
+* earthquake, water and poison reach. Only their *inertness* on a settled
+  board was measured, not what they do when triggered.
 
 ## Running
 

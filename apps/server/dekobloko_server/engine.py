@@ -775,14 +775,25 @@ class AuthoritativeMatch:
         # replica sampled mid-fall still shows the cell in the air, because
         # the client moves it one row per tick and then plays a ~13-tick
         # landing animation.
+        #
+        # Order within a cycle is gravity -> match -> drill, MEASURED: a drill
+        # sitting on a group that clears does NOT pre-empt the clear. Had it
+        # fired first it would have taken one cell out of the group, leaving
+        # three, and the rest would have survived -- they do not. The drill
+        # fires only on the next cycle, after it has fallen into the hole.
         board.collapse_loose()
         while True:
             changed, wave = _resolve_matches_once(
                 board, self.colour_count, self.feedback_level
             )
-            if not changed:
+            if changed:
+                returned.extend(wave)
+                board.collapse_loose()
+                continue
+            drilled = _fire_settled_drills(board, self.feedback_level)
+            if drilled is None:
                 return returned
-            returned.extend(wave)
+            returned.extend(drilled)
             board.collapse_loose()
 
     def _update_outcome(self) -> None:
@@ -940,10 +951,6 @@ def _activate_placed_specials(
         if cell == EARTHQUAKE_CELL:
             board.set(x, y, 0)
             board.earthquake()
-        elif cell == DRILL_CELL:
-            returned.extend(_drill(board, x, feedback_level))
-        elif cell == POWER_DRILL_CELL:
-            returned.extend(_power_drill(board, x, feedback_level))
         elif cell == WATER_CELL:
             board.set(x, y, 0)
             _water(board)
@@ -951,12 +958,74 @@ def _activate_placed_specials(
             board.set(x, y, 0)
             _poison(board)
         # Bombs remain until a neighbouring coloured match triggers them.
+        #
+        # Drills are NOT fired here. They fire from the cascade loop, because
+        # the client fires them whenever one comes to REST -- not only when
+        # one is placed. MEASURED: a drill riding on top of a group that
+        # clears falls into the hole and then fires, with nothing having been
+        # placed. Firing them here as well would double-fire a placed drill.
     return returned
 
 
-def _drill(board: Board, column: int, feedback_level: int) -> list[ReturnedShape]:
+def _fire_settled_drills(
+    board: Board, feedback_level: int
+) -> list[ReturnedShape] | None:
+    """Fire EVERY drill at rest on the board, or None if there is none.
+
+    Callers must have collapsed the board first, so every cell is at rest by
+    construction. Scanned in the client's own index order (x + width*y).
+
+    All of them fire in ONE pass, with no collapse in between, and that
+    matters. MEASURED, shrunk from a fuzz failure to five cells -- a plain
+    drill in column 0 over a wildcard, a power drill in column 1 over a ``c``,
+    and a ``c`` above the plain drill::
+
+        14  c.......
+        15  13......
+        16  h.......
+        17  .c......
+
+    Collapsing between the two shots drops that ``c`` into (0,17), where the
+    power drill's colour group then reaches it and destroys it. The client
+    keeps it: by the time the power drill fires, (0,17) is still the hole the
+    first drill just made. The ``c`` only falls afterwards.
+
+    Removals do apply immediately WITHIN the pass, which is what empties
+    (0,17) before the second drill computes its group. A drill destroyed by an
+    earlier drill in the same pass does not fire.
+    """
+    positions = [
+        (x, y)
+        for y in range(board.height - 1, -1, -1)
+        for x in range(board.width)
+        if (board.get(x, y) & 31) in (DRILL_CELL, POWER_DRILL_CELL)
+    ]
+    if not positions:
+        return None
     returned: list[ReturnedShape] = []
-    for y in range(board.height):
+    for x, y in positions:
+        cell = board.get(x, y) & 31
+        if cell == DRILL_CELL:
+            returned.extend(_drill(board, x, y, feedback_level))
+        elif cell == POWER_DRILL_CELL:
+            returned.extend(_power_drill(board, x, y, feedback_level))
+    return returned
+
+
+def _drill(
+    board: Board, column: int, start_y: int, feedback_level: int
+) -> list[ReturnedShape]:
+    """Clear the drill's own cell and everything BELOW it in its column.
+
+    MEASURED (tools/oracle/ClearProbe settle). A drill at (3,15) over a full
+    column destroys itself, (3,16) and (3,17), and the two cells that were
+    ABOVE it fall down into the hole -- they are not destroyed. This used to
+    clear ``range(board.height)``, the whole column including everything
+    above, which silently ate the rest of the piece whenever a drill settled
+    as the bottom cell of a vertical triple.
+    """
+    returned: list[ReturnedShape] = []
+    for y in range(start_y, board.height):
         cell = board.get(column, y) & 31
         if not cell:
             continue
@@ -968,11 +1037,20 @@ def _drill(board: Board, column: int, feedback_level: int) -> list[ReturnedShape
     return returned
 
 
-def _power_drill(board: Board, column: int, feedback_level: int) -> list[ReturnedShape]:
+def _power_drill(
+    board: Board, column: int, start_y: int, feedback_level: int
+) -> list[ReturnedShape]:
+    """As ``_drill``, but each cell it passes takes its colour group with it.
+
+    MEASURED: a power drill dropped onto the middle of a three-wide ``aaa``
+    run removes all three, where a plain drill removes only the one in its own
+    column. Downward-only in exactly the same way -- cells above it fall into
+    the hole rather than being destroyed.
+    """
     units: list[tuple[int, set[tuple[int, int]]]] = []
     claimed_loose: set[tuple[int, int]] = set()
     claimed_solids: set[int] = set()
-    for y in range(board.height):
+    for y in range(start_y, board.height):
         if not board.get(column, y):
             continue
         solid_id = board.solid_ids[y][column]
@@ -986,12 +1064,12 @@ def _power_drill(board: Board, column: int, feedback_level: int) -> list[Returne
         if (column, y) in claimed_loose:
             continue
         cell = board.get(column, y) & 31
-        if cell == WILDCARD_CELL:
-            component = {(column, y)}
-            colour = -1
-        else:
-            colour = cell & 7
-            component = _loose_component(board, column, y, colour)
+        # The joker rule, MEASURED -- see _joker_component. A wildcard is NOT
+        # a lone cell here: the drill takes its neighbouring colours with it,
+        # and an ordinary colour takes adjacent wildcards with it. Treating a
+        # wildcard as {(column, y)} alone left the neighbours standing.
+        component = _joker_component(board, column, y)
+        colour = -1 if cell == WILDCARD_CELL else cell & 7
         claimed_loose.update(component)
         unit = set(component)
         if colour >= 0:
@@ -1091,7 +1169,7 @@ def _poison(board: Board) -> None:
 
 
 def _loose_component(
-    board: Board, start_x: int, start_y: int, colour: int
+    board: Board, start_x: int, start_y: int, colour: int, wildcards: bool = False
 ) -> set[tuple[int, int]]:
     result = {(start_x, start_y)}
     pending = [(start_x, start_y)]
@@ -1101,10 +1179,70 @@ def _loose_component(
             if (
                 (next_x, next_y) not in result
                 and not board.solid_ids[next_y][next_x]
-                and _cell_matches(board.get(next_x, next_y), colour)
+                and _cell_matches(board.get(next_x, next_y), colour, wildcards)
             ):
                 result.add((next_x, next_y))
                 pending.append((next_x, next_y))
+    return result
+
+
+def _joker_component(
+    board: Board, start_x: int, start_y: int
+) -> set[tuple[int, int]]:
+    """Connected run under the power drill's joker rule.
+
+    A wildcard behaves differently depending on how it was reached, which is
+    the part that is easy to get wrong:
+
+    * hit DIRECTLY by the drill, it is a joker -- every adjacent colour goes,
+      and each of those takes its own colour group with it;
+    * merely ABSORBED into a colour group, it does not extend that group into
+      a different colour. It is carried along, and stops there.
+
+    MEASURED with ``tools/oracle/ClearProbe settle`` (drill in column 3, over
+    a full support row of alternating ``bcbcbcbc``):
+
+        ..bha...   onto the h -> b, h and a all go (joker seed)
+        ..bah...   onto the a -> a and h go, the b survives
+        ..aah...   onto the a -> a, a and h go, but NOT the cell under the h
+        .ahaha..   onto the middle h -> the whole run goes
+
+    The third case is the one that pins it. Letting an absorbed wildcard keep
+    spreading also took the ``b`` directly beneath it, one cell more than the
+    client removes.
+    """
+    cell = board.get(start_x, start_y) & 31
+    # A powerup (24..31) has no colour group -- it goes on its own. Without
+    # this the drill's OWN cell is read as colour ``cell & 7``, and because
+    # wildcards join any colour it would swallow a wildcard sitting directly
+    # beneath it, marking that row claimed so the real joker spread never ran.
+    if not _is_loose(cell):
+        return {(start_x, start_y)}
+    if cell != WILDCARD_CELL:
+        return _loose_component(board, start_x, start_y, cell & 7, True)
+
+    result = {(start_x, start_y)}
+    jokers = [(start_x, start_y)]
+    seen_jokers = {(start_x, start_y)}
+    while jokers:
+        x, y = jokers.pop(0)
+        for next_x, next_y in _touching(board, x, y):
+            if board.solid_ids[next_y][next_x]:
+                continue
+            neighbour = board.get(next_x, next_y)
+            if not _is_loose(neighbour):
+                continue
+            if (neighbour & 31) == WILDCARD_CELL:
+                if (next_x, next_y) not in seen_jokers:
+                    seen_jokers.add((next_x, next_y))
+                    jokers.append((next_x, next_y))
+                    result.add((next_x, next_y))
+                continue
+            if (next_x, next_y) in result:
+                continue
+            result |= _loose_component(
+                board, next_x, next_y, neighbour & 7, True
+            )
     return result
 
 

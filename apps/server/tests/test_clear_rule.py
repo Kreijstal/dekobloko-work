@@ -23,10 +23,13 @@ from pathlib import Path
 from dekobloko_server.engine import (
     BOMB_CELL,
     Board,
+    DRILL_CELL,
     EARTHQUAKE_CELL,
     POISON_CELL,
+    POWER_DRILL_CELL,
     WATER_CELL,
     WILDCARD_CELL,
+    _fire_settled_drills,
     _find_matches,
     _resolve_matches_once,
 )
@@ -73,12 +76,19 @@ def render(board: Board) -> list[str]:
 
 
 def settle(board: Board) -> None:
-    """The engine's resting state: gravity first, then match/collapse waves."""
+    """The engine's resting state, mirroring ``_resolve_cascades``.
+
+    Gravity, then matches, then -- only once nothing matches -- drills. That
+    order is measured; see ``AuthoritativeMatch._resolve_cascades``.
+    """
     board.collapse_loose()
     while True:
         changed, _ = _resolve_matches_once(board, 7, 0)
-        if not changed:
-            break
+        if changed:
+            board.collapse_loose()
+            continue
+        if _fire_settled_drills(board, 0) is None:
+            return
         board.collapse_loose()
 
 
@@ -183,6 +193,100 @@ class ClearGravity(unittest.TestCase):
         )
         settle(board)
         self.assertEqual(["....", "....", "b..."], render(board))
+
+
+class Drills(unittest.TestCase):
+    """Drill reach and triggering. Measured with ``ClearProbe settle``.
+
+    The whole family was unpinned before this: the differential fuzz that
+    validated the colour rule only ever generated ``. a b c d h`` boards, so
+    no powerup was exercised even once and these bugs sat behind a green
+    suite.
+    """
+
+    def drill_at(self, rows: list[str], x: int, y: int, cell: int) -> Board:
+        board = board_from(rows)
+        board.set(x, y, cell)
+        settle(board)
+        return board
+
+    def test_a_drill_clears_downward_not_the_whole_column(self) -> None:
+        # Measured: a drill at (3,15) over a full column destroys itself,
+        # (3,16) and (3,17), and the two cells ABOVE it fall into the hole.
+        # The old _drill cleared range(board.height) -- the entire column --
+        # which ate the rest of the piece whenever a drill settled as the
+        # bottom cell of a vertical triple.
+        # Client: "4 5 a...b...1...cbcbbcbc" settles to the a and b landing on
+        # top of the untouched support rows -- they are NOT destroyed.
+        board = self.drill_at(["a...", "b...", "....", "cbcb", "bcbc"], 0, 2, DRILL_CELL)
+        self.assertEqual(
+            ["....", "....", "....", "abcb", "bcbc"], render(board)
+        )
+
+    def test_a_drill_fires_when_it_comes_to_rest_not_only_when_placed(self) -> None:
+        # Measured: a drill riding on top of a group that clears falls into
+        # the hole and fires there, with nothing having been placed. The
+        # engine used to fire drills only from _activate_placed_specials.
+        board = board_from(["....", "aaaa", "bcbc"])
+        board.set(1, 0, DRILL_CELL)
+        settle(board)
+        self.assertEqual(["....", "....", "b.bc"], render(board))
+
+    def test_a_power_drill_takes_the_colour_group_a_plain_drill_does_not(self) -> None:
+        plain = board_from(["....", ".aaa", "bcbc"])
+        plain.set(2, 0, DRILL_CELL)
+        settle(plain)
+        self.assertEqual(["....", ".a.a", "bc.c"], render(plain))
+
+        power = board_from(["....", ".aaa", "bcbc"])
+        power.set(2, 0, POWER_DRILL_CELL)
+        settle(power)
+        self.assertEqual(["....", "....", "bc.c"], render(power))
+
+    def test_a_wildcard_is_a_joker_only_when_the_drill_hits_it_directly(self) -> None:
+        # Hit directly, every adjacent colour goes with it.
+        seeded = board_from(["....", "bha.", "cbcb"])
+        seeded.set(1, 0, POWER_DRILL_CELL)
+        settle(seeded)
+        self.assertEqual(["....", "....", "c.cb"], render(seeded))
+
+        # Merely absorbed into a colour group, it does NOT extend that group
+        # into a different colour. Re-measured, because this one data point
+        # decides the rule: the b directly beneath the absorbed h survives.
+        # Client: "4 3 3...aah.bcbc" settles to ".cbc" -- the b at (2,2), the
+        # cell directly under the absorbed h, is still standing.
+        absorbed = board_from(["....", "aah.", "bcbc"])
+        absorbed.set(0, 0, POWER_DRILL_CELL)
+        settle(absorbed)
+        self.assertEqual(["....", "....", ".cbc"], render(absorbed))
+        self.assertEqual("b", char_of(absorbed.get(2, 2)),
+                         "the cell under an ABSORBED wildcard must survive")
+
+    def test_all_settled_drills_fire_in_one_pass_without_collapsing(self) -> None:
+        # Shrunk from a fuzz failure to five cells. Collapsing between the two
+        # shots drops the c into (0,17), where the power drill's group then
+        # reaches and destroys it. The client keeps it: when the power drill
+        # fires, that square is still the hole the first drill just made.
+        board = board_from(["c...", "....", "h...", ".c.."])
+        board.set(0, 1, DRILL_CELL)
+        board.set(1, 1, POWER_DRILL_CELL)
+        settle(board)
+        self.assertEqual("c", char_of(board.get(0, 3)),
+                         "the c must survive and fall, not be drilled")
+
+    def test_only_the_drills_fire_on_their_own(self) -> None:
+        # Measured over all eight powerups on a settled board: 25 and 27 fire
+        # by themselves, the rest sit inert until something triggers them.
+        for powerup in (EARTHQUAKE_CELL, BOMB_CELL, WATER_CELL, POISON_CELL):
+            board = board_from(["....", "abca"])
+            board.set(1, 0, powerup)
+            self.assertIsNone(
+                _fire_settled_drills(board, 0), f"powerup {powerup} must not fire"
+            )
+        for drill in (DRILL_CELL, POWER_DRILL_CELL):
+            board = board_from(["....", "abca"])
+            board.set(1, 0, drill)
+            self.assertIsNotNone(_fire_settled_drills(board, 0))
 
 
 @unittest.skipIf(

@@ -207,10 +207,18 @@ class AuthoritativeEngineTest(unittest.TestCase):
             landed=True,
         )
         drilled = drill_match.finalize_landed(0)
+        # The drill lands on the floor, so it clears only itself -- and the
+        # lone cell parked far ABOVE it in the same column FALLS INTO the
+        # hole rather than being destroyed.
+        #
+        # This used to assert (3,17) was empty, from the old _drill clearing
+        # range(board.height): the whole column, above included. MEASURED on
+        # the unmodified jar (tools/oracle/ClearProbe settle, "a" at (3,10),
+        # drill at (3,17), "b" at (4,17)) the client settles to "...ab..." on
+        # the floor row. See test_clear_rule.Drills.
         self.assertEqual(0, drill_board.get(3, 10))
-        self.assertEqual(0, drill_board.get(3, 17))
+        self.assertEqual(16, drill_board.get(3, 17))
         self.assertEqual(17, drill_board.get(4, 17))
-        self.assertEqual(2, len(drilled.returned_shapes))
 
         power_match = AuthoritativeMatch(2, 8, 18, 0, 4, 3)
         power_board = power_match.players[0].board
