@@ -109,7 +109,7 @@ class Board:
             for y in range(self.height - 2, -1, -1):
                 for x in range(self.width):
                     cell = self.cells[y][x]
-                    if cell and _is_loose(cell) and self.cells[y + 1][x] == 0:
+                    if cell and _falls(cell) and self.cells[y + 1][x] == 0:
                         self.cells[y + 1][x] = cell
                         self.solid_ids[y + 1][x] = self.solid_ids[y][x]
                         self.cells[y][x] = 0
@@ -753,20 +753,29 @@ class AuthoritativeMatch:
 
     def _resolve_cascades(self, board: Board) -> list[ReturnedShape]:
         returned: list[ReturnedShape] = []
-        # Collapse only AFTER a wave clears, never before the first match test.
-        # A landing that matches nothing leaves an overhanging cell hanging,
-        # and that is correct: the client does the same. Measured 2026-07-25 on
-        # a replica whose board held a 5-cell column plus one cell overhanging
-        # an empty column, still hanging at the next install.
+        # Collapse BEFORE the first match test, not only after a wave clears.
         #
-        # Do not "fix" this by collapsing up front. The trap is that a client
-        # board signature sampled at an install is NOT the same instant as the
-        # server's at finalize -- the client resolves a clear and the collapse
-        # that follows it over later frames, so a replica routinely shows a
-        # group that has already cleared server-side. Sampled at the wrong
-        # phase that reads as the server leaving cells in mid-air, and adding a
-        # collapse here to "match" it silently changes the physics of every
-        # landing instead.
+        # The client's tick runs gravity first and only looks for matches once
+        # nothing is left in mid-air: lk.a(oi,125,false,lk) dispatches on
+        # field_ib, and a freshly spawned piece leaves field_ib = 0 (state
+        # 307), which is the gravity pass (states 19-101). Detection (states
+        # 102-144) is not reached until gravity has moved nothing, at which
+        # point state 101 sets field_ib = 2.
+        #
+        # MEASURED, tools/oracle/ClearProbe:
+        #   * `settle` on a five-cell column with one cell overhanging an
+        #     empty column drops the overhang to the floor, with no match
+        #     anywhere on the board;
+        #   * 1500 random boards agree cell-for-cell with this loop only when
+        #     the collapse runs first. With the collapse deferred, 13 of the
+        #     first 200 diverged.
+        #
+        # An earlier revision of this comment asserted the opposite, from a
+        # replica board sampled at an install. That reading was wrong: a
+        # replica sampled mid-fall still shows the cell in the air, because
+        # the client moves it one row per tick and then plays a ~13-tick
+        # landing animation.
+        board.collapse_loose()
         while True:
             changed, wave = _resolve_matches_once(
                 board, self.colour_count, self.feedback_level
@@ -812,7 +821,28 @@ class AuthoritativeMatch:
 
 
 def _is_loose(cell: int) -> bool:
+    """A cell the colour clear can match: the eight values 16..23.
+
+    This is the client's own seed test, ``(cell & 0x8FFFFFFF) >> 3 == 2`` at
+    the head of the flood fill (lk.java:616). Powerups (24..31) and solids
+    (8..15) are deliberately excluded -- they never seed and never join a
+    colour group.
+    """
     return ((cell & 31) & 24) == 16
+
+
+def _falls(cell: int) -> bool:
+    """A cell gravity moves: 16..31, i.e. ordinary colours AND powerups.
+
+    MEASURED on the unmodified client (``tools/oracle/ClearProbe settle``): a
+    floating cell of each of 24, 26, 28, 29, 30 lands on the floor exactly as
+    an ordinary colour does, while a solid (8..15) stays in mid-air. That is
+    the client's own gravity gate, ``(cell & 24) == 16 || (cell & 24) == 24``
+    (lk.java:3016 and 3022), which admits both bands.
+
+    Distinct from ``_is_loose`` on purpose: a powerup falls but never matches.
+    """
+    return ((cell & 31) & 24) in (16, 24)
 
 
 def _find_matches(

@@ -302,3 +302,139 @@ Every row is `(0,0)`, `(±1,0)` or `(0,±1)`.
   colours, wildcard, and every powerup) and reports 0 mismatches, so the table
   is valid for powerup-bearing shapes even though it was generated with cell
   24 (which is `EARTHQUAKE_CELL`).
+
+# Colour-clear oracle (`ClearProbe`)
+
+`ClearProbe.java` measures which cells the original client clears, and where
+the survivors end up, by executing the real board tick. It exists because the
+Python engine's clear rule disagreed with the client mid-match, and the
+detection pass is a 900-line obfuscated CFG state machine that nobody should
+be reading for behaviour.
+
+## What it drives
+
+Two entry points into the unmodified jar, both on an `lk` allocated with
+`Unsafe.allocateInstance`:
+
+* **detection only** -- the seed loop of `lk.a(oi,int,boolean,lk)` states
+  106-122, verbatim:
+
+  ```
+  for (i = 0; i < width * height; i++)
+      lk.SA(true, 2, 4, null, true, -1, i, 1, null, false, 71);
+  ```
+
+  then the commit, `lk.a(-99, false, 1)`. The probe reports the group each
+  seed produced, plus the raw tag bits (28-30) and visited flag (bit 31), so
+  the group decomposition is observed rather than inferred.
+
+* **the whole tick** -- `lk.a(null, 127, false, null)` in a loop until the
+  board stops changing, starting from `field_ib = 0`. Production calls it as
+  `lk.a(field_db, 125, false, lk)` (qc.java:1016), so the flags match; 127 and
+  125 are both above the `param1 > 124` gate.
+
+`field_ib` is the phase selector: 1 = the pop animation (states 4-16), 0 =
+gravity (states 19-101), 2 = look for matches (states 102-144). A freshly
+spawned piece leaves 0 behind (state 307), so **gravity runs before the first
+detection**. Starting the probe at 2 instead measures matches between cells
+that are still in mid-air, which never happens in a real match -- that mistake
+produced 111 phantom mismatches before it was spotted.
+
+## Stubs
+
+`stub/ai.java` joins `stub/ge.java`: the chain sound on the second and later
+clear waves goes through `ai.a(62, level, jm.field_v[slot], ...)` and dies
+without an audio bank. The fall sound at state 90 (`ei.c`) cannot be stubbed as
+cheaply -- `ei extends ol`, which is abstract with five abstract methods -- so
+`settle` catches exactly that one throwable and continues. It is raised after
+the gravity pass has already written `field_P`, and the states it skips
+(92-144 sound, 238-302 bomb/water/poison, all inert on a plain colour board)
+touch neither `field_P` nor `field_ib`. Every board that took that path is
+flagged with a leading `~`.
+
+**Run everything with `-XX:-OmitStackTraceInFastThrow`.** After a few thousand
+boards HotSpot recompiles that implicit NPE into a preallocated exception with
+no stack trace, the "is this the sound failure?" test stops recognising it, and
+the run turns into a flood of bogus mismatches halfway through.
+
+## Measured rule
+
+Detection, per wave:
+
+* seeds run in index order, `x + width * y`, over the whole board; the group's
+  colour is whatever the seed cell holds, so groups are found in board order,
+  not colour order;
+* a seed must be an unvisited settled cell in 16..22. The gate is
+  `(cell & 0x8FFFFFFF) >> 3 == 2`, which also excludes wildcards (23 returns
+  immediately when `param5 == -1`), powerups (24..31), solids (8..15), and any
+  cell mid-animation (bit 5 or above set);
+* the flood is **4-connected**, and a neighbour joins when
+  `(cell & 0x8FFFFFFF)` equals the seed's value exactly, or equals 23;
+* the minimum group size is **4** (`param2`);
+* a group of 4 or more is tagged; the commit pass then rewrites every tagged
+  cell to `32 | (cell & 0x0FFFFFFF)` and sets `field_ib = 1`;
+* all groups found in one scan pop together;
+* ordinary colours keep their visited flag for the rest of the scan, so each
+  one belongs to exactly one group -- but **wildcards are unvisited after
+  every seed**, so a single wildcard can be counted by two different groups.
+  Measured: `8 2 aaah....hbbb....` tags all eight cells.
+
+Gravity:
+
+* a cell falls when `(cell & 24) == 16 || (cell & 24) == 24`, i.e. values
+  16..31. Measured one at a time: floating 24, 26, 28, 29 and 30 all land on
+  the floor exactly as a colour does, while a solid (8) stays in mid-air;
+* it runs on every tick, **with or without a clear**. Measured: a five-cell
+  column with one cell overhanging an empty column ends with the overhang on
+  the floor, no match anywhere on the board;
+* one row per tick, followed by a ~13-tick landing animation (the cell's value
+  is bumped by 32 each tick until it reaches 448 and is masked back to
+  `& 31`). A replica sampled mid-fall therefore still shows the cell up. That
+  is the phase trap, not a physics difference, and reading it as one is what
+  put the wrong rule into the engine in the first place.
+
+## Differential result
+
+`_find_matches` in `apps/server/dekobloko_server/engine.py` already agreed with
+the client's detection: 1500 random colour/wildcard boards, one wave each, 0
+mismatches. The full settle disagreed on 13 of the first 200 boards purely
+because the engine collapsed only after a wave cleared. With the collapse moved
+ahead of the first match test, 3800 boards over five seeds agree cell for cell.
+
+`apps/server/tests/fixtures/golden-clear-settle.tsv` pins 160 of those boards,
+replayed by `apps/server/tests/test_clear_rule.py`.
+
+## Not measured
+
+* the solid-expansion arm (`param4`) and the powerup triggers reached through
+  `lk.b(int,int,boolean)`. A bomb next to a colour match **was** measured to
+  fire, so that arm is live, but its exact reach was not mapped;
+* the earthquake slide (`field_l != 0`, states 35-53). It shares the gravity
+  gate in the decompiled source, so it probably falls for powerups too, but
+  the engine's `earthquake()` was left alone rather than changed on a reading;
+* the drill and power-drill passes (states 157-188).
+
+## Running
+
+```sh
+cd tools/oracle
+J8=/usr/lib/jvm/java-8-openjdk
+$J8/bin/javac -nowarn -cp ../../dekobloko.jar -d stub stub/ai.java
+$J8/bin/javac -nowarn -cp ../../dekobloko.jar -d . ClearProbe.java
+
+F=-XX:-OmitStackTraceInFastThrow
+
+# labelled detection spot checks
+$J8/bin/java $F -cp stub:.:../../dekobloko.jar ClearProbe cases
+
+# one board, seed by seed, with the tag/visited dump
+$J8/bin/java $F -cp stub:.:../../dekobloko.jar ClearProbe detect "aah/haa"
+
+# one board, tick by tick
+$J8/bin/java $F -cp stub:.:../../dekobloko.jar ClearProbe tick "aaaa/bbbb/aaaa"
+
+# streams: "<w> <h> <w*h cells>" per line
+#   batch  -> the indices one detection wave tagged
+#   settle -> the resting board, prefixed '=' clean or '~' sound muted
+$J8/bin/java $F -cp stub:.:../../dekobloko.jar ClearProbe settle < boards.txt
+```

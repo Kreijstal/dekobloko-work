@@ -269,21 +269,26 @@ class GarbageDeliveryRegression(unittest.TestCase):
         self.assertIn(1, game.inactive_slots)
         self.assertEqual(0, game.engine.players[1].lives)
 
-    def test_overhanging_cells_stay_up_when_nothing_clears(self) -> None:
-        """A landing that matches nothing must NOT collapse overhangs.
+    def test_overhanging_cells_fall_even_when_nothing_clears(self) -> None:
+        """A landing that matches nothing STILL collapses overhangs.
 
-        Cells fall only as the aftermath of a clear. The client agrees:
-        measured 2026-07-25, a replica held a five-cell column with one cell
-        overhanging an empty column and it was still hanging at the next
-        install.
+        This test previously asserted the opposite, from a replica board
+        sampled at an install. That reading was wrong, and it is the reason
+        the engine stalled boards mid-match: cells the client had already
+        dropped stayed in mid-air server-side, so the two sides disagreed
+        about which groups existed.
 
-        This is a standing trap, so it is pinned. A client board signature
-        sampled at an install is not the same instant as the server's at
-        finalize -- the client resolves a clear, and the collapse that follows
-        it, over later frames. Sampled at the wrong phase a replica looks like
-        it dropped a cell the engine left in mid-air, which invites adding a
-        collapse before the first match test. That would change the physics of
-        every landing in the game.
+        Ground truth, measured on the unmodified jar with
+        ``tools/oracle/ClearProbe settle``: a five-cell column with one cell
+        overhanging an empty column ends with the overhang on the floor, with
+        no match anywhere on the board. The client's tick runs gravity
+        (lk.a states 19-101) before it ever looks for a match (states
+        102-144), and a freshly spawned piece leaves field_ib = 0, the gravity
+        phase.
+
+        A replica sampled mid-fall does show the cell still up: the client
+        moves it one row per tick and then plays a ~13-tick landing
+        animation. That is the phase trap, not a physics difference.
         """
         game, _host, _ = start_game(53)
         board = game.engine.players[1].board
@@ -296,8 +301,8 @@ class GarbageDeliveryRegression(unittest.TestCase):
 
         game.engine.finalize_landed(1)
 
-        self.assertEqual(17, board.get(2, 16), "the overhang must stay up")
-        self.assertEqual(0, board.get(2, 17), "nothing falls without a clear")
+        self.assertEqual(0, board.get(2, 16), "the overhang must not stay up")
+        self.assertEqual(17, board.get(2, 17), "it falls to the floor")
 
     def test_spawn_on_an_empty_bucket_is_never_blocked(self) -> None:
         """The block-out test must not misfire on a normal spawn."""

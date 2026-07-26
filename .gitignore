@@ -59,3 +59,8 @@ __pycache__/
 
 # Generated golden tables (~21MB); regenerate with tools/oracle ParityProbe
 /apps/server/tests/fixtures/*.tsv
+# ...except the clear-settle table, which is only ~50KB. It pins a rule that
+# has now been measured wrong twice, so it is worth carrying in the repo:
+# ignored, the test silently skips and the pinning is illusory on a fresh
+# checkout. Regenerate with tools/oracle/ClearProbe settle.
+!/apps/server/tests/fixtures/golden-clear-settle.tsv
