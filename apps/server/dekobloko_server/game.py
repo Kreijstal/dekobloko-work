@@ -450,19 +450,49 @@ class GameSession:
         self._send_packet(62, PacketBuilder().u8(player_slot).u8(result_code).finish())
         print(f"[game] {self.peer} sent player removed slot={player_slot} result={result_code}")
 
-    def send_winner(self, result_code: int) -> None:
-        """Server opcode 69 -- tell THIS session it won.
+    def send_panic_banner(self, level: int) -> None:
+        """Server opcode 69 -- raise the in-game "PANIC!" banner on THIS session.
 
-        Fixed one-byte payload, no length byte. The client stores the byte in
-        qc.field_T, sets qc.field_r and pushes the win UI resource.
+        MEASURED, not inferred (tools/oracle/WinBannerProbe): 69 is a banner
+        event, NOT an end-of-game result. It pushes banner id 8 ("PANIC!") and
+        sets qc.field_r = true. The byte goes into qc.field_T, whose only
+        consumer is qc.b(boolean) -> mb.a -> ob.a(int, ui, byte): a MUSIC
+        PLAYBACK RATE. field_T is the speed/tempo level and field_r is the panic
+        flag; neither selects any end-of-game text.
 
-        Send this only to the winner. The result-code vocabulary is not decoded:
-        qc.field_T feeds a text lookup that was never driven (it needs AWT), so
-        which byte renders "you win" versus a placement line is unknown. 0 is
-        what we send until someone maps it.
+        Opcode 68 is the same shape with banner "SPEED UP!".
+
+        Sending this at match end is what put the winner on the "Panic!" screen.
+        The winner packet is 70 -- see send_match_result.
         """
-        self._send_packet(69, PacketBuilder().u8(result_code).finish())
-        print(f"[game] {self.peer} sent winner result={result_code}")
+        self._send_packet(69, PacketBuilder().u8(level).finish())
+        print(f"[game] {self.peer} sent panic banner level={level}")
+
+    #: Wire byte for "nobody won". wl.g(byte) reads the payload as a SIGNED
+    #: byte, and any negative value selects the "DRAW!" banner.
+    DRAW_RESULT = 0xFF
+
+    def send_match_result(self, winner_slot: int) -> None:
+        """Server opcode 70 -- announce who won, to EVERY player.
+
+        Payload is one byte: the winner's PLAYER SLOT INDEX, read signed. The
+        client compares it against its own slot (qc.field_P) and picks a banner:
+
+            byte == my slot      -> "YOU WIN!"        (id 10)
+            byte == another slot -> "<NAME> WINS!"    (id 11)
+            byte  < 0            -> "DRAW!"           (id  9)
+            byte >= roster size  -> ArrayIndexOutOfBoundsException, client dies
+
+        Measured across all 256 byte values with the local player in two
+        different slots (tools/oracle/WinBannerProbe), so the slot-relative
+        reading is established rather than assumed.
+
+        This goes to everyone, not just the winner: the losers' "<NAME> WINS!"
+        comes from this same packet. Callers MUST range-check the slot -- an
+        out-of-range byte crashes the client rather than showing anything.
+        """
+        self._send_packet(70, PacketBuilder().u8(winner_slot & 0xFF).finish())
+        print(f"[game] {self.peer} sent match result winner_slot={winner_slot}")
 
     def send_game_over(self) -> None:
         """Server opcode 60 -- tear the game down.

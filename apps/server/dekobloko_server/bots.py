@@ -131,7 +131,7 @@ class BotLobbySession:
     def send_full_state(self, player_slot: int, state_payload: bytes) -> None:
         return
 
-    def send_winner(self, result_code: int) -> None:
+    def send_match_result(self, winner_slot: int) -> None:
         return
 
     def send_game_over(self) -> None:

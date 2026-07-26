@@ -12,7 +12,14 @@ import unittest
 from dekobloko_demo import LobbyDemo
 from dekobloko_server.accounts import AccountStore
 from dekobloko_server.game import GameSession
-from dekobloko_server.lobby import CookedShape, GameOptions, HostedGame, Lobby, Piece
+from dekobloko_server.lobby import (
+    DRAW_RESULT_SLOT,
+    CookedShape,
+    GameOptions,
+    HostedGame,
+    Lobby,
+    Piece,
+)
 from dekobloko_server.engine import (
     ActiveDomino,
     FAST_DROP,
@@ -95,8 +102,8 @@ class FakeSession:
     def send_full_state(self, player_slot: int, state_payload: bytes) -> None:
         self.full_states.append((player_slot, state_payload))
 
-    def send_winner(self, result_code: int) -> None:
-        self.winner_results.append(result_code)
+    def send_match_result(self, winner_slot: int) -> None:
+        self.winner_results.append(winner_slot)
 
     def send_game_over(self) -> None:
         self.game_over_count += 1
@@ -468,8 +475,16 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertIn(1, game.inactive_slots)
         self.assertEqual([(1, 0)], host.removals)
         self.assertEqual([(1, 0)], peer.removals)
+        # Opcode 70 carries the winner's SLOT INDEX and goes to EVERY attached
+        # session, loser included -- each client compares the byte against its
+        # own slot to pick "YOU WIN!" versus "<NAME> WINS!". Sending it only to
+        # the winner would leave the loser with no result line at all.
+        #
+        # The host is slot 0 and won, so every recipient must receive 0. This
+        # must NOT be confused with the old opcode-69 path: 69 is the in-game
+        # PANIC banner and no byte of it ever produced a win screen.
         self.assertEqual([0], host.winner_results)
-        self.assertEqual([], peer.winner_results)
+        self.assertEqual([0], peer.winner_results)
         # Opcode 60 is HELD until the player dismisses the result screen. 62 and
         # 69 raise the defeat/win UI and 60 tears it down, so sending it here
         # destroyed the screen in the same breath as it was created and dumped
@@ -1127,7 +1142,7 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertIsNone(spectator.player_slot)
         self.assertEqual([], game.spectators)
 
-    def test_spectator_observes_results_and_teardown_without_winner_ui(self) -> None:
+    def test_spectator_observes_results_and_teardown(self) -> None:
         host = FakeSession("host")
         peer = FakeSession("peer")
         spectator = FakeSession("spectator")
@@ -1140,13 +1155,41 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         game.end_game(host)
 
         self.assertEqual([(1, 0)], spectator.removals)
-        self.assertEqual([], spectator.winner_results)
+        # A spectator DOES get opcode 70. It is an announcement of who won, not
+        # a "you won" notification, and the byte is the winner's slot: the
+        # spectator's own slot is None, so it never matches and the spectator
+        # sees "<NAME> WINS!" -- which is what a watcher should see. The old
+        # assertion here (no result at all) encoded opcode 69's winner-only
+        # semantics, and 69 turned out to be the PANIC banner, not the result.
+        self.assertEqual([0], spectator.winner_results)
         self.assertEqual("finished", game.state)
         # A spectator watches the same held result screen as the players: it
         # gets the results (62) but not the teardown (60) until it dismisses.
         self.assertEqual(0, spectator.game_over_count)
         game.dismiss(spectator)
         self.assertEqual(1, spectator.game_over_count)
+
+    def test_a_winnerless_match_sends_the_draw_byte_not_an_invalid_slot(self) -> None:
+        """Opcode 70's byte is an ARRAY INDEX on the client.
+
+        qc indexes the roster with it, so a byte >= the roster length raises
+        ArrayIndexOutOfBoundsException and kills the client outright -- measured
+        across all 256 values in tools/oracle/WinBannerProbe. "No winner" must
+        therefore degrade to a signed-negative byte, which selects "DRAW!",
+        rather than to any slot-shaped placeholder.
+        """
+        host = FakeSession("host")
+        peer = FakeSession("peer")
+        game = HostedGame(game_id=24, host=host)
+        game.add_player(peer)
+        game.start()
+
+        game.end_game(None)
+
+        for session in (host, peer):
+            self.assertEqual([DRAW_RESULT_SLOT], session.winner_results)
+            byte = session.winner_results[0] & 0xFF
+            self.assertGreater(byte, 127, "draw byte must be negative when read signed")
 
     def test_spectator_admission_respects_match_option(self) -> None:
         host = FakeSession("host")

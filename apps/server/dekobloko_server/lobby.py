@@ -20,6 +20,10 @@ from .engine import FAST_DROP, AuthoritativeMatch, LockResult, Outcome
 #: coasts across the landing instead of racing the S2C 64 to it -- the race it
 #: loses by latching field_Bb and self-disconnecting ("T5").
 FINAL_APPROACH_ROWS = 3
+
+#: Wire byte for opcode 70 meaning "nobody won". The client reads the payload as
+#: a SIGNED byte and any negative value renders the "DRAW!" banner.
+DRAW_RESULT_SLOT = 0xFF
 from .packets import (
     PacketBuilder,
     build_add_room,
@@ -152,7 +156,7 @@ class LobbySession(Protocol):
     def send_full_state(self, player_slot: int, state_payload: bytes) -> None:
         ...
 
-    def send_winner(self, result_code: int) -> None:
+    def send_match_result(self, winner_slot: int) -> None:
         ...
 
     def send_game_over(self) -> None:
@@ -1388,7 +1392,7 @@ class HostedGame:
         ORDER IS LOAD-BEARING and is the whole reason this is one method:
 
           1. opcode 62 for every loser  (removes the slot, fires the defeat UI)
-          2. opcode 69 to the winner    (sets qc.field_r, pushes the win UI)
+          2. opcode 70 to EVERYONE      (announces the winner by slot index)
           3. opcode 60 to everyone      (tears the game down)
 
         Opcode 60 clears the state the other two refer to, so sending it first
@@ -1407,19 +1411,27 @@ class HostedGame:
         on screen. So opcode 62's defeat UI is execution-proven, and 60 is
         confirmed to be the teardown rather than part of the result display.
 
-        KNOWN WRONG: opcode 69 shows the winner the "Panic!" screen, not "You
-        win!" (observed 2026-07-26, once the deferred teardown made the screen
-        readable at all). 69 does reach the winner UI -- the screen changes, and
-        it is not the defeat screen -- but it selects the wrong end-of-game
-        resource. Suspect result_code, which is 0 here and has never been passed
-        anything else by any caller; opcodes 68 and 70 carry a similarly
-        unexplained result byte, so they likely share one vocabulary. Settle it
-        by driving qc's 69 handler with each candidate byte, not by guessing
-        against a live match.
+        FIXED 2026-07-26: the winner used to be sent opcode 69, which showed
+        the "Panic!" screen. That was not a wrong result byte -- 69 is simply
+        NOT the winner packet. It is the in-game PANIC banner, and its byte is
+        a music tempo level (qc.field_T -> qc.b -> mb.a -> ob.a, a playback
+        rate). No byte of 69 could ever have produced a win screen.
 
-        Also missing: no score payload accompanies 69, so the win menu's scores
-        and highscore table cannot populate, and the post-game S2C 71-74 masks
-        that the rematch UI reads have no senders at all. See
+        The winner packet is opcode 70, carrying the winner's SLOT INDEX read
+        as a signed byte. Measured across all 256 values with the local player
+        in two different slots (tools/oracle/WinBannerProbe):
+
+            byte == my slot      -> "YOU WIN!"
+            byte == another slot -> "<NAME> WINS!"
+            byte  < 0            -> "DRAW!"
+            byte >= roster size  -> the client throws and dies
+
+        so it is broadcast to everyone -- the losers' "<NAME> WINS!" line comes
+        from the same packet -- and the slot is range-checked before sending.
+
+        Still missing: no score payload accompanies the result, so the win
+        menu's scores and highscore table cannot populate, and the post-game
+        S2C 71-74 masks that the rematch UI reads have no senders at all. See
         docs/multiplayer-gameplay-protocol.md.
         """
         with self._lock:
@@ -1439,8 +1451,21 @@ class HostedGame:
             if slot is not None:
                 self._broadcast_player_removed(slot, result_code)
 
-        if winner is not None:
-            _safe_call(lambda: winner.send_winner(result_code))
+        # Opcode 70 goes to EVERY attached session, winner included: each client
+        # compares the byte against its own slot to choose "YOU WIN!" versus
+        # "<NAME> WINS!". A slot >= the client's roster length crashes it with an
+        # ArrayIndexOutOfBoundsException, so an unknown or out-of-range winner
+        # degrades to the signed-negative "DRAW!" byte rather than a dead client.
+        winner_slot = None if winner is None else winner.player_slot
+        if winner_slot is None or not 0 <= winner_slot < len(self.players):
+            if winner is not None:
+                print(
+                    f"[game] game {self.game_id} winner slot {winner_slot} is "
+                    f"outside the roster of {len(self.players)}; sending DRAW"
+                )
+            winner_slot = DRAW_RESULT_SLOT
+        for player in recipients:
+            _safe_call(lambda p=player: p.send_match_result(winner_slot))
 
         # Opcode 60 is DELIBERATELY not sent here, and the room is deliberately
         # not retired yet. 62 and 69 raise the defeat/win screen; 60 tears it

@@ -179,7 +179,9 @@ After initialization an observer is a read-only replication recipient. It gets
 the same S2C 63 controls, S2C 64 transitions, S2C 67 cooked shapes, proactive
 S2C 61 snapshots, S2C 62 removals, chat, and final teardown as the players. It
 does not send C2S 60 controls or participate in lives, feedback targeting,
-active masks, or winner selection. Only the actual winner receives S2C 69.
+active masks, or winner selection. It DOES receive S2C 70: that packet announces
+who won rather than telling a recipient it won, so an observer sees
+`<NAME> WINS!` from the same broadcast the players get.
 
 ## Controls: C2S 60 and S2C 63
 
@@ -439,8 +441,8 @@ that treats the first overflow as defeat chooses the wrong winner.
 
 Winner selection is mechanical after that engine result: tombstone the defeated
 stable slot, count the live slots, and when exactly one remains send S2C 62 for
-the loser(s), S2C 69 to that survivor, then the teardown packet. No client
-packet reports a win.
+the loser(s), S2C 70 carrying that survivor's slot index to EVERYONE, then the
+teardown packet. No client packet reports a win.
 
 Verified receiver effects:
 
@@ -448,8 +450,8 @@ Verified receiver effects:
 |---|---:|---|---|
 | 65 | fixed 1 | `u8 slot` | Drain queued events, clear/reset that board, reset local round UI if applicable. |
 | 62 | fixed 2 | `u8 slot, u8 result` | Drain the target stream, clear the board pointer and active-mask bit, decrement live count, and show defeat state if local. |
-| 69 | fixed 1 | `u8 result` | Mark this recipient as winner and enter winner UI state. |
-| 70 | fixed 1 | `i8 result_or_winner` | Drain all board streams, freeze/end the board group, and enter an end-of-round UI state. Exact byte vocabulary is unresolved. |
+| 69 | fixed 1 | `u8 tempo_level` | Raise the in-game **"PANIC!"** banner; byte is a music tempo level (`qc.field_T`), and sets `qc.field_r`. NOT a result packet. |
+| 70 | fixed 1 | `i8 winner_slot` | Announce the winner. Byte is the winner's **player slot index**, read signed: own slot -> `YOU WIN!`, other valid slot -> `<NAME> WINS!`, negative -> `DRAW!`, `>=` roster length -> client crashes. Broadcast to everyone. |
 | 68 | fixed 1 | `u8 result` | Store a result/status and show a distinct result resource. Exact meaning unresolved. |
 | 60 | fixed 0 | none | Tear down the multiplayer/spectator game state. Send only after result packets. |
 
@@ -475,29 +477,65 @@ for real -- an eliminated opponent shows `PLAYER 3 IS OUT` on screen. So:
 Sessions with no UI -- bots and the demo fixtures -- must dismiss themselves, or
 they pin the room open forever.
 
-### The winner gets the "Panic!" screen, not "You win!" (observed 2026-07-26)
+### S2C 69 is the PANIC banner, not the winner packet -- 70 is (CONFIRMED LIVE 2026-07-26)
 
-With the teardown deferred so the end screen survives long enough to be read,
-the winner's screen is now visible -- and it is **wrong**. The client shows the
-**"Panic!"** screen rather than "You win!". So S2C 69 does reach the winner UI
-(the screen changes, and it is not the defeat screen), but it selects the wrong
-end-of-game resource.
+**The win screen works.** Confirmed on a live match: with the server sending
+S2C 70 carrying the winner's slot, the winner now sees the real win screen
+instead of "Panic!". Server log for that match:
 
-The server sends 69 with `result_code = 0`, and 0 is the default that every
-internal caller passes; no call site has ever chosen a different value. The
-obvious reading is that this byte is not a formality but the **selector for
-which end screen is shown**, with 0 landing on panic rather than victory. That
-matches the neighbouring opcodes: the table above already records 68 as "show a
-distinct result resource" and 70 as carrying an `i8 result_or_winner` whose
-"exact byte vocabulary is unresolved" -- three opcodes with an unexplained
-result byte is a strong hint they share one vocabulary.
+```
+[game] sent player removed slot=1 result=0
+[game] authoritative slot=1 eliminated by final life
+[game] sent match result winner_slot=0
+[game] game 1 ended; winner=Hello; holding result screen for 2 player(s)
+```
 
-This is a hypothesis, not a measurement. It should be settled the way the
-rotation question was: drive `qc`'s 69 handler with each candidate byte and see
-which resource each selects, rather than guessing values against a live match.
-Note "Panic!" is plainly a real game state in its own right (a bucket close to
-topping out), so the value space likely encodes several outcomes -- win, loss,
-draw, panic -- not just a win/lose flag.
+So the full end-of-match sequence -- 62 to the loser, 70 to everyone, 60 held
+until dismissal -- is now execution-proven end to end, not just measured under
+the oracle.
+
+
+With the teardown deferred so the end screen survived long enough to be read,
+the winner's screen turned out to show **"Panic!"**. The hypothesis recorded
+here previously -- that 69 was the winner packet carrying a wrong result byte --
+was **wrong**, and was settled by driving the handler rather than by guessing.
+
+**69 is simply not the winner packet.** It raises the in-game "PANIC!" banner
+(banner id 8) and sets `qc.field_r = true`. Its byte lands in `qc.field_T`,
+whose only consumer is `qc.b(boolean)` -> `mb.a` -> `ob.a(int, ui, byte)`: a
+**music playback rate**. `field_T` is the speed/tempo level and `field_r` the
+panic flag. Neither selects any end-of-game text, so no byte of 69 could ever
+have produced a win screen. S2C 68 is the same shape with the "SPEED UP!"
+banner.
+
+**The winner packet is S2C 70**, and its byte is the winner's **player slot
+index**, read signed. `tools/oracle/WinBannerProbe` executed all 256 values with
+the local player in two different slots:
+
+| payload byte | banner |
+| --- | --- |
+| `== my slot` | `YOU WIN!` (id 10) |
+| `== another valid slot` | `<NAME> WINS!` (id 11) |
+| `< 0` (signed) | `DRAW!` (id 9) |
+| `>= roster length` | `ArrayIndexOutOfBoundsException` -- the client dies |
+
+Moving the local player between slots moved `YOU WIN!` with it, which is what
+establishes the reading as slot-relative rather than a fixed vocabulary.
+
+Consequences for the server, now implemented:
+
+* 70 is broadcast to **everyone**, not just the winner -- the losers' and
+  spectators' `<NAME> WINS!` line comes from this same packet;
+* the slot is **range-checked** before sending, because an out-of-range byte is
+  a client-killing array index, not a harmless unknown value; "no winner"
+  degrades to a signed-negative byte for `DRAW!`;
+* 62 is unaffected and still carries 0, which remains execution-proven as
+  "PLAYER N IS OUT".
+
+Measured runtime strings, for anyone matching a screenshot to an opcode:
+`cn.field_T` = `YOU WIN!`, `fh.field_b` = `<%0> WINS!`, `ri.field_k` = `DRAW!`,
+`bn.field_c` = `PANIC!`, `eb.field_c` = `SPEED UP!`, `a.field_e` =
+`<%0><br>IS OUT!`.
 
 Beyond picking the right byte, the win menu proper -- final scores, the
 highscore table, the menu buttons -- has never been seen populated. Two further
