@@ -6,8 +6,13 @@ import java.lang.reflect.Field;
  * Traces the incoming-garbage lifecycle from the client's side so it can be
  * diffed against the server's [garbage] lines:
  *
- *   STAGE   lk.a(rf, byte)      S2C 67 appended a cooked shape to the queue
- *   RELEASE lk.b(int)           S2C 66 started a queued shape's exit animation
+ *   G67     client            an S2C 67 "cooked shape" packet was parsed
+ *   STAGE<  lk.a(rf, byte)    queue immediately BEFORE the append
+ *   STAGE>  lk.a(rf, byte)    queue immediately AFTER the append
+ *   G66     client            an S2C 66 "cooked release" packet was parsed
+ *   REL<    lk.b(int)         queue before one shape is taken out of pending
+ *   REL>    lk.b(int)         which shape came out, and what is left
+ *   STGDRAW qc.a(lk,...)      the staging-area renderer's view of the queue
  *   INSTALL lk.a(int, int, rf)  a piece became the active falling piece
  *   DROP    lk.p(int)           a shape left the queue for good
  *   CACHE   oi.a(rf, int)       shape-cache insert (throws on a duplicate id)
@@ -19,6 +24,9 @@ import java.lang.reflect.Field;
 public final class GarbageTrace {
 
     private GarbageTrace() {}
+
+    /** CT_LOCK=1 re-enables the per-tick LOCK lines (off by default). */
+    private static final boolean LOCK_LINES = System.getenv("CT_LOCK") != null;
 
     private static Field field(Object o, String name) {
         if (o == null) return null;
@@ -136,15 +144,210 @@ public final class GarbageTrace {
         System.out.flush();
     }
 
-    public static void stage(Object board, Object shape) {
+    // ------------------------------------------------------------------
+    // Incoming-garbage STAGING AREA lifecycle
+    //
+    // Vocabulary, all confirmed against the shipped bytecode rather than the
+    // decompiled source:
+    //
+    //   lk.X   rf[]  the staging queue; it starts life one element long and is
+    //                doubled in place by lk.a(rf,byte) when it fills up
+    //   lk.t   int   how many of lk.X are live -- the render loops [0, t)
+    //   lk.wb  int   next shape's approach delay; set to 18 at reset, bumped by
+    //                3 per append, ticked back down towards 18 once per frame
+    //   lk.m   int   how many shapes have left the queue; also rotates the ring
+    //                the staging area is drawn on
+    //   rf.l   int   this shape's approach countdown, seeded from lk.wb.  The
+    //                renderer offsets the shape by 8192*l, so a big l parks it
+    //                far off-screen: a staged shape is only VISIBLE near l==0
+    //   rf.e   int   0 = pending; lk.b() makes it 1 and lk.s() then increments
+    //                it every frame until it hits 13, when lk.p() dequeues it
+    //   rf.c   byte[] per-cell colour; the renderer SKIPS any entry whose c is
+    //                null, so such an entry is staged-but-invisible forever
+    // ------------------------------------------------------------------
+
+    /** One queue entry, in a form a log parser can split on ';' then ','. */
+    private static String entry(int index, Object shape) {
+        if (shape == null) return index + ",null";
+        byte[] cells = null;
         try {
-            say("STAGE   before{" + queue(board) + "} " + rf(shape));
+            Field f = field(shape, "c");
+            cells = f == null ? null : (byte[]) f.get(shape);
+        } catch (Throwable ignored) {}
+        int filled = 0;
+        java.util.TreeSet<Integer> colours = new java.util.TreeSet<Integer>();
+        if (cells != null) {
+            for (int k = 0; k < cells.length; k++) {
+                int c = cells[k] & 255;
+                if (c != 0) { filled++; colours.add(Integer.valueOf(c)); }
+            }
+        }
+        return index
+                + ",id=" + i(shape, "j")
+                + ",e=" + i(shape, "e")
+                + ",l=" + i(shape, "l")
+                + ",m=" + i(shape, "m")
+                + ",wh=" + i(shape, "b") + "x" + i(shape, "n")
+                + ",cells=" + (cells == null ? "NULL" : String.valueOf(filled))
+                + ",colours=" + (cells == null ? "NULL" : colours.toString().replace(" ", ""));
+    }
+
+    /** The whole live part of lk.X, [0, lk.t). */
+    private static String entries(Object board) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            Field f = field(board, "X");
+            Object arr = f == null ? null : f.get(board);
+            int len = arr == null ? 0 : java.lang.reflect.Array.getLength(arr);
+            int t = i(board, "t");
+            for (int k = 0; k < t && k < len; k++) {
+                if (sb.length() > 0) sb.append(';');
+                sb.append(entry(k, java.lang.reflect.Array.get(arr, k)));
+            }
+        } catch (Throwable t) {
+            sb.append("err");
+        }
+        return "[" + sb + "]";
+    }
+
+    /** Entries still waiting for a release, i.e. rf.e == 0. */
+    private static int pending(Object board) {
+        int n = 0;
+        try {
+            Field f = field(board, "X");
+            Object arr = f == null ? null : f.get(board);
+            int len = arr == null ? 0 : java.lang.reflect.Array.getLength(arr);
+            int t = i(board, "t");
+            for (int k = 0; k < t && k < len; k++) {
+                Object s = java.lang.reflect.Array.get(arr, k);
+                if (s != null && i(s, "e") == 0) n++;
+            }
+        } catch (Throwable t) {
+            return -1;
+        }
+        return n;
+    }
+
+    /** Queue header shared by every staging line. */
+    private static String q(Object board) {
+        return "board=" + Integer.toHexString(System.identityHashCode(board))
+                + " t=" + i(board, "t")
+                + " cap=" + arrayLen(board, "X")
+                + " wb=" + i(board, "wb")
+                + " m=" + i(board, "m")
+                + " pending=" + pending(board);
+    }
+
+    /**
+     * The first frame outside this class.  lk.b() is reached both from the S2C
+     * 66 handler in `client` and from qc's spawn path, and lk.a(rf,byte) is
+     * called by lk itself as well as by the packet handler, so an untagged line
+     * cannot be attributed to a packet.
+     */
+    private static String caller() {
+        try {
+            StackTraceElement[] frames = new Throwable().getStackTrace();
+            for (int k = 0; k < frames.length; k++) {
+                if (!"GarbageTrace".equals(frames[k].getClassName())) {
+                    return frames[k].getClassName() + "." + frames[k].getMethodName();
+                }
+            }
+        } catch (Throwable ignored) {}
+        return "?";
+    }
+
+    /** S2C 67 parsed: the shape as it came off the wire, before the append. */
+    public static void recv67(int slot, Object shape) {
+        try {
+            say("G67     slot=" + slot + " shape={" + entry(-1, shape) + "}");
         } catch (Throwable ignored) {}
     }
 
-    public static void release(Object board, int cookie) {
+    /** S2C 66 parsed: how many releases the server asked for, and how many the
+     *  queue can actually satisfy (lk.b throws IllegalStateException if asked
+     *  for more than are pending). */
+    public static void recv66(int slot, int count, Object board) {
         try {
-            say("RELEASE cookie=" + cookie + " {" + queue(board) + "}");
+            say("G66     slot=" + slot + " count=" + count + " " + q(board)
+                    + " entries=" + entries(board));
+        } catch (Throwable ignored) {}
+    }
+
+    public static void stageBefore(Object board, Object shape) {
+        try {
+            say("STAGE<  " + q(board) + " via=" + caller()
+                    + " shape={" + entry(-1, shape) + "}"
+                    + " entries=" + entries(board));
+        } catch (Throwable ignored) {}
+    }
+
+    public static void stageAfter(Object board, Object shape) {
+        try {
+            say("STAGE>  " + q(board)
+                    + " shape={" + entry(-1, shape) + "}"
+                    + " entries=" + entries(board));
+        } catch (Throwable ignored) {}
+    }
+
+    public static void releaseBefore(Object board, int cookie) {
+        try {
+            say("REL<    " + q(board) + " cookie=" + cookie + " via=" + caller()
+                    + " entries=" + entries(board));
+        } catch (Throwable ignored) {}
+    }
+
+    public static void releaseAfter(Object shape, Object board) {
+        try {
+            say("REL>    " + q(board)
+                    + " released={" + entry(-1, shape) + "}"
+                    + " entries=" + entries(board));
+        } catch (Throwable ignored) {}
+    }
+
+    /** Last STGDRAW summary per board, so the every-frame renderer only speaks
+     *  when its view of the queue actually changes. */
+    private static final java.util.Map<Object, String> DRAW_LAST =
+            new java.util.IdentityHashMap<Object, String>();
+
+    /**
+     * qc.a(lk,int,int,int,int,boolean,int,int) -- the staging-area renderer.
+     *
+     * It iterates i in [0, lk.t) over lk.X[i], skips any entry whose rf.c is
+     * null, and otherwise draws the shape's cells at a vertical offset of
+     * 8192*rf.l on a ring position derived from (lk.m + i) & 15.  So `drawn` is
+     * how many entries it believes it should paint, `nocells` how many it
+     * silently discards, and `far` how many it paints so far away they are not
+     * on screen yet.
+     */
+    public static void stagingDraw(Object board) {
+        try {
+            int t = i(board, "t");
+            int drawn = 0, nocells = 0, far = 0;
+            StringBuilder shape = new StringBuilder();
+            Field f = field(board, "X");
+            Object arr = f == null ? null : f.get(board);
+            int len = arr == null ? 0 : java.lang.reflect.Array.getLength(arr);
+            for (int k = 0; k < t && k < len; k++) {
+                Object s = java.lang.reflect.Array.get(arr, k);
+                boolean hasCells = false;
+                if (s != null) {
+                    try {
+                        Field cf = field(s, "c");
+                        hasCells = cf != null && cf.get(s) != null;
+                    } catch (Throwable ignored) {}
+                }
+                int l = s == null ? -1 : i(s, "l");
+                if (!hasCells) nocells++; else { drawn++; if (l > 0) far++; }
+                shape.append(i(s, "j")).append('/').append(i(s, "e"))
+                     .append('/').append(hasCells ? 'c' : 'N')
+                     .append('/').append(l > 0 ? "far" : "near").append(' ');
+            }
+            String key = t + "|" + shape;
+            if (key.equals(DRAW_LAST.get(board))) return;
+            DRAW_LAST.put(board, key);
+            say("STGDRAW " + q(board)
+                    + " drawn=" + drawn + " nocells=" + nocells + " far=" + far
+                    + " entries=" + entries(board));
         } catch (Throwable ignored) {}
     }
 
@@ -284,6 +487,11 @@ public final class GarbageTrace {
             if ("true".equals(z(board, "y"))) {
                 emitSig(board, "landed");
             }
+            // One LOCK line per board per tick drowns everything else at ~50
+            // lines/second/board.  The SIG dumps above are what diff_boards.py
+            // consumes, so they always run; the per-tick line is opt-in with
+            // CT_LOCK=1 for when the lock routine itself is the question.
+            if (!LOCK_LINES) return;
             say("LOCK    " + queue(board)
                     + " fill=" + boardFill(board)
                     + " active=" + i(board, "C") + "x" + i(board, "zb")

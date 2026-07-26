@@ -6,11 +6,17 @@
 # test stays the original one, so anything it does wrong is the protocol's
 # fault and not the decompiler's.
 #
-# Output: tools/instr/dekobloko-trace.jar
+# Output: tools/instr/dekobloko-trace.jar, or dekobloko-trace-$1.jar when a
+# version tag is given.  Overwriting a jar a live client is still using
+# memory-maps its central directory and later SIGSEGVs in ZIP_GetEntry (see
+# docs/troubleshooting.md), so pass a fresh tag for each rebuild:
+#
+#     sh tools/instr/build.sh v2
 set -e
 
 W=/home/kreijstal/git/dekobloko-work
 I=$W/tools/instr
+OUT_JAR="$I/dekobloko-trace${1:+-$1}.jar"
 J=/usr/lib/jvm/java-8-openjdk/bin
 ASM=$W/.work/games/.owned-decompiler-tools/asm
 CP=$ASM/asm-9.9.1.jar:$ASM/asm-tree-9.9.1.jar:$ASM/asm-analysis-9.9.1.jar
@@ -33,7 +39,7 @@ echo "== compiling runtime logger"
 
 # cfM: NO manifest. A manifest makes the client fail with error_game_js5io.
 echo "== packaging"
-rm -f "$I/dekobloko-trace.jar"
-(cd "$I/work/out" && "$J/jar" cfM "$I/dekobloko-trace.jar" *.class)
+rm -f "$OUT_JAR"
+(cd "$I/work/out" && "$J/jar" cfM "$OUT_JAR" *.class)
 
-echo "== done: $I/dekobloko-trace.jar ($(du -h "$I/dekobloko-trace.jar" | cut -f1))"
+echo "== done: $OUT_JAR ($(du -h "$OUT_JAR" | cut -f1))"

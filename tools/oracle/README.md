@@ -153,7 +153,91 @@ therefore NOT a rotation bug. The untested primitive that would explain it is
 the multi-cell **descent collision** test: park a shape above terrain, descend
 until it stops, and compare the resting row. That probe does not exist yet.
 
+# End-of-game banner oracle (`WinBannerProbe`)
+
+`WinBannerProbe.java` measures which end-of-game banner the original client
+picks, by executing the real selector. It exists because the winner kept
+landing on the "PANIC!" screen and the reason was assumed to be a result-code
+vocabulary that nobody had ever driven.
+
+## What it drives
+
+Exactly what `client.i(byte)` does for **server opcode 70**, at bytecode
+offsets 4068-4082:
+
+```
+qc.field_g.a(<signed byte off the wire>, (byte) -70);   // eb.a(IB)V
+qc.a(100);                                              // qc.a(I)V
+```
+
+`eb.a(int,byte)` is the only writer of `eb.field_e`; `qc.a(int)` then compares
+`field_g.field_e` against `field_P` (the local slot) and pushes
+`new in(text, id, false)`.
+
+`stub-ui/in.java` shadows `in`, whose real constructor lays the banner out with
+`in.field_n` (an `lm` font) and therefore needs the whole graphics stack. The
+stub records the constructor arguments instead. That is the only stub — `qc`,
+`eb`, `vj`, `cm` and every string holder come from `dekobloko.jar`. Put
+`stub-ui` **first** on the classpath.
+
+## Measured result
+
+Local player in slot 1 of 4, roster `[ALPHA, BRAVO, CHARLIE, DELTA]`, all 256
+wire bytes executed:
+
+| wire byte | signed | banner id | text |
+|---|---|---|---|
+| 0 | 0 | 11 | `ALPHA WINS!` |
+| 1 | 1 | **10** | **`YOU WIN!`** |
+| 2 | 2 | 11 | `CHARLIE WINS!` |
+| 3 | 3 | 11 | `DELTA WINS!` |
+| 4..127 | 4..127 | — | `ArrayIndexOutOfBoundsException` in `qc.a` |
+
+| 128..255 | -128..-1 | 9 | `DRAW!` |
+
+Repeating with the local player in slot 0 moves `YOU WIN!` to byte 0. So the
+opcode-70 payload is the **winner's player slot**, read as a *signed* byte
+(`wl.g(byte)` ends in `baload`), not a result code:
+
+* `byte == qc.field_P` → `YOU WIN!`
+* `0 <= byte < roster length`, other slot → `<NAME> WINS!`
+* `byte < 0` → `DRAW!`
+* `byte >= roster length` → the client throws; do not send one
+
+The upper bound is the length of `eb.field_q` (the name roster the game-start
+packet supplied), not `eb.field_b` — `qc.a(int)` indexes the roster without
+checking anything. The probe ran with the two equal.
+
+## What this settles about opcodes 68 and 69
+
+They are **in-game banners, not results**. Both write an *unsigned* byte
+(`uf.d(B)I`) into `qc.field_T` and raise a banner:
+
+| opcode | offset in `client.i` | banner | side effect |
+|---|---|---|---|
+| 68 | 3803-3835 | `eb.field_c` = `SPEED UP!` (id 12) | — |
+| 69 | 3859-3896 | `bn.field_c` = `PANIC!` (id 8) | sets `qc.field_r = true` |
+
+`qc.field_T` is the speed/tempo level and `qc.field_r` the panic flag. The only
+consumer of both is `qc.b(boolean)`, which returns
+`256 + var2 * (field_T - var3) + (field_r ? 64 : 0)` via `mb.a`, and that value
+is handed to `ob.a(int, ui, byte)` — a **music playback rate**, alongside track
+sets `ee.field_a` / `sb.field_u[level]` (`ui[]`, played by `wj.field_Ob`).
+
+The earlier `field_T == 10` reading (qc.java:5063, 5511, 2892) is therefore
+about music selection, not about any screen or text. It never had anything to
+do with the winner.
+
 ## Running
+
+```sh
+J8=/usr/lib/jvm/java-8-openjdk
+$J8/bin/javac -nowarn -cp ../../dekobloko.jar -d stub-ui stub-ui/in.java
+$J8/bin/javac -nowarn -cp ../../dekobloko.jar -d . WinBannerProbe.java
+$J8/bin/java -cp stub-ui:.:../../dekobloko.jar WinBannerProbe
+```
+
+# Running (`ParityProbe`)
 
 Needs JDK 8 — the classes are class-file version 50 and `client` extends
 `java.applet.Applet`, which modern JDKs no longer ship.
