@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FunOrb PCM diagnostics</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1118;
+      --panel: #121b25;
+      --panel-2: #182431;
+      --line: #2a3948;
+      --ink: #edf6f4;
+      --muted: #9eb0b9;
+      --accent: #52d3ad;
+      --accent-2: #f7bf5b;
+      --danger: #ff786f;
+      font: 15px/1.45 Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); }
+    button, select { font: inherit; }
+    main { width: min(1160px, calc(100% - 32px)); margin: 0 auto; padding: 30px 0 54px; }
+    header { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 22px; }
+    h1 { margin: 0 0 5px; font-size: clamp(25px, 4vw, 39px); line-height: 1.05; letter-spacing: -0.025em; }
+    p { margin: 0; color: var(--muted); }
+    .badge { flex: 0 0 auto; padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--accent); background: #0e171e; }
+    .panel { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); box-shadow: 0 16px 44px #0005; overflow: hidden; }
+    .controls { display: grid; grid-template-columns: minmax(240px, 1fr) auto auto auto auto; gap: 10px; align-items: center; padding: 16px; }
+    select, button {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--ink);
+      padding: 0 13px;
+    }
+    button { cursor: pointer; white-space: nowrap; }
+    button:hover:not(:disabled) { border-color: var(--accent); }
+    button:disabled { cursor: wait; opacity: .55; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #07120f; font-weight: 700; }
+    .mode { display: flex; gap: 7px; align-items: center; color: var(--muted); padding: 0 16px 15px; }
+    .mode select { min-height: 35px; padding: 0 8px; }
+    .progress-shell { height: 5px; background: #0a1016; }
+    #progress { width: 0; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 80ms linear; }
+    .status { display: flex; justify-content: space-between; gap: 15px; padding: 11px 16px; border-top: 1px solid var(--line); color: var(--muted); font-variant-numeric: tabular-nums; }
+    #statusText[data-kind="error"] { color: var(--danger); }
+    #statusText[data-kind="active"] { color: var(--accent); }
+    .metrics { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; margin-top: 18px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--line); }
+    .metric { min-height: 94px; padding: 13px; background: var(--panel); }
+    .metric label { display: block; color: var(--muted); font-size: 12px; }
+    .metric output { display: block; margin-top: 9px; font-size: 19px; font-weight: 650; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; }
+    .metric small { display: block; margin-top: 3px; color: var(--muted); }
+    section.details { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+    .card { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); padding: 16px; min-width: 0; }
+    h2 { margin: 0 0 12px; font-size: 16px; }
+    dl { display: grid; grid-template-columns: 1fr auto; gap: 7px 16px; margin: 0; font-variant-numeric: tabular-nums; }
+    dt { color: var(--muted); }
+    dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+    .history { margin-top: 18px; overflow: auto; }
+    .java-diagnostic { margin-top: 18px; }
+    .java-heading { display: flex; justify-content: space-between; align-items: start; gap: 18px; padding: 17px; }
+    .java-heading h2 { margin-bottom: 4px; }
+    .java-heading button { flex: 0 0 auto; }
+    .java-metrics { margin: 0; border-width: 1px 0 0; border-radius: 0; }
+    .java-status { border-top: 1px solid var(--line); padding: 11px 16px; color: var(--muted); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+    .java-profile { margin: 0; padding: 14px 16px; border-top: 1px solid var(--line); background: #0c141c; color: #c8d8dc; font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+    #javaStatus[data-kind="error"] { color: var(--danger); }
+    #javaStatus[data-kind="active"] { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+    th, td { padding: 9px 11px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+    th:first-child, td:first-child { text-align: left; max-width: 340px; overflow: hidden; text-overflow: ellipsis; }
+    th { color: var(--muted); font-weight: 500; }
+    .empty { color: var(--muted); text-align: center !important; padding: 24px; }
+    code { color: var(--accent-2); }
+
+    @media (max-width: 900px) {
+      .controls { grid-template-columns: 1fr 1fr; }
+      .controls select { grid-column: 1 / -1; }
+      .metrics { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 620px) {
+      main { width: min(100% - 20px, 1160px); padding-top: 18px; }
+      header { align-items: start; flex-direction: column; }
+      .controls, section.details { grid-template-columns: 1fr; }
+      .controls select { grid-column: auto; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .status { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>FunOrb PCM diagnostics</h1>
+        <p>Run the recovered FunOrb music mixer inside guest Java and stream its PCM through the browser JVM audio bridge.</p>
+        <p>The sample bank is decoded during preparation, so this isolates guest music mixing and WebAudio—not archive/Vorbis unpacking.</p>
+      </div>
+      <div class="badge" id="libraryBadge">Loading library…</div>
+    </header>
+
+    <div class="panel">
+      <div class="controls">
+        <select id="trackSelect" aria-label="Soundtrack track"></select>
+        <button id="playButton" class="primary">Play track through Java</button>
+        <button id="playlistButton">Play all through Java</button>
+        <button id="benchmarkButton">Render only</button>
+        <button id="stopButton">Stop</button>
+      </div>
+      <div class="mode">
+        JavaScript comparison renderer
+        <select id="engineSelect" aria-label="PCM renderer">
+          <option value="worker">Web Worker (recommended)</option>
+          <option value="main">Main thread</option>
+        </select>
+        <span id="modeExplanation">keeps rendering away from animation and input</span>
+      </div>
+      <div class="progress-shell"><div id="progress"></div></div>
+      <div class="status">
+        <span id="statusText">Preparing soundtrack metadata…</span>
+        <span id="playbackText">00:00 / 00:00</span>
+      </div>
+    </div>
+
+    <section class="metrics" aria-label="Latest PCM render measurements">
+      <div class="metric"><label>PCM synthesis</label><output id="renderTime">—</output><small>wall time</small></div>
+      <div class="metric"><label>Audio produced</label><output id="audioDuration">—</output><small>decoded PCM</small></div>
+      <div class="metric"><label>Render speed</label><output id="realtimeFactor">—</output><small>× real time</small></div>
+      <div class="metric"><label>Worst UI stall</label><output id="eventLoopDelay">—</output><small>50 ms heartbeat</small></div>
+      <div class="metric"><label>WebAudio buffer</label><output id="bufferTime">—</output><small>allocate + copy</small></div>
+      <div class="metric"><label>PCM checksum</label><output id="checksum">—</output><small>FNV-1a float bits</small></div>
+    </section>
+
+    <section class="details">
+      <div class="card">
+        <h2>PCM output</h2>
+        <dl>
+          <dt>Samples</dt><dd id="sampleCount">—</dd>
+          <dt>Sample rate</dt><dd id="sampleRate">—</dd>
+          <dt>Peak</dt><dd id="peak">—</dd>
+          <dt>RMS</dt><dd id="rms">—</dd>
+          <dt>Non-zero samples</dt><dd id="nonZero">—</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <h2>Browser audio</h2>
+        <dl>
+          <dt>AudioContext</dt><dd id="contextState">not created</dd>
+          <dt>Output sample rate</dt><dd id="outputRate">—</dd>
+          <dt>Base latency</dt><dd id="baseLatency">—</dd>
+          <dt>Output latency</dt><dd id="outputLatency">—</dd>
+          <dt>Sample-bank load</dt><dd id="bankLoad">—</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="panel java-diagnostic">
+      <div class="java-heading">
+        <div>
+          <h2>Guest FunOrb mixer → SourceDataLine → JVM.js → WebAudio</h2>
+          <p>The selected <code>ui</code> track runs through guest <code>ia</code>/<code>mi</code>/<code>ei</code>; Java converts and pushes each live 512-frame chunk.</p>
+        </div>
+      </div>
+      <div class="metrics java-metrics">
+        <div class="metric"><label>Guest mixer CPU</label><output id="javaGeneration">—</output><small><code>mi.b</code> PCM synthesis</small></div>
+        <div class="metric"><label>SourceDataLine.write</label><output id="javaWrite">—</output><small>JVM audio bridge</small></div>
+        <div class="metric"><label>Backpressure wait</label><output id="javaWait">—</output><small>audio pacing</small></div>
+        <div class="metric"><label>Push wall time</label><output id="javaPush">—</output><small>whole selected track</small></div>
+        <div class="metric"><label>Worst UI stall</label><output id="javaUiStall">—</output><small>during guest Java</small></div>
+        <div class="metric"><label>Audio underruns</label><output id="javaUnderruns">—</output><small id="javaUnderrunTime">queue gaps</small></div>
+      </div>
+      <div class="java-status" id="javaStatus">Loading the JVM.js runtime, original game classes, and decoded sample bank…</div>
+      <pre class="java-profile" id="javaProfile">Per-chunk deadline and sampled guest-method timings will appear after playback starts.</pre>
+    </section>
+
+    <div class="card history">
+      <h2>Render history</h2>
+      <table>
+        <thead><tr><th>Track</th><th>Engine</th><th>Render</th><th>Audio</th><th>Speed</th><th>UI stall</th><th>Checksum</th></tr></thead>
+        <tbody id="historyBody"><tr><td colspan="7" class="empty">No PCM has been rendered yet.</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

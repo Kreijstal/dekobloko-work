@@ -449,6 +449,110 @@ async function main() {
     appletParameters,
     appletCodeBase: options.codeBase || undefined,
   });
+  if (process.env.JVM_BENCHMARK_METADATA === '1') {
+    const jit = jvm.jit;
+    const structured = jit && jit.structuredSsa;
+    const fused = jit && jit.fusedRegions;
+    const wasm = jit && jit.wasmJit;
+    console.error('[jvm-benchmark-gates] ' + JSON.stringify({
+      eventLoopYieldMs: jvm.eventLoopYieldMs,
+      eventLoopYieldStrategy: jvm.eventLoopYieldStrategy,
+      interpreterBurst: jvm.interpreterBurst,
+      fakeTime: Boolean(jvm.clock && jvm.clock.enabled),
+      fakeTimeRealtime: Boolean(jvm.clock && jvm.clock.realtime),
+      jit: {
+        enabled: Boolean(jit && jit.enabled),
+        profileMethods: Boolean(jit && jit.profileMethods),
+        profileTimings: Boolean(jit && jit.profileTimings),
+        preferWholeMethodJs: Boolean(jit && jit.preferWholeMethodJs),
+        rendererPipeline: Boolean(jit && jit.rendererPipelineEnabled),
+        scalarLoops: Boolean(jit && jit.scalarLoopsEnabled),
+        scalarGuestBodies: Boolean(jit && jit.scalarGuestBodiesEnabled),
+        scalarSsaOptimizations: Boolean(jit && jit.scalarSsaOptimizationsEnabled),
+        longArithmeticWasmFirst: Boolean(jit && jit.longArithmeticWasmFirstEnabled),
+      },
+      wasm: {
+        enabled: Boolean(wasm && wasm.enabled),
+        structured: Boolean(wasm && wasm.structuredEnabled),
+      },
+      structuredSsa: {
+        enabled: Boolean(structured && structured.enabled),
+        continuations: Boolean(structured && structured.continuationsEnabled),
+        dispatchIslands: Boolean(structured && structured.dispatchIslandsEnabled),
+        deferredCallMaterialization: Boolean(
+          structured && structured.deferredCallMaterializationEnabled),
+        localValueNumbering: Boolean(structured && structured.localValueNumberingEnabled),
+        guardedStaticBooleans: Boolean(
+          structured && structured.guardedStaticBooleansEnabled),
+        coarseCountedLoopSafePoints: Boolean(
+          structured && structured.coarseCountedLoopSafePointsEnabled),
+        atomicBoundedLoops: Boolean(structured && structured.atomicBoundedLoopsEnabled),
+      },
+      fusedRegions: {
+        enabled: Boolean(fused && fused.enabled),
+        directCalls: Boolean(fused && fused.directCallsEnabled),
+        lexicalKernels: Boolean(fused && fused.lexicalKernelsEnabled),
+        handwrittenKernels: Boolean(fused && fused.handwrittenKernelsEnabled),
+        semanticRasterKernels: Boolean(fused && fused.semanticRasterKernelsEnabled),
+      },
+    }));
+    process.once('exit', () => {
+      console.error('[jvm-benchmark-counters] ' + JSON.stringify({
+        structuredSsaRuns: Number(structured && structured.runCount) || 0,
+        structuredSsaSafePoints: Number(structured && structured.safePointCount) || 0,
+        fusedRuns: Number(jit && jit.fusedRunCount) || 0,
+        fusedDirectRuns: Number(jit && jit.fusedDirectRunCount) || 0,
+        fusedGuardedFallbacks: Number(jit && jit.fusedGuardedFallbackCount) || 0,
+        fusedRestoredExceptionFrames:
+          Number(jit && jit.fusedRestoredExceptionFrameCount) || 0,
+        handwrittenFusedRegions:
+          Number(jit && jit.handwrittenFusedRegionCount) || 0,
+        handwrittenFusedRuns:
+          Number(jit && jit.handwrittenFusedRunCount) || 0,
+        semanticFusedWrapperRuns:
+          Number(jit && jit.semanticFusedWrapperRunCount) || 0,
+        semanticFusedRasterRuns:
+          Number(jit && jit.semanticFusedRasterRunCount) || 0,
+        semanticFusedFlatRasterRuns:
+          Number(jit && jit.semanticFusedFlatRasterRunCount) || 0,
+        lexicalFusedKernels:
+          Number(jit && jit.lexicalFusedKernelCount) || 0,
+        fusedDirectEntries: Number(
+          fused && Array.isArray(fused.directEntries) && fused.directEntries.length) || 0,
+        fusedResolvedDirectEntries: fused && Array.isArray(fused.directEntries)
+          ? fused.directEntries.filter((entry) => entry && entry.target).length : 0,
+        fusedUnresolvedDirectEntries: fused && Array.isArray(fused.directEntries)
+          ? fused.directEntries.filter((entry) => entry && entry.unresolved).length : 0,
+        fusedRejectedDirectEntries: fused && Array.isArray(fused.directEntries)
+          ? fused.directEntries.filter((entry) => entry && entry.permanentlyRejected).length : 0,
+        fusedDirectAttempts: Number(fused && fused.directAttemptCount) || 0,
+        fusedDirectFallbacksByReason: fused && fused.directFallbackCounts
+          ? Object.fromEntries(fused.directFallbackCounts) : {},
+        fusedDirectEntryStates: fused && Array.isArray(fused.directEntries)
+          ? fused.directEntries.map((entry) => ({
+            owner: entry && (entry.target && entry.target.lookupClass ||
+              entry.unresolved && entry.unresolved.owner) || null,
+            descriptor: entry && (entry.target && entry.target.method &&
+              entry.target.method.descriptor ||
+              entry.unresolved && entry.unresolved.descriptor) || null,
+            resolved: Boolean(entry && entry.target),
+            compiled: Boolean(entry && (entry.region ||
+              entry.target && fused.cache.get(entry.target.method))),
+            permanentlyRejected: Boolean(entry && entry.permanentlyRejected),
+            rejectedEpoch: entry && entry.rejectedEpoch || null,
+          })) : [],
+        wasmRuns: Number(wasm && wasm.runCount) || 0,
+        oversizedWasmFirstMethods:
+          Number(jit && jit.oversizedWasmFirstMethodCount) || 0,
+        longArithmeticWasmFirstMethods:
+          Number(jit && jit.longArithmeticWasmFirstMethodCount) || 0,
+        adaptiveWholeMethodPromotions:
+          Number(jit && jit.adaptiveWholeMethodPromotionCount) || 0,
+        adaptiveWholeMethodEscalations:
+          Number(jit && jit.adaptiveWholeMethodEscalationCount) || 0,
+      }));
+    });
+  }
 
   let appletInstance = null;
   if (options.replayAwt) {

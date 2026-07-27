@@ -116,6 +116,49 @@ The state stores Java heap/thread/frame/static data, not generated JIT machine
 code. Cache files reopen on load; sockets, audio outputs, and canvas handles are
 host resources and are omitted from the portable payload.
 
+### Reproducible Node Jagex-logo FPS
+
+Use the phase-aware benchmark instead of calculating FPS across fixed frame
+numbers:
+
+```bash
+node scripts/benchmark-dekobloko-node-logo.js \
+  --classes .work/jvmjs/hybrid-all-recompiled-lean-carriers/classes \
+  --generated-from-jar dekobloko.jar \
+  --minimum-warm-fps 45
+```
+
+The benchmark samples every tenth published surface and separates the sparse
+Jagex-logo animation from the much denser login panel. It reports cold and
+warm logo FPS independently and writes `result.json`, logs, surfaces, and any
+dirty tracked patches to a temporary artifact directory.
+
+Every result records the complete `java-tools` and `dekobloko-work` commit
+SHA-1 and Git tree SHA-1, tracked/overall dirty state, dirty-patch hashes and
+files, untracked paths, the declared generating JAR's SHA-1/SHA-256, a
+deterministic generated-class-tree SHA-256, Node/platform identity, exact
+command, every `JVM_*` variable, and the resolved JIT/Wasm/fusion/scheduler
+gates. A result without this provenance is not an authoritative FPS result.
+
+The 2026-07-27 accepted Node series measured 49.8804, 49.9991, and
+49.9991 warm logo FPS (**49.9991 median**), with zero runtime errors and the
+first login-classified surface at frame 240 in every process. The structural
+SSA renderer preserves scalar continuations across scheduler-visible void
+children, and the fused compiler now renders verified CFGs as lexical
+JavaScript loops/branches with fixed operand join slots rather than scalar
+`pc`/`switch` dispatch. Every run compiled six lexical fused kernels and
+executed 604,127 direct fusions.
+
+The accepted run installed and executed zero fingerprint-selected handwritten
+kernels. Those kernels are now opt-in test oracles; the normal runtime uses
+bytecode-derived positional/scalar kernels. The differential harness compares
+both generated renderer families against canonical execution and the
+handwritten target while also rejecting generated source that contains child
+frames, operand-stack access, generic call dispatch, or a raster `pc` switch.
+Selection remains class- and method-name independent; names are retained only
+in diagnostic output. Set `JVM_DISABLE_LEXICAL_FUSED_KERNELS=1` for the
+state-machine A/B control.
+
 ### JVM.js Firefox renderer performance
 
 The authoritative optimization diary, benchmark commands, accepted and rejected
@@ -1109,6 +1152,78 @@ The page imports D3 from `esm.sh`, loads `json/sample-bank.json`, plays decoded
 sample PCM through browser-side `Ia`, `Mi`, and `Ei` classes in
 `web/music-visualizer/audio.js`, and animates decoded `ui` pattern events. It
 does not yet port the custom `bi`/`va` sample decoders to the browser.
+
+For a playback-focused PCM diagnostic without the D3 dependency, prepare its
+local data (the first argument may point at any complete Dekobloko cache):
+
+```bash
+# Defaults to ~/.alterorb/caches/dekobloko and .work/music/dekobloko.
+python3 tools/music/extract-dekobloko-music.py
+
+mkdir -p .work/music/dekobloko-tools
+javac -cp classes-original -d .work/music/dekobloko-tools \
+  tools/music/MusicSampleDecoder.java \
+  tools/music/MusicUiJsonDumper.java \
+  tools/music/MusicSampleBankExporter.java
+
+java -cp .work/music/dekobloko-tools:classes-original \
+  MusicUiJsonDumper .work/music/dekobloko
+java -cp .work/music/dekobloko-tools:classes-original \
+  MusicSampleBankExporter .work/music/dekobloko
+```
+
+Then start:
+
+```bash
+node scripts/serve-audio-diagnostics.js
+```
+
+Open `http://127.0.0.1:8775/audio-diagnostics/`. The page exposes every
+extracted soundtrack track and records PCM synthesis time, audio duration,
+real-time factor, event-loop stalls, WebAudio buffer-copy time, peak/RMS, and a
+stable checksum. Rendering uses a Web Worker by default; switching to
+`Main thread` measures the same JavaScript mixer while it competes with browser
+animation and input.
+
+`Play track through Java` and `Play all through Java` execute the recovered
+FunOrb mixer inside the browser guest JVM. The browser loads the untouched
+`dekobloko.jar` plus a separate, small `JavaFunOrbTrackPlayer` driver JAR, while
+the browser virtual filesystem supplies the selected raw `ui` descriptor plus
+a decoded `ud` sample bank.
+Guest `ui` parses the track, `ia`/`mi`/`ei` synthesize every 512-frame chunk,
+and guest Java converts it to PCM16 and calls `SourceDataLine.write`. There is
+no host-rendered WAV or synthetic two-second playback button.
+
+The panel reports guest mixer CPU, PCM conversion, bridge-write time,
+backpressure wait, event-loop stalls, and WebAudio underruns separately. Stop
+sets a guest static safe-point flag, so a multi-minute track ends cleanly after
+the short queued tail. The server records SHA-256 values for `dekobloko.jar`,
+the mixer source, sample bank, generated driver JAR, JVM bundle, and WebAudio
+bridge. The Worker/main selector and `Render only` remain as the pure-JavaScript
+comparison.
+
+Completed, stopped, and failed guest-mixer runs are appended to
+`.work/telemetry/audio-diagnostics.jsonl`. The latest 20 records are available
+from `/api/audio-diagnostics/latest`, including the timing breakdown, underruns,
+browser identity, and exact artifact hashes. While playback is active, a
+progress record is sent every five seconds.
+
+The guest driver records every 512-frame chunk without retaining PCM: phase
+maxima, warmup and steady averages, the 23.22 ms deadline-miss count and
+longest streak, and a latency histogram. JVM.js additionally samples scheduler
+ownership at 1/16 execution slices and generated-method inclusive time at
+1/128 entries. These rates can be changed with `schedulerSampleRate` and
+`jitSampleRate`; `?profile=0` keeps chunk timing but disables both JVM samplers
+for observer-overhead comparisons.
+
+`java-tools/benchmarks/JavaPcmPushDiagnostic.java` remains available as a
+standalone synthetic bridge microbenchmark, but the integrated soundtrack page
+does not use it.
+
+`FUNORB_AUDIO_DATA`, `JAVA_TOOLS_DIR`, `AUDIO_DIAGNOSTICS_HOST`, and
+`AUDIO_DIAGNOSTICS_PORT` override the generated-data directory, sibling
+java-tools checkout, bind address, and port. Extracted sample data and the
+generated diagnostic JAR remain under `.work/` and are not committed.
 
 When porting mixer code, use the current deobfuscated mixer slice, not stale raw
 CFR source:
