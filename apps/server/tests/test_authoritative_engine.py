@@ -21,6 +21,7 @@ from dekobloko_server.engine import (
     ReturnedShape,
     WATER_CELL,
     WILDCARD_CELL,
+    _resolve_matches_once,
 )
 
 
@@ -182,6 +183,31 @@ class AuthoritativeEngineTest(unittest.TestCase):
         self.assertEqual(1, board.occupied_count())
         self.assertEqual(17, board.get(4, 17))
 
+    def test_match_expands_across_touching_same_colour_cooked_shapes(self) -> None:
+        """Cooked shape ids must not split the client's contiguous clear."""
+        board = Board(8, 2)
+        for x in range(4):
+            board.set(x, 1, 16)
+        board.set_solid(4, 1, 0, 1)
+        board.set_solid(5, 1, 0, 2)
+        board.set_solid(6, 1, 0, 2)
+        board.set_solid(7, 1, 0, 2)
+
+        changed, returned = _resolve_matches_once(board, 3, 2)
+
+        self.assertTrue(changed)
+        self.assertEqual(0, board.occupied_count())
+        self.assertEqual(1, len(returned))
+        self.assertEqual(
+            (0, 8, 1, (True,) * 8),
+            (
+                returned[0].colour,
+                returned[0].width,
+                returned[0].height,
+                returned[0].occupied,
+            ),
+        )
+
     def test_wildcard_and_bomb_activation(self) -> None:
         match = AuthoritativeMatch(2, 8, 18, 0, 4, 3)
         board = match.players[0].board
@@ -237,7 +263,54 @@ class AuthoritativeEngineTest(unittest.TestCase):
         self.assertEqual(0, power_board.get(4, 10))
         self.assertGreaterEqual(len(powered.returned_shapes), 1)
 
-    def test_automatic_water_poison_and_earthquake(self) -> None:
+    def test_power_drill_activates_water_then_runs_gravity(self) -> None:
+        match = AuthoritativeMatch(2, 8, 18, 0, 4, 0)
+        board = match.players[0].board
+        board.set_solid(5, 14, 0, 1)
+        board.set(3, 16, POWER_DRILL_CELL)
+        board.set(3, 17, WATER_CELL)
+        effect_ticks = [0]
+        effect_frames = []
+
+        match._resolve_cascades(
+            board,
+            effect_counter=effect_ticks,
+            effect_frames=effect_frames,
+        )
+
+        self.assertEqual(0, board.get(3, 16))
+        self.assertEqual(0, board.get(3, 17))
+        self.assertEqual(16, board.get(5, 17))
+        self.assertEqual(0, board.solid_ids[17][5])
+        self.assertEqual(29, effect_ticks[0])
+        self.assertEqual(4, len(effect_frames))
+        self.assertEqual(16, effect_frames[0][14][5])
+        self.assertEqual(16, effect_frames[-1][17][5])
+
+    def test_power_drill_pops_poison_instead_of_eliminating_it(self) -> None:
+        match = AuthoritativeMatch(2, 8, 18, 0, 4, 0)
+        board = match.players[0].board
+        for y in range(15, 18):
+            board.set(5, y, 17)
+        board.set(3, 16, POWER_DRILL_CELL)
+        board.set(3, 17, POISON_CELL)
+        effect_ticks = [0]
+        effect_frames = []
+
+        match._resolve_cascades(
+            board,
+            effect_counter=effect_ticks,
+            effect_frames=effect_frames,
+        )
+
+        self.assertEqual(0, board.get(3, 16))
+        self.assertEqual(0, board.get(3, 17))
+        self.assertEqual([9, 9, 9], [board.get(5, y) for y in range(15, 18)])
+        self.assertGreater(board.solid_ids[15][5], 0)
+        self.assertEqual(13, effect_ticks[0])
+        self.assertEqual(17, effect_frames[0][15][5])
+
+    def test_water_poison_and_earthquake_wait_for_an_adjacent_match(self) -> None:
         water_match = AuthoritativeMatch(2, 8, 18, 0, 4, 0)
         water_board = water_match.players[0].board
         water_board.set_solid(0, 16, 2, 1)
@@ -251,8 +324,8 @@ class AuthoritativeEngineTest(unittest.TestCase):
             landed=True,
         )
         water_match.finalize_landed(0)
-        self.assertEqual(0, water_board.solid_ids[16][0])
-        self.assertEqual(18, water_board.get(0, 16))
+        self.assertGreater(water_board.solid_ids[16][0], 0)
+        self.assertEqual(WATER_CELL, water_board.get(3, 17))
 
         poison_match = AuthoritativeMatch(2, 8, 18, 0, 4, 0)
         poison_board = poison_match.players[0].board
@@ -267,10 +340,8 @@ class AuthoritativeEngineTest(unittest.TestCase):
             landed=True,
         )
         poison_match.finalize_landed(0)
-        self.assertGreater(poison_board.solid_ids[17][0], 0)
-        self.assertEqual(
-            poison_board.solid_ids[17][0], poison_board.solid_ids[17][1]
-        )
+        self.assertEqual(0, poison_board.solid_ids[17][0])
+        self.assertEqual(POISON_CELL, poison_board.get(3, 17))
 
         quake_match = AuthoritativeMatch(2, 8, 18, 0, 4, 0)
         quake_board = quake_match.players[0].board
@@ -284,8 +355,87 @@ class AuthoritativeEngineTest(unittest.TestCase):
             landed=True,
         )
         quake_match.finalize_landed(0)
-        self.assertEqual(0, quake_board.get(0, 10))
-        self.assertNotEqual(0, quake_board.get(0, 17))
+        self.assertEqual(EARTHQUAKE_CELL, quake_board.get(3, 17))
+
+    def test_adjacent_match_triggers_water_poison_and_earthquake(self) -> None:
+        water = Board(7, 2)
+        for x in range(4):
+            water.set(x, 1, 16)
+        water.set(4, 1, WATER_CELL)
+        water.set_solid(5, 1, 1, 1)
+        water.set_solid(6, 1, 1, 1)
+        water_ticks = [0]
+        water_frames = []
+        _changed, _returned = _resolve_matches_once(
+            water,
+            4,
+            0,
+            effect_counter=water_ticks,
+            effect_frames=water_frames,
+        )
+        self.assertEqual([17, 17], [water.get(5, 1), water.get(6, 1)])
+        self.assertEqual([0, 0], [water.solid_ids[1][5], water.solid_ids[1][6]])
+        self.assertEqual(13, water_ticks[0])
+        self.assertEqual(1, len(water_frames))
+
+        poison = Board(7, 2)
+        for x in range(4):
+            poison.set(x, 1, 16)
+        poison.set(4, 1, POISON_CELL)
+        poison.set(5, 1, 17)
+        poison.set(6, 1, 17)
+        poison_ticks = [0]
+        poison_frames = []
+        _changed, _returned = _resolve_matches_once(
+            poison,
+            4,
+            0,
+            effect_counter=poison_ticks,
+            effect_frames=poison_frames,
+        )
+        self.assertGreater(poison.solid_ids[1][5], 0)
+        self.assertEqual(poison.solid_ids[1][5], poison.solid_ids[1][6])
+        self.assertEqual(13, poison_ticks[0])
+        self.assertEqual(1, len(poison_frames))
+
+        poison_overhang = Board(5, 2)
+        poison_overhang.set(0, 0, 17)
+        for x in range(4):
+            poison_overhang.set(x, 1, 16)
+        poison_overhang.set(4, 1, POISON_CELL)
+        overhang_ticks = [0]
+        overhang_frames = []
+        _changed, _returned = _resolve_matches_once(
+            poison_overhang,
+            4,
+            0,
+            effect_counter=overhang_ticks,
+            effect_frames=overhang_frames,
+        )
+        self.assertEqual(0, poison_overhang.get(0, 0))
+        self.assertEqual(9, poison_overhang.get(0, 1))
+        self.assertEqual(27, overhang_ticks[0])
+        self.assertEqual(17, overhang_frames[0][0][0])
+        self.assertEqual(17, overhang_frames[-1][1][0])
+
+        quake = Board(5, 3)
+        quake.set(0, 0, 18)
+        quake.set(0, 1, 17)
+        for x in range(4):
+            quake.set(x, 2, 16)
+        quake.set(4, 2, EARTHQUAKE_CELL)
+        effect_ticks = [0]
+        effect_frames = []
+        _changed, _returned = _resolve_matches_once(
+            quake,
+            4,
+            0,
+            effect_counter=effect_ticks,
+            effect_frames=effect_frames,
+        )
+        self.assertEqual([17, 18, 0, 0, 0], quake.cells[2])
+        self.assertEqual(29, effect_ticks[0])
+        self.assertEqual(4, len(effect_frames))
 
     def test_incoming_feedback_overflow_consumes_last_life_and_selects_winner(self) -> None:
         match = AuthoritativeMatch(2, 8, 18, 0, 4, 1)

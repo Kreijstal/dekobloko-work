@@ -18,6 +18,8 @@ ROTATE_CLOCKWISE = 8
 FAST_DROP = 16
 ALL_CONTROLS = 31
 LOCK_DELAY_TICKS = 20
+POWERUP_POP_TICKS = 13
+POWERUP_LAND_TICKS = 13
 SPEED_TICKS = (40, 30, 24, 19, 15, 12, 9, 6, 4, 2, 0)
 WILDCARD_CELL = 23
 EARTHQUAKE_CELL = 24
@@ -51,6 +53,10 @@ class LockResult:
     life_lost: bool
     placed_cells: frozenset[tuple[int, int]]
     returned_shapes: tuple[ReturnedShape, ...] = ()
+    combo_count: int = 0
+    effect_ticks: int = 0
+    effect_origin: tuple[tuple[int, ...], ...] = ()
+    effect_frames: tuple[tuple[tuple[int, ...], ...], ...] = ()
 
     @property
     def eliminated(self) -> bool:
@@ -99,11 +105,54 @@ class Board:
             if self.solid_ids[y][x] == shape_id
         }
 
+    def merge_solid(
+        self,
+        positions: set[tuple[int, int]] | frozenset[tuple[int, int]],
+        colour: int,
+        preferred_shape_id: int | None = None,
+    ) -> int:
+        """Place a cooked shape and merge touching same-colour cooked shapes."""
+        if not positions:
+            raise ValueError("a cooked shape must occupy at least one cell")
+        touching_ids: set[int] = set()
+        for x, y in positions:
+            self._require(x, y)
+            for next_x, next_y in (
+                (x - 1, y),
+                (x + 1, y),
+                (x, y - 1),
+                (x, y + 1),
+            ):
+                if not (0 <= next_x < self.width and 0 <= next_y < self.height):
+                    continue
+                shape_id = self.solid_ids[next_y][next_x]
+                if shape_id and (self.cells[next_y][next_x] & 31) == (8 | colour):
+                    touching_ids.add(shape_id)
+
+        if touching_ids:
+            shape_id = min(touching_ids)
+        elif preferred_shape_id is not None:
+            if preferred_shape_id <= 0:
+                raise ValueError("preferred shape id must be positive")
+            shape_id = preferred_shape_id
+        else:
+            shape_id = self.allocate_solid_id()
+
+        merged_positions = set(positions)
+        for touching_id in touching_ids:
+            merged_positions.update(self.positions_for_solid(touching_id))
+        for x, y in merged_positions:
+            self.set_solid(x, y, colour, shape_id)
+        return shape_id
+
     def occupied_count(self) -> int:
         return sum(cell != 0 for row in self.cells for cell in row)
 
-    def collapse_loose(self) -> None:
+    def collapse_loose(
+        self, frames: list[tuple[tuple[int, ...], ...]] | None = None
+    ) -> int:
         moved = True
+        movement_ticks = 0
         while moved:
             moved = False
             for y in range(self.height - 2, -1, -1):
@@ -115,10 +164,18 @@ class Board:
                         self.cells[y][x] = 0
                         self.solid_ids[y][x] = 0
                         moved = True
+            if moved:
+                movement_ticks += 1
+                if frames is not None:
+                    frames.append(tuple(tuple(row) for row in self.cells))
+        return movement_ticks
 
-    def earthquake(self) -> None:
+    def earthquake(
+        self, frames: list[tuple[tuple[int, ...], ...]] | None = None
+    ) -> int:
         preferred = 1
         active = True
+        movement_ticks = 0
         while active:
             active = False
             for y in range(self.height - 1, -1, -1):
@@ -145,7 +202,13 @@ class Board:
                         self.cells[y][x] = 0
                         active = True
             if active:
+                movement_ticks += 1
+                if frames is not None:
+                    frames.append(
+                        tuple(tuple(row) for row in self.cells)
+                    )
                 preferred = -preferred
+        return movement_ticks
 
     def _require(self, x: int, y: int) -> None:
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
@@ -220,11 +283,34 @@ class ActiveDomino:
         width, height = self.dimensions
         if top_x is None:
             top_x = (board.width - width) >> 1
+        default_spawn = top_y is None
         if top_y is None:
             top_y = -height + 1
         min_x, min_y = self._minimum_offsets(self.orientation)
         self._pivot_x = top_x - min_x
         self._pivot_y = top_y - min_y
+        # The client never leaves a freshly installed piece intersecting the
+        # settled grid. If the centred spawn overlaps the top row, it raises
+        # the bitmap until all occupied cells are valid. This matters at block
+        # out: controls are then evaluated from y=-1 (or above), rather than
+        # from an invalid y=0 position where different moves and rotations are
+        # accepted. Explicit coordinates are snapshots/test fixtures and must
+        # not be corrected.
+        blocked_at_spawn = False
+        if default_spawn:
+            oriented = self._oriented(self.orientation)
+            horizontally_inside = all(
+                0 <= self._pivot_x + dx < board.width
+                for dx, _dy, _cell in oriented
+            )
+            if horizontally_inside:
+                blocked_at_spawn = self._collides(
+                    self.orientation, self._pivot_x, self._pivot_y
+                )
+                while self._collides(
+                    self.orientation, self._pivot_x, self._pivot_y
+                ):
+                    self._pivot_y -= 1
         self.previous_controls = previous_controls & ALL_CONTROLS
         self.horizontal_repeat = horizontal_repeat
         self.drop_countdown = (
@@ -249,16 +335,7 @@ class ActiveDomino:
             default_h if horizontal_parity is None else horizontal_parity
         )
         self.finalized = False
-        # Block out: the piece cannot even occupy its spawn cells because the
-        # stack has reached the top. Without this the match spins forever --
-        # an ordinary 2x1 domino spawns at top_y = -height + 1 = 0, so `y < 0`
-        # is never true for it and the old overflow test could not fire. The
-        # board fills, every piece lands on its first tick at y=0, and lives
-        # never decrement. Observed live: piece 473..477 all
-        # "final=(3,0) lives=2" in an unbroken loop.
-        self.blocked_at_spawn = self._collides(
-            self.orientation, self._pivot_x, self._pivot_y
-        )
+        self.blocked_at_spawn = blocked_at_spawn
 
     @staticmethod
     def _initial_parities(
@@ -412,15 +489,15 @@ class ActiveDomino:
             raise RuntimeError("active domino has not landed")
         if lives <= 0:
             raise ValueError("an active player must have at least one life")
-        # A life is lost either because the piece locked partly above the
-        # bucket (tall shapes) or because it never had room to spawn at all
-        # (block out). The second case is the only one a 2x1 domino can hit.
+        # A life is lost when the corrected piece still locks partly above the
+        # bucket. A spawn overlap alone is not enough: after being raised, a
+        # player may steer the piece into a gap and descend normally.
         #
         # Losing a life deliberately does NOT clear or compact the bucket --
         # confirmed against the real game 2026-07-25. A topped-out player
         # therefore burns their remaining lives in quick succession, which is
         # correct behaviour and not a bug to be "fixed".
-        life_lost = self.y < 0 or self.blocked_at_spawn
+        life_lost = self.y < 0
         remaining = lives - 1 if life_lost else lives
         placed: set[tuple[int, int]] = set()
         oriented = self._oriented(self.orientation)
@@ -461,6 +538,11 @@ class ActiveDomino:
             if not self._try_move_down():
                 self.drop_countdown = LOCK_DELAY_TICKS
                 self.grounded = True
+                # This is only the client's field_y (grounded) transition.
+                # It starts a 20-tick lock delay during which horizontal
+                # movement or rotation can move the piece off its support and
+                # resume descent. Finalizing here discarded those controls and
+                # made S2C 64 correct otherwise valid client landings.
                 return
             self.drop_countdown = self.base_drop_ticks
             if movement_recovery:
@@ -611,8 +693,13 @@ class AuthoritativeMatch:
         speed_index: int,
         colour_count: int,
         feedback_level: int,
+        *,
+        allow_single_player: bool = False,
     ) -> None:
-        if player_count < 2 or player_count > 8:
+        if not (
+            2 <= player_count <= 8
+            or allow_single_player and player_count == 1
+        ):
             raise ValueError("multiplayer requires 2..8 players")
         if speed_index < 0 or speed_index >= len(SPEED_TICKS):
             raise ValueError("speed index is outside the original table")
@@ -667,20 +754,52 @@ class AuthoritativeMatch:
         player = self._live_player(slot)
         if player.active is None:
             raise RuntimeError("slot has no active domino")
-        result = player.active.finalize(player.lives)
+        active = player.active
+        cooked_colour = None
+        if not active.is_domino:
+            cooked_colours = {
+                cell & 7
+                for _dx, _dy, cell in active._base
+                if 8 <= (cell & 31) <= 14
+            }
+            if len(cooked_colours) == 1:
+                cooked_colour = next(iter(cooked_colours))
+        result = active.finalize(player.lives)
         player.active = None
         player.lives = result.lives_remaining
+        placed_cells = result.placed_cells
+        rejected_cooked = cooked_colour is not None and result.life_lost
+        if rejected_cooked:
+            # The client rejects an overflowing cooked bitmap atomically. The
+            # generic finalize path may have staged its in-bounds cells while
+            # accounting for the life loss; remove those writes rather than
+            # leaving raw 8|colour cells behind without a cooked solid id.
+            for x, y in placed_cells:
+                player.board.set(x, y, 0)
+            placed_cells = frozenset()
+        if (
+            cooked_colour is not None
+            and not result.life_lost
+            and placed_cells
+        ):
+            player.board.merge_solid(placed_cells, cooked_colour)
         returned: list[ReturnedShape] = []
+        combo_counter = [0]
+        effect_counter = [0]
+        effect_origin = tuple(tuple(row) for row in player.board.cells)
+        effect_frames: list[tuple[tuple[int, ...], ...]] = []
         if player.lives == 0:
             player.active_slot = False
             self._update_outcome()
-        else:
+        elif not result.life_lost:
             returned.extend(
-                _activate_placed_specials(
-                    player.board, result.placed_cells, self.feedback_level
+                self._resolve_cascades(
+                    player.board,
+                    combo_counter,
+                    effect_counter,
+                    effect_frames,
                 )
             )
-            returned.extend(self._resolve_cascades(player.board))
         player.last_returned_shapes = tuple(returned)
         return LockResult(
             result.x,
@@ -688,8 +807,12 @@ class AuthoritativeMatch:
             result.orientation,
             result.lives_remaining,
             result.life_lost,
-            result.placed_cells,
+            placed_cells,
             tuple(returned),
+            combo_counter[0],
+            effect_counter[0],
+            effect_origin if effect_counter[0] else (),
+            tuple(effect_frames),
         )
 
     def eliminate(self, slot: int) -> None:
@@ -741,18 +864,40 @@ class AuthoritativeMatch:
                 player.active = None
                 self._update_outcome()
                 return True
-        solid_id = max(1, shape_id + 1)
+        positions: set[tuple[int, int]] = set()
         for index, occupied in enumerate(shape.occupied):
             if not occupied:
                 continue
             x = origin_x + index % shape.width
             y = origin_y + index // shape.width
             if y >= 0 and board.get(x, y) == 0:
-                board.set_solid(x, y, shape.colour, solid_id)
+                positions.add((x, y))
+        if positions:
+            board.merge_solid(
+                positions,
+                shape.colour,
+                preferred_shape_id=max(1, shape_id + 1),
+            )
         return False
 
-    def _resolve_cascades(self, board: Board) -> list[ReturnedShape]:
+    def _resolve_cascades(
+        self,
+        board: Board,
+        combo_counter: list[int] | None = None,
+        effect_counter: list[int] | None = None,
+        effect_frames: list[tuple[tuple[int, ...], ...]] | None = None,
+    ) -> list[ReturnedShape]:
         returned: list[ReturnedShape] = []
+
+        def collapse_with_client_timing() -> None:
+            movement_ticks = board.collapse_loose(effect_frames)
+            if movement_ticks and effect_counter is not None:
+                # The client advances loose cells by one row per logic tick,
+                # then holds the settled board for one fixed landing phase.
+                # This is per gravity wave, not per cleared group, so a large
+                # same-wave combo never stalls the following piece.
+                effect_counter[0] += movement_ticks + POWERUP_LAND_TICKS
+
         # Collapse BEFORE the first match test, not only after a wave clears.
         #
         # The client's tick runs gravity first and only looks for matches once
@@ -781,20 +926,35 @@ class AuthoritativeMatch:
         # fired first it would have taken one cell out of the group, leaving
         # three, and the rest would have survived -- they do not. The drill
         # fires only on the next cycle, after it has fallen into the hole.
-        board.collapse_loose()
+        collapse_with_client_timing()
         while True:
             changed, wave = _resolve_matches_once(
-                board, self.colour_count, self.feedback_level
+                board,
+                self.colour_count,
+                self.feedback_level,
+                combo_counter,
+                effect_counter,
+                effect_frames,
             )
             if changed:
                 returned.extend(wave)
-                board.collapse_loose()
+                # Every set of simultaneously detected groups shares one
+                # client pop phase. Charging per group made an eight-group
+                # combo eight times slower than the client.
+                if effect_counter is not None:
+                    effect_counter[0] += POWERUP_POP_TICKS
+                collapse_with_client_timing()
                 continue
-            drilled = _fire_settled_drills(board, self.feedback_level)
+            drilled = _fire_settled_drills(
+                board,
+                self.feedback_level,
+                effect_counter,
+                effect_frames,
+            )
             if drilled is None:
                 return returned
             returned.extend(drilled)
-            board.collapse_loose()
+            collapse_with_client_timing()
 
     def _update_outcome(self) -> None:
         live = [slot for slot, player in enumerate(self.players) if player.active_slot]
@@ -904,31 +1064,87 @@ def _cell_matches(cell: int, colour: int, wildcards: bool = False) -> bool:
     )
 
 
+def _touching_cooked_component(
+    board: Board,
+    start_x: int,
+    start_y: int,
+    colour: int,
+) -> set[tuple[int, int]]:
+    """Expand through every touching cooked shape of ``colour``.
+
+    The client clear routine first finds a loose colour group, changes its
+    search value to ``8 | colour``, and keeps expanding through the settled
+    grid. Shape ids are not a boundary in that search. They remain useful on
+    the server because one cooked descriptor can contain disconnected islands:
+    touching any island consumes that descriptor's complete geometry. Every
+    island can then touch another same-colour descriptor, so expansion must be
+    transitive across both grid adjacency and shape ids.
+    """
+    cooked_cell = 8 | colour
+    pending = [(start_x, start_y)]
+    positions: set[tuple[int, int]] = set()
+    expanded_ids: set[int] = set()
+    while pending:
+        x, y = pending.pop()
+        if (x, y) in positions or (board.get(x, y) & 31) != cooked_cell:
+            continue
+        solid_id = board.solid_ids[y][x]
+        if solid_id:
+            if solid_id in expanded_ids:
+                continue
+            expanded_ids.add(solid_id)
+            additions = board.positions_for_solid(solid_id)
+        else:
+            additions = {(x, y)}
+        for position in additions:
+            if position in positions:
+                continue
+            positions.add(position)
+            pending.extend(_touching(board, *position))
+    return positions
+
+
 def _resolve_matches_once(
-    board: Board, colour_count: int, feedback_level: int
+    board: Board,
+    colour_count: int,
+    feedback_level: int,
+    combo_counter: list[int] | None = None,
+    effect_counter: list[int] | None = None,
+    effect_frames: list[tuple[tuple[int, ...], ...]] | None = None,
 ) -> tuple[bool, list[ReturnedShape]]:
     groups = _find_matches(board, colour_count)
     if not groups:
         return False, []
+    if combo_counter is not None:
+        combo_counter[0] += len(groups)
     removed: set[tuple[int, int]] = set()
     returned: list[ReturnedShape] = []
     bombs: set[tuple[int, int, int]] = set()
-    claimed_solids: set[int] = set()
+    triggered_specials: set[tuple[int, int]] = set()
+    claimed_cooked: set[tuple[int, int]] = set()
     for colour, positions in groups:
         feedback_positions = set(positions)
         removed.update(positions)
         for x, y in positions:
             for next_x, next_y in _touching(board, x, y):
                 cell = board.get(next_x, next_y) & 31
-                solid_id = board.solid_ids[next_y][next_x]
-                if solid_id and (cell & 7) == colour:
-                    solid_positions = board.positions_for_solid(solid_id)
-                    removed.update(solid_positions)
-                    if feedback_level >= 2 and solid_id not in claimed_solids:
-                        feedback_positions.update(solid_positions)
-                        claimed_solids.add(solid_id)
+                if cell == (8 | colour):
+                    if (next_x, next_y) in claimed_cooked:
+                        continue
+                    cooked_positions = _touching_cooked_component(
+                        board,
+                        next_x,
+                        next_y,
+                        colour,
+                    )
+                    claimed_cooked.update(cooked_positions)
+                    removed.update(cooked_positions)
+                    if feedback_level >= 2:
+                        feedback_positions.update(cooked_positions)
                 elif cell == BOMB_CELL:
                     bombs.add((next_x, next_y, colour))
+                elif cell in (EARTHQUAKE_CELL, WATER_CELL, POISON_CELL):
+                    triggered_specials.add((next_x, next_y))
         if feedback_level >= 1:
             returned.append(_shape_from_positions(colour, frozenset(feedback_positions)))
 
@@ -937,38 +1153,33 @@ def _resolve_matches_once(
     for bomb_x, bomb_y, colour in bombs:
         board.set(bomb_x, bomb_y, 0)
         returned.extend(_bomb(board, colour, feedback_level))
-    return True, returned
-
-
-def _activate_placed_specials(
-    board: Board,
-    placed: frozenset[tuple[int, int]],
-    feedback_level: int,
-) -> list[ReturnedShape]:
-    returned: list[ReturnedShape] = []
-    for x, y in sorted(placed, key=lambda position: (position[1], position[0])):
+    for x, y in sorted(
+        triggered_specials, key=lambda position: (position[1], position[0])
+    ):
         cell = board.get(x, y) & 31
         if cell == EARTHQUAKE_CELL:
             board.set(x, y, 0)
-            board.earthquake()
+            if effect_frames is not None:
+                effect_frames.append(tuple(tuple(row) for row in board.cells))
+            movement_ticks = board.earthquake(effect_frames)
+            if effect_counter is not None:
+                effect_counter[0] += (
+                    POWERUP_POP_TICKS + movement_ticks + POWERUP_LAND_TICKS
+                )
         elif cell == WATER_CELL:
             board.set(x, y, 0)
-            _water(board)
+            _water(board, effect_counter, effect_frames)
         elif cell == POISON_CELL:
             board.set(x, y, 0)
-            _poison(board)
-        # Bombs remain until a neighbouring coloured match triggers them.
-        #
-        # Drills are NOT fired here. They fire from the cascade loop, because
-        # the client fires them whenever one comes to REST -- not only when
-        # one is placed. MEASURED: a drill riding on top of a group that
-        # clears falls into the hole and then fires, with nothing having been
-        # placed. Firing them here as well would double-fire a placed drill.
-    return returned
+            _activate_poison(board, effect_counter, effect_frames)
+    return True, returned
 
 
 def _fire_settled_drills(
-    board: Board, feedback_level: int
+    board: Board,
+    feedback_level: int,
+    effect_counter: list[int] | None = None,
+    effect_frames: list[tuple[tuple[int, ...], ...]] | None = None,
 ) -> list[ReturnedShape] | None:
     """Fire EVERY drill at rest on the board, or None if there is none.
 
@@ -1006,14 +1217,37 @@ def _fire_settled_drills(
     for x, y in positions:
         cell = board.get(x, y) & 31
         if cell == DRILL_CELL:
-            returned.extend(_drill(board, x, y, feedback_level))
+            returned.extend(
+                _drill(
+                    board,
+                    x,
+                    y,
+                    feedback_level,
+                    effect_counter,
+                    effect_frames,
+                )
+            )
         elif cell == POWER_DRILL_CELL:
-            returned.extend(_power_drill(board, x, y, feedback_level))
+            returned.extend(
+                _power_drill(
+                    board,
+                    x,
+                    y,
+                    feedback_level,
+                    effect_counter,
+                    effect_frames,
+                )
+            )
     return returned
 
 
 def _drill(
-    board: Board, column: int, start_y: int, feedback_level: int
+    board: Board,
+    column: int,
+    start_y: int,
+    feedback_level: int,
+    effect_counter: list[int] | None = None,
+    effect_frames: list[tuple[tuple[int, ...], ...]] | None = None,
 ) -> list[ReturnedShape]:
     """Clear the drill's own cell and everything BELOW it in its column.
 
@@ -1025,20 +1259,30 @@ def _drill(
     as the bottom cell of a vertical triple.
     """
     returned: list[ReturnedShape] = []
+    water_hit = False
     for y in range(start_y, board.height):
         cell = board.get(column, y) & 31
         if not cell:
             continue
+        if cell == WATER_CELL:
+            water_hit = True
         if feedback_level >= 3 and cell != WILDCARD_CELL:
             returned.append(
                 _shape_from_positions(cell & 7, frozenset({(column, y)}))
             )
         board.set(column, y, 0)
+    if water_hit:
+        _water(board, effect_counter, effect_frames)
     return returned
 
 
 def _power_drill(
-    board: Board, column: int, start_y: int, feedback_level: int
+    board: Board,
+    column: int,
+    start_y: int,
+    feedback_level: int,
+    effect_counter: list[int] | None = None,
+    effect_frames: list[tuple[tuple[int, ...], ...]] | None = None,
 ) -> list[ReturnedShape]:
     """As ``_drill``, but each cell it passes takes its colour group with it.
 
@@ -1050,9 +1294,16 @@ def _power_drill(
     units: list[tuple[int, set[tuple[int, int]]]] = []
     claimed_loose: set[tuple[int, int]] = set()
     claimed_solids: set[int] = set()
+    water_hit = False
+    poison_hit = False
     for y in range(start_y, board.height):
         if not board.get(column, y):
             continue
+        path_cell = board.get(column, y) & 31
+        if path_cell == WATER_CELL:
+            water_hit = True
+        elif path_cell == POISON_CELL:
+            poison_hit = True
         solid_id = board.solid_ids[y][column]
         if solid_id:
             if solid_id not in claimed_solids:
@@ -1081,7 +1332,12 @@ def _power_drill(
                             claimed_solids.add(touching_id)
                             unit.update(board.positions_for_solid(touching_id))
         units.append((colour, unit))
-    return _remove_units(board, units, feedback_level)
+    returned = _remove_units(board, units, feedback_level)
+    if water_hit:
+        _water(board, effect_counter, effect_frames)
+    if poison_hit:
+        _activate_poison(board, effect_counter, effect_frames)
+    return returned
 
 
 def _bomb(board: Board, colour: int, feedback_level: int) -> list[ReturnedShape]:
@@ -1140,13 +1396,38 @@ def _remove_units(
     return returned
 
 
-def _water(board: Board) -> None:
+def _water(
+    board: Board,
+    effect_counter: list[int] | None = None,
+    effect_frames: list[tuple[tuple[int, ...], ...]] | None = None,
+) -> None:
     for y in range(board.height):
         for x in range(board.width):
             if board.solid_ids[y][x]:
                 colour = board.get(x, y) & 7
                 board.set(x, y, 16 | colour)
-    board.collapse_loose()
+    if effect_frames is not None:
+        effect_frames.append(tuple(tuple(row) for row in board.cells))
+    movement_ticks = board.collapse_loose(effect_frames)
+    if effect_counter is not None:
+        effect_counter[0] += POWERUP_POP_TICKS
+        if movement_ticks:
+            effect_counter[0] += movement_ticks + POWERUP_LAND_TICKS
+
+
+def _activate_poison(
+    board: Board,
+    effect_counter: list[int] | None = None,
+    effect_frames: list[tuple[tuple[int, ...], ...]] | None = None,
+) -> None:
+    if effect_frames is not None:
+        effect_frames.append(tuple(tuple(row) for row in board.cells))
+    movement_ticks = board.collapse_loose(effect_frames)
+    _poison(board)
+    if effect_counter is not None:
+        effect_counter[0] += POWERUP_POP_TICKS
+        if movement_ticks:
+            effect_counter[0] += movement_ticks + POWERUP_LAND_TICKS
 
 
 def _poison(board: Board) -> None:

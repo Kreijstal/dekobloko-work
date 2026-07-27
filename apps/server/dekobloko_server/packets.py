@@ -1108,6 +1108,15 @@ def build_room_invitation(room_id: int) -> bytes:
     return bytes([11]) + (room_id & 0xFFFF).to_bytes(2, "big")
 
 
+def build_lobby_player_left(player_id: int, reason: int = 0) -> bytes:
+    """Server opcode 10, mode 6 (PLAYER_LEFT_LOBBY)."""
+    return (
+        bytes([6])
+        + (player_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big")
+        + bytes([reason & 0xFF])
+    )
+
+
 def build_host_invitation_added(player_id: int) -> bytes:
     """Server opcode 10, mode 14 (ADD_PLAYER_INVITE)."""
     return bytes([14]) + (player_id & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "big")

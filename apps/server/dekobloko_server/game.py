@@ -335,7 +335,7 @@ class GameSession:
             PacketBuilder()
             .u16(game.options.settings_word())
             .u16(game.game_id)
-            .u8(game.options.theme)
+            .u8(getattr(game, "_selected_theme", game.options.theme))
             .u8(len(game.players))
             .i8(local_slot)
         )
@@ -398,8 +398,10 @@ class GameSession:
                 f"payload={payload.hex(' ')}"
             )
 
-    def send_cooked_shape(self, player_slot: int, shape: CookedShape) -> None:
-        """S2C 67: send the exact cooked geometry to one replicated board."""
+    def send_cooked_shape(
+        self, player_slot: int, shape: CookedShape | QueuedPowerup
+    ) -> None:
+        """S2C 67: queue an exact cooked or power-up bitmap on one board."""
         payload = PacketBuilder().u8(player_slot).raw(shape.encode_rf()).finish()
         self._send_packet(67, payload)
         print(
@@ -450,6 +452,17 @@ class GameSession:
         self._send_packet(62, PacketBuilder().u8(player_slot).u8(result_code).finish())
         print(f"[game] {self.peer} sent player removed slot={player_slot} result={result_code}")
 
+    def send_elimination_order(self, player_slot: int) -> None:
+        """Server opcode 76 -- retain a defeated player in the standings.
+
+        Opcode 62 removes the player's live bucket. It does not populate the
+        post-match table. The client appends this slot to ``qc.g.f`` and derives
+        its position from elimination order: first out is last place, and the
+        final eliminated player is second place.
+        """
+        self._send_packet(76, PacketBuilder().u8(player_slot).finish())
+        print(f"[game] {self.peer} sent elimination order slot={player_slot}")
+
     def send_panic_banner(self, level: int) -> None:
         """Server opcode 69 -- raise the in-game "PANIC!" banner on THIS session.
 
@@ -493,6 +506,11 @@ class GameSession:
         """
         self._send_packet(70, PacketBuilder().u8(winner_slot & 0xFF).finish())
         print(f"[game] {self.peer} sent match result winner_slot={winner_slot}")
+
+    def send_rematch_state(self, player_mask: int) -> None:
+        """Server opcode 73 -- replace the result-screen rematch vote mask."""
+        self._send_packet(73, PacketBuilder().u8(player_mask & 0xFF).finish())
+        print(f"[game] {self.peer} sent rematch mask=0x{player_mask & 0xFF:02x}")
 
     def send_game_over(self) -> None:
         """Server opcode 60 -- tear the game down.
@@ -1252,15 +1270,14 @@ class GameSession:
                 continue
 
             if packet.opcode == 62:
-                LOBBY.leave_game(self)
+                game = self.current_game
+                if game is None or not game.resign_player(self):
+                    LOBBY.leave_game(self)
                 continue
 
             if packet.opcode == 63:
-                # Post-game rematch offer/cancel/accept. The exact choice is
-                # selected from the current S2C 71--74 masks. This used to be
-                # treated as a piece request, replacing the active piece when
-                # a UI action fired.
-                print(f"[game] {self.peer} rematch-state action (63)")
+                if self.current_game is not None:
+                    self.current_game.handle_rematch_action(self)
                 continue
 
             # The social add/remove opcodes (friend add, ignore add, remove) are

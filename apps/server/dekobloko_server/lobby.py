@@ -14,13 +14,6 @@ from typing import Callable, Protocol
 
 from .engine import FAST_DROP, AuthoritativeMatch, LockResult, Outcome
 
-#: How close (in rows) the authoritative piece must be to resting before the
-#: relay stops telling replicas to fast drop. Small enough that a replica
-#: tracks the real descent for almost the whole fall, large enough that it
-#: coasts across the landing instead of racing the S2C 64 to it -- the race it
-#: loses by latching field_Bb and self-disconnecting ("T5").
-FINAL_APPROACH_ROWS = 3
-
 #: Wire byte for opcode 70 meaning "nobody won". The client reads the payload as
 #: a SIGNED byte and any negative value renders the "DRAW!" banner.
 DRAW_RESULT_SLOT = 0xFF
@@ -45,6 +38,15 @@ from .packets import (
 LOGIC_TICKS_PER_SECOND = 50.0
 CONTROL_BURST_TICKS = 40.0
 PROACTIVE_SNAPSHOT_TICKS = 500
+REMATCH_START_DELAY_TICKS = 50
+# The client normally flushes 20 controls every 0.4 seconds. If it lands on
+# exactly the twentieth sample it sends no short final batch, so a server whose
+# piece is still airborne needs an idle boundary to finish the transition.
+CLIENT_CONTROL_IDLE_SECONDS = 0.55
+# Remote boards can temporarily differ from the authoritative board while a
+# clear/feedback correction is in flight. Stop relaying FAST_DROP before that
+# drift can make a replica lock early; S2C 64 supplies the exact landing.
+REPLICA_FAST_DROP_GUARD_ROWS = 8
 
 # Trace the incoming-garbage lifecycle: queue -> spawn as falling piece ->
 # descent -> landing. On by default while this path is being brought up; set
@@ -144,7 +146,9 @@ class LobbySession(Protocol):
     ) -> None:
         ...
 
-    def send_cooked_shape(self, player_slot: int, shape: "CookedShape") -> None:
+    def send_cooked_shape(
+        self, player_slot: int, shape: "CookedShape | QueuedPowerup"
+    ) -> None:
         ...
 
     def send_action_stream(self, player_slot: int, controls_payload: bytes) -> None:
@@ -153,10 +157,16 @@ class LobbySession(Protocol):
     def send_player_removed(self, player_slot: int, result_code: int) -> None:
         ...
 
+    def send_elimination_order(self, player_slot: int) -> None:
+        ...
+
     def send_full_state(self, player_slot: int, state_payload: bytes) -> None:
         ...
 
     def send_match_result(self, winner_slot: int) -> None:
+        ...
+
+    def send_rematch_state(self, player_mask: int) -> None:
         ...
 
     def send_game_over(self) -> None:
@@ -253,6 +263,24 @@ class CookedShape:
         )
 
 
+@dataclass(frozen=True)
+class QueuedPowerup:
+    shape_id: int
+    width: int
+    height: int
+    cells: tuple[int, ...]
+    colour: int = -1
+
+    @property
+    def occupied(self) -> tuple[bool, ...]:
+        return tuple(cell != 0 for cell in self.cells)
+
+    def encode_rf(self) -> bytes:
+        return _encode_rf(
+            self.shape_id, self.width, self.height, self.cells, "powerup reward"
+        )
+
+
 def _encode_rf(
     shape_id: int,
     width: int,
@@ -287,10 +315,12 @@ class HostedGame:
     spectators: list[LobbySession] = field(default_factory=list)
     invitations: set[int] = field(default_factory=set)
     inactive_slots: set[int] = field(default_factory=set)
+    elimination_order: list[int] = field(default_factory=list)
     state: str = "waiting"
     created_at: float = field(default_factory=time.time)
     shape_counter: int = 0
     rng: random.Random = field(default_factory=random.Random)
+    debug_single_player: bool = False
     engine: AuthoritativeMatch | None = field(default=None, init=False, repr=False)
     transition_counters: list[int] = field(default_factory=list, init=False, repr=False)
     awaiting_transition_ack: dict[int, int] = field(
@@ -299,7 +329,18 @@ class HostedGame:
     feedback_cursor: list[int] = field(default_factory=list, init=False, repr=False)
     control_credit: list[float] = field(default_factory=list, init=False, repr=False)
     control_refill_at: list[float] = field(default_factory=list, init=False, repr=False)
+    control_idle_generation: list[int] = field(
+        default_factory=list, init=False, repr=False
+    )
     ticks_since_snapshot: list[int] = field(default_factory=list, init=False, repr=False)
+    completed_pieces: list[int] = field(default_factory=list, init=False, repr=False)
+    next_pieces: list[Piece] = field(default_factory=list, init=False, repr=False)
+    pending_rewards: dict[int, list[QueuedPowerup]] = field(
+        default_factory=dict, init=False, repr=False
+    )
+    garbage_eligible_after: dict[tuple[int, int], int] = field(
+        default_factory=dict, init=False, repr=False
+    )
     on_finished: Callable[["HostedGame"], None] | None = field(
         default=None, repr=False, compare=False
     )
@@ -339,12 +380,18 @@ class HostedGame:
             ]
 
     def replication_recipients(self) -> list[LobbySession]:
-        """Live players plus observers, without assigning spectators slots."""
+        """Every attached viewer, including players eliminated this round.
+
+        Eliminated players remain on the multiplayer game screen until the
+        winner is decided. Excluding their sessions here stops all surviving
+        buckets at their last replicated control sample, then makes the client
+        appear to unfreeze only when the match-result packet arrives.
+        """
         with self._lock:
-            return self.active_players() + [
-                spectator
-                for spectator in self.spectators
-                if spectator.current_game is self
+            return [
+                session
+                for session in self.players + self.spectators
+                if session.current_game is self
             ]
 
     def attached_sessions(self) -> list[LobbySession]:
@@ -441,9 +488,22 @@ class HostedGame:
                 return
             if not self.players:
                 raise ValueError("cannot start a game with no players")
-            if len(self.players) < 2:
+            if len(self.players) < 2 and not self.debug_single_player:
                 raise ValueError("authoritative multiplayer requires at least two players")
+            previous_theme = getattr(self, "_selected_theme", None)
+            theme_choices = [
+                theme for theme in range(8) if theme != previous_theme
+            ]
+            self._selected_theme = random.choice(theme_choices)
             self.state = "playing"
+            # start() is also the rematch reset boundary. Player slots and the
+            # room stay stable, but every piece of per-round state must be new.
+            self.inactive_slots.clear()
+            self.elimination_order.clear()
+            self.rematch_mask = 0
+            self.rematch_required_mask = 0
+            self._rematch_cancelled = False
+            self.awaiting_dismissal = None
             players = self.active_players()
             width, height = ((12, 27) if self.options.bucket_large else (8, 18))
             self.engine = AuthoritativeMatch(
@@ -453,6 +513,7 @@ class HostedGame:
                 self.options.speed_index,
                 self.options.colours,
                 self.options.bombardment_level,
+                allow_single_player=self.debug_single_player,
             )
             self.transition_counters = [-1] * len(self.players)
             self.awaiting_transition_ack.clear()
@@ -467,17 +528,22 @@ class HostedGame:
             # real falling piece that descends under gravity and is steered by
             # the player, exactly like an ordinary domino.
             self.pending_garbage: dict[int, list[CookedShape]] = {}
+            self.completed_pieces = [0] * len(self.players)
+            self.next_pieces = []
+            self.pending_rewards = {}
+            self.pending_effects: dict[int, tuple[int, LockResult]] = {}
+            self.garbage_eligible_after = {}
             now = time.monotonic()
             self.control_credit = [CONTROL_BURST_TICKS] * len(self.players)
             self.control_refill_at = [now] * len(self.players)
+            self.control_idle_generation = [0] * len(self.players)
             self.ticks_since_snapshot = [0] * len(self.players)
             # Ticks consumed since each slot's last positional board dump.
             self._signature_ticks: dict[int, int] = {}
 
+        print(f"[game] game {self.game_id} selected theme={self._selected_theme}")
         for index, player in enumerate(players):
             player.send_match_start(self, index)
-
-        self.broadcast_message(f"Game {self.game_id} started with {len(players)} player(s).")
 
         # Do NOT open a match with packet 64. It is a TRANSITION: it corrects
         # the prior active piece and then finalizes it. The old code here sent
@@ -511,7 +577,9 @@ class HostedGame:
         # attack every board.)
         for slot, _player in enumerate(players):
             active = self.next_piece()
+            preview = self.next_piece()
             with self._lock:
+                self.next_pieces.append(preview)
                 self.engine.spawn(slot, (active.cells[0], active.cells[1]))
                 # Advance the counter WITHOUT arming awaiting_transition_ack:
                 # that latch is cleared by the ack to a packet 64, and no 64 is
@@ -558,16 +626,8 @@ class HostedGame:
         )
 
     def _next_piece_cell(self, colour_count: int) -> tuple[int, int]:
-        """Generate one cell using an explicit server-side item frequency.
-
-        The client defines which item kinds each option level enables, but the
-        historical server's frequency is unavailable. One enabled item chance
-        per twelve cells is therefore our documented server policy.
-        """
+        """Generate one cell with the client's single-player distribution."""
         level = max(0, min(4, self.options.special_level))
-        enabled: list[tuple[int, int]] = []
-        if level >= 1:
-            enabled.append((23, 7))       # Wildcard is loose colour slot 7.
         # Item cells 24..31 are DELIBERATELY not generated here.
         #
         # An ordinary piece is described to the client by one descriptor byte of
@@ -588,10 +648,14 @@ class HostedGame:
         # resolver already handles drills, bombs, water, poison and earthquake
         # when they are ON the board); they are simply never part of an
         # ordinary falling domino.
-        if enabled and self.rng.randrange(12) == 0:
-            return enabled[self.rng.randrange(len(enabled))]
-        colour = self.rng.randrange(colour_count)
-        return 16 + colour, colour
+        # Client lk.m(26580) draws each half uniformly from
+        # field_d + (field_c >= 1), where field_d is the colour count and the
+        # one extra value is remapped to nibble 7. Thus wildcard frequency is
+        # exactly 1/(colour_count + 1), not an independent 1/12 item roll.
+        choice = self.rng.randrange(colour_count + (1 if level >= 1 else 0))
+        if level >= 1 and choice == colour_count:
+            return 23, 7
+        return 16 + choice, choice
 
     def _next_shape_id(self) -> int:
         # Ordinary pieces and cooked feedback share the connection's oi/rf
@@ -669,7 +733,9 @@ class HostedGame:
                 )
             )
 
-    def broadcast_cooked_shape(self, player_slot: int, shape: CookedShape) -> None:
+    def broadcast_cooked_shape(
+        self, player_slot: int, shape: CookedShape | QueuedPowerup
+    ) -> None:
         with self._lock:
             recipients = self.replication_recipients()
         for player in recipients:
@@ -694,6 +760,9 @@ class HostedGame:
         except ValueError as exc:
             print(f"[game] rejected malformed controls slot={slot}: {exc}")
             return
+        client_landing_boundary = (
+            0 < len(controls) < 20 and not getattr(sender, "is_bot", False)
+        )
 
         with self._lock:
             if self.state != "playing":
@@ -702,6 +771,12 @@ class HostedGame:
             engine = self.engine
             awaiting = self.awaiting_transition_ack.get(slot)
             authoritative = engine is not None
+            is_human = not getattr(sender, "is_bot", False)
+            if is_human and slot < len(self.control_idle_generation):
+                self.control_idle_generation[slot] += 1
+                idle_generation = self.control_idle_generation[slot]
+            else:
+                idle_generation = -1
         if authoritative and awaiting is not None:
             print(
                 f"[game] ignored controls slot={slot} while awaiting "
@@ -726,20 +801,66 @@ class HostedGame:
                 controls = controls[:allowed]
                 payload = bytes([allowed]) + pack_5bit(controls)
 
+        with self._lock:
+            effect_pending = slot in self.pending_effects
+        if authoritative and effect_pending:
+            self._advance_pending_effect(slot, len(controls))
+            return
+
         landed = False
+        landed_during_catchup = False
         accepted_controls = controls
+        replica_controls = controls
         if authoritative:
             try:
                 with self._lock:
                     if self.state != "playing" or slot in self.inactive_slots:
                         return
                     accepted: list[int] = []
+                    replica_accepted: list[int] = []
                     for control in controls:
+                        active = engine.players[slot].active
+                        replica_control = control
+                        if (
+                            active is not None
+                            and control & FAST_DROP
+                            and active.clearance_rows(
+                                REPLICA_FAST_DROP_GUARD_ROWS
+                            )
+                            < REPLICA_FAST_DROP_GUARD_ROWS
+                        ):
+                            replica_control &= ~FAST_DROP
                         accepted.append(control)
+                        replica_accepted.append(replica_control)
                         if engine.apply_controls(slot, (control,)):
                             landed = True
                             break
                     accepted_controls = tuple(accepted)
+                    replica_controls = tuple(replica_accepted)
+                    # The original client flushes its action buffer early when
+                    # its local piece settles, then waits for S2C 64. If small
+                    # positional drift leaves the authoritative piece airborne,
+                    # waiting for another client batch deadlocks both sides.
+                    # Advance only vertical timing here: horizontal/rotation
+                    # input has already been fully represented by the wire
+                    # samples, while preserving FAST_DROP matches the client's
+                    # final descent mode.
+                    if client_landing_boundary and not landed:
+                        catchup_control = (
+                            accepted_controls[-1] & FAST_DROP
+                            if accepted_controls
+                            else 0
+                        )
+                        for _ in range(800):
+                            if engine.apply_controls(slot, (catchup_control,)):
+                                landed = True
+                                landed_during_catchup = True
+                                break
+                        if not landed:
+                            raise RuntimeError(
+                                "client landing boundary did not land "
+                                "authoritative piece within 800 ticks"
+                            )
             except (IndexError, RuntimeError, ValueError) as exc:
                 print(f"[game] rejected controls for authoritative slot={slot}: {exc}")
                 return
@@ -763,125 +884,22 @@ class HostedGame:
                     board = engine.players[slot].board if engine else None
                 _trace(f"SIG slot={slot} at=periodic {_board_signature(board)}")
 
-        # A REPLICA must never land a piece under its own steam.
+        # The landing sample itself is replaced by packet 64's absolute
+        # x/y/orientation. Clear FAST_DROP from the entire final relayed batch,
+        # while preserving lateral/rotation input: a grounded client clamps its
+        # 20-tick lock delay to two while that bit is held.
         #
-        # The relay is queued input the replica works through one sample per
-        # rendered frame, and it cannot apply a pending authoritative landing
-        # (S2C 64) until it reaches the end of that queue. So if the relay
-        # contains the sample that lands the piece, the replica gets there
-        # first, decides the piece has come to rest, and sets lk.field_y to
-        # wait for the transition that confirms it. lk.c then latches
-        # field_Bb, and qc turns that into the "T5" self-disconnect -- which
-        # kills the HUMAN's connection over an OPPONENT's bucket. Captured
-        # 2026-07-25, with the two boards in perfect agreement either side of
-        # the gap, so nothing had actually diverged:
-        #     [CT] LOCK board=502ccf0a at=(3,12) y=true
-        #     Error: T5: 1 3 true
-        #     [CT] LANDING board=502ccf0a final=(3,13)      <- arrived after
-        #
-        # Widening the window does not close this. field_e collapses 20 -> 1
-        # in a single tick, so the replica has a couple of frames, and no
-        # feed rate makes a couple of frames reliable.
-        #
-        # Withholding the landing sample removes the race instead of racing
-        # it: the replica advances to one tick short of the landing and stops,
-        # with no opinion about whether the piece is down. The S2C 64 that
-        # follows carries final_x, final_y and the orientation and applies
-        # them absolutely (lk.java:1352-1353), so nothing is lost by not
-        # replaying the last sample -- whatever it would have done to the
-        # piece's position or rotation, the transition overrides anyway.
-        #
-        # This does not touch the owner's own board, which never receives its
-        # own action stream: a player waiting on field_y for a landing THEY
-        # made is the mechanism working as intended.
-        relayed_controls = accepted_controls
-        if landed and relayed_controls:
-            # Withholding the landing sample is not enough on its own: a
-            # replica HOLDS the last control mask it was given and keeps
-            # applying it once the relay runs out, so it simply lands on the
-            # next frame under its own steam.
-            relayed_controls = relayed_controls[:-1]
-        # Only the FINAL APPROACH is dangerous. Stripping the drop bit from
-        # every sample (an earlier revision) does stop the T5, but it drops the
-        # replica to base gravity -- 40 ticks a row against the authoritative
-        # 2 -- so it barely leaves the spawn before the transition snaps it to
-        # the floor. Measured 2026-07-25, every piece teleported the full
-        # height of the bucket and the opponent's board was unwatchable:
-        #     LANDING was=(3,0)  -> final=(3,16)
-        #     LANDING was=(2,0)  -> final=(3,15)
-        #     LANDING was=(4,-1) -> final=(5,15)
-        # against the owner's own board, which predicts exactly (was == final).
-        #
-        # So relay the drop bit for the bulk of the fall, where it is what makes
-        # the replica track the real descent, and cut it only once the
-        # authoritative piece is within FINAL_APPROACH_ROWS of resting. The
-        # replica then coasts the last stretch, arrives after the server rather
-        # than before it, and still holds its full 20-tick grace if it does
-        # touch down first.
-        # No engine means no authoritative piece to measure against, so fall
-        # back to the conservative end: cut the bit. Being early costs smooth
-        # replication; being late costs the client its connection.
-        active = (
-            None if self.engine is None else self.engine.active_piece(slot)
-        )
-        clearance = (
-            0 if active is None else active.clearance_rows(FINAL_APPROACH_ROWS + 1)
-        )
-        if relayed_controls and clearance <= FINAL_APPROACH_ROWS:
-            #
-            # Two narrower versions of this were tried and both failed live.
-            # Stripping only landing batches misses the case that actually
-            # fires, because the replica reaches the floor BEFORE the server and
-            # so no landing batch exists yet.  Stripping only the trailing
-            # sample of every batch is one tick too late: the replica can land
-            # part-way through a batch, and the fast-drop samples still queued
-            # behind it collapse the grace before the cleared sample is ever
-            # reached.  Measured 2026-07-25, with the trailing-sample fix live
-            # and visibly working (ctrl does reach 0) yet still fatal:
-            #     [INSTR lk.d] Ab=786 e=20 ctrl=16 y=true  <- landed, grace 20
-            #     [INSTR lk.d] Ab=785 e=1  ctrl=0  y=true  <- too late, e gone
-            #     Error: T5: 1 3 true
-            # lk.d clamps field_e to 2 whenever the drop bit is seen
-            # (lk.java:1241/1270), so ONE such sample after the landing is
-            # enough to spend a 20-tick grace.  Nothing short of stripping them
-            # all closes that.
-            #
-            # For reference, the original measurement on a bot's replica:
-            #     [INSTR lk.d] Ab=782 e=20 ctrl=16 y=true   <- grace set to 20
-            #     [INSTR lk.d] Ab=781 e=1  ctrl=16 y=true   <- gone next tick
-            # then field_Bb latched and qc raised the "T5" self-disconnect,
-            # killing the human's connection over an OPPONENT's bucket.
-            #
-            # Restricting this to landing batches (as an earlier revision did)
-            # misses the case that actually fires, because the replica reaches
-            # the floor BEFORE the server does and so no landing batch exists
-            # yet.  The engine spends exactly four ticks per piece that the
-            # replica does not -- a final blocked drop cycle, then the
-            # grounded->landed promotion -- so a piece that falls r rows takes
-            # 2r ticks on the replica and 2r+4 here.  Measured over one match,
-            # server ticks against landing row: 38/17, 34/15, 36/16, 38/17,
-            # 32/14, i.e. 2r+4 every time.  The replica banks two rows a piece
-            # and eventually touches down first; the client's own probe shows
-            # the transition catching it progressively lower each piece:
-            #     final=(4,17) was=(3,0)     <- replica still at the top
-            #     final=(4,15) was=(4,4)
-            #     final=(5,16) was=(3,9)
-            #     final=(2,17) was=(3,8)
-            #     final=(3,14) was=(3,13)    <- on the floor: y=true, then T5
-            #
-            # With the bit cleared the replica coasts on base gravity whenever
-            # it outruns the relay, so it can no longer arrive early, and if it
-            # does land first the full 20-tick grace survives -- ample for the
-            # four-tick overhead plus the round trip.  Steering bits are left
-            # alone: the S2C 64 applies position and rotation absolutely
-            # (lk.java:1352-1353), so nothing they would have done is lost.
-            #
-            # The cost is one non-accelerated tick per batch, so a replica
-            # descends slightly slower than the authoritative piece.  That is
-            # the safe direction to err -- being late only means the transition
-            # teleports the piece down, which is already the normal case above.
+        # Clearing only the penultimate sample was insufficient once a remote
+        # replica's clear result left its stack several rows higher than the
+        # authoritative board. Such a replica could reach its own support on an
+        # earlier FAST_DROP sample, exhaust the two-tick timeout, and raise T5
+        # before the following S2C 64 was dispatched. This rewrite applies only
+        # after the server has final-locked; packet 64 immediately corrects the
+        # final position, so retaining fast descent in this batch has no value.
+        relayed_controls = replica_controls
+        if landed and not landed_during_catchup and relayed_controls:
             relayed_controls = tuple(
-                mask & ~FAST_DROP for mask in relayed_controls
+                control & ~FAST_DROP for control in relayed_controls[:-1]
             )
         if len(accepted_controls) != len(controls):
             print(
@@ -916,7 +934,9 @@ class HostedGame:
         print(
             f"[game] controls slot={slot} samples={len(accepted_controls)} "
             f"client_short_batch={len(accepted_controls) < 20} "
-            f"authoritative_landed={landed} masks={accepted_controls!r}"
+            f"authoritative_landed={landed} "
+            f"landing_catchup={landed_during_catchup} "
+            f"masks={accepted_controls!r}"
         )
         if authoritative:
             with self._lock:
@@ -933,6 +953,15 @@ class HostedGame:
             # spectator join). ticks_since_snapshot is kept for diagnostics only.
         if landed and engine is not None:
             self._finish_authoritative_piece(slot)
+        elif (
+            authoritative
+            and is_human
+            and accepted_controls
+            and idle_generation >= 0
+        ):
+            self._schedule_idle_landing_catchup(
+                slot, idle_generation, accepted_controls[-1] & FAST_DROP
+            )
         if needs_sender_resync:
             with self._lock:
                 can_resync = self.state == "playing" and slot not in self.inactive_slots
@@ -990,6 +1019,98 @@ class HostedGame:
         self.control_credit[slot] -= allowed
         return allowed
 
+    def _schedule_idle_landing_catchup(
+        self, slot: int, generation: int, vertical_control: int
+    ) -> None:
+        """Resolve a landing that falls exactly on a 20-sample packet boundary.
+
+        A later control batch invalidates ``generation``. The callback therefore
+        runs only after the owner has been silent longer than its normal packet
+        interval, which is the wire-level signal that the local piece landed and
+        is waiting for S2C 64.
+        """
+        timer = threading.Timer(
+            CLIENT_CONTROL_IDLE_SECONDS,
+            self._finish_idle_landing_catchup,
+            args=(slot, generation, vertical_control),
+        )
+        timer.daemon = True
+        timer.start()
+
+    def _finish_idle_landing_catchup(
+        self, slot: int, generation: int, vertical_control: int
+    ) -> None:
+        try:
+            with self._lock:
+                if (
+                    self.state != "playing"
+                    or slot in self.inactive_slots
+                    or slot >= len(self.control_idle_generation)
+                    or self.control_idle_generation[slot] != generation
+                    or slot in self.awaiting_transition_ack
+                    or slot in self.pending_effects
+                    or self.engine is None
+                ):
+                    return
+                engine = self.engine
+                active = engine.players[slot].active
+                if active is None:
+                    return
+                landed = active.landed
+                for _ in range(800):
+                    if landed or engine.apply_controls(slot, (vertical_control,)):
+                        landed = True
+                        break
+                if not landed:
+                    print(
+                        f"[game] idle landing catchup failed slot={slot} "
+                        "after 800 ticks"
+                    )
+                    return
+                self.control_idle_generation[slot] += 1
+            print(
+                f"[game] completed idle landing boundary slot={slot} "
+                f"generation={generation}"
+            )
+            self._finish_authoritative_piece(slot)
+        except (IndexError, RuntimeError, ValueError) as exc:
+            print(f"[game] idle landing catchup rejected slot={slot}: {exc}")
+
+    def _advance_pending_effect(self, slot: int, ticks: int) -> None:
+        if ticks <= 0:
+            return
+        with self._lock:
+            pending = self.pending_effects.get(slot)
+            if pending is None:
+                return
+            remaining, lock = pending
+            remaining -= ticks
+            if remaining > 0:
+                self.pending_effects[slot] = (remaining, lock)
+                return
+        self._finish_pending_effect(slot, lock)
+
+    def _finish_pending_effect(self, slot: int, expected_lock: LockResult) -> None:
+        """Release delayed feedback after the client-visible effect animation.
+
+        S2C 64 and the next piece are emitted as soon as the previous piece
+        locks, before the client's lock watchdog can expire. pending_effects
+        still consumes controls for that installed piece until this callback,
+        so it cannot advance while the pop/collapse animation is running.
+        Feedback and rewards remain delayed until the animation is complete.
+        The lock identity guard makes a late timer from an ended round harmless.
+        """
+        with self._lock:
+            pending = self.pending_effects.get(slot)
+            if pending is None or pending[1] is not expected_lock:
+                return
+            del self.pending_effects[slot]
+            if self.state != "playing" or slot in self.inactive_slots:
+                return
+        if self._dispatch_returned_shapes(slot, expected_lock):
+            return
+        self._queue_powerup_reward(slot, expected_lock.combo_count)
+
     def send_authoritative_snapshot(self, recipient: LobbySession, slot: int) -> None:
         """Serialize the server-owned slot using the exact S2C 61 field order.
 
@@ -1042,7 +1163,12 @@ class HostedGame:
             builder.i8(active.x).i8(active.y)
             builder.u8(active.drop_countdown).u16(active.forced_drop_countdown)
             builder.u8(active.previous_controls).i8(active.horizontal_repeat)
-            builder.u8(active.descriptor).u8(0).u8(0)
+            preview_descriptor = (
+                self.next_pieces[slot].descriptor
+                if slot < len(self.next_pieces)
+                else active.descriptor
+            )
+            builder.u8(preview_descriptor).u8(0).u8(0)
             payload = builder.finish()
         recipient.send_full_state(slot, payload)
         print(
@@ -1076,38 +1202,6 @@ class HostedGame:
         for recipient in recipients:
             _safe_call(lambda target=recipient: self.send_authoritative_snapshot(target, slot))
 
-    def resync_lives(self, slot: int, lives: int) -> None:
-        """Correct every replica's life counter for one slot.
-
-        Lives are ``lk.field_jb``. A replica keeps its own count -- the commit
-        routine decrements it whenever a piece locks above the top of the
-        bucket (lk.java:5793-5801) -- and the ONLY thing on the wire that ever
-        writes that field is the ``u8`` in a packet-61 snapshot (lk.java:4964).
-        There is no dedicated life packet to implement; this is the channel.
-
-        So a replica shows the right number of lives exactly as long as it
-        agrees with the authoritative bucket about when a piece overflows. When
-        it does not, the opponent visibly keeps all three lives while the
-        server eliminates them -- which is what happened on 2026-07-25. Pushing
-        a snapshot at the moment the engine changes a life count both fixes the
-        display and re-seats the board that disagreed.
-
-        Deliberately NOT periodic. A snapshot arriving into a replica that is
-        mid clear-animation reverts cells it is already clearing, overflows the
-        next piece, and trips the client's field_Bb "T5" self-disconnect. This
-        fires only on a life change, straight after the finalize that caused
-        it, when the bucket has just been committed.
-        """
-        with self._lock:
-            recipients = [
-                recipient
-                for recipient in self.replication_recipients()
-                if recipient.player_slot != slot
-            ]
-        print(f"[game] resyncing lives slot={slot} lives={lives}")
-        for recipient in recipients:
-            _safe_call(lambda target=recipient: self.send_authoritative_snapshot(target, slot))
-
     def send_all_authoritative_snapshots(self, recipient: LobbySession) -> None:
         """Recovery/spectator hook: replace every live stable-slot replica."""
         with self._lock:
@@ -1118,68 +1212,135 @@ class HostedGame:
         for slot in slots:
             self.send_authoritative_snapshot(recipient, slot)
 
-    def _finish_authoritative_piece(self, slot: int) -> None:
-        with self._lock:
-            engine = self.engine
-            if engine is None or slot in self.inactive_slots:
-                return
-            landing = engine.players[slot].active
-            was_garbage = landing is not None and not landing.is_domino
-            if was_garbage:
-                _trace(f"LAND slot={slot} {_describe_piece(landing)}")
-            fill_before = engine.players[slot].board.occupied_count()
-            lock = engine.finalize_landed(slot)
-            fill_after = engine.players[slot].board.occupied_count()
-            if was_garbage:
+    def _finish_authoritative_piece(
+        self, slot: int, lock: LockResult | None = None
+    ) -> None:
+        defer_outbound = False
+        if lock is None:
+            with self._lock:
+                engine = self.engine
+                if engine is None or slot in self.inactive_slots:
+                    return
+                landing = engine.players[slot].active
+                was_garbage = landing is not None and not landing.is_domino
+                if was_garbage:
+                    _trace(f"LAND slot={slot} {_describe_piece(landing)}")
+                fill_before = engine.players[slot].board.occupied_count()
+                lock = engine.finalize_landed(slot)
+                self.completed_pieces[slot] += 1
+                fill_after = engine.players[slot].board.occupied_count()
+                if was_garbage:
+                    _trace(
+                        f"LAND slot={slot} final=({lock.x},{lock.y}) "
+                        f"orient={lock.orientation} life_lost={lock.life_lost} "
+                        f"lives={lock.lives_remaining} "
+                        f"placed={sorted(lock.placed_cells)} "
+                        f"returned={len(lock.returned_shapes)} "
+                        f"board_fill={engine.players[slot].board.occupied_count()}"
+                    )
+                # EVERY finalize, not just garbage. A clear removes cells, so a
+                # drop in fill with returned=0 means the resolver cleared but
+                # produced no feedback, while no drop at all means it never
+                # matched. Without this the two are indistinguishable and a
+                # "my clear sent nothing" report cannot be diagnosed.
                 _trace(
-                    f"LAND slot={slot} final=({lock.x},{lock.y}) "
-                    f"orient={lock.orientation} life_lost={lock.life_lost} "
-                    f"lives={lock.lives_remaining} "
-                    f"placed={sorted(lock.placed_cells)} "
+                    f"FINALIZE slot={slot} placed={len(lock.placed_cells)} "
+                    f"fill {fill_before}->{fill_after} "
+                    f"cleared={fill_before + len(lock.placed_cells) - fill_after} "
                     f"returned={len(lock.returned_shapes)} "
-                    f"board_fill={engine.players[slot].board.occupied_count()}"
+                    f"shapes={[(s.colour, s.width, s.height, sum(s.occupied)) for s in lock.returned_shapes]} "
+                    f"feedback_level={engine.feedback_level} "
+                    f"life_lost={lock.life_lost} lives={lock.lives_remaining}"
                 )
-            # EVERY finalize, not just garbage. A clear removes cells, so a
-            # drop in fill with returned=0 means the resolver cleared but
-            # produced no feedback, while no drop at all means it never
-            # matched. Without this the two are indistinguishable and a
-            # "my clear sent nothing" report cannot be diagnosed.
-            _trace(
-                f"FINALIZE slot={slot} placed={len(lock.placed_cells)} "
-                f"fill {fill_before}->{fill_after} "
-                f"cleared={fill_before + len(lock.placed_cells) - fill_after} "
-                f"returned={len(lock.returned_shapes)} "
-                f"shapes={[(s.colour, s.width, s.height, sum(s.occupied)) for s in lock.returned_shapes]} "
-                f"feedback_level={engine.feedback_level} "
-                f"life_lost={lock.life_lost} lives={lock.lives_remaining}"
-            )
-            # The settled board immediately after a landing commits.  This is
-            # the sync point the client must agree with; if the two signatures
-            # differ here, every later landing height is suspect.
-            _trace(
-                f"SIG slot={slot} at=finalize "
-                f"{_board_signature(engine.players[slot].board)}"
-            )
+                # The settled board immediately after a landing commits.  This is
+                # the sync point the client must agree with; if the two signatures
+                # differ here, every later landing height is suspect.
+                _trace(
+                    f"SIG slot={slot} at=finalize "
+                    f"{_board_signature(engine.players[slot].board)}"
+                )
 
-        if lock.eliminated:
-            self._complete_authoritative_elimination(slot, "final life")
-            return
+            if lock.eliminated:
+                self._complete_authoritative_elimination(slot, "final life")
+                return
 
-        if self._dispatch_returned_shapes(slot, lock):
-            return
+            if lock.effect_ticks > 0:
+                with self._lock:
+                    self.pending_effects[slot] = (lock.effect_ticks, lock)
+                timer = threading.Timer(
+                    lock.effect_ticks / LOGIC_TICKS_PER_SECOND,
+                    self._finish_pending_effect,
+                    args=(slot, lock),
+                )
+                timer.daemon = True
+                timer.start()
+                _trace(
+                    f"EFFECT slot={slot} settle_ticks={lock.effect_ticks}"
+                )
+                defer_outbound = True
+        else:
+            with self._lock:
+                engine = self.engine
+                if engine is None or slot in self.inactive_slots:
+                    return
 
-        # Incoming garbage takes priority over a fresh domino: the queued cooked
-        # shape becomes this board's next FALLING piece.
+        # The client does not expose cooked feedback to the opponent while the
+        # source board is still playing its pop/collapse animation. Keep those
+        # outbound shapes and rewards behind _finish_pending_effect, but do not
+        # hold S2C 64 there: a replica that has locked waits only 20 ticks for
+        # that authoritative landing before it raises T5 and disconnects.
+        if not defer_outbound:
+            if self._dispatch_returned_shapes(slot, lock):
+                return
+            self._queue_powerup_reward(slot, lock.combo_count)
+
+        # Powerups sit behind every cooked feedback shape already queued for
+        # this bucket. An ineligible feedback shape also blocks the reward:
+        # the advertised normal pieces continue until that feedback becomes
+        # eligible, then the complete feedback queue falls before the powerup.
         with self._lock:
             queued = self.pending_garbage.get(slot)
-            cooked = queued.pop(0) if queued else None
-            if queued is not None and not queued:
-                del self.pending_garbage[slot]
+            cooked = None
+            if queued:
+                candidate = queued[0]
+                eligible_after = self.garbage_eligible_after.get(
+                    (slot, candidate.shape_id), 0
+                )
+                if eligible_after <= self.completed_pieces[slot]:
+                    cooked = queued.pop(0)
+                    self.garbage_eligible_after.pop(
+                        (slot, cooked.shape_id), None
+                    )
+                if queued is not None and not queued:
+                    del self.pending_garbage[slot]
+            else:
+                rewards = self.pending_rewards.get(slot)
+                if rewards:
+                    candidate = rewards[0]
+                    eligible_after = self.garbage_eligible_after.get(
+                        (slot, candidate.shape_id), 0
+                    )
+                    if eligible_after <= self.completed_pieces[slot]:
+                        cooked = rewards.pop(0)
+                        self.garbage_eligible_after.pop(
+                            (slot, cooked.shape_id), None
+                        )
+                if rewards is not None and not rewards:
+                    del self.pending_rewards[slot]
 
         if cooked is None:
-            next_piece = self.next_piece()
             with self._lock:
-                engine.spawn(slot, (next_piece.cells[0], next_piece.cells[1]))
+                falling = self.next_pieces[slot]
+                preview = self.next_piece()
+                self.next_pieces[slot] = preview
+                next_piece = Piece(
+                    piece_id=falling.piece_id,
+                    width=falling.width,
+                    height=falling.height,
+                    cells=falling.cells,
+                    descriptor=preview.descriptor,
+                )
+                engine.spawn(slot, (falling.cells[0], falling.cells[1]))
                 self._mark_transition_pending(slot)
             self.broadcast_piece_event(slot, next_piece, lock)
         else:
@@ -1190,15 +1351,16 @@ class HostedGame:
             # registered cooked.shape_id, so reusing it here killed the client
             # the instant the first garbage piece spawned.
             #
-            # descriptor 0: that byte is the next-piece PREVIEW (two nibbles,
-            # qc.java:11480), and a cooked shape has no such encoding -- its
-            # cells are 8|colour, outside the descriptor vocabulary.
+            # The descriptor still advertises the retained normal NEXT piece.
+            # The falling cooked bitmap itself has no descriptor encoding.
+            with self._lock:
+                preview_descriptor = self.next_pieces[slot].descriptor
             next_piece = Piece(
                 piece_id=self._next_shape_id(),
                 width=cooked.width,
                 height=cooked.height,
                 cells=cooked.cells,
-                descriptor=0,
+                descriptor=preview_descriptor,
             )
             with self._lock:
                 engine.spawn(
@@ -1304,21 +1466,46 @@ class HostedGame:
         # decompiled source.
         if os.environ.get("DEKOBLOKO_RESYNC_ON_TRANSITION") == "1":
             self.broadcast_authoritative_snapshot(slot)
-        elif lock.life_lost:
-            # Rare (at most twice a match before elimination), and lk.field_jb
-            # rides only in packet 61 (lk.java:4964), so there is no cheaper
-            # channel for it.
-            self.resync_lives(slot, lock.lives_remaining)
+
+    def _queue_powerup_reward(self, slot: int, combo_count: int) -> None:
+        level = max(0, min(4, self.options.special_level))
+        if combo_count < 2 or level < 2:
+            return
+        width = 1 if combo_count < 4 else 2
+        height = 1 if combo_count < 7 else 2
+        item_count = 2 if level < 3 else 4 if level < 4 else 6
+        reward = QueuedPowerup(
+            shape_id=self._next_shape_id(),
+            width=width,
+            height=height,
+            cells=tuple(
+                24 + self.rng.randrange(item_count)
+                for _ in range(width * height)
+            ),
+        )
+        with self._lock:
+            self.pending_rewards.setdefault(slot, []).append(reward)
+            # The powerup is a queued shape, not an instant replacement for
+            # the piece being installed by this transition. The normal piece
+            # already advertised in NEXT falls first.
+            self.garbage_eligible_after[(slot, reward.shape_id)] = (
+                self.completed_pieces[slot] + 1
+            )
+        self.broadcast_cooked_shape(slot, reward)
+        _trace(
+            f"POWERUP slot={slot} combo={combo_count} "
+            f"shape={reward.shape_id} {width}x{height} cells={reward.cells}"
+        )
 
     def _dispatch_returned_shapes(self, source_slot: int, lock: LockResult) -> bool:
-        """Target cooked shapes round-robin across the remaining live opponents."""
+        """Send every cooked shape to the source's fixed live opponent."""
         engine = self.engine
         if engine is None:
             return False
+        target = self._next_feedback_target(source_slot)
+        if target is None:
+            return False
         for returned in lock.returned_shapes:
-            target = self._next_feedback_target(source_slot)
-            if target is None:
-                return False
             cooked = self.send_cooked_feedback(
                 target,
                 returned.colour,
@@ -1327,9 +1514,10 @@ class HostedGame:
                 returned.occupied,
             )
             # S2C 67 only QUEUES the shape (field_e=0, "pending") as the visible
-            # incoming-material warning. Hold it there until the target's next
-            # piece transition, which spawns it as their FALLING piece and
-            # releases it from the queue (S2C 66) in the same breath.
+            # incoming-material warning. The target's active piece and the
+            # normal piece already advertised in NEXT must both settle before
+            # this shape becomes their FALLING piece. It is released from the
+            # queue (S2C 66) in the same transition that installs it.
             #
             # It is deliberately NOT settled into the target's grid here. The
             # earlier code wrote the cells immediately via receive_feedback and
@@ -1338,7 +1526,25 @@ class HostedGame:
             # A life is lost only if the shape overflows when it LANDS, which
             # falls out of the ordinary finalize path.
             with self._lock:
-                self.pending_garbage.setdefault(target, []).append(cooked)
+                queued = self.pending_garbage.setdefault(target, [])
+                if queued:
+                    # Once a cooked queue exists, later cooked shapes join the
+                    # same run. They must not insert another normal domino
+                    # between queued shapes.
+                    eligible_after = self.garbage_eligible_after.get(
+                        (target, queued[-1].shape_id),
+                        self.completed_pieces[target] + 1,
+                    )
+                else:
+                    # finalize_landed has already incremented completed_pieces.
+                    # One more completed piece is therefore exactly one turn:
+                    # the advertised normal NEXT falls, then this cooked queue
+                    # becomes eligible.
+                    eligible_after = self.completed_pieces[target] + 1
+                queued.append(cooked)
+                self.garbage_eligible_after[(target, cooked.shape_id)] = (
+                    eligible_after
+                )
             print(
                 f"[game] feedback queued source={source_slot} target={target} "
                 f"shape={cooked.shape_id} {cooked.width}x{cooked.height} "
@@ -1350,9 +1556,23 @@ class HostedGame:
     def _next_feedback_target(self, source_slot: int) -> int | None:
         with self._lock:
             player_count = len(self.players)
-            cursor = self.feedback_cursor[source_slot]
+            if (
+                self.debug_single_player
+                and player_count == 1
+                and source_slot == 0
+                and source_slot not in self.inactive_slots
+            ):
+                return source_slot
+
+            # A bucket keeps the same opponent for its entire lifetime. The
+            # cursor is the assigned target, not a per-attack round-robin
+            # position. Only an eliminated target advances the assignment.
+            target = self.feedback_cursor[source_slot]
+            if target != source_slot and target not in self.inactive_slots:
+                return target
+
             for offset in range(1, player_count + 1):
-                candidate = (cursor + offset) % player_count
+                candidate = (target + offset) % player_count
                 if candidate != source_slot and candidate not in self.inactive_slots:
                     self.feedback_cursor[source_slot] = candidate
                     return candidate
@@ -1362,7 +1582,9 @@ class HostedGame:
         engine = self.engine
         if engine is None:
             return
-        # Broadcast while the slot is still addressable, then tombstone it.
+        # Record the placement while the slot is still addressable, then remove
+        # its live bucket. Opcode 62 alone leaves no row on the result table.
+        self._broadcast_elimination_order(slot)
         self._broadcast_player_removed(slot, 0)
         with self._lock:
             self.inactive_slots.add(slot)
@@ -1374,6 +1596,22 @@ class HostedGame:
         elif engine.outcome is Outcome.DRAW:
             self.end_game(None)
 
+    def resign_player(self, session: LobbySession) -> bool:
+        """Eliminate a player without detaching their result/spectator view."""
+        with self._lock:
+            if (
+                self.state != "playing"
+                or session not in self.players
+                or self.engine is None
+            ):
+                return False
+            slot = self.players.index(session)
+            if slot in self.inactive_slots:
+                return False
+            self.engine.eliminate(slot)
+        self._complete_authoritative_elimination(slot, "resignation")
+        return True
+
     def debug_advance_piece(self, sender: LobbySession) -> None:
         """Refuse the old manual transition path now that state is authoritative."""
         sender.send_server_message(
@@ -1382,18 +1620,100 @@ class HostedGame:
 
     def _broadcast_player_removed(self, slot: int, result_code: int) -> None:
         with self._lock:
-            recipients = self.replication_recipients()
+            # Defeated players keep a live result screen and must see later
+            # eliminations too. replication_recipients() excludes them.
+            recipients = self.attached_sessions()
         for recipient in recipients:
             _safe_call(lambda p=recipient: p.send_player_removed(slot, result_code))
+
+    def _broadcast_elimination_order(self, slot: int) -> None:
+        with self._lock:
+            if slot in self.elimination_order:
+                return
+            self.elimination_order.append(slot)
+            recipients = self.attached_sessions()
+        for recipient in recipients:
+            _safe_call(lambda p=recipient: p.send_elimination_order(slot))
+
+    def handle_rematch_action(self, session: LobbySession) -> None:
+        """Toggle one post-game rematch vote and restart on unanimity.
+
+        C2S 63 has no payload. The client therefore expects the server to infer
+        offer/accept/cancel from the current mask: an absent local bit is added
+        and a present local bit is removed. S2C 73 replaces ``qc.g.a`` with the
+        resulting full player mask; without that reply the result-screen button
+        has no visible state change at all.
+        """
+        with self._lock:
+            pending = getattr(self, "awaiting_dismissal", None)
+            if (
+                self.state != "finished"
+                or pending is None
+                or session not in pending
+                or session not in self.players
+            ):
+                return
+
+            slot = session.player_slot
+            if slot is None or not 0 <= slot < 8:
+                return
+
+            bit = 1 << slot
+            mask = getattr(self, "rematch_mask", 0) ^ bit
+            self.rematch_mask = mask
+            recipients = list(pending)
+
+            required_mask = self.rematch_required_mask
+
+            unanimous = (
+                not self._rematch_cancelled
+                and required_mask != 0
+                and mask & required_mask == required_mask
+            )
+            if unanimous:
+                # Close the voting window before releasing the lock. Bot votes
+                # can arrive from the poll thread while a network vote is still
+                # broadcasting; this sentinel prevents two simultaneous starts.
+                self.state = "rematching"
+
+        for recipient in recipients:
+            _safe_call(lambda p=recipient: p.send_rematch_state(mask))
+
+        print(
+            f"[game] game {self.game_id} rematch mask="
+            f"0x{mask:02x}/0x{required_mask:02x}"
+        )
+        if unanimous:
+            # Leave the unanimous S2C 73 state on-screen for one client-second.
+            # S2C 58 then constructs a fresh game scene, which runs the same
+            # fade-in animation used by an initial match.
+            timer = threading.Timer(
+                REMATCH_START_DELAY_TICKS / LOGIC_TICKS_PER_SECOND,
+                self._start_rematch_after_transition,
+                args=(mask,),
+            )
+            timer.daemon = True
+            timer.start()
+
+    def _start_rematch_after_transition(self, expected_mask: int) -> None:
+        with self._lock:
+            if (
+                self.state != "rematching"
+                or self._rematch_cancelled
+                or self.rematch_mask != expected_mask
+            ):
+                return
+        self.start()
 
     def end_game(self, winner: LobbySession | None, result_code: int = 0) -> None:
         """Finish the game: per-player results first, then teardown.
 
         ORDER IS LOAD-BEARING and is the whole reason this is one method:
 
-          1. opcode 62 for every loser  (removes the slot, fires the defeat UI)
-          2. opcode 70 to EVERYONE      (announces the winner by slot index)
-          3. opcode 60 to everyone      (tears the game down)
+          1. opcode 76 for every loser  (records result-table placement)
+          2. opcode 62 for every loser  (removes the slot, fires the defeat UI)
+          3. opcode 70 to EVERYONE      (announces the winner by slot index)
+          4. opcode 60 to everyone      (tears the game down)
 
         Opcode 60 clears the state the other two refer to, so sending it first
         strands the results and the client shows nothing.
@@ -1429,10 +1749,9 @@ class HostedGame:
         so it is broadcast to everyone -- the losers' "<NAME> WINS!" line comes
         from the same packet -- and the slot is range-checked before sending.
 
-        Still missing: no score payload accompanies the result, so the win
-        menu's scores and highscore table cannot populate, and the post-game
-        S2C 71-74 masks that the rematch UI reads have no senders at all. See
-        docs/multiplayer-gameplay-protocol.md.
+        No score payload accompanies the result, so the win menu's scores and
+        highscore table cannot populate. Rematch state is handled separately by
+        handle_rematch_action() through S2C 73.
         """
         with self._lock:
             if self.state != "playing":
@@ -1443,12 +1762,20 @@ class HostedGame:
             # current_game and must not be called.
             recipients = self.attached_sessions()
             self.state = "finished"
+            self.rematch_mask = 0
+            self.rematch_required_mask = sum(
+                1 << player.player_slot
+                for player in recipients
+                if player.player_slot is not None
+            )
+            self._rematch_cancelled = False
 
         for player in active_players:
             if player is winner:
                 continue
             slot = player.player_slot
             if slot is not None:
+                self._broadcast_elimination_order(slot)
                 self._broadcast_player_removed(slot, result_code)
 
         # Opcode 70 goes to EVERY attached session, winner included: each client
@@ -1498,6 +1825,9 @@ class HostedGame:
         pending = getattr(self, "awaiting_dismissal", None)
         if pending is None:
             return
+        self._rematch_cancelled = True
+        if self.state == "rematching":
+            self.state = "finished"
         # Drop anyone who disconnected rather than dismissing, or the room would
         # be held open forever by a session that can never answer.
         attached = set(self.attached_sessions())
@@ -2379,9 +2709,6 @@ class Lobby:
                 build_host_invitation_removed(session_uid, status=2),
             )
         self._broadcast_room_update(game)
-        game.broadcast_message(
-            f"{session.display_name} joined game {game.game_id} as slot {slot}."
-        )
         return game
 
     def spectate_game(self, session: LobbySession, game_id: int) -> None:

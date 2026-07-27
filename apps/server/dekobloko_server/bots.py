@@ -8,9 +8,8 @@ single human client can exercise the multiplayer flow end to end:
     invite/kick resolve it by uid exactly like a networked player);
   * they auto-accept an invitation to a waiting room (a poll loop watches
     ``game.invitations`` for their uid and calls :meth:`Lobby.join_game`);
-  * they send a light stream of random controls while a match they are in is
-    playing, so their bucket is a live opponent the authoritative engine
-    advances rather than a dead grid;
+  * they plan cheap board-aware placements while a match is playing, with the
+    old random controls available through ``DEKOBLOKO_BOT_STRATEGY=random``;
   * after being kicked or when a match ends, ``current_game`` is cleared back to
     ``None`` and the bot is available to be invited again.
 
@@ -27,10 +26,11 @@ import os
 import random
 import threading
 import time
+import copy
 
 from .engine import FAST_DROP, LEFT, RIGHT, ROTATE_CLOCKWISE
 from .lobby import CookedShape, HostedGame, Lobby, Piece
-from .packets import pack_5bit
+from .packets import build_lobby_player_left, pack_5bit
 
 DEFAULT_BOT_NAMES = ("Player1", "Player2", "Player3")
 
@@ -47,17 +47,23 @@ DEFAULT_BOT_NAMES = ("Player1", "Player2", "Player3")
 #: socket -- so a starved bot board kills the real client's connection.
 CLIENT_FPS = 50
 
-#: Ceiling on one catch-up batch.  The server refills control credit at
-#: ``LOGIC_TICKS_PER_SECOND`` up to ``CONTROL_BURST_TICKS`` (40) and silently
-#: drops the excess, so asking for more than that after a long stall would be
-#: trimmed anyway -- and dumping a huge burst into a bucket makes it lurch.
-MAX_CATCHUP_SAMPLES = 40
+#: Ceiling on one wall-clock catch-up batch. These samples keep ordinary
+#: gravity synchronized with the client; bot fast-drop speed is limited
+#: separately below rather than starving the whole simulation.
+MAX_CATCHUP_SAMPLES = 20
+
+#: A clearing bot may pulse FAST_DROP once per this many engine ticks after it
+#: has reached its target column/orientation. Continuous FAST_DROP crosses the
+#: bucket in roughly 0.7 seconds; this cap produces a controlled descent while
+#: still letting the bot commit its placement.
+BOT_FAST_DROP_PERIOD_TICKS = 10
 
 #: Chance that a bot spends a whole turn holding fast drop. Deliberately well
 #: under 1: holding it permanently (which is what the bot used to do, on 99% of
 #: samples) makes its replica cross the bucket in ~0.7s and look frantic beside
 #: a human board falling at base gravity.
 FAST_DROP_TURN_CHANCE = 0.3
+BOT_STRATEGY = os.environ.get("DEKOBLOKO_BOT_STRATEGY", "clear").strip().lower()
 
 
 class BotLobbySession:
@@ -68,6 +74,8 @@ class BotLobbySession:
     transition so the match keeps advancing for the bot's slot (a real client
     acks by drawing the piece; without it the engine would wait forever).
     """
+
+    is_bot = True
 
     def __init__(self, name: str) -> None:
         self.display_name = name
@@ -128,10 +136,16 @@ class BotLobbySession:
     def send_player_removed(self, player_slot: int, result_code: int) -> None:
         return
 
+    def send_elimination_order(self, player_slot: int) -> None:
+        return
+
     def send_full_state(self, player_slot: int, state_payload: bytes) -> None:
         return
 
     def send_match_result(self, winner_slot: int) -> None:
+        return
+
+    def send_rematch_state(self, player_mask: int) -> None:
         return
 
     def send_game_over(self) -> None:
@@ -146,22 +160,6 @@ class BotManager:
         lobby: Lobby,
         names: tuple[str, ...] = DEFAULT_BOT_NAMES,
         *,
-        # Small on purpose. A relayed batch is buffered input the replica must
-        # chew through one sample per frame, and it cannot apply a pending
-        # authoritative landing (S2C 64) until it gets there. Land before that
-        # packet is available and the replica sets field_y, exhausts its grace
-        # and latches field_Bb -- the "T5" self-disconnect that kills the human
-        # player's connection over an OPPONENT's bucket.
-        #
-        # The grace is far shorter than the 20 ticks lk.c seems to promise.
-        # Measured 2026-07-25, field_e goes 20 -> 1 in a single tick:
-        #     [INSTR lk.d] Ab=774 e=20 ctrl=16 y=true
-        #     [INSTR lk.d] Ab=773 e=1  ctrl=16 y=true
-        # so the window is a couple of frames, not 0.4s. At 0.4s per batch the
-        # replica could be 20 frames of queued input away from the transition;
-        # at 0.08s it is at most 4. Billing against the wall clock
-        # (_samples_owed) keeps the overall rate identical either way, so this
-        # trades nothing for a proportionally narrower window.
         poll_interval: float = 0.08,
         seed: int | None = None,
     ) -> None:
@@ -173,8 +171,11 @@ class BotManager:
         self.samples_per_turn = max(1, round(poll_interval * CLIENT_FPS))
         # Wall-clock instant each bot has supplied control samples up to.
         self._fed_through: dict[str, float] = {}
+        self._plans: dict[str, tuple[int, int, int]] = {}
+        self._fast_drop_phase: dict[str, int] = {}
         self.rng = random.Random(seed)
         self.bots = [BotLobbySession(name) for name in names]
+        self._available_bots = set(self.bots)
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
 
@@ -191,6 +192,7 @@ class BotManager:
         print(
             "[bots] lobby bots enabled: "
             + ", ".join(bot.display_name for bot in self.bots)
+            + f" strategy={BOT_STRATEGY}"
         )
 
     def stop(self, timeout: float = 2.0) -> None:
@@ -216,16 +218,47 @@ class BotManager:
         for bot in self.bots:
             game = bot.current_game
             if game is None:
+                if bot not in self._available_bots:
+                    self._available_bots.add(bot)
+                    self._broadcast_bot_lobby_presence(bot, entered=True)
                 self._maybe_accept_invite(bot, games)
             elif game.state == "playing":
                 self._play_turn(bot, game)
             elif game.state == "finished":
-                # A finished game now HOLDS its result screen until each player
-                # dismisses it, so somebody has to answer for the bot -- it has
-                # no UI to show and would otherwise pin the room open forever.
-                # Dismissing only this bot's slot leaves the human's screen up.
                 self._fed_through.pop(bot.display_name, None)
-                self.lobby.leave_game(bot, announce=False)
+                self._plans.pop(bot.display_name, None)
+                # A human dismissal cancels the rematch. Release bots before
+                # considering another vote, otherwise the last bot vote can
+                # make the reduced roster unanimous and start a bot-only game.
+                pending = getattr(game, "awaiting_dismissal", None)
+                if pending is not None and all(
+                    player in self.bots for player in pending
+                ):
+                    self.lobby.leave_game(bot, announce=False)
+                    continue
+
+                rematch_mask = getattr(game, "rematch_mask", 0)
+                slot = bot.player_slot
+                if (
+                    slot is not None
+                    and rematch_mask & (1 << slot) == 0
+                ):
+                    # Each bot owns its vote just like a socket player. It asks
+                    # independently on entering the result screen; the server's
+                    # unanimous player mask keeps the game stopped until the
+                    # final human accepts.
+                    game.handle_rematch_action(bot)
+                    continue
+
+                # Keep bots attached while a human is viewing the results; that
+                # gives the human's Offer button a roster that can accept. Once
+                # every human has dismissed, only bots remain pending and they
+                # can tear themselves down without pinning the room forever.
+                pending = getattr(game, "awaiting_dismissal", None)
+                if pending is not None and all(
+                    player in self.bots for player in pending
+                ):
+                    self.lobby.leave_game(bot, announce=False)
 
     def _maybe_accept_invite(
         self, bot: BotLobbySession, games: list[HostedGame]
@@ -238,11 +271,39 @@ class BotManager:
                 and bot not in game.players
             ):
                 self.lobby.join_game(bot, game.game_id)
-                print(
-                    f"[bots] {bot.display_name} accepted invite to game "
-                    f"{game.game_id}"
-                )
+                if bot.current_game is game:
+                    self._available_bots.discard(bot)
+                    self._broadcast_bot_lobby_presence(bot, entered=False)
+                    print(
+                        f"[bots] {bot.display_name} accepted invite to game "
+                        f"{game.game_id}"
+                    )
+                    return
+
+    def _broadcast_bot_lobby_presence(
+        self, bot: BotLobbySession, *, entered: bool
+    ) -> None:
+        uid = self.lobby.uid_for(bot.display_name)
+        with self.lobby._lock:
+            recipients = [
+                session
+                for session in self.lobby._sessions
+                if getattr(session, "_lobby_bootstrapped", False)
+            ]
+            row = next(
+                (row for row in self.lobby.roster_rows() if row[0] == uid),
+                None,
+            )
+
+        if entered:
+            if row is None:
                 return
+            for recipient in recipients:
+                recipient.send_lobby_roster([row])
+        else:
+            payload = build_lobby_player_left(uid)
+            for recipient in recipients:
+                recipient.send_lobby_event(payload)
 
     def _samples_owed(self, bot: BotLobbySession) -> int:
         """One sample per client frame that has actually elapsed.
@@ -292,8 +353,35 @@ class BotManager:
     def _play_turn(self, bot: BotLobbySession, game: HostedGame) -> None:
         if bot not in game.active_players():
             self._fed_through.pop(bot.display_name, None)
+            self._plans.pop(bot.display_name, None)
             return
+
+        with game._lock:
+            engine = game.engine
+            slot = bot.player_slot
+            active = (
+                engine.players[slot].active
+                if engine is not None
+                and slot is not None
+                and 0 <= slot < len(engine.players)
+                else None
+            )
+        if active is None:
+            # Pop/collapse animations have no active falling piece. Do not bill
+            # those wall-clock ticks to the next piece as catch-up controls.
+            self._fed_through[bot.display_name] = time.monotonic()
+            self._plans.pop(bot.display_name, None)
+            return
+
         owed = self._samples_owed(bot)
+        if BOT_STRATEGY == "random":
+            controls = self._random_controls(owed)
+        else:
+            controls = self._clearing_controls(bot, game, active, owed)
+        game.handle_controls(bot, bytes([len(controls)]) + pack_5bit(controls))
+
+    def _random_controls(self, owed: int) -> list[int]:
+        """The original unguided strategy, retained behind an environment gate."""
         # Do NOT hold fast drop for the whole match. The bot used to set it on
         # every sample -- measured at 99% of them -- and once the relay stopped
         # swallowing the bit, replicas faithfully reproduced it: an opponent's
@@ -317,7 +405,178 @@ class BotManager:
             controls[0] |= RIGHT
         elif roll == 2:
             controls[0] |= ROTATE_CLOCKWISE
-        game.handle_controls(bot, bytes([len(controls)]) + pack_5bit(controls))
+        return controls
+
+    def _clearing_controls(
+        self,
+        bot: BotLobbySession,
+        game: HostedGame,
+        active: object,
+        owed: int,
+    ) -> list[int]:
+        """Steer one piece toward the best cheap authoritative placement."""
+        plan = self._plans.get(bot.display_name)
+        if plan is None or plan[0] != id(active):
+            with game._lock:
+                target_orientation, target_x = self._best_placement(game, active)
+            plan = (id(active), target_orientation, target_x)
+            self._plans[bot.display_name] = plan
+            self._fast_drop_phase[bot.display_name] = 0
+
+        _piece_id, target_orientation, target_x = plan
+        controls = [0] * owed
+        if active.orientation != target_orientation:
+            controls[0] = ROTATE_CLOCKWISE
+        elif active.x > target_x:
+            controls[0] = LEFT
+        elif active.x < target_x:
+            controls[0] = RIGHT
+        else:
+            phase = self._fast_drop_phase.get(bot.display_name, 0)
+            controls = [
+                FAST_DROP
+                if (phase + tick) % BOT_FAST_DROP_PERIOD_TICKS == 0
+                else 0
+                for tick in range(owed)
+            ]
+            self._fast_drop_phase[bot.display_name] = phase + owed
+        return controls
+
+    def _best_placement(self, game: HostedGame, active: object) -> tuple[int, int]:
+        """Evaluate every hard-drop landing using the real cascade resolver.
+
+        This is O(4 * bucket_width * bucket_cells) once per piece. It is not a
+        look-ahead tree: no future pieces, opponent states, or input sequences
+        are searched.
+        """
+        engine = game.engine
+        if engine is None:
+            return active.orientation, active.x
+
+        board = active.board
+        best_score: tuple[int, int, int] | None = None
+        best_target = (active.orientation, active.x)
+        base_fill = board.occupied_count()
+
+        for orientation in range(4):
+            oriented = active._oriented(orientation)
+            min_dx = min(dx for dx, _dy, _cell in oriented)
+            max_dx = max(dx for dx, _dy, _cell in oriented)
+            max_dy = max(dy for _dx, dy, _cell in oriented)
+            for pivot_x in range(-min_dx, board.width - max_dx):
+                pivot_y = -max_dy - 1
+                while not active._collides(orientation, pivot_x, pivot_y + 1):
+                    pivot_y += 1
+
+                positions = {
+                    (pivot_x + dx, pivot_y + dy): cell
+                    for dx, dy, cell in oriented
+                    if 0 <= pivot_y + dy < board.height
+                }
+                overflow = any(pivot_y + dy < 0 for _dx, dy, _cell in oriented)
+                if overflow or not positions:
+                    score = (-1_000_000, -abs(pivot_x), -orientation)
+                else:
+                    candidate = copy.deepcopy(board)
+                    if active.is_domino:
+                        for (x, y), cell in positions.items():
+                            candidate.set(x, y, cell)
+                    else:
+                        colours = {
+                            cell & 7
+                            for cell in positions.values()
+                            if 8 <= (cell & 31) <= 14
+                        }
+                        if len(colours) == 1:
+                            candidate.merge_solid(
+                                set(positions), next(iter(colours))
+                            )
+                        else:
+                            for (x, y), cell in positions.items():
+                                candidate.set(x, y, cell)
+
+                    contact_score = self._matching_contacts(
+                        board, positions
+                    )
+                    engine._resolve_cascades(candidate)
+                    fill_after = candidate.occupied_count()
+                    cleared = base_fill + len(positions) - fill_after
+                    heights, holes = self._board_profile(candidate)
+                    max_height = max(heights, default=0)
+                    roughness = sum(
+                        abs(left - right)
+                        for left, right in zip(heights, heights[1:])
+                    )
+                    numeric = (
+                        cleared * 1_000
+                        + contact_score * 35
+                        - holes * 120
+                        - max_height * 25
+                        - roughness * 8
+                        - fill_after * 3
+                    )
+                    top_x = pivot_x + min_dx
+                    score = (
+                        numeric,
+                        -abs((top_x * 2) - (board.width - 1)),
+                        -orientation,
+                    )
+
+                if best_score is None or score > best_score:
+                    best_score = score
+                    best_target = (orientation, pivot_x + min_dx)
+
+        return best_target
+
+    @staticmethod
+    def _matching_contacts(
+        board: object, positions: dict[tuple[int, int], int]
+    ) -> int:
+        contacts = 0
+        for (x, y), cell in positions.items():
+            value = cell & 31
+            if not 16 <= value <= 23:
+                continue
+            colour = value & 7
+            for next_x, next_y in (
+                (x - 1, y),
+                (x + 1, y),
+                (x, y - 1),
+                (x, y + 1),
+            ):
+                neighbour = positions.get((next_x, next_y))
+                if neighbour is None and 0 <= next_x < board.width and 0 <= next_y < board.height:
+                    neighbour = board.get(next_x, next_y)
+                if neighbour is None:
+                    continue
+                neighbour &= 31
+                if (
+                    16 <= neighbour <= 23
+                    and (
+                        colour == (neighbour & 7)
+                        or value == 23
+                        or neighbour == 23
+                    )
+                ):
+                    contacts += 1
+        return contacts
+
+    @staticmethod
+    def _board_profile(board: object) -> tuple[list[int], int]:
+        heights: list[int] = []
+        holes = 0
+        for x in range(board.width):
+            top = board.height
+            seen = False
+            for y in range(board.height):
+                occupied = board.get(x, y) != 0
+                if occupied and not seen:
+                    top = y
+                    seen = True
+                elif seen and not occupied:
+                    holes += 1
+            heights.append(board.height - top)
+        return heights, holes
 
 
 def bots_enabled() -> bool:

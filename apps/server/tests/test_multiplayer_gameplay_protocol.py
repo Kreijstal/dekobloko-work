@@ -44,6 +44,7 @@ class FakeSession:
         self.player_slot = None
         self.action_streams: list[tuple[int, bytes]] = []
         self.removals: list[tuple[int, int]] = []
+        self.elimination_order: list[int] = []
         self.messages: list[str] = []
         self.match_starts: list[tuple[int, int]] = []
         self.piece_events: list[tuple[int, int, int, int, int]] = []
@@ -72,6 +73,9 @@ class FakeSession:
 
     def send_player_removed(self, player_slot: int, result_code: int) -> None:
         self.removals.append((player_slot, result_code))
+
+    def send_elimination_order(self, player_slot: int) -> None:
+        self.elimination_order.append(player_slot)
 
     def send_match_start(self, game: HostedGame, local_slot: int) -> None:
         self.match_starts.append((game.game_id, local_slot))
@@ -430,7 +434,7 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         # 18 samples were applied to the piece; the replica is relayed 17. The
         # sample that LANDS a piece is withheld so a replica never lands one
         # itself -- see test_landing_sample_is_withheld_from_replicas.
-        self.assertEqual(17, len(decode_control_batch(peer.action_streams[-1][1])))
+        self.assertEqual(15, len(decode_control_batch(peer.action_streams[-1][1])))
 
         # A repeated short landed batch cannot move the newly spawned piece.
         game.handle_controls(host, bytes([1]) + pack_5bit((FAST_DROP,)))
@@ -534,26 +538,14 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertIsNotNone(applied, "a replacement piece must have spawned")
         # One short of what the engine consumed: the replica stops a tick
         # above the floor and forms no opinion about landing.
-        self.assertEqual(17, len(relayed))
+        self.assertEqual(15, len(relayed))
         self.assertEqual(20, len(decode_control_batch(peer.action_streams[-2][1])))
 
-    def test_last_relayed_sample_drops_the_fast_drop_bit(self) -> None:
-        # Withholding the landing sample is not enough by itself: a replica
-        # HOLDS the last control mask it was given and keeps applying it once
-        # the relay runs out, so it lands on the next frame anyway.
-        #
-        # And the held mask is normally FAST_DROP -- bots hold it permanently.
-        # Fast drop forces the drop countdown to 1 every tick, collapsing the
-        # 20-tick grace lk.c grants a landing into a SINGLE tick. Captured
-        # 2026-07-25 on a bot's replica, which is why none of the earlier
-        # timing work helped:
-        #     [INSTR lk.d] Ab=782 e=20 ctrl=16 y=true   <- grace set to 20
-        #     [INSTR lk.d] Ab=781 e=1  ctrl=16 y=true   <- gone next tick
-        # then field_Bb latched and qc raised the "T5" self-disconnect.
-        #
-        # Clearing the bit makes the replica coast on base gravity, which both
-        # keeps it off the landing and restores the full grace window for the
-        # S2C 64 already in flight.
+    def test_non_landing_controls_are_relayed_without_rewriting(self) -> None:
+        # Rewriting FAST_DROP changes the height at which lateral inputs occur.
+        # That can put the replica on top of an overhang while the engine slips
+        # below it. Only the final landing sample is replaced by packet 64;
+        # every earlier mask must remain byte-for-byte equivalent.
         host = FakeSession("host")
         peer = FakeSession("peer")
         game = HostedGame(game_id=29, host=host)
@@ -568,36 +560,14 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
 
         self.assertEqual(1, len(host.piece_events), "the piece must have landed")
         landing_relay = decode_control_batch(peer.action_streams[-1][1])
-        self.assertEqual(
-            0,
-            landing_relay[-1] & FAST_DROP,
-            "the replica must not be left holding fast drop into a landing",
-        )
-        # EVERY sample of the landing batch is stripped, not just the trailing
-        # one. Stripping only the tail is a tick too late: the replica can land
-        # part-way through a batch, and lk.d clamps field_e to 2 on any sample
-        # carrying the drop bit (lk.java:1241/1270), so a single queued sample
-        # behind the landing spends the whole 20-tick grace before the cleared
-        # one is reached. Observed live with the trailing-sample version
-        # deployed and demonstrably working:
-        #     Ab=786 e=20 ctrl=16 y=true   <- landed, grace 20
-        #     Ab=785 e=1  ctrl=0  y=true   <- cleared, but far too late
         self.assertTrue(
-            all(mask & FAST_DROP == 0 for mask in landing_relay),
-            "no sample of the landing batch may carry fast drop",
+            all(mask & FAST_DROP for mask in landing_relay),
+            "non-landing masks must preserve fast drop",
         )
-        # But the bulk of the fall keeps it. Cutting the bit for the whole
-        # descent drops the replica to base gravity (40 ticks a row against the
-        # authoritative 2), so it barely leaves the spawn before the transition
-        # snaps it to the floor -- every piece teleporting the full height of
-        # the bucket, which is what a live match actually looked like:
-        #     LANDING was=(3,0) -> final=(3,16)
-        # The replica only has to arrive AFTER the server, not be frozen.
         opening_relay = decode_control_batch(peer.action_streams[0][1])
         self.assertTrue(
-            any(mask & FAST_DROP for mask in opening_relay),
-            "a piece nowhere near resting must still be relayed fast drop, or "
-            "the replica cannot track the real descent",
+            all(mask & FAST_DROP for mask in opening_relay),
+            "opening controls must also remain unchanged",
         )
 
     def test_landing_only_batch_relays_nothing_at_all(self) -> None:
@@ -652,19 +622,12 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
             "the batch that lands the piece must relay nothing at all",
         )
 
-    def test_life_loss_resyncs_that_slot_to_every_other_replica(self) -> None:
-        # Lives are lk.field_jb, and a replica keeps its own count: the commit
-        # routine decrements it whenever a piece locks above the top of the
-        # bucket (lk.java:5793-5801). The ONLY thing on the wire that writes
-        # that field is the u8 in a packet-61 snapshot (lk.java:4964) -- there
-        # is no dedicated life packet in this protocol.
-        #
-        # So a replica shows the right number of lives exactly as long as it
-        # agrees with the engine about when a piece overflows, and when it does
-        # not the opponent keeps all three lives on screen while the server
-        # eliminates them. Observed 2026-07-25: slot 1 burned three lives
-        # server-side ("FINALIZE slot=1 placed=0 fill 38->38 life_lost=True")
-        # while the human's replica of that bucket was still at fill=26.
+    def test_life_loss_does_not_reseat_any_live_replica(self) -> None:
+        # A live replica decrements its own life count while committing the
+        # authoritative landing. Packet 61 cannot safely correct that count:
+        # observed 2026-07-26, it arrived after packet 64, duplicated a cooked
+        # 1x5 at the next update, and the replica disconnected with T5 when the
+        # duplicate could not descend.
         host = FakeSession("host")
         peer = FakeSession("peer")
         game = HostedGame(game_id=24, host=host)
@@ -691,14 +654,11 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         controls = (FAST_DROP,) * 4
         game.handle_controls(peer, bytes([len(controls)]) + pack_5bit(controls))
 
-        # The life was taken but the slot survives, so the match continues and
-        # the correction is the only thing that tells the other client.
+        # The life was taken but the slot survives, so the match continues.
+        # Packet 61 stays reserved for startup/recovery, never a live board.
         self.assertEqual(2, game.engine.players[1].lives)
         self.assertEqual("playing", game.state)
-        self.assertEqual([1], [slot for slot, _payload in host.full_states])
-        self._assert_original_decodes_snapshot(game, 1, host.full_states[0][1])
-        # Never back to the owner: their own board is live and a 61 would reset
-        # the physics they are mid-drop in.
+        self.assertEqual([], host.full_states)
         self.assertEqual([], peer.full_states)
 
     def test_a_landing_never_reseats_the_player_who_made_it(self) -> None:
@@ -1155,6 +1115,7 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         game.end_game(host)
 
         self.assertEqual([(1, 0)], spectator.removals)
+        self.assertEqual([1], spectator.elimination_order)
         # A spectator DOES get opcode 70. It is an announcement of who won, not
         # a "you won" notification, and the byte is the winner's slot: the
         # spectator's own slot is None, so it never matches and the spectator
@@ -1168,6 +1129,23 @@ class MultiplayerGameplayProtocolTest(unittest.TestCase):
         self.assertEqual(0, spectator.game_over_count)
         game.dismiss(spectator)
         self.assertEqual(1, spectator.game_over_count)
+
+    def test_every_attached_client_receives_complete_result_table_order(self) -> None:
+        sessions = [FakeSession(name) for name in ("winner", "fourth", "third", "second")]
+        game = HostedGame(game_id=25, host=sessions[0])
+        for session in sessions[1:]:
+            game.add_player(session)
+        game.start()
+
+        for slot in (1, 2, 3):
+            game.engine.eliminate(slot)
+            game._complete_authoritative_elimination(slot, "test")
+
+        for session in sessions:
+            self.assertEqual([1, 2, 3], session.elimination_order)
+            self.assertEqual([(1, 0), (2, 0), (3, 0)], session.removals)
+            self.assertEqual([0], session.winner_results)
+        self.assertEqual("finished", game.state)
 
     def test_a_winnerless_match_sends_the_draw_byte_not_an_invalid_slot(self) -> None:
         """Opcode 70's byte is an ARRAY INDEX on the client.

@@ -20,16 +20,18 @@ falling piece, and was rotated and steered before landing.
 from __future__ import annotations
 
 import unittest
+from dataclasses import replace
 
 from dekobloko_server.engine import (
     FAST_DROP,
     LEFT,
+    RIGHT,
     ROTATE_CLOCKWISE,
     ROTATE_COUNTER_CLOCKWISE,
     LockResult,
     ReturnedShape,
 )
-from dekobloko_server.lobby import HostedGame
+from dekobloko_server.lobby import GameOptions, HostedGame
 
 from test_multiplayer_gameplay_protocol import FakeSession
 
@@ -74,6 +76,118 @@ def send_garbage(game, source: int, shape: ReturnedShape) -> None:
 
 
 class GarbageDeliveryRegression(unittest.TestCase):
+
+    def test_earthquake_effect_delays_the_next_piece_for_client_ticks(self) -> None:
+        host = FakeSession("host")
+        game = HostedGame(
+            game_id=38,
+            host=host,
+            debug_single_player=True,
+        )
+        game.start()
+        original_finalize = game.engine.finalize_landed
+        land_current_piece(game, 0)
+
+        def finalize_with_effect(slot: int):
+            return replace(original_finalize(slot), effect_ticks=29)
+
+        game.engine.finalize_landed = finalize_with_effect
+        game._finish_authoritative_piece(0)
+        game.engine.finalize_landed = original_finalize
+
+        self.assertIsNone(game.engine.players[0].active)
+        self.assertEqual(29, game.pending_effects[0][0])
+
+        game._advance_pending_effect(0, 28)
+        self.assertIsNone(game.engine.players[0].active)
+        self.assertEqual(1, game.pending_effects[0][0])
+
+        game._advance_pending_effect(0, 1)
+        self.assertIsNotNone(game.engine.players[0].active)
+        self.assertNotIn(0, game.pending_effects)
+
+    def test_single_player_feedback_is_exactly_one_normal_turn_ahead(self) -> None:
+        """Self-feedback created by a finalize queues behind exactly one normal.
+
+        This is the Pygame/single-player timing case. completed_pieces is
+        incremented before the returned shape is queued, so an eligibility
+        offset of two inserts two normal turns instead of the client's one.
+        """
+        host = FakeSession("host")
+        game = HostedGame(
+            game_id=40,
+            host=host,
+            debug_single_player=True,
+        )
+        game.start()
+        returned = shape_from("##/##", 2, 2)
+        original_finalize = game.engine.finalize_landed
+
+        land_current_piece(game, 0)
+
+        def finalize_with_feedback(slot: int):
+            return replace(
+                original_finalize(slot),
+                returned_shapes=(returned,),
+            )
+
+        game.engine.finalize_landed = finalize_with_feedback
+        game._finish_authoritative_piece(0)
+        game.engine.finalize_landed = original_finalize
+
+        self.assertTrue(
+            game.engine.players[0].active.is_domino,
+            "the advertised normal piece must fall before self-feedback",
+        )
+        self.assertEqual(1, len(game.pending_garbage[0]))
+        self.assertEqual([], host.cooked_releases)
+
+        land_current_piece(game, 0)
+        game._finish_authoritative_piece(0)
+
+        self.assertFalse(
+            game.engine.players[0].active.is_domino,
+            "self-feedback must fall after exactly one normal piece",
+        )
+        self.assertEqual([(0, 1)], host.cooked_releases)
+        self.assertEqual({}, game.pending_garbage)
+
+    def test_powerup_reward_waits_in_queue_for_one_normal_turn(self) -> None:
+        """A combo reward uses the client queue instead of spawning instantly."""
+        host = FakeSession("host")
+        game = HostedGame(
+            game_id=39,
+            host=host,
+            options=GameOptions(special_level=4),
+            debug_single_player=True,
+        )
+        game.start()
+        original_finalize = game.engine.finalize_landed
+
+        land_current_piece(game, 0)
+
+        def finalize_with_combo(slot: int):
+            return replace(original_finalize(slot), combo_count=2)
+
+        game.engine.finalize_landed = finalize_with_combo
+        game._finish_authoritative_piece(0)
+        game.engine.finalize_landed = original_finalize
+
+        self.assertTrue(
+            game.engine.players[0].active.is_domino,
+            "a reward must not replace the normal piece immediately",
+        )
+        self.assertEqual(1, len(game.pending_rewards[0]))
+        self.assertEqual([], host.cooked_releases)
+
+        land_current_piece(game, 0)
+        game._finish_authoritative_piece(0)
+
+        active = game.engine.players[0].active
+        self.assertFalse(active.is_domino)
+        self.assertTrue(all(24 <= cell <= 29 for cell in active.cells))
+        self.assertEqual([(0, 1)], host.cooked_releases)
+        self.assertEqual({}, game.pending_rewards)
 
     def test_spawned_piece_id_differs_from_the_queued_shape_id(self) -> None:
         """The crash that killed the client on the first build.
@@ -243,8 +357,8 @@ class GarbageDeliveryRegression(unittest.TestCase):
         `y < 0`, but an ordinary 2x1 domino spawns at top_y = -height + 1 = 0,
         so it can never be negative -- once the stack reached the top every
         piece landed instantly at y=0, no life was ever lost, and the game ran
-        forever. Block out (the piece cannot occupy its spawn cells) is the
-        condition that actually fires for a domino.
+        forever. The client raises an overlapping spawn above the grid; if it
+        still locks there, the negative final y is the block-out condition.
         """
         game, _host, _ = start_game(51)
         board = game.engine.players[1].board
@@ -268,6 +382,73 @@ class GarbageDeliveryRegression(unittest.TestCase):
         self.assertEqual("finished", game.state)
         self.assertIn(1, game.inactive_slots)
         self.assertEqual(0, game.engine.players[1].lives)
+
+    def test_overlapping_spawn_replays_the_client_block_out_path(self) -> None:
+        """A crowded spawn is raised before controls are evaluated.
+
+        Captured from the replica that raised T5 immediately before the result
+        screen on 2026-07-26. Starting the piece inside row zero rejects a
+        different set of moves and leaves the server several rows below the
+        client; starting at y=-1 reproduces the client's final (5,-1).
+        """
+        game, _host, _ = start_game(54)
+        player = game.engine.players[1]
+        board = player.board
+        for y, row in enumerate(
+            (
+                "....###.",
+                "....###.",
+                "....#.#.",
+                "....#.#.",
+                "...##.#.",
+                "...####.",
+                "...####.",
+                "...##...",
+                "...##...",
+                "...##...",
+                "...#....",
+                "..##....",
+                "..##....",
+                "..##....",
+                "...#....",
+                "...###..",
+                "#..####.",
+                "#######.",
+            )
+        ):
+            for x, cell in enumerate(row):
+                if cell == "#":
+                    board.set_solid(x, y, 0, 1 + y * board.width + x)
+
+        player.active = None
+        game.engine.base_drop_ticks = 40
+        active = game.engine.spawn(1, (1, 2))
+        self.assertTrue(active.blocked_at_spawn)
+        self.assertEqual((active.x, active.y), (3, -1))
+
+        batches = (
+            (0, 0, 0, 0),
+            (0, 0, 0, 0),
+            (RIGHT, 0, 0, 0),
+            (LEFT, 0, 0, 0),
+            (0, 0, 0, 0),
+            (ROTATE_CLOCKWISE, 0, 0, 0),
+            (RIGHT, 0, 0, 0),
+            (ROTATE_CLOCKWISE, 0, 0, 0),
+            (0, 0, 0, 0),
+            (FAST_DROP, FAST_DROP, FAST_DROP, FAST_DROP),
+            (RIGHT, 0, 0, 0),
+            (0, 0, 0, 0),
+            (0, 0, 0, 0),
+            (ROTATE_CLOCKWISE, 0, 0, 0),
+            (LEFT | FAST_DROP, FAST_DROP, FAST_DROP, FAST_DROP),
+        )
+        for controls in batches:
+            game.engine.apply_controls(1, controls)
+
+        self.assertTrue(active.landed)
+        self.assertEqual((active.x, active.y, active.orientation), (5, -1, 2))
+        self.assertTrue(game.engine.finalize_landed(1).life_lost)
 
     def test_overhanging_cells_fall_even_when_nothing_clears(self) -> None:
         """A landing that matches nothing STILL collapses overhangs.

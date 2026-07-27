@@ -296,6 +296,10 @@ public class ClearProbe {
             try {
                 tick.invoke(board, null, 127, false, null);
             } catch (Throwable e) {
+                if (isSoundFailure(e)) {
+                    System.out.println("  tick " + t + " sound muted");
+                    continue;
+                }
                 unwrap(e, "  tick " + t);
                 return;
             }
