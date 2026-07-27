@@ -22,6 +22,7 @@ import static org.objectweb.asm.Opcodes.ASTORE;
 import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.ILOAD;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.ISTORE;
 import static org.objectweb.asm.Opcodes.RETURN;
 
 /**
@@ -70,7 +71,29 @@ public final class InjectGarbageTrace {
             InsnList pre = null;
             boolean touched = false;
 
-            if (cn.name.equals("lk") && mn.name.equals("a")
+            if (cn.name.equals("client") && mn.name.equals("<init>")
+                    && mn.desc.equals("()V")) {
+                // Start a daemon which waits for the title resources, then
+                // enters the real single-player path through reflection. This
+                // works with the launcher's fake AWT and needs no X11 events.
+                touched |= atReturns(mn, RETURN, false,
+                        call("startSingleplayerBot", "()V",
+                                new int[]{}, new int[]{}), 0);
+
+            } else if (cn.name.equals("lk") && mn.name.equals("d")
+                    && mn.desc.equals("(II)V")) {
+                // The real bucket tick. Replace its control argument before
+                // any client state changes, then capture the complete state at
+                // every normal return. The helper also supplies the synthetic
+                // clock barrier when the reflection bot is enabled.
+                pre = call("beforeTick", "(Ljava/lang/Object;I)I",
+                        new int[]{ALOAD, ILOAD}, new int[]{0, 1});
+                pre.add(new VarInsnNode(ISTORE, 1));
+                touched |= atReturns(mn, RETURN, false,
+                        call("afterTick", "(Ljava/lang/Object;I)V",
+                                new int[]{ALOAD, ILOAD}, new int[]{0, 1}), 2);
+
+            } else if (cn.name.equals("lk") && mn.name.equals("a")
                     && mn.desc.equals("(Lrf;B)V")) {
                 // The append itself.  Entry gives the queue BEFORE, the return
                 // sites give it AFTER, which is the only way to see whether an

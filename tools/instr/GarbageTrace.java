@@ -1,4 +1,5 @@
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * Runtime logger injected into the ORIGINAL gamepack by InjectGarbageTrace.
@@ -27,6 +28,23 @@ public final class GarbageTrace {
 
     /** CT_LOCK=1 re-enables the per-tick LOCK lines (off by default). */
     private static final boolean LOCK_LINES = System.getenv("CT_LOCK") != null;
+    private static final boolean REFLECT_BOT =
+            Boolean.getBoolean("dekobloko.reflectBot");
+    private static final long BOT_TICK_NANOS =
+            Math.max(0L, Long.getLong("dekobloko.botTickMillis", 20L)) * 1000000L;
+    private static boolean botStarterStarted;
+    private static final java.util.IdentityHashMap<Object, BotState> BOT_STATES =
+            new java.util.IdentityHashMap<Object, BotState>();
+
+    private static final class BotState {
+        int tick;
+        int piece;
+        int age;
+        int targetX;
+        int targetOrientation;
+        int lastForced = Integer.MIN_VALUE;
+        long nextTickNanos;
+    }
 
     private static Field field(Object o, String name) {
         if (o == null) return null;
@@ -142,6 +160,186 @@ public final class GarbageTrace {
     private static void say(String line) {
         System.out.println("[CT] " + line);
         System.out.flush();
+    }
+
+    // ------------------------------------------------------------------
+    // Reflection-only deterministic single-player driver
+    // ------------------------------------------------------------------
+
+    public static synchronized void startSingleplayerBot() {
+        if (!REFLECT_BOT || botStarterStarted) return;
+        botStarterStarted = true;
+        Thread starter = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Object stages = null;
+                    for (int attempt = 0; attempt < 1200; attempt++) {
+                        stages = staticValue("sb", "u");
+                        if (nestedArrayReady(stages)) break;
+                        Thread.sleep(25L);
+                    }
+                    if (!nestedArrayReady(stages)) {
+                        say("DIFF_START error=singleplayer-resources-timeout");
+                        return;
+                    }
+                    Method start = Class.forName("pn").getDeclaredMethod(
+                            "a", Boolean.TYPE, Boolean.TYPE, Boolean.TYPE);
+                    start.setAccessible(true);
+                    start.invoke(null, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE);
+                    Object game = staticValue("kf", "I");
+                    say("DIFF_START game="
+                            + (game == null ? "null" : game.getClass().getName())
+                            + " awt=stub reflection=true");
+                } catch (Throwable t) {
+                    say("DIFF_START error=" + t.getClass().getName()
+                            + ":" + String.valueOf(t.getMessage()).replace(' ', '_'));
+                }
+            }
+        }, "dekobloko-reflection-bot-start");
+        starter.setDaemon(true);
+        starter.start();
+    }
+
+    private static Object staticValue(String className, String fieldName)
+            throws Exception {
+        Class<?> type = Class.forName(className);
+        Field f;
+        try {
+            f = type.getDeclaredField(fieldName);
+        } catch (NoSuchFieldException missing) {
+            f = type.getDeclaredField("field_" + fieldName);
+        }
+        f.setAccessible(true);
+        return f.get(null);
+    }
+
+    private static boolean nestedArrayReady(Object value) {
+        if (value == null || !value.getClass().isArray()
+                || java.lang.reflect.Array.getLength(value) == 0) return false;
+        Object first = java.lang.reflect.Array.get(value, 0);
+        return first != null && first.getClass().isArray()
+                && java.lang.reflect.Array.getLength(first) > 0
+                && java.lang.reflect.Array.get(first, 0) != null;
+    }
+
+    public static int beforeTick(Object board, int originalControl) {
+        if (!REFLECT_BOT) return originalControl;
+        BotState state;
+        synchronized (BOT_STATES) {
+            state = BOT_STATES.get(board);
+            if (state == null) {
+                state = new BotState();
+                state.nextTickNanos = System.nanoTime();
+                BOT_STATES.put(board, state);
+            }
+        }
+        pace(state);
+        int forced = i(board, "Ab");
+        if (state.lastForced == Integer.MIN_VALUE
+                || forced > state.lastForced + 100) {
+            state.piece++;
+            state.age = 0;
+            int width = Math.max(1, i(board, "O"));
+            int pieceWidth = Math.max(1, i(board, "C"));
+            int span = Math.max(1, width - pieceWidth + 1);
+            state.targetX = ((state.piece - 1) * 3) % span;
+            state.targetOrientation = state.piece & 1;
+        }
+        state.lastForced = forced;
+        state.age++;
+        int control = chooseControl(board, state);
+        state.tick++;
+        say(diffFrame("pre", board, control, state.tick));
+        return control;
+    }
+
+    public static void afterTick(Object board, int control) {
+        if (!REFLECT_BOT) return;
+        BotState state;
+        synchronized (BOT_STATES) {
+            state = BOT_STATES.get(board);
+        }
+        if (state != null) say(diffFrame("post", board, control, state.tick));
+    }
+
+    private static void pace(BotState state) {
+        if (BOT_TICK_NANOS <= 0L) return;
+        long now = System.nanoTime();
+        long wait = state.nextTickNanos - now;
+        if (wait > 0L) {
+            try {
+                long millis = wait / 1000000L;
+                int nanos = (int) (wait % 1000000L);
+                Thread.sleep(millis, nanos);
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        now = System.nanoTime();
+        state.nextTickNanos = Math.max(
+                state.nextTickNanos + BOT_TICK_NANOS,
+                now + BOT_TICK_NANOS);
+    }
+
+    private static int chooseControl(Object board, BotState state) {
+        if ("true".equals(z(board, "y"))) return 0;
+        int previous = i(board, "A") & 31;
+        int orientation = i(board, "ab") & 3;
+        if (orientation != state.targetOrientation) {
+            return (previous & 8) != 0 ? 0 : 8;
+        }
+        int x = i(board, "q");
+        if (x > state.targetX) return 1;
+        if (x < state.targetX) return 2;
+        // Exercise both normal gravity and accelerated timing while still
+        // finishing enough pieces to expose settle/queue mismatches quickly.
+        return state.age % 5 == 0 ? 0 : 16;
+    }
+
+    private static String diffFrame(
+            String phase, Object board, int control, int tick) {
+        int boardWidth = i(board, "O");
+        int boardHeight = i(board, "a");
+        int pieceWidth = i(board, "C");
+        int pieceHeight = i(board, "zb");
+        return "DIFF"
+                + " phase=" + phase
+                + " tick=" + tick
+                + " board=" + Integer.toHexString(System.identityHashCode(board))
+                + " ctrl=" + (control & 31)
+                + " bw=" + boardWidth
+                + " bh=" + boardHeight
+                + " grid=" + packedHex(board, "P", boardWidth * boardHeight)
+                + " pw=" + pieceWidth
+                + " ph=" + pieceHeight
+                + " piece=" + packedHex(board, "T", pieceWidth * pieceHeight)
+                + " x=" + i(board, "q")
+                + " y=" + i(board, "L")
+                + " orient=" + (i(board, "ab") & 3)
+                + " drop=" + i(board, "e")
+                + " forced=" + i(board, "Ab")
+                + " base=" + i(board, "g")
+                + " prev=" + (i(board, "A") & 31)
+                + " repeat=" + i(board, "Cb")
+                + " hp=" + i(board, "o")
+                + " vp=" + i(board, "db")
+                + " grounded=" + z(board, "y");
+    }
+
+    private static String packedHex(Object owner, String fieldName, int limit) {
+        StringBuilder out = new StringBuilder();
+        try {
+            Field f = field(owner, fieldName);
+            Object array = f == null ? null : f.get(owner);
+            int length = array == null ? 0 : java.lang.reflect.Array.getLength(array);
+            int count = Math.max(0, Math.min(length, limit));
+            for (int index = 0; index < count; index++) {
+                int value = java.lang.reflect.Array.getInt(array, index) & 31;
+                if (value < 16) out.append('0');
+                out.append(Integer.toHexString(value));
+            }
+        } catch (Throwable ignored) {}
+        return out.toString();
     }
 
     // ------------------------------------------------------------------
