@@ -6,6 +6,12 @@ const GUEST_BANK_PATH = "funorb-sample-bank.bin";
 const GUEST_TRACK_PATH = "diagnostic-track.ui.bin";
 const GUEST_SAMPLE_RATE = 22050;
 const METHOD_TIMING_ENABLED = QUERY.get("profile") !== "0";
+const EXCLUSIVE_TIMING_ROOT =
+  String(QUERY.get("exclusiveRoot") || "").trim() || null;
+const STRUCTURED_SSA_MODE = ["on", "off"].includes(
+  QUERY.get("structuredSsa")) ? QUERY.get("structuredSsa") : "default";
+const INLINE_LOOP_REGION_MODE = ["on", "off"].includes(
+  QUERY.get("inlineLoops")) ? QUERY.get("inlineLoops") : "default";
 const METHOD_TIMING_SAMPLE_RATE = Math.min(
   4096, Math.max(1, Number(QUERY.get("jitSampleRate")) || 128));
 const SCHEDULER_TIMING_SAMPLE_RATE = Math.min(
@@ -102,6 +108,18 @@ async function prepareJavaRuntime() {
   ]);
   const debug = new JVMDebug.BrowserJVMDebug();
   await debug.initialize();
+  if (STRUCTURED_SSA_MODE !== "default" ||
+      INLINE_LOOP_REGION_MODE !== "default") {
+    debug.debugController.options.jit = {
+      ...(debug.debugController.options.jit || {}),
+      ...(STRUCTURED_SSA_MODE === "default" ? {} : {
+        structuredSsa: STRUCTURED_SSA_MODE === "on",
+      }),
+      ...(INLINE_LOOP_REGION_MODE === "default" ? {} : {
+        inlineLoopRegions: INLINE_LOOP_REGION_MODE === "on",
+      }),
+    };
+  }
   await debug.loadFile(new File(
     [gameJarBytes], "dekobloko.jar",
     { type: "application/java-archive" }));
@@ -196,6 +214,10 @@ async function playTrackThroughJava(track) {
       if (methodProfiler && !methodProfiler.audioStarted && written > 0) {
         methodProfiler.jit.methodTimingSamples.clear();
         methodProfiler.jvm.resetSchedulerTimings();
+        if (!methodProfiler.jit.exclusiveTimingStack.length) {
+          methodProfiler.jit.exclusiveTimingSamples.clear();
+          methodProfiler.jit.exclusiveTimingEdges.clear();
+        }
         methodProfiler.audioStarted = true;
         methodProfiler.startedAtFrame = written;
       }
@@ -450,26 +472,47 @@ function formatGuestProfile(guest, methodProfile) {
       `≤50 ${histogram.le50Ms} · >50 ${histogram.over50Ms}`,
   ];
   if (methodProfile && methodProfile.enabled) {
-    lines.push(
-      `Sampled scheduler ownership (1/${methodProfile.schedulerRate}; estimated synchronous time):`);
-    if (!methodProfile.schedulerRows.length) {
-      lines.push("  no scheduler samples yet");
-    } else {
-      for (const row of methodProfile.schedulerRows.slice(0, 12)) {
-        lines.push(
-          `  ${row.estimatedTotalMs.toFixed(1).padStart(9)} ms · ` +
-          `${String(row.samples).padStart(5)} samples · ${row.method}`);
-      }
+    if (methodProfile.execution) {
+      lines.push(
+        `Generated regions: structured ${methodProfile.execution.structuredRuns} · ` +
+        `embedded array loops ${methodProfile.execution.inlineLoopRegionRuns} · ` +
+        `loop OSR ${methodProfile.execution.inlineLoopRegionOsr}`);
     }
-    lines.push(
-      `Sampled generated-method timings (1/${methodProfile.sampleRate}; inclusive estimates):`);
-    if (!methodProfile.rows.length) {
-      lines.push("  no generated method samples yet");
+    if (methodProfile.exclusiveRoot) {
+      lines.push(
+        `Exclusive generated timing rooted at ${methodProfile.exclusiveRoot}:`);
+      if (!methodProfile.exclusiveRows.length) {
+        lines.push("  root has not completed in the measured window");
+      } else {
+        for (const row of methodProfile.exclusiveRows.slice(0, 16)) {
+          lines.push(
+            `  ${row.exclusiveMs.toFixed(1).padStart(9)} ms self · ` +
+            `${row.inclusiveMs.toFixed(1).padStart(9)} inclusive · ` +
+            `${String(row.entries).padStart(6)} entries · ${row.tier} · ${row.method}`);
+        }
+      }
     } else {
-      for (const row of methodProfile.rows.slice(0, 12)) {
-        lines.push(
-          `  ${row.estimatedTotalMs.toFixed(1).padStart(9)} ms · ` +
-          `${String(row.samples).padStart(5)} samples · ${row.tier} · ${row.method}`);
+      lines.push(
+        `Sampled scheduler ownership (1/${methodProfile.schedulerRate}; estimated synchronous time):`);
+      if (!methodProfile.schedulerRows.length) {
+        lines.push("  no scheduler samples yet");
+      } else {
+        for (const row of methodProfile.schedulerRows.slice(0, 12)) {
+          lines.push(
+            `  ${row.estimatedTotalMs.toFixed(1).padStart(9)} ms · ` +
+            `${String(row.samples).padStart(5)} samples · ${row.method}`);
+        }
+      }
+      lines.push(
+        `Sampled generated-method timings (1/${methodProfile.sampleRate}; inclusive estimates):`);
+      if (!methodProfile.rows.length) {
+        lines.push("  no generated method samples yet");
+      } else {
+        for (const row of methodProfile.rows.slice(0, 12)) {
+          lines.push(
+            `  ${row.estimatedTotalMs.toFixed(1).padStart(9)} ms · ` +
+            `${String(row.samples).padStart(5)} samples · ${row.tier} · ${row.method}`);
+        }
       }
     }
   } else {
@@ -820,11 +863,17 @@ function instrumentationConfiguration() {
   return {
     chunkLatency: true,
     progressTelemetryIntervalMs: TELEMETRY_INTERVAL_MS,
-    generatedMethodSampling: METHOD_TIMING_ENABLED,
+    generatedMethodSampling:
+      METHOD_TIMING_ENABLED && !EXCLUSIVE_TIMING_ROOT,
     generatedMethodSampleRate:
-      METHOD_TIMING_ENABLED ? METHOD_TIMING_SAMPLE_RATE : 0,
+      METHOD_TIMING_ENABLED && !EXCLUSIVE_TIMING_ROOT
+        ? METHOD_TIMING_SAMPLE_RATE : 0,
     schedulerSampleRate:
-      METHOD_TIMING_ENABLED ? SCHEDULER_TIMING_SAMPLE_RATE : 0,
+      METHOD_TIMING_ENABLED && !EXCLUSIVE_TIMING_ROOT
+        ? SCHEDULER_TIMING_SAMPLE_RATE : 0,
+    exclusiveTimingRoot: EXCLUSIVE_TIMING_ROOT,
+    structuredSsa: STRUCTURED_SSA_MODE,
+    inlineLoopRegions: INLINE_LOOP_REGION_MODE,
     note: "Scheduler estimates attribute execution slices; generated-method estimates are inclusive and may overlap.",
   };
 }
@@ -834,7 +883,7 @@ function beginGuestMethodProfile() {
     state.javaDebug.debugController &&
     state.javaDebug.debugController.jvm;
   const jit = jvm && jvm.jit;
-  if (!jit || !METHOD_TIMING_ENABLED) return null;
+  if (!jit || !METHOD_TIMING_ENABLED && !EXCLUSIVE_TIMING_ROOT) return null;
   const profile = {
     jvm,
     jit,
@@ -842,15 +891,29 @@ function beginGuestMethodProfile() {
     previousRate: jit.methodTimingSampleRate,
     previousFilter: jit.methodTimingFilter,
     previousSchedulerProfile: jvm._schedulerTimingProfile,
+    previousExclusiveEnabled: jit.exclusiveTimingsEnabled,
+    previousExclusiveRoot: jit.exclusiveTimingRootKey,
+    previousExclusiveStack: jit.exclusiveTimingStack,
+    previousExclusiveSamples: jit.exclusiveTimingSamples,
+    previousExclusiveEdges: jit.exclusiveTimingEdges,
+    startingStructuredRuns: jit.structuredSsa.runCount,
+    startingInlineLoopRegionRuns: jit.inlineLoopRegionRunCount || 0,
+    startingInlineLoopRegionOsr: jit.inlineLoopRegionOsrCount || 0,
     audioStarted: false,
     startedAtFrame: 0,
   };
-  jit.profileTimings = true;
+  jit.profileTimings = METHOD_TIMING_ENABLED && !EXCLUSIVE_TIMING_ROOT;
   jit.methodTimingSampleRate = METHOD_TIMING_SAMPLE_RATE;
   jit.methodTimingFilter = null;
   jit.methodTimingSamples.clear();
+  jit.exclusiveTimingsEnabled = Boolean(EXCLUSIVE_TIMING_ROOT);
+  jit.exclusiveTimingRootKey = EXCLUSIVE_TIMING_ROOT;
+  jit.exclusiveTimingStack = [];
+  jit.exclusiveTimingSamples = new Map();
+  jit.exclusiveTimingEdges = new Map();
   if (typeof jvm.configureSchedulerTimings === "function") {
-    jvm.configureSchedulerTimings(SCHEDULER_TIMING_SAMPLE_RATE);
+    jvm.configureSchedulerTimings(
+      EXCLUSIVE_TIMING_ROOT ? 0 : SCHEDULER_TIMING_SAMPLE_RATE);
   }
   return profile;
 }
@@ -864,6 +927,10 @@ function snapshotGuestMethodProfile(profile) {
       startedAtFrame: 0,
       rows: [],
       schedulerRows: [],
+      exclusiveRoot: null,
+      exclusiveRows: [],
+      exclusiveEdges: [],
+      execution: null,
     };
   }
   const rate = profile.jit.methodTimingSampleRate;
@@ -888,6 +955,21 @@ function snapshotGuestMethodProfile(profile) {
     })).sort((left, right) =>
       right.estimatedTotalMs - left.estimatedTotalMs)
     : [];
+  const exclusiveRows = [...profile.jit.exclusiveTimingSamples.entries()]
+    .map(([method, value]) => ({
+      method,
+      tier: value.tier,
+      entries: value.samples,
+      exclusiveMs: value.totalMs,
+      inclusiveMs: value.inclusiveMs,
+      maximumExclusiveMs: value.maxMs,
+    }))
+    .sort((left, right) => right.exclusiveMs - left.exclusiveMs)
+    .slice(0, 40);
+  const exclusiveEdges = [...profile.jit.exclusiveTimingEdges.values()]
+    .map(value => ({...value}))
+    .sort((left, right) => right.totalMs - left.totalMs)
+    .slice(0, 60);
   return {
     enabled: true,
     sampleRate: rate,
@@ -898,6 +980,19 @@ function snapshotGuestMethodProfile(profile) {
     rows,
     schedulerRate: scheduler ? scheduler.rate : 0,
     schedulerRows,
+    exclusiveRoot: EXCLUSIVE_TIMING_ROOT,
+    exclusiveRows,
+    exclusiveEdges,
+    execution: {
+      structuredRuns:
+        profile.jit.structuredSsa.runCount - profile.startingStructuredRuns,
+      inlineLoopRegionRuns:
+        (profile.jit.inlineLoopRegionRunCount || 0) -
+        profile.startingInlineLoopRegionRuns,
+      inlineLoopRegionOsr:
+        (profile.jit.inlineLoopRegionOsrCount || 0) -
+        profile.startingInlineLoopRegionOsr,
+    },
   };
 }
 
@@ -907,6 +1002,11 @@ function endGuestMethodProfile(profile) {
   profile.jit.methodTimingSampleRate = profile.previousRate;
   profile.jit.methodTimingFilter = profile.previousFilter;
   profile.jvm._schedulerTimingProfile = profile.previousSchedulerProfile;
+  profile.jit.exclusiveTimingsEnabled = profile.previousExclusiveEnabled;
+  profile.jit.exclusiveTimingRootKey = profile.previousExclusiveRoot;
+  profile.jit.exclusiveTimingStack = profile.previousExclusiveStack;
+  profile.jit.exclusiveTimingSamples = profile.previousExclusiveSamples;
+  profile.jit.exclusiveTimingEdges = profile.previousExclusiveEdges;
 }
 
 function setJavaStatus(message, kind = "") {

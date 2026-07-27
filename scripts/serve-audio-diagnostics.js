@@ -130,12 +130,16 @@ function serveFile(file, urlPath, request, response) {
   });
 }
 
-server.listen(port, host, () => {
-  console.log(`FunOrb PCM diagnostics: http://${host}:${port}/audio-diagnostics/`);
-  console.log(`Audio data: ${dataRoot}`);
-  console.log(`Dekobloko JAR: ${javaManifest.gameJarSha256}`);
-  console.log(`Guest mixer driver: ${javaManifest.driverJarSha256}`);
-});
+if (process.argv.includes("--prepare-only")) {
+  console.log(JSON.stringify(javaManifest, null, 2));
+} else {
+  server.listen(port, host, () => {
+    console.log(`FunOrb PCM diagnostics: http://${host}:${port}/audio-diagnostics/`);
+    console.log(`Audio data: ${dataRoot}`);
+    console.log(`Dekobloko JAR: ${javaManifest.gameJarSha256}`);
+    console.log(`Guest mixer driver: ${javaManifest.driverJarSha256}`);
+  });
+}
 
 function resolveInside(root, relative) {
   let decoded;
@@ -178,6 +182,11 @@ function prepareJavaAssets() {
   ], { stdio: ["ignore", "ignore", "pipe"] });
   return {
     trackClassName: "JavaFunOrbTrackPlayer",
+    repositories: {
+      dekoblokoWork: gitMetadata(repositoryRoot),
+      javaTools: gitMetadata(javaToolsRoot),
+    },
+    environment: relevantEnvironment(),
     guestMixerSourceSha256: sha256(guestMixerSource),
     sampleBankSha256: sha256(sampleBankBinary),
     gameJarSha256: sha256(gameJar),
@@ -185,6 +194,49 @@ function prepareJavaAssets() {
     jvmBundleSha256: sha256(jvmBundle),
     webAudioSha256: sha256(webAudioBridge),
   };
+}
+
+function gitMetadata(root) {
+  const git = (args) => execFileSync("git", ["-C", root, ...args], {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  }).trim();
+  try {
+    const status = git(["status", "--porcelain=v1"]);
+    const trackedStatus = git([
+      "status", "--porcelain=v1", "--untracked-files=no",
+    ]);
+    const patch = execFileSync("git", ["-C", root, "diff", "--binary", "HEAD"], {
+      encoding: null,
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+    return {
+      revisionSha1: git(["rev-parse", "HEAD"]),
+      treeSha1: git(["rev-parse", "HEAD^{tree}"]),
+      trackedDirty: Boolean(trackedStatus),
+      dirty: Boolean(status),
+      trackedPatchSha256: crypto.createHash("sha256").update(patch).digest("hex"),
+    };
+  } catch {
+    return {
+      revisionSha1: null,
+      treeSha1: null,
+      trackedDirty: null,
+      dirty: null,
+      trackedPatchSha256: null,
+    };
+  }
+}
+
+function relevantEnvironment() {
+  const keys = Object.keys(process.env)
+    .filter(key => key.startsWith("JVM_") ||
+      key === "JAVA_TOOLS_DIR" ||
+      key === "FUNORB_AUDIO_DATA" ||
+      key === "AUDIO_DIAGNOSTICS_HOST" ||
+      key === "AUDIO_DIAGNOSTICS_PORT")
+    .sort();
+  return Object.fromEntries(keys.map(key => [key, process.env[key]]));
 }
 
 function sha256(file) {

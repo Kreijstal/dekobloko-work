@@ -1225,6 +1225,52 @@ does not use it.
 java-tools checkout, bind address, and port. Extracted sample data and the
 generated diagnostic JAR remain under `.work/` and are not committed.
 
+To run the identical guest mixer and track as an unpaced Node throughput
+benchmark:
+
+```bash
+node scripts/benchmark-guest-mixer-node.js
+```
+
+The JSON result records both repository revisions and dirty states, relevant
+`JVM_*` gates, Node/V8 versions, every input SHA-256, phase timings, deadline
+misses, and execution-tier counters. `--tier alternate` selects the alternate
+generated tier, while `--tier interpreter --stop-after-ms 12000` gives a
+bounded interpreter control. `--profile-timings` enables the same 1/128
+generated-method and 1/16 scheduler sampling used by the browser diagnostic;
+`--profile-methods` is a separate intrusive control that disables some
+inlining and should not be used for production comparisons.
+`--structured-ssa off` retains the baseline generated tier for a same-process
+differential against the default verified primitive-array-loop policy. Node
+uses the JVM's non-blocking mock
+`SourceDataLine`, so this isolates guest compute and bridge conversion rather
+than real-time browser scheduling or WebAudio backpressure.
+
+The browser page accepts the matching `?structuredSsa=off` differential;
+`?structuredSsa=on` enables the broader experimental tier, while omitting the
+parameter uses the default verified primitive-array-loop policy. The selected
+mode is included in submitted telemetry.
+`?inlineLoops=off` independently disables embedded primitive-array regions;
+`?inlineLoops=on` explicitly enables them. They are enabled by default. The
+profile reports region-entry and interpreter-OSR counts so a result can prove
+that every measured chunk reached optimized code.
+
+For low-overhead Firefox attribution, select one generated root with its JVM
+identity and disable the sampled profilers:
+
+```text
+/audio-diagnostics/?profile=0&exclusiveRoot=mi.b(%5BIII)V
+```
+
+This is a diagnostic selector, not an optimizer allowlist. Outside the selected
+subtree the JIT does not read the clock or format method keys. Inside it, exact
+entry/exit timing subtracts generated children and reports both self and
+inclusive time plus parent/child edges. Compare the steady chunk average with
+an unprofiled `?profile=0` run to quantify observer overhead. Browser telemetry
+also records the JVM bundle and input hashes, both repository commit/tree
+SHA-1s and dirty states, the tracked-patch SHA-256, relevant environment gates,
+and the selected structured-SSA mode.
+
 When porting mixer code, use the current deobfuscated mixer slice, not stale raw
 CFR source:
 
