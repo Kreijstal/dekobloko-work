@@ -303,6 +303,26 @@ function jitProfileSnapshot(jvm) {
         Number(jit.semanticBilinearSamplerRunCount || 0),
       semanticBilinearSamplerFallbacks:
         Number(jit.semanticBilinearSamplerFallbackCount || 0),
+      alphaMaskedColorBlitRuns:
+        Number(jit.alphaMaskedColorBlitRunCount || 0),
+      alphaMaskedColorBlitSlowPaths:
+        Number(jit.alphaMaskedColorBlitSlowPathCount || 0),
+      transparentIntBlitRuns:
+        Number(jit.transparentIntBlitRunCount || 0),
+      transparentIntBlitSlowPaths:
+        Number(jit.transparentIntBlitSlowPathCount || 0),
+      clippedGradientRuns:
+        Number(jit.clippedGradientRunCount || 0),
+      clippedGradientSlowPaths:
+        Number(jit.clippedGradientSlowPathCount || 0),
+      oversizedWasmFirstMethods:
+        Number(jit.oversizedWasmFirstMethodCount || 0),
+      longArithmeticWasmFirstMethods:
+        Number(jit.longArithmeticWasmFirstMethodCount || 0),
+      wasmRuns:
+        Number(jit.wasmJit && jit.wasmJit.runCount || 0),
+      referenceFramelessPositionalRuns:
+        Number(jit.referenceFramelessPositionalRunCount || 0),
       fusedRuns: Number(jit.fusedRunCount || 0),
       fusedDirectRuns: Number(jit.fusedDirectRunCount || 0),
       fusedGuardedFallbacks: Number(jit.fusedGuardedFallbackCount || 0),
@@ -369,6 +389,26 @@ function jitRuntimeCounters(jvm) {
       Number(jit.semanticBilinearSamplerRunCount || 0),
     semanticBilinearSamplerFallbacks:
       Number(jit.semanticBilinearSamplerFallbackCount || 0),
+    alphaMaskedColorBlitRuns:
+      Number(jit.alphaMaskedColorBlitRunCount || 0),
+    alphaMaskedColorBlitSlowPaths:
+      Number(jit.alphaMaskedColorBlitSlowPathCount || 0),
+    transparentIntBlitRuns:
+      Number(jit.transparentIntBlitRunCount || 0),
+    transparentIntBlitSlowPaths:
+      Number(jit.transparentIntBlitSlowPathCount || 0),
+    clippedGradientRuns:
+      Number(jit.clippedGradientRunCount || 0),
+    clippedGradientSlowPaths:
+      Number(jit.clippedGradientSlowPathCount || 0),
+    oversizedWasmFirstMethods:
+      Number(jit.oversizedWasmFirstMethodCount || 0),
+    longArithmeticWasmFirstMethods:
+      Number(jit.longArithmeticWasmFirstMethodCount || 0),
+    wasmRuns:
+      Number(jit.wasmJit && jit.wasmJit.runCount || 0),
+    referenceFramelessPositionalRuns:
+      Number(jit.referenceFramelessPositionalRunCount || 0),
     fusedRuns: Number(jit.fusedRunCount || 0),
     fusedDirectRuns: Number(jit.fusedDirectRunCount || 0),
     fusedGuardedFallbacks: Number(jit.fusedGuardedFallbackCount || 0),
