@@ -5,6 +5,7 @@ const fs = require("fs");
 const http = require("http");
 const path = require("path");
 const crypto = require("crypto");
+const zlib = require("zlib");
 const { execFileSync } = require("child_process");
 
 const repositoryRoot = path.resolve(__dirname, "..");
@@ -22,12 +23,23 @@ const javaAssetRoot = path.join(
   repositoryRoot, ".work", "audio-diagnostics", "java");
 const telemetryFile = path.join(
   repositoryRoot, ".work", "telemetry", "audio-diagnostics.jsonl");
+const animationTelemetryFile = path.join(
+  repositoryRoot, ".work", "telemetry", "animation-diagnostics.jsonl");
 const javaJar = path.join(javaAssetRoot, "funorb-guest-mixer.jar");
 const sampleBankBinary = path.join(
   javaAssetRoot, "funorb-sample-bank.bin");
 const jvmBundle = path.join(javaToolsRoot, "dist", "jvm-debug.js");
 const webAudioBridge = path.join(javaToolsRoot, "dist", "web-audio.js");
 const originalClasses = path.join(repositoryRoot, "classes-original");
+const animationAssetRoot = path.join(
+  repositoryRoot, ".work", "animation-diagnostics");
+const sceneTrace = path.resolve(process.env.DEKOBLOKO_SCENE_TRACE ||
+  path.join(animationAssetRoot, "logo-animation-trace.json"));
+const sceneClassesJar = path.resolve(process.env.DEKOBLOKO_SCENE_CLASSES_JAR ||
+  path.join(repositoryRoot, ".work", "games", "dekobloko",
+    "hybrid-all-recompiled-lean-carriers.jar"));
+const compressedSceneTrace = path.join(
+  animationAssetRoot, "logo-animation-trace.json.gz");
 
 const contentTypes = new Map([
   [".html", "text/html; charset=utf-8"],
@@ -38,17 +50,28 @@ const contentTypes = new Map([
 ]);
 
 const javaManifest = prepareJavaAssets();
+const animationManifest = prepareAnimationAssets();
 
 const server = http.createServer((request, response) => {
   const url = new URL(request.url, `http://${request.headers.host || "localhost"}`);
   let file;
   if (url.pathname === "/api/audio-diagnostics" && request.method === "POST") {
-    receiveTelemetry(request, response);
+    receiveTelemetry(request, response, telemetryFile);
     return;
   }
   if (url.pathname === "/api/audio-diagnostics/latest" &&
       request.method === "GET") {
-    serveLatestTelemetry(response);
+    serveLatestTelemetry(response, telemetryFile);
+    return;
+  }
+  if (url.pathname === "/api/animation-diagnostics" &&
+      request.method === "POST") {
+    receiveTelemetry(request, response, animationTelemetryFile);
+    return;
+  }
+  if (url.pathname === "/api/animation-diagnostics/latest" &&
+      request.method === "GET") {
+    serveLatestTelemetry(response, animationTelemetryFile);
     return;
   }
   if (url.pathname === "/jvm-assets/manifest.json") {
@@ -66,6 +89,11 @@ const server = http.createServer((request, response) => {
     response.end();
     return;
   }
+  if (url.pathname === "/animation-diagnostics") {
+    response.writeHead(302, { Location: "/animation-diagnostics/" });
+    response.end();
+    return;
+  }
   if (url.pathname === "/audio-diagnostics") {
     response.writeHead(302, { Location: "/audio-diagnostics/" });
     response.end();
@@ -76,6 +104,11 @@ const server = http.createServer((request, response) => {
   } else if (url.pathname.startsWith("/audio-diagnostics/")) {
     const relative = url.pathname === "/audio-diagnostics/"
       ? "audio-diagnostics/index.html"
+      : url.pathname.slice(1);
+    file = resolveInside(webRoot, relative);
+  } else if (url.pathname.startsWith("/animation-diagnostics/")) {
+    const relative = url.pathname === "/animation-diagnostics/"
+      ? "animation-diagnostics/index.html"
       : url.pathname.slice(1);
     file = resolveInside(webRoot, relative);
   } else if (url.pathname.startsWith("/music-visualizer/")) {
@@ -90,6 +123,20 @@ const server = http.createServer((request, response) => {
     file = javaJar;
   } else if (url.pathname === "/jvm-assets/funorb-sample-bank.bin") {
     file = sampleBankBinary;
+  } else if (url.pathname === "/animation-assets/manifest.json") {
+    const body = Buffer.from(JSON.stringify(animationManifest, null, 2));
+    response.writeHead(200, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Length": body.length,
+      "Cache-Control": "no-cache",
+    });
+    response.end(body);
+    return;
+  } else if (url.pathname === "/animation-assets/scene-classes.jar") {
+    file = sceneClassesJar;
+  } else if (url.pathname === "/animation-assets/animation-trace.json") {
+    serveGzipJson(compressedSceneTrace, request, response);
+    return;
   }
   if (!file) {
     response.writeHead(404, {"Content-Type": "text/plain; charset=utf-8"});
@@ -130,6 +177,32 @@ function serveFile(file, urlPath, request, response) {
   });
 }
 
+function serveGzipJson(file, request, response) {
+  fs.stat(file, (statError, stat) => {
+    if (statError || !stat.isFile()) {
+      response.writeHead(404, {"Content-Type": "text/plain; charset=utf-8"});
+      response.end("Not found\n");
+      return;
+    }
+    const etag = `W/"${stat.size}-${Math.trunc(stat.mtimeMs)}"`;
+    if (request.headers["if-none-match"] === etag) {
+      response.writeHead(304, { ETag: etag });
+      response.end();
+      return;
+    }
+    response.writeHead(200, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Encoding": "gzip",
+      "Content-Length": stat.size,
+      "Cache-Control": "public, max-age=3600",
+      ETag: etag,
+      "X-Content-Type-Options": "nosniff",
+    });
+    if (request.method === "HEAD") response.end();
+    else fs.createReadStream(file).pipe(response);
+  });
+}
+
 if (process.argv.includes("--prepare-only")) {
   console.log(JSON.stringify(javaManifest, null, 2));
 } else {
@@ -138,6 +211,7 @@ if (process.argv.includes("--prepare-only")) {
     console.log(`Audio data: ${dataRoot}`);
     console.log(`Dekobloko JAR: ${javaManifest.gameJarSha256}`);
     console.log(`Guest mixer driver: ${javaManifest.driverJarSha256}`);
+    console.log(`Scene replay: ${animationManifest.sceneTraceSha256}`);
   });
 }
 
@@ -193,6 +267,43 @@ function prepareJavaAssets() {
     driverJarSha256: sha256(javaJar),
     jvmBundleSha256: sha256(jvmBundle),
     webAudioSha256: sha256(webAudioBridge),
+  };
+}
+
+function prepareAnimationAssets() {
+  for (const file of [jvmBundle, sceneTrace, sceneClassesJar]) {
+    if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
+      throw new Error(`Animation diagnostic dependency is missing: ${file}`);
+    }
+  }
+  fs.mkdirSync(animationAssetRoot, { recursive: true });
+  const sourceStat = fs.statSync(sceneTrace);
+  const compressedStat = fs.statSync(
+    compressedSceneTrace, { throwIfNoEntry: false });
+  if (!compressedStat || compressedStat.mtimeMs < sourceStat.mtimeMs) {
+    fs.writeFileSync(compressedSceneTrace,
+      zlib.gzipSync(fs.readFileSync(sceneTrace), { level: 9 }));
+    fs.utimesSync(compressedSceneTrace,
+      sourceStat.atime, sourceStat.mtime);
+  }
+  const traceHeader = fs.readFileSync(sceneTrace, "utf8").slice(0, 1024);
+  const methodKey = /"methodKey"\s*:\s*"([^"]+)"/.exec(traceHeader)?.[1] || null;
+  return {
+    schema: 2,
+    workload: "moving-logo-animation",
+    methodKey,
+    repositories: {
+      dekoblokoWork: gitMetadata(repositoryRoot),
+      javaTools: gitMetadata(javaToolsRoot),
+    },
+    environment: relevantEnvironment(),
+    jvmBundleSha256: sha256(jvmBundle),
+    sceneTraceSha256: sha256(sceneTrace),
+    sceneTraceBytes: sourceStat.size,
+    compressedSceneTraceBytes: fs.statSync(compressedSceneTrace).size,
+    sceneClassesJarSha256: sha256(sceneClassesJar),
+    sceneClassesJarBytes: fs.statSync(sceneClassesJar).size,
+    generatedFromGameJarSha256: sha256(gameJar),
   };
 }
 
@@ -274,7 +385,7 @@ function int32(value) {
   return bytes;
 }
 
-function receiveTelemetry(request, response) {
+function receiveTelemetry(request, response, destination) {
   const chunks = [];
   let length = 0;
   request.on("data", chunk => {
@@ -301,8 +412,8 @@ function receiveTelemetry(request, response) {
         remoteAddress: request.socket.remoteAddress || null,
         userAgent: request.headers["user-agent"] || null,
       };
-      fs.mkdirSync(path.dirname(telemetryFile), { recursive: true });
-      fs.appendFileSync(telemetryFile, `${JSON.stringify(record)}\n`);
+      fs.mkdirSync(path.dirname(destination), { recursive: true });
+      fs.appendFileSync(destination, `${JSON.stringify(record)}\n`);
       response.writeHead(204, {"Cache-Control": "no-store"});
       response.end();
     } catch (error) {
@@ -312,10 +423,10 @@ function receiveTelemetry(request, response) {
   });
 }
 
-function serveLatestTelemetry(response) {
+function serveLatestTelemetry(response, source) {
   let records = [];
   try {
-    records = fs.readFileSync(telemetryFile, "utf8")
+    records = fs.readFileSync(source, "utf8")
       .trim()
       .split("\n")
       .filter(Boolean)

@@ -159,6 +159,86 @@ Selection remains class- and method-name independent; names are retained only
 in diagnostic output. Set `JVM_DISABLE_LEXICAL_FUSED_KERNELS=1` for the
 state-machine A/B control.
 
+### Extracted real-scene animation loop
+
+The end-to-end logo benchmark still includes startup, asset work, animation
+timing, and presentation. The focused diagnostic restores a captured entry to
+the original guest logo renderer and repeatedly feeds it changing animation
+progress:
+
+```text
+http://localhost:8775/animation-diagnostics/
+```
+
+This is deliberately not the earlier fixed-scene replay. The harness finds the
+dominant integer static input from the captured method's bytecode shape (eight
+reads versus one each for the next candidates), advances it through
+`0,25,…,175`, and loops that sequence. It executes the original guest method,
+nested geometry and raster calls, live object graph, initialized statics,
+exception tables, and scheduler semantics against the full 640×480 software
+surface. No optimizer decision contains the guest class, method, or field
+names.
+
+Every frame gets a full-surface FNV hash. A run fails unless it produces at
+least two distinct surfaces and changes at least half its consecutive frame
+transitions. Results include unique and changed-frame counts, a hash of the
+whole temporal sequence, guest/render/upload time, 60 and 30 FPS deadline
+misses, scheduler ticks, JIT counters, remote telemetry, and exact source
+provenance.
+
+Generate or refresh the input capture with:
+
+```bash
+DEKOBLOKO_URL=http://127.0.0.1:3780/ \
+PROBE_WAIT_MS=18000 \
+PROBE_CHANGED_FRAMES=10 \
+PROBE_TRACE_METHOD='qc.a(III)V' \
+PROBE_TRACE_AFTER_CHANGED_FRAMES=2 \
+PROBE_TRACE_OUTPUT="$PWD/.work/animation-diagnostics/logo-animation-trace.json" \
+npm --prefix ../java-tools run profile:dekobloko:firefox
+```
+
+The delayed trace gate matters: it captures the renderer only after visible
+animation has begun, instead of capturing an earlier asset-preparation call.
+Trace mode temporarily requests canonical child Frames so a positional
+frameless call can be captured without changing the normal optimized path.
+The JIT also has a regression test proving that an unset trace target cannot
+accidentally capture a `null` method identity.
+
+The diagnostics server reads that state plus
+`.work/games/dekobloko/hybrid-all-recompiled-lean-carriers.jar`. Override them
+with `DEKOBLOKO_SCENE_TRACE` and `DEKOBLOKO_SCENE_CLASSES_JAR`. It serves the
+48.0 MB JSON capture as a 782 KB gzip response and records the trace, class
+JAR, generating game JAR, JVM bundle, repository, dirty-tree, and environment
+identities.
+
+The fast Node measurement is:
+
+```bash
+DEKOBLOKO_ANIMATION_FRAMES=40 \
+DEKOBLOKO_ANIMATION_WARMUPS=8 \
+node scripts/benchmark-dekobloko-animation.js
+```
+
+On 2026-07-28, Node 26.4 measured **104.00 moving frames/s** with an
+8.227 ms median guest frame. All 39 consecutive transitions changed and all 40
+full-surface hashes were distinct. Three clean headless Firefox 146 paced runs
+measured 45.73, 42.55, and 42.61 moving frames/s (**42.61 median**), with
+17–18 ms median guest time, 19–20 ms median guest-plus-upload time, 29/29
+changed transitions, 30 distinct surfaces, identical temporal sequence hash
+`1456157722`, and no page or JVM errors.
+
+The recorded inputs were trace SHA-256
+`5b49fe4d0739167c0db566a8753661610fe357f82fe2e4398b5049582daa0a79`,
+classes JAR SHA-256
+`b7e6941c374dce4eeb9230690b618935dadda78372977b1888d8f447f167bb16`,
+game JAR SHA-256
+`a22410ad930334f54672ce8acdf25d88c31e380550e8f88a5618bb730f3cf06e`,
+and browser JVM bundle SHA-256
+`1744b7e37dd670e7c3f668d5fa2645baab27b63ad8b18f1460aa83e677311f0f`.
+Both repositories were tracked-dirty, so the emitted manifests also retain
+their commits, trees, and tracked-patch hashes.
+
 ### JVM.js Firefox renderer performance
 
 The authoritative optimization diary, benchmark commands, accepted and rejected
