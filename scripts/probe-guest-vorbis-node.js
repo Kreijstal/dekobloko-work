@@ -22,14 +22,27 @@ const vorbisIds = Object.keys(bank.samples)
   .filter(key => key.startsWith("vorbis:"))
   .map(key => Number(key.slice("vorbis:".length)))
   .sort((left, right) => left - right);
-const vorbisFiles = fs.readdirSync(sampleRoot).sort();
+const sampleFilesByPhysicalIndex = new Map();
+for (const name of fs.readdirSync(sampleRoot)) {
+  const match = /^(\d+)_sample\.packvorbis\.bin$/.exec(name);
+  if (!match) continue;
+  const physicalIndex = Number(match[1]);
+  if (sampleFilesByPhysicalIndex.has(physicalIndex)) {
+    throw new Error(`duplicate Vorbis physical sample ${physicalIndex}`);
+  }
+  sampleFilesByPhysicalIndex.set(physicalIndex, name);
+}
+const vorbisFilesById = new Map(vorbisIds.map((id, physicalIndex) => [
+  id,
+  sampleFilesByPhysicalIndex.get(physicalIndex + 1),
+]));
 const titleDecodeOrder = [90, 64, 30, 45, 22, 75, 86];
 const inputs = [
   path.join(sampleRoot, "00_headers.packvorbis.bin"),
   ...titleDecodeOrder.map(id => {
-    const physicalIndex = vorbisIds.indexOf(id);
-    if (physicalIndex < 0) throw new Error(`missing Vorbis sample id ${id}`);
-    return path.join(sampleRoot, vorbisFiles[physicalIndex + 1]);
+    const filename = vorbisFilesById.get(id);
+    if (!filename) throw new Error(`missing Vorbis sample id ${id}`);
+    return path.join(sampleRoot, filename);
   }),
 ];
 

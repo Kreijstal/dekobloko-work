@@ -3,7 +3,9 @@ const els = Object.fromEntries([
   "fps", "guest", "upload", "misses", "ticks", "hash", "details",
 ].map(id => [id, document.getElementById(id)]));
 const {
+  findSurfaceClearMethod,
   normalizeLogoTimeline,
+  sequenceHashesByLoop,
   summarizeLogoTimeline,
 } = globalThis.DekoblokoLogoTimeline;
 
@@ -420,18 +422,6 @@ function stats(values) {
   };
 }
 
-function sequenceHashesByLoop(rows, statesPerLoop) {
-  const hashes = [];
-  for (let offset = 0; offset < rows.length; offset += statesPerLoop) {
-    let hash = 2166136261;
-    for (const row of rows.slice(offset, offset + statesPerLoop)) {
-      hash = Math.imul(hash ^ row.hash, 16777619) >>> 0;
-    }
-    hashes.push(hash);
-  }
-  return hashes;
-}
-
 function jitCounters() {
   const jit = state.jvm.jit;
   return {
@@ -460,42 +450,6 @@ function findSurface(jvm) {
   }
   candidates.sort((left, right) => right.pixels.length - left.pixels.length);
   return candidates[0] || null;
-}
-
-function findSurfaceClearMethod(jvm, surfaceField) {
-  const fieldIdentity = JSON.stringify(surfaceField);
-  const candidates = [];
-  for (const [className, classData] of Object.entries(jvm.classes)) {
-    for (const item of classData?.ast?.classes?.[0]?.items || []) {
-      if (item.type !== "method" || item.method.descriptor !== "()V" ||
-          item.method.handlers?.length) continue;
-      const code = jvm.jit.getCodeItems(item.method);
-      const surfaceReads = code.filter(codeItem =>
-        codeItem?.instruction?.op === "getstatic" &&
-        JSON.stringify(codeItem.instruction.arg) === fieldIdentity).length;
-      const zeroStores = code.filter((codeItem, index) =>
-        instructionOp(codeItem) === "iastore" &&
-        instructionOp(code[index - 1]) === "iconst_0").length;
-      if (surfaceReads >= 4 && zeroStores >= 4) {
-        candidates.push({
-          method: item.method,
-          className,
-          surfaceReads,
-          zeroStores,
-        });
-      }
-    }
-  }
-  candidates.sort((left, right) =>
-    right.surfaceReads - left.surfaceReads ||
-    right.zeroStores - left.zeroStores);
-  if (candidates.length !== 1) return null;
-  return candidates[0];
-}
-
-function instructionOp(item) {
-  const instruction = item?.instruction;
-  return typeof instruction === "string" ? instruction : instruction?.op;
 }
 
 function findAnimationProgressField(jvm, method) {

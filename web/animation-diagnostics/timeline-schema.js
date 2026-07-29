@@ -51,5 +51,64 @@
     };
   }
 
-  return Object.freeze({normalizeLogoTimeline, summarizeLogoTimeline});
+  function sequenceHashesByLoop(rows, statesPerLoop) {
+    const hashes = [];
+    for (let offset = 0; offset < rows.length; offset += statesPerLoop) {
+      let hash = 2166136261;
+      for (const row of rows.slice(offset, offset + statesPerLoop)) {
+        hash = Math.imul(hash ^ row.hash, 16777619) >>> 0;
+      }
+      hashes.push(hash);
+    }
+    return hashes;
+  }
+
+  function instructionOp(item) {
+    const instruction = item && item.instruction;
+    return typeof instruction === "string" ? instruction :
+      instruction && instruction.op;
+  }
+
+  function findSurfaceClearMethod(jvm, surfaceField, onAmbiguous) {
+    const fieldIdentity = JSON.stringify(surfaceField);
+    const candidates = [];
+    for (const [className, classData] of Object.entries(jvm.classes)) {
+      const classItem = classData && classData.ast &&
+        classData.ast.classes && classData.ast.classes[0];
+      for (const item of classItem && classItem.items || []) {
+        if (item.type !== "method" || item.method.descriptor !== "()V" ||
+            item.method.handlers && item.method.handlers.length) continue;
+        const code = jvm.jit.getCodeItems(item.method);
+        const surfaceReads = code.filter(codeItem =>
+          codeItem && codeItem.instruction &&
+          codeItem.instruction.op === "getstatic" &&
+          JSON.stringify(codeItem.instruction.arg) === fieldIdentity).length;
+        const zeroStores = code.filter((codeItem, index) =>
+          instructionOp(codeItem) === "iastore" &&
+          instructionOp(code[index - 1]) === "iconst_0").length;
+        if (surfaceReads >= 4 && zeroStores >= 4) {
+          candidates.push({
+            method: item.method,
+            className,
+            surfaceReads,
+            zeroStores,
+          });
+        }
+      }
+    }
+    candidates.sort((left, right) =>
+      right.surfaceReads - left.surfaceReads ||
+      right.zeroStores - left.zeroStores);
+    if (candidates.length === 1) return candidates[0];
+    return typeof onAmbiguous === "function" ?
+      onAmbiguous(candidates.length) : null;
+  }
+
+  return Object.freeze({
+    findSurfaceClearMethod,
+    instructionOp,
+    normalizeLogoTimeline,
+    sequenceHashesByLoop,
+    summarizeLogoTimeline,
+  });
 }));

@@ -49,7 +49,9 @@ public final class AudioTrace {
     private AudioTrace() {
     }
 
-    public static void mixerStart(Object mixer, int frames, int budget) {
+    public static synchronized void mixerStart(
+        Object mixer, int frames, int budget
+    ) {
         MixerStats stats = MIXERS.get(mixer);
         if (stats == null) {
             stats = new MixerStats(nextMixerId++);
@@ -61,7 +63,7 @@ public final class AudioTrace {
         stats.budget = budget;
     }
 
-    public static void mixerEnd(Object mixer) {
+    public static synchronized void mixerEnd(Object mixer) {
         MixerStats stats = MIXERS.get(mixer);
         currentMixer = null;
         if (stats == null || stats.chunks < REPORT_CHUNKS) return;
@@ -72,7 +74,9 @@ public final class AudioTrace {
         stats.resetInterval();
     }
 
-    public static void dispatch(Object stream, boolean mixed, int frames) {
+    public static synchronized void dispatch(
+        Object stream, boolean mixed, int frames
+    ) {
         MixerStats stats = currentMixer;
         if (stats == null) return;
         String type = stream == null ? "null" : stream.getClass().getName();
@@ -84,7 +88,7 @@ public final class AudioTrace {
         }
     }
 
-    public static void catchup(Object mixer, int frames) {
+    public static synchronized void catchup(Object mixer, int frames) {
         MixerStats stats = MIXERS.get(mixer);
         if (stats == null) {
             stats = new MixerStats(nextMixerId++);
@@ -94,7 +98,7 @@ public final class AudioTrace {
         stats.catchupFrames += frames;
     }
 
-    public static void voiceCreated(
+    public static synchronized void voiceCreated(
         Object stream,
         int channel,
         int sample,
@@ -115,13 +119,15 @@ public final class AudioTrace {
         captureSource(voice, stream);
     }
 
-    public static void compressedCreated(Object decoder, byte[] encoded) {
+    public static synchronized void compressedCreated(
+        Object decoder, byte[] encoded
+    ) {
         CompressedStats stats = new CompressedStats();
         fingerprint(encoded, stats, true);
         COMPRESSED.put(decoder, stats);
     }
 
-    public static void compressedHeader(byte[] encoded) {
+    public static synchronized void compressedHeader(byte[] encoded) {
         CompressedStats stats = new CompressedStats();
         fingerprint(encoded, stats, true);
         headerCalls++;
@@ -131,12 +137,12 @@ public final class AudioTrace {
         headerSequence = ++decoderSequence;
     }
 
-    public static void compressedCleanup() {
+    public static synchronized void compressedCleanup() {
         cleanupCalls++;
         cleanupSequence = ++decoderSequence;
     }
 
-    public static void compressedHeaderComplete(
+    public static synchronized void compressedHeaderComplete(
         int smallBlock,
         int largeBlock,
         float[] firstA,
@@ -167,7 +173,7 @@ public final class AudioTrace {
         headerTableChecksum = checksum;
     }
 
-    public static void packetDecodeStart() {
+    public static synchronized void packetDecodeStart() {
         activePacketDecodes++;
         if (activePacketDecodes > maximumConcurrentPacketDecodes) {
             maximumConcurrentPacketDecodes = activePacketDecodes;
@@ -175,11 +181,13 @@ public final class AudioTrace {
         if (activePacketDecodes > 1) overlappingPacketDecodes++;
     }
 
-    public static void packetDecodeEnd() {
+    public static synchronized void packetDecodeEnd() {
         activePacketDecodes--;
     }
 
-    public static void decodedCreated(Object decoder, Object decoded) {
+    public static synchronized void decodedCreated(
+        Object decoder, Object decoded
+    ) {
         CompressedStats stats = COMPRESSED.get(decoder);
         if (stats == null) {
             stats = new CompressedStats();
@@ -243,7 +251,9 @@ public final class AudioTrace {
         voice.sourceChecksum = checksum;
     }
 
-    public static void leafStart(Object stream, int[] output, int offset, int frames) {
+    public static synchronized void leafStart(
+        Object stream, int[] output, int offset, int frames
+    ) {
         VoiceStats voice = voice(stream);
         voice.mixCalls++;
         int length = output == null ? 0 : output.length;
@@ -254,7 +264,9 @@ public final class AudioTrace {
         }
     }
 
-    public static void leafEnd(Object stream, int[] output, int offset, int frames) {
+    public static synchronized void leafEnd(
+        Object stream, int[] output, int offset, int frames
+    ) {
         VoiceStats voice = voice(stream);
         int length = output == null ? 0 : output.length;
         int probeLength = Math.min(voice.probeLength, length);
