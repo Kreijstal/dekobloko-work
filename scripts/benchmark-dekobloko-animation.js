@@ -17,9 +17,10 @@ const tracePath = path.resolve(process.argv[2] ||
 const classpath = path.resolve(process.argv[3] ||
   path.join(root, ".work", "jvmjs",
     "hybrid-all-recompiled-lean-carriers", "classes"));
-const frames = positiveInteger("DEKOBLOKO_ANIMATION_FRAMES", 40);
+const timelinePath = path.join(
+  root, "web", "animation-diagnostics", "logo-timeline.json");
+const loops = positiveInteger("DEKOBLOKO_ANIMATION_LOOPS", 1);
 const warmups = positiveInteger("DEKOBLOKO_ANIMATION_WARMUPS", 8);
-const progressValues = [0, 25, 50, 75, 100, 125, 150, 175];
 
 function positiveInteger(name, fallback) {
   const value = Number(process.env[name] || fallback);
@@ -27,6 +28,35 @@ function positiveInteger(name, fallback) {
     throw new Error(`${name} must be a positive integer`);
   }
   return value;
+}
+
+function loadTimeline(file, gameJarSha256) {
+  const value = JSON.parse(fs.readFileSync(file, "utf8"));
+  const start = Number(value?.start);
+  const end = Number(value?.end);
+  const step = Number(value?.step);
+  const tickNanoseconds = Number(value?.tickNanoseconds);
+  if (value?.schema !== 1 ||
+      !Number.isSafeInteger(start) ||
+      !Number.isSafeInteger(end) ||
+      !Number.isSafeInteger(step) || step <= 0 ||
+      end < start || (end - start) % step !== 0 ||
+      !Number.isSafeInteger(tickNanoseconds) || tickNanoseconds <= 0 ||
+      value.generatedFromGameJarSha256 !== gameJarSha256) {
+    throw new Error("logo timeline is invalid or belongs to another game JAR");
+  }
+  return {
+    schema: value.schema,
+    workload: value.workload,
+    start,
+    end,
+    step,
+    tickNanoseconds,
+    tickMs: tickNanoseconds / 1e6,
+    values: Array.from(
+      { length: (end - start) / step + 1 },
+      (_unused, index) => start + index * step),
+  };
 }
 
 function frameKey(jvm, frame) {
@@ -50,6 +80,18 @@ function hashPixels(pixels, count) {
       hash ^ (Number(pixels[index]) | 0), 16777619) >>> 0;
   }
   return hash;
+}
+
+function sequenceHashesByLoop(rows, statesPerLoop) {
+  const hashes = [];
+  for (let offset = 0; offset < rows.length; offset += statesPerLoop) {
+    let hash = 2166136261;
+    for (const row of rows.slice(offset, offset + statesPerLoop)) {
+      hash = Math.imul(hash ^ row.hash, 16777619) >>> 0;
+    }
+    hashes.push(hash);
+  }
+  return hashes;
 }
 
 function findAnimationProgressField(jvm, method) {
@@ -91,6 +133,45 @@ function findSurface(jvm) {
   candidates.sort((left, right) => right.pixels.length - left.pixels.length);
   if (!candidates[0]) throw new Error("captured software raster was not found");
   return candidates[0];
+}
+
+function findSurfaceClearMethod(jvm, surfaceField) {
+  const fieldIdentity = JSON.stringify(surfaceField);
+  const candidates = [];
+  for (const [className, classData] of Object.entries(jvm.classes)) {
+    for (const item of classData?.ast?.classes?.[0]?.items || []) {
+      if (item.type !== "method" || item.method.descriptor !== "()V" ||
+          item.method.handlers?.length) continue;
+      const code = jvm.jit.getCodeItems(item.method);
+      const surfaceReads = code.filter((codeItem) =>
+        codeItem?.instruction?.op === "getstatic" &&
+        JSON.stringify(codeItem.instruction.arg) === fieldIdentity).length;
+      const zeroStores = code.filter((codeItem, index) =>
+        instructionOp(codeItem) === "iastore" &&
+        instructionOp(code[index - 1]) === "iconst_0").length;
+      if (surfaceReads >= 4 && zeroStores >= 4) {
+        candidates.push({
+          method: item.method,
+          className,
+          surfaceReads,
+          zeroStores,
+        });
+      }
+    }
+  }
+  candidates.sort((left, right) =>
+    right.surfaceReads - left.surfaceReads ||
+    right.zeroStores - left.zeroStores);
+  if (candidates.length !== 1) {
+    throw new Error(
+      `captured software raster has ${candidates.length} clear candidates`);
+  }
+  return candidates[0];
+}
+
+function instructionOp(item) {
+  const instruction = item?.instruction;
+  return typeof instruction === "string" ? instruction : instruction?.op;
 }
 
 function median(values) {
@@ -137,16 +218,14 @@ function gitMetadata(directory) {
   };
 }
 
-async function invoke(runtime, progress) {
-  runtime.jvm.jit.putStaticSync(runtime.progressField.field, progress);
-  const frame = new Frame(runtime.method);
-  frame.className = runtime.className;
-  frame.locals = runtime.locals.slice();
+async function invokeGuestFrame(runtime, method, className, locals) {
+  const frame = new Frame(method);
+  frame.className = className;
+  frame.locals = locals.slice();
   runtime.thread.status = "runnable";
   runtime.thread.pendingException = null;
   runtime.thread.callStack.push(frame);
   let ticks = 0;
-  const started = process.hrtime.bigint();
   while (!runtime.thread.callStack.isEmpty()) {
     await runtime.jvm.executeTick();
     if (Date.now() >= runtime.jvm._nextEventLoopYieldAt) {
@@ -160,6 +239,17 @@ async function invoke(runtime, progress) {
     throw new Error(
       `animation left pending exception ${JSON.stringify(runtime.thread.pendingException)}`);
   }
+  return ticks;
+}
+
+async function invoke(runtime, progress) {
+  runtime.jvm.jit.putStaticSync(runtime.progressField.field, progress);
+  const started = process.hrtime.bigint();
+  let ticks = 0;
+  ticks += await invokeGuestFrame(
+    runtime, runtime.clearMethod, runtime.clearClassName, []);
+  ticks += await invokeGuestFrame(
+    runtime, runtime.method, runtime.className, runtime.locals);
   return {
     nanoseconds: Number(process.hrtime.bigint() - started),
     ticks,
@@ -173,6 +263,10 @@ async function main() {
       "Usage: node scripts/benchmark-dekobloko-animation.js " +
       "[trace.json] [class-directory]");
   }
+  const gameJarSha256 = sha256(path.join(root, "dekobloko.jar"));
+  const timeline = loadTimeline(timelinePath, gameJarSha256);
+  const progressValues = timeline.values;
+  const frames = loops * progressValues.length;
   const trace = JSON.parse(fs.readFileSync(tracePath, "utf8"));
   trace.state.classpath = [classpath];
   const jvm = new JVM({ classpath: [classpath], jit: {
@@ -205,6 +299,9 @@ async function main() {
     progressField: findAnimationProgressField(jvm, restored.frame.method),
     surface: findSurface(jvm),
   };
+  const clearTarget = findSurfaceClearMethod(jvm, runtime.surface.field);
+  runtime.clearMethod = clearTarget.method;
+  runtime.clearClassName = clearTarget.className;
   const width = Number(runtime.locals[1]) * 2;
   const height = Number(runtime.locals[0]) * 2;
   const pixelCount = width * height;
@@ -212,7 +309,6 @@ async function main() {
       runtime.surface.pixels.length < pixelCount) {
     throw new Error(`invalid captured surface ${width}x${height}`);
   }
-
   for (let index = 0; index < warmups; index++) {
     await invoke(runtime, progressValues[index % progressValues.length]);
   }
@@ -224,6 +320,8 @@ async function main() {
     rows.push({
       ...invocation,
       progress: progressValues[index % progressValues.length],
+      loop: Math.floor(index / progressValues.length),
+      timelineIndex: index % progressValues.length,
       hash: hashPixels(pixels, pixelCount),
     });
   }
@@ -236,6 +334,17 @@ async function main() {
       `static animation output: ${new Set(hashes).size} unique hashes, ` +
       `${changedTransitions}/${frames - 1} changed transitions`);
   }
+  const loopSequenceHashes = sequenceHashesByLoop(
+    rows, progressValues.length);
+  if (new Set(loopSequenceHashes).size !== 1) {
+    const firstMismatch = rows.findIndex((row, index) =>
+      index >= progressValues.length &&
+      row.hash !== rows[index % progressValues.length].hash);
+    throw new Error(
+      `timeline replay diverged across loops at state ` +
+      `${firstMismatch % progressValues.length}: ` +
+      `${loopSequenceHashes.join(", ")}`);
+  }
   let sequenceHash = 2166136261;
   for (const hash of hashes) {
     sequenceHash = Math.imul(sequenceHash ^ hash, 16777619) >>> 0;
@@ -245,12 +354,25 @@ async function main() {
     node: process.version,
     target: trace.methodKey,
     tier: "structured",
+    loops,
     frames,
     warmups,
     framesPerSecond: frames * 1e9 / elapsedNs,
     medianGuestMs: median(rows.map((row) => row.nanoseconds)) / 1e6,
     averageSchedulerTicks:
       rows.reduce((sum, row) => sum + row.ticks, 0) / frames,
+    timeline: {
+      schema: timeline.schema,
+      workload: timeline.workload,
+      start: timeline.start,
+      end: timeline.end,
+      step: timeline.step,
+      states: timeline.values.length,
+      tickNanoseconds: timeline.tickNanoseconds,
+      tickMs: timeline.tickMs,
+      durationMs: timeline.values.length * timeline.tickMs,
+      loopSequenceHashes,
+    },
     surface: {
       width,
       height,
@@ -270,8 +392,9 @@ async function main() {
     },
     provenance: {
       traceSha256: sha256(tracePath),
+      timelineSha256: sha256(timelinePath),
       classesTreeSha256: hashTree(classpath),
-      generatedFromGameJarSha256: sha256(path.join(root, "dekobloko.jar")),
+      generatedFromGameJarSha256: gameJarSha256,
       repositories: {
         dekoblokoWork: gitMetadata(root),
         javaTools: gitMetadata(javaToolsRoot),

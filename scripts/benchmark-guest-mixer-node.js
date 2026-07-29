@@ -13,7 +13,8 @@ const javaToolsRoot = path.resolve(process.env.JAVA_TOOLS_DIR ||
 const defaultTrack = path.join(
   repositoryRoot, ".work", "music", "dekobloko", "split",
   "archive10_group000", "music_Art_Deko_remix_NORMAL.ui.bin");
-const gameJar = path.join(repositoryRoot, "dekobloko.jar");
+const gameJar = path.resolve(process.env.FUNORB_GAME_JAR ||
+  path.join(repositoryRoot, "dekobloko.jar"));
 const driverJar = path.join(
   repositoryRoot, ".work", "audio-diagnostics", "java",
   "funorb-guest-mixer.jar");
@@ -36,6 +37,8 @@ Options:
   --structured-ssa default|on|off          Override structured-loop policy
   --inline-loop-regions on|off             Toggle embedded scalar array regions
   --track PATH                             Raw .ui.bin track descriptor
+  --channels mono|stereo                   Guest mixer output shape (default: mono)
+  --mix direct|scheduler                   Bypass or use the game audio scheduler
   --target-frames N                        Set the driver's reported expected frames
   --stop-after-ms N                        Request a guest safe-point stop on a timer
   --profile-timings                        Match browser 1/128 JIT and 1/16 scheduler samples
@@ -51,6 +54,8 @@ function parseArguments(argv) {
     structuredSsa: "default",
     inlineLoopRegions: "on",
     track: defaultTrack,
+    channels: "mono",
+    mix: "direct",
     targetFrames: 0,
     stopAfterMs: 0,
     profileTimings: false,
@@ -75,6 +80,10 @@ function parseArguments(argv) {
       options.inlineLoopRegions = requiredValue(argv, ++index, argument);
     } else if (argument === "--track") {
       options.track = path.resolve(requiredValue(argv, ++index, argument));
+    } else if (argument === "--channels") {
+      options.channels = requiredValue(argv, ++index, argument);
+    } else if (argument === "--mix") {
+      options.mix = requiredValue(argv, ++index, argument);
     } else if (argument === "--target-frames") {
       options.targetFrames = nonNegativeInteger(
         requiredValue(argv, ++index, argument), argument);
@@ -96,6 +105,14 @@ function parseArguments(argv) {
   if (!["on", "off"].includes(options.inlineLoopRegions)) {
     throw new Error(
       `--inline-loop-regions must be on or off; got ${options.inlineLoopRegions}`);
+  }
+  if (!["mono", "stereo"].includes(options.channels)) {
+    throw new Error(
+      `--channels must be mono or stereo; got ${options.channels}`);
+  }
+  if (!["direct", "scheduler"].includes(options.mix)) {
+    throw new Error(
+      `--mix must be direct or scheduler; got ${options.mix}`);
   }
   return options;
 }
@@ -187,6 +204,13 @@ function driverSnapshot(fields) {
     chunks: integer("profiledChunks"),
     writes: integer("writes"),
     checksum: integer("checksum") >>> 0,
+    channels: integer("channels"),
+    channelDiagnostics: {
+      leftChecksum: integer("leftChecksum") >>> 0,
+      rightChecksum: integer("rightChecksum") >>> 0,
+      leftAbsoluteSum: staticNumber(fields, "leftAbsoluteSum", "J"),
+      rightAbsoluteSum: staticNumber(fields, "rightAbsoluteSum", "J"),
+    },
     deadlineMs: millis("chunkDeadlineNanos"),
     deadlineMisses: integer("deadlineMisses"),
     longestDeadlineMissStreak: integer("longestDeadlineMissStreak"),
@@ -215,7 +239,8 @@ function driverSnapshot(fields) {
 function relevantEnvironment() {
   return Object.fromEntries(Object.entries(process.env)
     .filter(([name]) => name.startsWith("JVM_") ||
-      name === "JAVA_TOOLS_DIR" || name === "FUNORB_AUDIO_DATA")
+      name === "JAVA_TOOLS_DIR" || name === "FUNORB_AUDIO_DATA" ||
+      name === "FUNORB_GAME_JAR")
     .sort(([left], [right]) => left.localeCompare(right)));
 }
 
@@ -291,6 +316,8 @@ async function main() {
         options.track,
         sampleBank,
         String(options.targetFrames),
+        options.channels,
+        options.mix,
       ],
     });
   } finally {
@@ -316,6 +343,8 @@ async function main() {
       jit: jitOptions,
       finalPreferWholeMethodJs: jvm.jit.preferWholeMethodJs,
       targetFrames: options.targetFrames,
+      channels: options.channels,
+      mix: options.mix,
       stopAfterMs: options.stopAfterMs,
       profileTimings: options.profileTimings,
       structuredSsa: {

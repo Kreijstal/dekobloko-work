@@ -170,21 +170,34 @@ progress:
 http://localhost:8775/animation-diagnostics/
 ```
 
-This is deliberately not the earlier fixed-scene replay. The harness finds the
-dominant integer static input from the captured method's bytecode shape (eight
-reads versus one each for the next candidates), advances it through
-`0,25,…,175`, and loops that sequence. It executes the original guest method,
-nested geometry and raster calls, live object graph, initialized statics,
-exception tables, and scheduler semantics against the full 640×480 software
-surface. No optimizer decision contains the guest class, method, or field
-names.
+This is deliberately not the earlier fixed-scene replay or the later
+eight-phase throughput probe. The harness finds the dominant integer static
+input from the captured method's bytecode shape (eight reads versus one each
+for the next candidates), then reads a checked-in timeline tied to the source
+game JAR. The audited guest lifecycle initializes the value to zero, advances
+it before rendering, draws every value from 1 through 250, and replaces the
+logo after the next update reaches 251. The scheduler period is 20 ms, so one
+complete visible timeline is 250 states over 5 seconds.
 
-Every frame gets a full-surface FNV hash. A run fails unless it produces at
-least two distinct surfaces and changes at least half its consecutive frame
-transitions. Results include unique and changed-frame counts, a hash of the
-whole temporal sequence, guest/render/upload time, 60 and 30 FPS deadline
-misses, scheduler ticks, JIT counters, remote telemetry, and exact source
-provenance.
+Before every state, the harness executes the original guest framebuffer-clear
+method and then the captured logo renderer. The clear is selected by its
+descriptor, lack of exception handlers, repeated reads of the recovered raster
+field, and repeated zero-valued array stores—not by its obfuscated name. This
+matches the original outer render path and prevents pixels from earlier states
+accumulating as false animation artifacts. A run fails if per-loop
+surface-sequence hashes differ. It executes the original guest methods, nested
+geometry and raster calls, live object graph, initialized statics, exception
+tables, and scheduler semantics. No optimizer decision contains the guest
+class, method, or field names; names used to audit the timeline exist only in
+diagnostic metadata and documentation.
+
+Every frame gets an FNV hash over exactly 307,200 visible pixels (not the
+raster array's extra sentinel element). A run fails unless it produces at
+least two distinct surfaces, changes at least half its consecutive frame
+transitions, and repeats the same temporal hash on every loop. Results include
+unique and changed-frame counts, guest/render/upload time, original 20 ms plus
+60 and 30 FPS deadline misses, scheduler ticks, JIT counters, remote telemetry,
+and exact source provenance.
 
 Generate or refresh the input capture with:
 
@@ -215,18 +228,56 @@ identities.
 The fast Node measurement is:
 
 ```bash
-DEKOBLOKO_ANIMATION_FRAMES=40 \
+DEKOBLOKO_ANIMATION_LOOPS=2 \
 DEKOBLOKO_ANIMATION_WARMUPS=8 \
 node scripts/benchmark-dekobloko-animation.js
 ```
 
-On 2026-07-28, Node 26.4 measured **104.00 moving frames/s** with an
-8.227 ms median guest frame. All 39 consecutive transitions changed and all 40
-full-surface hashes were distinct. Three clean headless Firefox 146 paced runs
-measured 45.73, 42.55, and 42.61 moving frames/s (**42.61 median**), with
-17–18 ms median guest time, 19–20 ms median guest-plus-upload time, 29/29
-changed transitions, 30 distinct surfaces, identical temporal sequence hash
-`1456157722`, and no page or JVM errors.
+On 2026-07-28, Node 26.4 rendered two complete timelines, including the guest
+clear, at **143.02 states/s**, with a 6.739 ms median guest state. Three clean
+headless Firefox 146.0.1 paced runs measured 34.38, 31.45, and 34.56 states/s
+(**34.38 median**). Their median guest times were 20, 25, and 21 ms and their
+guest-plus-upload medians were 23, 29, and 24 ms. Each run produced 225 unique
+surfaces and 449/499 changed transitions, with no page or JVM errors.
+
+Both Node and Firefox produced per-loop hash `1711060353`, whole two-loop
+sequence hash `4093121037`, first hash `2929241493`, and last hash
+`3053477317`. This is the current correctness anchor. The earlier 104–143 Node
+and 41–49 Firefox results advanced `0,25,…,175`; they were useful renderer
+throughput probes, but they did not reproduce the original animation timeline
+and are superseded as logo-playback measurements.
+
+A remote 0.92 FPS report was also audited. It used the `generated` tight-loop
+control, which deliberately disables structured SSA and fused regions: every
+optimized counter was zero and it required 7,923.696 scheduler slices per
+state. It was not the normal optimized tier. The selector now calls this
+“Slow control (optimizations off)” and displays a prominent warning whenever
+it is active.
+
+A native Firefox profile then found that the fused-entry guard repeated stable
+class-initialization and bytecode-identity walks about 3,300 times per frame.
+The compiler now caches only a successful linkage proof against the JVM class
+and initialization epochs. Live target identity, mode statics, scheduler,
+debugger, breakpoint, and tracing checks still execute at every fused entry.
+Structured SSA entry guards use the same epoch discipline for their repeated
+class-initialization sets. Neither optimization selects a guest class or method
+name.
+
+The fused-entry linkage-proof cache remains a valid generic optimization, but
+its previously reported 48.39 FPS comparison used the superseded phase-jump
+workload. On the artifact-free authentic timeline with the same bundle,
+Firefox's 34.38 FPS median is above 30 FPS but below the original 50 Hz
+cadence: 327–396 of 500 states missed 20 ms and 126–173 exceeded 33.3 ms. It
+must not be described as
+a 48 FPS reproduction of the original logo.
+
+The post-change Gecko sample reduced `FusedRegionCompiler.guard` from 129 leaf
+samples in a 4,000-sample window to 16 in a 3,998-sample window. The largest
+remaining guest self-time is now the large structured geometry body; its
+generated function carries roughly 170 JVM locals and long cross-block copy
+chains. The next renderer optimization should therefore be generic SSA
+copy/phi simplification or safe method-region splitting, not another
+name-selected raster kernel.
 
 The recorded inputs were trace SHA-256
 `5b49fe4d0739167c0db566a8753661610fe357f82fe2e4398b5049582daa0a79`,
@@ -235,7 +286,9 @@ classes JAR SHA-256
 game JAR SHA-256
 `a22410ad930334f54672ce8acdf25d88c31e380550e8f88a5618bb730f3cf06e`,
 and browser JVM bundle SHA-256
-`1744b7e37dd670e7c3f668d5fa2645baab27b63ad8b18f1460aa83e677311f0f`.
+`537299a0ff80342f0133e537bf4c082a8ea61b3e66074f066234a4eb892f7dee`.
+The audited timeline SHA-256 was
+`93d87afcc1fd552a9247c8d84298a053a94cc3e89e8fcc896733fe75f0183490`.
 Both repositories were tracked-dirty, so the emitted manifests also retain
 their commits, trees, and tracked-patch hashes.
 

@@ -1,6 +1,7 @@
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -17,7 +18,7 @@ import javax.sound.sampled.SourceDataLine;
 public final class JavaFunOrbTrackPlayer {
     private static final int SAMPLE_RATE = 22050;
     private static final int CHUNK_FRAMES = 512;
-    private static final int BYTES_PER_FRAME = 2;
+    private static final int BYTES_PER_SAMPLE = 2;
     private static final int BUFFER_CHUNKS = 8;
     private static final int WARMUP_CHUNKS = 32;
     private static final long CHUNK_DEADLINE_NANOS =
@@ -47,6 +48,12 @@ public final class JavaFunOrbTrackPlayer {
     public static int writes;
     public static int blockedPolls;
     public static int checksum;
+    public static int channels;
+    public static int schedulerMix;
+    public static int leftChecksum;
+    public static int rightChecksum;
+    public static long leftAbsoluteSum;
+    public static long rightAbsoluteSum;
     public static int stopRequested;
     public static int error;
     public static int done;
@@ -81,6 +88,11 @@ public final class JavaFunOrbTrackPlayer {
                 targetFrames = 0;
             }
         }
+        channels = args.length > 3 && "stereo".equalsIgnoreCase(args[3])
+            ? 2
+            : 1;
+        schedulerMix = args.length > 4 &&
+            "scheduler".equalsIgnoreCase(args[4]) ? 1 : 0;
 
         SourceDataLine line = null;
         try {
@@ -95,6 +107,7 @@ public final class JavaFunOrbTrackPlayer {
             trackLoadNanos = System.nanoTime() - started;
 
             en.o = SAMPLE_RATE;
+            en.u = channels == 2;
             ia player = new ia(song);
             player.a(100);
             player.c(256);
@@ -103,10 +116,22 @@ public final class JavaFunOrbTrackPlayer {
             loop.setBoolean(player, false);
             mi mixer = new mi();
             mixer.a(player);
+            Object audioScheduler = null;
+            Method scheduledMix = null;
+            if (schedulerMix != 0) {
+                audioScheduler = new en();
+                Field rootStream = en.class.getDeclaredField("b");
+                rootStream.setAccessible(true);
+                rootStream.set(audioScheduler, mixer);
+                scheduledMix = en.class.getDeclaredMethod(
+                    "a", int[].class, Integer.TYPE);
+                scheduledMix.setAccessible(true);
+            }
 
             AudioFormat format =
-                new AudioFormat((float) SAMPLE_RATE, 16, 1, true, false);
-            int chunkBytes = CHUNK_FRAMES * BYTES_PER_FRAME;
+                new AudioFormat((float) SAMPLE_RATE, 16, channels, true, false);
+            int chunkBytes =
+                CHUNK_FRAMES * channels * BYTES_PER_SAMPLE;
             int bufferBytes = chunkBytes * BUFFER_CHUNKS;
             DataLine.Info info =
                 new DataLine.Info(SourceDataLine.class, format, bufferBytes);
@@ -114,34 +139,66 @@ public final class JavaFunOrbTrackPlayer {
             line.open(format, bufferBytes);
             line.start();
 
-            int[] mixed = new int[CHUNK_FRAMES];
+            int[] mixed = new int[CHUNK_FRAMES * channels];
             byte[] pcm = new byte[chunkBytes];
             long pushStarted = System.nanoTime();
-            while (player.n != null && stopRequested == 0) {
+            while (player.n != null && stopRequested == 0 &&
+                   (targetFrames <= 0 || writtenFrames < targetFrames)) {
+                int framesThisChunk = targetFrames > 0
+                    ? Math.min(CHUNK_FRAMES, targetFrames - writtenFrames)
+                    : CHUNK_FRAMES;
                 Arrays.fill(mixed, 0);
                 long mixStarted = System.nanoTime();
-                mixer.b(mixed, 0, mixed.length);
+                if (scheduledMix == null) {
+                    mixer.b(mixed, 0, framesThisChunk);
+                } else {
+                    scheduledMix.invoke(audioScheduler, new Object[] {
+                        mixed, Integer.valueOf(framesThisChunk)
+                    });
+                }
                 long mixElapsed = System.nanoTime() - mixStarted;
                 mixNanos += mixElapsed;
 
                 long convertStarted = System.nanoTime();
                 int hash = checksum;
-                for (int frame = 0; frame < mixed.length; frame++) {
-                    int sample = mixed[frame] >> 8;
+                int leftHash = leftChecksum;
+                int rightHash = rightChecksum;
+                long leftEnergy = leftAbsoluteSum;
+                long rightEnergy = rightAbsoluteSum;
+                for (int sampleIndex = 0;
+                     sampleIndex < framesThisChunk * channels;
+                     sampleIndex++) {
+                    int sample = mixed[sampleIndex] >> 8;
                     if (sample < -32768) sample = -32768;
                     if (sample > 32767) sample = 32767;
-                    int offset = frame * 2;
+                    int offset = sampleIndex * BYTES_PER_SAMPLE;
                     pcm[offset] = (byte) sample;
                     pcm[offset + 1] = (byte) (sample >> 8);
                     hash = hash * 31 + pcm[offset];
                     hash = hash * 31 + pcm[offset + 1];
+                    int channel = sampleIndex % channels;
+                    if (channel == 0) {
+                        leftHash = leftHash * 31 + pcm[offset];
+                        leftHash = leftHash * 31 + pcm[offset + 1];
+                        leftEnergy += Math.abs((long) sample);
+                    } else {
+                        rightHash = rightHash * 31 + pcm[offset];
+                        rightHash = rightHash * 31 + pcm[offset + 1];
+                        rightEnergy += Math.abs((long) sample);
+                    }
                 }
                 checksum = hash;
+                leftChecksum = leftHash;
+                rightChecksum = rightHash;
+                leftAbsoluteSum = leftEnergy;
+                rightAbsoluteSum = rightEnergy;
                 long convertElapsed = System.nanoTime() - convertStarted;
                 convertNanos += convertElapsed;
 
                 long waitStarted = System.nanoTime();
-                while (line.available() < pcm.length && stopRequested == 0) {
+                int pcmBytes =
+                    framesThisChunk * channels * BYTES_PER_SAMPLE;
+                while (line.available() < pcmBytes && stopRequested == 0) {
                     blockedPolls++;
                     try {
                         Thread.sleep(1L);
@@ -156,14 +213,14 @@ public final class JavaFunOrbTrackPlayer {
                 if (stopRequested != 0) break;
 
                 long writeStarted = System.nanoTime();
-                int accepted = line.write(pcm, 0, pcm.length);
+                int accepted = line.write(pcm, 0, pcmBytes);
                 long writeElapsed = System.nanoTime() - writeStarted;
                 writeNanos += writeElapsed;
-                if (accepted != pcm.length) {
+                if (accepted != pcmBytes) {
                     throw new IOException(
                         "short SourceDataLine write: " + accepted);
                 }
-                writtenFrames += mixed.length;
+                writtenFrames += framesThisChunk;
                 writtenBytes += accepted;
                 writes++;
                 recordChunk(mixElapsed, convertElapsed, writeElapsed);
@@ -316,6 +373,11 @@ public final class JavaFunOrbTrackPlayer {
         writes = 0;
         blockedPolls = 0;
         checksum = 0;
+        channels = 1;
+        leftChecksum = 0;
+        rightChecksum = 0;
+        leftAbsoluteSum = 0L;
+        rightAbsoluteSum = 0L;
         stopRequested = 0;
         error = 0;
         done = 0;
