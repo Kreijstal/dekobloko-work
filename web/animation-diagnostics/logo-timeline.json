@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "workload": "jagex-logo-start-to-end",
+  "start": 1,
+  "end": 250,
+  "step": 1,
+  "tickNanoseconds": 20000000,
+  "generatedFromGameJarSha256": "a22410ad930334f54672ce8acdf25d88c31e380550e8f88a5618bb730f3cf06e",
+  "audit": {
+    "initialization": "The guest initializes the progress field to zero before entering its update/render loop.",
+    "advance": "Each game update increments the field by exactly one before the following render.",
+    "completion": "The render path draws values 1 through 250; after the next update reaches 251, the greater-than-250 completion branch replaces it.",
+    "cadence": "The captured guest scheduler period is 20000000 nanoseconds."
+  }
+}

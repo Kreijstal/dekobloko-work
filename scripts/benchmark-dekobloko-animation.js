@@ -5,6 +5,12 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
+const {
+  findSurfaceClearMethod: findSharedSurfaceClearMethod,
+  normalizeLogoTimeline,
+  sequenceHashesByLoop,
+  summarizeLogoTimeline,
+} = require("../web/animation-diagnostics/timeline-schema");
 
 const root = path.resolve(__dirname, "..");
 const javaToolsRoot = path.resolve(process.env.JAVA_TOOLS_DIR ||
@@ -17,9 +23,10 @@ const tracePath = path.resolve(process.argv[2] ||
 const classpath = path.resolve(process.argv[3] ||
   path.join(root, ".work", "jvmjs",
     "hybrid-all-recompiled-lean-carriers", "classes"));
-const frames = positiveInteger("DEKOBLOKO_ANIMATION_FRAMES", 40);
+const timelinePath = path.join(
+  root, "web", "animation-diagnostics", "logo-timeline.json");
+const loops = positiveInteger("DEKOBLOKO_ANIMATION_LOOPS", 1);
 const warmups = positiveInteger("DEKOBLOKO_ANIMATION_WARMUPS", 8);
-const progressValues = [0, 25, 50, 75, 100, 125, 150, 175];
 
 function positiveInteger(name, fallback) {
   const value = Number(process.env[name] || fallback);
@@ -93,6 +100,13 @@ function findSurface(jvm) {
   return candidates[0];
 }
 
+function findSurfaceClearMethod(jvm, surfaceField) {
+  return findSharedSurfaceClearMethod(jvm, surfaceField, (candidateCount) => {
+    throw new Error(
+      `captured software raster has ${candidateCount} clear candidates`);
+  });
+}
+
 function median(values) {
   const ordered = [...values].sort((left, right) => left - right);
   return ordered[Math.floor(ordered.length / 2)];
@@ -137,16 +151,14 @@ function gitMetadata(directory) {
   };
 }
 
-async function invoke(runtime, progress) {
-  runtime.jvm.jit.putStaticSync(runtime.progressField.field, progress);
-  const frame = new Frame(runtime.method);
-  frame.className = runtime.className;
-  frame.locals = runtime.locals.slice();
+async function invokeGuestFrame(runtime, method, className, locals) {
+  const frame = new Frame(method);
+  frame.className = className;
+  frame.locals = locals.slice();
   runtime.thread.status = "runnable";
   runtime.thread.pendingException = null;
   runtime.thread.callStack.push(frame);
   let ticks = 0;
-  const started = process.hrtime.bigint();
   while (!runtime.thread.callStack.isEmpty()) {
     await runtime.jvm.executeTick();
     if (Date.now() >= runtime.jvm._nextEventLoopYieldAt) {
@@ -160,6 +172,17 @@ async function invoke(runtime, progress) {
     throw new Error(
       `animation left pending exception ${JSON.stringify(runtime.thread.pendingException)}`);
   }
+  return ticks;
+}
+
+async function invoke(runtime, progress) {
+  runtime.jvm.jit.putStaticSync(runtime.progressField.field, progress);
+  const started = process.hrtime.bigint();
+  let ticks = 0;
+  ticks += await invokeGuestFrame(
+    runtime, runtime.clearMethod, runtime.clearClassName, []);
+  ticks += await invokeGuestFrame(
+    runtime, runtime.method, runtime.className, runtime.locals);
   return {
     nanoseconds: Number(process.hrtime.bigint() - started),
     ticks,
@@ -173,6 +196,11 @@ async function main() {
       "Usage: node scripts/benchmark-dekobloko-animation.js " +
       "[trace.json] [class-directory]");
   }
+  const gameJarSha256 = sha256(path.join(root, "dekobloko.jar"));
+  const timeline = normalizeLogoTimeline(
+    JSON.parse(fs.readFileSync(timelinePath, "utf8")), gameJarSha256);
+  const progressValues = timeline.values;
+  const frames = loops * progressValues.length;
   const trace = JSON.parse(fs.readFileSync(tracePath, "utf8"));
   trace.state.classpath = [classpath];
   const jvm = new JVM({ classpath: [classpath], jit: {
@@ -205,6 +233,9 @@ async function main() {
     progressField: findAnimationProgressField(jvm, restored.frame.method),
     surface: findSurface(jvm),
   };
+  const clearTarget = findSurfaceClearMethod(jvm, runtime.surface.field);
+  runtime.clearMethod = clearTarget.method;
+  runtime.clearClassName = clearTarget.className;
   const width = Number(runtime.locals[1]) * 2;
   const height = Number(runtime.locals[0]) * 2;
   const pixelCount = width * height;
@@ -212,7 +243,6 @@ async function main() {
       runtime.surface.pixels.length < pixelCount) {
     throw new Error(`invalid captured surface ${width}x${height}`);
   }
-
   for (let index = 0; index < warmups; index++) {
     await invoke(runtime, progressValues[index % progressValues.length]);
   }
@@ -224,6 +254,8 @@ async function main() {
     rows.push({
       ...invocation,
       progress: progressValues[index % progressValues.length],
+      loop: Math.floor(index / progressValues.length),
+      timelineIndex: index % progressValues.length,
       hash: hashPixels(pixels, pixelCount),
     });
   }
@@ -236,6 +268,17 @@ async function main() {
       `static animation output: ${new Set(hashes).size} unique hashes, ` +
       `${changedTransitions}/${frames - 1} changed transitions`);
   }
+  const loopSequenceHashes = sequenceHashesByLoop(
+    rows, progressValues.length);
+  if (new Set(loopSequenceHashes).size !== 1) {
+    const firstMismatch = rows.findIndex((row, index) =>
+      index >= progressValues.length &&
+      row.hash !== rows[index % progressValues.length].hash);
+    throw new Error(
+      `timeline replay diverged across loops at state ` +
+      `${firstMismatch % progressValues.length}: ` +
+      `${loopSequenceHashes.join(", ")}`);
+  }
   let sequenceHash = 2166136261;
   for (const hash of hashes) {
     sequenceHash = Math.imul(sequenceHash ^ hash, 16777619) >>> 0;
@@ -245,12 +288,17 @@ async function main() {
     node: process.version,
     target: trace.methodKey,
     tier: "structured",
+    loops,
     frames,
     warmups,
     framesPerSecond: frames * 1e9 / elapsedNs,
     medianGuestMs: median(rows.map((row) => row.nanoseconds)) / 1e6,
     averageSchedulerTicks:
       rows.reduce((sum, row) => sum + row.ticks, 0) / frames,
+    timeline: {
+      ...summarizeLogoTimeline(timeline),
+      loopSequenceHashes,
+    },
     surface: {
       width,
       height,
@@ -270,8 +318,9 @@ async function main() {
     },
     provenance: {
       traceSha256: sha256(tracePath),
+      timelineSha256: sha256(timelinePath),
       classesTreeSha256: hashTree(classpath),
-      generatedFromGameJarSha256: sha256(path.join(root, "dekobloko.jar")),
+      generatedFromGameJarSha256: gameJarSha256,
       repositories: {
         dekoblokoWork: gitMetadata(root),
         javaTools: gitMetadata(javaToolsRoot),

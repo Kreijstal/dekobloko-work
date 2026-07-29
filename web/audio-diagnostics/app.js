@@ -5,6 +5,12 @@ const DATA_ROOT = QUERY.get("data") || "/audio-data";
 const GUEST_BANK_PATH = "funorb-sample-bank.bin";
 const GUEST_TRACK_PATH = "diagnostic-track.ui.bin";
 const GUEST_SAMPLE_RATE = 22050;
+const GUEST_CHANNEL_MODE =
+  QUERY.get("channels") === "stereo" ? "stereo" : "mono";
+const GUEST_MIX_MODE =
+  QUERY.get("mix") === "scheduler" ? "scheduler" : "direct";
+const GUEST_TARGET_FRAMES = Math.max(
+  0, Math.floor(Number(QUERY.get("frames")) || 0));
 const METHOD_TIMING_ENABLED = QUERY.get("profile") !== "0";
 const EXCLUSIVE_TIMING_ROOT =
   String(QUERY.get("exclusiveRoot") || "").trim() || null;
@@ -198,11 +204,14 @@ async function playTrackThroughJava(track) {
     const trackBytes = new Uint8Array(await trackResponse.arrayBuffer());
     if (state.stopped) return false;
     state.javaDebug.fileProvider.virtualFS.set(GUEST_TRACK_PATH, trackBytes);
-    const expectedFrames = estimateTrackFrames(descriptor);
+    const expectedFrames =
+      GUEST_TARGET_FRAMES || estimateTrackFrames(descriptor);
     const preparationMs = performance.now() - preparationStartedAt;
     const audioBefore = javaAudioDiagnostics();
     setStatus(
-      `${track.label}: guest ia/mi/ei is mixing and pushing PCM through SourceDataLine…`,
+      `${track.label}: guest ia/mi/ei is mixing through the ` +
+      `${GUEST_MIX_MODE === "scheduler" ? "game audio scheduler" : "direct mixer"} ` +
+      `and pushing PCM through SourceDataLine…`,
       "active");
 
     progressTimer = setInterval(() => {
@@ -251,6 +260,8 @@ async function playTrackThroughJava(track) {
         GUEST_TRACK_PATH,
         GUEST_BANK_PATH,
         String(expectedFrames),
+        GUEST_CHANNEL_MODE,
+        GUEST_MIX_MODE,
       ],
     });
     // BrowserJVMDebug.run resets its JVM synchronously before its first await.
@@ -288,6 +299,10 @@ async function playTrackThroughJava(track) {
       track: {label: track.label, path: track.path},
       message: String(error && (error.message || error) || error),
       stack: error && error.stack ? String(error.stack) : null,
+      causeStack: error && error.causeStack
+        ? String(error.causeStack) : null,
+      guestLocation: error && error.jvmGuestLocation
+        ? error.jvmGuestLocation : null,
       guest: fields ? guestDriverSnapshot(fields) : null,
       methodProfile: snapshotGuestMethodProfile(methodProfiler),
       audio: javaAudioDiagnostics(),
@@ -380,6 +395,14 @@ function guestDriverSnapshot(fields) {
     writes: integer("writes"),
     blockedPolls: integer("blockedPolls"),
     checksum: integer("checksum"),
+    channels: integer("channels"),
+    schedulerMix: integer("schedulerMix") !== 0,
+    channelDiagnostics: {
+      leftChecksum: integer("leftChecksum") >>> 0,
+      rightChecksum: integer("rightChecksum") >>> 0,
+      leftAbsoluteSum: javaField(fields, "leftAbsoluteSum", "J"),
+      rightAbsoluteSum: javaField(fields, "rightAbsoluteSum", "J"),
+    },
     stopped: integer("stopRequested") !== 0,
     error: integer("error"),
     done: integer("done") !== 0,
@@ -874,6 +897,9 @@ function instrumentationConfiguration() {
     exclusiveTimingRoot: EXCLUSIVE_TIMING_ROOT,
     structuredSsa: STRUCTURED_SSA_MODE,
     inlineLoopRegions: INLINE_LOOP_REGION_MODE,
+    channels: GUEST_CHANNEL_MODE,
+    mix: GUEST_MIX_MODE,
+    targetFrames: GUEST_TARGET_FRAMES || null,
     note: "Scheduler estimates attribute execution slices; generated-method estimates are inclusive and may overlap.",
   };
 }

@@ -38,6 +38,7 @@ function parseArgs(argv) {
     minFps: 30,
     profileJit: false,
     cpuProfile: false,
+    jarOverride: null,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -56,11 +57,13 @@ function parseArgs(argv) {
       options.minFps = Number(argv[++index]);
     } else if (arg === '--profile-jit') options.profileJit = true;
     else if (arg === '--cpu-profile') options.cpuProfile = true;
+    else if (arg === '--jar') options.jarOverride = path.resolve(argv[++index]);
     else if (arg === '--help' || arg === '-h') {
       console.log('Usage: node scripts/launch-alterorb-games-jvmjs.js ' +
         '[--game internalName] [--jobs N] [--timeout-ms N] [--report file] ' +
         '[--until-main-menu] [--measure-fps-ms N] [--min-fps N] ' +
-        '[--profile-jit] [--cpu-profile] [--no-jit] [--recompiled]');
+        '[--profile-jit] [--cpu-profile] [--no-jit] [--recompiled] ' +
+        '[--jar diagnostic.jar]');
       process.exit(0);
     } else {
       throw new Error(`Unknown argument: ${arg}`);
@@ -299,6 +302,10 @@ function jitProfileSnapshot(jvm) {
       polygonRasterRuns: Number(jit.polygonRasterRunCount || 0),
       polygonRasterGuardedFallbacks:
         Number(jit.polygonRasterGuardedFallbackCount || 0),
+      affineSpriteRasterRuns:
+        Number(jit.affineSpriteRasterRunCount || 0),
+      affineSpriteRasterGuardedFallbacks:
+        Number(jit.affineSpriteRasterGuardedFallbackCount || 0),
       semanticBilinearSamplerRuns:
         Number(jit.semanticBilinearSamplerRunCount || 0),
       semanticBilinearSamplerFallbacks:
@@ -361,6 +368,9 @@ function jitRuntimeCounters(jvm) {
     polygonRasterRuns: Number(jit.polygonRasterRunCount || 0),
     polygonRasterGuardedFallbacks:
       Number(jit.polygonRasterGuardedFallbackCount || 0),
+    affineSpriteRasterRuns: Number(jit.affineSpriteRasterRunCount || 0),
+    affineSpriteRasterGuardedFallbacks:
+      Number(jit.affineSpriteRasterGuardedFallbackCount || 0),
     polygonRasterFallbackEntry: Number(jit.polygonRasterFallbackEntry || 0),
     polygonRasterFallbackVertices:
       Number(jit.polygonRasterFallbackVertices || 0),
@@ -859,7 +869,7 @@ function tailLines(value, count = 300) {
 }
 
 function runChild(game, options) {
-  const jarPath = gamepackPath(game);
+  const jarPath = options.jarOverride || gamepackPath(game);
   if (!fs.existsSync(jarPath)) {
     return Promise.resolve({
       game: game.internalName,
@@ -870,7 +880,7 @@ function runChild(game, options) {
     });
   }
   const actualHash = sha256(jarPath);
-  if (actualHash !== game.gamepackHash) {
+  if (!options.jarOverride && actualHash !== game.gamepackHash) {
     return Promise.resolve({
       game: game.internalName,
       name: game.name,

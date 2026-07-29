@@ -63,15 +63,15 @@
     <section class="panel">
       <div class="controls">
         <select id="tier" aria-label="JVM execution tier">
-          <option value="structured">Composed structured JIT</option>
-          <option value="generated">Baseline generated JVM</option>
-          <option value="scalar">Broad scalar JVM</option>
+          <option value="structured">Optimized structured JIT (normal)</option>
+          <option value="generated">Slow control (optimizations off)</option>
+          <option value="scalar">Experimental scalar control</option>
         </select>
         <select id="mode">
-          <option value="paced">Animation-paced (requestAnimationFrame)</option>
+          <option value="paced">Original timeline (50 Hz)</option>
           <option value="tight">Tight guest throughput</option>
         </select>
-        <input id="frames" type="number" min="10" max="1000" step="10" value="120" aria-label="Frames">
+        <input id="frames" type="number" min="1" max="20" step="1" value="2" aria-label="Complete timeline loops" title="Complete start-to-end timeline loops">
         <button id="run" class="primary" disabled>Run animation loop</button>
         <button id="stop" disabled>Stop</button>
       </div>
@@ -82,14 +82,14 @@
     <section class="workspace">
       <div class="canvas-card">
         <canvas id="surface" width="640" height="480"></canvas>
-        <p style="margin-top:10px">Every preview frame is rendered by the guest with a new animation-progress value. The run fails if consecutive full-surface hashes do not change.</p>
+        <p style="margin-top:10px">Every preview frame follows the original rendered 1…250 guest timeline. Repeated loops must produce the same full-surface hash sequence.</p>
       </div>
       <div class="results">
         <div class="metrics">
           <div class="metric"><label>Presented loop rate</label><output id="fps">—</output></div>
           <div class="metric"><label>Guest render</label><output id="guest">—</output></div>
           <div class="metric"><label>Preview upload</label><output id="upload">—</output></div>
-          <div class="metric"><label>16.67 ms misses</label><output id="misses">—</output></div>
+          <div class="metric"><label>20 ms tick misses</label><output id="misses">—</output></div>
           <div class="metric"><label>Scheduler ticks</label><output id="ticks">—</output></div>
           <div class="metric"><label>Surface hash</label><output id="hash">—</output></div>
         </div>
@@ -97,6 +97,7 @@
       </div>
     </section>
   </main>
+  <script src="./timeline-schema.js"></script>
   <script type="module" src="./app.js"></script>
 </body>
 </html>

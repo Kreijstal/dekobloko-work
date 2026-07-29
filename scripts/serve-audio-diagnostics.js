@@ -26,6 +26,8 @@ const telemetryFile = path.join(
 const animationTelemetryFile = path.join(
   repositoryRoot, ".work", "telemetry", "animation-diagnostics.jsonl");
 const javaJar = path.join(javaAssetRoot, "funorb-guest-mixer.jar");
+const vorbisProbeJar = path.join(
+  repositoryRoot, ".work", "vorbis-probe", "vorbis-probe.jar");
 const sampleBankBinary = path.join(
   javaAssetRoot, "funorb-sample-bank.bin");
 const jvmBundle = path.join(javaToolsRoot, "dist", "jvm-debug.js");
@@ -40,6 +42,8 @@ const sceneClassesJar = path.resolve(process.env.DEKOBLOKO_SCENE_CLASSES_JAR ||
     "hybrid-all-recompiled-lean-carriers.jar"));
 const compressedSceneTrace = path.join(
   animationAssetRoot, "logo-animation-trace.json.gz");
+const animationTimeline = path.join(
+  webRoot, "animation-diagnostics", "logo-timeline.json");
 
 const contentTypes = new Map([
   [".html", "text/html; charset=utf-8"],
@@ -99,6 +103,11 @@ const server = http.createServer((request, response) => {
     response.end();
     return;
   }
+  if (url.pathname === "/vorbis-probe") {
+    response.writeHead(302, { Location: "/vorbis-probe/" });
+    response.end();
+    return;
+  }
   if (url.pathname.startsWith("/audio-data/")) {
     file = resolveInside(dataRoot, url.pathname.slice("/audio-data/".length));
   } else if (url.pathname.startsWith("/audio-diagnostics/")) {
@@ -111,6 +120,11 @@ const server = http.createServer((request, response) => {
       ? "animation-diagnostics/index.html"
       : url.pathname.slice(1);
     file = resolveInside(webRoot, relative);
+  } else if (url.pathname.startsWith("/vorbis-probe/")) {
+    const relative = url.pathname === "/vorbis-probe/"
+      ? "vorbis-probe/index.html"
+      : url.pathname.slice(1);
+    file = resolveInside(webRoot, relative);
   } else if (url.pathname.startsWith("/music-visualizer/")) {
     file = resolveInside(webRoot, url.pathname.slice(1));
   } else if (url.pathname === "/jvm-assets/jvm-debug.js") {
@@ -121,6 +135,8 @@ const server = http.createServer((request, response) => {
     file = gameJar;
   } else if (url.pathname === "/jvm-assets/funorb-guest-mixer.jar") {
     file = javaJar;
+  } else if (url.pathname === "/jvm-assets/vorbis-probe.jar") {
+    file = vorbisProbeJar;
   } else if (url.pathname === "/jvm-assets/funorb-sample-bank.bin") {
     file = sampleBankBinary;
   } else if (url.pathname === "/animation-assets/manifest.json") {
@@ -271,7 +287,9 @@ function prepareJavaAssets() {
 }
 
 function prepareAnimationAssets() {
-  for (const file of [jvmBundle, sceneTrace, sceneClassesJar]) {
+  for (const file of [
+    jvmBundle, sceneTrace, sceneClassesJar, animationTimeline,
+  ]) {
     if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
       throw new Error(`Animation diagnostic dependency is missing: ${file}`);
     }
@@ -289,8 +307,8 @@ function prepareAnimationAssets() {
   const traceHeader = fs.readFileSync(sceneTrace, "utf8").slice(0, 1024);
   const methodKey = /"methodKey"\s*:\s*"([^"]+)"/.exec(traceHeader)?.[1] || null;
   return {
-    schema: 2,
-    workload: "moving-logo-animation",
+    schema: 3,
+    workload: "jagex-logo-start-to-end",
     methodKey,
     repositories: {
       dekoblokoWork: gitMetadata(repositoryRoot),
@@ -303,6 +321,7 @@ function prepareAnimationAssets() {
     compressedSceneTraceBytes: fs.statSync(compressedSceneTrace).size,
     sceneClassesJarSha256: sha256(sceneClassesJar),
     sceneClassesJarBytes: fs.statSync(sceneClassesJar).size,
+    timelineSha256: sha256(animationTimeline),
     generatedFromGameJarSha256: sha256(gameJar),
   };
 }

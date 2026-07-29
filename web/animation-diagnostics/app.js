@@ -2,6 +2,12 @@ const els = Object.fromEntries([
   "identity", "tier", "mode", "frames", "run", "stop", "progress", "status", "surface",
   "fps", "guest", "upload", "misses", "ticks", "hash", "details",
 ].map(id => [id, document.getElementById(id)]));
+const {
+  findSurfaceClearMethod,
+  normalizeLogoTimeline,
+  sequenceHashesByLoop,
+  summarizeLogoTimeline,
+} = globalThis.DekoblokoLogoTimeline;
 
 const QUERY = new URLSearchParams(location.search);
 const TIER = ["structured", "generated", "scalar"].includes(QUERY.get("tier"))
@@ -33,8 +39,11 @@ const state = {
   className: null,
   locals: null,
   surface: null,
+  clearMethod: null,
+  clearClassName: null,
   progressField: null,
-  progressValues: [0, 25, 50, 75, 100, 125, 150, 175],
+  timeline: null,
+  progressValues: [],
   width: 0,
   height: 0,
   imageData: null,
@@ -43,6 +52,9 @@ const state = {
   session: crypto.randomUUID ? crypto.randomUUID() :
     `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
 };
+// This page is itself a profiler. Keep the runtime reachable for automation
+// without exposing or changing the generic browser JVM API.
+window.__dekoblokoAnimationDiagnostics = state;
 
 els.run.addEventListener("click", runBenchmark);
 els.tier.value = TIER;
@@ -60,16 +72,19 @@ initialize().catch(showError);
 
 async function initialize() {
   const started = performance.now();
-  const [manifest, jarResponse, traceResponse] = await Promise.all([
+  const [manifest, timelineData, jarResponse, traceResponse] = await Promise.all([
     fetch("/animation-assets/manifest.json").then(checkedJson),
+    fetch("./logo-timeline.json").then(checkedJson),
     fetch("/animation-assets/scene-classes.jar").then(checkedResponse),
     fetch("/animation-assets/animation-trace.json").then(checkedResponse),
     loadScript("/jvm-assets/jvm-debug.js"),
-  ]).then(values => values.slice(0, 3));
+  ]);
   const [jarBytes, trace] = await Promise.all([
     jarResponse.arrayBuffer(),
     traceResponse.json(),
   ]);
+  const timeline = normalizeLogoTimeline(
+    timelineData, manifest.generatedFromGameJarSha256);
 
   const debug = new JVMDebug.BrowserJVMDebug();
   await debug.initialize();
@@ -102,17 +117,21 @@ async function initialize() {
   jvm.currentThreadIndex = 0;
 
   const surface = findSurface(jvm);
+  const clearTarget = surface &&
+    findSurfaceClearMethod(jvm, surface.field);
   const progressField = findAnimationProgressField(jvm, restored.frame.method);
   if (!progressField) {
     throw new Error("capture has no structurally identifiable animation-progress field");
   }
   const width = Number(locals[1]) * 2;
   const height = Number(locals[0]) * 2;
-  if (!surface || !Number.isSafeInteger(width) || !Number.isSafeInteger(height) ||
+  if (!surface || !clearTarget ||
+      !Number.isSafeInteger(width) || !Number.isSafeInteger(height) ||
       width <= 0 || height <= 0 || surface.pixels.length < width * height) {
     throw new Error(
       `captured raster geometry is inconsistent: ${width}x${height}, ` +
-      `${surface?.pixels?.length || 0} pixels`);
+      `${surface?.pixels?.length || 0} pixels; ` +
+      `clear=${Boolean(clearTarget)}`);
   }
   state.manifest = manifest;
   state.jvm = jvm;
@@ -122,7 +141,11 @@ async function initialize() {
     jvm.findClassNameForMethod(restored.frame.method);
   state.locals = locals;
   state.surface = surface;
+  state.clearMethod = clearTarget.method;
+  state.clearClassName = clearTarget.className;
   state.progressField = progressField;
+  state.timeline = timeline;
+  state.progressValues = timeline.values;
   state.width = width;
   state.height = height;
   els.surface.width = width;
@@ -141,12 +164,19 @@ async function initialize() {
     `Generated from game JAR: ${manifest.generatedFromGameJarSha256}`,
     `JVM bundle: ${manifest.jvmBundleSha256}`,
     `Selected tier: ${TIER}`,
+    `Original timeline: ${timeline.start}…${timeline.end} by ${timeline.step}, ` +
+      `${timeline.tickMs.toFixed(2)} ms/tick (${timeline.values.length} states)`,
+    `Timeline SHA-256: ${manifest.timelineSha256}`,
+    `Per-frame guest clear: ${JSON.stringify(
+      describeMethod(jvm, clearTarget.method))}`,
     `Animation progress field: ${JSON.stringify(progressField.field)} ` +
       `(${progressField.readCount} reads in the captured bytecode)`,
-    `Progress loop: ${state.progressValues.join(", ")}`,
     `Target shape: ${JSON.stringify(describeMethod(jvm, state.method))}`,
   ].join("\n");
   els.status.textContent =
+    (TIER === "structured" ? "" :
+      "CONTROL TIER: structured SSA and fused regions are disabled; " +
+      "this mode is intentionally slow and is not the normal JVM path. ") +
     `Ready in ${(performance.now() - started).toFixed(1)} ms. ` +
     "The first run includes JIT warmup; every measured frame advances the " +
     "captured guest animation progress.";
@@ -155,6 +185,7 @@ async function initialize() {
     manifest,
     tier: TIER,
     preparationMs: performance.now() - started,
+    timeline: summarizeLogoTimeline(state.timeline),
     targetShape: describeMethod(jvm, state.method),
   });
 }
@@ -165,7 +196,9 @@ async function runBenchmark() {
   state.stopped = false;
   els.run.disabled = true;
   els.stop.disabled = false;
-  const requested = Math.max(10, Math.min(1000, Number(els.frames.value) || 120));
+  const requestedLoops = Math.max(
+    1, Math.min(20, Math.trunc(Number(els.frames.value) || 2)));
+  const requested = requestedLoops * state.progressValues.length;
   const mode = els.mode.value;
   const warmups = 8;
   const countersBefore = jitCounters();
@@ -181,16 +214,20 @@ async function runBenchmark() {
     let totalTicks = 0;
     let hashMs = 0;
     for (let index = 0; index < requested && !state.stopped; index += 1) {
-      if (mode === "paced") await nextAnimationFrame();
+      if (mode === "paced") {
+        await waitForTimelineDeadline(
+          started + index * state.timeline.tickMs);
+      }
       const frameStarted = performance.now();
-      const progress =
-        state.progressValues[index % state.progressValues.length];
+      const timelineIndex = index % state.progressValues.length;
+      const progress = state.progressValues[timelineIndex];
       const invocation = await invokeScene(progress);
       const renderedAt = performance.now();
       paintSurface();
       const uploadedAt = performance.now();
       const hashStarted = performance.now();
-      const surfaceHash = hashPixels(surfacePixels());
+      const surfaceHash = hashPixels(
+        surfacePixels(), state.width * state.height);
       hashMs += performance.now() - hashStarted;
       frameRows.push({
         guestMs: invocation.elapsedMs,
@@ -199,17 +236,23 @@ async function runBenchmark() {
         ticks: invocation.ticks,
         hash: surfaceHash,
         progress,
+        loop: Math.floor(index / state.progressValues.length),
+        timelineIndex,
       });
       totalTicks += invocation.ticks;
       els.progress.style.width = `${100 * (index + 1) / requested}%`;
       if ((index + 1) % 10 === 0) {
         els.status.textContent =
-          `Rendered ${index + 1}/${requested} original guest scene frames…`;
+          `Rendered ${index + 1}/${requested} original timeline states…`;
         await Promise.resolve();
       }
     }
     const elapsedMs = performance.now() - started;
     if (!frameRows.length) throw new Error("scene loop stopped before a measured frame");
+    if (frameRows.length !== requested) {
+      throw new Error(
+        `timeline stopped after ${frameRows.length}/${requested} states`);
+    }
     const hashes = frameRows.map(row => row.hash);
     const uniqueHashes = new Set(hashes);
     const changedTransitions = hashes.slice(1)
@@ -222,8 +265,14 @@ async function runBenchmark() {
         `animation did not move enough: ${uniqueHashes.size} unique surfaces, ` +
         `${changedTransitions}/${frameRows.length - 1} changed transitions`);
     }
+    const loopSequenceHashes = sequenceHashesByLoop(
+      frameRows, state.progressValues.length);
+    if (new Set(loopSequenceHashes).size !== 1) {
+      throw new Error(
+        `timeline replay diverged across loops: ${loopSequenceHashes.join(", ")}`);
+    }
     const result = summarize(
-      mode, requested, frameRows, elapsedMs, hashMs, totalTicks,
+      mode, requestedLoops, requested, frameRows, elapsedMs, hashMs, totalTicks,
       countersBefore, jitCounters());
     displayResult(result);
     sendTelemetry("animation_loop_result", {manifest: state.manifest, result});
@@ -243,13 +292,22 @@ async function runBenchmark() {
 
 async function invokeScene(progress) {
   state.jvm.jit.putStaticSync(state.progressField.field, progress);
-  const frame = new JVMDebug.Frame(state.method);
-  frame.className = state.className;
-  frame.locals = state.locals.slice();
+  const started = performance.now();
+  let ticks = 0;
+  ticks += await invokeGuestFrame(
+    state.clearMethod, state.clearClassName, []);
+  ticks += await invokeGuestFrame(
+    state.method, state.className, state.locals);
+  return {ticks, elapsedMs: performance.now() - started};
+}
+
+async function invokeGuestFrame(method, className, locals) {
+  const frame = new JVMDebug.Frame(method);
+  frame.className = className;
+  frame.locals = locals.slice();
   state.thread.status = "runnable";
   state.thread.pendingException = null;
   state.thread.callStack.push(frame);
-  const started = performance.now();
   let ticks = 0;
   while (!state.thread.callStack.isEmpty()) {
     const result = await state.jvm.executeTick();
@@ -267,11 +325,11 @@ async function invokeScene(progress) {
     throw new Error(
       `scene replay left pending exception ${JSON.stringify(state.thread.pendingException)}`);
   }
-  return {ticks, elapsedMs: performance.now() - started};
+  return ticks;
 }
 
-function summarize(mode, requested, rows, elapsedMs, hashMs, totalTicks,
-    before, after) {
+function summarize(mode, requestedLoops, requested, rows, elapsedMs, hashMs,
+    totalTicks, before, after) {
   const values = key => rows.map(row => row[key]);
   const guest = values("guestMs");
   const upload = values("uploadMs");
@@ -283,10 +341,12 @@ function summarize(mode, requested, rows, elapsedMs, hashMs, totalTicks,
   for (const hash of hashes) {
     sequenceHash = Math.imul(sequenceHash ^ hash, 16777619) >>> 0;
   }
-  const deadline = 1000 / 60;
+  const deadline = state.timeline.tickMs;
   return {
     tier: TIER,
     mode,
+    requestedLoops,
+    completedLoops: rows.length / state.progressValues.length,
     requestedFrames: requested,
     completedFrames: rows.length,
     elapsedMs,
@@ -297,8 +357,14 @@ function summarize(mode, requested, rows, elapsedMs, hashMs, totalTicks,
     hashMs,
     deadlineMs: deadline,
     deadlineMisses: pipeline.filter(value => value > deadline).length,
+    sixtyFpsMisses: pipeline.filter(value => value > 1000 / 60).length,
     thirtyFpsMisses: pipeline.filter(value => value > 1000 / 30).length,
     averageSchedulerTicks: totalTicks / rows.length,
+    timeline: {
+      ...summarizeLogoTimeline(state.timeline),
+      loopSequenceHashes: sequenceHashesByLoop(
+        rows, state.progressValues.length),
+    },
     surface: {
       width: state.width,
       height: state.height,
@@ -318,7 +384,9 @@ function summarize(mode, requested, rows, elapsedMs, hashMs, totalTicks,
 }
 
 function displayResult(result) {
-  els.fps.textContent = `${result.framesPerSecond.toFixed(2)} FPS`;
+  els.fps.textContent =
+    `${result.framesPerSecond.toFixed(2)} FPS` +
+    (TIER === "structured" ? "" : " · CONTROL");
   els.guest.textContent = `${result.guestMs.median.toFixed(2)} ms`;
   els.upload.textContent = `${result.uploadMs.median.toFixed(2)} ms`;
   els.misses.textContent =
@@ -331,7 +399,10 @@ function displayResult(result) {
     provenance: state.manifest,
   }, null, 2);
   els.status.textContent =
-    `${result.mode} loop complete: ${result.completedFrames} frames at ` +
+    (TIER === "structured" ? "" :
+      "CONTROL TIER (OPTIMIZATIONS OFF) · ") +
+    `${result.mode} timeline complete: ${result.completedLoops} loops / ` +
+    `${result.completedFrames} states at ` +
     `${result.framesPerSecond.toFixed(2)} FPS; ` +
     `${result.surface.changedTransitions}/${result.surface.transitionCount} ` +
     "consecutive surfaces changed.";
@@ -451,10 +522,10 @@ function surfacePixels() {
   return pixels;
 }
 
-function hashPixels(value) {
+function hashPixels(value, count) {
   const pixels = arrayData(value);
   let hash = 2166136261;
-  for (let index = 0; index < pixels.length; index++) {
+  for (let index = 0; index < count; index++) {
     hash = Math.imul(hash ^ (Number(pixels[index]) | 0), 16777619) >>> 0;
   }
   return hash;
@@ -474,8 +545,13 @@ function frameKey(jvm, frame) {
     `${frame.method.name}${frame.method.descriptor}`;
 }
 
-function nextAnimationFrame() {
-  return new Promise(resolve => requestAnimationFrame(resolve));
+async function waitForTimelineDeadline(deadline) {
+  for (;;) {
+    const remaining = deadline - performance.now();
+    if (remaining <= 0) return;
+    await new Promise(resolve =>
+      setTimeout(resolve, Math.max(0, remaining - 0.5)));
+  }
 }
 
 function checkedResponse(response) {
