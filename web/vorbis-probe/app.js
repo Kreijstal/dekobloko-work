@@ -33,7 +33,8 @@ try {
   await debug.run("JavaVorbisDecodeProbe", {args: files});
   const fields = debug.debugController.jvm.classes.JavaVorbisDecodeProbe.staticFields;
   const decoded = [];
-  for (let index = 0; index < 3; index++) {
+  const sampleCount = Math.min(3, integer(fields, "count"));
+  for (let index = 0; index < sampleCount; index++) {
     decoded.push({
       file: files[index + 1],
       length: integer(fields, `length${index}`),

@@ -2,6 +2,10 @@ const els = Object.fromEntries([
   "identity", "tier", "mode", "frames", "run", "stop", "progress", "status", "surface",
   "fps", "guest", "upload", "misses", "ticks", "hash", "details",
 ].map(id => [id, document.getElementById(id)]));
+const {
+  normalizeLogoTimeline,
+  summarizeLogoTimeline,
+} = globalThis.DekoblokoLogoTimeline;
 
 const QUERY = new URLSearchParams(location.search);
 const TIER = ["structured", "generated", "scalar"].includes(QUERY.get("tier"))
@@ -77,7 +81,8 @@ async function initialize() {
     jarResponse.arrayBuffer(),
     traceResponse.json(),
   ]);
-  const timeline = validateTimeline(timelineData, manifest);
+  const timeline = normalizeLogoTimeline(
+    timelineData, manifest.generatedFromGameJarSha256);
 
   const debug = new JVMDebug.BrowserJVMDebug();
   await debug.initialize();
@@ -178,7 +183,7 @@ async function initialize() {
     manifest,
     tier: TIER,
     preparationMs: performance.now() - started,
-    timeline: publicTimeline(),
+    timeline: summarizeLogoTimeline(state.timeline),
     targetShape: describeMethod(jvm, state.method),
   });
 }
@@ -354,7 +359,7 @@ function summarize(mode, requestedLoops, requested, rows, elapsedMs, hashMs,
     thirtyFpsMisses: pipeline.filter(value => value > 1000 / 30).length,
     averageSchedulerTicks: totalTicks / rows.length,
     timeline: {
-      ...publicTimeline(),
+      ...summarizeLogoTimeline(state.timeline),
       loopSequenceHashes: sequenceHashesByLoop(
         rows, state.progressValues.length),
     },
@@ -412,50 +417,6 @@ function stats(values) {
     maximum: ordered.at(-1),
     average: sum / values.length,
     total: sum,
-  };
-}
-
-function validateTimeline(value, manifest) {
-  const start = Number(value?.start);
-  const end = Number(value?.end);
-  const step = Number(value?.step);
-  const tickNanoseconds = Number(value?.tickNanoseconds);
-  if (value?.schema !== 1 ||
-      !Number.isSafeInteger(start) ||
-      !Number.isSafeInteger(end) ||
-      !Number.isSafeInteger(step) || step <= 0 ||
-      end < start || (end - start) % step !== 0 ||
-      !Number.isSafeInteger(tickNanoseconds) || tickNanoseconds <= 0 ||
-      value.generatedFromGameJarSha256 !==
-        manifest.generatedFromGameJarSha256) {
-    throw new Error("logo timeline is invalid or belongs to another game JAR");
-  }
-  const values = Array.from(
-    {length: (end - start) / step + 1},
-    (_unused, index) => start + index * step);
-  return {
-    schema: value.schema,
-    workload: value.workload,
-    start,
-    end,
-    step,
-    tickNanoseconds,
-    tickMs: tickNanoseconds / 1e6,
-    values,
-  };
-}
-
-function publicTimeline() {
-  return {
-    schema: state.timeline.schema,
-    workload: state.timeline.workload,
-    start: state.timeline.start,
-    end: state.timeline.end,
-    step: state.timeline.step,
-    states: state.timeline.values.length,
-    tickNanoseconds: state.timeline.tickNanoseconds,
-    tickMs: state.timeline.tickMs,
-    durationMs: state.timeline.values.length * state.timeline.tickMs,
   };
 }
 

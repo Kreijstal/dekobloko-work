@@ -374,6 +374,7 @@ public final class JavaFunOrbTrackPlayer {
         blockedPolls = 0;
         checksum = 0;
         channels = 1;
+        schedulerMix = 0;
         leftChecksum = 0;
         rightChecksum = 0;
         leftAbsoluteSum = 0L;

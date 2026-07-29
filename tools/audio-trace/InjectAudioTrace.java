@@ -3,6 +3,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -13,19 +14,52 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public final class InjectAudioTrace {
+    private static final String[] REQUIRED_SITES = {
+        "en.a([II)V",
+        "en.b(I)V",
+        "ol.a([III)V",
+        "ei.b([III)V",
+        "ia.a(IIIIII)V",
+        "va.<init>([B)V",
+        "va.b([B)V",
+        "va.c()V",
+        "va.a([I)Lud;",
+        "va.a()Lud;",
+        "va.d(I)[F",
+        "en.n:I",
+        "ol.p:Z",
+        "ia.fb:[Lei;",
+        "va.y:I",
+        "va.B:I",
+        "va.v:[F",
+        "va.p:[F",
+        "va.A:[F",
+        "va.U:[F",
+        "va.J:[F",
+        "va.M:[F",
+    };
+
     public static void main(String[] args) throws Exception {
+        if (args.length != 2) {
+            throw new IllegalArgumentException(
+                "Usage: InjectAudioTrace <input-classes> <output-classes>");
+        }
         Path input = Paths.get(args[0]);
         Path output = Paths.get(args[1]);
+        Map<String, Integer> found = new LinkedHashMap<>();
+        for (String site : REQUIRED_SITES) found.put(site, 0);
         try (Stream<Path> files = Files.walk(input)) {
             for (Path file : (Iterable<Path>) files
                     .filter(path -> path.toString().endsWith(".class"))::iterator) {
                 ClassReader reader = new ClassReader(Files.readAllBytes(file));
                 ClassNode node = new ClassNode();
                 reader.accept(node, 0);
-                boolean changed = instrument(node);
+                boolean changed = instrument(node, found);
                 Path target = output.resolve(input.relativize(file));
                 Files.createDirectories(target.getParent());
                 if (!changed) {
@@ -38,31 +72,42 @@ public final class InjectAudioTrace {
                 System.out.println("instrumented " + node.name);
             }
         }
+        verifyRequiredSites(found);
     }
 
-    private static boolean instrument(ClassNode node) {
+    private static boolean instrument(
+            ClassNode node, Map<String, Integer> found) {
         boolean changed = false;
+        for (FieldNode field : node.fields) {
+            String site = node.name + "." + field.name + ":" + field.desc;
+            if (found.containsKey(site)) mark(found, site);
+        }
         for (MethodNode method : node.methods) {
             if (node.name.equals("en") && method.name.equals("a") &&
                     method.desc.equals("([II)V")) {
+                mark(found, "en.a([II)V");
                 insertEntry(method, mixerStart());
                 insertBeforeReturns(method, mixerEnd());
                 changed = true;
             } else if (node.name.equals("en") && method.name.equals("b") &&
                     method.desc.equals("(I)V")) {
+                mark(found, "en.b(I)V");
                 insertEntry(method, catchup());
                 changed = true;
             } else if (node.name.equals("ol") && method.name.equals("a") &&
                     method.desc.equals("([III)V")) {
+                mark(found, "ol.a([III)V");
                 insertEntry(method, dispatch());
                 changed = true;
             } else if (node.name.equals("ei") && method.name.equals("b") &&
                     method.desc.equals("([III)V")) {
+                mark(found, "ei.b([III)V");
                 insertEntry(method, leafStart());
                 insertBeforeReturns(method, leafEnd());
                 changed = true;
             } else if (node.name.equals("ia") && method.name.equals("a") &&
                     method.desc.equals("(IIIIII)V")) {
+                mark(found, "ia.a(IIIIII)V");
                 int stores = instrumentVoiceStore(method);
                 if (stores != 1) {
                     throw new IllegalStateException(
@@ -71,30 +116,62 @@ public final class InjectAudioTrace {
                 changed = true;
             } else if (node.name.equals("va") && method.name.equals("<init>") &&
                     method.desc.equals("([B)V")) {
+                mark(found, "va.<init>([B)V");
                 insertBeforeReturns(method, compressedCreated());
                 changed = true;
             } else if (node.name.equals("va") && method.name.equals("b") &&
                     method.desc.equals("([B)V")) {
+                mark(found, "va.b([B)V");
                 insertEntry(method, compressedHeader());
                 insertBeforeReturns(method, compressedHeaderComplete());
                 changed = true;
             } else if (node.name.equals("va") && method.name.equals("c") &&
                     method.desc.equals("()V")) {
+                mark(found, "va.c()V");
                 insertEntry(method, compressedCleanup());
                 changed = true;
             } else if (node.name.equals("va") && method.name.equals("a") &&
-                    (method.desc.equals("([I)Lud;") ||
-                     method.desc.equals("()Lud;"))) {
+                    method.desc.equals("([I)Lud;")) {
+                mark(found, "va.a([I)Lud;");
+                insertBeforeObjectReturns(method, decodedCreated());
+                changed = true;
+            } else if (node.name.equals("va") && method.name.equals("a") &&
+                    method.desc.equals("()Lud;")) {
+                mark(found, "va.a()Lud;");
                 insertBeforeObjectReturns(method, decodedCreated());
                 changed = true;
             } else if (node.name.equals("va") && method.name.equals("d") &&
                     method.desc.equals("(I)[F")) {
+                mark(found, "va.d(I)[F");
                 insertEntry(method, packetDecodeStart());
                 insertBeforeObjectReturns(method, packetDecodeEnd());
                 changed = true;
             }
         }
         return changed;
+    }
+
+    private static void mark(Map<String, Integer> found, String site) {
+        found.put(site, found.get(site) + 1);
+    }
+
+    private static void verifyRequiredSites(Map<String, Integer> found) {
+        StringBuilder summary = new StringBuilder();
+        StringBuilder invalid = new StringBuilder();
+        for (Map.Entry<String, Integer> entry : found.entrySet()) {
+            if (summary.length() != 0) summary.append(", ");
+            summary.append(entry.getKey()).append('=').append(entry.getValue());
+            if (entry.getValue() != 1) {
+                if (invalid.length() != 0) invalid.append(", ");
+                invalid.append(entry.getKey()).append('=').append(entry.getValue());
+            }
+        }
+        if (invalid.length() != 0) {
+            throw new IllegalStateException(
+                "Audio trace injection target mismatch: " + invalid +
+                ". All sites: " + summary);
+        }
+        System.out.println("audio trace injection sites: " + summary);
     }
 
     private static void insertEntry(MethodNode method, InsnList probe) {

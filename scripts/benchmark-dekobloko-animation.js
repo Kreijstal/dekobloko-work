@@ -5,6 +5,10 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
+const {
+  normalizeLogoTimeline,
+  summarizeLogoTimeline,
+} = require("../web/animation-diagnostics/timeline-schema");
 
 const root = path.resolve(__dirname, "..");
 const javaToolsRoot = path.resolve(process.env.JAVA_TOOLS_DIR ||
@@ -28,35 +32,6 @@ function positiveInteger(name, fallback) {
     throw new Error(`${name} must be a positive integer`);
   }
   return value;
-}
-
-function loadTimeline(file, gameJarSha256) {
-  const value = JSON.parse(fs.readFileSync(file, "utf8"));
-  const start = Number(value?.start);
-  const end = Number(value?.end);
-  const step = Number(value?.step);
-  const tickNanoseconds = Number(value?.tickNanoseconds);
-  if (value?.schema !== 1 ||
-      !Number.isSafeInteger(start) ||
-      !Number.isSafeInteger(end) ||
-      !Number.isSafeInteger(step) || step <= 0 ||
-      end < start || (end - start) % step !== 0 ||
-      !Number.isSafeInteger(tickNanoseconds) || tickNanoseconds <= 0 ||
-      value.generatedFromGameJarSha256 !== gameJarSha256) {
-    throw new Error("logo timeline is invalid or belongs to another game JAR");
-  }
-  return {
-    schema: value.schema,
-    workload: value.workload,
-    start,
-    end,
-    step,
-    tickNanoseconds,
-    tickMs: tickNanoseconds / 1e6,
-    values: Array.from(
-      { length: (end - start) / step + 1 },
-      (_unused, index) => start + index * step),
-  };
 }
 
 function frameKey(jvm, frame) {
@@ -264,7 +239,8 @@ async function main() {
       "[trace.json] [class-directory]");
   }
   const gameJarSha256 = sha256(path.join(root, "dekobloko.jar"));
-  const timeline = loadTimeline(timelinePath, gameJarSha256);
+  const timeline = normalizeLogoTimeline(
+    JSON.parse(fs.readFileSync(timelinePath, "utf8")), gameJarSha256);
   const progressValues = timeline.values;
   const frames = loops * progressValues.length;
   const trace = JSON.parse(fs.readFileSync(tracePath, "utf8"));
@@ -362,15 +338,7 @@ async function main() {
     averageSchedulerTicks:
       rows.reduce((sum, row) => sum + row.ticks, 0) / frames,
     timeline: {
-      schema: timeline.schema,
-      workload: timeline.workload,
-      start: timeline.start,
-      end: timeline.end,
-      step: timeline.step,
-      states: timeline.values.length,
-      tickNanoseconds: timeline.tickNanoseconds,
-      tickMs: timeline.tickMs,
-      durationMs: timeline.values.length * timeline.tickMs,
+      ...summarizeLogoTimeline(timeline),
       loopSequenceHashes,
     },
     surface: {

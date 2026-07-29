@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-ROOT=/home/kreijstal/git/dekobloko-work
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 TRACE=$ROOT/tools/audio-trace
 WORK=$ROOT/.work/audio-trace
 INPUT=$WORK/input
