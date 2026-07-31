@@ -95,6 +95,29 @@ function findSurface(jvm) {
       if (pixels) candidates.push({ field, pixels });
     }
   }
+  // The complete historical raster oracle is intentionally disabled in the
+  // production JIT. Keep this diagnostic usable with the generic tier by
+  // deriving the surface from ordinary initialized static-array state. The
+  // largest live int[] is the software framebuffer in this captured replay;
+  // no owner or field identity participates in compilation.
+  if (!candidates.length) {
+    for (const [className, classData] of Object.entries(jvm.classes)) {
+      for (const [key, value] of classData?.staticFields || []) {
+        const pixels = arrayData(value);
+        if (!pixels || value?.type !== "[I") continue;
+        const separator = String(key).lastIndexOf(":");
+        if (separator <= 0 || String(key).slice(separator + 1) !== "[I") continue;
+        candidates.push({
+          field: [
+            "Field",
+            className,
+            [String(key).slice(0, separator), "[I"],
+          ],
+          pixels,
+        });
+      }
+    }
+  }
   candidates.sort((left, right) => right.pixels.length - left.pixels.length);
   if (!candidates[0]) throw new Error("captured software raster was not found");
   return candidates[0];
@@ -207,6 +230,7 @@ async function main() {
     warmupThreshold: 0,
     preferWholeMethodJs: true,
     rendererPipeline: true,
+    fusedRegions: true,
   } });
   await jvm.loadState(trace.state);
   const restored = jvm.threads.flatMap((thread) =>
@@ -334,6 +358,7 @@ async function main() {
         warmupThreshold: 0,
         preferWholeMethodJs: true,
         rendererPipeline: true,
+        fusedRegions: true,
       },
     },
   };

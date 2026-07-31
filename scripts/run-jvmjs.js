@@ -470,10 +470,13 @@ async function main() {
         scalarGuestBodies: Boolean(jit && jit.scalarGuestBodiesEnabled),
         scalarSsaOptimizations: Boolean(jit && jit.scalarSsaOptimizationsEnabled),
         longArithmeticWasmFirst: Boolean(jit && jit.longArithmeticWasmFirstEnabled),
+        dynamicArrayStructuredFirst: Boolean(
+          jit && jit.dynamicArrayStructuredFirstEnabled),
       },
       wasm: {
         enabled: Boolean(wasm && wasm.enabled),
         structured: Boolean(wasm && wasm.structuredEnabled),
+        typedArrayStores: Boolean(wasm && wasm.typedArrayStoresEnabled),
       },
       structuredSsa: {
         enabled: Boolean(structured && structured.enabled),
@@ -487,6 +490,11 @@ async function main() {
         coarseCountedLoopSafePoints: Boolean(
           structured && structured.coarseCountedLoopSafePointsEnabled),
         atomicBoundedLoops: Boolean(structured && structured.atomicBoundedLoopsEnabled),
+        inlinePrimitiveArrayStores: Boolean(
+          structured && structured.inlinePrimitiveArrayStoresEnabled),
+        versionedArrayRangeStores: Boolean(
+          structured && structured.versionedArrayRangeStoresEnabled),
+        runCounters: Boolean(structured && structured.runCountersEnabled),
       },
       fusedRegions: {
         enabled: Boolean(fused && fused.enabled),
@@ -497,9 +505,39 @@ async function main() {
       },
     }));
     process.once('exit', () => {
+      const syncCallSites = Array.isArray(jit && jit.syncCallSites)
+        ? jit.syncCallSites.filter(Boolean) : [];
       console.error('[jvm-benchmark-counters] ' + JSON.stringify({
-        structuredSsaRuns: Number(structured && structured.runCount) || 0,
+        structuredSsaRuns: Number(structured && structured.totalRunCount) || 0,
         structuredSsaSafePoints: Number(structured && structured.safePointCount) || 0,
+        structuredSsaLazyStaticLinks:
+          Number(structured && structured.lazyStaticTargetLinkCount) || 0,
+        structuredSsaRestoringDirectRuns:
+          Number(structured && structured.restoringDirectRunCount) || 0,
+        inlineLoopRegionRuns:
+          Number(jit && jit.inlineLoopRegionRunCount) || 0,
+        inlineLoopRegionOsr:
+          Number(jit && jit.inlineLoopRegionOsrCount) || 0,
+        syncCallSites: syncCallSites.length,
+        resolvedStaticCallSites: syncCallSites.filter((site) =>
+          Boolean(site.fastStaticTarget)).length,
+        positionalCallSites: syncCallSites.filter((site) =>
+          Boolean(site.fastPositional)).length,
+        restoringPositionalTargets: syncCallSites.filter((site) =>
+          typeof site.fastStaticTarget?.generated
+            ?.jvmRestoringDirectPositionalBody === 'function').length,
+        restoringPositionalCallSites: syncCallSites.filter((site) =>
+          Boolean(site.fastPositional) &&
+          typeof site.fastStaticTarget?.generated
+            ?.jvmRestoringDirectPositionalBody === 'function').length,
+        restoringPositionalTargetStates: syncCallSites.filter((site) =>
+          typeof site.fastStaticTarget?.generated
+            ?.jvmRestoringDirectPositionalBody === 'function')
+          .slice(0, 100)
+          .map((site) => ({
+            method: `${site.declaredClassName}.${site.methodName}${site.descriptor}`,
+            positional: Boolean(site.fastPositional),
+          })),
         fusedRuns: Number(jit && jit.fusedRunCount) || 0,
         fusedDirectRuns: Number(jit && jit.fusedDirectRunCount) || 0,
         fusedGuardedFallbacks: Number(jit && jit.fusedGuardedFallbackCount) || 0,
@@ -546,10 +584,34 @@ async function main() {
           Number(jit && jit.oversizedWasmFirstMethodCount) || 0,
         longArithmeticWasmFirstMethods:
           Number(jit && jit.longArithmeticWasmFirstMethodCount) || 0,
+        dynamicArrayStructuredFirstMethods:
+          Number(jit && jit.dynamicArrayStructuredFirstMethodCount) || 0,
         adaptiveWholeMethodPromotions:
           Number(jit && jit.adaptiveWholeMethodPromotionCount) || 0,
         adaptiveWholeMethodEscalations:
           Number(jit && jit.adaptiveWholeMethodEscalationCount) || 0,
+        guestKernelOraclesEnabled:
+          Boolean(jit && jit.guestKernelOraclesEnabled),
+        perspectiveSpanRuns:
+          Number(jit && jit.perspectiveSpanRunCount) || 0,
+        perspectiveSpanGuardedFallbacks:
+          Number(jit && jit.perspectiveSpanGuardedFallbackCount) || 0,
+        tiledBlitRuns:
+          Number(jit && jit.tiledBlitRunCount) || 0,
+        tiledBlitGuardedFallbacks:
+          Number(jit && jit.tiledBlitGuardedFallbackCount) || 0,
+        affineSpriteRasterRuns:
+          Number(jit && jit.affineSpriteRasterRunCount) || 0,
+        affineSpriteRasterGuardedFallbacks:
+          Number(jit && jit.affineSpriteRasterGuardedFallbackCount) || 0,
+        polygonRasterRuns:
+          Number(jit && jit.polygonRasterRunCount) || 0,
+        polygonRasterGuardedFallbacks:
+          Number(jit && jit.polygonRasterGuardedFallbackCount) || 0,
+        semanticBilinearSamplerRuns:
+          Number(jit && jit.semanticBilinearSamplerRunCount) || 0,
+        semanticBilinearSamplerFallbacks:
+          Number(jit && jit.semanticBilinearSamplerFallbackCount) || 0,
       }));
     });
   }
