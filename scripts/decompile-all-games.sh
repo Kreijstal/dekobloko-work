@@ -351,15 +351,18 @@ NODE
   fi
 
   if ((pipeline_fail == 0 && verify_fail == 0)); then
-    # The decompiler costs roughly 2s per class on this corpus (brickabrac:
-    # 420 classes, 895s), so a flat cap scaled with the smallest games and
-    # killed the largest.  Six games failed this way, and the kill was
-    # invisible: timeout SIGTERMs a --silent run, so the log was empty, no
-    # diagnostics.json was written, and the summary could only say cli=1 --
-    # identical to a genuine decompiler failure.
+    # A timeout here is never "the whole game was a bit slow": measured cost is
+    # ~0.1-0.6s per class, and every game that has ever hit the cap did so by
+    # wedging on ONE class (aceofskies eg.class, kickabout os.class) while the
+    # other 500-odd finished in seconds.  So the cap only has to be generous
+    # enough to be unambiguous, and the useful output is WHICH class it died on.
     cli_timeout=$((input_count * DECOMPILER_SECONDS_PER_CLASS))
     ((cli_timeout < DECOMPILER_TIMEOUT_SECONDS)) && cli_timeout="$DECOMPILER_TIMEOUT_SECONDS"
-    timeout "$cli_timeout" node "$DECOMPILER" \
+    # CFR_JS_PROFILE_CLASSES makes cfr.js log per-class start/done lines. Without
+    # it a kill left a 0-byte log, no diagnostics.json, and only cli=1 in the
+    # summary -- indistinguishable from the decompiler genuinely failing, which
+    # is how six games were misfiled as decompiler limits.
+    CFR_JS_PROFILE_CLASSES=1 timeout "$cli_timeout" node "$DECOMPILER" \
       --silent --fail-on-hard-failure \
       --classpath "$work/out:$STUBS" \
       --diagnostics-json "$work/logs/diagnostics.json" \
@@ -368,11 +371,12 @@ NODE
     cli_status=$?
     if ((cli_status != 0)); then
       cli_fail=1
-      # Say so in the log, so a cap that is still too low never again looks
-      # like the decompiler being unable to handle the game.
       if ((cli_status == 124)); then
+        # The last class to start without a matching done line is the culprit.
+        stuck=$(awk '/cfr-class-start/ {s=$2} /cfr-class-done/ {d=$3} END {print (s==d ? "" : s)}' \
+          "$work/logs/decompiler.log")
         echo "[harness] decompiler killed by timeout after ${cli_timeout}s" \
-          "(${input_count} classes); raise DECOMPILER_SECONDS_PER_CLASS" \
+          "(${input_count} classes); wedged on class: ${stuck:-unknown}" \
           >>"$work/logs/decompiler.log"
       fi
     fi
