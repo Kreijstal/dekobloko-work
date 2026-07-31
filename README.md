@@ -26,6 +26,10 @@ gate; see [recompiled runtime validation](docs/recompiled-runtime-validation.md)
 for the launch-to-main-menu gate and the operand-stack bugs found only at
 runtime.
 
+The companion [browser game library](docs/browser-game-library.md) exposes the
+locally validated AlterOrb catalog through one searchable page and one shared,
+data-driven JVM launcher.
+
 ## Repository Layout
 
 Source and tooling are grouped by job:
