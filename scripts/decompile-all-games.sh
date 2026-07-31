@@ -8,7 +8,9 @@ REPO="$(dirname "$SCRIPT_DIR")"
 ROOT="$REPO/.work/games"
 JAVA_TOOLS_DIR="${JAVA_TOOLS_DIR:-${JT_DIR:-/home/kreijstal/git/java-tools}}"
 PIPELINE_TIMEOUT_SECONDS="${PIPELINE_TIMEOUT_SECONDS:-1800}"
+# Floor for the decompiler cap; the effective cap scales with class count.
 DECOMPILER_TIMEOUT_SECONDS="${DECOMPILER_TIMEOUT_SECONDS:-600}"
+DECOMPILER_SECONDS_PER_CLASS="${DECOMPILER_SECONDS_PER_CLASS:-6}"
 JAVAC_TIMEOUT_SECONDS="${JAVAC_TIMEOUT_SECONDS:-600}"
 GAME=""
 RESUME=0
@@ -349,12 +351,31 @@ NODE
   fi
 
   if ((pipeline_fail == 0 && verify_fail == 0)); then
-    timeout "$DECOMPILER_TIMEOUT_SECONDS" node "$DECOMPILER" \
+    # The decompiler costs roughly 2s per class on this corpus (brickabrac:
+    # 420 classes, 895s), so a flat cap scaled with the smallest games and
+    # killed the largest.  Six games failed this way, and the kill was
+    # invisible: timeout SIGTERMs a --silent run, so the log was empty, no
+    # diagnostics.json was written, and the summary could only say cli=1 --
+    # identical to a genuine decompiler failure.
+    cli_timeout=$((input_count * DECOMPILER_SECONDS_PER_CLASS))
+    ((cli_timeout < DECOMPILER_TIMEOUT_SECONDS)) && cli_timeout="$DECOMPILER_TIMEOUT_SECONDS"
+    timeout "$cli_timeout" node "$DECOMPILER" \
       --silent --fail-on-hard-failure \
       --classpath "$work/out:$STUBS" \
       --diagnostics-json "$work/logs/diagnostics.json" \
       --outputdir "$work/java" "$work/out" \
-      >"$work/logs/decompiler.log" 2>&1 || cli_fail=1
+      >"$work/logs/decompiler.log" 2>&1
+    cli_status=$?
+    if ((cli_status != 0)); then
+      cli_fail=1
+      # Say so in the log, so a cap that is still too low never again looks
+      # like the decompiler being unable to handle the game.
+      if ((cli_status == 124)); then
+        echo "[harness] decompiler killed by timeout after ${cli_timeout}s" \
+          "(${input_count} classes); raise DECOMPILER_SECONDS_PER_CLASS" \
+          >>"$work/logs/decompiler.log"
+      fi
+    fi
   else
     cli_fail=1
   fi
