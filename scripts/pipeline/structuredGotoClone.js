@@ -2332,6 +2332,11 @@ function cloneSharedConditionalSideEffectExitTails(codeItems, code) {
       const currentTail = readSharedConditionalSideEffectExitTail(codeItems, currentTarget, maxInsns);
       if (!currentTail) continue;
       if (rangeTouchesExceptionTable(code, codeItems, currentTarget, currentTail.end)) continue;
+      const branch = codeItems[ref] && codeItems[ref].instruction;
+      // refsByLabel is a snapshot taken before cloning starts. Once an earlier
+      // clone retargets this branch to its original fallthrough, the cached ref
+      // is stale and must not be applied to the same tail again.
+      if (labelName(branch && branch.arg) !== targetLabel) continue;
       const changed = cloneConditionalRangeAfterBranchWithFallthroughGoto(
         codeItems,
         code,
@@ -5333,6 +5338,13 @@ function retargetGotoTrampolines(codeItems) {
     if (!replacement || replacement === targetLabel) continue;
     const replacementIndex = findLabelIndex(codeItems, replacement);
     if (replacementIndex < 0 || replacementIndex === target) continue;
+    // Preserve a conditional's explicit terminal trampoline. Several later
+    // tail-cloning passes use that goto as the region boundary; bypassing it
+    // lets them mistake an earlier live sibling block for terminal padding and
+    // remove it. Unconditional gotos remain safe to collapse, and conditional
+    // trampolines to non-terminal continuations still get the intended cleanup.
+    const replacementOp = op(codeItems[replacementIndex] && codeItems[replacementIndex].instruction);
+    if (isConditionalBranch(op(insn)) && isTerminalOp(replacementOp)) continue;
     insn.arg = replacement;
     rewrites += 1;
   }

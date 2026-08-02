@@ -50,6 +50,115 @@ function padded(codeItems) {
   return codeItems;
 }
 
+// A conditional's explicit goto-to-return trampoline is a semantic boundary
+// for the later terminal-tail transforms. Collapsing it exposed a live sibling
+// block in Brick-a-Brac km.a(ZZI)V as apparent terminal padding, deleting the
+// menu hit-test call. Direct gotos can still bypass the same trampoline.
+{
+  const conditional = padded([
+    item('LLOAD', 'iload_1'),
+    item('LBRANCH', { op: 'ifeq', arg: 'LTRAMP' }),
+    item('LLIVE', 'iconst_1'),
+    item(null, 'pop'),
+    item(null, 'return'),
+    item('LTRAMP', { op: 'goto', arg: 'LRETURN' }),
+    item('LRETURN', 'return'),
+  ]);
+  const conditionalResult = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_RETARGET_GOTO_TRAMPOLINES: '1',
+  }, () => runStructuredGotoClone(astFrom(conditional)));
+  assert.equal(conditionalResult.rewrites, 0,
+    'conditional terminal trampolines must remain explicit');
+  assert.equal(conditional[1].instruction.arg, 'LTRAMP');
+
+  const direct = padded([
+    item('LDIRECT', { op: 'goto', arg: 'LTRAMP' }),
+    item('LTRAMP', { op: 'goto', arg: 'LRETURN' }),
+    item('LRETURN', 'return'),
+  ]);
+  const directResult = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_RETARGET_GOTO_TRAMPOLINES: '1',
+  }, () => runStructuredGotoClone(astFrom(direct)));
+  assert.equal(directResult.rewrites, 1,
+    'unconditional terminal trampolines should still be collapsed');
+  assert.equal(direct[0].instruction.arg, 'LRETURN');
+
+  const nonTerminal = padded([
+    item('LLOAD', 'iload_1'),
+    item('LBRANCH', { op: 'ifeq', arg: 'LTRAMP' }),
+    item('LLIVE', 'iconst_1'),
+    item(null, 'pop'),
+    item(null, 'return'),
+    item('LTRAMP', { op: 'goto', arg: 'LCONTINUE' }),
+    item('LCONTINUE', 'iconst_3'),
+    item(null, 'istore_2'),
+    item(null, 'return'),
+  ]);
+  const nonTerminalResult = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_RETARGET_GOTO_TRAMPOLINES: '1',
+  }, () => runStructuredGotoClone(astFrom(nonTerminal)));
+  assert.equal(nonTerminalResult.rewrites, 1,
+    'conditional non-terminal trampolines should still be collapsed');
+  assert.equal(nonTerminal[1].instruction.arg, 'LCONTINUE');
+  const continuationIndex = nonTerminal.findIndex((entry) => entry.labelDef === 'LCONTINUE:');
+  assert.notEqual(continuationIndex, -1, 'the non-terminal continuation must remain reachable');
+  assert.equal(nonTerminal[continuationIndex].instruction, 'iconst_3',
+    'the non-terminal continuation must remain intact');
+  assert.equal(nonTerminal[continuationIndex + 1].instruction, 'istore_2',
+    'the continuation store must remain intact');
+}
+
+// Brick-a-Brac qj.a(ZZI)V loads the selected gameplay theme on the fallthrough
+// of a null check, then joins a shared conditional cleanup tail. After cloning
+// that cleanup once, the transform used to treat its newly exposed,
+// invoke-bearing fallthrough as a second tail and invert the null check again.
+// The loader became unreachable and the title music played throughout games.
+{
+  const codeItems = padded([
+    item('LNULL', 'aconst_null'),
+    item(null, { op: 'getstatic', arg: ['Field', 'oa', ['Sb', 'Lki;']] }),
+    item(null, { op: 'if_acmpeq', arg: 'LTAIL' }),
+    item('LLOADPATH', { op: 'getstatic', arg: ['Field', 'oa', ['Sb', 'Lki;']] }),
+    item(null, 'iconst_1'),
+    item(null, { op: 'invokevirtual', arg: ['Method', 'ki', ['e', '(I)V']] }),
+    item(null, { op: 'getstatic', arg: ['Field', 'oa', ['Sb', 'Lki;']] }),
+    item(null, { op: 'getfield', arg: ['Field', 'ki', ['q', 'Z']] }),
+    item(null, { op: 'ifeq', arg: 'LLOADTRACK' }),
+    item(null, { op: 'goto', arg: 'LTAIL' }),
+    item('LLOADTRACK', { op: 'getstatic', arg: ['Field', 'oa', ['Sb', 'Lki;']] }),
+    item(null, { op: 'bipush', arg: '59' }),
+    item(null, { op: 'invokevirtual', arg: ['Method', 'ki', ['d', '(I)V']] }),
+    item('LTAIL', { op: 'getstatic', arg: ['Field', 'km', ['i', 'I']] }),
+    item(null, 'iconst_m1'),
+    item(null, 'ixor'),
+    item(null, 'iconst_m1'),
+    item(null, { op: 'if_icmpge', arg: 'LEXIT' }),
+    item(null, { op: 'getstatic', arg: ['Field', 'km', ['i', 'I']] }),
+    item(null, 'iconst_1'),
+    item(null, 'isub'),
+    item(null, 'dup'),
+    item(null, { op: 'putstatic', arg: ['Field', 'km', ['i', 'I']] }),
+    item(null, 'iconst_0'),
+    item(null, { op: 'if_icmpne', arg: 'LEXIT' }),
+    item(null, 'aconst_null'),
+    item(null, { op: 'putstatic', arg: ['Field', 'fq', ['c', '[Ljp;']] }),
+    item(null, { op: 'goto', arg: 'LEXIT' }),
+    item('LEXIT', 'return'),
+  ]);
+  const result = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_SHARED_CONDITIONAL_SIDE_EFFECT_EXIT_TAIL: '1',
+  }, () => runStructuredGotoClone(astFrom(codeItems)));
+  const themeInvokes = codeItems.filter((entry) => {
+    const insn = entry && entry.instruction;
+    return insn && insn.op === 'invokevirtual' && Array.isArray(insn.arg) && insn.arg[1] === 'ki';
+  });
+
+  assert.equal(result.rewrites, 1, 'the shared cleanup tail should be cloned only once');
+  assert.equal(codeItems[2].instruction.op, 'if_acmpne', 'the null guard should be inverted exactly once');
+  assert.equal(codeItems[2].instruction.arg, 'LLOADPATH', 'the non-null path must still reach the theme loader');
+  assert.equal(themeInvokes.length, 2, 'both gameplay-theme initialization calls must remain');
+}
+
 // Regression for issue #24: cloning a small iinc join immediately after its
 // conditional must preserve the conditional's original fallthrough. The
 // fallthrough store is loop-carried and consumed after the loop; making it
