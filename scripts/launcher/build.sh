@@ -18,11 +18,13 @@ javac_exports=(
   --add-exports java.desktop/java.awt.dnd.peer=ALL-UNNAMED
   --add-exports java.desktop/sun.awt.datatransfer=ALL-UNNAMED
 )
-if javac -version 2>&1 | rg -q '^javac 1\.'; then
+case "$(javac -version 2>&1)" in
+*" 1."*)
   # JDK 8 predates the module system: these packages are directly accessible
   # and --add-exports is not a recognized compiler option.
   javac_exports=()
-fi
+  ;;
+esac
 
 if [[ -f "$JAR" || -f "$BOOTSTRAP_JAR" ]]; then
   # The fake AWT provider uses JDK-internal peer APIs that are only reliably

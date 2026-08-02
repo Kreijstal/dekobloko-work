@@ -82,6 +82,30 @@ function padded(codeItems) {
   assert.equal(directResult.rewrites, 1,
     'unconditional terminal trampolines should still be collapsed');
   assert.equal(direct[0].instruction.arg, 'LRETURN');
+
+  const nonTerminal = padded([
+    item('LLOAD', 'iload_1'),
+    item('LBRANCH', { op: 'ifeq', arg: 'LTRAMP' }),
+    item('LLIVE', 'iconst_1'),
+    item(null, 'pop'),
+    item(null, 'return'),
+    item('LTRAMP', { op: 'goto', arg: 'LCONTINUE' }),
+    item('LCONTINUE', 'iconst_3'),
+    item(null, 'istore_2'),
+    item(null, 'return'),
+  ]);
+  const nonTerminalResult = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_RETARGET_GOTO_TRAMPOLINES: '1',
+  }, () => runStructuredGotoClone(astFrom(nonTerminal)));
+  assert.equal(nonTerminalResult.rewrites, 1,
+    'conditional non-terminal trampolines should still be collapsed');
+  assert.equal(nonTerminal[1].instruction.arg, 'LCONTINUE');
+  const continuationIndex = nonTerminal.findIndex((entry) => entry.labelDef === 'LCONTINUE:');
+  assert.notEqual(continuationIndex, -1, 'the non-terminal continuation must remain reachable');
+  assert.equal(nonTerminal[continuationIndex].instruction, 'iconst_3',
+    'the non-terminal continuation must remain intact');
+  assert.equal(nonTerminal[continuationIndex + 1].instruction, 'istore_2',
+    'the continuation store must remain intact');
 }
 
 // Brick-a-Brac qj.a(ZZI)V loads the selected gameplay theme on the fallthrough
