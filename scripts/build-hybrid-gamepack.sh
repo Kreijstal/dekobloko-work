@@ -65,10 +65,12 @@ done
 
 mkdir -p "$(dirname "$OUT")"
 rm -f "$OUT"
-# zip runs from the staging dir, so the output path has to be absolute.
+# jar runs from the staging dir, so the output path has to be absolute.
 OUT="$(cd "$(dirname "$OUT")" && pwd)/$(basename "$OUT")"
-# -X keeps the archive free of extra attributes; the launcher only reads entries.
-(cd "$STAGE" && zip -q -X -r "$OUT" . -i '*.class')
+# Use the JDK tool already required by this repository instead of requiring a
+# separate `zip` executable. The generated manifest is harmless: the launcher
+# selects the applet entry class explicitly.
+(cd "$STAGE" && jar cf "$OUT" .)
 
 total=$(ls -1 "$STAGE"/*.class | wc -l)
 echo "wrote $OUT: $total classes, $kept kept from original, $((total - kept)) recompiled"
