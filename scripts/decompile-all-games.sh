@@ -156,38 +156,55 @@ fi
 
 if ((JOBS > 1)); then
   parallel_dir="$(mktemp -d "$ROOT/.owned-decompiler-parallel.XXXXXX")"
+  worker_pids=()
   cleanup_parallel() {
+    local worker_pid
+    for worker_pid in "${worker_pids[@]}"; do
+      # Each worker owns a session so an interrupted parent can terminate the
+      # transformer/decompiler timeout process groups it created as well.
+      pkill -TERM -s "$worker_pid" 2>/dev/null || true
+    done
     rm -rf -- "$parallel_dir"
   }
+  terminate_parallel() {
+    exit 130
+  }
   trap cleanup_parallel EXIT
+  trap terminate_parallel INT TERM
 
   worker_flags=()
   ((RESUME)) && worker_flags+=(--resume)
   ((REUSE_PIPELINE)) && worker_flags+=(--reuse-pipeline)
   worker_status=0
   active_workers=0
+  wait_for_worker() {
+    local completed_pid="" worker_pid
+    local remaining_pids=()
+    if ! wait -n -p completed_pid; then
+      worker_status=1
+    fi
+    for worker_pid in "${worker_pids[@]}"; do
+      [[ "$worker_pid" == "$completed_pid" ]] || remaining_pids+=("$worker_pid")
+    done
+    worker_pids=("${remaining_pids[@]}")
+    active_workers=$((active_workers - 1))
+  }
   for game_dir in "${GAME_DIRS[@]}"; do
     [[ -d "$game_dir/classes" ]] || continue
     game="$(basename "$game_dir")"
-    (
+    setsid env \
       OWNED_DECOMPILER_SUMMARY="$parallel_dir/$game.tsv" \
       OWNED_DECOMPILER_PROVENANCE="$parallel_dir/$game-provenance.json" \
       OWNED_DECOMPILER_SKIP_TOOL_BUILD=1 \
-        "$SCRIPT_DIR/decompile-all-games.sh" "$ROOT" --game "$game" "${worker_flags[@]}"
-    ) &
+        "$SCRIPT_DIR/decompile-all-games.sh" "$ROOT" --game "$game" "${worker_flags[@]}" &
+    worker_pids+=("$!")
     active_workers=$((active_workers + 1))
     if ((active_workers >= JOBS)); then
-      if ! wait -n; then
-        worker_status=1
-      fi
-      active_workers=$((active_workers - 1))
+      wait_for_worker
     fi
   done
   while ((active_workers > 0)); do
-    if ! wait -n; then
-      worker_status=1
-    fi
-    active_workers=$((active_workers - 1))
+    wait_for_worker
   done
 
   : > "$SUMMARY.tmp"
