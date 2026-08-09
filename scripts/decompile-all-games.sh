@@ -13,6 +13,7 @@ DECOMPILER_TIMEOUT_SECONDS="${DECOMPILER_TIMEOUT_SECONDS:-600}"
 DECOMPILER_SECONDS_PER_CLASS="${DECOMPILER_SECONDS_PER_CLASS:-6}"
 JAVAC_TIMEOUT_SECONDS="${JAVAC_TIMEOUT_SECONDS:-600}"
 GAME=""
+JOBS=1
 RESUME=0
 UPDATE_BASELINE=0
 REUSE_PIPELINE=0
@@ -26,17 +27,27 @@ export PIPELINE_ALLOW_MUTUALLY_GUARDED_FALSE_CYCLES="${PIPELINE_ALLOW_MUTUALLY_G
 while (($#)); do
   case "$1" in
     --game) GAME="$2"; shift 2 ;;
+    --jobs) JOBS="$2"; shift 2 ;;
     --resume) RESUME=1; shift ;;
     --reuse-pipeline) REUSE_PIPELINE=1; shift ;;
     --update-baseline) UPDATE_BASELINE=1; shift ;;
     --help|-h)
-      echo "Usage: $0 [games-root] [--game NAME] [--resume] [--reuse-pipeline] [--update-baseline]"
+      echo "Usage: $0 [games-root] [--game NAME] [--jobs N] [--resume] [--reuse-pipeline] [--update-baseline]"
       exit 0
       ;;
     --*) echo "Unknown option: $1" >&2; exit 2 ;;
     *) ROOT="$1"; shift ;;
   esac
 done
+
+[[ "$JOBS" =~ ^[1-9][0-9]*$ ]] || {
+  echo "FATAL: --jobs must be a positive integer" >&2
+  exit 2
+}
+if [[ -n "$GAME" && "$JOBS" != 1 ]]; then
+  echo "FATAL: --jobs cannot be combined with --game" >&2
+  exit 2
+fi
 
 DECOMPILER="$JAVA_TOOLS_DIR/scripts/runCfr.js"
 CACHE_PROVENANCE="$SCRIPT_DIR/pipeline-cache-provenance.js"
@@ -46,7 +57,7 @@ STUBS="$REPO/lib/dekobloko-stubs.jar"
 ASM_LIB="$JAVA_TOOLS_DIR/lib"
 VERIFY_TOOLS="$ROOT/.owned-decompiler-tools"
 ASM_CACHE="$VERIFY_TOOLS/asm"
-PROVENANCE="$ROOT/decompilation-provenance.json"
+PROVENANCE="${OWNED_DECOMPILER_PROVENANCE:-$ROOT/decompilation-provenance.json}"
 
 [[ -f "$DECOMPILER" ]] || { echo "FATAL: missing owned decompiler: $DECOMPILER" >&2; exit 2; }
 [[ -f "$STUBS" ]] || "$SCRIPT_DIR/build-stubs.sh" >/dev/null
@@ -131,7 +142,9 @@ for artifact in asm asm-tree asm-analysis; do
   fi
 done
 ASM_CP="$ASM_asm:$ASM_asm_tree:$ASM_asm_analysis"
-javac -cp "$ASM_CP" -d "$VERIFY_TOOLS" "$SCRIPT_DIR/Verify.java"
+if [[ "${OWNED_DECOMPILER_SKIP_TOOL_BUILD:-0}" != 1 ]]; then
+  javac -cp "$ASM_CP" -d "$VERIFY_TOOLS" "$SCRIPT_DIR/Verify.java"
+fi
 
 if [[ -n "$GAME" ]]; then
   GAME_DIRS=("$ROOT/$GAME")
@@ -139,6 +152,79 @@ else
   shopt -s nullglob
   GAME_DIRS=("$ROOT"/*)
   shopt -u nullglob
+fi
+
+if ((JOBS > 1)); then
+  parallel_dir="$(mktemp -d "$ROOT/.owned-decompiler-parallel.XXXXXX")"
+  cleanup_parallel() {
+    rm -rf -- "$parallel_dir"
+  }
+  trap cleanup_parallel EXIT
+
+  worker_flags=()
+  ((RESUME)) && worker_flags+=(--resume)
+  ((REUSE_PIPELINE)) && worker_flags+=(--reuse-pipeline)
+  worker_status=0
+  active_workers=0
+  for game_dir in "${GAME_DIRS[@]}"; do
+    [[ -d "$game_dir/classes" ]] || continue
+    game="$(basename "$game_dir")"
+    (
+      OWNED_DECOMPILER_SUMMARY="$parallel_dir/$game.tsv" \
+      OWNED_DECOMPILER_PROVENANCE="$parallel_dir/$game-provenance.json" \
+      OWNED_DECOMPILER_SKIP_TOOL_BUILD=1 \
+        "$SCRIPT_DIR/decompile-all-games.sh" "$ROOT" --game "$game" "${worker_flags[@]}"
+    ) &
+    active_workers=$((active_workers + 1))
+    if ((active_workers >= JOBS)); then
+      if ! wait -n; then
+        worker_status=1
+      fi
+      active_workers=$((active_workers - 1))
+    fi
+  done
+  while ((active_workers > 0)); do
+    if ! wait -n; then
+      worker_status=1
+    fi
+    active_workers=$((active_workers - 1))
+  done
+
+  : > "$SUMMARY.tmp"
+  printf '# game\tclasses\tsources\thard\tcli\tverify\tjavac\tstatus\n' >> "$SUMMARY.tmp"
+  for game_dir in "${GAME_DIRS[@]}"; do
+    [[ -d "$game_dir/classes" ]] || continue
+    game="$(basename "$game_dir")"
+    report="$game_dir/decompile-owned/logs/report.json"
+    if [[ ! -f "$report" ]]; then
+      printf '%s\t0\t0\t0\t1\t1\t1\tfail\n' "$game" >> "$SUMMARY.tmp"
+      worker_status=1
+      continue
+    fi
+    node - "$report" >> "$SUMMARY.tmp" <<'NODE'
+const fs = require('fs');
+const report = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const failures = report.failures || {};
+const values = [
+  report.game,
+  report.classes,
+  report.sources,
+  report.hardFailures,
+  failures.cli,
+  failures.verify,
+  failures.javac,
+  report.status,
+];
+process.stdout.write(`${values.map((value) => value ?? 0).join('\t')}\n`);
+NODE
+    [[ "$(node -e 'const fs=require("fs"); console.log(JSON.parse(fs.readFileSync(process.argv[1], "utf8")).status)' "$report")" == pass ]] \
+      || worker_status=1
+  done
+  mv "$SUMMARY.tmp" "$SUMMARY"
+  if ((UPDATE_BASELINE)); then
+    cp "$SUMMARY" "$EXPECTED"
+  fi
+  exit "$worker_status"
 fi
 
 mkdir -p "$(dirname "$SUMMARY")"
