@@ -39,6 +39,7 @@ while (($#)); do
 done
 
 DECOMPILER="$JAVA_TOOLS_DIR/scripts/runCfr.js"
+CACHE_PROVENANCE="$SCRIPT_DIR/pipeline-cache-provenance.js"
 EXPECTED="$SCRIPT_DIR/EXPECTED-OWN-DECOMPILER-ALL-GAMES.tsv"
 SUMMARY="${OWNED_DECOMPILER_SUMMARY:-$ROOT/owned-decompiler-all-games.tsv}"
 STUBS="$REPO/lib/dekobloko-stubs.jar"
@@ -150,6 +151,14 @@ for game_dir in "${GAME_DIRS[@]}"; do
   game="$(basename "$game_dir")"
   work="$game_dir/decompile-owned"
   report="$work/logs/report.json"
+  pipeline_skip_passes="${SKIP_PIPELINE_PASSES:+$SKIP_PIPELINE_PASSES,}intize-boolean-parameters,compile-conflict-renames"
+  pipeline_stamp="$work/pipeline-provenance.json"
+  pipeline_cache_args=(
+    --repo "$REPO"
+    --java-tools "$JAVA_TOOLS_DIR"
+    --input "$game_dir/classes"
+    --skip-passes "$pipeline_skip_passes"
+  )
   if ((RESUME)) && [[ -f "$report" ]] && rg -q '"status": "pass"' "$report"; then
     prior_row="$(awk -F'\t' -v game="$game" '$1 == game { print; exit }' "$SUMMARY" 2>/dev/null || true)"
     if [[ -n "$prior_row" ]]; then
@@ -175,34 +184,46 @@ NODE
     continue
   fi
 
-  if ((REUSE_PIPELINE)); then
-    [[ -d "$work/out" ]] || { echo "FATAL: no reusable pipeline output for $game" >&2; exit 2; }
+  game_reuse_pipeline=$REUSE_PIPELINE
+  cache_rebuilt=0
+  if ((game_reuse_pipeline)) && {
+    [[ ! -d "$work/out" ]] ||
+    ! node "$CACHE_PROVENANCE" check "$pipeline_stamp" "${pipeline_cache_args[@]}"
+  }; then
+    game_reuse_pipeline=0
+    cache_rebuilt=1
+    printf '%s\tstale or unproven pipeline cache; rebuilding\n' "$game" >&2
+  fi
+
+  if ((game_reuse_pipeline)); then
     rm -rf "$work/java" "$work/classes"
     mkdir -p "$work/java" "$work/classes" "$work/logs"
   else
     rm -rf "$work"
     mkdir -p "$work/out" "$work/java" "$work/classes" "$work/logs"
+    if ((cache_rebuilt)); then
+      printf '[pipeline-cache] stale or unproven output rejected; rebuilt from input classes\n' \
+        >"$work/logs/pipeline.log"
+    fi
   fi
   pipeline_fail=0 cli_fail=0 verify_fail=0 javac_fail=0
   run_original_bytecode_fallback=0
   if [[ "${PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION:-0}" != 1 ]]; then
     run_original_bytecode_fallback=1
   fi
-  pipeline_skip_passes="${SKIP_PIPELINE_PASSES:+$SKIP_PIPELINE_PASSES,}intize-boolean-parameters,compile-conflict-renames"
-
   compaction_stage="$work/compaction-stage"
 
-  if ((!REUSE_PIPELINE)); then
+  if ((!game_reuse_pipeline)); then
     PIPELINE_SIGNATURE_MAP_OUT="$work/logs/signature-map.json" \
     PIPELINE_SIGNATURE_COMPACTION_STAGE_OUT="$compaction_stage" \
     SKIP_PIPELINE_PASSES="$pipeline_skip_passes" timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
       "$game_dir/classes" "$work/out" --profile none --safe-bytecode \
-      >"$work/logs/pipeline.log" 2>&1 || pipeline_fail=1
+      >>"$work/logs/pipeline.log" 2>&1 || pipeline_fail=1
   fi
 
   input_count=$(find "$game_dir/classes" -type f -name '*.class' | wc -l)
   mapfile -d '' class_files < <(find "$work/out" -type f -name '*.class' -print0)
-  if ((REUSE_PIPELINE)) && ((${#class_files[@]} != input_count)); then
+  if ((game_reuse_pipeline)) && ((${#class_files[@]} != input_count)); then
     printf '[bytecode-guard] cached pipeline output incomplete: expected %d classes, found %d; rebuilding\n' \
       "$input_count" "${#class_files[@]}" >>"$work/logs/pipeline.log"
     rm -rf "$work/out"
@@ -354,6 +375,11 @@ NODE
     rg -q 'ClassesWithFails: 0' "$work/logs/verify.log" || verify_fail=1
   else
     verify_fail=1
+  fi
+
+  if ((pipeline_fail == 0 && verify_fail == 0)); then
+    node "$CACHE_PROVENANCE" write "$pipeline_stamp" \
+      "${pipeline_cache_args[@]}" || pipeline_fail=1
   fi
 
   if ((pipeline_fail == 0 && verify_fail == 0)); then

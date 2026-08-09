@@ -17,6 +17,56 @@ JVM has no game-name or main-menu knowledge. It writes an atomic partial report
 after every game, including `complete`, `completedGames`, and `expectedGames`,
 so a killed multi-hour run still has useful results.
 
+The report records the exact gamepack SHA-256, recompiled class-tree SHA-256,
+`dekobloko-work` and `java-tools` commits and dirty state, launcher SHA-256,
+Node platform, and effective JVM/Wasm/JIT gates. A timing or correctness result
+without these fields is historical evidence, not a reproducible acceptance
+result.
+
+Menu recognition is deliberately stricter than "a large canvas was painted".
+Dense menus require a materially varied palette; sparse menus require a larger
+painted region and a sequence of distinct guest frames. Full-screen,
+low-palette cinematics are not menus. Games whose simple-mode startup stops at
+an interactive cinematic can be exercised through the generic adapter option
+`--menu-advance-click X,Y`; this is external AWT input, not a game or method
+name in the JVM. After that input the harness requires at least five distinct
+guest surfaces so a slow fade or partially overlaid menu cannot pass merely
+because ten seconds of wall time elapsed.
+
+A full-color asset-preparation screen can still resemble a menu statistically.
+Dense-menu launches require one substantial scene transition by default;
+`--menu-scene-transitions N` overrides that count. Sparse animated menus retain
+their separate bounded-area/frame-history proof. The transition threshold
+compares quantized canvas samples and is independent of text, class names, and
+game identity; the adapter invocation chooses how many startup scenes must be
+crossed.
+
+## August 10 stale-pipeline finding
+
+Arcanists Multi exposed a failure that initially looked like a new decompiler
+or JIT regression. At runtime, `ve.a(ILeg;[I[Lll;Leg;)V` attempted an `iastore`
+through a null array. Exact PC tracing showed that original bytecode loaded a
+newly allocated local `int[]`, while the transformed bytecode loaded a nullable
+`int[]` parameter. The generic merge-local protection in
+`retargetUndefinedTypedAliasLoads` already fixed this shape and had a focused
+regression, but the published August source tree had been regenerated with
+`--reuse-pipeline` from transformed classes produced in July. Its top-level
+manifest named the August generators even though the reused bytecode predated
+the fix.
+
+This established two separate correctness requirements:
+
+1. a dataflow repair needs a regression that proves the bytecode/source shape;
+2. generated output must prove that the repaired pass actually produced the
+   transformed input being decompiled.
+
+Fresh transformation changed the bad loop load back from parameter slot 2 to
+the allocated array definition and then produced 363/363 Arcanists sources
+with zero pipeline, verifier, decompiler, or javac failures. Pipeline reuse is
+therefore now guarded by `scripts/pipeline-cache-provenance.js`; an unstamped
+or mismatched transformed tree is rebuilt instead of being relabeled with
+current provenance.
+
 ## July 23 runtime-correctness breakthrough
 
 Several apparent JVM/JIT performance failures were not performance failures.

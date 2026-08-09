@@ -26,6 +26,12 @@ gate; see [recompiled runtime validation](docs/recompiled-runtime-validation.md)
 for the launch-to-main-menu gate and the operand-stack bugs found only at
 runtime.
 
+`--reuse-pipeline` is provenance checked. Each transformed class tree is tied
+to the input-class digest, both generator commits and clean-tree state, the
+effective pass list, and pipeline environment gates. Missing, dirty, or stale
+stamps force a bytecode rebuild; a complete class count alone is not enough to
+prove cached transformed bytecode is current.
+
 The companion [browser game library](docs/browser-game-library.md) exposes the
 locally validated AlterOrb catalog through one searchable page and one shared,
 data-driven JVM launcher.

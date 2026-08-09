@@ -15,6 +15,7 @@ const net = require('net');
 const os = require('os');
 const path = require('path');
 const {execFileSync, spawn} = require('child_process');
+const {hashClassTree} = require('./pipeline-cache-provenance');
 
 const ROOT = path.resolve(__dirname, '..');
 const JAVA_TOOLS_DIR = process.env.JAVA_TOOLS_DIR ||
@@ -42,6 +43,8 @@ function parseArgs(argv) {
     profileJit: false,
     cpuProfile: false,
     jarOverride: null,
+    menuAdvanceClick: null,
+    menuSceneTransitions: 1,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -61,11 +64,28 @@ function parseArgs(argv) {
     } else if (arg === '--profile-jit') options.profileJit = true;
     else if (arg === '--cpu-profile') options.cpuProfile = true;
     else if (arg === '--jar') options.jarOverride = path.resolve(argv[++index]);
+    else if (arg === '--menu-advance-click') {
+      const coordinates = String(argv[++index] || '').split(',').map(Number);
+      if (coordinates.length !== 2 || coordinates.some(value =>
+        !Number.isInteger(value) || value < 0)) {
+        throw new Error('--menu-advance-click must be non-negative X,Y integers');
+      }
+      options.menuAdvanceClick = {x: coordinates[0], y: coordinates[1]};
+      options.until = 'main-menu';
+    } else if (arg === '--menu-scene-transitions') {
+      options.menuSceneTransitions = Number(argv[++index]);
+      if (!Number.isInteger(options.menuSceneTransitions) ||
+          options.menuSceneTransitions < 0) {
+        throw new Error('--menu-scene-transitions must be a non-negative integer');
+      }
+      options.until = 'main-menu';
+    }
     else if (arg === '--help' || arg === '-h') {
       console.log('Usage: node scripts/launch-alterorb-games-jvmjs.js ' +
         '[--game internalName] [--jobs N] [--timeout-ms N] [--report file] ' +
         '[--until-main-menu] [--measure-fps-ms N] [--min-fps N] ' +
         '[--profile-jit] [--cpu-profile] [--no-jit] [--recompiled] ' +
+        '[--menu-advance-click X,Y] [--menu-scene-transitions N] ' +
         '[--jar diagnostic.jar]');
       process.exit(0);
     } else {
@@ -87,8 +107,140 @@ function parseArgs(argv) {
   return options;
 }
 
+function classifyMenuSurface(surface, seenFrameCount) {
+  if (!surface) return {dense: false, sparse: false, advanceable: false};
+  // Full-screen narrative/cinematic frames can be spatially dense but use a
+  // tiny palette. Requiring richer color variation keeps them from satisfying
+  // the menu checkpoint. Sparse menus (for example Escape Vector) retain their
+  // own bounded-area rule.
+  const dense = surface.nonblankSamples >= 2500 &&
+    surface.uniqueSampleColors >= 96;
+  const sparse = surface.nonblankSamples >= 800 &&
+    surface.nonblankSamples < 2500 &&
+    surface.uniqueSampleColors >= 32 &&
+    seenFrameCount >= 10;
+  const advanceable = surface.nonblankSamples >= 2500 &&
+    surface.uniqueSampleColors >= 24 &&
+    seenFrameCount >= 10;
+  return {dense, sparse, advanceable};
+}
+
+function hasMenuAdvanceSettled(dispatchedAt, frameCountAtDispatch,
+  currentFrameCount) {
+  return dispatchedAt === null || (
+    Number.isInteger(frameCountAtDispatch) &&
+    currentFrameCount >= frameCountAtDispatch + 5
+  );
+}
+
+function sceneDifference(left, right) {
+  if (!left || !right || left.length !== right.length || left.length === 0) {
+    return 1;
+  }
+  let changed = 0;
+  for (let index = 0; index < left.length; index += 1) {
+    if (left[index] !== right[index]) changed += 1;
+  }
+  return changed / left.length;
+}
+
+function enqueueSyntheticMouseClick(jvm, x, y) {
+  const components = [...(jvm._awtInputComponents?.get('mouse') || [])]
+    .filter(component => component && component._visible !== false &&
+      component._listeners?.mouse?.length);
+  let callbacks = 0;
+  for (const component of components) {
+    const base = {
+      type: 'java/awt/event/MouseEvent',
+      source: component,
+      component,
+      when: Date.now(),
+      modifiers: 16,
+      x,
+      y,
+      button: 1,
+      clickCount: 1,
+      popupTrigger: false,
+      consumed: false,
+      fields: {},
+    };
+    for (const listener of component._listeners.mouse) {
+      for (const [methodName, id] of [
+        ['mousePressed', 501], ['mouseReleased', 502], ['mouseClicked', 500],
+      ]) {
+        jvm.enqueueAwtEventInvocation(listener, methodName,
+          '(Ljava/awt/event/MouseEvent;)V', {...base, id});
+        callbacks += 1;
+      }
+    }
+  }
+  return callbacks;
+}
+
 function sha256(file) {
   return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+}
+
+function gitTreeState(directory) {
+  const commit = execFileSync('git', ['-C', directory, 'rev-parse', 'HEAD'], {
+    encoding: 'utf8',
+  }).trim();
+  const status = execFileSync('git', [
+    '-C', directory, 'status', '--porcelain', '--untracked-files=all',
+  ], {encoding: 'utf8'});
+  const trackedStatus = execFileSync('git', [
+    '-C', directory, 'status', '--porcelain', '--untracked-files=no',
+  ], {encoding: 'utf8'});
+  return {
+    path: directory,
+    commit,
+    dirty: status.trim().length > 0,
+    trackedDirty: trackedStatus.trim().length > 0,
+  };
+}
+
+function effectiveRuntimeGates(options, environment = process.env) {
+  return {
+    jitEnabled: !options.noJit,
+    JVM_WASM_JIT: environment.JVM_WASM_JIT || '1',
+    JVM_WASM_STRUCTURED: environment.JVM_WASM_STRUCTURED || '1',
+    JVM_ENABLE_RENDERER_PIPELINE:
+      environment.JVM_ENABLE_RENDERER_PIPELINE || '1',
+    JVM_FAKE_TIME: environment.JVM_FAKE_TIME || '1000000000000',
+    JVM_FAKE_TIME_REALTIME: environment.JVM_FAKE_TIME_REALTIME || '1',
+    JVM_PROFILE_SCHEDULER_TIMES: options.profileJit
+      ? (environment.JVM_PROFILE_SCHEDULER_TIMES || '64')
+      : (environment.JVM_PROFILE_SCHEDULER_TIMES || ''),
+    JVM_DEBUG_ARRAY_OOB: environment.JVM_DEBUG_ARRAY_OOB || '1',
+    ALTERORB_JVMJS_TCP_PORT: String(TCP_PORT),
+    ALTERORB_JVMJS_HTTP_PROXY_PORT: String(HTTP_PROXY_PORT),
+  };
+}
+
+function collectRunProvenance(options) {
+  const decompilationManifest = path.join(ROOT, '.work', 'games',
+    'decompilation-provenance.json');
+  return {
+    launcher: {
+      path: __filename,
+      sha256: sha256(__filename),
+    },
+    repositories: {
+      dekoblokoWork: gitTreeState(ROOT),
+      javaTools: gitTreeState(JAVA_TOOLS_DIR),
+    },
+    decompilationManifest: fs.existsSync(decompilationManifest) ? {
+      path: decompilationManifest,
+      sha256: sha256(decompilationManifest),
+      value: JSON.parse(fs.readFileSync(decompilationManifest, 'utf8')),
+    } : null,
+    runtime: {
+      node: process.version,
+      platform: process.platform,
+      architecture: process.arch,
+      gates: effectiveRuntimeGates(options),
+    },
+  };
 }
 
 function gamepackPath(game) {
@@ -219,6 +371,8 @@ function surfaceSnapshot(jvm) {
     let nonblankSamples = 0;
     let hash = 2166136261;
     const colors = new Set();
+    const sceneSamples = [];
+    let sampleNumber = 0;
     for (let index = 0; index < pixels.length; index += stride) {
       const pixel = Number(pixels[index]) >>> 0;
       const rgb = pixel & 0xffffff;
@@ -226,8 +380,12 @@ function surfaceSnapshot(jvm) {
       colors.add(rgb);
       hash ^= pixel;
       hash = Math.imul(hash, 16777619) >>> 0;
+      if ((sampleNumber++ & 15) === 0) {
+        sceneSamples.push(((rgb >>> 20) & 15) << 8 |
+          ((rgb >>> 12) & 15) << 4 | ((rgb >>> 4) & 15));
+      }
     }
-    return {
+    const snapshot = {
       pixels: pixels.length,
       width: Number(surface._width || surface.width || 0),
       height: Number(surface._height || surface.height || 0),
@@ -235,6 +393,8 @@ function surfaceSnapshot(jvm) {
       uniqueSampleColors: colors.size,
       sampleHash: hash.toString(16).padStart(8, '0'),
     };
+    Object.defineProperty(snapshot, '_sceneSamples', {value: sceneSamples});
+    return snapshot;
   }
 }
 
@@ -629,6 +789,13 @@ async function runWorker(specification) {
   let menuActivityLastChangeAt = null;
   let menuActivityLastPresented = 0;
   let menuActivityLastDirtyMarks = 0;
+  let menuAdvanceCandidateAt = null;
+  let menuAdvanceDispatchedAt = null;
+  let menuAdvanceSourceHash = null;
+  let menuAdvanceCallbacks = 0;
+  let menuAdvanceFrameCount = null;
+  let denseSceneSamples = null;
+  let denseSceneTransitions = 0;
   let fpsStartedAt = null;
   let fpsStartPresented = 0;
   let fpsStartDirtyMarks = 0;
@@ -660,6 +827,15 @@ async function runWorker(specification) {
       elapsedMs: Date.now() - startedAt,
       methodEntryTraceMatches: methodEntryTraceOut
         ? jvm.jit.methodEntryTraceMatchCount : undefined,
+      menuAdvance: menuAdvanceDispatchedAt === null ? null : {
+        elapsedMs: menuAdvanceDispatchedAt - startedAt,
+        sourceHash: menuAdvanceSourceHash,
+        callbacks: menuAdvanceCallbacks,
+        subsequentDistinctFrames: Math.max(0,
+          seenFrameHashes.size - menuAdvanceFrameCount),
+        ...specification.menuAdvanceClick,
+      },
+      menuSceneTransitions: denseSceneTransitions,
       ...extra,
     }, exitCode);
   };
@@ -696,19 +872,55 @@ async function runWorker(specification) {
     }
     const isFirstFrame = specification.until !== 'main-menu' &&
       firstFrameAt !== null;
-    const denseMenuArtwork = surface &&
-      surface.nonblankSamples >= 2500 &&
-      surface.uniqueSampleColors >= 32;
+    const menuSurface = classifyMenuSurface(surface, seenFrameHashes.size);
+    const denseMenuArtwork = menuSurface.dense;
+    if (denseMenuArtwork && surface._sceneSamples) {
+      if (denseSceneSamples === null) {
+        denseSceneSamples = surface._sceneSamples;
+      } else if (sceneDifference(denseSceneSamples,
+        surface._sceneSamples) >= 0.3) {
+        denseSceneTransitions += 1;
+        denseSceneSamples = surface._sceneSamples;
+        menuCandidateFrameAt = null;
+        menuActivityStartAt = null;
+      }
+    }
     // Some complete menus deliberately use mostly-black artwork. Keep them
     // distinct from the sparse Jagex progress panel (roughly 470 sampled
     // nonblank pixels) by requiring a materially larger painted area and a
     // richer sequence of frame states.
-    const sparseAnimatedMenu = surface &&
-      surface.nonblankSamples >= 800 &&
-      surface.uniqueSampleColors >= 32 &&
-      seenFrameHashes.size >= 10;
+    const sparseAnimatedMenu = menuSurface.sparse;
+    if (specification.until === 'main-menu' &&
+        specification.menuAdvanceClick &&
+        menuAdvanceDispatchedAt === null) {
+      if (menuSurface.advanceable) {
+        if (menuAdvanceCandidateAt === null) menuAdvanceCandidateAt = observedAt;
+        if (observedAt - menuAdvanceCandidateAt >= 5000) {
+          const callbacks = enqueueSyntheticMouseClick(jvm,
+            specification.menuAdvanceClick.x,
+            specification.menuAdvanceClick.y);
+          if (callbacks > 0) {
+            menuAdvanceDispatchedAt = observedAt;
+            menuAdvanceSourceHash = surface.sampleHash;
+            menuAdvanceCallbacks = callbacks;
+            menuAdvanceFrameCount = seenFrameHashes.size;
+            menuCandidateFrameAt = null;
+            menuActivityStartAt = null;
+          }
+        }
+      } else {
+        menuAdvanceCandidateAt = null;
+      }
+    }
+    const changedAfterAdvance = menuAdvanceDispatchedAt === null ||
+      surface && surface.sampleHash !== menuAdvanceSourceHash;
+    const settledAfterAdvance = hasMenuAdvanceSettled(
+      menuAdvanceDispatchedAt, menuAdvanceFrameCount, seenFrameHashes.size);
+    const sceneRequirementMet = sparseAnimatedMenu ||
+      denseSceneTransitions >= specification.menuSceneTransitions;
     if (specification.until === 'main-menu' &&
         (denseMenuArtwork || sparseAnimatedMenu) &&
+        changedAfterAdvance &&
         menuCandidateFrameAt === null) {
       menuCandidateFrameAt = observedAt;
       menuActivityStartAt = observedAt;
@@ -728,6 +940,8 @@ async function runWorker(specification) {
       menuCandidateFrameAt !== null &&
       Date.now() - menuCandidateFrameAt >= 10000 &&
       seenFrameHashes.size >= 3 &&
+      settledAfterAdvance &&
+      sceneRequirementMet &&
       (denseMenuArtwork || sparseAnimatedMenu);
     if (isMenu && specification.measureFpsMs > 0 && fpsStartedAt === null) {
       fpsStartedAt = Date.now();
@@ -982,6 +1196,13 @@ function runChild(game, options) {
     }
     classesDir = validation.classesDir;
   }
+  const artifacts = {
+    gamepack: {path: jarPath, sha256: actualHash},
+    recompiledClasses: classesDir ? {
+      path: classesDir,
+      ...hashClassTree(classesDir),
+    } : null,
+  };
   const specification = Buffer.from(JSON.stringify({
     game,
     jarPath,
@@ -994,6 +1215,8 @@ function runChild(game, options) {
     minFps: options.minFps,
     profileJit: options.profileJit,
     cpuProfile: options.cpuProfile,
+    menuAdvanceClick: options.menuAdvanceClick,
+    menuSceneTransitions: options.menuSceneTransitions,
   })).toString('base64');
   return new Promise(resolve => {
     const child = spawn(process.execPath, [__filename], {
@@ -1041,6 +1264,7 @@ function runChild(game, options) {
         try {
           resolve({
             ...JSON.parse(resultLine.slice(RESULT_PREFIX.length)),
+            artifacts,
             exitCode: code,
             signal,
             stderrTail: tailLines(stderr),
@@ -1055,6 +1279,7 @@ function runChild(game, options) {
         name: game.name,
         mainClass: game.mainClass,
         status: 'invalid-worker-result',
+        artifacts,
         exitCode: code,
         signal,
         stdoutTail: tailLines(stdout),
@@ -1115,6 +1340,9 @@ function buildReport(config, options, results, expectedCount, complete) {
     minFps: options.minFps,
     profileJit: options.profileJit,
     cpuProfile: options.cpuProfile,
+    menuAdvanceClick: options.menuAdvanceClick,
+    menuSceneTransitions: options.menuSceneTransitions,
+    provenance: options.provenance,
     jobs: options.jobs,
     complete,
     completedGames: sortedResults.length,
@@ -1141,6 +1369,7 @@ async function main() {
   }
 
   const options = parseArgs(process.argv.slice(2));
+  options.provenance = collectRunProvenance(options);
   execFileSync(process.execPath, [
     path.join(JAVA_TOOLS_DIR, 'scripts', 'generate-jre-index.js'),
   ], {stdio: 'ignore'});
@@ -1192,7 +1421,18 @@ async function main() {
   }
 }
 
-main().catch(error => {
-  console.error(error && error.stack ? error.stack : String(error));
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(error => {
+    console.error(error && error.stack ? error.stack : String(error));
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  classifyMenuSurface,
+  effectiveRuntimeGates,
+  enqueueSyntheticMouseClick,
+  hasMenuAdvanceSettled,
+  parseArgs,
+  sceneDifference,
+};
