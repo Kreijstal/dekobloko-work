@@ -17,6 +17,12 @@ RESUME=0
 UPDATE_BASELINE=0
 REUSE_PIPELINE=0
 
+# AlterOrb gamepacks are processed as complete closed-world class corpora. This
+# permits the generic fixed-point proof for default-false static sentinels:
+# every write is visible, and a mutually guarded cycle cannot leave false.
+# Keep the gate independently overrideable for partial-corpus diagnostics.
+export PIPELINE_ALLOW_MUTUALLY_GUARDED_FALSE_CYCLES="${PIPELINE_ALLOW_MUTUALLY_GUARDED_FALSE_CYCLES:-1}"
+
 while (($#)); do
   case "$1" in
     --game) GAME="$2"; shift 2 ;;

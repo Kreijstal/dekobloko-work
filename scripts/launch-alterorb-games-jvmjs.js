@@ -20,8 +20,11 @@ const ROOT = path.resolve(__dirname, '..');
 const JAVA_TOOLS_DIR = process.env.JAVA_TOOLS_DIR ||
   path.join(os.homedir(), 'git', 'java-tools');
 const CONFIG_URL = 'https://static.alterorb.net/launcher/v3/config.json';
-const TCP_PORT = 43594;
-const HTTP_PROXY_PORT = 18080;
+const REMOTE_TCP_PORT = 43594;
+const TCP_PORT = Number(process.env.ALTERORB_JVMJS_TCP_PORT || REMOTE_TCP_PORT);
+const HTTP_PROXY_PORT = Number(
+  process.env.ALTERORB_JVMJS_HTTP_PROXY_PORT || 18080,
+);
 const RESULT_PREFIX = 'ALTERORB_JVMJS_RESULT ';
 
 function parseArgs(argv) {
@@ -276,14 +279,26 @@ function topEntries(map, limit = 40) {
     .slice(0, limit);
 }
 
+function topTimingEntries(map, limit = 40) {
+  if (!(map instanceof Map)) return [];
+  return [...map.entries()]
+    .sort((left, right) =>
+      Number(right[1] && right[1].totalMs || 0) -
+      Number(left[1] && left[1].totalMs || 0))
+    .slice(0, limit);
+}
+
 function resetJitProfile(jvm) {
   const jit = jvm && jvm.jit;
   if (!jit) return;
   jit.profileMethods = true;
+  jit.profileTimings = true;
+  jit.methodTimingSampleRate = 128;
   for (const name of [
     'generatedMethodRunCounts', 'intrinsicMethodRunCounts',
     'inlinedMethodRunCounts', 'methodDeoptCounts', 'methodDeoptReasons',
     'methodDeoptSites',
+    'methodTimingSamples',
     'structuredSsaMethodRunCounts', 'scalarLoopMethodRunCounts',
   ]) {
     const value = jit[name];
@@ -337,6 +352,7 @@ function jitProfileSnapshot(jvm) {
         Number(jit.fusedRestoredExceptionFrameCount || 0),
     },
     generatedMethods: topEntries(jit.generatedMethodRunCounts),
+    generatedMethodTimings: topTimingEntries(jit.methodTimingSamples),
     intrinsicMethods: topEntries(jit.intrinsicMethodRunCounts),
     inlinedMethods: topEntries(jit.inlinedMethodRunCounts),
     deopts: topEntries(jit.methodDeoptCounts),
@@ -460,6 +476,17 @@ function schedulerTimingSnapshot(jvm) {
         generatedCached: Boolean(generated),
         structuredContinuation:
           Boolean(generated && generated.jvmStructuredContinuation),
+        structuredSafePointBudget: Number.isFinite(
+          generated && generated.jvmStructuredSafePointBudget)
+          ? generated.jvmStructuredSafePointBudget : null,
+        structuredLoopCount: Number.isFinite(
+          generated && generated.jvmStructuredLoopCount)
+          ? generated.jvmStructuredLoopCount : null,
+        structuredCoarseCountedLoopCount: Number.isFinite(
+          generated && generated.jvmStructuredCoarseCountedLoopCount)
+          ? generated.jvmStructuredCoarseCountedLoopCount : null,
+        adaptivePositional: Boolean(
+          generated && generated.jvmAdaptivePositionalBody),
         codegenSupported: Boolean(method && jit &&
           jit.isCodegenSupported(method)),
         adaptiveCodegenSupported: Boolean(method && jit &&
@@ -578,8 +605,21 @@ async function runWorker(specification) {
     classpath: [classesDir, hookDir],
     appletParameters,
     appletCodeBase: `http://127.0.0.1:${HTTP_PROXY_PORT}/`,
-    jit: {enabled: !specification.noJit},
+    jit: {
+      enabled: !specification.noJit,
+      profileMethods: specification.profileJit,
+      profileTimings: specification.profileJit,
+      methodTimingSampleRate: 128,
+    },
   });
+  const methodEntryTraceOut = process.env.JVM_METHOD_ENTRY_TRACE_OUT || null;
+  if (methodEntryTraceOut && process.env.JVM_METHOD_ENTRY_TRACE) {
+    jvm.jit.methodEntryTraceKey = process.env.JVM_METHOD_ENTRY_TRACE;
+    jvm.jit.methodEntryTraceOccurrence = Math.max(1, Number(
+      process.env.JVM_METHOD_ENTRY_TRACE_OCCURRENCE,
+    ) || 1);
+  }
+  let methodEntryTraceWritten = false;
   const startedAt = Date.now();
   let firstFrameAt = null;
   let menuCandidateFrameAt = null;
@@ -600,6 +640,13 @@ async function runWorker(specification) {
   const finish = (status, extra, exitCode) => {
     if (settled) return;
     settled = true;
+    if (!methodEntryTraceWritten && methodEntryTraceOut &&
+        jvm.jit.methodEntryTrace) {
+      fs.mkdirSync(path.dirname(methodEntryTraceOut), {recursive: true});
+      fs.writeFileSync(methodEntryTraceOut,
+        JSON.stringify(jvm.jit.methodEntryTrace, null, 2));
+      methodEntryTraceWritten = true;
+    }
     if (process.env.JVM_DEBUG_JIT === '1' &&
         jvm.jit && typeof jvm.jit.dumpStats === 'function') {
       jvm.jit.dumpStats(Number(process.env.JVM_DEBUG_JIT_LIMIT) || 25);
@@ -611,10 +658,19 @@ async function runWorker(specification) {
       variant: specification.variant || 'original',
       status,
       elapsedMs: Date.now() - startedAt,
+      methodEntryTraceMatches: methodEntryTraceOut
+        ? jvm.jit.methodEntryTraceMatchCount : undefined,
       ...extra,
     }, exitCode);
   };
   const timer = setInterval(() => {
+    if (!methodEntryTraceWritten && methodEntryTraceOut &&
+        jvm.jit.methodEntryTrace) {
+      fs.mkdirSync(path.dirname(methodEntryTraceOut), {recursive: true});
+      fs.writeFileSync(methodEntryTraceOut,
+        JSON.stringify(jvm.jit.methodEntryTrace, null, 2));
+      methodEntryTraceWritten = true;
+    }
     const observedAt = Date.now();
     const presentationStats = jvm._awtPresentationStats;
     const totalPresented = Number(presentationStats && presentationStats.presented || 0);
@@ -768,6 +824,9 @@ async function runWorker(specification) {
         surface,
         screenshot,
         frameHistory,
+        jitProfile: specification.profileJit ? jitProfileSnapshot(jvm) : undefined,
+        jitCounters: jitRuntimeCounters(jvm),
+        schedulerTimings: schedulerTimingSnapshot(jvm),
       }, 0);
     } else if (fpsStartedAt === null &&
         Date.now() - startedAt >= specification.timeoutMs) {
@@ -777,6 +836,9 @@ async function runWorker(specification) {
         screenshot: writeSurfacePng(jvm, game, 'timeout'),
         frameHistory,
         threads: threadSnapshot(jvm),
+        jitProfile: specification.profileJit ? jitProfileSnapshot(jvm) : undefined,
+        jitCounters: jitRuntimeCounters(jvm),
+        schedulerTimings: schedulerTimingSnapshot(jvm),
       }, 2);
     }
   }, 100);
@@ -788,6 +850,9 @@ async function runWorker(specification) {
       screenshot: writeSurfacePng(jvm, game, 'exited'),
       frameHistory,
       threads: threadSnapshot(jvm),
+      jitProfile: specification.profileJit ? jitProfileSnapshot(jvm) : undefined,
+      jitCounters: jitRuntimeCounters(jvm),
+      schedulerTimings: schedulerTimingSnapshot(jvm),
     }, 3);
   }, (error) => {
     clearInterval(timer);
@@ -797,6 +862,9 @@ async function runWorker(specification) {
       screenshot: writeSurfacePng(jvm, game, 'error'),
       frameHistory,
       threads: threadSnapshot(jvm),
+      jitProfile: specification.profileJit ? jitProfileSnapshot(jvm) : undefined,
+      jitCounters: jitRuntimeCounters(jvm),
+      schedulerTimings: schedulerTimingSnapshot(jvm),
     }, 1);
   });
 }
@@ -804,7 +872,10 @@ async function runWorker(specification) {
 function startTcpBridge(remoteHost) {
   const sockets = new Set();
   const server = net.createServer(client => {
-    const upstream = net.createConnection({host: remoteHost, port: TCP_PORT});
+    const upstream = net.createConnection({
+      host: remoteHost,
+      port: REMOTE_TCP_PORT,
+    });
     sockets.add(client);
     sockets.add(upstream);
     client.pipe(upstream).pipe(client);
@@ -864,7 +935,9 @@ async function fetchConfig(url) {
   return response.json();
 }
 
-function tailLines(value, count = 300) {
+function tailLines(value, count = Number(
+  process.env.ALTERORB_JVMJS_REPORT_TAIL_LINES,
+) || 300) {
   return String(value).trim().split(/\r?\n/).slice(-count);
 }
 

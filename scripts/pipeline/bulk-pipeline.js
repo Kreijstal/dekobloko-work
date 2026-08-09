@@ -149,6 +149,9 @@ const runtimeSafe = process.argv.includes('--runtime-safe');
 const safeBytecode = process.argv.includes('--safe-bytecode');
 const experimentalInterclassDce = process.argv.includes('--experimental-interclass-dce')
   || process.env.PIPELINE_EXPERIMENTAL_INTERCLASS_DCE === '1';
+const allowMutuallyGuardedFalseCycles = experimentalInterclassDce ||
+  process.argv.includes('--allow-mutually-guarded-false-cycles') ||
+  process.env.PIPELINE_ALLOW_MUTUALLY_GUARDED_FALSE_CYCLES === '1';
 let experimentalSignatureCompaction = experimentalInterclassDce
   && (process.argv.includes('--experimental-signature-compaction')
     || process.env.PIPELINE_EXPERIMENTAL_SIGNATURE_COMPACTION === '1');
@@ -2828,7 +2831,7 @@ function collectAutoDeadFlagFields() {
   return discoverDeadStaticFlags({ classes }, {
     allowIntFlags: true,
     allowTerminalSelfIncrementFlags: true,
-    allowMutuallyGuardedFalseCycles: experimentalInterclassDce,
+    allowMutuallyGuardedFalseCycles,
   });
 }
 

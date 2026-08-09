@@ -1656,6 +1656,13 @@ Set
 `PIPELINE_EXPERIMENTAL_INTERCLASS_DCE=1` as an equivalent opt-in for runtime A/B
 experiments.
 
+The fixed-point false-field proof can instead be enabled on its own with
+`--allow-mutually-guarded-false-cycles` or
+`PIPELINE_ALLOW_MUTUALLY_GUARDED_FALSE_CYCLES=1`. This keeps ordinary method
+signatures and constant-argument behavior while removing only static
+zero/false sentinel cycles proven from the complete input corpus. It has the
+same closed-world requirement as the full interclass mode.
+
 `PIPELINE_EXPERIMENTAL_UNTHROWABLE_CATCH_DCE=1` enables a second, independently
 gated source cleanup. After control-flow reconstruction, a catch of a specific
 checked type is retained only when the emitted try body contains a call whose
