@@ -36,9 +36,13 @@ runtime acceptance: each recompiled game still needs an exact-tree main-menu
 report.
 
 Matching every historical report's recompiled-class SHA-256 against those 44
-current trees gives 16 strict main-menu passes and 28 trees still awaiting a
-current-tree pass. This count deliberately ignores a pass from a different
-class tree even when the game name is the same.
+current trees initially gave 16 strict main-menu passes and 28 trees awaiting
+a current-tree pass. After the generated-call repair, Pool reached its main
+menu in 234.8 seconds with surface hash `d60b862f`, no runtime error, and clean
+runtime commits `java-tools` `864aae72726ef87e34a555af0293dc6fd5e68b2e`
+and `dekobloko-work` `51cec32a941dd254f39e2ddc5d2d921e48b19d90`.
+The strict total is therefore 17 passes and 27 pending. This count deliberately
+ignores a pass from a different class tree even when the game name is the same.
 
 Pool then exposed a generic generated-call bug in a recursive object traversal.
 The method recursively called itself while also calling virtual child-iterator
