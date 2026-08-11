@@ -46,6 +46,46 @@ ignores a pass from a different class tree even when the game name is the same.
 
 ### Current-tree closure
 
+The latest authoritative closure supersedes the earlier hashes below. A clean,
+non-reused generation at `dekobloko-work`
+`7616b02d4db8d0e021d129ca0ed206ad98519869` and `java-tools`
+`374673353751b75c93f9edca93a5035e3bf40546` produced all 18,481 sources for
+all 44 games with zero hard, CLI, verifier, or `javac` failures. ABI restoration
+then reported zero mismatches for every game. Both repositories were tracked
+clean when `.work/games/decompilation-provenance.json` was captured.
+
+Runtime validation is also complete for those exact regenerated trees:
+**44/44 current class-tree SHA-256 values have a `main-menu` report, with zero
+missing hashes**. The evidence is split across an interrupted catalog report,
+seven focused retries, and a final 12-game gap sweep. This split is deliberate:
+successful hashes were retained instead of wasting hours rerunning games that
+had already passed.
+
+The initial parallel run reported seven timeouts even though every saved
+screenshot visibly showed the completed menu. Those games went directly into
+their menu and produced no 30% whole-scene transition, while the harness default
+requires one transition to avoid accepting a cinematic. Running only those
+seven with the generic `--menu-scene-transitions 0` mode and without CPU
+contention produced seven `main-menu` results. No game, class, or method name was
+added to the detector. The remaining 12 games had never run and were exercised
+once, serially and fail-fast, with the same zero-transition gate.
+
+Use the evidence auditor before launching anything:
+
+```bash
+node scripts/audit-recompiled-main-menu-evidence.js \
+  --games-root .work/games \
+  .work/alterorb-jvmjs/*recompiled*report.json
+```
+
+It hashes the same preferred regenerated class directories used by the
+launcher and accepts evidence only when the game, `recompiled` variant,
+`main-menu` status, and class-tree SHA-256 all match. It knows no catalog names.
+A changed tree is reported as `missing`, so the next run list is exactly the
+gaps or failures. The August 11 closure command, using the three precise report
+groups rather than the broad wildcard above, ended with
+`summary 44/44 proven 0 missing`.
+
 The 17/44 count above is the historical checkpoint from the first clean-tree
 comparison, not the final result. Subsequent exact-tree runs closed the
 remaining set. Three late failures found generic compiler/runtime defects:
