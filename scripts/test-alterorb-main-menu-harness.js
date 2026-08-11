@@ -10,6 +10,7 @@ const {
   parseArgs,
   sceneDifference,
   shouldResetMenuCandidateOnSceneTransition,
+  threadSnapshot,
 } = require('./launch-alterorb-games-jvmjs');
 
 assert.deepStrictEqual(
@@ -75,6 +76,25 @@ assert.strictEqual(
 assert.strictEqual(
   shouldResetMenuCandidateOnSceneTransition(1, 1), false,
   'later menu animation does not restart settling after the gate is met');
+
+const lockedMonitor = {type: 'example/Audio', isLocked: true,
+  lockOwner: 7, lockCount: 2};
+const blockedFrame = {className: 'example/Loader', pc: 12,
+  method: {name: 'load', descriptor: '()V'}};
+const ownerFrame = {className: 'example/Audio', pc: 4,
+  method: {name: 'mix', descriptor: '()V'}};
+const threadDiagnostics = threadSnapshot({threads: [
+  {id: 5, status: 'BLOCKED', blockingOn: lockedMonitor,
+    callStack: {items: [blockedFrame]}},
+  {id: 7, status: 'runnable', callStack: {items: [ownerFrame],
+    peek() { return ownerFrame; }}},
+]});
+assert.deepStrictEqual(threadDiagnostics[0].blockingOn, {
+  type: 'example/Audio', isLocked: true, lockOwner: 7, lockCount: 2,
+  ownerStatus: 'runnable', ownerLocation: 'example/Audio.mix()V@4',
+});
+assert.deepStrictEqual(threadDiagnostics[0].stack,
+  ['example/Loader.load()V@12']);
 
 assert.deepStrictEqual(effectiveRuntimeGates({noJit: false, profileJit: true}, {
   JVM_WASM_JIT: '0',

@@ -424,14 +424,28 @@ function threadSnapshot(jvm) {
   return jvm.threads.map((thread) => {
     const frames = thread.callStack && thread.callStack.items;
     const frame = frames && frames[frames.length - 1];
-    const method = frame && frame.method;
+    const blockingOn = thread.blockingOn;
+    const lockOwner = blockingOn && blockingOn.lockOwner;
+    const ownerThread = Number.isInteger(lockOwner)
+      ? jvm.threads.find(candidate => candidate.id === lockOwner) : null;
+    const frameLocation = candidate => candidate
+      ? `${candidate.className}.${candidate.method && candidate.method.name}` +
+        `${candidate.method && candidate.method.descriptor || ''}@${candidate.pc}`
+      : null;
     return {
       id: thread.id,
       status: thread.status,
-      location: frame
-        ? `${frame.className}.${method && method.name}` +
-          `${method && method.descriptor || ''}@${frame.pc}`
-        : null,
+      location: frameLocation(frame),
+      stack: frames ? frames.slice(-8).map(frameLocation) : [],
+      blockingOn: blockingOn ? {
+        type: blockingOn._className || blockingOn.type || null,
+        isLocked: Boolean(blockingOn.isLocked),
+        lockOwner: Number.isInteger(lockOwner) ? lockOwner : null,
+        lockCount: Number(blockingOn.lockCount || 0),
+        ownerStatus: ownerThread ? ownerThread.status : null,
+        ownerLocation: ownerThread && ownerThread.callStack
+          ? frameLocation(ownerThread.callStack.peek()) : null,
+      } : null,
       traceTail: thread._trace ? thread._trace.slice(-200) : undefined,
     };
   });
@@ -1448,4 +1462,5 @@ module.exports = {
   parseArgs,
   sceneDifference,
   shouldResetMenuCandidateOnSceneTransition,
+  threadSnapshot,
 };
