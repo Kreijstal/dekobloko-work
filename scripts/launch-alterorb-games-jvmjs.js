@@ -144,6 +144,11 @@ function sceneDifference(left, right) {
   return changed / left.length;
 }
 
+function shouldResetMenuCandidateOnSceneTransition(observedTransitions,
+    requiredTransitions) {
+  return observedTransitions < requiredTransitions;
+}
+
 function enqueueSyntheticMouseClick(jvm, x, y) {
   const components = [...(jvm._awtInputComponents?.get('mouse') || [])]
     .filter(component => component && component._visible !== false &&
@@ -879,10 +884,17 @@ async function runWorker(specification) {
         denseSceneSamples = surface._sceneSamples;
       } else if (sceneDifference(denseSceneSamples,
         surface._sceneSamples) >= 0.3) {
+        const resetCandidate = shouldResetMenuCandidateOnSceneTransition(
+          denseSceneTransitions, specification.menuSceneTransitions);
         denseSceneTransitions += 1;
         denseSceneSamples = surface._sceneSamples;
-        menuCandidateFrameAt = null;
-        menuActivityStartAt = null;
+        // The transition count is a startup gate, not a request for a static
+        // menu. Once it is satisfied, normal full-screen menu animation must
+        // not perpetually restart the settling window.
+        if (resetCandidate) {
+          menuCandidateFrameAt = null;
+          menuActivityStartAt = null;
+        }
       }
     }
     // Some complete menus deliberately use mostly-black artwork. Keep them
@@ -1435,4 +1447,5 @@ module.exports = {
   hasMenuAdvanceSettled,
   parseArgs,
   sceneDifference,
+  shouldResetMenuCandidateOnSceneTransition,
 };

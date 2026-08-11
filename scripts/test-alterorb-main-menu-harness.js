@@ -9,6 +9,7 @@ const {
   hasMenuAdvanceSettled,
   parseArgs,
   sceneDifference,
+  shouldResetMenuCandidateOnSceneTransition,
 } = require('./launch-alterorb-games-jvmjs');
 
 assert.deepStrictEqual(
@@ -65,6 +66,15 @@ assert.strictEqual(hasMenuAdvanceSettled(1000, 20, 25), true,
   'five post-advance surfaces settle the guest transition');
 assert.strictEqual(sceneDifference([0x111, 0x222], [0x111, 0x222]), 0);
 assert.strictEqual(sceneDifference([0x111, 0x222], [0x333, 0x222]), 0.5);
+assert.strictEqual(
+  shouldResetMenuCandidateOnSceneTransition(0, 0), false,
+  'a disabled transition gate does not reset an animated menu candidate');
+assert.strictEqual(
+  shouldResetMenuCandidateOnSceneTransition(0, 1), true,
+  'the transition satisfying a requested gate starts fresh settling');
+assert.strictEqual(
+  shouldResetMenuCandidateOnSceneTransition(1, 1), false,
+  'later menu animation does not restart settling after the gate is met');
 
 assert.deepStrictEqual(effectiveRuntimeGates({noJit: false, profileJit: true}, {
   JVM_WASM_JIT: '0',
