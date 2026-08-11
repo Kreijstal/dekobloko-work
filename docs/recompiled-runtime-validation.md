@@ -44,6 +44,73 @@ and `dekobloko-work` `51cec32a941dd254f39e2ddc5d2d921e48b19d90`.
 The strict total is therefore 17 passes and 27 pending. This count deliberately
 ignores a pass from a different class tree even when the game name is the same.
 
+### Current-tree closure
+
+The 17/44 count above is the historical checkpoint from the first clean-tree
+comparison, not the final result. Subsequent exact-tree runs closed the
+remaining set. Three late failures found generic compiler/runtime defects:
+
+- Tomb Racer combined self-recursion with calls that can suspend through the
+  scheduler. The structured tier now keeps canonical Frame-backed nested calls
+  for that mixed shape and does not publish a restoring positional ABI across
+  exception-protected non-void calls.
+- Hold the Line exposed an SSA aliasing error. Two object fields happened to
+  reference different arrays through the same mutable field cache, but a later
+  array load reused the first array's backing-data snapshot. Dynamic field-array
+  loads now snapshot `cache.data` into the SSA value produced by that individual
+  load, so rebinding the cache cannot change an earlier value.
+- Void Hunters exposed traversal-order-dependent local naming in the
+  decompiler. A later store to a parameter slot was visited before an earlier
+  load and retroactively renamed the earlier value. Object locals now use the
+  reaching bytecode store set; a load with no reaching store retains its initial
+  receiver/parameter identity, and compatible stores retain the declared
+  reference variable and its required casts.
+
+The exact-tree main-menu evidence for those repairs is:
+
+| game | elapsed | surface hash | recompiled class-tree SHA-256 |
+| --- | ---: | --- | --- |
+| Tomb Racer | 648.897 s | `3b02efb1` | `bd40e56a0a68733693ac99752bd480340ce48f59bc8e1ef42800481b72c86743` |
+| Hold the Line | 414.310 s | `764d7bb4` | `b37ed6faad26f91d136921bccd3a20c6ab0937b9e79d252352200d7af8736034` |
+| Void Hunters | 226.694 s | `86304c7e` | `68ebae52f6853cf0430389adad7a9dbfa29e20a5cce11316950eee6944479c5f` |
+| Virogrid | 1,279.449 s | `c2837c39` | `a6d16b292fda4151710c9bba55bdf62507f43bf00ae89ae42ecc98c60ffd4931` |
+
+The corresponding reports live under `.work/alterorb-jvmjs/` and include the
+gamepack hash, exact dirty/clean repository state, Node version, launcher hash,
+and all effective JVM/Wasm/JIT gates. These repairs are descriptor-, CFG-,
+dataflow-, and type-structure based. The optimizer contains no AlterOrb game,
+class, or method names.
+
+Virogrid also broadened the generic Java frontend while validating the last
+generated tree: primitive `arraylength` fallback, cast/comma parsing, contextual
+static overload selection, hierarchy-ranked instance overload selection,
+decimal `ldc2_w`, long literal suffixes, and local-class member registration.
+Its runtime failure was then isolated by class and method bytecode substitution:
+only the regenerated `a(ZZ)V` body changed a healthy run into the fatal sleep
+loop. The generated Java was not the cause. Substituting the pipeline bytecode
+body itself reproduced the failure, while the same structural pipeline's
+`--runtime-safe` body remained active and healthy through the same checkpoint.
+The unsafe body had removed every protected region and duplicated several
+observable call sites; disabling only JIT, Wasm, fusion, or positional calls did
+not repair it. Consequently the owned all-game source pipeline now audits each
+transformed method for the combination of an extremely fragmented removed
+RuntimeException graph and duplicated observable calls. Classes containing that structural hazard are
+rerun through the existing `--runtime-safe` policy and overlaid before CFR; the
+retry policy is part of the cache/provenance fingerprint. This is a
+corpus-independent pipeline policy, not an owner or method exception.
+
+With that policy, Virogrid emits and compiles all 347 generated sources with
+zero verifier, decompiler, or `javac` failures. ABI restoration checked all 347
+original classes plus one generated carrier with zero mismatches. The automatic
+workflow tree was byte-for-byte identical across all 348 classfiles to the tree
+that reached the menu, so the current exact-tree runtime total is **44/44**.
+
+A deliberately global `--runtime-safe` A/B was semantically healthy but missed
+the 1,750-second menu gate while still rendering. Restricting the conservative
+retry to the structurally rejected class reached the real menu in 1,279.449
+seconds. This preserves the already accepted fast output for the other 346
+classes while preventing the unsafe cross-region call duplication.
+
 Pool then exposed a generic generated-call bug in a recursive object traversal.
 The method recursively called itself while also calling virtual child-iterator
 methods that could leave scheduler-visible Frames. A restoring scalar entry

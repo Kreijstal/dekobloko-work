@@ -65,6 +65,14 @@ try {
     },
   }), false, 'dirty generators are never reusable');
   assert.strictEqual(fingerprintSnapshot(snapshot).length, 64);
+  const configured = require('./pipeline-cache-provenance').buildSnapshot({
+    repo: path.resolve(__dirname, '..'),
+    javaTools: path.resolve(__dirname, '..'),
+    input: classes,
+    skipPasses: '',
+  });
+  assert.strictEqual(configured.pipeline.runtimeSafetyRetry,
+    'removed-runtime-handlers-with-observable-call-duplication');
 } finally {
   fs.rmSync(temporary, {recursive: true, force: true});
 }

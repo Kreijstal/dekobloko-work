@@ -100,6 +100,7 @@ const manifest = {
     reusePipeline: reusePipeline === '1',
     updateBaseline: updateBaseline === '1',
     fixedPipelineArguments: ['--profile', 'none', '--safe-bytecode'],
+    runtimeSafetyRetry: 'removed-runtime-handlers-with-observable-call-duplication',
     environment: selectedEnvironment,
   },
 };
@@ -471,6 +472,36 @@ NODE
           done < <(awk '/^FAIL_CLASS: / { print $2 }' "$work/logs/guard-verify.log")
         fi
       fi
+      mapfile -d '' class_files < <(find "$work/out" -type f -name '*.class' -print0)
+    fi
+    safety_retry_list="$work/logs/runtime-safety-retry-classes.txt"
+    JAVA_TOOLS_DIR="$JAVA_TOOLS_DIR" node \
+      "$SCRIPT_DIR/find-unsafe-observable-call-duplications.js" \
+      "$game_dir/classes" "$work/out" >"$safety_retry_list" \
+      2>>"$work/logs/pipeline.log" || pipeline_fail=1
+    if ((pipeline_fail == 0)) && [[ -s "$safety_retry_list" ]]; then
+      safety_retry_out="$work/runtime-safety-retry-out"
+      rm -rf "$safety_retry_out"
+      mkdir -p "$safety_retry_out"
+      safety_final_out="$(cd "$work/out" && pwd)"
+      safety_guard_names=""
+      while IFS= read -r relative_class; do
+        [[ -n "$relative_class" ]] || continue
+        safety_guard_names+="${safety_guard_names:+,}$(basename "$relative_class" .class)"
+      done <"$safety_retry_list"
+      printf '[runtime-safety] retrying conservative pipeline for: %s\n' \
+        "$safety_guard_names" >>"$work/logs/pipeline.log"
+      BULK_PIPELINE_CLASS_LIST="$safety_retry_list" \
+      BULK_PIPELINE_SKIP_UNSELECTED_COPY=1 \
+      BULK_PIPELINE_ASM_GUARD_CP="$VERIFY_TOOLS:$ASM_CP" \
+      BULK_PIPELINE_ASM_GUARD_CLASSES="$safety_guard_names" \
+      SKIP_PIPELINE_PASSES="$pipeline_skip_passes" \
+      timeout "$PIPELINE_TIMEOUT_SECONDS" node "$REPO/scripts/pipeline/bulk-pipeline.js" \
+        "$game_dir/classes" "$safety_retry_out" --profile none --safe-bytecode --runtime-safe \
+        >>"$work/logs/pipeline.log" 2>&1 \
+        && (cd "$safety_retry_out" && find . -type f -name '*.class' \
+          -exec cp --parents {} "$safety_final_out/" \;) \
+        || pipeline_fail=1
       mapfile -d '' class_files < <(find "$work/out" -type f -name '*.class' -print0)
     fi
     java -cp "$VERIFY_TOOLS:$ASM_CP" Verify "${class_files[@]}" \

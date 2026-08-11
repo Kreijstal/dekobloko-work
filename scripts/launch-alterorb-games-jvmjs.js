@@ -43,6 +43,7 @@ function parseArgs(argv) {
     profileJit: false,
     cpuProfile: false,
     jarOverride: null,
+    classesOverride: null,
     menuAdvanceClick: null,
     menuSceneTransitions: 1,
   };
@@ -64,6 +65,10 @@ function parseArgs(argv) {
     } else if (arg === '--profile-jit') options.profileJit = true;
     else if (arg === '--cpu-profile') options.cpuProfile = true;
     else if (arg === '--jar') options.jarOverride = path.resolve(argv[++index]);
+    else if (arg === '--classes-dir') {
+      options.classesOverride = path.resolve(argv[++index]);
+      options.recompiled = true;
+    }
     else if (arg === '--menu-advance-click') {
       const coordinates = String(argv[++index] || '').split(',').map(Number);
       if (coordinates.length !== 2 || coordinates.some(value =>
@@ -85,6 +90,7 @@ function parseArgs(argv) {
         '[--game internalName] [--jobs N] [--timeout-ms N] [--report file] ' +
         '[--until-main-menu] [--measure-fps-ms N] [--min-fps N] ' +
         '[--profile-jit] [--cpu-profile] [--no-jit] [--recompiled] ' +
+        '[--classes-dir directory] ' +
         '[--menu-advance-click X,Y] [--menu-scene-transitions N] ' +
         '[--jar diagnostic.jar]');
       process.exit(0);
@@ -267,8 +273,8 @@ function recompiledClassesDir(game) {
   return fs.existsSync(abiNormalized) ? abiNormalized : path.join(owned, 'classes');
 }
 
-function validateRecompiledClasses(game, jarPath) {
-  const classesDir = recompiledClassesDir(game);
+function validateRecompiledClasses(game, jarPath, classesOverride = null) {
+  const classesDir = classesOverride || recompiledClassesDir(game);
   if (!fs.existsSync(classesDir)) {
     return {ok: false, status: 'missing-recompiled-classes', classesDir};
   }
@@ -1206,7 +1212,8 @@ function runChild(game, options) {
   }
   let classesDir = null;
   if (options.recompiled) {
-    const validation = validateRecompiledClasses(game, jarPath);
+    const validation = validateRecompiledClasses(
+      game, jarPath, options.classesOverride);
     if (!validation.ok) {
       return Promise.resolve({
         game: game.internalName,
@@ -1395,6 +1402,9 @@ async function main() {
   }
 
   const options = parseArgs(process.argv.slice(2));
+  if (options.classesOverride && options.games.length !== 1) {
+    throw new Error('--classes-dir requires exactly one --game');
+  }
   options.provenance = collectRunProvenance(options);
   execFileSync(process.execPath, [
     path.join(JAVA_TOOLS_DIR, 'scripts', 'generate-jre-index.js'),

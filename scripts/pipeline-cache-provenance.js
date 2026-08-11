@@ -73,6 +73,7 @@ function buildSnapshot(options, environment = process.env) {
     inputClasses: hashClassTree(options.input),
     pipeline: {
       arguments: ['--profile', 'none', '--safe-bytecode'],
+      runtimeSafetyRetry: 'removed-runtime-handlers-with-observable-call-duplication',
       skipPasses: options.skipPasses,
       environment: selectedEnvironment(environment),
     },

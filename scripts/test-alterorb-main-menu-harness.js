@@ -58,6 +58,10 @@ assert.strictEqual(options.until, 'main-menu');
 const sceneOptions = parseArgs(['--menu-scene-transitions', '2']);
 assert.strictEqual(sceneOptions.menuSceneTransitions, 2);
 assert.strictEqual(sceneOptions.until, 'main-menu');
+const classesOptions = parseArgs(['--classes-dir', './generated-classes']);
+assert.strictEqual(classesOptions.classesOverride,
+  require('path').resolve('./generated-classes'));
+assert.strictEqual(classesOptions.recompiled, true);
 
 assert.strictEqual(hasMenuAdvanceSettled(null, null, 3), true,
   'manual runs do not need an automated-advance settling window');
