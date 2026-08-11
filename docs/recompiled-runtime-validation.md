@@ -23,6 +23,53 @@ Node platform, and effective JVM/Wasm/JIT gates. A timing or correctness result
 without these fields is historical evidence, not a reproducible acceptance
 result.
 
+## August 11 complete source generation and runtime handoffs
+
+A clean all-games generation produced Java for all 44 catalog games. The
+pipeline processed 18,481 source files and emitted 18,542 class files with zero
+pipeline, verifier, decompiler, or `javac` failures. The exact clean generator
+inputs were `dekobloko-work` `f86d79b8537a5e0ac43000455df6be17f16e37b4`
+and `java-tools` `d877f14df59837190d2bb006bfae4f62e77420ea`;
+`.work/games/decompilation-provenance.json` records the command, environment,
+and output hashes. This establishes complete source generation, not complete
+runtime acceptance: each recompiled game still needs an exact-tree main-menu
+report.
+
+Matching every historical report's recompiled-class SHA-256 against those 44
+current trees gives 16 strict main-menu passes and 28 trees still awaiting a
+current-tree pass. This count deliberately ignores a pass from a different
+class tree even when the game name is the same.
+
+Pool then exposed a generic generated-call bug in a recursive object traversal.
+The method recursively called itself while also calling virtual child-iterator
+methods that could leave scheduler-visible Frames. A restoring scalar entry
+had omitted multiple recursive Frames; after a nested suspension, an omitted
+caller could resume after its invoke without the child transition that owned
+the return. The SSA renderer now rejects the restoring direct ABI when its
+resolved call graph combines self-recursion with independently suspendable
+calls. The method remains structured, but uses the ordinary Frame-backed
+positional entry. The rule examines descriptors and resolved call-site
+structure only; it contains no game, class, or method names.
+
+Hostile Spawn exposed two related handoff boundaries:
+
+- A contended synchronized frameless callee recorded its restoration depth
+  only after acquiring the monitor. Contention therefore retained `-1` and
+  inserted the restored child below its caller, allowing the caller to resume
+  without the callee's non-void return. Positional entry now records the exact
+  call-stack depth before attempting the implied synchronized-method monitor.
+- An asynchronous sentinel can mean either that the invocation was consumed
+  and its callee is active, or that class initialization started before the
+  invocation executed. Generated callers now distinguish these cases through
+  the active child's explicit generated-return parent. A consumed call keeps
+  its post-invoke state; an unconsumed class-initialization handoff retains the
+  invoke PC and operands for replay.
+
+Focused regressions cover consumed versus unconsumed asynchronous calls,
+monitor contention and float-return delivery, acyclic scalar calls, and mixed
+recursive/suspendable call graphs. These are scheduler and generated-ABI
+repairs, not game-specific optimizer kernels.
+
 Menu recognition is deliberately stricter than "a large canvas was painted".
 Dense menus require a materially varied palette; sparse menus require a larger
 painted region and a sequence of distinct guest frames. Full-screen,
