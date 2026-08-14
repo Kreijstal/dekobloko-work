@@ -666,6 +666,10 @@ function jitProfileSnapshot(jvm) {
         Number(jit.hotCallGraphRegions?.outlinedLoopCount || 0),
       hotCallGraphOutlinedLoopSourceBytes:
         Number(jit.hotCallGraphRegions?.outlinedLoopSourceBytes || 0),
+      hotCallGraphPartitionedSegments:
+        Number(jit.hotCallGraphRegions?.partitionedSegmentCount || 0),
+      hotCallGraphPartitionedSegmentSourceBytes:
+        Number(jit.hotCallGraphRegions?.partitionedSegmentSourceBytes || 0),
       structuredProducedArrayLocalViews:
         Number(jit.structuredSsa
           ?.persistentProducedArrayLocalViewCompileCount || 0),
@@ -809,6 +813,10 @@ function jitRuntimeCounters(jvm) {
       Number(jit.hotCallGraphRegions?.outlinedLoopCount || 0),
     hotCallGraphOutlinedLoopSourceBytes:
       Number(jit.hotCallGraphRegions?.outlinedLoopSourceBytes || 0),
+    hotCallGraphPartitionedSegments:
+      Number(jit.hotCallGraphRegions?.partitionedSegmentCount || 0),
+    hotCallGraphPartitionedSegmentSourceBytes:
+      Number(jit.hotCallGraphRegions?.partitionedSegmentSourceBytes || 0),
     structuredProducedArrayLocalViews:
       Number(jit.structuredSsa
         ?.persistentProducedArrayLocalViewCompileCount || 0),
@@ -1668,11 +1676,22 @@ function runChild(game, options) {
     });
     let stdout = '';
     let stderr = '';
+    // The rolling buffers below cap worker output for result reporting; V8
+    // diagnostic streams (for example --trace-opt) exceed them by orders of
+    // magnitude, so mirror the full streams to disk on request.
+    const childLogStream = process.env.ALTERORB_JVMJS_CHILD_LOG
+      ? fs.createWriteStream(path.join(
+        process.env.ALTERORB_JVMJS_CHILD_LOG,
+        `child-${game.internalName}-${process.pid}-` +
+          `${crypto.randomBytes(4).toString('hex')}.log`))
+      : null;
     child.stdout.on('data', chunk => {
+      if (childLogStream) childLogStream.write(chunk);
       stdout += chunk;
       if (stdout.length > 262144) stdout = stdout.slice(-131072);
     });
     child.stderr.on('data', chunk => {
+      if (childLogStream) childLogStream.write(chunk);
       stderr += chunk;
       if (stderr.length > 262144) stderr = stderr.slice(-131072);
     });

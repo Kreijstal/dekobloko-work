@@ -1706,3 +1706,71 @@ met**; the best paired result in this series is 179.312 seconds against the
 24.021-second artifact-equivalent ceiling. The unwind-compact implementation
 lives in java-tools `src/jit/JvmSsaBlockRenderer.js` (tracked-dirty alongside
 the day's earlier region work).
+
+## Straight-line partitioning of oversized region bodies (August 14, 2026, second series)
+
+The previous section's conclusion — that flat straight-line bulk cannot be
+sliced at loop granularity — motivated a statement-run partitioner instead:
+`partitionOversizedLinearBlocks` in java-tools
+`src/jit/HotCallGraphRegionCompiler.js` (opt-in,
+`JVM_ENABLE_HOT_CALL_GRAPH_LINEAR_PARTITION=1`). After loop outlining, any
+module function whose executable self-size exceeds
+`JVM_HOT_CALL_GRAPH_LINEAR_PARTITION_UNIT_BYTES` (default 49,152) has runs of
+consecutive statements extracted into module-level helpers with the loop
+outliner's positional live-in/live-out ABI. A run executes once per arrival
+at its block position, so unlike fine loop outlining the ABI cost is
+amortized over ~32 KiB of straight-line work. Three protocol extensions were
+required: an outward-jump table (outcome 3) that re-establishes
+break/continue at the call site, hoisting of run-level `let`/`const`
+declarations whose bindings are referenced after the run, and a shared
+labeled-block epilogue for live-out write-backs (per-exit write-backs
+re-grew a name-dense segment to 155 KB). Statements larger than a segment
+recurse into their nested statement lists; segment helpers are terminal
+(re-partitioning one only re-plumbs its live-name set). The pass is covered
+by a differential tape suite (`test/hotCallGraphLinearPartition.test.js`,
+91 assertions executing original and partitioned modules against identical
+inputs) which caught one real bug also latent in the loop outliner: a
+multi-statement exit rewrite replacing an unbraced if-consequent ran its
+`break`/`return` unconditionally. Both rewrites now emit braced blocks.
+
+Paired same-session Tomb Racer runs (three QEMU guests resident again;
+absolute numbers are not comparable to the morning series):
+
+| configuration | post-logo menu time |
+|---|---|
+| outlining only (session baseline) | 214.4 s |
+| outlining + linear partitioning | 218.6 s |
+| diagnostics (partition arm, tracing enabled) | 219.1–227.3 s |
+
+Live effect, verified with `--trace-opt` mirrored through the launcher's new
+`ALTERORB_JVMJS_CHILD_LOG` passthrough: the partitioner emitted 285–292
+segments across 26 module compiles; every positional region module now has
+all units under the 49 KiB budget (live fka module: 32 functions, largest
+47.3 KB, previously 465 KB); V8 reports 139 TurboFan completions for region
+node and outlined-loop functions where the earlier series recorded none.
+The mechanism works. The timing did not move, and the CPU profile of the
+partition arm explains why:
+
+1. **Loading heat is diffuse, not kernel-shaped.** The largest single guest
+   function is 5.7% self (`jvmRegionOutlinedLoop1_0` in the framed
+   `vma.b()[B` module, already TurboFan-optimized); no `jvmRegionSegment*`
+   function appears in top-self at all. The phase spends ~25% in jit-runtime
+   dispatch (`tryInvokeResolvedTarget`, `dispatcher`, `tryInvokeSyncAt`),
+   ~15% in jvm-core scheduling/interpretation, ~28% spread across hundreds
+   of generated guest functions, ~12% idle, ~5% GC.
+2. **The framed generator tier carries much of the region execution.** The
+   hot region modules in the profile are `?tier=hot-call-graph-framed-region`;
+   their roots are 0.9–1.2 MB generator functions with hundreds of yield
+   points that no source-level pass can split (a yield cannot cross a
+   function boundary). Partitioning correctly skips them.
+3. **Unit size was a real defect but not this phase's bottleneck.** Fixing
+   it is necessary groundwork (and composes with the planned pre-emission
+   partitioner) but the loading gap is dominated by per-call dispatch
+   overhead and the framed tier, which require the CFG/SSA-level backend
+   (yield-aware resume points, cheaper calling convention or Wasm) rather
+   than more source surgery.
+
+The acceptance verdict is unchanged: **the Tomb Racer 1.5x target is not
+met** (best this series 214.4 s against the 24.021-second ceiling; the host
+was contaminated throughout). Linear partitioning stays opt-in alongside
+loop outlining pending a clean-host pairing.
