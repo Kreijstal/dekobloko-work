@@ -1774,3 +1774,73 @@ The acceptance verdict is unchanged: **the Tomb Racer 1.5x target is not
 met** (best this series 214.4 s against the 24.021-second ceiling; the host
 was contaminated throughout). Linear partitioning stays opt-in alongside
 loop outlining pending a clean-host pairing.
+
+## Framed-tier partitioning: environment lift + yield* delegation (August 14, 2026, third series)
+
+The previous series ended on "a yield cannot cross a function boundary."
+That is true of a plain call, but not of generator delegation: `yield*`
+forwards yielded values, argument-less `next()` resumes, and
+`iterator.return()` abandonment transparently, and the framed continuation
+wrapper uses exactly that driver protocol and nothing more. Two passes in
+java-tools `src/jit/HotCallGraphRegionCompiler.js` (opt-in,
+`JVM_ENABLE_HOT_CALL_GRAPH_FRAMED_PARTITION=1`) now make framed region
+modules splittable:
+
+1. **`liftOversizedUnitLocalsToEnvironment`** — the cheaper calling
+   convention. A live framed root (`oc.a(B,I)V`, 1.17 MB) declares 975
+   function-scoped locals referenced ~16,000 times; under the positional
+   segment ABI those names re-plumb through every boundary, and the naive
+   split grew the module to 3.5–8.5 MB while the root itself *grew* with
+   smaller targets (356–752 KB). The pass rewrites every single-declaration
+   top-level `let`/`const` into one per-invocation environment array, so a
+   segment's free names collapse to the array plus the five unit parameters.
+2. **Generator-aware partitioning** — in a generator unit, a statement run
+   containing depth-0 `yield` is extracted into a `function*` helper reached
+   through `yield*`; yield-free runs keep plain helpers. Protocol (outcome
+   array, outward-jump table, shared epilogue) is unchanged; the shared
+   state array is written and consumed inside one synchronous burst, so
+   suspension inside a helper never exposes a torn protocol window.
+
+Offline on the 1.17 MB dump: root 1.17 MB → 48.6 KB, all 52 module
+functions under V8's 61,440-byte optimized-bytecode budget, +15% total
+source. Differential coverage grew to 329 assertions
+(`test/hotCallGraphLinearPartition.test.js`): yield sequencing, mid-run
+abandonment finallys, throws across delegation, env-lift purity with
+shadowing and closures. A third defect class was found and fixed while
+attributing the first live regression: `applySourceEdits` was
+O(edits × source) (69% of pass self-time, 8.5% GC on top); a single forward
+chunk join made the pass 5.9x faster with byte-identical output and cut the
+live pass cost from ~75 s to 8.9 s per load (measured by the new
+`hotCallGraphPartitionPassMillis` counter).
+
+Paired same-session Tomb Racer runs (same contaminated host class as the
+second series):
+
+| configuration | post-logo menu time |
+|---|---|
+| framed partitioning, slow pass | 282.8 s |
+| its paired baseline | 224.9 s |
+| framed partitioning, fast pass | 226.9 s |
+| its paired baseline | 211.2 s |
+| trace-opt diagnostic (framed arm) | 229.1 s |
+
+Identical-config baselines drifted 211.2–224.9 s between pairings, so the
+fast-pass framed arm is neutral within host noise once its remaining 8.9 s
+pass cost is discounted. The live counters confirm the mechanism end to
+end: 705 framed segments, 18,246 lifted locals, and — decisive — V8 reports
+**195 TurboFan completions for `jvmRegionSegment*` helpers** (generator
+helpers included, some OSR, zero segment deopts) where the framed tier
+previously had zero optimizable functions.
+
+Conclusion: both halves of the "unoptimizable guest code" theory are now
+closed. Positional units (second series) and framed generator roots (this
+series) are all TurboFan-compiled, and post-logo loading still does not
+move. The gap is where the profile said it was all along: ~40% per-call
+dispatch and scheduling overhead (`tryInvokeSyncAt` chains, per-entry
+re-evaluation of module declarations across 2.3M region runs, Frame
+lifecycle). The next architectural step is dispatch-side: evaluate region
+modules once and enter through a factory instead of re-declaring every
+helper per run, then shrink the `tryInvokeSyncAt` fast path — or lower the
+whole calling convention into Wasm. The acceptance verdict is unchanged:
+**the Tomb Racer 1.5x target is not met** (211.2–229.1 s this series
+against the 24.021-second ceiling).

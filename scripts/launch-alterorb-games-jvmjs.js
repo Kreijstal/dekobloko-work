@@ -670,6 +670,12 @@ function jitProfileSnapshot(jvm) {
         Number(jit.hotCallGraphRegions?.partitionedSegmentCount || 0),
       hotCallGraphPartitionedSegmentSourceBytes:
         Number(jit.hotCallGraphRegions?.partitionedSegmentSourceBytes || 0),
+      hotCallGraphFramedPartitionedSegments:
+        Number(jit.hotCallGraphRegions?.framedPartitionedSegmentCount || 0),
+      hotCallGraphLiftedEnvironmentNames:
+        Number(jit.hotCallGraphRegions?.liftedEnvironmentNameCount || 0),
+      hotCallGraphPartitionPassMillis:
+        Math.round(Number(jit.hotCallGraphRegions?.partitionPassMillis || 0)),
       structuredProducedArrayLocalViews:
         Number(jit.structuredSsa
           ?.persistentProducedArrayLocalViewCompileCount || 0),
@@ -817,6 +823,12 @@ function jitRuntimeCounters(jvm) {
       Number(jit.hotCallGraphRegions?.partitionedSegmentCount || 0),
     hotCallGraphPartitionedSegmentSourceBytes:
       Number(jit.hotCallGraphRegions?.partitionedSegmentSourceBytes || 0),
+    hotCallGraphFramedPartitionedSegments:
+      Number(jit.hotCallGraphRegions?.framedPartitionedSegmentCount || 0),
+    hotCallGraphLiftedEnvironmentNames:
+      Number(jit.hotCallGraphRegions?.liftedEnvironmentNameCount || 0),
+    hotCallGraphPartitionPassMillis:
+      Math.round(Number(jit.hotCallGraphRegions?.partitionPassMillis || 0)),
     structuredProducedArrayLocalViews:
       Number(jit.structuredSsa
         ?.persistentProducedArrayLocalViewCompileCount || 0),
