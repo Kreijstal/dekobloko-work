@@ -1640,3 +1640,69 @@ bytes; its report is
 `.work/alterorb-jvmjs/2026-08-14-tombracer-call-graph-hoisted-loop-outlining-run1.json`.
 The pass remains opt-in because this one sample is not enough to establish a
 production win and the target miss is decisive.
+
+## Unwind-compact materialization and outlining pairings (August 14, 2026)
+
+A same-day paired series re-measured the outlining decision and added a new
+generic restoring-tier compaction. All five runs used the original gamepack
+(SHA-256 `0764abb0...`), CPU 6 pinned, the standard gates plus
+`JVM_ENABLE_HOT_CALL_GRAPH_REGIONS=1`, and ran back-to-back on a host with
+three idle QEMU guests resident, so they are mutually comparable but slower in
+absolute terms than the earlier clean-host series (first frame ~24 s here
+versus ~15 s there).
+
+| Configuration | Post-logo to menu |
+| --- | ---: |
+| Production defaults (paired baseline) | 187.754 s |
+| Unwind-compact materialization only | 186.431 s |
+| Loop outlining only | **179.312 s** |
+| Loop outlining + unwind compaction | 185.049 s |
+| Fine outlining (8 KiB minimum, 64/node) | timeout > 300 s |
+
+Reports:
+`.work/alterorb-jvmjs/2026-08-14-tombracer-session-baseline-run1.json`,
+`.work/alterorb-jvmjs/2026-08-14-tombracer-session-unwindcompact-only-run1.json`,
+`.work/alterorb-jvmjs/2026-08-14-tombracer-session-outlining-run1.json`,
+`.work/alterorb-jvmjs/2026-08-14-tombracer-session-outlining-unwindcompact-run1.json`,
+and `.work/alterorb-jvmjs/2026-08-14-tombracer-session-fine-outline-run1.json`.
+
+Three conclusions:
+
+1. **Loop outlining's earlier rejection was a contaminated comparison.** Its
+   179.7-second sample had been judged against the clean-host 164.5-second
+   best; paired on one host it is a real −4.5% at default knobs. It remains
+   opt-in pending a clean-host pairing, but the negative verdict recorded
+   above should not be treated as settled.
+2. **Unwind-compact materialization is timing-neutral live and is retained
+   default-on for its source-size effect.** The structured restoring tier now
+   materializes a locals-free unwind frame at throwing sites whose bytecode
+   index no in-method exception-table entry covers (array load/store,
+   arraylength, div/rem by zero, negative array size, and null field access);
+   scheduler yields, deopts, and invoke exception paths keep exact
+   full-locals restoration, and a release path restores the frameless
+   invariant if a guarded helper ever returns instead of throwing. The
+   check is purely structural (exception-table ranges); no guest identity
+   participates. `JVM_DISABLE_SSA_UNWIND_COMPACT_MATERIALIZATION=1` disables
+   it. The focused JIT plus hot-call-graph suites pass 2,465/2,469 with the
+   feature on and off alike (the four failures pre-exist in the tracked-dirty
+   tree). In the live fka module it compacted 136 of 406 restoration arms;
+   every remaining full arm is a scheduler-resume or invoke-exception site
+   that genuinely needs its locals.
+3. **The optimization-unit blocker is flat straight-line bulk, not loops or
+   cold arms.** With outlining and compaction on, the hot `fka` module still
+   contains a 290,302-byte root residual and one 289,000-byte outlined
+   payload; at an 8 KiB outline minimum it still contains 252,107-byte and
+   226,660-byte units while 86 finer outlines drove the run past the
+   300-second timeout. The synthesis loop's body is a flat sequence of small
+   loops and straight-line code that source-level slicing cannot decompose
+   into engine-optimizable units without paying per-call ABI costs inside
+   hot iterations. This closes the source-splicing avenue and leaves the
+   previously recorded conclusion as the only route: partition the verified
+   CFG/SSA graph before emission (or emit one region-sized Wasm function),
+   with cold exits carried as compact deoptimization metadata.
+
+The acceptance verdict is unchanged: **the Tomb Racer 1.5x target is not
+met**; the best paired result in this series is 179.312 seconds against the
+24.021-second artifact-equivalent ceiling. The unwind-compact implementation
+lives in java-tools `src/jit/JvmSsaBlockRenderer.js` (tracked-dirty alongside
+the day's earlier region work).
