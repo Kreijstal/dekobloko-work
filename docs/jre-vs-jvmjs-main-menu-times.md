@@ -1866,9 +1866,13 @@ zero JavaScript on the call path, with an in-wasm status check at the site.
 On the reproducer this collapses the call shape from 39.5 to 7.2 ns/iter
 (48.8x → 8.9x) and the blend from 11.9x to 2.2x; the pre-existing
 intermethod benchmark moves static 66x → 6.8x and virtual/interface
-105/103x → 19x (receiver dispatch still bridges through JS). Full
-java-tools suite: 1172/1173 with the flag off and the one failure
-pre-existing; targeted wasm suites pass with the flag on.
+105/103x → 19x (receiver dispatch still bridges through JS). Suite
+status (corrected in the fifth series): the default runner stops at the
+first failing file, so the "1172/1173" observed here covered only the
+first third of the files; the genuinely full run
+(`JVM_TEST_CONTINUE_ON_FAILURE=1`, 196 files, 8820 tests) passes with
+only the same single pre-existing failure, flag off, and targeted wasm
+suites pass with the flag on.
 
 Paired same-session Tomb Racer runs, flag off then on, same core:
 
@@ -1928,3 +1932,12 @@ live but closure re-instantiation was a minor cost, exactly as the
 profile predicted. The acceptance verdict is unchanged: **the Tomb Racer
 1.5x target is not met** (166.8–171.1 s this series against the
 24.021-second ceiling).
+
+Suite-coverage correction (applies to every series above): the java-tools
+test runner exits at the first failing test file by default, and
+`fusedHotLoopRegression` fails pre-existingly, so any default `npm test`
+run silently covered only ~62 of 196 files. The genuinely full run
+(`JVM_TEST_CONTINUE_ON_FAILURE=1`) executes all 196 files / 8820 tests
+and, with the retv/runv emission, direct-link flag off, and factory-hoist
+flag off at their defaults, still shows exactly that one pre-existing
+failure.
