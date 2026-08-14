@@ -1844,3 +1844,48 @@ helper per run, then shrink the `tryInvokeSyncAt` fast path — or lower the
 whole calling convention into Wasm. The acceptance verdict is unchanged:
 **the Tomb Racer 1.5x target is not met** (211.2–229.1 s this series
 against the 24.021-second ceiling).
+
+## Direct wasm→wasm static linking (August 14, 2026, fourth series)
+
+The dispatch cost was first isolated in a minimal reproducer (java-tools
+`benchmarks/CallBoundaryHotLoop.java` + `scripts/benchmarkCallBoundaryHotLoop.js`,
+median of 5 on both HotSpot `-Xbatch` and the production wasm tier,
+checksum-compared): an arithmetic-only loop runs at 1.1x native, adding one
+tiny static call per iteration costs ~36–40 ns and lands at 45–50x, and a
+blend of 4 arithmetic ops + 1 call reproduces the whole-app ~11.7–11.9x
+ratio exactly. The per-call boundary — exit compiled code, walk the
+`tryInvokeSyncAt` chain, build a Frame, re-enter — *is* the gap.
+
+The iteration on that boundary (java-tools, opt-in
+`JVM_WASM_DIRECT_STATIC_LINK=1`): every wasm module now exports a `runv`
+wrapper (params → [status, value], fuel supplied in-wasm) plus a `retv`
+mutable global carrying the return value, and eligible static call sites
+(non-partial callee, identity slot mapping, no exception-handler wrapper on
+the caller) import the callee's `runv` directly as a wasm function import —
+zero JavaScript on the call path, with an in-wasm status check at the site.
+On the reproducer this collapses the call shape from 39.5 to 7.2 ns/iter
+(48.8x → 8.9x) and the blend from 11.9x to 2.2x; the pre-existing
+intermethod benchmark moves static 66x → 6.8x and virtual/interface
+105/103x → 19x (receiver dispatch still bridges through JS). Full
+java-tools suite: 1172/1173 with the flag off and the one failure
+pre-existing; targeted wasm suites pass with the flag on.
+
+Paired same-session Tomb Racer runs, flag off then on, same core:
+
+| configuration | post-logo menu time |
+|---|---|
+| baseline (retv/runv emitted, link off) | 175.9 s |
+| direct static linking on | 180.8 s |
+
+No measurable whole-game effect (the +4.9 s is inside the 211.2–224.9 s
+baseline drift band observed across this host's pairings). The counters
+say why: during loading the wasm tier ran only ~180k times while the JS
+region tier ran ~3.7–3.95M (`referenceFramelessPositionalRuns`) — loading
+is dominated 20:1 by JS-tier dispatch, so a 5.5x cheaper wasm-tier call
+boundary is invisible there. The reproducer fix is real and kept (opt-in),
+but the loading-time attack surface is the JS tier's per-call path:
+evaluate region modules once behind entry factories, shrink
+`tryInvokeSyncAt`, or move the loading-hot call graph onto the wasm tier
+so the direct links apply. The acceptance verdict is unchanged: **the Tomb
+Racer 1.5x target is not met** (175.9–180.8 s this series against the
+24.021-second ceiling).
