@@ -676,6 +676,10 @@ function jitProfileSnapshot(jvm) {
         Number(jit.hotCallGraphRegions?.liftedEnvironmentNameCount || 0),
       hotCallGraphPartitionPassMillis:
         Math.round(Number(jit.hotCallGraphRegions?.partitionPassMillis || 0)),
+      hotCallGraphFactoryHoistedModules:
+        Number(jit.hotCallGraphRegions?.factoryHoistedModuleCount || 0),
+      hotCallGraphFactoryHoistedDeclarations:
+        Number(jit.hotCallGraphRegions?.factoryHoistedDeclarationCount || 0),
       structuredProducedArrayLocalViews:
         Number(jit.structuredSsa
           ?.persistentProducedArrayLocalViewCompileCount || 0),
@@ -829,6 +833,10 @@ function jitRuntimeCounters(jvm) {
       Number(jit.hotCallGraphRegions?.liftedEnvironmentNameCount || 0),
     hotCallGraphPartitionPassMillis:
       Math.round(Number(jit.hotCallGraphRegions?.partitionPassMillis || 0)),
+    hotCallGraphFactoryHoistedModules:
+      Number(jit.hotCallGraphRegions?.factoryHoistedModuleCount || 0),
+    hotCallGraphFactoryHoistedDeclarations:
+      Number(jit.hotCallGraphRegions?.factoryHoistedDeclarationCount || 0),
     structuredProducedArrayLocalViews:
       Number(jit.structuredSsa
         ?.persistentProducedArrayLocalViewCompileCount || 0),

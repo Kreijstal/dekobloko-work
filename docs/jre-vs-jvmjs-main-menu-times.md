@@ -1889,3 +1889,42 @@ evaluate region modules once behind entry factories, shrink
 so the direct links apply. The acceptance verdict is unchanged: **the Tomb
 Racer 1.5x target is not met** (175.9–180.8 s this series against the
 24.021-second ceiling).
+
+## Boot CPU profile and module-once factory hoist (August 14, 2026, fifth series)
+
+An in-process sampled CPU profile of a full boot (`--cpu-profile`,
+217.0 s total, post-logo 176.6 s) finally decomposes the loading time.
+Of all samples: generated guest code 28.2%, jit-runtime 25.5%, jvm-core
+15.3%, idle 12.6%, GC 4.9%, interpreter opcodes 3.9%, wasm 1.3% — plus
+4.7% inside acorn (the region compiler's source-rewrite passes re-parse
+generated modules during boot). The largest single guest URL is the
+`vma.b()[B` framed region at 7.1%. The dispatch chain
+(`tryInvokeResolvedTarget` + `dispatcher` + `tryInvokeSyncAt` +
+frame-run plumbing) sums to ~6% self; the synchronous interpreter tick
+loop plus `execute` add ~10% self on top of the 3.9% opcode handlers.
+Two structural conclusions: (1) there is no concentrated hotspot left —
+the overhead is a diffuse 41% runtime tax; and (2) even zeroing that
+entire tax leaves ~4x versus HotSpot, because the JS-tier generated
+code itself (28%) plus interpretation (14%) is that much slower than
+native. The only path to the 1.5x target is moving the loading-hot call
+graph onto the wasm tier with the direct-link calling convention.
+
+The measurable increment this series (java-tools, opt-in
+`JVM_ENABLE_HOT_CALL_GRAPH_FACTORY_HOIST=1`): region module sources are
+split by AST into factory-scope declarations (parameter-complete helper
+functions and empty protocol state arrays) and a per-call entry tail, so
+each module's helpers instantiate once instead of on every one of the
+~3.7M region entries. 24 new structural assertions plus the 521 existing
+region assertions pass with the flag on. Live paired A/B, same core,
+back-to-back:
+
+| configuration | post-logo menu time | hoisted |
+|---|---|---|
+| baseline | 171.1 s | 0 of 121 modules |
+| factory hoist on | 166.8 s | 121 of 121 modules (594 declarations) |
+
+The −4.2 s is within the host's pairing noise: the mechanism is proven
+live but closure re-instantiation was a minor cost, exactly as the
+profile predicted. The acceptance verdict is unchanged: **the Tomb Racer
+1.5x target is not met** (166.8–171.1 s this series against the
+24.021-second ceiling).
