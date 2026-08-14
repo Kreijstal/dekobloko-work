@@ -1995,3 +1995,35 @@ callees partial, direct links that engage for late-ready callees, and
 linear-heap array/field access. The acceptance verdict is unchanged:
 **the Tomb Racer 1.5x target is not met** (176.3–193.8 s this series
 against the 24.021-second ceiling).
+
+## Guard elision for provably-`this` calls (August 15, 2026, seventh series)
+
+Working the first two wasm-routing prerequisites from the sixth series
+against the loading-unpack reproducer (java-tools, uncommitted): an
+inlined zero-arg instance call directly following `aload_0` — in a
+method that never stores slot 0, at an instruction that is not a branch
+target — provably has `this` as receiver, so its inline guard and
+guard-miss deopt stub are elided (the site still records its
+speculation for revalidation). That makes `readUShort`-shape callees
+fully compiled and therefore raw-linkable. The speculation machinery was
+generalized to match: "speculative" now means "has specSites", captured
+nested-dispatch targets are revalidated per call, and raw wasm→wasm
+links to speculative callees are permitted only through the closed
+receiver-class-set guard verified at link time (an intermediate version
+that simply vetoed them everywhere sent the wasm-only unpack column to
+18740x — fixed).
+
+Reproducer effect (pinned, 2M iterations): hybrid unpack **271.7x →
+147x**, with site counters proving the generic bridge is no longer
+called at the linked sites. The remaining wasm-tier unpack cost is a
+~24 ns/call floor (receiver-class guard JS import plus per-run
+field-cache refill) and guest byte[] access that the linear heap does
+not cover — so the wasm tier at 147x still loses to the JS region tier
+at ~38x on this shape, and the routing refactor stays blocked on those.
+Verification: all four wasm test files pass including three new
+elision regression tests (one proves a later-loaded subclass overriding
+an elided target still dispatches correctly); the genuinely full suite
+is 196 files / 8838 tests with only the pre-existing failure; a live
+Tomb Racer boot reaches the main menu (post-logo 196.1 s, unpaired,
+expected neutral at ~20:1 JS-tier-bound loading). The acceptance
+verdict is unchanged: **the Tomb Racer 1.5x target is not met**.
