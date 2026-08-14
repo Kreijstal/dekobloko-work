@@ -1941,3 +1941,57 @@ run silently covered only ~62 of 196 files. The genuinely full run
 and, with the retv/runv emission, direct-link flag off, and factory-hoist
 flag off at their defaults, still shows exactly that one pre-existing
 failure.
+
+## Direct wasm→wasm instance linking and the loading-unpack reproducer (August 14, 2026, sixth series)
+
+The fourth series linked static call sites; this one extends the raw
+wasm-import calling convention to instance calls in both wasm tiers
+(java-tools, opt-in `JVM_WASM_DIRECT_INSTANCE_LINK=1`). A call site with a
+single ready fully-compiled target imports that target's `runv` directly;
+`invokespecial` guards with an in-wasm null check, and
+`invokevirtual`/`invokeinterface` guard with one JS import that tests the
+receiver's runtime class against the classes known to dispatch to the
+linked target, falling back to the generic dispatch import otherwise
+(soundness unchanged). On the call-shape microbenchmarks the receiver
+dispatch cost drops from 104x/110.7x (virtual/interface, dispatcher tier)
+to 10.9x/10.8x, and from 21.0x/21.9x to 4.35x/4.24x on the structured
+tier. The genuinely full suite (196 files, 8820 tests) passes with only
+the known pre-existing failure, flag on and off.
+
+Live paired A/B, same core, back-to-back, treatment arm with
+`JVM_WASM_DIRECT_STATIC_LINK=1 JVM_WASM_DIRECT_INSTANCE_LINK=1`:
+
+| configuration | post-logo menu time | wasm runs | region-tier runs |
+|---|---|---|---|
+| baseline | 193.8 s | 172,975 | 3,999,253 |
+| static+instance links on | 176.3 s | 175,855 | 3,587,935 |
+
+The −17.6 s is favorable but sits at the edge of this host's single-pair
+noise, and the counters repeat the fourth-series diagnosis: loading runs
+the wasm tier ~20x less often than the JS region tier, so wasm-boundary
+fixes cannot carry the load until loading-hot code runs there.
+
+To make that gap measurable without four-minute boots, a second
+reproducer now isolates the LOADING slowdown the way
+`benchmarkCallBoundaryHotLoop.js` isolated the wasm call boundary:
+java-tools `benchmarks/LoadingUnpackHotLoop.java` +
+`scripts/benchmarkLoadingUnpackHotLoop.js` model the loading-hot
+buffer-unpack idiom (byte-array reads through tiny instance methods
+advancing a position field, the `vma.b()[B` shape) and run it end-to-end
+on HotSpot and three jvm.js configurations with checksums verified.
+Pinned results (2M iterations, medians): on the production JS region
+tier the realistic unpack blend is **37.9x** (ingredients: array ~10x,
+field ~7x, one instance call ~11x, arith 1.3x — the blend is
+superlinear). In the full game configuration the wasm tier claims these
+methods and runs the same blend at **271.7x** — seven times worse than
+the JS tier it displaced — because the root compiles partial
+(`Buffer.<init>` is never wasm-compiled and nested instance calls make
+`readUShort` partial and therefore link-ineligible), so every
+per-element call bridges out. `JVM_WASM_HEAP=1` rescues only the
+pure-array shape (38.8x → 11.9x). The wasm-routing refactor therefore
+has four concrete prerequisites, each now iterable in seconds:
+constructor calls in wasm, nested instance calls that do not force
+callees partial, direct links that engage for late-ready callees, and
+linear-heap array/field access. The acceptance verdict is unchanged:
+**the Tomb Racer 1.5x target is not met** (176.3–193.8 s this series
+against the 24.021-second ceiling).
