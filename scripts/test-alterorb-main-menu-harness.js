@@ -7,9 +7,11 @@ const {
   effectiveRuntimeGates,
   enqueueSyntheticMouseClick,
   hasMenuAdvanceSettled,
+  isPostLogoLoadingSurface,
   parseArgs,
   sceneDifference,
   shouldResetMenuCandidateOnSceneTransition,
+  summarizeCpuProfile,
   threadSnapshot,
 } = require('./launch-alterorb-games-jvmjs');
 
@@ -33,6 +35,15 @@ assert.deepStrictEqual(
   {dense: false, sparse: false, advanceable: false},
   'the Jagex progress panel is not a menu',
 );
+assert.strictEqual(isPostLogoLoadingSurface(
+  {nonblankSamples: 473, uniqueSampleColors: 120}, 30), true,
+'the common sparse loading panel marks the post-logo boundary');
+assert.strictEqual(isPostLogoLoadingSurface(
+  {nonblankSamples: 216, uniqueSampleColors: 137}, 30), false,
+'a late animated-logo frame does not end warmup');
+assert.strictEqual(isPostLogoLoadingSurface(
+  {nonblankSamples: 473, uniqueSampleColors: 120}, 4), false,
+'an early sparse surface cannot end warmup without a logo sequence');
 
 const listener = {type: 'example/MouseListener'};
 const component = {
@@ -87,18 +98,25 @@ const blockedFrame = {className: 'example/Loader', pc: 12,
   method: {name: 'load', descriptor: '()V'}};
 const ownerFrame = {className: 'example/Audio', pc: 4,
   method: {name: 'mix', descriptor: '()V'}};
+ownerFrame._hotGraphContinuation = true;
 const threadDiagnostics = threadSnapshot({threads: [
   {id: 5, status: 'BLOCKED', blockingOn: lockedMonitor,
     callStack: {items: [blockedFrame]}},
   {id: 7, status: 'runnable', callStack: {items: [ownerFrame],
     peek() { return ownerFrame; }}},
-]});
+], jit: {codegenCache: new Map([[ownerFrame.method, {
+  jvmHotCallGraphHasContinuation(frame) {
+    return frame._hotGraphContinuation === true;
+  },
+}]])}});
 assert.deepStrictEqual(threadDiagnostics[0].blockingOn, {
   type: 'example/Audio', isLocked: true, lockOwner: 7, lockCount: 2,
   ownerStatus: 'runnable', ownerLocation: 'example/Audio.mix()V@4',
 });
 assert.deepStrictEqual(threadDiagnostics[0].stack,
   ['example/Loader.load()V@12']);
+assert.deepStrictEqual(threadDiagnostics[1].hotGraphContinuations,
+  ['example/Audio.mix()V@4']);
 
 assert.deepStrictEqual(effectiveRuntimeGates({noJit: false, profileJit: true}, {
   JVM_WASM_JIT: '0',
@@ -112,8 +130,52 @@ assert.deepStrictEqual(effectiveRuntimeGates({noJit: false, profileJit: true}, {
   JVM_FAKE_TIME_REALTIME: '1',
   JVM_PROFILE_SCHEDULER_TIMES: '32',
   JVM_DEBUG_ARRAY_OOB: '1',
+  JVM_DISABLE_STRUCTURED_FIELD_ARRAY_LOCAL_VIEWS: '',
+  JVM_ENABLE_STRUCTURED_LOOP_STATIC_ARRAY_VIEWS: '',
+  JVM_ENABLE_STRUCTURED_PRODUCED_ARRAY_LOCAL_VIEWS: '',
+  JVM_DISABLE_STRUCTURED_INDIRECT_ARRAY_RANGES: '',
+  JVM_DISABLE_STRUCTURED_UNSAFE_CONSTRUCTOR_CALLERS: '',
+  JVM_ENABLE_COMPILED_CALL_CHAINS: '',
+  JVM_ENABLE_HOT_CALL_GRAPH_REGIONS: '',
+  JVM_ENABLE_GRAPH_OWNED_STRUCTURED_CANDIDATES: '',
+  JVM_ENABLE_FRAME_POSITIONAL_CALLS: '',
+  JVM_PROFILE_HOT_CALL_GRAPH_REGIONS: '',
+  JVM_TRACE_HOT_CALL_GRAPH_DEOPTS: '',
+  JVM_TRACE_HOT_CALL_GRAPH_SOURCE: '',
+  JVM_HOT_CALL_GRAPH_MIN_ROOT_CODE_ITEMS: '',
+  JVM_HOT_CALL_GRAPH_MAX_ROOT_CODE_ITEMS: '',
+  JVM_HOT_CALL_GRAPH_MAX_METHODS: '',
+  JVM_HOT_CALL_GRAPH_MAX_CODE_ITEMS: '',
+  JVM_HOT_CALL_GRAPH_INLINE_CODE_ITEM_BUDGET: '',
+  JVM_HOT_CALL_GRAPH_MAX_INLINE_SITES_PER_TARGET: '',
+  JVM_HOT_CALL_GRAPH_INLINE_SOURCE_BYTE_BUDGET: '',
+  JVM_HOT_CALL_GRAPH_DIRECT_SAFE_POINT_BUDGET: '',
+  JVM_HOT_CALL_GRAPH_EXPANSION_ENTRY_THRESHOLD: '',
+  JVM_HOT_CALL_GRAPH_EXPANSION_PROBE_INTERVAL: '',
+  JVM_DISABLE_HOT_CALL_GRAPH_COMPACT_INTERNAL_CALLS: '',
+  JVM_ENABLE_STRUCTURED_RUN_COUNTERS: '',
+  JVM_DISABLE_EAGER_MONOMORPHIC_CALLS: '',
+  JVM_EAGER_MONOMORPHIC_CALL_MAX_CODE_ITEMS: '',
   ALTERORB_JVMJS_TCP_PORT: '43594',
   ALTERORB_JVMJS_HTTP_PROXY_PORT: '18080',
 });
+
+const cpuSummary = summarizeCpuProfile({
+  samples: [1, 1, 2, 3],
+  timeDeltas: [1000, 1000, 1000, 1000],
+  nodes: [
+    {id: 1, callFrame: {functionName: 'guest',
+      url: 'jvm-generated://Fixture/run?tier=structured-ssa', lineNumber: 2}},
+    {id: 2, callFrame: {functionName: 'executeTick',
+      url: 'file:///workspace/src/core/jvm.js', lineNumber: 9}},
+    {id: 3, callFrame: {functionName: 'helper',
+      url: 'jvm-generated://Fixture/helper?tier=generated-sync', lineNumber: 4}},
+  ],
+});
+assert.deepStrictEqual(cpuSummary.categories.slice(0, 2), [
+  {key: 'generated-guest', samples: 3, percent: 75},
+  {key: 'jvm-core', samples: 1, percent: 25},
+], 'whole-profile category totals include nodes beyond the displayed top-self rows');
+assert.strictEqual(cpuSummary.durationMicros, 4000);
 
 console.log('alterorb main-menu harness tests passed');

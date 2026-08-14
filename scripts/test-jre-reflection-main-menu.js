@@ -17,6 +17,9 @@ assert.deepStrictEqual(parseArgs([
 ]).games, ['example']);
 assert.deepStrictEqual(parseArgs(['--exclude-game', 'skip']).excludedGames,
   ['skip']);
+assert.strictEqual(parseArgs([
+  '--jfr-profile', 'native-profile.jfr',
+]).jfrProfile, path.resolve('native-profile.jfr'));
 assert.throws(() => parseArgs(['--variant', 'unknown']), /must be original/);
 const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'jre-reflection-test-'));
 try {

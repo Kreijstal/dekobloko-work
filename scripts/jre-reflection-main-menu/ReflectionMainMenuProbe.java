@@ -30,6 +30,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import jdk.jfr.Event;
+import jdk.jfr.Label;
+import jdk.jfr.Name;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import sun.misc.Unsafe;
@@ -51,6 +54,7 @@ public final class ReflectionMainMenuProbe {
         URL codeBase = normalizedUrl(required(options, "code-base"));
         long timeoutMillis = Long.parseLong(options.getOrDefault("timeout-ms", "180000"));
         long startedAt = System.nanoTime();
+        emitPhase(game, "probe-start", 0);
         Thread.setDefaultUncaughtExceptionHandler((thread, error) -> {
             error.printStackTrace(System.err);
         });
@@ -92,6 +96,7 @@ public final class ReflectionMainMenuProbe {
         String status = "timeout";
         SurfaceSnapshot lastSurface = null;
         long firstFrameAt = -1;
+        long logoCompletedAt = -1;
         long menuCandidateAt = -1;
         Set<String> seenHashes = new HashSet<>();
         Throwable failure = null;
@@ -109,6 +114,13 @@ public final class ReflectionMainMenuProbe {
                     if (firstFrameAt < 0 && surface.nonblankSamples >= 16) {
                         firstFrameAt = now;
                     }
+                    if (logoCompletedAt < 0 && seenHashes.size() >= 10 &&
+                        surface.nonblankSamples >= 300 &&
+                        surface.nonblankSamples < 800 &&
+                        surface.uniqueSampleColors >= 16) {
+                        logoCompletedAt = now;
+                        emitPhase(game, "logo-complete", now);
+                    }
                     boolean dense = surface.nonblankSamples >= 2500 &&
                         surface.uniqueSampleColors >= 96;
                     boolean sparse = surface.nonblankSamples >= 800 &&
@@ -116,6 +128,7 @@ public final class ReflectionMainMenuProbe {
                         surface.uniqueSampleColors >= 32 && seenHashes.size() >= 10;
                     if ((dense || sparse) && menuCandidateAt < 0) {
                         menuCandidateAt = now;
+                        emitPhase(game, "menu-surface", now);
                     }
                     if (firstFrameAt >= 0 && now - firstFrameAt >= 5000 &&
                         menuCandidateAt >= 0 && now - menuCandidateAt >= 10000 &&
@@ -149,7 +162,10 @@ public final class ReflectionMainMenuProbe {
         System.out.println("JRE_REFLECTION_RESULT\t" + game + "\t" + status +
             "\t" + elapsed + "\t" + (lastSurface == null ? "" : lastSurface.hash) +
             "\t" + (lastSurface == null ? 0 : lastSurface.nonblankSamples) +
-            "\t" + (lastSurface == null ? 0 : lastSurface.uniqueSampleColors));
+            "\t" + (lastSurface == null ? 0 : lastSurface.uniqueSampleColors) +
+            "\t" + logoCompletedAt + "\t" + menuCandidateAt + "\t" +
+            (logoCompletedAt < 0 || menuCandidateAt < 0
+                ? -1 : menuCandidateAt - logoCompletedAt));
         if (failure != null) failure.printStackTrace(System.err);
         System.exit("main-menu".equals(status) ? 0 : 1);
     }
@@ -275,6 +291,14 @@ public final class ReflectionMainMenuProbe {
         return (System.nanoTime() - startedAt) / 1_000_000L;
     }
 
+    private static void emitPhase(String game, String phase, long elapsedMillis) {
+        PhaseBoundary event = new PhaseBoundary();
+        event.game = game;
+        event.phase = phase;
+        event.elapsedMillis = elapsedMillis;
+        event.commit();
+    }
+
     private static URL normalizedUrl(String value) throws Exception {
         return new URL(value.endsWith("/") ? value : value + "/");
     }
@@ -308,6 +332,19 @@ public final class ReflectionMainMenuProbe {
             this.uniqueSampleColors = uniqueSampleColors;
             this.hash = hash;
         }
+    }
+
+    @Name("jvmjs.NativeMainMenuPhase")
+    @Label("Native main-menu phase boundary")
+    private static final class PhaseBoundary extends Event {
+        @Label("Game")
+        String game;
+
+        @Label("Phase")
+        String phase;
+
+        @Label("Elapsed milliseconds")
+        long elapsedMillis;
     }
 
     private static final class ProbeAppletStub implements AppletStub {

@@ -131,6 +131,17 @@ function classifyMenuSurface(surface, seenFrameCount) {
   return {dense, sparse, advanceable};
 }
 
+function isPostLogoLoadingSurface(surface, seenFrameCount) {
+  if (!surface || seenFrameCount < 10) return false;
+  // FunOrb's common animated Jagex logo is a sequence of small, rapidly
+  // changing surfaces.  Once it finishes, the archive/loading panel paints a
+  // materially larger but still sparse surface.  Keep this purely visual so
+  // the runner does not need guest class, method, field, or game identities.
+  return surface.nonblankSamples >= 300 &&
+    surface.nonblankSamples < 800 &&
+    surface.uniqueSampleColors >= 16;
+}
+
 function hasMenuAdvanceSettled(dispatchedAt, frameCountAtDispatch,
   currentFrameCount) {
   return dispatchedAt === null || (
@@ -223,6 +234,58 @@ function effectiveRuntimeGates(options, environment = process.env) {
       ? (environment.JVM_PROFILE_SCHEDULER_TIMES || '64')
       : (environment.JVM_PROFILE_SCHEDULER_TIMES || ''),
     JVM_DEBUG_ARRAY_OOB: environment.JVM_DEBUG_ARRAY_OOB || '1',
+    JVM_DISABLE_STRUCTURED_FIELD_ARRAY_LOCAL_VIEWS:
+      environment.JVM_DISABLE_STRUCTURED_FIELD_ARRAY_LOCAL_VIEWS || '',
+    JVM_ENABLE_STRUCTURED_LOOP_STATIC_ARRAY_VIEWS:
+      environment.JVM_ENABLE_STRUCTURED_LOOP_STATIC_ARRAY_VIEWS || '',
+    JVM_ENABLE_STRUCTURED_PRODUCED_ARRAY_LOCAL_VIEWS:
+      environment.JVM_ENABLE_STRUCTURED_PRODUCED_ARRAY_LOCAL_VIEWS || '',
+    JVM_DISABLE_STRUCTURED_INDIRECT_ARRAY_RANGES:
+      environment.JVM_DISABLE_STRUCTURED_INDIRECT_ARRAY_RANGES || '',
+    JVM_DISABLE_STRUCTURED_UNSAFE_CONSTRUCTOR_CALLERS:
+      environment.JVM_DISABLE_STRUCTURED_UNSAFE_CONSTRUCTOR_CALLERS || '',
+    JVM_ENABLE_COMPILED_CALL_CHAINS:
+      environment.JVM_ENABLE_COMPILED_CALL_CHAINS || '',
+    JVM_ENABLE_HOT_CALL_GRAPH_REGIONS:
+      environment.JVM_ENABLE_HOT_CALL_GRAPH_REGIONS || '',
+    JVM_ENABLE_GRAPH_OWNED_STRUCTURED_CANDIDATES:
+      environment.JVM_ENABLE_GRAPH_OWNED_STRUCTURED_CANDIDATES || '',
+    JVM_ENABLE_FRAME_POSITIONAL_CALLS:
+      environment.JVM_ENABLE_FRAME_POSITIONAL_CALLS || '',
+    JVM_PROFILE_HOT_CALL_GRAPH_REGIONS:
+      environment.JVM_PROFILE_HOT_CALL_GRAPH_REGIONS || '',
+    JVM_TRACE_HOT_CALL_GRAPH_DEOPTS:
+      environment.JVM_TRACE_HOT_CALL_GRAPH_DEOPTS || '',
+    JVM_TRACE_HOT_CALL_GRAPH_SOURCE:
+      environment.JVM_TRACE_HOT_CALL_GRAPH_SOURCE || '',
+    JVM_HOT_CALL_GRAPH_MIN_ROOT_CODE_ITEMS:
+      environment.JVM_HOT_CALL_GRAPH_MIN_ROOT_CODE_ITEMS || '',
+    JVM_HOT_CALL_GRAPH_MAX_ROOT_CODE_ITEMS:
+      environment.JVM_HOT_CALL_GRAPH_MAX_ROOT_CODE_ITEMS || '',
+    JVM_HOT_CALL_GRAPH_MAX_METHODS:
+      environment.JVM_HOT_CALL_GRAPH_MAX_METHODS || '',
+    JVM_HOT_CALL_GRAPH_MAX_CODE_ITEMS:
+      environment.JVM_HOT_CALL_GRAPH_MAX_CODE_ITEMS || '',
+    JVM_HOT_CALL_GRAPH_INLINE_CODE_ITEM_BUDGET:
+      environment.JVM_HOT_CALL_GRAPH_INLINE_CODE_ITEM_BUDGET || '',
+    JVM_HOT_CALL_GRAPH_MAX_INLINE_SITES_PER_TARGET:
+      environment.JVM_HOT_CALL_GRAPH_MAX_INLINE_SITES_PER_TARGET || '',
+    JVM_HOT_CALL_GRAPH_INLINE_SOURCE_BYTE_BUDGET:
+      environment.JVM_HOT_CALL_GRAPH_INLINE_SOURCE_BYTE_BUDGET || '',
+    JVM_HOT_CALL_GRAPH_DIRECT_SAFE_POINT_BUDGET:
+      environment.JVM_HOT_CALL_GRAPH_DIRECT_SAFE_POINT_BUDGET || '',
+    JVM_HOT_CALL_GRAPH_EXPANSION_ENTRY_THRESHOLD:
+      environment.JVM_HOT_CALL_GRAPH_EXPANSION_ENTRY_THRESHOLD || '',
+    JVM_HOT_CALL_GRAPH_EXPANSION_PROBE_INTERVAL:
+      environment.JVM_HOT_CALL_GRAPH_EXPANSION_PROBE_INTERVAL || '',
+    JVM_DISABLE_HOT_CALL_GRAPH_COMPACT_INTERNAL_CALLS:
+      environment.JVM_DISABLE_HOT_CALL_GRAPH_COMPACT_INTERNAL_CALLS || '',
+    JVM_ENABLE_STRUCTURED_RUN_COUNTERS:
+      environment.JVM_ENABLE_STRUCTURED_RUN_COUNTERS || '',
+    JVM_DISABLE_EAGER_MONOMORPHIC_CALLS:
+      environment.JVM_DISABLE_EAGER_MONOMORPHIC_CALLS || '',
+    JVM_EAGER_MONOMORPHIC_CALL_MAX_CODE_ITEMS:
+      environment.JVM_EAGER_MONOMORPHIC_CALL_MAX_CODE_ITEMS || '',
     ALTERORB_JVMJS_TCP_PORT: String(TCP_PORT),
     ALTERORB_JVMJS_HTTP_PROXY_PORT: String(HTTP_PROXY_PORT),
   };
@@ -438,11 +501,24 @@ function threadSnapshot(jvm) {
       ? `${candidate.className}.${candidate.method && candidate.method.name}` +
         `${candidate.method && candidate.method.descriptor || ''}@${candidate.pc}`
       : null;
+    const hotGraphContinuation = candidate => {
+      if (!candidate || !candidate.method || !jvm.jit) return false;
+      const generated = jvm.jit.codegenCache?.get(candidate.method);
+      return Boolean(generated?.jvmHotCallGraphHasContinuation?.(candidate));
+    };
     return {
       id: thread.id,
       status: thread.status,
+      priority: Number(thread.javaThread?.priority ?? thread.priority ?? 5),
+      sleepUntil: thread.sleepUntil === undefined
+        ? null : Number(thread.sleepUntil),
+      sleepRemainingMs: thread.sleepUntil === undefined
+        ? null : Math.max(0,
+          Number(thread.sleepUntil) - Number(jvm.clock?.millis?.() || 0)),
       location: frameLocation(frame),
       stack: frames ? frames.slice(-8).map(frameLocation) : [],
+      hotGraphContinuations: frames ? frames.slice(-8)
+        .filter(hotGraphContinuation).map(frameLocation) : [],
       blockingOn: blockingOn ? {
         type: blockingOn._className || blockingOn.type || null,
         isLocked: Boolean(blockingOn.isLocked),
@@ -471,6 +547,38 @@ function topTimingEntries(map, limit = 40) {
       Number(right[1] && right[1].totalMs || 0) -
       Number(left[1] && left[1].totalMs || 0))
     .slice(0, limit);
+}
+
+function hotCallGraphRegionSummaries(jit) {
+  const traceSource = process.env.JVM_TRACE_HOT_CALL_GRAPH_SOURCE === '1';
+  const traceFilter = process.env.JVM_TRACE_HOT_CALL_GRAPH_FILTER || '';
+  const summaries = [...(jit?.hotCallGraphRegions
+    ?.compiledRegionSummaries || [])]
+    .filter((summary) => !traceFilter ||
+      String(summary.root || '').includes(traceFilter))
+    .sort((left, right) => right.runs - left.runs)
+    .slice(0, traceSource ? 256 : 32);
+  if (!traceSource) return summaries;
+  const directory = path.join(ROOT, '.work', 'alterorb-jvmjs',
+    'generated-regions');
+  fs.mkdirSync(directory, {recursive: true});
+  return summaries.map((summary, index) => {
+    if (typeof summary.source !== 'string') return summary;
+    const source = summary.source;
+    const identity = String(summary.root || 'region')
+      .replace(/[^a-z0-9_.-]+/gi, '_').slice(0, 80);
+    const output = path.join(directory,
+      `${process.pid}-${index}-${identity}.js`);
+    fs.writeFileSync(output, source);
+    const copy = {...summary};
+    delete copy.source;
+    copy.sourceArtifact = {
+      path: output,
+      bytes: Buffer.byteLength(source),
+      sha256: crypto.createHash('sha256').update(source).digest('hex'),
+    };
+    return copy;
+  });
 }
 
 function resetJitProfile(jvm) {
@@ -530,6 +638,54 @@ function jitProfileSnapshot(jvm) {
         Number(jit.wasmJit && jit.wasmJit.runCount || 0),
       referenceFramelessPositionalRuns:
         Number(jit.referenceFramelessPositionalRunCount || 0),
+      framePositionalCalls:
+        Number(jit.framePositionalCallCount || 0),
+      framePositionalFallbacks:
+        Number(jit.framePositionalFallbackCount || 0),
+      structuredRestoringDirectRuns:
+        Number(jit.structuredSsa?.restoringDirectRunCount || 0),
+      lateStructuredUpgrades:
+        Number(jit.structuredConstructorUpgradeCount || 0),
+      graphOwnedStructuredCompiles:
+        Number(jit.regionStructuredCandidateCompileCount || 0),
+      eagerMonomorphicCallLinks:
+        Number(jit.eagerMonomorphicCallLinkCount || 0),
+      compiledCallChainRuns:
+        Number(jit.compiledCallChainRunCount || 0),
+      hotCallGraphModules:
+        Number(jit.hotCallGraphRegions?.moduleCompileCount || 0),
+      hotCallGraphLexicallyInlinedEdges:
+        Number(jit.hotCallGraphRegions?.lexicallyInlinedEdgeCount || 0),
+      hotCallGraphExceptionalInlinedEdges:
+        Number(jit.hotCallGraphRegions?.exceptionalInlinedEdgeCount || 0),
+      hotCallGraphCompactInternalEdges:
+        Number(jit.hotCallGraphRegions?.compactInternalEdgeCount || 0),
+      hotCallGraphGuardedInternalEdges:
+        Number(jit.hotCallGraphRegions?.guardedInternalEdgeCount || 0),
+      hotCallGraphOutlinedLoops:
+        Number(jit.hotCallGraphRegions?.outlinedLoopCount || 0),
+      hotCallGraphOutlinedLoopSourceBytes:
+        Number(jit.hotCallGraphRegions?.outlinedLoopSourceBytes || 0),
+      structuredProducedArrayLocalViews:
+        Number(jit.structuredSsa
+          ?.persistentProducedArrayLocalViewCompileCount || 0),
+      structuredLoopInvariantStaticArrayViews:
+        Number(jit.structuredSsa
+          ?.loopInvariantStaticArrayViewCompileCount || 0),
+      hotCallGraphBindingIndexBuilds:
+        Number(jit.hotCallGraphRegions?.callBindingIndexBuildCount || 0),
+      hotCallGraphBindingIndexReuses:
+        Number(jit.hotCallGraphRegions?.callBindingIndexReuseCount || 0),
+      hotCallGraphDirtyExpansions:
+        Number(jit.hotCallGraphRegions?.dirtyExpansionCount || 0),
+      hotCallGraphStateExpansions:
+        Number(jit.hotCallGraphRegions?.stateExpansionCount || 0),
+      hotCallGraphPeriodicExpansions:
+        Number(jit.hotCallGraphRegions?.periodicExpansionCount || 0),
+      hotCallGraphRuns:
+        Number(jit.hotCallGraphRegions?.runCount || 0),
+      hotCallGraphFallbacks:
+        Number(jit.hotCallGraphRegions?.guardFallbackCount || 0),
       fusedRuns: Number(jit.fusedRunCount || 0),
       fusedDirectRuns: Number(jit.fusedDirectRunCount || 0),
       fusedGuardedFallbacks: Number(jit.fusedGuardedFallbackCount || 0),
@@ -537,6 +693,11 @@ function jitProfileSnapshot(jvm) {
         Number(jit.fusedRestoredExceptionFrameCount || 0),
     },
     generatedMethods: topEntries(jit.generatedMethodRunCounts),
+    hotCallGraphRegions: hotCallGraphRegionSummaries(jit),
+    hotCallGraphRejections:
+      jit.hotCallGraphRegions?.getRejectionSummaries?.() || [],
+    hotCallGraphGenericCallSites:
+      jit.hotCallGraphRegions?.getGenericCallSiteSummaries?.() || [],
     generatedMethodTimings: topTimingEntries(jit.methodTimingSamples),
     intrinsicMethods: topEntries(jit.intrinsicMethodRunCounts),
     inlinedMethods: topEntries(jit.inlinedMethodRunCounts),
@@ -620,6 +781,77 @@ function jitRuntimeCounters(jvm) {
       Number(jit.wasmJit && jit.wasmJit.runCount || 0),
     referenceFramelessPositionalRuns:
       Number(jit.referenceFramelessPositionalRunCount || 0),
+    framePositionalCalls:
+      Number(jit.framePositionalCallCount || 0),
+    framePositionalFallbacks:
+      Number(jit.framePositionalFallbackCount || 0),
+    structuredRestoringDirectRuns:
+      Number(jit.structuredSsa?.restoringDirectRunCount || 0),
+    lateStructuredUpgrades:
+      Number(jit.structuredConstructorUpgradeCount || 0),
+    graphOwnedStructuredCompiles:
+      Number(jit.regionStructuredCandidateCompileCount || 0),
+    eagerMonomorphicCallLinks:
+      Number(jit.eagerMonomorphicCallLinkCount || 0),
+    compiledCallChainRuns:
+      Number(jit.compiledCallChainRunCount || 0),
+    hotCallGraphModules:
+      Number(jit.hotCallGraphRegions?.moduleCompileCount || 0),
+    hotCallGraphLexicallyInlinedEdges:
+      Number(jit.hotCallGraphRegions?.lexicallyInlinedEdgeCount || 0),
+    hotCallGraphExceptionalInlinedEdges:
+      Number(jit.hotCallGraphRegions?.exceptionalInlinedEdgeCount || 0),
+    hotCallGraphCompactInternalEdges:
+      Number(jit.hotCallGraphRegions?.compactInternalEdgeCount || 0),
+    hotCallGraphGuardedInternalEdges:
+      Number(jit.hotCallGraphRegions?.guardedInternalEdgeCount || 0),
+    hotCallGraphOutlinedLoops:
+      Number(jit.hotCallGraphRegions?.outlinedLoopCount || 0),
+    hotCallGraphOutlinedLoopSourceBytes:
+      Number(jit.hotCallGraphRegions?.outlinedLoopSourceBytes || 0),
+    structuredProducedArrayLocalViews:
+      Number(jit.structuredSsa
+        ?.persistentProducedArrayLocalViewCompileCount || 0),
+    structuredLoopInvariantStaticArrayViews:
+      Number(jit.structuredSsa
+        ?.loopInvariantStaticArrayViewCompileCount || 0),
+    hotCallGraphBindingIndexBuilds:
+      Number(jit.hotCallGraphRegions?.callBindingIndexBuildCount || 0),
+    hotCallGraphBindingIndexReuses:
+      Number(jit.hotCallGraphRegions?.callBindingIndexReuseCount || 0),
+    hotCallGraphDirtyExpansions:
+      Number(jit.hotCallGraphRegions?.dirtyExpansionCount || 0),
+    hotCallGraphStateExpansions:
+      Number(jit.hotCallGraphRegions?.stateExpansionCount || 0),
+    hotCallGraphPeriodicExpansions:
+      Number(jit.hotCallGraphRegions?.periodicExpansionCount || 0),
+    hotCallGraphRuns:
+      Number(jit.hotCallGraphRegions?.runCount || 0),
+    hotCallGraphFallbacks:
+      Number(jit.hotCallGraphRegions?.guardFallbackCount || 0),
+    hotCallGraphRegions: hotCallGraphRegionSummaries(jit),
+    hotCallGraphRejections:
+      jit.hotCallGraphRegions?.getRejectionSummaries?.() || [],
+    hotCallGraphGenericCallSites:
+      jit.hotCallGraphRegions?.getGenericCallSiteSummaries?.() || [],
+    positionalGeneratedTemplateCompiles:
+      Number(jit.positionalGeneratedTemplateCompileCount || 0),
+    positionalGeneratedTemplateReuses:
+      Number(jit.positionalGeneratedTemplateReuseCount || 0),
+    positionalJreTemplateCompiles:
+      Number(jit.positionalJreTemplateCompileCount || 0),
+    positionalJreTemplateReuses:
+      Number(jit.positionalJreTemplateReuseCount || 0),
+    stableGeneratedEntryRuns:
+      Number(jit.stableGeneratedEntryRunCount || 0),
+    registeredSyncCallSites:
+      Number(jit.syncCallSites && jit.syncCallSites.length || 0),
+    legacySyncCallSites:
+      Number(jit.legacySyncCallSites && jit.legacySyncCallSites.size || 0),
+    generatedSchedulerBurstFrames:
+      Number(jvm.generatedSchedulerBurstFrames || 0),
+    generatedSchedulerBurstBatches:
+      Number(jvm.generatedSchedulerBurstBatches || 0),
     fusedRuns: Number(jit.fusedRunCount || 0),
     fusedDirectRuns: Number(jit.fusedDirectRunCount || 0),
     fusedGuardedFallbacks: Number(jit.fusedGuardedFallbackCount || 0),
@@ -672,6 +904,13 @@ function schedulerTimingSnapshot(jvm) {
           ? generated.jvmStructuredCoarseCountedLoopCount : null,
         adaptivePositional: Boolean(
           generated && generated.jvmAdaptivePositionalBody),
+        hotCallGraphFramedCandidate: Boolean(
+          generated && generated.jvmHotCallGraphFramedSource),
+        hotCallGraphCallSites: Array.isArray(
+          generated && generated.jvmStructuredRegionCallSites)
+          ? generated.jvmStructuredRegionCallSites.length : null,
+        hotCallGraphPlanned: Boolean(
+          generated && generated.jvmHotCallGraphRegionPlan),
         codegenSupported: Boolean(method && jit &&
           jit.isCodegenSupported(method)),
         adaptiveCodegenSupported: Boolean(method && jit &&
@@ -736,7 +975,7 @@ function summarizeCpuProfile(profile, error) {
     selfSamples.set(id, (selfSamples.get(id) || 0) + 1);
   }
   const totalSamples = (profile.samples || []).length;
-  const topSelf = (profile.nodes || [])
+  const allSelf = (profile.nodes || [])
     .map((node) => {
       const call = node.callFrame || {};
       const samples = selfSamples.get(node.id) || 0;
@@ -749,18 +988,83 @@ function summarizeCpuProfile(profile, error) {
       };
     })
     .filter((entry) => entry.samples > 0)
+    .sort((left, right) => right.samples - left.samples);
+  const classify = (entry) => {
+    if (entry.url.startsWith('jvm-generated:')) return 'generated-guest';
+    if (entry.url.includes('/src/core/')) return 'jvm-core';
+    if (entry.url.includes('/src/jit/')) return 'jit-runtime';
+    if (entry.url.includes('/src/instructions/')) return 'interpreter-opcode';
+    if (entry.url.includes('/src/jre/')) return 'jre-native';
+    if (entry.url.startsWith('node:')) return 'node-runtime';
+    if (entry.functionName === '(program)' ||
+        entry.functionName === 'wasm-to-js') return 'wasm';
+    if (entry.functionName === '(garbage collector)') return 'gc';
+    if (entry.functionName === '(idle)') return 'idle';
+    return 'other';
+  };
+  const sumBy = (keyFor) => {
+    const sums = new Map();
+    for (const entry of allSelf) {
+      const key = keyFor(entry);
+      sums.set(key, (sums.get(key) || 0) + entry.samples);
+    }
+    return [...sums.entries()]
+      .map(([key, samples]) => ({
+        key, samples,
+        percent: totalSamples > 0 ? samples * 100 / totalSamples : 0,
+      }))
+      .sort((left, right) => right.samples - left.samples);
+  };
+  const profileNodes = new Map((profile.nodes || []).map((node) =>
+    [node.id, node]));
+  const callerEdges = new Map();
+  const callIdentity = (node) => {
+    const frame = node && node.callFrame || {};
+    return {
+      functionName: frame.functionName || '(anonymous)',
+      url: frame.url || '',
+      lineNumber: Number(frame.lineNumber || 0) + 1,
+    };
+  };
+  for (const parent of profile.nodes || []) {
+    const caller = callIdentity(parent);
+    for (const childId of parent.children || []) {
+      const samples = selfSamples.get(childId) || 0;
+      if (!samples) continue;
+      const callee = callIdentity(profileNodes.get(childId));
+      const key = JSON.stringify([caller, callee]);
+      const existing = callerEdges.get(key);
+      if (existing) existing.samples += samples;
+      else callerEdges.set(key, {caller, callee, samples});
+    }
+  }
+  const topCallerEdges = [...callerEdges.values()]
+    .map((entry) => ({
+      ...entry,
+      percent: totalSamples > 0 ? entry.samples * 100 / totalSamples : 0,
+    }))
     .sort((left, right) => right.samples - left.samples)
-    .slice(0, 80);
+    .slice(0, 120);
   return {
     totalSamples,
     durationMicros: (profile.timeDeltas || [])
       .reduce((sum, value) => sum + Number(value || 0), 0),
-    topSelf,
+    categories: sumBy(classify),
+    topUrls: sumBy((entry) => entry.url || '(no URL)').slice(0, 80),
+    topSelf: allSelf.slice(0, 80),
+    topCallerEdges,
   };
 }
 
 function emitWorkerResult(result, exitCode) {
-  process.stdout.write(RESULT_PREFIX + JSON.stringify(result) + '\n');
+  const resultPath = process.env.ALTERORB_JVMJS_WORKER_RESULT || null;
+  if (resultPath) {
+    fs.mkdirSync(path.dirname(resultPath), {recursive: true});
+    fs.writeFileSync(resultPath, JSON.stringify(result));
+    process.stdout.write(RESULT_PREFIX + JSON.stringify({resultPath}) + '\n');
+  } else {
+    process.stdout.write(RESULT_PREFIX + JSON.stringify(result) + '\n');
+  }
   setTimeout(() => process.exit(exitCode), 10);
 }
 
@@ -807,6 +1111,8 @@ async function runWorker(specification) {
   let methodEntryTraceWritten = false;
   const startedAt = Date.now();
   let firstFrameAt = null;
+  let logoCompletedAt = null;
+  let firstMenuSurfaceAt = null;
   let menuCandidateFrameAt = null;
   let menuActivityStartAt = null;
   let menuActivityStartPresented = 0;
@@ -825,10 +1131,23 @@ async function runWorker(specification) {
   let fpsStartPresented = 0;
   let fpsStartDirtyMarks = 0;
   let cpuProfilePromise = null;
+  let cpuProfileSummaryPromise = null;
   let menuScreenshot = null;
   const seenFrameHashes = new Set();
   const frameHistory = [];
   let settled = false;
+  const stopCpuProfile = () => {
+    if (!cpuProfilePromise) return Promise.resolve(null);
+    if (!cpuProfileSummaryPromise) {
+      cpuProfileSummaryPromise = cpuProfilePromise.then(async (controller) => {
+        const profile = await controller.stop();
+        return summarizeCpuProfile(profile, controller.error);
+      }).catch((error) => ({
+        error: String(error && (error.stack || error.message) || error),
+      }));
+    }
+    return cpuProfileSummaryPromise;
+  };
   const finish = (status, extra, exitCode) => {
     if (settled) return;
     settled = true;
@@ -843,26 +1162,53 @@ async function runWorker(specification) {
         jvm.jit && typeof jvm.jit.dumpStats === 'function') {
       jvm.jit.dumpStats(Number(process.env.JVM_DEBUG_JIT_LIMIT) || 25);
     }
-    emitWorkerResult({
+    const publish = async () => {
+      let resultExtra = extra || {};
+      if (cpuProfilePromise &&
+          !Object.prototype.hasOwnProperty.call(resultExtra, 'cpuProfile')) {
+        resultExtra = {...resultExtra, cpuProfile: await stopCpuProfile()};
+      }
+      emitWorkerResult({
+        game: game.internalName,
+        name: game.name,
+        mainClass: game.mainClass,
+        variant: specification.variant || 'original',
+        status,
+        elapsedMs: Date.now() - startedAt,
+        phaseTimings: {
+          firstFrameElapsedMs: firstFrameAt === null
+            ? null : firstFrameAt - startedAt,
+          logoCompletedElapsedMs: logoCompletedAt === null
+            ? null : logoCompletedAt - startedAt,
+          firstMenuSurfaceElapsedMs: firstMenuSurfaceAt === null
+            ? null : firstMenuSurfaceAt - startedAt,
+          postLogoToMenuMs: logoCompletedAt === null ||
+              firstMenuSurfaceAt === null
+            ? null : firstMenuSurfaceAt - logoCompletedAt,
+        },
+        methodEntryTraceMatches: methodEntryTraceOut
+          ? jvm.jit.methodEntryTraceMatchCount : undefined,
+        menuAdvance: menuAdvanceDispatchedAt === null ? null : {
+          elapsedMs: menuAdvanceDispatchedAt - startedAt,
+          sourceHash: menuAdvanceSourceHash,
+          callbacks: menuAdvanceCallbacks,
+          subsequentDistinctFrames: Math.max(0,
+            seenFrameHashes.size - menuAdvanceFrameCount),
+          ...specification.menuAdvanceClick,
+        },
+        menuSceneTransitions: denseSceneTransitions,
+        ...resultExtra,
+      }, exitCode);
+    };
+    publish().catch((error) => emitWorkerResult({
       game: game.internalName,
       name: game.name,
       mainClass: game.mainClass,
       variant: specification.variant || 'original',
-      status,
+      status: 'error',
       elapsedMs: Date.now() - startedAt,
-      methodEntryTraceMatches: methodEntryTraceOut
-        ? jvm.jit.methodEntryTraceMatchCount : undefined,
-      menuAdvance: menuAdvanceDispatchedAt === null ? null : {
-        elapsedMs: menuAdvanceDispatchedAt - startedAt,
-        sourceHash: menuAdvanceSourceHash,
-        callbacks: menuAdvanceCallbacks,
-        subsequentDistinctFrames: Math.max(0,
-          seenFrameHashes.size - menuAdvanceFrameCount),
-        ...specification.menuAdvanceClick,
-      },
-      menuSceneTransitions: denseSceneTransitions,
-      ...extra,
-    }, exitCode);
+      error: String(error && (error.stack || error.message) || error),
+    }, 1));
   };
   const timer = setInterval(() => {
     if (!methodEntryTraceWritten && methodEntryTraceOut &&
@@ -898,6 +1244,30 @@ async function runWorker(specification) {
     const isFirstFrame = specification.until !== 'main-menu' &&
       firstFrameAt !== null;
     const menuSurface = classifyMenuSurface(surface, seenFrameHashes.size);
+    if (logoCompletedAt === null &&
+        isPostLogoLoadingSurface(surface, seenFrameHashes.size)) {
+      logoCompletedAt = observedAt;
+      // Main-menu startup profiling measures guest loading mechanics, not
+      // JVM/process startup or the logo animation. Reset sampled ownership at
+      // the same generic framebuffer boundary used by postLogoToMenuMs.
+      // Menu-FPS profiling deliberately keeps its later, menu-only boundary.
+      if (specification.measureFpsMs <= 0) {
+        if (specification.profileJit) resetJitProfile(jvm);
+        if (specification.cpuProfile && cpuProfilePromise === null) {
+          const delayMs = Math.max(0,
+            Number(process.env.JVM_CPU_PROFILE_DELAY_MS) || 0);
+          if (delayMs === 0) {
+            cpuProfilePromise = startCpuProfile();
+          } else {
+            setTimeout(() => {
+              if (!settled && cpuProfilePromise === null) {
+                cpuProfilePromise = startCpuProfile();
+              }
+            }, delayMs);
+          }
+        }
+      }
+    }
     const denseMenuArtwork = menuSurface.dense;
     if (denseMenuArtwork && surface._sceneSamples) {
       if (denseSceneSamples === null) {
@@ -922,6 +1292,16 @@ async function runWorker(specification) {
     // nonblank pixels) by requiring a materially larger painted area and a
     // richer sequence of frame states.
     const sparseAnimatedMenu = menuSurface.sparse;
+    if (firstMenuSurfaceAt === null &&
+        (denseMenuArtwork || sparseAnimatedMenu)) {
+      firstMenuSurfaceAt = observedAt;
+      // The loading profile begins at the post-logo framebuffer boundary and
+      // must end at the metric's first-menu boundary. Do not include the
+      // subsequent correctness settling window in its samples.
+      if (specification.cpuProfile && specification.measureFpsMs <= 0) {
+        void stopCpuProfile();
+      }
+    }
     if (specification.until === 'main-menu' &&
         specification.menuAdvanceClick &&
         menuAdvanceDispatchedAt === null) {
@@ -983,7 +1363,10 @@ async function runWorker(specification) {
         jvm._awtPresentationStats && jvm._awtPresentationStats.dirtyMarks || 0);
       menuScreenshot = writeSurfacePng(jvm, game, 'main-menu');
       if (specification.profileJit) resetJitProfile(jvm);
-      if (specification.cpuProfile) cpuProfilePromise = startCpuProfile();
+      if (specification.cpuProfile) {
+        cpuProfilePromise = startCpuProfile();
+        cpuProfileSummaryPromise = null;
+      }
     }
     if (fpsStartedAt !== null &&
         Date.now() - fpsStartedAt >= specification.measureFpsMs) {
@@ -1088,6 +1471,10 @@ async function runWorker(specification) {
       }, 2);
     }
   }, 100);
+  if (specification.cpuProfile && specification.measureFpsMs <= 0 &&
+      specification.until !== 'main-menu') {
+    cpuProfilePromise = startCpuProfile();
+  }
   const runPromise = jvm.run(game.mainClass, {args: []});
   runPromise.then(() => {
     clearInterval(timer);
@@ -1251,12 +1638,19 @@ function runChild(game, options) {
     menuAdvanceClick: options.menuAdvanceClick,
     menuSceneTransitions: options.menuSceneTransitions,
   })).toString('base64');
+  const workerResultPath = path.join(ROOT, '.work', 'alterorb-jvmjs',
+    'worker-results', `${process.pid}-${game.internalName}-` +
+      `${crypto.randomBytes(8).toString('hex')}.json`);
   return new Promise(resolve => {
-    const child = spawn(process.execPath, [__filename], {
+    // Preserve diagnostic/runtime V8 flags (for example optimization tracing)
+    // in workers. Environment variables alone cannot carry every allowed V8
+    // option, and silently dropping execArgv makes provenance misleading.
+    const child = spawn(process.execPath, [...process.execArgv, __filename], {
       cwd: ROOT,
       env: {
         ...process.env,
         ALTERORB_JVMJS_WORKER: specification,
+        ALTERORB_JVMJS_WORKER_RESULT: workerResultPath,
         JAVA_TOOLS_DIR,
         JVM_WASM_JIT: process.env.JVM_WASM_JIT || '1',
         JVM_WASM_STRUCTURED: process.env.JVM_WASM_STRUCTURED || '1',
@@ -1291,6 +1685,23 @@ function runChild(game, options) {
       elapsedMs: 0,
     }));
     child.on('exit', (code, signal) => {
+      if (fs.existsSync(workerResultPath)) {
+        try {
+          const workerResult = JSON.parse(fs.readFileSync(
+            workerResultPath, 'utf8'));
+          fs.unlinkSync(workerResultPath);
+          resolve({
+            ...workerResult,
+            artifacts,
+            exitCode: code,
+            signal,
+            stderrTail: tailLines(stderr),
+          });
+          return;
+        } catch (_) {
+          // Fall through to the legacy stdout transport and diagnostics.
+        }
+      }
       const resultLine = stdout.split(/\r?\n/)
         .find(line => line.startsWith(RESULT_PREFIX));
       if (resultLine) {
@@ -1469,8 +1880,10 @@ module.exports = {
   effectiveRuntimeGates,
   enqueueSyntheticMouseClick,
   hasMenuAdvanceSettled,
+  isPostLogoLoadingSurface,
   parseArgs,
   sceneDifference,
   shouldResetMenuCandidateOnSceneTransition,
+  summarizeCpuProfile,
   threadSnapshot,
 };

@@ -23,6 +23,7 @@ function parseArgs(argv) {
     report: path.join(ROOT, '.work', 'jre-reflection-main-menu', 'report.json'),
     configUrl: CONFIG_URL,
     cacheRoot: path.join(ROOT, '.work', 'jre-reflection-main-menu', 'cache'),
+    jfrProfile: null,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
@@ -33,6 +34,9 @@ function parseArgs(argv) {
     else if (argument === '--report') options.report = path.resolve(argv[++index]);
     else if (argument === '--config-url') options.configUrl = argv[++index];
     else if (argument === '--cache-root') options.cacheRoot = path.resolve(argv[++index]);
+    else if (argument === '--jfr-profile') {
+      options.jfrProfile = path.resolve(argv[++index]);
+    }
     else throw new Error(`Unknown argument: ${argument}`);
   }
   if (!['original', 'recompiled', 'both'].includes(options.variant)) {
@@ -84,8 +88,21 @@ function runGame(game, variant, options, config) {
   }
   const cache = path.join(options.cacheRoot, game.internalName);
   fs.mkdirSync(cache, {recursive: true});
+  const javaArguments = [];
+  let jfrProfile = null;
+  if (options.jfrProfile) {
+    const extension = path.extname(options.jfrProfile);
+    const stem = extension
+      ? options.jfrProfile.slice(0, -extension.length) : options.jfrProfile;
+    jfrProfile = `${stem}-${game.internalName}-${variant}${extension || '.jfr'}`;
+    fs.mkdirSync(path.dirname(jfrProfile), {recursive: true});
+    javaArguments.push(
+      `-XX:StartFlightRecording=settings=profile,filename=${jfrProfile},dumponexit=true`,
+    );
+  }
   const result = spawnSync('xvfb-run', [
-    '-a', 'java', '-cp', PROBE_CLASSES, 'ReflectionMainMenuProbe',
+    '-a', 'java', ...javaArguments,
+    '-cp', PROBE_CLASSES, 'ReflectionMainMenuProbe',
     '--game', game.internalName,
     '--main-class', game.mainClass,
     '--classpath', classPath,
@@ -101,6 +118,10 @@ function runGame(game, variant, options, config) {
   const line = String(result.stdout || '').split(/\r?\n/)
     .find(value => value.startsWith('JRE_REFLECTION_RESULT\t'));
   const fields = line ? line.split('\t') : [];
+  const phaseValue = index => {
+    const value = Number(fields[index]);
+    return Number.isFinite(value) && value >= 0 ? value : null;
+  };
   return {
     game: game.internalName,
     name: game.name,
@@ -110,9 +131,15 @@ function runGame(game, variant, options, config) {
     surfaceHash: fields[4] || null,
     nonblankSamples: Number(fields[5] || 0),
     uniqueSampleColors: Number(fields[6] || 0),
+    phaseTimings: {
+      logoCompletedElapsedMs: phaseValue(7),
+      firstMenuSurfaceElapsedMs: phaseValue(8),
+      postLogoToMenuMs: phaseValue(9),
+    },
     artifact: variant === 'original'
       ? {path: classPath, sha256: sha256(classPath)}
       : {path: classPath, ...hashClassTree(classPath)},
+    jfrProfile,
     exitCode: result.status,
     signal: result.signal,
     stderrTail: String(result.stderr || '').trim().split(/\r?\n/).slice(-30),
