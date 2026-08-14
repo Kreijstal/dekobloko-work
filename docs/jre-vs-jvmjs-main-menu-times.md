@@ -2027,3 +2027,31 @@ is 196 files / 8838 tests with only the pre-existing failure; a live
 Tomb Racer boot reaches the main menu (post-logo 196.1 s, unpaired,
 expected neutral at ~20:1 JS-tier-bound loading). The acceptance
 verdict is unchanged: **the Tomb Racer 1.5x target is not met**.
+
+## Speculative monomorphic links (August 15, 2026, eighth series)
+
+The ~24 ns/call floor's largest ingredient was the receiver-class
+guard: even a raw-linked call still paid a JS `dguard` import per
+element. When a call site's resolved cone is complete and has exactly
+one implementation, the link is now made with no class guard at all —
+only the existing null check plus one wasm-local `i32.and` against a
+per-module mutable `specok` global. The mid-run class-load hole is
+closed synchronously: every class registration bumps the class epoch,
+which zeroes `specok` on every registered module instance, forcing the
+next entry through revalidation (which re-arms the global only if the
+cone is still monomorphic).
+
+Reproducer effect (pinned, 2M iterations, two runs): hybrid call
+**30.1x → 19.1x/19.2x**, hybrid unpack **146.9x → 128.7x/133.5x** —
+stable, so the change is kept per the measure-else-undo criterion.
+Verification: a new soundness test proves a later-loaded subclass
+flips `specok` to 0 and dispatch stays correct for both receiver
+classes; the full suite is 196 files / 8850 tests with only the
+pre-existing fusedHotLoopRegression failure. The java-tools work
+landed publicly as 3bfc0d8 (decompiled `real-test/` material
+excluded). The remaining unpack cost is per-run field-cache refill
+and guest byte[] imports inside callees; the wasm tier at ~129x still
+loses to the JS region tier at ~38x on the loading shape, so routing
+loading onto wasm stays blocked on the linear-heap prerequisite. The
+acceptance verdict is unchanged: **the Tomb Racer 1.5x target is not
+met**.
