@@ -2055,3 +2055,38 @@ loses to the JS region tier at ~38x on the loading shape, so routing
 loading onto wasm stays blocked on the linear-heap prerequisite. The
 acceptance verdict is unchanged: **the Tomb Racer 1.5x target is not
 met**.
+
+## Constructor links, interior elision, cache upgrades (August 15, 2026, ninth series)
+
+Working the reproducer's remaining wasm-routing prerequisites (java-tools
+37cd8f2): `invokespecial <init>` now resolves exact-owner and links when
+the constructor compiles fully (`Object.<init>` compiles to a no-op), so
+the reproducer roots lose their entry-block demotes; interior
+`aload_0`-fed sites inside spliced bodies elide their guards, letting
+`readUShort` inline whole into `runUnpack`; write-through field caches
+(keyed on the read import — a first version keyed on the put import and
+fed an entry nobody read), per-SSA-value instanceof verdict caches, and
+heap-cached `arraylength` cut the unpack loop from 7 JS imports per
+element to 3 (the `pos` putfield stores, measured with the new
+`JVM_WASM_IMPORT_STATS=1` counters).
+
+Reproducer effect (pinned, 2M): call 30.1x → **2.0x**; unpack 271.7x →
+**59.2x** (**36.7x** with `JVM_WASM_HEAP=1` — beating the JS region
+tier's 39.1x on the loading shape for the first time); array 35.3x →
+3.1x (heap); field 17.3x → 11.0x. The wasm tier claiming loading-shaped
+methods is no longer a per-shape regression.
+
+Whole-game: paired same-day boots put 37cd8f2 at 218.3 s (221.0 s with
+`JVM_WASM_HEAP=1`) against 214.7 s for the prior commit — neutral within
+run variance, on a day systematically slower than the eighth series'
+176–196 s. This matches the 20:1 finding: the game's loading-hot
+methods still run on the JS region tier, which none of these changes
+touch, so the reproducer win cannot materialize until the wasm tier
+actually claims those methods (real-method eligibility is the next
+blocker) or the cache ideas are ported to the JS tier. Verification:
+196-file suite on a calm machine shows only the pre-existing
+fusedHotLoopRegression failure (three jitCompiler OSR-handoff tests
+proved load-flaky via stash A/B under a load-30 machine); both boots
+reach the main menu. The acceptance verdict is unchanged: **the Tomb
+Racer 1.5x target is not met** (214.7–221.0 s this series against the
+24.021-second ceiling).
