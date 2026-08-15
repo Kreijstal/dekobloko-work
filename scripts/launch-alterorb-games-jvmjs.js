@@ -981,7 +981,16 @@ function startCpuProfile() {
       stop: async () => {
         try {
           const result = await post('Profiler.stop');
-          return result && result.profile || null;
+          const profile = result && result.profile || null;
+          // The report only keeps a summary. Custom attribution (per-tier
+          // buckets, boundary machinery) needs the raw node/sample graph, so
+          // allow dumping it without changing what the run itself does.
+          const rawPath = process.env.ALTERORB_JVMJS_CPU_PROFILE_RAW;
+          if (profile && rawPath) {
+            fs.mkdirSync(path.dirname(rawPath), {recursive: true});
+            fs.writeFileSync(rawPath, JSON.stringify(profile));
+          }
+          return profile;
         } finally {
           session.disconnect();
         }
