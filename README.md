@@ -78,10 +78,15 @@ tracked repository paths.
 
 ## Requirements
 
-- JDK 8 or newer
+- JDK 8. Not "8 or newer": the games are applets, and a JDK that has removed
+  the Applet API cannot compile or run them. See
+  [Applet toolchain caveats](#applet-toolchain-caveats).
 - Bash
 - Node.js for `apps/launcher/assert-trace.js`
 - `curl` for fetching the gamepack
+- `ripgrep` (`rg`) for `scripts/decompile-all-games.sh`; without it the
+  verification check fails open and the run reports failure even when every
+  class verified
 
 For launcher-only work, this repository is otherwise self-contained. For the
 deobfuscation pipeline, also clone
@@ -1454,6 +1459,95 @@ To build dependency stubs for decompilation/compiler linking:
 ```
 
 This writes `lib/dekobloko-stubs.jar`.
+
+## Applet toolchain caveats
+
+Every game in this harness is a `java.applet.Applet`. The Applet API was
+deprecated for removal in JDK 17 and is gone from JDK 26, so a modern default
+JDK cannot compile the decompiled sources, cannot build the launcher, and
+cannot run either. Nothing here is a decompiler defect; it is purely a
+toolchain constraint.
+
+Verified locally: JDK 8 (`/usr/lib/jvm/java-8-openjdk`) works, JDK 26.0.2 does
+not. The versions in between are untested here.
+
+### Compiling decompiled sources
+
+Compile against the stubs with a JDK that still ships `java.applet`:
+
+```bash
+JDK8=/usr/lib/jvm/java-8-openjdk
+"$JDK8/bin/javac" -nowarn -proc:none \
+  -cp stubs/funorb-stubs.jar -d out games/vertigo2/*.java
+```
+
+Under JDK 26 the same command fails. For vertigo2 that is 100 errors, of which
+only 60 name the real cause (`package java.applet does not exist`). The other
+40 are cascade damage from `Applet` being an unknown type, and they look like
+genuine decompiler bugs while being nothing of the sort:
+
+```
+29  reference to a is ambiguous
+ 5  cannot find symbol
+ 2  non-static method a(byte,int) cannot be referenced from a static context
+ 1  name clash: class pp has two methods with the same erasure ...
+ 1  incompatible types: og cannot be converted to Component
+ 1  cannot access ComponentPeer
+ 1  a(Applet,int) in fk cannot override a(boolean,int) in li
+```
+
+Before investigating any of those, re-run on JDK 8. All 100 disappear.
+
+### Building the launcher
+
+`scripts/launcher/build.sh` also fails on a modern JDK, with 42 errors of the
+form "does not override or implement a method from a supertype" in
+`BasicAppletContext` and `UrlAudioClip` — those interfaces (`AppletContext`,
+`AudioClip`) no longer exist. Either build under JDK 8 or reuse an existing
+`.work/launcher/dekobloko-launcher.jar`; the jar is small and stable, so a
+prebuilt one is usually fine.
+
+### Running
+
+The launcher must run on an Applet-capable JRE, and needs a desktop session
+(`DISPLAY` or `WAYLAND_DISPLAY`):
+
+```bash
+"$JDK8/bin/java" -Djava.awt.headless=false \
+  -jar .work/launcher/dekobloko-launcher.jar \
+  --awt real \
+  --gamepack /path/to/gamepack.jar \
+  --main-class Vertigo2 \
+  --trace-file .work/traces/run.log
+```
+
+Notes that cost time if you do not know them:
+
+- `--main-class` is the game's entry class, not a fixed value. It is the name
+  after `launcher.loadClass` in any previous trace log for that game.
+- `scripts/launcher/run-real-awt.sh` hardcodes the dekobloko gamepack and calls
+  `build.sh` first, so it is unusable for another game on a modern JDK. Use
+  `run-launcher.sh`, which forwards its arguments, or invoke `java` directly as
+  above.
+- A jar built straight from `javac` output has no ABI-restore step, so its
+  fields carry the decompiled names rather than the original obfuscated ones.
+  That is self-consistent for an all-recompiled gamepack, but it will not
+  interoperate with original classes in a hybrid jar. Use
+  `scripts/build-hybrid-gamepack.sh` when mixing.
+- The launcher resolves its code base against the live AlterOrb server, so a
+  successful launch makes real network calls and stops at a login prompt.
+
+A successful start looks like this in the trace:
+
+```
+launcher.loadClass Vertigo2
+launcher.newApplet Vertigo2
+applet.setStub
+stub.appletResize 640x480
+applet.init.return
+applet.start.return
+frame.setVisible true
+```
 
 ## Run Modes
 

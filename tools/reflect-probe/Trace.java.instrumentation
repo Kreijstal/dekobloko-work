@@ -1,0 +1,143 @@
+/*
+ * Instrumentation helper (not part of the decompiled gamepack).
+ *
+ * Traces widget arming and click dispatch, so a click that runs the wrong
+ * button's action can be attributed to a concrete pair of widgets.
+ *
+ * Writes to its own file as well as stderr, because the launcher may not
+ * surface the applet's stderr.
+ */
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
+final class Trace {
+
+    private static final String PATH =
+        System.getProperty("trace.file", "/tmp/v2-clicks.log");
+
+    private static PrintWriter out;
+
+    static {
+        try {
+            out = new PrintWriter(new FileWriter(PATH, true), true);
+            log("tracer loaded");
+        } catch (Throwable t) {
+            out = null;
+            System.err.println("[click] tracer could not open " + PATH + ": " + t);
+        }
+    }
+
+    private Trace() {
+    }
+
+    private static void log(String message) {
+        String line = "[click] " + message;
+        System.err.println(line);
+        if (out != null) {
+            out.println(line);
+        }
+    }
+
+    static String label(Object widget) {
+        if (widget == null) {
+            return "null";
+        }
+        String kind = widget.getClass().getName() + "#" + System.identityHashCode(widget);
+        if (widget instanceof iq) {
+            String text = ((iq) widget).field_w;
+            if (text != null) {
+                return kind + "(\"" + text + "\")";
+            }
+        }
+        return kind + "(<no label>)";
+    }
+
+    static String handler(Object widget) {
+        if (!(widget instanceof iq)) {
+            return "n/a";
+        }
+        Object h = ((iq) widget).field_v;
+        if (h == null) {
+            return "null";
+        }
+        return h.getClass().getName() + "#" + System.identityHashCode(h)
+            + (h instanceof sh ? " [sh]" : " [NOT sh]");
+    }
+
+    /** Which branch ob's handler took for a click, and the gating flags. */
+    static void branch(String which, boolean flagN, boolean flagR) {
+        log("BRANCH " + which + " field_N=" + flagN + " field_R=" + flagR);
+    }
+
+    /** A button is about to run its ij action handler. */
+    static void action(Object button, Object handlerOwner) {
+        log("ACTION button=" + label(button)
+            + " handler=" + handler(button)
+            + " ownerClass=" + (handlerOwner == null
+                ? "null" : handlerOwner.getClass().getName()));
+    }
+
+    /** A button had no handler at all, so the click does nothing here. */
+    static void noAction(Object button) {
+        log("NOACT button=" + label(button));
+    }
+
+    /**
+     * Logs which child a container selected, and returns it unchanged.
+     */
+    static iq child(String site, iq selected) {
+        log("CHILD site=" + site + " selected=" + label(selected)
+            + " handler=" + handler(selected));
+        return selected;
+    }
+
+    /** A code site read the current click coordinates. */
+    static void consume(String site, int x, int y) {
+        log("READ site=" + site + " at (" + x + "," + y + ")");
+    }
+
+    /**
+     * Wraps a widget hit test so both the widget and the outcome are visible.
+     * Returns the result unchanged.
+     */
+    static boolean hitTest(String site, Object widget, boolean result) {
+        if (result) {
+            log("HIT  site=" + site + " widget=" + label(widget)
+                + " handler=" + handler(widget));
+        }
+        return result;
+    }
+
+    /** Raw AWT mouse event, before the game interprets it. */
+    static void mouse(String kind, java.awt.event.MouseEvent e) {
+        if (e == null) {
+            log("MOUSE " + kind + " <null event>");
+            return;
+        }
+        log("MOUSE " + kind + " at (" + e.getX() + "," + e.getY() + ")"
+            + " button=" + e.getButton()
+            + " right=" + javax.swing.SwingUtilities.isRightMouseButton(e));
+    }
+
+    /** A widget passed its hit test and latched itself as the armed widget. */
+    static void arm(Object widget, int a, int b, int c, int d, int mode) {
+        log("ARM  widget=" + label(widget)
+            + " handler=" + handler(widget)
+            + " mode=" + mode
+            + " coords=(" + a + "," + b + "," + c + "," + d + ")");
+    }
+
+    /** A handler is about to run for the armed widget. */
+    static void fire(String site, Object armed) {
+        log("FIRE site=" + site
+            + " armed=" + label(armed)
+            + " handler=" + handler(armed));
+    }
+
+    /** The armed widget had no usable handler, so nothing runs. */
+    static void noHandler(String site, Object armed) {
+        log("NONE site=" + site
+            + " armed=" + label(armed)
+            + " handler=" + handler(armed));
+    }
+}

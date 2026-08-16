@@ -1,0 +1,230 @@
+--- a/cr.java
++++ b/cr.java
+@@ -1178,6 +1178,7 @@
+                 if (kf.field_c == 0) {
+                   break L6;
+                 } else {
++                  Trace.consume("cr:1181", sd.field_N, no.field_e);
+                   if (sd.field_N < bi.field_d) {
+                     break L6;
+                   } else {
+--- a/d.java
++++ b/d.java
+@@ -17,9 +17,11 @@
+           L0: {
+             L1: {
+               if (null == this.field_v) {
++                Trace.noAction(this);
+                 break L1;
+               } else {
+                 if (this.field_v instanceof ij) {
++                  Trace.action(this, this.field_v);
+                   ((ij) ((Object) this.field_v)).a(param3, (d) (this), (byte) -123, param1, param0);
+                   break L1;
+                 } else {
+--- a/fo.java
++++ b/fo.java
+@@ -127,6 +127,7 @@
+             } else {
+               L1: while (true) {
+                 if (!gf.a(false)) {
++                  Trace.consume("fo:130", sd.field_N, no.field_e);
+                   this.field_a.a((byte) -29, this.a(31, ed.field_n, gb.field_d), this.a(121, sd.field_N, no.field_e));
+                   if ((this.field_a.field_c ^ -1) == 0) {
+                     break L0;
+@@ -512,6 +513,7 @@
+         int var3 = 54 % ((param1 - -46) / 59);
+         oa.field_q = this.a(param0, ed.field_n, (byte) 121, gb.field_d);
+         if ((kf.field_c ^ -1) == -2) {
++            Trace.consume("fo:515", sd.field_N, no.field_e);
+             var4 = this.a(param0, sd.field_N, (byte) 119, no.field_e);
+             if (qc.field_t == var4) {
+                 qc.field_t = -1;
+--- a/ho.java
++++ b/ho.java
+@@ -35,6 +35,7 @@
+             var5_ref_String = nf.field_o;
+             var4.field_n.a(var5_ref_String, 5, param0 ^ 24285);
+             var4 = un.field_Lb;
++            Trace.consume("ho:38", sd.field_N, no.field_e);
+             var5 = sd.field_N;
+             var6 = no.field_e;
+             var4.field_n.c(0, var6, -1220, var5, 0);
+--- a/iq.java
++++ b/iq.java
+@@ -215,7 +215,7 @@
+                   break L2;
+                 } else {
+                   L3: {
+-                    if (this.a(sd.field_N, param3, param0, (iq) (this), kf.field_c, (byte) -125, no.field_e)) {
++                    if (Trace.hitTest("iq.hit", (iq) (this), this.a(sd.field_N, param3, param0, (iq) (this), kf.field_c, (byte) -125, no.field_e))) {
+                       break L3;
+                     } else {
+                       this.d((byte) 2);
+@@ -236,12 +236,14 @@
+                   var6_ref_qg = um.field_E;
+                   if (var6_ref_qg != null) {
+                     if (!(var6_ref_qg.field_v instanceof sh)) {
++                      Trace.noHandler("iq:1", var6_ref_qg);
+                       um.field_E = null;
+                       rg.field_c = q.field_v;
+                       qc.a(this.a(false), 74);
+                       var6 = 96 % ((4 - param2) / 50);
+                       return param1;
+                     } else {
++                      Trace.fire("iq:1", var6_ref_qg);
+                       ((sh) ((Object) var6_ref_qg.field_v)).a(-13413, var6_ref_qg, (ac) null);
+                       um.field_E = null;
+                       rg.field_c = q.field_v;
+@@ -272,7 +274,7 @@
+         }
+         if (-1 != (kf.field_c ^ -1)) {
+           L4: {
+-            if (this.a(sd.field_N, param3, param0, (iq) (this), kf.field_c, (byte) -125, no.field_e)) {
++            if (Trace.hitTest("iq.hit", (iq) (this), this.a(sd.field_N, param3, param0, (iq) (this), kf.field_c, (byte) -125, no.field_e))) {
+               param1 = false;
+               break L4;
+             } else {
+@@ -288,12 +290,14 @@
+                       var6_ref_qg = um.field_E;
+                       if (var6_ref_qg != null) {
+                         if (!(var6_ref_qg.field_v instanceof sh)) {
++                          Trace.noHandler("iq:2", var6_ref_qg);
+                           um.field_E = null;
+                           rg.field_c = q.field_v;
+                           qc.a(this.a(false), 74);
+                           var6 = 96 % ((4 - param2) / 50);
+                           return param1;
+                         } else {
++                          Trace.fire("iq:2", var6_ref_qg);
+                           ((sh) ((Object) var6_ref_qg.field_v)).a(-13413, var6_ref_qg, (ac) null);
+                           um.field_E = null;
+                           rg.field_c = q.field_v;
+@@ -327,12 +331,14 @@
+                     var6_ref_qg = um.field_E;
+                     if (var6_ref_qg != null) {
+                       if (!(var6_ref_qg.field_v instanceof sh)) {
++                        Trace.noHandler("iq:3", var6_ref_qg);
+                         um.field_E = null;
+                         rg.field_c = q.field_v;
+                         qc.a(this.a(false), 74);
+                         var6 = 96 % ((4 - param2) / 50);
+                         return param1;
+                       } else {
++                        Trace.fire("iq:3", var6_ref_qg);
+                         ((sh) ((Object) var6_ref_qg.field_v)).a(-13413, var6_ref_qg, (ac) null);
+                         um.field_E = null;
+                         rg.field_c = q.field_v;
+@@ -367,12 +373,14 @@
+               var6_ref_qg = um.field_E;
+               if (var6_ref_qg != null) {
+                 if (!(var6_ref_qg.field_v instanceof sh)) {
++                  Trace.noHandler("iq:4", var6_ref_qg);
+                   um.field_E = null;
+                   rg.field_c = q.field_v;
+                   qc.a(this.a(false), 74);
+                   var6 = 96 % ((4 - param2) / 50);
+                   return param1;
+                 } else {
++                  Trace.fire("iq:4", var6_ref_qg);
+                   ((sh) ((Object) var6_ref_qg.field_v)).a(-13413, var6_ref_qg, (ac) null);
+                   um.field_E = null;
+                   rg.field_c = q.field_v;
+@@ -405,12 +413,14 @@
+               var6_ref_qg = um.field_E;
+               if (var6_ref_qg != null) {
+                 if (!(var6_ref_qg.field_v instanceof sh)) {
++                  Trace.noHandler("iq:5", var6_ref_qg);
+                   um.field_E = null;
+                   rg.field_c = q.field_v;
+                   qc.a(this.a(false), 74);
+                   var6 = 96 % ((4 - param2) / 50);
+                   return param1;
+                 } else {
++                  Trace.fire("iq:5", var6_ref_qg);
+                   ((sh) ((Object) var6_ref_qg.field_v)).a(-13413, var6_ref_qg, (ac) null);
+                   um.field_E = null;
+                   rg.field_c = q.field_v;
+--- a/nd.java
++++ b/nd.java
+@@ -138,6 +138,7 @@
+               un.field_Lb.c(-24634);
+               un.field_Lb.a(true, param0);
+               var13 = un.field_Lb;
++              Trace.consume("nd:141", sd.field_N, no.field_e);
+               var3 = sd.field_N;
+               var4 = no.field_e;
+               var13.field_n.c(0, var4, -1220, var3, 0);
+--- a/ob.java
++++ b/ob.java
+@@ -614,13 +614,16 @@
+                 if (param1 != this.field_K) {
+                   if (this.field_G == param1) {
+                     if (this.field_N) {
++                      Trace.branch("JustPlay->rk.h(-128)", this.field_N, this.field_R);
+                       rk.h(-128);
+                       break L1;
+                     } else {
+                       if (this.field_R) {
++                        Trace.branch("JustPlay->sg.b(81)", this.field_N, this.field_R);
+                         sg.b((byte) 81);
+                         break L1;
+                       } else {
++                        Trace.branch("JustPlay->oq.a(true)", this.field_N, this.field_R);
+                         oq.a(true);
+                         break L1;
+                       }
+@@ -629,6 +632,7 @@
+                     break L1;
+                   }
+                 } else {
++                  Trace.branch("AccountButton->ff.b(-104)", this.field_N, this.field_R);
+                   ff.b((byte) -104);
+                   break L1;
+                 }
+--- a/qg.java
++++ b/qg.java
+@@ -76,6 +76,7 @@
+                 decompiledRegionSelector0 = 2;
+                 break L0;
+               } else {
++                Trace.arm(this, param2, param1, param0, param6, param4);
+                 um.field_E = (qg) (this);
+                 this.field_J = -param2 + -this.field_t + param6;
+                 this.field_H = -param1 + (param0 - this.field_o);
+--- a/ql.java
++++ b/ql.java
+@@ -283,6 +283,7 @@
+                         var13_ref_String = eq.field_B;
+                         var16.field_n.a(var13_ref_String, 7, 0);
+                         var17 = un.field_Lb;
++                        Trace.consume("ql:286", sd.field_N, no.field_e);
+                         var13 = sd.field_N;
+                         var14 = no.field_e;
+                         var17.field_n.c(0, var14, -1220, var13, 0);
+--- a/sa.java
++++ b/sa.java
+@@ -75,6 +75,7 @@
+     }
+ 
+     public final synchronized void mousePressed(java.awt.event.MouseEvent param0) {
++        Trace.mouse("pressed", param0);
+         int var2_int = 0;
+         RuntimeException var2 = null;
+         RuntimeException stackIn_13_0 = null;
+@@ -159,6 +160,7 @@
+     }
+ 
+     public final void mouseClicked(java.awt.event.MouseEvent param0) {
++        Trace.mouse("clicked", param0);
+         RuntimeException var2 = null;
+         RuntimeException stackIn_6_0 = null;
+         StringBuilder stackIn_6_1 = null;
+@@ -262,6 +264,7 @@
+     }
+ 
+     public final synchronized void mouseReleased(java.awt.event.MouseEvent param0) {
++        Trace.mouse("released", param0);
+         int var2_int = 0;
+         RuntimeException var2 = null;
+         RuntimeException stackIn_9_0 = null;
