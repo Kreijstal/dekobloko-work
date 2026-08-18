@@ -16,6 +16,8 @@ const os = require('os');
 const path = require('path');
 const {execFileSync, spawn} = require('child_process');
 const {hashClassTree} = require('./pipeline-cache-provenance');
+const {startJs5Server} = require('./js5-server');
+const {startJs5RecordingProxy} = require('./js5-recorder');
 
 const ROOT = path.resolve(__dirname, '..');
 const JAVA_TOOLS_DIR = process.env.JAVA_TOOLS_DIR ||
@@ -46,6 +48,11 @@ function parseArgs(argv) {
     classesOverride: null,
     menuAdvanceClick: null,
     menuSceneTransitions: 1,
+    localCacheDir: null,
+    recordCacheDir: null,
+    offline: false,
+    configFile: path.join(ROOT, '.work', 'upstream-alterorb-launcher',
+      'config.json'),
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -62,6 +69,31 @@ function parseArgs(argv) {
       options.until = 'main-menu';
     } else if (arg === '--min-fps') {
       options.minFps = Number(argv[++index]);
+    } else if (arg === '--local-cache') {
+      // Serve JS5 from local caches instead of proxying to the remote update
+      // server. One server per game on its own ephemeral port: the JS5
+      // handshake carries only a build revision, and the validated builds
+      // collide across games (44 games, 31 distinct builds), so a single
+      // shared port cannot tell which cache a connection wants.
+      const next = argv[index + 1];
+      options.localCacheDir = next && !next.startsWith('--')
+        ? path.resolve(argv[++index])
+        : path.join(ROOT, '.work', 'jre-reflection-main-menu', 'cache');
+    } else if (arg === '--offline') {
+      // Launch with no network at all: local launcher config, gamepacks
+      // already on disk, and JS5 from a recorded cache. Anything that still
+      // tries to reach out fails loudly rather than silently working only
+      // while the machine happens to be online.
+      options.offline = true;
+    } else if (arg === '--config-file') {
+      options.configFile = path.resolve(argv[++index]);
+    } else if (arg === '--record-cache') {
+      // Proxy to the real update server as usual, but write every group it
+      // returns into <dir>/<game>. That directory is then a valid input to
+      // --local-cache. Recording is how a complete cache is obtained at all:
+      // the client never persists the master index it validates in memory, so
+      // its own on-disk cache cannot be replayed.
+      options.recordCacheDir = path.resolve(argv[++index]);
     } else if (arg === '--profile-jit') options.profileJit = true;
     else if (arg === '--cpu-profile') options.cpuProfile = true;
     else if (arg === '--jar') options.jarOverride = path.resolve(argv[++index]);
@@ -92,7 +124,9 @@ function parseArgs(argv) {
         '[--profile-jit] [--cpu-profile] [--no-jit] [--recompiled] ' +
         '[--classes-dir directory] ' +
         '[--menu-advance-click X,Y] [--menu-scene-transitions N] ' +
-        '[--jar diagnostic.jar]');
+        '[--jar diagnostic.jar] ' +
+        '[--local-cache [directory]] [--record-cache directory] ' +
+        '[--offline] [--config-file file]');
       process.exit(0);
     } else {
       throw new Error(`Unknown argument: ${arg}`);
@@ -358,10 +392,14 @@ function validateRecompiledClasses(game, jarPath, classesOverride = null) {
   return {ok: true, classesDir, expectedClasses: expected.length};
 }
 
-async function ensureGamepack(game, configUrl) {
+async function ensureGamepack(game, configUrl, offline = false) {
   const jarPath = gamepackPath(game);
   if (fs.existsSync(jarPath) && sha256(jarPath) === game.gamepackHash) {
     return jarPath;
+  }
+  if (offline) {
+    throw new Error(`--offline has no verified gamepack for ` +
+      `${game.internalName} at ${jarPath}`);
   }
 
   console.log(`download ${game.internalName}`);
@@ -1571,6 +1609,53 @@ function startTcpBridge(remoteHost) {
   });
 }
 
+// Offline is only a real claim if it is enforced. Refuse every outbound
+// connection that is not loopback, in the parent and in each worker, so a
+// forgotten dependency on alterorb fails immediately and visibly instead of
+// working right up until the machine is actually disconnected.
+function enforceLoopbackOnly() {
+  const allowed = new Set(['127.0.0.1', '::1', 'localhost', '0.0.0.0', '']);
+  const socketConnect = net.Socket.prototype.connect;
+  net.Socket.prototype.connect = function connect(...args) {
+    const target = args[0] && typeof args[0] === 'object'
+      ? args[0].host : (typeof args[1] === 'string' ? args[1] : '');
+    if (!allowed.has(String(target ?? ''))) {
+      throw new Error(`offline: refused outbound connection to ${target}`);
+    }
+    return socketConnect.apply(this, args);
+  };
+  globalThis.fetch = (input) => Promise.reject(
+    new Error(`offline: refused fetch ${input}`));
+}
+
+// The applet's codeBase points at a local HTTP port. Offline that must not be
+// a tunnel to alterorb, so answer locally: serve anything staged under
+// .work/offline-www and 404 the rest, logging every request so a genuine
+// dependency on remote HTTP would show up rather than silently failing.
+function startOfflineHttpServer() {
+  const documentRoot = path.join(ROOT, '.work', 'offline-www');
+  const server = http.createServer((request, response) => {
+    const relative = decodeURIComponent(
+      (request.url || '/').split('?')[0]).replace(/^\/+/, '');
+    const candidate = path.resolve(documentRoot, relative);
+    if (relative && candidate.startsWith(path.resolve(documentRoot)) &&
+        fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+      response.writeHead(200);
+      fs.createReadStream(candidate).pipe(response);
+      console.log(`[offline-http] 200 ${request.url}`);
+      return;
+    }
+    console.log(`[offline-http] 404 ${request.url}`);
+    response.writeHead(404);
+    response.end();
+  });
+  return new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(HTTP_PROXY_PORT, '127.0.0.1',
+      () => resolve({close: () => server.close()}));
+  });
+}
+
 function startHttpBridge(remoteHost) {
   const server = http.createServer((request, response) => {
     const upstream = https.request({
@@ -1597,12 +1682,30 @@ function startHttpBridge(remoteHost) {
   });
 }
 
-async function fetchConfig(url) {
+async function fetchConfig(url, options = {}) {
+  const configFile = options.configFile;
+  if (options.offline) {
+    if (!configFile || !fs.existsSync(configFile)) {
+      throw new Error(`--offline needs a launcher config at ${configFile}; ` +
+        'run once online (or with --config-file) to record one');
+    }
+    return JSON.parse(fs.readFileSync(configFile, 'utf8'));
+  }
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`AlterOrb config request failed: ${response.status}`);
   }
-  return response.json();
+  const config = await response.json();
+  // Keep a copy so a later --offline run has one without a special step.
+  if (configFile) {
+    try {
+      fs.mkdirSync(path.dirname(configFile), {recursive: true});
+      fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+    } catch (error) {
+      console.warn(`could not cache launcher config: ${error.message}`);
+    }
+  }
+  return config;
 }
 
 function tailLines(value, count = Number(
@@ -1700,6 +1803,9 @@ function runChild(game, options) {
           ? (process.env.JVM_PROFILE_SCHEDULER_TIMES || '64')
           : (process.env.JVM_PROFILE_SCHEDULER_TIMES || ''),
         JVM_DEBUG_ARRAY_OOB: process.env.JVM_DEBUG_ARRAY_OOB || '1',
+        ALTERORB_JVMJS_TCP_PORT: String(
+          options.js5Ports?.get(game.internalName) ?? TCP_PORT),
+        ALTERORB_JVMJS_OFFLINE: options.offline ? '1' : '',
       },
       stdio: ['ignore', 'pipe', 'pipe'],
     });
@@ -1854,6 +1960,7 @@ function writeReportAtomically(reportPath, report) {
 async function main() {
   const workerSpec = process.env.ALTERORB_JVMJS_WORKER;
   if (workerSpec) {
+    if (process.env.ALTERORB_JVMJS_OFFLINE === '1') enforceLoopbackOnly();
     const specification = JSON.parse(Buffer.from(workerSpec, 'base64')
       .toString('utf8'));
     await runWorker(specification);
@@ -1869,7 +1976,11 @@ async function main() {
     path.join(JAVA_TOOLS_DIR, 'scripts', 'generate-jre-index.js'),
   ], {stdio: 'ignore'});
   buildHookStub();
-  const config = await fetchConfig(options.configUrl);
+  if (options.offline && !options.localCacheDir) {
+    options.localCacheDir = path.join(ROOT, '.work', 'js5-recorded');
+  }
+  if (options.offline) enforceLoopbackOnly();
+  const config = await fetchConfig(options.configUrl, options);
   let games = config.games || [];
   if (options.games.length) {
     const selected = new Set(options.games);
@@ -1884,12 +1995,55 @@ async function main() {
     `jobs=${options.jobs} timeout=${options.timeoutMs}ms until=${options.until} ` +
     `measureFps=${options.measureFpsMs}ms minFps=${options.minFps} ` +
     `variant=${options.recompiled ? 'recompiled' : 'original'}`);
-  await Promise.all(games.map(game => ensureGamepack(game, options.configUrl)));
+  await Promise.all(games.map(game =>
+    ensureGamepack(game, options.configUrl, options.offline)));
   const remoteHost = new URL(config.server).hostname;
-  const [tcpBridge, httpBridge] = await Promise.all([
-    startTcpBridge(remoteHost),
-    startHttpBridge(remoteHost),
-  ]);
+  const js5Servers = [];
+  options.js5Ports = new Map();
+  let tcpBridge = null;
+  if (options.localCacheDir) {
+    for (const game of games) {
+      const cacheDir = path.join(options.localCacheDir, game.internalName);
+      if (!fs.existsSync(cacheDir)) {
+        throw new Error(`--local-cache has no cache for ${game.internalName} ` +
+          `(expected ${cacheDir})`);
+      }
+      // Fall back to the client's own cache for anything the recording lacks.
+      // A recording made against a warm client holds only the index layer --
+      // 255/255 and the group tables -- because the client asked for nothing
+      // else; the data groups it already had are sitting right here.
+      const clientCache = path.join(os.homedir(), '.alterorb', 'caches',
+        game.internalName);
+      const chain = fs.existsSync(path.join(clientCache,
+        'main_file_cache.dat2')) ? [cacheDir, clientCache] : cacheDir;
+      const server = await startJs5Server({cacheDir: chain, port: 0,
+        log: process.env.ALTERORB_JVMJS_JS5_LOG ? line => console.error(line)
+          : () => {}});
+      js5Servers.push(server);
+      options.js5Ports.set(game.internalName, server.port);
+    }
+    console.log(`Local JS5: ${js5Servers.length} cache server(s) from ` +
+      options.localCacheDir);
+  } else if (options.recordCacheDir) {
+    for (const game of games) {
+      const recorder = await startJs5RecordingProxy({
+        remoteHost,
+        remotePort: REMOTE_TCP_PORT,
+        port: 0,
+        outDir: path.join(options.recordCacheDir, game.internalName),
+        log: process.env.ALTERORB_JVMJS_JS5_LOG ? line => console.error(line)
+          : () => {},
+      });
+      js5Servers.push(recorder);
+      options.js5Ports.set(game.internalName, recorder.port);
+    }
+    console.log(`Recording JS5 into ${options.recordCacheDir}`);
+  } else {
+    tcpBridge = await startTcpBridge(remoteHost);
+  }
+  const httpBridge = options.offline
+    ? await startOfflineHttpServer()
+    : await startHttpBridge(remoteHost);
   let results;
   try {
     results = await runPool(games, options, partialResults => {
@@ -1897,7 +2051,14 @@ async function main() {
         buildReport(config, options, partialResults, games.length, false));
     });
   } finally {
-    tcpBridge.close();
+    if (tcpBridge) tcpBridge.close();
+    for (const server of js5Servers) {
+      if (options.recordCacheDir) {
+        console.log(`Recorded ${server.groupCount} groups ` +
+          `(${(server.byteCount / 1024).toFixed(0)} KiB)`);
+      }
+      server.close();
+    }
     httpBridge.close();
   }
   const report = buildReport(config, options, results, games.length, true);
