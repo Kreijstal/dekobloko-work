@@ -61,7 +61,8 @@ function readEvidence(reportPaths) {
   for (const reportPath of reportPaths) {
     const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
     for (const result of report.results || []) {
-      const classes = result.artifacts && result.artifacts.recompiledClasses;
+      const classes = result.artifact ||
+        result.artifacts && result.artifacts.recompiledClasses;
       if (result.variant !== 'recompiled' || result.status !== 'main-menu' ||
           !classes || !classes.sha256) continue;
       evidence.push({

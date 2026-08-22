@@ -34,6 +34,19 @@ try {
   const evidence = readEvidence([reportPath]);
   assert.strictEqual(auditTrees(trees, evidence)[0].status, 'proven');
 
+  const nativeReportPath = path.join(temporary, 'native-report.json');
+  fs.writeFileSync(nativeReportPath, JSON.stringify({results: [{
+    game: 'example',
+    variant: 'recompiled',
+    status: 'main-menu',
+    artifact: {sha256: trees[0].sha256},
+  }]}));
+  assert.strictEqual(
+    auditTrees(trees, readEvidence([nativeReportPath]))[0].status,
+    'proven',
+    'native reflection reports use the singular artifact field',
+  );
+
   const changed = [{...trees[0], sha256: 'changed'}];
   assert.strictEqual(auditTrees(changed, evidence)[0].status, 'missing',
     'evidence for an older class tree must not suppress a new run');

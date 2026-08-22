@@ -1,5 +1,8 @@
 # Recompiled game runtime validation
 
+For the complete per-game native-JRE original/recompiled and JVM.js recompiled
+startup comparison, see `docs/jre-vs-jvmjs-main-menu-times.md`.
+
 The owned-decompiler pipeline is not considered correct merely because every
 class verifies and recompiles. The acceptance test is to launch the recompiled
 class set in the generic JVM.js runner and reach each game's main menu.
