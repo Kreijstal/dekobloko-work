@@ -50,6 +50,13 @@ const versionCache = new Map();
 let alterOrbConfig = null;
 
 function gameJarPath(game) {
+  // Per-game override for locally patched (server-key) gamepacks; the
+  // override opts the game out of catalog-hash validation because a
+  // re-signed JAR cannot match AlterOrb's published hash.
+  const override =
+    process.env['GAME_LIBRARY_JAR_' +
+      game.internalName.toUpperCase().replace(/[^A-Z0-9]/g, '_')];
+  if (override) return override;
   if (game.internalName === 'dekobloko' && process.env.DEKOBLOKO_BROWSER_JAR) {
     return process.env.DEKOBLOKO_BROWSER_JAR;
   }
@@ -72,8 +79,14 @@ function gameById(id) {
     .find(game => game.internalName === id) || null;
 }
 
+function gameJarOverridden(game) {
+  return Boolean(process.env['GAME_LIBRARY_JAR_' +
+    game.internalName.toUpperCase().replace(/[^A-Z0-9]/g, '_')]);
+}
+
 function gameJarAvailable(game) {
   const jarPath = gameJarPath(game);
+  if (gameJarOverridden(game)) return fs.existsSync(jarPath);
   return fs.existsSync(jarPath) &&
     fileVersion(jarPath) === String(game.gamepackHash || '').toLowerCase();
 }
@@ -139,11 +152,11 @@ function browserAssetManifest(game) {
         game.internalName === 'dekobloko' ? 9 : null,
     },
     runtime: assetEntry('/' + bundleScript, bundlePath, bundleScript),
-    jar: assetEntry(
+    jar: fs.existsSync(jarPath) ? assetEntry(
       '/game-jars/' + game.internalName + '.jar',
       jarPath,
       game.internalName + '.jar',
-    ),
+    ) : null,
     gameCache: cacheFiles.map(name => assetEntry(
       '/game-cache/' + game.internalName + '/' + name,
       path.join(cacheDir, name),
@@ -2071,8 +2084,16 @@ const server = http.createServer((request, response) => {
   if (pathname === '/diagnostics' || pathname === '/diagnostics/') {
     const diagnosticsGame =
       gameById(requestUrl.searchParams.get('game')) ||
-      gameById('dekobloko') ||
+      // Prefer a locally available game so the manifest below never
+      // stats a missing JAR; dekobloko itself is often not downloaded.
+      (alterOrbConfig.games || []).find(game => gameJarAvailable(game)) ||
       alterOrbConfig.games[0];
+    if (!diagnosticsGame || !fs.existsSync(gameJarPath(diagnosticsGame))) {
+      response.writeHead(503, {'Content-Type': 'application/json; charset=utf-8'});
+      response.end(JSON.stringify(
+        {schema: 1, error: 'no locally validated game JAR for diagnostics'}));
+      return;
+    }
     const manifest = browserAssetManifest(diagnosticsGame);
     const diagnosticsConfig = {
       schema: 1,
@@ -2167,7 +2188,12 @@ server.on('upgrade', (request, socket, head) => {
     return;
   }
   webSockets.handleUpgrade(request, socket, head, ws => {
-    const tcp = net.createConnection({host: 'mgg-server.alterorb.net', port: targetPort});
+    // Route the guest's game-server connection through a locally running
+    // backend when configured; fall back to AlterOrb's public server.
+    const tcp = net.createConnection({
+      host: process.env.GAME_LIBRARY_TCP_BRIDGE_HOST || 'mgg-server.alterorb.net',
+      port: Number(process.env.GAME_LIBRARY_TCP_BRIDGE_PORT || targetPort),
+    });
     ws.on('message', bytes => tcp.write(bytes));
     ws.on('close', () => tcp.destroy());
     ws.on('error', () => tcp.destroy());
@@ -2184,11 +2210,17 @@ server.on('upgrade', (request, socket, head) => {
 
 async function loadAlterOrbConfig() {
   try {
-    const response = await fetch(alterOrbConfigUrl);
-    if (!response.ok) {
-      throw new Error('HTTP ' + response.status + ' from ' + alterOrbConfigUrl);
+    let config;
+    if (alterOrbConfigUrl.startsWith('file://')) {
+      // Pinned offline catalog: never contacts AlterOrb.
+      config = JSON.parse(fs.readFileSync(new URL(alterOrbConfigUrl), 'utf8'));
+    } else {
+      const response = await fetch(alterOrbConfigUrl);
+      if (!response.ok) {
+        throw new Error('HTTP ' + response.status + ' from ' + alterOrbConfigUrl);
+      }
+      config = await response.json();
     }
-    const config = await response.json();
     if (!config || !Array.isArray(config.games) || config.games.length === 0) {
       throw new Error('AlterOrb config contains no games');
     }
