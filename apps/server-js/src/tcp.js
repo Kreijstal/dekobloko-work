@@ -88,7 +88,11 @@ async function handleStream(reader, writer, options) {
       await session.run_after_handshake(revision);
       return "js5";
     }
-    const session = new options.sessions.GameSession(writer, config, peer);
+    // GameSession needs the async reader for its recv loop; js5-style
+    // sessions ignore the extra argument.
+    const session = new options.sessions.GameSession(writer, config, peer, {
+      reader,
+    });
     await session.run_after_opcode(nextOpcode);
     return "game";
   } catch (error) {

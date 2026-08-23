@@ -953,7 +953,10 @@ class HostedGame {
       CONTROL_BURST_TICKS,
       this.control_credit[slot] + elapsed * LOGIC_TICKS_PER_SECOND
     );
-    const allowed = Math.min(requested, this.control_credit[slot] + 1.0e-9 | 0);
+    const allowed = Math.min(
+      requested,
+      Math.trunc(this.control_credit[slot] + 1.0e-9)
+    );
     this.control_credit[slot] -= allowed;
     return allowed;
   }

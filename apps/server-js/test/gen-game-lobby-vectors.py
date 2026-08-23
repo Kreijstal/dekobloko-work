@@ -396,7 +396,10 @@ def main() -> None:
     }
 
     # Lobby room lifecycle over fake sessions. Freeze wall-clock so elapsed_ms
-    # is reproducible.
+    # is reproducible. NOTE: HostedGame.created_at uses default_factory=time.time,
+    # which binds the REAL clock at class definition -- patching time.time later
+    # does not freeze creation stamps. So every golden room update is recorded
+    # after explicitly normalizing created_at back to T0 (elapsed 0).
     T0 = 2000000000.0
     real_time = time.time
     time.time = lambda: T0
@@ -416,39 +419,64 @@ def main() -> None:
         lobby.join(host_s)
         lobby.join(peer_s)
         lobby.join(observer)
+
+        def norm_update():
+            game.created_at = T0
+            lobby._broadcast_room_update(game)
+            return h(observer.lobby_events[-1])
+
         game = lobby.create_game(
             host_s, GameOptions(allow_spectators=False, invite_only=True))
-        after_create = len(observer.lobby_events)
+        create_events = [norm_update()]
+
+        count_before = len(observer.lobby_events)
         rejected = lobby.join_game(observer, game.game_id)
-        after_reject = len(observer.lobby_events)
+        reject_added_none = len(observer.lobby_events) == count_before
+        invitation_only_message = "invitation-only" in observer.messages[-1]
+
         invited = lobby.invite_player(host_s, lobby.uid_for("peer"))
-        after_invite = len(observer.lobby_events)
+        invite_events = [norm_update()]
         lobby.join_game(peer_s, game.game_id)
-        after_join = len(observer.lobby_events)
+        join_events = [norm_update()]
         lobby.start_game(host_s)
-        after_start = len(observer.lobby_events)
+        start_events = [norm_update()]
         # Nonzero elapsed: rewind creation and re-broadcast.
         game.created_at = T0 - 6.128
         lobby._broadcast_room_update(game)
-        game.end_game(host_s)
-        after_end = len(observer.lobby_events)
-        game.dismiss(host_s)
-        game.dismiss(peer_s)
-        after_dismiss = len(observer.lobby_events)
+        elapsed_update = h(observer.lobby_events[-1])
 
+        end_count = len(observer.lobby_events)
+        game.end_game(host_s)
+        end_events = [h(e) for e in observer.lobby_events[end_count:]]
+        room_survives_first_dismiss = [game] == lobby.games_snapshot()
+        game.dismiss(host_s)
+        dismiss_host_pair = [h(e) for e in observer.lobby_events[end_count:]]
+        game.dismiss(peer_s)
+        dismiss_peer_pair = [h(e) for e in observer.lobby_events[end_count:]]
+        final_modes = [e[0] for e in observer.lobby_events[-2:]]
+        concluded_bit4 = bool(observer.lobby_events[-2][6] & 0x04)
         fx["room_lifecycle"] = {
             "game_id": game.game_id,
-            "create_events": [h(e) for e in observer.lobby_events[:after_create]],
-            "reject_added_none": after_reject == after_create,
-            "invite_events": [h(e) for e in observer.lobby_events[after_create:after_invite]],
-            "join_events": [h(e) for e in observer.lobby_events[after_invite:after_join]],
-            "start_events": [h(e) for e in observer.lobby_events[after_join:after_start]],
-            "elapsed_update": h(observer.lobby_events[after_start]),
-            "elapsed_ms": 6128,
-            "end_events": [h(e) for e in observer.lobby_events[after_start + 1:after_end]],
-            "dismiss_events": [h(e) for e in observer.lobby_events[after_end:after_dismiss]],
+            "create_events": create_events,
+            "reject_added_none": bool(reject_added_none),
             "observer_rejected": rejected is None,
+            "invitation_only_message": bool(invitation_only_message),
             "invite_accepted": bool(invited),
+            "invite_events": invite_events,
+            "join_events": join_events,
+            "start_events": start_events,
+            "elapsed_update": elapsed_update,
+            "elapsed_ms": 6128,
+            "end_events": end_events,
+            "room_survives_first_dismiss": bool(room_survives_first_dismiss),
+            "dismiss_events": dismiss_peer_pair,
+            "dismiss_pairs_identical": dismiss_host_pair == dismiss_peer_pair,
+            "final_modes": final_modes,
+            "concluded_flag_bit4": bool(concluded_bit4),
+            "snapshot_empty_after_last_dismiss": lobby.games_snapshot() == [],
+            "sessions_detached": (
+                host_s.current_game is None and peer_s.current_game is None
+            ),
         }
     finally:
         time.time = real_time
