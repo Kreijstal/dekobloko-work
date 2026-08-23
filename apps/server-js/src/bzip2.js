@@ -22,18 +22,43 @@ const CRC_TABLE = (() => {
   const table = new Int32Array(256);
   for (let n = 0; n < 256; n++) {
     let c = n;
-    for (let k = 0; k < 8; k++) c = c & 1 ? Math.imul(c >>> 1, 0xedb88320) ^ 0xffffffff : c >>> 1;
+    for (let k = 0; k < 8; k++) c = c & 1 ? (c >>> 1) ^ 0xedb88320 : c >>> 1;
     table[n] = c | 0;
   }
   return table;
 })();
 
-/** Standard IEEE CRC32 (identical polynomial/init/finalise to zlib.crc32,
- * which is what bzip2 block CRCs use). */
+/** Standard reflected IEEE CRC32 -- the zlib.crc32 flavour used by js5.py. */
 function crc32(buf) {
   let c = -1;
   for (let i = 0; i < buf.length; i++) c = (c >>> 8) ^ CRC_TABLE[(c ^ buf[i]) & 0xff];
   return (c ^ -1) >>> 0;
+}
+
+// bzip2 block CRCs use the NON-reflected MSB-first CRC-32 (same polynomial
+// 0x04C11DB7, but refin=false/refout=false). It is NOT numerically equal to
+// zlib.crc32 -- e.g. check("123456789") = 0xfc891918 here vs 0xcbf43926 for
+// zlib -- so the two flavours must never be mixed up.
+const BZIP2_CRC_TABLE = (() => {
+  const table = new Int32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n << 24;
+    for (let k = 0; k < 8; k++) {
+      c = c & 0x80000000 ? ((c << 1) ^ 0x04c11db7) | 0 : (c << 1) | 0;
+    }
+    table[n] = c | 0;
+  }
+  return table;
+})();
+
+/** CRC-32/BZIP2: poly 0x04C11DB7, init 0xFFFFFFFF, no reflection,
+ * final xor 0xFFFFFFFF. Used for per-block integrity checks. */
+function crc32_bzip2(buf) {
+  let c = -1;
+  for (let i = 0; i < buf.length; i++) {
+    c = ((c << 8) ^ BZIP2_CRC_TABLE[((c >>> 24) ^ buf[i]) & 0xff]) | 0;
+  }
+  return (~c) >>> 0;
 }
 
 class BitReader {
@@ -91,7 +116,11 @@ function makeHuffmanTable(lengths, alphaSize) {
     vec *= 2;
   }
   for (let l = minLen + 1; l <= maxLen; l++) {
-    base[l] = (limit[l - 1] + 1) * 2 - base[l + 1];
+    // base[l] still holds its original cumulative count (#codes shorter than
+    // l) at this point -- slots are overwritten in ascending order. The decode
+    // offset is first_code(l) minus that count, so perm[zvec - base[l]]
+    // addresses symbols in (length, symbol-index) order.
+    base[l] = (limit[l - 1] + 1) * 2 - base[l];
   }
   return { minLen, maxLen, limit, base, perm };
 }
@@ -114,14 +143,16 @@ function bzip2_decompress(input) {
   if (!(input instanceof Buffer)) input = Buffer.from(input);
   const br = new BitReader(input);
   const members = [];
+  let sawMember = false;
   for (;;) {
     // Member header "BZh" + level digit, byte aligned at member start.
     if (br.bitsLeft < 32) break; // under 4 bytes left: no room for another member
-    const BZH = charCode("B") * 65536 + charCode("Z") * 256 + charCode("h");
+    const BZH = charCode("B") * 0x10000 + charCode("Z") * 0x100 + charCode("h");
     if (br.peekBits(24) !== BZH) {
-      if (members.length === 0) throw new Error("bzip2: bad magic");
+      if (!sawMember) throw new Error("bzip2: bad magic");
       break; // trailing non-member bytes: stop like GzipFile would
     }
+    sawMember = true;
     br.readBits(24);
     const level = br.readBits(8); // ASCII digit consumed as raw byte value
     const digit = String.fromCharCode(level);
@@ -138,12 +169,20 @@ function bzip2_decompress(input) {
     }
 
     br.alignToByte();
-    // Multi-member stream? Loop again if another "BZh" header follows.
-    if (br.bitsLeft < 32 || br.peekBits(24) !== BZH) {
+    // Multi-member streams: libbz2 leaves a variable amount of slack after
+    // the terminator (it pads the final Huffman bits, not to a member
+    // boundary), so -- exactly like CPython's _bz2 module -- rescan forward
+    // for the next byte-aligned "BZh" header instead of assuming one sits at
+    // the current position.
+    const next = input.indexOf("BZh", br.bitPos >>> 3);
+    if (next < 0 || next * 8 + 32 > input.length * 8) {
+      if (!sawMember) throw new Error("bzip2: bad magic");
       break;
     }
+    br.bitPos = next * 8;
   }
-  if (members.length === 0) throw new Error("bzip2: empty stream");
+  // A member with zero blocks (bz2.compress(b"")) legitimately yields b"",
+  // matching Python's bz2.decompress; only absent members are an error.
   return Buffer.concat(members);
 }
 
@@ -183,10 +222,12 @@ function decodeBlock(br, blockMax) {
   const alphaSize = nInUse + 2;
   const EOB = alphaSize - 1;
 
-  // Huffman table count and MTF-coded selector list.
-  const nGroups = br.readBits(3) + 1;
-  const nSelectors = br.readBits(15) + 1;
-  if (nGroups > 6) throw new Error("bzip2: too many tables");
+  // Huffman table count and MTF-coded selector list. Both are stored as
+  // direct values (bzlib validates 2..6 and >= 1; there is no +/-1 bias).
+  const nGroups = br.readBits(3);
+  const nSelectors = br.readBits(15);
+  if (nGroups < 2 || nGroups > 6) throw new Error("bzip2: bad group count " + nGroups);
+  if (nSelectors < 1) throw new Error("bzip2: bad selector count");
   const selectorMtf = new Int32Array(nSelectors);
   for (let j = 0; j < nSelectors; j++) {
     let k = 0;
@@ -310,7 +351,7 @@ function decodeBlock(br, blockMax) {
   const plain = Buffer.concat(out);
 
   // Verify the block CRC over the fully decoded bytes.
-  const got = crc32(plain);
+  const got = crc32_bzip2(plain);
   if (got !== storedCrc) {
     throw new Error(
       "bzip2: block CRC mismatch (stored 0x" +
@@ -328,4 +369,4 @@ function bzip2_decompress_bzh1(body) {
   return bzip2_decompress(Buffer.concat([Buffer.from("BZh1", "ascii"), body]));
 }
 
-module.exports = { bzip2_decompress, bzip2_decompress_bzh1, crc32 };
+module.exports = { bzip2_decompress, bzip2_decompress_bzh1, crc32, crc32_bzip2 };
