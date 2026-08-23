@@ -214,7 +214,8 @@ def gen_bzip2():
     first, second = b"first member " * 8, b"second member!"
     comp_multi = bz2.compress(first, 1) + bz2.compress(second, 9)
     add("multimember", "two concatenated .bz2 members",
-        first + second, comp_multi)
+        first + second, comp_multi,
+        member_plain_hex=(first + second).hex())
 
     dump("bzip2", {
         "_meta": {
@@ -570,12 +571,14 @@ def gen_js5():
     for n in (0, 1, 512, 513, 1023, 1024, 2000):
         packet = bytes((i * 37 + 11) & 0xFF for i in range(n))
         chunks = py_frame(packet)
+        joined = b"".join(chunks)
         fr.append({"packet_len": n, "chunk_lens": [len(c) for c in chunks],
                    # Identify markers by CONTENT: a multi-chunk frame whose
                    # final data slice is exactly one byte is not a marker.
                    "marker_positions_hex":
                        [c.hex() for c in chunks if len(c) == 1 and c == b"\xff"],
-                   "stream_sha256": hashlib.sha256(packet).hexdigest()})
+                   "packet_sha256": hashlib.sha256(packet).hexdigest(),
+                   "chunks_stream_sha256": hashlib.sha256(joined).hexdigest()})
     out["pure"]["frame_cases"] = fr
 
     # --- session behaviour over the synthetic cache ----------------------
