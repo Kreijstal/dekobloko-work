@@ -1753,7 +1753,7 @@ class Lobby {
     this.progress[player] = counter;
     this._save_progress();
     let note;
-    const master = Lobby.MASTER_CHALLENGE_STAGE_VALUE;
+    const master = Lobby.MASTER_CHALLENGE_STAGE;
     if (counter >= master && previous < master) note = "Master Challenge UNLOCKED";
     else if (counter >= master) note = "Master Challenge unlocked";
     else note = "still locked -- " + (master - counter) + " more stage(s) to report";
@@ -1813,7 +1813,7 @@ class Lobby {
       );
       return false;
     }
-    const name = Lobby.ACHIEVEMENT_NAMES_LIST[index];
+    const name = Lobby.ACHIEVEMENT_NAMES[index];
     if (!this.achievements.hasOwnProperty(player)) {
       this.achievements[player] = [];
     }
@@ -2777,18 +2777,6 @@ class Lobby {
     }
   }
 }
-
-Lobby.ACHIEVEMENT_NAMES_LIST = [
-  "Deko Bloko", "Double Deko", "Triple Deko", "Mega Deko", "Double Bloko",
-  "Triple Bloko", "Mini Bombo", "Maxi Bombo", "Tower Bloko",
-  "Massive Attako", "Clean Sweepo", "Uh-Oh Bloko", "Floral Bloko",
-  "Urban Bloko", "Retro Bloko", "Bronze Blokker", "Silver Blokker",
-  "Gold Blokker", "Blok of Beginning", "Blok of Victory",
-  "Blok of Supremacy", "Deko Pwnage", "Ultimate Pwnage", "Quick Deko",
-  "Safe Deko", "Deko Modo", "Shape Mover", "Shape Sender",
-  "Shape Dispatcher", "Shape Consigner", "Shape Shifter",
-];
-Lobby.MASTER_CHALLENGE_STAGE_VALUE = 3;
 
 function hex_spaced(buf) {
   return [...buf].map((b) => b.toString(16).padStart(2, "0")).join(" ");
