@@ -7,7 +7,7 @@ Usage:
 
 Writes JSON fixtures under apps/server-js/test/fixtures/. Bytes are hex-encoded;
 oversized plains are described by hash plus head/tail snippets only.
-Sections: config io bzip2 cache js5
+Sections: config io bzip2 cache js5 crypto http packets
 """
 from __future__ import annotations
 
@@ -915,6 +915,329 @@ def gen_http():
     })
 
 
+# ----------------------------------------------------------------- login ------
+
+def gen_login():
+    from dekobloko_server.crypto import IsaacCipher, RsaPrivateKey, xtea_encrypt_dekobloko
+    from dekobloko_server.login import (
+        PacketReader,
+        _BASE37,
+        decode_base37,
+        decode_base38_pair,
+        parse_login_body,
+    )
+
+    repo = Path(__file__).resolve().parents[3]
+    key = RsaPrivateKey.from_json(
+        repo / ".work" / "multiplayer" / "dekobloko-rsa-private.json"
+    )
+    klen = (key.n.bit_length() + 7) // 8
+
+    def pack37(name):
+        packed = 0
+        for ch in name:
+            packed = packed * 37 + _BASE37.index(ch)
+        return packed
+
+    def enc38(text):
+        # Inverse of decode_base38_pair restricted to [a-z0-9 ]: char j of each
+        # 10-char half is the j-th base-38 digit (LSB first), 7 bytes per half.
+        halves = bytearray()
+        for half_text in (text[:10], text[10:20]):
+            value = 0
+            for i, ch in enumerate(half_text):
+                if ch == " ":
+                    v = 1
+                elif ch.isdigit():
+                    v = 28 + int(ch)
+                else:
+                    v = 2 + ord(ch) - ord("a")
+                value += v * (38 ** i)
+            halves += value.to_bytes(7, "big")
+        return bytes(halves)
+
+    # --- decode_base37 ---------------------------------------------------------
+
+    b37_inputs = [
+        0, -5, 1, 2, 12, 27, 36, 37, 38, 39, 40, 729, 1369, 1370,
+        pack37("a"), pack37("player"), pack37("hello"), pack37("a_a"),
+        pack37("zx_qu9"), 2 ** 53 + 3, 37 ** 12 - 1, 37 ** 12,
+        37 ** 12 + 37, pack37("megalongname"),
+    ]
+    assert pack37("megalongname") > 2 ** 53
+    base37_cases = [{"in": str(v), "out": decode_base37(v)} for v in b37_inputs]
+
+    # --- decode_base38_pair ------------------------------------------------------
+
+    b38_inputs = [
+        bytes(14),
+        enc38("hunter2"),
+        enc38("hello world 99"),
+        b"a" * 14,
+        b"\xff" * 14,
+        b"abcdefghijklmn",
+        b"\x01" * 13,  # wrong length: hex passthrough
+        b"\x01" * 15,
+    ]
+    base38_cases = [
+        {"in_hex": blob.hex(), "out": decode_base38_pair(blob)} for blob in b38_inputs
+    ]
+
+    # --- PacketReader ------------------------------------------------------------
+
+    reader_cases = []
+
+    def rop(name, op, data, pos, fn, size=None):
+        entry = {"name": name, "op": op, "in_hex": data.hex(), "pos": pos}
+        if size is not None:
+            entry["size"] = size
+        reader = PacketReader(data)
+        reader.pos = pos
+        try:
+            out = fn(reader)
+            entry["end_pos"] = reader.pos
+            if isinstance(out, bytes):
+                entry["out_hex"] = out.hex()
+            elif isinstance(out, int) and abs(out) > 2 ** 53:
+                entry["out"] = str(out)
+            else:
+                entry["out"] = out
+        except Exception as exc:
+            entry["error"] = type(exc).__name__
+            entry["message"] = str(exc)
+        reader_cases.append(entry)
+
+    rop("read_u8_ok", "read_u8", bytes([7, 9]), 0, lambda r: r.read_u8())
+    rop("read_u8_short", "read_u8", b"", 0, lambda r: r.read_u8())
+    rop("read_u16", "read_u16", bytes.fromhex("f1f2"), 0, lambda r: r.read_u16())
+    rop("read_u24", "read_u24", bytes.fromhex("010203"), 0, lambda r: r.read_u24())
+    rop("read_u32", "read_u32", bytes.fromhex("deadbeef"), 0, lambda r: r.read_u32())
+    rop("read_i32_negative", "read_i32", bytes.fromhex("fffffffe"), 0,
+        lambda r: r.read_i32())
+    rop("read_u64_small", "read_u64", bytes.fromhex("000000000000002a"), 0,
+        lambda r: r.read_u64())
+    rop("read_bytes_short", "read_bytes", b"abc", 0, lambda r: r.read_bytes(5), size=5)
+    rop("cstring_ascii", "read_cstring", b"name\x00tail", 0, lambda r: r.read_cstring())
+    rop("cstring_cp1252", "read_cstring", b"caf\xe9 \x80.\x81\x00zz", 0,
+        lambda r: r.read_cstring())
+    rop("cstring_unterminated", "read_cstring", b"abc", 0, lambda r: r.read_cstring())
+    rop("nullable_null", "read_nullable_cstring", b"\x00x", 0,
+        lambda r: r.read_nullable_cstring())
+    rop("nullable_value", "read_nullable_cstring", b"hi\x00", 0,
+        lambda r: r.read_nullable_cstring())
+    rop("remaining_mid", "remaining", b"abc", 1, lambda r: r.remaining())
+
+    # --- parse_login_body ----------------------------------------------------------
+    #
+    # Synthetic ISAAC challenge: the live server sends secrets.randbits(64)
+    # (game.py); for reproducible vectors we draw two ISAAC words instead and
+    # splice them into client seed slots 2/3.
+
+    rng = IsaacCipher([0x5ED1A77, 0xC0FFEE11, 0x1234ABCD, 0x00F00BAB])
+    challenge_hi = rng.next_int()
+    challenge_lo = rng.next_int()
+    challenge = (challenge_hi << 32) | challenge_lo
+    challenge_mismatch = (challenge_hi << 32) | ((challenge_lo ^ 1) & 0xFFFFFFFF)
+
+    def next_words(count):
+        return [rng.next_int() for _ in range(count)]
+
+    def next_uid():
+        return bytes(rng.next_int() & 0xFF for _ in range(24))
+
+    def serialize(parsed):
+        return {
+            "prefix": {
+                "client_revision": parsed.prefix.client_revision,
+                "client_detail": str(parsed.prefix.client_detail),
+                "flags": parsed.prefix.flags,
+                "client_string": parsed.prefix.client_string,
+                "extra_token_hex": (
+                    parsed.prefix.extra_token.hex()
+                    if parsed.prefix.extra_token is not None
+                    else None
+                ),
+            },
+            "rsa_plain_hex": parsed.rsa_plain.hex(),
+            "xtea_keys": list(parsed.xtea_keys),
+            "xtea_plain_length": parsed.xtea_plain_length,
+            "client_seed": list(parsed.client_seed),
+            "client_seed_signed": list(parsed.client_seed_signed),
+            "challenge_seed": str(parsed.challenge_seed),
+            "challenge_matches": parsed.challenge_matches,
+            "random_uid_hex": parsed.random_uid.hex(),
+            "credentials": {
+                "username": parsed.credentials.username,
+                "password": parsed.credentials.password,
+                "login_mode": parsed.credentials.login_mode,
+                "credential_kind": parsed.credentials.credential_kind,
+                "username_raw": str(parsed.credentials.username_raw),
+            },
+        }
+
+    login_cases = []
+
+    def build_case(name, *, challenge_value, revision=551, detail=0x1122334455667788,
+                   flags=0x04, client_string="en", token=None, token_marker=None,
+                   mode=0, creds=b"", seed_override=None, declared_len=None,
+                   rsa_plain_override=None, truncate_tail=0, raw_body=None):
+        keys = next_words(4)
+        uid = next_uid()
+        seed = seed_override
+        if seed is None:
+            seed = [
+                (keys[0] ^ 0x5A5A5A5A) & 0xFFFFFFFF,
+                keys[1],
+                challenge_hi,
+                challenge_lo,
+            ]
+        inner = b"".join(w.to_bytes(4, "big") for w in seed)
+        inner += uid + mode.to_bytes(2, "big") + creds
+        padded_len = len(inner)
+        inner += b"\x00" * ((-len(inner)) % 8)
+
+        rsa_plain = rsa_plain_override
+        if rsa_plain is None:
+            declared = declared_len if declared_len is not None else padded_len
+            rsa_plain = b"\x0a" + b"".join(k.to_bytes(4, "big") for k in keys)
+            rsa_plain += declared.to_bytes(2, "big")
+        xtea_cipher = xtea_encrypt_dekobloko(inner, keys)
+        rsa_cipher = pow(int.from_bytes(rsa_plain, "big"), key.e, key.n)
+        rsa_cipher = rsa_cipher.to_bytes(klen, "big")
+
+        body = raw_body
+        if body is None:
+            body = revision.to_bytes(4, "big") + detail.to_bytes(8, "big")
+            body += bytes([flags]) + client_string.encode("cp1252") + b"\x00"
+            if flags & 0x10:
+                marker = token_marker if token_marker is not None else 0
+                body += bytes([marker])
+                if token is not None:
+                    body += token.encode("cp1252") + b"\x00"
+            body += len(rsa_cipher).to_bytes(2, "big") + rsa_cipher + xtea_cipher
+            if truncate_tail:
+                body = body[:-truncate_tail]
+
+        entry = {
+            "name": name,
+            "body_hex": body.hex(),
+            "expected_challenge": str(challenge_value),
+        }
+        try:
+            parsed = parse_login_body(body, key, challenge_value)
+            entry["result"] = serialize(parsed)
+        except Exception as exc:
+            entry["error"] = {"type": type(exc).__name__, "message": str(exc)}
+        login_cases.append(entry)
+
+    build_case(
+        "string_base38_mode0_match",
+        challenge_value=challenge,
+        flags=0x04,
+        mode=0,
+        creds=b"\x00" + b"player@mail.example" + b"\x00" + enc38("hunter2"),
+    )
+    build_case(
+        "base37_base38_mode1_extra_token",
+        challenge_value=challenge,
+        flags=0x14,
+        token="abcdef123",
+        mode=1,
+        creds=pack37("zx_qu9").to_bytes(8, "big") + enc38("pass word9"),
+    )
+    build_case(
+        "reconnect_id_slot_mismatch",
+        challenge_value=challenge_mismatch,
+        flags=0x00,
+        mode=1,
+        creds=(42).to_bytes(8, "big") + enc38("secret12"),
+    )
+    build_case(
+        "empty_credentials_mode0",
+        challenge_value=challenge,
+        detail=7,
+        flags=0x01,
+        mode=0,
+        creds=b"",
+    )
+    build_case(
+        "raw_fallback_short_tail",
+        challenge_value=challenge,
+        mode=0,
+        creds=bytes([1, 2, 3, 4, 5]),
+    )
+    build_case(
+        "string_form_rejected_fallback",
+        challenge_value=challenge,
+        mode=1,
+        creds=pack37("abc").to_bytes(8, "big") + enc38("pw123456"),
+    )
+    build_case(
+        "long_name_beyond_double53",
+        challenge_value=challenge,
+        mode=0,
+        creds=pack37("megalongname").to_bytes(8, "big") + enc38("z0z0z0"),
+    )
+    build_case(
+        "cp1252_client_string",
+        challenge_value=challenge_mismatch,
+        revision=778,
+        flags=0x08,
+        client_string="caf\u00e9 \u20ac-\u00f1",
+        mode=1,
+        creds=b"\x00" + b"second@mail.example" + b"\x00" + enc38("dragon33"),
+    )
+
+    # Error paths -- exact exception type + message recorded.
+    build_case(
+        "bad_optional_token_marker",
+        challenge_value=challenge,
+        flags=0x10,
+        token="t",
+        token_marker=5,
+    )
+    build_case(
+        "unterminated_client_string",
+        challenge_value=challenge,
+        raw_body=(
+            (551).to_bytes(4, "big")
+            + (0x1122334455667788).to_bytes(8, "big")
+            + bytes([4])
+            + b"en"
+        ),
+    )
+    build_case(
+        "short_rsa_cipher",
+        challenge_value=challenge,
+        truncate_tail=60,  # swallows all XTEA blocks plus 12 RSA bytes
+    )
+    build_case(
+        "bad_rsa_marker",
+        challenge_value=challenge,
+        rsa_plain_override=b"\x07" + bytes(16),
+    )
+    build_case(
+        "xtea_declared_length_exceeds",
+        challenge_value=challenge,
+        declared_len=4096,
+        creds=b"\x00" + b"short@x" + b"\x00" + enc38("tiny123"),
+    )
+    build_case(
+        "empty_xtea_payload_declared_zero",
+        challenge_value=challenge,
+        declared_len=0,
+        creds=b"",
+    )
+
+    dump("login", {
+        "key": {"n": str(key.n), "d": str(key.d), "e": key.e},
+        "base37": base37_cases,
+        "base38": base38_cases,
+        "reader": reader_cases,
+        "login": login_cases,
+    })
+
+
 GENERATORS = {
     "config": gen_config,
     "io": gen_io,
@@ -923,6 +1246,7 @@ GENERATORS = {
     "js5": gen_js5,
     "crypto": gen_crypto,
     "http": gen_http,
+    "login": gen_login,
 }
 
 
