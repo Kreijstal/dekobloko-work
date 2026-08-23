@@ -10,7 +10,7 @@
 // until the gameplay port lands.
 
 const net = require('net');
-const { EOFError: IoEOFError, read_exact, read_u8 } = require('./io');
+const { EOFError: IoEOFError } = require('./io');
 
 function defaultLog() { console.log.apply(console, arguments); }
 
@@ -67,6 +67,26 @@ function makeSocketReader(socket) {
   };
 }
 
+/**
+ * Async read_exact over the reader/writer interface. io.js's read_exact is
+ * deliberately synchronous (unit-test fixtures recv() buffers directly), so
+ * the live-socket path does its own awaiting here: makeSocketReader resolves
+ * promises, stub readers in tests return plain Buffers -- await accepts both.
+ */
+async function _recv_exact(reader, n) {
+  const parts = [];
+  let have = 0;
+  while (have < n) {
+    const chunk = await reader.recv(n - have);
+    if (chunk === null || chunk === undefined || chunk.length === 0) {
+      throw new IoEOFError("socket closed while reading " + n + " bytes");
+    }
+    parts.push(chunk);
+    have += chunk.length;
+  }
+  return Buffer.concat(parts);
+}
+
 // Route one client stream. Returns a disposition string useful for logs/tests.
 async function handleStream(reader, writer, options) {
   const peer = options.peer;
@@ -74,15 +94,15 @@ async function handleStream(reader, writer, options) {
   const cache = options.cache;
   const log = options.log || defaultLog;
   try {
-    const preamble = await read_exact(reader, 8);
+    const preamble = await _recv_exact(reader, 8);
     if (preamble.length !== 8 || preamble[0] !== 12) {
       const hex = Array.from(preamble).map((b) => b.toString(16).padStart(2, "0")).join(" ");
       log("[tcp] " + peer + " invalid preamble " + hex);
       return "invalid-preamble";
     }
-    const nextOpcode = await read_u8(reader);
+    const nextOpcode = (await _recv_exact(reader, 1))[0];
     if (nextOpcode === 15) {
-      const revisionBytes = await read_exact(reader, 4);
+      const revisionBytes = await _recv_exact(reader, 4);
       const revision = revisionBytes.readUInt32BE(0);
       const session = new options.sessions.Js5Session(writer, cache, peer);
       await session.run_after_handshake(revision);
