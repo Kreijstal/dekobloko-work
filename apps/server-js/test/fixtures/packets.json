@@ -1,0 +1,1863 @@
+{
+  "builder": [
+    {
+      "name": "u8_chain",
+      "ops": [
+        [
+          "u8",
+          0
+        ],
+        [
+          "u8",
+          255
+        ],
+        [
+          "u8",
+          256
+        ],
+        [
+          "u8",
+          -1
+        ]
+      ],
+      "out_hex": "00ff00ff"
+    },
+    {
+      "name": "i8_negative",
+      "ops": [
+        [
+          "i8",
+          -1
+        ],
+        [
+          "i8",
+          300
+        ]
+      ],
+      "out_hex": "ff2c"
+    },
+    {
+      "name": "u16_u24",
+      "ops": [
+        [
+          "u16",
+          65535
+        ],
+        [
+          "u16",
+          70000
+        ],
+        [
+          "u24",
+          11259375
+        ],
+        [
+          "u24",
+          16777216
+        ]
+      ],
+      "out_hex": "ffff1170abcdef000000"
+    },
+    {
+      "name": "u32_mask",
+      "ops": [
+        [
+          "u32",
+          4294967295
+        ],
+        [
+          "u32",
+          4294967301
+        ]
+      ],
+      "out_hex": "ffffffff00000005"
+    },
+    {
+      "name": "u64_masks",
+      "ops": [
+        [
+          "u64",
+          -1
+        ],
+        [
+          "u64",
+          "18446744073709551616"
+        ],
+        [
+          "u64",
+          "18446744073709551615"
+        ],
+        [
+          "u64",
+          42
+        ]
+      ],
+      "out_hex": "ffffffffffffffff0000000000000000ffffffffffffffff000000000000002a"
+    },
+    {
+      "name": "varint7_small",
+      "ops": [
+        [
+          "varint7",
+          0
+        ],
+        [
+          "varint7",
+          1
+        ],
+        [
+          "varint7",
+          127
+        ]
+      ],
+      "out_hex": "00017f"
+    },
+    {
+      "name": "varint7_multi",
+      "ops": [
+        [
+          "varint7",
+          128
+        ],
+        [
+          "varint7",
+          129
+        ],
+        [
+          "varint7",
+          16383
+        ],
+        [
+          "varint7",
+          16384
+        ],
+        [
+          "varint7",
+          2097151
+        ],
+        [
+          "varint7",
+          4294967295
+        ]
+      ],
+      "out_hex": "81008101ff7f818000ffff7f8fffffff7f"
+    },
+    {
+      "name": "cstring_ascii",
+      "ops": [
+        [
+          "cstring",
+          "Alice"
+        ]
+      ],
+      "out_hex": "416c69636500"
+    },
+    {
+      "name": "cstring_cp1252",
+      "ops": [
+        [
+          "cstring",
+          "caf\u00e9 \u2014 \u2018fancy\u2019 \u2026 \u20ac"
+        ]
+      ],
+      "out_hex": "636166e92097209166616e6379922085208000"
+    },
+    {
+      "name": "cstring_replaced",
+      "ops": [
+        [
+          "cstring",
+          "snow \u2603 ok"
+        ]
+      ],
+      "out_hex": "736e6f77203f206f6b00"
+    },
+    {
+      "name": "jagex_string",
+      "ops": [
+        [
+          "jagex_string",
+          "Lobby"
+        ]
+      ],
+      "out_hex": "004c6f62627900"
+    },
+    {
+      "name": "mixed_raw",
+      "ops": [
+        [
+          "u8",
+          5
+        ],
+        [
+          "raw",
+          "deadbeef"
+        ],
+        [
+          "cstring",
+          "x"
+        ],
+        [
+          "u16",
+          258
+        ]
+      ],
+      "out_hex": "05deadbeef78000102"
+    },
+    {
+      "name": "empty",
+      "ops": [],
+      "out_hex": ""
+    },
+    {
+      "error": "varint7 cannot encode negative values",
+      "error_type": "ValueError",
+      "name": "err_varint_negative",
+      "ops": [
+        [
+          "varint7",
+          -1
+        ]
+      ]
+    },
+    {
+      "error": "NUL is not allowed inside client strings",
+      "error_type": "ValueError",
+      "name": "err_cstring_nul",
+      "ops": [
+        [
+          "cstring",
+          "a\u0000b"
+        ]
+      ]
+    }
+  ],
+  "builds": [
+    {
+      "args": [
+        0
+      ],
+      "family": "build_sb_reply",
+      "kwargs": {},
+      "name": "zero",
+      "out_hex": "000000000000"
+    },
+    {
+      "args": [
+        3
+      ],
+      "family": "build_sb_reply",
+      "kwargs": {},
+      "name": "stage3",
+      "out_hex": "000003000000"
+    },
+    {
+      "args": [
+        305419896
+      ],
+      "family": "build_sb_reply",
+      "kwargs": {},
+      "name": "large",
+      "out_hex": "000078563412"
+    },
+    {
+      "args": [
+        []
+      ],
+      "family": "build_achievements_reply",
+      "kwargs": {},
+      "name": "none",
+      "out_hex": "000100000000"
+    },
+    {
+      "args": [
+        [
+          0
+        ]
+      ],
+      "family": "build_achievements_reply",
+      "kwargs": {},
+      "name": "one",
+      "out_hex": "000100000001"
+    },
+    {
+      "args": [
+        [
+          1,
+          5,
+          30
+        ]
+      ],
+      "family": "build_achievements_reply",
+      "kwargs": {},
+      "name": "spread",
+      "out_hex": "000140000022"
+    },
+    {
+      "args": [
+        [
+          31,
+          99,
+          -1
+        ]
+      ],
+      "family": "build_achievements_reply",
+      "kwargs": {},
+      "name": "out_of_range_ignored",
+      "out_hex": "000100000000"
+    },
+    {
+      "args": [
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      "family": "build_achievements_reply",
+      "kwargs": {},
+      "name": "dupes",
+      "out_hex": "000100000004"
+    },
+    {
+      "args": [
+        []
+      ],
+      "family": "build_achievement_mask",
+      "kwargs": {},
+      "name": "none",
+      "out_hex": "0100000000"
+    },
+    {
+      "args": [
+        [
+          0,
+          3,
+          17
+        ]
+      ],
+      "family": "build_achievement_mask",
+      "kwargs": {},
+      "name": "several",
+      "out_hex": "0100020009"
+    },
+    {
+      "args": [
+        [
+          40,
+          -5
+        ]
+      ],
+      "family": "build_achievement_mask",
+      "kwargs": {},
+      "name": "out_of_range_ignored",
+      "out_hex": "0100000000"
+    },
+    {
+      "args": [],
+      "family": "build_f_reply",
+      "kwargs": {},
+      "name": "always",
+      "out_hex": "02"
+    },
+    {
+      "args": [
+        "Zed",
+        5,
+        {
+          "__hex__": "68656c6c6f"
+        },
+        0
+      ],
+      "family": "build_chat_broadcast",
+      "kwargs": {},
+      "name": "lobby_default",
+      "out_hex": "00010000000000000000005a6564000568656c6c6f"
+    },
+    {
+      "args": [
+        "<img=1>Duke",
+        11,
+        {
+          "__hex__": "6772656574696e6773"
+        },
+        0
+      ],
+      "family": "build_chat_broadcast",
+      "kwargs": {},
+      "name": "markup_name",
+      "out_hex": "00010000000000000000003c696d673d313e44756b65000b6772656574696e6773"
+    },
+    {
+      "args": [
+        "Amy",
+        3,
+        {
+          "__hex__": "6869"
+        },
+        1
+      ],
+      "family": "build_chat_broadcast",
+      "kwargs": {
+        "room_id": 5,
+        "room_owner": "Bob"
+      },
+      "name": "room_channel1",
+      "out_hex": "0101000000000000000000416d79000005426f6200036869"
+    },
+    {
+      "args": [
+        "Cid",
+        2,
+        {
+          "__hex__": "6869"
+        },
+        132
+      ],
+      "family": "build_chat_broadcast",
+      "kwargs": {
+        "room_id": 4097,
+        "room_owner": "\u00e9owyn"
+      },
+      "name": "channel4_via_132",
+      "out_hex": "0401000000000000000000436964001001e96f77796e00026869"
+    },
+    {
+      "args": [
+        "Hex",
+        4,
+        {
+          "__hex__": "00ff7f80"
+        },
+        0
+      ],
+      "family": "build_chat_broadcast",
+      "kwargs": {},
+      "name": "binary_body",
+      "out_hex": "0001000000000000000000486578000400ff7f80"
+    },
+    {
+      "args": [
+        "Nope",
+        1,
+        {
+          "__hex__": "6869"
+        },
+        1
+      ],
+      "error": "room chat requires room_id and room_owner",
+      "error_type": "ValueError",
+      "family": "build_chat_broadcast",
+      "kwargs": {},
+      "name": "err_room_fields_missing"
+    },
+    {
+      "args": [
+        "Pat",
+        42,
+        0
+      ],
+      "family": "build_quickchat_broadcast",
+      "kwargs": {},
+      "name": "lobby",
+      "out_hex": "000100000000000000000050617400002a"
+    },
+    {
+      "args": [
+        "Pat",
+        32775,
+        0
+      ],
+      "family": "build_quickchat_broadcast",
+      "kwargs": {},
+      "name": "high_bit_id",
+      "out_hex": "0001000000000000000000506174008007"
+    },
+    {
+      "args": [
+        "Sam",
+        9,
+        1
+      ],
+      "family": "build_quickchat_broadcast",
+      "kwargs": {
+        "room_id": 12,
+        "room_owner": "Owner"
+      },
+      "name": "room_ch1",
+      "out_hex": "010100000000000000000053616d00000c4f776e6572000009"
+    },
+    {
+      "args": [
+        "X",
+        1,
+        2
+      ],
+      "error": "unsupported quickchat channel",
+      "error_type": "ValueError",
+      "family": "build_quickchat_broadcast",
+      "kwargs": {},
+      "name": "err_unsupported_channel"
+    },
+    {
+      "args": [
+        "Y",
+        1,
+        1
+      ],
+      "error": "room quickchat requires room_id and room_owner",
+      "error_type": "ValueError",
+      "family": "build_quickchat_broadcast",
+      "kwargs": {},
+      "name": "err_room_fields_missing"
+    },
+    {
+      "args": [
+        5
+      ],
+      "family": "build_room_membership",
+      "kwargs": {},
+      "name": "disc5",
+      "out_hex": "0500"
+    },
+    {
+      "args": [
+        0
+      ],
+      "family": "build_room_membership",
+      "kwargs": {},
+      "name": "disc0",
+      "out_hex": "0000"
+    },
+    {
+      "args": [
+        5
+      ],
+      "error": "occupant records (N >= 1) are not reversed yet; see build_room_membership",
+      "error_type": "ValueError",
+      "family": "build_room_membership",
+      "kwargs": {
+        "occupants": 1
+      },
+      "name": "err_occupants"
+    },
+    {
+      "args": [
+        43981,
+        {
+          "__bigint__": "1234605616436508552"
+        }
+      ],
+      "family": "build_achievement_ack",
+      "kwargs": {},
+      "name": "proven",
+      "out_hex": "01abcd1122334455667788"
+    },
+    {
+      "args": [
+        1,
+        -1
+      ],
+      "family": "build_achievement_ack",
+      "kwargs": {},
+      "name": "neg_value_wraps",
+      "out_hex": "010001ffffffffffffffff"
+    },
+    {
+      "args": [
+        7
+      ],
+      "family": "build_achievement_ack",
+      "kwargs": {},
+      "name": "defaults",
+      "out_hex": "0100070000000000000000"
+    },
+    {
+      "args": [
+        0,
+        [
+          [
+            0,
+            999,
+            [
+              5
+            ]
+          ]
+        ]
+      ],
+      "family": "build_hiscore_table",
+      "kwargs": {},
+      "name": "proven_minimal",
+      "out_hex": "00000001010000000000000003e700000005"
+    },
+    {
+      "args": [
+        7,
+        [
+          [
+            0,
+            1099511627776,
+            [
+              7,
+              8
+            ]
+          ],
+          [
+            1,
+            5,
+            [
+              9,
+              10
+            ]
+          ]
+        ]
+      ],
+      "family": "build_hiscore_table",
+      "kwargs": {
+        "columns": [
+          [
+            "Board",
+            null
+          ],
+          [
+            "Time",
+            "secs"
+          ]
+        ],
+        "vcols": 2
+      },
+      "name": "columns_vcols",
+      "out_hex": "00000703426f617264000054696d6500017365637300020000000100000000000000000700000008010000000000000005000000090000000a"
+    },
+    {
+      "args": [
+        0,
+        [
+          [
+            0,
+            1,
+            [
+              1,
+              2
+            ]
+          ]
+        ]
+      ],
+      "error": "entry needs exactly 1 values, got 2",
+      "error_type": "ValueError",
+      "family": "build_hiscore_table",
+      "kwargs": {},
+      "name": "err_value_count"
+    },
+    {
+      "args": [
+        "Troll"
+      ],
+      "family": "build_ignore_entry",
+      "kwargs": {},
+      "name": "default",
+      "out_hex": "010054726f6c6c0000"
+    },
+    {
+      "args": [
+        "Troll"
+      ],
+      "family": "build_ignore_entry",
+      "kwargs": {
+        "previous": "Foo",
+        "world": "World31"
+      },
+      "name": "full",
+      "out_hex": "01466f6f0054726f6c6c00576f726c64333100"
+    },
+    {
+      "args": [
+        "Amelia"
+      ],
+      "family": "build_friend_entry",
+      "kwargs": {},
+      "name": "no_display",
+      "out_hex": "0000416d656c69610000"
+    },
+    {
+      "args": [
+        "Amelia"
+      ],
+      "family": "build_friend_entry",
+      "kwargs": {
+        "display_name": "Amy",
+        "world": "W2"
+      },
+      "name": "display",
+      "out_hex": "0001416d656c696100416d7900573200"
+    },
+    {
+      "args": [
+        42,
+        "GUEST"
+      ],
+      "family": "build_player_joined_room",
+      "kwargs": {},
+      "name": "defaults",
+      "out_hex": "12000000000000002a4755455354004755455354000000000000"
+    },
+    {
+      "args": [
+        42,
+        "GUEST"
+      ],
+      "family": "build_player_joined_room",
+      "kwargs": {
+        "crown": 3,
+        "display_name": "Guesty",
+        "options": 1,
+        "rated_games": 37,
+        "rating": 1487
+      },
+      "name": "full",
+      "out_hex": "12000000000000002a4755455354004775657374790005cf4a0301"
+    },
+    {
+      "args": [
+        42
+      ],
+      "family": "build_player_left_room",
+      "kwargs": {},
+      "name": "plain",
+      "out_hex": "13000000000000002a00"
+    },
+    {
+      "args": [
+        42
+      ],
+      "family": "build_player_left_room",
+      "kwargs": {
+        "reason": 3
+      },
+      "name": "kicked",
+      "out_hex": "13000000000000002a03"
+    },
+    {
+      "args": [],
+      "family": "build_leave_room_reply",
+      "kwargs": {},
+      "name": "always",
+      "out_hex": "00"
+    },
+    {
+      "args": [],
+      "family": "build_kicked_room_reply",
+      "kwargs": {},
+      "name": "always",
+      "out_hex": "01"
+    },
+    {
+      "args": [
+        1,
+        1000,
+        "Host"
+      ],
+      "family": "build_add_room",
+      "kwargs": {
+        "player_count": 1
+      },
+      "name": "minimal",
+      "out_hex": "08000101080498000000000000000000000000000000000003e8486f737400"
+    },
+    {
+      "args": [
+        2,
+        1000,
+        "Host"
+      ],
+      "family": "build_add_room",
+      "kwargs": {
+        "elapsed_ms": 61000,
+        "player_count": 3,
+        "started": true
+      },
+      "name": "started",
+      "out_hex": "080002030804d0000000000000000000ee4800000000000003e8486f737400"
+    },
+    {
+      "args": [
+        3,
+        1000,
+        "Host"
+      ],
+      "family": "build_add_room",
+      "kwargs": {
+        "allow_join": false,
+        "concluded": true,
+        "elapsed_ms": 120000,
+        "player_count": 8,
+        "rated": true
+      },
+      "name": "concluded_rated_nojoin",
+      "out_hex": "0800030808043c000000000000000001d4c00001d4c000000000000003e8486f737400"
+    },
+    {
+      "args": [
+        4,
+        1000,
+        "H"
+      ],
+      "family": "build_add_room",
+      "kwargs": {
+        "allow_spectators": false,
+        "options": {
+          "__hex__": "0102030405"
+        },
+        "player_count": 0
+      },
+      "name": "invite_only_no_spectate",
+      "out_hex": "08000400080488010203040500000000000000000000000003e84800"
+    },
+    {
+      "args": [
+        9
+      ],
+      "family": "build_remove_room",
+      "kwargs": {},
+      "name": "default",
+      "out_hex": "09000900"
+    },
+    {
+      "args": [
+        9
+      ],
+      "family": "build_remove_room",
+      "kwargs": {
+        "reason": 2
+      },
+      "name": "reason",
+      "out_hex": "09000902"
+    },
+    {
+      "args": [
+        77
+      ],
+      "family": "build_room_invitation",
+      "kwargs": {},
+      "name": "basic",
+      "out_hex": "0b004d"
+    },
+    {
+      "args": [
+        500
+      ],
+      "family": "build_lobby_player_left",
+      "kwargs": {},
+      "name": "default",
+      "out_hex": "0600000000000001f400"
+    },
+    {
+      "args": [
+        500
+      ],
+      "family": "build_lobby_player_left",
+      "kwargs": {
+        "reason": 1
+      },
+      "name": "reason",
+      "out_hex": "0600000000000001f401"
+    },
+    {
+      "args": [
+        501
+      ],
+      "family": "build_host_invitation_added",
+      "kwargs": {},
+      "name": "basic",
+      "out_hex": "0e00000000000001f5"
+    },
+    {
+      "args": [
+        502
+      ],
+      "family": "build_host_invitation_removed",
+      "kwargs": {},
+      "name": "default_status2",
+      "out_hex": "0f00000000000001f602"
+    },
+    {
+      "args": [
+        502
+      ],
+      "family": "build_host_invitation_removed",
+      "kwargs": {
+        "status": 7
+      },
+      "name": "custom",
+      "out_hex": "0f00000000000001f607"
+    },
+    {
+      "args": [
+        10,
+        1000,
+        "Host"
+      ],
+      "family": "build_create_room_reply",
+      "kwargs": {},
+      "name": "open",
+      "out_hex": "04000a080498000000000000000000000000000000000003e8486f737400"
+    },
+    {
+      "args": [
+        11,
+        1000,
+        "Host"
+      ],
+      "family": "build_create_room_reply",
+      "kwargs": {
+        "invite_only": true,
+        "max_players": 4
+      },
+      "name": "invite_only_small",
+      "out_hex": "04000b040098000000000000000000000000000000000003e8486f737400"
+    },
+    {
+      "args": [
+        42
+      ],
+      "family": "build_local_player_id",
+      "kwargs": {},
+      "name": "answer42",
+      "out_hex": "17000000000000002a"
+    },
+    {
+      "args": [
+        0
+      ],
+      "family": "build_local_player_id",
+      "kwargs": {},
+      "name": "zero",
+      "out_hex": "170000000000000000"
+    },
+    {
+      "args": [
+        {
+          "__bigint__": "18446744073709551615"
+        }
+      ],
+      "family": "build_local_player_id",
+      "kwargs": {},
+      "name": "max_u64",
+      "out_hex": "17ffffffffffffffff"
+    },
+    {
+      "args": [
+        -1
+      ],
+      "error": "uid must fit in u64, got -1",
+      "error_type": "ValueError",
+      "family": "build_local_player_id",
+      "kwargs": {},
+      "name": "err_negative"
+    },
+    {
+      "args": [
+        {
+          "__bigint__": "18446744073709551616"
+        }
+      ],
+      "error": "uid must fit in u64, got 18446744073709551616",
+      "error_type": "ValueError",
+      "family": "build_local_player_id",
+      "kwargs": {},
+      "name": "err_too_big"
+    },
+    {
+      "args": [
+        42,
+        "Alice",
+        1487
+      ],
+      "family": "build_lobby_player",
+      "kwargs": {
+        "flag": true,
+        "icon": 3,
+        "previous_name": "",
+        "rated_games": 37,
+        "seconds_ago": 600
+      },
+      "name": "proven_shape",
+      "out_hex": "05000000000000002a416c6963650000416c696365000000025805cf4b0300"
+    },
+    {
+      "args": [
+        7,
+        "Bob",
+        0
+      ],
+      "family": "build_lobby_player",
+      "kwargs": {
+        "display_name": "Bobby"
+      },
+      "name": "display_override",
+      "out_hex": "050000000000000007426f620000426f62627900000000000000000000"
+    },
+    {
+      "args": [
+        1,
+        "X",
+        65536
+      ],
+      "error": "rating must fit in u16, got 65536",
+      "error_type": "ValueError",
+      "family": "build_lobby_player",
+      "kwargs": {},
+      "name": "err_rating"
+    },
+    {
+      "args": [
+        1,
+        "X",
+        0
+      ],
+      "error": "rated_games must fit in 7 bits (packed as games << 1 | flag), got 128",
+      "error_type": "ValueError",
+      "family": "build_lobby_player",
+      "kwargs": {
+        "rated_games": 128
+      },
+      "name": "err_rated_games"
+    },
+    {
+      "args": [],
+      "family": "build_social_list_complete",
+      "kwargs": {},
+      "name": "mode2_default",
+      "out_hex": "02"
+    },
+    {
+      "args": [],
+      "family": "build_social_list_complete",
+      "kwargs": {
+        "mode": 3
+      },
+      "name": "mode3",
+      "out_hex": "03"
+    },
+    {
+      "args": [],
+      "error": "only the proven list-complete modes 2 and 3 are supported",
+      "error_type": "ValueError",
+      "family": "build_social_list_complete",
+      "kwargs": {
+        "mode": 4
+      },
+      "name": "err_mode4"
+    }
+  ],
+  "codec_decode": [
+    {
+      "frames": [
+        {
+          "assumed_variable": false,
+          "kind": "table",
+          "opcode": 17,
+          "payload_hex": ""
+        },
+        {
+          "assumed_variable": true,
+          "kind": "assume",
+          "opcode": 99,
+          "payload_hex": "cafebabe"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "table",
+          "opcode": 60,
+          "payload_hex": "03127e"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "hiscore3",
+          "opcode": 3,
+          "payload_hex": "050000000a01"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "table",
+          "opcode": 7,
+          "payload_hex": "000a"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "achrec3",
+          "opcode": 3,
+          "payload_hex": "0100070009000004d20000162e00000000000000000000000000000000000000deadbeef"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "req5",
+          "opcode": 5,
+          "payload_hex": "020000"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "progress5",
+          "opcode": 5,
+          "payload_hex": "0100430000000000000000000000000000000000000000"
+        },
+        {
+          "assumed_variable": true,
+          "kind": "assume_zero",
+          "opcode": 77,
+          "payload_hex": ""
+        },
+        {
+          "assumed_variable": false,
+          "kind": "table",
+          "opcode": 59,
+          "payload_hex": "2a"
+        }
+      ],
+      "label": "seed_a",
+      "seed": [
+        11,
+        22,
+        33,
+        44
+      ],
+      "stream_hex": "f67804cafebabe0a0303127e5a050000000a018d000a54240100070009000004d20000162e00000000000000000000000000000000000000deadbeef8a0200001b17010043000000000000000000000000000000000000000075007c2a"
+    },
+    {
+      "frames": [
+        {
+          "assumed_variable": false,
+          "kind": "table",
+          "opcode": 17,
+          "payload_hex": ""
+        },
+        {
+          "assumed_variable": true,
+          "kind": "assume",
+          "opcode": 99,
+          "payload_hex": "cafebabe"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "table",
+          "opcode": 60,
+          "payload_hex": "03127e"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "hiscore3",
+          "opcode": 3,
+          "payload_hex": "050000000a01"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "table",
+          "opcode": 7,
+          "payload_hex": "000a"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "achrec3",
+          "opcode": 3,
+          "payload_hex": "0100070009000004d20000162e00000000000000000000000000000000000000deadbeef"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "req5",
+          "opcode": 5,
+          "payload_hex": "020000"
+        },
+        {
+          "assumed_variable": false,
+          "kind": "progress5",
+          "opcode": 5,
+          "payload_hex": "0100430000000000000000000000000000000000000000"
+        },
+        {
+          "assumed_variable": true,
+          "kind": "assume_zero",
+          "opcode": 77,
+          "payload_hex": ""
+        },
+        {
+          "assumed_variable": false,
+          "kind": "table",
+          "opcode": 59,
+          "payload_hex": "2a"
+        }
+      ],
+      "label": "seed_b_wrap",
+      "seed": [
+        4294967295,
+        2147483647,
+        50,
+        0
+      ],
+      "stream_hex": "428d04cafebabeb60303127ef1050000000a014e000a61240100070009000004d20000162e00000000000000000000000000000000000000deadbeef1802000080170100430000000000000000000000000000000000000000f0005b2a"
+    }
+  ],
+  "codec_encode": {
+    "cases": [
+      {
+        "label": "seed_a",
+        "opcode": 0,
+        "payload_hex": "",
+        "wire_hex": "26"
+      },
+      {
+        "label": "seed_a",
+        "opcode": 14,
+        "payload_hex": "",
+        "wire_hex": "d1"
+      },
+      {
+        "label": "seed_a",
+        "opcode": 18,
+        "payload_hex": "07",
+        "wire_hex": "4407"
+      },
+      {
+        "label": "seed_a",
+        "opcode": 62,
+        "payload_hex": "0102",
+        "wire_hex": "f80102"
+      },
+      {
+        "label": "seed_a",
+        "opcode": 9,
+        "payload_hex": "48656c6c6f00",
+        "wire_hex": "b20648656c6c6f00"
+      },
+      {
+        "label": "seed_a",
+        "opcode": 75,
+        "payload_hex": "0100000008",
+        "wire_hex": "86050100000008"
+      },
+      {
+        "label": "seed_a",
+        "opcode": 2,
+        "payload_hex": "01abcd1122334455667788",
+        "wire_hex": "08000b01abcd1122334455667788"
+      },
+      {
+        "label": "seed_a",
+        "opcode": 61,
+        "payload_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b",
+        "wire_hex": "c4003c000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b"
+      },
+      {
+        "label": "seed_a",
+        "opcode": 100,
+        "payload_hex": "abcd",
+        "warning": "[packets] WARNING opcode 100 has no measured length entry; guessing fixed 2-byte framing. If the client's mk.field_c[100] disagrees, this DESYNCS the stream and the client will die somewhere unrelated.",
+        "wire_hex": "a0abcd"
+      },
+      {
+        "label": "seed_b_wrap",
+        "opcode": 0,
+        "payload_hex": "",
+        "wire_hex": "48"
+      },
+      {
+        "label": "seed_b_wrap",
+        "opcode": 14,
+        "payload_hex": "",
+        "wire_hex": "4f"
+      },
+      {
+        "label": "seed_b_wrap",
+        "opcode": 18,
+        "payload_hex": "07",
+        "wire_hex": "1107"
+      },
+      {
+        "label": "seed_b_wrap",
+        "opcode": 62,
+        "payload_hex": "0102",
+        "wire_hex": "690102"
+      },
+      {
+        "label": "seed_b_wrap",
+        "opcode": 9,
+        "payload_hex": "48656c6c6f00",
+        "wire_hex": "f30648656c6c6f00"
+      },
+      {
+        "label": "seed_b_wrap",
+        "opcode": 75,
+        "payload_hex": "0100000008",
+        "wire_hex": "7c050100000008"
+      },
+      {
+        "label": "seed_b_wrap",
+        "opcode": 2,
+        "payload_hex": "01abcd1122334455667788",
+        "wire_hex": "c1000b01abcd1122334455667788"
+      },
+      {
+        "label": "seed_b_wrap",
+        "opcode": 61,
+        "payload_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b",
+        "wire_hex": "79003c000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b"
+      },
+      {
+        "label": "seed_b_wrap",
+        "opcode": 100,
+        "payload_hex": "abcd",
+        "warning": "[packets] WARNING opcode 100 has no measured length entry; guessing fixed 2-byte framing. If the client's mk.field_c[100] disagrees, this DESYNCS the stream and the client will die somewhere unrelated.",
+        "wire_hex": "6babcd"
+      }
+    ],
+    "errors": [
+      {
+        "case": "fixed_mismatch",
+        "error": "packet 0 is fixed at 0 bytes, got 1",
+        "error_type": "ValueError",
+        "label": "seed_a",
+        "post_error_wire_hex": "c3"
+      },
+      {
+        "case": "too_long_u8",
+        "error": "packet 9: 256 bytes does not fit a one-byte length",
+        "error_type": "ValueError",
+        "label": "seed_a"
+      },
+      {
+        "case": "too_long_u16",
+        "error": "packet 2: 65536 bytes does not fit a two-byte length",
+        "error_type": "ValueError",
+        "label": "seed_a"
+      },
+      {
+        "case": "fixed_mismatch",
+        "error": "packet 0 is fixed at 0 bytes, got 1",
+        "error_type": "ValueError",
+        "label": "seed_b_wrap",
+        "post_error_wire_hex": "41"
+      },
+      {
+        "case": "too_long_u8",
+        "error": "packet 9: 256 bytes does not fit a one-byte length",
+        "error_type": "ValueError",
+        "label": "seed_b_wrap"
+      },
+      {
+        "case": "too_long_u16",
+        "error": "packet 2: 65536 bytes does not fit a two-byte length",
+        "error_type": "ValueError",
+        "label": "seed_b_wrap"
+      }
+    ]
+  },
+  "decode_control_batch": [
+    {
+      "name": "three_controls",
+      "out": [
+        5,
+        6,
+        7
+      ],
+      "payload_hex": "03298e"
+    },
+    {
+      "name": "zero_count",
+      "out": [],
+      "payload_hex": "00"
+    },
+    {
+      "name": "max_twenty",
+      "out": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "payload_hex": "1408421084210842108421084210"
+    },
+    {
+      "error": "control batch is missing its count byte",
+      "error_type": "ValueError",
+      "name": "err_missing_count",
+      "payload_hex": ""
+    },
+    {
+      "error": "control batch count exceeds client buffer: 21",
+      "error_type": "ValueError",
+      "name": "err_count_over_buffer",
+      "payload_hex": "150000000000000000000000000000"
+    }
+  ],
+  "pack_5bit": [
+    {
+      "name": "empty",
+      "out_hex": "",
+      "values": []
+    },
+    {
+      "name": "single_zero",
+      "out_hex": "00",
+      "values": [
+        0
+      ]
+    },
+    {
+      "name": "single_max",
+      "out_hex": "f8",
+      "values": [
+        31
+      ]
+    },
+    {
+      "name": "single_masked",
+      "out_hex": "f8",
+      "values": [
+        255
+      ]
+    },
+    {
+      "name": "two_values",
+      "out_hex": "0880",
+      "values": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "three_exact",
+      "out_hex": "1b9e",
+      "values": [
+        3,
+        14,
+        15
+      ]
+    },
+    {
+      "name": "four_boundary",
+      "out_hex": "f83e00",
+      "values": [
+        31,
+        0,
+        31,
+        0
+      ]
+    },
+    {
+      "name": "five_exact",
+      "out_hex": "08864280",
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "six_spill",
+      "out_hex": "ffbbcde8",
+      "values": [
+        31,
+        30,
+        29,
+        28,
+        27,
+        26
+      ]
+    },
+    {
+      "name": "eight_mixed",
+      "out_hex": "07c3e1747c",
+      "values": [
+        0,
+        31,
+        1,
+        30,
+        2,
+        29,
+        3,
+        28
+      ]
+    },
+    {
+      "name": "nine_spill",
+      "out_hex": "4a0e62906208",
+      "values": [
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "name": "twenty_controls",
+      "out_hex": "283e7283e7283e7283e7283e70",
+      "values": [
+        5,
+        0,
+        31,
+        7,
+        5,
+        0,
+        31,
+        7,
+        5,
+        0,
+        31,
+        7,
+        5,
+        0,
+        31,
+        7,
+        5,
+        0,
+        31,
+        7
+      ]
+    }
+  ],
+  "server_message": [
+    {
+      "label": "seed_a",
+      "text": "Welcome to Dekobloko!",
+      "text_name": "welcome",
+      "wire_hex": "2f1657656c636f6d6520746f2044656b6f626c6f6b6f2100"
+    },
+    {
+      "label": "seed_a",
+      "text": "caf\u00e9 \u2014 \u2018fancy\u2019 \u2026 \u20ac \u00fc\u00f1\u00df\u00d7",
+      "text_name": "cp1252_specials",
+      "wire_hex": "cc18636166e92097209166616e6379922085208020fcf1dfd700"
+    },
+    {
+      "label": "seed_a",
+      "text": "snow \u2603 \u0081ctrl end",
+      "text_name": "unmappable_replaced",
+      "wire_hex": "3b11736e6f77203f203f6374726c20656e6400"
+    },
+    {
+      "label": "seed_a",
+      "text": "",
+      "text_name": "empty",
+      "wire_hex": "c30100"
+    },
+    {
+      "label": "seed_b_wrap",
+      "text": "Welcome to Dekobloko!",
+      "text_name": "welcome",
+      "wire_hex": "511657656c636f6d6520746f2044656b6f626c6f6b6f2100"
+    },
+    {
+      "label": "seed_b_wrap",
+      "text": "caf\u00e9 \u2014 \u2018fancy\u2019 \u2026 \u20ac \u00fc\u00f1\u00df\u00d7",
+      "text_name": "cp1252_specials",
+      "wire_hex": "4a18636166e92097209166616e6379922085208020fcf1dfd700"
+    },
+    {
+      "label": "seed_b_wrap",
+      "text": "snow \u2603 \u0081ctrl end",
+      "text_name": "unmappable_replaced",
+      "wire_hex": "0811736e6f77203f203f6374726c20656e6400"
+    },
+    {
+      "label": "seed_b_wrap",
+      "text": "",
+      "text_name": "empty",
+      "wire_hex": "340100"
+    }
+  ],
+  "tables": {
+    "client_packet_lengths": {
+      "0": 0,
+      "1": 0,
+      "10": 0,
+      "11": -1,
+      "12": -1,
+      "14": -1,
+      "15": -1,
+      "17": 0,
+      "18": -1,
+      "4": -1,
+      "58": 0,
+      "59": 1,
+      "60": -1,
+      "61": 0,
+      "62": 0,
+      "63": 0,
+      "7": 2,
+      "9": 0
+    },
+    "lobby_action_names": {
+      "0": "PLAY_RATED_GAME",
+      "1": "RETURN_TO_LOBBY",
+      "10": "SPECTATE_GAME",
+      "11": "SHOW_PLAYERS_IN_GAME",
+      "2": "SET_RATED_OPTIONS",
+      "3": "ACK_RATED_ROOM_INFO",
+      "4": "CREATE_UNRATED_GAME",
+      "5": "SET_ROOM_OPTIONS",
+      "6": "INVITE_PLAYER_TO_GAME",
+      "7": "KICK_PLAYER_FROM_GAME",
+      "8": "JOIN_ROOM",
+      "9": "LEAVE_ROOM"
+    },
+    "server_opcodes_seen_enabled": [
+      0,
+      2,
+      3,
+      4,
+      6,
+      7,
+      8,
+      11,
+      12,
+      13,
+      16,
+      17,
+      18
+    ],
+    "server_packet_lengths": {
+      "0": 0,
+      "1": 16,
+      "10": -1,
+      "11": -1,
+      "12": -1,
+      "13": -1,
+      "14": 0,
+      "15": 0,
+      "16": -1,
+      "17": -1,
+      "18": 1,
+      "2": -2,
+      "3": -1,
+      "4": -1,
+      "5": -1,
+      "58": -2,
+      "59": -2,
+      "6": -2,
+      "60": 0,
+      "61": -2,
+      "62": 2,
+      "63": -1,
+      "64": -2,
+      "65": 1,
+      "66": 2,
+      "67": -1,
+      "68": 1,
+      "69": 1,
+      "7": -1,
+      "70": 1,
+      "71": 1,
+      "72": 1,
+      "73": 1,
+      "74": 1,
+      "75": -1,
+      "76": 1,
+      "8": -2,
+      "9": -1
+    }
+  },
+  "unpack_5bit": [
+    {
+      "count": 0,
+      "data_hex": "",
+      "name": "empty_rt",
+      "out": []
+    },
+    {
+      "count": 1,
+      "data_hex": "00",
+      "name": "single_zero_rt",
+      "out": [
+        0
+      ]
+    },
+    {
+      "count": 1,
+      "data_hex": "f8",
+      "name": "single_max_rt",
+      "out": [
+        31
+      ]
+    },
+    {
+      "count": 1,
+      "data_hex": "f8",
+      "name": "single_masked_rt",
+      "out": [
+        31
+      ]
+    },
+    {
+      "count": 2,
+      "data_hex": "0880",
+      "name": "two_values_rt",
+      "out": [
+        1,
+        2
+      ]
+    },
+    {
+      "count": 3,
+      "data_hex": "1b9e",
+      "name": "three_exact_rt",
+      "out": [
+        3,
+        14,
+        15
+      ]
+    },
+    {
+      "count": 4,
+      "data_hex": "f83e00",
+      "name": "four_boundary_rt",
+      "out": [
+        31,
+        0,
+        31,
+        0
+      ]
+    },
+    {
+      "count": 5,
+      "data_hex": "08864280",
+      "name": "five_exact_rt",
+      "out": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "count": 6,
+      "data_hex": "ffbbcde8",
+      "name": "six_spill_rt",
+      "out": [
+        31,
+        30,
+        29,
+        28,
+        27,
+        26
+      ]
+    },
+    {
+      "count": 8,
+      "data_hex": "07c3e1747c",
+      "name": "eight_mixed_rt",
+      "out": [
+        0,
+        31,
+        1,
+        30,
+        2,
+        29,
+        3,
+        28
+      ]
+    },
+    {
+      "count": 9,
+      "data_hex": "4a0e62906208",
+      "name": "nine_spill_rt",
+      "out": [
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "count": 20,
+      "data_hex": "283e7283e7283e7283e7283e70",
+      "name": "twenty_controls_rt",
+      "out": [
+        5,
+        0,
+        31,
+        7,
+        5,
+        0,
+        31,
+        7,
+        5,
+        0,
+        31,
+        7,
+        5,
+        0,
+        31,
+        7,
+        5,
+        0,
+        31,
+        7
+      ]
+    },
+    {
+      "count": 0,
+      "data_hex": "",
+      "name": "zero_count_empty",
+      "out": []
+    },
+    {
+      "count": 3,
+      "data_hex": "39ce",
+      "name": "padded_tail",
+      "out": [
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "count": -1,
+      "data_hex": "00",
+      "error": "5-bit value count cannot be negative",
+      "error_type": "ValueError",
+      "name": "err_negative_count"
+    },
+    {
+      "count": 4,
+      "data_hex": "0000",
+      "error": "5-bit stream for 4 values requires 3 bytes, got 2",
+      "error_type": "ValueError",
+      "name": "err_short_stream"
+    },
+    {
+      "count": 3,
+      "data_hex": "000000",
+      "error": "5-bit stream for 3 values requires 2 bytes, got 3",
+      "error_type": "ValueError",
+      "name": "err_long_stream"
+    }
+  ]
+}
