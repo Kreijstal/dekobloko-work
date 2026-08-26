@@ -107,6 +107,7 @@ attribution and compiled-call-chain result above supersede that open item.
 | Reduce the adaptive frameless multiplier from 20 to 10. | The clean run averaged 17.38 FPS with a 12.76 FPS one-second floor, but its maximum active gap was 496 ms. | Rejected because its first maximum exceeded the corrected retained 492 ms. Quantum length and valley size are not monotonic. |
 | Reduce the adaptive frameless multiplier from 100 to 20. | Initial runs measured 475 and 427 ms, but the corrected no-mid-measurement-screenshot pair measured 515 and 459 ms. Repeating multiplier 100 under the same harness measured 456 and 492 ms. | Rejected and restored by cloning-page commit `2097c8a`: multiplier 20 has the worse conservative exact gap, despite better one-second windows in some runs. |
 | The profiler's five-second confirmation screenshot causes the second transition valley. | Moving the screenshot after diagnostics still produced gaps separated by about five seconds; corrected runs reached 515 and 459 ms. | Rejected. The periodic valley belongs to application/runtime work and remains in the floor. |
+| Compiled call chains lose their positional child-work safe point, so restoring an exact pre-call handoff must bound the remaining valley. | The generic implementation passed all 2,410 JIT assertions and restored the caller at the pending invoke before child effects. Firefox runs measured 519 and 449 ms maximum active gaps, with averages 13.67 and 14.05 FPS, versus the retained corrected 456/492 ms pair. | Rejected and reverted (`3bd84f6`, reverted by `ab0f0be`). The repeat improved, but the conservative 519 ms result regressed both the exact floor and throughput; added deoptimization overhead does not reliably bound the nested work. |
 
 ## Transition valleys
 
@@ -159,6 +160,14 @@ roots (`m.a` and `kl.a`), and the second only about 1 ms attributed to `bg.a`.
 This rules out one long top-level scheduler activation as the whole periodic
 valley; the next pass must separate nested generated work and SpiderMonkey
 JIT/GC time rather than increasing root-timing overhead further.
+
+Gecko marker correlation over the exact 613 ms native-profile valley rules
+out garbage collection as the missing pause. Eight minor collections totaled
+6.43 ms and the largest lasted 1.42 ms; the only main-thread long-task marker
+was 64.21 ms. Native samples throughout the interval instead remain inside
+nested generated rendering, direct raster bodies, transparent blits, and the
+runtime call-chain machinery. The interval is therefore accumulated execution
+without a presentation, not a single Firefox GC stop-the-world event.
 
 Do not reintroduce the rejected Wasm-heap, forced-Wasm, opaque-blit, or
 exception-status experiments without new evidence that changes their measured
