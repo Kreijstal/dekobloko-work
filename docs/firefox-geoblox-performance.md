@@ -41,6 +41,10 @@ average and a 3.91 FPS one-second-window floor. Exact presentation timestamps
 still contain a 629 ms continuously active gap, equivalent to a 1.59 FPS
 instantaneous floor. This is an improvement, not a completed fix.
 
+Later exploratory runtime builds reached roughly 7.6 FPS average, but their
+clean maximum active presentation gaps were 655--760 ms. They therefore fail
+the floor objective and are not evidence of a completed performance fix.
+
 ## Retained changes
 
 | Commit | Result | Reason retained |
@@ -79,6 +83,8 @@ be attributed.
 | Generated JavaScript `try/catch` around transparent blits prevents SpiderMonkey optimization. | Exception-status experiment: 3.97 average versus 5.06 baseline. Floor was 1.96, but sustained throughput regressed. | Rejected and reverted (`856f54e`, reverted by `e93da9c`). |
 | The workload itself explains Firefox performance. | HotSpot runs the identical class files at approximately 150 presentations/second. | Rejected. The problem is runtime cost per unit of useful work, not merely the existence of the work. |
 | A presented-frame threshold alone identifies Instructions. | Captured canvas at 500 presentations was the main menu; after the click, a second capture confirmed Instructions. Some early profiles also included transition asset work. | The threshold is valid only together with visual/state confirmation. |
+| Selecting a large call-heavy method for whole-method JavaScript entry is sufficient to remove the remaining valley. | Exact Firefox attribution still recorded about 1,803 entries and 5,970 ms inclusive time for the selected UI dispatcher; the clean maximum gap remained 655 ms. | Failed. Publication of a generated body does not prove that nested calls avoid expensive runtime boundaries, and inclusive timing cannot identify the exclusive leaf cost. |
+| Higher average FPS proves that the latest helper/entry policies improved responsiveness. | Exploratory builds averaged about 7.4--7.6 FPS but had 655--760 ms maximum active gaps, versus the retained 629 ms gap. | Rejected under the floor-first objective unless a later change reduces the clean maximum gap below the retained baseline. |
 
 ## Transition valleys
 
@@ -101,6 +107,11 @@ blit against V8 and HotSpot while separating:
 4. array representation/access cost;
 5. transition-only archive/decode work; and
 6. frame-production work versus presentation coalescing.
+
+Scheduler method timing is inclusive: parent and child durations overlap and
+must not be summed as independent causes. The next attribution pass must use
+exclusive nested timing (or a native sampled profile) around the active-valley
+roots before changing another generic runtime policy.
 
 Do not reintroduce the rejected Wasm-heap, forced-Wasm, opaque-blit, or
 exception-status experiments without new evidence that changes their measured
