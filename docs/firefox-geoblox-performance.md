@@ -110,6 +110,7 @@ attribution and compiled-call-chain result above supersede that open item.
 | Precompile methods from already initialized classes after applet lifecycle startup. | The clean run booted and averaged 7.31 FPS, but its maximum active gap was 673 ms and its one-second floor was 2.98 FPS. | Rejected and reverted (`d7cd9e6`, reverted by `876d5ba`). Safely initialized classes did not cover enough first-use transition work to improve the floor. |
 | Give mixed recursive/unresolved generated call graphs an ordinary deoptimizing entry instead of retaining a continuation. | All 2,406 focused JIT tests passed. The clean run averaged 16.92 FPS, but its maximum active gap remained 483 ms and its one-second floor slipped to 9.88 FPS. | Rejected and reverted (`bd42e3a`, reverted by `1be2dea`). Removing additional generators did not reduce the authoritative maximum gap. |
 | Reduce the adaptive frameless multiplier further from 20 to 5. | The first clean run reached a 391 ms maximum and 13.77 FPS one-second floor, but the repeat regressed to a 531 ms maximum and 5.81 FPS floor. | Rejected. The favorable first result was not repeatable and the conservative maximum is worse than the retained 475 ms. |
+| Reduce the adaptive frameless multiplier from 20 to 10. | The clean run averaged 17.38 FPS with a 12.76 FPS one-second floor, but its maximum active gap was 496 ms. | Rejected without a repeat because the first authoritative maximum already exceeded the retained 475 ms. Quantum length and valley size are not monotonic. |
 
 ## Transition valleys
 
