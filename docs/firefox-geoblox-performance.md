@@ -36,9 +36,10 @@ active floor. Firefox does not optimize the same generated code nearly as
 well.
 
 The Firefox Instructions screen was visually confirmed. Its initial overlay
-showed about 2.2 FPS. The best retained 30-second run currently measured 5.06
-FPS average, with late windows around 7.7--8.95 FPS and a 0.98 FPS transition
-floor. This is not considered fixed.
+showed about 2.2 FPS. The latest retained 30-second run measured 6.30 FPS
+average and a 3.91 FPS one-second-window floor. Exact presentation timestamps
+still contain a 629 ms continuously active gap, equivalent to a 1.59 FPS
+instantaneous floor. This is an improvement, not a completed fix.
 
 ## Retained changes
 
@@ -49,11 +50,21 @@ floor. This is not considered fixed.
 | `a7dcb21` | Firefox average approximately 3.50 -> 4.66 FPS in its measured run | Gives the AWT producer a bounded structured quantum instead of repeatedly reconstructing a slow frame. |
 | `1059a0f` | Firefox approximately 3.63 -> 4.29 FPS | Recognizes the structurally verified javac.js transparent-blit lowering. |
 | `2b7052f` | Firefox approximately 4.29 -> 5.06 FPS | Replaces redundant per-row bounds validation with an equivalent constant-time proof, retaining an overflow fallback. |
+| `3eb8e9e` | Firefox 5.06 -> 6.30 FPS average; one-second floor 3.91 FPS | Keeps small acyclic reference-field cursor helpers in positional JavaScript instead of scheduling every invocation through ready Wasm. |
 
 The transparent intrinsic is genuinely active. One measured run recorded
 16,479,272 successful calls and zero slow-path fallbacks. This call count marks
 the hot execution location; it does **not** prove the Java game performs
 unnecessary work, because HotSpot runs the same workload quickly.
+
+Exact presentation-gap correlation identified `tf.d(I)Lhf;` as the dominant
+cost in a 1,513 ms active valley: 209,318 scheduler activations consumed about
+20.9 seconds over the profiled run. Each activation was individually tiny;
+the cumulative scheduler crossings were the problem. After the generic cursor
+policy change, clean low-overhead sampling recorded only 244 activations of
+the adjacent `tf.g(I)Lhf;` cursor and no sampled `tf.d` contribution. The
+remaining 629 ms maximum gap therefore has a different cause and remains to
+be attributed.
 
 ## Rejected hypotheses and experiments
 
@@ -83,11 +94,13 @@ Java sources must not be modified and asset work must not be guessed away.
 The remaining investigation should compare Firefox's cost per transparent
 blit against V8 and HotSpot while separating:
 
-1. intrinsic body time;
-2. generated caller and positional-call overhead;
-3. array representation/access cost;
-4. transition-only archive/decode work; and
-5. frame-production work versus presentation coalescing.
+1. correlate the remaining exact 629 ms active gap with scheduler activity at
+   a sampling rate that does not materially perturb Firefox;
+2. intrinsic body time;
+3. generated caller and positional-call overhead;
+4. array representation/access cost;
+5. transition-only archive/decode work; and
+6. frame-production work versus presentation coalescing.
 
 Do not reintroduce the rejected Wasm-heap, forced-Wasm, opaque-blit, or
 exception-status experiments without new evidence that changes their measured

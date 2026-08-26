@@ -311,10 +311,10 @@ their commits, trees, and tracked-patch hashes.
 
 The authoritative optimization diary, benchmark commands, accepted and rejected
 experiments, correctness hashes, and Firefox measurements live in
-[`java-tools/docs/dekobloko-firefox-performance.md`](https://github.com/Kreijstal/java-tools/blob/master/docs/dekobloko-firefox-performance.md).
+[`docs/firefox-geoblox-performance.md`](docs/firefox-geoblox-performance.md).
 With the sibling checkout used elsewhere in this repository, the same document
 is available at
-`$JAVA_TOOLS_DIR/docs/dekobloko-firefox-performance.md`.
+`docs/firefox-geoblox-performance.md` in this repository.
 
 The current timers-off production measurement is roughly 13 changed images/s:
 13.3303, 13.0468, and 13.9486 across three fresh Firefox processes, for a
