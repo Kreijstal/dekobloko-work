@@ -44,17 +44,12 @@ Native samples inside a later exact 754 ms profiled valley showed 584 samples
 under the structured-SSA generator continuation wrapper. The stacks repeatedly
 resumed nested `kj`, `ad`, and `kl` generated methods. Enabling the existing
 generic compiled-call-chain tier converts verified non-recursive call graphs
-to ordinary JavaScript activations. Two clean low-overhead runs then measured
-17.08 and 17.35 FPS average, 10.78 and 10.74 FPS one-second-window floors, and
-maximum active gaps of 483 and 447 ms. The conservative retained maximum is
-therefore 483 ms, equivalent to a 2.07 FPS instantaneous floor. The one-second
-target is reached, but the exact-gap 10 FPS target still requires at most
-100 ms and is not complete.
-
-Reducing the cloning page's generic adaptive frameless quantum multiplier from
-100 to 20 produced clean maximum gaps of 475 and 427 ms, one-second floors of
-12.66 and 13.83 FPS, and averages of 17.01 and 17.72 FPS. The conservative
-retained maximum is now 475 ms, equivalent to a 2.11 FPS instantaneous floor.
+to ordinary JavaScript activations. Initial clean runs measured maximum active
+gaps of 483 and 447 ms. A corrected harness that moves its confirmation
+screenshot after diagnostics measured 456 and 492 ms at multiplier 100, with
+one-second floors of 8.91 and 7.33 FPS. The conservative retained maximum is
+therefore 492 ms, equivalent to a 2.03 FPS instantaneous floor. Neither the
+one-second nor exact-gap 10 FPS target is complete.
 
 Later exploratory runtime builds reached roughly 7.6 FPS average, but their
 clean maximum active presentation gaps were 655--760 ms. They therefore fail
@@ -71,8 +66,7 @@ the floor objective and are not evidence of a completed performance fix.
 | `2b7052f` | Firefox approximately 4.29 -> 5.06 FPS | Replaces redundant per-row bounds validation with an equivalent constant-time proof, retaining an overflow fallback. |
 | `3eb8e9e` | Firefox 5.06 -> 6.30 FPS average; one-second floor 3.91 FPS | Keeps small acyclic reference-field cursor helpers in positional JavaScript instead of scheduling every invocation through ready Wasm. |
 | `234ed6f`, corrected by `d8e9dac` | Clean maximum active gaps 583 and 524 ms, versus the retained 629 ms baseline | Caps generated-loop polling at 256 backedges while preserving the proven 64-backedge minimum, so the 16 ms host deadline is observed before a generated call tree monopolizes Firefox for an entire frame valley. |
-| cloning page `2f2fec8` | Clean maximum active gaps 483 and 447 ms; one-second floors 10.78 and 10.74 FPS | Enables the runtime's generic compiled-call-chain tier so verified non-recursive generated call graphs use ordinary activations instead of nested generator resumptions. |
-| cloning page `ed6ad33` | Clean maximum active gaps 475 and 427 ms; one-second floors 12.66 and 13.83 FPS | Reduces the adaptive frameless multiplier from 100 to 20 so generated call chains observe cooperative deadlines sooner during transition work. |
+| cloning page `2f2fec8` | Corrected-harness maximum active gaps 456 and 492 ms | Enables the runtime's generic compiled-call-chain tier so verified non-recursive generated call graphs use ordinary activations instead of nested generator resumptions. |
 
 The transparent intrinsic is genuinely active. One measured run recorded
 16,479,272 successful calls and zero slow-path fallbacks. This call count marks
@@ -109,8 +103,10 @@ attribution and compiled-call-chain result above supersede that open item.
 | Tighten the generated-loop maximum from 256 to 128 backedges while preserving the 64 minimum. | The clean run averaged 7.03 FPS but its maximum active gap was 666 ms, versus the retained conservative 583 ms. | Rejected and reverted (`26f2df6`, reverted by `114e841`). More frequent polling increased the worst valley despite acceptable average throughput. |
 | Precompile methods from already initialized classes after applet lifecycle startup. | The clean run booted and averaged 7.31 FPS, but its maximum active gap was 673 ms and its one-second floor was 2.98 FPS. | Rejected and reverted (`d7cd9e6`, reverted by `876d5ba`). Safely initialized classes did not cover enough first-use transition work to improve the floor. |
 | Give mixed recursive/unresolved generated call graphs an ordinary deoptimizing entry instead of retaining a continuation. | All 2,406 focused JIT tests passed. The clean run averaged 16.92 FPS, but its maximum active gap remained 483 ms and its one-second floor slipped to 9.88 FPS. | Rejected and reverted (`bd42e3a`, reverted by `1be2dea`). Removing additional generators did not reduce the authoritative maximum gap. |
-| Reduce the adaptive frameless multiplier further from 20 to 5. | The first clean run reached a 391 ms maximum and 13.77 FPS one-second floor, but the repeat regressed to a 531 ms maximum and 5.81 FPS floor. | Rejected. The favorable first result was not repeatable and the conservative maximum is worse than the retained 475 ms. |
-| Reduce the adaptive frameless multiplier from 20 to 10. | The clean run averaged 17.38 FPS with a 12.76 FPS one-second floor, but its maximum active gap was 496 ms. | Rejected without a repeat because the first authoritative maximum already exceeded the retained 475 ms. Quantum length and valley size are not monotonic. |
+| Reduce the adaptive frameless multiplier further from 20 to 5. | The first clean run reached a 391 ms maximum and 13.77 FPS one-second floor, but the repeat regressed to a 531 ms maximum and 5.81 FPS floor. | Rejected. The favorable first result was not repeatable and the conservative maximum is worse than the retained 492 ms. |
+| Reduce the adaptive frameless multiplier from 20 to 10. | The clean run averaged 17.38 FPS with a 12.76 FPS one-second floor, but its maximum active gap was 496 ms. | Rejected because its first maximum exceeded the corrected retained 492 ms. Quantum length and valley size are not monotonic. |
+| Reduce the adaptive frameless multiplier from 100 to 20. | Initial runs measured 475 and 427 ms, but the corrected no-mid-measurement-screenshot pair measured 515 and 459 ms. Repeating multiplier 100 under the same harness measured 456 and 492 ms. | Rejected and restored by cloning-page commit `2097c8a`: multiplier 20 has the worse conservative exact gap, despite better one-second windows in some runs. |
+| The profiler's five-second confirmation screenshot causes the second transition valley. | Moving the screenshot after diagnostics still produced gaps separated by about five seconds; corrected runs reached 515 and 459 ms. | Rejected. The periodic valley belongs to application/runtime work and remains in the floor. |
 
 ## Transition valleys
 
@@ -126,7 +122,7 @@ Java sources must not be modified and asset work must not be guessed away.
 The remaining investigation should compare Firefox's cost per transparent
 blit against V8 and HotSpot while separating:
 
-1. correlate the remaining exact 475 ms active gap with scheduler activity at
+1. correlate the remaining exact 492 ms active gap with scheduler activity at
    a sampling rate that does not materially perturb Firefox;
 2. intrinsic body time;
 3. generated caller and positional-call overhead;
