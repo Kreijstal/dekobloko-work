@@ -36,11 +36,20 @@ active floor. Firefox does not optimize the same generated code nearly as
 well.
 
 The Firefox Instructions screen was visually confirmed. Its initial overlay
-showed about 2.2 FPS. Two clean runs with the latest retained scheduler cap
-measured 8.14 and 7.41 FPS average, 3.96 FPS one-second-window floors, and
-maximum continuously active gaps of 583 and 524 ms. The conservative retained
-maximum is therefore 583 ms, equivalent to a 1.72 FPS instantaneous floor.
-This improves the earlier 629 ms gap but is not a completed fix.
+showed about 2.2 FPS. Two clean runs with the scheduler cap alone measured
+8.14 and 7.41 FPS average, 3.96 FPS one-second-window floors, and maximum
+continuously active gaps of 583 and 524 ms.
+
+Native samples inside a later exact 754 ms profiled valley showed 584 samples
+under the structured-SSA generator continuation wrapper. The stacks repeatedly
+resumed nested `kj`, `ad`, and `kl` generated methods. Enabling the existing
+generic compiled-call-chain tier converts verified non-recursive call graphs
+to ordinary JavaScript activations. Two clean low-overhead runs then measured
+17.08 and 17.35 FPS average, 10.78 and 10.74 FPS one-second-window floors, and
+maximum active gaps of 483 and 447 ms. The conservative retained maximum is
+therefore 483 ms, equivalent to a 2.07 FPS instantaneous floor. The one-second
+target is reached, but the exact-gap 10 FPS target still requires at most
+100 ms and is not complete.
 
 Later exploratory runtime builds reached roughly 7.6 FPS average, but their
 clean maximum active presentation gaps were 655--760 ms. They therefore fail
@@ -57,6 +66,7 @@ the floor objective and are not evidence of a completed performance fix.
 | `2b7052f` | Firefox approximately 4.29 -> 5.06 FPS | Replaces redundant per-row bounds validation with an equivalent constant-time proof, retaining an overflow fallback. |
 | `3eb8e9e` | Firefox 5.06 -> 6.30 FPS average; one-second floor 3.91 FPS | Keeps small acyclic reference-field cursor helpers in positional JavaScript instead of scheduling every invocation through ready Wasm. |
 | `234ed6f`, corrected by `d8e9dac` | Clean maximum active gaps 583 and 524 ms, versus the retained 629 ms baseline | Caps generated-loop polling at 256 backedges while preserving the proven 64-backedge minimum, so the 16 ms host deadline is observed before a generated call tree monopolizes Firefox for an entire frame valley. |
+| cloning page `2f2fec8` | Clean maximum active gaps 483 and 447 ms; one-second floors 10.78 and 10.74 FPS | Enables the runtime's generic compiled-call-chain tier so verified non-recursive generated call graphs use ordinary activations instead of nested generator resumptions. |
 
 The transparent intrinsic is genuinely active. One measured run recorded
 16,479,272 successful calls and zero slow-path fallbacks. This call count marks
@@ -69,8 +79,8 @@ cost in a 1,513 ms active valley: 209,318 scheduler activations consumed about
 the cumulative scheduler crossings were the problem. After the generic cursor
 policy change, clean low-overhead sampling recorded only 244 activations of
 the adjacent `tf.g(I)Lhf;` cursor and no sampled `tf.d` contribution. The
-remaining 629 ms maximum gap therefore has a different cause and remains to
-be attributed.
+remaining gap therefore had a different cause; the native continuation
+attribution and compiled-call-chain result above supersede that open item.
 
 ## Rejected hypotheses and experiments
 
@@ -107,7 +117,7 @@ Java sources must not be modified and asset work must not be guessed away.
 The remaining investigation should compare Firefox's cost per transparent
 blit against V8 and HotSpot while separating:
 
-1. correlate the remaining exact 583 ms active gap with scheduler activity at
+1. correlate the remaining exact 483 ms active gap with scheduler activity at
    a sampling rate that does not materially perturb Firefox;
 2. intrinsic body time;
 3. generated caller and positional-call overhead;
