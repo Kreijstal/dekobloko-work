@@ -51,6 +51,11 @@ therefore 483 ms, equivalent to a 2.07 FPS instantaneous floor. The one-second
 target is reached, but the exact-gap 10 FPS target still requires at most
 100 ms and is not complete.
 
+Reducing the cloning page's generic adaptive frameless quantum multiplier from
+100 to 20 produced clean maximum gaps of 475 and 427 ms, one-second floors of
+12.66 and 13.83 FPS, and averages of 17.01 and 17.72 FPS. The conservative
+retained maximum is now 475 ms, equivalent to a 2.11 FPS instantaneous floor.
+
 Later exploratory runtime builds reached roughly 7.6 FPS average, but their
 clean maximum active presentation gaps were 655--760 ms. They therefore fail
 the floor objective and are not evidence of a completed performance fix.
@@ -67,6 +72,7 @@ the floor objective and are not evidence of a completed performance fix.
 | `3eb8e9e` | Firefox 5.06 -> 6.30 FPS average; one-second floor 3.91 FPS | Keeps small acyclic reference-field cursor helpers in positional JavaScript instead of scheduling every invocation through ready Wasm. |
 | `234ed6f`, corrected by `d8e9dac` | Clean maximum active gaps 583 and 524 ms, versus the retained 629 ms baseline | Caps generated-loop polling at 256 backedges while preserving the proven 64-backedge minimum, so the 16 ms host deadline is observed before a generated call tree monopolizes Firefox for an entire frame valley. |
 | cloning page `2f2fec8` | Clean maximum active gaps 483 and 447 ms; one-second floors 10.78 and 10.74 FPS | Enables the runtime's generic compiled-call-chain tier so verified non-recursive generated call graphs use ordinary activations instead of nested generator resumptions. |
+| cloning page `ed6ad33` | Clean maximum active gaps 475 and 427 ms; one-second floors 12.66 and 13.83 FPS | Reduces the adaptive frameless multiplier from 100 to 20 so generated call chains observe cooperative deadlines sooner during transition work. |
 
 The transparent intrinsic is genuinely active. One measured run recorded
 16,479,272 successful calls and zero slow-path fallbacks. This call count marks
@@ -118,7 +124,7 @@ Java sources must not be modified and asset work must not be guessed away.
 The remaining investigation should compare Firefox's cost per transparent
 blit against V8 and HotSpot while separating:
 
-1. correlate the remaining exact 483 ms active gap with scheduler activity at
+1. correlate the remaining exact 475 ms active gap with scheduler activity at
    a sampling rate that does not materially perturb Firefox;
 2. intrinsic body time;
 3. generated caller and positional-call overhead;
