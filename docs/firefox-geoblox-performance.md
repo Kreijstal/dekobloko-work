@@ -153,6 +153,13 @@ Broadening ordinary entries removed more wrapper eligibility barriers without
 improving the low-overhead 483 ms maximum, so continuation presence alone is
 no longer a sufficient next hypothesis.
 
+A later 1/64 scheduler-correlation run on restored multiplier 100 measured
+449 and 371 ms transition gaps. The first contained only zero-duration sampled
+roots (`m.a` and `kl.a`), and the second only about 1 ms attributed to `bg.a`.
+This rules out one long top-level scheduler activation as the whole periodic
+valley; the next pass must separate nested generated work and SpiderMonkey
+JIT/GC time rather than increasing root-timing overhead further.
+
 Do not reintroduce the rejected Wasm-heap, forced-Wasm, opaque-blit, or
 exception-status experiments without new evidence that changes their measured
 premises.
