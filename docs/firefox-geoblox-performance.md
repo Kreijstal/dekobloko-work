@@ -102,6 +102,7 @@ attribution and compiled-call-chain result above supersede that open item.
 | Replace the per-plan Acorn discovery pass with exact compiler-line matching. | All 2,404 focused JIT tests passed, but the clean maximum active gap regressed from 583 ms to 714 ms. | Rejected and reverted (`06a8d1a`, reverted by `726d114`). A smaller compile path did not produce a better Firefox floor. |
 | Tighten the generated-loop maximum from 256 to 128 backedges while preserving the 64 minimum. | The clean run averaged 7.03 FPS but its maximum active gap was 666 ms, versus the retained conservative 583 ms. | Rejected and reverted (`26f2df6`, reverted by `114e841`). More frequent polling increased the worst valley despite acceptable average throughput. |
 | Precompile methods from already initialized classes after applet lifecycle startup. | The clean run booted and averaged 7.31 FPS, but its maximum active gap was 673 ms and its one-second floor was 2.98 FPS. | Rejected and reverted (`d7cd9e6`, reverted by `876d5ba`). Safely initialized classes did not cover enough first-use transition work to improve the floor. |
+| Give mixed recursive/unresolved generated call graphs an ordinary deoptimizing entry instead of retaining a continuation. | All 2,406 focused JIT tests passed. The clean run averaged 16.92 FPS, but its maximum active gap remained 483 ms and its one-second floor slipped to 9.88 FPS. | Rejected and reverted (`bd42e3a`, reverted by `1be2dea`). Removing additional generators did not reduce the authoritative maximum gap. |
 
 ## Transition valleys
 
@@ -139,6 +140,14 @@ JavaScript, 16% named generated guest JavaScript, and 56% unsymbolicated
 native/JIT code. Acorn `parseSubscript`/`readWord1` frames prove that lazy JIT
 parsing contributes to transition valleys, but the two attempts above did not
 reduce the clean floor safely.
+
+After compiled call chains were enabled, a native profile of a 613 ms
+instrumented valley still contained 359 samples below continuation wrappers,
+but useful raster execution was now prominent: the two direct raster bodies
+and transparent-blit intrinsic were the largest named exclusive leaves.
+Broadening ordinary entries removed more wrapper eligibility barriers without
+improving the low-overhead 483 ms maximum, so continuation presence alone is
+no longer a sufficient next hypothesis.
 
 Do not reintroduce the rejected Wasm-heap, forced-Wasm, opaque-blit, or
 exception-status experiments without new evidence that changes their measured
