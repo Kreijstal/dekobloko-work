@@ -36,10 +36,11 @@ active floor. Firefox does not optimize the same generated code nearly as
 well.
 
 The Firefox Instructions screen was visually confirmed. Its initial overlay
-showed about 2.2 FPS. The latest retained 30-second run measured 6.30 FPS
-average and a 3.91 FPS one-second-window floor. Exact presentation timestamps
-still contain a 629 ms continuously active gap, equivalent to a 1.59 FPS
-instantaneous floor. This is an improvement, not a completed fix.
+showed about 2.2 FPS. Two clean runs with the latest retained scheduler cap
+measured 8.14 and 7.41 FPS average, 3.96 FPS one-second-window floors, and
+maximum continuously active gaps of 583 and 524 ms. The conservative retained
+maximum is therefore 583 ms, equivalent to a 1.72 FPS instantaneous floor.
+This improves the earlier 629 ms gap but is not a completed fix.
 
 Later exploratory runtime builds reached roughly 7.6 FPS average, but their
 clean maximum active presentation gaps were 655--760 ms. They therefore fail
@@ -55,6 +56,7 @@ the floor objective and are not evidence of a completed performance fix.
 | `1059a0f` | Firefox approximately 3.63 -> 4.29 FPS | Recognizes the structurally verified javac.js transparent-blit lowering. |
 | `2b7052f` | Firefox approximately 4.29 -> 5.06 FPS | Replaces redundant per-row bounds validation with an equivalent constant-time proof, retaining an overflow fallback. |
 | `3eb8e9e` | Firefox 5.06 -> 6.30 FPS average; one-second floor 3.91 FPS | Keeps small acyclic reference-field cursor helpers in positional JavaScript instead of scheduling every invocation through ready Wasm. |
+| `234ed6f`, corrected by `d8e9dac` | Clean maximum active gaps 583 and 524 ms, versus the retained 629 ms baseline | Caps generated-loop polling at 256 backedges while preserving the proven 64-backedge minimum, so the 16 ms host deadline is observed before a generated call tree monopolizes Firefox for an entire frame valley. |
 
 The transparent intrinsic is genuinely active. One measured run recorded
 16,479,272 successful calls and zero slow-path fallbacks. This call count marks
@@ -85,6 +87,9 @@ be attributed.
 | A presented-frame threshold alone identifies Instructions. | Captured canvas at 500 presentations was the main menu; after the click, a second capture confirmed Instructions. Some early profiles also included transition asset work. | The threshold is valid only together with visual/state confirmation. |
 | Selecting a large call-heavy method for whole-method JavaScript entry is sufficient to remove the remaining valley. | Exact Firefox attribution still recorded about 1,803 entries and 5,970 ms inclusive time for the selected UI dispatcher; the clean maximum gap remained 655 ms. | Failed. Publication of a generated body does not prove that nested calls avoid expensive runtime boundaries, and inclusive timing cannot identify the exclusive leaf cost. |
 | Higher average FPS proves that the latest helper/entry policies improved responsiveness. | Exploratory builds averaged about 7.4--7.6 FPS but had 655--760 ms maximum active gaps, versus the retained 629 ms gap. | Rejected under the floor-first objective unless a later change reduces the clean maximum gap below the retained baseline. |
+| Lower every generated-loop poll interval to 32--256 backedges. | The runtime failed during startup when a synchronized long-return continuation resumed with `undefined` in a generated audio scheduler body. | Rejected on correctness. Keeping the existing 64 minimum and reducing only the 10,000 maximum boots correctly and improves the clean floor. |
+| Precompile every supplied class before guest execution to move Acorn parsing out of animation. | An eagerly compiled positional body captured an uninitialized static-array view and later dereferenced `null`. | Rejected and reverted (`012b514`, reverted by `55ab825`). Pre-initialization compilation is not safe until all static-cache entry guards are proven for that lifecycle. |
+| Replace the per-plan Acorn discovery pass with exact compiler-line matching. | All 2,404 focused JIT tests passed, but the clean maximum active gap regressed from 583 ms to 714 ms. | Rejected and reverted (`06a8d1a`, reverted by `726d114`). A smaller compile path did not produce a better Firefox floor. |
 
 ## Transition valleys
 
@@ -112,6 +117,16 @@ Scheduler method timing is inclusive: parent and child durations overlap and
 must not be summed as independent causes. The next attribution pass must use
 exclusive nested timing (or a native sampled profile) around the active-valley
 roots before changing another generic runtime policy.
+
+Exclusive timing cleared two misleading parents: `bl.b(I)Z` consumed about
+1 ms exclusive across 98 calls, and `kj.c(IIII)V` consumed about 125 ms
+exclusive across 1,610 calls. Native Firefox sampling instead showed the
+content process saturated inside one long promise callback. In one profiled
+954 ms valley, approximately 24% of samples were named generic runtime
+JavaScript, 16% named generated guest JavaScript, and 56% unsymbolicated
+native/JIT code. Acorn `parseSubscript`/`readWord1` frames prove that lazy JIT
+parsing contributes to transition valleys, but the two attempts above did not
+reduce the clean floor safely.
 
 Do not reintroduce the rejected Wasm-heap, forced-Wasm, opaque-blit, or
 exception-status experiments without new evidence that changes their measured
