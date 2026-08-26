@@ -91,6 +91,7 @@ be attributed.
 | Precompile every supplied class before guest execution to move Acorn parsing out of animation. | An eagerly compiled positional body captured an uninitialized static-array view and later dereferenced `null`. | Rejected and reverted (`012b514`, reverted by `55ab825`). Pre-initialization compilation is not safe until all static-cache entry guards are proven for that lifecycle. |
 | Replace the per-plan Acorn discovery pass with exact compiler-line matching. | All 2,404 focused JIT tests passed, but the clean maximum active gap regressed from 583 ms to 714 ms. | Rejected and reverted (`06a8d1a`, reverted by `726d114`). A smaller compile path did not produce a better Firefox floor. |
 | Tighten the generated-loop maximum from 256 to 128 backedges while preserving the 64 minimum. | The clean run averaged 7.03 FPS but its maximum active gap was 666 ms, versus the retained conservative 583 ms. | Rejected and reverted (`26f2df6`, reverted by `114e841`). More frequent polling increased the worst valley despite acceptable average throughput. |
+| Precompile methods from already initialized classes after applet lifecycle startup. | The clean run booted and averaged 7.31 FPS, but its maximum active gap was 673 ms and its one-second floor was 2.98 FPS. | Rejected and reverted (`d7cd9e6`, reverted by `876d5ba`). Safely initialized classes did not cover enough first-use transition work to improve the floor. |
 
 ## Transition valleys
 
