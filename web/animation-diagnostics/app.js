@@ -20,14 +20,12 @@ const TIER_OPTIONS = {
     scalarLoops: false,
     scalarGuestBodies: false,
     structuredSsa: false,
-    fusedRegions: false,
   },
   scalar: {
     scalarLoops: true,
     scalarGuestBodies: true,
     scalarSsaOptimizations: false,
     structuredSsa: false,
-    fusedRegions: false,
   },
 };
 
@@ -175,7 +173,7 @@ async function initialize() {
   ].join("\n");
   els.status.textContent =
     (TIER === "structured" ? "" :
-      "CONTROL TIER: structured SSA and fused regions are disabled; " +
+      "CONTROL TIER: structured SSA is disabled; " +
       "this mode is intentionally slow and is not the normal JVM path. ") +
     `Ready in ${(performance.now() - started).toFixed(1)} ms. ` +
     "The first run includes JIT warmup; every measured frame advances the " +

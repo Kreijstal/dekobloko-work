@@ -402,6 +402,33 @@ tiering, not the eliminated JS first-use or recurring `kc.b` retry storms.
 
 ## Active-frame floor experiments (August 30, 2026)
 
+### Correction: incremental uploads were not complete frames (August 31, 2026)
+
+The retained incremental-presentation measurements below do not establish a
+completed-frame floor. Remote Firefox session `mtgbpyie-ovjvpsaj` made the
+error observable: at the last sample the runtime had counted 8,116 canvas
+uploads but only 320 Java `Graphics.drawImage` calls. Of those uploads, 7,796
+used the JavaScript swizzle and 2,475 were explicitly triggered at an internal
+raster yield. The displayed surface was therefore often a framebuffer still
+being modified by the guest.
+
+This path also replaced the presenter's typed snapshot with the guest's live
+plain JavaScript array. Full 800x600 conversion and upload averaged 15.56 ms
+per counted presentation and ran about 24 times per second, consuming enough
+of Firefox's main thread to make WebAudio audibly choppy. The cloning page no
+longer enables `awtIncrementalPresentation`; the option and implementation have
+been removed from java-tools. The runtime now registers an AWT `ImageConsumer`,
+copies pixels delivered by `setPixels`, and makes the image drawable only after
+`imageComplete(SINGLEFRAMEDONE|STATICIMAGEDONE)`. Its FPS counter therefore
+counts only completed Java image/blit boundaries. Results below that used
+incremental presentation remain useful scheduler experiments, but their
+displayed FPS must not be compared with HotSpot or complete-frame browser FPS.
+
+Final cleanup also removed the framebuffer field-guessing bridge, mutation
+sampler/signals, exact descriptor and bytecode-count renderers, guest-kernel
+oracles, and the old fused-region compiler. Any “retained” label below records
+the state of an earlier experiment and does not describe the current tree.
+
 These runs measure consecutive presented frames in foreground Firefox and omit
 genuinely static input-wait windows. The target is the worst non-idle gap, not a
 short peak FPS sample. A retained scalar reference-field helper baseline gave an

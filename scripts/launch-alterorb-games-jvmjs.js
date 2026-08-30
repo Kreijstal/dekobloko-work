@@ -645,29 +645,6 @@ function jitProfileSnapshot(jvm) {
   if (!jit) return null;
   return {
     counters: {
-      polygonRasterRuns: Number(jit.polygonRasterRunCount || 0),
-      polygonRasterGuardedFallbacks:
-        Number(jit.polygonRasterGuardedFallbackCount || 0),
-      affineSpriteRasterRuns:
-        Number(jit.affineSpriteRasterRunCount || 0),
-      affineSpriteRasterGuardedFallbacks:
-        Number(jit.affineSpriteRasterGuardedFallbackCount || 0),
-      semanticBilinearSamplerRuns:
-        Number(jit.semanticBilinearSamplerRunCount || 0),
-      semanticBilinearSamplerFallbacks:
-        Number(jit.semanticBilinearSamplerFallbackCount || 0),
-      alphaMaskedColorBlitRuns:
-        Number(jit.alphaMaskedColorBlitRunCount || 0),
-      alphaMaskedColorBlitSlowPaths:
-        Number(jit.alphaMaskedColorBlitSlowPathCount || 0),
-      transparentIntBlitRuns:
-        Number(jit.transparentIntBlitRunCount || 0),
-      transparentIntBlitSlowPaths:
-        Number(jit.transparentIntBlitSlowPathCount || 0),
-      clippedGradientRuns:
-        Number(jit.clippedGradientRunCount || 0),
-      clippedGradientSlowPaths:
-        Number(jit.clippedGradientSlowPathCount || 0),
       oversizedWasmFirstMethods:
         Number(jit.oversizedWasmFirstMethodCount || 0),
       longArithmeticWasmFirstMethods:
@@ -779,52 +756,6 @@ function jitRuntimeCounters(jvm) {
       Number(jit.adaptiveWholeMethodPromotionCount || 0),
     adaptiveWholeMethodEscalations:
       Number(jit.adaptiveWholeMethodEscalationCount || 0),
-    polygonRasterRuns: Number(jit.polygonRasterRunCount || 0),
-    polygonRasterGuardedFallbacks:
-      Number(jit.polygonRasterGuardedFallbackCount || 0),
-    affineSpriteRasterRuns: Number(jit.affineSpriteRasterRunCount || 0),
-    affineSpriteRasterGuardedFallbacks:
-      Number(jit.affineSpriteRasterGuardedFallbackCount || 0),
-    polygonRasterFallbackEntry: Number(jit.polygonRasterFallbackEntry || 0),
-    polygonRasterFallbackVertices:
-      Number(jit.polygonRasterFallbackVertices || 0),
-    polygonRasterFallbackCoordinate:
-      Number(jit.polygonRasterFallbackCoordinate || 0),
-    polygonRasterFallbackDegenerate:
-      Number(jit.polygonRasterFallbackDegenerate || 0),
-    polygonRasterFallbackSurface:
-      Number(jit.polygonRasterFallbackSurface || 0),
-    polygonRasterFallbackScratch:
-      Number(jit.polygonRasterFallbackScratch || 0),
-    polygonRasterFallbackSurfaceSample:
-      jit.polygonRasterFallbackSurfaceSample || null,
-    tiledBlitRuns: Number(jit.tiledBlitRunCount || 0),
-    tiledBlitGuardedFallbacks:
-      Number(jit.tiledBlitGuardedFallbackCount || 0),
-    tiledBlitFallbackEntry: Number(jit.tiledBlitFallbackEntry || 0),
-    tiledBlitFallbackTag: Number(jit.tiledBlitFallbackTag || 0),
-    tiledBlitFallbackArrays: Number(jit.tiledBlitFallbackArrays || 0),
-    tiledBlitFallbackLayout: Number(jit.tiledBlitFallbackLayout || 0),
-    tiledBlitFallbackBounds: Number(jit.tiledBlitFallbackBounds || 0),
-    perspectiveSpanRuns: Number(jit.perspectiveSpanRunCount || 0),
-    perspectiveSpanGuardedFallbacks:
-      Number(jit.perspectiveSpanGuardedFallbackCount || 0),
-    semanticBilinearSamplerRuns:
-      Number(jit.semanticBilinearSamplerRunCount || 0),
-    semanticBilinearSamplerFallbacks:
-      Number(jit.semanticBilinearSamplerFallbackCount || 0),
-    alphaMaskedColorBlitRuns:
-      Number(jit.alphaMaskedColorBlitRunCount || 0),
-    alphaMaskedColorBlitSlowPaths:
-      Number(jit.alphaMaskedColorBlitSlowPathCount || 0),
-    transparentIntBlitRuns:
-      Number(jit.transparentIntBlitRunCount || 0),
-    transparentIntBlitSlowPaths:
-      Number(jit.transparentIntBlitSlowPathCount || 0),
-    clippedGradientRuns:
-      Number(jit.clippedGradientRunCount || 0),
-    clippedGradientSlowPaths:
-      Number(jit.clippedGradientSlowPathCount || 0),
     oversizedWasmFirstMethods:
       Number(jit.oversizedWasmFirstMethodCount || 0),
     longArithmeticWasmFirstMethods:

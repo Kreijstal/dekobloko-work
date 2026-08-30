@@ -230,7 +230,6 @@ async function main() {
     warmupThreshold: 0,
     preferWholeMethodJs: true,
     rendererPipeline: true,
-    fusedRegions: true,
   } });
   await jvm.loadState(trace.state);
   const restored = jvm.threads.flatMap((thread) =>
@@ -358,7 +357,6 @@ async function main() {
         warmupThreshold: 0,
         preferWholeMethodJs: true,
         rendererPipeline: true,
-        fusedRegions: true,
       },
     },
   };

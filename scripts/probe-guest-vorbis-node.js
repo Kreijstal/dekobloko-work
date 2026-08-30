@@ -67,7 +67,6 @@ const jvm = new JVM({
     rendererPipeline: true,
     scalarLoops: true,
     scalarGuestBodies: true,
-    fusedRegions: true,
     structuredSsa: true,
     structuredDeferredCallMaterialization: true,
     ordinaryAdaptiveFramelessPositional: true,

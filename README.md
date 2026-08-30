@@ -262,37 +262,12 @@ and 41–49 Firefox results advanced `0,25,…,175`; they were useful renderer
 throughput probes, but they did not reproduce the original animation timeline
 and are superseded as logo-playback measurements.
 
-A remote 0.92 FPS report was also audited. It used the `generated` tight-loop
-control, which deliberately disables structured SSA and fused regions: every
-optimized counter was zero and it required 7,923.696 scheduler slices per
-state. It was not the normal optimized tier. The selector now calls this
-“Slow control (optimizations off)” and displays a prominent warning whenever
-it is active.
-
-A native Firefox profile then found that the fused-entry guard repeated stable
-class-initialization and bytecode-identity walks about 3,300 times per frame.
-The compiler now caches only a successful linkage proof against the JVM class
-and initialization epochs. Live target identity, mode statics, scheduler,
-debugger, breakpoint, and tracing checks still execute at every fused entry.
-Structured SSA entry guards use the same epoch discipline for their repeated
-class-initialization sets. Neither optimization selects a guest class or method
-name.
-
-The fused-entry linkage-proof cache remains a valid generic optimization, but
-its previously reported 48.39 FPS comparison used the superseded phase-jump
-workload. On the artifact-free authentic timeline with the same bundle,
-Firefox's 34.38 FPS median is above 30 FPS but below the original 50 Hz
-cadence: 327–396 of 500 states missed 20 ms and 126–173 exceeded 33.3 ms. It
-must not be described as
-a 48 FPS reproduction of the original logo.
-
-The post-change Gecko sample reduced `FusedRegionCompiler.guard` from 129 leaf
-samples in a 4,000-sample window to 16 in a 3,998-sample window. The largest
-remaining guest self-time is now the large structured geometry body; its
-generated function carries roughly 170 JVM locals and long cross-block copy
-chains. The next renderer optimization should therefore be generic SSA
-copy/phi simplification or safe method-region splitting, not another
-name-selected raster kernel.
+The former fused-region and bytecode-fingerprint renderer experiments were
+removed on August 31, 2026. They substituted complete workload-shaped
+algorithms and made measurements depend on a second implementation rather than
+the JVM's execution of the compiled classes. Current runtime optimization is
+limited to generic bytecode, SSA, call-graph, and Wasm machinery. AWT frames are
+published through `ImageProducer`/`ImageConsumer` completion callbacks.
 
 The recorded inputs were trace SHA-256
 `5b49fe4d0739167c0db566a8753661610fe357f82fe2e4398b5049582daa0a79`,

@@ -771,10 +771,6 @@ const launcher = `<!doctype html>
               jvm.jit.adaptiveWholeMethodEscalationCount || 0),
             generatedRuns: Number(jvm.jit.generatedRunCount || 0),
             wasmRuns: Number(jvm.jit.wasmJit && jvm.jit.wasmJit.runCount || 0),
-            affineSpriteRasterRuns: Number(
-              jvm.jit.affineSpriteRasterRunCount || 0),
-            affineSpriteRasterGuardedFallbacks: Number(
-              jvm.jit.affineSpriteRasterGuardedFallbackCount || 0),
             structuredSsaRuns: Number(
               jvm.jit.structuredSsa && jvm.jit.structuredSsa.runCount || 0),
             structuredSsaLazyStaticLinks: Number(
@@ -785,22 +781,6 @@ const launcher = `<!doctype html>
               jvm.jit.structuredSsa.restoringDirectRunCount || 0),
             ordinaryAdaptiveFramelessRuns: Number(
               jvm.jit.ordinaryAdaptiveFramelessRunCount || 0),
-            affineSpriteRasterRuns: Number(
-              jvm.jit.affineSpriteRasterRunCount || 0),
-            affineSpriteRasterGuardedFallbacks: Number(
-              jvm.jit.affineSpriteRasterGuardedFallbackCount || 0),
-            alphaMaskedColorBlitRuns: Number(
-              jvm.jit.alphaMaskedColorBlitRunCount || 0),
-            alphaMaskedColorBlitSlowPaths: Number(
-              jvm.jit.alphaMaskedColorBlitSlowPathCount || 0),
-            transparentIntBlitRuns: Number(
-              jvm.jit.transparentIntBlitRunCount || 0),
-            transparentIntBlitSlowPaths: Number(
-              jvm.jit.transparentIntBlitSlowPathCount || 0),
-            clippedGradientRuns: Number(
-              jvm.jit.clippedGradientRunCount || 0),
-            clippedGradientSlowPaths: Number(
-              jvm.jit.clippedGradientSlowPathCount || 0),
             oversizedWasmFirstMethods: Number(
               jvm.jit.oversizedWasmFirstMethodCount || 0),
             longArithmeticWasmFirstMethods: Number(
@@ -974,18 +954,6 @@ const launcher = `<!doctype html>
           jit: jvm.jit ? {
             ordinaryAdaptiveFramelessRuns: Number(
               jvm.jit.ordinaryAdaptiveFramelessRunCount || 0),
-            alphaMaskedColorBlitRuns: Number(
-              jvm.jit.alphaMaskedColorBlitRunCount || 0),
-            alphaMaskedColorBlitSlowPaths: Number(
-              jvm.jit.alphaMaskedColorBlitSlowPathCount || 0),
-            transparentIntBlitRuns: Number(
-              jvm.jit.transparentIntBlitRunCount || 0),
-            transparentIntBlitSlowPaths: Number(
-              jvm.jit.transparentIntBlitSlowPathCount || 0),
-            clippedGradientRuns: Number(
-              jvm.jit.clippedGradientRunCount || 0),
-            clippedGradientSlowPaths: Number(
-              jvm.jit.clippedGradientSlowPathCount || 0),
             oversizedWasmFirstMethods: Number(
               jvm.jit.oversizedWasmFirstMethodCount || 0),
             longArithmeticWasmFirstMethods: Number(
@@ -1238,10 +1206,6 @@ const launcher = `<!doctype html>
         const optimizerMode = query.get('mode') || 'structured';
         const structuredSsa = optimizerMode !== 'baseline';
         const wasmFirst = optimizerMode === 'wasm';
-        // Production uses the bytecode-structural compiler. Handwritten guest
-        // translations remain an explicit differential oracle only, never an
-        // optimizer dependency.
-        const guestKernelOracles = query.get('oracles') === '1';
         // Lightweight generated-body timing is enabled unless explicitly
         // disabled. The JIT chooses a sample before formatting method identity,
         // so ordinary entries pay only one deterministic PRNG update.
@@ -1271,13 +1235,10 @@ const launcher = `<!doctype html>
           scalarLoops: true,
           scalarGuestBodies: true,
           scalarSsaOptimizations: false,
-          guestKernelOracles,
-          fusedRegions: true,
           structuredSsa,
           structuredDeferredCallMaterialization: structuredSsa,
           ordinaryAdaptiveFramelessPositional: structuredSsa,
           adaptiveFramelessBudgetMultiplier: 100,
-          affineSpriteRaster: query.get('affine') !== '0',
           preferWholeMethodJs: !wasmFirst,
           profileTimings: timingProfile,
           methodTimingSampleRate,
@@ -1311,7 +1272,6 @@ const launcher = `<!doctype html>
           fullMode: !simpleMode,
           optimizerMode,
           structuredSsa,
-          guestKernelOracles,
           wasmFirst,
           timingProfile,
           methodTimingSampleRate,
@@ -1322,7 +1282,6 @@ const launcher = `<!doctype html>
         jit.rendererPipelineEnabled = true;
         jit.scalarLoopsEnabled = true;
         jit.scalarGuestBodiesEnabled = true;
-        jit.fusedRegions.enabled = true;
         jit.structuredSsa.enabled = structuredSsa;
         setProgress(6, 'Initializing Java…', 'Preparing classes, memory, and the applet environment.', 3, true);
         await debug.initialize();

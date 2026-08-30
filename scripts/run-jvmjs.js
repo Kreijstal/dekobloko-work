@@ -452,7 +452,6 @@ async function main() {
   if (process.env.JVM_BENCHMARK_METADATA === '1') {
     const jit = jvm.jit;
     const structured = jit && jit.structuredSsa;
-    const fused = jit && jit.fusedRegions;
     const wasm = jit && jit.wasmJit;
     console.error('[jvm-benchmark-gates] ' + JSON.stringify({
       eventLoopYieldMs: jvm.eventLoopYieldMs,
@@ -496,13 +495,6 @@ async function main() {
           structured && structured.versionedArrayRangeStoresEnabled),
         runCounters: Boolean(structured && structured.runCountersEnabled),
       },
-      fusedRegions: {
-        enabled: Boolean(fused && fused.enabled),
-        directCalls: Boolean(fused && fused.directCallsEnabled),
-        lexicalKernels: Boolean(fused && fused.lexicalKernelsEnabled),
-        handwrittenKernels: Boolean(fused && fused.handwrittenKernelsEnabled),
-        semanticRasterKernels: Boolean(fused && fused.semanticRasterKernelsEnabled),
-      },
     }));
     process.once('exit', () => {
       const syncCallSites = Array.isArray(jit && jit.syncCallSites)
@@ -538,47 +530,6 @@ async function main() {
             method: `${site.declaredClassName}.${site.methodName}${site.descriptor}`,
             positional: Boolean(site.fastPositional),
           })),
-        fusedRuns: Number(jit && jit.fusedRunCount) || 0,
-        fusedDirectRuns: Number(jit && jit.fusedDirectRunCount) || 0,
-        fusedGuardedFallbacks: Number(jit && jit.fusedGuardedFallbackCount) || 0,
-        fusedRestoredExceptionFrames:
-          Number(jit && jit.fusedRestoredExceptionFrameCount) || 0,
-        handwrittenFusedRegions:
-          Number(jit && jit.handwrittenFusedRegionCount) || 0,
-        handwrittenFusedRuns:
-          Number(jit && jit.handwrittenFusedRunCount) || 0,
-        semanticFusedWrapperRuns:
-          Number(jit && jit.semanticFusedWrapperRunCount) || 0,
-        semanticFusedRasterRuns:
-          Number(jit && jit.semanticFusedRasterRunCount) || 0,
-        semanticFusedFlatRasterRuns:
-          Number(jit && jit.semanticFusedFlatRasterRunCount) || 0,
-        lexicalFusedKernels:
-          Number(jit && jit.lexicalFusedKernelCount) || 0,
-        fusedDirectEntries: Number(
-          fused && Array.isArray(fused.directEntries) && fused.directEntries.length) || 0,
-        fusedResolvedDirectEntries: fused && Array.isArray(fused.directEntries)
-          ? fused.directEntries.filter((entry) => entry && entry.target).length : 0,
-        fusedUnresolvedDirectEntries: fused && Array.isArray(fused.directEntries)
-          ? fused.directEntries.filter((entry) => entry && entry.unresolved).length : 0,
-        fusedRejectedDirectEntries: fused && Array.isArray(fused.directEntries)
-          ? fused.directEntries.filter((entry) => entry && entry.permanentlyRejected).length : 0,
-        fusedDirectAttempts: Number(fused && fused.directAttemptCount) || 0,
-        fusedDirectFallbacksByReason: fused && fused.directFallbackCounts
-          ? Object.fromEntries(fused.directFallbackCounts) : {},
-        fusedDirectEntryStates: fused && Array.isArray(fused.directEntries)
-          ? fused.directEntries.map((entry) => ({
-            owner: entry && (entry.target && entry.target.lookupClass ||
-              entry.unresolved && entry.unresolved.owner) || null,
-            descriptor: entry && (entry.target && entry.target.method &&
-              entry.target.method.descriptor ||
-              entry.unresolved && entry.unresolved.descriptor) || null,
-            resolved: Boolean(entry && entry.target),
-            compiled: Boolean(entry && (entry.region ||
-              entry.target && fused.cache.get(entry.target.method))),
-            permanentlyRejected: Boolean(entry && entry.permanentlyRejected),
-            rejectedEpoch: entry && entry.rejectedEpoch || null,
-          })) : [],
         wasmRuns: Number(wasm && wasm.runCount) || 0,
         oversizedWasmFirstMethods:
           Number(jit && jit.oversizedWasmFirstMethodCount) || 0,
@@ -590,28 +541,6 @@ async function main() {
           Number(jit && jit.adaptiveWholeMethodPromotionCount) || 0,
         adaptiveWholeMethodEscalations:
           Number(jit && jit.adaptiveWholeMethodEscalationCount) || 0,
-        guestKernelOraclesEnabled:
-          Boolean(jit && jit.guestKernelOraclesEnabled),
-        perspectiveSpanRuns:
-          Number(jit && jit.perspectiveSpanRunCount) || 0,
-        perspectiveSpanGuardedFallbacks:
-          Number(jit && jit.perspectiveSpanGuardedFallbackCount) || 0,
-        tiledBlitRuns:
-          Number(jit && jit.tiledBlitRunCount) || 0,
-        tiledBlitGuardedFallbacks:
-          Number(jit && jit.tiledBlitGuardedFallbackCount) || 0,
-        affineSpriteRasterRuns:
-          Number(jit && jit.affineSpriteRasterRunCount) || 0,
-        affineSpriteRasterGuardedFallbacks:
-          Number(jit && jit.affineSpriteRasterGuardedFallbackCount) || 0,
-        polygonRasterRuns:
-          Number(jit && jit.polygonRasterRunCount) || 0,
-        polygonRasterGuardedFallbacks:
-          Number(jit && jit.polygonRasterGuardedFallbackCount) || 0,
-        semanticBilinearSamplerRuns:
-          Number(jit && jit.semanticBilinearSamplerRunCount) || 0,
-        semanticBilinearSamplerFallbacks:
-          Number(jit && jit.semanticBilinearSamplerFallbackCount) || 0,
       }));
     });
   }
