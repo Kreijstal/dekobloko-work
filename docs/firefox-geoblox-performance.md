@@ -487,3 +487,12 @@ The accepted preparation policy is owned by DekoBloko in
 `apps/launcher/browser-runtime.json` and its cloned after-start script. java-tools
 contains only generic preparation and tier-routing machinery; the clone page only
 loads the repository-declared hook. No game Java source was optimized.
+
+The final production-path confirmation used neither `?jvm=local` nor a
+profiler-triggered preparation. It fetched the committed JVM and Deko hook through
+the browser Git clones. The reflected stage call took 39 ms, the worst transition
+gap was 37 ms, PLAY-to-Instructions peaked at 38 ms, the one-second floor was
+48.85 FPS, and the average was 54.34 FPS. The complete oversized module ran 18
+times with zero exits. This also caught and fixed a late-preparation case where a
+previously cached positional JavaScript child link had to be invalidated when the
+prepared Wasm module became ready.
