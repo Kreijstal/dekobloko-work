@@ -61,15 +61,31 @@ public final class FrameProfiler {
     public static void registerGameClassLoader(ClassLoader loader) {
         if (!ENABLED) return;
         try {
-            Class<?> providerOwner = Class.forName("le", false, loader);
-            rasterProviderField = providerOwner.getDeclaredField("m");
-            rasterProviderField.setAccessible(true);
-            Class<?> providerType = Class.forName("eh", false, loader);
-            pixelsField = providerType.getDeclaredField("f");
-            pixelsField.setAccessible(true);
+            try {
+                registerRasterFields(loader, "le", "m", "eh", "f");
+            } catch (ReflectiveOperationException dekoblokoLayout) {
+                try {
+                    // The browser-compiler cache preserves compact names.
+                    registerRasterFields(loader, "sh", "y", "sc", "d");
+                } catch (ReflectiveOperationException compactLayout) {
+                    // A freshly decompiled tree uses field-prefixed names.
+                    registerRasterFields(loader, "sh", "field_y", "sc", "field_d");
+                }
+            }
         } catch (ReflectiveOperationException ex) {
             throw new IllegalStateException("Could not locate game raster provider", ex);
         }
+    }
+
+    private static void registerRasterFields(ClassLoader loader, String ownerName,
+            String providerFieldName, String providerTypeName, String pixelsFieldName)
+            throws ReflectiveOperationException {
+        Class<?> providerOwner = Class.forName(ownerName, false, loader);
+        rasterProviderField = providerOwner.getDeclaredField(providerFieldName);
+        rasterProviderField.setAccessible(true);
+        Class<?> providerType = Class.forName(providerTypeName, false, loader);
+        pixelsField = providerType.getDeclaredField(pixelsFieldName);
+        pixelsField.setAccessible(true);
     }
 
     static Graphics wrap(Graphics delegate) {

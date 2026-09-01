@@ -523,3 +523,613 @@ gap was 37 ms, PLAY-to-Instructions peaked at 38 ms, the one-second floor was
 times with zero exits. This also caught and fixed a late-preparation case where a
 previously cached positional JavaScript child link had to be invalidated when the
 prepared Wasm module became ready.
+
+## Complete-frame floor after removing partial presentation (August 31, 2026)
+
+The valid complete-frame reference is now 38 ms on the main menu, 357 ms for
+the menu-to-Instructions transition, and 301 ms on Instructions. The global
+worst is therefore 357 ms, 8.9 times the 40 ms target. Earlier sub-40 ms
+transition figures above used a presentation path that could upload an image
+before Java completed it and are not comparable to this reference.
+
+A native Gecko profile collected without `jit.profileMethods` (which disables
+production fast links) attributed an instrumented 532 ms Instructions valley
+primarily to the ordinary generated `ma` rendering activation and its nested
+calls: the `ma` tree was present in 66.35% of samples, generic resolved-target
+dispatch in 62.97%, and the generated `dm.b(II)V` body in 26.5%. Profiling
+overhead increased the measured gaps, so these percentages are attribution,
+not a replacement floor measurement. A low-overhead deoptimization trace
+recorded 1,005 `synchronous generated quantum` exits from the same `ma` method;
+the child raster did not itself deopt. One complete frame spans many expensive
+ordinary-JavaScript quanta, so this is neither an idle window nor a broken
+clock.
+
+New rejected experiments:
+
+- Enabling the generic hot call-graph region tier measured 73/537/449 ms for
+  menu/transition/Instructions and was reverted.
+- Splitting the oversized ordinary adaptive body first caused a guest null
+  pointer due to an invalid lexical capture. After repairing and
+  differential-testing the capture ABI, two broad runs measured 59/382/285
+  and 87/365/270 ms. Instructions improved, but the global floor regressed.
+  Restricting the splitter to compiled call chains was much worse at
+  112/363/841 ms. All splitter code was removed.
+- Capturing the adaptive tier's 103 immutable sentinel values eliminated 84
+  async-sentinel, eight void-return, and eleven static-deopt helper calls, but
+  measured 70/387/326 ms. It was removed.
+- Outlining the repeated abnormal child-call branches reduced the `ma`
+  adaptive source from 204,336 to 177,544 bytes while leaving successful
+  calls inline. It measured 227/363/682 ms and was removed. This and the
+  splitter results show that generated source size is not a monotonic proxy
+  for SpiderMonkey floor performance.
+
+The restored diagnostic bundle is `cfcf0c7c4869`. The next attribution pass
+targets the periodic raster execution and its actual positional-link state;
+source-size, sentinel-call, whole-graph, and ordinary-body splitting changes
+must not be retried without evidence that changes their premises.
+
+The positional-link audit found one remaining generic ownership error. A ready,
+fully compiled Wasm method was allowed to veto a positional JavaScript link
+forever after *any* invocation had reached that Wasm state, even while one exact
+synchronous generated edge subsequently accumulated thousands of JavaScript
+child runs. Treating those repeated edge-local runs as proof that this edge
+cannot reach scheduler Wasm released the nested `vb.b()V` link. All 2,320 focused
+JIT assertions passed. The clean complete-frame run measured 208/296/216 ms for
+menu/transition/Instructions, improving the retained global maximum from 357 to
+296 ms in that run. Upload work remained 1--5 ms and no frames were coalesced or
+partially published.
+
+A low-overhead trace after that fix recorded 4,062 ordinary adaptive positional
+safe-point exits from `ma.a(IIIBI[Ldm;)V` at loop PC 568. Converting compiled
+call-chain positional bodies from ordinary functions to resumable generators
+removed the permanent baseline-resume premise but regressed the clean result to
+141/337/341 ms; transition and Instructions medians also rose from 138/136 to
+202/192 ms. The experiment passed all 2,321 focused JIT assertions and was fully
+reverted. SpiderMonkey's ordinary-function optimization is worth more than the
+saved iterator state. A future resume fix must preserve an ordinary optimizable
+activation and reconstruct structured state at verified loop leaders; do not
+retry whole-method generator conversion.
+
+The normal runtime clock facade was also issuing a second `Date.now()` at every
+structured-quantum check, even when fake time was disabled, and did so before it
+knew whether any sleeping/waiting thread had a deadline. Reusing the already
+sampled wall time and reading guest time lazily passed all 2,321 focused JIT
+assertions. Its clean run measured 63/298/194 ms; this improves Instructions but
+does not independently change the conservative transition floor.
+
+With that correction, disabling the retained linear generator partitioner was
+beneficial under complete-frame measurement. Two clean controlled runs, using
+the same cloned after-start lifecycle, measured 71/285/192 and 71/225/208 ms.
+The conservative global maximum is 285 ms, versus 296 ms with partitioning. The
+second run had zero coalescing; completion timestamps, rather than rAF upload
+times, are used in both. This reverses the older conclusion from the partial-
+publication era: generated segment helpers accounted for about 12% of effective
+self samples in the corrected native Instructions profile, and their removal is
+now retained in DekoBloko's generic browser runtime options.
+
+The next generic range-proof experiment explained why the hot transparent
+raster still had ten checked primitive-array accesses. Both negative-count
+inner loops duplicate the same `iinc` onto mutually exclusive latch arms, while
+the counted-loop recognizer required one syntactic write. A CFG proof of exactly
+one identical positive update on every backedge admitted all three loops and
+specialized all 10/10 accesses. Differential fixtures covered multiple literal
+backedges, zero trips, aliasing, cursor overflow, exact bounds exceptions, and
+effects before a failing access; all 2,338 focused assertions passed.
+
+That correctness proof did not improve the Firefox floor. Under the same
+bundle, class files, after-start preparation, unpartitioned policy, complete
+frame publication, and 60-frame settled-screen windows, two disabled controls
+measured 80/260/201 and 77/242/209 ms for menu/transition/Instructions. Two
+enabled runs measured 52/217/177 and 75/327/205 ms. Thus the conservative global
+maximum regressed from 260 to 327 ms even though one run and some Instructions
+samples improved. The extra loop version changed SpiderMonkey's code shape more
+than the removed checks repaid. The induction proof, its diagnostic option, and
+its tests were fully removed; the rebuilt local bundle returned exactly to
+`a918ac537be4`. Do not retry this form of per-loop range specialization without
+evidence that the generated fast loop itself becomes smaller or a different
+host representation removes the duplicated versioned bodies.
+
+An attempted measurement with the uncommitted before-start preparation hook was
+excluded: preparing all 7,816 methods before class initialization produced a
+guest null-array store and the applet never presented a frame. The controlled
+A/B temporarily used the known-valid cloned after-start hook and restored the
+pre-existing local before-start files afterward. This is a correctness issue in
+that separate lifecycle experiment, not a performance result.
+
+A native Gecko profile of the retained unpartitioned build confirmed that
+presentation is not the remaining floor. Canvas queue/upload was 2--5 ms while
+the sampled 491 ms Instructions valley was spent before Java frame completion.
+In that exact valley, `ma.a(IIIBI[Ldm;)V` accounted for 20.16% effective self,
+`dm.b(II)V` for 11%, the transparent raster for 5.91%, and structured quantum
+handling for 4.28%. Sampling overhead makes the absolute profile gaps unsuitable
+as a baseline, but the ownership is unambiguous and no longer includes the
+removed linear-partition segment helpers.
+
+The hot `ma` method's restoring positional admission was blocked only by an
+`aaload` from its unchanged reference-array parameter. A generic provenance
+proof admitted that shape while retaining Java null/bounds checks, dynamic
+receiver guards, and exact exceptional restoration; generic fixtures covered
+null/object elements, compiled child calls, caught null-array exceptions, and
+the diagnostic-off control. All 2,325 focused assertions passed and the javac.js
+method published the intended restoring body. That body was 468,798 bytes,
+however, versus 231,239 bytes for the existing ordinary adaptive body.
+
+An exact-bundle Firefox A/B rejected it. With bundle `370d26c58ec4`, two disabled
+controls measured 63/233/198 and 61/249/185 ms for menu/transition/Instructions.
+Two enabled runs measured 134/250/208 and 100/314/206 ms. Tier inspection proved
+the restoring entry was selected, and upload remained separate; the conservative
+global floor therefore regressed from 249 to 314 ms. The proof, option, and tests
+were fully removed, 2,321 focused assertions passed again, and the served bundle
+returned byte-for-byte to `a918ac537be4`. Do not retry broad exact-restoration
+source for large call-bearing bodies unless cold restoration arms can be encoded
+without roughly doubling the host function.
+
+The existing generic linear primitive-array heap was then tested as a changed
+representation premise. Its structured Wasm backend already emits raw linear-
+memory loads/stores with a correct import fallback, and 61 focused heap/slab
+assertions passed. Merely enabling the heap measured 61/260/230 ms, but tier
+inspection showed zero runs in both ready raster Wasm methods: the generic
+imported-array policy still assumed every primitive array lived in JavaScript.
+
+Temporarily removing that stale locality veto when direct heap access was active
+made `dm.b(II)V` run in Wasm 64 times and its transparent raster run there 119
+times, both with zero exits. The exact-bundle enabled run measured 56/268/216 ms
+and the heap-disabled control measured 121/258/219 ms. Together with the earlier
+61/260/230 ms control-equivalent run, the global floor remained 258--268 ms;
+queue/upload stayed at 1--18/1--5 ms. Direct Wasm raster execution therefore did
+not remove the transition floor. The tier-policy change, runtime capability
+flag, and test were removed rather than retaining a neutral code path. This
+rules out primitive-array JS/Wasm boundary crossings as the dominant remaining
+periodic cost; the higher-level `ma` activation and repeated `dm` calls remain
+the next targets.
+
+Firefox's native implementation labels identify a tiering asymmetry inside that
+remaining work. In the retained profile, the higher-level
+`ma.a(IIIBI[Ldm;)V` activation had 7,417 inclusive baseline samples and no Ion
+samples, while `dm.b(II)V` had 3,539 Ion samples and the transparent raster had
+1,946. The leaf loops therefore do optimize; the large generator-continuation
+activation above them does not.
+
+A semantic diagnostic disabled structured continuations so the exact Java state
+was materialized into the existing ordinary resumable companion. It regressed
+the complete-frame gaps to 59/343/401 ms for menu/transition/Instructions,
+versus the retained best repeatable 71/285/192 and best single transition run of
+225 ms. The switch was removed. Merely replacing the generator with the current
+generated-sync resume path is not sufficient; the next implementation must
+preserve an ordinary optimizable activation while reconstructing state only at
+verified continuation points.
+
+A follow-up kept the generator but added one generic labelled fast-success edge
+around each positional call. The edge skipped the cold async/deopt/active-child
+handlers only when the result was non-sentinel, non-deoptimizing, the call-stack
+depth was unchanged, and the thread remained runnable. All 2,322 focused JIT
+assertions passed, but an exact-bundle Firefox A/B rejected the host code shape:
+enabled measured 68/390/366 ms for menu/transition/Instructions, while disabled
+measured 82/293/213 ms. The option, implementation, and test were removed. Even
+fewer executed branches can destabilize the oversized baseline-only generator;
+the next tier must move hot work into a separate ordinary optimization unit
+rather than adding control flow to that generator.
+
+An ordinary-loop outlining prototype then moved compiler-marked structured
+continuation loops into separate non-generator functions and reconstructed
+their live scalar state at the verified loop header. Unit-level differential
+tests covered completion, cold handoff, generator source offsets, and outward
+label routing, but the real browser workload exposed two compiler defects
+before any frame measurement: `ch.a(IIIIILjava/lang/String;I)V` first completed
+as raw JavaScript `undefined`, and the narrowed version later reached a guest
+null pointer and stalled before presenting a frame. Because no end-to-end run
+was correct, this produced no valid performance result. The option, compiler
+path, diagnostics, and tests were removed; the served bundle was restored
+byte-for-byte to `a918ac537be4`. A future ordinary optimization unit needs a
+JVM-level differential harness for full structured CFGs before browser timing.
+
+The next audit found that DekoBloko's configured adaptive frameless multiplier
+was not reaching generated loops. The method entered with a 6,400-instruction
+adaptive allowance, but every loop header replaced it with that loop's original
+64-instruction budget. A generic `ordinaryAdaptiveCallChainSafePointBudget`
+option now scales every verified loop budget in a canonical, non-recursive
+compiled call chain while preserving relative loop weights, wall-clock checks,
+and exact deoptimization. The focused JIT suite passed all 2,323 assertions;
+offline inspection of `ma.a(IIIBI[Ldm;)V` showed the 4,000,000 budget at entry
+and at all six loop resets. A traced Firefox run measured 46/213/102 ms with no
+`ma` deopts, and clean repeats measured 54/229/123 and 45/288/138 ms. This
+roughly halved the Instructions floor, but transition variance remained.
+
+That profile exposed a separate periodic cost after each completed frame. The
+old browser publication copied the 640x480 Java `int[]` framebuffer into Wasm,
+swizzled RGB channels there, copied it into `ImageData`, and finally called
+`putImageData`. A generic opt-in WebGL presenter instead uploads the same one
+complete typed framebuffer as a texture and swaps its BGRA byte layout in a
+fragment shader. Its initial compatibility implementation rendered to an
+offscreen WebGL canvas and copied that into the visible 2D canvas. Two clean
+runs measured 68/200/112 and 122/233/126 ms, with 844/844 and 1,036/1,036 GPU
+presentations and no CPU swizzle. The image was color-, orientation-, and
+content-correct, but the offscreen-to-2D copy still occupied about 12% of the
+exact worst native-profile window.
+
+The visible canvas could not be claimed directly because the first AWT
+primitive frame allocated its software raster as a plain JavaScript `Array`.
+That frame could not be texture-uploaded and therefore acquired a permanent 2D
+context before later typed full-frame blits arrived. AWT software integer
+surfaces now use `Int32Array` from their first primitive draw, matching Java
+`int[]` storage. Graphics creation and repaint keep raster operations attached
+to the component without pre-acquiring 2D when the generic complete-frame
+WebGL backend is enabled. A context-order trace proves the first connected
+640x480 request is now `webgl`; the only earlier 2D request is a disconnected
+304x34 Java image. All 206 focused AWT assertions passed.
+
+With bundle `23e75ffff703`, two clean Firefox runs measured 38/211/96 and
+40/219/93 ms for menu/transition/Instructions. Every observed presentation was
+direct to the visible canvas (934/934 and 1,047/1,047), with zero WebGL, Wasm,
+or scalar fallback and 2--4 ms maximum uploads. The captured Instructions frame
+is complete and correctly oriented. This establishes a conservative 219 ms
+global floor and a 211 ms best transition gap; the settled main-menu floor now
+meets the 40 ms target, but Instructions and especially transition computation
+do not. The next native profile therefore targets the transition before Java
+frame completion, not presentation.
+
+The next retained generic change admits effectful methods with verifier-safe
+monitor ownership to adaptive code generation. Together with the 4,000,000
+ordinary call-chain safe-point budget and direct visible WebGL presenter, clean
+runs measured 77/203/127 and 101/198/132 ms for
+menu/transition/Instructions. The best observed global gap is 198 ms and the
+repeatable conservative gap is 203 ms. Bundle `d32ed16fe9a3` is the retained
+reference.
+
+An attribution-only native profile inflated those windows to 83/680/129 ms,
+so its absolute gaps are excluded. In the exact 680-sample transition valley,
+generated Java execution occupied 78.7% inclusively and the synchronous call
+root 73.1%. Effective self time was distributed across useful bodies rather
+than one presentation or dispatch leaf: `dm.b(II)V` 8.24%,
+`kj.a(II[ILpc;Z)Z` 5.74%, `kl.a([III)V` 5.74%,
+`kl.b([IIIII)I` 4.26%, the two measured `ad` bodies 6.76% combined, and
+`ma.a(IIIBI[Ldm;)V` 2.5%. `ma` and the raster leaf reached Ion in that
+profile; several large handler/monitor callers remained Baseline.
+
+Further rejected experiments, all removed from the retained bundle:
+
+- Allowing acyclic handler-protected non-void methods to use structured
+  continuations measured 60/226/128 ms. Restricting that admission to methods
+  with at most 256 code items measured 61/230/122 ms. Both improved some local
+  windows but regressed the global floor.
+- Partitioning only oversized ordinary adaptive handler/monitor bodies passed
+  its focused differential tests but never progressed beyond startup frame 1
+  in the browser and printed a guest null pointer. It produced no valid timing
+  result and was fully removed.
+- Disabling Firefox's 100 KB Ion script-size gate measured 64/221/163 ms. A
+  native profile under that switch still labeled the dominant `ma`, `kj`, and
+  `kl` bodies Baseline. Lowering Firefox's Ion warm-up threshold from 1,500 to
+  10 measured 50/224/142 ms. Script-size and warm-up gates alone therefore do
+  not explain the retained floor.
+- Encoding generic synchronous-call exceptions as an internal result removed
+  roughly half the host catch regions from the large generated callers and
+  passed 2,328 exact JIT assertions, including exceptional frame ownership and
+  operand restoration. Its clean run measured 54/234/117 ms: Instructions
+  improved but the global transition floor regressed, so the option, ABI, and
+  tests were removed. The restored suite has 2,326 passing assertions and the
+  rebuilt bundle is again exactly `d32ed16fe9a3`.
+
+A live linkage audit after the restoration found all 28 `ma` call sites and all
+seven sites in the measured 121-item `ad` body linked to positional targets.
+Other apparently unlinked sites had no resolved target, indicating an
+unexecuted/cold branch rather than a hot edge stranded behind generic
+dispatch. This changes the next premise: the inclusive `tryInvokeSyncAt` stack
+is principally the root owning useful nested work, not proof that 73% is helper
+self time. The remaining 5x target requires a separate, correctly
+differential-tested optimization unit for the useful generated computation (or
+an equivalent generic representation change), not another link-release,
+presentation, warm-up, or exception-status tweak.
+
+### Rejected ordinary call-loop outliner (September 1, 2026)
+
+A temporary generic structured-loop counter narrowed the periodic transition
+work further. In one instrumented transition, the outer call-bearing loop in
+`ma.a(IIIBI[Ldm;)V` executed 1,645,712 iterations and invoked one child on each
+iteration. Its raster children included 2,091,374 and 1,205,252 iterations in
+`dm.b`, 1,298,923 in `dm.a`, and 742,582 in `kl.b`. The absolute profiled gaps
+were excluded because the counters inflated them; the counts establish that
+the recurring cost is useful call-bearing raster work rather than unresolved
+linkage, presentation, or an idle clock window.
+
+Moving the large ordinary `ma` loop into a separate host function exposed a
+generic compiler correctness defect: renderer-local materialization callbacks
+captured the parent function's stale scalar bindings while the outlined helper
+held the current bindings. Synchronizing live state before those cold callback
+calls restored exact behavior. Differential coverage for outward labels,
+normal completion, and exceptional exits passed all 352 focused outliner and
+2,329 JIT assertions.
+
+The corrected design was still rejected on clean complete-frame measurements.
+State-buffer synchronization measured 94/230/132 and 91/224/134 ms for
+menu/transition/Instructions, compared with an exact disabled control of
+71/271/146 ms and the retained 198--203 ms global reference. A compact
+fixed-arity synchronization ABI regressed catastrophically to
+761/1,012/519 ms. Limiting outlined loops to at most 20 live outputs still
+measured 130/374/199 ms. All loop counters, ordinary-outlining options,
+compiler support, and tests were removed. Do not retry this extraction model
+without a representation that avoids both parent-closure synchronization and
+a high-arity scalar ABI; the retained floor remains 198 ms best and 203 ms
+conservative.
+
+### Rejected late hot-call-graph fusion (September 1, 2026)
+
+A late, diagnostic-only compilation of `ma.a(IIIBI[Ldm;)V` first discovered
+zero connected edges, 19 productive-Wasm boundaries, and nine unresolved
+edges. This proved that the earlier broad graph-tier experiment had not
+actually fused the dominant root. Interning regenerated bytecode call-site
+metadata reduced repeated compilation attempts from 18 to six and retained
+ten connected edges. Honoring the existing edge-local proof that a ready Wasm
+target was unused then produced a fully connected seven-node graph with 31
+edges and no boundaries.
+
+That complete graph executed zero times: `ma` is one long-lived activation
+already running before the interactive menu, and publishing a replacement
+entry cannot migrate its live locals or program counter. A forced graph for
+the recurring `dm.b(II)V` child did execute 11.65 million times, but its 69 KB
+module and generic entry guard enlarged the transition gap to 980 ms. Inlining
+the unchanged epoch/class/debug guard fast path reduced that to 225 ms.
+Bounding production-only entry counters measured 52/239/124 ms for
+menu/transition/Instructions. Graph-disabled controls with call-site interning
+measured 112/214/214 and 60/229/210 ms, neither beating the retained floor.
+
+All code and diagnostic switches from this experiment were removed. Late
+fusion cannot replace an already active root, while entering even the small
+child graph remained slower than the ordinary positional path. Do not retry
+this representation without either correct pre-start/OSR state transfer or a
+substantially smaller child-module ABI. The retained best remains 198 ms and
+the conservative repeatable result remains 203 ms.
+
+### Rejected pre-start hot-call-graph fusion (September 1, 2026)
+
+A generic pre-start candidate pass tested whether compiling complete graph
+regions before the first guest instruction could avoid the live-activation
+problem above. Candidate selection used only bytecode structure and renderer
+metadata, with no game or class identity. In Node it found 313 candidates,
+attempted the top 16, and produced 14 graphs containing 73 methods. The large
+call-bearing root discussed above was selected thirteenth under the root-size
+bound and formed a seven-node graph with 31 connected edges, zero boundaries,
+and 324,437 bytes of generated source.
+
+The experiment also implemented a sound declared-receiver fast path: an exact
+declared class was guarded locally, while any overriding subclass fell back to
+the canonical JVM call path. Focused differential coverage passed. In the real
+browser, 7,816 methods were preloaded and all 16 graph attempts completed
+before the first frame, so the result was not contaminated by late publication.
+
+The clean complete-frame result nevertheless regressed to 319 ms for the
+PLAY-to-Instructions transition and 298 ms on Instructions, with maximum upload
+costs of only 5 ms and 2 ms respectively. The comparable restored control was
+228/118 ms, and the retained best remains 198 ms (203 ms conservatively).
+Eliminating graph boundaries by emitting one 324 KB JavaScript optimization
+unit increased host compilation/execution cost; publishing 14 other cold large
+graphs also worsened the settled screen. All pre-start graph compiler, JVM, and
+Deko runtime changes were removed. Do not retry this representation without a
+substantially smaller graph ABI or a region backend that keeps its working data
+inside Wasm rather than generating another giant JavaScript body.
+
+### Rejected canonical guest-wrapper shape (September 1, 2026)
+
+A post-measurement reachability census inspected 11,178 live guest values
+without placing counters in the render loop. It found one stable field-map
+layout per sampled runtime class and no field site with multiple resolved
+receiver layouts. Primitive and reference arrays were dense plain Arrays with
+the same three metadata properties (`type`, `elementType`, and `hashCode`). A
+field-vector rewrite or another typed-array switch therefore lacked new
+evidence; the earlier matched typed-array JS-path regression remains applicable.
+
+The wrapper itself did expose an allocation-tier split: 769 live `dm` objects
+had the canonical literal shape while 47 interpreter-created objects also had
+an own `toString` closure. A generic prototype/shape experiment moved one
+shared adapter into the canonical object literal for interpreter, compiled,
+and Wasm allocation. Focused representation and JRE suites passed 40 and 206
+assertions, and the next census proved all 816 live `dm` objects shared one
+shape.
+
+Complete-frame behavior nevertheless regressed. The adjacent restored control
+measured 241 ms for transition and 113 ms on Instructions. Two treatment runs
+measured 260/141 ms and 341/247 ms, while upload remained at 2 ms. The extra
+universal wrapper slot cost more than eliminating this limited shape split, so
+the implementation and its test were removed. Guest field-map multiplicity and
+the interpreter-only `toString` expando are not supported as the current floor
+cause; do not pursue a broad object-layout rewrite without execution evidence
+that identifies a specific hot property access or allocation pressure window.
+
+### Rejected hybrid dense instance fields (September 1, 2026)
+
+The same reachability census found 65,693 live guest field sites: 41,232 used
+their statically resolved declaring key, 3,950 used inherited aliases, and none
+required a polymorphic runtime-key cache. A Firefox microbenchmark over 20
+million reads measured dense numeric Array slots in roughly 51--74 ms versus
+120--146 ms for the existing fully-qualified string properties. That isolated
+result justified testing the representation, but did not establish an
+end-to-end win.
+
+The temporary generic implementation assigned superclass-first numeric slots
+to every declared instance field. Compiled field sites embedded the fixed
+slot, while a shared Array prototype exposed named `Owner.field` access for
+the interpreter, reflection, JRE stubs, diagnostics, and save-state restore.
+There was no guest class, game, or field-name selection. Focused field, JIT,
+JRE, and save-state suites passed 47, 2,332, 206, and 12 assertions.
+
+Real complete-frame measurements rejected all three forms. The first
+dual-path form measured 233 ms for transition and 162 ms on Instructions. A
+smaller generated direct-slot form exposed a costly `Map.get` in the named
+compatibility accessor and regressed to 515/548 ms. Replacing that lookup with
+a fixed-slot accessor still measured a 1,251 ms transition maximum and 364 ms
+Instructions maximum; complete uploads remained only 2 ms. The adjacent plain
+field-map control measured 241/113 ms, and the retained best remains 198 ms
+(203 ms conservatively).
+
+The numeric microbenchmark was real, but the hybrid representation forced the
+rest of the runtime through compatibility accessors and Array-shape guards.
+That cost outweighed direct generated-slot reads by a wide margin. The runtime,
+compiler, manifest option, and tests were removed. Do not retry a hybrid
+numeric/named object shape. A future field ABI experiment would have to move
+all interpreter, reflection/JRE, generated-JavaScript, and Wasm consumers to a
+single representation before it is worth another browser measurement.
+
+### Packed-array census and rejected field-site interning (September 1, 2026)
+
+A second post-measurement census questioned the remaining live container
+shapes. All 7,142 reachable guest arrays were packed ordinary Arrays: zero
+holes across 15,611,446 indexed slots, with one consistent metadata suffix
+(`type`, `elementType`, `hashCode`) per descriptor. Active frames were shallow
+(at most eight in the sampled run), their maximum locals array was 103, and
+the maximum live operand stack contained one value. There is no holey-array or
+oversized frame-container defect to optimize. The prior typed-array and linear
+heap A/B results still reject changing the packed primitive-array storage on
+the present JavaScript/Wasm paths.
+
+Compiler metadata did contain substantial duplication. After preparation,
+65,609 field-site records represented only 2,189 unique field references; the
+35,981 synchronous call-site records represented 18,619 unique caller-PC
+edges and 2,111 target signatures. Call-site linkage feedback is edge-local,
+and its earlier interning control did not beat the retained floor, so it was
+not changed. A temporary generic field-reference interner safely shared field
+resolution and receiver-key caches, including a late-class-loading upgrade.
+It reduced the live field-site total to exactly 2,189 and passed all 2,332
+focused JIT assertions.
+
+Two clean Firefox runs measured 214/117 ms and 237/140 ms for
+transition/Instructions, with 1--2 ms uploads. This is not a conservative
+improvement over the retained 198 ms best and 203 ms repeatable global floor,
+so the interner, runtime option, and test were removed. The duplication is a
+real memory/startup inefficiency, but it is not supported as the periodic
+complete-frame limiter and must not be retained as a floor optimization.
+
+### Rejected cross-tier raster representation (September 1, 2026)
+
+A differential Firefox fixture compiled in the browser with `javac.js` split
+the dominant renderer ABI into three equivalent shapes: a direct static
+primitive-array blit, a monomorphic object draw, and a reference-array-loaded
+polymorphic draw. Each draw copied the same 8x8 integer raster, and every tier
+matched HotSpot's checksum. Timing is reported per completed draw, not per
+pixel or presentation.
+
+The stable generated-JavaScript static path measured 0.34--0.44 us, while
+structured Wasm over its ordinary imported arrays measured 2.40--2.64 us.
+Moving primitive arrays and primitive object fields into linear memory reduced
+the Wasm static/monomorphic shapes to 1.02--1.22 us, but adding the real
+reference-array plus polymorphic receiver shape raised it to 2.18 us. A
+temporary generic numeric dispatch tag followed by direct Wasm-to-Wasm target
+calls reduced that last shape to 1.82 us, about 17%, but remained over four
+times slower than the generated-JavaScript primitive-array path. The
+non-linear-heap polymorphic result was 3.57 us in the longer run. HotSpot
+measured 24--28 ns for static/monomorphic and 81--84 ns for polymorphic.
+
+This rules out two broad representation guesses. The packed JavaScript arrays
+are not intrinsically the wrong raster storage for the production JavaScript
+route, and moving reference arrays or every object into a Wasm handle table
+cannot recover the required fivefold complete-frame improvement when the
+best-case all-numeric Wasm body is already slower. The costly shape is the
+mixed-tier seam: JavaScript owns object references and Wasm owns numeric
+storage, so reference lookup, target classification, reference-field access,
+and the numeric child cannot remain in one optimizer. The temporary
+polymorphic Wasm implementation was removed rather than adding an unused
+runtime option without a plausible route to the floor target. The fixture is
+retained as a generic compiler benchmark; its browser result reader stores
+elapsed microseconds because the deliberately interpreted reference variants
+can exceed a signed 32-bit nanosecond counter.
+
+Future representation work must therefore form a smaller complete
+JavaScript-native optimization unit around the useful call-bearing raster
+loop, with dataflow-derived inputs/outputs. It must not repeat the global
+typed-array, dense-field, wrapper-shape, field-site interning, giant fused
+graph, or copy-every-live-local state-buffer experiments rejected above.
+
+A follow-up tested the smallest remaining container-access hypothesis rather
+than changing storage. The structured-JavaScript renderer temporarily captured
+one raw view for a descriptor-proven reference-array parameter only when no
+`astore` could rebind that JVM local. This removed the repeated
+`array.elements ? array.elements[index] : array[index]` choice from the normal
+`aaload` path while retaining the canonical reference, null/bounds fallback,
+legacy wrapper arrays, and exact reassignment behavior. All 2,336 JIT
+assertions passed before the browser A/B.
+
+The real cached clone+javac.js Firefox treatment measured 199 ms for the first
+18 complete frames after the Instructions click, but 289 ms presentation / 295
+ms completion on the subsequent 60-frame Instructions sample and 146 ms on
+the menu. Its own 295 ms global gap is already worse than the retained 203 ms
+floor. The adjacent disabled control measured 230 ms transition and 128 ms
+Instructions (with one noisy 513 ms menu outlier); upload remained 0--4 ms in
+both. The treatment also reached the hook's 500-frame preparation boundary at
+284 seconds versus 230 seconds for control, while the actual preparation work
+was the same 76 seconds. The parameter-view implementation, option, and test
+were removed. Even a representation branch proven redundant in isolation can
+change SpiderMonkey's large generated-function shape adversely; packed-array
+storage and its access wrapper are not the supported floor cause.
+
+### Retained transitive Wasm dependency blockers (September 1, 2026)
+
+A generic Firefox dispatch fixture exposed a circular dependency in the Wasm
+callee compiler rather than another slow container. A hot caller recorded only
+that an acyclic reference-returning factory method lacked a module. The factory
+had actually been deferred because its allocation class was not initialized,
+but the caller discarded that transitive class blocker. Because an acyclic
+callee compiles only when requested by a caller, the caller then waited for the
+factory while no dependency transition could trigger the caller translation
+that would retry it.
+
+The underlying blocker representation was lossy in two places. Structured
+entry-block demotion retained one global blocker set but threw away the exact
+entry block's blocker metadata, and reference-return rejection retained only
+the selected lowering's causes even when the alternate structured lowering was
+recoverably blocked. The generic correction now stores blockers per structured
+block, preserves recoverable causes from every viable lowering, and attaches a
+deferred callee's concrete causes alongside its method identity at caller sites.
+This is dependency-driven; it adds no timer, warm-up retry, guest identity, or
+game-specific selection.
+
+On the Firefox fixture the factory and constructor changed from permanently
+cold to fully compiled, and the caller changed from 383 exits in six measured
+runs to zero exits. In one same-process comparison the corrected structured
+path measured 940 ns per tile iteration versus 3,743 ns for the unresolved
+dispatcher path; every variant retained the HotSpot checksum. The focused
+instance-link suite passed all 78 assertions.
+
+This correctness and generic-linking improvement is retained, but it is not a
+claim that the GeoBlox floor target has been met. A clean local-cloner run with
+cached javac.js classes and complete-frame measurement produced 50 ms maximum
+on the main menu, 217 ms during the PLAY-to-Instructions transition, and 109 ms
+on Instructions. Maximum upload cost was 2 ms. The transition therefore remains
+at roughly the prior 198--203 ms floor; the remaining limiter is useful raster
+and call work, not lost factory linkage or partial presentation.
+
+### Fully unified dense fields and linear primitive storage (September 1, 2026)
+
+The rejected hybrid-field result above did not test one representation across
+all consumers: it retained named compatibility accessors around the numeric
+slots. A new generic implementation instead gives loaded classes stable,
+superclass-first slots and routes the interpreter, generated JavaScript, Wasm,
+reflection, `Unsafe`, method handles, and JRE native code through the same field
+read/write helpers. It contains no workload identity or Java source change. A
+late-loaded Wasm owner exposed and fixed one correctness defect in inherited
+slot resolution before measurement. The focused compiler/JRE/field/Wasm suite
+passes all 2,753 assertions with this representation enabled.
+
+Dense fields alone reduced an adjacent Instructions maximum from approximately
+135 ms to 114 ms, so the unified representation is retained. Re-testing the
+generic linear primitive-array heap with the corrected current runtime produced
+two complete-frame runs of 63/227/120 and 58/237/122 ms for
+menu/transition/Instructions. Adjacent packed-array controls measured
+57/255/114 and 75/246/135 ms. The 256 MiB heap is therefore retained because it
+improves the conservative global transition floor, although the result remains
+far above 40 ms. A separate attempt to move only garbage-collector bookkeeping
+arrays to typed storage measured 71/256/128 ms and was removed.
+
+Two further isolated data-structure wins failed end to end and were removed:
+
+- A Firefox microbenchmark made object-property static-field reads faster than
+  `Map.get`, but replacing the canonical static maps measured 72/255/114 and
+  78/256/114 ms. It did not improve the global floor.
+- Numeric class-index lookup was roughly twice as fast as string receiver lookup
+  in a 20-million-operation microbenchmark. Adding a parallel numeric positional
+  call-site cache changed the generated-function shape and regressed the real
+  browser result to 95/349/483 ms. The cache was completely reverted.
+
+These results narrow the representation premise. Fully unified dense instance
+fields and linear primitive storage offer modest retained gains; selectively
+adding compatibility shapes, alternate static containers, or parallel dispatch
+caches does not. The current conservative complete-frame maximum is 237 ms in
+the retained configuration, about 5.9 times the 40 ms target. Upload remains
+1--3 ms, so the remaining floor is still useful generated raster/call work.
