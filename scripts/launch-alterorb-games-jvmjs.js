@@ -651,6 +651,10 @@ function jitProfileSnapshot(jvm) {
         Number(jit.longArithmeticWasmFirstMethodCount || 0),
       wasmRuns:
         Number(jit.wasmJit && jit.wasmJit.runCount || 0),
+      wasmOwnedSyncCalleeRuns: Number(jit.wasmOwnedSyncCalleeRuns || 0),
+      wasmOwnedSyncCalleeExits: Number(jit.wasmOwnedSyncCalleeExits || 0),
+      wasmOwnedSyncCalleeDeclined:
+        Number(jit.wasmOwnedSyncCalleeDeclined || 0),
       referenceFramelessPositionalRuns:
         Number(jit.referenceFramelessPositionalRunCount || 0),
       framePositionalCalls:
@@ -1096,11 +1100,21 @@ async function runWorker(specification) {
     instanceid: crypto.randomBytes(8).readBigInt64BE().toString(),
     gamecrc: String(game.gamecrc),
   };
+  // ALTERORB_JVMJS_RUNTIME_MANIFEST=<browser-runtime.json> applies the same
+  // jvmOptions the cloned browser page applies, so a Node launch exercises the
+  // production tier policy instead of the smoke-launcher defaults.
+  const runtimeManifestPath = process.env.ALTERORB_JVMJS_RUNTIME_MANIFEST || null;
+  const runtimeManifest = runtimeManifestPath
+    ? JSON.parse(fs.readFileSync(path.resolve(ROOT, runtimeManifestPath), 'utf8'))
+    : null;
+  const manifestJvmOptions = runtimeManifest?.jvmOptions || {};
   const jvm = new JVM({
+    ...manifestJvmOptions,
     classpath: [classesDir, hookDir],
     appletParameters,
     appletCodeBase: `http://127.0.0.1:${HTTP_PROXY_PORT}/`,
     jit: {
+      ...(manifestJvmOptions.jit || {}),
       enabled: !specification.noJit,
       profileMethods: specification.profileJit,
       profileTimings: specification.profileJit,
@@ -1481,7 +1495,28 @@ async function runWorker(specification) {
       specification.until !== 'main-menu') {
     cpuProfilePromise = startCpuProfile();
   }
-  const runPromise = jvm.run(game.mainClass, {args: []});
+  // ALTERORB_JVMJS_PREPARE_BEFORE_START=1 runs the launcher's ahead-of-time
+  // runtime preparation on the fresh JVM before main(), i.e. before any class
+  // initializer has run. This is the lifecycle the browser beforeStartScript
+  // hook would use.
+  const prepareBeforeStart =
+    process.env.ALTERORB_JVMJS_PREPARE_BEFORE_START === '1';
+  const runPromise = (async () => {
+    if (prepareBeforeStart) {
+      const preparationStartedAt = Date.now();
+      const result = await jvm.precompileInitializedClasses({
+        preloadClasspath: true,
+        initializedOnly: false,
+        effectful: true,
+        wasm: true,
+        wasmPreparedUpgradesOnly: true,
+      });
+      jvm.jit.wasmJit?.freezeCompilation?.();
+      console.error(`[prepare-before-start] ${JSON.stringify(result)} in ` +
+        `${Date.now() - preparationStartedAt} ms`);
+    }
+    return jvm.run(game.mainClass, {args: []});
+  })();
   runPromise.then(() => {
     clearInterval(timer);
     finish('exited', {
