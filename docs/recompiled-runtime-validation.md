@@ -1,7 +1,8 @@
 # Recompiled game runtime validation
 
-For the complete per-game native-JRE original/recompiled and JVM.js recompiled
-startup comparison, see [`docs/performance.md`](performance.md).
+The complete per-game native-JRE original/recompiled and JVM.js recompiled
+startup comparison is kept in a local, untracked `docs/performance.md`; those
+numbers are machine-specific and are not carried in this repository.
 
 The owned-decompiler pipeline is not considered correct merely because every
 class verifies and recompiles. The acceptance test is to launch the recompiled

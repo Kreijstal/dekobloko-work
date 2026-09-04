@@ -6,7 +6,7 @@
 // Requires the cloning page on --url (default http://localhost:5173/). Writes
 // samples.jsonl plus one screenshot per state; always check the screenshots
 // before trusting a state's numbers. Never run two of these concurrently.
-// See docs/performance.md.
+// Results are recorded in the local, untracked docs/performance.md.
 'use strict';
 const { firefox } = require('playwright');
 const fs = require('fs');

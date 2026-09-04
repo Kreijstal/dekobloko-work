@@ -285,8 +285,10 @@ their commits, trees, and tracked-patch hashes.
 ### JVM.js Firefox renderer performance
 
 Measured frame rates, the post-logo startup acceptance table, retained changes,
-the rejected-experiment list, and the harness recipes live in
-[`docs/performance.md`](docs/performance.md).
+the rejected-experiment list, and the harness recipes are kept in a local,
+untracked `docs/performance.md`. Those numbers are machine-specific and are
+not carried in this repository; reproduce the browser figures with
+[`scripts/measure-geoblox-fps.js`](scripts/measure-geoblox-fps.js).
 
 Obfuscated method identities such as `vk.a(I)V` are permitted only as runtime
 profiler roots and trace selectors. Reusable JIT optimizations in `java-tools`
