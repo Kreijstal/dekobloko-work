@@ -9,8 +9,7 @@ oracle. Any useful result here has to be translated into a bytecode-shape
 predicate and a deterministic pass in `scripts/pipeline/`, then validated
 against these fixtures.
 
-`results.tsv` and `results.json` record all 20 oracle outcomes. The
-`accepted/` subdirectories keep the original Krakatau input and selected
+The `accepted/` subdirectories keep the original Krakatau input and selected
 Krakatau output for the five clean accepted candidates:
 
 - `02-aceofskies-fg`: `15 -> 7`, profile `no-terminal-extract`

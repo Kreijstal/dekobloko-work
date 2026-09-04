@@ -116,7 +116,8 @@ Those three are never nulled by design and are non-null on every client. Only
 3, 7, 8, 9 and 10 are completion signals.
 
 To confirm the diagnosis, force the gate and watch the menu appear:
-[`menu-bit-flip.md`](menu-bit-flip.md). That is a diagnostic, not a fix.
+[`loading-and-menu-investigation.md`](loading-and-menu-investigation.md#forcing-the-menu-by-flipping-vfield_d-diagnostic-not-a-fix).
+That is a diagnostic, not a fix.
 
 If the bar is **partial**, loading genuinely is in progress. Zero **data**
 groups requested is normal with a populated cache — the client reads locally and

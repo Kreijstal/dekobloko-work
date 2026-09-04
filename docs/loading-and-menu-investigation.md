@@ -144,6 +144,48 @@ The launcher hardcodes its applet parameters and never fetches them over HTTP,
 so the server's own `--simplemode` flag is inert; the launcher exposes it as an
 opt-in `--simplemode` argument.
 
+### Forcing the menu by flipping `v.field_d` (diagnostic, not a fix)
+
+Setting the static boolean `v.field_d = true` by reflection paints the real UI
+over a stalled loading screen. It forces route A by hand, so the surrounding
+state machine in `bd.a()` never runs: the menu renders but is only half live
+(the lobby's "RETURN TO MAIN MENU" does nothing), `bd.java:108` can clear the
+flag at any time, and it does not survive a restart. `simplemode=true` reaches
+the same screen without an agent and is the better tool when you only need the
+menu or single player. Neither unblocks multiplayer, which needs route B.
+
+```sh
+A=/path/to/agent                       # SetAgent2 writes statics, agent4 dumps the canvas
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
+P=$($JAVA_HOME/bin/jps -l | awk '/DekoblokoLauncher/{print $1}')
+$JAVA_HOME/bin/java -cp $JAVA_HOME/lib/tools.jar:$A Attacher \
+    $P $A/setagent2.jar "$A/out.txt,v.field_d=true"
+$JAVA_HOME/bin/java -cp $JAVA_HOME/lib/tools.jar:$A Attacher \
+    $P $A/agent4.jar $A/canvas.png
+```
+
+Agent jars must be absolute paths (`loadAgent` rejects relative ones). The first
+frame after the flip is usually a partial paint; dump two or three times.
+`gb.field_Ob` (screen id) does not need touching -- it already reads 0.
+
+What you get depends on the server: if the lobby bootstrap is auto-sent on the
+4/5 heartbeat you land in the **lobby**, and if it is withheld until requested
+you land on the **main menu**. That is how the auto-bootstrap was found to be
+skipping the menu, and why `game.py` defers it to `_ensure_lobby_bootstrap()`
+gated on opcode 58 or 9.
+
+Two menu actions assert on the flag and throw `IllegalStateException` if it is
+false when they run: `gf.a(byte)` (`gf.java:272`) and `ed.a(int)`
+(`ed.java:180`).
+
+**Attach-agent trap:** loading a new agent jar whose agent class has a name
+already loaded in the target VM silently reuses the *old* class, with no
+warning -- the symptom is a fixed agent that keeps failing the old way with
+`AgentInitializationException` and an empty output file. Rename the class
+(`PickAgent` -> `PickAgent2`) and rebuild. Also, several obfuscated classes
+override `toString()` to throw (e.g. `gh.toString()`), so any agent that
+stringifies fields must guard each value individually.
+
 ## Lobby chat and post-login requests
 
 Moved to [`chat-and-requests.md`](chat-and-requests.md): the request/reply

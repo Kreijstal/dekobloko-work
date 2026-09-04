@@ -284,35 +284,15 @@ their commits, trees, and tracked-patch hashes.
 
 ### JVM.js Firefox renderer performance
 
-The authoritative optimization diary, benchmark commands, accepted and rejected
-experiments, correctness hashes, and Firefox measurements live in
-[`docs/firefox-geoblox-performance.md`](docs/firefox-geoblox-performance.md).
-With the sibling checkout used elsewhere in this repository, the same document
-is available at
-`docs/firefox-geoblox-performance.md` in this repository.
-
-The current timers-off production measurement is roughly 13 changed images/s:
-13.3303, 13.0468, and 13.9486 across three fresh Firefox processes, for a
-13.3303 median. All three began at the expected surface hash and reported no
-page or console errors. These are changed-image rates from the reproducible
-20-image browser probe, not Java method invocation counts.
-
-Non-overlapping wall-time attribution identifies the complete scene body as the
-largest scheduler owner. Exclusive nested timing further attributes 370 of its
-561 ms (66.0%) to the geometry/face subtree: 147 ms in geometry and control
-flow, 164 ms in gradient rasterization, 39 ms in a geometry helper, and 20 ms
-in flat rasterization. The transform subtree consumes another 153 ms, while the
-scene root itself consumes only 15 ms exclusive. The next useful optimization
-target is therefore the complete geometry-to-gradient path, not generic call
-entry alone.
+Measured frame rates, the post-logo startup acceptance table, retained changes,
+the rejected-experiment list, and the harness recipes live in
+[`docs/performance.md`](docs/performance.md).
 
 Obfuscated method identities such as `vk.a(I)V` are permitted only as runtime
 profiler roots and trace selectors. Reusable JIT optimizations in `java-tools`
 must continue to select code by descriptors, verified CFG/stack structure,
 opcodes, and runtime target shape; they must not hardcode Dekobloko method
-names. The detailed report also records why invocation counts were retired for
-bottleneck selection and why experimental irreducible-CFG splitting remains
-disabled after its Firefox regression.
+names.
 
 ## Fetch the Gamepack
 

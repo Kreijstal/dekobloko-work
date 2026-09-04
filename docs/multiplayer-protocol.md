@@ -401,3 +401,54 @@ Each item lists the exact harness/action that would close it.
 | 13 | **Renderer proof for every inbound feature.** | All inbound proofs are *field-decode / state-advance* only (`ib.pb`, `kc.field_p`, `cl.field_A`, `ph.Eb`, etc.). Painting (`gf.a`, `mb.a`, `cl.b`, `ke`, `qc`) needs AWT and was not driven — a correct decode does not prove the screen paints. |
 | 14 | **achievement `pe.a` checksum** and `kn.field_o` value semantics. | A length-driven server read consumes the 4 checksum bytes without recomputing; only reverse `pe.a` if a future client validates it. `field_o` value meaning (timestamp/score/id) needs a live client that displays it. |
 | 15 | **private-messages** (inventory only, not investigated). | Drive the `ad.a`/`ce.a` PM path (`ai.java:310` "Send private message"); confirm opcode (candidate 14) and Huffman body relay. |
+
+---
+
+## 6. Adversarial review — where this spec overclaims
+
+Ranked by severity. These qualify the PROVEN tags above; the numbered
+"how to close it" harnesses are in §5.
+
+1. **[BLOCKER] The `te.field_v[]` enable gate was bypassed everywhere.** Every
+   inbound proof called its handler directly (`ke.e`, `ul.a`, `oe.c`, `ki.a`)
+   instead of going through `bd.f`. If login/bootstrap does not set
+   `te.field_v[2]/[6]/[12]/[13]`, every reply is dropped and all three
+   "fully proven" blocking features (create-unrated, high-scores,
+   achievement-sync) deadlock. See §5 item 12.
+2. **[BLOCKER] Opcode-3 collision.** `wb.a` writes a fixed 6-byte frame,
+   `fm.a` a length-prefixed one; the two source specs demand
+   `CLIENT_PACKET_LENGTHS[3] = 6` and `= -1` respectively. The "peek `0x05`"
+   disambiguation is synthesis that was never executed, and it was never shown
+   both writers fire in one session. A wrong peek storms both features.
+3. **[HIGH] play-rated inbound op-58 body was never executed.** The concrete
+   `build_match_start()` is reverse-guessed from `qc` field order; the outbound
+   opcode (11 vs 124) is also unknown. Keep it behind the guarded gate.
+4. **[HIGH] winning op60 handler effects are bytecode-read, not run.** `wl.d`
+   was never run for op60 (op60 has no body). Byte layout is proven; the
+   elimination/teardown/defeat-UI mutations are not.
+5. **[MEDIUM] 58/59/60 are bidirectional too**, not just 62 — client 58 fixed-0
+   vs server −2, client 59 fixed-1 vs server −2, client 60 −1 vs server fixed-0.
+6. **[MEDIUM] play-rated contradicts itself**: "fire-and-forget, no storm"
+   versus the raw finding's "stalls forever re-firing". Unresolved.
+7. **[MEDIUM] Three outbound opcodes are menu-threaded and unknown**
+   (`sn.a` social, `ce.a` quick-chat, `ad.a` play-rated); the quick-chat server
+   branch is keyed on a TBD opcode. The ignore-list opcode byte is
+   ISAAC-encrypted, so a prematurely guessed length key desyncs the keystream.
+8. **[MEDIUM] lobby-player-list was proven by injecting into `de.field_V`**,
+   bypassing the login→ISAAC transition, and its 5-name cap suggests a friends
+   preview rather than the room roster (`cl.x`/`kc.r` may be the real one).
+9. **[MEDIUM] create-unrated is proven only for the degenerate empty room**
+   (`N=0`); the `N>=1` occupant record and the `q`/`z` create-vs-join meaning
+   are unreversed.
+10. **[LOW] quick-chat**: the `0x8000` strip-on-echo rule is a hypothesis, and
+    the channel==2 / var4==1 / channel 1|4 branches were never executed.
+11. **[LOW] No renderer was driven for any inbound feature.** Every proof is
+    field-decode/state-advance; a correct decode does not prove the screen
+    paints.
+
+**Highest-value next harness:** replay the server's real login-success and
+bootstrap byte stream through the client's own `bd.f`/`te.field_v`
+initialization and assert `te.field_v[2] == te.field_v[6] == te.field_v[13] ==
+true` (and read `[12]`). It de-risks three blocking features at once. Runner-up:
+drive the lobby menu-action descriptor init and read the stored action opcodes,
+which would pin the play-rated, social, and quick-chat outbound numbers together.
