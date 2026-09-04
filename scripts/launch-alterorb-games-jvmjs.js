@@ -201,36 +201,65 @@ function shouldResetMenuCandidateOnSceneTransition(observedTransitions,
 }
 
 function enqueueSyntheticMouseClick(jvm, x, y) {
-  const components = [...(jvm._awtInputComponents?.get('mouse') || [])]
+  // Mirror a real pointer: a move (so the guest's hover/latched position is
+  // set), then press, then release+click on later ticks. Enqueuing all three
+  // button events in one turn let the guest's input poll miss the press
+  // entirely, so the advance click only landed on a lucky boot.
+  const visible = (kind) => [...(jvm._awtInputComponents?.get(kind) || [])]
     .filter(component => component && component._visible !== false &&
-      component._listeners?.mouse?.length);
-  let callbacks = 0;
-  for (const component of components) {
-    const base = {
-      type: 'java/awt/event/MouseEvent',
-      source: component,
-      component,
-      when: Date.now(),
-      modifiers: 16,
-      x,
-      y,
-      button: 1,
-      clickCount: 1,
-      popupTrigger: false,
-      consumed: false,
-      fields: {},
-    };
-    for (const listener of component._listeners.mouse) {
-      for (const [methodName, id] of [
-        ['mousePressed', 501], ['mouseReleased', 502], ['mouseClicked', 500],
-      ]) {
+      component._listeners?.[kind]?.length);
+  const event = (component, id) => ({
+    type: 'java/awt/event/MouseEvent',
+    source: component,
+    component,
+    when: Date.now(),
+    modifiers: id === 503 ? 0 : 16,
+    x,
+    y,
+    button: id === 503 ? 0 : 1,
+    clickCount: id === 503 ? 0 : 1,
+    popupTrigger: false,
+    consumed: false,
+    fields: {},
+  });
+  const dispatch = (kind, methodName, id) => {
+    let count = 0;
+    for (const component of visible(kind)) {
+      for (const listener of component._listeners[kind]) {
         jvm.enqueueAwtEventInvocation(listener, methodName,
-          '(Ljava/awt/event/MouseEvent;)V', {...base, id});
-        callbacks += 1;
+          '(Ljava/awt/event/MouseEvent;)V', event(component, id),
+          methodName === 'mouseMoved');
+        count += 1;
       }
     }
+    return count;
+  };
+  const pressTargets = visible('mouse');
+  if (pressTargets.length === 0) return 0;
+  // A real mousedown focuses the applet first; the guest's input latch may
+  // drop button events while it believes it is unfocused.
+  const focusTarget = visible('key')[0] || pressTargets[0];
+  jvm._awtFocusedComponent = focusTarget;
+  focusTarget._focused = true;
+  for (const component of visible('focus')) {
+    for (const listener of component._listeners.focus) {
+      jvm.enqueueAwtEventInvocation(listener, 'focusGained',
+        '(Ljava/awt/event/FocusEvent;)V', {
+          type: 'java/awt/event/FocusEvent', source: component, component,
+          id: 1004, temporary: false, consumed: false, fields: {},
+        });
+    }
   }
-  return callbacks;
+  dispatch('mouseMotion', 'mouseMoved', 503);
+  setTimeout(() => {
+    dispatch('mouse', 'mousePressed', 501);
+    setTimeout(() => {
+      dispatch('mouse', 'mouseReleased', 502);
+      dispatch('mouse', 'mouseClicked', 500);
+    }, 80);
+  }, 150);
+  return pressTargets.reduce(
+    (total, component) => total + component._listeners.mouse.length * 3, 0);
 }
 
 function sha256(file) {
@@ -1346,8 +1375,14 @@ async function runWorker(specification) {
     }
     const changedAfterAdvance = menuAdvanceDispatchedAt === null ||
       surface && surface.sampleHash !== menuAdvanceSourceHash;
-    const settledAfterAdvance = hasMenuAdvanceSettled(
-      menuAdvanceDispatchedAt, menuAdvanceFrameCount, seenFrameHashes.size);
+    // A requested advance click owns the measurement: the fps window must
+    // not open on the pre-click surface just because the click has not been
+    // dispatched yet, or the sampled scene depends on a timing race.
+    const advanceDispatchedIfRequested = !specification.menuAdvanceClick ||
+      menuAdvanceDispatchedAt !== null;
+    const settledAfterAdvance = advanceDispatchedIfRequested &&
+      hasMenuAdvanceSettled(
+        menuAdvanceDispatchedAt, menuAdvanceFrameCount, seenFrameHashes.size);
     const sceneRequirementMet = sparseAnimatedMenu ||
       denseSceneTransitions >= specification.menuSceneTransitions;
     if (specification.until === 'main-menu' &&
