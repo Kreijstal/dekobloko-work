@@ -212,6 +212,9 @@ function enqueueSyntheticMouseClick(jvm, x, y) {
     type: 'java/awt/event/MouseEvent',
     source: component,
     component,
+    // AWTEvent.getID() reads this field, so a handler that switches on the
+    // event id sees 0 -- not a valid AWT id -- when it is missing.
+    id,
     when: Date.now(),
     modifiers: id === 503 ? 0 : 16,
     x,
@@ -775,10 +778,96 @@ function jitProfileSnapshot(jvm) {
   };
 }
 
+function codegenStatsSummary(jvm, jit) {
+  const stats = jit.codegenStats;
+  if (!(stats instanceof Map)) return null;
+  const rows = [];
+  let totalMs = 0;
+  let compiles = 0;
+  for (const [method, entry] of stats) {
+    totalMs += entry.ms;
+    compiles += entry.count;
+    const owner = method?.className ||
+      jvm.findClassNameForMethod?.(method) || "?";
+    rows.push({
+      method: `${owner}.${method?.name || "?"}${method?.descriptor || ""}`,
+      ms: Math.round(entry.ms * 10) / 10,
+      count: entry.count,
+      invocations: Number(jit.invocationCounts?.get?.(method) || 0),
+    });
+  }
+  rows.sort((a, b) => b.ms - a.ms);
+  return {
+    methods: stats.size,
+    compiles,
+    totalMs: Math.round(totalMs),
+    top: rows.slice(0, 60),
+  };
+}
+
+// docs/refactor.md 0.5 item 1: average fps alone is not enough, so report the
+// distribution and the frames that missed the budget, and report the logo and
+// the menu separately -- an aggregate hides a stall that lives in one of them.
+// The frames come from the guest's own presentations (JVM_FRAME_TRACE=1), not
+// from this file's 100 ms surface poller, which samples the framebuffer and
+// would count neither dropped nor repeated frames correctly.
+const FRAME_BUDGET_MS = 1000 / 24;
+
+function percentile(sorted, fraction) {
+  if (sorted.length === 0) return null;
+  const rank = Math.min(sorted.length - 1,
+    Math.max(0, Math.ceil(fraction * sorted.length) - 1));
+  return Math.round(sorted[rank] * 100) / 100;
+}
+
+function framePacingBucket(gaps) {
+  if (gaps.length === 0) return null;
+  const sorted = [...gaps].sort((left, right) => left - right);
+  const total = gaps.reduce((sum, gap) => sum + gap, 0);
+  return {
+    frames: gaps.length,
+    // The mean gap's reciprocal, not frames/wall-second: a phase boundary can
+    // fall mid-frame, and this way the number is the distribution's own.
+    meanFps: Math.round(100000 / (total / gaps.length)) / 100,
+    p50Ms: percentile(sorted, 0.5),
+    p95Ms: percentile(sorted, 0.95),
+    p99Ms: percentile(sorted, 0.99),
+    maxGapMs: Math.round(sorted[sorted.length - 1] * 100) / 100,
+    framesOverBudget: gaps.filter(gap => gap > FRAME_BUDGET_MS).length,
+  };
+}
+
+function framePacingSummary(jvm, phases) {
+  const trace = jvm && jvm._awtPresentationStats &&
+    jvm._awtPresentationStats.presentationTrace;
+  if (!Array.isArray(trace)) return null;
+  const logo = [];
+  const loading = [];
+  const menu = [];
+  for (const entry of trace) {
+    if (!entry || typeof entry.gapMs !== 'number') continue;
+    if (phases.logoCompletedAt !== null && entry.atMs >= phases.logoCompletedAt) {
+      if (phases.firstMenuSurfaceAt !== null &&
+          entry.atMs >= phases.firstMenuSurfaceAt) menu.push(entry.gapMs);
+      else loading.push(entry.gapMs);
+    } else {
+      logo.push(entry.gapMs);
+    }
+  }
+  return {
+    budgetMs: Math.round(FRAME_BUDGET_MS * 100) / 100,
+    tracedFrames: trace.length,
+    logo: framePacingBucket(logo),
+    loading: framePacingBucket(loading),
+    menu: framePacingBucket(menu),
+  };
+}
+
 function jitRuntimeCounters(jvm) {
   const jit = jvm && jvm.jit;
   if (!jit) return null;
   return {
+    codegenStats: codegenStatsSummary(jvm, jit),
     preferWholeMethodJs: Boolean(jit.preferWholeMethodJs),
     adaptiveConstructorCallers:
       Boolean(jit.adaptiveConstructorCallersEnabled),
@@ -887,6 +976,26 @@ function jitRuntimeCounters(jvm) {
     fusedGuardedFallbacks: Number(jit.fusedGuardedFallbackCount || 0),
     fusedRestoredExceptionFrames:
       Number(jit.fusedRestoredExceptionFrameCount || 0),
+    // Phase 1 of docs/refactor.md 0.5, item 3: optimization interference.
+    // These are the numbers the non-blocking contract is judged on, and the
+    // launcher is the only harness here that runs the real game, so the
+    // measurement has to come from this report and not from a synthetic
+    // benchmark. `syncCompile.postMainSyncCompile*` is the contract
+    // violation counter: it must reach zero on the measured workload.
+    phase1: {
+      syncCompile: jit.syncCompileCensus ? jit.syncCompileCensus() : null,
+      install: jit.installCensus ? jit.installCensus() : null,
+      worker: jit.compileWorker ? {
+        enabled: Boolean(jit.compileWorker.enabled),
+        ...jit.compileWorker.stats,
+      } : null,
+      // Which Wasm entry paths reached the compiler after main(). The freeze
+      // set after preparation gates only the warmup path, so this is how a
+      // report says whether the other four were used rather than merely
+      // unexercised.
+      wasm: jit.wasmJit && jit.wasmJit.postMainCompileCensus
+        ? jit.wasmJit.postMainCompileCensus() : null,
+    },
   };
 }
 
@@ -1235,6 +1344,9 @@ async function runWorker(specification) {
               firstMenuSurfaceAt === null
             ? null : firstMenuSurfaceAt - logoCompletedAt,
         },
+        framePacing: framePacingSummary(jvm,
+          {logoCompletedAt, firstMenuSurfaceAt}),
+        eventLoopStalls: {maxTickGapMs, tickIntervalMs: 100, stalls: tickStalls},
         methodEntryTraceMatches: methodEntryTraceOut
           ? jvm.jit.methodEntryTraceMatchCount : undefined,
         menuAdvance: menuAdvanceDispatchedAt === null ? null : {
@@ -1259,6 +1371,39 @@ async function runWorker(specification) {
       error: String(error && (error.stack || error.message) || error),
     }, 1));
   };
+  // docs/refactor.md 0.2 requires linkage, class initialization, I/O and other
+  // guest waits to be reported as themselves rather than lumped in with
+  // optimization stalls. A long gap between guest presentations has two very
+  // different causes and the frame trace alone cannot tell them apart: the
+  // event loop is blocked, or the guest is running and simply not repainting.
+  // This timer answers that, because a blocked loop stops firing it too. When
+  // it does fire late, it records what each live thread was executing.
+  let lastTickAt = null;
+  let maxTickGapMs = 0;
+  const tickStalls = [];
+  const observeTick = (observedAt) => {
+    if (lastTickAt !== null) {
+      const gapMs = observedAt - lastTickAt;
+      if (gapMs > maxTickGapMs) maxTickGapMs = gapMs;
+      if (gapMs > 500 && tickStalls.length < 200) {
+        tickStalls.push({
+          endedAtElapsedMs: observedAt - startedAt,
+          gapMs,
+          // Where the guest is now, i.e. the first thing to run after the
+          // stall. Sampled after the fact, so treat it as a pointer to the
+          // region, not as proof of what consumed the time.
+          threads: jvm.threads.map((thread) => {
+            const frames = thread.callStack && thread.callStack.items;
+            const frame = frames && frames[frames.length - 1];
+            return frame ? `${frame.className}.${frame.method &&
+              frame.method.name}${frame.method &&
+              frame.method.descriptor || ''}` : null;
+          }).filter(Boolean).slice(0, 6),
+        });
+      }
+    }
+    lastTickAt = observedAt;
+  };
   const timer = setInterval(() => {
     if (!methodEntryTraceWritten && methodEntryTraceOut &&
         jvm.jit.methodEntryTrace) {
@@ -1268,6 +1413,7 @@ async function runWorker(specification) {
       methodEntryTraceWritten = true;
     }
     const observedAt = Date.now();
+    observeTick(observedAt);
     const presentationStats = jvm._awtPresentationStats;
     const totalPresented = Number(presentationStats && presentationStats.presented || 0);
     const totalDirtyMarks = Number(presentationStats && presentationStats.dirtyMarks || 0);
@@ -1534,23 +1680,29 @@ async function runWorker(specification) {
   // runtime preparation on the fresh JVM before main(), i.e. before any class
   // initializer has run. This is the lifecycle the browser beforeStartScript
   // hook would use.
+  //
+  // Work done here is free: nothing the guest can observe has started yet.
+  // What costs is compiling AFTER main(), which shows up as loading time and
+  // as fps stalls during play. So this pass compiles every eligible method on
+  // both tiers rather than the oversized-loop subset -- pairing a narrow
+  // upfront Wasm pass with freezeCompilation() afterwards was the one
+  // combination that could leave a method permanently off the Wasm tier.
+  // On by default: work before main() is free, and doing it later is what
+  // costs loading time and fps. ALTERORB_JVMJS_PREPARE_BEFORE_START=0 opts
+  // out, for measuring against the old lifecycle.
   const prepareBeforeStart =
-    process.env.ALTERORB_JVMJS_PREPARE_BEFORE_START === '1';
+    process.env.ALTERORB_JVMJS_PREPARE_BEFORE_START !== '0';
   const runPromise = (async () => {
+    // Preparation itself now lives in JVM.run(), so every embedder gets it and
+    // not just this launcher. This only chooses whether to do it and times it.
+    const preparationStartedAt = Date.now();
+    const result = await jvm.run(game.mainClass,
+      {args: [], prepare: prepareBeforeStart});
     if (prepareBeforeStart) {
-      const preparationStartedAt = Date.now();
-      const result = await jvm.precompileInitializedClasses({
-        preloadClasspath: true,
-        initializedOnly: false,
-        effectful: true,
-        wasm: true,
-        wasmPreparedUpgradesOnly: true,
-      });
-      jvm.jit.wasmJit?.freezeCompilation?.();
-      console.error(`[prepare-before-start] ${JSON.stringify(result)} in ` +
-        `${Date.now() - preparationStartedAt} ms`);
+      console.error(`[prepare-before-start] finished in ` +
+        `${Date.now() - preparationStartedAt} ms (includes the run)`);
     }
-    return jvm.run(game.mainClass, {args: []});
+    return result;
   })();
   runPromise.then(() => {
     clearInterval(timer);
@@ -2089,6 +2241,8 @@ module.exports = {
   classifyMenuSurface,
   effectiveRuntimeGates,
   enqueueSyntheticMouseClick,
+  framePacingBucket,
+  framePacingSummary,
   hasMenuAdvanceSettled,
   isPostLogoLoadingSurface,
   parseArgs,

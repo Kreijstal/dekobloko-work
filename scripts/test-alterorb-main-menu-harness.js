@@ -6,6 +6,8 @@ const {
   classifyMenuSurface,
   effectiveRuntimeGates,
   enqueueSyntheticMouseClick,
+  framePacingBucket,
+  framePacingSummary,
   hasMenuAdvanceSettled,
   isPostLogoLoadingSurface,
   parseArgs,
@@ -58,10 +60,19 @@ const jvm = {
 };
 assert.strictEqual(enqueueSyntheticMouseClick(jvm, 580, 400), 3,
   'one listener receives press, release, and click callbacks');
-assert.deepStrictEqual(queued.map(entry => entry[1]),
-  ['mousePressed', 'mouseReleased', 'mouseClicked']);
-assert.deepStrictEqual(queued.map(entry => entry[3].id), [501, 502, 500]);
-assert.ok(queued.every(entry => entry[3].x === 580 && entry[3].y === 400));
+// The button events are deliberately spread over later turns: enqueuing all
+// three at once let the guest's input poll miss the press, so the advance
+// click only landed on a lucky boot. Nothing is queued synchronously here
+// because this stub registers no motion or focus listeners.
+assert.deepStrictEqual(queued, [],
+  'the button events are deferred, not dispatched in the calling turn');
+const mouseClickDelivered = new Promise(resolve => setTimeout(resolve, 400))
+  .then(() => {
+    assert.deepStrictEqual(queued.map(entry => entry[1]),
+      ['mousePressed', 'mouseReleased', 'mouseClicked']);
+    assert.deepStrictEqual(queued.map(entry => entry[3].id), [501, 502, 500]);
+    assert.ok(queued.every(entry => entry[3].x === 580 && entry[3].y === 400));
+  });
 
 const options = parseArgs(['--menu-advance-click', '580,400']);
 assert.deepStrictEqual(options.menuAdvanceClick, {x: 580, y: 400});
@@ -179,3 +190,55 @@ assert.deepStrictEqual(cpuSummary.categories.slice(0, 2), [
 assert.strictEqual(cpuSummary.durationMicros, 4000);
 
 console.log('alterorb main-menu harness tests passed');
+
+// docs/refactor.md 0.5 item 1: the acceptance gate reads the distribution and
+// the missed-budget count, so the summary has to split the run by phase and
+// must not silently invent buckets when the trace was never enabled.
+assert.deepStrictEqual(
+  framePacingBucket([40, 40, 40, 40]),
+  {frames: 4, meanFps: 25, p50Ms: 40, p95Ms: 40, p99Ms: 40, maxGapMs: 40,
+    framesOverBudget: 0},
+  'a steady 40 ms cadence is 25 fps and misses no 24 fps budget',
+);
+assert.deepStrictEqual(
+  framePacingBucket([10, 10, 10, 500]),
+  {frames: 4, meanFps: 7.55, p50Ms: 10, p95Ms: 500, p99Ms: 500,
+    maxGapMs: 500, framesOverBudget: 1},
+  'one long stall shows up in the tail and the over-budget count, ' +
+    'which is exactly what an average alone would hide',
+);
+assert.strictEqual(framePacingBucket([]), null,
+  'a phase with no frames reports nothing rather than a fabricated zero');
+assert.strictEqual(
+  framePacingSummary({_awtPresentationStats: {}},
+    {logoCompletedAt: null, firstMenuSurfaceAt: null}),
+  null,
+  'without JVM_FRAME_TRACE there is no trace and so no summary');
+
+{
+  const trace = [
+    {atMs: 1000, gapMs: 20},
+    {atMs: 1500, gapMs: 30},
+    {atMs: 2500, gapMs: 100},
+    {atMs: 4000, gapMs: 25},
+    {atMs: 4500, gapMs: 45},
+  ];
+  const summary = framePacingSummary(
+    {_awtPresentationStats: {presentationTrace: trace}},
+    {logoCompletedAt: 2000, firstMenuSurfaceAt: 3500});
+  assert.strictEqual(summary.tracedFrames, 5, 'every traced frame is counted');
+  assert.strictEqual(summary.logo.frames, 2, 'frames before the logo finished');
+  assert.strictEqual(summary.loading.frames, 1,
+    'the post-logo loading interval is reported on its own, so a stall ' +
+      'moved into it cannot hide inside the menu number');
+  assert.strictEqual(summary.menu.frames, 2, 'frames from the menu onward');
+  assert.strictEqual(summary.menu.framesOverBudget, 1,
+    'the 45 ms menu frame missed the 41.67 ms budget');
+  assert.strictEqual(summary.budgetMs, 41.67, 'the budget is 24 fps');
+}
+
+console.log('frame pacing summary checks passed');
+
+mouseClickDelivered.then(() => {
+  console.log('deferred synthetic click checks passed');
+});

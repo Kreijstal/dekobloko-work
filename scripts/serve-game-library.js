@@ -881,6 +881,11 @@ const launcher = `<!doctype html>
       let animationCallbacks = 0;
       let lastPerformanceAt = performance.now();
       let lastPerformanceAnimationCallbacks = 0;
+      // Assigning textContent every animation frame restyles the page even
+      // when the text is unchanged; only touch the DOM on a real change.
+      const setText = (node, text) => {
+        if (node.textContent !== text) node.textContent = text;
+      };
       const updateFps = now => {
         animationCallbacks += 1;
         const jvm = window.jvmDebug && window.jvmDebug.debugController &&
@@ -906,19 +911,19 @@ const launcher = `<!doctype html>
         const duration = now - oldest.time;
         if (duration >= 500 && stats) {
           const fps = (presented - oldest.presented) * 1000 / duration;
-          fpsValue.textContent = fps.toFixed(1);
+          setText(fpsValue, fps.toFixed(1));
         } else {
-          fpsValue.textContent = '--';
+          setText(fpsValue, '--');
         }
         if (presentationGaps.length) {
           const latest = presentationGaps[presentationGaps.length - 1].gap;
           const worst = presentationGaps.reduce((value, sample) =>
             Math.max(value, sample.gap), 0);
-          frameGap.textContent = Math.round(latest) + ' ms';
-          worstGap.textContent = Math.round(worst) + ' ms';
+          setText(frameGap, Math.round(latest) + ' ms');
+          setText(worstGap, Math.round(worst) + ' ms');
         } else {
-          frameGap.textContent = '-- ms';
-          worstGap.textContent = '-- ms';
+          setText(frameGap, '-- ms');
+          setText(worstGap, '-- ms');
         }
         requestAnimationFrame(updateFps);
       };
@@ -1222,8 +1227,16 @@ const launcher = `<!doctype html>
           && Number.isFinite(requestedSchedulerTimingRate)
           ? Math.max(1, Math.min(4096, Math.round(requestedSchedulerTimingRate)))
           : 256;
-        const yieldStrategy = query.get('yield') === 'message-channel'
-          ? 'message-channel' : 'timer';
+        // Firefox clamps the nested setTimeout(0) behind the timer yield, so
+        // a timer host turn idles the main thread ~19% of the loading phase
+        // (13.9k yields in 200 s, each a short poll wait). The MessageChannel
+        // yield keeps the queue runnable; presentation backpressure still
+        // parks the guest on a real rendering opportunity once a frame is
+        // pending. Measured 2026-09-05 (Firefox 153, back-to-back pairs):
+        // first frame 37.7/36.5 s -> 22.2/22.1 s, loading 3 -> 8 frames/s.
+        // ?yield=timer restores the old behaviour for comparison.
+        const yieldStrategy = query.get('yield') === 'timer'
+          ? 'timer' : 'message-channel';
         // BrowserJVMDebug.run() resets the DebugController before it starts the
         // applet. Store the optimizer policy in the controller's constructor
         // options so the replacement JVM receives it too.
@@ -1296,6 +1309,13 @@ const launcher = `<!doctype html>
           'Loading the Java cache files from persistent browser storage.', 5, true);
         let assetDatabase = null;
         try {
+          if (query.get('reset') === '1') {
+            await new Promise(resolve => {
+              const request = indexedDB.deleteDatabase('alterorb-assets-' + game.id);
+              request.onsuccess = request.onerror = request.onblocked = () => resolve();
+            });
+            telemetry('asset_cache_reset', {});
+          }
           assetDatabase = await openAssetDatabase();
         } catch (error) {
           telemetry('asset_cache_database_error', {message: String(error)});
@@ -2113,6 +2133,13 @@ const server = http.createServer((request, response) => {
       return;
     }
   }
+  if (/^\/debug-[a-z]+\.js$/.test(pathname)) {
+    // Console probes for a live tab, e.g.
+    // await eval(await (await fetch('/debug-sched.js')).text())
+    response.writeHead(200, {'Content-Type': 'text/javascript', 'Cache-Control': 'no-store'});
+    response.end(fs.readFileSync(path.join(__dirname, pathname.slice(1)), 'utf8'));
+    return;
+  }
   if (pathname === '/dekobloko.jar') {
     response.writeHead(302, {'Location': '/game-jars/dekobloko.jar'});
     response.end();
@@ -2138,6 +2165,46 @@ const server = http.createServer((request, response) => {
   response.end('Not found');
 });
 
+// JS5 assets used to come from a separately launched `js5-server.js` holding
+// 43594, which meant two long-lived processes and a fixed port that had to be
+// up before the library was useful. The launcher already starts its own server
+// per run (`startJs5Server({port: 0})`), so do the same here: one lazily
+// created server per game, on an ephemeral port, with the same recording ->
+// client-cache chain the launcher builds. The guest still asks for 43594 --
+// the applet params hardcode it -- and the bridge maps that to the real port.
+const {startJs5Server} = require('./js5-server');
+const js5Servers = new Map();
+
+function js5CacheChain(game) {
+  const recorded = path.join(repositoryRoot, '.work', 'js5-recorded', game);
+  // Fall back to the client's own cache for anything the recording lacks: a
+  // recording made against a warm client holds only the index layer, because
+  // the client never asked for the groups it already had.
+  const clientCache = path.join(gameCacheRoot, game);
+  const hasClient = fs.existsSync(path.join(clientCache, 'main_file_cache.dat2'));
+  if (!fs.existsSync(recorded)) return hasClient ? clientCache : null;
+  return hasClient ? [recorded, clientCache] : recorded;
+}
+
+function ensureJs5Server(game) {
+  let pending = js5Servers.get(game);
+  if (pending) return pending;
+  const chain = js5CacheChain(game);
+  if (!chain) return null;
+  pending = startJs5Server({
+    cacheDir: chain,
+    port: 0,
+    host: '127.0.0.1',
+    log: process.env.GAME_LIBRARY_JS5_LOG ? line => console.error(line)
+      : () => {},
+  }).then(server => {
+    console.log(`[js5] ${game} on 127.0.0.1:${server.port}`);
+    return server;
+  });
+  js5Servers.set(game, pending);
+  return pending;
+}
+
 const webSockets = new WebSocketServer({noServer: true});
 server.on('upgrade', (request, socket, head) => {
   const url = new URL(request.url, 'http://localhost');
@@ -2146,13 +2213,32 @@ server.on('upgrade', (request, socket, head) => {
     socket.destroy();
     return;
   }
-  webSockets.handleUpgrade(request, socket, head, ws => {
+  const game = url.searchParams.get('game') ||
+    process.env.GAME_LIBRARY_JS5_GAME || 'dekobloko';
+  webSockets.handleUpgrade(request, socket, head, async ws => {
     // Route the guest's game-server connection through a locally running
-    // backend when configured; fall back to AlterOrb's public server.
-    const tcp = net.createConnection({
-      host: process.env.GAME_LIBRARY_TCP_BRIDGE_HOST || 'mgg-server.alterorb.net',
-      port: Number(process.env.GAME_LIBRARY_TCP_BRIDGE_PORT || targetPort),
-    });
+    // backend when configured; default to a JS5 server on this machine so the
+    // library never reaches an external server unless explicitly told to.
+    // An explicit bridge port still wins, so an externally started backend
+    // (including the old standalone js5-server) can be pointed at by hand.
+    let host = process.env.GAME_LIBRARY_TCP_BRIDGE_HOST || '127.0.0.1';
+    let port = Number(process.env.GAME_LIBRARY_TCP_BRIDGE_PORT || 0);
+    if (!port) {
+      const started = ensureJs5Server(game);
+      if (!started) {
+        console.error(`[js5] no cache for ${game}; closing bridge`);
+        ws.close();
+        return;
+      }
+      try {
+        port = (await started).port;
+      } catch (error) {
+        console.error(`[js5] ${game} failed to start: ${error.message}`);
+        ws.close();
+        return;
+      }
+    }
+    const tcp = net.createConnection({host, port});
     ws.on('message', bytes => tcp.write(bytes));
     ws.on('close', () => tcp.destroy());
     ws.on('error', () => tcp.destroy());
@@ -2170,7 +2256,11 @@ server.on('upgrade', (request, socket, head) => {
 async function loadAlterOrbConfig() {
   try {
     let config;
-    if (alterOrbConfigUrl.startsWith('file://')) {
+    if (!process.env.ALTERORB_CONFIG_URL && fs.existsSync(alterOrbConfigCache)) {
+      // A cached catalog is enough; do not contact AlterOrb unless a URL is
+      // configured explicitly.
+      config = JSON.parse(fs.readFileSync(alterOrbConfigCache, 'utf8'));
+    } else if (alterOrbConfigUrl.startsWith('file://')) {
       // Pinned offline catalog: never contacts AlterOrb.
       config = JSON.parse(fs.readFileSync(new URL(alterOrbConfigUrl), 'utf8'));
     } else {
