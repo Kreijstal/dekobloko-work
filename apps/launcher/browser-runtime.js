@@ -1,12 +1,6 @@
 const {controller, session, setStatus, sendTelemetry} = context;
 const jvm = controller.jvm;
 
-while (controller.jvm === jvm &&
-    Number(jvm._awtPresentationStats?.presented || 0) < 500) {
-  await new Promise((resolve) => setTimeout(resolve, 100));
-}
-if (controller.jvm !== jvm) return;
-
 const loader = document.getElementById("geoblox-loader");
 const canvas = document.querySelector(".awt-applet-root canvas");
 loader?.classList.remove("complete");

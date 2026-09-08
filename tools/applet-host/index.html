@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__MAIN_CLASS__ · jvm.js applet host</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #101418; color: #d8dee6; font: 14px/1.4 system-ui, sans-serif; }
+  header { padding: 10px 14px; border-bottom: 1px solid #2a323c; display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline; }
+  header h1 { font-size: 16px; margin: 0; }
+  header code { color: #9fc7ff; }
+  #status { flex: 1 1 100%; color: #ffd479; }
+  #progress { height: 6px; background: #1f262e; border-radius: 3px; overflow: hidden; flex: 1 1 100%; }
+  #progress-fill { height: 100%; width: 0; background: #59a5ff; transition: width .15s; }
+  #progress.indeterminate #progress-fill { width: 30%; animation: slide 1.2s linear infinite; }
+  @keyframes slide { from { margin-left: -30%; } to { margin-left: 100%; } }
+  main { display: grid; grid-template-columns: minmax(0, auto) minmax(280px, 1fr); gap: 12px; padding: 12px 14px; }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } }
+  #stage { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  #awt-container { position: relative; border: 1px solid #2a323c; }
+  /* z-index:0 makes the root a stacking context so the runtime's z-index:-1 backdrop canvas paints inside it, not behind the page. */
+  .awt-applet-root { position: relative; z-index: 0; min-width: 360px; min-height: 240px; background: #000; }
+  .awt-applet-root canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+  #controls { display: flex; gap: 8px; flex-wrap: wrap; }
+  button { background: #1f2a36; color: #d8dee6; border: 1px solid #3a4756; border-radius: 4px; padding: 6px 12px; cursor: pointer; }
+  button.on { background: #1f4a2e; border-color: #3f8f5c; }
+  #fps { font-variant-numeric: tabular-nums; color: #9fe0a5; }
+  #log { margin: 0; background: #0a0d10; border: 1px solid #2a323c; padding: 8px; height: 60vh; overflow: auto; font: 12px/1.35 ui-monospace, monospace; white-space: pre-wrap; word-break: break-word; }
+  #log .err { color: #ff8a80; }
+  #log .out { color: #c8e6c9; }
+  #log .ev { color: #90caf9; }
+  #log .warn { color: #ffd479; }
+  #session { color: #8b98a8; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>__MAIN_CLASS__ <small>in jvm.js</small></h1>
+  <span id="session"></span>
+  <span id="fps">-- FPS</span>
+  <span id="status">Loading…</span>
+  <div id="progress" class="indeterminate"><div id="progress-fill"></div></div>
+</header>
+<main>
+  <section id="stage">
+    <div id="awt-container"><div class="awt-applet-root"></div></div>
+    <div id="controls">
+      <button id="audio" type="button">Enable audio</button>
+      <button id="restart" type="button">Restart</button>
+      <button id="snapshot" type="button">Send diagnostics now</button>
+      <a href="__SOURCE_NAME__" target="_blank">source</a>
+      <a href="api/telemetry?limit=40" target="_blank">telemetry tail</a>
+    </div>
+    <div id="hint">Add <code>?autoframes=240</code> for a bounded deterministic run that prints checksums.</div>
+  </section>
+  <pre id="log" aria-live="polite"></pre>
+</main>
+
+<script>
+(() => {
+  const MAIN_CLASS = "__MAIN_CLASS__";
+  const SOURCE_NAME = "__SOURCE_NAME__";
+  const BUNDLE_URL = "jvm-assets/jvm-debug.js"; // relative: the host may be mounted under a prefix
+  const params = new URLSearchParams(location.search);
+  // `host.*` query keys configure this page and are not applet parameters.
+  const hostFlag = (name, fallback) => params.get(`host.${name}`) || fallback;
+  const session = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+  const t0 = performance.now();
+  const $ = (id) => document.getElementById(id);
+  $("session").textContent = `session ${session}`;
+  window.appletHost = { session, mainClass: MAIN_CLASS, state: "loading", events: 0 };
+
+  // ---- log + telemetry --------------------------------------------------
+  const log = $("log");
+  function appendLog(text, cls) {
+    const line = document.createElement("span");
+    line.className = cls || "";
+    line.textContent = text.endsWith("\n") ? text : `${text}\n`;
+    log.appendChild(line);
+    if (log.childNodes.length > 2000) log.removeChild(log.firstChild);
+    log.scrollTop = log.scrollHeight;
+  }
+  let queue = [];
+  let flushTimer = null;
+  function flush(sync) {
+    if (queue.length === 0) return;
+    const batch = queue;
+    queue = [];
+    const body = JSON.stringify(batch);
+    if (sync && navigator.sendBeacon) {
+      navigator.sendBeacon("api/telemetry", new Blob([body], { type: "application/json" }));
+      return;
+    }
+    fetch("api/telemetry", {
+      method: "POST", headers: { "content-type": "application/json" },
+      body, keepalive: true,
+    }).catch((error) => appendLog(`telemetry failed: ${error}`, "warn"));
+  }
+  function send(event, details = {}, immediate = false) {
+    window.appletHost.events++;
+    queue.push({
+      session, event, elapsedMs: Math.round(performance.now() - t0),
+      page: location.href, details,
+    });
+    if (immediate) { flush(false); return; }
+    if (!flushTimer) flushTimer = setTimeout(() => { flushTimer = null; flush(false); }, 750);
+  }
+  addEventListener("pagehide", () => flush(true));
+  document.addEventListener("visibilitychange", () => {
+    send("visibility", { state: document.visibilityState }, true);
+  });
+
+  // ---- error capture ---------------------------------------------------
+  function describeError(error) {
+    if (!error) return { message: "unknown" };
+    return {
+      message: String(error.message || error),
+      stack: String(error.stack || ""),
+      cause: error.cause ? String(error.cause.message || error.cause) : undefined,
+      causeStack: error.causeStack || (error.cause && error.cause.stack) || undefined,
+      guestType: error.jvmExceptionType || error.type || (error.cause && error.cause.type) || undefined,
+      guestMessage: error.jvmExceptionMessage || undefined,
+      guestLocation: error.jvmGuestLocation || undefined,
+    };
+  }
+  addEventListener("error", (event) => {
+    appendLog(`[window.error] ${event.message} @${event.filename}:${event.lineno}`, "err");
+    send("host_error", { ...describeError(event.error), message: event.message,
+      file: event.filename, line: event.lineno }, true);
+  });
+  addEventListener("unhandledrejection", (event) => {
+    appendLog(`[unhandledrejection] ${event.reason && event.reason.message || event.reason}`, "err");
+    send("unhandled_rejection", describeError(event.reason), true);
+  });
+  const nativeConsoleError = console.error.bind(console);
+  let consoleErrors = 0;
+  console.error = (...args) => {
+    nativeConsoleError(...args);
+    const text = args.map((a) => (a && a.stack) || (typeof a === "string" ? a : (() => { try { return JSON.stringify(a); } catch (_e) { return String(a); } })())).join(" ");
+    appendLog(`[console.error] ${text}`.slice(0, 4000), "err");
+    if (consoleErrors++ < 60) send("console_error", { text: text.slice(0, 8000) }, true);
+  };
+  const nativeConsoleWarn = console.warn.bind(console);
+  let consoleWarns = 0;
+  console.warn = (...args) => {
+    nativeConsoleWarn(...args);
+    const text = args.map((a) => typeof a === "string" ? a : String(a && a.message || a)).join(" ");
+    if (consoleWarns++ < 60) send("console_warn", { text: text.slice(0, 2000) });
+  };
+
+  // ---- UI helpers ------------------------------------------------------
+  function setStatus(text) { $("status").textContent = text; appendLog(`· ${text}`, "ev"); }
+  function setProgress(done, total) {
+    $("progress").classList.remove("indeterminate");
+    $("progress-fill").style.width = total ? `${Math.round(100 * done / total)}%` : "0%";
+  }
+  function setIndeterminate() { $("progress").classList.add("indeterminate"); }
+
+  // ---- stdout / stderr capture ----------------------------------------
+  let outBuffer = "";
+  let errBuffer = "";
+  let stdoutLines = 0;
+  function guestWriter(kind) {
+    return (ch) => {
+      if (kind === "stdout") outBuffer += ch; else errBuffer += ch;
+      const buffer = kind === "stdout" ? outBuffer : errBuffer;
+      if (ch === "\n" || buffer.length > 4000) {
+        appendLog(buffer, kind === "stdout" ? "out" : "err");
+        stdoutLines++;
+        send(kind, { text: buffer });
+        if (kind === "stdout") outBuffer = ""; else errBuffer = "";
+      }
+    };
+  }
+  const outWriter = guestWriter("stdout");
+  const errWriter = guestWriter("stderr");
+  // Same shape as java-tools' browser UI: replace only System.<clinit> so
+  // System.out/err print through the page instead of a silent no-op writer.
+  const jreOverrides = {
+    "java/lang/System": {
+      methods: {
+        "<clinit>()V": (jvm) => {
+          const systemClass = jvm.classes["java/lang/System"];
+          const cosInit = jvm._jreFindMethod("java/io/ConsoleOutputStream", "<init>", "(Ljava/lang/Object;)V");
+          const psInit = jvm._jreFindMethod("java/io/PrintStream", "<init>", "(Ljava/io/OutputStream;)V");
+          const make = (writer) => {
+            const cos = { type: "java/io/ConsoleOutputStream", fields: {} };
+            cosInit(jvm, cos, [writer]);
+            const ps = { type: "java/io/PrintStream", fields: {} };
+            psInit(jvm, ps, [cos]);
+            return ps;
+          };
+          systemClass.staticFields.set("out:Ljava/io/PrintStream;", make(outWriter));
+          systemClass.staticFields.set("err:Ljava/io/PrintStream;", make(errWriter));
+          systemClass.staticFields.set("in:Ljava/io/InputStream;", { type: "java/io/InputStream", fields: {} });
+        },
+      },
+    },
+  };
+
+  // ---- audio unlock ----------------------------------------------------
+  $("audio").addEventListener("click", async () => {
+    const Ctor = window.AudioContext || window.webkitAudioContext;
+    if (!Ctor) { $("audio").textContent = "Audio unavailable"; return; }
+    const existing = window.__jvmSharedAudioContext;
+    const context = existing && existing.state !== "closed" ? existing : new Ctor();
+    window.__jvmSharedAudioContext = context;
+    if (context.state === "suspended") await context.resume();
+    $("audio").classList.toggle("on", context.state === "running");
+    send("audio_unlock", { state: context.state, sampleRate: context.sampleRate }, true);
+  });
+  $("restart").addEventListener("click", () => { send("restart_click", {}, true); location.reload(); });
+
+  // ---- diagnostics (mirrors blank-github-cloner console.js) -----------
+  function topCounterEntries(value, limit = 16) {
+    if (!(value instanceof Map)) return [];
+    return [...value.entries()].sort((a, b) => Number(b[1]) - Number(a[1])).slice(0, limit)
+      .map(([method, count]) => ({ method, count: Number(count) }));
+  }
+  function captureJitDiagnostics(jvm) {
+    const jit = jvm && jvm.jit;
+    if (!jit) return null;
+    const timings = jit.methodTimingSamples instanceof Map
+      ? [...jit.methodTimingSamples.entries()].sort((a, b) => b[1].totalMs - a[1].totalMs).slice(0, 20)
+        .map(([method, v]) => ({ method, tier: v.tier, samples: Number(v.samples || 0),
+          totalMs: Number(v.totalMs || 0), maxMs: Number(v.maxMs || 0) }))
+      : [];
+    const deopts = topCounterEntries(jit.methodDeoptCounts).map((entry) => ({
+      ...entry, reason: (jit.methodDeoptReasons && jit.methodDeoptReasons.get(entry.method)) || "unspecified",
+    }));
+    const hotGraph = jit.hotCallGraphRegions;
+    const wasmStates = jit.wasmJit && jit.wasmJit.state instanceof Map ? jit.wasmJit.state : null;
+    let wasm = null;
+    if (wasmStates) {
+      wasm = { modules: 0, ready: 0, failed: 0, runs: 0, exits: 0, failReasons: {} };
+      for (const state of wasmStates.values()) {
+        wasm.modules++;
+        if (state.status === "ready") wasm.ready++;
+        if (state.failReason) { wasm.failed++; wasm.failReasons[state.failReason] = (wasm.failReasons[state.failReason] || 0) + 1; }
+        wasm.runs += Number(state.runs || 0);
+        wasm.exits += Number(state.exits || 0);
+      }
+    }
+    // Counters as this runtime build names them (the older generatedRunCount /
+    // methodRunCounts family stays at zero here, so both sets are reported).
+    const counters = {};
+    for (const key of ["warmupThreshold", "preMainSyncCompileCount", "postMainSyncCompileCount",
+      "workerUnservedPostMainCount", "workerUnservedPostMainMethodCount", "hotnessTickCount",
+      "hotnessSelectedCount", "hotnessCompiledCount", "stableGeneratedEntryRunCount",
+      "ordinaryAdaptiveFramelessRunCount", "referenceFramelessPositionalRunCount",
+      "compiledCallChainRunCount", "positionalGeneratedTemplateCompileCount",
+      "positionalGeneratedTemplateReuseCount", "structuredConstructorUpgradeCount",
+      "eagerMonomorphicCallLinkCount", "cooperativeCallSuspensionCount", "framePositionalCallCount",
+      "framePositionalFallbackCount", "readyWasmPositionalReleaseCount", "wasmOwnedSyncCalleeRuns",
+      "generatedTargetUpgradePublicationCount"]) {
+      if (typeof jit[key] === "number") counters[key] = jit[key];
+    }
+    const client = jit.compileWorkerClient || jit.compileWorker || jit.worker;
+    const sizeOf = (v) => v == null ? undefined : (typeof v.size === "number" ? v.size : (Array.isArray(v) ? v.length : undefined));
+    const compileWorker = client ? {
+      enabled: client.enabled, kind: client.worker && client.worker.kind, nextRequestId: client.nextRequestId,
+      queued: sizeOf(client.queue) ?? client.queued, inFlight: sizeOf(client.inFlight),
+      installedMethods: sizeOf(client.installedMethods), declined: sizeOf(client.declined),
+      declinedByRefusal: client.declinedByRefusal && typeof client.declinedByRefusal === "object"
+        ? Object.fromEntries([...(client.declinedByRefusal instanceof Map ? client.declinedByRefusal.entries() : Object.entries(client.declinedByRefusal))].slice(0, 12))
+        : client.declinedByRefusal,
+      unsendableClasses: sizeOf(client.unsendableClasses), consecutiveSendFailures: client.consecutiveSendFailures,
+      lastRefusal: client.lastRefusal || null,
+      stats: client.stats && typeof client.stats === "object" ? JSON.parse(JSON.stringify(client.stats)) : client.stats,
+    } : null;
+    return {
+      enabled: Boolean(jit.enabled), codegenEnabled: Boolean(jit.codegenEnabled),
+      counters, compileWorker,
+      generatedRuns: Number(jit.generatedRunCount || 0),
+      runnerRuns: Number(jit.runnerRunCount || 0),
+      structuredSsaRuns: Number(jit.structuredSsa && jit.structuredSsa.runCount || 0),
+      structuredSsaSafePoints: Number(jit.structuredSsa && jit.structuredSsa.safePointCount || 0),
+      codegenCacheSize: jit.codegenCache && typeof jit.codegenCache.size === "number" ? jit.codegenCache.size : undefined,
+      hotGraph: hotGraph ? {
+        modules: Number(hotGraph.moduleCompileCount || 0), runs: Number(hotGraph.runCount || 0),
+        rejections: Number(hotGraph.rejectionCount || 0), fallbacks: Number(hotGraph.guardFallbackCount || 0),
+        rejectionSummaries: typeof hotGraph.getRejectionSummaries === "function" ? hotGraph.getRejectionSummaries(12) : [],
+      } : null,
+      wasm, timings,
+      generatedMethods: topCounterEntries(jit.generatedMethodRunCounts),
+      structuredMethods: topCounterEntries(jit.structuredSsaMethodRunCounts),
+      hotMethods: topCounterEntries(jit.methodRunCounts, 30),
+      deopts,
+    };
+  }
+  function frameLabel(frame) {
+    return `${frame.className || "?"}.${(frame.method && frame.method.name) || "?"}${(frame.method && frame.method.descriptor) || ""}@${frame.pc}`;
+  }
+  function captureThreads(jvm) {
+    return (jvm.threads || []).map((thread) => ({
+      id: thread.id, name: thread.name || null, status: thread.status,
+      stack: ((thread.callStack && thread.callStack.items) || []).slice(-5).reverse().map(frameLabel),
+      pendingException: thread.pendingException ? String(thread.pendingException.type || thread.pendingException) : null,
+    }));
+  }
+  function audioDiagnostics() {
+    try {
+      const platform = window.JVMDebug && window.JVMDebug.audioPlatform;
+      const context = window.__jvmSharedAudioContext;
+      return {
+        contextState: context ? context.state : null,
+        platform: platform && typeof platform.getWebAudioDiagnostics === "function" ? platform.getWebAudioDiagnostics() : null,
+      };
+    } catch (error) { return { error: String(error) }; }
+  }
+  let controllerRef = null;
+  function snapshot(reason) {
+    const jvm = controllerRef && controllerRef.jvm;
+    if (!jvm) { send("snapshot", { reason, jvm: null }, true); return; }
+    const stats = jvm._awtPresentationStats || {};
+    send("performance", {
+      reason,
+      presented: Number(stats.presented || 0),
+      presentation: { ...stats },
+      canvas: (() => { const c = document.querySelector("#awt-container canvas"); return c ? `${c.width}x${c.height}` : null; })(),
+      host: {
+        visibilityState: document.visibilityState, hasFocus: document.hasFocus(),
+        devicePixelRatio: devicePixelRatio, innerSize: `${innerWidth}x${innerHeight}`,
+        memory: performance.memory ? { usedJSHeap: performance.memory.usedJSHeapSize } : undefined,
+      },
+      inputDispatches: Number(jvm._awtInputDispatchCount || 0),
+      threads: captureThreads(jvm),
+      schedulerTimings: typeof jvm.getSchedulerTimingSnapshot === "function" ? jvm.getSchedulerTimingSnapshot(8) : null,
+      jit: captureJitDiagnostics(jvm),
+      audio: audioDiagnostics(),
+      stdoutLines,
+    }, true);
+  }
+  $("snapshot").addEventListener("click", () => snapshot("button"));
+  window.appletHost.snapshot = snapshot;
+
+  function startRuntimeTelemetry() {
+    let lastPresented = 0;
+    let lastAt = performance.now();
+    let rafTicks = 0;
+    let worstGapMs = 0;
+    let lastFrameAt = null;
+    let framesSeen = 0;
+    const samples = [];
+    const watch = (now) => {
+      rafTicks++;
+      const jvm = controllerRef && controllerRef.jvm;
+      const presented = Number(jvm && jvm._awtPresentationStats && jvm._awtPresentationStats.presented || 0);
+      if (presented > framesSeen) {
+        if (lastFrameAt !== null) worstGapMs = Math.max(worstGapMs, now - lastFrameAt);
+        if (framesSeen === 0) {
+          send("first_frame", { atMs: Math.round(now - t0), presented }, true);
+          setStatus(`${MAIN_CLASS} presented its first frame`);
+          setProgress(1, 1);
+        }
+        lastFrameAt = now;
+        framesSeen = presented;
+      }
+      samples.push({ now, presented });
+      while (samples.length > 1 && samples[1].now < now - 5000) samples.shift();
+      const oldest = samples[0];
+      if (now - oldest.now >= 1000) {
+        $("fps").textContent = `${((presented - oldest.presented) * 1000 / (now - oldest.now)).toFixed(1)} FPS`;
+      }
+      requestAnimationFrame(watch);
+    };
+    requestAnimationFrame(watch);
+    setInterval(() => {
+      const jvm = controllerRef && controllerRef.jvm;
+      if (!jvm) return;
+      const now = performance.now();
+      const presented = Number(jvm._awtPresentationStats && jvm._awtPresentationStats.presented || 0);
+      const interval = now - lastAt;
+      snapshot("interval");
+      send("fps", { fps: interval > 0 ? (presented - lastPresented) * 1000 / interval : 0,
+        rafPerSecond: rafTicks * 1000 / interval, worstGapMs, presented });
+      lastPresented = presented; lastAt = now; rafTicks = 0; worstGapMs = 0;
+    }, 10000);
+  }
+
+  // ---- pipeline --------------------------------------------------------
+  // The tunnel drops roughly one request in six with a 408, so every load
+  // that a session depends on gets a few attempts before it counts as failed.
+  async function retrying(label, attempts, task) {
+    let lastError;
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+      try {
+        return await task(attempt);
+      } catch (error) {
+        lastError = error;
+        appendLog(`[retry] ${label} attempt ${attempt}/${attempts} failed: ${error.message}`, "warn");
+        send("load_retry", { label, attempt, attempts, message: String(error.message || error) }, true);
+        if (attempt < attempts) await new Promise((r) => setTimeout(r, 1500 * attempt));
+      }
+    }
+    throw lastError;
+  }
+  function loadScript(url) {
+    return retrying(url, 4, (attempt) => new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = attempt > 1 ? `${url}${url.includes("?") ? "&" : "?"}retry=${attempt}` : url;
+      script.addEventListener("load", resolve, { once: true });
+      script.addEventListener("error", () => { script.remove(); reject(new Error(`Unable to load ${url}`)); }, { once: true });
+      document.head.append(script);
+    }));
+  }
+  async function fetchText(url) {
+    return retrying(url, 4, async () => {
+      const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+      return response.text();
+    });
+  }
+  function compileInWorker(sources, onProgress) {
+    return retrying("compile worker", 3, () => compileInWorkerOnce(sources, onProgress));
+  }
+  let bundleAssets = null;
+  function compileInWorkerOnce(sources, onProgress) {
+    return new Promise((resolve, reject) => {
+      const worker = new Worker(bundleAssets.__compileWorkerUrl);
+      worker.addEventListener("message", (message) => {
+        const data = message.data || {};
+        if (data.type === "progress") onProgress(data.event);
+        else if (data.type === "complete") { worker.terminate(); resolve(data); }
+        else if (data.type === "error") {
+          worker.terminate();
+          const error = new Error(data.message);
+          error.stack = data.stack || error.stack;
+          error.durationMs = data.durationMs;
+          reject(error);
+        }
+      });
+      worker.addEventListener("error", (event) => {
+        worker.terminate();
+        reject(new Error(event.message || "Compilation worker failed."));
+      });
+      const { __compileWorkerUrl, ...sourcesOnly } = bundleAssets;
+      // host.compile=data (default) | url — whether the worker gets the bundle
+      // sources as data or fetches them itself.
+      worker.postMessage({ type: "compile", bundleUrl: new URL(BUNDLE_URL, location.href).href,
+        bundleAssets: hostFlag("compile", "data") === "url" ? null : sourcesOnly, sources });
+    });
+  }
+
+  async function main() {
+    send("session_start", {
+      mainClass: MAIN_CLASS, source: SOURCE_NAME, query: Object.fromEntries(params.entries()),
+      screen: `${screen.width}x${screen.height}`, dpr: devicePixelRatio,
+      hardwareConcurrency: navigator.hardwareConcurrency, language: navigator.language,
+      wasm: typeof WebAssembly !== "undefined", worker: typeof Worker !== "undefined",
+    }, true);
+
+    setStatus(`Fetching ${SOURCE_NAME}…`);
+    const source = await fetchText(SOURCE_NAME);
+    send("source_loaded", { bytes: source.length, lines: source.split("\n").length });
+
+    // Fetch every script exactly once (with retries) and evaluate from text:
+    // the runtime's lazy chunks, the compile worker and the JIT worker all
+    // get their sources from here instead of fetching over the tunnel again.
+    setStatus("Loading jvm.js bundle…");
+    const bundleStart = performance.now();
+    const info = JSON.parse(await fetchText("api/info"));
+    const names = info.assets || ["jvm-debug.js", "jvm-compile-worker.js"];
+    const fetched = {};
+    let index = 0;
+    const pump = async () => {
+      while (index < names.length) {
+        const name = names[index++];
+        setStatus(`Loading ${name}…`);
+        fetched[name] = await fetchText(`jvm-assets/${name}`);
+        setProgress(Object.keys(fetched).length, names.length);
+      }
+    };
+    await Promise.all([pump(), pump()]);
+    bundleAssets = { ...fetched, __compileWorkerUrl: URL.createObjectURL(
+      new Blob([await fetchText("compile-worker.js")], { type: "text/javascript" })) };
+    const appendChild = document.head.appendChild.bind(document.head);
+    document.head.appendChild = (node) => {
+      if (node && node.tagName === "SCRIPT" && node.src) {
+        const assetName = new URL(node.src, location.href).pathname.split("/").pop();
+        const text = fetched[assetName];
+        if (text) {
+          try {
+            (0, eval)(`${text}\n//# sourceURL=jvm-assets/${assetName}`);
+            queueMicrotask(() => node.onload && node.onload({ type: "load", target: node }));
+          } catch (error) {
+            queueMicrotask(() => node.onerror && node.onerror({ type: "error", target: node, error, message: String(error) }));
+          }
+          return node;
+        }
+      }
+      return appendChild(node);
+    };
+    // webpack's automatic publicPath reads document.currentScript.src, which
+    // an eval has none of; give it the bundle's real URL for the duration.
+    const bundleHref = new URL(BUNDLE_URL, location.href).href;
+    Object.defineProperty(document, "currentScript", {
+      configurable: true, get: () => ({ tagName: "SCRIPT", src: bundleHref, getAttribute: () => null }),
+    });
+    try {
+        if (hostFlag("bundle", "eval") === "script") await loadScript(BUNDLE_URL);
+      else (0, eval)(`${fetched["jvm-debug.js"]}\n//# sourceURL=jvm-assets/jvm-debug.js`);
+    } finally {
+      delete document.currentScript;
+    }
+    // host.jitworker=off (default) | url | blob — how the JIT's compile worker
+    // is located. A worker loaded from a blob: URL, or served over the tunnel,
+    // installs a miscompiled body (SoundChip.findVoice returns nothing ->
+    // "Stack underflow" at blip pc=6); a worker served from the local URL
+    // passed 4/4. Until that java-tools defect is understood the JIT compiles
+    // on the main thread, exactly as it does without a worker.
+    const jitWorkerMode = hostFlag("jitworker", "off");
+    if (jitWorkerMode === "blob" && fetched["jvm-compile-worker.js"]) {
+      window.JVM_COMPILE_WORKER_URL = URL.createObjectURL(new Blob([fetched["jvm-compile-worker.js"]], { type: "text/javascript" }));
+    } else if (jitWorkerMode !== "off") {
+      window.JVM_COMPILE_WORKER_URL = new URL("jvm-assets/jvm-compile-worker.js", location.href).href;
+    }
+    send("bundle_loaded", { ms: Math.round(performance.now() - bundleStart), hasJVMDebug: Boolean(window.JVMDebug),
+      assets: Object.fromEntries(Object.entries(fetched).map(([k, v]) => [k, v.length])) });
+    if (!window.JVMDebug) throw new Error("jvm-debug.js loaded but window.JVMDebug is missing");
+
+    setStatus(`Compiling ${SOURCE_NAME} with javac.js in a worker…`);
+    window.appletHost.state = "compiling";
+    const compileStart = performance.now();
+    send("compile_start", {}, true);
+    const phaseLog = {};
+    let result;
+    try {
+      result = await compileInWorker([{ path: `/src/${SOURCE_NAME}`, content: source }], (event) => {
+        if (event.total) setProgress(event.completed, event.total);
+        if (event.event === "start" || event.event === "end") phaseLog[`${event.phase}:${event.event}`] = Math.round(performance.now() - compileStart);
+        if (event.event === "file-error") {
+          appendLog(`[compile] ${event.inputPath}: ${event.error || event.message || "error"}`, "err");
+          send("compile_file_error", event, true);
+        } else if (event.event === "end" || event.event === "file-end") {
+          setStatus(`${event.phase} ${event.completed}/${event.total}${event.internalName ? ` — ${event.internalName}` : ""}`);
+        }
+      });
+    } catch (error) {
+      window.appletHost.state = "compile_failed";
+      setStatus(`Compilation failed: ${error.message}`);
+      appendLog(error.stack || String(error), "err");
+      send("compile_failed", { ...describeError(error), phases: phaseLog, ms: Math.round(performance.now() - compileStart) }, true);
+      throw error;
+    }
+    const classes = result.artifacts.map((a) => ({ name: a.internalName, path: a.outputPath, bytes: a.bytes.byteLength }));
+    send("compile_complete", {
+      ms: Math.round(performance.now() - compileStart), workerMs: result.durationMs,
+      phases: phaseLog, workerPhases: result.phases, classes,
+      totalBytes: classes.reduce((n, c) => n + c.bytes, 0),
+    }, true);
+    setStatus(`Compiled ${classes.length} classes in ${Math.round(performance.now() - compileStart)} ms`);
+    appendLog(classes.map((c) => `  ${c.path} (${c.bytes} B)`).join("\n"), "ev");
+
+    const debug = new window.JVMDebug.BrowserJVMDebug();
+    await debug.initialize({ workspace: true });
+    for (const artifact of result.artifacts) {
+      debug.writeWorkspaceFile(artifact.outputPath, new Uint8Array(artifact.bytes));
+    }
+    const controller = debug.debugController;
+    controllerRef = controller;
+    window.appletHost.debug = debug;
+    window.appletHost.controller = controller;
+    controller.options.jreOverrides = jreOverrides;
+    const appletParameters = {};
+    for (const [key, value] of params.entries()) {
+      if (!key.startsWith("host.")) appletParameters[key] = value;
+    }
+    controller.options.appletParameters = appletParameters;
+    controller.options.appletCodeBase = `${location.origin}/`;
+    send("runtime_config", {
+      appletParameters, jit: JSON.parse(JSON.stringify(controller.options.jit || {})),
+      wasmHeap: controller.options.wasmHeap, wasmFields: controller.options.wasmFields,
+      compileWorkerUrl: window.JVM_COMPILE_WORKER_URL,
+    }, true);
+
+    setStatus(`Starting ${MAIN_CLASS}…`);
+    setIndeterminate();
+    window.appletHost.state = "running";
+    const runStart = performance.now();
+    send("runtime_start", { mainClass: MAIN_CLASS }, true);
+    startRuntimeTelemetry();
+    const canvasObserver = new MutationObserver(() => {
+      const canvas = document.querySelector("#awt-container canvas");
+      if (canvas) {
+        send("canvas_mounted", { size: `${canvas.width}x${canvas.height}`, atMs: Math.round(performance.now() - t0) }, true);
+        canvasObserver.disconnect();
+      }
+    });
+    canvasObserver.observe(document.body, { childList: true, subtree: true });
+    try {
+      const outcome = await debug.run(MAIN_CLASS, { classpath: ["/classes"] });
+      window.appletHost.state = "completed";
+      if (outBuffer) { appendLog(outBuffer, "out"); send("stdout", { text: outBuffer }); outBuffer = ""; }
+      setStatus(`${MAIN_CLASS} finished (${outcome && outcome.status}) after ${Math.round(performance.now() - runStart)} ms`);
+      snapshot("run_complete");
+      send("run_complete", { ms: Math.round(performance.now() - runStart), status: outcome && outcome.status, stdoutLines }, true);
+    } catch (error) {
+      window.appletHost.state = "run_failed";
+      window.appletHost.error = describeError(error);
+      setStatus(`Run failed: ${error.message}`);
+      appendLog(error.causeStack || error.stack || String(error), "err");
+      snapshot("run_failed");
+      send("run_failed", { ...describeError(error), ms: Math.round(performance.now() - runStart), stdoutLines }, true);
+    }
+  }
+  main().catch((error) => {
+    if (window.appletHost.state === "loading" || window.appletHost.state === "compiling") {
+      if (window.appletHost.state === "loading") {
+        setStatus(`Failed: ${error.message}`);
+        send("boot_failed", describeError(error), true);
+      }
+      window.appletHost.state = window.appletHost.state === "loading" ? "boot_failed" : window.appletHost.state;
+    }
+    window.appletHost.error = describeError(error);
+  });
+})();
+</script>
+</body>
+</html>

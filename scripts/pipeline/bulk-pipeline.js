@@ -14,7 +14,12 @@ const { createRequire } = Module;
 
 const DEKOB = path.resolve(__dirname, '..', '..');
 const JT = path.resolve(process.env.JAVA_TOOLS_DIR || process.env.JT_DIR || '/home/kreijstal/git/java-tools');
-const NODE_DEPS_DIR = path.resolve(process.env.JAVA_TOOLS_NODE_DEPS_DIR || '/home/kreijstal/git/java-tools');
+// Default to the java-tools checkout we just resolved. This previously
+// defaulted to the literal author path even when JAVA_TOOLS_DIR pointed
+// somewhere else, so on any other machine the pipeline looked for its node
+// dependencies in a directory that did not exist. On the author's machine
+// both expressions resolve identically, so this is a no-op there.
+const NODE_DEPS_DIR = path.resolve(process.env.JAVA_TOOLS_NODE_DEPS_DIR || JT);
 process.env.NODE_PATH = [
   path.join(JT, 'node_modules'),
   path.join(NODE_DEPS_DIR, 'node_modules'),

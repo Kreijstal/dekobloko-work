@@ -265,26 +265,19 @@ function enqueueSyntheticMouseClick(jvm, x, y) {
     (total, component) => total + component._listeners.mouse.length * 3, 0);
 }
 
-function sha256(file) {
-  return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
-}
+// Shared infrastructure. These were private copies in this file; the
+// behaviour is byte-identical (see scripts/test-lib-provenance.js and
+// scripts/test-lib-offline-guard.js for the pinned contracts).
+const provenance = require('./lib/provenance');
+const {sha256File: sha256} = provenance;
+const {installOfflineGuard} = require('./lib/offline-guard');
 
+// The record shape written into launch reports is unchanged: asCommitSchema
+// maps the canonical provenance record back onto the exact {path, commit,
+// dirty, trackedDirty} keys this report has always used, so previously
+// recorded reports stay comparable with new ones.
 function gitTreeState(directory) {
-  const commit = execFileSync('git', ['-C', directory, 'rev-parse', 'HEAD'], {
-    encoding: 'utf8',
-  }).trim();
-  const status = execFileSync('git', [
-    '-C', directory, 'status', '--porcelain', '--untracked-files=all',
-  ], {encoding: 'utf8'});
-  const trackedStatus = execFileSync('git', [
-    '-C', directory, 'status', '--porcelain', '--untracked-files=no',
-  ], {encoding: 'utf8'});
-  return {
-    path: directory,
-    commit,
-    dirty: status.trim().length > 0,
-    trackedDirty: trackedStatus.trim().length > 0,
-  };
+  return provenance.asCommitSchema(provenance.gitTreeState(directory));
 }
 
 function effectiveRuntimeGates(options, environment = process.env) {
@@ -1766,19 +1759,12 @@ function startTcpBridge(remoteHost) {
 // connection that is not loopback, in the parent and in each worker, so a
 // forgotten dependency on alterorb fails immediately and visibly instead of
 // working right up until the machine is actually disconnected.
+// Moved to scripts/lib/offline-guard.js so the browser game library, the
+// headless runner and the benchmarks can install the same guard instead of
+// each claiming to be offline without enforcing it. Behaviour is unchanged:
+// same loopback allow-list, same refusal messages, same fetch rejection.
 function enforceLoopbackOnly() {
-  const allowed = new Set(['127.0.0.1', '::1', 'localhost', '0.0.0.0', '']);
-  const socketConnect = net.Socket.prototype.connect;
-  net.Socket.prototype.connect = function connect(...args) {
-    const target = args[0] && typeof args[0] === 'object'
-      ? args[0].host : (typeof args[1] === 'string' ? args[1] : '');
-    if (!allowed.has(String(target ?? ''))) {
-      throw new Error(`offline: refused outbound connection to ${target}`);
-    }
-    return socketConnect.apply(this, args);
-  };
-  globalThis.fetch = (input) => Promise.reject(
-    new Error(`offline: refused fetch ${input}`));
+  installOfflineGuard();
 }
 
 // The applet's codeBase points at a local HTTP port. Offline that must not be

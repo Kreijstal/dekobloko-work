@@ -1,0 +1,15 @@
+{
+  "name": "actual-sample-stereo-voice-256",
+  "class": "AudioVoice",
+  "inputFile": "audio.bin",
+  "expectedChecksum": 62529537,
+  "oracleSource": "Java 8 HotSpot -Xint; real archive-3 file-1 sample; verification rejects silent output",
+  "members": "static gd sample; static kl voice; static int[] mix;",
+  "setup": "byte[] b=FixtureInput.load(); int n=((b[0]&255)<<24)|((b[1]&255)<<16)|((b[2]&255)<<8)|(b[3]&255); byte[] setup=new byte[n]; byte[] payload=new byte[b.length-4-n]; System.arraycopy(b,4,setup,0,n); System.arraycopy(b,4+n,payload,0,payload.length); ua.a(setup); java.lang.reflect.Constructor<ua> ctor=ua.class.getDeclaredConstructor(byte[].class); ctor.setAccessible(true); ua decoder=ctor.newInstance((Object)payload); sample=decoder.c(); if(sample==null||sample.field_k.length<256)throw new IllegalStateException(\"missing decoded sample\"); qk.field_j=22050; qk.field_q=true; mix=new int[512];",
+  "reset": "java.util.Arrays.fill(mix,0); voice=kl.a(sample,256,64,8192);",
+  "call": "voice.a(mix,0,256);",
+  "oracle": "int h=1; boolean nonzero=false; for(int v:mix){h=31*h+v;nonzero|=v!=0;} if(!nonzero)throw new IllegalStateException(\"silent output\"); return h;",
+  "targets": ["kl.a([III)V"],
+  "samples": 9,
+  "warmup": 12
+}

@@ -135,9 +135,8 @@ function median(values) {
   return ordered[Math.floor(ordered.length / 2)];
 }
 
-function sha256(file) {
-  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
-}
+// Shared with five other scripts that each had this same private copy.
+const {sha256File: sha256} = require("./lib/provenance");
 
 function hashTree(directory) {
   const digest = crypto.createHash("sha256");

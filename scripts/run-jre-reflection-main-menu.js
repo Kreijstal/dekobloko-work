@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-const crypto = require('crypto');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -65,9 +64,8 @@ function selectedRecompiledDirectory(game, root = ROOT) {
   return null;
 }
 
-function sha256(file) {
-  return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
-}
+// Shared with five other scripts that each had this same private copy.
+const {sha256File: sha256} = require('./lib/provenance');
 
 function runGame(game, variant, options, config) {
   const classPath = variant === 'original'

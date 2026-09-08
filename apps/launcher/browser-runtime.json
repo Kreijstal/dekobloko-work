@@ -1,6 +1,8 @@
 {
   "schema": 1,
   "jvmOptions": {
+    "prepareBeforeMain": true,
+    "eventLoopYieldStrategy": "message-channel",
     "schedulerTimingRate": 256,
     "awtWebGlPresentation": true,
     "denseInstanceFields": true,
@@ -25,6 +27,7 @@
       "structuredLinearPartitionMinimumSegmentBytes": 8192,
       "oversizedWasmFirstCodeItems": 1024,
       "wasmStructured": true,
+      "wasmSynchronizedInstanceLinks": false,
       "wasmCheckcast": true,
       "wasmRelaxedReferenceReturns": true,
       "structuredDeferredCallMaterialization": true,
@@ -36,5 +39,5 @@
       "profileTimings": false
     }
   },
-  "afterStartScript": "apps/launcher/browser-runtime.js"
+  "beforeStartScript": "apps/launcher/browser-runtime-before.js"
 }

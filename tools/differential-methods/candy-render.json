@@ -1,0 +1,12 @@
+{
+  "name": "candy-foreground-rotation-zero",
+  "class": "CandyRender",
+  "members": "static dm sprite; static int[] canvas;",
+  "setup": "hf.a(true, FixtureInput.load()); sprite=sc.a((byte)-60); canvas=new int[461*461]; vb.a(canvas,461,461);",
+  "reset": "java.util.Arrays.fill(canvas,0);",
+  "call": "sprite.b(sprite.field_s<<3,sprite.field_o<<3,461<<3,461<<3,0,4096);",
+  "oracle": "int h=1; for(int v:new int[]{461,461,0,0,461,461})h=31*h+v; for(int p:canvas)h=31*h+p; return h;",
+  "targets": ["dm.b(IIIIII)V"],
+  "samples": 9,
+  "warmup": 12
+}

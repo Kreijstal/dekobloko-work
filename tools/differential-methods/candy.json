@@ -1,0 +1,12 @@
+{
+  "name": "candy-foreground-decode",
+  "class": "CandyDecode",
+  "members": "static byte[] input; static dm output;",
+  "setup": "input=FixtureInput.load();",
+  "reset": "output=null;",
+  "call": "hf.a(true, input); output=sc.a((byte)-60);",
+  "oracle": "int h=1; h=31*h+output.field_s; h=31*h+output.field_o; h=31*h+output.field_p; h=31*h+output.field_u; h=31*h+output.field_r; h=31*h+output.field_m; for(int p:output.field_v)h=31*h+p; return h;",
+  "targets": ["hf.a(Z[B)V", "sc.a(B)Ldm;"],
+  "samples": 9,
+  "warmup": 12
+}

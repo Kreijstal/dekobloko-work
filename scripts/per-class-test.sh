@@ -5,7 +5,9 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEKOB_DIR="$(dirname "$SCRIPT_DIR")"
-JT_DIR=/home/kreijstal/git/java-tools
+# Match the convention every sibling script uses. This previously assigned
+# unconditionally, silently discarding an exported JT_DIR/JAVA_TOOLS_DIR.
+JT_DIR="${JAVA_TOOLS_DIR:-${JT_DIR:-/home/kreijstal/git/java-tools}}"
 CFR_JAR="$DEKOB_DIR/lib/cfr.jar"
 CLASSES_DIR="$DEKOB_DIR/classes-original"
 

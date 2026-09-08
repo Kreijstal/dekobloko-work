@@ -12,9 +12,16 @@ const DEKOB = path.resolve(__dirname, '..');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cfr-goto-casebook-test-'));
 try {
   const scan = path.join(tmp, 'scan');
-  const gameDir = path.join(scan, 'samplegame');
+  // goto-ingest reads the pipeline's real on-disk layout:
+  //   <scan>/<game>/deob-safe/logs/cfr-markers.txt
+  // A game directory without that exact file is skipped silently, so a fixture
+  // built at any other path reports goto_ingested=0 and exit 0 -- which reads
+  // as a decompiler regression rather than a wrong fixture.
+  const gameDir = path.join(scan, 'samplegame', 'deob-safe');
   const cfrDir = path.join(gameDir, 'cfr');
+  const logsDir = path.join(gameDir, 'logs');
   fs.mkdirSync(cfrDir, { recursive: true });
+  fs.mkdirSync(logsDir, { recursive: true });
   const source = path.join(cfrDir, 'Foo.java');
   fs.writeFileSync(source, [
     'public class Foo {',
@@ -24,7 +31,7 @@ try {
     '}',
     '',
   ].join('\n'));
-  fs.writeFileSync(path.join(gameDir, 'markers.txt'), `${source}:3:    if (n == 0) ** GOTO lbl12\n`);
+  fs.writeFileSync(path.join(logsDir, 'cfr-markers.txt'), `${source}:3:    if (n == 0) ** GOTO lbl12\n`);
 
   const db = path.join(tmp, 'records.jsonl');
   const ingest = execFileSync(process.execPath, [
