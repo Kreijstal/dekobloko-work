@@ -176,7 +176,7 @@ Order of implementation. Each is written to fail first.
 |---|---|
 | compile before readiness | `A` lowers and compiles while `B` has no live compiled export |
 | late binding | the same `A` artifact instantiates and publishes after `B` becomes compatible, without being lowered or compiled again |
-| recursive group | `A` and `B` instantiate against reserved slots; every entry initialized before any guest entry into the group is published |
+| recursive group | `A` and `B` instantiate against reserved slots; every entry initialized before any guest entry into the group is published — **passing 2026-09-08**, java-tools `test/wasmRecursiveGroup.test.js` (44): both slots bound in one seal step before either arm is called never-exits |
 | callee replacement | subsequent calls reach the replacement; `A`'s artifact and instance are unchanged |
 | nested deopt | caller under-stack preserved, callee continuation preserved, side effects exactly once |
 | runtime veto | flipping `linkVetoed` changes the target without recompiling the caller and without corrupting an active invocation |
@@ -260,6 +260,75 @@ expected callee turned it red, and enlarging the callee turned it green for the
 right reason. Every fixture in this suite needs a callee too large to inline, or
 it tests nothing.
 
+**2026-09-08, runtime linker (`src/jit/WasmLinker.js`).** The late-bound
+`lcall_` trampoline was permanent: once the callee compiled, every call still
+crossed into JS, re-resolved the callee's state and entered it through
+`runNested`, until a caller recompile (off by default -- it storms). The
+linker replaces the permanent bridge with a funcref TABLE SLOT per late-bound
+site. The caller emits `args..., i32.const <slot>, call_indirect <sig>`
+through one shared table imported as `env.ltab`; the slot's initial occupant
+is the old trampoline wrapped in a one-function stub module of the `runv`
+shape (`[params] -> [status, ret?]`). When the callee publishes and satisfies
+the direct-link contract (fully compiled, never exits, identity slot mapping,
+unboxed, no EH, not speculative, not vetoed -- `WasmLinker.directLinkable`
+mirrors the `dcall_` eligibility exactly) the linker writes the callee's
+`runv` export into the slot and the call is wasm->wasm; `WasmJit.withdrawModule`
+-- the one path every dependency-world and speculation reset now takes --
+puts the stub back. The call site keeps both protocols: the status check of
+the `runv` shape and the deopt-flag check of the trampoline shape, so either
+occupant is sound. Partial callees never bind directly and keep the
+nested-call protocol behind the stub.
+
+Two traps found by the acceptance test (`test/wasmLinkTable.test.js`, 42
+assertions): the structured compiler lowers every block twice (a dry-run
+support probe, then the real emission), so a slot has to be memoized per
+call-site node the way imports are memoized by name, or every site burns two;
+and the trampoline's epoch-keyed resolution cache missed a WITHDRAWN callee
+(state object survives with `meta` gone and no epoch bump), so every call
+deopted until an unrelated compile moved the epoch -- pre-existing, now
+re-resolved when the cached state has no module. Slots of discarded
+translations (re-lowered without inlining, the dispatcher backend winning, a
+failed compile) are released to a free list. Driving the fixture through the
+scheduler was vacuous -- the JS tier took the frame and the slot path never
+ran (runs == exits, 64 of 64, on the OSR companion) -- so the test compiles
+and enters the module through `WasmJit.compile`/`execute` directly.
+
+Still open: the dispatcher backend (`WasmJit.compiledCallee`) has no
+trampoline and therefore no slots (section 11); `dcall_` sites lowered while
+the callee was already ready keep their direct import and stay pinned to that
+module across callee recompiles (correct, possibly stale) -- routing them
+through the table too would make recompiles propagate at the price of a
+`call_indirect` per call; and `new WebAssembly.Module` still runs on the main
+thread. `JVM_WASM_LINK_TABLE=0` / `jit.wasm.linkTable:false` (page:
+`?linktable=0`) keeps the old import.
+
+**2026-09-08, recursive groups (`WasmLinker.sealGroups`).** The two-class
+fixture (`GroupA.ping` <-> `GroupB.pong`, each with its own `<clinit>`) ran
+right from the start but never converged: linker `bound 0`, both arms fully
+compiled, every call through the trampoline, and each later caller of either
+arm bridged in through a deoptable `pcall_`. Cause: each arm's one deoptable
+site is the slot naming the other, so each counted `deoptableCalls 1`, so
+neither satisfied the never-exits contract the other's slot needed -- a
+verdict that cannot be reached one module at a time. The linker now takes it
+over the group: candidates are modules whose deoptable sites are ALL slot
+sites (`meta.slotSites`), a greatest fixpoint removes any whose slot names
+neither a never-exits export nor another candidate, and the survivors get
+every slot bound in one step, then `groupSealed`; `sealedNeverExits(meta)`
+makes a sealed module never-exits for `dcall_`, the pinned-pair fallback and
+`directLinkable`. Two rules follow. (1) A sealed edge is PINNED across the
+callee's withdrawal instead of reverting to the stub -- a member may already
+be entered directly, so its slot must never again hold something that can
+deopt; the withdrawn export is still a correct compilation of the callee, and
+a republished callee that meets the contract takes the edge back. That is the
+`dcall_` pin generalised, and it now also holds for a sealed singleton (a
+caller whose only slot holds a never-exits export), which changed step 3 of
+`test/wasmLinkTable.test.js`. (2) A ready callee that is an unsealed group
+member is lowered through a slot rather than a deoptable bridge, or the
+caller could never be sealed. Found on the way: `publishWasmTargetReady`
+threw on a second publication of a method whose generated targets were
+already withdrawn, failing every such recompile. Acceptance in
+`test/wasmRecursiveGroup.test.js` (44 assertions).
+
 ## 10. Correction: the trampoline needed the three-state rule to be enforced
 
 The first landing of the late-bound call replaced the UNKNOWN refusal with a
@@ -314,6 +383,7 @@ land in both backends. Two of the three parts did:
 | refusal split (UNKNOWN vs INCOMPATIBLE) | yes | yes |
 | `artifactId` + `linkBindings` in meta | yes | yes |
 | late-bound `lcall_` trampoline | **yes** | **no** |
+| runtime-linker table slot (`WasmLinker`) | **yes** | **no** |
 
 The trampoline is not mirrored, and this is a decision rather than an omission.
 It is built on the structured compiler's `runNested` partial-link helper, which
