@@ -1,0 +1,28 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+const window={addEventListener(){}};
+vm.runInNewContext(fs.readFileSync(new URL('./termination-trace.js',import.meta.url),'utf8'),{window,performance});
+const method={name:'a',descriptor:'(B)V'};
+const symbol=Symbol('structuredContinuation');
+const f={className:'ch',method,pc:37,instructions:Array(106).fill({op:'return'}),locals:[12],stack:{items:[]},[symbol]:{pc:37,ownsFrame:true,framelessEntry:true}};
+const stack={items:[f],push(v){this.items.push(v)},pop(){return this.items.pop()},clear(){this.items.length=0}};
+const j={threads:[],_prepareSchedulerTick(){return {}},jit:{codegenCache:new Map(),runGeneratedFrame(g,f,t){t.callStack.pop();return {returned:true}}},handleException(){},dispatchExceptionInFrame(){return false},_failSynchronousJitTick(){}};
+window.installTerminationTrace(j);
+// Launcher resets the array after the installation hook.
+j.threads=[];
+const t={id:2,status:'runnable',callStack:stack};j.threads.push(t);
+j._prepareSchedulerTick();
+assert.equal(typeof Object.getOwnPropertyDescriptor(t,'status').set,'function');
+assert.equal(j.jit.runGeneratedFrame(function testTier(){},f,t).returned,true);
+f.locals[0]=999;f[symbol].pc=999;
+t.status='terminated';
+assert.equal(t.status,'terminated');
+const d=window.terminationTrace.dump;
+assert.equal(d.reason,'thread-2-terminated');
+const before=d.events.find(e=>e.event==='stack-pop-before');
+assert.equal(before.frames[0].locals[0],12);
+assert.equal(before.frames[0].symbols['Symbol(structuredContinuation)'].properties.pc,37);
+assert.equal(before.frames[0].id,d.events.find(e=>e.event==='stack-pop-after').removed.id);
+assert.equal(window.terminationTrace.errors.length,0);
+console.log('PASS observation preserves returns/status, snapshots mutable state and stable frame identity');
