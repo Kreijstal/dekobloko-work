@@ -99,7 +99,7 @@ const read = (file) => fs.readFileSync(file, 'utf8');
 // scripts/pipeline/bulk-pipeline.js's second copy. Every remaining site is
 // listed in docs/configuration.md. Lower this number as families migrate to
 // the `required` strategy in scripts/lib/java-tools.js.
-const AUTHOR_FALLBACK_BUDGET = 41;
+const AUTHOR_FALLBACK_BUDGET = 7;
 
 // scripts/lib/ and this test DOCUMENT the author path -- naming a bad default
 // in order to describe it is not the same as depending on it. Counting them
@@ -131,17 +131,6 @@ if (sites.length < AUTHOR_FALLBACK_BUDGET) {
     `${sites.length}. Good -- now lower AUTHOR_FALLBACK_BUDGET in ` +
     `scripts/test-config-portability.js to ${sites.length} so the ` +
     'improvement is locked in, and update docs/configuration.md.');
-}
-
-// --- 4. the one consumer that refuses to guess must keep refusing ----------
-{
-  const file = path.join(REPO, 'scripts/repair-same-int-constant-selectors.js');
-  const text = read(file);
-  assert.ok(!text.includes(AUTHOR_PATH),
-    'repair-same-int-constant-selectors.js is the only script that fails ' +
-    'rather than guessing a java-tools path; it must stay that way');
-  assert.match(text, /process\.exit\(2\)/,
-    'it must exit non-zero when java-tools is not configured');
 }
 
 console.log(

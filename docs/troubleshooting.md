@@ -4,10 +4,8 @@ Symptom-first index for running the Dekobloko client against the local server.
 Several symptoms have multiple causes that look identical — that is what this
 page is for.
 
-Related: [`loading-and-menu-investigation.md`](loading-and-menu-investigation.md),
-[`client-runtime-state.md`](client-runtime-state.md),
-[`js5-sprite-format.md`](js5-sprite-format.md), and the local server README at
-`.work/multiplayer/server-src/README.md`.
+Related: [protocol.md](protocol.md), [js5-sprite-format.md](js5-sprite-format.md),
+[running.md](running.md), and `apps/server/README.md`.
 
 ## Client fails at startup with `error_game_js5io`
 
@@ -99,25 +97,24 @@ If the bar is **full**, nothing is loading. Loading finished and the render gate
 **This is solved.** `se.i(-1)` opens when `nm.field_Qb && qj.field_k` are both
 true, and each is set by a server reply the client is waiting for: opcode 5 must
 be answered with opcode 4, and opcode 4 with opcode 3. See
-[`chat-and-requests.md`](chat-and-requests.md). If the stall reappears, check
-those replies are being sent before anything else.
+[protocol.md](protocol.md) §1. If the stall reappears, check those replies are
+being sent before anything else.
 
-Confirm the gate state with `pickagent2.jar`:
+Confirm the gate state by dumping these statics from a live client (see
+*Attaching to a live client* below):
 
-```sh
-java -cp $JAVA_HOME/lib/tools.jar:. Attacher <pid> $PWD/pickagent2.jar "$PWD/out.txt,nm;qj;v;sh"
-# sh.field_j = true          -> loading finished
-# nm.field_Qb / qj.field_k   -> both must be true to open se.i(-1)
-# v.field_d = true           -> the simplemode bypass, NOT the multiplayer path
+```text
+sh.field_j = true          -> loading finished
+nm.field_Qb / qj.field_k   -> both must be true to open se.i(-1)
+v.field_d  = true          -> the simplemode bypass, NOT the multiplayer path
 ```
 
 Do **not** read anything into archives 4, 6 and 11 having non-null handles.
 Those three are never nulled by design and are non-null on every client. Only
 3, 7, 8, 9 and 10 are completion signals.
 
-To confirm the diagnosis, force the gate and watch the menu appear:
-[`loading-and-menu-investigation.md`](loading-and-menu-investigation.md#forcing-the-menu-by-flipping-vfield_d-diagnostic-not-a-fix).
-That is a diagnostic, not a fix.
+Forcing `v.field_d` makes the menu appear, which confirms the diagnosis. That is
+a diagnostic, not a fix.
 
 If the bar is **partial**, loading genuinely is in progress. Zero **data**
 groups requested is normal with a populated cache — the client reads locally and
@@ -132,7 +129,8 @@ table. Expected for any synthesised substitute. Confirm with
 `grep -c net-validate-failed client.log`.
 
 Fix by forging the substitute's CRC to the recorded value, not by rewriting the
-recorded CRC — see [`crc-reconciliation.md`](crc-reconciliation.md).
+recorded CRC. The master index (archive 255 group 255) is signed and records a
+CRC over every group table, so rewriting a recorded CRC invalidates it.
 
 Note `cache-validate-failed` is a **different, benign** line: on a cold cache the
 client checks its empty local store, misses, and fetches from the network. Dozens
@@ -151,8 +149,7 @@ which invalidates the signature; the client verifies it and throws before the
 login screen.
 
 The server log prints `loaded signed master index` on every run. Never rewrite
-the contents of a signed index. Details in
-[`crc-reconciliation.md`](crc-reconciliation.md).
+the contents of a signed index.
 
 ## A client feature silently does nothing
 
@@ -162,7 +159,7 @@ every tick, so the request repeats forever and the server sees a storm.
 
 Group outbound packets by CALL SITE, not opcode: a request from feature code
 that fires once is satisfied, one repeating via `bd.g` is not. The request/reply
-table is in [`chat-and-requests.md`](chat-and-requests.md).
+table is in [protocol.md](protocol.md) §1.
 
 Known unanswered as of writing: client opcode 3 (scores/achievements -- no
 handler, no length entry, silently dropped) and opcode 10 (return to main menu).
@@ -187,19 +184,19 @@ means that name field was null.
 | `0x82` | any | server message / status channel |
 
 Read `mb.java:118-215` before changing bytes; it states the rules. Details in
-[`chat-and-requests.md`](chat-and-requests.md).
+[protocol.md](protocol.md) §5.
 
 ## A packet parses in a harness but crashes the live client
 
-`ChatProbe` covers `ki.a` (the parser) only. Rendering happens later in `cl.a`,
-which can still throw -- the `0x02` chat payload parsed cleanly and then NPEd a
-live client. A green probe means the fields decode, not that the client will
-draw them.
+A harness that injects a payload into `de.field_V` and calls `ki.a` covers the
+parser only. Rendering happens later in `cl.a`, which can still throw -- the
+`0x02` chat payload parsed cleanly and then NPEd a live client. A green probe
+means the fields decode, not that the client will draw them.
 
 ## Server-side edits do not need the client restarted
 
 The client reconnects on its own. Only rebuild and relaunch it when the gamepack
-changes (new probes, a new `instr-serverkey-vNN.jar`). Restarting it for a
+changes. Restarting it for a
 Python-only change throws away the user's session and login for nothing.
 
 ## Tracing decompiled control flow keeps giving wrong answers
@@ -209,27 +206,26 @@ contradicted by a probe: `var5` is not a server response code, opcode 12 does no
 route to `cm.a(53)`, and the login button does not reach `lg.a(8927)`.
 
 The nesting is deep enough that brace-walking picks the wrong branch and the
-result still reads as plausible. **Probe first.** The instrumentation pipeline
-turns a question into an answer in one build cycle; reading has a poor record
-here. Useful probe points already wired: `Instr.dispatch` (bd.f entry),
-`Instr.reachedCm`, `Instr.disconnect` (si.a), `Instr.aiWrite` (the sole writer of
-`ai.field_P`, with stack trace).
+result still reads as plausible. **Probe first**: add a print to the decompiled
+source, rebuild that one class, and run it. Reading has a poor record here.
 
-## Agent reads a field as null/absent that clearly exists
+## An agent reads a field as null/absent that clearly exists
 
-`InstAgent` v1 calls `getDeclaredFields()` on the concrete class only, so
-inherited fields are silently missing -- `de.field_V.field_n` is declared on `wl`,
-not `uf`, and looked absent. Use `InstAgent2`, which walks the hierarchy.
+`getDeclaredFields()` on the concrete class only silently misses inherited
+fields — `de.field_V.field_n` is declared on `wl`, not `uf`, and looks absent.
+Walk the hierarchy instead, or dump every static field rather than requesting
+specific ones.
 
 Related: a rebuilt agent jar whose class name matches one already loaded in the
-target VM is ignored; the old class is reused. Version agent class names.
+target VM is ignored and the old class is reused. Version agent class names.
 
-## A build script silently patched the wrong jar
+## A build or patch script silently used the wrong input
 
-`serverkey-v8.py` had its input jar hardcoded, so it kept re-patching a stale
-build after the version moved on -- only the output filename revealed it. Use
-`serverkey2.py`, which takes src/dst as arguments and exits non-zero if the
-modulus is not found.
+A patcher with its input jar hardcoded keeps re-patching a stale build after the
+version has moved on, and only the output filename reveals it. Take source and
+destination as arguments and exit non-zero when the expected pattern is not
+found. A patcher that edits a source tree in place instead of re-copying it also
+accumulates probes on every run; keep patchers idempotent.
 
 Also: `javac ... | head && echo OK` reports success on a failed build, because
 `&&` chains off `head`. Check the exit status separately.
@@ -311,49 +307,84 @@ The sources reference Microsoft J++ classes (`com.ms.dll`, `com.ms.directX`,
 `com.ms.com`) in `ae.java`/`fg.java`. Compile against the stubs:
 
 ```sh
-javac -nowarn -cp funorb-stubs.jar:dekobloko-stubs.jar -d classes games/dekobloko/*.java
+javac -nowarn -cp lib/dekobloko-stubs.jar -d classes games/dekobloko/*.java
 ```
 
-## Build fails: `cannot find symbol` on a probe method you just added
+## Attaching to a live client
 
-`patch3.py` re-copies the 343 tracked sources **plus a master `Instr.java`** on
-every run. Edits to `src/Instr.java` are discarded. Edit the master at
-`instr/Instr.java`.
+`jdb` is unreliable here: `-connect com.sun.jdi.SocketAttachingConnector` is
+rejected outright, and `-attach 127.0.0.1:5005` connects but `print` on the
+obfuscated statics returns nothing. The dependable route is a JVMTI attach agent
+that reads statics reflectively via `com.sun.tools.attach.VirtualMachine`, built
+against `$JAVA_HOME/lib/tools.jar`. Two shapes are useful:
 
-Related: when generating Java from a Python heredoc, watch escaping — a
-mis-escaped `"}\\n"` writes a literal backslash-n and yields
-`illegal character: '\'` at the final line.
+1. **State dump** — for a list of classes, print every static field as
+   `class.field : Type = value`. Arrays print length and, for reference arrays,
+   how many slots are non-null.
+2. **State resolution** — scan every loaded class for static fields of type `um`
+   and print `class.field = um@<identityHash>`, which is what turns
+   `ph.field_xb = um@1fd67a99` into a name.
 
-## Instrumentation counts keep doubling
-
-A patcher that edits `src/` in place instead of re-copying accumulates probes on
-every run. `patch3.py` re-copies first; keep any new patcher idempotent the same
-way.
-
-## `jdb` will not attach
-
-Both connector forms fail here: `-connect com.sun.jdi.SocketAttachingConnector`
-is rejected outright, and `-attach 127.0.0.1:5005` connects but `print` on the
-obfuscated statics returns nothing. Use the JVMTI attach agents in
-`/home/kreijstal/.claude/jobs/720d2707/tmp/agent/` instead:
-
-```sh
-java -cp $JAVA_HOME/lib/tools.jar:. Attacher <pid> <agent.jar> <outfile>
-```
-
-Launching with JDWP anyway costs nothing and leaves breakpoints available:
+The manifest needs `Agent-Class:`, not `Premain-Class:`, since this attaches to
+an already-running VM. Launch the client with JDWP anyway — it costs nothing and
+leaves breakpoints available:
 `-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=127.0.0.1:5005`.
+
+Find the pid with `jps -l | grep DekoblokoLauncher`: the pid printed by a
+backgrounded shell launch is the **wrapper**, not the JVM.
 
 ## "The game is hung" — how to see what it is actually doing
 
 Dump the client's own canvas. `hk` is the software rasterizer, `hk.field_l` its
-`int[]` pixel buffer, `field_j` the stride, `field_i` the height. `FrameAgent`
-writes it to a PNG with no X11 involvement. This is the single most useful
-diagnostic here — it is what turned "the game is hung" into "it is sitting on
-the *Loading extra data* screen", which no amount of packet logging revealed.
+`int[]` pixel buffer, `field_j` the stride, `field_i` the height; an attach
+agent can write it to a PNG with no X11 involvement. This is the single most
+useful diagnostic here — it is what turned "the game is hung" into "it is
+sitting on the *Loading extra data* screen", which no amount of packet logging
+revealed.
 
-Note the pid printed by a backgrounded shell launch is the **wrapper**, not the
-JVM. Get the real one with `jps -l | grep DekoblokoLauncher`.
+## Client state reference
+
+`ph.field_xb` is the game state. It holds one of eleven singleton constants of
+type `um` (`ba.field_f`, `bh.field_l`, `kb.field_c`, `kk.field_p`, `kl.field_B`,
+`ll.field_a`, `nn.field_c`, `of.field_a`, `rb.field_f`, `wf.field_p`,
+`wf.field_u`), so comparing states means comparing identity. Assignment sites
+are in `sn.java`, the packet reader. To name the current state, scan every
+loaded class for static fields of type `um` and match identity hashes:
+
+```
+ph.field_xb = um@1fd67a99      # meaningless on its own
+wf.field_u  = um@1fd67a99      # <-- same identity: the state is wf.field_u
+```
+
+`wf.field_u` is the normal terminal state of the login handshake. Only
+`si.java:323` and `wj.java:318` gate on it.
+
+`client.n(int)` loads resources across five ticks, one stage per call, each
+gated on a field it nulls when that stage is done:
+
+| stage | guard | work |
+|---|---|---|
+| 1 | `jj.field_c` | sound effects |
+| 2 | `wg.field_h` | music |
+| 3 | `ph.field_Db` | graphics + lobby UI construction (`mf.a` → `gf.field_c`) |
+| 4 | `cl.field_y` | huffman |
+| 5 | — | fonts installed (`wf.field_q`), returns 1 |
+
+All four guards null, plus `wf.field_q` and `gf.field_c` non-null, means the
+five stages finished. The caller then sets `sh.field_j = true`
+(`client.java:529`), the authoritative "loading is done" signal. Only archives
+3, 7, 8, 9 and 10 (`cl.field_y`, `ph.field_Db`, `jj.field_c`, `ah.field_d`,
+`wg.field_h`) are nulled on completion; `vb.field_S` (4), `ii.field_t` (6) and
+`eg.field_e` (11) have no null-assignment site and stay live for the client's
+whole run.
+
+A completed load does not mean a visible UI: `v.field_d` gates whether the
+client renders its real screen or keeps painting the loading screen at 100%, and
+it is written only by `bd.a()`.
+
+The cache is always `~/.alterorb/caches/dekobloko/` — the launcher ignores
+`HOME`, so a client run with `HOME` pointed elsewhere is still using the real
+cache.
 
 ## Signals that mislead
 
@@ -378,5 +409,7 @@ Field names differ between builds (`bh.k` in the original gamepack,
 `bh.field_k` in the decompiled one); methods are identical. Anything that looks
 fields up **by name** therefore works against only one build, and a swallowed
 `NoSuchFieldException` reads as a behavioural difference when it is purely a
-naming artifact. Details and the mitigation in
-[`client-runtime-state.md`](client-runtime-state.md#field-names-differ-between-builds).
+naming artifact. Mitigation: dump *all* static fields by name rather than
+requesting specific ones. The two builds are otherwise ABI-compatible — the
+methods are identical in name, parameter types, return types and modifiers, with
+no synthetic or bridge methods.

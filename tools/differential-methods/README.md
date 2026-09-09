@@ -79,6 +79,17 @@ the independent exact pixel oracle for stronger validation.
   guest mixer/decoder production are subsequent workloads, not generic loops
   pretending to represent those operations.
 
+Measurement environment, which comparable runs must hold fixed:
+
+- All logical CPUs pinned to a fixed frequency (the recorded runs used 900000
+  kHz, powersave). An unpinned machine makes cold/warm deltas meaningless.
+- Timed runs sequential, with the diagnostic game paused and the browser
+  visible during guest execution; a hidden tab throttles and invalidates a run.
+- Record the engine versions and the bundle/manifest SHA-256 with the results;
+  the bundle hash, not the source revision, identifies the runtime under test.
+- Capture the game classes from the working browser compilation, not from the
+  differently obfuscated `dekobloko.jar` in this repository.
+
 No game/compiler optimization or deployment is included in this runner.
 
 ## Additional actual-method workloads

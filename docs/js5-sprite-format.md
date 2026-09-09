@@ -5,9 +5,6 @@ read out of real cache bytes and cross-checked against the decompiled client.
 Confidence is called out per section; the only genuinely open items are five
 unresolved file names (see "Name hashes").
 
-Scratch scripts and rendered PNGs live outside the repo, under
-`/home/kreijstal/.claude/jobs/720d2707/tmp/sprite/`.
-
 ---
 
 ## 1. Scope
@@ -66,7 +63,7 @@ i32  fileNameHash[g][fileCount[g]] (flags & 1)
 ```
 
 The parser consumes exactly 832 bytes with no slack, which is itself a decent
-correctness signal. Implemented in `parse_idx.py`.
+correctness signal.
 
 Note the asymmetry: **group 0's own name hash is 0
 (unnamed). The resource names are attached to the *files*, not the group.**
@@ -93,7 +90,7 @@ Archive 6 group 0: `stripeCount = 3`, `fileCount = 128`, trailer =
 `1 + 3*128*4 = 1537` bytes, payload = `1,240,630 - 1,537 = 1,239,093` bytes,
 which matches the sum of all 128 reconstructed file sizes exactly.
 
-Implemented in `split.py`. File sizes range from 36 bytes to 459,786.
+File sizes range from 36 bytes to 459,786.
 
 ---
 
@@ -212,21 +209,20 @@ never balance this equation 128 times.
 
 ### Visual verification
 
-Not just structural — decoded and looked at. Rendered PNGs are in
-`/home/kreijstal/.claude/jobs/720d2707/tmp/sprite/png/` (all 128 files, one
-contact sheet per file, frames composited on their canvas), plus these
-verification montages:
+Not just structural — decoded and looked at. All 128 files were rendered (one
+contact sheet per file, frames composited on their canvas). What the montages
+showed:
 
-- `verify_main.png` — `ui_lobby_logo` and `ui_menu_title` render as a legible
-  "DEKO BLOKO" wordmark; `ui_button_up` as a rounded button.
-- `verify_explode.png` — `explode` is a coherent 6-frame explosion, a bright
-  core expanding into a burst ring.
-- `verify_font.png` — the full `tinybloko` glyph set, legible.
+- `ui_lobby_logo` and `ui_menu_title` render as a legible "DEKO BLOKO"
+  wordmark; `ui_button_up` as a rounded button.
+- `explode` is a coherent 6-frame explosion, a bright core expanding into a
+  burst ring.
+- the full `tinybloko` glyph set is legible.
 
 Rendering gotcha worth recording: several sets (`tinybloko`, `pop`) have palette
 `[transparent, 0xffffff]`, i.e. pure white on transparent. Composite them onto a
-**dark** background or they look like empty images and you will think the
-decoder is broken. It cost a cycle here.
+**dark** background or they look like empty images and the decoder looks
+broken.
 
 ---
 
@@ -255,17 +251,11 @@ metrics beyond the frame boxes live in the font class, not in archive 6.
 **The hash is the plain Java `String.hashCode`:** `h = h*31 + c`, over the
 lowercase name, as a signed 32-bit int.
 
-### What does not work
-
-A previous attempt used `h = h*61 + (c - 32)` and resolved nothing. Two separate
-faults, both worth recording:
-
-1. **Wrong algorithm.** `h*61 + (c-32)` matches **0** of the 128 file hashes.
-   `h*31 + c` matches 107 of 128 directly from source literals.
-2. **Wrong table.** It was applied to the *group* name hashes. Group 0's name
-   hash is `0`, so every "hit" was the empty/`" "` string trivially hashing to
-   0. The names are on the **file** hash table. Even the correct algorithm would
-   have looked like a failure applied there.
+Two things make a name lookup silently fail here. `h*61 + (c-32)` is the wrong
+algorithm and matches **0** of the 128 file hashes. And the names live on the
+**file** hash table, not the group one: group 0's name hash is `0`, so any
+lookup against the group table "hits" on the empty string and looks like a
+successful resolution.
 
 ### Result
 
@@ -288,7 +278,7 @@ hash known, matched from a short wordlist).
 (hashes `0x69b8ee9e`, `0x8332eda3`, `0xa7c6ad97`, `0xfe707cb6`, `0xcd1bb2a4`).
 These are isolated — no adjacent regular block to pivot off — so the algebraic
 trick does not apply and they would need either a wordlist hit or a longer
-search. The full mapping is in `names.json`.
+search. The recovered mapping is not checked into this repository.
 
 The same method applied to group 1 gives the **four lost files**: `borders`,
 `logo`, `price`, `screenshots`, in a group named `benefits`. That naming is a
@@ -308,7 +298,8 @@ panel, not gameplay assets.
 7. Map index 0 → transparent, index *k* → `palette[k]`, applying the alpha plane
    if `flags & 2`.
 
-`sprite.py` does steps 3–7; `load_archive6()` is the one-call entry point.
+Steps 3–7 are the decoder proper; steps 1–2 are ordinary JS5 container
+handling.
 
 ---
 

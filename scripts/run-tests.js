@@ -36,27 +36,13 @@ const DEFAULT_TIMEOUT_MS = 300000;
 // Tests that take long enough that --quick should skip them, with measured
 // wall times from a baseline run on 2026-09-08.
 const SLOW = new Map([
-  ['test-cfr-pass-regressions', 44],
-  ['test-cfr-oracle-policy', 11],
+  ['test-pipeline-pass-regressions', 44],
 ]);
 
 // Failures that are already failing for a reason outside this repository.
-// Each entry MUST name the cause and where the fix belongs.
-const KNOWN_FAILURES = new Map([
-  ['test-cfr-oracle-policy', {
-    reason:
-      'Pinned marker counts no longer reproduce: the "terminal-helper ' +
-      'fallback" case selects baseline (15 markers) where the baseline file ' +
-      'expects candidate (7). The expected values are an ORACLE; they must not ' +
-      'be regenerated to make this green. Confirmed cross-repository rather ' +
-      'than local: cfr-oracle-select-transform.js shells out to ' +
-      '$JAVA_TOOLS_DIR/scripts/jvm-cli.js, and the case fails identically ' +
-      'against a clean java-tools worktree at c53e8f3, before any of the ' +
-      'renderer refactor commits.',
-    owner: 'java-tools (cross-repository)',
-    since: '2026-09-08 baseline',
-  }],
-]);
+// Each entry MUST name the cause and where the fix belongs. Empty is the
+// correct state: a known failure is a debt, not a category to keep stocked.
+const KNOWN_FAILURES = new Map([]);
 
 function discover() {
   return fs.readdirSync(SCRIPTS)

@@ -66,12 +66,6 @@ A particularly important distinction is that there are two UI families: the `w`/
 | [`ea`](https://github.com/Kreijstal/funorb-decompiled/blob/ab22425456e0b95dbe0540e9a2232f2a972d9c4c/games/dekobloko/ea.java) | Game and lobby domain logic | Mixed game helper/data class that also stores the RSA public exponent. | high |
 | [`dh`](https://github.com/Kreijstal/funorb-decompiled/blob/ab22425456e0b95dbe0540e9a2232f2a972d9c4c/games/dekobloko/dh.java) | Errors and diagnostics | Wraps exceptions with accumulated obfuscated method context. | high |
 
-## Runtime evidence for the decompiler failure
-
-- Rebuilt source: the final outer `w.d(int)` enters a child `w.d(int)` whose `field_M` is null; the child exits, but the outer call never exits and the game reports a `NullPointerException`.
-- Original JAR: equivalent outer `w.d(int)` calls visit two null-`field_M` children and then exit normally, repeatedly.
-- This validates `w` as a recursive visual/widget tree and localizes the behavioral divergence to its child iteration, matching the bad decompilation at `games/dekobloko/w.java:642`.
-
 ## Category summary
 
 | Category | Count | Purpose |

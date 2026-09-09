@@ -531,6 +531,32 @@ async function main() {
             positional: Boolean(site.fastPositional),
           })),
         wasmRuns: Number(wasm && wasm.runCount) || 0,
+        // How often a wasm module left wasm to reach a callee through a JS
+        // bridge, by bridge kind. Needs JVM_WASM_IMPORT_STATS=1, which wraps
+        // every import in a counting closure -- so this is a diagnostic run,
+        // never an acceptance-timing one. `call_` is the never-exits static
+        // bridge, `pcall_`/`lcall_` the partial and late-bound ones, `dcall_`
+        // a direct wasm->wasm link that costs no bridge at all.
+        wasmBridgeCrossings: (() => {
+          const totals = { call: 0, pcall: 0, lcall: 0, dcall: 0, other: 0 };
+          const states = wasm && wasm.stateByKey;
+          if (!states || typeof states.values !== 'function') return null;
+          const counted = new Set();
+          for (const st of states.values()) {
+            const stats = st && st.meta && st.meta.importStats;
+            if (!stats || counted.has(stats)) continue;
+            counted.add(stats);
+            for (const [name, count] of stats) {
+              if (!count) continue;
+              if (name.startsWith('call_')) totals.call += count;
+              else if (name.startsWith('pcall_')) totals.pcall += count;
+              else if (name.startsWith('lcall_')) totals.lcall += count;
+              else if (name.startsWith('dcall_')) totals.dcall += count;
+              else totals.other += count;
+            }
+          }
+          return totals;
+        })(),
         oversizedWasmFirstMethods:
           Number(jit && jit.oversizedWasmFirstMethodCount) || 0,
         longArithmeticWasmFirstMethods:

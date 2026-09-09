@@ -76,10 +76,15 @@ assert.deepEqual(staleConsumers, [],
 
 // --- divergences are recorded, not silently smoothed over -----------------
 const divergent = config.divergences().map((entry) => entry.name).sort();
+// This list may SHRINK as a divergence is genuinely migrated away, and the
+// shrink must be deliberate: prove the consumers now agree, then edit this
+// list in the same change. It must never grow silently.
+// JAVA_TOOLS_NODE_DEPS_DIR left this list once bulk-pipeline.js and
+// test-pipeline-pass-regressions.js both defaulted it to the resolved
+// JAVA_TOOLS_DIR instead of a literal path.
 assert.deepEqual(divergent, [
-  'GAME_LIBRARY_BUNDLE_DIR', 'JAVA_TOOLS_DIR', 'JAVA_TOOLS_NODE_DEPS_DIR',
-  'JAVA_TOOLS_ROOT',
-], 'the four known configuration divergences must stay recorded until migrated');
+  'GAME_LIBRARY_BUNDLE_DIR', 'JAVA_TOOLS_DIR', 'JAVA_TOOLS_ROOT',
+], 'the three known configuration divergences must stay recorded until migrated');
 for (const entry of config.divergences()) {
   assert.ok(entry.note && entry.note.length > 40,
     `${entry.name} must explain its divergence`);
