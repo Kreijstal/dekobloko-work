@@ -29,8 +29,13 @@ const alterOrbConfigUrl = process.env.ALTERORB_CONFIG_URL ||
   'https://static.alterorb.net/launcher/v3/config.json';
 const alterOrbConfigCache = path.join(
   repositoryRoot, '.work', 'game-library', 'config.json');
-const gameCacheRoot = path.join(
-  os.homedir(), '.alterorb', 'caches');
+// Both cache readers below -- the browser asset manifest and the JS5 chain --
+// come from here, so a run points at a disposable copy by moving one variable.
+// This is the same ALTERORB_JVMJS_CACHE_ROOT the Node launcher honours, so a
+// browser run and a headless run can share one isolated cache.
+const gameCacheRoot = process.env.ALTERORB_JVMJS_CACHE_ROOT
+  ? path.resolve(process.env.ALTERORB_JVMJS_CACHE_ROOT)
+  : path.join(os.homedir(), '.alterorb', 'caches');
 const telemetryPath =
   process.env.GAME_LIBRARY_TELEMETRY_PATH ||
   process.env.DEKOBLOKO_TELEMETRY_PATH ||
@@ -69,6 +74,11 @@ function cacheDirectoryForGame(game) {
 
 function cacheFilesForGame(game) {
   const directory = cacheDirectoryForGame(game);
+  // The browser mounts these as the guest's own client cache, which is a
+  // second data path independent of the JS5 socket. A run that insists on the
+  // recorded layer has to close both, or the guest reads groups from a build
+  // the recorded metadata does not describe.
+  if (process.env.GAME_LIBRARY_JS5_RECORDED_ONLY === '1') return [];
   if (!fs.existsSync(directory)) return [];
   return fs.readdirSync(directory).filter(name =>
     name === 'random.dat' || /^main_file_cache\.(?:dat2|idx\d+)$/.test(name));
@@ -452,6 +462,7 @@ const launcher = `<!doctype html>
   </aside>
   <script>
     (async () => {
+      const {configureApplet} = await import('/browser-loader/applet-config.mjs');
       const loader = document.getElementById('loader');
       const appletStage = document.getElementById('appletStage');
       const loadingCanvas = document.getElementById('loadingCanvas');
@@ -1255,24 +1266,77 @@ const launcher = `<!doctype html>
           preferWholeMethodJs: !wasmFirst,
           profileTimings: timingProfile,
           methodTimingSampleRate,
-          adaptiveWholeMethodEscalationThreshold: wasmFirst ? 0 : 16
+          adaptiveWholeMethodEscalationThreshold: wasmFirst ? 0 : 16,
+          // How long one compile may hold the guest's thread before the
+          // compilers stop enlarging that turn (the Wasm tier's on-demand
+          // callee recursion is what this bounds). The runtime's own default
+          // is what ships; ?compileBudget=N overrides it for an A/B and
+          // ?compileBudget=0 removes the bound, which is the behaviour that
+          // froze Deko Bloko's Start Game click for ~10 s.
+          //
+          // Measured 2026-09-11 in Firefox, back to back on this host, first
+          // click after the menu: freeze 9.7-10.0 s with no bound, 4.3-4.8 s
+          // at 120 ms, 4.7 s at 40 ms and 6.7 s at 15 ms -- and a tighter
+          // bound costs the boot dearly (menu in 113 s at 120 ms, 299 s at
+          // 15 ms, 1226 s at 40 ms), because a turn that keeps running out
+          // leaves modules partial and they are rebuilt.
+          //
+          // The compile worker is deliberately NOT wired up here. It works in
+          // this browser (scripts/verifyBrowserCompileWorker.js) and the
+          // bundle is served, but with it on the queue refused most of what it
+          // was offered, the first frame took 100-166 s instead of 67-73 s,
+          // the menu 214-268 s instead of 109-114 s, and the Start Game freeze
+          // did not improve beyond the bound above.
+          ...(query.has('compileBudget')
+            ? {postMainCompileBudgetMs: Number(query.get('compileBudget'))} : {})
         };
+        // Ahead-of-main preparation, complete, on by default. The runtime is
+        // written around compiling everything before main() ("a later compile
+        // would be a stall with no upside"); this page hosts the JVM through
+        // the debug controller, whose constructor turns preparation OFF for
+        // debugging fidelity, so the page turns it back on. Traced on
+        // 2026-09-11 with it off: the boot ran 1004 synchronous post-main
+        // compiles (32.9 s) and the Start Game click ran 77 more, 4.5 s of
+        // the 6.1 s between the click and the first Stage 1 frame. With it
+        // on, the click reaches Stage 1 with no compile at all, at the cost
+        // of a longer boot -- the boot is free, the click is not.
+        //
+        // The pass runs to a fixed point (java-tools JVM._precompile-
+        // InitializedClasses): compile rounds until nothing new appears, a
+        // link pass over every prepared call site, Wasm modules for the
+        // prepared oversized-loop upgrades (the only ones the runtime can
+        // select as an entry tier -- as apps/launcher/browser-runtime.js
+        // asks for) settled against their dependencies, then the Wasm tier
+        // is frozen.
+        //
+        // ?prepare=0 is the developer opt-out for A/B work. The remaining
+        // switches are diagnostics for bisecting a preparation problem, not
+        // configurations to ship: ?prepareWasm=0 / ?prepareEffectful=0
+        // leave one half out, ?prepareLoops=1 prepares only loop-bearing
+        // methods.
+        if (query.get('prepare') !== '0') {
+          debug.debugController.options.prepareBeforeMain = true;
+          debug.debugController.options.prepareWasmPreparedUpgradesOnly = true;
+          debug.debugController.options.prepareWasm = query.get('prepareWasm') !== '0';
+          debug.debugController.options.prepareEffectful = query.get('prepareEffectful') !== '0';
+          debug.debugController.options.prepareLoopsOnly = query.get('prepareLoops') === '1';
+        }
+        if (query.get('asyncCensus') === '1') {
+          // Diagnostic: every synchronous call site that hands a call back to
+          // the scheduler, with the reason (jit.asyncCallCensus).
+          debug.debugController.options.jit.asyncCallCensus = true;
+        }
+        if (query.get('preparedConstructors') === '0') {
+          // Diagnostic: keep the syntactic constructor admission only
+          // (java-tools JVM_DISABLE_PREPARED_CONSTRUCTORS), for bisecting a
+          // problem in a constructor prepared on its resolved call graph.
+          debug.debugController.options.jit.preparedConstructors = false;
+        }
         // Keep the default browser page equivalent to the headless
         // --until-main-menu performance run. Add ?full=1 to exercise normal
         // login/audio startup instead.
         const simpleMode = query.get('full') !== '1';
-        debug.debugController.options.appletParameters = {
-          overxgames: '45',
-          overxachievements: '1000',
-          member: 'no',
-          gameport1: '43594',
-          gameport2: '43594',
-          servernum: '8003',
-          simplemode: simpleMode ? 'true' : 'false',
-          instanceid: String(Date.now()),
-          gamecrc: String(game.gamecrc)
-        };
-        debug.debugController.options.appletCodeBase = game.server;
+        configureApplet(debug.debugController, game, {simpleMode});
         debug.debugController.options.eventLoopYieldStrategy = yieldStrategy;
         // Sample one scheduler entry in 256. This records elapsed time, not
         // invocation counts, and is cheap enough to leave enabled while
@@ -1292,6 +1356,13 @@ const launcher = `<!doctype html>
           yieldStrategy
         });
         const jit = debug.debugController.jvm.jit;
+        if (query.get('jitDeny')) {
+          // Diagnostic: refuse JIT admission for these guest classes (the
+          // java-tools JVM_JIT_DENY lever, which the bundle cannot read from
+          // an environment), for bisecting a miscompile in the browser.
+          jit.jitDenyClasses = new Set(
+            query.get('jitDeny').split(',').map(name => name.trim()).filter(Boolean));
+        }
         jit.rendererPipelineEnabled = true;
         jit.scalarLoopsEnabled = true;
         jit.scalarGuestBodiesEnabled = true;
@@ -1395,10 +1466,17 @@ const launcher = `<!doctype html>
         const browserSockets = new Map();
         let nextSocketId = 1;
         const wakeSocket = state => state.waiters.splice(0).forEach(resolve => resolve());
+        // The bridge picks which game's JS5 cache to serve from this URL. With
+        // no game parameter the server can only fall back to its configured
+        // default, which silently hands every game dekobloko's cache.
+        const js5SocketUrl = (host, pageProtocol, port, gameId) =>
+          (pageProtocol === 'https:' ? 'wss:' : 'ws:') + '//' + host +
+          '/tcp?port=' + encodeURIComponent(port) +
+          '&game=' + encodeURIComponent(gameId);
         const openSocket = port => {
           const id = nextSocketId++;
-          const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-          const ws = new WebSocket(protocol + '//' + location.host + '/tcp?port=' + port);
+          const ws = new WebSocket(
+            js5SocketUrl(location.host, location.protocol, port, game.id));
           ws.binaryType = 'arraybuffer';
           const metric = {
             id,
@@ -1760,13 +1838,7 @@ const launcher = `<!doctype html>
           // optimization. Keep it out of every other obfuscated game.
           delete debug.debugController.options.jreOverrides.um;
         }
-        debug.debugController.options.appletParameters = {
-          overxgames: '45', overxachievements: '1000', member: 'no',
-          gameport1: '43594', gameport2: '43594', servernum: '8003',
-          simplemode: simpleMode ? 'true' : 'false',
-          instanceid: String(Date.now()), gamecrc: String(game.gamecrc)
-        };
-        debug.debugController.options.appletCodeBase = game.server;
+        configureApplet(debug.debugController, game, {simpleMode});
         appletStartedAt = performance.now();
         setProgress(10, 'Starting the Java applet…',
           'The JVM is running. Game asset preparation has not started yet.', 6, true);
@@ -1927,6 +1999,14 @@ const server = http.createServer((request, response) => {
   const requestUrl = new URL(request.url, 'http://localhost');
   const pathname = requestUrl.pathname;
   const requestedVersion = requestUrl.searchParams.get('v');
+  if (/^\/browser-loader\/[a-zA-Z0-9_-]+\.mjs$/.test(pathname)) {
+    const file = path.join(repositoryRoot, 'apps/launcher', pathname.slice(1));
+    if (!fs.existsSync(file)) {response.writeHead(404); response.end('Unknown loader module'); return;}
+    response.writeHead(200, {'content-type': 'text/javascript', 'cache-control': 'no-cache'});
+    response.end(fs.readFileSync(file));
+    return;
+  }
+
   if (pathname === '/telemetry' && request.method === 'POST') {
     const chunks = [];
     let size = 0;
@@ -2175,13 +2255,24 @@ const server = http.createServer((request, response) => {
 const {startJs5Server} = require('./js5-server');
 const js5Servers = new Map();
 
+// Game ids index the JS5 cache chain by path segment; keep them to the set the
+// /play/ route already accepts so a socket cannot walk out of the cache root.
+const JS5_GAME_ID = /^[a-z0-9_]+$/;
+// Documented default for a socket that carries no game parameter at all.
+const DEFAULT_JS5_GAME = 'dekobloko';
+
 function js5CacheChain(game) {
   const recorded = path.join(repositoryRoot, '.work', 'js5-recorded', game);
   // Fall back to the client's own cache for anything the recording lacks: a
   // recording made against a warm client holds only the index layer, because
   // the client never asked for the groups it already had.
   const clientCache = path.join(gameCacheRoot, game);
-  const hasClient = fs.existsSync(path.join(clientCache, 'main_file_cache.dat2'));
+  // A client cache can hold groups from an older build than the one the
+  // recorded metadata describes. Serving those would answer a request with
+  // data whose CRC the reference table disagrees with, so allow a run to
+  // insist on the recorded layer alone.
+  const hasClient = process.env.GAME_LIBRARY_JS5_RECORDED_ONLY !== '1' &&
+    fs.existsSync(path.join(clientCache, 'main_file_cache.dat2'));
   if (!fs.existsSync(recorded)) return hasClient ? clientCache : null;
   return hasClient ? [recorded, clientCache] : recorded;
 }
@@ -2213,8 +2304,16 @@ server.on('upgrade', (request, socket, head) => {
     socket.destroy();
     return;
   }
-  const game = url.searchParams.get('game') ||
-    process.env.GAME_LIBRARY_JS5_GAME || 'dekobloko';
+  // Which cache this socket gets. The play page names its own game; the
+  // environment override and the built-in default cover hand-driven sockets
+  // only, and both are announced so a fallback is never silent.
+  const requestedGame = url.searchParams.get('game');
+  const configuredGame = process.env.GAME_LIBRARY_JS5_GAME;
+  const game = requestedGame || configuredGame || DEFAULT_JS5_GAME;
+  if (!requestedGame) {
+    console.error('[js5] socket carried no game parameter; serving ' + game +
+      (configuredGame ? ' from GAME_LIBRARY_JS5_GAME' : ' (built-in default)'));
+  }
   webSockets.handleUpgrade(request, socket, head, async ws => {
     // Route the guest's game-server connection through a locally running
     // backend when configured; default to a JS5 server on this machine so the
@@ -2224,6 +2323,14 @@ server.on('upgrade', (request, socket, head) => {
     let host = process.env.GAME_LIBRARY_TCP_BRIDGE_HOST || '127.0.0.1';
     let port = Number(process.env.GAME_LIBRARY_TCP_BRIDGE_PORT || 0);
     if (!port) {
+      // A game id becomes a path segment of the cache chain, so hold it to the
+      // same character set the /play/ route accepts. An id that fails this, or
+      // one with no cache, closes the bridge; it never becomes another game.
+      if (!JS5_GAME_ID.test(game)) {
+        console.error(`[js5] rejecting malformed game id ${JSON.stringify(game)}`);
+        ws.close();
+        return;
+      }
       const started = ensureJs5Server(game);
       if (!started) {
         console.error(`[js5] no cache for ${game}; closing bridge`);

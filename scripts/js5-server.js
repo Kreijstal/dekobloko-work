@@ -7,17 +7,19 @@
 // from a remote update server. This serves the same protocol from a local
 // main_file_cache directory instead, so a game can boot with no network at all.
 //
-// It is deliberately not tied to one game: the JS5 handshake carries a build
-// revision and nothing else, so the only per-game input is which cache
-// directory to read. The revision is accepted as-is -- a real server uses it to
-// reject outdated clients, which is not a job a local mirror needs to do.
+// It is deliberately not tied to one game: the only per-game input is which
+// cache directory to read.
 //
-// Note that the revision cannot be used to identify the game either: the 44
-// validated builds collide (31 distinct values), so a single shared port cannot
-// route by revision. Run one server per game, each on its own port, and point
-// that game's gameport1/gameport2 applet parameters at it.
+// The 13-byte handshake is [12][17][build:u16][server:u16][lang:u8][15]
+// [gamecrc:u32]. The build revision does not identify the game -- the 44
+// validated builds collide into 31 distinct values -- but the trailing gamecrc
+// does: it is the per-game `gamecrc` in the AlterOrb launcher config. Pass
+// --game-crc and the server refuses a connection from a different game instead
+// of answering it out of the wrong cache, which a client cannot detect and
+// which strands it on a blank screen. Still run one server per game.
 //
 //   node scripts/js5-server.js --cache-dir <dir> [--port 43594] [--host 127.0.0.1]
+//                              [--game-crc <n>]
 //
 // Also exports startJs5Server() for callers that embed it (see
 // launch-alterorb-games-jvmjs.js).
@@ -51,6 +53,37 @@ class CacheStore {
     } catch (error) {
       return 0;
     }
+  }
+
+  // Which archives this cache actually holds bytes for, with the group ids it
+  // stores for each. Used to check a chained index layer describes this data
+  // and not some other game's.
+  storedArchives() {
+    const archives = new Map();
+    let names;
+    try {
+      names = fs.readdirSync(this.cacheDir);
+    } catch (error) {
+      return archives;
+    }
+    for (const name of names) {
+      const match = /^main_file_cache\.idx(\d+)$/.exec(name);
+      if (!match) continue;
+      const archive = Number(match[1]);
+      if (archive === 255) continue;
+      let index;
+      try {
+        index = fs.readFileSync(path.join(this.cacheDir, name));
+      } catch (error) {
+        continue;
+      }
+      const groups = [];
+      for (let group = 0; (group + 1) * 6 <= index.length; group += 1) {
+        if (index.readUIntBE(group * 6, 3) > 0) groups.push(group);
+      }
+      if (groups.length) archives.set(archive, groups);
+    }
+    return archives;
   }
 
   read(archiveId, groupId) {
@@ -136,6 +169,10 @@ class RawGroupStore {
     }
   }
 
+  hasMasterIndex() {
+    return fs.existsSync(path.join(this.cacheDir, '255-255.bin'));
+  }
+
   archiveCount() {
     let highest = -1;
     try {
@@ -189,6 +226,125 @@ class ChainStore {
   }
 }
 
+// --- chain identity --------------------------------------------------------
+
+// Decompress a JS5 container. Compression 0 is stored, 2 is gzip; 1 (bzip2)
+// has no core Node decoder, and a table that uses it is skipped rather than
+// guessed at.
+function containerPayload(raw) {
+  if (raw === null || raw.length < 5) return null;
+  const compression = raw[0];
+  const compressedLength = raw.readUInt32BE(1);
+  if (compression === 0) return raw.subarray(5, 5 + compressedLength);
+  if (compression === 2) {
+    try {
+      return zlib.gunzipSync(raw.subarray(9, 9 + compressedLength));
+    } catch (error) {
+      return null;
+    }
+  }
+  return null;
+}
+
+// Parse an archive's reference table (archive 255, group <archive>) far enough
+// to recover each group's id, CRC and version. Those three are what a client
+// checks a group against, so they are what identifies the data the table
+// describes.
+function parseReferenceTable(raw) {
+  const payload = containerPayload(raw);
+  if (payload === null || payload.length < 2) return null;
+  let offset = 0;
+  const u8 = () => payload[offset++];
+  const u16 = () => { const v = payload.readUInt16BE(offset); offset += 2; return v; };
+  const i32 = () => { const v = payload.readInt32BE(offset); offset += 4; return v; };
+  try {
+    const protocol = u8();
+    if (protocol < 5 || protocol > 7) return null;
+    if (protocol >= 6) i32();
+    const flags = u8();
+    // Protocol 7 replaces every count and delta with a "large smart"; this
+    // check only needs the protocol-6 shape, which is what the FunOrb tables
+    // that chain with a client cache use.
+    if (protocol >= 7) return null;
+    const count = u16();
+    const ids = [];
+    let id = 0;
+    for (let index = 0; index < count; index += 1) { id += u16(); ids.push(id); }
+    if (flags & 1) offset += count * 4;
+    if (flags & 2) offset += count * 64;
+    const groups = new Map();
+    const crcs = [];
+    for (let index = 0; index < count; index += 1) crcs.push(i32() >>> 0);
+    for (let index = 0; index < count; index += 1) {
+      groups.set(ids[index], {crc: crcs[index], version: i32()});
+    }
+    return groups;
+  } catch (error) {
+    return null;
+  }
+}
+
+// Which archives a master index declares. Entry N is 72 bytes -- CRC, version,
+// whirlpool -- after a one-byte count, and an all-zero CRC means "no such
+// archive in this build".
+function declaredArchives(raw) {
+  const payload = containerPayload(raw);
+  if (payload === null || payload.length < 1) return null;
+  const count = payload[0];
+  if (payload.length < 1 + count * 72) return null;
+  const declared = new Set();
+  for (let archive = 0; archive < count; archive += 1) {
+    if (payload.readUInt32BE(1 + archive * 72) !== 0) declared.add(archive);
+  }
+  return declared;
+}
+
+// A chained store mixes two datasets on purpose: the recorded index layer says
+// which groups exist and what they must hash to, the client cache supplies the
+// bytes. If the two came from different games or builds the server still
+// answers every request and the client still never boots -- it looks up an
+// asset by name, the foreign table resolves it to a group that is not there,
+// and startup blocks on a condition that can never become true. The JS5
+// handshake carries only a build revision and the 44 validated builds collide
+// into 31 values, so nothing upstream of here can catch that. Check it.
+function chainIdentityProblems(stores) {
+  const indexLayer = stores.find((store) =>
+    store instanceof RawGroupStore && store.hasMasterIndex());
+  const caches = stores.filter((store) => store instanceof CacheStore &&
+    store.available());
+  if (!indexLayer || !caches.length) return [];
+  const declared = declaredArchives(indexLayer.read(255, 255));
+  if (declared === null) return [];
+  const problems = [];
+  for (const cache of caches) {
+    for (const [archive, groups] of cache.storedArchives()) {
+      if (!declared.has(archive)) {
+        problems.push(`archive ${archive} is stored in ${cache.cacheDir} ` +
+          `(${groups.length} group(s)) but ${indexLayer.cacheDir}/255-255.bin ` +
+          `declares no such archive`);
+        continue;
+      }
+      const table = parseReferenceTable(indexLayer.read(255, archive));
+      if (table === null) continue;
+      for (const group of groups) {
+        const entry = table.get(group);
+        const stored = cache.read(archive, group);
+        if (!entry || stored === null || stored.length < 3) continue;
+        const body = stored.subarray(0, stored.length - 2);
+        const version = stored.readUInt16BE(stored.length - 2);
+        const crc = crc32(body);
+        if (crc === entry.crc && version === (entry.version & 0xffff)) break;
+        problems.push(`archive ${archive} group ${group}: ` +
+          `${cache.cacheDir} holds crc=0x${crc.toString(16)} version=${version}, ` +
+          `${indexLayer.cacheDir}/255-${archive}.bin describes ` +
+          `crc=0x${entry.crc.toString(16)} version=${entry.version & 0xffff}`);
+        break;
+      }
+    }
+  }
+  return problems;
+}
+
 // A recorded directory and a client cache are both "the cache" as far as the
 // server is concerned; pick whichever each directory actually holds.
 function openStore(cacheDir) {
@@ -196,6 +352,16 @@ function openStore(cacheDir) {
   const stores = directories.map((directory) =>
     fs.existsSync(path.join(directory, 'main_file_cache.dat2'))
       ? new CacheStore(directory) : new RawGroupStore(directory));
+  if (stores.length > 1) {
+    const problems = chainIdentityProblems(stores);
+    if (problems.length) {
+      throw new Error('JS5 cache chain mixes datasets that do not describe ' +
+        'each other:\n  ' + problems.join('\n  ') +
+        '\nServing this chain answers every request and still cannot boot ' +
+        'the game. Record the index layer from the same game and build as ' +
+        'the client cache.');
+    }
+  }
   return stores.length === 1 ? stores[0] : new ChainStore(stores);
 }
 
@@ -292,7 +458,7 @@ class Js5Session {
   }
 
   async run(revision) {
-    this.log(`[js5] ${this.peer} accepted revision=${revision}`);
+    this.log(`[js5] ${this.peer} accepted gamecrc=${revision}`);
     this.socket.write(Buffer.from([0]));
     for (;;) {
       const packet = await this.reader.read(6);
@@ -444,7 +610,9 @@ function defaultSubstitutes() {
 }
 
 function startJs5Server({cacheDir, port = 43594, host = '127.0.0.1',
-  substitutes = defaultSubstitutes(), log = () => {}} = {}) {
+  gameCrc = null, substitutes = defaultSubstitutes(), log = () => {}} = {}) {
+  const expectedGameCrc = gameCrc === null || gameCrc === undefined
+    ? null : gameCrc >>> 0;
   const cache = openStore(cacheDir);
   const sockets = new Set();
   const server = net.createServer((socket) => {
@@ -471,7 +639,17 @@ function startJs5Server({cacheDir, port = 43594, host = '127.0.0.1',
         socket.destroy();
         return;
       }
-      const revision = (await reader.read(4)).readUInt32BE(0);
+      const handshakeGameCrc = (await reader.read(4)).readUInt32BE(0);
+      if (expectedGameCrc !== null && handshakeGameCrc !== expectedGameCrc) {
+        // Answering would serve one game's index layer to another. Every
+        // request then succeeds and the client still never boots, because the
+        // foreign tables resolve its assets to groups this cache does not have.
+        log(`[js5] ${peer} REFUSED gamecrc=${handshakeGameCrc}, ` +
+          `this server serves gamecrc=${expectedGameCrc}`);
+        socket.destroy();
+        return;
+      }
+      const revision = handshakeGameCrc;
       const session = new Js5Session(socket, cache, peer, {substitutes, log});
       session.reader = reader;
       await session.run(revision);
@@ -499,6 +677,7 @@ function startJs5Server({cacheDir, port = 43594, host = '127.0.0.1',
 }
 
 module.exports = {startJs5Server, CacheStore, RawGroupStore, ChainStore,
+  chainIdentityProblems, parseReferenceTable, declaredArchives,
   openStore, crc32, defaultSubstitutes};
 
 if (require.main === module) {
@@ -507,6 +686,7 @@ if (require.main === module) {
   let port = 43594;
   let host = '127.0.0.1';
   let substitutes = defaultSubstitutes();
+  let gameCrc = null;
   for (let index = 0; index < args.length; index += 1) {
     if (args[index] === '--cache-dir') {
       // Repeatable: later directories answer only what earlier ones lack.
@@ -515,6 +695,7 @@ if (require.main === module) {
     }
     else if (args[index] === '--port') port = Number(args[++index]);
     else if (args[index] === '--host') host = args[++index];
+    else if (args[index] === '--game-crc') gameCrc = Number(args[++index]);
     else if (args[index] === '--substitute') {
       // --substitute 6/1=path/to/group.bin
       const [key, file] = args[++index].split('=');
@@ -528,12 +709,14 @@ if (require.main === module) {
   }
   if (!cacheDir) {
     console.error('usage: js5-server.js --cache-dir <dir> [--port N] ' +
-      '[--host H] [--substitute A/G=file] [--no-substitutes] [--quiet]');
+      '[--host H] [--game-crc N] [--substitute A/G=file] ' +
+      '[--no-substitutes] [--quiet]');
     process.exit(2);
   }
   const log = process.env.JS5_QUIET === '1'
     ? () => {} : (line) => console.error(line);
-  startJs5Server({cacheDir, port, host, substitutes, log}).catch((error) => {
+  startJs5Server({cacheDir, port, host, gameCrc, substitutes, log})
+    .catch((error) => {
     console.error(`js5-server failed: ${error.message}`);
     process.exit(1);
   });

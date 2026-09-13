@@ -113,3 +113,21 @@ behavior. See [protocol.md](protocol.md) §8 and
 - [testing.md](testing.md) — the suites that exist and how to run them
 - [protocol.md](protocol.md) — the wire protocol the servers implement
 - [troubleshooting.md](troubleshooting.md) — symptom-first index
+
+### Shared browser launcher
+
+`apps/launcher/browser-loader/` is the application-owned FunOrb loader used by
+`blank-github-cloner`. Its module manifest is read from the browser's Deko Git
+checkout; there is no independently maintained cloner copy of its source patches,
+login/JS5 endpoint, or old-JVM compatibility adapters. The catalog page also
+imports its shared `applet-config.mjs`, while continuing to use the server-backed
+socket transport. Generic class loading, applet lifecycle, AWT and execution
+remain in `java-tools`. See [the loader contract](../apps/launcher/browser-loader/README.md)
+for host injection points, cache invalidation and publication order.
+
+Jagex cache maintenance is also Deko-owned: `scripts/fetch-game-assets.cjs`,
+`import-game-assets.cjs`, `audit-game-assets.cjs` and `recover-jagex-assets.cjs`
+share the local JS5 reader and helpers. `GAME_ASSETS_ROOT` selects the consuming
+site's static web root; the default is `.work/browser-assets`. The cloner hosts
+outputs and retains only generic browser checkout/compilation caching. See
+[cache tool usage](../scripts/README-cache-assets.md).

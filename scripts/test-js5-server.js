@@ -66,6 +66,41 @@ function container(payload) {
   return Buffer.concat([head, payload]);
 }
 
+// A protocol-6 reference table: the per-archive index the client checks a
+// group's bytes against.
+function referenceTable(groups) {
+  const head = Buffer.alloc(1 + 4 + 1 + 2);
+  head[0] = 6;
+  head.writeUInt32BE(1, 1);      // format version
+  head[5] = 0;                   // no names, no whirlpools
+  head.writeUInt16BE(groups.length, 6);
+  const ids = Buffer.alloc(groups.length * 2);
+  let previous = 0;
+  groups.forEach((group, index) => {
+    ids.writeUInt16BE(group.id - previous, index * 2);
+    previous = group.id;
+  });
+  const crcs = Buffer.alloc(groups.length * 4);
+  const versions = Buffer.alloc(groups.length * 4);
+  groups.forEach((group, index) => {
+    crcs.writeUInt32BE(group.crc, index * 4);
+    versions.writeUInt32BE(group.version, index * 4);
+  });
+  return container(Buffer.concat([head, ids, crcs, versions]));
+}
+
+// The master index: one 72-byte entry per archive after a one-byte count.
+function masterIndex(entries) {
+  const count = Math.max(...entries.keys()) + 1;
+  const body = Buffer.alloc(1 + count * 72);
+  body[0] = count;
+  for (const [archive, entry] of entries) {
+    body.writeUInt32BE(entry.crc >>> 0, 1 + archive * 72);
+    body.writeUInt32BE(entry.version >>> 0, 1 + archive * 72 + 4);
+  }
+  return container(body);
+}
+
 // --- the client half of the protocol ---------------------------------------
 
 function connect(port) {
@@ -283,6 +318,89 @@ async function main() {
     } finally {
       chainServer.close();
       fs.rmSync(indexOnly, {recursive: true, force: true});
+    }
+
+    // --- a chained index layer must describe the cache it is chained to ---
+    //
+    // The recorded index layer says which groups exist and what they hash to;
+    // the client cache supplies the bytes. Chain two games together and the
+    // server answers every request while the client still never boots: it
+    // resolves an asset by name through the foreign table, lands on a group id
+    // that cache does not hold, and blocks on a condition that can never come
+    // true. Nothing upstream catches it -- the handshake's build revision is
+    // shared by several games -- so the chain itself has to.
+    const foreignIndex = fs.mkdtempSync(path.join(os.tmpdir(), 'js5-foreign-'));
+    const ownCache = fs.mkdtempSync(path.join(os.tmpdir(), 'js5-own-'));
+    try {
+      const ours = container(Buffer.from('this cache holds THIS game'));
+      const theirs = container(Buffer.from('the table describes ANOTHER game'));
+      // The client stores container + a two-byte version trailer.
+      writeCache(ownCache, [
+        [12, 0, Buffer.concat([ours, Buffer.from([0, 1])])],
+        [6, 0, Buffer.concat([ours, Buffer.from([0, 1])])],
+      ]);
+      fs.writeFileSync(path.join(foreignIndex, '255-255.bin'),
+        masterIndex(new Map([[12, {crc: crc32(referenceTable([
+          {id: 0, crc: crc32(theirs), version: 4},
+        ])), version: 4}]])));
+      fs.writeFileSync(path.join(foreignIndex, '255-12.bin'),
+        referenceTable([{id: 0, crc: crc32(theirs), version: 4}]));
+
+      assert.throws(() => openStore([foreignIndex, ownCache]), (error) => {
+        assert.ok(/archive 12 group 0/.test(error.message),
+          'the mismatch names the archive and group that disagree:\n' +
+          error.message);
+        assert.ok(new RegExp(`crc=0x${crc32(ours).toString(16)}`)
+          .test(error.message),
+        'and reports what the cache actually holds:\n' + error.message);
+        assert.ok(/archive 6 .*declares no such archive/.test(error.message),
+          'an archive the cache holds but the master index omits is also ' +
+          'a mismatch:\n' + error.message);
+        return true;
+      }, 'a chain whose index layer describes another dataset is refused');
+
+      // The same shapes agreeing must still open.
+      fs.writeFileSync(path.join(foreignIndex, '255-12.bin'),
+        referenceTable([{id: 0, crc: crc32(ours), version: 1}]));
+      fs.writeFileSync(path.join(foreignIndex, '255-6.bin'),
+        referenceTable([{id: 0, crc: crc32(ours), version: 1}]));
+      fs.writeFileSync(path.join(foreignIndex, '255-255.bin'),
+        masterIndex(new Map([
+          [6, {crc: 1, version: 1}],
+          [12, {crc: 1, version: 1}],
+        ])));
+      assert.ok(openStore([foreignIndex, ownCache]),
+        'an index layer that does describe the cache opens normally');
+    } finally {
+      fs.rmSync(foreignIndex, {recursive: true, force: true});
+      fs.rmSync(ownCache, {recursive: true, force: true});
+    }
+
+    // --- the handshake names the game, so a foreign client is refused -------
+    const crcServer = await startJs5Server({
+      cacheDir: directory, port: 0, gameCrc: 2147312574,
+      substitutes: new Map(),
+    });
+    try {
+      const wrong = connect(crcServer.port);
+      await wrong.ready;
+      wrong.socket.write(Buffer.concat([
+        Buffer.from([12, 0, 0, 0, 0, 0, 0, 0, 15]),
+        (() => { const b = Buffer.alloc(4); b.writeUInt32BE(3215123456); return b; })(),
+      ]));
+      const closed = await new Promise(resolve => {
+        wrong.socket.once('close', () => resolve('closed'));
+        wrong.read(1).then(() => resolve('answered'));
+      });
+      assert.strictEqual(closed, 'closed',
+        'a connection carrying another game\'s gamecrc is refused, not ' +
+        'answered out of this game\'s cache');
+
+      const right = connect(crcServer.port);
+      await handshake(right, 2147312574);
+      right.socket.destroy();
+    } finally {
+      crcServer.close();
     }
 
     console.log('js5-server: all checks passed');
