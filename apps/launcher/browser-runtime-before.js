@@ -77,10 +77,24 @@ jvm.precompileInitializedClasses = async (options = {}) => {
   sendTelemetry("runtime_preparation_complete", session.runtimePreparation);
   return result;
 };
-const markMainStarted = jvm.jit.markMainStarted.bind(jvm.jit);
-jvm.jit.markMainStarted = () => {
-  markMainStarted();
+const recordGuestStart = () => {
   session.runtimeStartedAt = performance.now();
   sendTelemetry("guest_execution_start", {at: session.runtimeStartedAt});
   setStatus("Starting GeoBlox…");
 };
+if (typeof jvm.jit.markMainStarted === "function") {
+  const markMainStarted = jvm.jit.markMainStarted.bind(jvm.jit);
+  jvm.jit.markMainStarted = (...args) => {
+    const result = markMainStarted(...args);
+    recordGuestStart();
+    return result;
+  };
+}
+
+// Old bundles cannot safely prepare uninitialized classes. Report the missing
+// lifecycle instead of forcing an unsupported compilation pass.
+if (typeof jvm.prepareBeforeMain !== "boolean") {
+  sendTelemetry("runtime_preparation_unavailable", {
+    reason: "JVM bundle lacks preparation-before-main; rebuild browser-runtime from current java-tools source",
+  });
+}
