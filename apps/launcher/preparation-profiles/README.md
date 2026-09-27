@@ -21,3 +21,16 @@ regression in this pair, and no proven gameplay improvement. Normal-loader cache
 integration and release validation remain open.
 The launcher does not select this profile automatically. The sibling cloner's
 `JVM-MEMORY-VALIDATION.md` records the exact candidates and diagnostic commands.
+
+`geoblox-gameplay-v17-decompressor-callees.json` extends the decoder candidate
+with six existing decompressor helpers as Wasm callees and prepares them before
+their root. The 962-method limit and exact source/patch identities are preserved.
+An initial capture changed `tb.e(Ljl;)V` from 64 entries/64 exits to 10 entries
+with only two scheduled fuel exits. Audio decoder runs remained 5,903/zero exits.
+With the isolated `jvm-crc32-byte-views` runtime, a warm 6x comparison reached
+the menu in 93.74 seconds versus 98.12 seconds, with 412.75 MiB sampled heap
+and no errors. Menu submissions were minimum 19/median 23 per second, worst
+gap 98.7 ms; a loading submission gap of 11.43 seconds remains. These are
+submission observations, not verified presented game FPS. No acceptance gate
+or sustained gameplay validation is established by this pair. This profile is
+diagnostic-only and is not selected by the launcher.
