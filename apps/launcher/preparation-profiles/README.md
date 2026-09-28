@@ -104,3 +104,29 @@ entry methods reduced gameplay compile events to zero in the candidate capture.
 Median submissions remained 20/s; minimum was 7/s, worst gap 234.5ms. Thus it
 removes that observed compile chain, but does not satisfy the frame floor or
 establish sustained stability. This diagnostic profile remains unselected.
+
+`geoblox-gameplay-v31-background-span-parameters.json` is an unselected
+background-cache experiment. The cache validates source and palette contents and
+retains fixed storage of approximately 1.47 MiB. Native Java differential tests
+cover 2,058 cases. Explicit helper array parameters restore full Wasm heap
+specialization, but the safe cache alone only matched median20 submissions/s.
+With the generic typed-array `System.arraycopy` candidate, one run reached
+median21/minimum7 with a208.5ms worst gap. These are AWT submissions, not
+verified presentations. Neither this profile nor its source patch is enabled
+by the owning loader. All acceptance gates remain open.
+
+`geoblox-gameplay-v32-background-byte-equals.json` replaces the source-byte
+validation loop with generic `java.util.Arrays.equals(byte[],byte[])`. It requires
+the byte-equality JRE implementation and synchronous Wasm bridge, as well as the
+typed System.arraycopy optimization. Mutation checks and fixed cache storage
+remain intact. Two60-second diagnostics reached median23/22.5 AWT submissions/s,
+minimum9/15 and worst gaps200.1/132.6ms. It remains unselected and below target;
+normal-loader startup and presented-game-frame acceptance are unverified.
+
+
+The unregistered `sparse-blit.mjs` and `layer-span-cache.mjs` patches preserve
+rejected experiments for reproduction. Their native Java differential tests
+pass, but sparse grouping provided no measured gameplay gain and the layer
+cache regressed median submissions to 17/s. Do not enable these patches as
+performance fixes. The retained v32 control remains below the mandatory frame
+floor; see the cloner validation journal for full limitations and results.
