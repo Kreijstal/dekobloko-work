@@ -122,3 +122,186 @@ export function patchGeobloxSource(source, sourcePath, modulus) {
     }
   return source;
 }
+
+// Unregistered until constrained browser validation passes. Clear only the
+// active raster prefix: the framebuffer may reserve trailing sentinel cells.
+export function patchRasterPrefixFill(source, sourcePath) {
+  if (sourcePath !== 'games/geoblox/vb.java' || source.includes('deko-raster-prefix-fill')) return source;
+  const anchor = '    final static void c() {';
+  if (source.split(anchor).length !== 2) return source;
+  return source.replace(anchor, anchor + `
+        // deko-raster-prefix-fill: preserve overflow/error paths and the tail.
+        int dekoFillCount = field_f * field_b;
+        if (field_c != null && dekoFillCount >= 0 && dekoFillCount <= field_c.length) {
+            java.util.Arrays.fill(field_c, 0, dekoFillCount, 0);
+            return;
+        }
+`);
+}
+
+// Experimental, deliberately unregistered. This renderer has no field writes
+// or guest callbacks: its drawing state is stable throughout an invocation.
+// Pass that state as parameters so array addressing stays outside pixel loops.
+export function patchRotationParameters(source, sourcePath) {
+  if (sourcePath !== 'games/geoblox/dm.java' || source.includes('deko-rotation-parameters')) return source;
+  const signature = '    void b(int param0, int param1, int param2, int param3, int param4, int param5) {';
+  const start = source.indexOf(signature);
+  if (start < 0 || source.indexOf(signature, start + 1) >= 0) return source;
+  const bodyStart = start + signature.length;
+  let end = bodyStart, depth = 1;
+  for (; end < source.length && depth; end++) {
+    if (source[end] === '{') depth++;
+    if (source[end] === '}') depth--;
+  }
+  if (depth) return source;
+  let body = source.slice(bodyStart, end - 1);
+  // Refuse changed algorithms that could mutate the captured state or call
+  // back into game code while drawing. Math intrinsics are the only calls in
+  // the recognized renderer; field snapshots are not valid for arbitrary code.
+  if (/\bvolatile\b/.test(source) ||
+      /(?:\b(?:this|vb)\.field_\w+\s*(?:=(?!=)|(?:[-+*/%&|^]|<<|>>>?)=|\+\+|--)|(?:\+\+|--)\s*(?:this|vb)\.field_\w+)/.test(body)) return source;
+  const withoutMath = body.replace(/\bMath\.(?:floor|sin|cos)\s*\(/g, '(');
+  if ([...withoutMath.matchAll(/\b([A-Za-z_$][\w$]*)\s*\(/g)]
+      .some(([, name]) => name !== 'if' && name !== 'while')) return source;
+  const fields = [
+    ['this.field_v', 'int[]', 'dekoSource', 9],
+    ['vb.field_c', 'int[]', 'dekoTarget', 9],
+    ['this.field_r', 'int', 'dekoWidth', 28],
+    ['this.field_m', 'int', 'dekoHeight', 19],
+    ['this.field_u', 'int', 'dekoOffsetX', 1],
+    ['this.field_p', 'int', 'dekoOffsetY', 1],
+    ['vb.field_e', 'int', 'dekoClipLeft', 2],
+    ['vb.field_k', 'int', 'dekoClipRight', 2],
+    ['vb.field_i', 'int', 'dekoClipTop', 2],
+    ['vb.field_d', 'int', 'dekoClipBottom', 2],
+    ['vb.field_f', 'int', 'dekoStride', 12],
+  ];
+  for (const [field, , name, count] of fields) {
+    if (body.split(field).length !== count + 1) return source;
+    body = body.replaceAll(field, name);
+  }
+  if (/\b(?:this|vb)\./.test(body)) return source;
+  const inputs = Array.from({ length: 6 }, (_, i) => `param${i}`);
+  const argumentsList = [...fields.map(([field]) => field), ...inputs].join(', ');
+  const parameters = [...fields.map(([, type, name]) => `${type} ${name}`),
+    ...inputs.map(name => `int ${name}`)].join(', ');
+  return source.slice(0, start) + signature + `
+        // deko-rotation-parameters: retain the no-op scale before state reads.
+        if (param5 == 0) return;
+        dekoRotate(${argumentsList});
+    }
+
+    private static void dekoRotate(${parameters}) {${body}}
+` + source.slice(end);
+}
+
+// Experimental, deliberately unregistered. Preserve the original outline
+// algorithm, while making its stable array and dimensions helper parameters.
+export function patchOutlineParameters(source, sourcePath) {
+  if (sourcePath !== 'games/geoblox/dm.java' || source.includes('dekoOutline') ||
+      /\bvolatile\b/.test(source)) return source;
+  const signature = '    final void g(int param0) {';
+  const start = source.indexOf(signature);
+  if (start < 0 || source.indexOf(signature, start + 1) >= 0) return source;
+  const bodyStart = start + signature.length;
+  const end = closingBrace(source, bodyStart - 1);
+  if (end < 0) return source;
+  let body = source.slice(bodyStart, end);
+  const publish = /this\.field_v = var2;\s*return;/g;
+  if ([...body.matchAll(publish)].length !== 1) return source;
+  body = body.replace(publish, 'return var2;');
+  if (/\bthis\.field_\w+\s*(?:=(?!=)|(?:[-+*/%&|^]|<<|>>>?)=|\+\+|--)|(?:\+\+|--)\s*this\.field_\w+/.test(body)) return source;
+  if ([...body.matchAll(/\b([A-Za-z_$][\w$]*)\s*\(/g)]
+      .some(([, name]) => name !== 'if' && name !== 'while')) return source;
+  for (const [field, replacement, count] of [
+    ['this.field_v', 'dekoSource', 5],
+    ['this.field_r', 'dekoWidth', 5],
+    ['this.field_m', 'dekoHeight', 3],
+  ]) {
+    if (body.split(field).length !== count + 1) return source;
+    body = body.replaceAll(field, replacement);
+  }
+  if (/\bthis\./.test(body)) return source;
+  return source.slice(0, start) + signature + `
+        // deko-outline-parameters: publish only after successful completion.
+        this.field_v = dekoOutline(this.field_v, this.field_r, this.field_m, param0);
+    }
+
+    private static int[] dekoOutline(int[] dekoSource, int dekoWidth, int dekoHeight, int param0) {${body}}
+` + source.slice(end + 1);
+}
+
+// Experimental, deliberately unregistered. The smooth renderer calls a
+// bilinear sampler for each pixel. Snapshot their shared drawing state once
+// and pass it through both helpers, retaining the original Java algorithms.
+export function patchSmoothRotationParameters(source, sourcePath) {
+  if (sourcePath !== 'games/geoblox/dm.java' || /\bvolatile\b/.test(source) ||
+      source.includes('dekoSmoothRotate') || source.includes('dekoBilinearSample')) return source;
+  const signature = '    final void a(int param0, int param1, int param2, int param3, int param4, int param5) {';
+  const sampleSignature = '    private final void c(int param0, int param1, int param2, int param3, int param4) {';
+  const read = signature => {
+    const start = source.indexOf(signature);
+    if (start < 0 || source.indexOf(signature, start + 1) >= 0) return null;
+    const end = closingBrace(source, start + signature.length - 1);
+    return end < 0 ? null : {start, end, body: source.slice(start + signature.length, end)};
+  };
+  const renderer = read(signature), sampler = read(sampleSignature);
+  if (!renderer || !sampler) return source;
+  for (const body of [renderer.body, sampler.body]) {
+    if (/(?:\b(?:this|vb)\.field_\w+\s*(?:=(?!=)|(?:[-+*/%&|^]|<<|>>>?)=|\+\+|--)|(?:\+\+|--)\s*(?:this|vb)\.field_\w+)/.test(body)) return source;
+  }
+  if ((renderer.body.match(/this\.c\(/g) || []).length !== 4) return source;
+  const fields = [
+    ['this.field_v', 'int[]', 'dekoSource', 0, 4],
+    ['vb.field_c', 'int[]', 'dekoTarget', 0, 2],
+    ['this.field_r', 'int', 'dekoWidth', 8, 5],
+    ['this.field_m', 'int', 'dekoHeight', 8, 1],
+    ['this.field_u', 'int', 'dekoOffsetX', 1, 0],
+    ['this.field_p', 'int', 'dekoOffsetY', 1, 0],
+    ['vb.field_e', 'int', 'dekoClipLeft', 2, 0],
+    ['vb.field_k', 'int', 'dekoClipRight', 2, 0],
+    ['vb.field_i', 'int', 'dekoClipTop', 2, 0],
+    ['vb.field_d', 'int', 'dekoClipBottom', 2, 0],
+    ['vb.field_f', 'int', 'dekoStride', 2, 0],
+  ];
+  if ([renderer.body, sampler.body].some(body =>
+    fields.some(([, , name]) => body.includes(name)))) return source;
+  for (const [field, , name, rendererCount, samplerCount] of fields) {
+    if (renderer.body.split(field).length !== rendererCount + 1 ||
+        sampler.body.split(field).length !== samplerCount + 1) return source;
+    renderer.body = renderer.body.replaceAll(field, name);
+    sampler.body = sampler.body.replaceAll(field, name);
+  }
+  renderer.body = renderer.body.replaceAll('this.c(',
+    'dekoBilinearSample(dekoSource, dekoTarget, dekoWidth, dekoHeight, ');
+  for (const body of [renderer.body, sampler.body]) {
+    if (/\b(?:this|vb)\./.test(body)) return source;
+    const withoutMath = body.replace(/\bMath\.(?:floor|sin|cos)\s*\(/g, '(');
+    if ([...withoutMath.matchAll(/\b([A-Za-z_$][\w$]*)\s*\(/g)]
+        .some(([, name]) => !['if', 'while', 'dekoBilinearSample'].includes(name))) return source;
+  }
+  const inputs = count => Array.from({length: count}, (_, i) => `param${i}`);
+  const args = (state, count) => [...state.map(([field]) => field), ...inputs(count)].join(', ');
+  const params = (state, count) => [...state.map(([, type, name]) => `${type} ${name}`),
+    ...inputs(count).map(name => `int ${name}`)].join(', ');
+  const replacements = [
+    {...renderer, text: signature + `
+        // deko-smooth-rotation-parameters: keep zero scale a no-op.
+        if (param5 == 0) return;
+        dekoSmoothRotate(${args(fields, 6)});
+    }
+
+    private static void dekoSmoothRotate(${params(fields, 6)}) {${renderer.body}}
+`},
+    {...sampler, text: sampleSignature + `
+        dekoBilinearSample(${args(fields.slice(0, 4), 5)});
+    }
+
+    private static void dekoBilinearSample(${params(fields.slice(0, 4), 5)}) {${sampler.body}}
+`},
+  ];
+  for (const {start, end, text} of replacements.sort((a, b) => b.start - a.start)) {
+    source = source.slice(0, start) + text + source.slice(end + 1);
+  }
+  return source;
+}
