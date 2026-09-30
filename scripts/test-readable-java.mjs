@@ -16,7 +16,8 @@ function fixture(sources, rules) {
   }
   const rulesFile = path.join(root, 'rules.json');
   fs.writeFileSync(rulesFile, JSON.stringify({schema: 1, inputTreeSha256: sourceIdentity(sourceInventory(input)),
-    renames: rules.map(([symbol, to]) => ({symbol, to, evidence: 'Executable fixture'}))}, null, 2) + '\n');
+    renames: rules.map(([symbol, to, originalName]) => ({symbol, to, evidence: 'Executable fixture',
+      ...(originalName === undefined ? {} : {originalName})}))}, null, 2) + '\n');
   return {root, input, output: path.join(root, 'readable'), rulesFile};
 }
 
@@ -132,4 +133,39 @@ test('refuses a new virtual override even when all source references still bind'
     assert.throws(() => generateReadable(context), /Override relationships changed/);
     assert.equal(fs.existsSync(context.output), false);
   } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+});
+
+test('local rules identify declarations across scopes and retain exact runtime effects', () => {
+  const context = fixture({'p/Main.java': `package p;
+public class Main {
+  public static void main(String[] args) {
+    int total = 0;
+    { int value = 3; total += value; }
+    { int value = 7; total += value; }
+    try { throw new IllegalStateException("value"); }
+    catch (IllegalStateException value) { System.out.println(total + ":" + value.getMessage()); }
+  }
+}
+`}, [['L:p.Main.main([Ljava/lang/String;)V#1', 'leftValue_value', 'value']]);
+  try {
+    generateReadable(context);
+    const source = fs.readFileSync(path.join(context.output, 'src/p/Main.java'), 'utf8');
+    assert.match(source, /int leftValue_value = 3; total \+= leftValue_value/);
+    assert.match(source, /int value = 7; total \+= value/);
+    assert.match(source, /catch \(IllegalStateException value\)/);
+    assert.equal(run(context.root, context.input, 'original'), '10:value\n');
+    assert.equal(run(context.root, path.join(context.output, 'src'), 'renamed'), '10:value\n');
+    assert.equal(generateReadable({...context, check: true}).check, true);
+  } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+});
+
+test('local ordinal rules reject absent or wrong original-name guards', () => {
+  for (const originalName of [undefined, 'different']) {
+    const context = fixture({'a.java': 'class a { int m() { int value = 1; return value; } }\n'},
+      [['L:a.m()I#0', 'readable_value', originalName]]);
+    try {
+      assert.throws(() => generateReadable(context), /requires originalName|Original name mismatch/);
+      assert.equal(fs.existsSync(context.output), false);
+    } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+  }
 });

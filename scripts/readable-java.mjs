@@ -45,13 +45,18 @@ function validateRules(rules, audit) {
   const identifier = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
   const keywords = new Set(('abstract assert boolean break byte case catch char class const continue default do double else enum extends final finally float for goto if implements import instanceof int interface long native new package private protected public return short static strictfp super switch synchronized this throw throws transient try void volatile while true false null _').split(' '));
   for (const rule of rules.renames) {
-    if (!/^[CMFP]:/.test(rule.symbol) || !identifier.test(rule.to) || keywords.has(rule.to))
+    if (!/^[CMFPL]:/.test(rule.symbol) || !identifier.test(rule.to) || keywords.has(rule.to))
       throw new Error(`Invalid rename rule: ${JSON.stringify(rule)}`);
     if (!rule.evidence || typeof rule.evidence !== 'string') throw new Error(`Missing evidence: ${rule.symbol}`);
     if (renames.has(rule.symbol)) throw new Error(`Duplicate rule: ${rule.symbol}`);
     if (!declarations.has(rule.symbol)) throw new Error(`Missing declaration: ${rule.symbol}`);
+    if (rule.symbol.startsWith('L:') && typeof rule.originalName !== 'string')
+      throw new Error(`Local rename requires originalName: ${rule.symbol}`);
+    if (rule.originalName !== undefined && declarations.get(rule.symbol).name !== rule.originalName)
+      throw new Error(`Original name mismatch: ${rule.symbol}: expected ${rule.originalName}, got ${declarations.get(rule.symbol).name}`);
     if (rule.symbol.startsWith('C:') && rule.symbol.includes('$')) throw new Error('Nested/local class renaming is not supported');
-    if (rule.symbol.includes('.<init>') || rule.symbol.includes('.<clinit>')) throw new Error('Use a class rule to rename constructors');
+    if (!rule.symbol.startsWith('L:') && (rule.symbol.includes('.<init>') || rule.symbol.includes('.<clinit>')))
+      throw new Error('Use a class rule to rename constructors');
     renames.set(rule.symbol, rule.to);
   }
   const methodName = key => renames.get(key) ?? key.slice(2, key.indexOf('(')).split('.').at(-1);
