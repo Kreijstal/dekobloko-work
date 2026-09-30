@@ -1,0 +1,1552 @@
+{
+  "schema": 1,
+  "game": "geoblox",
+  "purpose": "Offline readable source mirror; not a runtime patch",
+  "source": {
+    "repository": "https://github.com/Kreijstal/funorb-decompiled.git",
+    "commit": "3230e3092c687d210ba068bdfd7667a5213d22fb",
+    "subdirectory": "games/geoblox"
+  },
+  "inputTreeSha256": "45b38190d2b94f1daa68bdf4ea16aa516be2feda493dceabe51ef8146cce6d7f",
+  "namingPolicy": "Confirmed role plus original spelling; unknown symbols stay unchanged. Parameter keys use zero-based source parameter positions. Local rules use declaration ordinals and require the original spelling as an additional guard; reused locals retain both roles in the name. Screen IDs and action IDs remain numeric; decompiler control-flow state is not treated as gameplay state.",
+  "renames": [
+    {
+      "symbol": "C:dm",
+      "to": "Sprite_dm",
+      "evidence": "Owns int pixels and nearest/smooth sprite transforms; raster fixtures and rotation census."
+    },
+    {
+      "symbol": "C:wh",
+      "to": "SpriteState_wh",
+      "evidence": "Declares sprite dimensions and trim offsets read by dm transforms; also contains unrelated static helpers."
+    },
+    {
+      "symbol": "C:vb",
+      "to": "SoftwareRasterizer_vb",
+      "evidence": "Owns shared framebuffer, scanline stride and clipping bounds."
+    },
+    {
+      "symbol": "C:na",
+      "to": "IndexedSprite_na",
+      "evidence": "Owns byte pixel indices and int palette used by indexed raster loops."
+    },
+    {
+      "symbol": "C:ua",
+      "to": "MusicDecoder_ua",
+      "evidence": "Music-loading profiles and source show packet decoding and shared bit readers."
+    },
+    {
+      "symbol": "C:u",
+      "to": "MusicDecodeStage_u",
+      "evidence": "Prepared dependency of ua.c(I)[F; conservative stage name, no assumed codec algorithm."
+    },
+    {
+      "symbol": "C:kl",
+      "to": "PcmSampleStream_kl",
+      "evidence": "Audio chunk census and sample interpolation/mixing bodies."
+    },
+    {
+      "symbol": "C:qk",
+      "to": "AudioOutput_qk",
+      "evidence": "Owns output sample buffer and drives ia stream fill from the audio update chain."
+    },
+    {
+      "symbol": "F:dm.field_v:[I",
+      "to": "pixels_field_v",
+      "evidence": "Pixel array read by nearest/smooth rotation and written by sprite operations."
+    },
+    {
+      "symbol": "F:wh.field_r:I",
+      "to": "width_field_r",
+      "evidence": "Pixel row stride and horizontal source boundary in dm.c."
+    },
+    {
+      "symbol": "F:wh.field_m:I",
+      "to": "height_field_m",
+      "evidence": "Vertical source boundary in dm.c."
+    },
+    {
+      "symbol": "F:wh.field_u:I",
+      "to": "trimX_field_u",
+      "evidence": "Subtracted from horizontal transform pivot, shifted by four."
+    },
+    {
+      "symbol": "F:wh.field_p:I",
+      "to": "trimY_field_p",
+      "evidence": "Subtracted from vertical transform pivot, shifted by four."
+    },
+    {
+      "symbol": "F:vb.field_c:[I",
+      "to": "framebuffer_field_c",
+      "evidence": "Shared destination of raster operations; writer audit."
+    },
+    {
+      "symbol": "F:vb.field_f:I",
+      "to": "stride_field_f",
+      "evidence": "Destination index x + y * field_f in raster bodies."
+    },
+    {
+      "symbol": "F:vb.field_e:I",
+      "to": "clipLeft_field_e",
+      "evidence": "Horizontal lower clipping boundary in vb.d and na.a."
+    },
+    {
+      "symbol": "F:vb.field_k:I",
+      "to": "clipRight_field_k",
+      "evidence": "Horizontal upper clipping boundary in vb.d and na.a."
+    },
+    {
+      "symbol": "F:vb.field_i:I",
+      "to": "clipTop_field_i",
+      "evidence": "Vertical lower clipping boundary in vb.d and na.a."
+    },
+    {
+      "symbol": "F:vb.field_d:I",
+      "to": "clipBottom_field_d",
+      "evidence": "Vertical upper clipping boundary in vb.d and na.a."
+    },
+    {
+      "symbol": "F:na.field_h:[I",
+      "to": "palette_field_h",
+      "evidence": "Indexed raster looks up int color by unsigned byte pixel value."
+    },
+    {
+      "symbol": "F:na.field_i:[B",
+      "to": "indices_field_i",
+      "evidence": "Byte indices consumed by indexed raster bodies."
+    },
+    {
+      "symbol": "M:dm.b(IIIIII)V",
+      "to": "rotateNearest_b",
+      "evidence": "Nearest-neighbor transform covered by test-rotation-parameters.mjs."
+    },
+    {
+      "symbol": "M:dm.a(IIIIII)V",
+      "to": "rotateSmooth_a",
+      "evidence": "Smooth transform covered by test-smooth-rotation-parameters.mjs."
+    },
+    {
+      "symbol": "M:dm.c(IIIII)V",
+      "to": "sampleBilinear_c",
+      "evidence": "Four source neighbors weighted by fractions masked to 4095, then destination write."
+    },
+    {
+      "symbol": "M:ua.b()I",
+      "to": "readBit_b",
+      "evidence": "Reads one bit at shared byte/bit cursor."
+    },
+    {
+      "symbol": "M:ua.b(I)I",
+      "to": "readBits_b",
+      "evidence": "Reads the requested bit count across byte boundaries."
+    },
+    {
+      "symbol": "M:ua.c(I)[F",
+      "to": "decodePacket_c",
+      "evidence": "Selects field_p packet by index and computes float output during music loading."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#0",
+      "to": "sourcePivotX_param0",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#1",
+      "to": "sourcePivotY_param1",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#2",
+      "to": "destinationX_param2",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#3",
+      "to": "destinationY_param3",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#4",
+      "to": "angle_param4",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#5",
+      "to": "scale_param5",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#0",
+      "to": "sourcePivotX_param0",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#1",
+      "to": "sourcePivotY_param1",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#2",
+      "to": "destinationX_param2",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#3",
+      "to": "destinationY_param3",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#4",
+      "to": "angle_param4",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#5",
+      "to": "scale_param5",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#0",
+      "to": "destinationIndex_param0",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#1",
+      "to": "sourceX_param1",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#2",
+      "to": "sourceY_param2",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#3",
+      "to": "fractionX_param3",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#4",
+      "to": "fractionY_param4",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:ua.b(I)I#0",
+      "to": "bitCount_param0",
+      "evidence": "Requested bit count in shared bit-reader loop."
+    },
+    {
+      "symbol": "M:il.b(IIIIII)V",
+      "to": "rotateNearest_b",
+      "evidence": "Javac resolves this override of dm.b(IIIIII)V; retain the complete virtual family."
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#9",
+      "to": "angleRadians_var7",
+      "evidence": "Masked 16-bit angle multiplied by 2*pi/65536 before sin/cos.",
+      "originalName": "var7"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#10",
+      "to": "scaledSin_var9",
+      "evidence": "floor(sin(angleRadians) * scale + 0.5), used in forward corner transform.",
+      "originalName": "var9"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#11",
+      "to": "scaledCos_var10",
+      "evidence": "floor(cos(angleRadians) * scale + 0.5), used in forward corner transform.",
+      "originalName": "var10"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#12",
+      "to": "corner0X_var11",
+      "evidence": "First transformed horizontal corner expression, used by lower/upper X reduction.",
+      "originalName": "var11"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#13",
+      "to": "corner0Y_var12",
+      "evidence": "First transformed vertical corner expression, used by lower/upper Y reduction; original pivot decrements remain intact.",
+      "originalName": "var12"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#14",
+      "to": "corner1X_var13",
+      "evidence": "Horizontal corner expression using width<<4, used in X bound reduction.",
+      "originalName": "var13"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#15",
+      "to": "corner1Y_var14",
+      "evidence": "Vertical corner expression using width<<4, used in Y bound reduction.",
+      "originalName": "var14"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#16",
+      "to": "corner2X_var15",
+      "evidence": "Horizontal corner expression using height<<4, used in X bound reduction.",
+      "originalName": "var15"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#17",
+      "to": "corner2Y_var16",
+      "evidence": "Vertical corner expression using height<<4, used in Y bound reduction; original pivot decrements remain intact.",
+      "originalName": "var16"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#18",
+      "to": "corner3X_var17",
+      "evidence": "Horizontal corner expression using width and height, used in X bound reduction.",
+      "originalName": "var17"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#19",
+      "to": "corner3Y_var18",
+      "evidence": "Vertical corner expression using width and height, used in Y bound reduction.",
+      "originalName": "var18"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#20",
+      "to": "leftBound_var19",
+      "evidence": "Minimum transformed X, converted to destination pixels and clipped against vb.field_e.",
+      "originalName": "var19"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#21",
+      "to": "rightThenNegativeWidth_var20",
+      "evidence": "Initially maximum/right X; overwritten with left-right before negative pixel-count loops.",
+      "originalName": "var20"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#22",
+      "to": "topBound_var21",
+      "evidence": "Minimum transformed Y, converted to destination pixels and clipped against vb.field_i.",
+      "originalName": "var21"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#23",
+      "to": "bottomThenNegativeHeight_var22",
+      "evidence": "Initially maximum/bottom Y; overwritten with top-bottom before negative row-count loops.",
+      "originalName": "var22"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#0",
+      "to": "angleRadians_var7",
+      "evidence": "Masked 16-bit angle multiplied by 2*pi/65536 before sin/cos.",
+      "originalName": "var7"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#1",
+      "to": "scaledSin_var9",
+      "evidence": "floor(sin(angleRadians) * scale + 0.5), used in forward corner transform.",
+      "originalName": "var9"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#2",
+      "to": "scaledCos_var10",
+      "evidence": "floor(cos(angleRadians) * scale + 0.5), used in forward corner transform.",
+      "originalName": "var10"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#3",
+      "to": "corner0X_var11",
+      "evidence": "First transformed horizontal corner expression, used by lower/upper X reduction.",
+      "originalName": "var11"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#4",
+      "to": "corner0Y_var12",
+      "evidence": "First transformed vertical corner expression, used by lower/upper Y reduction; original pivot decrements remain intact.",
+      "originalName": "var12"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#5",
+      "to": "corner1X_var13",
+      "evidence": "Horizontal corner expression using width<<4, used in X bound reduction.",
+      "originalName": "var13"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#6",
+      "to": "corner1Y_var14",
+      "evidence": "Vertical corner expression using width<<4, used in Y bound reduction.",
+      "originalName": "var14"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#7",
+      "to": "corner2X_var15",
+      "evidence": "Horizontal corner expression using height<<4, used in X bound reduction.",
+      "originalName": "var15"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#8",
+      "to": "corner2Y_var16",
+      "evidence": "Vertical corner expression using height<<4, used in Y bound reduction; original pivot decrements remain intact.",
+      "originalName": "var16"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#9",
+      "to": "corner3X_var17",
+      "evidence": "Horizontal corner expression using width and height, used in X bound reduction.",
+      "originalName": "var17"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#10",
+      "to": "corner3Y_var18",
+      "evidence": "Vertical corner expression using width and height, used in Y bound reduction.",
+      "originalName": "var18"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#11",
+      "to": "leftBound_var19",
+      "evidence": "Minimum transformed X, converted to destination pixels and clipped against vb.field_e.",
+      "originalName": "var19"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#12",
+      "to": "rightThenNegativeWidth_var20",
+      "evidence": "Initially maximum/right X; overwritten with left-right before negative pixel-count loops.",
+      "originalName": "var20"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#13",
+      "to": "topBound_var21",
+      "evidence": "Minimum transformed Y, converted to destination pixels and clipped against vb.field_i.",
+      "originalName": "var21"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#14",
+      "to": "bottomThenNegativeHeight_var22",
+      "evidence": "Initially maximum/bottom Y; overwritten with top-bottom before negative row-count loops.",
+      "originalName": "var22"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#24",
+      "to": "rowDestinationIndex_var23",
+      "evidence": "top*framebuffer stride+left; advanced by stride after each nearest-neighbor row.",
+      "originalName": "var23"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#25",
+      "to": "inverseScaleFactor_var24",
+      "evidence": "16777216.0/scale used in inverse sin/cos coefficients.",
+      "originalName": "var24"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#26",
+      "to": "inverseSinStep_var26",
+      "evidence": "floor(sin(angleRadians)*inverseScaleFactor+0.5); increments source Y for each destination pixel.",
+      "originalName": "var26"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#27",
+      "to": "inverseCosStep_var27",
+      "evidence": "floor(cos(angleRadians)*inverseScaleFactor+0.5); increments source X for each destination pixel.",
+      "originalName": "var27"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#28",
+      "to": "destinationOffsetX_var28",
+      "evidence": "(leftBound<<4)+8-destinationX at the first destination pixel center.",
+      "originalName": "var28"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#29",
+      "to": "destinationOffsetY_var29",
+      "evidence": "(topBound<<4)+8-destinationY at the first destination pixel center.",
+      "originalName": "var29"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#30",
+      "to": "rowSourceXQ12_var30",
+      "evidence": "Source pivot shifted by eight minus row-offset sine; decreases by inverseSinStep per row.",
+      "originalName": "var30"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#31",
+      "to": "rowSourceYQ12_var31",
+      "evidence": "Source pivot shifted by eight plus row-offset cosine; increases by inverseCosStep per row.",
+      "originalName": "var31"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#32",
+      "to": "clipPixelCount_var32",
+      "evidence": "Division results used to skip or limit pixels when source coordinates cross boundaries.",
+      "originalName": "var32"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#33",
+      "to": "negativeRowCounter_var33",
+      "evidence": "Starts at negative height and increments until zero.",
+      "originalName": "var33"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#34",
+      "to": "destinationIndex_var34",
+      "evidence": "Per-pixel destination pointer copied from the row start and advanced on each write/transparent sample.",
+      "originalName": "var34"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#35",
+      "to": "sourceXQ12_var35",
+      "evidence": "Source X accumulator indexed with >>12 and advanced by inverseCosStep.",
+      "originalName": "var35"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#36",
+      "to": "sourceYQ12_var36",
+      "evidence": "Source Y accumulator indexed with >>12 and advanced by inverseSinStep.",
+      "originalName": "var36"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#37",
+      "to": "negativePixelCounter_var37",
+      "evidence": "Starts at negative width, adjusted by source clipping and incremented until zero.",
+      "originalName": "var37"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#38",
+      "to": "sampledPixel_var38",
+      "evidence": "Reads pixels[(sourceY>>12)*width+(sourceX>>12)], zero is transparent.",
+      "originalName": "var38"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#0",
+      "to": "writeIndex_incrementValue$0",
+      "evidence": "Captured old destination index before increment, used for the corresponding framebuffer write.",
+      "originalName": "incrementValue$0"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#1",
+      "to": "writeIndex_incrementValue$1",
+      "evidence": "Captured old destination index before increment, used for the corresponding framebuffer write.",
+      "originalName": "incrementValue$1"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#2",
+      "to": "writeIndex_incrementValue$2",
+      "evidence": "Captured old destination index before increment, used for the corresponding framebuffer write.",
+      "originalName": "incrementValue$2"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#3",
+      "to": "writeIndex_incrementValue$3",
+      "evidence": "Captured old destination index before increment, used for the corresponding framebuffer write.",
+      "originalName": "incrementValue$3"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#4",
+      "to": "writeIndex_incrementValue$4",
+      "evidence": "Captured old destination index before increment, used for the corresponding framebuffer write.",
+      "originalName": "incrementValue$4"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#5",
+      "to": "writeIndex_incrementValue$5",
+      "evidence": "Captured old destination index before increment, used for the corresponding framebuffer write.",
+      "originalName": "incrementValue$5"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#6",
+      "to": "writeIndex_incrementValue$6",
+      "evidence": "Captured old destination index before increment, used for the corresponding framebuffer write.",
+      "originalName": "incrementValue$6"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#7",
+      "to": "writeIndex_incrementValue$7",
+      "evidence": "Captured old destination index before increment, used for the corresponding framebuffer write.",
+      "originalName": "incrementValue$7"
+    },
+    {
+      "symbol": "L:dm.b(IIIIII)V#8",
+      "to": "writeIndex_incrementValue$8",
+      "evidence": "Captured old destination index before increment, used for the corresponding framebuffer write.",
+      "originalName": "incrementValue$8"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#15",
+      "to": "destinationIndex_var23",
+      "evidence": "Destination pointer advanced during sampling and by rowSkip after each row.",
+      "originalName": "var23"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#16",
+      "to": "rowSkip_var24",
+      "evidence": "Framebuffer stride+negativeWidth; skips the remainder of each destination scanline.",
+      "originalName": "var24"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#17",
+      "to": "inverseScaleFactor_var25",
+      "evidence": "16777216.0/scale used in inverse sin/cos coefficients.",
+      "originalName": "var25"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#18",
+      "to": "inverseSinStep_var27",
+      "evidence": "Inverse sine coefficient advances source Y per destination pixel.",
+      "originalName": "var27"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#19",
+      "to": "inverseCosStep_var28",
+      "evidence": "Inverse cosine coefficient advances source X per destination pixel.",
+      "originalName": "var28"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#20",
+      "to": "destinationOffsetX_var29",
+      "evidence": "First destination pixel center relative to destination X pivot.",
+      "originalName": "var29"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#21",
+      "to": "destinationOffsetY_var30",
+      "evidence": "First destination pixel center relative to destination Y pivot.",
+      "originalName": "var30"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#22",
+      "to": "rowSourceXQ12_var31",
+      "evidence": "Row source X origin includes half-pixel -2048 correction and inverse sine row offset.",
+      "originalName": "var31"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#23",
+      "to": "rowSourceYQ12_var32",
+      "evidence": "Row source Y origin includes half-pixel -2048 correction and inverse cosine row offset.",
+      "originalName": "var32"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#24",
+      "to": "sourcePixelX_var33",
+      "evidence": "sourceXQ12>>12 passed to the bilinear sampler.",
+      "originalName": "var33"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#25",
+      "to": "sourcePixelY_var34",
+      "evidence": "sourceYQ12>>12 passed to the bilinear sampler.",
+      "originalName": "var34"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#26",
+      "to": "clipScratch_var35",
+      "evidence": "Reused for source-edge offset and divided skip-count calculations.",
+      "originalName": "var35"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#27",
+      "to": "negativeRowCounter_var36",
+      "evidence": "Starts at negative height and increments until zero.",
+      "originalName": "var36"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#28",
+      "to": "sourceXQ12_var37",
+      "evidence": "Source X accumulator passed as fraction coordinate to dm.c and advanced by inverse cosine.",
+      "originalName": "var37"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#29",
+      "to": "sourceYQ12_var38",
+      "evidence": "Source Y accumulator passed as fraction coordinate to dm.c and advanced by inverse sine.",
+      "originalName": "var38"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#30",
+      "to": "negativePixelCounter_var39",
+      "evidence": "Negative remaining width, adjusted by source clipping.",
+      "originalName": "var39"
+    },
+    {
+      "symbol": "L:dm.a(IIIIII)V#31",
+      "to": "canSample_var40",
+      "evidence": "Integer 0/1 tracks whether source clipping admits the inner bilinear sampling loop.",
+      "originalName": "var40"
+    },
+    {
+      "symbol": "F:ua.field_L:[B",
+      "to": "bitstreamBytes_field_L",
+      "evidence": "Assigned by ua.a([BI)V; byte input to both bit readers."
+    },
+    {
+      "symbol": "F:ua.field_y:I",
+      "to": "byteCursor_field_y",
+      "evidence": "Input byte index, incremented when bit cursor crosses byte boundaries."
+    },
+    {
+      "symbol": "F:ua.field_j:I",
+      "to": "bitCursor_field_j",
+      "evidence": "Bit position within byte, reset/masked with 7 by the bit readers."
+    },
+    {
+      "symbol": "F:ua.field_p:[[B",
+      "to": "packets_field_p",
+      "evidence": "Length-prefixed byte packets allocated by ua.b([B)V and selected by decodePacket."
+    },
+    {
+      "symbol": "F:ua.field_x:I",
+      "to": "packetCursor_field_x",
+      "evidence": "Resumable PCM decoder packet index; incremented after each packet."
+    },
+    {
+      "symbol": "F:ua.field_E:[B",
+      "to": "pcmBytes_field_E",
+      "evidence": "Output byte storage allocated to sample count, filled by ua.a([I)Lgd;."
+    },
+    {
+      "symbol": "F:ua.field_J:I",
+      "to": "pcmWriteCursor_field_J",
+      "evidence": "Resumable PCM write offset, saved after each packet conversion."
+    },
+    {
+      "symbol": "F:ua.field_H:I",
+      "to": "sampleCount_field_H",
+      "evidence": "Header count bounds and sizes the final PCM byte array."
+    },
+    {
+      "symbol": "F:ua.field_C:[F",
+      "to": "previousBlock_field_C",
+      "evidence": "Previous float block used in overlap-add, swapped with shared work buffer at packet completion."
+    },
+    {
+      "symbol": "F:ua.field_M:I",
+      "to": "previousBlockSize_field_M",
+      "evidence": "Prior block size used in overlap-add output length; assigned current block size at packet completion."
+    },
+    {
+      "symbol": "F:ua.field_B:[F",
+      "to": "workBlock_field_B",
+      "evidence": "Shared float decoding buffer, swapped with per-instance previousBlock."
+    },
+    {
+      "symbol": "F:ua.field_v:I",
+      "to": "shortBlockSize_field_v",
+      "evidence": "First 1<<readBits(4) setup size, selected for unflagged block mode."
+    },
+    {
+      "symbol": "F:ua.field_t:I",
+      "to": "longBlockSize_field_t",
+      "evidence": "Second 1<<readBits(4) setup size, selected for flagged block mode."
+    },
+    {
+      "symbol": "F:Geoblox.field_z:[Ljava/lang/String;",
+      "to": "reconnectMessages_field_z",
+      "evidence": "Static initializer contains the four Connection lost - attempting to reconnect messages."
+    },
+    {
+      "symbol": "F:Geoblox.field_A:Ljava/lang/String;",
+      "to": "loginMessage_field_A",
+      "evidence": "Initialized to Please login and cleared during cleanup."
+    },
+    {
+      "symbol": "F:ib.field_a:Z",
+      "to": "gameAssetsInitialized_field_a",
+      "evidence": "Geoblox update sets true only after prepareGameAssets succeeds; rendering uses it to select loading screen."
+    },
+    {
+      "symbol": "F:ll.field_g:[Z",
+      "to": "themesLoaded_field_g",
+      "evidence": "Theme loaders mark fixed indices after foreground/background resource loading."
+    },
+    {
+      "symbol": "M:ua.a([BI)V",
+      "to": "setBitInput_a",
+      "evidence": "Sets shared bitstream bytes and byte cursor, resetting bit cursor to zero."
+    },
+    {
+      "symbol": "M:ua.a([I)Lgd;",
+      "to": "decodePcmBudgeted_a",
+      "evidence": "Converts decoded packets to signed PCM bytes, preserving packet/write cursors when sample budget is exhausted."
+    },
+    {
+      "symbol": "M:ua.c()Lgd;",
+      "to": "decodePcm_c",
+      "evidence": "Decodes all packets and builds gd from complete PCM output."
+    },
+    {
+      "symbol": "M:ua.b([B)V",
+      "to": "readPacketContainer_b",
+      "evidence": "Reads sample metadata and length-prefixed packet payloads from qc; retains IOException behavior."
+    },
+    {
+      "symbol": "M:Geoblox.g(Z)Z",
+      "to": "pollArchiveLoading_g",
+      "evidence": "Polls archive readiness and reports 5..25 percent loading progress; returns completion."
+    },
+    {
+      "symbol": "M:Geoblox.o(I)Z",
+      "to": "prepareGameAssets_o",
+      "evidence": "Initializes music, sprites/fonts and interface resources over successive readiness stages; returns true on completion."
+    },
+    {
+      "symbol": "M:Geoblox.f(Z)V",
+      "to": "requestGameArchives_f",
+      "evidence": "Requests numbered game archives and configures resource providers."
+    },
+    {
+      "symbol": "M:Geoblox.m(I)V",
+      "to": "initializeScreens_m",
+      "evidence": "Constructs nine c screen objects in og.field_q and resets current/target screen state."
+    },
+    {
+      "symbol": "M:Geoblox.n(I)V",
+      "to": "loadSportsTheme_n",
+      "evidence": "Loads sports foreground/background and sets themesLoaded[5]."
+    },
+    {
+      "symbol": "M:Geoblox.h(Z)V",
+      "to": "loadJewelsTheme_h",
+      "evidence": "Loads jewels foreground/background and sets themesLoaded[0]."
+    },
+    {
+      "symbol": "M:Geoblox.q(I)V",
+      "to": "loadBakingTheme_q",
+      "evidence": "Loads baking foreground/background and sets themesLoaded[4]."
+    },
+    {
+      "symbol": "M:Geoblox.e(Z)V",
+      "to": "loadSpaceTheme_e",
+      "evidence": "Loads space foreground/background and sets themesLoaded[6]."
+    },
+    {
+      "symbol": "M:Geoblox.p(I)V",
+      "to": "loadSweetsTheme_p",
+      "evidence": "Loads sweets foreground/background and sets themesLoaded[2]."
+    },
+    {
+      "symbol": "M:Geoblox.i(B)V",
+      "to": "loadGermsTheme_i",
+      "evidence": "Loads germs foreground/background and sets themesLoaded[3]."
+    },
+    {
+      "symbol": "M:ch.c(Z)V",
+      "to": "updateGame_c",
+      "evidence": "ch tick invokes c(false); GeoBlox polls loading, input and screen updates. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "M:Geoblox.c(Z)V",
+      "to": "updateGame_c",
+      "evidence": "ch tick invokes c(false); GeoBlox polls loading, input and screen updates. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "M:ch.a(I)V",
+      "to": "renderFrame_a",
+      "evidence": "ch draw turn invokes a(25853); GeoBlox draws loading/menu/game content and publishes Canvas. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "M:Geoblox.a(I)V",
+      "to": "renderFrame_a",
+      "evidence": "ch draw turn invokes a(25853); GeoBlox draws loading/menu/game content and publishes Canvas. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "M:ch.c(I)V",
+      "to": "serviceAudio_c",
+      "evidence": "Services me.b audio outputs plus popup/host state; ch invokes c(1) during host service. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "M:Geoblox.c(I)V",
+      "to": "serviceAudio_c",
+      "evidence": "Services me.b audio outputs plus popup/host state; ch invokes c(1) during host service. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "M:ch.b(I)V",
+      "to": "initializeGame_b",
+      "evidence": "Initializes session configuration and 22050-Hz audio components. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "M:Geoblox.b(I)V",
+      "to": "initializeGame_b",
+      "evidence": "Initializes session configuration and 22050-Hz audio components. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "M:ch.b(B)V",
+      "to": "releaseGameResources_b",
+      "evidence": "Invokes global resource cleanup and clears game state references. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "M:Geoblox.b(B)V",
+      "to": "releaseGameResources_b",
+      "evidence": "Invokes global resource cleanup and clears game state references. Rename abstract declaration and implementation as one virtual family."
+    },
+    {
+      "symbol": "P:ua.a([BI)V#0",
+      "to": "inputBytes_param0",
+      "evidence": "Assigned directly to shared bitstream bytes."
+    },
+    {
+      "symbol": "P:ua.a([BI)V#1",
+      "to": "startByte_param1",
+      "evidence": "Assigned directly to byte cursor."
+    },
+    {
+      "symbol": "P:ua.a([I)Lgd;#0",
+      "to": "sampleBudget_param0",
+      "evidence": "Optional int[0] remaining sample budget; null preserves unlimited decoding."
+    },
+    {
+      "symbol": "P:ua.c(I)[F#0",
+      "to": "packetIndex_param0",
+      "evidence": "Selects packets[packetIndex] before starting bit input."
+    },
+    {
+      "symbol": "P:ua.b([B)V#0",
+      "to": "containerBytes_param0",
+      "evidence": "qc wraps the input container bytes for header and packet parsing."
+    },
+    {
+      "symbol": "L:ua.b()I#0",
+      "to": "bitValue_var0",
+      "evidence": "One-bit return expression from the shared input cursor.",
+      "originalName": "var0"
+    },
+    {
+      "symbol": "L:ua.b(I)I#2",
+      "to": "value_var1",
+      "evidence": "Accumulated extracted bits returned by the method.",
+      "originalName": "var1"
+    },
+    {
+      "symbol": "L:ua.b(I)I#3",
+      "to": "outputShift_var2",
+      "evidence": "Total previously consumed bits; shifts each chunk into the result.",
+      "originalName": "var2"
+    },
+    {
+      "symbol": "L:ua.b(I)I#1",
+      "to": "chunkBitsThenMask_var3",
+      "evidence": "Initially bits remaining in the byte; reused as tail-bit mask after the byte loop.",
+      "originalName": "var3"
+    },
+    {
+      "symbol": "L:ua.b(I)I#0",
+      "to": "chunkMask_var4",
+      "evidence": "(1<<chunkBitCount)-1 inside the byte-consuming loop.",
+      "originalName": "var4"
+    },
+    {
+      "symbol": "L:ua.a([I)Lgd;#1",
+      "to": "writePosition_var3",
+      "evidence": "Current PCM output offset, committed to pcmWriteCursor after conversion.",
+      "originalName": "var3"
+    },
+    {
+      "symbol": "L:ua.a([I)Lgd;#2",
+      "to": "samplesToWrite_var4",
+      "evidence": "Decoded packet length clamped against output sample count.",
+      "originalName": "var4"
+    },
+    {
+      "symbol": "L:ua.a([I)Lgd;#3",
+      "to": "sampleIndex_var5",
+      "evidence": "Indexes decoded float samples during conversion.",
+      "originalName": "var5"
+    },
+    {
+      "symbol": "L:ua.a([I)Lgd;#4",
+      "to": "unsignedPcmSample_var6",
+      "evidence": "128+float*128, clamped to byte range before subtracting 128 for signed PCM.",
+      "originalName": "var6"
+    },
+    {
+      "symbol": "L:ua.a([I)Lgd;#5",
+      "to": "decodedSamples_var7",
+      "evidence": "Float block returned by decodePacket.",
+      "originalName": "var7"
+    },
+    {
+      "symbol": "L:ua.a([I)Lgd;#6",
+      "to": "completedPcm_var12",
+      "evidence": "Saved completed PCM array before clearing resumable output storage.",
+      "originalName": "var12"
+    },
+    {
+      "symbol": "C:ka",
+      "to": "MenuScreen_ka",
+      "evidence": "Base for c; stores item geometry and selection, dispatches keyboard/pointer input, renders item rows."
+    },
+    {
+      "symbol": "C:c",
+      "to": "GameScreen_c",
+      "evidence": "Nine instances constructed by Geoblox.m, selected by current/requested screen IDs; implements menu rendering, input and per-screen update."
+    },
+    {
+      "symbol": "C:gh",
+      "to": "GameplaySession_gh",
+      "evidence": "Created when a menu starts play; Geoblox delegates gameplay update/render to it; owns board angle, score and session progression."
+    },
+    {
+      "symbol": "F:og.field_q:[Lc;",
+      "to": "screens_field_q",
+      "evidence": "Nine c instances indexed by current/requested screen ID in Geoblox update/render."
+    },
+    {
+      "symbol": "F:tc.field_c:I",
+      "to": "currentScreenId_field_c",
+      "evidence": "Committed screen ID; -1 delegates update/render to gameplay, nonnegative indexes screens; transition commits requested ID after 160 ticks."
+    },
+    {
+      "symbol": "F:ai.field_p:I",
+      "to": "requestedScreenId_field_p",
+      "evidence": "Requested destination ID compared with current screen during update/render; assigned by menu actions and gameplay."
+    },
+    {
+      "symbol": "F:nf.field_A:I",
+      "to": "screenTransitionTick_field_A",
+      "evidence": "Incremented while current/requested screens differ; reset at 160; drives clipping and curtain position in Geoblox render."
+    },
+    {
+      "symbol": "F:qj.field_b:Z",
+      "to": "clearGameplayDuringTransition_field_b",
+      "evidence": "Set when transition is triggered via pg.field_e, forces cleared background instead of drawing gameplay; cleared on transition completion."
+    },
+    {
+      "symbol": "F:qj.field_c:Ldm;",
+      "to": "transitionCurtain_field_c",
+      "evidence": "Sprite drawn at y=6*transitionTick-480 after outgoing/incoming screen clipping."
+    },
+    {
+      "symbol": "F:oc.field_b:I",
+      "to": "previousMenuScreenId_field_b",
+      "evidence": "Remembers screen 0/1 when leaving; escape/back routes to this screen."
+    },
+    {
+      "symbol": "F:pg.field_e:Z",
+      "to": "screenChangePending_field_e",
+      "evidence": "Consumed by Geoblox update to choose requested screen from el.field_i or cd.field_j and initiate transition."
+    },
+    {
+      "symbol": "F:t.field_i:[[I",
+      "to": "menuActionIds_field_i",
+      "evidence": "Maps screen ID and item index to integer action identifiers dispatched by c menu handlers."
+    },
+    {
+      "symbol": "F:el.field_o:Lgh;",
+      "to": "gameplaySession_field_o",
+      "evidence": "Current gh created by c activation; used for gameplay update/render and score access."
+    },
+    {
+      "symbol": "F:c.field_K:I",
+      "to": "screenId_field_K",
+      "evidence": "Constructor stores screen index; indexes per-screen action IDs and selects screen-specific behavior."
+    },
+    {
+      "symbol": "F:c.field_p:LGeoblox;",
+      "to": "gameApplet_field_p",
+      "evidence": "Geoblox constructor argument retained for session creation and host operations."
+    },
+    {
+      "symbol": "F:c.field_D:I",
+      "to": "animationTick_field_D",
+      "evidence": "Incremented by normal and transition updates; drives modulo-based screen animations."
+    },
+    {
+      "symbol": "F:c.field_y:I",
+      "to": "activeTicks_field_y",
+      "evidence": "Incremented only by normal screen update, reset on menu/session operations; used for timeout."
+    },
+    {
+      "symbol": "F:c.field_U:I",
+      "to": "volumePreviewTicks_field_U",
+      "evidence": "Ticks since preview start; reset when d(0) starts/restarts volume preview stream."
+    },
+    {
+      "symbol": "F:c.field_R:Lkl;",
+      "to": "volumePreviewStream_field_R",
+      "evidence": "d(0) creates kl from audio sample 8 using j.field_gb volume, adds to mixer and retains for preview throttling."
+    },
+    {
+      "symbol": "F:c.field_ab:I",
+      "to": "selectedThemeId_field_ab",
+      "evidence": "Indexes loaded-theme flags and theme palette/sprite arrays in screen and gameplay rendering."
+    },
+    {
+      "symbol": "F:ka.field_b:I",
+      "to": "selectedItemIndex_field_b",
+      "evidence": "Selected/hovered row index used for input dispatch and rendering highlighted row."
+    },
+    {
+      "symbol": "F:ka.field_e:I",
+      "to": "itemCount_field_e",
+      "evidence": "Constructor receives action-array length; bounds hit testing, selection wrapping and rendering loop."
+    },
+    {
+      "symbol": "F:ka.field_k:I",
+      "to": "firstItemY_field_k",
+      "evidence": "Menu top Y; hit test subtracts it and render initializes row Y from it."
+    },
+    {
+      "symbol": "F:ka.field_d:I",
+      "to": "itemSpacing_field_d",
+      "evidence": "Vertical row spacing; divisor in hit test and increment in rendering loop."
+    },
+    {
+      "symbol": "F:ka.field_g:Z",
+      "to": "pointerInteractionActive_field_g",
+      "evidence": "Set on nonempty pointer hit; gates held-button dispatch and keyboard selection."
+    },
+    {
+      "symbol": "F:ka.field_l:Z",
+      "to": "keyboardSelectionActive_field_l",
+      "evidence": "True when navigation selects a row; pointer hover clears it and changes selection."
+    },
+    {
+      "symbol": "F:gh.field_I:LGeoblox;",
+      "to": "gameApplet_field_I",
+      "evidence": "Retains the owning Geoblox constructor argument."
+    },
+    {
+      "symbol": "F:gh.field_J:F",
+      "to": "boardAngleRadians_field_J",
+      "evidence": "Changed by rotation input; sin/cos in render and radians-to-16-bit-angle conversion rotate board sprite."
+    },
+    {
+      "symbol": "F:gh.field_o:I",
+      "to": "score_field_o",
+      "evidence": "Added to by a(BI), formatted as score text and submitted as final score by e(B)."
+    },
+    {
+      "symbol": "F:gh.field_X:Ljava/lang/StringBuilder;",
+      "to": "scoreText_field_X",
+      "evidence": "Updated from score in a(BI), rendered by gameplay drawing."
+    },
+    {
+      "symbol": "F:gh.field_v:I",
+      "to": "updateTick_field_v",
+      "evidence": "Incremented on gameplay update, used for periodic animation and timing."
+    },
+    {
+      "symbol": "F:gh.field_A:I",
+      "to": "pendingPopupPoints_field_A",
+      "evidence": "Accumulated by a(II); c(Z) creates points popup then resets to zero."
+    },
+    {
+      "symbol": "F:gh.field_g:Ljava/lang/StringBuilder;",
+      "to": "popupPointsText_field_g",
+      "evidence": "Updated when a(II) adds popup points; stores formatted accumulated value."
+    },
+    {
+      "symbol": "M:ka.a(I)V",
+      "to": "renderScreen_a",
+      "evidence": "Geoblox render calls c.a(-28750); base implementation renders item rows, concrete draws complete screen. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:c.a(I)V",
+      "to": "renderScreen_a",
+      "evidence": "Geoblox render calls c.a(-28750); base implementation renders item rows, concrete draws complete screen. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:ka.a(Z)V",
+      "to": "updatePointer_a",
+      "evidence": "Polls click/held/hover coordinates and invokes menu handlers; inherited final method."
+    },
+    {
+      "symbol": "M:ka.a(II)V",
+      "to": "handleMenuKey_a",
+      "evidence": "Base dispatches key codes to decrease/increase/activate item; concrete adds screen-specific shortcuts. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:c.a(II)V",
+      "to": "handleMenuKey_a",
+      "evidence": "Base dispatches key codes to decrease/increase/activate item; concrete adds screen-specific shortcuts. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:ka.a(IIB)I",
+      "to": "hitTestMenuItem_a",
+      "evidence": "Called with pointer X/Y; returns selected menu row or -1 from screen-specific geometry. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:c.a(IIB)I",
+      "to": "hitTestMenuItem_a",
+      "evidence": "Called with pointer X/Y; returns selected menu row or -1 from screen-specific geometry. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:ka.a(IB)V",
+      "to": "decreaseMenuValue_a",
+      "evidence": "Concrete decreases music/effect sliders by ten; base dispatches left-direction keys here. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:c.a(IB)V",
+      "to": "decreaseMenuValue_a",
+      "evidence": "Concrete decreases music/effect sliders by ten; base dispatches left-direction keys here. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:ka.a(BI)V",
+      "to": "increaseMenuValue_a",
+      "evidence": "Concrete increases music/effect sliders by ten; base dispatches right-direction keys here. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:c.a(BI)V",
+      "to": "increaseMenuValue_a",
+      "evidence": "Concrete increases music/effect sliders by ten; base dispatches right-direction keys here. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:ka.b(IB)V",
+      "to": "activateMenuItem_b",
+      "evidence": "Dispatches per-screen action ID, requests screens, resumes play or creates new gh gameplay session. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:c.b(IB)V",
+      "to": "activateMenuItem_b",
+      "evidence": "Dispatches per-screen action ID, requests screens, resumes play or creates new gh gameplay session. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:ka.a(ZBII)V",
+      "to": "renderMenuItem_a",
+      "evidence": "Base render loops call with selection flag, row index and row Y; concrete draws label/slider content. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:c.a(ZBII)V",
+      "to": "renderMenuItem_a",
+      "evidence": "Base render loops call with selection flag, row index and row Y; concrete draws label/slider content. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:ka.a(IIZIZI)V",
+      "to": "handleMenuPointer_a",
+      "evidence": "Base pointer polling dispatches row, X, click/hold flags, row-relative Y and button; concrete handles sliders and activation. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:c.a(IIZIZI)V",
+      "to": "handleMenuPointer_a",
+      "evidence": "Base pointer polling dispatches row, X, click/hold flags, row-relative Y and button; concrete handles sliders and activation. Both base and concrete declarations are renamed."
+    },
+    {
+      "symbol": "M:c.h(B)V",
+      "to": "updateScreen_h",
+      "evidence": "Geoblox calls this on committed nonnegative screen ID; advances animation, processes keyboard/pointer and screen-specific state."
+    },
+    {
+      "symbol": "M:c.c(I)V",
+      "to": "updateTransition_c",
+      "evidence": "Geoblox calls on outgoing/incoming screens while their IDs differ; advances animation without normal screen input."
+    },
+    {
+      "symbol": "M:c.c(II)V",
+      "to": "setItemCount_c",
+      "evidence": "Assigns inherited item count from second argument; called after action-array length changes."
+    },
+    {
+      "symbol": "M:c.b(B)V",
+      "to": "handleScreenKey_b",
+      "evidence": "Called while hh key events remain; branches on ki.field_d for navigation, activation and shortcuts."
+    },
+    {
+      "symbol": "M:c.d(I)V",
+      "to": "previewMusicVolume_d",
+      "evidence": "Starts sample 8 at j.field_gb volume, retaining preview stream and resetting preview ticks."
+    },
+    {
+      "symbol": "M:gh.a(I)V",
+      "to": "updateSession_a",
+      "evidence": "Called by Geoblox when current/requested screen IDs are -1; updates input, board/session logic and animations."
+    },
+    {
+      "symbol": "M:gh.a(B)V",
+      "to": "renderSession_a",
+      "evidence": "Called by Geoblox gameplay drawing; renders theme, rotating board, entities, text and overlays."
+    },
+    {
+      "symbol": "M:gh.a(BI)V",
+      "to": "addScore_a",
+      "evidence": "Adds second argument to score, formats/clamps display and updates score-dependent counters."
+    },
+    {
+      "symbol": "M:gh.a(II)V",
+      "to": "addPopupPoints_a",
+      "evidence": "Adds first argument to accumulated popup points and updates corresponding text."
+    },
+    {
+      "symbol": "M:gh.c(Z)V",
+      "to": "emitPointsPopup_c",
+      "evidence": "Creates ld popup for accumulated points, plays sample 32 and resets pending points."
+    },
+    {
+      "symbol": "M:gh.e(B)V",
+      "to": "submitScore_e",
+      "evidence": "Submits positive score through qf when eligible; clears ca pending record."
+    },
+    {
+      "symbol": "P:ka.a(II)V#0",
+      "to": "itemIndex_param0",
+      "evidence": "Selected row passed to key handling."
+    },
+    {
+      "symbol": "P:ka.a(IIB)I#0",
+      "to": "pointerX_param0",
+      "evidence": "Horizontal pointer coordinate tested against menu bounds."
+    },
+    {
+      "symbol": "P:ka.a(IIB)I#1",
+      "to": "pointerY_param1",
+      "evidence": "Vertical pointer coordinate tested against menu rows."
+    },
+    {
+      "symbol": "P:ka.a(IB)V#0",
+      "to": "itemIndex_param0",
+      "evidence": "Indexes action IDs for decrease operation."
+    },
+    {
+      "symbol": "P:ka.a(BI)V#1",
+      "to": "itemIndex_param1",
+      "evidence": "Indexes action IDs for increase operation."
+    },
+    {
+      "symbol": "P:ka.b(IB)V#0",
+      "to": "itemIndex_param0",
+      "evidence": "Indexes action IDs for activation."
+    },
+    {
+      "symbol": "P:ka.a(ZBII)V#0",
+      "to": "selected_param0",
+      "evidence": "True for the selected row when rendering."
+    },
+    {
+      "symbol": "P:ka.a(ZBII)V#2",
+      "to": "itemIndex_param2",
+      "evidence": "Row index supplied by render loop."
+    },
+    {
+      "symbol": "P:ka.a(ZBII)V#3",
+      "to": "rowY_param3",
+      "evidence": "Row Y supplied by render loop and used in text/slider drawing."
+    },
+    {
+      "symbol": "P:ka.a(IIZIZI)V#0",
+      "to": "itemIndex_param0",
+      "evidence": "Row index from hit test or retained pointer selection."
+    },
+    {
+      "symbol": "P:ka.a(IIZIZI)V#1",
+      "to": "pointerX_param1",
+      "evidence": "Pointer X, converted to slider-relative coordinate by concrete handler."
+    },
+    {
+      "symbol": "P:ka.a(IIZIZI)V#2",
+      "to": "initialClick_param2",
+      "evidence": "True for initial click path; false for held-button repeat."
+    },
+    {
+      "symbol": "P:ka.a(IIZIZI)V#3",
+      "to": "rowOffsetY_param3",
+      "evidence": "Pointer Y minus top and row spacing."
+    },
+    {
+      "symbol": "P:ka.a(IIZIZI)V#4",
+      "to": "heldRepeat_param4",
+      "evidence": "True in held-button path, controls repeat timing in base handler."
+    },
+    {
+      "symbol": "P:ka.a(IIZIZI)V#5",
+      "to": "pointerButton_param5",
+      "evidence": "Click/held button value; controls activation or value adjustment."
+    },
+    {
+      "symbol": "P:c.a(II)V#0",
+      "to": "itemIndex_param0",
+      "evidence": "Selected row passed to key handling."
+    },
+    {
+      "symbol": "P:c.a(IIB)I#0",
+      "to": "pointerX_param0",
+      "evidence": "Horizontal pointer coordinate tested against menu bounds."
+    },
+    {
+      "symbol": "P:c.a(IIB)I#1",
+      "to": "pointerY_param1",
+      "evidence": "Vertical pointer coordinate tested against menu rows."
+    },
+    {
+      "symbol": "P:c.a(IB)V#0",
+      "to": "itemIndex_param0",
+      "evidence": "Indexes action IDs for decrease operation."
+    },
+    {
+      "symbol": "P:c.a(BI)V#1",
+      "to": "itemIndex_param1",
+      "evidence": "Indexes action IDs for increase operation."
+    },
+    {
+      "symbol": "P:c.b(IB)V#0",
+      "to": "itemIndex_param0",
+      "evidence": "Indexes action IDs for activation."
+    },
+    {
+      "symbol": "P:c.a(ZBII)V#0",
+      "to": "selected_param0",
+      "evidence": "True for the selected row when rendering."
+    },
+    {
+      "symbol": "P:c.a(ZBII)V#2",
+      "to": "itemIndex_param2",
+      "evidence": "Row index supplied by render loop."
+    },
+    {
+      "symbol": "P:c.a(ZBII)V#3",
+      "to": "rowY_param3",
+      "evidence": "Row Y supplied by render loop and used in text/slider drawing."
+    },
+    {
+      "symbol": "P:c.a(IIZIZI)V#0",
+      "to": "itemIndex_param0",
+      "evidence": "Row index from hit test or retained pointer selection."
+    },
+    {
+      "symbol": "P:c.a(IIZIZI)V#1",
+      "to": "pointerX_param1",
+      "evidence": "Pointer X, converted to slider-relative coordinate by concrete handler."
+    },
+    {
+      "symbol": "P:c.a(IIZIZI)V#2",
+      "to": "initialClick_param2",
+      "evidence": "True for initial click path; false for held-button repeat."
+    },
+    {
+      "symbol": "P:c.a(IIZIZI)V#3",
+      "to": "rowOffsetY_param3",
+      "evidence": "Pointer Y minus top and row spacing."
+    },
+    {
+      "symbol": "P:c.a(IIZIZI)V#4",
+      "to": "heldRepeat_param4",
+      "evidence": "True in held-button path, controls repeat timing in base handler."
+    },
+    {
+      "symbol": "P:c.a(IIZIZI)V#5",
+      "to": "pointerButton_param5",
+      "evidence": "Click/held button value; controls activation or value adjustment."
+    },
+    {
+      "symbol": "P:c.c(II)V#1",
+      "to": "itemCount_param1",
+      "evidence": "Copied into inherited item count."
+    },
+    {
+      "symbol": "P:gh.a(BI)V#1",
+      "to": "points_param1",
+      "evidence": "Value added to score."
+    },
+    {
+      "symbol": "P:gh.a(II)V#0",
+      "to": "points_param0",
+      "evidence": "Value added to popup points."
+    },
+    {
+      "symbol": "P:gh.c(Z)V#0",
+      "to": "markSubmissionBlocked_param0",
+      "evidence": "When true sets field_K, which blocks score submission."
+    },
+    {
+      "symbol": "L:Geoblox.m(I)V#0",
+      "originalName": "var2",
+      "to": "screenIndex_var2",
+      "evidence": "Loop index 0..8 creates and stores matching c screen instance."
+    },
+    {
+      "symbol": "L:Geoblox.a(I)V#4",
+      "originalName": "var3",
+      "to": "transitionSplitY_var3",
+      "evidence": "Computed as 6*transitionTick-445; divides clipping between incoming and outgoing screens."
+    },
+    {
+      "symbol": "L:ka.a(Z)V#0",
+      "originalName": "var2",
+      "to": "hitItemIndex_var2",
+      "evidence": "Result of menu hit test, used for selection and pointer dispatch."
+    },
+    {
+      "symbol": "L:ka.a(I)V#1",
+      "originalName": "var2",
+      "to": "itemIndex_var2",
+      "evidence": "Rendering row loop index bounded by item count."
+    },
+    {
+      "symbol": "L:ka.a(I)V#2",
+      "originalName": "var3",
+      "to": "rowY_var3",
+      "evidence": "Starts at first-item Y and advances by row spacing."
+    },
+    {
+      "symbol": "L:c.a(II)V#1",
+      "originalName": "var3_int",
+      "to": "actionId_var3_int",
+      "evidence": "Value read from per-screen action ID array using item index; drives action-specific branches."
+    },
+    {
+      "symbol": "L:c.a(IB)V#2",
+      "originalName": "var4",
+      "to": "actionId_var4",
+      "evidence": "Value read from per-screen action ID array using item index; drives action-specific branches."
+    },
+    {
+      "symbol": "L:c.a(BI)V#1",
+      "originalName": "var3_int",
+      "to": "actionId_var3_int",
+      "evidence": "Value read from per-screen action ID array using item index; drives action-specific branches."
+    },
+    {
+      "symbol": "L:c.b(IB)V#6",
+      "originalName": "var5",
+      "to": "actionId_var5",
+      "evidence": "Value read from per-screen action ID array using item index; drives action-specific branches."
+    },
+    {
+      "symbol": "L:c.a(IIZIZI)V#1",
+      "originalName": "var7_int",
+      "to": "actionId_var7_int",
+      "evidence": "Value read from per-screen action ID array using item index; drives action-specific branches."
+    },
+    {
+      "symbol": "L:c.a(ZBII)V#11",
+      "originalName": "var6",
+      "to": "actionId_var6",
+      "evidence": "Value read from per-screen action ID array using item index; drives action-specific branches."
+    },
+    {
+      "symbol": "L:gh.a(BI)V#0",
+      "originalName": "var3",
+      "to": "pointsForCounters_var3",
+      "evidence": "Copies points amount for per-mode score counters."
+    },
+    {
+      "symbol": "L:gh.a(BI)V#1",
+      "originalName": "var4",
+      "to": "counterSplitMode_var4",
+      "evidence": "kd.field_c modulo three selects how added points are split across counters."
+    },
+    {
+      "symbol": "L:gh.a(BI)V#2",
+      "originalName": "var5",
+      "to": "oneThirdPoints_var5",
+      "evidence": "One third of added points in mixed counter mode."
+    },
+    {
+      "symbol": "F:el.field_i:I",
+      "to": "gameplayReturnScreenId_field_i",
+      "evidence": "Stored when leaving gameplay via menus; Geoblox consumes as requested destination on the non-fh.c branch. -1 is the initial/reset sentinel."
+    },
+    {
+      "symbol": "F:cd.field_j:I",
+      "to": "gameplayOriginScreenId_field_j",
+      "evidence": "Menu activation stores its own screen ID alongside gameplay return destination; Geoblox consumes on the fh.c branch and uses for origin-specific setup."
+    },
+    {
+      "symbol": "F:ka.field_j:I",
+      "to": "hitLeftX_field_j",
+      "evidence": "Lower X boundary in base menu hit test; initialized by constructor."
+    },
+    {
+      "symbol": "F:ka.field_f:I",
+      "to": "hitRightX_field_f",
+      "evidence": "Exclusive upper X boundary in base menu hit test; initialized by constructor."
+    },
+    {
+      "symbol": "M:gh.d(I)V",
+      "to": "requestSessionExitScreen_d",
+      "evidence": "Chooses requested screen 0, 2, 4 or 6 from session score/progression and fh.c branch, then starts exit audio."
+    }
+  ],
+  "revision": 3,
+  "previousRulesSha256": "d066e13b372a40fa76211009b001f822407a29e3bbc59cf5bdf3cbe8e1d0e223"
+}
