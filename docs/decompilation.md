@@ -3,6 +3,9 @@
 The pipeline that turns an obfuscated AlterOrb/FunOrb gamepack into
 verifier-clean bytecode and compilable Java, and the rules for changing it.
 
+For a deterministic readable GeoBlox source mirror with exact symbol rules and
+reverse mappings, see [Readable GeoBlox sources](geoblox-readable-source.md).
+
 ## Stubs
 
 `stubs/src/` resolves the legacy dependencies the gamepacks reference:
