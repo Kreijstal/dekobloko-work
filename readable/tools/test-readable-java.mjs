@@ -6,7 +6,7 @@ import path from 'node:path';
 import {captureProcess} from './lib/capture-process.mjs';
 import {generateReadable, sourceInventory, sourceIdentity} from './readable-java.mjs';
 
-function fixture(sources, rules) {
+function fixture(sources, rules, options = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'readable-java-test-'));
   const input = path.join(root, 'input');
   fs.mkdirSync(input);
@@ -17,7 +17,7 @@ function fixture(sources, rules) {
   const rulesFile = path.join(root, 'rules.json');
   fs.writeFileSync(rulesFile, JSON.stringify({schema: 1, inputTreeSha256: sourceIdentity(sourceInventory(input)),
     renames: rules.map(([symbol, to, originalName]) => ({symbol, to, evidence: 'Executable fixture',
-      ...(originalName === undefined ? {} : {originalName})}))}, null, 2) + '\n');
+      ...(originalName === undefined ? {} : {originalName})})), ...options}, null, 2) + '\n');
   return {root, input, output: path.join(root, 'readable'), rulesFile};
 }
 
@@ -212,4 +212,71 @@ test('constructor identities still require a class rule rather than a method ren
     assert.throws(() => generateReadable(context), /Use a class rule to rename constructors/);
     assert.equal(fs.existsSync(context.output), false);
   } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+});
+
+test('owned Class.forName literals preserve loading, initialization, reflection calls and exact reversal', () => {
+  const context = fixture({
+    'p/a.java': `package p; public class a {
+      static { Main.initializations++; }
+      public a() {} public int value() { return 17; }
+    }`,
+    'p/Main.java': `package p; public class Main {
+      static int initializations;
+      static class Class { static String forName(String name) { return name; } }
+      public static void main(String[] args) throws Exception {
+        java.lang.Class<?> lazy = java.lang.Class.forName(("p.a"), false, Main.class.getClassLoader());
+        System.out.print(initializations + ":");
+        Object instance = java.lang.Class.forName("p.a").newInstance();
+        System.out.println(initializations + ":" + lazy.getMethod("value").invoke(instance)
+          + ":" + Class.forName("p.a") + ":" + "p.a");
+        java.lang.Class.forName("java.lang.String");
+        // Class.forName("p.a") is documentation, not an executable lookup.
+      }
+    }`,
+  }, [['C:p.a', 'ReflectedValue']], {classNameLiterals: {policy: 'direct-owned-class-for-name', expectedEdits: 2}});
+  try {
+    const result = generateReadable(context);
+    assert.equal(result.classNameLiteralEdits, 2);
+    const main = fs.readFileSync(path.join(context.output, 'src/p/Main.java'), 'utf8');
+    assert.match(main, /java\.lang\.Class\.forName\(\("p.ReflectedValue"\), false/);
+    assert.match(main, /Class\.forName\("p.a"\) \+ ":" \+ "p.a"/);
+    assert.match(main, /Class\.forName\("java.lang.String"\)/);
+    assert.match(main, /\/\/ Class.forName\("p.a"\)/);
+    assert.equal(run(context.root, context.input, 'original'), '0:1:17:p.a:p.a\n');
+    assert.equal(run(context.root, path.join(context.output, 'src'), 'renamed'), '0:1:17:p.a:p.a\n');
+    const mapping = JSON.parse(fs.readFileSync(path.join(context.output, 'mapping.json')));
+    assert.equal(mapping.files.flatMap(file => file.edits).filter(edit => edit.kind === 'class-name-literal').length, 2);
+    assert.equal(generateReadable({...context, check: true}).check, true);
+    const restored = path.join(context.root, 'restored');
+    captureProcess(process.execPath, [new URL('./restore-original.mjs', import.meta.url).pathname, context.output, restored]);
+    for (const file of sourceInventory(context.input))
+      assert.deepEqual(fs.readFileSync(path.join(restored, file.path)), fs.readFileSync(path.join(context.input, file.path)));
+  } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+});
+
+test('reflective class renames require explicit policy and the reviewed edit count', () => {
+  for (const policy of [undefined, {policy: 'direct-owned-class-for-name', expectedEdits: 2}]) {
+    const context = fixture({'a.java': 'class a { static Class<?> load() throws Exception { return Class.forName("a"); } }'},
+      [['C:a', 'NamedClass']], policy ? {classNameLiterals: policy} : {});
+    try {
+      assert.throws(() => generateReadable(context), /requires explicit Class.forName literal policy|edit count differs/);
+      assert.equal(fs.existsSync(context.output), false);
+    } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+  }
+});
+
+test('escaped owned class literals remain unchanged or refuse a renamed target', () => {
+  const source = String.raw`class a { static Class<?> load() throws Exception { return Class.forName("\u0061"); } }`;
+  for (const renames of [[], [['C:a', 'NamedClass']]]) {
+    const context = fixture({'a.java': source}, renames, {classNameLiterals: {policy: 'direct-owned-class-for-name'}});
+    try {
+      if (renames.length) {
+        assert.throws(() => generateReadable(context), /Escaped Class.forName literal/);
+        assert.equal(fs.existsSync(context.output), false);
+      } else {
+        assert.equal(generateReadable(context).classNameLiteralEdits, 0);
+        assert.equal(fs.readFileSync(path.join(context.output, 'src/a.java'), 'utf8'), source);
+      }
+    } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+  }
 });

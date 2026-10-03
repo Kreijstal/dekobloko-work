@@ -20,6 +20,8 @@ public final class ReadableJava {
     final PrintWriter out;
     final Map<Element, String> variables = new HashMap<>();
     final List<ExecutableElement> methods = new ArrayList<>();
+    final Set<String> ownedClasses = new HashSet<>();
+    boolean auditClassNameLiterals;
 
     ReadableJava(JavacTask task, Path root, PrintWriter out) {
         trees = Trees.instance(task);
@@ -73,6 +75,12 @@ public final class ReadableJava {
     void declarations(List<CompilationUnitTree> units) {
         final Map<String, Integer> ordinals = new HashMap<>();
         for (CompilationUnitTree unit : units) new TreePathScanner<Void, Void>() {
+            @Override public Void visitClass(ClassTree node, Void unused) {
+                Element element = trees.getElement(getCurrentPath());
+                if (element instanceof TypeElement)
+                    ownedClasses.add(elements.getBinaryName((TypeElement) element).toString());
+                return super.visitClass(node, unused);
+            }
             @Override public Void visitMethod(MethodTree node, Void unused) {
                 Element element = trees.getElement(getCurrentPath());
                 if (element instanceof ExecutableElement) {
@@ -179,6 +187,33 @@ public final class ReadableJava {
                 if (found == null) throw new IllegalArgumentException(file + ": unresolved source token " + name + " at " + from + ".." + to);
                 return found;
             }
+            @Override public Void visitMethodInvocation(MethodInvocationTree node, Void unused) {
+                if (auditClassNameLiterals) {
+                    Element selected = trees.getElement(new TreePath(getCurrentPath(), node.getMethodSelect()));
+                    if (selected instanceof ExecutableElement) {
+                        String method = methodKey((ExecutableElement) selected);
+                        if (method.equals("M:java.lang.Class.forName(Ljava/lang/String;)Ljava/lang/Class;") ||
+                            method.equals("M:java.lang.Class.forName(Ljava/lang/String;ZLjava/lang/ClassLoader;)Ljava/lang/Class;")) {
+                            ExpressionTree argument = node.getArguments().get(0);
+                            while (argument instanceof ParenthesizedTree)
+                                argument = ((ParenthesizedTree) argument).getExpression();
+                            if (argument instanceof LiteralTree && ((LiteralTree) argument).getValue() instanceof String) {
+                                String value = (String) ((LiteralTree) argument).getValue();
+                                if (ownedClasses.contains(value)) {
+                                    int from = start(argument), to = end(argument);
+                                    boolean plain = source.substring(from, to).equals("\"" + value + "\"");
+                                    // Keep literals separate from Java symbol bindings. Escaped
+                                    // spellings are recorded for refusal if their class is renamed.
+                                    out.println((plain ? "S" : "U") + "\t" + file + "\t" +
+                                        (plain ? from + 1 : from) + "\t" + (plain ? to - 1 : to) +
+                                        "\tC:" + value + "\t" + value);
+                                }
+                            }
+                        }
+                    }
+                }
+                return super.visitMethodInvocation(node, unused);
+            }
             @Override public Void visitClass(ClassTree node, Void unused) {
                 Element element = trees.getElement(getCurrentPath());
                 String name = node.getSimpleName().toString();
@@ -264,6 +299,8 @@ public final class ReadableJava {
 
     public static void main(String[] args) throws Exception {
         // root, sorted relative file list, report, compiled-class directory, classpath
+        if (args.length != 5 && !(args.length == 6 && args[5].equals("--class-name-literals")))
+            throw new IllegalArgumentException("Expected five audit paths and optional --class-name-literals");
         Path root = Paths.get(args[0]).toAbsolutePath().normalize();
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         if (compiler == null) throw new IllegalStateException("A JDK is required");
@@ -280,6 +317,7 @@ public final class ReadableJava {
             task.analyze();
             requireClean(diagnostics);
             ReadableJava reader = new ReadableJava(task, root, out);
+            reader.auditClassNameLiterals = args.length == 6;
             reader.declarations(units);
             for (CompilationUnitTree unit : units) reader.scan(unit);
             reader.overrides();

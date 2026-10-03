@@ -34,8 +34,10 @@ export function sourceIdentity(files) {
 
 function readAudit(file) {
   const rows = fs.readFileSync(file, 'utf8').trimEnd().split('\n').map(line => line.split('\t'));
-  return {bindings: rows.filter(row => row[0] !== 'O').map(([kind, file, start, end, key, name]) =>
-    ({kind, file, start: Number(start), end: Number(end), key, name})),
+  const positions = rows => rows.map(([kind, file, start, end, key, name]) =>
+    ({kind, file, start: Number(start), end: Number(end), key, name}));
+  return {bindings: positions(rows.filter(row => row[0] === 'D' || row[0] === 'R')),
+  classNameLiterals: positions(rows.filter(row => row[0] === 'S' || row[0] === 'U')),
   overrides: rows.filter(row => row[0] === 'O').map(([, child, parent]) => ({child, parent}))};
 }
 
@@ -135,6 +137,20 @@ function verifyBindings(before, after, files, editsByFile, mapIdentity) {
     throw new Error('Override relationships changed after renaming');
 }
 
+function verifyClassNameLiterals(before, after, files, editsByFile, mapIdentity) {
+  const expected = before.map(binding => {
+    const edits = editsByFile.get(binding.file) ?? [];
+    const shift = offset => edits.filter(edit => edit.end <= offset)
+      .reduce((delta, edit) => delta + edit.renamed.length - (edit.end - edit.start), 0);
+    return [binding.kind, files.get(binding.file), binding.start + shift(binding.start),
+      binding.end + shift(binding.end), mapIdentity(binding.key)];
+  });
+  const actual = after.map(binding => [binding.kind, binding.file, binding.start, binding.end, binding.key]);
+  const ordered = rows => rows.map(row => JSON.stringify(row)).sort(order);
+  if (JSON.stringify(ordered(expected)) !== JSON.stringify(ordered(actual)))
+    throw new Error('Owned Class.forName literal identity or position changed unexpectedly');
+}
+
 export function generateReadable({input, output, rulesFile, classpath = '', check = false}) {
   input = path.resolve(input);
   output = path.resolve(output);
@@ -144,6 +160,9 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
   const inventory = sourceInventory(input);
   const rulesBytes = fs.readFileSync(rulesFile);
   const rules = JSON.parse(rulesBytes);
+  if (rules.classNameLiterals !== undefined &&
+      rules.classNameLiterals.policy !== 'direct-owned-class-for-name')
+    throw new Error('Unsupported class-name literal policy');
   const inputIdentity = sourceIdentity(inventory);
   if (rules.inputTreeSha256 !== inputIdentity) throw new Error(`Source identity mismatch: expected ${rules.inputTreeSha256}, got ${inputIdentity}`);
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'readable-java-'));
@@ -159,7 +178,8 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
       const classes = path.join(temporary, name + '-classes');
       fs.mkdirSync(classes);
       fs.writeFileSync(list, files.map(file => file.path).join('\n') + '\n');
-      captureProcess(java, ['-Xmx1024m', '-cp', compiledHelper, 'ReadableJava', root, list, report, classes, classpath]);
+      captureProcess(java, ['-Xmx1024m', '-cp', compiledHelper, 'ReadableJava', root, list, report, classes, classpath,
+        '--class-name-literals']);
       return readAudit(report);
     }
     const before = audit(input, inventory, 'original');
@@ -176,6 +196,24 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
       edits.push({start: binding.start, end: binding.end, symbol: binding.key, original: binding.name, renamed});
       editsByFile.set(binding.file, edits);
     }
+    for (const edits of editsByFile.values()) edits.sort((a, b) => a.start - b.start);
+    let classNameLiteralEdits = 0;
+    for (const binding of before.classNameLiterals) {
+      const renamed = mapIdentity(binding.key).slice(2);
+      if (renamed === binding.name) continue;
+      if (!rules.classNameLiterals)
+        throw new Error(`Class rename requires explicit Class.forName literal policy: ${binding.key}`);
+      if (binding.kind !== 'S')
+        throw new Error(`Escaped Class.forName literal cannot be renamed: ${binding.key}`);
+      const edits = editsByFile.get(binding.file) ?? [];
+      edits.push({start: binding.start, end: binding.end, symbol: binding.key,
+        original: binding.name, renamed, kind: 'class-name-literal'});
+      editsByFile.set(binding.file, edits);
+      classNameLiteralEdits++;
+    }
+    if (rules.classNameLiterals?.expectedEdits !== undefined &&
+        rules.classNameLiterals.expectedEdits !== classNameLiteralEdits)
+      throw new Error('Class.forName literal edit count differs from the reviewed guard');
     for (const edits of editsByFile.values()) edits.sort((a, b) => a.start - b.start);
     const files = new Map();
     for (const file of inventory) {
@@ -196,6 +234,7 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
     }
     const after = audit(sources, sourceInventory(sources), 'renamed');
     verifyBindings(before, after, files, editsByFile, mapIdentity);
+    verifyClassNameLiterals(before.classNameLiterals, after.classNameLiterals, files, editsByFile, mapIdentity);
     const explicitRules = rules.renames.map(rule => ({...rule, renamedSymbol: mapIdentity(rule.symbol)})).sort((a, b) => order(a.symbol, b.symbol));
     const symbols = before.bindings.filter(row => row.kind === 'D').map(row => ({
       symbol: row.key, renamedSymbol: mapIdentity(row.key), originalName: row.name,
@@ -221,7 +260,9 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
         return {name: path.basename(file), sha256: sha256(fs.readFileSync(file))};
       }),
       verification: {originalCompiles: true, renamedCompiles: true, bindingsCompared: before.bindings.length,
-        overrideFamiliesChecked: before.overrides.length, overrideRelationshipsPreserved: true, runtimeEquivalenceVerified: false}};
+        overrideFamiliesChecked: before.overrides.length, overrideRelationshipsPreserved: true,
+        classNameLiteralBindingsCompared: before.classNameLiterals.length, classNameLiteralEdits,
+        runtimeEquivalenceVerified: false}};
     fs.writeFileSync(path.join(generated, 'mapping.json'), JSON.stringify(mapping, null, 2) + '\n');
     fs.writeFileSync(path.join(generated, 'provenance.json'), JSON.stringify(provenance, null, 2) + '\n');
     const table = ['# Readable Java symbol map', '', 'Generated from explicit rules; original names remain lookup identities.', '',
@@ -246,8 +287,11 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
       fs.mkdirSync(path.dirname(output), {recursive: true});
       fs.cpSync(generated, output, {recursive: true, errorOnExist: true, force: false});
     }
-    return {files: inventory.length, rules: explicitRules.length, edits: [...editsByFile.values()].reduce((n, edits) => n + edits.length, 0),
-      bindingsCompared: before.bindings.length, inputTreeSha256: inputIdentity, outputTreeSha256: provenance.outputTreeSha256, check};
+    const editCount = [...editsByFile.values()].reduce((n, edits) => n + edits.length, 0);
+    return {files: inventory.length, rules: explicitRules.length, edits: editCount,
+      identifierEdits: editCount - classNameLiteralEdits,
+      bindingsCompared: before.bindings.length, classNameLiteralEdits,
+      inputTreeSha256: inputIdentity, outputTreeSha256: provenance.outputTreeSha256, check};
   } finally {
     fs.rmSync(temporary, {recursive: true, force: true});
   }
