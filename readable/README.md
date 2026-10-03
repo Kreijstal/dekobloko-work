@@ -36,7 +36,28 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current pass 121
+## Current pass 122
+
+Pass 122 adds 214 guarded names: 13 classes, 17 fields, 32 methods,
+49 parameters and 103 locals. The logo loading path now reads through
+`LogoPreparationSupport.prepareLogoAnimation`, `EntityMotionSupport.decodeLogoAudio`,
+`FullscreenSupport.prepareMeshSpecularResponse`, `MidiNoteMixer.prepareLogoGlowRaster`
+and `LogoCompositor.drawLogoAnimation`. The shared owners also expose snapshot
+retention, fullscreen exit, username-query reuse, common UI fonts, cache handles,
+name separators and configured timer rate. All parameters and locals in the
+13 audited owners have names. The top/bottom final-frame slices, scene/glow
+rasters, packet buffer and encrypted scratch have source-supported roles.
+All 10,324 previous complete rules, raw bodies, local ordinals, bytecode and
+source/tool/native trace pins remain. The export has 10,538 rules and 82,881
+identifier edits. All 303 raw/readable sources compile, compare 136,612 bindings
+and preserve 388 override relationships. Class coverage is 260 renamed, one
+meaningful original name and 42 opaque names. Six large labeled bodies and
+207 block labels remain. Configured update rate is a timer setting, not measured
+presented FPS. Mixed-purpose statics stay on their owners. This naming pass adds
+no whole-game, successful asset/audio/AWT fullscreen, live server, browser/phone
+or heap/FPS equivalence claim.
+
+## Previous progression and session pass 121
 
 Pass 121 adds 286 guarded names: 14 classes, 19 fields, 24 methods,
 44 parameters and 185 locals. The game now reads through `MatchCandidateSupport`,
