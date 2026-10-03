@@ -36,7 +36,27 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current pass 118
+## Current pass 119
+
+Pass 119 replaces 67 capture temporaries with proven postfix array reads in
+26 methods across seven files, including font glyph-mask conditions. The raw
+source shrinks by 201 lines to 76,320. The dictionary retires 47 deleted capture
+names and migrates 220 guarded local identities among 260 surviving local ordinal
+changes; every surviving semantic name, original spelling and evidence remains.
+There are 9,889 rules and 78,860 identifier edits. All 303 raw/readable files
+compile, compare 136,612 bindings and preserve 388 override relationships.
+A source proof checks complete expected token streams, predicted bindings and
+local migrations. The six focused generic groups pass, including 12,096 new
+native read comparisons and eight independent oracles; the existing 244,944
+store comparisons also pass. Clean tracked decompiler source reproduces every
+Java and diagnostics byte. Null/bounds/unboxing failures, counter overflow,
+short-circuit and later condition effects, and cleanup/monitor order remain.
+Repeated conditions, earlier effects, field/getter arrays, compound assignments
+and escaping captures retain their statements. Bytecode is unchanged. There
+are still 76 opaque class names, six large labeled bodies and 207 block labels;
+whole-game, assets, browser/phone and memory/FPS acceptance remain unverified.
+
+## Previous naming and ownership pass 118
 
 The export has 9,936 rules: 226 classes, 1,356 fields, 970 methods,
 2,896 parameters and 4,488 local declarations. This pass adds 120 rules,
@@ -68,6 +88,7 @@ bodies. Full readability and browser/phone FPS/heap targets remain unfinished.
 ```sh
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node scripts/test-readable-java.mjs
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test readable/tests/test-geoblox-rule-builder.mjs readable/tests/test-geoblox-migration-source.mjs readable/tests/test-geoblox-text-rules.mjs
+JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-array-reads-source.mjs /path/to/java-tools
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-array-increments-source.mjs /path/to/java-tools
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-post-guard-source.mjs /path/to/java-tools
 ```
@@ -83,11 +104,11 @@ probes with the exact verified transformed class tree as their argument:
 Each checks the transformed-class identity and retained native trace pins,
 then compares raw and readable source variants within its documented scope.
 
-The current decompiler-source SHA-256 remains
-`0a8df4a6b454c7dbbfdf824aa8a726157459685c26ca9d426cc6200b3bd29b30`:
+The current decompiler-source SHA-256 is
+`c5ea1520d6be43f14bf44349fed7ffdf0e08be03c5e14cc59db89df4155a45e3`:
 
 ```sh
-git -C /path/to/java-tools archive --format=tar 97a6e5e3b10426f11c59814d8fe5243ac1127a6e | sha256sum
+git -C /path/to/java-tools archive --format=tar 98292d12a3026b1c08ce589e83feb9510746564c | sha256sum
 ```
 
 That hash identifies tracked decompiler source, not a game JAR.
