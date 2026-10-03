@@ -24,7 +24,8 @@ unmanaged files in it prevent replacement. Temporary check copies are removed.
 
 [geoblox-rules.json](geoblox-rules.json) is the only maintained naming manifest.
 It pins the raw Git source and decompiler source tar, every original JVM spelling
-and local ordinal, source/native evidence and executable workflow file hashes.
+and local ordinal, source/native evidence and executable workflow file hashes. The optional
+`classNameLiterals` policy also forms part of the explicit source-change identity.
 Explicit `ruleChanges` preserve every unaffected complete rule. The previous
 manifest is read from Git, with its repository identity and SHA-256 checked;
 the first Deko-owned pass refers to the last FunOrb-owned manifest. A source or
@@ -36,7 +37,35 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current pass 122
+## Current pass 123
+
+Pass 123 names the five previously held reflective implementations:
+`AwtMouseWheelListener`, `BufferedImageRasterBuffer`, `AwtFullscreenBridge`,
+`AwtCursorBridge` and `LegacyDirectSoundBridge`. It adds 58 guarded naming rules:
+five classes, six fields, two methods, 18 parameters and 27 locals. All 10,538
+previous complete rules and raw/decompiler/bytecode inputs remain. The export
+has 10,596 rules and 83,103 identifier edits, plus 11 separately recorded class-name
+literal edits. All 303 sources compile, compare 136,612 Java bindings and
+388 override relationships; 11 literal target/position records are checked
+separately. Class coverage is 265 renamed, one meaningful original name and
+37 opaque names. Six large labeled bodies and 207 block labels remain.
+
+The generic naming dependency now supports an explicit, count-guarded policy
+for direct `java.lang.Class.forName` literals targeting owned classes. It proves
+the called Java method through javac, leaves ordinary strings/comments and
+public reflective member spellings unchanged, refuses escaped renamed targets,
+and reverses the new literal edits through the same dictionary. Dynamic strings,
+concatenation, `ClassLoader.loadClass` and reflective member-name rewriting are
+outside this policy. Twelve generic tests and 25 publication tests pass. All
+eight native probes retain fixed hashes, including 122 new headless checks for
+five class loads/member contracts, wheel factory/event/guard/drain behavior and
+preferred buffered-raster factory/shared pixel/draw behavior. Hardware fullscreen,
+Robot, COM audio, full assets/game/server/browser/phone and heap/FPS remain
+unverified. The raw decompiler source/archive and prior seven probe pins do not
+change; the naming dependency and its new literal policy have an explicit
+source-change record.
+
+## Previous logo and UI support pass 122
 
 Pass 122 adds 214 guarded names: 13 classes, 17 fields, 32 methods,
 49 parameters and 103 locals. The logo loading path now reads through
@@ -161,12 +190,13 @@ JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-post-guard-s
 
 The structural proofs read immutable raw/tool Git commits, compare every
 expected token stream, compile all sources, check declaration migrations and
-ordered bindings, and remove their temporary exports. Run the seven native
+ordered bindings, and remove their temporary exports. Run the eight native
 probes with the exact verified transformed class tree as their argument:
 `test-geoblox-gameplay.mjs`, `test-geoblox-match-scoring.mjs`,
 `test-geoblox-text-write.mjs`, `test-geoblox-result-sequence.mjs`,
-`test-geoblox-nine-slice.mjs`, `test-geoblox-result-helpers.mjs`, and
-`test-geoblox-achievements.mjs`, all under `readable/tests`.
+`test-geoblox-nine-slice.mjs`, `test-geoblox-result-helpers.mjs`,
+`test-geoblox-achievements.mjs`, and `test-geoblox-reflection.mjs`, all under
+`readable/tests`.
 Each checks the transformed-class identity and retained native trace pins,
 then compares raw and readable source variants within its documented scope.
 
@@ -178,3 +208,29 @@ git -C /path/to/java-tools archive --format=tar 98292d12a3026b1c08ce589e83feb951
 ```
 
 That hash identifies tracked decompiler source, not a game JAR.
+
+## Direct reflected class names
+
+`classNameLiterals` opts into `direct-owned-class-for-name` with an exact expected
+edit count. The Java audit resolves the selected `java.lang.Class.forName` overload
+and recognizes literal binary names declared by the same source corpus. Literal
+records are separate from declaration/reference bindings; the five-path audit CLI
+keeps its existing D/R/O format unless `--class-name-literals` is requested.
+The named export records 11 such edits in `mapping.json` with
+`kind: "class-name-literal"`; the same restorer recovers exact raw bytes.
+Renaming a directly reflected class without the policy, or changing the reviewed
+count, fails before output publication. Escaped target literals fail when their
+class would be renamed. Ordinary strings, comments, external class names, dynamic
+arguments and public `getMethod`/`getDeclaredMethod` string contracts are preserved.
+
+The dependency source snapshot is now the six tracked generic files listed by
+`tools/PIN.json`'s `sourceArchive.reproduce`, pinned to Deko Git history rather than
+the old adaptation bundle. The manifest binds its repository, revision, file
+hashes and source archive. This does not change the decompiler source SHA-256.
+The reflection probe checks both real preferred factories: a renamed target must
+produce its intended wheel/raster implementation, rather than silently returning
+null or using the raster fallback. Its independent headless assertions cover
+pixel sharing/drawing, signed wheel overflow, event consumption, failed null-event
+drain, accumulator reset and listener removal guard timing. The three other
+bridges are loaded and their constructors/member signatures are resolved, but
+hardware-dependent operations are not exercised.

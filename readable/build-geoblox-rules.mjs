@@ -11,7 +11,8 @@ const sorted = rules => rules.slice().sort((a, b) => a.symbol < b.symbol ? -1 : 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const sha256 = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
 const sourceIdentity = rules => ({source: rules.source, generators: rules.generators,
-  inputTreeSha256: rules.inputTreeSha256, readabilityWorkflow: rules.readabilityWorkflow ?? null});
+  inputTreeSha256: rules.inputTreeSha256, readabilityWorkflow: rules.readabilityWorkflow ?? null,
+  classNameLiterals: rules.classNameLiterals ?? null});
 
 // One current manifest. The previous reviewed rules live in Git, not copied
 // version files. Explicit differences preserve every unaffected guarded name.
@@ -100,6 +101,16 @@ export function validateManifest(rules, directory = root) {
   }
   const toolRoot = path.join(directory, 'tools');
   const tool = JSON.parse(fs.readFileSync(path.join(toolRoot, 'PIN.json')));
+  const namingTool = rules.generators.namingTool;
+  if (namingTool && (namingTool.repository !== tool.adaptedToolRepository ||
+      namingTool.commit !== tool.adaptedToolCommit ||
+      !same(namingTool.files, tool.files) ||
+      namingTool.sourceArchive?.sha256 !== tool.sourceArchive?.sha256))
+    throw new Error('Current naming dependency differs from its pinned identity');
+  if (rules.classNameLiterals && (!namingTool ||
+      rules.classNameLiterals.policy !== 'direct-owned-class-for-name' ||
+      !Number.isInteger(rules.classNameLiterals.expectedEdits) || rules.classNameLiterals.expectedEdits < 0))
+    throw new Error('Invalid guarded class-name literal policy');
   for (const file of ['readable-java.mjs', 'lib/ReadableJava.java', 'lib/capture-process.mjs'])
     if (hash(fs.readFileSync(path.join(toolRoot, file))) !== tool.files[file])
       throw new Error(`Frozen naming tool changed: ${file}`);

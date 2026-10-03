@@ -82,6 +82,18 @@ test('source and generator changes need a current explicit migration record', ()
     data => { data.generators.javaTools.commit = '0'.repeat(40); },
   ]) assert.throws(() => fixture(change), /explicit sourceChange/);
 });
+test('class-name literal policy and naming dependency require explicit migration', () => {
+  for (const change of [
+    data => { data.classNameLiterals.expectedEdits++; },
+    data => { delete data.classNameLiterals; },
+    data => { data.generators.namingTool.commit = '0'.repeat(40); },
+  ]) assert.throws(() => fixture(change), /explicit sourceChange/);
+  assert.throws(() => fixture((_data, directory) => {
+    const file = path.join(directory, 'tools/PIN.json');
+    const pin = JSON.parse(fs.readFileSync(file)); pin.adaptedToolCommit = '0'.repeat(40);
+    fs.writeFileSync(file, JSON.stringify(pin));
+  }), /naming dependency differs/);
+});
 test('source evidence refuses duplicate entries, traversal and malformed hashes', () => {
   for (const change of [
     data => { data.publication.sourceEvidence.push(data.publication.sourceEvidence[0]); },
