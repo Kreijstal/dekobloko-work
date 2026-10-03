@@ -37,7 +37,32 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current pass 123
+## Current pass 124
+
+Pass 124 adds 306 guarded names: ten classes, 23 fields, 32 methods,
+63 parameters and 178 locals. All 10,596 previous complete rules and source,
+naming-tool, decompiler, bytecode and native fixture pins remain. The export now
+has 10,902 rules and 84,798 identifier edits, with the same 11 separately recorded
+class-name literal edits. All parameters and locals in the ten audited owners,
+plus the selected cross-owner text primitives, have guarded semantic names.
+Both 303-file corpora compile and compare 136,612 bindings, 388 override
+relationships and 11 reflected class-literal records. Dictionary reversal recovers
+all 303 pinned raw files byte-for-byte. Class coverage is 275 renamed, one meaningful
+original name and 27 opaque top-level names; six large labeled bodies and 207
+plain-block labels remain.
+
+The named chains cover exact-size byte-array pool acquisition/storage, corrected
+wall-clock sampling and session elapsed time, shared GMT cookie timestamps,
+settings-cookie writing, UTF-16 reversal, ASCII letter/digit predicates, signed
+radix parsing, selected-range concatenation, character replacement and sprite
+loading. Shared statics remain on their original owners. The calendar remains
+mutable/shared; wrong guards, recursion, partial writes, numeric flags, arithmetic
+overflow, strings and exception/monitor boundaries remain unchanged. No new live
+clock/cookie/archive/platform/game/browser/phone performance coverage is added.
+The 25 publication checks and all eight fixed native probes pass within their
+existing scopes; all sources reproduce from clean committed checkouts.
+
+## Previous reflected implementation pass 123
 
 Pass 123 names the five previously held reflective implementations:
 `AwtMouseWheelListener`, `BufferedImageRasterBuffer`, `AwtFullscreenBridge`,
