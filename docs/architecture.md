@@ -15,6 +15,8 @@ belongs here, and nothing game-specific belongs there.
 |---|---|
 | Bytecode parsing, transforms, decompiler, JIT, Wasm tiers, `jvm-cli.js` | `java-tools` |
 | Game launchers, gamepack retrieval, JS5 services, per-game profiles, protocol servers | this repository |
+| Per-game readable naming manifests, reproduction/export drivers, proof fixtures | this repository (`readable/`) |
+| Published raw/readable Java, dictionaries and export provenance | `funorb-decompiled` |
 
 Game-specific compatibility lives in named, documented adapters —
 `stubs/src/`, `apps/launcher/src/local/awt/`, `scripts/pipeline/profiles/` —

@@ -10,6 +10,15 @@ repository [`java-tools`](https://github.com/Kreijstal/java-tools). Nothing
 generic belongs here, and nothing game-specific belongs there — see
 [docs/architecture.md](docs/architecture.md).
 
+## Readable Java publication
+
+The [GeoBlox readable workflow](readable/README.md) owns the current naming
+manifest, export/reproduction scripts and proof fixtures here in Deko.
+`funorb-decompiled` contains the generated Java, dictionary and provenance;
+`blank-github-cloner` contains no Java exports. Run
+`node readable/reproduce-geoblox.mjs --check` against a sibling publication
+checkout, or select it with `FUNORB_DECOMPILED_DIR`.
+
 ## Prerequisites
 
 | Component | Needed for |
