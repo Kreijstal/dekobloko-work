@@ -36,7 +36,28 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current pass 119
+## Current pass 120
+
+Pass 120 adds 149 guarded names: seven classes, four fields, 15 methods,
+28 parameters and 95 locals. The main gameplay helper owners now read as
+`EntityMotionSupport`, `EntityCollisionSupport`, `EntitySpawnSupport`,
+`BoardReconciliationSupport`, `EntityContactSupport`, `EntityLinkSupport` and
+`AvatarFeedbackSupport`. These describe their gameplay helper families; unrelated
+static functions and globals remain on their original owners. The contact-mask
+scan now names its crop bounds, pixel indices, row skips, kind-two mismatch,
+pooled conversion entity, avatar sentinel handling and exception context.
+The remaining link-operation diagnostics, canvas listener cleanup, ranked-list
+index sorting, applet quit navigation and widget gradient-border parameters
+also have source-supported names. Raw sources, local ordinals, bytecode,
+decompiler/naming-tool pins and native probe source/trace pins are unchanged;
+all 9,889 previous complete rules survive. The export has 10,038 rules and
+79,782 identifier edits. All 303 raw/readable files compile, compare 136,612
+bindings and preserve 388 override relationships. Class coverage is 233 renamed,
+one meaningful original name and 69 opaque names. The six large labeled bodies
+and 207 block labels remain. Whole-game/assets, applet navigation, live network,
+browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous array-read recovery pass 119
 
 Pass 119 replaces 67 capture temporaries with proven postfix array reads in
 26 methods across seven files, including font glyph-mask conditions. The raw
