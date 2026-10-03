@@ -145,6 +145,31 @@ function assetEntry(url, file, name, virtualPath = name) {
   return {name, virtualPath, url: url + '?v=' + version, version, size: stat.size};
 }
 
+// Development only: a JIT code pack produced on another machine by
+// scripts/build-code-pack.mjs for the bundle this server serves. Off unless
+// GAME_LIBRARY_CODE_PACK names the file; even then a page uses it only with
+// ?codePack=1 (replay) or ?codePack=verify (compile and compare), and the
+// page refuses a pack whose identity does not match its runtime, jar and
+// options. Served gzip-compressed (the raw pack is mostly source text).
+const codePackPath = process.env.GAME_LIBRARY_CODE_PACK
+  ? path.resolve(process.env.GAME_LIBRARY_CODE_PACK) : null;
+let codePackGzip = null;
+
+function codePackEntry() {
+  if (!codePackPath || !fs.existsSync(codePackPath)) return null;
+  const version = fileVersion(codePackPath);
+  return {url: '/code-pack.bin?v=' + version, version, size: fs.statSync(codePackPath).size};
+}
+
+function codePackCompressed() {
+  const stat = fs.statSync(codePackPath);
+  if (!codePackGzip || codePackGzip.mtimeMs !== stat.mtimeMs || codePackGzip.size !== stat.size) {
+    codePackGzip = {mtimeMs: stat.mtimeMs, size: stat.size,
+      bytes: zlib.gzipSync(fs.readFileSync(codePackPath), {level: 1})};
+  }
+  return codePackGzip.bytes;
+}
+
 function browserAssetManifest(game) {
   const bundlePath = path.join(bundleDir, bundleScript);
   const jarPath = gameJarPath(game);
@@ -162,6 +187,7 @@ function browserAssetManifest(game) {
         game.internalName === 'dekobloko' ? 9 : null,
     },
     runtime: assetEntry('/' + bundleScript, bundlePath, bundleScript),
+    ...(codePackPath ? {codePack: codePackEntry()} : {}),
     jar: fs.existsSync(jarPath) ? assetEntry(
       '/game-jars/' + game.internalName + '.jar',
       jarPath,
@@ -1219,6 +1245,18 @@ const launcher = `<!doctype html>
         const debug = new JVMDebug.BrowserJVMDebug();
         window.jvmDebug = debug;
         const query = new URLSearchParams(location.search);
+        // Defaults for the A/B switches below, from browser measurements on
+        // the 900 MHz host; a query value always wins (?wasmDeep=0,
+        // ?checkedLeaf=0 turn them off). 2026-10-03, no method named:
+        // Geoblox Instructions 17.4-19.1 FPS (checked leaves + row batching
+        // in JS alone: 11.6-13.1), first frame unchanged; Deko Bloko menu
+        // 3.1-5.3 / gameplay 4.7-7.5 against 3.2-4.2 / 4.0-6.4 without.
+        const pageDefaults = {
+          checkedLeaf: '1',
+          wasmDeep: '1',
+        };
+        const pageOption = (name) => query.has(name)
+          ? query.get(name) : (pageDefaults[name] ?? null);
         const optimizerMode = query.get('mode') || 'structured';
         const structuredSsa = optimizerMode !== 'baseline';
         const wasmFirst = optimizerMode === 'wasm';
@@ -1288,8 +1326,56 @@ const launcher = `<!doctype html>
           // the menu 214-268 s instead of 109-114 s, and the Start Game freeze
           // did not improve beyond the bound above.
           ...(query.has('compileBudget')
-            ? {postMainCompileBudgetMs: Number(query.get('compileBudget'))} : {})
+            ? {postMainCompileBudgetMs: Number(query.get('compileBudget'))} : {}),
+          // ?checkedLeaf=1 publishes the checked-leaf direct positional tier
+          // (java-tools jit.checkedLeafDirectPositional): call-free counted
+          // loop nests whose array range guards are hoisted to the entry run
+          // as one frame-free body without safe-point polls. The runtime
+          // keeps it off until a browser A/B shows a win; this is that A/B
+          // switch (2026-09-30, Geoblox sprite blit dm.b([I[IIIIIIII)V).
+          ...(pageOption('checkedLeaf') === '1'
+            ? {checkedLeafDirectPositional: true} : {}),
+          // ?wasmDeep=1: the structured Wasm backend splices call sites in
+          // live handler ranges, static calls inside spliced bodies and
+          // counted loops, and preparation gives a Wasm module to every
+          // prepared loop method with a call it splices inside a loop; the
+          // module owns the method's entry when its only exits are inlined
+          // guard-miss stubs (JitCompiler isDeepInlineWasmCandidate /
+          // hasPreparedDeepInlineWasmUpgrade). ?wasmMethods=Cls.m(desc),...
+          // remains an explicit override (preparedPartialWasmMethods).
+          // With it, linked Wasm calls may enter synchronized methods (the
+          // import takes the receiver's or class's monitor; tested by
+          // java-tools test/wasmSynchronizedCalls.test.js) and casts compile
+          // in place. Deko Bloko's audio channel class is synchronized
+          // throughout, so without these its mixer's module left Wasm at
+          // nearly every call and was retired as an exit storm.
+          ...(pageOption('wasmDeep') === '1' ? {
+            wasmSynchronizedInstanceLinks: true,
+            wasmSynchronizedStaticLinks: true,
+            wasm: {
+              ...((debug.debugController.options.jit || {}).wasm || {}),
+              deepInline: true,
+              checkcast: true,
+            },
+          } : {}),
+          ...(pageOption('wasmMethods') ? {
+            preparedPartialWasmMethods: pageOption('wasmMethods').split(',')
+              .filter(Boolean),
+          } : {}),
+          // ?jitOff=a,b turns named boolean jit options off (A/B bisection).
+          ...Object.fromEntries((query.get('jitOff') || '').split(',')
+            .filter(Boolean).map((name) => [name, false]))
         };
+        // ?wasmHeapMb=N sizes the Wasm heap that primitive arrays live in
+        // (the runtime reserves it up front; untouched pages cost nothing).
+        // A Wasm body reads an array as raw memory only if it was allocated
+        // there; Geoblox fills the 128 MB default during boot, after which
+        // new arrays fall back to plain typed arrays and import access.
+        // ?wasmDeep=1 defaults it to 512 so the framebuffer and every sprite
+        // pixel array the painter touches stay in Wasm memory.
+        const wasmHeapMb = Number(query.get('wasmHeapMb') ||
+          (pageOption('wasmDeep') === '1' ? 512 : 0));
+        if (wasmHeapMb > 0) debug.debugController.options.wasmHeapMb = wasmHeapMb;
         // Ahead-of-main preparation, complete, on by default. The runtime is
         // written around compiling everything before main() ("a later compile
         // would be a stall with no upside"); this page hosts the JVM through
@@ -1839,6 +1925,80 @@ const launcher = `<!doctype html>
           delete debug.debugController.options.jreOverrides.um;
         }
         configureApplet(debug.debugController, game, {simpleMode});
+        // Development only (see GAME_LIBRARY_CODE_PACK in the server): with
+        // ?codePack=1 the ahead-of-main preparation restores the JIT output a
+        // pack recorded for exactly this runtime, jar and set of options, and
+        // compiles whatever it cannot restore; ?codePack=verify compiles
+        // everything and compares each result with the pack. Any mismatch
+        // leaves the ordinary local compile in place. Results:
+        // window.__codePack and the code_pack telemetry event.
+        let runOptions = {};
+        const codePackMode = query.get('codePack') === 'verify' ? 'verify'
+          : query.get('codePack') === '1' ? 'replay' : null;
+        if (codePackMode && !assetManifest.codePack) {
+          console.warn('codePack requested, but the server has no GAME_LIBRARY_CODE_PACK');
+          telemetry('code_pack_unavailable', {});
+        } else if (codePackMode) {
+          const codePackState = window.__codePack = {mode: codePackMode, status: 'loading'};
+          try {
+            const codePackModule = await import('/browser-loader/code-pack.mjs');
+            setProgress(10, 'Loading the code pack…',
+              'Development mode: restoring prepared JIT output.', 6, true);
+            const fetchStart = performance.now();
+            const response = await fetch(assetManifest.codePack.url);
+            if (!response.ok) throw new Error('code pack request failed: ' + response.status);
+            // Only the store keeps the pack, and it lets go once preparation
+            // is over (the hook below outlives this block for the session).
+            let packBytes = new Uint8Array(await response.arrayBuffer());
+            const decodeStart = performance.now();
+            let pack = codePackModule.decodeCodePack(packBytes);
+            const identity = codePackModule.codePackIdentity({
+              runtimeVersion: assetManifest.runtime.version,
+              jarVersion: assetManifest.jar.version,
+              options: debug.debugController.options,
+            });
+            Object.assign(codePackState, {
+              fetchMs: Math.round(decodeStart - fetchStart),
+              decodeMs: Math.round(performance.now() - decodeStart),
+              bytes: packBytes.length, entries: pack.size, identity, packIdentity: pack.identity,
+              configuration: codePackModule.codePackConfiguration(debug.debugController.options),
+            });
+            const packIdentity = pack.identity;
+            const store = codePackModule.sameIdentity(packIdentity, identity)
+              ? codePackModule.createCodePackStore(codePackMode, pack) : null;
+            pack = null;
+            packBytes = null;
+            if (!store) {
+              codePackState.status = 'mismatch';
+              console.warn('code pack identity differs; compiling locally', packIdentity, identity);
+              telemetry('code_pack_mismatch', {pack: packIdentity, page: identity});
+            } else {
+              codePackState.status = 'installed';
+              codePackState.store = store.stats;
+              runOptions = {beforeRun: ({jvm}) => codePackModule.installCodePack(jvm, {
+                identity, store,
+                onReport: (result, stats) => {
+                  codePackState.status = 'prepared';
+                  codePackState.preparedCache = result.report.preparedCache;
+                  const census = jvm.jit.syncCompileCensus();
+                  codePackState.preMainSyncCompileCount = census.preMainSyncCompileCount;
+                  codePackState.preMainSyncCompileMs = Math.round(census.preMainSyncCompileMs);
+                  telemetry('code_pack', {mode: codePackMode,
+                    fetchMs: codePackState.fetchMs, decodeMs: codePackState.decodeMs,
+                    bytes: codePackState.bytes, store: stats,
+                    preparedCache: result.report.preparedCache,
+                    preMainSyncCompileCount: census.preMainSyncCompileCount,
+                    preMainSyncCompileMs: Math.round(census.preMainSyncCompileMs)});
+                },
+              })};
+            }
+          } catch (error) {
+            codePackState.status = 'error';
+            codePackState.error = String(error && error.message || error);
+            console.warn('code pack unavailable; compiling locally', error);
+            telemetry('code_pack_error', {message: codePackState.error});
+          }
+        }
         appletStartedAt = performance.now();
         setProgress(10, 'Starting the Java applet…',
           'The JVM is running. Game asset preparation has not started yet.', 6, true);
@@ -1936,7 +2096,7 @@ const launcher = `<!doctype html>
           clearInterval(elapsedTimer);
           setTimeout(() => loader.classList.add('complete'), 450);
         }, 100);
-        const clientRun = debug.run(game.mainClass);
+        const clientRun = debug.run(game.mainClass, runOptions);
         if (optimizerMode === 'interpreter' || optimizerMode === 'no-wasm') {
           debug.debugController.jvm.jit.wasmJit.enabled = false;
         }
@@ -2231,6 +2391,17 @@ const server = http.createServer((request, response) => {
       gameById('dekobloko');
     response.writeHead(200, {'Content-Type': 'application/json', 'Cache-Control': 'no-store'});
     response.end(JSON.stringify(game ? cacheFilesForGame(game) : []));
+    return;
+  }
+  if (pathname === '/code-pack.bin' && codePackPath && fs.existsSync(codePackPath)) {
+    const body = codePackCompressed();
+    response.writeHead(200, {
+      'Content-Type': 'application/octet-stream',
+      'Content-Encoding': 'gzip',
+      'Content-Length': body.length,
+      'Cache-Control': 'no-store'
+    });
+    response.end(body);
     return;
   }
   const bundleName = path.basename(pathname);

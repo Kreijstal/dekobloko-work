@@ -30,6 +30,21 @@ const HTTP_PROXY_PORT = Number(
 );
 const RESULT_PREFIX = 'ALTERORB_JVMJS_RESULT ';
 
+// The guest resolves its cache files relatively -- Hook.cacheRedirect hands
+// back `new File(name)` -- so whatever directory the worker process is in IS
+// the cache the guest reads and WRITES. That makes the default
+// ~/.alterorb/caches/<game> a live, mutable input: a normal run rewrites it.
+// ALTERORB_JVMJS_CACHE_ROOT moves both halves together -- the worker's working
+// directory and the parent's read-chain fallback -- so a run can be pointed at
+// a disposable copy. Moving only one of them would silently mix two caches.
+const CLIENT_CACHE_ROOT = process.env.ALTERORB_JVMJS_CACHE_ROOT
+  ? path.resolve(process.env.ALTERORB_JVMJS_CACHE_ROOT)
+  : path.join(os.homedir(), '.alterorb', 'caches');
+
+function clientCacheDir(internalName) {
+  return path.join(CLIENT_CACHE_ROOT, internalName);
+}
+
 function parseArgs(argv) {
   const options = {
     games: [],
@@ -552,6 +567,71 @@ function writeSurfacePng(jvm, game, artifactKind) {
   return output;
 }
 
+// ALTERORB_JVMJS_DUMP_TYPES=le,dd names guest classes whose live instances
+// should be summarized when a run finishes. A stalled loader's state lives in
+// objects that no thread is currently executing in, so a thread dump cannot
+// reach them; this walks the same roots the JVM itself keeps -- static fields
+// and thread frames -- and stops at a fixed node budget so a diagnostic can
+// never turn into an unbounded heap traversal.
+function dumpGuestInstances(jvm, wanted) {
+  if (!wanted || wanted.length === 0) return null;
+  const want = new Set(wanted);
+  const seen = new Set();
+  const found = new Map();
+  const queue = [];
+  const push = (value) => {
+    if (!value || typeof value !== 'object') return;
+    if (seen.has(value)) return;
+    seen.add(value);
+    queue.push(value);
+  };
+  for (const classData of Object.values(jvm.classes || {})) {
+    const statics = classData && classData.staticFields;
+    if (!statics) continue;
+    const entries = typeof statics.entries === 'function'
+      ? statics.entries() : Object.entries(statics);
+    for (const [, value] of entries) push(value);
+  }
+  for (const thread of jvm.threads || []) {
+    for (const frame of (thread.callStack && thread.callStack.items) || []) {
+      for (const local of frame.locals || []) push(local);
+    }
+  }
+  let budget = 400000;
+  while (queue.length > 0 && budget-- > 0) {
+    const node = queue.shift();
+    if (Array.isArray(node)) {
+      for (const item of node) push(item);
+      continue;
+    }
+    if (node.type && want.has(node.type)) {
+      const list = found.get(node.type) || [];
+      if (list.length < 24) {
+        const fields = {};
+        for (const [key, value] of Object.entries(node.fields || {})) {
+          if (value === null || value === undefined) fields[key] = null;
+          else if (Array.isArray(value)) {
+            fields[key] = value.length <= 40
+              ? `[${value.join(',')}]` : `[${value.length} items]`;
+          } else if (typeof value === 'object') {
+            fields[key] = `<${value.type || 'object'}>`;
+          } else fields[key] = typeof value === 'bigint' ? `${value}n` : value;
+        }
+        list.push(fields);
+      }
+      found.set(node.type, list);
+    }
+    for (const value of Object.values(node.fields || {})) push(value);
+  }
+  if (budget <= 0) found.set('_truncated', [{note: 'node budget exhausted'}]);
+  return Object.fromEntries(found);
+}
+
+function dumpTypesFromEnv() {
+  return String(process.env.ALTERORB_JVMJS_DUMP_TYPES || '')
+    .split(',').map((name) => name.trim()).filter(Boolean);
+}
+
 function threadSnapshot(jvm) {
   return jvm.threads.map((thread) => {
     const frames = thread.callStack && thread.callStack.items;
@@ -569,9 +649,30 @@ function threadSnapshot(jvm) {
       const generated = jvm.jit.codegenCache?.get(candidate.method);
       return Boolean(generated?.jvmHotCallGraphHasContinuation?.(candidate));
     };
+    // A parked worker's own object carries the state that says whether it is
+    // idle because there is nothing to do, or idle while its owner still
+    // believes work is outstanding. Its `this` is local 0 of its bottom frame.
+    const receiverFields = () => {
+      const bottom = frames && frames[0];
+      const receiver = bottom && bottom.locals && bottom.locals[0];
+      if (!receiver || typeof receiver !== 'object' || !receiver.fields) return null;
+      const out = {};
+      for (const [key, value] of Object.entries(receiver.fields)) {
+        if (value === null || value === undefined) out[key] = null;
+        else if (typeof value === 'object') {
+          out[key] = Array.isArray(value)
+            ? `[${value.length}]` : `<${value.type || 'object'}>`;
+        } else out[key] = typeof value === 'bigint' ? `${value}n` : value;
+      }
+      return {type: receiver.type || null, fields: out};
+    };
     return {
       id: thread.id,
       status: thread.status,
+      // Set by Thread.start(); the only way to identify a thread whose stack
+      // is already gone.
+      entry: thread.entry || (thread.id === 0 ? 'main' : null),
+      receiver: receiverFields(),
       priority: Number(thread.javaThread?.priority ?? thread.priority ?? 5),
       sleepUntil: thread.sleepUntil === undefined
         ? null : Number(thread.sleepUntil),
@@ -1211,10 +1312,12 @@ function emitWorkerResult(result, exitCode) {
 
 async function runWorker(specification) {
   const game = specification.game;
-  const cacheDir = path.join(os.homedir(), '.alterorb', 'caches',
-    game.internalName);
+  const cacheDir = clientCacheDir(game.internalName);
   fs.mkdirSync(cacheDir, {recursive: true});
   process.chdir(cacheDir);
+  // Print what the guest will actually read and write, so an isolated run can
+  // be verified rather than assumed.
+  console.error(`[cache] ${game.internalName} guest cwd=${process.cwd()}`);
 
   const classesDir = specification.classesDir ||
     extractGamepack(game, specification.jarPath);
@@ -1659,6 +1762,7 @@ async function runWorker(specification) {
         screenshot: writeSurfacePng(jvm, game, 'timeout'),
         frameHistory,
         threads: threadSnapshot(jvm),
+        guestInstances: dumpGuestInstances(jvm, dumpTypesFromEnv()),
         jitProfile: specification.profileJit ? jitProfileSnapshot(jvm) : undefined,
         jitCounters: jitRuntimeCounters(jvm),
         schedulerTimings: schedulerTimingSnapshot(jvm),
@@ -1685,6 +1789,24 @@ async function runWorker(specification) {
   // out, for measuring against the old lifecycle.
   const prepareBeforeStart =
     process.env.ALTERORB_JVMJS_PREPARE_BEFORE_START !== '0';
+  // ALTERORB_JVMJS_DUMP_INTERVAL_MS samples the same instance dump on a timer
+  // and appends it to ALTERORB_JVMJS_DUMP_FILE. An end-of-run dump shows where
+  // a loader settled; only a series shows which transition took it there.
+  const dumpIntervalMs = Number(process.env.ALTERORB_JVMJS_DUMP_INTERVAL_MS || 0);
+  const dumpFile = process.env.ALTERORB_JVMJS_DUMP_FILE || null;
+  if (dumpIntervalMs > 0 && dumpFile) {
+    const dumpTypes = dumpTypesFromEnv();
+    const sampler = setInterval(() => {
+      try {
+        fs.appendFileSync(dumpFile, JSON.stringify({
+          atMs: Date.now() - startedAt,
+          instances: dumpGuestInstances(jvm, dumpTypes),
+        }) + '\n');
+      } catch (_) { /* sampling must never break the run */ }
+    }, dumpIntervalMs);
+    sampler.unref();
+  }
+
   const runPromise = (async () => {
     // Preparation itself now lives in JVM.run(), so every embedder gets it and
     // not just this launcher. This only chooses whether to do it and times it.
@@ -1953,12 +2075,21 @@ function runChild(game, options) {
     // The rolling buffers below cap worker output for result reporting; V8
     // diagnostic streams (for example --trace-opt) exceed them by orders of
     // magnitude, so mirror the full streams to disk on request.
-    const childLogStream = process.env.ALTERORB_JVMJS_CHILD_LOG
-      ? fs.createWriteStream(path.join(
+    // Written synchronously on purpose. A WriteStream buffers, and a worker
+    // that has to be killed on timeout -- the case a diagnostic log exists
+    // for -- loses whatever is still buffered, so the log ends just before
+    // the interesting part. A missing tail here reads as "the event never
+    // happened", which is the one thing a diagnostic must never fake.
+    const childLogFd = process.env.ALTERORB_JVMJS_CHILD_LOG
+      ? fs.openSync(path.join(
         process.env.ALTERORB_JVMJS_CHILD_LOG,
         `child-${game.internalName}-${process.pid}-` +
-          `${crypto.randomBytes(4).toString('hex')}.log`))
+          `${crypto.randomBytes(4).toString('hex')}.log`), 'a')
       : null;
+    const childLogStream = childLogFd === null ? null : {
+      write: (chunk) => { try { fs.writeSync(childLogFd, chunk); } catch (_) {} },
+      end: () => { try { fs.closeSync(childLogFd); } catch (_) {} },
+    };
     child.stdout.on('data', chunk => {
       if (childLogStream) childLogStream.write(chunk);
       stdout += chunk;
@@ -1977,7 +2108,11 @@ function runChild(game, options) {
       error: String(error.stack || error),
       elapsedMs: 0,
     }));
-    child.on('exit', (code, signal) => {
+    // 'close', not 'exit': 'exit' fires as soon as the process is gone, while
+    // its stdout/stderr pipes may still hold unread data. Resolving there ends
+    // the run with the tail of the worker's own diagnostics still in the pipe,
+    // which is exactly the part a timing-out worker was being watched for.
+    child.on('close', (code, signal) => {
       if (fs.existsSync(workerResultPath)) {
         try {
           const workerResult = JSON.parse(fs.readFileSync(
@@ -2151,11 +2286,15 @@ async function main() {
       // A recording made against a warm client holds only the index layer --
       // 255/255 and the group tables -- because the client asked for nothing
       // else; the data groups it already had are sitting right here.
-      const clientCache = path.join(os.homedir(), '.alterorb', 'caches',
-        game.internalName);
+      const clientCache = clientCacheDir(game.internalName);
       const chain = fs.existsSync(path.join(clientCache,
         'main_file_cache.dat2')) ? [cacheDir, clientCache] : cacheDir;
+      // The handshake's trailing u32 is the game's `gamecrc` from the
+      // launcher config, so the server can tell whose connection this is.
+      // Without it a game reaches another game's cache and every request is
+      // answered out of the wrong dataset.
       const server = await startJs5Server({cacheDir: chain, port: 0,
+        gameCrc: game.gamecrc,
         log: process.env.ALTERORB_JVMJS_JS5_LOG ? line => console.error(line)
           : () => {}});
       js5Servers.push(server);

@@ -66,7 +66,7 @@ Full inventory, precedence and consumers:
 | Serve the browser game library | `JAVA_TOOLS_ROOT=... node scripts/serve-game-library.js` |
 | Serve a local JS5 update server | `node scripts/js5-server.js --cache-dir <dir>` |
 | Build the applet launcher | `./scripts/launcher/build.sh` |
-| Fake-AWT boundary check | `./scripts/launcher/run-fake-awt-check.sh` |
+| Fake-AWT boundary check | `./scripts/launcher/run-trace-test.sh` |
 | Build and test the renderer-free game logic | `./game-logic/build.sh` |
 | Run the protocol server suites | `cd apps/server-js && npm test` / `PYTHONPATH=apps/server python3 -m unittest discover apps/server/tests` |
 

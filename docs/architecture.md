@@ -39,10 +39,10 @@ trace selectors.
 | `scripts/lib/` | Shared infrastructure: java-tools discovery, provenance, offline guard, configuration registry. |
 | `scripts/pipeline/` | The deobfuscation pipeline (`bulk-pipeline.js`), its passes, and per-game JSON profiles. |
 | `scripts/launcher/` | Build and run wrappers for the native applet launcher. |
-| `scripts/` | Gamepack fetch, decompile driver, headless and multi-game jvm.js runners, JS5 server/recorder/proxy, the browser game library, the config printer and the test runner. |
+| `scripts/` | Gamepack fetch, decompile driver, headless and multi-game jvm.js runners, JS5 server and recorder, the browser game library, the config printer and the test runner. |
 | `tools/differential-methods/` | The differential-method benchmark workflow: capture, oracle, build, hotspot, server and report stages. `build.mjs` defaults its compiler to `/usr/lib/jvm/java-8-openjdk/bin/javac`, which is not present here; set `JAVAC`. |
-| `tools/js5/` | JS5 cache download and the validated-build list. |
-| `web/` | `jvm-js-logo.svg`, served by the game library as its loading logo. The other pages under `web/` have no server in this checkout. |
+| `tools/js5/` | The validated-build list (data only). |
+| `web/` | `jvm-js-logo.svg`, served by the game library as its loading logo. |
 
 ## Boundaries and invariants
 

@@ -4,7 +4,14 @@ import java.io.File;
 import local.Trace;
 
 public final class Hook {
-    private static final File CACHE_DIR = new File(System.getProperty("user.home"), ".alterorb/caches");
+    // The cache root is absolute, so running the launcher from another
+    // directory does NOT redirect the guest's cache writes -- a test that
+    // "isolates" itself with a chdir silently reads and writes the real one.
+    // -Dalterorb.cacheRoot=<dir> is the supported way to point a run at a
+    // disposable copy.
+    private static final File CACHE_DIR = new File(
+            System.getProperty("alterorb.cacheRoot",
+                    new File(System.getProperty("user.home"), ".alterorb/caches").getPath()));
 
     private Hook() {
     }

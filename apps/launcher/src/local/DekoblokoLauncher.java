@@ -107,8 +107,12 @@ public final class DekoblokoLauncher {
         params.put("overxgames", "45");
         params.put("overxachievements", "1000");
         params.put("member", "no");
-        params.put("gameport1", "43594");
-        params.put("gameport2", "43594");
+        // 43594 is the real update-server port, so it is also the port an
+        // already-running local server occupies. A test that cannot move off
+        // it silently joins whatever else is listening there and reports that
+        // server's behaviour as its own.
+        params.put("gameport1", Integer.toString(options.gamePort));
+        params.put("gameport2", Integer.toString(options.gamePort));
         params.put("servernum", "8003");
         params.put("instanceid", Long.toString(new Random().nextLong()));
         params.put("gamecrc", Integer.toString(options.gameCrc));
@@ -256,6 +260,7 @@ public final class DekoblokoLauncher {
         private File gamepack = new File(System.getProperty("user.home"), ".alterorb/gamepacks/dekobloko.jar");
         private String mainClass = "client";
         private int gameCrc = 2147312574;
+        private int gamePort = 43594;
         private String server = DEFAULT_SERVER;
         private int width = 765;
         private int height = 503;
@@ -283,6 +288,8 @@ public final class DekoblokoLauncher {
                     options.mainClass = args[++i];
                 } else if ("--gamecrc".equals(arg)) {
                     options.gameCrc = Integer.parseInt(args[++i]);
+                } else if ("--gameport".equals(arg)) {
+                    options.gamePort = Integer.parseInt(args[++i]);
                 } else if ("--server".equals(arg)) {
                     options.server = args[++i];
                 } else if ("--width".equals(arg)) {

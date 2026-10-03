@@ -62,8 +62,8 @@ out to java-tools and CFR. `--quick` skips it and says so.
 that are gitignored and absent here (`golden-active-piece.tsv`,
 `golden-rotation.tsv`, ~21 MB). It reports them as unittest **skips**, not
 passes — a bare exit-code check would still read the run as green. The probe
-that regenerated them (`tools/oracle/ParityProbe`) is no longer in this
-repository, so those skips cannot currently be closed from this checkout.
+that regenerates them is `tools/oracle/ParityProbe.java`, which needs a JDK 8
+and `dekobloko.jar`; see the compile line in the test's own header comment.
 
 `golden-clear-settle.tsv` is deliberately committed, because the rule it pins
 has been measured wrong twice.
@@ -73,8 +73,9 @@ has been measured wrong twice.
 - No CI configuration exists (`.github/` is absent).
 - No root `package.json` exists, so there is no top-level `npm test`.
 - The native applet launcher's trace oracle (`apps/launcher/assert-trace.js`)
-  is not wired into any runner; it is invoked by
-  `scripts/launcher/run-trace-test.sh`.
+  is not wired into `run-tests.js`; it is invoked by
+  `scripts/launcher/run-trace-test.sh`, which needs a JDK and a desktop
+  session.
 - Browser behaviour is not covered by any of these suites.
 
 ## Measurement is not testing

@@ -3,6 +3,9 @@
 The pipeline that turns an obfuscated AlterOrb/FunOrb gamepack into
 verifier-clean bytecode and compilable Java, and the rules for changing it.
 
+For a deterministic readable GeoBlox source mirror with exact symbol rules and
+reverse mappings, see [Readable GeoBlox sources](geoblox-readable-source.md).
+
 ## Stubs
 
 `stubs/src/` resolves the legacy dependencies the gamepacks reference:
@@ -258,7 +261,7 @@ parameters, uninitialised locals, a constant-guarded `** GOTO`, or a timeout
 `scripts/test-observable-call-duplication-guard.js`) catch tail-duplication
 passes that would execute an observable call twice.
 
-**Runtime boundary.** `./scripts/launcher/run-fake-awt-check.sh` is a separate
+**Runtime boundary.** `./scripts/launcher/run-trace-test.sh` is a separate
 runtime boundary check that catches launcher/AWT/cache regressions after
 bytecode or harness changes. It is not part of any decompiler oracle.
 

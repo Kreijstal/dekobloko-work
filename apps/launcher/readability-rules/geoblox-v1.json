@@ -1,0 +1,244 @@
+{
+  "schema": 1,
+  "game": "geoblox",
+  "purpose": "Offline readable source mirror; not a runtime patch",
+  "source": {
+    "repository": "https://github.com/Kreijstal/funorb-decompiled.git",
+    "commit": "3230e3092c687d210ba068bdfd7667a5213d22fb",
+    "subdirectory": "games/geoblox"
+  },
+  "inputTreeSha256": "45b38190d2b94f1daa68bdf4ea16aa516be2feda493dceabe51ef8146cce6d7f",
+  "namingPolicy": "Confirmed role plus original spelling; unknown symbols stay unchanged. Parameter keys use zero-based source parameter positions.",
+  "renames": [
+    {
+      "symbol": "C:dm",
+      "to": "Sprite_dm",
+      "evidence": "Owns int pixels and nearest/smooth sprite transforms; raster fixtures and rotation census."
+    },
+    {
+      "symbol": "C:wh",
+      "to": "SpriteState_wh",
+      "evidence": "Declares sprite dimensions and trim offsets read by dm transforms; also contains unrelated static helpers."
+    },
+    {
+      "symbol": "C:vb",
+      "to": "SoftwareRasterizer_vb",
+      "evidence": "Owns shared framebuffer, scanline stride and clipping bounds."
+    },
+    {
+      "symbol": "C:na",
+      "to": "IndexedSprite_na",
+      "evidence": "Owns byte pixel indices and int palette used by indexed raster loops."
+    },
+    {
+      "symbol": "C:ua",
+      "to": "MusicDecoder_ua",
+      "evidence": "Music-loading profiles and source show packet decoding and shared bit readers."
+    },
+    {
+      "symbol": "C:u",
+      "to": "MusicDecodeStage_u",
+      "evidence": "Prepared dependency of ua.c(I)[F; conservative stage name, no assumed codec algorithm."
+    },
+    {
+      "symbol": "C:kl",
+      "to": "PcmSampleStream_kl",
+      "evidence": "Audio chunk census and sample interpolation/mixing bodies."
+    },
+    {
+      "symbol": "C:qk",
+      "to": "AudioOutput_qk",
+      "evidence": "Owns output sample buffer and drives ia stream fill from the audio update chain."
+    },
+    {
+      "symbol": "F:dm.field_v:[I",
+      "to": "pixels_field_v",
+      "evidence": "Pixel array read by nearest/smooth rotation and written by sprite operations."
+    },
+    {
+      "symbol": "F:wh.field_r:I",
+      "to": "width_field_r",
+      "evidence": "Pixel row stride and horizontal source boundary in dm.c."
+    },
+    {
+      "symbol": "F:wh.field_m:I",
+      "to": "height_field_m",
+      "evidence": "Vertical source boundary in dm.c."
+    },
+    {
+      "symbol": "F:wh.field_u:I",
+      "to": "trimX_field_u",
+      "evidence": "Subtracted from horizontal transform pivot, shifted by four."
+    },
+    {
+      "symbol": "F:wh.field_p:I",
+      "to": "trimY_field_p",
+      "evidence": "Subtracted from vertical transform pivot, shifted by four."
+    },
+    {
+      "symbol": "F:vb.field_c:[I",
+      "to": "framebuffer_field_c",
+      "evidence": "Shared destination of raster operations; writer audit."
+    },
+    {
+      "symbol": "F:vb.field_f:I",
+      "to": "stride_field_f",
+      "evidence": "Destination index x + y * field_f in raster bodies."
+    },
+    {
+      "symbol": "F:vb.field_e:I",
+      "to": "clipLeft_field_e",
+      "evidence": "Horizontal lower clipping boundary in vb.d and na.a."
+    },
+    {
+      "symbol": "F:vb.field_k:I",
+      "to": "clipRight_field_k",
+      "evidence": "Horizontal upper clipping boundary in vb.d and na.a."
+    },
+    {
+      "symbol": "F:vb.field_i:I",
+      "to": "clipTop_field_i",
+      "evidence": "Vertical lower clipping boundary in vb.d and na.a."
+    },
+    {
+      "symbol": "F:vb.field_d:I",
+      "to": "clipBottom_field_d",
+      "evidence": "Vertical upper clipping boundary in vb.d and na.a."
+    },
+    {
+      "symbol": "F:na.field_h:[I",
+      "to": "palette_field_h",
+      "evidence": "Indexed raster looks up int color by unsigned byte pixel value."
+    },
+    {
+      "symbol": "F:na.field_i:[B",
+      "to": "indices_field_i",
+      "evidence": "Byte indices consumed by indexed raster bodies."
+    },
+    {
+      "symbol": "M:dm.b(IIIIII)V",
+      "to": "rotateNearest_b",
+      "evidence": "Nearest-neighbor transform covered by test-rotation-parameters.mjs."
+    },
+    {
+      "symbol": "M:dm.a(IIIIII)V",
+      "to": "rotateSmooth_a",
+      "evidence": "Smooth transform covered by test-smooth-rotation-parameters.mjs."
+    },
+    {
+      "symbol": "M:dm.c(IIIII)V",
+      "to": "sampleBilinear_c",
+      "evidence": "Four source neighbors weighted by fractions masked to 4095, then destination write."
+    },
+    {
+      "symbol": "M:ua.b()I",
+      "to": "readBit_b",
+      "evidence": "Reads one bit at shared byte/bit cursor."
+    },
+    {
+      "symbol": "M:ua.b(I)I",
+      "to": "readBits_b",
+      "evidence": "Reads the requested bit count across byte boundaries."
+    },
+    {
+      "symbol": "M:ua.c(I)[F",
+      "to": "decodePacket_c",
+      "evidence": "Selects field_p packet by index and computes float output during music loading."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#0",
+      "to": "sourcePivotX_param0",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#1",
+      "to": "sourcePivotY_param1",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#2",
+      "to": "destinationX_param2",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#3",
+      "to": "destinationY_param3",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#4",
+      "to": "angle_param4",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.b(IIIIII)V#5",
+      "to": "scale_param5",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#0",
+      "to": "sourcePivotX_param0",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#1",
+      "to": "sourcePivotY_param1",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#2",
+      "to": "destinationX_param2",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#3",
+      "to": "destinationY_param3",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#4",
+      "to": "angle_param4",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.a(IIIIII)V#5",
+      "to": "scale_param5",
+      "evidence": "Original position retained; transform equations and renderer differential fixtures."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#0",
+      "to": "destinationIndex_param0",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#1",
+      "to": "sourceX_param1",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#2",
+      "to": "sourceY_param2",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#3",
+      "to": "fractionX_param3",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:dm.c(IIIII)V#4",
+      "to": "fractionY_param4",
+      "evidence": "Bilinear sampler array index and 12-bit fraction expressions."
+    },
+    {
+      "symbol": "P:ua.b(I)I#0",
+      "to": "bitCount_param0",
+      "evidence": "Requested bit count in shared bit-reader loop."
+    },
+    {
+      "symbol": "M:il.b(IIIIII)V",
+      "to": "rotateNearest_b",
+      "evidence": "Javac resolves this override of dm.b(IIIIII)V; retain the complete virtual family."
+    }
+  ]
+}

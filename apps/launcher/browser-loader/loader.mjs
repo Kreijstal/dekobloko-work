@@ -1,3 +1,4 @@
+import {selectPreparationProfile} from './preparation-profile.mjs';
 import {createBrowserGameServer, LOGIN_MODULUS} from './browser-game-server.mjs';
 import {patchLoginEncryption, patchSocketWriter, selectGameSources, patchGameCompatibility, patchGeobloxSource} from './game-source-patches.mjs';
 import {installBrowserInflater} from './browser-inflater.mjs';
@@ -7,7 +8,7 @@ import {installInterpreterOverrides} from './browser-interpreter-overrides.mjs';
 import {configureApplet} from './applet-config.mjs';
 
 // Bump when source transforms change emitted class files, not for host fixes.
-export const sourcePatchAbi = 'catalog-account-server-v9';
+export const sourcePatchAbi = 'catalog-account-server-v11-voice-cursor';
 export {selectGameSources, configureApplet};
 export function patchSource(source, sourcePath) {
   source = patchGeobloxSource(source, sourcePath, LOGIN_MODULUS);
@@ -22,7 +23,7 @@ export function createGameLauncher({game, storage, fetchAsset, diagnostics = {}}
   const configured = new WeakSet();
   return {
     server,
-    configure(controller, {fileSystem, codeBase, runtimeManifest, decoder = globalThis.pako} = {}) {
+    configure(controller, {fileSystem, codeBase, runtimeManifest, sourceIdentity, decoder = globalThis.pako} = {}) {
       detach?.();
       configureApplet(controller, game, {codeBase});
       controller.options.prepareWasmPreparedUpgradesOnly = runtimeManifest?.jvmOptions?.prepareWasmPreparedUpgradesOnly ?? true;
@@ -40,6 +41,8 @@ export function createGameLauncher({game, storage, fetchAsset, diagnostics = {}}
         const prepare = jvm.precompileInitializedClasses?.bind(jvm);
         if (prepare) jvm.precompileInitializedClasses = (options = {}) => prepare({
           ...options, wasm: game.prepareWasm ?? options.wasm,
+          preparationPolicy: selectPreparationProfile(game.preparationProfiles,
+            sourceIdentity, sourcePatchAbi) ?? options.preparationPolicy,
           wasmPreparedUpgradesOnly: options.wasmPreparedUpgradesOnly ?? controller.options.prepareWasmPreparedUpgradesOnly,
         });
         server.install(jvm);

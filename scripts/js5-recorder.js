@@ -5,14 +5,11 @@
 // real server and writes every group the server returns to disk, so a later
 // run can be served entirely from local files.
 //
-// This exists because the two other ways to obtain a cache both fall short.
-// The client's own on-disk cache is not enough -- it never persists the master
-// index (255/255), which it fetches and validates in memory every boot, and it
-// only stores what it happened to need. And the standalone sweep in
-// tools/js5/download-caches.py walks the archives independently of any client,
-// which desynchronizes against the live mirror partway through.
+// This exists because a client's own on-disk cache is not enough: it never
+// persists the master index (255/255), which it fetches and validates in memory
+// every boot, and it only stores the groups it happened to need.
 //
-// Recording sidesteps both: whatever a real boot asked for and received is
+// Recording sidesteps that: whatever a real boot asked for and received is
 // exactly what a replay needs, master index included.
 //
 // Responses are self-describing -- each carries its own archive and group in
