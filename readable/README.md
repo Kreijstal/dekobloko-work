@@ -36,7 +36,31 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current pass 120
+## Current pass 121
+
+Pass 121 adds 286 guarded names: 14 classes, 19 fields, 24 methods,
+44 parameters and 185 locals. The game now reads through `MatchCandidateSupport`,
+`MatchScoringSupport`, `PlayfieldRules`, `ScorePopupSupport`,
+`AttachedEntityRenderer`, `EndingAnimationSupport`, `DebugOverviewCompositor`,
+`MeshDepthSupport`, `MeshPrioritySupport`, `GameplaySetupSupport`,
+`BoardEntityState` and `GameSoundResources`. Session calls expose
+`LoginProtocolSupport.advanceLoginHandshake` and `AchievementProtocolSupport`.
+All parameters and locals in the 14 audited owners now have guarded names.
+Shared login phases expose request readiness, initial reply, result, details,
+failure text and connected-session identity. The reflection decoder names its
+operation/class/member/argument data, reused argument-count/integer-write slot,
+serialized buffers and per-operation failures. Its generated increment state
+keeps the original zero/one values and control flow. Class names describe helper
+families; unrelated static functions and globals stay on each owner.
+All 10,038 previous complete rules, raw bodies, local ordinals, bytecode and
+source/tool/native trace pins remain. The export has 10,324 rules and 81,351
+identifier edits. All 303 raw/readable sources compile, compare 136,612 bindings
+and preserve 388 override relationships. Class coverage is 247 renamed, one
+meaningful original name and 55 opaque names. Six large labeled bodies and
+207 block labels remain. New naming does not establish full login/reflection/
+server, asset/audio/AWT/browser/phone or heap/FPS equivalence.
+
+## Previous gameplay support pass 120
 
 Pass 120 adds 149 guarded names: seven classes, four fields, 15 methods,
 28 parameters and 95 locals. The main gameplay helper owners now read as

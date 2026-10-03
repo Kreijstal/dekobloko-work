@@ -49,7 +49,10 @@ test('retained names, evidence and original spelling need explicit changes', () 
 });
 test('explicit additions and replacements check their complete previous identity', () => {
   const add = data => {
-    const rule = {symbol: 'L:ul.b(I)V#2', originalName: 'stackIn_10_0', to: 'fixtureResult', evidence: 'Fixture addition'};
+    // This test checks manifest history, not source binding. Use a test-only
+    // identity so later naming passes cannot consume its supposedly new local.
+    const rule = {symbol: 'L:RuleBuilderFixture.method()V#0', originalName: 'fixtureLocal', to: 'fixtureResult', evidence: 'Fixture addition'};
+    assert.ok(!data.renames.some(item => item.symbol === rule.symbol));
     data.renames.push(rule); data.publication.ruleChanges.push({symbol: rule.symbol, before: null, after: rule});
   };
   assert.equal(JSON.parse(fixture(add, false).stdout).rules, current.renames.length + 1);
