@@ -36,6 +36,12 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 139 names every AudioOutput/JavaSoundAudioOutput field, method, parameter
+and local, plus all owned PCM stream contract methods. It adds 199 rules and
+names the existing stream-selection budget-exit block without altering control
+flow. There are 12,448 rules and 190 opaque labels. Buffering, retry, scheduling,
+callback and device behavior remain; live audio devices are not validated here.
+
 Pass 138 adds 105 rules for social storage/response/lookup, shared effects volume,
 loading status/dialog helpers and the audio worker. Every AudioService declaration
 is named. One existing social insertion-selection block label is named; its frame

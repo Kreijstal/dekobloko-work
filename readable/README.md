@@ -37,7 +37,41 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current social, audio and loading helpers pass 138
+## Current audio output and stream contracts pass 139
+
+Pass 139 adds 199 guarded rules: 31 fields, 57 methods, 45 parameters,
+65 locals and one label. Every AudioOutput and JavaSoundAudioOutput field,
+method, parameter and local is named. The PcmStream contract and all owned
+overrides now expose firstChildStream/nextChildStream, mixInto/skipFrames,
+getSchedulingPriority and getSchedulingCost; their bodies stay intact.
+
+AudioOutput exposes requested/adaptive buffering, drain checks, reopen time,
+stream-time catch-up, root stream and eight priority queues. mixBlock selects
+streams against schedulingWorkLimit, clears priority links and then mixes the
+root. streamSelection names its existing plain budget-exit block; the frame,
+exit and cleanup remain. Label accounting grows from 186 to 188 edits explicitly.
+
+Java Sound hooks expose initializeDevice, openDevice, getQueuedFrames,
+writeMixBlock, flushDevice and closeDevice. Signed 24-bit clipping and signed 16-bit
+little-endian packing remain. Any listed mixer name containing soundmax retains
+reopen-after-flush behavior; this is not a new mixer-selection policy. Capacity
+rounding and power-of-two retry, base no-op hooks, Throwable silent-output
+fallback and any partial service/device installation remain. Volatile flags,
+synchronized calls, callback order, 256-frame blocks, 16384-frame cap and
+two-second drain/reopen timing are unchanged. No runtime scheduling optimization
+or new physical-device validation is claimed.
+
+There are 12,448 rules and 91,653 identifier edits, plus eleven class-literal
+and 188 label edits: 91,852 total. All 12,249 prior complete rules and raw/tool/
+workflow/stub/native/text pins remain. Both 303-file corpora compile, preserving
+136,607 bindings, 388 overrides and 813 lexical label records, and all 303 files
+reverse byte exactly. The 27 publication checks and eight existing native
+fixtures pass within their recorded scopes. Native music fixtures control PCM
+and sample state; real devices, service timing and complete live scheduling
+remain unverified. Eight large labeled bodies and 190 opaque labels remain;
+full-game/assets/server/device and heap/FPS acceptance remain unverified.
+
+## Previous social, audio and loading helpers pass 138
 
 Pass 138 adds 105 guarded rules: 23 fields, nine methods, 18 parameters,
 54 locals and one label. Social packet updates and both name-hash lookups now
