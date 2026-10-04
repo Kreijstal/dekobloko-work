@@ -21,6 +21,8 @@ const expectedTriangleRasterSha256 = '3a708f0eb4343a68f9cd859b75cc6d42db0eda6901
 const expectedMeshLightingSha256 = '8606f3fa1d8808bbfd5e5bfafe3b67872487172f07455401ac290acf79f5fdc6';
 const expectedFlatTriangleRasterSha256 = '60e7b9df0d8b178901617ebcd5a7b8da7745fdaf40f40beea681676733237ab7';
 const expectedMeshProjectionSha256 = '57934a58138344ef260c50eab4b271b90db9c07dd51825e4a4f30874eeef3f34';
+const expectedWidgetSkinsSha256 = '524a4658ff2f7dc99015a8695e9477c44ffca98403b0371316e0d07a6df7b4f9';
+let expectedWidgetSkins=null;
 const expectedLogoSceneSha256 = '7a9551ce1b3e69ac61c2aa291b1b88b9a20d3bd45f2ee903b37657f7d9e00351';
 let expectedLogoScene=null, expectedMeshProjection=null, expected=null, expectedSpritePixels=null, expectedSpriteTransforms=null, expectedTriangleRaster=null, expectedMeshLighting=null, expectedFlatTriangleRaster=null;
 try {
@@ -43,6 +45,8 @@ try {
     const type=original=>name('C:'+original,original);
     const field=(owner,original,descriptor)=>native?original.replace(/^field_/,''):name(`F:${owner}.${original}:${descriptor}`,original);
     const call=(owner,signature)=>type(owner)+'.'+name('M:'+owner+'.'+signature,signature.split('(')[0]);
+    const skinCall=signature=>name('M:si.'+signature,signature.split('(')[0]);
+    const rendererCall=signature=>name('M:rd.'+signature,signature.split('(')[0]);
     const spriteCall=(signature)=>name('M:dm.'+signature,signature.split('(')[0]);
     const indexedCall=(signature)=>name('M:na.'+signature,signature.split('(')[0]);
     const harness=`import java.lang.reflect.*;import java.nio.*;import java.security.*;
@@ -61,7 +65,8 @@ try {
       }
       public static void main(String[]args)throws Exception {
         if(args.length!=0){
-          if(args[0].equals("logo-scene"))LogoSceneBehavior.main(args);
+          if(args[0].equals("widget-skins"))WidgetSkinBehavior.main(args);
+          else if(args[0].equals("logo-scene"))LogoSceneBehavior.main(args);
           else if(args[0].equals("mesh-projection"))MeshProjectionBehavior.main(args);
           else if(args[0].equals("flat-triangle"))FlatTriangleBehavior.main(args);
           else if(args[0].equals("mesh-lighting"))MeshLightingBehavior.main(args);
@@ -983,7 +988,166 @@ try {
         StringBuilder sha=new StringBuilder();for(byte b:trace.digest())sha.append(String.format("%02x",b&255));
         System.out.println("sprite-transforms:"+cases+":"+oracleCases+":"+traceCases+":"+sha);
       }
-    }`;
+    }    class WidgetSkinBehavior {
+      static Field field(String type,String name){try{return NineSliceBehavior.field(type,name);}catch(Exception e){throw new AssertionError(e);}}
+      static int[] values(Object skin)throws Exception{int[] v=new int[5];for(int i=0;i<5;i++)v[i]=integers[i].getInt(skin);return v;}
+      static final int MIN=Integer.MIN_VALUE;
+      static final Field[] integers={
+        field("${type('si')}","${field('si','field_b','I')}"),
+        field("${type('si')}","${field('si','field_f','I')}"),
+        field("${type('si')}","${field('si','field_d','I')}"),
+        field("${type('si')}","${field('si','field_e','I')}"),
+        field("${type('si')}","${field('si','field_k','I')}")};
+      static final Field flush=field("${type('si')}","${field('si','field_h','Z')}");
+      static final Field panels=field("${type('si')}","${field('si','field_a','[Ldm;')}");
+      static final Field icon=field("${type('si')}","${field('si','field_l','Ldm;')}");
+      static final Field states=field("${type('rd')}","${field('rd','field_x','[Lsi;')}");
+      static final Field working=field("${type('rd')}","${field('rd','field_t','Lsi;')}");
+      static final Field flag=field("${type('Geoblox')}","${field('Geoblox','field_C','I')}");
+      static final Field pool=field("${type('rd')}","${field('rd','field_s','[[B')}");
+      static final Field templateLoader=field("${type('rd')}","${field('rd','field_r','Ldi;')}");
+      static final Field pending=field("${type('si')}","${field('si','field_n','Llh;')}");
+      static final Field invalid=field("${type('si')}","${field('si','field_m','Llh;')}");
+      static final Field suggestions=field("${type('si')}","${field('si','field_i','[Ljava/lang/String;')}");
+      static final Field opcode=field("${type('si')}","${field('si','field_c','Z')}");
+      static final Field emailCharacters=field("${type('rd')}","${field('rd','field_w','Ljava/lang/String;')}");
+      static final MessageDigest trace;
+      static int cases,resets,setters,copies,merges,renderers,draws,failures;
+      static {try{trace=MessageDigest.getInstance("SHA-256");}catch(Exception e){throw new AssertionError(e);}}
+      static void require(boolean value,String why){if(!value)throw new AssertionError(why);}
+      static void record(String value){try{trace.update((value+"\\n").getBytes("UTF-8"));cases++;}catch(Exception e){throw new AssertionError(e);}}
+      static void set(Object skin,int[] values,boolean overlay,${type('dm')}[] sprites,${type('dm')} picture)throws Exception{
+        for(int i=0;i<5;i++)integers[i].setInt(skin,values[i]);flush.setBoolean(skin,overlay);panels.set(skin,sprites);icon.set(skin,picture);
+      }
+      static void check(Object skin,int[] expected,boolean overlay,Object sprites,Object picture,String context)throws Exception{
+        for(int i=0;i<5;i++)require(integers[i].getInt(skin)==expected[i],context+": integer "+i+" actual="+integers[i].getInt(skin)+" expected="+expected[i]);
+        require(flush.getBoolean(skin)==overlay,context+": flush");require(panels.get(skin)==sprites,context+": panels alias");require(icon.get(skin)==picture,context+": icon alias");
+      }
+      static String snapshot(Object skin)throws Exception{
+        StringBuilder text=new StringBuilder();for(Field f:integers)text.append(f.getInt(skin)).append(',');return text.append(flush.getBoolean(skin)).append(',').append(panels.get(skin)!=null).append(',').append(icon.get(skin)!=null).toString();
+      }
+      static ${type('dm')} sprite(int color){${type('dm')} s=new ${type('dm')}(1,1);s.${field('dm','field_v','[I')}[0]=color;return s;}
+      static int[] target(){int[] pixels=new int[12*10];java.util.Arrays.fill(pixels,0x123456);${call('vb','a([III)V')}(pixels,12,10);return pixels;}
+      static ${type('el')} widget()throws Exception{
+        ${type('el')} w=(${type('el')})NineSliceBehavior.construct("${type('el')}");w.${field('el','field_v','I')}=2;w.${field('el','field_m','I')}=2;w.${field('el','field_r','I')}=6;w.${field('el','field_h','I')}=4;return w;
+      }
+      static void resetCases()throws Exception{
+        ${type('dm')} picture=sprite(0x010101);${type('dm')}[] sprites=new ${type('dm')}[9];
+        ${type('si')} initial=new ${type('si')}();check(initial,new int[]{MIN,MIN,-2,-2,MIN},false,null,null,"constructor");record("constructor:"+snapshot(initial));resets++;
+        for(int control:new int[]{-1,0,1})for(int guard=-128;guard<=127;guard++){
+          flag.setInt(null,control);${type('si')} skin=new ${type('si')}();set(skin,new int[]{17,18,19,20,21},true,sprites,picture);
+          boolean bad=(57-guard)/46==0;String failure="ok";
+          try{skin.${skinCall('a(B)V')}((byte)guard);require(!bad,"reset must fail");}
+          catch(ArithmeticException e){require(bad,"reset unexpected failure");failure="division";failures++;}
+          check(skin,new int[]{0,bad?18:0,-1,bad?20:0,256},true,null,null,"reset");record("reset:"+control+":"+guard+":"+failure+":"+snapshot(skin));resets++;
+        }
+      }
+      static void setterCases()throws Exception{
+        ${type('dm')} picture=sprite(0x020202);${type('dm')}[] sprites=new ${type('dm')}[9];
+        for(int control:new int[]{-1,0,1})for(int value:new int[]{MIN,-2,-1,0,7,Integer.MAX_VALUE})for(int operation=0;operation<5;operation++){
+          int[] guards=operation<2?new int[]{-1,0,1,256}:new int[]{-128,-53,0,16,73,127};
+          for(int guard:guards){flag.setInt(null,control);${type('si')} skin=new ${type('si')}();int[] expected={17,18,19,20,21};set(skin,expected,false,sprites,picture);expected=expected.clone();boolean overlay=false;${type('si')} result;
+            if(operation==0){result=skin.${skinCall('a(II)Lsi;')}(guard,value);expected[1]=value;require(result==(guard==0?skin:null),"Y setter result");}
+            else if(operation==1){result=skin.${skinCall('b(II)Lsi;')}(guard,value);expected[3]=value;require(result==(guard==256?skin:null),"color setter result");}
+            else if(operation==2){result=skin.${skinCall('a(BI)Lsi;')}((byte)guard,value);expected[2]=value;require(result==(guard==16?skin:null),"shadow setter result");}
+            else if(operation==3){result=skin.${skinCall('b(BI)Lsi;')}((byte)guard,value);expected[0]=value;overlay=guard!=-53;require(result==skin,"X setter result");}
+            else{pending.set(null,NineSliceBehavior.construct("${type('lh')}"));invalid.set(null,NineSliceBehavior.construct("${type('lh')}"));suggestions.set(null,new String[]{"name"});opcode.setBoolean(null,false);overlay=value!=0;
+              result=skin.${skinCall('a(ZB)Lsi;')}(overlay,(byte)guard);require(result==skin,"flush setter result");require((pending.get(null)==null)==(guard!=73),"flush cleanup pending");require((invalid.get(null)==null)==(guard!=73),"flush cleanup invalid");require((suggestions.get(null)==null)==(guard!=73),"flush cleanup suggestions");require(!opcode.getBoolean(null),"false cleanup opcode");}
+            check(skin,expected,overlay,sprites,picture,"setter");record("setter:"+control+":"+operation+":"+guard+":"+value+":"+(result==skin)+":"+snapshot(skin));setters++;
+          }
+        }
+        for(boolean preserve:new boolean[]{false,true}){${type('si')} skin=new ${type('si')}();${type('si')} result=skin.${skinCall('a([Ldm;Z)Lsi;')}(sprites,preserve);check(skin,new int[]{MIN,MIN,preserve?-2:-18,-2,MIN},false,sprites,null,"panel setter");require(result==skin,"panel result");record("panel:"+preserve+":"+snapshot(skin));setters++;}
+        for(boolean enable:new boolean[]{false,true}){pending.set(null,NineSliceBehavior.construct("${type('lh')}"));invalid.set(null,NineSliceBehavior.construct("${type('lh')}"));suggestions.set(null,new String[]{"name"});opcode.setBoolean(null,false);
+          ${call('si','a(Z)V')}(enable);require(pending.get(null)==null&&invalid.get(null)==null&&suggestions.get(null)==null,"shared cleanup");require(opcode.getBoolean(null)==enable,"opcode cleanup");record("cleanup:"+enable);setters++;}
+      }
+      static void copyCases()throws Exception{
+        ${type('dm')} picture=sprite(0x030303);${type('dm')}[] sprites=new ${type('dm')}[9];
+        for(int control:new int[]{-1,0,1})for(int guard:new int[]{0,2,-1})for(boolean aliased:new boolean[]{false,true})for(boolean missing:new boolean[]{false,true}){
+          flag.setInt(null,control);${type('si')} source=new ${type('si')}();set(source,new int[]{5,6,7,8,9},true,sprites,picture);${type('si')} destination=missing?null:(aliased?source:new ${type('si')}());boolean failed=false;
+          try{source.${skinCall('a(ILsi;)V')}(guard,destination);require(!missing,"copy null must fail");}catch(RuntimeException e){require(missing,"copy unexpected failure");failed=true;failures++;}
+          Object expectedPanels=guard==2||missing?sprites:null;check(source,new int[]{5,6,7,8,9},true,expectedPanels,picture,"copy source");
+          if(!missing)check(destination,new int[]{5,6,7,8,9},true,expectedPanels,picture,"copy target");record("copy:"+control+":"+guard+":"+aliased+":"+failed+":"+snapshot(source));copies++;
+        }
+      }
+      static void mergeCases()throws Exception{
+        ${type('dm')} picture=sprite(0x040404);${type('dm')}[] sprites=new ${type('dm')}[9];${type('rd')} renderer=new ${type('rd')}();${type('el')} w=widget();
+        for(int control:new int[]{-1,0,1})for(int mask=0;mask<128;mask++)for(boolean overlay:new boolean[]{false,true})for(boolean valid:new boolean[]{false,true}){
+          flag.setInt(null,control);target();${type('si')} source=new ${type('si')}();int[] sourceValues={(mask&1)!=0?-7:MIN,(mask&2)!=0?-8:MIN,(mask&4)!=0?-1:-2,(mask&8)!=0?-1:-2,(mask&16)!=0?128:MIN};
+          set(source,sourceValues,overlay,(mask&32)!=0?sprites:null,(mask&64)!=0?picture:null);
+          ${type('si')} destination=new ${type('si')}();int[] expected={2,3,4,5,6};set(destination,expected,true,null,null);Object expectedPanels=null,expectedIcon=null;
+          if(overlay)expected=new int[]{0,0,-1,0,256};else expected=expected.clone();
+          if(valid){for(int i=0;i<5;i++)if(i==2||i==3?sourceValues[i]>=-1:sourceValues[i]!=MIN)expected[i]=sourceValues[i];expectedPanels=(mask&32)!=0?sprites:null;expectedIcon=(mask&64)!=0?picture:null;}
+          source.${skinCall('a(IILsi;Lrd;ILel;)V')}(0,0,destination,renderer,valid?-16566:0,w);check(destination,expected,true,expectedPanels,expectedIcon,"merge");check(source,sourceValues,overlay,(mask&32)!=0?sprites:null,(mask&64)!=0?picture:null,"merge source");record("merge:"+control+":"+mask+":"+overlay+":"+valid+":"+snapshot(destination));merges++;
+        }
+      }
+      static void rendererCases()throws Exception{
+        ${type('dm')} picture=sprite(0x050505);${type('dm')}[] sprites=new ${type('dm')}[9];
+        for(int control:new int[]{-1,0,1})for(int slot=0;slot<6;slot++){
+          flag.setInt(null,control);${type('rd')} renderer=new ${type('rd')}();${type('si')}[] skinStates=(${type('si')}[])states.get(renderer);Object initial=skinStates[slot];require(renderer.${rendererCall('a(II)Lsi;')}(-93,slot)==null&&skinStates[slot]==initial,"replacement guard");
+          ${type('si')} replacement=renderer.${rendererCall('a(II)Lsi;')}(-94,slot);require(replacement==skinStates[slot]&&replacement!=initial,"replacement identity");check(replacement,new int[]{MIN,MIN,-2,-2,MIN},false,null,null,"replacement defaults");
+          ${type('si')} second=renderer.${rendererCall('a(II)Lsi;')}(-100,slot);require(second!=replacement&&second==skinStates[slot],"second replacement");
+          renderer.${rendererCall('a([Ldm;IB)V')}(sprites,slot,(byte)39);require(skinStates[slot]==second&&panels.get(second)==sprites,"panel reuses skin");
+          renderer.${rendererCall('a(B[Ldm;)V')}((byte)124,(${type('dm')}[])null);for(int i=0;i<6;i++)if(skinStates[i]!=null)require(panels.get(skinStates[i])==null,"all panels");
+          renderer.${rendererCall('a(ILdm;)V')}(slot,picture);for(int i=0;i<6;i++)if(skinStates[i]!=null)require(icon.get(skinStates[i])==(i>=slot?picture:null),"icon start");
+          for(boolean copy:new boolean[]{false,true}){${type('rd')} duplicate=new ${type('rd')}(renderer,copy);${type('si')}[] copied=(${type('si')}[])states.get(duplicate);
+            for(int i=0;i<6;i++){require((copied[i]==null)==(skinStates[i]==null),"copy null slots");if(copied[i]!=null){require((copied[i]==skinStates[i])==!copy,"copy object identity");check(copied[i],values(skinStates[i]),flush.getBoolean(skinStates[i]),panels.get(skinStates[i]),icon.get(skinStates[i]),"copy skin");}}
+            record("renderer-copy:"+control+":"+slot+":"+copy);renderers++;}
+          record("renderer:"+control+":"+slot);renderers++;
+        }
+        for(int start:new int[]{-1,6,7}){${type('rd')} renderer=new ${type('rd')}();boolean failed=false;try{renderer.${rendererCall('a(ILdm;)V')}(start,picture);}catch(RuntimeException e){require(start<0,"icon unexpected failure");failed=true;failures++;}require(failed==(start<0),"icon range");require(icon.get(((${type('si')}[])states.get(renderer))[0])==null,"icon partial");record("icon-range:"+start+":"+failed);renderers++;}
+        for(int guard:new int[]{-128,32,82,127}){byte[][] marker=new byte[1][];pool.set(null,marker);emailCharacters.set(null,"literal");boolean bad=(32-guard)/50==0,failed=false;try{${call('rd','a(B)V')}((byte)guard);}catch(ArithmeticException e){require(bad,"cleanup failure");failed=true;failures++;}require(failed==bad,"cleanup guard");require(pool.get(null)==(bad?marker:null),"cleanup pool timing");require(emailCharacters.get(null)==(bad?"literal":null),"cleanup literal timing");record("renderer-cleanup:"+guard+":"+failed);renderers++;}
+      }
+      static void drawCases()throws Exception{
+        field("${type('hb')}","${field('hb','field_j','Lwa;')}").set(null,NineSliceBehavior.construct("${type('wa')}"));
+        for(int control:new int[]{-1,0,1})for(int present=0;present<32;present++)for(int inputs=0;inputs<64;inputs++){
+          flag.setInt(null,control);${type('rd')} renderer=new ${type('rd')}();${type('si')}[] skinStates=(${type('si')}[])states.get(renderer);
+          for(int i=0;i<6;i++){if(i!=0&&(present&(1<<(i-1)))==0){skinStates[i]=null;continue;}skinStates[i]=new ${type('si')}();set(skinStates[i],new int[]{0,0,-1,i+1,256},false,null,sprite(0x101010*(i+1)));}
+          ${type('hk')} w=(${type('hk')})NineSliceBehavior.construct("${type('hk')}");w.${field('el','field_v','I')}=2;w.${field('el','field_m','I')}=2;w.${field('el','field_r','I')}=6;w.${field('el','field_h','I')}=4;
+          boolean enabled=(inputs&1)!=0;w.${field('hk','field_D','Z')}=(inputs&2)!=0;w.${field('hk','field_y','Z')}=(inputs&4)!=0;w.${field('el','field_l','Z')}=(inputs&8)!=0;field("${type('hk')}","${field('hk','field_A','Z')}").setBoolean(w,(inputs&16)!=0);w.${field('el','field_f','I')}=(inputs&32)!=0?1:0;
+          int selected=0;if(w.${field('hk','field_y','Z')}&&skinStates[1]!=null)selected=1;
+          if(w.${field('el','field_l','Z')}){if(w.${field('el','field_f','I')}!=0&&skinStates[3]!=null)selected=3;else if(skinStates[2]!=null)selected=2;}
+          if((inputs&16)!=0&&skinStates[5]!=null)selected=5;if(!(enabled&&w.${field('hk','field_D','Z')})&&skinStates[4]!=null)selected=4;
+          int[] pixels=target();renderer.${rendererCall('a(IIIZLel;)V')}(1,-6,1,enabled,w);Object skin=working.get(renderer);check(skin,new int[]{0,0,-1,selected+1,256},false,null,icon.get(skinStates[selected]),"state order");
+          for(int i=0;i<pixels.length;i++)require(pixels[i]==(i==3+3*12?0x101010*(selected+1):0x123456),"state pixels");
+          require(${type('vb')}.${field('vb','field_e','I')}==0&&${type('vb')}.${field('vb','field_i','I')}==0&&${type('vb')}.${field('vb','field_k','I')}==12&&${type('vb')}.${field('vb','field_d','I')}==10,"success clip restoration");record("draw:"+control+":"+present+":"+inputs+":"+selected+":"+java.util.Arrays.hashCode(pixels));draws++;
+        }
+        ${type('rd')} renderer=new ${type('rd')}();${type('el')} w=widget();${type('si')} skin=new ${type('si')}();set(skin,new int[]{1,1,-1,0,256},false,null,sprite(0x060606));
+        for(int horizontal=0;horizontal<3;horizontal++)for(int vertical=0;vertical<3;vertical++)for(int guard:new int[]{0,1}){
+          renderer.${field('ff','field_g','I')}=horizontal;
+          renderer.${field('ff','field_i','I')}=vertical;
+          int[] pixels=target();pending.set(null,NineSliceBehavior.construct("${type('lh')}"));skin.${skinCall('a(Lrd;IILel;I)V')}(renderer,1,1,w,guard);int x=4+(horizontal==1?2:horizontal==2?5:0),y=4+(vertical==1?1:vertical==2?3:0);
+          for(int i=0;i<pixels.length;i++)require(pixels[i]==(i==x+y*12?0x060606:0x123456),"aligned icon pixels");require((pending.get(null)==null)==(guard!=0),"draw guard ordering");record("alignment:"+horizontal+":"+vertical+":"+guard+":"+java.util.Arrays.hashCode(pixels));draws++;
+        }
+      }
+      static void overlayAndFailureCases()throws Exception{
+        ${type('rd')} renderer=new ${type('rd')}();${type('el')} w=widget();
+        for(int control:new int[]{-1,0,1})for(boolean valid:new boolean[]{false,true})for(boolean missingWidget:new boolean[]{false,true}){
+          flag.setInt(null,control);int[] pixels=target();${type('si')} source=new ${type('si')}(),destination=new ${type('si')}();${type('dm')} oldIcon=sprite(0x111111),newIcon=sprite(0x222222);
+          set(destination,new int[]{0,0,-1,0,256},true,null,oldIcon);set(source,new int[]{1,0,-2,-2,MIN},true,null,newIcon);boolean failed=false;
+          try{source.${skinCall('a(IILsi;Lrd;ILel;)V')}(1,1,destination,renderer,valid?-16566:0,missingWidget?null:w);require(!missingWidget,"flush requires widget");}
+          catch(RuntimeException e){require(missingWidget,"unexpected flush failure");failed=true;failures++;}
+          if(missingWidget)check(destination,new int[]{0,0,-1,0,256},true,null,oldIcon,"failed flush retains target");
+          else{check(destination,new int[]{valid?1:0,0,-1,0,256},true,null,valid?newIcon:null,"flush then merge");destination.${skinCall('a(Lrd;IILel;I)V')}(renderer,1,1,w,0);}
+          for(int i=0;i<pixels.length;i++){int expected=0x123456;if(!missingWidget&&i==3+3*12)expected=0x111111;if(!missingWidget&&valid&&i==4+3*12)expected=0x222222;require(pixels[i]==expected,"flush pixels before guard");}
+          record("flush:"+control+":"+valid+":"+failed+":"+snapshot(destination)+":"+java.util.Arrays.hashCode(pixels));merges++;
+        }
+        for(int control:new int[]{-1,0,1}){
+          flag.setInt(null,control);renderer=new ${type('rd')}();((${type('si')}[])states.get(renderer))[0]=null;target();boolean failed=false;
+          try{renderer.${rendererCall('a(IIIZLel;)V')}(1,-6,1,true,w);}catch(RuntimeException e){failed=true;failures++;}
+          require(failed,"missing base must fail");require(${type('vb')}.${field('vb','field_e','I')}==3&&${type('vb')}.${field('vb','field_i','I')}==3&&${type('vb')}.${field('vb','field_k','I')}==9&&${type('vb')}.${field('vb','field_d','I')}==7,"failure retains pushed clip");
+          ${call('id','a(Z)V')}(true);
+          record("draw-failure:"+control);draws++;
+        }
+        for(int slot=1;slot<6;slot++)for(int guard:new int[]{38,39}){
+          renderer=new ${type('rd')}();${type('si')}[] skinStates=(${type('si')}[])states.get(renderer);require(skinStates[slot]==null,"missing state fixture");${type('dm')}[] sprites=new ${type('dm')}[9];renderer.${rendererCall('a([Ldm;IB)V')}(sprites,slot,(byte)guard);require(skinStates[slot]!=null,"panel creates state");check(skinStates[slot],new int[]{MIN,MIN,-2,-2,MIN},false,sprites,null,"new panel state");record("panel-create:"+slot+":"+guard);renderers++;
+        }
+      }
+      public static void main(String[] args)throws Exception{
+        resetCases();setterCases();copyCases();mergeCases();rendererCases();drawCases();overlayAndFailureCases();StringBuilder hash=new StringBuilder();for(byte b:trace.digest())hash.append(String.format("%02x",b&255));
+        System.out.println("widget-skins:"+cases+":"+resets+":"+setters+":"+copies+":"+merges+":"+renderers+":"+draws+":"+failures+":"+hash);
+      }
+    }
+`;
     const directory=path.join(temporary,variant),classes=path.join(directory,'classes');fs.mkdirSync(classes,{recursive:true});
     const harnessFile=path.join(directory,'NineSliceBehavior.java');fs.writeFileSync(harnessFile,harness);
     const stub=path.join(root,'funorb-stubs.jar');const cp=native?nativeInput+path.delimiter+stub:stub;
@@ -991,6 +1155,13 @@ try {
     const sources=native?[]:sourceInventory(sourceRoot).map(file=>path.join(sourceRoot,file.path));
     const list=path.join(directory,'sources.txt');fs.writeFileSync(list,[...sources,harnessFile].map(p=>JSON.stringify(p)).join('\n')+'\n');
     captureProcess('javac',['--release','8','-proc:none','-encoding','UTF-8','-classpath',cp,'-d',classes,'@'+list]);
+    const widgetOutput=captureProcess('java',['-Djava.awt.headless=true','-cp',classes+path.delimiter+cp,'NineSliceBehavior','widget-skins']).stdout;
+    const widgetSha=crypto.createHash('sha256').update(widgetOutput).digest('hex');
+    console.log(JSON.stringify({variant,widgetSkinsTrace:widgetOutput.toString().trim(),sha256:widgetSha}));
+    assert.match(widgetOutput.toString(),/^widget-skins:9061:769:472:36:1548:71:6165:302:[a-f0-9]{64}\n$/);
+    assert.equal(widgetSha,expectedWidgetSkinsSha256,variant+': fixed native widget-skin trace');
+    if(expectedWidgetSkins===null)expectedWidgetSkins=widgetOutput;
+    else assert.deepEqual(widgetOutput,expectedWidgetSkins,variant+': skin state/alias/guard/overlay and raster pixel selection');
     const output=captureProcess('java',['-Djava.awt.headless=true','-cp',classes+path.delimiter+cp,'NineSliceBehavior']).stdout;
     assert.equal(output.toString().trim().split('\n').length,2592);
     assert.equal(crypto.createHash('sha256').update(output).digest('hex'),expectedNativeSha256,variant+': matches recorded verified native bytecode output');

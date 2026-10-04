@@ -37,7 +37,45 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current nonlocal loop exit pass 153
+## Current widget skin naming pass 154
+
+Pass 154 adds 207 guarded names: five fields, 22 methods, 54 parameters and
+126 locals. All 113 declarations owned by WidgetSkinState and all 119 owned by
+StatefulWidgetRenderer have readable names; their three constructors follow
+class rules. Callers now show replacing a state skin, setting offsets/colors,
+copying properties, merging overlays and drawing the result. The renderer applies
+base0, active1, pressed3 or hover2, focus5 and disabled4 in that exact order.
+
+The names expose existing quirks without changing behavior: invalid setters can
+write before returning null, reset keeps the overlay flag, invalid copying clears
+the source panel array after the first target write, and copying skin properties
+still shares sprites/arrays. Flushing draws and resets the old target before the
+merge guard. Rendering restores the clip only on success. Shared fields are
+traced through their actual consumers: username suggestions, intro face RGB,
+text-template definitions, the decoded ranked ratio numerator and email local-part
+characters. No client-control flag value is assumed.
+
+The existing nine-slice fixture adds 9,061 native/raw/readable cases with
+independent state, alias, guard-timing and pixel oracles: 769 constructor/reset,
+472 setter/cleanup, 36 copy/null-target, 1,548 merge/flush/failure, 71 renderer
+replace/copy/panel/range/cleanup and 6,165 state-order/alignment/failure cases.
+They include 302 expected failures and negative/zero/positive control flags.
+All eight previous raster trace hashes remain unchanged.
+
+The export has 14,911 rules and 103,436 identifier edits, plus eleven class-name
+literal and 250 label edits: 103,697 total. All 14,704 previous complete rules
+remain. Seventeen generated Java files change; raw code, generator/workflow/stub
+pins, all 19,498 dictionary identities, 136,607 bindings, 388 overrides and 811
+label records remain. Both 303-file corpora compile, reproduce and reverse byte
+exactly. The 27 publication tests and affected native fixtures pass. No generated
+Java body is hand edited and no decompiler change is required.
+
+Eight large labeled bodies and 162 opaque labels remain, together with 302
+opaque fields and 320 single-letter methods. Real fonts/assets, arbitrary widget
+callbacks, live dialogs/network, full-game/server/browser/phone and heap/FPS
+acceptance remain unverified.
+
+## Previous nonlocal loop exit pass 153
 
 Pass 153 makes two stopping conditions explicit in board reconciliation:
 connected-component detachment and clearing the visited table. Each infinite
