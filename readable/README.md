@@ -37,7 +37,42 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current validation and account name pass 147
+## Current text layout and renderer pass 148
+
+Pass 148 adds 560 guarded rules: 31 fields, fifty methods, 194 parameters,
+284 locals and one label. Every declaration in TextWidgetLayout (43),
+TextWidgetRenderer (283), TextLayout (74), TextLayoutLine (20) and
+CachedTextLayout (117) has a readable name; constructors follow class rules.
+The complete layout interface and display-text/password override families now
+expose hitTestCaretIndex, drawSelection, drawCaret, getTextLayout, origins,
+available viewport dimensions and padded metrics. Maximum line end X retains
+its alignment offsets; it is not presented as plain string width.
+
+Padding, colors, selection ARGB, font/alignment/spacing, line bounds and caret
+positions follow producers and consumers. populateCaretPositions exposes the
+existing markup-anchor and fixed256 space-justification arithmetic. Cache keys
+and aliases remain exact: single-line caches omit anchor/baseline, centered
+layout never saves cachedText, null text clears lines without clearing keys,
+and paragraph alignment/spacing mutations keep their original behavior.
+Selection still passes bottomY as rectangle height. Clip restoration remains
+on successful paths, not an invented finally. Overflow, guards, partial
+failures, password masking, caller ordering and all client-control paths stay.
+
+Shared progress image, unread ticket message, reconnect-error-page suppression,
+fullscreen pointer origin and intro frame/red tint have grounded names.
+textDrawingCompletion names one existing frame and three breaks; label edits
+grow from 246 to 250 without removing control flow. There are 14,618 rules and
+102,174 identifier edits, plus eleven class-literal and 250 label edits:
+102,435 total. All 14,058 previous complete rules and raw/tool/workflow/stub/
+native/text pins remain. Both 303-file corpora compile, preserve 136,607
+bindings, 388 overrides and 813 lexical label records, and reverse byte exactly.
+The 27 publication tests and eight existing native fixtures pass within their
+recorded scopes. Full fonts/markup/cache/caret/selection, arbitrary callbacks,
+async input/assets and device behavior are not newly executed. Eight large
+labeled bodies, 163 opaque labels, 329 opaque fields and 355 short opaque
+methods remain; whole-game/server/device and heap/FPS acceptance remain unverified.
+
+## Previous validation and account name pass 147
 
 Pass 147 adds 148 guarded names: fifteen fields, 24 methods, 49 parameters
 and 60 locals. Every declaration in ValidatedTextInputWidget (49),
