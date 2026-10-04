@@ -37,7 +37,52 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current intrusive collection and codec labels pass 132
+## Current guarded loop continuations pass 133
+
+Pass 133 recovers 21 ordinary guarded loops across 14 methods and 12 files.
+Previously, `while (true)` put its guard in a first `if` and buried the complete
+continuation inside the loop. The generic decompiler now proves that neither
+arm nor continuation can fall through, that the arm cannot exit this loop,
+and that the continuation cannot transfer back to it. Transfers consumed by
+inner loops, switches and labels are distinguished from exits of the arm;
+catches are conservative and finally overrides keep their original meaning.
+The exact guard becomes the loop condition and the complete continuation follows.
+
+Bzip2 selector-rank and Huffman-table decoding now use
+`while (index < selectorCount)` and
+`while (huffmanTableIndex < huffmanTableCount)`, with their following work outside
+the loops. Music packed-event counting similarly uses its track-count guard.
+Board reconciliation, menu/input helpers and pixel/triangle routines also gain
+ordinary loop conditions. Every old break/continue target and label remains.
+Condition evaluation order, partial effects, numeric states, overflow,
+exception/finally/monitor ownership, scopes and diagnostics are unchanged.
+No client-control flag value is assumed. Potentially constant headers, consumed
+inner-loop exits, repeating continuations, ambiguous labels and unknown syntax
+refuse reconstruction. Direct continuation declarations keep separate braces.
+
+The raw tree loses 42 scaffolding lines: 76,230 lines remain, with the same
+188 block labels and 58 loop labels. Bzip2 block decoding falls from 385 to 381
+lines, the music constructor from 519 to 517, board reconciliation from 333 to
+331, and sorted RGB triangle rendering from 364 to 362. Eight bodies of at least
+300 lines still retain labels; all their 51 labels are named. Across the tree,
+192 labels and other unmapped members remain opaque. All 11,635 complete naming
+rules survive, with the same 88,331 identifier, eleven class-literal and 184
+label edits. This improves loop structure without adding or altering naming rules.
+
+Four focused groups pass, including six native variants with 13,392 comparisons
+against 13,392 independent loop-model oracle cases. Coverage includes nullable
+and effectful guards, catch priority and exception identity, enclosing transfers,
+finally overrides and return-value snapshot timing, declaration scopes and
+monitor release. The relevant suite passes 113 tests with one existing skip.
+Fresh decompilation from a clean tracked source archive reproduces all 303 Java
+files and diagnostics byte for byte. The shared source proof independently
+replays all 303 complete token streams and preserves 136,607 ordered Java
+bindings, 388 overrides and 813 lexical label records without ordinal migrations.
+Reproduction, byte-exact reversal, 27 publication checks and all eight fixed
+native game probes pass within their stated scopes. Full-game/assets/server/
+browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous intrusive collection and codec labels pass 132
 
 Pass 132 adds 244 guarded names across eight intrusive collection/node classes
 and the Bzip2/music labels: 23 fields, 30 methods, 69 parameters, 112 locals
@@ -465,8 +510,9 @@ JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-post-guard-s
 The structural proofs read immutable raw/tool Git commits, compare every
 expected token stream, compile all sources, check declaration migrations and
 ordered bindings, and remove their temporary exports. The guarded-abrupt fixture
-now proves pass 131, exact consumed shared-frame references and the complete
-large-body inventory. Its pass 130 revision remains at Deko commit
+now proves pass 133, complete guarded-loop continuations and the complete
+large-body inventory. Its pass 131 revision remains at Deko commit
+`4de6b7f1ce230f07121d8d04cd3f1d278b244f23`; pass 130 remains at
 `ae6a72a78b800823d1065e198cbb858be26a4d12`, and pass 129 at
 `2677205ae25fec66c48784e948b8665f556f1121`; historical provenance pins both
 workflow revisions and source hashes. Run the eight native
@@ -480,7 +526,7 @@ Each checks the transformed-class identity and retained native trace pins,
 then compares raw and readable source variants within its documented scope.
 
 The current decompiler-source SHA-256 is
-`40f073acc94e61b6fe0116e76c9dc45fa43a92e54ad4d22c9ca104905dd5ad9d`:
+`41a301061aa8015aa57f55e59599d32fe8ee923ad5af6157c959475b67cd5e68`:
 
 ```sh
 git -C /path/to/java-tools archive --format=tar 42fb5ae77ee5bb6a7cea316084d201e8908c2b28 | sha256sum
