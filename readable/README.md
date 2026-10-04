@@ -37,7 +37,63 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current intro, ranked-list and input naming (pass 169)
+## Current bootstrap, tooltip and shared cleanup naming (pass 170)
+
+Pass 170 adds 339 guarded names: 36 fields, 95 methods, 112 parameters,
+95 locals and one lexical label. Seventy-three cleanup methods now describe
+their release of retained static references. Guarded partial clears, duplicated
+clears, recursive invalid calls, unrelated writes, arithmetic exceptions and
+diagnostic strings retain their original order. The names do not promise full
+cleanup or disposal for every argument.
+
+Bootstrap names distinguish initial sprite/font/button-and-logo archives from
+their retained graphics/font aliases and the game-text archive. Load helpers
+retain sprite/commonui, font/commonui and button.gif ordering, retention flags,
+short circuits and partial effects. Cache-index file aliases and shutdown
+consumers are explicit. The game-text loader preserves every original read,
+discarded string, fallback/null check and successful-tail root-archive clear.
+Its type-nine clear and conditional client-control increment remain; the
+corresponding flag toggle is not assumed absent.
+
+Login names expose the server seed and four cipher-seed words, including the
+original add-50 mutation between outgoing and incoming cipher initialization.
+The accepted response long and its successful-login error-report copy are
+named by their wire/consumer roles, without assigning account-ID/token meaning.
+Retry flag, guest mode, reconnect-message state, cookie-marker flag, singleton
+login method names and pending navigation are explicit. The cookie flag is set
+before script execution and does not prove storage succeeded.
+
+Tooltip text, anchors, suppression and reset age expose the existing delay/
+duration logic. Its null/equality joins, overflowing duration addition, pointer
+snapshots and guarded calls remain. One age-adjustment block and its two breaks
+retain their exact targets. Shared UI names expose theme aliases, viewport and
+pointer origins, progress color, frame-bottom sprites and horizontal strip
+tiling. The tiler retains zero-width behavior, parameter reuse and its existing
+non-finally clip restoration. Connected-session checks, fullscreen frame work,
+reflection queue/replies, account panels and audio servicing are named without
+adding safety checks. RNG names retain the original signed rejection threshold,
+unsigned multiply, adjusted remainder and wrong-guard results; no runtime
+randomness or determinism policy changes.
+
+The ten previously named unused fields were reviewed across the complete
+fixed-source corpus. Their references remain within initialization, cleanup,
+storage or capacity checks; no hidden element or execution consumer was found.
+These claims retain their precise scopes, rather than asserting no reads.
+
+All 17,123 previous complete rules and raw/decompiler/naming/workflow/stub/
+native/text pins remain. The export has 17,462 rules, 114,334 identifier edits,
+eleven class-name literal edits and 338 label edits: 114,683 total. Both 303-file
+corpora compile, reproduce and reverse byte exactly, preserving 19,498 dictionary
+identities, 136,607 bindings, 388 overrides, 245 label definitions and 811 records.
+All 27 publication tests pass. No native probes or new runtime cases are added
+or run by this naming pass.
+
+Eight large labeled bodies, 137 opaque labels, 61 opaque fields and 68
+single-letter methods remain. Full bootstrap/login/tooltip/UI/network/input/
+audio/assets/game/server/browser/phone and heap/presented-FPS acceptance remain
+unverified.
+
+## Previous intro, ranked-list and input naming (pass 169)
 
 Pass 169 adds 213 guarded names: 31 fields, 27 methods, 44 parameters,
 101 locals and ten lexical labels. The intro sequence now exposes its animation
