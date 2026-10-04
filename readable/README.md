@@ -37,7 +37,32 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current large-body label pass 127
+## Current switch-aware guard recovery pass 128
+
+Pass128 removes a whole-method refusal in the generic decompiler: an ordinary
+colon switch no longer prevents recovery of proven captured-local guards.
+`GameplaySession.renderSession` loses four redundant comparisons before loop
+continues, and `GameScreen.activateMenuItem` replaces one labeled conditional exit
+with an `if/else`. The switch selector, nonzero control-flag paths, evaluation
+order and exception/finally/monitor boundaries remain. The raw tree loses twelve
+lines and one opaque block label: 76,308 lines, 206 block labels and 58 loop
+labels remain. Six large labeled bodies and unmapped members still need work;
+all 52 labels in those six bodies retain their descriptive names.
+
+All 11,399 previous complete naming rules and guarded ordinals are preserved.
+The export has 87,406 Java identifier edits, eleven class-literal edits and
+173 label edits, comparing 136,607 Java bindings and 852 label records across
+303 compiling sources. Four new generic test groups pass, including 15,120 native
+comparisons and ten independent oracles for case entry, fallthrough, selectors,
+transfers, cleanup and monitors. The emitter suite passes 93 tests with one skip;
+ten exception-loop/integer-argument checks and 27 publication tests pass. The
+new source proof checks all 303 expected token streams, unchanged declarations
+and overrides, and ordered surviving references/label targets. A clean tracked
+decompiler archive reproduces all source and diagnostics bytes. The eight fixed
+game probes retain their documented scopes; full renderer/menu action, assets,
+servers, browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous large-body label pass 127
 
 Pass 127 adds 52 guarded label rules, covering every label in the six large
 bodies: menu render/update, gameplay render/update, board reconciliation and
@@ -294,6 +319,7 @@ bodies. Full readability and browser/phone FPS/heap targets remain unfinished.
 ```sh
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node scripts/test-readable-java.mjs
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test readable/tests/test-geoblox-rule-builder.mjs readable/tests/test-geoblox-migration-source.mjs readable/tests/test-geoblox-text-rules.mjs
+JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-switch-guards-source.mjs /path/to/java-tools
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-array-reads-source.mjs /path/to/java-tools
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-array-increments-source.mjs /path/to/java-tools
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-post-guard-source.mjs /path/to/java-tools
@@ -312,10 +338,10 @@ Each checks the transformed-class identity and retained native trace pins,
 then compares raw and readable source variants within its documented scope.
 
 The current decompiler-source SHA-256 is
-`c5ea1520d6be43f14bf44349fed7ffdf0e08be03c5e14cc59db89df4155a45e3`:
+`c73390da4f1ca5cea809d42dc82658708bc8219ae89bfe5817e1026273e41568`:
 
 ```sh
-git -C /path/to/java-tools archive --format=tar 98292d12a3026b1c08ce589e83feb9510746564c | sha256sum
+git -C /path/to/java-tools archive --format=tar 6c8dd6ef3215090329a8ac0b5a6ad2da8478676d | sha256sum
 ```
 
 That hash identifies tracked decompiler source, not a game JAR.
