@@ -39,7 +39,48 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current helper-label naming (pass 179)
+## Current gameplay and protocol field naming (pass 180)
+
+Sixteen formerly opaque fields now describe their verified roles. They include
+`fiveMatchChainAchievementId`, `sixMatchChainAchievementId`,
+`specialMatchAchievementId`, `fiveKindFourRemovalsAchievementId`,
+`loginMembershipGateValue`, `awaitingUsernameSuggestionsStage`,
+`lockBootstrapLoginPanelActions`, `highUpdateRateModeActive` and the
+fullscreen focus-loss/timeout reason identities. The membership value is an
+unsigned 16-bit login value used as a positive membership gate; this name does
+not assume days or expiry semantics. The update-rate flag selects the original
+150/50 update scheduling requests, without claiming a rendering frame rate.
+
+Five optional mesh short-array streams have names indicating their decoded wire
+order. Their lengths use 16 bits, their payloads retain the original signed-base/
+variable-width delta decoding, and the discarded section value stays discarded.
+The source supplies no consumer proving UV, texture or other attribute semantics.
+The stored, unconsumed `kg.C(` diagnostic prefix is also named and preserved.
+
+The compiler-backed naming driver makes exactly 77 additional identifier edits:
+16 declarations and 61 references across 20 files. An independent whole-corpus
+comparison matches those field replacements and every other source character.
+All 18,436 previous complete rules remain unchanged; there are 18,452 rules.
+All 303 raw/readable sources compile, comparing 136,574 ordinary bindings,
+388 override pairs and 811 lexical label records. All 245 labels remain named.
+The output has 117,547 identifier, eleven literal and 811 label edits: 118,369 total.
+Raw input, decompiler/naming/workflow/stub/native pins, guards, numeric IDs/rates,
+conditions, statements, diagnostics and operation order remain unchanged.
+Deterministic reproduction and dictionary reversal are byte exact.
+
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test readable/tests/test-geoblox-rule-builder.mjs readable/tests/test-geoblox-migration-source.mjs readable/tests/test-geoblox-text-rules.mjs`
+passes all 27 publication tests. Existing scoped gameplay and nine-slice/UI/mesh
+probes also retain their native/raw/readable trace hashes. Their existing scopes
+are unchanged; this naming pass adds no native runtime cases or fixtures.
+
+Eight large labeled bodies and 41 opaque fields remain. The fields comprise
+six public GameApplet fields with no source references and 35 private
+VisualPropertyOverrides fields used only for default initialization and merge
+retention. Their source does not establish more specific UI meanings.
+Whole game/renderer/server/browser/phone and heap/presented-FPS acceptance
+remain unverified; the large bodies still need structural recovery.
+
+## Previous helper-label naming (pass 179)
 
 All 73 remaining opaque labels now describe their original lexical scope:
 37 plain blocks and 36 loops across 34 files. Names include
