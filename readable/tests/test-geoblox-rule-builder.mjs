@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {captureProcess} from '../tools/lib/capture-process.mjs';
 
@@ -33,6 +34,28 @@ function fixture(change, check = true) {
 
 test('one current manifest reproduces all guarded rules using Git history', () => {
   assert.equal(JSON.parse(fixture().stdout).rules, current.renames.length);
+});
+test('historical manifests larger than 8 MiB still verify their exact Git bytes', () => {
+  const result = fixture((data, directory) => {
+    const previous = data.publication.previousRules;
+    const repository = path.resolve(directory, '..');
+    const bytes = captureProcess('git', ['-C', repository, 'show',
+      `${previous.commit}:${previous.path}`], {maxBuffer: 32 * 1024 * 1024}).stdout;
+    // JSON whitespace changes the reviewed byte hash without changing any rule.
+    const padded = Buffer.concat([bytes, Buffer.alloc(Math.max(1, 9 * 1024 * 1024 - bytes.length), 32)]);
+    assert.ok(padded.length > 8 * 1024 * 1024);
+    const file = path.join(repository, 'historical-manifest');
+    fs.writeFileSync(file, padded);
+    const git = args => captureProcess('git', ['-C', repository, ...args]).stdout.toString().trim();
+    const blob = git(['hash-object', '-w', file]);
+    git(['read-tree', previous.commit]);
+    git(['update-index', '--cacheinfo', `100644,${blob},${previous.path}`]);
+    const tree = git(['write-tree']);
+    previous.commit = git(['-c', 'user.name=Readability fixture', '-c', 'user.email=fixture@example.invalid',
+      'commit-tree', tree, '-p', previous.commit, '-m', 'Historical manifest size fixture']);
+    previous.sha256 = crypto.createHash('sha256').update(padded).digest('hex');
+  });
+  assert.equal(JSON.parse(result.stdout).rules, current.renames.length);
 });
 test('previous Git objects and their hash cannot change silently', () => {
   for (const change of [

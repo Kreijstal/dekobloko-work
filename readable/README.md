@@ -37,7 +37,37 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current pass 125
+## Current shared state and socket pass 126
+
+Pass 126 adds 153 guarded names: fourteen classes, 32 fields, 28 methods,
+52 parameters and 27 locals. All 11,194 previous complete rules survive.
+The export has 11,347 rules and 87,411 identifier edits plus the same eleven
+separately recorded reflected class-name edits. All 303 top-level classes have
+meaningful names: 302 renamed and the original `Geoblox`. All parameters and
+locals in the fourteen audited owners have guarded names. Unmapped members,
+six large labeled bodies and 207 plain-block labels remain.
+
+The named paths cover session socket task polling, packet buffers/header and
+opcode history, bootstrap stages/localized loading text, generated-entity quota,
+validation scratch and raster restoration/copy/outline helpers. Shared statics
+stay on their original owners. The option mask has no fixed-source nonzero
+producer; a received session-access byte is not assigned undocumented server
+privileges. The power-of-two helper retains overflow and wrong-guard return,
+and outline expansion retains its signed pixel>1 and zero-neighbor conditions.
+
+The prior manifest exceeds the generic subprocess capture limit of 8 MiB.
+Only the workflow's historical-manifest read now allows a bounded 32 MiB;
+compiler and frozen generic naming limits stay unchanged. An explicit
+`sourceChange` records the builder hash, and a regression fixture commits a
+padded historical manifest above 8 MiB and verifies its exact Git-byte hash.
+Raw source, decompiler, bytecode, frozen naming tool and eight native fixture
+pins stay unchanged. The 26 publication tests and all eight native probes pass
+within their existing scopes. All 303 sources reproduce and reverse exactly;
+clean committed checkouts reproduce the export. This pass does not add live
+socket/header/login/bootstrap service, assets/server/browser/phone or performance
+coverage.
+
+## Previous client flow and bootstrap pass 125
 
 Pass 125 adds 292 guarded names: thirteen classes, 40 fields, 34 methods,
 78 parameters and 127 locals. All 10,902 previous complete rules and source,

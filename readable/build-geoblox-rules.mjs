@@ -38,8 +38,10 @@ export function validateManifest(rules, directory = root) {
       !['Kreijstal/funorb-decompiled', 'Kreijstal/dekobloko-work'].includes(previous.repository)) throw new Error('Invalid previous Git rule identity');
   const historyRepository = previous.repository === 'Kreijstal/funorb-decompiled'
     ? funorbRepository : path.resolve(directory, '..');
+  // The guarded dictionary and evidence can exceed the generic 8 MiB limit.
+  // Bound this historical manifest read separately; compiler limits stay fixed.
   const bytes = captureProcess('git', ['-C', historyRepository, 'show',
-    `${previous.commit}:${previous.path}`]).stdout;
+    `${previous.commit}:${previous.path}`], {maxBuffer: 32 * 1024 * 1024}).stdout;
   if (hash(bytes) !== previous.sha256) throw new Error('Previous Git rules differ from their reviewed hash');
   const before = JSON.parse(bytes);
   if (!same(sourceIdentity(before), sourceIdentity(rules)) &&
