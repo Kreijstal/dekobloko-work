@@ -12,7 +12,7 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const sha256 = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
 const sourceIdentity = rules => ({source: rules.source, generators: rules.generators,
   inputTreeSha256: rules.inputTreeSha256, readabilityWorkflow: rules.readabilityWorkflow ?? null,
-  classNameLiterals: rules.classNameLiterals ?? null});
+  classNameLiterals: rules.classNameLiterals ?? null, labels: rules.labels ?? null});
 
 // One current manifest. The previous reviewed rules live in Git, not copied
 // version files. Explicit differences preserve every unaffected guarded name.
@@ -52,7 +52,7 @@ export function validateManifest(rules, directory = root) {
       new Set(rules.renames.map(rule => rule.symbol)).size !== rules.renames.length)
     throw new Error('Current naming rules have duplicate or missing identities');
   for (const rule of rules.renames) {
-    if (!/^[CMFPL]:/.test(rule.symbol) || !/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(rule.originalName ?? '') ||
+    if (!/^[CMFPLB]:/.test(rule.symbol) || !/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(rule.originalName ?? '') ||
         !/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(rule.to ?? '') || typeof rule.evidence !== 'string' || !rule.evidence.trim())
       throw new Error(`Incomplete guarded naming rule: ${rule.symbol}`);
   }
@@ -113,6 +113,11 @@ export function validateManifest(rules, directory = root) {
       rules.classNameLiterals.policy !== 'direct-owned-class-for-name' ||
       !Number.isInteger(rules.classNameLiterals.expectedEdits) || rules.classNameLiterals.expectedEdits < 0))
     throw new Error('Invalid guarded class-name literal policy');
+  if (rules.labels && (!namingTool || rules.labels.policy !== 'lexical-targets' ||
+      !Number.isInteger(rules.labels.expectedEdits) || rules.labels.expectedEdits < 0))
+    throw new Error('Invalid guarded label policy');
+  if (rules.renames.some(rule => rule.symbol.startsWith('B:')) && !rules.labels)
+    throw new Error('Label names require the guarded lexical-target policy');
   for (const file of ['readable-java.mjs', 'lib/ReadableJava.java', 'lib/capture-process.mjs'])
     if (hash(fs.readFileSync(path.join(toolRoot, file))) !== tool.files[file])
       throw new Error(`Frozen naming tool changed: ${file}`);

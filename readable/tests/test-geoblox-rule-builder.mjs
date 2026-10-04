@@ -117,6 +117,18 @@ test('class-name literal policy and naming dependency require explicit migration
     fs.writeFileSync(file, JSON.stringify(pin));
   }), /naming dependency differs/);
 });
+test('label policy changes require explicit migration and exact count guards', () => {
+  assert.ok(current.labels);
+  for (const change of [
+    data => { data.labels.expectedEdits++; },
+    data => { delete data.labels; },
+    data => { data.labels.policy = 'different'; },
+  ]) assert.throws(() => fixture(change), /explicit sourceChange/);
+  assert.throws(() => fixture(data => {
+    data.labels.expectedEdits = -1;
+    data.publication.sourceChange.after.labels = data.labels;
+  }), /Invalid guarded label policy/);
+});
 test('source evidence refuses duplicate entries, traversal and malformed hashes', () => {
   for (const change of [
     data => { data.publication.sourceEvidence.push(data.publication.sourceEvidence[0]); },

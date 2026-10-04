@@ -37,7 +37,38 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current shared state and socket pass 126
+## Current large-body label pass 127
+
+Pass 127 adds 52 guarded label rules, covering every label in the six large
+bodies: menu render/update, gameplay render/update, board reconciliation and
+sorted RGB triangle rendering. Fifty describe plain-block exit scopes; two name
+component-traversal loops. The export has 11,399 rules, the same 87,411 Java
+identifier edits and eleven reflected class-name edits, plus 173 separate label
+edits. All 11,347 previous complete rules survive. Class coverage stays 302
+renamed plus `Geoblox`; the six large bodies retain their structure and length.
+There are still 213 opaque labels elsewhere and unmapped members.
+
+The frozen naming dependency now supports `B:owner.method(descriptor)#ordinal`
+identities and the explicit `labels` policy `lexical-targets`. It audits 265
+label declarations and 854 declaration/break/continue records separately from
+136,612 Java bindings. Each transfer retains its original kind and exact lexical
+AST target, even when a spelling is reused in disjoint scopes. Names describe
+existing regions; they do not infer that the client control flag is zero, replace
+numeric state or relax exception-region reconstruction. Dictionary reversal
+recovers all 303 raw sources exactly.
+
+Fifteen generic naming tests plus four subprocess tests pass, including runtime
+loop/finally/monitor traces, guard/count refusals and exact reversal. The default
+five-path audit remains byte-identical to the previous frozen helper on all303
+sources; extra label and class-literal records are opt-in. The 27 publication
+tests and all eight fixed native probes pass within their scopes. Compiling the
+previous pass126 and current exports with the same JDK and release8 options gives
+304 byte-identical class files. Clean committed checkouts reproduce the export.
+Raw source, decompiler/bytecode and all native source/trace pins remain; explicit
+source migration pins the new naming dependency, workflow and label policy.
+Full-game/assets/server/browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous shared state and socket pass 126
 
 Pass 126 adds 153 guarded names: fourteen classes, 32 fields, 28 methods,
 52 parameters and 27 locals. All 11,194 previous complete rules survive.
@@ -314,3 +345,23 @@ pixel sharing/drawing, signed wheel overflow, event consumption, failed null-eve
 drain, accumulator reset and listener removal guard timing. The three other
 bridges are loaded and their constructors/member signatures are resolved, but
 hardware-dependent operations are not exercised.
+
+## Guarded lexical label names
+
+`labels: {policy: "lexical-targets", expectedEdits: …}` opts into label edits.
+The original method descriptor and label-declaration ordinal form a stable `B:`
+identity; every rule also guards the original label spelling. The Java audit
+emits separate `T` declaration, `B` break and `N` continue records only with
+`--labels`. It resolves targets by enclosing lexical statements and stops at
+method, class and lambda boundaries. Continue targets must be labeled loops.
+The default five audit paths still emit only the original `D/R/O` records;
+`--class-name-literals` and `--labels` can be selected independently or together.
+
+The generator compares every label target, transfer kind and shifted token
+position after javac recompiles the named sources. It records `kind: "label"`
+edits in the existing reverse dictionary. Label edits are counted separately
+from Java symbol identifiers and class-name literals. Unsupported policies,
+missing/wrong spelling or ordinal guards, count mismatches and non-compiling
+label collisions refuse publication. Strings, comments and unlabeled transfers
+remain unchanged. This feature names existing scopes; structural decompiler
+reconstruction remains in `java-tools`.
