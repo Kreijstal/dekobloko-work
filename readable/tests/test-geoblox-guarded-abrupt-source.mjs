@@ -10,13 +10,13 @@ import {captureProcess} from '../tools/lib/capture-process.mjs';
 import {sourceInventory, sourceIdentity} from '../tools/readable-java.mjs';
 
 // Recheck the latest guarded-abrupt structural pass from immutable Git inputs.
-// The suffix/shared-exit/guarded-loop/nonrepeating-loop extensions share this fixture; earlier source/hash
+// The suffix/shared-exit/guarded-loop/nonrepeating/trailing-loop extensions share this fixture; earlier source/hash
 // remains available in its pinned workflow commit. No extra preview is needed.
 const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -87,10 +87,10 @@ public final class GeobloxBodyPositions {
     return {file, start: Number(start), end: Number(end), parameterNames: (parameters || '').split(',').filter(Boolean)};
   });
   const require = createRequire(import.meta.url);
-  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
+  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
   const {tokenizeJava} = require(path.join(tools.directory, 'src/java-frontend/lexer.js'));
   const tokens = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind)).map(t => t.text);
-  const counts = {}, sharedSelections = [];
+  const counts = {}, sharedSelections = [], trailingSelections = [];
   let methods = 0, files = 0, linesBefore = 0, linesAfter = 0, labelsBefore = 0, labelsAfter = 0;
   for (const entry of beforeFiles) {
     const original = fs.readFileSync(path.join(before, entry.path), 'utf8');
@@ -99,6 +99,19 @@ public final class GeobloxBodyPositions {
     for (const span of spans.filter(s => s.file === entry.path)) {
       const body = original.slice(span.start + 1, span.end - 1);
       const recover = source => {
+        if (proof.trailingLoopContinuations) {
+          let loops = 0, continues = 0;
+          const labels = [];
+          for (;;) {
+            const result = foldTrailingLoopContinuations(source, {parameterNames: span.parameterNames, retainDiagnostics: true});
+            if (!result.loopsRecovered) break;
+            assert.notEqual(result.source, source, 'each trailing loop consumes direct guard backedges');
+            if (result.diagnostics.label) labels.push(result.diagnostics.label);
+            continues += result.diagnostics.removedContinueRanges.length;
+            source = result.source; loops += result.loopsRecovered;
+          }
+          return {source, rewrites: loops, labels, counts: {trailingLoopContinuations: loops, directGuardContinuesRemoved: continues}};
+        }
         if (proof.nonrepeatingWhileLoops) {
           let conditionals = 0;
           for (;;) {
@@ -122,6 +135,7 @@ public final class GeobloxBodyPositions {
       const result = recover(body);
       if (!result.rewrites) continue;
       assert.equal(recover(result.source).source, result.source, 'fixed point');
+      if (proof.trailingLoopContinuations) trailingSelections.push(...result.labels.map(label => ({...span, label})));
       if (proof.sharedGuardedJumpSelections) {
         let selected = body, jumps = 0;
         for (;;) {
@@ -189,6 +203,8 @@ public final class GeobloxBodyPositions {
   const pending = new Set(selectedTargets.filter(target => mapping.get(target.symbol)).map(target => target.symbol));
   assert.equal(pending.size, selectedTargets.filter(target => mapping.get(target.symbol)).length, 'at most one selected guarded jump per surviving frame');
   const expectedLabels = records(oldAudit).filter(row => mapping.get(row[4])).filter(row => {
+    if (proof.trailingLoopContinuations && row[0] === 'N' && trailingSelections.some(span => row[1] === span.file
+        && row[5] === span.label && Number(row[2]) >= span.start && Number(row[3]) <= span.end)) return false;
     if (row[0] !== 'B' || !pending.has(row[4])) return true;
     // The destination proof permits all other references only in the complete
     // fallback. Its selected direct guard is therefore the first old break to
@@ -200,6 +216,8 @@ public final class GeobloxBodyPositions {
   const actualLabels = records(newAudit).map(row => [row[0], row[1], row[4], row[5]]);
   assert.equal(records(oldAudit).length, proof.labelBindingsBefore);
   assert.equal(actualLabels.length, proof.labelBindingsAfter);
+  if (proof.trailingLoopContinuations) assert.equal(records(oldAudit).length - actualLabels.length,
+    proof.labeledGuardContinuesRemoved, 'only own labeled guard backedges are consumed');
   assert.deepEqual(actualLabels, expectedLabels, 'all ordered surviving label declarations, destinations and transfer kinds');
   if (proof.largeLabeledBodiesAfter) {
     const inventory = [];
