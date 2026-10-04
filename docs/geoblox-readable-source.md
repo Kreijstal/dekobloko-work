@@ -36,7 +36,43 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current trailing loop reconstruction pass 149
+## Current loop exit continuation pass 150
+
+Pass 150 separates 54 noncompleting continuations from repeating loop prefixes
+in 39 methods across 29 owners. The final section now follows an explicit loop
+exit. Board reconciliation exposes moving/connectivity work, attached-entity
+routing, transient recycling and final raster/achievement updates as sequential
+sections. Session drawing/update, menu update/render helpers, Bzip2 selector
+reading and output-state publication receive the same generic reconstruction.
+
+All existing repeats must stay inside a complete prefix, and no existing own
+break may skip the old continuation. Own exits, prefix-owned direct locals,
+ambiguous/unsupported syntax, a prefix without normal completion and a suffix
+that can fall through refuse reconstruction. Whole conditional, try/catch/finally,
+switch, label and monitor constructs remain intact. Suffix local scope and scalar
+parent braces remain. Earlier/finally continues still repeat; nonlocal transfers
+still skip both sections. No control-flag value is assumed. Explicit breaks add
+54 source lines while reducing continuation nesting; no labels are removed.
+
+Four new focused groups include eight native variants checked against 18,432
+independent event-model cases. Effectful else arms, nullable/effectful guards,
+exception identity, partial effects, earlier repeats, finally backedges that
+override pending exceptions, return snapshots and monitor release are covered.
+The emitter suite passes 116 tests with one existing skip. A clean tracked source
+tar reproduces all 303 Java files and unchanged diagnostics, without failures or
+fallbacks. The shared source proof checks every expected token stream, all 136,607
+ordered declaration/reference bindings, 388 overrides and 813 lexical label records,
+plus the 54 added bare exits. No local or label ordinal migrates.
+
+All 14,618 complete naming rules and 102,435 recorded edits remain unchanged.
+Both corpora compile, reproduce and reverse byte exactly. The 27 publication
+checks and eight existing native fixtures pass within their documented scopes.
+Five large bodies change but eight remain: board reconciliation is 335 lines,
+session render/update 346/630, menu update 327 and Bzip2 decodeBlocks 376.
+There are still 163 opaque labels, 329 opaque fields and 355 short opaque methods.
+Full assets/gameplay, servers, browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous trailing loop reconstruction pass 149
 
 Pass 149 reconstructs thirteen guarded infinite loops as explicit `do…while`
 loops in twelve methods across nine owners. Bzip2 run decoding now repeats while

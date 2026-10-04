@@ -37,7 +37,43 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current trailing loop reconstruction pass 149
+## Current loop exit continuation pass 150
+
+Pass 150 separates 54 noncompleting continuations from repeating loop prefixes
+in 39 methods across 29 owners. The final section now follows an explicit loop
+exit. Board reconciliation exposes moving/connectivity work, attached-entity
+routing, transient recycling and final raster/achievement updates as sequential
+sections. Session drawing/update, menu update/render helpers, Bzip2 selector
+reading and output-state publication receive the same generic reconstruction.
+
+All existing repeats must stay inside a complete prefix, and no existing own
+break may skip the old continuation. Own exits, prefix-owned direct locals,
+ambiguous/unsupported syntax, a prefix without normal completion and a suffix
+that can fall through refuse reconstruction. Whole conditional, try/catch/finally,
+switch, label and monitor constructs remain intact. Suffix local scope and scalar
+parent braces remain. Earlier/finally continues still repeat; nonlocal transfers
+still skip both sections. No control-flag value is assumed. Explicit breaks add
+54 source lines while reducing continuation nesting; no labels are removed.
+
+Four new focused groups include eight native variants checked against 18,432
+independent event-model cases. Effectful else arms, nullable/effectful guards,
+exception identity, partial effects, earlier repeats, finally backedges that
+override pending exceptions, return snapshots and monitor release are covered.
+The emitter suite passes 116 tests with one existing skip. A clean tracked source
+tar reproduces all 303 Java files and unchanged diagnostics, without failures or
+fallbacks. The shared source proof checks every expected token stream, all 136,607
+ordered declaration/reference bindings, 388 overrides and 813 lexical label records,
+plus the 54 added bare exits. No local or label ordinal migrates.
+
+All 14,618 complete naming rules and 102,435 recorded edits remain unchanged.
+Both corpora compile, reproduce and reverse byte exactly. The 27 publication
+checks and eight existing native fixtures pass within their documented scopes.
+Five large bodies change but eight remain: board reconciliation is 335 lines,
+session render/update 346/630, menu update 327 and Bzip2 decodeBlocks 376.
+There are still 163 opaque labels, 329 opaque fields and 355 short opaque methods.
+Full assets/gameplay, servers, browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous trailing loop reconstruction pass 149
 
 Pass 149 reconstructs thirteen guarded infinite loops as explicit `do…while`
 loops in twelve methods across nine owners. Bzip2 run decoding now repeats while
@@ -1065,8 +1101,9 @@ JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-post-guard-s
 The structural proofs read immutable raw/tool Git commits, compare every
 expected token stream, compile all sources, check declaration migrations and
 ordered bindings, and remove their temporary exports. The guarded-abrupt fixture
-now proves pass 149, trailing loop recovery and the complete large-body
-inventory. Its pass 135 revision remains at Deko commit
+now proves pass 150, loop exit continuations and the complete large-body
+inventory. Its pass 149 revision remains at Deko commit
+`3c7273824f655a21b14668cd12e71a2ecccac07c`; pass 135 remains at
 `364dcb8cead1403a17f5395541c6049e9b9d75a8`; pass 133 remains at
 `c66ee0af3d13865ac6cbf482d198de689e64e450`; pass 131 remains at
 `4de6b7f1ce230f07121d8d04cd3f1d278b244f23`; pass 130 remains at
