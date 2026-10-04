@@ -23,6 +23,8 @@ const expectedArchiveCompressionSha256 = '191d74dde65e8e0a6b5dc72a0193765baa165a
 const expectedBzip2BlockSha256 = 'f237b1b6fd8e69c006fa43ec005f742ae5909d107d0ba5ec4574f2c804ad3ba9';
 const expectedMusicScoreSha256 = 'dbb5328e2411eeac81a8c9f515fb6ab1cd3f07f56a2bca7ffda0508a6f444ff4';
 const expectedInstrumentPatchSha256 = '632bd2079878bac0a78c60d5bce99a688b1fdc552641b56dd62ad9d21e7d5b24';
+const expectedFrameTimerSha256 = 'ede4d1133daada42504bf8fe04c675cbbde84af1a2e59b7793339f7210538df8';
+let expectedFrameTimerBaseline;
 const expectedSynthesizedSoundSha256 = '5940267c23617214e39dc820f851b313492cc7e3c5950144a2d34ffb1a75d62b';
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-result-helpers-'));
 try {
@@ -1265,10 +1267,108 @@ try {
         }
       }
 `;
+    const timerHarness=`
+      class FrameTimerBehavior extends ResultHelperBehavior {
+        static Field F(String owner,String name){try{return field(owner,name);}catch(Exception e){throw new AssertionError(e);}}
+        static final Field accumulated=F("${type('cm')}","${field('cm','field_e','J')}");
+        static final Field scheduled=F("${type('cm')}","${field('cm','field_c','J')}");
+        static final Field lastSample=F("${type('cm')}","${field('cm','field_i','J')}");
+        static final Field samples=F("${type('cm')}","${field('cm','field_f','[J')}");
+        static final Field index=F("${type('cm')}","${field('cm','field_d','I')}");
+        static final Field sampleCount=F("${type('cm')}","${field('cm','field_g','I')}");
+        static final java.security.MessageDigest trace;
+        static int cases,advances,resets,averages,wrappers,ranking,flushes,cleanup,failures;
+        static {try{trace=java.security.MessageDigest.getInstance("SHA-256");}catch(Exception e){throw new AssertionError(e);}}
+        static void record(String text){try{trace.update((text+"\\n").getBytes("UTF-8"));cases++;}catch(Exception e){throw new AssertionError(e);}}
+        static long wrappedAdd(long a,long b){return java.math.BigInteger.valueOf(a).add(java.math.BigInteger.valueOf(b)).longValue();}
+        static long[] tickOracle(long time,long deadline,long previous,long period){
+          if(deadline>time){long adjusted=java.math.BigInteger.valueOf(previous).add(java.math.BigInteger.valueOf(deadline)).subtract(java.math.BigInteger.valueOf(time)).longValue();return new long[]{deadline,wrappedAdd(deadline,period),adjusted,1};}
+          for(int k=1;k<=10;k++){long candidate=java.math.BigInteger.valueOf(deadline).add(java.math.BigInteger.valueOf(period).multiply(java.math.BigInteger.valueOf(k))).longValue();if(candidate>=time||k==10)return new long[]{time,Math.max(time,candidate),previous,k};}
+          throw new AssertionError("tick oracle");
+        }
+        static ${type('cm')} timer(long time,long deadline,long previous,int count,int cursor,long[] ring)throws Exception{
+          ${type('cm')} timer=(${type('cm')})allocate("${type('cm')}");accumulated.setLong(timer,time);scheduled.setLong(timer,deadline);lastSample.setLong(timer,previous);sampleCount.setInt(timer,count);index.setInt(timer,cursor);samples.set(timer,ring);return timer;
+        }
+        static void control(int value)throws Exception{${set('Geoblox','field_C','I','null','value')}}
+        static void advanceCases()throws Exception{
+          long[] clocks={-100,0,5,100,Long.MIN_VALUE,Long.MAX_VALUE,Long.MIN_VALUE+10,Long.MAX_VALUE-10};
+          for(int flag:new int[]{-1,0,1})for(long time:clocks)for(long deadline:clocks)for(long previous:new long[]{0,Long.MAX_VALUE})for(long period:new long[]{-3,0,1,7,Long.MIN_VALUE,Long.MAX_VALUE})for(boolean guard:new boolean[]{false,true}){
+            control(flag);long[] ring={1,2,3,4,5,6,7,8,9,10};${type('cm')} timer=timer(time,deadline,previous,2,3,ring);int[] palette={1,2};${set('cm','field_j','[I','null','palette')}${set('cm','field_h','Ljava/lang/String;','null','"Checking"')}
+            int ticks=timer.${method('cm','a(ZJ)I')}(guard,period);long[] wanted=tickOracle(time,deadline,previous,period);check(ticks==wanted[3]&&accumulated.getLong(timer)==wanted[0]&&scheduled.getLong(timer)==wanted[1]&&lastSample.getLong(timer)==wanted[2],"tick oracle");check(samples.get(timer)==ring&&sampleCount.getInt(timer)==2&&index.getInt(timer)==3,"tick retains ring");check(${get('cm','field_j','[I')}==(guard?palette:null)&&Objects.equals(${get('cm','field_h','Ljava/lang/String;')},guard?"Checking":null),"tick guard cleanup");record("tick:"+flag+":"+time+":"+deadline+":"+previous+":"+period+":"+guard+":"+Arrays.toString(wanted));advances++;
+          }
+          for(int flag:new int[]{-1,0,1})for(long time:clocks)for(long deadline:clocks)for(long previous:new long[]{0,Long.MAX_VALUE})for(int guard:new int[]{0,59,60,100}){
+            control(flag);long[] ring={1,2,3,4,5,6,7,8,9,10};${type('cm')} timer=timer(time,deadline,previous,2,3,ring);timer.${method('cm','a(I)V')}(guard);check(accumulated.getLong(timer)==Math.max(time,deadline)&&scheduled.getLong(timer)==deadline&&lastSample.getLong(timer)==(guard>=60?0:previous),"reset partial oracle");check(samples.get(timer)==ring&&sampleCount.getInt(timer)==2&&index.getInt(timer)==3,"reset retains ring");record("reset:"+flag+":"+time+":"+deadline+":"+previous+":"+guard);resets++;
+          }
+        }
+        static void averageCases()throws Exception{
+          Method average=method("${type('cm')}","${method('cm','d(I)J')}",int.class);
+          for(int flag:new int[]{-1,0,1})for(int count:new int[]{0,1,2,10})for(int cursor:new int[]{0,5,9})for(int initial:new int[]{-3,0,5})for(boolean accepted:new boolean[]{false,true}){
+            control(flag);long before=System.nanoTime(),seed=wrappedAdd(before,accepted?-1000000:10000000000L);long[] ring={-10,20,-30,40,-50,60,-70,80,-90,100},original=ring.clone();${type('cm')} timer=timer(17,23,seed,count,cursor,ring);long value=0;boolean failed=false;
+            try{value=(Long)average.invoke(timer,initial);}catch(InvocationTargetException e){check(!accepted&&count==0&&e.getCause() instanceof ArithmeticException,"average failure");failed=true;failures++;}
+            long after=System.nanoTime(),observed=lastSample.getLong(timer),delta=observed-seed;check(observed>=before&&observed<=after,"stored actual clock sample");check((delta>-5000000000L&&delta<5000000000L)==accepted,"controlled interval domain");int wantedCount=accepted&&count<1?count+1:count,wantedIndex=accepted?(cursor+1)%10:cursor;
+            long[] wantedRing=original.clone();if(accepted)wantedRing[cursor]=delta;check(Arrays.equals(ring,wantedRing)&&index.getInt(timer)==wantedIndex&&sampleCount.getInt(timer)==wantedCount,"sample ring state");check(accumulated.getLong(timer)==17&&scheduled.getLong(timer)==23,"sampling retains tick clocks");
+            long sum=initial;for(int offset=1;offset<=wantedCount;offset++)sum=wrappedAdd(sum,wantedRing[(wantedIndex+10-offset)%10]);check(failed==(wantedCount==0),"average zero count");if(!failed)check(value==sum/wantedCount,"average arithmetic");record("average:"+flag+":"+count+":"+cursor+":"+initial+":"+accepted+":"+failed);averages++;
+          }
+          for(int flag:new int[]{-1,0,1}){control(flag);long before=System.nanoTime();${type('cm')} timer=new ${type('cm')}();long after=System.nanoTime();check(accumulated.getLong(timer)>=before&&scheduled.getLong(timer)>=accumulated.getLong(timer)&&scheduled.getLong(timer)<=after,"constructor clock samples");check(lastSample.getLong(timer)==0&&sampleCount.getInt(timer)==1&&index.getInt(timer)==0&&Arrays.equals((long[])samples.get(timer),new long[10]),"constructor interval state");record("constructor:"+flag);averages++;}
+        }
+        static class ProbeTimer extends ${type('cj')} {
+          final StringBuilder calls=new StringBuilder();long delay;int failAt=-1;Throwable failure;
+          void ${method('cj','a(I)V')}(int guard){throw new AssertionError("unused reset");}
+          long ${method('cj','a(B)J')}(byte guard){calls.append("sample:").append(guard).append(';');if(failAt==0)fail();return delay;}
+          int ${method('cj','a(ZJ)I')}(boolean guard,long period){calls.append("advance:").append(guard).append(':').append(period).append(';');if(failAt==1)fail();return 3;}
+          void fail(){if(failure instanceof Error)throw (Error)failure;throw (RuntimeException)failure;}
+        }
+        static void wrapperCases()throws Exception{
+          for(byte guard:new byte[]{-6,0,7})for(long period:new long[]{0,1,Long.MAX_VALUE})for(long delay:new long[]{-1,0,1})for(int failAt:new int[]{-1,0,1})for(boolean error:new boolean[]{false,true}){
+            ProbeTimer timer=new ProbeTimer();timer.delay=delay;timer.failAt=failAt;timer.failure=error?new AssertionError("clock-callback"):new IllegalArgumentException("clock-callback");boolean shouldFail=failAt==0||failAt==1&&guard==-6,failed=false;int value=0;
+            try{value=timer.${method('cj','a(BJ)I')}(guard,period);}catch(RuntimeException e){check(shouldFail&&!error&&e==timer.failure,"clock runtime identity");failed=true;failures++;}catch(Error e){check(shouldFail&&error&&e==timer.failure,"clock Error identity");failed=true;failures++;}
+            check(failed==shouldFail,"wrapper failure order");if(!failed)check(value==(guard==-6?3:-30),"wrapper result");String wanted="sample:-49;"+(failAt!=0&&guard==-6?"advance:true:"+period+";":"");check(timer.calls.toString().equals(wanted),"wrapper callback order");record("wrapper:"+guard+":"+period+":"+delay+":"+failAt+":"+error+":"+failed+":"+timer.calls);wrappers++;
+          }
+          for(int guard:new int[]{-60,-59,-58,0}){int[] components={1,2};${set('cj','field_b','[I','null','components')}${set('cj','field_a','Ljava/lang/String;','null','"record"')}method("${type('cj')}","${method('cj','b(I)V')}",int.class).invoke(null,guard);check(${get('cj','field_a','Ljava/lang/String;')}==null&&${get('cj','field_b','[I')}==(guard<=-59?null:components),"frame resource guard");record("cleanup:"+guard);cleanup++;}
+        }
+        static byte[] response(int limit,int values,boolean names)throws Exception{
+          java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();java.io.DataOutputStream out=new java.io.DataOutputStream(bytes);out.writeByte(0);out.writeShort(777);out.writeByte(names?3:0);
+          if(names){out.writeBytes("Other");out.writeByte(0);out.writeByte(1);out.writeBytes("alias");out.writeByte(0);out.writeBytes("SELF");out.writeByte(0);out.writeByte(0);out.writeByte(3);
+            for(int row=0;row<3;row++){out.writeByte(row);out.writeLong(40+row);for(int col=0;col<values;col++)out.writeInt(100*row+col+1);}}
+          return bytes.toByteArray();
+        }
+        static void rankingCase(int flag,int limit,int values,boolean names,int prefix)throws Exception{
+          control(flag);byte[] complete=response(limit,values,names),bytes=prefix<0?complete:Arrays.copyOf(complete,prefix);${type('pk')} packet=new ${type('pk')}(bytes);${set('eh','field_d','Lpk;','null','packet')}${set('wd','field_f','Ljava/lang/String;','null','"Self"')}${set('vg','field_b','Ljava/lang/String;','null','"self"')}
+          ${type('mg')} query=new ${type('mg')}();query.${field('mg','field_i','I')}=777;query.${field('mg','field_f','I')}=limit;query.${field('mg','field_l','I')}=values;String[][] oldNames={{"old"}};int[][] oldValues={{-7}};query.${field('mg','field_k','[[Ljava/lang/String;')}=oldNames;query.${field('mg','field_h','[[I')}=oldValues;
+          ${type('tf')} pending=new ${type('tf')}();pending.${method('tf','a(ILhf;)V')}(-71,query);${set('rh','field_d','Ltf;','null','pending')}
+          ${type('lc')}[] table=new ${type('lc')}[3];for(int i=0;i<3;i++)table[i]=new ${type('lc')}();${set('id','field_b','[Llc;','null','table')}
+          String failure="ok";try{method("${type('cm')}","${method('cm','c(I)V')}",int.class).invoke(null,-24839);}catch(InvocationTargetException e){Object underlying=get("${type('sa')}","${field('sa','field_a','Ljava/lang/Throwable;')}",e.getCause());check(prefix>=0&&underlying instanceof RuntimeException,"truncated ranking failure");failure=underlying.getClass().getSimpleName();failures++;}
+          if(prefix<0){check(query.${field('mg','field_j','Z')},"ranking completion");check(pending.${method('tf','g(I)Lhf;')}(0)==null,"query unlinked");check(packet.${field('qc','field_f','I')}==complete.length,"ranking cursor");
+            if(!names)check(query.${field('mg','field_k','[[Ljava/lang/String;')}==oldNames&&query.${field('mg','field_h','[[I')}==oldValues,"zero names retains views");
+            else{String[] primary={"Self","Other","SELF"};int[][] sourceRows={{0,1,2},{0,2},{0,1,2}};
+              for(int view=0;view<3;view++)for(int row=0;row<limit;row++){int available=view==1?2:Math.min(3,limit);String wanted=row<available?(view==1?"Self":primary[sourceRows[view][row]]):null;check(Objects.equals(query.${field('mg','field_k','[[Ljava/lang/String;')}[view][row],wanted),"ranking view names");for(int col=0;col<values;col++)check(query.${field('mg','field_h','[[I')}[view][row*values+col]==(row<available?100*sourceRows[view][row]+col+1:0),"ranking view values");}
+              check(table[0].${field('lc','field_c','Z')}&&table[1].${field('lc','field_c','Z')}&&table[2].${field('lc','field_c','Z')}==(limit>=3),"unique name-index state");check(Objects.equals(table[1].${field('lc','field_a','Ljava/lang/String;')},"alias")&&table[2].${field('lc','field_a','Ljava/lang/String;')}==null,"alternate names");}}
+          else check(!query.${field('mg','field_j','Z')},"partial query not completed");record("ranking:"+flag+":"+limit+":"+values+":"+names+":"+prefix+":"+failure+":"+packet.${field('qc','field_f','I')}+":"+Arrays.deepToString(query.${field('mg','field_k','[[Ljava/lang/String;')})+":"+Arrays.deepToString(query.${field('mg','field_h','[[I')}));ranking++;
+        }
+        static void rankingCases()throws Exception{
+          for(int flag:new int[]{-1,0,1})for(int limit:new int[]{2,3,4})for(int values:new int[]{0,1,2})for(boolean names:new boolean[]{false,true})rankingCase(flag,limit,values,names,-1);
+          int length=response(3,2,true).length;for(int prefix=0;prefix<length;prefix++)rankingCase(0,3,2,true,prefix);
+        }
+        static void flushCases()throws Exception{
+          Method flush=method("${type('cm')}","${method('cm','a(II)V')}",int.class,int.class);
+          for(int flag:new int[]{-1,0,1})for(int position:new int[]{0,1,3})for(int guard:new int[]{Integer.MIN_VALUE,-1,0,Integer.MAX_VALUE})for(boolean closed:new boolean[]{false,true})for(boolean allowed:new boolean[]{false,true}){
+            control(flag);SocketIoBehavior.Socket fixture=new SocketIoBehavior.Socket();Object socket=SocketIoBehavior.holder(fixture,256,0,closed);${set('oc','field_e','Lba;','null','socket')}
+            ${type('pk')} packet=new ${type('pk')}(new byte[]{11,22,33,44});packet.${field('qc','field_f','I')}=position;${set('fj','field_q','Lpk;','null','packet')}
+            ${set('pk','field_l','Lgk;','null','null')}long future=${type('oa')}.${method('oa','a(I)J')}(-12520)+100000;${set('v','field_r','J','null','future')}
+            flush.invoke(null,guard,allowed?-1:20);boolean attempted=allowed&&guard>~position;check(packet.${field('qc','field_f','I')}==(allowed&&!attempted?position:0),"flush pending position");int queued=(Integer)${get('ba','field_e','I','socket')};check(queued==(attempted&&!closed?position:0),"flush queue length flag="+flag+" pos="+position+" guard="+guard+" closed="+closed+" allowed="+allowed+" actual="+queued+" attempted="+attempted);if(queued>0){byte[] queue=(byte[])${get('ba','field_d','[B','socket')};for(int i=0;i<queued;i++)check(queue[i]==packet.${field('qc','field_j','[B')}[i],"flush queued bytes");}
+            long last=(Long)${get('v','field_r','J')};check(attempted?last<future:last==future,"flush clock write timing");record("flush:"+flag+":"+position+":"+guard+":"+closed+":"+allowed+":"+queued+":"+packet.${field('qc','field_f','I')});flushes++;
+          }
+          ${set('oc','field_e','Lba;','null','null')}
+        }
+        public static void main(String[] args)throws Exception{
+          advanceCases();averageCases();wrapperCases();rankingCases();flushCases();StringBuilder hash=new StringBuilder();for(byte b:trace.digest())hash.append(String.format("%02x",b&255));System.out.println("frame-timer:"+cases+":"+advances+":"+resets+":"+averages+":"+wrappers+":"+ranking+":"+flushes+":"+cleanup+":"+failures+":"+hash);
+        }
+      }
+`;
     const directory = path.join(temporary, variant), classes = path.join(directory, 'classes');
     fs.mkdirSync(classes, {recursive: true});
     const harnessFile = path.join(directory, 'ResultHelperBehavior.java');
-    fs.writeFileSync(harnessFile, harness + soundHarness);
+    fs.writeFileSync(harnessFile, harness + soundHarness + timerHarness);
     const stub = path.join(root, 'funorb-stubs.jar');
     const cp = native ? nativeInput + path.delimiter + stub : stub;
     const sourceRoot = path.join(root, renamed ? 'geoblox/src' : '../games/geoblox');
@@ -1277,6 +1377,13 @@ try {
     fs.writeFileSync(list, [...sources, harnessFile].map(file => JSON.stringify(file)).join('\n') + '\n');
     captureProcess('javac', ['--release','8','-proc:none','-encoding','UTF-8','-classpath',cp,'-d',classes,'@'+list]);
 
+    const timerOutput=captureProcess('java',['-Djava.awt.headless=true','-cp',classes+path.delimiter+cp,'FrameTimerBehavior']).stdout;
+    const timerSha=crypto.createHash('sha256').update(timerOutput).digest('hex');
+    console.log(JSON.stringify({variant,frameTimerTrace:timerOutput.toString().trim(),sha256:timerSha}));
+    assert.match(timerOutput.toString(),/^frame-timer:6802:4608:1536:219:162:129:144:4:174:[a-f0-9]{64}\n$/);
+    assert.equal(timerSha,expectedFrameTimerSha256,variant+': fixed native frame-timer trace');
+    if(expectedFrameTimerBaseline===undefined)expectedFrameTimerBaseline=timerOutput;
+    else assert.deepEqual(timerOutput,expectedFrameTimerBaseline,variant+': clock arithmetic/guards, ranking views/partial cursor and queued writes');
     const soundOutput = captureProcess('java', ['-Djava.awt.headless=true','-cp',classes + path.delimiter + cp,
       'SynthesizedSoundBehavior']).stdout;
     const synthesizedSoundSha256 = crypto.createHash('sha256').update(soundOutput).digest('hex');

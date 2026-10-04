@@ -37,7 +37,49 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current widget theme naming pass 155
+## Current frame timer and ranking transport naming pass 156
+
+Pass 156 adds 82 guarded names: eight fields, eleven methods, fifteen parameters
+and 48 locals. All eighteen declarations owned by FrameTimer and all 72 owned by
+NanoFrameTimer now have readable names; the constructor follows its class rule.
+The applet caller exposes awaitAndCountTicks, measureSleepMillis, advanceTicks and
+resetForResume. Clock fields separate the accumulated time, scheduled deadline,
+previous sample and ten-slot interval ring. The original sample count starts at
+one and grows only when below one; no new smoothing policy is introduced.
+
+Unrelated helpers in the timer class now show flushSessionWrites and ranking
+reply locals. The pendingHighscoreQueries deque and ranked ratio component array
+have their actual transport roles. Ranking views distinguish limited first rows,
+normalized current-session rows and unique name-table indexes. Alternate-name and
+record-long arrays remain local stores. Packet cursor rewinds, flattened write
+indexes, cleanup guards, ten-tick cap and signed overflow are preserved.
+
+The existing result-helper fixture adds 6,802 native/raw/readable cases: 4,608
+BigInteger-based tick/overflow cases, 1,536 resets, 219 sampler/constructor cases,
+162 callback wrappers, 129 ranking/prefix cases, 144 fake-socket queued writes and
+four cleanups. There are 174 expected failures. Independent oracles check tick
+state, sample rings/count/average arithmetic, stored real-clock bounds, callback
+order and throwable identity, ranking views and 75 truncated prefixes, plus
+buffer/stage/guard/queue effects. Actual nano samples are normalized in the trace;
+fake sockets use existing dummy tasks and suppress idle keepalive. Negative,
+zero and positive client flags remain. All twelve previous result-helper trace
+pins retain their hashes.
+
+The export has 15,070 rules and 104,152 identifier edits, plus eleven class-name
+literal and 250 label edits: 104,413 total. All 14,988 previous complete rules
+remain. Seventeen generated Java files change; raw code, generator/workflow/stub
+pins, all 19,498 dictionary identities, 136,607 bindings, 388 overrides and 811
+label records remain. Both 303-file corpora compile, reproduce and reverse byte
+exactly. The 27 publication tests and affected native fixtures pass. No generated
+Java body is hand edited and no decompiler change is required.
+
+Eight large labeled bodies and 162 opaque labels remain, together with 283
+opaque fields and 308 single-letter methods. Real-time pacing, idle cipher
+keepalive, write-IOException closure, unmatched/unknown ranking replies, live
+server/network/assets/game/browser/phone and heap/presented-FPS acceptance remain
+unverified.
+
+## Previous widget theme naming pass 155
 
 Pass 155 adds 77 guarded names: eleven fields, one method, five parameters and
 sixty locals. All 119 declarations owned by WidgetTheme now have readable names;
