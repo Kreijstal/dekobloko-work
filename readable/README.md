@@ -37,7 +37,39 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current packet framing and ranked range pass 143
+## Current widget diagnostics and single child pass 144
+
+Pass 144 adds 251 guarded rules: 17 methods, 58 parameters, 174 locals and
+two labels. Every SingleChildWidget field, method, parameter and local is now
+named. appendWidgetDiagnostics identifies all five owned overrides;
+appendWidgetDiagnosticProperties, beginWidgetDiagnosticVisit and the child
+helpers expose formatting and traversal. The visited Hashtable retains entries,
+so the existing circular marker includes shared revisits. Renderer/listener
+widget checks still recurse on this same widget receiver, with the original
+output aliases, callback order and nonzero client-control fallthrough.
+
+getLastRenderPass names the inclusive pass index: base zero, child delegation
+or container maximum. renderWidgetPassesAndTooltip retains the supplied start,
+integer increment/overflow, client-control exit and tooltip order. Base key
+input and child delegation now expose their actual roles. The two private
+requestUnfocusedChildFocus overloads keep identical child predicates/bodies and
+different guards; no forward/backward navigation is invented. Numeric key codes 80/81,
+child-origin additions, unchanged wheel coordinates and nullable hover fallback
+remain exact.
+
+rendererDiagnosticFormatting and listenerDiagnosticFormatting name existing
+plain frames and their two breaks. No frame or transfer is removed; label edit
+accounting grows from 238 to 242. There are 13,608 rules and 98,370 identifier
+edits, plus eleven class-literal and 242 label edits: 98,623 total. All 13,357
+previous complete rules and raw/tool/workflow/stub/native/text pins remain.
+Both 303-file corpora compile, preserve 136,607 bindings, 388 overrides and 813
+lexical label records, and reverse byte exactly. The 27 publication tests and
+eight existing native fixtures pass within their recorded scopes. Arbitrary
+diagnostic callback recursion, live AWT input and complete render-pass/device
+behavior remain unverified. Eight large labeled bodies and 166 opaque labels
+remain; full-game/server/device and heap/FPS acceptance are still unverified.
+
+## Previous packet framing and ranked range pass 143
 
 Pass 143 adds 56 guarded rules: seven fields, four methods, twelve parameters
 and 33 locals. The complete incoming-packet reader now exposes
