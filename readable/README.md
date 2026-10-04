@@ -37,7 +37,49 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current received-text and name helpers pass 136
+## Current session applet and bootstrap pass 137
+
+Pass 137 adds 232 guarded rules: 25 fields, 26 methods, 60 parameters and
+121 locals. Every field, method, parameter and local in `SessionGameApplet`
+is now named. Applet bootstrap fields expose server ports/host/number, game CRC,
+instance id, member mode, language and affiliate id from their original
+parameter keys. Archive ids now distinguish game/interface text, common UI
+sprites, UI fonts and the combined button/logo archive.
+
+The central paths are `initializeGameApplet`, `initializeFromAppletParameters`,
+`initializeSessionAppletServices`, `updateSessionBootstrapAndInput`,
+`updateBootstrapUi`, `pollReconnectAndResendRequests` and
+`processAccountUiActions`. The packet enable and length tables now expose
+`enabledSessionPacketOpcodes` and `sessionPacketLengthByOpcode`; variable lengths
+keep their original -1/-2 byte/short framing. Reply-family methods preserve
+original opcode values, enable order, resend order and guard effects.
+
+`requestIdleDisconnect` names the flag set by the gameplay `brk` command and
+consumed through the existing idle-disconnect branch. `canvasReplacementRequested`
+names the paint-driven canvas rebuild flag. `pollAccountDialogAction` still
+processes dialog pointer/animation/keyboard input, consumes pending actions and
+returns original request-state actions; it is not a zero-return stub.
+The adapter retains its unused language, wheel and fullscreen inputs.
+
+URL helpers expose `applySessionOverridesToUrl`, `rewriteSessionUrlPath`,
+`handleOpenUrlPacket` and `openUrlInNewWindow`. The unusual settings/session
+alias, repeated assignments, ignored navigation flag and original URL fallback
+remain. Path rewriting adds no new encoding or policy. The patched
+`isAppletStartupAllowed` still returns true; it implies no domain validation.
+Bootstrap keeps language edge cases, partial initialization and nested catches.
+
+There are 12,144 rules and 90,308 identifier edits, plus eleven class-literal
+and 184 label edits: 90,503 total. All 11,912 prior complete rules and the raw,
+decompiler, naming, workflow, stub, native and text pins remain unchanged.
+Both 303-file corpora compile, preserve 136,607 bindings, 388 override
+relationships and 813 lexical label records, and reverse byte exactly.
+The 27 publication checks and eight existing native fixtures pass within their
+recorded scopes; they do not establish live applet/session/country-list/browser
+services. No source bodies or bytecode change. Eight large labeled bodies,
+192 opaque labels and other unmapped members remain. Full-game/assets/server/
+device and heap/FPS acceptance remain unverified.
+
+## Previous received-text and name helpers pass 136
 
 Pass 136 adds 100 guarded rules: 25 fields, nine methods, 19 parameters and
 47 locals. Ten previous names are explicitly corrected. `ReceivedTextRecord`

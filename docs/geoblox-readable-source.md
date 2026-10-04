@@ -36,6 +36,12 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 137 names every field, method, parameter and local in `SessionGameApplet`,
+plus shared packet enable/length tables, archive ids, account action readers and
+URL helpers. It adds 232 rules without changing any previous rule. Bootstrap,
+input, reconnect/resend and account UI routes now have confirmed semantic names.
+The export has 12,144 rules; guards, numeric states and source/tool pins remain.
+
 Pass 136 adds 100 names and explicitly corrects ten earlier names. The received
 text path now exposes `ReceivedTextRecord`, `SessionTextHistorySupport`, packet
 reader staging fields, split-id deduplication and category-bounded history.
