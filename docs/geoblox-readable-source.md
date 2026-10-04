@@ -36,6 +36,13 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 140 names all mixer/listener, delayed-stream and MIDI-note-mixer
+fields/methods/parameters/locals, plus selected note/sample playback controls.
+It adds 208 guarded rules and names one existing note-skip completion label.
+There are 12,656 rules and 189 opaque labels. Listener deadlines, callback locks,
+list replacement, sample retrigger/fade and guard behavior remain unchanged;
+real-device and live scheduling behavior are outside the existing fixture scopes.
+
 Pass 139 names every AudioOutput/JavaSoundAudioOutput field, method, parameter
 and local, plus all owned PCM stream contract methods. It adds 199 rules and
 names the existing stream-selection budget-exit block without altering control

@@ -37,7 +37,44 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current audio output and stream contracts pass 139
+## Current mixer, delay and note playback pass 140
+
+Pass 140 adds 208 guarded rules: 25 fields, 27 methods, 49 parameters,
+106 locals and one label. All fields, methods, parameters and locals in
+PcmStreamMixer, PcmMixerListener, DelayedPcmStream and MidiNoteMixer now have
+names. Other note/controller fields and optimized sample kernels remain opaque.
+
+The mixer exposes childStreams, scheduledListeners, nextListenerFrameOffset,
+normalizeListenerFrameOffsets and insertListenerByFrameOffset. Mixing and
+skipping consume the exact deadline chunk, invoke the listener under its
+monitor, then remove or reinsert it using the callback's signed result. Equal
+deadline insertion, zero-frame handling and nested locking remain. No owned
+concrete listener implementation exists; its private constructor still throws
+Error, and callback internals are not invented.
+
+Delayed streams expose wrappedStream and remainingDelayFrames, retaining their
+list replacement before processing the positive remainder and the original
+pointer-write order. MIDI notes expose sampleStream, channelIndex, keyNumber,
+framesUntilUpdate and retriggerPhaseFixed. mixNoteFrames/skipNoteFrames and the
+selected owner helpers retain 20-bit phase arithmetic, guard effects, sample
+position reflection, stream recreation, loop flags and old-stream fades. Sample
+controls now read fadeOutAndUnlink, rampVolumeAndPan, setLoopCount and
+getTargetVolume. Signed sentinels, overflow, locks and partial effects remain.
+
+noteSkipCompletion names the existing plain note-completion frame and its one
+break; no frame or transfer is removed. Explicit label accounting grows from
+188 to 190 edits. There are 12,656 rules and 92,977 identifier edits, plus eleven
+class-literal and 190 label edits: 93,178 total. All 12,448 prior complete rules
+and raw/tool/workflow/stub/native/text pins remain unchanged. Both 303-file
+corpora compile and preserve 136,607 bindings, 388 overrides and 813 lexical
+label records; all 303 files reverse byte exactly. The 27 publication tests
+and eight existing native fixtures pass within their recorded scopes. Those
+fixtures do not establish listener callback scheduling, real devices or live
+MIDI retriggering/service timing. Eight large labeled bodies and 189 opaque
+labels remain; full-game/assets/server/device and heap/FPS acceptance are
+still unverified.
+
+## Previous audio output and stream contracts pass 139
 
 Pass 139 adds 199 guarded rules: 31 fields, 57 methods, 45 parameters,
 65 locals and one label. Every AudioOutput and JavaSoundAudioOutput field,
