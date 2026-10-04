@@ -36,6 +36,14 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 136 adds 100 names and explicitly corrects ten earlier names. The received
+text path now exposes `ReceivedTextRecord`, `SessionTextHistorySupport`, packet
+reader staging fields, split-id deduplication and category-bounded history.
+The character validation and normalization helpers use exact inspected roles,
+including the existing sharp-s to b mapping and wrong-guard effects. There are
+11,912 guarded rules. All 11,802 unaffected complete rules and the raw/tool pins
+remain; both 303-file corpora compile, preserve bindings and reverse byte exactly.
+
 Pass 135 proves that the ending-radius column test executes at most once and
 changes its while keyword to if through the generic decompiler. The body and
 every transfer stay intact; all naming rules remain. The shared source proof
@@ -44,7 +52,7 @@ checks every source token stream and all bindings/labels.
 Pass 134 names cache/reference operations, secondary collection
 helpers, account responses and received/normalized session names. It adds 177
 guarded rules and explicitly corrects two earlier hash-naming claims. There are
-11,812 rules; all five audited cache/collection classes have named methods,
+The pass134 export had 11,812 rules; all five audited cache/collection classes have named methods,
 parameters and locals. The existing unknown achievement id stays opaque.
 The raw input and tool/proof pins remain fixed; generated exports and their
 matching dictionary are published only in FunOrb.
