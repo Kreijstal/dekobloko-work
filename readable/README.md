@@ -37,7 +37,38 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current captured-integer switches (pass 174)
+## Current menu and session exit names (pass 175)
+
+All labels in GameScreen and GameplaySession now have meaningful names. This
+pass adds 59 guarded lexical names: 56 plain exit regions and three loops.
+Menu helpers expose key/action dispatch, volume slider handling, hit tests,
+button geometry, highscore status, tutorial diagrams and slide selection.
+Session helpers expose tutorial prompt placement/buttons, score and popup text,
+score-context counters, scene-transition preparation, preceding-theme lookup,
+theme achievement entry points, result sprite scanning, result phase selection
+and exit-screen routing. Examples include tutorialPromptPlacement,
+menuActionDispatch, endingSpriteColumnScan and sessionExitScreenSelection.
+Achievement-entry names describe the destination after a labeled break; they
+do not assert exclusive execution when the client-control flag is nonzero.
+
+Exactly 59 definitions and 175 break/continue references change spelling in
+two Java files. Every other Java byte remains unchanged, including all guards,
+snapshots, partial effects, callbacks, overflow/floating order, exception scopes,
+nonzero-control fallthrough and diagnostics. All 18,304 previous complete rules
+remain exact. Raw source, decompiler, naming/workflow sources, bytecode, stubs
+and native evidence pins remain unchanged. This pass changes no state-machine
+structure and adds/runs no native runtime probes.
+
+The export has 18,363 rules, 117,478 identifier edits, eleven class-name literal
+edits and 583 label edits: 118,072 total. Both 303-source corpora compile and
+compare 136,582 bindings, 388 overrides, 245 label declarations and 811 label
+records. All 27 publication tests pass; reproduction and dictionary reversal
+recover every raw file byte exactly. Eight large labeled bodies, 73 opaque
+labels elsewhere (37 plain/36 loop), 57 opaque fields and zero single-letter
+methods remain. Whole-game/assets/server/browser/phone and heap/presented-FPS
+acceptance remain unverified.
+
+## Previous captured-integer switches (pass 174)
 
 Four deeply nested integer classifiers now read as switches: the menu's
 inputDerivedStateUpdate and gameplay's negativeRotationAndStateUpdate,
