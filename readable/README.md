@@ -37,7 +37,32 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current pass 124
+## Current pass 125
+
+Pass 125 adds 292 guarded names: thirteen classes, 40 fields, 34 methods,
+78 parameters and 127 locals. All 10,902 previous complete rules and source,
+naming-tool, decompiler, bytecode and native fixture pins remain. The current
+export has 11,194 rules and 86,300 identifier edits, with the same 11 separately
+recorded class-name literal edits. All parameters and locals in the thirteen
+audited owners have semantic names. Both 303-file corpora compile and compare
+136,612 bindings, 388 override relationships and 11 reflected class-literal
+records. Dictionary reversal recovers all 303 pinned raw files byte-for-byte.
+Class coverage is 288 renamed, one meaningful original name and 14 opaque
+top-level names; six large labeled bodies and 207 plain-block labels remain.
+
+The named paths connect session bootstrap/packet buffers, FIFO and CRC
+acknowledgements, account/username flow tokens and form values, username result
+handling, login UI/archive progress and fullscreen task completion. The three
+flow markers remain distinct identity objects with throwing `toString`; no enum,
+state numbers or wire values replace them. Mixed-purpose statics stay on their
+owners. Guards, aliasing, partial writes, recursive failure paths, byte counts,
+signed arithmetic and exception/monitor boundaries remain. The 25 publication
+checks and all eight fixed native probes pass within their existing scopes; the
+committed export reproduces from clean checkouts. No new live acknowledgement,
+account/network/server, seed-file write, hardware fullscreen, browser/phone or
+full-game/performance coverage is added by this naming pass.
+
+## Previous text, clock and pool pass 124
 
 Pass 124 adds 306 guarded names: ten classes, 23 fields, 32 methods,
 63 parameters and 178 locals. All 10,596 previous complete rules and source,
