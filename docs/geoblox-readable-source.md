@@ -36,7 +36,12 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-The current pass 134 names cache/reference operations, secondary collection
+Pass 135 proves that the ending-radius column test executes at most once and
+changes its while keyword to if through the generic decompiler. The body and
+every transfer stay intact; all naming rules remain. The shared source proof
+checks every source token stream and all bindings/labels.
+
+Pass 134 names cache/reference operations, secondary collection
 helpers, account responses and received/normalized session names. It adds 177
 guarded rules and explicitly corrects two earlier hash-naming claims. There are
 11,812 rules; all five audited cache/collection classes have named methods,

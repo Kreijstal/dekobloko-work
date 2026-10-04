@@ -37,7 +37,41 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current cache/reference and session-name pass 134
+## Current nonrepeating loop pass 135
+
+Pass 135 changes the ending-entity radius column test in
+`GameplaySession.updateResultSequence` from `while` to `if`.
+Its body cannot fall through or continue to that test: after scanning rows and
+advancing the column it continues the enclosing column loop. Nonzero client
+control flags keep their existing exit. The generic decompiler now proves this
+single-evaluation shape using lexical transfer destinations and completion sets.
+Only the keyword changes; the exact condition, complete body, outer backedge,
+declarations, labels, guards and protected/monitor boundaries stay intact.
+
+Labeled breaks remain legal with the same label. Bare own breaks, own continues,
+normal body completion, potentially constant guards, ambiguous destinations and
+unsupported syntax refuse recovery. Inner loop/switch/label exits are consumed
+only by their own destination; catches stay conservative and finally overrides
+retain their effects. Five focused groups pass, including eight native variants
+with 512 comparisons against 512 independent event-model cases. They cover
+nullable/effectful guards, exception identity and catch order, finally return
+snapshots and overrides, labeled/enclosing exits, scopes and monitor release.
+The relevant decompiler suite passes 118 tests with one existing skip.
+
+Fresh CLI decompilation from the tracked source archive produces all 303 files
+with no hard failures or fallbacks. Only the predicted keyword changes;
+diagnostics are byte identical. The shared source proof independently replays
+all 303 complete token streams and preserves 136,607 ordered Java bindings,
+388 overrides and 813 lexical label records without ordinal migrations.
+All 11,812 complete naming rules and 89,130 edits remain; both corpora compile
+and all 303 files reverse byte exactly. The 27 publication checks and eight
+fixed native probes pass within their documented scopes. The result-sequence
+probe retains 27 controlled sequences and 26,043 ticks with minimal sprites;
+it does not establish full asset/device behavior. Eight large labeled bodies,
+192 opaque labels and other unmapped members remain. Full-game/assets/server/
+browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous cache/reference and session-name pass 134
 
 Pass 134 adds 177 guarded names: eleven fields, 22 methods, 48 parameters
 and 96 locals. Cache code now exposes `entryWeight`, `weightCapacity`,
@@ -546,8 +580,9 @@ JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-post-guard-s
 The structural proofs read immutable raw/tool Git commits, compare every
 expected token stream, compile all sources, check declaration migrations and
 ordered bindings, and remove their temporary exports. The guarded-abrupt fixture
-now proves pass 133, complete guarded-loop continuations and the complete
-large-body inventory. Its pass 131 revision remains at Deko commit
+now proves pass 135, nonrepeating loop recovery and the complete large-body
+inventory. Its pass 133 revision remains at Deko commit
+`c66ee0af3d13865ac6cbf482d198de689e64e450`; pass 131 remains at
 `4de6b7f1ce230f07121d8d04cd3f1d278b244f23`; pass 130 remains at
 `ae6a72a78b800823d1065e198cbb858be26a4d12`, and pass 129 at
 `2677205ae25fec66c48784e948b8665f556f1121`; historical provenance pins both
@@ -562,10 +597,10 @@ Each checks the transformed-class identity and retained native trace pins,
 then compares raw and readable source variants within its documented scope.
 
 The current decompiler-source SHA-256 is
-`41a301061aa8015aa57f55e59599d32fe8ee923ad5af6157c959475b67cd5e68`:
+`841f43eedeec1f7261638588a61b4047a8aae54f9d193ecf777eb6eb3b59aaf1`:
 
 ```sh
-git -C /path/to/java-tools archive --format=tar 42fb5ae77ee5bb6a7cea316084d201e8908c2b28 | sha256sum
+git -C /path/to/java-tools archive --format=tar f46a79b6f6696993347a45ac51a3090038a841d1 | sha256sum
 ```
 
 That hash identifies tracked decompiler source, not a game JAR.

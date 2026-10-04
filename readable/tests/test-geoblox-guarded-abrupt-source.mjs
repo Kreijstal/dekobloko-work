@@ -10,13 +10,13 @@ import {captureProcess} from '../tools/lib/capture-process.mjs';
 import {sourceInventory, sourceIdentity} from '../tools/readable-java.mjs';
 
 // Recheck the latest guarded-abrupt structural pass from immutable Git inputs.
-// The suffix/shared-exit/guarded-loop extensions share this fixture; earlier source/hash
+// The suffix/shared-exit/guarded-loop/nonrepeating-loop extensions share this fixture; earlier source/hash
 // remains available in its pinned workflow commit. No extra preview is needed.
 const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -87,7 +87,7 @@ public final class GeobloxBodyPositions {
     return {file, start: Number(start), end: Number(end), parameterNames: (parameters || '').split(',').filter(Boolean)};
   });
   const require = createRequire(import.meta.url);
-  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
+  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
   const {tokenizeJava} = require(path.join(tools.directory, 'src/java-frontend/lexer.js'));
   const tokens = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind)).map(t => t.text);
   const counts = {}, sharedSelections = [];
@@ -99,6 +99,16 @@ public final class GeobloxBodyPositions {
     for (const span of spans.filter(s => s.file === entry.path)) {
       const body = original.slice(span.start + 1, span.end - 1);
       const recover = source => {
+        if (proof.nonrepeatingWhileLoops) {
+          let conditionals = 0;
+          for (;;) {
+            const result = foldNonrepeatingWhileLoops(source, {parameterNames: span.parameterNames});
+            if (!result.conditionalsRecovered) break;
+            assert.notEqual(result.source, source, 'each nonrepeating while becomes an if');
+            source = result.source; conditionals += result.conditionalsRecovered;
+          }
+          return {source, rewrites: conditionals, counts: {nonrepeatingWhileLoops: conditionals}};
+        }
         if (!proof.guardedLoopContinuations) return recoverPostGuardExits(source, {parameterNames: span.parameterNames});
         let loops = 0;
         for (;;) {
