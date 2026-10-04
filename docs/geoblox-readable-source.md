@@ -36,6 +36,13 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 138 adds 105 rules for social storage/response/lookup, shared effects volume,
+loading status/dialog helpers and the audio worker. Every AudioService declaration
+is named. One existing social insertion-selection block label is named; its frame
+and exits remain and the label accounting changes explicitly from184 to186 edits.
+There are 12,249 rules,191 opaque labels and eight large labeled bodies remaining.
+All prior complete rules, raw input and source/tool/native/text pins remain.
+
 Pass 137 names every field, method, parameter and local in `SessionGameApplet`,
 plus shared packet enable/length tables, archive ids, account action readers and
 URL helpers. It adds 232 rules without changing any previous rule. Bootstrap,
