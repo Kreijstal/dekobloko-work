@@ -36,7 +36,50 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current hotspot, opacity and shared UI naming pass 164
+## Current explicit loop exit guards (pass 167)
+
+Pass 167 flattens twelve loop arms across ten methods in six classes:
+GameScreen, GameApplet, GameplaySession, MeshDepthSupport,
+BoardReconciliationSupport and HighscoreNameEntry. This includes gameplay
+keyboard-event processing, board connectivity traversal and debug queue drawing.
+An original `if (predicate) { mainPath } else { exitEffects }` followed by a
+bare own-loop break becomes `if (!(predicate)) { exitEffects; break; }`, then
+the original main path and original break, all inside the same loop. The main
+path loses one nesting level; source lines and label counts stay unchanged.
+
+Keeping exit effects in the loop preserves both exit reasons. A main path that
+falls through still skips exit effects; an own continue still reevaluates the
+predicate. In particular, a nonzero client-control flag is not assumed away.
+Predicate bytes, return snapshots, callback/evaluation order, numeric behavior,
+partial effects and original own/nonlocal transfer targets remain. Nested
+scopes and complete try/catch/finally/monitor groups stay intact. Direct main-arm
+declarations and exit arms with declarations/control/protected groups refuse
+this reconstruction, as do unsupported syntax and ambiguous transfers.
+
+The generic decompiler changes live in java-tools. Its tracked source archive
+reproduces all 303 raw Java files and unchanged diagnostics: no hard failures,
+fallbacks or panics. The Deko source proof independently reconstructs all token
+streams, tags the exact arm permutation and verifies every ordinary reference
+at its resulting location. It preserves 19,253 ordinary declarations, 117,354
+reference occurrences, 388 overrides, 245 label definitions and 811 label
+records, with no local/label ordinal migration. Unchanged files remain byte
+identical. Six native variants match 5,184 independent event cases, including
+nullable guards, nonzero flags, exceptions, finally overrides and monitor release.
+The focused generic suite passes 20 groups; loop regressions pass 66 with one
+existing optional skip.
+
+All 16,766 complete naming rules and 111,674 edits remain: 111,378 identifier,
+eleven class-name literal and 285 label edits. Both 303-file corpora compile,
+and the dictionary reverses the readable export byte exactly. Eight large labeled
+bodies, 149 opaque labels, 164 opaque fields and 202 single-letter methods remain.
+The 27 publication tests pass. Existing gameplay and result-helper probes also
+match their unchanged native/raw/readable traces, including the controlled board
+reconciliation and 741 applet-loop cases. Their documented scope exclusions
+remain; no complete gameplay renderer, URL execution or live device run is added.
+Full game/server/assets/browser/phone and heap/presented-FPS acceptance remain
+unverified.
+
+## Previous hotspot, opacity and shared UI naming pass 164
 
 Pass 164 adds 164 guarded names: five fields, nine methods, sixteen parameters
 and 134 locals. All 142 HotspotTextWidget and 84 OpacityWidget declarations now
