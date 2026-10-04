@@ -3,7 +3,10 @@
 The maintained workflow is [readable/README.md](../readable/README.md).
 `dekobloko-work` owns the reproduction scripts, frozen naming tool, proof fixtures
 and the single current [naming manifest](../readable/geoblox-rules.json).
-`java-tools` owns generic structural recovery. `funorb-decompiled` owns generated
+`java-tools` owns generic structural recovery. Its rules recognize control-flow
+patterns in arbitrary Java, without GeoBlox-specific class names or branches.
+Generic fixtures and GeoBlox validate the current changes; catalog-wide effects
+have not been verified. `funorb-decompiled` owns generated
 raw/readable Java, the reversible dictionary, provenance and reading guide.
 Generated game Java does not belong in Deko or the cloner.
 
@@ -36,7 +39,56 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current display-name and shared gameplay naming (pass 168)
+## Current intro, ranked-list and input naming (pass 169)
+
+Pass 169 adds 213 guarded names: 31 fields, 27 methods, 44 parameters,
+101 locals and ten lexical labels. The intro sequence now exposes its animation
+tick, face-frame start tick, blue tint delta, second geometry sound flag,
+update/draw helpers and tint/music preparation. Sound samples 25/26/7/8, key 13, 40-tick
+frame changes, completion at 494, the squared fall displacement and original red
+mask 16735942 remain. Mixed counters, floating operation order and nonzero
+client-control paths are preserved.
+
+Ranked-list helpers expose packed decoding, component arrays, the unused
+response-index array, array preparation and entry insertion.
+The previous `unusedGuardScratch` field rule is corrected to
+`decodedRankedKeyTwo`: the fourth packed value is passed into the key-two array.
+The old no-reads claim was incorrect. Guard writes -11/78/67 still remain.
+Names follow numerator/second/third
+component positions; their server-side interpretation is not inferred. Packed
+reads, partial stores, numerator*1000/sum overflow, zero sums and mixed key-two/
+ratio sort bounds remain. The packed byte reader keeps signed-byte bases,
+three-bit delta widths, exact-length destination reuse and zero-length nulls.
+
+All declarations in ScorePopup, KeyboardInputListener and MouseWheelInput now
+have meaningful names. Shared helpers expose audio-output disposal, entity
+queue/contact reset, created-account email login and account-result polling.
+Cleanup still preserves guarded partial clears, recursion and arithmetic
+failures. Display-name validation keeps normalized edge checks separate from
+the original-text separator scan. Domain validation and character splitting
+keep their original policy, empty segments, numeric-final-component marker,
+failure identities and callback order. Login reply flags are named by bits
+four/eight without assigning server meaning. Initial score/Vorbis archives,
+common button sprites, session override, pumpkin/loading resource texts and
+template type IDs zero/two/seven/nine/ten/twelve/fifteen are explicit.
+
+Nine-slice loops/counter joins and entity contact resolution receive lexical
+names. All ten original definitions and their eleven transfers retain their
+targets; no state machine is reconstructed in this naming pass. All 16,909
+other previous complete rules, raw source and decompiler/naming/workflow/stub/
+native/text pins remain; one full field rule is explicitly corrected.
+The export has 17,123 rules and 112,993 identifier edits,
+eleven class-name literal edits and 335 label edits: 113,339 total. Both 303-file
+corpora compile, reproduce and reverse byte exactly, preserving 19,498 dictionary
+identities, 136,607 bindings, 388 overrides, 245 label definitions and 811 records.
+All 27 publication tests pass. No native probes or new runtime cases are added
+or run by this naming pass.
+
+Eight large labeled bodies, 138 opaque labels, 97 opaque fields and 163
+single-letter methods remain. Full intro/ranking/network/input/audio/assets/
+game/server/browser/phone and heap/presented-FPS acceptance remain unverified.
+
+## Previous display-name and shared gameplay naming (pass 168)
 
 Pass 168 adds 144 guarded names: 36 fields, twelve methods, 33 parameters,
 62 locals and one lexical label. DisplayNamePanel now exposes every remaining
