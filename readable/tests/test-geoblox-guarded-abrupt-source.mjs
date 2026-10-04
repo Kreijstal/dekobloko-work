@@ -16,7 +16,7 @@ const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -87,7 +87,7 @@ public final class GeobloxBodyPositions {
     return {file, start: Number(start), end: Number(end), parameterNames: (parameters || '').split(',').filter(Boolean)};
   });
   const require = createRequire(import.meta.url);
-  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
+  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
   const {tokenizeJava} = require(path.join(tools.directory, 'src/java-frontend/lexer.js'));
   const tokens = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind)).map(t => t.text);
   const bareBreaks = source => { const text = tokens(source); return text.filter((token, index) => token === 'break' && text[index + 1] === ';').length; };
@@ -101,6 +101,21 @@ public final class GeobloxBodyPositions {
     for (const span of spans.filter(s => s.file === entry.path)) {
       const body = original.slice(span.start + 1, span.end - 1);
       const recover = source => {
+        if (proof.terminalLoopExits) {
+          const counts = {terminalLoopExits: 0, whileHeaders: 0, doWhileHeaders: 0, bareExitsRemoved: 0, directContinuesRemoved: 0, loopLabelsRemoved: 0};
+          for (;;) {
+            const result = foldTerminalLoopExits(source, {parameterNames: span.parameterNames, retainDiagnostics: true});
+            if (!result.loopsRecovered) break;
+            assert.notEqual(result.source, source, 'each terminal loop gains its original guard header');
+            counts.terminalLoopExits += result.loopsRecovered;
+            counts[result.diagnostics.form === 'while' ? 'whileHeaders' : 'doWhileHeaders']++;
+            counts.bareExitsRemoved += Number(result.diagnostics.terminalBareBreakRemoved);
+            counts.directContinuesRemoved += (result.diagnostics.removedContinueRanges || []).length;
+            counts.loopLabelsRemoved += Number(Boolean(result.diagnostics.removedLoopLabel));
+            source = result.source;
+          }
+          return {source, rewrites: counts.terminalLoopExits, counts};
+        }
         if (proof.loopExitContinuations) {
           let continuations = 0;
           for (;;) {
@@ -172,13 +187,14 @@ public final class GeobloxBodyPositions {
     linesBefore += original.split('\n').length - 1; linesAfter += actual.split('\n').length - 1;
     labelsBefore += (original.match(/^\s+L\d+:\s*\{/gm) || []).length;
     labelsAfter += (actual.match(/^\s+L\d+:\s*\{/gm) || []).length;
-    if (proof.loopExitContinuations) { bareBreaksBefore += bareBreaks(original); bareBreaksAfter += bareBreaks(actual); }
+    if (proof.loopExitContinuations || proof.terminalLoopExits) { bareBreaksBefore += bareBreaks(original); bareBreaksAfter += bareBreaks(actual); }
   }
   assert.equal(methods, proof.changedMethodBodies); assert.equal(files, proof.changedJavaFiles);
   assert.equal(linesBefore, proof.sourceLinesBefore); assert.equal(linesAfter, proof.sourceLinesAfter);
   assert.equal(labelsBefore, proof.plainBlockLabelsBefore); assert.equal(labelsAfter, proof.plainBlockLabelsAfter);
   assert.deepEqual(counts, proof.counts);
   if (proof.loopExitContinuations) assert.equal(bareBreaksAfter - bareBreaksBefore, proof.bareLoopExitsAdded, 'all added bare loop exits accounted for');
+  if (proof.terminalLoopExits) assert.equal(bareBreaksBefore - bareBreaksAfter, proof.counts.bareExitsRemoved, 'all consumed bare loop exits accounted for');
 
   const list = path.join(temporary, 'files.txt');
   fs.writeFileSync(list, beforeFiles.map(f => f.path).join('\n') + '\n');
