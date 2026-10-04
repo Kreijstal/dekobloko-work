@@ -37,7 +37,43 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current shared guarded exits pass 131
+## Current intrusive collection and codec labels pass 132
+
+Pass 132 adds 244 guarded names across eight intrusive collection/node classes
+and the Bzip2/music labels: 23 fields, 30 methods, 69 parameters, 112 locals
+and ten labels. Hash tables now expose `findByKey`, `put`, `bucketSentinels`,
+`bucketCount`, `lookupCursor` and iteration cursors; iterators expose their
+own table/deque, next node and last returned node. Primary and secondary links
+remain independent. Callers in caches, MIDI and gameplay use the same names.
+All parameters and locals in these eight classes are named. The packed ranking
+count array in `NodeHashTableIterator` stays opaque because its semantic meaning
+is not established; Java Iterator/Iterable method names stay unchanged.
+
+The unrelated helpers now identify login initiation, the one-byte pending login
+Boolean reply, archive-loading completion, tooltip anchor X, integer power,
+partially filled sprites and session-text read/hash. Names describe the inspected
+implementations and callers without guessing protocol meanings. Guard failures,
+partial cleanup/link effects, sentinel/null exhaustion, arithmetic/overflow,
+exception scopes and original diagnostic strings remain. No raw bodies change.
+
+All ten labels in `Bzip2Decoder` and `MusicScore` now identify block/selector/
+Huffman/run decoding, state commit, packed-event counting, MIDI track output
+and earliest-tick collection. All labels in the eight bodies of at least 300
+lines now have guarded descriptive names. Those bodies retain their lengths and
+structure; naming does not reconstruct their loops. Across all 303 sources,
+192 labels remain opaque: 145 block labels and 47 loop labels.
+
+All 11,391 previous complete rules survive. The export has 11,635 guarded rules,
+88,331 Java identifier edits, eleven class-literal edits and 184 label edits:
+88,526 edits in total. Both 303-file trees compile and preserve 136,607 ordered
+bindings, 388 overrides and 813 lexical label records. The raw source, tracked
+decompiler-source tar, naming/workflow sources, stubs and source/native/text
+proof pins stay unchanged. Reproduction, byte-exact reversal of all 303 files,
+27 publication checks, all eight fixed native probes and the existing deque
+fixture pass within their stated scopes. Unknown members and large shared joins
+remain; full-game/assets/server/browser/phone and FPS/heap targets are unverified.
+
+## Previous shared guarded exits pass 131
 
 Pass 131 recovers three guarded jumps while retaining their shared exit labels:
 `GameplaySession.renderSession`,
