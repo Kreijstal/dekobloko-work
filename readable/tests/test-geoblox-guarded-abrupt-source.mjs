@@ -16,7 +16,7 @@ const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -66,11 +66,11 @@ public final class GeobloxBodyPositions {
         new TreeScanner<Void,Void>() {
           @Override public Void visitClass(ClassTree tree,Void unused) {
             for(Tree member:tree.getMembers())if(member instanceof BlockTree)
-              System.out.println(file+"\\t"+source.indexOf("{",(int)positions.getStartPosition(unit,member))+"\\t"+positions.getEndPosition(unit,member)+"\\t");
+              System.out.println(file+"\\t"+source.indexOf("{",(int)positions.getStartPosition(unit,member))+"\\t"+positions.getEndPosition(unit,member)+"\\t\\tinitializer");
             return super.visitClass(tree,unused);
           }
           @Override public Void visitMethod(MethodTree tree,Void unused) {
-            if(tree.getBody()!=null)System.out.println(file+"\\t"+positions.getStartPosition(unit,tree.getBody())+"\\t"+positions.getEndPosition(unit,tree.getBody())+"\\t"+tree.getParameters().stream().map(p->p.getName().toString()).collect(Collectors.joining(",")));
+            if(tree.getBody()!=null)System.out.println(file+"\\t"+positions.getStartPosition(unit,tree.getBody())+"\\t"+positions.getEndPosition(unit,tree.getBody())+"\\t"+tree.getParameters().stream().map(p->p.getName().toString()).collect(Collectors.joining(","))+"\\t"+tree.getName());
             return super.visitMethod(tree,unused);
           }
         }.scan(unit,null);
@@ -103,6 +103,35 @@ public final class GeobloxBodyPositions {
     for (const span of spans.filter(s => s.file === entry.path)) {
       const body = original.slice(span.start + 1, span.end - 1);
       const recover = source => {
+        if (proof.terminalPrefixBreaks) {
+          let loops = 0;
+          let mappedTokens = lexical(source).map(token => ({text: token.text, origin: token.range.startOffset}));
+          for (;;) {
+            const result = foldTerminalLoopExits(source, {parameterNames: span.parameterNames, retainDiagnostics: true});
+            if (!result.loopsRecovered) break;
+            const oldTokens = lexical(source), d = result.diagnostics;
+            assert.equal(d.form, 'doWhile');
+            assert.ok(d.retainedPrefixBreakRanges.length, 'only newly supported early-exit loops');
+            assert.equal(d.removedLoopLabel, null, 'no label definition removed from this fixed corpus');
+            const slice = range => mappedTokens.filter((_, index) => oldTokens[index].range.startOffset >= range.start
+              && oldTokens[index].range.endOffset <= range.end);
+            const generated = values => values.map(text => ({text, origin: null}));
+            // Rebuild independently: intact prefix and every early transfer,
+            // then the original guard predicates in ordered short-circuit OR.
+            // The terminal bare exit and direct backedges disappear; no prefix
+            // jump, protected construct, declaration or identifier is changed.
+            const predicates = d.conditionRanges.flatMap((range, index) => [
+              ...generated(index ? ['||'] : []), ...generated(d.conditionRanges.length > 1 ? ['('] : []),
+              ...slice(range), ...generated(d.conditionRanges.length > 1 ? [')'] : [])]);
+            const labels = slice({start: d.loopRange.start, end: d.loopKeywordRange.start});
+            mappedTokens = [...slice({start: 0, end: d.loopRange.start}), ...labels, ...generated(['do', '{']),
+              ...slice(d.prefixRange), ...generated(['}', 'while', '(']), ...predicates, ...generated([')', ';']),
+              ...slice({start: d.loopRange.end, end: source.length})];
+            assert.deepEqual(mappedTokens.map(token => token.text), tokens(result.source), 'independent prefix/header token permutation');
+            source = result.source; loops += result.loopsRecovered;
+          }
+          return {source, rewrites: loops, mappedTokens, counts: {terminalPrefixBreaks: loops}};
+        }
         if (proof.loopElseExitGuards) {
           let loops = 0;
           let mappedTokens = lexical(source).map(token => ({text: token.text, origin: token.range.startOffset}));
@@ -241,9 +270,9 @@ public final class GeobloxBodyPositions {
       // Frontend token offsets refer to Unicode-translated input. Require direct
       // source offsets for changed files; byte-identical files can retain their
       // original compiler positions without interpreting that translation.
-      if (proof.loopElseExitGuards) assert.ok(!/\\u/.test(original), 'changed file has direct source/token offsets');
+      if (proof.loopElseExitGuards || proof.terminalPrefixBreaks) assert.ok(!/\\u/.test(original), 'changed file has direct source/token offsets');
     }
-    if (proof.nonlocalLoopExits || proof.loopElseExitGuards) {
+    if (proof.nonlocalLoopExits || proof.loopElseExitGuards || proof.terminalPrefixBreaks) {
       const originalTokens = lexical(original);
       let expectedTokens = originalTokens.map(token => ({text: token.text, origin: token.range.startOffset}));
       for (const edit of edits.slice().reverse()) {
@@ -271,7 +300,7 @@ public final class GeobloxBodyPositions {
     linesBefore += original.split('\n').length - 1; linesAfter += actual.split('\n').length - 1;
     labelsBefore += (original.match(/^\s+L\d+:\s*\{/gm) || []).length;
     labelsAfter += (actual.match(/^\s+L\d+:\s*\{/gm) || []).length;
-    if (proof.loopExitContinuations || proof.terminalLoopExits || proof.loopElseExitGuards) { bareBreaksBefore += bareBreaks(original); bareBreaksAfter += bareBreaks(actual); }
+    if (proof.loopExitContinuations || proof.terminalLoopExits || proof.loopElseExitGuards || proof.terminalPrefixBreaks) { bareBreaksBefore += bareBreaks(original); bareBreaksAfter += bareBreaks(actual); }
   }
   assert.equal(methods, proof.changedMethodBodies); assert.equal(files, proof.changedJavaFiles);
   assert.equal(linesBefore, proof.sourceLinesBefore); assert.equal(linesAfter, proof.sourceLinesAfter);
@@ -279,6 +308,7 @@ public final class GeobloxBodyPositions {
   assert.deepEqual(counts, proof.counts);
   if (proof.loopExitContinuations) assert.equal(bareBreaksAfter - bareBreaksBefore, proof.bareLoopExitsAdded, 'all added bare loop exits accounted for');
   if (proof.loopElseExitGuards) assert.equal(bareBreaksAfter - bareBreaksBefore, proof.bareLoopExitsAdded, 'one new bare exit per terminating else guard');
+  if (proof.terminalPrefixBreaks) assert.equal(bareBreaksBefore - bareBreaksAfter, proof.counts.terminalPrefixBreaks, 'one final bare exit consumed per recovered loop');
   if (proof.terminalLoopExits) assert.equal(bareBreaksBefore - bareBreaksAfter, proof.counts.bareExitsRemoved, 'all consumed bare loop exits accounted for');
 
   const list = path.join(temporary, 'files.txt');
@@ -295,7 +325,7 @@ public final class GeobloxBodyPositions {
     const identities = rows => rows.filter(r => r[0] === kind).map(r => [r[1], r[4], r[5]]);
     assert.equal(identities(oldAudit).length, count);
     assert.equal(identities(newAudit).length, kind === 'D' ? proof.sourceDeclarationsAfter : proof.sourceReferenceOccurrencesAfter);
-    if (proof.loopElseExitGuards && kind === 'R') {
+    if ((proof.loopElseExitGuards || proof.terminalPrefixBreaks) && kind === 'R') {
       const expected = oldAudit.filter(row => row[0] === kind).map(row => {
         const location = changedFiles.has(row[1]) ? originLocations.get(row[1]).get(Number(row[2])) : Number(row[2]);
         assert.notEqual(location, undefined, 'every original reference token survives exactly once: ' + JSON.stringify(row));
@@ -336,10 +366,10 @@ public final class GeobloxBodyPositions {
     // this label. Prune only that reference, never another fallback transfer.
     pending.delete(row[4]); return false;
   });
-  if (proof.nonlocalLoopExits || proof.loopElseExitGuards) {
-    for (const row of expectedRecords) if (!proof.loopElseExitGuards || changedFiles.has(row[1]))
+  if (proof.nonlocalLoopExits || proof.loopElseExitGuards || proof.terminalPrefixBreaks) {
+    for (const row of expectedRecords) if (!(proof.loopElseExitGuards || proof.terminalPrefixBreaks) || changedFiles.has(row[1]))
       assert.ok(originOrders.get(row[1]).has(Number(row[2])), 'every original label token survives exactly once');
-    const order = row => proof.loopElseExitGuards && !changedFiles.has(row[1]) ? Number(row[2])
+    const order = row => (proof.loopElseExitGuards || proof.terminalPrefixBreaks) && !changedFiles.has(row[1]) ? Number(row[2])
       : originOrders.get(row[1]).get(Number(row[2]));
     expectedRecords.sort((a, b) => a[1] < b[1] ? -1 : a[1] > b[1] ? 1
       : order(a) - order(b));
@@ -354,16 +384,29 @@ public final class GeobloxBodyPositions {
   assert.deepEqual(actualLabels, expectedLabels, 'all ordered surviving label declarations, destinations and transfer kinds');
   if (proof.largeLabeledBodiesAfter) {
     const inventory = [];
+    let methodBodies = 0, largeMethodBodies = 0, largePlainBlockMethodBodies = 0;
     for (const line of run('java', ['-cp', helpers, 'GeobloxBodyPositions', after]).toString().trim().split('\n')) {
-      const [file, start, end] = line.split('\t');
+      const [file, start, end, parameters, executable] = line.split('\t');
       const source = fs.readFileSync(path.join(after, file), 'utf8');
       const body = source.slice(Number(start), Number(end));
       const lines = body.split('\n').length;
+      if (executable !== 'initializer') {
+        methodBodies++;
+        if (lines >= proof.largeLabeledBodiesAfter.minimumBodyLines) {
+          largeMethodBodies++;
+          if (/^\s*L\d+:\s*\{/m.test(body)) largePlainBlockMethodBodies++;
+        }
+      }
       const labels = newLabels.filter(row => row[1] === file && Number(row[2]) >= Number(start) && Number(row[3]) <= Number(end));
       if (lines < proof.largeLabeledBodiesAfter.minimumBodyLines || !labels.length) continue;
       const enclosingMethod = labels[0][4].slice(2, labels[0][4].lastIndexOf('#'));
       assert.ok(labels.every(row => row[4].slice(2, row[4].lastIndexOf('#')) === enclosingMethod), 'no nested executable inventory ambiguity');
       inventory.push({rawFile: file, enclosingMethod, lines, labels: labels.length});
+    }
+    if (proof.terminalPrefixBreaks) {
+      assert.equal(methodBodies, proof.methodBodiesAfter);
+      assert.equal(largeMethodBodies, proof.largeMethodBodiesAfter);
+      assert.equal(largePlainBlockMethodBodies, proof.largeMethodBodiesWithPlainBlockLabelsAfter);
     }
     assert.equal(inventory.length, proof.largeLabeledBodiesAfter.bodies);
     assert.deepEqual(inventory, proof.largeLabeledBodiesAfter.inventory.map(({rawFile, enclosingMethod, lines, labels}) =>
@@ -377,7 +420,7 @@ public final class GeobloxBodyPositions {
   console.log(JSON.stringify({filesChecked: 303, changedFiles: files, changedMethods: methods, labelsBefore, labelsAfter,
     declarations: proof.sourceDeclarationsAfter, references: proof.sourceReferenceOccurrencesAfter, overrides: proof.fullOverridePairsPreserved,
     counts, labelBindings: actualLabels.length, survivingLabelOrdinalMigrations: migrations, sourceArchiveSha256: proof.sourceArchiveSha256, exactExpectedTokenStreams: true,
-    orderedJavaDeclarationsUnchanged: true, ...(proof.loopElseExitGuards ? {perOccurrenceJavaBindingsPreserved: true} : {orderedJavaBindingsUnchanged: true})}));
+    orderedJavaDeclarationsUnchanged: true, ...((proof.loopElseExitGuards || proof.terminalPrefixBreaks) ? {perOccurrenceJavaBindingsPreserved: true} : {orderedJavaBindingsUnchanged: true})}));
 } finally {
   fs.rmSync(temporary, {recursive: true, force: true});
 }
