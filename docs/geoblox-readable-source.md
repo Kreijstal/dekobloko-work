@@ -36,6 +36,30 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 143 adds 56 guarded rules: seven fields, four methods, twelve parameters
+and 33 locals. The complete incoming-packet reader now exposes
+readNextIncomingPacket, readSessionPacketPayload and readSessionBytesIfAvailable.
+Fixed and one-byte/two-byte variable lengths, partial-read progress, activity
+timeout, opcode history, delayed replay/enqueue and Gaussian delay cast/clamp
+retain their original behavior. The strict delivery-time comparison and all
+wrong-guard/exception/copy effects remain. Delay defaults are zero; no owned
+nonzero delay producer or delayed-queue initializer is invented.
+
+sortRankedEntryRange names partition/bubble roles, prefix cutoff and selected
+keys; rankedEntryIndices names the shared index array. Integral midpoint,
+comparator, recursion and preincrement ordering stay intact. fpsTextTemplate
+names the actual gameplay text. No generated Java body is hand edited.
+
+There are 13,357 rules and 97,588 identifier edits, plus eleven class-literal
+and 238 label edits: 97,837 total. All 13,301 previous complete rules and raw/
+tool/workflow/stub/native/text pins remain unchanged. Both 303-file corpora
+compile and preserve 136,607 bindings, 388 overrides and 813 lexical label
+records; all 303 files reverse byte exactly. The 27 publication tests and eight
+existing native fixtures pass within their recorded scopes. Live socket/framing
+timing and exhaustive ranked sorting are outside those fixtures. Eight large
+labeled bodies and 168 opaque labels remain; full-game/server/device and
+heap/FPS acceptance remain unverified.
+
 Pass 142 names every MidiPcmStream/MidiNote field/method/parameter/local/label.
 It adds 227 guarded rules; there are 13,301 rules and 168 opaque labels.
 Channel/key/group storage, controllers, note/envelope gain/pitch and event clocks
