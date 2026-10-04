@@ -36,7 +36,48 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current widget skin naming pass 154
+## Current widget theme naming pass 155
+
+Pass 155 adds 77 guarded names: eleven fields, one method, five parameters and
+sixty locals. All 119 declarations owned by WidgetTheme now have readable names;
+its constructor follows the existing class rule. Renderer slots show text,
+button, checkbox and text-input roles. The protected button constructor's fallback
+slot is explicitly named but remains uninitialized by theme setup. Tooltip
+padding, line spacing, wrapped border color and beveled panel construction are
+visible both here and in MessageDialog's overrides.
+
+Initialization keeps its original unused dial/slider/stripe/arrow renderer
+constructions and aliased overlay sprites. Reused locals name every role:
+wrapWidthOrBoxX and widthChunkCountOrLineIndexOrBoxY. Single-line and wrapped
+boxes keep their different edge placement and padding rules. Wrong guards retain
+recursive panel failures, partial drawing and the bottom-padding write. The
+checkbox renderer is cleared by a false tooltip guard only after successful
+drawing; glyph callback failures preserve it and the already drawn box.
+
+The existing nine-slice fixture adds 2,634 native/raw/readable cases: ten
+constructor/initialization cases and 2,624 tooltip/line-guard cases. Independent
+oracles check renderer/default/panel/color/padding aliases, raster pixels, glyph
+call geometry, explicit line breaks, quarter-raster balancing, clipping and
+exception/Error identity. Twenty-six expected failures retain original partial
+effects. Negative/positive control flags also exercise bootstrap-dependent account
+widget failures with the shared theme deliberately null; successful setup is
+checked separately. No client-control flag value is assumed. All nine previous
+raster/widget trace pins remain.
+
+The export has 14,988 rules and 103,778 identifier edits, plus eleven class-name
+literal and 250 label edits: 104,039 total. All 14,911 previous complete rules
+remain. Six generated Java files change; raw code, generator/workflow/stub pins,
+all 19,498 dictionary identities, 136,607 bindings, 388 overrides and 811 label
+records remain. Both 303-file corpora compile, reproduce and reverse byte exactly.
+The 27 publication tests and affected native fixtures pass. No generated Java body
+is hand edited and no decompiler change is required.
+
+Eight large labeled bodies and 162 opaque labels remain, together with 291
+opaque fields and 319 single-letter methods. Real fonts/assets, arbitrary markup
+and callbacks, live account UI/network/game/server/browser/phone and heap/FPS
+acceptance remain unverified.
+
+## Previous widget skin naming pass 154
 
 Pass 154 adds 207 guarded names: five fields, 22 methods, 54 parameters and
 126 locals. All 113 declarations owned by WidgetSkinState and all 119 owned by

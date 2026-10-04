@@ -21,6 +21,8 @@ const expectedTriangleRasterSha256 = '3a708f0eb4343a68f9cd859b75cc6d42db0eda6901
 const expectedMeshLightingSha256 = '8606f3fa1d8808bbfd5e5bfafe3b67872487172f07455401ac290acf79f5fdc6';
 const expectedFlatTriangleRasterSha256 = '60e7b9df0d8b178901617ebcd5a7b8da7745fdaf40f40beea681676733237ab7';
 const expectedMeshProjectionSha256 = '57934a58138344ef260c50eab4b271b90db9c07dd51825e4a4f30874eeef3f34';
+const expectedWidgetThemeSha256 = '46f4fc30c7b757dce41d2a3297929bf5a195b7d15c03d2821809f59b06c437e8';
+let expectedWidgetTheme=null;
 const expectedWidgetSkinsSha256 = '524a4658ff2f7dc99015a8695e9477c44ffca98403b0371316e0d07a6df7b4f9';
 let expectedWidgetSkins=null;
 const expectedLogoSceneSha256 = '7a9551ce1b3e69ac61c2aa291b1b88b9a20d3bd45f2ee903b37657f7d9e00351';
@@ -45,6 +47,7 @@ try {
     const type=original=>name('C:'+original,original);
     const field=(owner,original,descriptor)=>native?original.replace(/^field_/,''):name(`F:${owner}.${original}:${descriptor}`,original);
     const call=(owner,signature)=>type(owner)+'.'+name('M:'+owner+'.'+signature,signature.split('(')[0]);
+    const themeCall=signature=>name('M:wa.'+signature,signature.split('(')[0]);
     const skinCall=signature=>name('M:si.'+signature,signature.split('(')[0]);
     const rendererCall=signature=>name('M:rd.'+signature,signature.split('(')[0]);
     const spriteCall=(signature)=>name('M:dm.'+signature,signature.split('(')[0]);
@@ -65,7 +68,8 @@ try {
       }
       public static void main(String[]args)throws Exception {
         if(args.length!=0){
-          if(args[0].equals("widget-skins"))WidgetSkinBehavior.main(args);
+          if(args[0].equals("widget-theme"))WidgetThemeBehavior.main(args);
+          else if(args[0].equals("widget-skins"))WidgetSkinBehavior.main(args);
           else if(args[0].equals("logo-scene"))LogoSceneBehavior.main(args);
           else if(args[0].equals("mesh-projection"))MeshProjectionBehavior.main(args);
           else if(args[0].equals("flat-triangle"))FlatTriangleBehavior.main(args);
@@ -1147,6 +1151,108 @@ try {
         System.out.println("widget-skins:"+cases+":"+resets+":"+setters+":"+copies+":"+merges+":"+renderers+":"+draws+":"+failures+":"+hash);
       }
     }
+    class WidgetThemeBehavior {
+      static Field field(String type,String name){return WidgetSkinBehavior.field(type,name);}
+      static final Field[] padding={field("${type('wa')}","${field('wa','field_d','I')}"),field("${type('wa')}","${field('wa','field_e','I')}"),field("${type('wa')}","${field('wa','field_i','I')}"),field("${type('wa')}","${field('wa','field_p','I')}")};
+      static final Field wrap=field("${type('wa')}","${field('wa','field_o','Z')}");
+      static final Field color=field("${type('wa')}","${field('wa','field_k','I')}");
+      static final Field border=field("${type('wa')}","${field('wa','field_n','I')}");
+      static final Field spacing=field("${type('wa')}","${field('wa','field_h','I')}");
+      static final Field textRenderer=field("${type('wa')}","${field('wa','field_b','Ldh;')}");
+      static final Field buttonRenderer=field("${type('wa')}","${field('wa','field_j','Ldh;')}");
+      static final Field inputRenderer=field("${type('wa')}","${field('wa','field_g','Ldh;')}");
+      static final Field checkbox=field("${type('wa')}","${field('wa','field_c','Ldh;')}");
+      static final Field fallback=field("${type('wa')}","${field('wa','field_l','Ldh;')}");
+      static final Field originalFailure=field("${type('sa')}","${field('sa','field_a','Ljava/lang/Throwable;')}");
+      static final MessageDigest trace;
+      static int cases,initializations,tooltips,failures;
+      static {try{trace=MessageDigest.getInstance("SHA-256");}catch(Exception e){throw new AssertionError(e);}}
+      static void require(boolean value,String why){if(!value)throw new AssertionError(why);}
+      static void record(String value){try{trace.update((value+"\\n").getBytes("UTF-8"));cases++;}catch(Exception e){throw new AssertionError(e);}}
+      static class ProbeFont extends ${type('m')} {
+        final StringBuilder glyphs=new StringBuilder();int failAt=-1,count;Throwable failure;
+        static byte[] metrics(){byte[] m=new byte[257];java.util.Arrays.fill(m,(byte)2);m[256]=5;return m;}
+        static int[] filled(int value){int[] a=new int[256];java.util.Arrays.fill(a,value);return a;}
+        ProbeFont(){super(metrics(),filled(0),filled(1),filled(1),filled(5));}
+        void glyph(int index,int x,int y,int width,int height,int color,boolean shadow){
+          glyphs.append(index).append(',').append(x).append(',').append(y).append(',').append(width).append(',').append(height).append(',').append(color).append(',').append(shadow).append(';');
+          if(count++==failAt){if(failure instanceof Error)throw (Error)failure;throw (RuntimeException)failure;}
+        }
+        void ${name('M:m.a(IIIIIIZ)V','a')}(int glyph,int x,int y,int width,int height,int color,boolean shadow){glyph(glyph,x,y,width,height,color,shadow);}
+        void ${name('M:m.a(IIIIIIIZ)V','a')}(int glyph,int x,int y,int width,int height,int color,int alpha,boolean shadow){require(alpha==256,"opaque font alpha");glyph(glyph,x,y,width,height,color,shadow);}
+      }
+      static int[] target(int width,int height){int[] pixels=new int[width*height];java.util.Arrays.fill(pixels,0x123456);${call('vb','a([III)V')}(pixels,width,height);return pixels;}
+      static ${type('wa')} theme(ProbeFont font,boolean wrapped,int[] insets,int lineSpacing)throws Exception{
+        ${type('wa')} theme=new ${type('wa')}();wrap.setBoolean(theme,wrapped);for(int i=0;i<4;i++)padding[i].setInt(theme,insets[i]);spacing.setInt(theme,lineSpacing);color.setInt(theme,0xabcdef);border.setInt(theme,0x998877);theme.${field('wa','field_f','I')}=0x556677;theme.${field('wa','field_m','Lm;')}=font;return theme;
+      }
+      static void assertBox(int[] pixels,int width,int height,int x,int y,int boxWidth,int boxHeight,int outline,boolean fill,String label){
+        for(int row=0;row<height;row++)for(int col=0;col<width;col++){
+          int expected=0x123456;if(col>=x&&col<x+boxWidth&&row>=y&&row<y+boxHeight){
+            if(col==x||col==x+boxWidth-1||row==y||row==y+boxHeight-1)expected=outline;else if(fill)expected=0x556677;}
+          require(pixels[col+row*width]==expected,label+": pixel "+col+","+row+" actual="+pixels[col+row*width]+" expected="+expected);
+        }
+      }
+      static String glyphOracle(String[] lines,int x,int y,int lineSpacing){
+        StringBuilder glyphs=new StringBuilder();for(int row=0;row<lines.length;row++)for(int i=0;i<lines[row].length();i++){char c=lines[row].charAt(i);if(c!=' ')glyphs.append((int)c).append(',').append(x+i*2).append(',').append(y+row*lineSpacing).append(",1,5,11259375,false;");}return glyphs.toString();
+      }
+      static void panel(Object skin,int first,int center,int second)throws Exception{
+        ${type('dm')}[] sprites=(${type('dm')}[])WidgetSkinBehavior.panels.get(skin);require(sprites.length==9,"panel count");
+        for(int i=0;i<9;i++){require(sprites[i]!=null,"panel sprite");int expected=i==4?center:(i==5||i==7||i==8?second:first);for(int pixel:sprites[i].${field('dm','field_v','[I')})require(pixel==expected,"panel color");}
+        require(sprites[0]==sprites[1]&&sprites[1]==sprites[2]&&sprites[2]==sprites[3]&&sprites[3]==sprites[6],"first border aliases");require(sprites[5]==sprites[7]&&sprites[7]==sprites[8],"second border aliases");
+      }
+      static void initializeCases()throws Exception{
+        for(int control:new int[]{-1,0,1}){
+          WidgetSkinBehavior.flag.setInt(null,control);ProbeFont font=new ProbeFont();${type('wa')} theme=new ${type('wa')}();${type('rd')} retainedFallback=new ${type('rd')}();fallback.set(theme,retainedFallback);
+          field("${type('hb')}","${field('hb','field_j','Lwa;')}").set(null,null);boolean bootstrapFailure=false;
+          try{theme.${themeCall('a(ILm;)V')}(9,font);}catch(RuntimeException e){require(control!=0&&originalFailure.get(e) instanceof NullPointerException,"unseeded account-panel failure");bootstrapFailure=true;failures++;}
+          if(control!=0){require(bootstrapFailure,"nonzero guard must take bootstrap-dependent branch");require(textRenderer.get(theme)!=null&&buttonRenderer.get(theme)==null&&checkbox.get(theme)==null&&inputRenderer.get(theme)==null,"bootstrap failure installation order");for(Field p:padding)require(p.getInt(theme)==3,"bootstrap failure retains padding");require(fallback.get(theme)==retainedFallback,"bootstrap failure fallback");record("initialize-bootstrap-failure:"+control);initializations++;continue;}
+          require(!bootstrapFailure,"zero-flag initialization");require(fallback.get(theme)==retainedFallback,"fallback untouched");require(textRenderer.get(theme) instanceof ${type('ff')},"text renderer");require(buttonRenderer.get(theme) instanceof ${type('rd')},"button renderer");require(inputRenderer.get(theme) instanceof ${type('rd')},"input renderer");require(checkbox.get(theme) instanceof ${type('bi')},"checkbox renderer");require(theme.${field('wa','field_m','Lm;')}==font,"font alias");
+          for(Field p:padding)require(p.getInt(theme)==3,"default padding");require(spacing.getInt(theme)==-1,"default line spacing");require(color.getInt(theme)==0xeeeeee&&border.getInt(theme)==0xeeeeee&&theme.${field('wa','field_f','I')}==0x555555,"default colors");
+          ${type('si')}[] buttons=(${type('si')}[])WidgetSkinBehavior.states.get(buttonRenderer.get(theme));for(int i=0;i<6;i++)require((buttons[i]!=null)==(i!=2),"button slots");panel(buttons[0],0x999999,0x888888,0x777777);panel(buttons[1],0x999999,0xaaaaaa,0xcccccc);panel(buttons[3],0x777777,0x888888,0x999999);
+          require(WidgetSkinBehavior.integers[0].getInt(buttons[3])==1&&WidgetSkinBehavior.integers[1].getInt(buttons[3])==1,"pressed offsets");require(WidgetSkinBehavior.flush.getBoolean(buttons[4])&&WidgetSkinBehavior.flush.getBoolean(buttons[5]),"overlay flags");require(WidgetSkinBehavior.integers[3].getInt(buttons[0])==0xeeeeee&&WidgetSkinBehavior.integers[3].getInt(buttons[5])==-1,"button text colors");
+          ${type('dm')}[] overlay=(${type('dm')}[])WidgetSkinBehavior.panels.get(buttons[4]);for(int i=0;i<9;i++)require((overlay[i]!=null)==(i==4),"overlay slots");require(overlay[4] instanceof ${type('il')},"overlay sprite type");for(int pixel:overlay[4].${field('dm','field_v','[I')})require(pixel==0x40404040,"overlay pixels");
+          ${type('si')}[] inputs=(${type('si')}[])WidgetSkinBehavior.states.get(inputRenderer.get(theme));for(int i=0;i<6;i++)require((inputs[i]!=null)==(i==0||i==4),"input slots");panel(inputs[0],0x777777,0xeeeeee,0x999999);require(WidgetSkinBehavior.panels.get(inputs[4])==overlay,"shared disabled overlay");require(WidgetSkinBehavior.integers[3].getInt(inputs[0])==0x111111&&WidgetSkinBehavior.integers[2].getInt(inputs[0])==-1,"input colors");require(font.glyphs.length()==0,"initialization has no glyph draws");record("initialize:"+control);initializations++;
+        }
+        WidgetSkinBehavior.flag.setInt(null,0);
+        for(int guard:new int[]{9,33,Integer.MAX_VALUE})for(boolean nullFont:new boolean[]{false,true}){
+          ${type('wa')} theme=new ${type('wa')}();ProbeFont font=nullFont?null:new ProbeFont();boolean shouldFail=nullFont||guard!=9,failed=false;
+          try{theme.${themeCall('a(ILm;)V')}(guard,font);require(!shouldFail,"invalid initializer must fail");}catch(RuntimeException e){require(shouldFail,"unexpected initialize failure");failed=true;failures++;}
+          require((textRenderer.get(theme)==null)==nullFont,"first initialization write timing");require((buttonRenderer.get(theme)==null)==shouldFail,"button slot install timing");require(fallback.get(theme)==null,"default fallback null");
+          if(nullFont)for(Field p:padding)require(p.getInt(theme)==0,"null-font early failure");else for(Field p:padding)require(p.getInt(theme)==3,"later failure retains padding");record("initialize-failure:"+guard+":"+nullFont+":"+failed);initializations++;
+        }
+      }
+      static void tooltipCases()throws Exception{
+        for(int control:new int[]{-1,0,1})for(boolean wrapped:new boolean[]{false,true})for(boolean guard:new boolean[]{false,true})for(int width:new int[]{12,48})for(int height:new int[]{20,60})for(int pointerX:new int[]{-2,4,45})for(int pointerY:new int[]{-2,5,50})for(String text:new String[]{"","AB","AB<br>CD"})for(int preset=0;preset<2;preset++){
+          WidgetSkinBehavior.flag.setInt(null,control);ProbeFont font=new ProbeFont();int[] insets=preset==0?new int[]{3,3,3,3}:new int[]{2,3,1,2};int advance=preset==0?-1:7,effectiveAdvance=advance==-1?5:advance;${type('wa')} theme=theme(font,wrapped,insets,advance);Object marker=new ${type('rd')}();checkbox.set(theme,marker);int[] pixels=target(width,height);
+          theme.${themeCall('a(IZILjava/lang/String;)V')}(pointerY,guard,pointerX,text);require(checkbox.get(theme)==(guard?marker:null),"post-draw guard");
+          String[] lines=wrapped&&text.contains("<br>")?new String[]{"AB","CD"}:new String[]{text.replace("<br>","")};int textWidth=lines[0].length()*2,textHeight=5+(lines.length-1)*effectiveAdvance;int boxWidth=textWidth+(wrapped?insets[0]+insets[1]:6),boxHeight=textHeight+(wrapped?insets[2]+insets[3]:6),x=pointerX,y=pointerY+28;
+          if(x+boxWidth>width)x=width-boxWidth;if(y+boxHeight>height)y=wrapped?pointerY-boxHeight:height-boxHeight;
+          assertBox(pixels,width,height,x,y,boxWidth,boxHeight,wrapped?0x998877:0xabcdef,true,"tooltip");String wanted=glyphOracle(lines,x+(wrapped?insets[0]:3),y+(wrapped?insets[2]:3),effectiveAdvance);require(font.glyphs.toString().equals(wanted),"tooltip glyphs actual="+font.glyphs+" expected="+wanted);record("tooltip:"+control+":"+wrapped+":"+guard+":"+width+":"+height+":"+pointerX+":"+pointerY+":"+text+":"+preset+":"+java.util.Arrays.hashCode(pixels)+":"+font.glyphs);tooltips++;
+        }
+      }
+      static void tooltipFailureCases()throws Exception{
+        for(boolean wrapped:new boolean[]{false,true})for(boolean guard:new boolean[]{false,true})for(boolean nullText:new boolean[]{false,true})for(boolean nullFont:new boolean[]{false,true}){
+          ProbeFont font=nullFont?null:new ProbeFont();${type('wa')} theme=theme(font,wrapped,new int[]{3,3,3,3},-1);Object marker=new ${type('rd')}();checkbox.set(theme,marker);int[] pixels=target(48,60);boolean shouldFail=nullFont||wrapped&&nullText,failed=false;
+          try{theme.${themeCall('a(IZILjava/lang/String;)V')}(5,guard,4,nullText?null:"AB");require(!shouldFail,"null tooltip must fail");}catch(RuntimeException e){require(shouldFail,"unexpected null tooltip failure");failed=true;failures++;}
+          require(checkbox.get(theme)==(shouldFail||guard?marker:null),"failure prevents guard clear");if(shouldFail)for(int pixel:pixels)require(pixel==0x123456,"null failure before pixels");record("tooltip-null:"+wrapped+":"+guard+":"+nullText+":"+nullFont+":"+failed+":"+java.util.Arrays.hashCode(pixels));tooltips++;
+        }
+        for(boolean wrapped:new boolean[]{false,true})for(int failAt:new int[]{0,1})for(boolean error:new boolean[]{false,true}){
+          ProbeFont font=new ProbeFont();font.failAt=failAt;font.failure=error?new AssertionError("glyph-failure"):new IllegalArgumentException("glyph-failure");${type('wa')} theme=theme(font,wrapped,new int[]{3,3,3,3},-1);Object marker=new ${type('rd')}();checkbox.set(theme,marker);int[] pixels=target(48,60);boolean failed=false;
+          try{theme.${themeCall('a(IZILjava/lang/String;)V')}(5,false,4,"AB");}catch(RuntimeException e){require(!error&&originalFailure.get(e)==font.failure,"wrapped callback exception identity");failed=true;failures++;}catch(Error e){require(error&&e==font.failure,"callback Error identity");failed=true;failures++;}require(failed,"glyph callback must fail");require(checkbox.get(theme)==marker,"failed callback keeps renderer");assertBox(pixels,48,60,4,33,10,11,wrapped?0x998877:0xabcdef,true,"callback partial pixels");require(font.count==failAt+1,"callback count");record("tooltip-callback:"+wrapped+":"+failAt+":"+error+":"+java.util.Arrays.hashCode(pixels)+":"+font.glyphs);tooltips++;
+        }
+        Method single=Class.forName("${type('wa')}").getDeclaredMethod("${themeCall('a(BILjava/lang/String;I)V')}",byte.class,int.class,String.class,int.class);single.setAccessible(true);
+        ${type('wa')} theme=theme(new ProbeFont(),true,new int[]{3,3,3,3},-1);int[] pixels=target(48,60);boolean failed=false;try{single.invoke(theme,(byte)0,4,"AB",5);}catch(InvocationTargetException e){require(e.getCause() instanceof RuntimeException,"wrong single guard failure");failed=true;failures++;}require(failed,"wrong single guard must fail");assertBox(pixels,48,60,4,33,10,11,0xabcdef,false,"wrong guard partial border");record("single-guard:"+java.util.Arrays.hashCode(pixels));tooltips++;
+        Method multiple=Class.forName("${type('wa')}").getDeclaredMethod("${themeCall('a(ILjava/lang/String;II)V')}",int.class,String.class,int.class,int.class);multiple.setAccessible(true);pixels=target(48,60);multiple.invoke(theme,5,"AB",4,0);for(int pixel:pixels)require(pixel==0x123456,"wrong wrapped guard no draw");record("wrapped-guard");tooltips++;
+      }
+      static void lineGuardCases()throws Exception{
+        ${type('wa')} fresh=new ${type('wa')}();require(wrap.getBoolean(fresh),"constructor enables wrapping");for(Field p:padding)require(p.getInt(fresh)==0,"constructor padding defaults");require(fallback.get(fresh)==null,"constructor fallback");record("theme-constructor");initializations++;
+        for(int control:new int[]{-1,0,1})for(boolean valid:new boolean[]{false,true}){
+          WidgetSkinBehavior.flag.setInt(null,control);${type('wa')} theme=theme(new ProbeFont(),true,new int[]{3,3,3,2},-1);int[] pixels=target(12,10);theme.${themeCall('a(IIIIII)V')}(1,4,0x2468ac,1,1,valid?8947848:0);
+          require(padding[3].getInt(theme)==(valid?2:22),"line guard bottom padding");for(int row=0;row<10;row++)for(int col=0;col<12;col++)require(pixels[col+12*row]==(row==1&&col>=1&&col<=4?0x2468ac:0x123456),"line pixels");record("line-guard:"+control+":"+valid+":"+java.util.Arrays.hashCode(pixels));tooltips++;
+        }
+      }
+      public static void main(String[] args)throws Exception{initializeCases();tooltipCases();tooltipFailureCases();lineGuardCases();StringBuilder hash=new StringBuilder();for(byte b:trace.digest())hash.append(String.format("%02x",b&255));System.out.println("widget-theme:"+cases+":"+initializations+":"+tooltips+":"+failures+":"+hash);}
+    }
 `;
     const directory=path.join(temporary,variant),classes=path.join(directory,'classes');fs.mkdirSync(classes,{recursive:true});
     const harnessFile=path.join(directory,'NineSliceBehavior.java');fs.writeFileSync(harnessFile,harness);
@@ -1155,6 +1261,13 @@ try {
     const sources=native?[]:sourceInventory(sourceRoot).map(file=>path.join(sourceRoot,file.path));
     const list=path.join(directory,'sources.txt');fs.writeFileSync(list,[...sources,harnessFile].map(p=>JSON.stringify(p)).join('\n')+'\n');
     captureProcess('javac',['--release','8','-proc:none','-encoding','UTF-8','-classpath',cp,'-d',classes,'@'+list]);
+    const themeOutput=captureProcess('java',['-Djava.awt.headless=true','-cp',classes+path.delimiter+cp,'NineSliceBehavior','widget-theme']).stdout;
+    const themeSha=crypto.createHash('sha256').update(themeOutput).digest('hex');
+    console.log(JSON.stringify({variant,widgetThemeTrace:themeOutput.toString().trim(),sha256:themeSha}));
+    assert.match(themeOutput.toString(),/^widget-theme:2634:10:2624:26:[a-f0-9]{64}\n$/);
+    assert.equal(themeSha,expectedWidgetThemeSha256,variant+': fixed native theme trace');
+    if(expectedWidgetTheme===null)expectedWidgetTheme=themeOutput;
+    else assert.deepEqual(themeOutput,expectedWidgetTheme,variant+': renderer defaults, tooltip pixels/layout/callbacks/partial failures');
     const widgetOutput=captureProcess('java',['-Djava.awt.headless=true','-cp',classes+path.delimiter+cp,'NineSliceBehavior','widget-skins']).stdout;
     const widgetSha=crypto.createHash('sha256').update(widgetOutput).digest('hex');
     console.log(JSON.stringify({variant,widgetSkinsTrace:widgetOutput.toString().trim(),sha256:widgetSha}));
