@@ -37,7 +37,42 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current PCM sample playback and mixing kernels pass 141
+## Current MIDI playback owner and note state pass 142
+
+Pass 142 adds 227 guarded rules: 36 fields, 29 methods, 68 parameters,
+91 locals and three labels. Every MidiPcmStream and MidiNote field, method,
+parameter, local and label is now named. All prior complete naming rules remain.
+
+MIDI playback exposes heldNotesByKey versus notesByKeyGroup, default/current
+instrument ids and bank offsets, channel volume/expression/pan/pitch bend,
+modulation/portamento/gain/selected-parameter/retrigger state, and earliest-track
+clock values. dispatchMidiEvent, startNote/releaseNote, computeNoteVolume/Pan/
+SampleStep, resetSynthesisState and advanceMidiEvents identify the existing
+paths. Velocity-squared gain, note age/vibrato/decay/envelope indexes, held and
+release states, note reuse/group replacement and exact controller masks/numbers
+remain. Pressure handlers are still guarded stubs. Pending-score fields retain
+their branches; no owned queue producer or new playback feature is invented.
+
+Shared input/sprite/keyboard/session helpers are named in their actual roles.
+MidiNote.stagedIncomingPacketOpcode comes from SingleChildWidget's real cipher
+header reader and dispatch/delay path; it is not an audio-only status field.
+clearAudioReferences still writes 41 into that packet state on its wrong guard.
+All wrong-guard effects, diagnostics, numeric states, overflow/floating/division,
+callback/partial-effect order, synchronization and client-control reads remain.
+
+The existing eventTrackSelection loop, portamentoReleaseSelection block and
+releaseEnvelopeAdvance block keep their frames and five labeled transfers.
+Only names and label accounting change: 230 to 238 edits. There are 13,301 rules
+and 97,288 identifier edits, plus eleven class-literal and 238 label edits:
+97,537 total. All 13,074 prior complete rules and raw/tool/workflow/stub/native/
+text pins remain unchanged. Both 303-file corpora compile and preserve 136,607
+bindings, 388 overrides and 813 lexical label records; all 303 files reverse
+byte exactly. The 27 publication tests and eight existing native fixtures pass
+within their recorded scopes. Full MIDI controller/envelope/event timing,
+live input/network/audio devices and full-game/assets/server/heap/FPS behavior
+remain unverified. Eight large labeled bodies and 168 opaque labels remain.
+
+## Previous PCM sample playback and mixing kernels pass 141
 
 Pass 141 adds 418 guarded rules: 13 fields, 28 methods, 227 parameters,
 132 locals and 18 labels. Every PcmSampleStream field, method, parameter,

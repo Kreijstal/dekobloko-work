@@ -36,6 +36,13 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 142 names every MidiPcmStream/MidiNote field/method/parameter/local/label.
+It adds 227 guarded rules; there are 13,301 rules and 168 opaque labels.
+Channel/key/group storage, controllers, note/envelope gain/pitch and event clocks
+now expose their inspected roles. Shared packet staging remains distinct from
+audio state, including its wrong-guard write. Stubs, pending-score branches,
+exact masks/numbers and all existing loop/block exits remain unchanged.
+
 Pass 141 names every PcmSampleStream field/method/parameter/local/label,
 including all 16 forward/reverse mono/stereo aligned/interpolated gain kernels.
 It adds 418 guarded rules; there are 13,074 rules and 171 opaque labels.
