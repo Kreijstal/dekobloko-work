@@ -37,7 +37,67 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current shared validation, cookie, encoding and rendering naming (pass 171)
+## Current startup, archives, audio and mesh naming (pass 172)
+
+Pass 172 adds 413 guarded names: two fields, all 30 remaining single-letter
+methods, 106 parameters and 275 locals. Four older alignment rules are explicitly
+corrected: the only fixed-corpus caller supplies a payload BYTE COUNT for XTEA,
+not a bit offset. The helper, value and locals now describe rounding to a
+multiple of eight. Its guard, return89, signed arithmetic and overflow remain.
+All 17,887 unaffected previous complete rules remain exact; full before/after
+objects for the four corrections are recorded in the manifest.
+
+Startup names expose loading/logo/account/prepared-frame selection, redraw-flag
+consumption, AWT progress drawing and pointer-listener removal. Progress image
+and font caches, partial image-fill return, direct draw/repaint fallbacks,
+unclamped percentages, recursive wrong-guard path and original catch boundaries
+remain. The applet username helper inspects/encodes its parameter without storing
+a login identity. Keyboard-idle and canvas-container helpers retain their guard
+effects. Account login/creation wrappers, logging-in dialog and button appending
+retain field writes, construction/callback order, the diagnostic-only message
+argument and unused guard-helper argument.
+
+Cookie writing, marker creation, page-link updates and reload/server-list/support/
+relative-URL navigation expose their original attempted actions. Cookiehost,
+Discard/Expires/Max-Age arithmetic, raw script text, URL session overrides,
+window targets, late guard work, printed failures and Throwable catches remain.
+Neither the marker flag nor these names guarantee browser/storage success.
+
+Common UI loading exposes sprite/font/GIF groups and palette-state preparation.
+The first two screen-options frame sets follow the existing third-frame name
+without guessing their actions. Indexed-sprite copying retains shared palette
+and index arrays, allocation before its guard and partial dimensions. Button
+splitting keeps aliases, grayscale work and successful-tail raster restoration.
+The game archive factory flag explicitly selects discarding decoded files after
+read for policy1; it does not claim retention. RGB sprite loading and gray-tinted
+strip drawing retain short circuits, guard writes, shared clip storage, reused
+X parameter, zero-center-width behavior and non-finally clip restoration.
+
+Audio setup and delayed playback retain output/rate/volume arguments, stream
+tracking before early return, mixer/root/volume ordering and partial state.
+Packed short/mesh decoding keeps exact-length reuse, null sentinel, signed base,
+delta widths, optional-section reads and unclassified array meanings, priority
+nulling/narrowing and guards. Encrypted payload writing retains SecureRandom key
+generation, buffer/key aliases, byte padding, XTEA/modPow order, optional early
+return and partial destination appends. Fullscreen construction and display-mode
+waiting retain parameters, focus/bounds order, task polling and original sleeps.
+No timeout, renderer/audio policy, encryption or runtime behavior is repaired.
+
+The export has 18,304 rules, 117,503 identifier edits, eleven class-name literal
+edits and 349 label edits: 117,863 total. Raw/decompiler/naming/workflow/stub/
+native/text and label pins remain unchanged. Both 303-file corpora compile,
+reproduce and reverse byte exactly, preserving 19,498 dictionary identities,
+136,607 bindings, 388 overrides, 245 label definitions and 811 label records.
+All 27 publication tests pass. No native probes or new runtime cases are added
+or run by this naming pass.
+
+No single-letter methods remain in the current compiler dictionary. Eight large
+labeled bodies, 132 opaque labels (93 plain blocks and 39 loops) and 57 opaque
+fields remain. Zero single-letter methods does not establish complete semantic
+readability. Full startup/login/crypto/cookies/UI/network/input/audio/assets/game/
+server/browser/phone and heap/presented-FPS acceptance remain unverified.
+
+## Previous shared validation, cookie, encoding and rendering naming (pass 171)
 
 Pass 171 adds 429 guarded names: two fields, 38 methods, 82 parameters,
 302 locals and five lexical labels. Email helpers expose syntax/local-part
