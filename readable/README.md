@@ -37,7 +37,41 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current music floor and decoder naming pass 162
+## Current Vorbis setup and residue naming pass 163
+
+Pass 163 adds 75 guarded names: one method, three parameters, 69 locals and
+two lexical labels. All 53 VorbisCodebook, 39 VorbisResidue and seven VorbisMapping
+declarations now have readable names; constructors follow their class rules.
+The seeded reverseLowBitsIntoAccumulator helper and all its parameters/locals
+are named. Codebook construction exposes length runs, sparse entries, codeword
+carry resolution, flattened Huffman nodes and lattice/dense vector expansion.
+Residue names expose cascade masks, eight passes, classword decomposition,
+partition groups and strided/contiguous vector writes.
+
+Names follow source data flow; codebook/residue roles align with sections 3 and
+8 of [Xiph's Vorbis I specification](https://xiph.org/vorbis/doc/Vorbis_I_spec.html).
+This does not prove full codec compliance. The existing positive non1 lookup
+branch, nonzero residue-type branch, discarded mapping fields, clear-before-silent
+behavior, aliases, unused snapshots, shifts/overflow, floating evaluation and
+partial writes remain. Reused locals retain their phase roles. The named block
+and loop preserve three existing breaks and one continue. The bit helper keeps
+its seed, mutated diagnostic arguments, caught aliases and original string literal.
+
+The export has 16,267 rules and 109,443 identifier edits, plus eleven class-name
+literal and 283 label edits: 109,737 total. All 16,192 previous complete rules,
+19,498 dictionary identities, 136,607 bindings, 388 overrides and 811 label
+records remain. Five generated Java files change only in names. Both 303-file
+corpora compile, reproduce and reverse byte exactly. Label-edit accounting grows
+by six; raw source and all tool, workflow, stub, class-literal and native pins
+stay fixed. All 27 publication tests pass. This pass adds/runs no native probes
+or runtime cases and makes no new performance claim.
+
+Eight large labeled bodies, 150 opaque labels, 210 opaque fields and 235
+single-letter methods remain. Live setup/archive/audio playback, malformed
+input handling, full codec/game/browser/phone behavior and heap/presented-FPS
+acceptance remain unverified.
+
+## Previous music floor and decoder naming pass 162
 
 Pass 162 adds 277 guarded names: 33 fields, fourteen methods, 29 parameters
 and 201 locals. All 123 MusicDecodeStage and 195 MusicDecoder declarations now
