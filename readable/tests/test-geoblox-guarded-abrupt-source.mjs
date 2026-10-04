@@ -16,7 +16,7 @@ const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.integralPredicateNegationRecovery ?? provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -55,22 +55,36 @@ import java.util.stream.*;
 public final class GeobloxBodyPositions {
   public static void main(String[] args) throws Exception {
     JavaCompiler compiler=ToolProvider.getSystemJavaCompiler();
+    DiagnosticCollector<JavaFileObject> diagnostics=new DiagnosticCollector<>();
     try(StandardJavaFileManager manager=compiler.getStandardFileManager(null,null,StandardCharsets.UTF_8);
         Stream<Path> paths=Files.list(Paths.get(args[0]))) {
       List<java.io.File> files=paths.filter(p->p.toString().endsWith(".java")).sorted().map(Path::toFile).collect(Collectors.toList());
-      JavacTask task=(JavacTask)compiler.getTask(null,manager,null,Arrays.asList("-proc:none","-source","8"),null,manager.getJavaFileObjectsFromFiles(files));
-      SourcePositions positions=Trees.instance(task).getSourcePositions();
-      for(CompilationUnitTree unit:task.parse()) {
+      JavacTask task=(JavacTask)compiler.getTask(null,manager,diagnostics,args.length>1?Arrays.asList("-proc:none","-source","8","-classpath",args[1]):Arrays.asList("-proc:none","-source","8"),null,manager.getJavaFileObjectsFromFiles(files));
+      Trees trees=Trees.instance(task);
+      SourcePositions positions=trees.getSourcePositions();
+      List<CompilationUnitTree> units=new ArrayList<>();task.parse().forEach(units::add);
+      if(args.length>1)task.analyze();
+      if(diagnostics.getDiagnostics().stream().anyMatch(d->d.getKind()==Diagnostic.Kind.ERROR))throw new AssertionError(diagnostics.getDiagnostics());
+      for(CompilationUnitTree unit:units) {
         String file=Paths.get(unit.getSourceFile().toUri()).getFileName().toString();
         String source=unit.getSourceFile().getCharContent(true).toString();
-        new TreeScanner<Void,Void>() {
+        new TreePathScanner<Void,Void>() {
+          @Override public Void visitBinary(BinaryTree tree,Void unused) {
+            if(args.length>1 && Arrays.asList(Tree.Kind.LESS_THAN,Tree.Kind.LESS_THAN_EQUAL,Tree.Kind.GREATER_THAN,Tree.Kind.GREATER_THAN_EQUAL).contains(tree.getKind())) {
+              long leftEnd=positions.getEndPosition(unit,tree.getLeftOperand()),rightStart=positions.getStartPosition(unit,tree.getRightOperand());
+              String op=source.substring((int)leftEnd,(int)rightStart).trim();
+              if(!Arrays.asList("<","<=",">",">=").contains(op))throw new AssertionError("ambiguous relational operator");
+              System.out.println("C\\t"+file+"\\t"+(leftEnd+source.substring((int)leftEnd,(int)rightStart).indexOf(op))+"\\t"+trees.getTypeMirror(new TreePath(getCurrentPath(),tree.getLeftOperand())).getKind()+"\\t"+trees.getTypeMirror(new TreePath(getCurrentPath(),tree.getRightOperand())).getKind());
+            }
+            return super.visitBinary(tree,unused);
+          }
           @Override public Void visitClass(ClassTree tree,Void unused) {
             for(Tree member:tree.getMembers())if(member instanceof BlockTree)
               System.out.println(file+"\\t"+source.indexOf("{",(int)positions.getStartPosition(unit,member))+"\\t"+positions.getEndPosition(unit,member)+"\\t\\tinitializer");
             return super.visitClass(tree,unused);
           }
           @Override public Void visitMethod(MethodTree tree,Void unused) {
-            if(tree.getBody()!=null)System.out.println(file+"\\t"+positions.getStartPosition(unit,tree.getBody())+"\\t"+positions.getEndPosition(unit,tree.getBody())+"\\t"+tree.getParameters().stream().map(p->p.getName().toString()).collect(Collectors.joining(","))+"\\t"+tree.getName());
+            if(tree.getBody()!=null && positions.getStartPosition(unit,tree.getBody())>=0 && positions.getEndPosition(unit,tree.getBody())>positions.getStartPosition(unit,tree.getBody()))System.out.println(file+"\\t"+positions.getStartPosition(unit,tree.getBody())+"\\t"+positions.getEndPosition(unit,tree.getBody())+"\\t"+tree.getParameters().stream().map(p->p.getName().toString()).collect(Collectors.joining(","))+"\\t"+tree.getName()+"\\t"+tree.getParameters().stream().map(p->Base64.getEncoder().encodeToString(p.getType().toString().getBytes(StandardCharsets.UTF_8))).collect(Collectors.joining(",")));
             return super.visitMethod(tree,unused);
           }
         }.scan(unit,null);
@@ -82,9 +96,15 @@ public final class GeobloxBodyPositions {
   const helpers = path.join(temporary, 'helpers');
   fs.mkdirSync(helpers);
   run('javac', ['-d', helpers, helper, path.join(workflowRoot, 'tools/lib/ReadableJava.java')]);
-  const spans = run('java', ['-cp', helpers, 'GeobloxBodyPositions', before]).toString().trim().split('\n').map(line => {
-    const [file, start, end, parameters] = line.split('\t');
-    return {file, start: Number(start), end: Number(end), parameterNames: (parameters || '').split(',').filter(Boolean)};
+  const positionRows = run('java', ['-cp', helpers, 'GeobloxBodyPositions', before,
+    ...(proof.integralPredicates ? [path.join(repository, 'readable/funorb-stubs.jar')] : [])]).toString().trim().split('\n').map(line => line.split('\t'));
+  const integralEvidence = new Map(positionRows.filter(row => row[0] === 'C').map(row => [row[1] + ':' + row[2], row.slice(3)]));
+  const spans = positionRows.filter(row => row[0] !== 'C').map(([file, start, end, parameters, method, types]) => {
+    const parameterNames = (parameters || '').split(',').filter(Boolean);
+    const parameterTypes = (types || '').split(',').filter(Boolean).map(type => Buffer.from(type, 'base64').toString('utf8'));
+    assert.equal(parameterNames.length, parameterTypes.length, 'all formal parameter types');
+    return {file, start: Number(start), end: Number(end), parameterNames,
+      parameters: parameterNames.map((name, index) => ({name, type: parameterTypes[index]}))};
   });
   const require = createRequire(import.meta.url);
   const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits, foldNonlocalLoopExits, foldLoopElseExitGuards, recoverScalarIfDispatches, simplifyPredicateNegations} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
@@ -105,18 +125,31 @@ public final class GeobloxBodyPositions {
       const recover = source => {
         if (proof.predicateNegations) {
           let predicates = 0;
-          const totals = {doubleNegations: 0, equalityComplements: 0, deMorganOperators: 0, booleanLiterals: 0};
+          const totals = {doubleNegations: 0, equalityComplements: 0, deMorganOperators: 0, booleanLiterals: 0, ...(proof.integralPredicates ? {relationalComplements: 0} : {})};
           let mappedCharacters = Array.from({length: source.length}, (_, index) => index);
           for (;;) {
-            const result = simplifyPredicateNegations(source, {retainDiagnostics: true});
+            const result = simplifyPredicateNegations(source, {retainDiagnostics: true, ...(proof.integralPredicates ? {parameters: span.parameters} : {})});
             if (!result.predicatesSimplified) break;
+            if (proof.integralPredicates) {
+              const relationalEdits = result.diagnostics.tokenEdits.filter(edit => ['<', '<=', '>', '>='].includes(source.slice(edit.start, edit.end)));
+              assert.deepEqual(relationalEdits.map(edit => [edit.start, edit.end]).sort((a,b) => a[0]-b[0]),
+                result.diagnostics.relationalComparisons.map(comparison => [comparison.start, comparison.end]).sort((a,b) => a[0]-b[0]), 'every relational edit requires independent type evidence');
+              assert.equal(relationalEdits.length, result.diagnostics.counts.relationalComplements);
+            }
+            if (proof.integralPredicates) for (const comparison of result.diagnostics.relationalComparisons) {
+              const origin = mappedCharacters[comparison.start];
+              assert.ok(Number.isInteger(origin), 'relational operator is an unchanged original character');
+              const types = integralEvidence.get(entry.path + ':' + (span.start + 1 + origin));
+              assert.ok(types && types.every(type => ['BYTE', 'SHORT', 'CHAR', 'INT', 'LONG'].includes(type)), 'JDK independently proves both operands integral');
+              assert.deepEqual(types.map(type => type.toLowerCase()), [comparison.leftType, comparison.rightType], 'exact independently resolved primitive operand types');
+            }
             let expected = source;
             for (const edit of result.diagnostics.tokenEdits.slice().reverse()) {
               const before = source.slice(edit.start, edit.end);
               const allowed = before === '!' && edit.text === ''
-                || ({'==': '!=', '!=': '==', '&&': '||', '||': '&&', 'true': 'false', 'false': 'true'})[before] === edit.text
+                || ({'==': '!=', '!=': '==', '&&': '||', '||': '&&', 'true': 'false', 'false': 'true', ...(proof.integralPredicates ? {'<': '>=', '<=': '>', '>': '<=', '>=': '<'} : {})})[before] === edit.text
                 || !before && ['!(', ')'].includes(edit.text);
-              assert.ok(allowed, 'only Boolean operators and grouping can change');
+              assert.ok(allowed, 'only proven predicate operators and grouping can change');
               expected = expected.slice(0, edit.start) + edit.text + expected.slice(edit.end);
               mappedCharacters.splice(edit.start, edit.end - edit.start, ...Array(edit.text.length).fill(null));
             }
@@ -379,6 +412,7 @@ public final class GeobloxBodyPositions {
   assert.equal(linesBefore, proof.sourceLinesBefore); assert.equal(linesAfter, proof.sourceLinesAfter);
   assert.equal(labelsBefore, proof.plainBlockLabelsBefore); assert.equal(labelsAfter, proof.plainBlockLabelsAfter);
   assert.deepEqual(counts, proof.counts);
+  if (proof.integralPredicates) assert.equal(counts.relationalComplements, proof.independentlyAttributedIntegralComparisons);
   if (proof.scalarIfDispatches) assert.equal(bareBreaksAfter - bareBreaksBefore, proof.counts.bareSwitchExitsAdded, 'all new bare switch exits accounted for');
   if (proof.loopExitContinuations) assert.equal(bareBreaksAfter - bareBreaksBefore, proof.bareLoopExitsAdded, 'all added bare loop exits accounted for');
   if (proof.loopElseExitGuards) assert.equal(bareBreaksAfter - bareBreaksBefore, proof.bareLoopExitsAdded, 'one new bare exit per terminating else guard');
@@ -522,7 +556,7 @@ public final class GeobloxBodyPositions {
     run('git', ['show', proof.previousSourceCommit + ':decompilation/geoblox-decompiler-diagnostics.json']).toString(), 'diagnostics unchanged');
   console.log(JSON.stringify({filesChecked: 303, changedFiles: files, changedMethods: methods, labelsBefore, labelsAfter,
     declarations: proof.sourceDeclarationsAfter, references: proof.sourceReferenceOccurrencesAfter, overrides: proof.fullOverridePairsPreserved,
-    counts, labelBindings: actualLabels.length, survivingLabelOrdinalMigrations: migrations, sourceArchiveSha256: proof.sourceArchiveSha256, exactExpectedTokenStreams: true,
+    counts, ...(proof.integralPredicates ? {independentlyAttributedIntegralComparisons: counts.relationalComplements} : {}), labelBindings: actualLabels.length, survivingLabelOrdinalMigrations: migrations, sourceArchiveSha256: proof.sourceArchiveSha256, exactExpectedTokenStreams: true,
     orderedJavaDeclarationsUnchanged: true, ...(proof.predicateNegations ? {perOccurrenceJavaAndLabelBindingsPreserved: true, exactExpectedSourceBytes: true} : proof.scalarIfDispatches ? {survivingPerOccurrenceJavaBindingsPreserved: true, purePrimitiveReadsRemoved: proof.primitiveReferenceOccurrencesRemoved}
       : (proof.loopElseExitGuards || proof.terminalPrefixBreaks) ? {perOccurrenceJavaBindingsPreserved: true} : {orderedJavaBindingsUnchanged: true})}));
 } finally {

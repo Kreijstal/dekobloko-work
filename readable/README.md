@@ -37,7 +37,38 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current Boolean predicate cleanup (pass 176)
+## Current integral predicate cleanup (pass 177)
+
+The generic decompiler can now turn `!(row < limit)` into `row >= limit`
+when both operands are proven primitive integers. Scoped unique declarations,
+actual method parameter types, casts, integer/character literals, integral
+arithmetic and known array access/length supply that proof. Unknown fields,
+call results and boxed values stay opaque; mixed floating comparisons keep
+their negation and NaN behavior. Every operand remains byte exact, preserving
+reads, writes, overflow, exceptions and short-circuit order.
+
+This simplifies 56 comparisons in 32 bodies across 25 files, including board
+reconciliation, sprite/raster helpers, fonts, archives and client utilities.
+No game-specific names or states are hardcoded. An independent JDK attribution
+checks both primitive operand types of every changed relational operator.
+The source-character and compiler-binding audit verifies all 303 expected raw
+files, 19,253 ordinary declarations, 117,329 references, 388 override pairs,
+245 labels and 811 label records. All 18,363 complete naming rules survive.
+The committed source archive reproduces all sources and unchanged diagnostics;
+the readable export and dictionary reversal are byte exact.
+
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/predicateNegationRecovery.test.js test/cfrBranchMergeRegressions.test.js test/javaAstEmitterLoopExits.test.js test/javaAstEmitterTrailingLoops.test.js test/scalarIfDispatchRecovery.test.js`
+passes 105 tests with one existing optional skip. Nine focused groups include
+708,750 Boolean-context and 453,600 integral native ordered-oracle cases. They
+cover int overflow/division, long shifts, NaN/infinity casts, array null/bounds
+failures, narrowing casts, throwing callbacks, finally overrides and monitors.
+All 27 publication tests pass; scoped gameplay/result-helper trace pins remain.
+
+Eight large labeled bodies, 73 opaque labels and 57 opaque fields remain.
+This pass clarifies predicates; it does not finish their structural recovery.
+Whole-game/server/browser/phone and heap/presented-FPS acceptance are unverified.
+
+## Previous Boolean predicate cleanup (pass 176)
 
 A generic java-tools pass now simplifies conditions introduced by control-flow
 recovery. For example, !((5 != screenId) && (7 != screenId)) becomes
