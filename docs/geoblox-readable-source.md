@@ -36,7 +36,48 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current account creation form naming pass 159
+## Current login and suggestions naming pass 160
+
+Pass 160 adds 237 guarded names: three fields, eleven methods, 39 parameters,
+183 locals and one lexical block label. All 224 declarations owned by LoginPanel
+and all eighty owned by UsernameSuggestionsPanel now have readable names;
+constructors follow class rules. Credential updates, login gating, account/lookup
+transport, reflection replies, focus/button callbacks and suggestion construction
+retain their existing execution order and effects.
+
+advanceAccountCreationOrLookupRequest distinguishes opcode18 account creation
+from opcode16 lookup, including affiliate/age/news fields, conditional string
+inclusion, encryption, length backpatches, incremental reads, suggestion and
+boolean replies, settings cookies, timeout and alternating ports. Reused locals
+retain flags, offsets, reply codes, read lengths and port roles. Reflection names
+expose lookup readiness, field operations, deserialized arguments, invocation
+results, twelve exception reply codes and the CRC span. The plain
+intRecordReplyDispatch label preserves its original break destination.
+
+Suggestion updates still clear children before checking the guard, retain the
+old button array for null/empty suggestions, share one renderer and scan every
+button without an early callback-loop exit. Constructor renderer aliases,
+unused snapshots, duplicate clears, wrong guards, client-control flag values,
+partial effects, integer overflow and diagnostic string literals remain.
+Shared names distinguish namedRootResourceArchive, the account/lookup reply
+opcode stage and alternateLongAndTextPayloadKind without inventing server state.
+
+The export has 15,711 rules and 106,634 identifier edits, plus eleven class-name
+literal and 277 label edits: 106,922 total. All 15,474 previous complete rules,
+19,498 dictionary identities, 136,607 bindings, 388 overrides and 811 label
+records remain. Thirteen generated Java files change only in names. Both
+303-file corpora compile, reproduce and reverse byte exactly. Expected label
+edits increase by two for the one declaration and its
+existing break; raw source and all tool, workflow, stub, class-literal and native
+pins stay fixed. All 27 publication tests pass. No native probes, cases or
+performance results are added or claimed by this naming pass.
+
+Eight large labeled bodies, 152 opaque labels, 255 opaque fields and 265
+single-letter methods remain. Live credential entry, suggestion interaction,
+reflection/lookup/account-creation network behavior, server/assets/game/browser/
+phone and heap/presented-FPS acceptance remain unverified.
+
+## Previous account creation form naming pass 159
 
 Pass 159 adds 153 guarded names: two fields, twelve methods, 41 parameters
 and 98 locals. All 187 declarations owned by AccountCreationForm now have
