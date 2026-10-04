@@ -37,7 +37,43 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current guarded suffix recovery pass 130
+## Current shared guarded exits pass 131
+
+Pass 131 recovers three guarded jumps while retaining their shared exit labels:
+`GameplaySession.renderSession`,
+`BoardReconciliationSupport.reconcileBoardEntities` and
+`AchievementSubmission.projectMeshAndQueueFaces` now use inverse conditionals
+for their entry-arm suffixes. All other references must lie in the complete
+fallback, which becomes `else` inside the original labeled block. Its nested
+loops, scopes, finally/monitor boundaries and exit destinations stay intact.
+Prefix/arm references to the shared label still refuse this reconstruction.
+
+In debug rendering, position/gray calculations still precede the control-flag
+test. The draw/advance/continue sequence runs under the inverse condition;
+the fallback's queue traversal and final shared exit remain. Nonzero values keep
+their original partial-effect path. This does not assume the client flag is zero.
+
+All 11,391 previous complete naming rules and label ordinals remain. Two named
+break references disappear, reducing label edits to 155; all 44 labels in the
+six tracked gameplay/menu/triangle bodies retain their names. The raw tree still
+has 76,272 lines, 188 block labels and 58 loop labels. All 136,607 ordered Java
+bindings and 388 overrides match. Label records fall from 816 to 813: the source
+proof identifies exactly the first guarded break to each of the three retained
+labels and verifies every remaining destination. The complete inventory still
+has eight bodies of at least 300 lines with labels; 202 labels elsewhere and
+unmapped members remain opaque.
+
+Six focused groups pass 725,760 native comparisons and 48 independent oracles,
+covering skipped/executed suffixes and fallbacks, nested loop/switch transfers,
+finally overrides, throwing effects, local scopes, nullable guards and monitors.
+The relevant decompiler suite passes 109 tests with one existing skip. A clean
+tracked decompiler archive reproduces all 303 sources and diagnostics byte for
+byte. Full reproduction, reversible dictionaries, 27 publication checks and
+the eight fixed native game probes pass within their documented scopes.
+Full debug rendering/session update, full mesh execution, assets/servers,
+browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous guarded suffix recovery pass 130
 
 Pass 130 extends guarded-exit recovery to complete multi-statement suffixes.
 Ten labeled exits become ordinary conditional alternatives across eight methods:
@@ -393,9 +429,11 @@ JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-post-guard-s
 The structural proofs read immutable raw/tool Git commits, compare every
 expected token stream, compile all sources, check declaration migrations and
 ordered bindings, and remove their temporary exports. The guarded-abrupt fixture
-now proves pass 130 and its complete large-body inventory. Its pass 129 revision
-remains at Deko commit `2677205ae25fec66c48784e948b8665f556f1121`; the historical
-provenance pins that workflow revision and source hash. Run the eight native
+now proves pass 131, exact consumed shared-frame references and the complete
+large-body inventory. Its pass 130 revision remains at Deko commit
+`ae6a72a78b800823d1065e198cbb858be26a4d12`, and pass 129 at
+`2677205ae25fec66c48784e948b8665f556f1121`; historical provenance pins both
+workflow revisions and source hashes. Run the eight native
 probes with the exact verified transformed class tree as their argument:
 `test-geoblox-gameplay.mjs`, `test-geoblox-match-scoring.mjs`,
 `test-geoblox-text-write.mjs`, `test-geoblox-result-sequence.mjs`,
@@ -406,10 +444,10 @@ Each checks the transformed-class identity and retained native trace pins,
 then compares raw and readable source variants within its documented scope.
 
 The current decompiler-source SHA-256 is
-`8c7b8224e9e9ed7d001a66fc4bfac1388938096de96095e5e2f5bcfc06780752`:
+`40f073acc94e61b6fe0116e76c9dc45fa43a92e54ad4d22c9ca104905dd5ad9d`:
 
 ```sh
-git -C /path/to/java-tools archive --format=tar ace45d9e003641f3b5f628bffb2e87e34a81ca76 | sha256sum
+git -C /path/to/java-tools archive --format=tar 42fb5ae77ee5bb6a7cea316084d201e8908c2b28 | sha256sum
 ```
 
 That hash identifies tracked decompiler source, not a game JAR.

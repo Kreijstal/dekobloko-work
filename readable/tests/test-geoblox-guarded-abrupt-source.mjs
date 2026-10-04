@@ -10,13 +10,13 @@ import {captureProcess} from '../tools/lib/capture-process.mjs';
 import {sourceInventory, sourceIdentity} from '../tools/readable-java.mjs';
 
 // Recheck the latest guarded-abrupt structural pass from immutable Git inputs.
-// The suffix extension shares this fixture; the original pass's source/hash
+// The suffix/shared-exit extensions share this fixture; earlier source/hash
 // remains available in its pinned workflow commit. No extra preview is needed.
 const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -87,10 +87,11 @@ public final class GeobloxBodyPositions {
     return {file, start: Number(start), end: Number(end), parameterNames: (parameters || '').split(',').filter(Boolean)};
   });
   const require = createRequire(import.meta.url);
-  const {recoverPostGuardExits} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
+  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
   const {tokenizeJava} = require(path.join(tools.directory, 'src/java-frontend/lexer.js'));
   const tokens = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind)).map(t => t.text);
-  const counts = {}; let methods = 0, files = 0, linesBefore = 0, linesAfter = 0, labelsBefore = 0, labelsAfter = 0;
+  const counts = {}, sharedSelections = [];
+  let methods = 0, files = 0, linesBefore = 0, linesAfter = 0, labelsBefore = 0, labelsAfter = 0;
   for (const entry of beforeFiles) {
     const original = fs.readFileSync(path.join(before, entry.path), 'utf8');
     const actual = fs.readFileSync(path.join(after, entry.path), 'utf8');
@@ -100,6 +101,17 @@ public final class GeobloxBodyPositions {
       const result = recoverPostGuardExits(body, {parameterNames: span.parameterNames});
       if (!result.rewrites) continue;
       assert.equal(recoverPostGuardExits(result.source, {parameterNames: span.parameterNames}).source, result.source, 'fixed point');
+      if (proof.sharedGuardedJumpSelections) {
+        let selected = body, jumps = 0;
+        for (;;) {
+          const folded = foldGuardedAbruptPlainBlockExits(selected, {retainDiagnostics: true});
+          if (!folded.jumpsRemoved) break;
+          assert.notEqual(folded.source, selected, 'each guarded jump recovery progresses');
+          if (folded.diagnostics.labelRetained) sharedSelections.push({...span, label: folded.diagnostics.label});
+          selected = folded.source; jumps += folded.jumpsRemoved;
+        }
+        assert.equal(jumps, result.counts.guardedAbruptJumps, 'independent guarded jump selection replay');
+      }
       for (const [name, value] of Object.entries(result.counts)) counts[name] = (counts[name] || 0) + value;
       edits.push({...span, source: result.source}); methods++;
     }
@@ -146,8 +158,24 @@ public final class GeobloxBodyPositions {
   for (const [before, after] of mapping) if (after && before !== after) migrations++;
   assert.equal(migrations, proof.survivingLabelOrdinalMigrations);
   const records = rows => rows.filter(r => ['T', 'B', 'N'].includes(r[0]));
-  const expectedLabels = records(oldAudit).filter(row => mapping.get(row[4]))
+  const selectedTargets = sharedSelections.map(span => {
+    const declarations = oldLabels.filter(row => row[1] === span.file && row[5] === span.label
+      && Number(row[2]) >= span.start && Number(row[3]) <= span.end);
+    assert.equal(declarations.length, 1, 'unique original selected label in the executable scope');
+    return {file: span.file, symbol: declarations[0][4], originalName: span.label};
+  });
+  if (proof.sharedGuardedJumpSelections) assert.deepEqual(selectedTargets, proof.sharedGuardedJumpSelections, 'all independently selected shared frame exits');
+  const pending = new Set(selectedTargets.filter(target => mapping.get(target.symbol)).map(target => target.symbol));
+  assert.equal(pending.size, selectedTargets.filter(target => mapping.get(target.symbol)).length, 'at most one selected guarded jump per surviving frame');
+  const expectedLabels = records(oldAudit).filter(row => mapping.get(row[4])).filter(row => {
+    if (row[0] !== 'B' || !pending.has(row[4])) return true;
+    // The destination proof permits all other references only in the complete
+    // fallback. Its selected direct guard is therefore the first old break to
+    // this label. Prune only that reference, never another fallback transfer.
+    pending.delete(row[4]); return false;
+  })
     .map(row => [row[0], row[1], mapping.get(row[4]), row[5]]);
+  assert.equal(pending.size, 0, 'every selected surviving-frame break accounted for');
   const actualLabels = records(newAudit).map(row => [row[0], row[1], row[4], row[5]]);
   assert.equal(records(oldAudit).length, proof.labelBindingsBefore);
   assert.equal(actualLabels.length, proof.labelBindingsAfter);
