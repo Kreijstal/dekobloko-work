@@ -37,7 +37,39 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current switch-aware guard recovery pass 128
+## Current guarded abrupt exit recovery pass 129
+
+Pass 129 replaces eight labeled exits with ordinary conditional alternatives
+across six bodies. Three disappear from `GameplaySession.renderSession` and one
+from `GameScreen.updateScreen`; the applet update loop, disk-cache write path,
+ranked-list helper and entity cleanup lose one each. A branch retains its work,
+then performs its existing return/throw/loop transfer under the inverse guard.
+Its complete fallback becomes an `else`. Guards still evaluate once after the
+prefix; nonzero client-control paths, exception coverage, finally effects and
+monitor ownership remain. Equality inversion preserves NaNs and unboxing;
+other predicates keep exact logical negation. Prefix locals and single-statement
+if/loop positions retain their required braces.
+
+The raw tree loses sixteen lines and eight block labels: 76,292 lines,
+198 block labels and 58 loop labels remain. All ordered 136,607 Java bindings
+and 388 override relationships remain. Eleven surviving label ordinals migrate,
+including nine named rules; four consumed label names retire. All other complete
+rules are preserved. There are 11,395 naming rules and 165 label edits; all
+48 surviving labels in the six large bodies remain named. Six large bodies,
+208 opaque labels elsewhere and unmapped members still need work.
+
+Four focused groups pass 347,760 native comparisons and fifteen independent
+oracles, including effects, transferred values, field/local shadowing, dangling
+else, NaNs, nullable unboxing, throwing cleanup and monitors. The emitter and
+exception/integer-argument suite passes 107 tests with one skip. The source proof
+checks all 303 expected token streams, complete ordered Java bindings and
+surviving label destinations; a clean tracked decompiler archive reproduces
+all source and diagnostics bytes. Publication checks and the eight fixed game
+probes retain their stated scopes. Full applet/renderer/menu execution, real disk
+cache I/O and ranked sorting, assets/server/browser/phone and heap/FPS acceptance
+remain unverified.
+
+## Previous switch-aware guard recovery pass 128
 
 Pass128 removes a whole-method refusal in the generic decompiler: an ordinary
 colon switch no longer prevents recovery of proven captured-local guards.
@@ -319,6 +351,7 @@ bodies. Full readability and browser/phone FPS/heap targets remain unfinished.
 ```sh
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node scripts/test-readable-java.mjs
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test readable/tests/test-geoblox-rule-builder.mjs readable/tests/test-geoblox-migration-source.mjs readable/tests/test-geoblox-text-rules.mjs
+JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-guarded-abrupt-source.mjs /path/to/java-tools
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-switch-guards-source.mjs /path/to/java-tools
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-array-reads-source.mjs /path/to/java-tools
 JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-array-increments-source.mjs /path/to/java-tools
@@ -338,10 +371,10 @@ Each checks the transformed-class identity and retained native trace pins,
 then compares raw and readable source variants within its documented scope.
 
 The current decompiler-source SHA-256 is
-`c73390da4f1ca5cea809d42dc82658708bc8219ae89bfe5817e1026273e41568`:
+`fb97147a54cecccd775d549ef27ac23236b57b144d185cc454953cff0bb67970`:
 
 ```sh
-git -C /path/to/java-tools archive --format=tar 6c8dd6ef3215090329a8ac0b5a6ad2da8478676d | sha256sum
+git -C /path/to/java-tools archive --format=tar f72ed6ee281f45fcc61702e48b02a91b4e2e38f2 | sha256sum
 ```
 
 That hash identifies tracked decompiler source, not a game JAR.
