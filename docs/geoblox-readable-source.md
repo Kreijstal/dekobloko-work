@@ -36,6 +36,38 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 147 adds 148 guarded names: fifteen fields, 24 methods, 49 parameters
+and 60 locals. Every declaration in ValidatedTextInputWidget (49),
+DebouncedValidationProvider (40), TextInputValidator (86), CheckboxRenderer
+(59) and ValidationProvider (nine) now has a readable name; constructors follow
+class rules. Complete API families expose isInputEmpty,
+getDebouncedValidationMessage, getDebouncedValidationState and resetValidationDelay.
+Empty, debouncing, invalid, query-pending and valid singleton states follow
+actual validators and icon/message consumers. The exact 350ms boundary, signed
+clock arithmetic, empty-input short circuit and original guards remain.
+
+The account-name chain names length/normalization/separator structure and
+per-character checks, preserving wrong-guard early success and arbitrary
+CharSequence callbacks. Checkbox drawing/constructor roles, pointer-local X,
+tooltip anchors, validation provider assignment and pointer-listener monitor
+are explicit. Shared logo delay and optional login-response extension bytes
+follow their consumers without inventing producers or payload semantics.
+handleLoginUiResponse exposes existing visible-dialog processing, response
+8-to-2 remapping, response-10 name-panel routing, guarded reset and partial
+failure order. Dial reference angle and fullscreen-unavailable token follow
+their actual consumers.
+
+There are 14,058 rules and 100,022 identifier edits, plus eleven class-literal
+and 246 label edits: 100,279 total. All 13,910 previous complete rules and
+raw/tool/workflow/stub/native/text pins remain. Both 303-file corpora compile,
+preserve 136,607 bindings, 388 overrides and 813 lexical label records, and
+reverse byte exactly. The 27 publication tests and eight existing native
+fixtures pass within their recorded scopes. Live asynchronous editing, remote
+availability/login services, arbitrary CharSequence implementations and device
+behavior remain unverified. Eight large labeled bodies, 164 opaque labels,
+360 opaque fields and 405 short opaque methods remain; whole-game/server/
+device and heap/FPS acceptance are still unverified.
+
 Pass 146 adds 180 guarded names: eleven fields, 25 methods, 46 parameters
 and 98 locals. All 95 ButtonWidget, 156 TextInputWidget and seven
 TextInputListener declarations now have readable names; constructors follow
