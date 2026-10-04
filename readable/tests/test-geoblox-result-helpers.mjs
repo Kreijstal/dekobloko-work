@@ -23,6 +23,7 @@ const expectedArchiveCompressionSha256 = '191d74dde65e8e0a6b5dc72a0193765baa165a
 const expectedBzip2BlockSha256 = 'f237b1b6fd8e69c006fa43ec005f742ae5909d107d0ba5ec4574f2c804ad3ba9';
 const expectedMusicScoreSha256 = 'dbb5328e2411eeac81a8c9f515fb6ab1cd3f07f56a2bca7ffda0508a6f444ff4';
 const expectedInstrumentPatchSha256 = '632bd2079878bac0a78c60d5bce99a688b1fdc552641b56dd62ad9d21e7d5b24';
+const expectedSynthesizedSoundSha256 = '5940267c23617214e39dc820f851b313492cc7e3c5950144a2d34ffb1a75d62b';
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-result-helpers-'));
 try {
   if (nativeInput) {
@@ -47,7 +48,7 @@ try {
     assert.equal(files.length, pin.files);
     assert.equal(hash.digest('hex'), pin.sha256);
   }
-  let expected, expectedArchiveSectorSha256Baseline, expectedArchiveCompressionBaseline, expectedBzip2BlockBaseline, expectedMusicScoreBaseline, expectedInstrumentPatchBaseline;
+  let expected, expectedArchiveSectorSha256Baseline, expectedArchiveCompressionBaseline, expectedBzip2BlockBaseline, expectedMusicScoreBaseline, expectedInstrumentPatchBaseline, expectedSynthesizedSoundBaseline;
   for (const variant of [...(nativeInput ? ['native'] : []), 'original', 'renamed']) {
     const native = variant === 'native', renamed = variant === 'renamed';
     const name = (symbol, original) => renamed ? aliases.get(symbol) ?? original : original;
@@ -1167,10 +1168,107 @@ try {
         }
       }
 `;
+    const soundHarness = `
+      class SynthesizedSoundBehavior extends ResultHelperBehavior {
+        static Object buffer(byte[] bytes) throws Exception {return construct("${type('qc')}",new Class<?>[]{byte[].class},(Object)bytes);}
+        static Object envelope(int value) throws Exception {
+          Object envelope=construct("${type('uc')}",new Class<?>[0]);
+          ${set('uc','field_i','[I','envelope','new int[]{value,value}')}
+          ${set('uc','field_e','I','envelope','1')}
+          return envelope;
+        }
+        static void shortBE(java.io.DataOutputStream out,int value) throws Exception {out.writeShort(value);}
+        static byte[] envelopeBytes() throws Exception {
+          java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();java.io.DataOutputStream out=new java.io.DataOutputStream(bytes);
+          out.writeByte(3);out.writeInt(-12345);out.writeInt(98765);out.writeByte(3);
+          for(int[] point:new int[][]{{0,0},{32768,32768},{65535,65535}}){shortBE(out,point[0]);shortBE(out,point[1]);}
+          return bytes.toByteArray();
+        }
+        static String failure(Throwable error) {return error==null?"ok":error.getClass().getName();}
+        public static void main(String[] args) throws Exception {
+          int cases=0,flat=0,ramps=0,truncated=0,filters=0,effects=0;
+          Method reset=method("${type('uc')}","${method('uc','a()V')}");
+          Method step=method("${type('uc')}","${method('uc','a(I)I')}",int.class);
+          Method decodeEnvelope=method("${type('uc')}","${method('uc','a(Lqc;)V')}",Class.forName("${type('qc')}"));
+          for(int level:new int[]{0,1,32768,65535})for(int length:new int[]{0,1,2,8,32,65536}) {
+            Object env=envelope(level);
+            for(int repeat=0;repeat<2;repeat++) {
+              reset.invoke(env);int[] actual=new int[40];
+              for(int i=0;i<actual.length;i++){actual[i]=(Integer)step.invoke(env,length);check(actual[i]==level,"flat envelope independent oracle");}
+              check((Integer)${get('uc','field_b','I','env')}==40,"envelope sample counter");
+              System.out.println("sound-flat:"+level+":"+length+":"+repeat+":"+Arrays.hashCode(actual));cases++;flat++;
+            }
+          }
+          byte[] encoded=envelopeBytes();
+          for(int repeat=0;repeat<3;repeat++) {
+            Object env=construct("${type('uc')}",new Class<?>[0]),input=buffer(encoded);
+            decodeEnvelope.invoke(env,input);check((Integer)${get('qc','field_f','I','input')}==encoded.length,"envelope exact decode cursor");
+            check((Integer)${get('uc','field_e','I','env')}==3&&(Integer)${get('uc','field_j','I','env')}==-12345&&(Integer)${get('uc','field_g','I','env')}==98765,"envelope header oracle");
+            check(Arrays.equals((int[])${get('uc','field_c','[I','env')},new int[]{0,32768,65535})&&Arrays.equals((int[])${get('uc','field_i','[I','env')},new int[]{0,32768,65535}),"envelope point oracle");
+            // Fixed-point increments truncate before shifting: the penultimate
+            // segment sample is 54612, rather than a rounded linear sample.
+            int[] wanted={0,8192,16384,24576,32768,43690,54612,65535,65535,65535,65535,65535},actual=new int[wanted.length];
+            reset.invoke(env);for(int i=0;i<actual.length;i++)actual[i]=(Integer)step.invoke(env,8);
+            check(Arrays.equals(actual,wanted),"explicit piecewise ramp oracle: "+Arrays.toString(actual));
+            System.out.println("sound-ramp:"+repeat+":"+Arrays.toString(actual));cases++;ramps++;
+          }
+          for(int length=-1;length<encoded.length;length++) {
+            Object env=construct("${type('uc')}",new Class<?>[0]),input=buffer(length<0?null:Arrays.copyOf(encoded,length));Throwable error=null;
+            try{decodeEnvelope.invoke(env,input);}catch(InvocationTargetException thrown){error=thrown.getCause();}
+            check(error!=null,"truncated envelope fails");
+            System.out.println("sound-truncated:"+length+":"+failure(error)+":"+${get('qc','field_f','I','input')}+":"+${get('uc','field_e','I','env')}+":"+${get('uc','field_j','I','env')}+":"+${get('uc','field_g','I','env')}+":"+Arrays.toString((int[])${get('uc','field_c','[I','env')})+":"+Arrays.toString((int[])${get('uc','field_i','[I','env')}));cases++;truncated++;
+          }
+          Method decodeFilter=method("${type('ub')}","${method('ub','a(Lqc;Luc;)V')}",Class.forName("${type('qc')}"),Class.forName("${type('uc')}"));
+          Method compute=method("${type('ub')}","${method('ub','a(IF)I')}",int.class,float.class);
+          for(int packed:new int[]{0,16,1,17,68})for(int mask:new int[]{0,255})for(float fraction:new float[]{0,0.5f,1,Float.NaN}) {
+            java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();java.io.DataOutputStream out=new java.io.DataOutputStream(bytes);out.writeByte(packed);
+            int[] counts={packed>>4,packed&15};
+            if(packed!=0){shortBE(out,0);shortBE(out,mask==0?0:1024);out.writeByte(mask);
+              for(int channel=0;channel<2;channel++)for(int pair=0;pair<counts[channel];pair++){shortBE(out,channel*8192+pair*512);shortBE(out,mask==0?0:6400+pair*100);}
+              if(mask!=0){for(int channel=0;channel<2;channel++)for(int pair=0;pair<counts[channel];pair++){shortBE(out,16384+channel*4096+pair*256);shortBE(out,3200+pair*80);}out.write(envelopeBytes(),9,13);}
+            }
+            Object filter=construct("${type('ub')}",new Class<?>[0]),env=envelope(0),input=buffer(bytes.toByteArray());decodeFilter.invoke(filter,input,env);
+            check((Integer)${get('qc','field_f','I','input')}==bytes.size(),"filter exact decode cursor");
+            check(Arrays.equals((int[])${get('ub','field_b','[I','filter')},counts),"filter pair counts");
+            ${set('ub','field_f','[[F','null','new float[2][8]')}${set('ub','field_g','[[I','null','new int[2][8]')}
+            int left=(Integer)compute.invoke(filter,0,fraction),right=(Integer)compute.invoke(filter,1,fraction);int[][] coefficients=(int[][])${get('ub','field_g','[[I')};
+            check(left==counts[0]*2&&right==counts[1]*2,"coefficient count oracle");
+            if(mask==0&&!Float.isNaN(fraction)){check((Integer)${get('ub','field_a','I')}==65536,"unity filter forward scale");check(Arrays.deepEquals(coefficients,new int[2][8]),"zero-radius filter coefficients");}
+            float[][] floats=(float[][])${get('ub','field_f','[[F')};int[][] bits=new int[2][8];for(int c=0;c<2;c++)for(int i=0;i<8;i++)bits[c][i]=Float.floatToIntBits(floats[c][i]);
+            System.out.println("sound-filter:"+packed+":"+mask+":"+Float.floatToIntBits(fraction)+":"+left+":"+right+":"+${get('ub','field_a','I')}+":"+Float.floatToIntBits((Float)${get('ub','field_d','F')})+":"+Arrays.deepToString(coefficients)+":"+Arrays.deepToString(bits));cases++;filters++;
+          }
+          Method render=method("${type('fg')}","${method('fg','b()[B')}");Method toSample=method("${type('fg')}","${method('fg','a()Lgd;')}");
+          for(int count:new int[]{0,1,2,3,10})for(int polarity:new int[]{-1,1})for(int delay:new int[]{0,3}) {
+            byte[] packed=new byte[14];packed[11]=2;packed[13]=9;Object input=buffer(packed);
+            Object effect=construct("${type('fg')}",new Class<?>[]{Class.forName("${type('qc')}")},input);
+            Object[] instruments=(Object[])${get('fg','field_a','[Led;','effect')};
+            check(instruments.length==10&&(Integer)${get('qc','field_f','I','input')}==14,"effect decode slots/cursor");
+            for(int i=0;i<count;i++) {
+              Object instrument=construct("${type('ed')}",new Class<?>[0]);instruments[i]=instrument;
+              ${set('ed','field_t','Luc;','instrument','envelope(0)')}${set('ed','field_o','Luc;','instrument','envelope(32767)')}
+              ${set('ed','field_e','Lub;','instrument','construct("'+type('ub')+'",new Class<?>[0])')}
+              ${set('ed','field_a','[I','instrument','new int[]{polarity*100,0,0,0,0}')}
+              ${set('ed','field_d','I','instrument','10')}${set('ed','field_v','I','instrument','delay')}
+            }
+            byte[] actual=(byte[])render.invoke(effect);int offset=22050*delay/1000,length=count==0?0:22050*(10+delay)/1000;
+            check(actual.length==length,"effect duration oracle");
+            int contribution=polarity==1?63:-64,wanted=Math.max(-128,Math.min(127,count*contribution));
+            for(int i=0;i<actual.length;i++)check(actual[i]==(i>=offset&&i<offset+220?wanted:0),"square-wave mixing/delay/saturation oracle "+i);
+            Object sample=toSample.invoke(effect);check((Integer)${get('gd','field_h','I','sample')}==22050&&(Integer)${get('gd','field_g','I','sample')}==44&&(Integer)${get('gd','field_j','I','sample')}==198,"sample loop positions in samples");
+            check(Arrays.equals((byte[])${get('gd','field_k','[B','sample')},actual),"sample contains rendered signed PCM");
+            System.out.println("sound-effect:"+count+":"+polarity+":"+delay+":"+length+":"+Arrays.hashCode(actual));cases++;effects++;
+          }
+          method("${type('ub')}","${method('ub','a()V')}").invoke(null);
+          check(${get('ub','field_f','[[F')}==null&&${get('ub','field_g','[[I')}==null,"filter coefficient cleanup");
+          check(flat==48&&ramps==3&&truncated==23&&filters==40&&effects==20,"sound case inventory");
+          System.out.println("sound-complete:"+cases+":"+flat+":"+ramps+":"+truncated+":"+filters+":"+effects);
+        }
+      }
+`;
     const directory = path.join(temporary, variant), classes = path.join(directory, 'classes');
     fs.mkdirSync(classes, {recursive: true});
     const harnessFile = path.join(directory, 'ResultHelperBehavior.java');
-    fs.writeFileSync(harnessFile, harness);
+    fs.writeFileSync(harnessFile, harness + soundHarness);
     const stub = path.join(root, 'funorb-stubs.jar');
     const cp = native ? nativeInput + path.delimiter + stub : stub;
     const sourceRoot = path.join(root, renamed ? 'geoblox/src' : '../games/geoblox');
@@ -1178,6 +1276,14 @@ try {
     const list = path.join(directory, 'sources.txt');
     fs.writeFileSync(list, [...sources, harnessFile].map(file => JSON.stringify(file)).join('\n') + '\n');
     captureProcess('javac', ['--release','8','-proc:none','-encoding','UTF-8','-classpath',cp,'-d',classes,'@'+list]);
+
+    const soundOutput = captureProcess('java', ['-Djava.awt.headless=true','-cp',classes + path.delimiter + cp,
+      'SynthesizedSoundBehavior']).stdout;
+    const synthesizedSoundSha256 = crypto.createHash('sha256').update(soundOutput).digest('hex');
+    console.log(JSON.stringify({variant, synthesizedSoundSha256, completion: soundOutput.toString().trim().split('\n').at(-1)}));
+    assert.equal(synthesizedSoundSha256, expectedSynthesizedSoundSha256, variant);
+    if (variant === 'native') expectedSynthesizedSoundBaseline = soundOutput;
+    if (nativeInput && variant !== 'native') assert.equal(Buffer.compare(soundOutput, expectedSynthesizedSoundBaseline), 0, variant);
 
 
     const patchOutput = captureProcess('java', ['-Djava.awt.headless=true','-cp',classes + path.delimiter + cp,

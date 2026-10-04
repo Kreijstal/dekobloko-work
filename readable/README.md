@@ -37,7 +37,39 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current terminal loop header pass 151
+## Current synthesized sound naming pass 152
+
+Pass 152 adds 86 guarded names: 22 fields, thirteen methods, eighteen
+parameters and 33 locals. Every declaration in SoundFilter (45), SoundEnvelope
+(22) and SynthesizedSoundEffect (25) has a readable name; constructors follow
+the existing class rules. Their callers now show envelope reset/advance,
+endpoint decode, pole-pair coefficient expansion, forward gain and signed PCM
+mixing with millisecond loop boundaries. Reused slots keep names that cover
+both roles, rather than implying a register has only one meaning.
+
+The same result-helper fixture adds 134 native/raw/readable cases: 48 constant
+envelope/reset trajectories, three explicit fixed-point ramps, 23 truncated/null
+envelopes with partial-state/cursor traces, forty filter cases including NaN,
+and twenty constructed square-wave mix/delay/saturation/PCM-loop cases. Flat
+and ramp values, coefficient counts/unity/zero-radius cases, and mixing/loop
+values have independent explicit oracles. Other filter coefficients and partial
+decode state compare transformed native/raw/readable traces directly. All eleven
+previous result-helper traces retain their reviewed hashes.
+
+There are 14,704 rules and 102,711 identifier edits, plus eleven class-name
+literal and 250 label edits: 102,972 total. All 14,618 previous complete rules
+remain. Six generated Java files change; all raw code, source/tool/workflow/stub
+pins, local ordinals, 136,607 bindings, 388 overrides and 811 lexical label
+records remain. Both 303-file corpora compile, reproduce and reverse byte
+exactly; the 27 publication tests and extended result-helper fixture pass.
+No Java body is hand edited and no decompiler change is required.
+
+Eight large labeled bodies and 162 opaque labels remain, together with 307
+opaque fields and 342 short opaque methods. Full packed instruments, arbitrary
+modulation/filtering, real archive assets, device playback, full-game/server/
+browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous terminal loop header pass 151
 
 Pass 151 gives three loops their original guard headers: the frame loop in
 GameApplet.run becomes do-while; MidiPcmStream.advanceMidiEvents and
