@@ -37,7 +37,44 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current mixer, delay and note playback pass 140
+## Current PCM sample playback and mixing kernels pass 141
+
+Pass 141 adds 418 guarded rules: 13 fields, 28 methods, 227 parameters,
+132 locals and 18 labels. Every PcmSampleStream field, method, parameter,
+local and label is now named. The original arithmetic and source bodies remain.
+
+The 16 mixing kernels expose forward/reverse, mono/stereo, aligned/interpolated
+and fixed/ramped volume variants. mixForwardToBoundary/mixReverseToBoundary
+select them using the original step/alignment, stereo and ramp state. Parameter
+names retain reused units and roles: fixed position becomes integer source
+index in aligned kernels, stereo frame indexes become interleaved array indexes,
+and scratch source indexes can become a boundary sample or copied step. Saved
+source/destination indexes describe each original unrolled or tail write;
+increment/decrement order and += accumulation do not change.
+
+Playback fields expose loopsRemaining, pingPongLoop, loopStart/loopEnd,
+target/current volumes, targetPan, rampFramesRemaining and gain steps. Methods
+expose refreshCurrentVolumes, finishOrContinueVolumeRamp, cancelVolumeRamp,
+setVolumeAndPan, setReversePlayback and equal-power left/right gain helpers.
+Negative loop counts, MIN_VALUE fade sentinel, step overflow, shifts,
+interpolation boundaries, wrap/reflection, signed division/remainder and
+synchronized state updates remain, including partial failure effects.
+
+All 18 existing plain labels are named: interiorFrameLimit/boundaryFrameLimit
+in interpolation kernels and finiteLoopMixing/finiteLoopSkipping around the
+finite-loop paths. Their 22 breaks retain their targets; no frame or transfer
+is removed. Explicit accounting grows from 190 to 230 label edits. There are
+13,074 rules and 96,034 identifier edits, plus eleven class-literal and 230
+label edits: 96,275 total. All 12,656 prior complete rules and raw/tool/workflow/
+stub/native/text pins remain unchanged. Both 303-file corpora compile and
+preserve 136,607 bindings, 388 overrides and 813 lexical label records; all
+303 files reverse byte exactly. The 27 publication tests and eight existing
+native fixtures pass within their recorded scopes. These fixtures cover
+factory/position/music-data behavior, not exhaustive PCM mix/ramp/loop kernels
+or live audio devices. Eight large labeled bodies and 171 opaque labels remain;
+full-game/assets/server/device and heap/FPS acceptance are still unverified.
+
+## Previous mixer, delay and note playback pass 140
 
 Pass 140 adds 208 guarded rules: 25 fields, 27 methods, 49 parameters,
 106 locals and one label. All fields, methods, parameters and locals in

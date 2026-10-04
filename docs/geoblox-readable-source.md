@@ -36,6 +36,13 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 141 names every PcmSampleStream field/method/parameter/local/label,
+including all 16 forward/reverse mono/stereo aligned/interpolated gain kernels.
+It adds 418 guarded rules; there are 13,074 rules and 171 opaque labels.
+All existing interpolation-limit and finite-loop frames/exits remain. Signed
+mix/gain/loop arithmetic, increment order and partial effects are unchanged;
+exhaustive mix/ramp/loop execution and real devices are not newly validated.
+
 Pass 140 names all mixer/listener, delayed-stream and MIDI-note-mixer
 fields/methods/parameters/locals, plus selected note/sample playback controls.
 It adds 208 guarded rules and names one existing note-skip completion label.
