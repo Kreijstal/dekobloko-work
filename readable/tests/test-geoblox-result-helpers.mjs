@@ -25,6 +25,8 @@ const expectedMusicScoreSha256 = 'dbb5328e2411eeac81a8c9f515fb6ab1cd3f07f56a2bca
 const expectedInstrumentPatchSha256 = '632bd2079878bac0a78c60d5bce99a688b1fdc552641b56dd62ad9d21e7d5b24';
 const expectedFrameTimerSha256 = 'ede4d1133daada42504bf8fe04c675cbbde84af1a2e59b7793339f7210538df8';
 let expectedFrameTimerBaseline;
+const expectedAppletLoopSha256 = '1256a138fc5e61a038a32f3a7a687784609906bc0901e6a4aba445ed6dade7f6';
+let expectedAppletLoopBaseline;
 const expectedSynthesizedSoundSha256 = '5940267c23617214e39dc820f851b313492cc7e3c5950144a2d34ffb1a75d62b';
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-result-helpers-'));
 try {
@@ -1365,10 +1367,104 @@ try {
         }
       }
 `;
+    const appletHarness = `
+      class AppletLoopBehavior extends ResultHelperBehavior {
+        static final java.security.MessageDigest trace;
+        static int cases,updates,renders,resets,cleanups,focusCases,failures;
+        static {try{trace=java.security.MessageDigest.getInstance("SHA-256");}catch(Exception e){throw new AssertionError(e);}}
+        static void record(String text)throws Exception{trace.update((text+"\\n").getBytes("UTF-8"));cases++;}
+        static class AppletProbe extends ${type('ch')} {
+          StringBuilder calls;Throwable failure;
+          public void init(){}
+          void ${method('ch','b(I)V')}(int guard){throw new AssertionError("unused initialize");}
+          void ${method('ch','b(B)V')}(byte guard){throw new AssertionError("unused release");}
+          void ${method('ch','c(I)V')}(int guard){throw new AssertionError("unused audio");}
+          void fail(){if(failure instanceof Error)throw (Error)failure;if(failure!=null)throw (RuntimeException)failure;}
+          void ${method('ch','c(Z)V')}(boolean argument){check(!Thread.holdsLock(this),"update callback outside monitor");calls.append("update:").append(argument).append(';');fail();}
+          void ${method('ch','a(I)V')}(int guard){check(!Thread.holdsLock(this),"render callback outside monitor");calls.append("render:").append(guard).append(';');fail();}
+        }
+        static class CanvasProbe extends java.awt.Canvas {
+          StringBuilder calls=new StringBuilder();
+          public void setSize(int width,int height){calls.append("size:").append(width).append(':').append(height).append(';');}
+          public void setVisible(boolean visible){calls.append("visible:").append(visible).append(';');}
+          public void setLocation(int x,int y){calls.append("location:").append(x).append(':').append(y).append(';');}
+        }
+        static class ResetProbe extends ${type('cj')} {
+          int calls,guard;Throwable failure;
+          void ${method('cj','a(I)V')}(int argument){calls++;guard=argument;if(failure instanceof Error)throw (Error)failure;if(failure!=null)throw (RuntimeException)failure;}
+          long ${method('cj','a(B)J')}(byte guard){throw new AssertionError("unused sample");}
+          int ${method('cj','a(ZJ)I')}(boolean guard,long period){throw new AssertionError("unused advance");}
+        }
+        static AppletProbe applet(int fail)throws Exception{
+          AppletProbe applet=(AppletProbe)allocate("AppletLoopBehavior$AppletProbe");applet.calls=new StringBuilder();
+          applet.failure=fail==1?new IllegalArgumentException("applet-callback"):fail==2?new AssertionError("applet-callback"):null;return applet;
+        }
+        static Throwable invoke(Method target,Object receiver,Object... args)throws Exception{
+          try{target.invoke(receiver,args);return null;}catch(InvocationTargetException e){Throwable error=e.getCause();
+            if(error instanceof ${type('sa')})return (Throwable)get("${type('sa')}","${field('sa','field_a','Ljava/lang/Throwable;')}",error);return error;}
+        }
+        static void control(int flag)throws Exception{${set('Geoblox','field_C','I','null','flag')}}
+        static void clock()throws Exception{${set('nd','field_b','J','null','0L')}${set('rj','field_b','J','null','0L')}}
+        static void updateCases()throws Exception{
+          Method update=method("${type('ch')}","${method('ch','a(B)V')}",byte.class);
+          for(int flag:new int[]{-1,0,1})for(int index:new int[]{-1,0,15,31,32})for(boolean focus:new boolean[]{false,true})for(int fail=0;fail<3;fail++)for(byte guard:new byte[]{-10,0}){
+            control(flag);clock();AppletProbe applet=applet(fail);long[] ring=new long[32];Arrays.fill(ring,-99L);long[] original=ring.clone();
+            ${set('tl','field_l','[J','null','ring')}${set('ij','field_cb','I','null','index')}${set('wc','field_g','Z','null','focus')}${set('lh','field_d','Z','null','!focus')}${set('ch','field_b','I','null','73')}
+            String[] text={"sentinel"};${set('oa','field_d','[Ljava/lang/String;','null','text')}
+            long before=System.currentTimeMillis();Throwable error=invoke(update,applet,guard);long after=System.currentTimeMillis();boolean valid=index>=0&&index<32;
+            check((Integer)${get('ch','field_b','I')}==(guard==-10?73:-102),"update guard write");check(${get('oa','field_d','[Ljava/lang/String;')}==(guard==-10?text:null),"update clock guard cleanup");
+            check((Integer)${get('ij','field_cb','I')}==(valid?(index+1)%32:index),"update history cursor");
+            if(valid){check(ring[index]>=before&&ring[index]<=after,"update real clock bounds");original[index]=ring[index];}
+            check(Arrays.equals(ring,original),"update preserves other history slots");check((Boolean)${get('lh','field_d','Z')}==(valid?focus:!focus),"focus copy after history write");
+            check(applet.calls.toString().equals(valid?"update:false;":""),"update callback order");check(error==null==(valid&&fail==0),"update failure presence");
+            if(error!=null){failures++;check(valid?error==applet.failure:error instanceof ArrayIndexOutOfBoundsException,"update throwable identity");}
+            check(!Thread.holdsLock(applet),"update releases monitor");record("update:"+flag+":"+index+":"+focus+":"+fail+":"+guard+":"+(error!=null));updates++;
+          }
+        }
+        static void renderCases()throws Exception{
+          Method render=method("${type('ch')}","${method('ch','d(I)V')}",int.class);
+          for(int flag:new int[]{-1,0,1})for(int counter:new int[]{-1,0,50,51,100,Integer.MAX_VALUE})for(int history=0;history<3;history++)for(int fail=0;fail<3;fail++)for(int guard:new int[]{32000,0}){
+            control(flag);clock();AppletProbe applet=applet(fail);CanvasProbe canvas=new CanvasProbe();long seed=history==0?0:System.currentTimeMillis()+(history==1?-1000:60000);long[] ring=new long[32];Arrays.fill(ring,seed);
+            ${set('pb','field_p','[J','null','ring')}${set('fe','field_k','I','null','31')}${set('rj','field_i','I','null','counter')}${set('ec','field_b','I','null','77')}
+            ${set('dl','field_c','Z','null','false')}${set('f','field_kb','Ljava/awt/Canvas;','null','canvas')}${set('sg','field_a','Ljava/awt/Frame;','null','null')}${set('he','field_a','Ljava/awt/Frame;','null','null')}
+            ${set('kh','field_d','I','null','123')}${set('ok','field_c','I','null','45')}${set('qa','field_b','I','null','7')}${set('hk','field_B','I','null','9')}
+            String[] text={"sentinel"};${set('oa','field_d','[Ljava/lang/String;','null','text')}
+            long before=System.currentTimeMillis();Throwable error=invoke(render,applet,guard);long after=System.currentTimeMillis();boolean refresh=counter>50,canvasFailure=refresh&&flag!=0;
+            check(ring[31]>=before&&ring[31]<=after,"render real clock bounds");for(int i=0;i<31;i++)check(ring[i]==seed,"render retains other history slots");check((Integer)${get('fe','field_k','I')}==0,"render ring wraps");
+            int expectedRate=77;if(history==1){int elapsed=(int)(ring[31]-seed);expectedRate=java.math.BigInteger.valueOf(32000).add(java.math.BigInteger.valueOf(elapsed).shiftRight(1)).intValue()/elapsed;}
+            check((Integer)${get('ec','field_b','I')}==expectedRate,"render history rate estimate");check(${get('oa','field_d','[Ljava/lang/String;')}==(guard==32000?text:null),"render clock guard cleanup");
+            check((Integer)${get('rj','field_i','I')}==(int)((long)counter+1-(refresh?50:0)),"refresh signed counter");check((Boolean)${get('dl','field_c','Z')}==refresh,"refresh redraw flag");
+            check(canvas.calls.toString().equals(refresh?"size:123:45;visible:true;location:7:9;":""),"canvas partial order");check(applet.calls.toString().equals(canvasFailure?"":"render:25853;"),"render callback order");
+            check(error==null==(!canvasFailure&&fail==0),"render failure presence");if(error!=null){failures++;check(canvasFailure?error instanceof NullPointerException:error==applet.failure,"render cause identity");}
+            record("render:"+flag+":"+counter+":"+history+":"+fail+":"+guard+":"+(error!=null));renders++;
+          }
+        }
+        static void resetCases()throws Exception{
+          Method reset=method("${type('ih')}","${method('ih','b(I)V')}",int.class);
+          for(int flag:new int[]{-1,0,1})for(int guard:new int[]{Integer.MIN_VALUE,0,68,125,132})for(int fail=0;fail<3;fail++)for(int shape=0;shape<5;shape++){
+            control(flag);ResetProbe timer=new ResetProbe();timer.failure=fail==1?new IllegalArgumentException("reset"):fail==2?new AssertionError("reset"):null;
+            long[] render=shape==1?null:new long[shape==2?1:32],update=shape==3?null:new long[shape==4?1:32];if(render!=null)Arrays.fill(render,11);if(update!=null)Arrays.fill(update,22);
+            ${set('eg','field_p','Lcj;','null','timer')}${set('pb','field_p','[J','null','render')}${set('tl','field_l','[J','null','update')}${set('fe','field_k','I','null','17')}${set('ij','field_cb','I','null','19')}${set('nf','field_w','I','null','9')}
+            Throwable error=invoke(reset,null,guard);check(timer.calls==1&&timer.guard==111,"timer reset first");boolean arithmetic=guard==68,started=fail==0&&!arithmetic,success=started&&shape==0;
+            check(error==null==success,"reset failure presence");if(error!=null){failures++;check(fail!=0?error==timer.failure:arithmetic?error instanceof ArithmeticException:shape==1||shape==3?error instanceof NullPointerException:error instanceof ArrayIndexOutOfBoundsException,"reset cause identity");}
+            if(render!=null)for(long v:render)check(v==(started?0:11),"render history partial clear");if(update!=null)for(long v:update)check(v==(started&&shape!=1&&shape!=2?0:22),"update history partial clear");
+            check((Integer)${get('nf','field_w','I')}==(success?0:9),"pending ticks last");check((Integer)${get('fe','field_k','I')}==17&&(Integer)${get('ij','field_cb','I')}==19,"reset retains cursors");record("reset:"+flag+":"+guard+":"+fail+":"+shape+":"+(error!=null));resets++;
+          }
+        }
+        static void cleanupAndFocusCases()throws Exception{
+          Method cleanup=method("${type('ch')}","${method('ch','c(B)V')}",byte.class);
+          for(byte guard:new byte[]{-128,-23,0,30,82,127}){int[] counts={7,8};${set('ch','field_d','[I','null','counts')}Throwable error=invoke(cleanup,null,guard);
+            check(${get('ch','field_d','[I')}==null,"cleanup writes before arithmetic");boolean failed=guard>-22&&guard<82;check(error==null==!failed,"cleanup guard division");if(error!=null){failures++;check(error instanceof ArithmeticException,"cleanup cause");}record("cleanup:"+guard+":"+failed);cleanups++;}
+          for(int flag:new int[]{-1,0,1})for(boolean gain:new boolean[]{false,true}){control(flag);AppletProbe applet=applet(0);${set('wc','field_g','Z','null','!gain')}${set('dl','field_c','Z','null','false')}${set('lh','field_d','Z','null','!gain')}
+            if(gain)applet.focusGained(null);else applet.focusLost(null);check((Boolean)${get('wc','field_g','Z')}==gain,"AWT focus flag");check((Boolean)${get('dl','field_c','Z')}==gain,"focus gain requests redraw");check((Boolean)${get('lh','field_d','Z')}==!gain,"focus callback retains update snapshot");record("focus:"+flag+":"+gain);focusCases++;}
+        }
+        public static void main(String[] args)throws Exception{updateCases();renderCases();resetCases();cleanupAndFocusCases();StringBuilder digest=new StringBuilder();for(byte b:trace.digest())digest.append(String.format("%02x",b&255));System.out.println("applet-loop:"+cases+":"+updates+":"+renders+":"+resets+":"+cleanups+":"+focusCases+":"+failures+":"+digest);}
+      }
+`;
     const directory = path.join(temporary, variant), classes = path.join(directory, 'classes');
     fs.mkdirSync(classes, {recursive: true});
     const harnessFile = path.join(directory, 'ResultHelperBehavior.java');
-    fs.writeFileSync(harnessFile, harness + soundHarness + timerHarness);
+    fs.writeFileSync(harnessFile, harness + soundHarness + timerHarness + appletHarness);
     const stub = path.join(root, 'funorb-stubs.jar');
     const cp = native ? nativeInput + path.delimiter + stub : stub;
     const sourceRoot = path.join(root, renamed ? 'geoblox/src' : '../games/geoblox');
@@ -1377,6 +1473,13 @@ try {
     fs.writeFileSync(list, [...sources, harnessFile].map(file => JSON.stringify(file)).join('\n') + '\n');
     captureProcess('javac', ['--release','8','-proc:none','-encoding','UTF-8','-classpath',cp,'-d',classes,'@'+list]);
 
+    const appletOutput=captureProcess('java',['-Djava.awt.headless=true','-cp',classes+path.delimiter+cp,'AppletLoopBehavior']).stdout;
+    const appletSha=crypto.createHash('sha256').update(appletOutput).digest('hex');
+    console.log(JSON.stringify({variant,appletLoopTrace:appletOutput.toString().trim(),sha256:appletSha}));
+    assert.match(appletOutput.toString(),/^applet-loop:741:180:324:225:6:6:611:[a-f0-9]{64}\n$/);
+    assert.equal(appletSha,expectedAppletLoopSha256,variant+': fixed native applet-loop trace');
+    if(expectedAppletLoopBaseline===undefined)expectedAppletLoopBaseline=appletOutput;
+    else assert.deepEqual(appletOutput,expectedAppletLoopBaseline,variant+': frame history/focus/refresh and reset partial effects');
     const timerOutput=captureProcess('java',['-Djava.awt.headless=true','-cp',classes+path.delimiter+cp,'FrameTimerBehavior']).stdout;
     const timerSha=crypto.createHash('sha256').update(timerOutput).digest('hex');
     console.log(JSON.stringify({variant,frameTimerTrace:timerOutput.toString().trim(),sha256:timerSha}));
