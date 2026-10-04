@@ -37,7 +37,69 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current hotspot, opacity and shared UI naming pass 164
+## Current socket, proxy and theme achievement naming pass 165
+
+Pass 165 adds 158 guarded names: sixteen fields, nine methods, fifteen
+parameters, 117 locals and one lexical label. SocketConnector and
+ProxySocketConnector now expose direct connection, system proxy selection,
+SOCKS connection and HTTP CONNECT response handling. Both declarations of the
+proxy-selection override use the same name. All remaining opaque fields,
+single-letter methods, generated temporaries and labels in these classes and
+ProxyAuthenticationRequiredException are named. The generic sneaky-throw helper
+retains its original name and meaningful throwable parameter.
+
+Source quirks remain: proxy lists are combined in their original order and
+iteration begins at the caller-supplied index. URI syntax failure falls back to
+a direct connection; IO failures are swallowed, authentication failures are
+retained, and a retained authentication failure is rethrown after all candidates.
+HTTP authentication reflection failures are swallowed. The CONNECT writer keeps
+its original line endings, encoding, timeout, guard arithmetic and partial
+resource cleanup. Status 200 returns the open socket; status 407 scans at most
+fifty header lines and throws the existing scheme exception. This is readable
+source, not a repaired or validated proxy implementation.
+
+Shared names expose the instrument-patch archive, bootstrap login message,
+discard-results warning, numeric template types eight/thirteen, ranked key-two
+upper-bound seed and seven theme-completion achievement fields. Theme names
+follow the existing dispatch and asset IDs; original alternate guard writes,
+sun fallback and nonzero-control fallthrough remain. The ranked seed is not a
+computed maximum: its MIN_VALUE reset and original comparison/write quirks
+remain. Theme color sorting locals describe the selected channel values and
+derived hue/lightness/saturation; original masks, ties, floating divisions,
+shift expressions, aliases and insertion order remain.
+
+The export has 16,589 rules and 110,717 identifier edits, plus eleven class-name
+literal and 285 label edits: 111,013 total. All 16,431 previous complete rules,
+19,498 dictionary identities, 136,607 bindings, 388 overrides and 811 label
+records remain. Twenty-one generated Java files change only in names. Both
+303-file corpora compile, reproduce and reverse byte exactly. The label-policy
+count increases by two, with an explicit sourceChange for the existing response
+label declaration and its single break. All raw/tool/workflow/stub/native pins
+stay fixed. All 27 publication tests pass; no native probes or new runtime cases
+are added or run in this pass.
+
+Eight large labeled bodies, 149 opaque labels, 189 opaque fields and 217
+single-letter methods remain. Whole-game, live proxy/network/server/assets,
+browser/phone and heap/presented-FPS acceptance remain unverified.
+
+A control-flow audit considered moving the else branch of
+`while (true) { if (P) { A } else { B } break; }` after a guarded loop.
+Using compiler method-body extents (the scanner in the existing guarded-abrupt
+source fixture) and the pinned recovery module's lexical transfer/completion
+analysis, it inspected 2,335 method/initializer bodies; two bodies were refused
+by the existing cleanup parser. Twelve loops matched the shape, and zero passed
+the no-normal-completion requirement for A. Every matching A can fall through
+under the original control guards. Hoisting B would then run it after A, although
+the original skipped it. No decompiler change was made.
+
+Matches occur in BoardReconciliationSupport (three), GameApplet (one),
+GameScreen (one), GameplaySession (four), HighscoreNameEntry (one) and
+MeshDepthSupport (two). Several are inside the large remaining gameplay methods.
+A future reconstruction must preserve the two distinct exit reasons and all
+exception/finally/monitor scopes; treating the client control flag as zero is
+not a valid recovery proof. The existing twelve loops remain unchanged.
+
+## Previous hotspot, opacity and shared UI naming pass 164
 
 Pass 164 adds 164 guarded names: five fields, nine methods, sixteen parameters
 and 134 locals. All 142 HotspotTextWidget and 84 OpacityWidget declarations now
