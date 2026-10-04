@@ -9,13 +9,14 @@ import {fileURLToPath} from 'node:url';
 import {captureProcess} from '../tools/lib/capture-process.mjs';
 import {sourceInventory, sourceIdentity} from '../tools/readable-java.mjs';
 
-// Recheck the historical structural pass from immutable Git inputs. Later
-// naming passes can run this proof without maintaining another source preview.
+// Recheck the latest guarded-abrupt structural pass from immutable Git inputs.
+// The suffix extension shares this fixture; the original pass's source/hash
+// remains available in its pinned workflow commit. No extra preview is needed.
 const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.guardedAbruptExitRecovery;
+const proof = provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -151,6 +152,23 @@ public final class GeobloxBodyPositions {
   assert.equal(records(oldAudit).length, proof.labelBindingsBefore);
   assert.equal(actualLabels.length, proof.labelBindingsAfter);
   assert.deepEqual(actualLabels, expectedLabels, 'all ordered surviving label declarations, destinations and transfer kinds');
+  if (proof.largeLabeledBodiesAfter) {
+    const inventory = [];
+    for (const line of run('java', ['-cp', helpers, 'GeobloxBodyPositions', after]).toString().trim().split('\n')) {
+      const [file, start, end] = line.split('\t');
+      const source = fs.readFileSync(path.join(after, file), 'utf8');
+      const body = source.slice(Number(start), Number(end));
+      const lines = body.split('\n').length;
+      const labels = newLabels.filter(row => row[1] === file && Number(row[2]) >= Number(start) && Number(row[3]) <= Number(end));
+      if (lines < proof.largeLabeledBodiesAfter.minimumBodyLines || !labels.length) continue;
+      const enclosingMethod = labels[0][4].slice(2, labels[0][4].lastIndexOf('#'));
+      assert.ok(labels.every(row => row[4].slice(2, row[4].lastIndexOf('#')) === enclosingMethod), 'no nested executable inventory ambiguity');
+      inventory.push({rawFile: file, enclosingMethod, lines, labels: labels.length});
+    }
+    assert.equal(inventory.length, proof.largeLabeledBodiesAfter.bodies);
+    assert.deepEqual(inventory, proof.largeLabeledBodiesAfter.inventory.map(({rawFile, enclosingMethod, lines, labels}) =>
+      ({rawFile, enclosingMethod, lines, labels})).sort((a, b) => a.rawFile < b.rawFile ? -1 : a.rawFile > b.rawFile ? 1 : 0), 'complete large labeled-body inventory');
+  }
   const overrides = rows => rows.filter(r => r[0] === 'O');
   assert.equal(overrides(oldAudit).length, proof.fullOverridePairsPreserved);
   assert.deepEqual(overrides(newAudit), overrides(oldAudit), 'complete ordered override pairs');
