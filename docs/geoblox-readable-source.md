@@ -36,6 +36,14 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+The current pass 134 names cache/reference operations, secondary collection
+helpers, account responses and received/normalized session names. It adds 177
+guarded rules and explicitly corrects two earlier hash-naming claims. There are
+11,812 rules; all five audited cache/collection classes have named methods,
+parameters and locals. The existing unknown achievement id stays opaque.
+The raw input and tool/proof pins remain fixed; generated exports and their
+matching dictionary are published only in FunOrb.
+
 Structural changes are made in the generic decompiler and published through a
 fresh decompilation. The source proofs compare all303 expected token streams,
 compiler bindings and labels. Guard recovery never assumes the client flag is

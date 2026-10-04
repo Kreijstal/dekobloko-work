@@ -124,9 +124,19 @@ test('label policy changes require explicit migration and exact count guards', (
     data => { delete data.labels; },
     data => { data.labels.policy = 'different'; },
   ]) assert.throws(() => fixture(change), /explicit sourceChange/);
-  assert.throws(() => fixture(data => {
+  assert.throws(() => fixture((data, directory) => {
+    // Naming-only passes do not need a sourceChange. Build this test's own
+    // complete migration so the negative count reaches label validation.
+    const identity = rules => ({source: rules.source, generators: rules.generators,
+      inputTreeSha256: rules.inputTreeSha256, readabilityWorkflow: rules.readabilityWorkflow ?? null,
+      classNameLiterals: rules.classNameLiterals ?? null, labels: rules.labels ?? null});
+    const previous = data.publication.previousRules;
+    const repository = previous.repository === 'Kreijstal/funorb-decompiled'
+      ? funorbRepository : path.resolve(directory, '..');
+    const before = JSON.parse(captureProcess('git', ['-C', repository, 'show',
+      `${previous.commit}:${previous.path}`], {maxBuffer: 32 * 1024 * 1024}).stdout);
     data.labels.expectedEdits = -1;
-    data.publication.sourceChange.after.labels = data.labels;
+    data.publication.sourceChange = {before: identity(before), after: identity(data)};
   }), /Invalid guarded label policy/);
 });
 test('source evidence refuses duplicate entries, traversal and malformed hashes', () => {

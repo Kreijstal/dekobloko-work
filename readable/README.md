@@ -37,7 +37,43 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current guarded loop continuations pass 133
+## Current cache/reference and session-name pass 134
+
+Pass 134 adds 177 guarded names: eleven fields, 22 methods, 48 parameters
+and 96 locals. Cache code now exposes `entryWeight`, `weightCapacity`,
+`remainingWeightCapacity`, `entriesByKey`, `recencyQueue`, `getByKey`,
+`putWeighted`, `removeByKey`, `removeEntry` and `getReferent`.
+All parameters, locals and methods in the five audited cache/reference and
+secondary collection classes are named. The template-definition cache caller,
+account resource setup/username response, progress dialog, login payload factory
+and shared name slots also use inspected roles.
+
+Two previous rules are explicitly corrected: `readSessionTextAndHash` becomes
+`readSessionNameAndNormalize`, and `textForHash` becomes `nameToNormalize`.
+The called `normalizeSessionName` trims separators, validates length and maps
+characters; it does not produce a hash. Received text and normalized name remain
+separate fields. The country-list helper still only has its original guard side
+effect; downloaded text is unused. The cache's private constructor still throws
+Error, and this corpus contains only the strong reference subclass. The promotion
+predicate is named for its lookup decision, without inventing soft-reference
+implementations. Achievement id 13 in `WeightedObjectCache.field_g` stays opaque
+because its title is not established.
+
+The export has 11,812 rules and 88,935 identifier edits, plus eleven class-literal
+and 184 label edits: 89,130 edits in total. All 11,633 unaffected complete rules
+and the raw/decompiler/naming/workflow/stub/native/text pins remain unchanged.
+Thirty generated Java files change through declarations and their callers.
+Both 303-file corpora compile, preserving 136,607 ordered bindings, 388 overrides
+and 813 lexical label records; all 303 files reverse byte exactly to raw Git.
+The existing 27 publication checks, eight fixed native probes and deque fixture
+pass within their documented scopes. The label-refusal test now creates its own
+source migration, so it also works during naming-only passes. No raw bodies,
+numeric states, guards, evaluation order, partial effects, diagnostics or
+exception/monitor boundaries change. Eight large labeled bodies, 192 opaque
+labels and other unmapped members remain. Full-game/assets/server/browser/phone
+and heap/FPS acceptance remain unverified.
+
+## Previous guarded loop continuations pass 133
 
 Pass 133 recovers 21 ordinary guarded loops across 14 methods and 12 files.
 Previously, `while (true)` put its guard in a first `if` and buried the complete
