@@ -37,7 +37,48 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current explicit loop exit guards (pass 167)
+## Current display-name and shared gameplay naming (pass 168)
+
+Pass 168 adds 144 guarded names: 36 fields, twelve methods, 33 parameters,
+62 locals and one lexical label. DisplayNamePanel now exposes every remaining
+opaque declaration: validated input layout, accepted-provider checks, confirm/
+cancel callbacks, focus routing, suggestion snapshots and login submission.
+The labeled row keeps its original dimensions and validation-message height35.
+A missing provider still passes; other providers require the original valid
+state. Wrong guards still clear buttons or write retry-deadline55. Partial
+widget insertion, callback order, aliases and exception contexts remain.
+
+Shared gameplay names expose the three-character fog/brk debug window, the
+received debug-permission byte and the original score-context fields. Counter
+names follow their four submission positions; their server-side meaning is
+not inferred. Seeds4703/1385/275/5997, modulo dispatch, overflow, nonzero control
+flags and packet layout remain. HUD names follow gameName, clearBonus, level,
+score, fetchingHS and youAreNotLoggedIn resource keys. Menu action text slots,
+post-decrement pointer debounce, fullscreen dialog/canvas state, active login/
+display-name panels, applet dispatcher, mixers, payload CRC and login modulus
+are explicit. The shared mixer reference is not assumed to be initialized.
+
+The domain-label alphanumeric alphabet and achievement IDs one/two/fifteen are
+named from their exact consumers. Ranked-sort upper-bound names preserve the
+original mixed key/ratio assignments and MIN_VALUE reset. Guarded cleanup,
+client-option reset and account-flow helpers keep recursion, partial clears,
+wrong-guard calls and diagnostic strings. The encoder's per-character handled
+label names its original definition and 28 breaks; byte mapping is unchanged.
+
+All 16,766 previous complete rules, raw source and decompiler/naming/workflow/
+stub/native/text pins remain. The export has 16,910 rules and 112,136 identifier
+edits, eleven class-name literal edits and 314 label edits: 112,461 total.
+Both 303-file corpora compile, reproduce and reverse byte exactly, preserving
+19,498 dictionary identities, 136,607 bindings, 388 overrides, 245 label
+definitions and 811 label records. All 27 publication tests pass.
+This naming pass adds/runs no native probes or new runtime cases.
+
+Eight large labeled bodies, 148 opaque labels, 128 opaque fields and 190
+single-letter methods remain. Full display-name UI/network, live input/audio/
+fullscreen/assets/game/server/browser/phone and heap/presented-FPS acceptance
+remain unverified.
+
+## Previous explicit loop exit guards (pass 167)
 
 Pass 167 flattens twelve loop arms across ten methods in six classes:
 GameScreen, GameApplet, GameplaySession, MeshDepthSupport,
