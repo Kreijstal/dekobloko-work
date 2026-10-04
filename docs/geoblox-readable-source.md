@@ -36,6 +36,35 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
+Pass 145 adds 122 guarded rules: three fields, five methods, fifteen
+parameters, 97 locals and two labels. All 243 UiWidget and 219 WidgetContainer
+declarations now have readable names; constructors follow class rules and
+toString keeps its JDK spelling. requestPreviousChildFocus/requestNextChildFocus
+expose the actual nonwrapping scans after focused children. First-focus
+acquisition, reverse draw order, forward input/layout/hover traversal,
+linked-node early exits, cursor positions and callback order stay intact.
+
+Compiler-resolved field references establish textOffsetX/textOffsetY/textLayout
+across the text-input and renderer holders. Caret-driven X adjustment, the
+wrong-guard bounds store of 112, only-zero owned Y stores and lazy layout/cache
+aliases remain. appendRsaXteaEncryptedBuffer names the existing source/destination
+wrapper; exponent/modulus argument order, signed BigInteger transformation,
+random/scratch state and guarded query cleanup are unchanged.
+
+pointerPressWithoutWheel and pointerPressWithWheel name two existing frames
+and their breaks. Numeric keys 80/81, wheel coordinates, release-guard effects
+and all nonzero client-control paths remain. Label edit accounting grows from
+242 to 246; no frame or transfer is removed. There are 13,730 rules and 98,806
+identifier edits, plus eleven class-literal and 246 label edits: 99,063 total.
+All 13,608 previous complete rules and raw/tool/workflow/stub/native/text pins
+remain. Both 303-file corpora compile, preserve 136,607 bindings, 388 overrides
+and 813 lexical label records, and reverse byte exactly. The 27 publication
+tests and eight existing native fixtures pass within their recorded scopes.
+Live AWT input, arbitrary callback-driven list mutations, complete text
+scrolling/layout and encrypted-payload interoperability remain unverified.
+Eight large labeled bodies and 164 opaque labels remain; full-game/server/
+device and heap/FPS acceptance are still unverified.
+
 Pass 144 adds 251 guarded rules: 17 methods, 58 parameters, 174 locals and
 two labels. Every SingleChildWidget field, method, parameter and local is now
 named. appendWidgetDiagnostics identifies all five owned overrides;
