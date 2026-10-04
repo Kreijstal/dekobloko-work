@@ -36,7 +36,49 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current login and suggestions naming pass 160
+## Current account validator naming pass 161
+
+Pass 161 adds 204 guarded names: twelve fields, fifteen methods, 33 parameters
+and 144 locals. All 57 AgeValidator, 79 EmailValidator, 53 EmailAvailabilityValidator
+and 103 UsernameAvailabilityValidator declarations now have readable names;
+constructors follow class rules. Shared fields expose gameArchiveRequestPending,
+reconnectingLoginMode, restartTutorialText, countryListDownloader, release-text
+colors, email/username availability caches and optional error-report identity.
+The private unusedCrc64Table retains its exact initialization and stores; no
+element consumers or polynomial variant are inferred.
+
+The validators preserve age1..130 checks, email syntax-helper results, matching
+before email queries, candidate-cache write order and pending-query behavior.
+Username cache invalidation clears only its text, retaining its availability
+boolean. Pending email availability still selects valid-email message text;
+this does not imply server acceptance. Reflection readiness checks only the
+first queued request and treats failed lookup tasks as ready. Wrong guards,
+nulls, partial cache effects and original exception contexts remain.
+
+Shared helper names expose encrypted login writes and their guard-after-header
+ordering, account-ineligibility marking, optional-login-text updates, proxy
+connector construction, primitive/reflection class resolution, navigation action
+requests and achievement-state gating. Original request flags, buffer writes,
+RNG calls, cookie effects, callback order, renderer/input aliases, unused stores,
+integer overflow, client-control flag values and diagnostic string literals stay
+unchanged. Naming a navigation request or configured connector does not execute
+browser navigation or open a socket.
+
+The export has 15,915 rules and 107,323 identifier edits, plus eleven class-name
+literal and 277 label edits: 107,611 total. All 15,711 previous complete rules,
+19,498 dictionary identities, 136,607 bindings, 388 overrides and 811 label
+records remain. Twenty-five generated Java files change only in names. Both
+303-file corpora compile, reproduce and reverse byte exactly. Raw source and
+all tool, workflow, stub, class-literal, label-policy and native pins stay fixed.
+All 27 publication tests pass. No native probes, cases or performance results
+are added or claimed by this naming pass.
+
+Eight large labeled bodies, 152 opaque labels, 243 opaque fields and 250
+single-letter methods remain. Live validation/query/cache interaction, cookie,
+reflection/login/network/navigation behavior, server/assets/game/browser/phone
+and heap/presented-FPS acceptance remain unverified.
+
+## Previous login and suggestions naming pass 160
 
 Pass 160 adds 237 guarded names: three fields, eleven methods, 39 parameters,
 183 locals and one lexical block label. All 224 declarations owned by LoginPanel
