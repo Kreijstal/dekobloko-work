@@ -38,23 +38,27 @@ function readAudit(file) {
     ({kind, file, start: Number(start), end: Number(end), key, name}));
   return {bindings: positions(rows.filter(row => row[0] === 'D' || row[0] === 'R')),
   classNameLiterals: positions(rows.filter(row => row[0] === 'S' || row[0] === 'U')),
+  labels: positions(rows.filter(row => ['T', 'B', 'N'].includes(row[0]))),
   overrides: rows.filter(row => row[0] === 'O').map(([, child, parent]) => ({child, parent}))};
 }
 
 function validateRules(rules, audit) {
   if (rules.schema !== 1 || !Array.isArray(rules.renames)) throw new Error('Expected rules schema 1');
   const declarations = new Map(audit.bindings.filter(row => row.kind === 'D').map(row => [row.key, row]));
+  for (const row of audit.labels.filter(row => row.kind === 'T')) declarations.set(row.key, row);
   const renames = new Map();
   const identifier = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
   const keywords = new Set(('abstract assert boolean break byte case catch char class const continue default do double else enum extends final finally float for goto if implements import instanceof int interface long native new package private protected public return short static strictfp super switch synchronized this throw throws transient try void volatile while true false null _').split(' '));
   for (const rule of rules.renames) {
-    if (!/^[CMFPL]:/.test(rule.symbol) || !identifier.test(rule.to) || keywords.has(rule.to))
+    if (!/^[CMFPLB]:/.test(rule.symbol) || !identifier.test(rule.to) || keywords.has(rule.to))
       throw new Error(`Invalid rename rule: ${JSON.stringify(rule)}`);
     if (!rule.evidence || typeof rule.evidence !== 'string') throw new Error(`Missing evidence: ${rule.symbol}`);
     if (renames.has(rule.symbol)) throw new Error(`Duplicate rule: ${rule.symbol}`);
     if (!declarations.has(rule.symbol)) throw new Error(`Missing declaration: ${rule.symbol}`);
     if (rule.symbol.startsWith('L:') && typeof rule.originalName !== 'string')
       throw new Error(`Local rename requires originalName: ${rule.symbol}`);
+    if (rule.symbol.startsWith('B:') && typeof rule.originalName !== 'string')
+      throw new Error(`Label rename requires originalName: ${rule.symbol}`);
     if (rule.originalName !== undefined && declarations.get(rule.symbol).name !== rule.originalName)
       throw new Error(`Original name mismatch: ${rule.symbol}: expected ${rule.originalName}, got ${declarations.get(rule.symbol).name}`);
     if (rule.symbol.startsWith('C:') && rule.symbol.includes('$')) throw new Error('Nested/local class renaming is not supported');
@@ -83,7 +87,7 @@ function identityMapper(renames) {
   const descriptor = value => value.replace(/L([^;]+);/g, (_, name) => `L${owner(name.replaceAll('/', '.')).replaceAll('.', '/')};`);
   return key => {
     if (key.startsWith('C:')) return 'C:' + owner(key.slice(2));
-    const parameter = key.startsWith('P:') || key.startsWith('L:');
+    const parameter = key.startsWith('P:') || key.startsWith('L:') || key.startsWith('B:');
     const prefix = key.slice(0, 2);
     const hash = parameter ? key.lastIndexOf('#') : key.length;
     const member = key.slice(2, hash);
@@ -137,7 +141,7 @@ function verifyBindings(before, after, files, editsByFile, mapIdentity) {
     throw new Error('Override relationships changed after renaming');
 }
 
-function verifyClassNameLiterals(before, after, files, editsByFile, mapIdentity) {
+function verifyPositions(before, after, files, editsByFile, mapIdentity, message) {
   const expected = before.map(binding => {
     const edits = editsByFile.get(binding.file) ?? [];
     const shift = offset => edits.filter(edit => edit.end <= offset)
@@ -148,7 +152,7 @@ function verifyClassNameLiterals(before, after, files, editsByFile, mapIdentity)
   const actual = after.map(binding => [binding.kind, binding.file, binding.start, binding.end, binding.key]);
   const ordered = rows => rows.map(row => JSON.stringify(row)).sort(order);
   if (JSON.stringify(ordered(expected)) !== JSON.stringify(ordered(actual)))
-    throw new Error('Owned Class.forName literal identity or position changed unexpectedly');
+    throw new Error(message);
 }
 
 export function generateReadable({input, output, rulesFile, classpath = '', check = false}) {
@@ -163,6 +167,11 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
   if (rules.classNameLiterals !== undefined &&
       rules.classNameLiterals.policy !== 'direct-owned-class-for-name')
     throw new Error('Unsupported class-name literal policy');
+  if (rules.labels !== undefined && (rules.labels.policy !== 'lexical-targets' ||
+      !Number.isInteger(rules.labels.expectedEdits) || rules.labels.expectedEdits < 0))
+    throw new Error('Invalid guarded label policy');
+  if (rules.renames.some(rule => rule.symbol.startsWith('B:')) && !rules.labels)
+    throw new Error('Label rename requires explicit lexical-target policy');
   const inputIdentity = sourceIdentity(inventory);
   if (rules.inputTreeSha256 !== inputIdentity) throw new Error(`Source identity mismatch: expected ${rules.inputTreeSha256}, got ${inputIdentity}`);
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'readable-java-'));
@@ -179,7 +188,7 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
       fs.mkdirSync(classes);
       fs.writeFileSync(list, files.map(file => file.path).join('\n') + '\n');
       captureProcess(java, ['-Xmx1024m', '-cp', compiledHelper, 'ReadableJava', root, list, report, classes, classpath,
-        '--class-name-literals']);
+        '--class-name-literals', ...(rules.labels ? ['--labels'] : [])]);
       return readAudit(report);
     }
     const before = audit(input, inventory, 'original');
@@ -214,6 +223,18 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
     if (rules.classNameLiterals?.expectedEdits !== undefined &&
         rules.classNameLiterals.expectedEdits !== classNameLiteralEdits)
       throw new Error('Class.forName literal edit count differs from the reviewed guard');
+    let labelEdits = 0;
+    for (const binding of before.labels) {
+      const renamed = renames.get(binding.key);
+      if (!renamed || renamed === binding.name) continue;
+      const edits = editsByFile.get(binding.file) ?? [];
+      edits.push({start: binding.start, end: binding.end, symbol: binding.key,
+        original: binding.name, renamed, kind: 'label'});
+      editsByFile.set(binding.file, edits);
+      labelEdits++;
+    }
+    if (rules.labels && rules.labels.expectedEdits !== labelEdits)
+      throw new Error('Label edit count differs from the reviewed guard');
     for (const edits of editsByFile.values()) edits.sort((a, b) => a.start - b.start);
     const files = new Map();
     for (const file of inventory) {
@@ -234,9 +255,13 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
     }
     const after = audit(sources, sourceInventory(sources), 'renamed');
     verifyBindings(before, after, files, editsByFile, mapIdentity);
-    verifyClassNameLiterals(before.classNameLiterals, after.classNameLiterals, files, editsByFile, mapIdentity);
+    verifyPositions(before.classNameLiterals, after.classNameLiterals, files, editsByFile, mapIdentity,
+      'Owned Class.forName literal identity or position changed unexpectedly');
+    verifyPositions(before.labels, after.labels, files, editsByFile, mapIdentity,
+      'Label declaration, transfer target or position changed unexpectedly');
     const explicitRules = rules.renames.map(rule => ({...rule, renamedSymbol: mapIdentity(rule.symbol)})).sort((a, b) => order(a.symbol, b.symbol));
-    const symbols = before.bindings.filter(row => row.kind === 'D').map(row => ({
+    const symbols = [...before.bindings.filter(row => row.kind === 'D'),
+      ...before.labels.filter(row => row.kind === 'T')].map(row => ({
       symbol: row.key, renamedSymbol: mapIdentity(row.key), originalName: row.name,
       renamedName: renames.get(row.key) ?? (row.key.startsWith('M:') && row.key.includes('.<init>(')
         ? renames.get('C:' + row.key.slice(2, row.key.indexOf('.<init>('))) : undefined) ?? row.name,
@@ -262,6 +287,7 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
       verification: {originalCompiles: true, renamedCompiles: true, bindingsCompared: before.bindings.length,
         overrideFamiliesChecked: before.overrides.length, overrideRelationshipsPreserved: true,
         classNameLiteralBindingsCompared: before.classNameLiterals.length, classNameLiteralEdits,
+        labelBindingsCompared: before.labels.length, labelEdits,
         runtimeEquivalenceVerified: false}};
     fs.writeFileSync(path.join(generated, 'mapping.json'), JSON.stringify(mapping, null, 2) + '\n');
     fs.writeFileSync(path.join(generated, 'provenance.json'), JSON.stringify(provenance, null, 2) + '\n');
@@ -289,7 +315,8 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
     }
     const editCount = [...editsByFile.values()].reduce((n, edits) => n + edits.length, 0);
     return {files: inventory.length, rules: explicitRules.length, edits: editCount,
-      identifierEdits: editCount - classNameLiteralEdits,
+      identifierEdits: editCount - classNameLiteralEdits - labelEdits, labelEdits,
+      labelBindingsCompared: before.labels.length,
       bindingsCompared: before.bindings.length, classNameLiteralEdits,
       inputTreeSha256: inputIdentity, outputTreeSha256: provenance.outputTreeSha256, check};
   } finally {

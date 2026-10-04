@@ -280,3 +280,114 @@ test('escaped owned class literals remain unchanged or refuse a renamed target',
     } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
   }
 });
+
+test('lexical label rules preserve repeated names, loop transfers, finally, monitors and exact reversal', () => {
+  const context = fixture({'p/Main.java': `package p; public class Main {
+    static final Object lock = new Object();
+    static String probe(int mode) {
+      StringBuilder trace = new StringBuilder();
+      int same = 5;
+      synchronized (lock) {
+        same: { trace.append("a"); if (mode == -1) break same; trace.append("b"); }
+        same: for (int i = 0; i < 3; i++) {
+          inner: for (int j = 0; j < 3; j++) {
+            try {
+              trace.append(i).append(j);
+              if (mode == 0 && j == 1) continue same;
+              if (mode == 1 && i == 1) break same;
+              if (mode == 2 && j == 1) break inner;
+              if (mode == 3 && i == 0 && j == 1) throw new IllegalStateException("same");
+              if (mode == 4) break;
+            } finally { trace.append("f"); }
+          }
+        }
+        // same and inner inside documentation are not label references.
+        return trace.append(":" + same + ":same inner").toString();
+      }
+    }
+    public static void main(String[] args) {
+      for (int mode = -1; mode <= 4; mode++) {
+        try { System.out.println(probe(mode)); }
+        catch (IllegalStateException failure) { System.out.println(failure.getMessage() + ":" + Thread.holdsLock(lock)); }
+      }
+    }
+  }`}, [['M:p.Main.probe(I)Ljava/lang/String;', 'visit'],
+    ['P:p.Main.probe(I)Ljava/lang/String;#0', 'scenario', 'mode'],
+    ['B:p.Main.probe(I)Ljava/lang/String;#0', 'optionalPrefix', 'same'],
+    ['B:p.Main.probe(I)Ljava/lang/String;#1', 'outerRows', 'same'],
+    ['B:p.Main.probe(I)Ljava/lang/String;#2', 'innerColumns', 'inner']],
+    {labels: {policy: 'lexical-targets', expectedEdits: 7}});
+  try {
+    const result = generateReadable(context);
+    assert.equal(result.labelEdits, 7);
+    assert.equal(result.labelBindingsCompared, 7);
+    const source = fs.readFileSync(path.join(context.output, 'src/p/Main.java'), 'utf8');
+    assert.match(source, /optionalPrefix:.*break optionalPrefix/);
+    assert.match(source, /outerRows: for/);
+    assert.match(source, /continue outerRows/);
+    assert.match(source, /break outerRows/);
+    assert.match(source, /break innerColumns/);
+    assert.match(source, /int same = 5/);
+    assert.match(source, /":same inner"/);
+    const expected = 'a00f01f02f10f11f12f20f21f22f:5:same inner\n'
+      + 'ab00f01f10f11f20f21f:5:same inner\n'
+      + 'ab00f01f02f10f:5:same inner\n'
+      + 'ab00f01f10f11f20f21f:5:same inner\n'
+      + 'same:false\nab00f10f20f:5:same inner\n';
+    assert.equal(run(context.root, context.input, 'original'), expected);
+    assert.equal(run(context.root, path.join(context.output, 'src'), 'renamed'), expected);
+    const mapping = JSON.parse(fs.readFileSync(path.join(context.output, 'mapping.json')));
+    assert.equal(mapping.symbols.find(row => row.symbol === 'B:p.Main.probe(I)Ljava/lang/String;#1').renamedSymbol,
+      'B:p.Main.visit(I)Ljava/lang/String;#1');
+    assert.equal(generateReadable({...context, check: true}).check, true);
+    const restored = path.join(context.root, 'restored');
+    captureProcess(process.execPath, [new URL('./restore-original.mjs', import.meta.url).pathname, context.output, restored]);
+    assert.deepEqual(fs.readFileSync(path.join(restored, 'p/Main.java')), fs.readFileSync(path.join(context.input, 'p/Main.java')));
+  } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+});
+
+test('label policies, spelling/ordinal guards and count guards refuse partial exports', () => {
+  for (const [rules, options, message] of [
+    [[['B:a.m()V#0', 'named', 'L0']], {}, /explicit lexical-target policy/],
+    [[['B:a.m()V#0', 'named']], {labels: {policy: 'lexical-targets', expectedEdits: 2}}, /requires originalName/],
+    [[['B:a.m()V#0', 'named', 'wrong']], {labels: {policy: 'lexical-targets', expectedEdits: 2}}, /Original name mismatch/],
+    [[['B:a.m()V#1', 'named', 'L0']], {labels: {policy: 'lexical-targets', expectedEdits: 2}}, /Missing declaration/],
+    [[['B:a.m()V#0', 'named', 'L0']], {labels: {policy: 'lexical-targets', expectedEdits: 1}}, /Label edit count differs/],
+    [[], {labels: {policy: 'unknown', expectedEdits: 0}}, /Invalid guarded label policy/],
+  ]) {
+    const context = fixture({'a.java': 'class a { void m() { L0: { break L0; } } }'}, rules, options);
+    try {
+      assert.throws(() => generateReadable(context), message);
+      assert.equal(fs.existsSync(context.output), false);
+    } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+  }
+});
+
+test('label audit preserves lexical domains and default five-path audit compatibility', () => {
+  const context = fixture({'a.java': `class a {
+    static { L0: { break L0; } }
+    void m() {
+      L0: { Runnable r = () -> { lambdaExit: { break lambdaExit; } }; r.run(); break L0; }
+      class Local { void m() { L0: { break L0; } } }
+      new Local().m();
+    }
+  }`}, [], {labels: {policy: 'lexical-targets', expectedEdits: 0}});
+  try {
+    generateReadable(context);
+    const mapping = JSON.parse(fs.readFileSync(path.join(context.output, 'mapping.json')));
+    const keys = mapping.symbols.filter(row => row.symbol.startsWith('B:')).map(row => row.symbol);
+    assert.deepEqual(keys, ['B:a.<initializer>()V#0', 'B:a.m()V#0', 'B:a.m()V#1', 'B:a$1Local.m()V#0'].sort());
+    const helper = path.join(context.root, 'helper'); fs.mkdirSync(helper);
+    captureProcess(process.env.JAVAC ?? 'javac', ['-d', helper, new URL('./lib/ReadableJava.java', import.meta.url).pathname]);
+    const list = path.join(context.root, 'files'); fs.writeFileSync(list, 'a.java\n');
+    const reports = [];
+    for (const [name, flags] of [['default', []], ['labels', ['--labels']], ['both', ['--class-name-literals', '--labels']]]) {
+      const classes = path.join(context.root, name); fs.mkdirSync(classes);
+      const report = path.join(context.root, name + '.tsv');
+      captureProcess(process.env.JAVA ?? 'java', ['-cp', helper, 'ReadableJava', context.input, list, report, classes, '', ...flags]);
+      reports.push(fs.readFileSync(report, 'utf8').split('\n').filter(line => /^[DRO]\t/.test(line)).join('\n'));
+      if (name === 'default') assert.ok(!/^[TBN]\t/m.test(fs.readFileSync(report, 'utf8')));
+    }
+    assert.equal(reports[0], reports[1]); assert.equal(reports[0], reports[2]);
+  } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+});

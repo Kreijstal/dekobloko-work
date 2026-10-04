@@ -22,6 +22,8 @@ public final class ReadableJava {
     final List<ExecutableElement> methods = new ArrayList<>();
     final Set<String> ownedClasses = new HashSet<>();
     boolean auditClassNameLiterals;
+    boolean auditLabels;
+    final Map<LabeledStatementTree, String> labels = new IdentityHashMap<>();
 
     ReadableJava(JavacTask task, Path root, PrintWriter out) {
         trees = Trees.instance(task);
@@ -74,7 +76,28 @@ public final class ReadableJava {
     // Local ordinals are tied to their enclosing method, not mutable source offsets.
     void declarations(List<CompilationUnitTree> units) {
         final Map<String, Integer> ordinals = new HashMap<>();
+        final Map<String, Integer> labelOrdinals = new HashMap<>();
         for (CompilationUnitTree unit : units) new TreePathScanner<Void, Void>() {
+            @Override public Void visitLabeledStatement(LabeledStatementTree node, Void unused) {
+                if (auditLabels) {
+                    String context = null;
+                    for (TreePath parent = getCurrentPath().getParentPath(); parent != null; parent = parent.getParentPath()) {
+                        if (parent.getLeaf() instanceof MethodTree) {
+                            context = methodKey((ExecutableElement) trees.getElement(parent)).substring(2);
+                            break;
+                        }
+                        if (parent.getLeaf() instanceof ClassTree) {
+                            context = elements.getBinaryName((TypeElement) trees.getElement(parent)) + ".<initializer>()V";
+                            break;
+                        }
+                    }
+                    if (context == null) throw new IllegalArgumentException("Missing label context");
+                    int ordinal = labelOrdinals.getOrDefault(context, 0);
+                    labelOrdinals.put(context, ordinal + 1);
+                    labels.put(node, "B:" + context + "#" + ordinal);
+                }
+                return super.visitLabeledStatement(node, unused);
+            }
             @Override public Void visitClass(ClassTree node, Void unused) {
                 Element element = trees.getElement(getCurrentPath());
                 if (element instanceof TypeElement)
@@ -186,6 +209,48 @@ public final class ReadableJava {
                 }
                 if (found == null) throw new IllegalArgumentException(file + ": unresolved source token " + name + " at " + from + ".." + to);
                 return found;
+            }
+            void labelRow(String kind, Token token, LabeledStatementTree target) {
+                String identity = labels.get(target);
+                if (identity == null) throw new IllegalArgumentException("Unresolved label target");
+                out.println(kind + "\t" + file + "\t" + token.start + "\t" + token.end + "\t" + identity + "\t" + token.text);
+            }
+            LabeledStatementTree labelTarget(String name) {
+                for (TreePath parent = getCurrentPath().getParentPath(); parent != null; parent = parent.getParentPath()) {
+                    Tree tree = parent.getLeaf();
+                    if (tree instanceof MethodTree || tree instanceof ClassTree || tree instanceof LambdaExpressionTree) break;
+                    if (tree instanceof LabeledStatementTree && ((LabeledStatementTree) tree).getLabel().contentEquals(name))
+                        return (LabeledStatementTree) tree;
+                }
+                throw new IllegalArgumentException("Missing lexical label target: " + name);
+            }
+            @Override public Void visitLabeledStatement(LabeledStatementTree node, Void unused) {
+                if (auditLabels) {
+                    int index = first(start(node));
+                    if (index + 1 >= tokens.size() || !tokens.get(index).text.equals(node.getLabel().toString()) ||
+                        !tokens.get(index + 1).text.equals(":")) throw new IllegalArgumentException("Unresolved label declaration token");
+                    labelRow("T", tokens.get(index), node);
+                }
+                return super.visitLabeledStatement(node, unused);
+            }
+            @Override public Void visitBreak(BreakTree node, Void unused) {
+                if (auditLabels && node.getLabel() != null) {
+                    String name = node.getLabel().toString();
+                    labelRow("B", last(name, start(node), end(node)), labelTarget(name));
+                }
+                return super.visitBreak(node, unused);
+            }
+            @Override public Void visitContinue(ContinueTree node, Void unused) {
+                if (auditLabels && node.getLabel() != null) {
+                    String name = node.getLabel().toString();
+                    LabeledStatementTree target = labelTarget(name);
+                    Tree statement = target.getStatement();
+                    if (!(statement instanceof WhileLoopTree || statement instanceof DoWhileLoopTree ||
+                        statement instanceof ForLoopTree || statement instanceof EnhancedForLoopTree))
+                        throw new IllegalArgumentException("Continue requires a labeled loop");
+                    labelRow("N", last(name, start(node), end(node)), target);
+                }
+                return super.visitContinue(node, unused);
             }
             @Override public Void visitMethodInvocation(MethodInvocationTree node, Void unused) {
                 if (auditClassNameLiterals) {
@@ -299,8 +364,12 @@ public final class ReadableJava {
 
     public static void main(String[] args) throws Exception {
         // root, sorted relative file list, report, compiled-class directory, classpath
-        if (args.length != 5 && !(args.length == 6 && args[5].equals("--class-name-literals")))
-            throw new IllegalArgumentException("Expected five audit paths and optional --class-name-literals");
+        if (args.length < 5 || args.length > 7)
+            throw new IllegalArgumentException("Expected five audit paths and optional --class-name-literals/--labels");
+        Set<String> auditOptions = new HashSet<>();
+        for (int i = 5; i < args.length; i++)
+            if (!(args[i].equals("--class-name-literals") || args[i].equals("--labels")) || !auditOptions.add(args[i]))
+                throw new IllegalArgumentException("Invalid or duplicate audit option: " + args[i]);
         Path root = Paths.get(args[0]).toAbsolutePath().normalize();
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         if (compiler == null) throw new IllegalStateException("A JDK is required");
@@ -317,7 +386,8 @@ public final class ReadableJava {
             task.analyze();
             requireClean(diagnostics);
             ReadableJava reader = new ReadableJava(task, root, out);
-            reader.auditClassNameLiterals = args.length == 6;
+            reader.auditClassNameLiterals = auditOptions.contains("--class-name-literals");
+            reader.auditLabels = auditOptions.contains("--labels");
             reader.declarations(units);
             for (CompilationUnitTree unit : units) reader.scan(unit);
             reader.overrides();
