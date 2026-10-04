@@ -16,7 +16,7 @@ const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -87,9 +87,11 @@ public final class GeobloxBodyPositions {
     return {file, start: Number(start), end: Number(end), parameterNames: (parameters || '').split(',').filter(Boolean)};
   });
   const require = createRequire(import.meta.url);
-  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
+  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits, foldNonlocalLoopExits} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
   const {tokenizeJava} = require(path.join(tools.directory, 'src/java-frontend/lexer.js'));
   const tokens = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind)).map(t => t.text);
+  const lexical = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind));
+  const originOrders = new Map();
   const bareBreaks = source => { const text = tokens(source); return text.filter((token, index) => token === 'break' && text[index + 1] === ';').length; };
   const counts = {}, sharedSelections = [], trailingSelections = [];
   let methods = 0, files = 0, linesBefore = 0, linesAfter = 0, labelsBefore = 0, labelsAfter = 0;
@@ -101,6 +103,34 @@ public final class GeobloxBodyPositions {
     for (const span of spans.filter(s => s.file === entry.path)) {
       const body = original.slice(span.start + 1, span.end - 1);
       const recover = source => {
+        if (proof.nonlocalLoopExits) {
+          let loops = 0;
+          let mappedTokens = lexical(source).map(token => ({text: token.text, origin: token.range.startOffset}));
+          for (;;) {
+            const result = foldNonlocalLoopExits(source, {parameterNames: span.parameterNames, retainDiagnostics: true});
+            if (!result.loopsRecovered) break;
+            assert.notEqual(result.source, source, 'each nonlocal exit guard becomes a loop header');
+            const oldTokens = lexical(source), d = result.diagnostics;
+            const slice = range => mappedTokens.filter((_, index) => oldTokens[index].range.startOffset >= range.start
+              && oldTokens[index].range.endOffset <= range.end);
+            const generated = values => values.map(text => ({text, origin: null}));
+            // Reconstruct the token permutation independently: header condition,
+            // intact remaining body, then the original bare labeled break. Only
+            // punctuation is synthesized. Tag every retained original token so
+            // a moved break cannot silently borrow another equal-spelled target.
+            const before = slice({start: 0, end: d.loopRange.start});
+            const after = slice({start: d.loopRange.end, end: source.length});
+            const labels = slice({start: d.loopRange.start, end: d.loopKeywordRange.start});
+            const condition = slice(d.conditionRange), remainder = slice(d.bodyRange), exit = slice(d.exitRange);
+            assert.deepEqual(exit.map(token => token.text), ['break', d.exitTarget, ';']);
+            mappedTokens = [...before, ...generated(d.scalarParentWrapped ? ['{'] : []), ...labels,
+              ...generated(['while', '(', '!', '(']), ...condition, ...generated([')', ')', '{']),
+              ...remainder, ...generated(['}']), ...exit, ...generated(d.scalarParentWrapped ? ['}'] : []), ...after];
+            assert.deepEqual(mappedTokens.map(token => token.text), tokens(result.source), 'complete independent header/body/exit token permutation');
+            source = result.source; loops += result.loopsRecovered;
+          }
+          return {source, rewrites: loops, mappedTokens, counts: {nonlocalLoopExits: loops}};
+        }
         if (proof.terminalLoopExits) {
           const counts = {terminalLoopExits: 0, whileHeaders: 0, doWhileHeaders: 0, bareExitsRemoved: 0, directContinuesRemoved: 0, loopLabelsRemoved: 0};
           for (;;) {
@@ -175,10 +205,28 @@ public final class GeobloxBodyPositions {
         assert.equal(jumps, result.counts.guardedAbruptJumps, 'independent guarded jump selection replay');
       }
       for (const [name, value] of Object.entries(result.counts)) counts[name] = (counts[name] || 0) + value;
-      edits.push({...span, source: result.source}); methods++;
+      edits.push({...span, source: result.source, mappedTokens: result.mappedTokens}); methods++;
     }
     edits.sort((a, b) => a.start - b.start);
     assert.ok(edits.every((e, i) => !i || edits[i - 1].end <= e.start), 'nonoverlapping executable edits');
+    if (proof.nonlocalLoopExits) {
+      const originalTokens = lexical(original);
+      let expectedTokens = originalTokens.map(token => ({text: token.text, origin: token.range.startOffset}));
+      for (const edit of edits.slice().reverse()) {
+        const start = originalTokens.findIndex(token => token.range.startOffset >= edit.start + 1);
+        let end = originalTokens.findIndex(token => token.range.startOffset >= edit.end - 1);
+        if (end < 0) end = originalTokens.length;
+        expectedTokens.splice(start, end - start, ...edit.mappedTokens.map(token => ({...token,
+          origin: token.origin === null ? null : edit.start + 1 + token.origin})));
+      }
+      assert.deepEqual(expectedTokens.map(token => token.text), tokens(actual), 'all executable permutations and unchanged file tokens');
+      const order = new Map();
+      expectedTokens.forEach((token, index) => {
+        if (token.origin === null) return;
+        assert.ok(!order.has(token.origin), 'retained original token occurs once'); order.set(token.origin, index);
+      });
+      originOrders.set(entry.path, order);
+    }
     let expected = original;
     for (const edit of edits.reverse()) expected = expected.slice(0, edit.start + 1) + edit.source + expected.slice(edit.end - 1);
     assert.deepEqual(tokens(actual), tokens(expected), entry.path + ' complete expected token stream');
@@ -232,7 +280,7 @@ public final class GeobloxBodyPositions {
   if (proof.sharedGuardedJumpSelections) assert.deepEqual(selectedTargets, proof.sharedGuardedJumpSelections, 'all independently selected shared frame exits');
   const pending = new Set(selectedTargets.filter(target => mapping.get(target.symbol)).map(target => target.symbol));
   assert.equal(pending.size, selectedTargets.filter(target => mapping.get(target.symbol)).length, 'at most one selected guarded jump per surviving frame');
-  const expectedLabels = records(oldAudit).filter(row => mapping.get(row[4])).filter(row => {
+  const expectedRecords = records(oldAudit).filter(row => mapping.get(row[4])).filter(row => {
     if (proof.trailingLoopContinuations && row[0] === 'N' && trailingSelections.some(span => row[1] === span.file
         && row[5] === span.label && Number(row[2]) >= span.start && Number(row[3]) <= span.end)) return false;
     if (row[0] !== 'B' || !pending.has(row[4])) return true;
@@ -240,8 +288,13 @@ public final class GeobloxBodyPositions {
     // fallback. Its selected direct guard is therefore the first old break to
     // this label. Prune only that reference, never another fallback transfer.
     pending.delete(row[4]); return false;
-  })
-    .map(row => [row[0], row[1], mapping.get(row[4]), row[5]]);
+  });
+  if (proof.nonlocalLoopExits) {
+    for (const row of expectedRecords) assert.ok(originOrders.get(row[1]).has(Number(row[2])), 'every original label token survives exactly once');
+    expectedRecords.sort((a, b) => a[1] < b[1] ? -1 : a[1] > b[1] ? 1
+      : originOrders.get(a[1]).get(Number(a[2])) - originOrders.get(b[1]).get(Number(b[2])));
+  }
+  const expectedLabels = expectedRecords.map(row => [row[0], row[1], mapping.get(row[4]), row[5]]);
   assert.equal(pending.size, 0, 'every selected surviving-frame break accounted for');
   const actualLabels = records(newAudit).map(row => [row[0], row[1], row[4], row[5]]);
   assert.equal(records(oldAudit).length, proof.labelBindingsBefore);

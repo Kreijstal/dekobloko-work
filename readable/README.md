@@ -37,7 +37,39 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current synthesized sound naming pass 152
+## Current nonlocal loop exit pass 153
+
+Pass 153 makes two stopping conditions explicit in board reconciliation:
+connected-component detachment and clearing the visited table. Each infinite
+loop's leading single labeled break becomes a negated loop header, followed by
+the exact same break to its original enclosing frame. Board reconciliation
+falls from 335 to 331 lines; eight large labeled bodies still remain.
+
+Every own break, including a finally override, refuses this reconstruction.
+Own continues still evaluate the guard at the next iteration, and every other
+nonlocal transfer retains its target. Remaining body declarations, complete
+try/catch/finally and monitor regions, and scalar-parent braces stay intact.
+The guard is negated as written; no control-flag value or numeric type is assumed.
+
+Four focused groups include six native variants checked against 5,184 independent
+guard/body/finally event cases. They cover effectful/nullable guards, negative/
+zero/positive flags, exception identity and partial effects, return snapshots,
+finally backedges overriding pending exceptions, local scope and monitor release.
+The emitter suite passes 125 tests with one existing skip. A clean tracked
+decompiler-source tar reproduces all 303 files and unchanged diagnostics without
+hard failures or fallbacks. The source proof reconstructs every expected token
+stream and tags retained original tokens to verify the exact moved-break lexical
+permutation, all 811 label records/destinations, 136,607 ordered ordinary bindings,
+local ordinals and 388 overrides. No label is removed or retargeted.
+
+All 14,704 complete naming rules and 102,972 edits remain unchanged. Both corpora
+compile, reproduce and reverse byte exactly; 27 publication tests and the eight
+native/raw/readable fixtures pass within their documented scopes. Only the
+generated BoardReconciliationSupport body changes; no Java body is hand edited.
+There are still 307 opaque fields, 342 single-letter methods and 162 opaque labels.
+Full assets/gameplay, servers, browser/phone and heap/FPS acceptance remain unverified.
+
+## Previous synthesized sound naming pass 152
 
 Pass 152 adds 86 guarded names: 22 fields, thirteen methods, eighteen
 parameters and 33 locals. Every declaration in SoundFilter (45), SoundEnvelope
