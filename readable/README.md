@@ -37,7 +37,60 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current redundant exit guards (pass 183)
+## Current loop finishing tails (pass 184)
+
+Six one-time finishing tails now follow their repeatable loops. The original
+final bare break moves before the finishing work; every other own transfer must
+remain a continue in the prefix. No guard, callback or action is duplicated or
+reevaluated. Earlier own breaks refuse recovery because they would skip the old
+tail. Direct prefix declarations refuse; tail declarations and scalar/case
+parents retain explicit scopes. Try/catch/finally/monitor constructs stay whole.
+
+Seven new generic groups include eight independent native completion/event
+models matching 69,120 cases: callbacks and nullable guards, partial effects,
+signed overflow, return/finally overrides, monitor ownership, declaration
+shadowing and refusal of early breaks. From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/terminalControlCleanup.test.js test/javaAstEmitterLoopExits.test.js test/javaAstEmitterTrailingLoops.test.js test/cfrBranchMergeRegressions.test.js`
+passes 113 tests with one existing optional corpus skip. The focused command
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/javaAstEmitterTrailingLoops.test.js`
+passes all 30 groups.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+proves exact expected bytes/tokens for all 303 raw files. Independent JDK trees
+check each selected boundary and declaration scope, all 5,204 bare/named
+break/continue/return/throw targets and enclosing exception/monitor identities.
+The complete ordinary/label binding, override and compilation checks pass.
+All 18,445 complete naming rules, 19,253 ordinary declarations, 117,307
+references, 388 overrides, 238 label declarations and 769 lexical label records
+survive. No declaration retires or ordinal migrates. The dictionary retains
+19,491 identities and 118,313 edits; all 303 files reverse byte exactly.
+All 27 publication tests and the existing scoped gameplay/result-helper native,
+raw and readable trace checks pass. Whole renderer/game/assets/server/browser/
+phone and heap/presented-FPS acceptance remain unverified.
+
+The change places 83 lines of finishing code one loop level outward, including
+47 lines of Vorbis transform/window finishing work. Method and corpus line
+counts stay unchanged. The selected methods and line counts are independently
+resolved against compiler JVM identities and the naming manifest:
+
+| Method | Finishing lines moved |
+| --- | ---: |
+| `SynthesizedSoundInstrument.synthesize` | 12 |
+| `GameplaySession.renderSession` | 1 |
+| `AudioOutput.mixBlock` | 12 |
+| `Bzip2Decoder.emitBlockRuns` | 7 |
+| `MusicDecoder.decodePacket` | 47 |
+| `SpriteState.writeCachedRandomSeedBytes` | 4 |
+
+Eight large labeled bodies and 41 unsupported opaque fields remain. Source
+inputs and frozen naming/native evidence stay pinned; catalog-wide effects
+remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`8b88237589e77f755bb086d86ad39a27f94375d914853819816be2a6868c4dcb`.
+
+## Previous redundant exit guards (pass 183)
 
 The generic decompiler removes 14 effect-free guards whose outcomes reach the
 same lexical exit: two in screen update and twelve in session update. It proves
