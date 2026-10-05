@@ -37,7 +37,69 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current Boolean local assignment recovery (pass 189)
+## Current natural loop exits (pass 190)
+
+The generic decompiler now removes a continue at the end of its own loop body,
+where normal completion already takes the same update/header. When an inner
+loop is the outer body's final statement, a proven outer continue becomes a
+local inner break. Headers, updates, callbacks and complete exception/finally/
+monitor groups stay in place. Intervening statements, protected wrappers or
+switch/loop destinations refuse this rule. No control-flag value is assumed.
+
+For example, the music constructor now finishes a packed track locally:
+
+```java
+if (eventCodeOrControllerCursor == 7) {
+  trackIndexOrDeltaStart++;
+  break;
+}
+```
+
+The inner loop is the outer track loop's final statement, so this break reaches
+the same next track iteration as the former labeled continue. Across 83 methods
+in 50 files, 114 redundant terminal continues disappear and 36 outer continues
+become local breaks. The pass retires 42 loop labels and removes 114 corpus lines.
+`MusicScore.<init>` falls from 517 to 515 lines with no labels; the Bzip2 block
+decoder falls from 376 to 373 lines with no labels. Board reconciliation falls
+from 328 to 321 lines and seven to six labels. Six large labeled bodies remain,
+down from eight; session update has 562 lines and the half-blend triangle 360.
+
+Nine surviving label ordinals migrate explicitly. All other 18,394 complete
+naming rule objects remain intact; the 42 retired label rules leave 18,403 rules
+and 19,449 dictionary identities. The export records 117,447 ordinary identifier
+edits, 11 class-name literal edits and 682 label edits: 118,140 edits total.
+It compares 136,470 ordinary bindings and preserves 388 override relationships.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/naturalLoopExitRecovery.test.js`
+passes six focused groups, including 20,160 independent native cases across
+eight loop models. They cover effectful headers/updates, overflow, negative/
+zero/positive flags, partial failures, finally overrides and monitor release.
+The regression command
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/naturalLoopExitRecovery.test.js test/booleanLocalAssignmentRecovery.test.js test/scalarIfDispatchRecovery.test.js test/predicateGroupingRecovery.test.js test/predicateNegationRecovery.test.js test/javaAstEmitterLoopExits.test.js test/javaAstEmitterTrailingLoops.test.js test/cfrBranchMergeRegressions.test.js`
+passes 147 tests with one existing optional corpus skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks exact expected bytes/tokens for all 303 raw files. Independent javac
+certificates prove all 150 selected continues and any already-consumed terminal
+suffix, the 42 label retirements, nine ordinal migrations and all 5,091 surviving
+transfer destinations and protected scopes. All ordinary bindings, surviving
+lexical label records and overrides remain exact; both complete corpora compile.
+The proof maps untouched literal Unicode escapes back to raw javac offsets;
+escapes affecting grammar or reconstructed bodies remain unsupported.
+
+All 303 readable files reverse byte exactly. The 27 publication tests, all 17
+scoped gameplay/result-helper native trace groups and current/fresh sibling
+reproduction checks pass. Forty-one unsupported opaque fields remain, along
+with the six large labeled bodies. Whole game/renderer/assets/server/browser/
+phone, heap/presented-FPS acceptance and catalog-wide effects remain unverified.
+Earlier reviewed proofs, frozen inputs and native/naming pins remain unchanged.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`8e194dd1b49d674ba09b4f8001737b663543ecace605caceab0cbe8197baa47e`.
+
+## Previous Boolean local assignment recovery (pass 189)
 
 Thirty-four opposite Boolean-literal branch pairs now assign the condition's
 value or its logical negation directly to the same primitive local. The generic
