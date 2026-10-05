@@ -16,14 +16,15 @@ const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.nestedScalarDispatchRecovery ?? provenance.predicateGroupingRecovery ?? provenance.ownedFieldPredicateRecovery ?? provenance.terminalLoopTailRecovery ?? provenance.redundantExitGuardRecovery ?? provenance.terminalSwitchFrameCleanup ?? provenance.terminalControlFrameCleanup ?? provenance.dominatedPredicateRecovery ?? provenance.integralPredicateNegationRecovery ?? provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.scalarSwitchPrefixRecovery ?? provenance.nestedScalarDispatchRecovery ?? provenance.predicateGroupingRecovery ?? provenance.ownedFieldPredicateRecovery ?? provenance.terminalLoopTailRecovery ?? provenance.redundantExitGuardRecovery ?? provenance.terminalSwitchFrameCleanup ?? provenance.terminalControlFrameCleanup ?? provenance.dominatedPredicateRecovery ?? provenance.integralPredicateNegationRecovery ?? provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const terminalFrames = proof.terminalControlFrames || proof.terminalSwitchFrames;
 const redundantGuards = proof.redundantExitGuards;
 const terminalTails = proof.terminalLoopTails;
 const fieldPredicates = proof.ownedFieldPredicates;
 const grouping = proof.predicateGrouping;
 const characterPredicates = proof.predicateNegations || grouping;
-const nestedDispatch = proof.nestedDispatchRegions;
+const switchPrefixes = proof.switchPrefixDispatches;
+const nestedDispatch = proof.nestedDispatchRegions || switchPrefixes;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -521,7 +522,7 @@ public final class GeobloxBodyPositions {
       parameters: parameterNames.map((name, index) => ({name, type: parameterTypes[index]}))};
   });
   const require = createRequire(import.meta.url);
-  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits, foldNonlocalLoopExits, foldLoopElseExitGuards, recoverScalarIfDispatches, simplifyPredicateNegations, simplifyDominatedPredicates, finalizeControlFrames, finalizeTerminalSwitchFrames, foldRedundantExitGuards, foldTerminalLoopTails, simplifyPredicateGrouping} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
+  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits, foldNonlocalLoopExits, foldLoopElseExitGuards, recoverScalarIfDispatches, simplifyPredicateNegations, simplifyDominatedPredicates, finalizeControlFrames, finalizeTerminalSwitchFrames, foldRedundantExitGuards, foldTerminalLoopTails, simplifyPredicateGrouping, foldScalarSwitchPrefixes} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
   const {tokenizeJava} = require(path.join(tools.directory, 'src/java-frontend/lexer.js'));
   const tokens = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind)).map(t => t.text);
   const lexical = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind));
@@ -529,6 +530,7 @@ public final class GeobloxBodyPositions {
   const bareBreaks = source => { const text = tokens(source); return text.filter((token, index) => token === 'break' && text[index + 1] === ';').length; };
   const counts = {}, sharedSelections = [], trailingSelections = [], tailSelections = [], fieldPredicateSelections = [], groupingSelections = [], dispatchSelections = [];
   let independentlyAttributedClassifierReads = 0;
+  const switchSelectorOrigins = [];
   let methods = 0, files = 0, linesBefore = 0, linesAfter = 0, labelsBefore = 0, labelsAfter = 0;
   let bareBreaksBefore = 0, bareBreaksAfter = 0;
   for (const entry of beforeFiles) {
@@ -748,11 +750,12 @@ public final class GeobloxBodyPositions {
           return {source, rewrites: predicates, mappedCharacters, counts: {predicatesSimplified: predicates, ...totals}};
         }
         if (proof.scalarIfDispatches) {
-          let dispatches = 0, comparisonsRemoved = 0, switchExitsAdded = 0;
+          let dispatches = 0, comparisonsRemoved = 0, switchExitsAdded = 0, blocksUnwrapped = 0;
           let mappedTokens = lexical(source).map(token => ({text: token.text, origin: token.range.startOffset}));
           for (;;) {
-            const result = recoverScalarIfDispatches(source, {retainDiagnostics: true, nestedRegions: Boolean(nestedDispatch)});
-            if (!result.dispatchesRecovered) break;
+            const result = switchPrefixes ? foldScalarSwitchPrefixes(source, {retainDiagnostics: true})
+              : recoverScalarIfDispatches(source, {retainDiagnostics: true, nestedRegions: Boolean(nestedDispatch)});
+            if (!(switchPrefixes ? result.switchesExtended : result.dispatchesRecovered)) break;
             const oldTokens = lexical(source), d = result.diagnostics;
             const slice = range => mappedTokens.filter((_, index) => oldTokens[index].range.startOffset >= range.start
               && oldTokens[index].range.endOffset <= range.end);
@@ -769,7 +772,9 @@ public final class GeobloxBodyPositions {
                 const fact = dispatchReads.get(entry.path + ':' + absolute);
                 assert.ok(fact, 'JDK attributes each classifier read to a primitive int local and literal');
                 assert.equal(fact[4], d.selector); assert.equal(fact[7], 'INT');
-                const suffixStart = span.start + 1 + selector[0].origin;
+                const firstComparison = slice(d.conditionRanges[0]).find(token => token.text === d.selector);
+                const suffixStart = span.start + 1 + (switchPrefixes ? firstComparison.origin : selector[0].origin);
+                if (switchPrefixes) assert.equal(fact[9], 'EQUAL_TO', 'JDK proves each actual prefix is an equality arm');
                 const lastOriginal = slice(d.regionRange).filter(token => token.origin !== null).at(-1);
                 assert.ok(lastOriginal);
                 const suffixEnd = span.start + 1 + lastOriginal.origin + lastOriginal.text.length;
@@ -778,26 +783,34 @@ public final class GeobloxBodyPositions {
                 attributedValues.push(Number(fact[8])); independentlyAttributedClassifierReads++;
               }
             }
-            if (nestedDispatch) assert.deepEqual([...new Set(d.actions.flatMap(action => action.cases).concat(d.emptyCases))].sort((a,b)=>a-b),
+            if (nestedDispatch) assert.deepEqual([...new Set(d.actions.flatMap(action => action.cases).concat(d.emptyCases || []))].sort((a,b)=>a-b),
               [...new Set(attributedValues)].sort((a,b)=>a-b), 'every independently attributed int constant is represented exactly once');
             const clauses = d.actions.flatMap(action => [
               ...action.cases.flatMap(value => generated(['case', String(value), ':'])),
               ...generated(action.default ? ['default', ':'] : []), ...slice(action.range),
               ...generated(action.exitAdded ? ['break', ';'] : [])]);
-            const empty = [...d.emptyCases.flatMap(value => generated(['case', String(value), ':'])),
+            const empty = [...(d.emptyCases || []).flatMap(value => generated(['case', String(value), ':'])),
               ...generated(d.emptyDefault ? ['default', ':'] : []),
-              ...generated(d.emptyCases.length || d.emptyDefault ? ['break', ';'] : [])];
+              ...generated((d.emptyCases || []).length || d.emptyDefault ? ['break', ';'] : [])];
             // Keep the selector computation, every action and every existing
             // flag/transfer token; replace only pure integer comparisons. The
-            // switch read retains the first original selector token's identity.
-            mappedTokens = [...slice({start: 0, end: d.regionRange.start}), ...slice(d.prefixRange),
+            // new switch retains the first comparison read; an extended switch
+            // retains its original selector read and header, moved together.
+            if (switchPrefixes) {
+              const firstRead = slice(d.conditionRanges[0]).find(token => token.text === d.selector);
+              switchSelectorOrigins.push({file: entry.path, selector: span.start + 1 + selector[0].origin, comparison: span.start + 1 + firstRead.origin});
+            }
+            mappedTokens = switchPrefixes
+              ? [...slice({start: 0, end: d.regionRange.start}), ...slice(d.headerRange), ...clauses, ...slice(d.tailRange), ...slice({start: d.regionRange.end, end: source.length})]
+              : [...slice({start: 0, end: d.regionRange.start}), ...slice(d.prefixRange),
               ...generated(['switch', '(']), ...selector, ...generated([')', '{']), ...clauses, ...empty,
               ...generated(['}']), ...slice({start: d.regionRange.end, end: source.length})];
             assert.deepEqual(mappedTokens.map(token => token.text), tokens(result.source), 'independent prefix/selector/ordered-actions switch permutation');
             source = result.source; dispatches++; comparisonsRemoved += d.conditionRanges.length;
-            switchExitsAdded += d.actions.filter(action => action.exitAdded).length + Number(Boolean(d.emptyCases.length || d.emptyDefault));
+            blocksUnwrapped += result.blocksUnwrapped || 0;
+            switchExitsAdded += d.actions.filter(action => action.exitAdded).length + Number(Boolean((d.emptyCases || []).length || d.emptyDefault));
           }
-          return {source, rewrites: dispatches, mappedTokens, counts: {scalarIfDispatches: dispatches, primitiveComparisonsRemoved: comparisonsRemoved, bareSwitchExitsAdded: switchExitsAdded}};
+          return {source, rewrites: dispatches, mappedTokens, counts: {...(switchPrefixes ? {scalarSwitchPrefixes: dispatches, blocksUnwrapped} : {scalarIfDispatches: dispatches}), primitiveComparisonsRemoved: comparisonsRemoved, bareSwitchExitsAdded: switchExitsAdded}};
         }
         if (proof.terminalPrefixBreaks) {
           let loops = 0;
@@ -1038,6 +1051,12 @@ public final class GeobloxBodyPositions {
     return fs.readFileSync(report, 'utf8').trim().split('\n').map(line => line.split('\t'));
   }
   const oldAudit = audit(before, 'old'), newAudit = audit(after, 'new');
+  for (const origin of switchSelectorOrigins) {
+    const selector = oldAudit.filter(row => row[0] === 'R' && row[1] === origin.file && Number(row[2]) === origin.selector);
+    const comparison = oldAudit.filter(row => row[0] === 'R' && row[1] === origin.file && Number(row[2]) === origin.comparison);
+    assert.equal(selector.length, 1); assert.equal(comparison.length, 1);
+    assert.equal(selector[0][4], comparison[0][4], 'moved switch read independently resolves to the same attributed primitive local');
+  }
   if (nestedDispatch) {
     // Actual changed encoders, independently checked against the JDK charset
     // one UTF-16 code unit at a time (the game treats surrogate halves singly).
@@ -1264,7 +1283,7 @@ public class DispatchEncodingProbe {
       const declarations = oldAudit.filter(row => row[0] === 'D' && row[1] === span.file && row[4].startsWith('M:')
         && Number(row[2]) >= span.methodStart && Number(row[3]) <= span.start);
       assert.equal(declarations.length, 1, 'one enclosing full JVM method');
-      return {symbol: declarations[0][4], dispatches: span.scalarIfDispatches, comparisons: span.primitiveComparisonsRemoved};
+      return {symbol: declarations[0][4], ...(switchPrefixes ? {switchesExtended: span.scalarSwitchPrefixes} : {dispatches: span.scalarIfDispatches}), comparisons: span.primitiveComparisonsRemoved};
     }).sort((a,b) => a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0);
     assert.deepEqual(selected, proof.changedMethods, 'every affected method and independently attributed classifier count');
   }
