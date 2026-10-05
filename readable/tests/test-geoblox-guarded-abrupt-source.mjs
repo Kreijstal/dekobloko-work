@@ -16,7 +16,8 @@ const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.scalarSwitchPrefixRecovery ?? provenance.nestedScalarDispatchRecovery ?? provenance.predicateGroupingRecovery ?? provenance.ownedFieldPredicateRecovery ?? provenance.terminalLoopTailRecovery ?? provenance.redundantExitGuardRecovery ?? provenance.terminalSwitchFrameCleanup ?? provenance.terminalControlFrameCleanup ?? provenance.dominatedPredicateRecovery ?? provenance.integralPredicateNegationRecovery ?? provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.booleanLocalAssignmentRecovery ?? provenance.scalarSwitchPrefixRecovery ?? provenance.nestedScalarDispatchRecovery ?? provenance.predicateGroupingRecovery ?? provenance.ownedFieldPredicateRecovery ?? provenance.terminalLoopTailRecovery ?? provenance.redundantExitGuardRecovery ?? provenance.terminalSwitchFrameCleanup ?? provenance.terminalControlFrameCleanup ?? provenance.dominatedPredicateRecovery ?? provenance.integralPredicateNegationRecovery ?? provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const booleanAssignments = proof.booleanLocalAssignments;
 const terminalFrames = proof.terminalControlFrames || proof.terminalSwitchFrames;
 const redundantGuards = proof.redundantExitGuards;
 const terminalTails = proof.terminalLoopTails;
@@ -88,6 +89,10 @@ public final class GeobloxBodyPositions {
             }
             return super.visitBinary(tree,unused);
           }
+          @Override public Void visitIf(IfTree tree,Void unused) {
+            if(args.length>2 && args[2].equals("booleans"))booleanAssignment(unit,trees,positions,file,tree);
+            return super.visitIf(tree,unused);
+          }
           void written(ExpressionTree expression) {
             if(args.length<3 || !args[2].equals("dispatch"))return;
             TreePath path=new TreePath(getCurrentPath(),expression);
@@ -108,7 +113,7 @@ public final class GeobloxBodyPositions {
             }
             for(Tree member:tree.getMembers())if(member instanceof BlockTree) {
               System.out.println(file+"\\t"+source.indexOf("{",(int)positions.getStartPosition(unit,member))+"\\t"+positions.getEndPosition(unit,member)+"\\t\\tinitializer");
-              if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields") || args[2].equals("grouping") || args[2].equals("dispatch")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),member));
+              if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields") || args[2].equals("grouping") || args[2].equals("dispatch") || args[2].equals("booleans")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),member));
               else if(args.length>2 && args[2].equals("redundant"))verifyRedundantGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),member));
               else if(args.length>2 && args[2].equals("terminal"))verifyTerminalTransfers(unit,positions,file,new TreePath(getCurrentPath(),member));
               else if(args.length>2)verifyGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),member));
@@ -117,7 +122,7 @@ public final class GeobloxBodyPositions {
           }
           @Override public Void visitMethod(MethodTree tree,Void unused) {
             if(tree.getBody()!=null && positions.getStartPosition(unit,tree.getBody())>=0 && positions.getEndPosition(unit,tree.getBody())>positions.getStartPosition(unit,tree.getBody())) { System.out.println(file+"\\t"+positions.getStartPosition(unit,tree.getBody())+"\\t"+positions.getEndPosition(unit,tree.getBody())+"\\t"+tree.getParameters().stream().map(p->p.getName().toString()).collect(Collectors.joining(","))+"\\t"+tree.getName()+"\\t"+tree.getParameters().stream().map(p->Base64.getEncoder().encodeToString(p.getType().toString().getBytes(StandardCharsets.UTF_8))).collect(Collectors.joining(","))+"\\t"+positions.getStartPosition(unit,tree)+"\\t"+enclosingClass(getCurrentPath()));
-              if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields") || args[2].equals("grouping") || args[2].equals("dispatch")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
+              if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields") || args[2].equals("grouping") || args[2].equals("dispatch") || args[2].equals("booleans")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
               else if(args.length>2 && args[2].equals("redundant"))verifyRedundantGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
               else if(args.length>2 && args[2].equals("terminal"))verifyTerminalTransfers(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
               else if(args.length>2)verifyGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
@@ -131,6 +136,24 @@ public final class GeobloxBodyPositions {
   // Independent JDK attribution for removed classifier reads. Record exact
   // primitive-local declarations and literal constants, rather than trusting
   // the recovery parser's names or inferred types.
+  static AssignmentTree booleanArm(StatementTree statement) {
+    if(statement instanceof BlockTree) {List<? extends StatementTree> arms=((BlockTree)statement).getStatements();if(arms.size()!=1)return null;statement=arms.get(0);}
+    if(!(statement instanceof ExpressionStatementTree))return null;
+    ExpressionTree expression=((ExpressionStatementTree)statement).getExpression();
+    if(!(expression instanceof AssignmentTree))return null;
+    AssignmentTree assignment=(AssignmentTree)expression;
+    return assignment.getVariable() instanceof IdentifierTree && assignment.getExpression().getKind()==Tree.Kind.BOOLEAN_LITERAL?assignment:null;
+  }
+  static void booleanAssignment(CompilationUnitTree unit,Trees trees,SourcePositions positions,String file,IfTree tree) {
+    AssignmentTree yes=booleanArm(tree.getThenStatement()),no=booleanArm(tree.getElseStatement());if(yes==null||no==null)return;
+    javax.lang.model.element.Element variable=trees.getElement(TreePath.getPath(unit,yes.getVariable())),other=trees.getElement(TreePath.getPath(unit,no.getVariable()));
+    if(variable==null||!variable.equals(other)||variable.getKind()!=javax.lang.model.element.ElementKind.LOCAL_VARIABLE||variable.asType().getKind()!=javax.lang.model.type.TypeKind.BOOLEAN)return;
+    Object a=((LiteralTree)yes.getExpression()).getValue(),b=((LiteralTree)no.getExpression()).getValue();if(a.equals(b))return;
+    Tree declaration=trees.getTree(variable);
+    String conditionType=trees.getTypeMirror(TreePath.getPath(unit,tree.getCondition())).toString();
+    if(!conditionType.equals("boolean")&&!conditionType.equals("java.lang.Boolean"))throw new AssertionError("non Boolean if condition");
+    System.out.println("V\\t"+file+"\\t"+positions.getStartPosition(unit,tree)+"\\t"+positions.getEndPosition(unit,tree)+"\\t"+positions.getStartPosition(unit,tree.getCondition())+"\\t"+positions.getEndPosition(unit,tree.getCondition())+"\\t"+positions.getStartPosition(unit,yes.getVariable())+"\\t"+positions.getStartPosition(unit,no.getVariable())+"\\t"+positions.getStartPosition(unit,declaration)+"\\t"+positions.getEndPosition(unit,declaration)+"\\tBOOLEAN\\t"+a+"\\t"+b+"\\t"+conditionType);
+  }
   static void dispatchComparison(CompilationUnitTree unit,Trees trees,SourcePositions positions,String file,TreePath path) {
     BinaryTree binary=(BinaryTree)path.getLeaf();
     if(!Arrays.asList(Tree.Kind.EQUAL_TO,Tree.Kind.NOT_EQUAL_TO).contains(binary.getKind()))return;
@@ -499,7 +522,7 @@ public final class GeobloxBodyPositions {
   fs.mkdirSync(helpers);
   run('javac', ['-d', helpers, helper, path.join(workflowRoot, 'tools/lib/ReadableJava.java')]);
   const positionRows = run('java', ['-cp', helpers, 'GeobloxBodyPositions', before,
-    ...((proof.integralPredicates || proof.dominatedPredicates || terminalFrames || redundantGuards || terminalTails || fieldPredicates || grouping || nestedDispatch) ? [path.join(repository, 'readable/funorb-stubs.jar')] : []), ...(nestedDispatch ? ['dispatch'] : grouping ? ['grouping'] : fieldPredicates ? ['fields'] : terminalTails ? ['tails'] : redundantGuards ? ['redundant'] : terminalFrames ? ['terminal'] : proof.dominatedPredicates ? ['dominated'] : [])]).toString().trim().split('\n').map(line => line.split('\t'));
+    ...((proof.integralPredicates || proof.dominatedPredicates || terminalFrames || redundantGuards || terminalTails || fieldPredicates || grouping || nestedDispatch || booleanAssignments) ? [path.join(repository, 'readable/funorb-stubs.jar')] : []), ...(booleanAssignments ? ['booleans'] : nestedDispatch ? ['dispatch'] : grouping ? ['grouping'] : fieldPredicates ? ['fields'] : terminalTails ? ['tails'] : redundantGuards ? ['redundant'] : terminalFrames ? ['terminal'] : proof.dominatedPredicates ? ['dominated'] : [])]).toString().trim().split('\n').map(line => line.split('\t'));
   const ownedFieldEvidence = new Map(beforeFiles.map(entry => {
     const owner = entry.path.slice(0, -5);
     const fields = positionRows.filter(row => row[0] === 'W' && row[1] === entry.path && row[2] === owner);
@@ -522,7 +545,7 @@ public final class GeobloxBodyPositions {
       parameters: parameterNames.map((name, index) => ({name, type: parameterTypes[index]}))};
   });
   const require = createRequire(import.meta.url);
-  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits, foldNonlocalLoopExits, foldLoopElseExitGuards, recoverScalarIfDispatches, simplifyPredicateNegations, simplifyDominatedPredicates, finalizeControlFrames, finalizeTerminalSwitchFrames, foldRedundantExitGuards, foldTerminalLoopTails, simplifyPredicateGrouping, foldScalarSwitchPrefixes} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
+  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits, foldNonlocalLoopExits, foldLoopElseExitGuards, recoverScalarIfDispatches, simplifyPredicateNegations, simplifyDominatedPredicates, finalizeControlFrames, finalizeTerminalSwitchFrames, foldRedundantExitGuards, foldTerminalLoopTails, simplifyPredicateGrouping, foldScalarSwitchPrefixes, foldBooleanLocalAssignments} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
   const {tokenizeJava} = require(path.join(tools.directory, 'src/java-frontend/lexer.js'));
   const tokens = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind)).map(t => t.text);
   const lexical = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind));
@@ -531,6 +554,8 @@ public final class GeobloxBodyPositions {
   const counts = {}, sharedSelections = [], trailingSelections = [], tailSelections = [], fieldPredicateSelections = [], groupingSelections = [], dispatchSelections = [];
   let independentlyAttributedClassifierReads = 0;
   const switchSelectorOrigins = [];
+  const booleanAssignmentSelections = [], booleanAssignmentsProven = [];
+  const booleanFacts = new Map(positionRows.filter(row => row[0] === 'V').map(row => [row[1] + ':' + row[2], row]));
   let methods = 0, files = 0, linesBefore = 0, linesAfter = 0, labelsBefore = 0, labelsAfter = 0;
   let bareBreaksBefore = 0, bareBreaksAfter = 0;
   for (const entry of beforeFiles) {
@@ -538,9 +563,33 @@ public final class GeobloxBodyPositions {
     const actual = fs.readFileSync(path.join(after, entry.path), 'utf8');
     const edits = [];
     for (const span of spans.filter(s => s.file === entry.path)) {
-      if ((fieldPredicates || grouping || nestedDispatch) && span.owner !== entry.path.slice(0, -5)) continue;
+      if ((fieldPredicates || grouping || nestedDispatch || booleanAssignments) && span.owner !== entry.path.slice(0, -5)) continue;
       const body = original.slice(span.start + 1, span.end - 1);
       const recover = source => {
+        if (booleanAssignments) {
+          const result = foldBooleanLocalAssignments(source, {retainDiagnostics: true});
+          if (!result.assignmentsFolded) return {source, rewrites: 0};
+          const oldTokens = lexical(source), mappedTokens = [], base = span.start + 1;
+          const slice = range => oldTokens.filter(token => token.range.startOffset >= range.start && token.range.endOffset <= range.end)
+            .map(token => ({text: token.text, origin: token.range.startOffset}));
+          const generated = values => values.map(text => ({text, origin: null}));
+          let cursor = 0;
+          for (const d of result.diagnostics.assignments) {
+            const fact = booleanFacts.get(entry.path + ':' + (base + d.range.start));
+            assert.ok(fact, 'independent JDK proves opposite literals store the same primitive Boolean local');
+            assert.equal(Number(fact[3]), base + d.range.end); assert.equal(Number(fact[4]), base + d.conditionRange.start); assert.equal(Number(fact[5]), base + d.conditionRange.end);
+            assert.equal(Number(fact[6]), base + d.nameRange.start); assert.equal(Number(fact[7]), base + d.discardedNameRange.start);
+            assert.equal(fact[10], 'BOOLEAN'); assert.equal(fact[11], d.inverted ? 'false' : 'true'); assert.equal(fact[12], d.inverted ? 'true' : 'false');
+            assert.ok(['boolean', 'java.lang.Boolean'].includes(fact[13]));
+            booleanAssignmentsProven.push({file: entry.path, fact, name: d.variable});
+            mappedTokens.push(...slice({start: cursor, end: d.range.start}), ...slice(d.nameRange), ...generated(['=', ...(d.inverted ? ['!'] : [])]), ...slice(d.conditionRange), ...generated([';']));
+            cursor = d.range.end;
+          }
+          mappedTokens.push(...slice({start: cursor, end: source.length}));
+          assert.deepEqual(mappedTokens.map(token => token.text), tokens(result.source), 'independent single local store and unchanged condition token permutation');
+          assert.equal(foldBooleanLocalAssignments(result.source).assignmentsFolded, 0);
+          return {source: result.source, rewrites: result.assignmentsFolded, mappedTokens, counts: {booleanLocalAssignments: result.assignmentsFolded, negatedAssignments: result.negatedAssignments, branchBlocksRemoved: result.blocksRemoved, duplicateLocalWritesRemoved: result.assignmentsFolded}};
+        }
         if (grouping) {
           const result = simplifyPredicateGrouping(source, {retainDiagnostics: true});
           if (!result.parenthesisPairsRemoved) return {source, rewrites: 0};
@@ -957,6 +1006,7 @@ public final class GeobloxBodyPositions {
       const result = recover(body);
       if (!result.rewrites) continue;
       if (nestedDispatch) dispatchSelections.push({...span, ...result.counts});
+      if (booleanAssignments) booleanAssignmentSelections.push({...span, ...result.counts});
       if (grouping) groupingSelections.push({...span, ...result.counts});
       if (fieldPredicates) fieldPredicateSelections.push({...span, comparisons: result.counts.relationalComplements});
       if (terminalTails) tailSelections.push({...span, tailLines: result.tailLines});
@@ -983,7 +1033,7 @@ public final class GeobloxBodyPositions {
       // Frontend token offsets refer to Unicode-translated input. Require direct
       // source offsets for changed files; byte-identical files can retain their
       // original compiler positions without interpreting that translation.
-      if (proof.loopElseExitGuards || proof.terminalPrefixBreaks || proof.scalarIfDispatches || terminalFrames || terminalTails) assert.ok(!/\\u/.test(original), 'changed file has direct source/token offsets');
+      if (proof.loopElseExitGuards || proof.terminalPrefixBreaks || proof.scalarIfDispatches || terminalFrames || terminalTails || booleanAssignments) assert.ok(!/\\u/.test(original), 'changed file has direct source/token offsets');
     }
     if (characterPredicates || proof.dominatedPredicates || redundantGuards) {
       let characters = Array.from({length: original.length}, (_, index) => index);
@@ -998,7 +1048,7 @@ public final class GeobloxBodyPositions {
       });
       originLocations.set(entry.path, locations);
     }
-    if (proof.nonlocalLoopExits || proof.loopElseExitGuards || proof.terminalPrefixBreaks || proof.scalarIfDispatches || terminalFrames || terminalTails) {
+    if (proof.nonlocalLoopExits || proof.loopElseExitGuards || proof.terminalPrefixBreaks || proof.scalarIfDispatches || terminalFrames || terminalTails || booleanAssignments) {
       const originalTokens = lexical(original);
       let expectedTokens = originalTokens.map(token => ({text: token.text, origin: token.range.startOffset}));
       for (const edit of edits.slice().reverse()) {
@@ -1014,7 +1064,7 @@ public final class GeobloxBodyPositions {
         if (token.origin === null) return;
         assert.ok(!order.has(token.origin), 'retained original token occurs once'); order.set(token.origin, index);
         locations.set(token.origin, actualTokens[index].range.startOffset);
-        if (nestedDispatch) locations.set(token.origin + token.text.length - 1, actualTokens[index].range.endOffset - 1);
+        if (nestedDispatch || booleanAssignments) locations.set(token.origin + token.text.length - 1, actualTokens[index].range.endOffset - 1);
       });
       originOrders.set(entry.path, order);
       originLocations.set(entry.path, locations);
@@ -1022,7 +1072,7 @@ public final class GeobloxBodyPositions {
     let expected = original;
     for (const edit of edits.reverse()) expected = expected.slice(0, edit.start + 1) + edit.source + expected.slice(edit.end - 1);
     assert.deepEqual(tokens(actual), tokens(expected), entry.path + ' complete expected token stream');
-    if (characterPredicates || proof.dominatedPredicates || redundantGuards || terminalFrames || terminalTails || nestedDispatch) assert.equal(actual, expected, entry.path + ' exact expected source bytes');
+    if (characterPredicates || proof.dominatedPredicates || redundantGuards || terminalFrames || terminalTails || nestedDispatch || booleanAssignments) assert.equal(actual, expected, entry.path + ' exact expected source bytes');
     if (!edits.length) assert.equal(actual, original, entry.path + ' unchanged bytes');
     else files++;
     linesBefore += original.split('\n').length - 1; linesAfter += actual.split('\n').length - 1;
@@ -1051,6 +1101,21 @@ public final class GeobloxBodyPositions {
     return fs.readFileSync(report, 'utf8').trim().split('\n').map(line => line.split('\t'));
   }
   const oldAudit = audit(before, 'old'), newAudit = audit(after, 'new');
+  const removedBooleanWrites = new Set(), booleanDestinationSymbols = new Set();
+  if (booleanAssignments) for (const {file, fact, name} of booleanAssignmentsProven) {
+    const declarations = oldAudit.filter(row => row[0] === 'D' && row[1] === file && row[5] === name && Number(row[2]) >= Number(fact[8]) && Number(row[3]) <= Number(fact[9]));
+    assert.equal(declarations.length, 1, 'unique independently attributed primitive-local declaration');
+    booleanDestinationSymbols.add(declarations[0][4]);
+    for (const offset of [fact[6], fact[7]]) {
+      const references = oldAudit.filter(row => row[0] === 'R' && row[1] === file && row[2] === offset);
+      assert.equal(references.length, 1); assert.equal(references[0][4], declarations[0][4]); assert.equal(references[0][5], name);
+    }
+    const key = file + ':' + fact[7]; assert.ok(!removedBooleanWrites.has(key)); removedBooleanWrites.add(key);
+  }
+  if (booleanAssignments) {
+    assert.equal(removedBooleanWrites.size, proof.duplicateLocalWriteOccurrencesRemoved);
+    assert.deepEqual([...booleanDestinationSymbols].sort(), proof.booleanDestinationSymbols, 'every exact JVM-local destination identity independently reverified');
+  }
   for (const origin of switchSelectorOrigins) {
     const selector = oldAudit.filter(row => row[0] === 'R' && row[1] === origin.file && Number(row[2]) === origin.selector);
     const comparison = oldAudit.filter(row => row[0] === 'R' && row[1] === origin.file && Number(row[2]) === origin.comparison);
@@ -1117,7 +1182,19 @@ public class DispatchEncodingProbe {
     const identities = rows => rows.filter(r => r[0] === kind).map(r => [r[1], r[4], r[5]]);
     assert.equal(identities(oldAudit).length, count);
     assert.equal(identities(newAudit).length, kind === 'D' ? proof.sourceDeclarationsAfter : proof.sourceReferenceOccurrencesAfter);
-    if (terminalFrames || terminalTails) {
+    if (booleanAssignments) {
+      for (const row of oldAudit.filter(row => row[0] === kind && changedFiles.has(row[1])))
+        assert.equal(!originLocations.get(row[1]).has(Number(row[2])), kind === 'R' && removedBooleanWrites.has(row[1] + ':' + row[2]), 'only the independently attributed duplicate local stores disappear');
+      const positioned = (row, transform) => {
+        const start = transform ? originLocations.get(row[1]).get(Number(row[2])) : Number(row[2]);
+        assert.notEqual(start, undefined, 'every surviving ordinary binding has one exact token origin');
+        return [row[1], start, start + Number(row[3]) - Number(row[2]), row[4], row[5]];
+      };
+      const ordered = rows => rows.sort((a,b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] - b[1]);
+      assert.deepEqual(ordered(newAudit.filter(row => row[0] === kind).map(row => positioned(row, false))),
+        ordered(oldAudit.filter(row => row[0] === kind && !(kind === 'R' && removedBooleanWrites.has(row[1] + ':' + row[2]))).map(row => positioned(row, changedFiles.has(row[1])))), 'all retained declarations, condition references and local store bindings follow the independent token map');
+    } else if (terminalFrames || terminalTails) {
+
       const positioned = (row, transform) => {
         const start = transform ? originLocations.get(row[1]).get(Number(row[2])) : Number(row[2]);
         assert.notEqual(start, undefined, 'every ordinary binding token survives exactly once');
@@ -1277,6 +1354,15 @@ public class DispatchEncodingProbe {
     assert.deepEqual(selected, proof.changedMethods, 'every affected full JVM method and comparison count');
     assert.equal(selected.reduce((sum, method) => sum + method.comparisons, 0), proof.independentlyAttributedIntegralComparisons);
   }
+  if (booleanAssignments) {
+    assert.equal(booleanAssignmentsProven.length, proof.independentlyAttributedBooleanAssignments);
+    const selected = booleanAssignmentSelections.map(span => {
+      const declarations = oldAudit.filter(row => row[0] === 'D' && row[1] === span.file && row[4].startsWith('M:') && Number(row[2]) >= span.methodStart && Number(row[3]) <= span.start);
+      assert.equal(declarations.length, 1);
+      return {symbol: declarations[0][4], assignments: span.booleanLocalAssignments, negatedAssignments: span.negatedAssignments};
+    }).sort((a,b) => a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0);
+    assert.deepEqual(selected, proof.changedMethods, 'every affected full JVM method and Boolean assignment count');
+  }
   if (nestedDispatch) {
     assert.equal(independentlyAttributedClassifierReads, proof.counts.primitiveComparisonsRemoved);
     const selected = dispatchSelections.map(span => {
@@ -1287,7 +1373,7 @@ public class DispatchEncodingProbe {
     }).sort((a,b) => a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0);
     assert.deepEqual(selected, proof.changedMethods, 'every affected method and independently attributed classifier count');
   }
-  if (terminalTails || fieldPredicates || grouping || nestedDispatch) {
+  if (terminalTails || fieldPredicates || grouping || nestedDispatch || booleanAssignments) {
     const nextRows = run('java', ['-cp', helpers, 'GeobloxBodyPositions', after, stubs, 'tails']).toString().trim().split('\n').map(line => line.split('\t')).filter(row => row[0] === 'Q');
     assert.equal(oldTransferEvidence.length, proof.independentlyComparedTransferFacts);
     assert.equal(nextRows.length, oldTransferEvidence.length + (nestedDispatch ? proof.counts.bareSwitchExitsAdded : 0));
@@ -1345,7 +1431,7 @@ public class DispatchEncodingProbe {
       assert.ok(labels.every(row => row[4].slice(2, row[4].lastIndexOf('#')) === enclosingMethod), 'no nested executable inventory ambiguity');
       inventory.push({rawFile: file, enclosingMethod, lines, labels: labels.length});
     }
-    if (proof.terminalPrefixBreaks || proof.scalarIfDispatches || characterPredicates || proof.dominatedPredicates || redundantGuards || terminalFrames || terminalTails) {
+    if (proof.terminalPrefixBreaks || proof.scalarIfDispatches || characterPredicates || proof.dominatedPredicates || redundantGuards || terminalFrames || terminalTails || booleanAssignments) {
       assert.equal(methodBodies, proof.methodBodiesAfter);
       assert.equal(largeMethodBodies, proof.largeMethodBodiesAfter);
       assert.equal(largePlainBlockMethodBodies, proof.largeMethodBodiesWithPlainBlockLabelsAfter);
@@ -1361,8 +1447,8 @@ public class DispatchEncodingProbe {
     run('git', ['show', proof.previousSourceCommit + ':decompilation/geoblox-decompiler-diagnostics.json']).toString(), 'diagnostics unchanged');
   console.log(JSON.stringify({filesChecked: 303, changedFiles: files, changedMethods: methods, labelsBefore, labelsAfter,
     declarations: proof.sourceDeclarationsAfter, references: proof.sourceReferenceOccurrencesAfter, overrides: proof.fullOverridePairsPreserved,
-    counts, ...(nestedDispatch ? {independentlyAttributedClassifierReads, capturedLocalsUnmodifiedInDispatch: true, independentlyEncodedUtf16Units: 393216, allOriginalTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : {}), ...(grouping ? {completeJavaAstModuloParenthesesPreserved: true, independentlyComparedAstFiles: 303} : {}), ...(proof.dominatedPredicates ? {independentlyProvenGuardComparisons: removedGuardReads.size} : {}), ...(proof.integralPredicates ? {independentlyAttributedIntegralComparisons: counts.relationalComplements} : {}), labelBindings: actualLabels.length, survivingLabelOrdinalMigrations: migrations, sourceArchiveSha256: proof.sourceArchiveSha256, exactExpectedTokenStreams: true,
-    orderedJavaDeclarationsUnchanged: true, ...((terminalTails || fieldPredicates || grouping) ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, allTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : redundantGuards ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkPureGuardAndDestinationEvidence: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : terminalFrames ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : proof.dominatedPredicates ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : characterPredicates ? {perOccurrenceJavaAndLabelBindingsPreserved: true, exactExpectedSourceBytes: true} : proof.scalarIfDispatches ? {survivingPerOccurrenceJavaBindingsPreserved: true, purePrimitiveReadsRemoved: proof.primitiveReferenceOccurrencesRemoved}
+    counts, ...(booleanAssignments ? {independentlyAttributedBooleanAssignments: booleanAssignmentsProven.length, duplicateLocalWriteOccurrencesRemoved: removedBooleanWrites.size, survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, allTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : {}), ...(nestedDispatch ? {independentlyAttributedClassifierReads, capturedLocalsUnmodifiedInDispatch: true, independentlyEncodedUtf16Units: 393216, allOriginalTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : {}), ...(grouping ? {completeJavaAstModuloParenthesesPreserved: true, independentlyComparedAstFiles: 303} : {}), ...(proof.dominatedPredicates ? {independentlyProvenGuardComparisons: removedGuardReads.size} : {}), ...(proof.integralPredicates ? {independentlyAttributedIntegralComparisons: counts.relationalComplements} : {}), labelBindings: actualLabels.length, survivingLabelOrdinalMigrations: migrations, sourceArchiveSha256: proof.sourceArchiveSha256, exactExpectedTokenStreams: true,
+    orderedJavaDeclarationsUnchanged: true, ...((terminalTails || fieldPredicates || grouping || booleanAssignments) ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, allTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : redundantGuards ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkPureGuardAndDestinationEvidence: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : terminalFrames ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : proof.dominatedPredicates ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : characterPredicates ? {perOccurrenceJavaAndLabelBindingsPreserved: true, exactExpectedSourceBytes: true} : proof.scalarIfDispatches ? {survivingPerOccurrenceJavaBindingsPreserved: true, purePrimitiveReadsRemoved: proof.primitiveReferenceOccurrencesRemoved}
       : (proof.loopElseExitGuards || proof.terminalPrefixBreaks) ? {perOccurrenceJavaBindingsPreserved: true} : {orderedJavaBindingsUnchanged: true})}));
 } finally {
   fs.rmSync(temporary, {recursive: true, force: true});
