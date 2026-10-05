@@ -16,10 +16,11 @@ const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.terminalLoopTailRecovery ?? provenance.redundantExitGuardRecovery ?? provenance.terminalSwitchFrameCleanup ?? provenance.terminalControlFrameCleanup ?? provenance.dominatedPredicateRecovery ?? provenance.integralPredicateNegationRecovery ?? provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.ownedFieldPredicateRecovery ?? provenance.terminalLoopTailRecovery ?? provenance.redundantExitGuardRecovery ?? provenance.terminalSwitchFrameCleanup ?? provenance.terminalControlFrameCleanup ?? provenance.dominatedPredicateRecovery ?? provenance.integralPredicateNegationRecovery ?? provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
 const terminalFrames = proof.terminalControlFrames || proof.terminalSwitchFrames;
 const redundantGuards = proof.redundantExitGuards;
 const terminalTails = proof.terminalLoopTails;
+const fieldPredicates = proof.ownedFieldPredicates;
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-abrupt-proof-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const run = (command, args, cwd = repository) => captureProcess(command, command === 'git' ? ['-C', cwd, ...args] : args).stdout;
@@ -82,9 +83,13 @@ public final class GeobloxBodyPositions {
             return super.visitBinary(tree,unused);
           }
           @Override public Void visitClass(ClassTree tree,Void unused) {
+            if(args.length>2 && args[2].equals("fields")) for(Tree member:tree.getMembers())if(member instanceof VariableTree) {
+              VariableTree field=(VariableTree)member;
+              System.out.println("W\\t"+file+"\\t"+tree.getSimpleName()+"\\t"+field.getName()+"\\t"+field.getType()+"\\t"+field.getModifiers().getFlags().contains(javax.lang.model.element.Modifier.STATIC));
+            }
             for(Tree member:tree.getMembers())if(member instanceof BlockTree) {
               System.out.println(file+"\\t"+source.indexOf("{",(int)positions.getStartPosition(unit,member))+"\\t"+positions.getEndPosition(unit,member)+"\\t\\tinitializer");
-              if(args.length>2 && args[2].equals("tails"))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),member));
+              if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),member));
               else if(args.length>2 && args[2].equals("redundant"))verifyRedundantGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),member));
               else if(args.length>2 && args[2].equals("terminal"))verifyTerminalTransfers(unit,positions,file,new TreePath(getCurrentPath(),member));
               else if(args.length>2)verifyGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),member));
@@ -92,8 +97,8 @@ public final class GeobloxBodyPositions {
             return super.visitClass(tree,unused);
           }
           @Override public Void visitMethod(MethodTree tree,Void unused) {
-            if(tree.getBody()!=null && positions.getStartPosition(unit,tree.getBody())>=0 && positions.getEndPosition(unit,tree.getBody())>positions.getStartPosition(unit,tree.getBody())) { System.out.println(file+"\\t"+positions.getStartPosition(unit,tree.getBody())+"\\t"+positions.getEndPosition(unit,tree.getBody())+"\\t"+tree.getParameters().stream().map(p->p.getName().toString()).collect(Collectors.joining(","))+"\\t"+tree.getName()+"\\t"+tree.getParameters().stream().map(p->Base64.getEncoder().encodeToString(p.getType().toString().getBytes(StandardCharsets.UTF_8))).collect(Collectors.joining(","))+"\\t"+positions.getStartPosition(unit,tree));
-              if(args.length>2 && args[2].equals("tails"))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
+            if(tree.getBody()!=null && positions.getStartPosition(unit,tree.getBody())>=0 && positions.getEndPosition(unit,tree.getBody())>positions.getStartPosition(unit,tree.getBody())) { System.out.println(file+"\\t"+positions.getStartPosition(unit,tree.getBody())+"\\t"+positions.getEndPosition(unit,tree.getBody())+"\\t"+tree.getParameters().stream().map(p->p.getName().toString()).collect(Collectors.joining(","))+"\\t"+tree.getName()+"\\t"+tree.getParameters().stream().map(p->Base64.getEncoder().encodeToString(p.getType().toString().getBytes(StandardCharsets.UTF_8))).collect(Collectors.joining(","))+"\\t"+positions.getStartPosition(unit,tree)+"\\t"+enclosingClass(getCurrentPath()));
+              if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
               else if(args.length>2 && args[2].equals("redundant"))verifyRedundantGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
               else if(args.length>2 && args[2].equals("terminal"))verifyTerminalTransfers(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
               else if(args.length>2)verifyGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
@@ -103,6 +108,10 @@ public final class GeobloxBodyPositions {
         }.scan(unit,null);
       }
     }
+  }
+  static String enclosingClass(TreePath path) {
+    for(TreePath p=path;p!=null;p=p.getParentPath())if(p.getLeaf() instanceof ClassTree)return ((ClassTree)p.getLeaf()).getSimpleName().toString();
+    return "";
   }
   // Independent JDK AST evidence: normal completion reaches exactly the same
   // plain label exit, or a localized continue reaches the same nearest loop.
@@ -420,7 +429,12 @@ public final class GeobloxBodyPositions {
   fs.mkdirSync(helpers);
   run('javac', ['-d', helpers, helper, path.join(workflowRoot, 'tools/lib/ReadableJava.java')]);
   const positionRows = run('java', ['-cp', helpers, 'GeobloxBodyPositions', before,
-    ...((proof.integralPredicates || proof.dominatedPredicates || terminalFrames || redundantGuards || terminalTails) ? [path.join(repository, 'readable/funorb-stubs.jar')] : []), ...(terminalTails ? ['tails'] : redundantGuards ? ['redundant'] : terminalFrames ? ['terminal'] : proof.dominatedPredicates ? ['dominated'] : [])]).toString().trim().split('\n').map(line => line.split('\t'));
+    ...((proof.integralPredicates || proof.dominatedPredicates || terminalFrames || redundantGuards || terminalTails || fieldPredicates) ? [path.join(repository, 'readable/funorb-stubs.jar')] : []), ...(fieldPredicates ? ['fields'] : terminalTails ? ['tails'] : redundantGuards ? ['redundant'] : terminalFrames ? ['terminal'] : proof.dominatedPredicates ? ['dominated'] : [])]).toString().trim().split('\n').map(line => line.split('\t'));
+  const ownedFieldEvidence = new Map(beforeFiles.map(entry => {
+    const owner = entry.path.slice(0, -5);
+    const fields = positionRows.filter(row => row[0] === 'W' && row[1] === entry.path && row[2] === owner);
+    return [entry.path, {owner, fields: fields.map(row => ({name: row[3], type: row[4], static: row[5] === 'true'}))}];
+  }));
   const integralEvidence = new Map(positionRows.filter(row => row[0] === 'C').map(row => [row[1] + ':' + row[2], row.slice(3)]));
   const guardEvidence = new Map(positionRows.filter(row => row[0] === 'G').map(row => [row[1] + ':' + row[2] + ':' + row[3], row.slice(4)]));
   const terminalEvidence = new Map(positionRows.filter(row => ['E', 'U', 'F', 'S'].includes(row[0])).map(row => [row[0] + ':' + row[1] + ':' + row[2], row]));
@@ -428,11 +442,11 @@ public final class GeobloxBodyPositions {
   const redundantReads = positionRows.filter(row => row[0] === 'V');
   const tailEvidence = new Map(positionRows.filter(row => row[0] === 'Y').map(row => [row[1] + ':' + row[2] + ':' + row[7], row]));
   const oldTransferEvidence = positionRows.filter(row => row[0] === 'Q');
-  const spans = positionRows.filter(row => !['C', 'G', 'E', 'U', 'F', 'S', 'H', 'V', 'Q', 'Y'].includes(row[0])).map(([file, start, end, parameters, method, types, methodStart]) => {
+  const spans = positionRows.filter(row => !['C', 'G', 'E', 'U', 'F', 'S', 'H', 'V', 'Q', 'Y', 'W'].includes(row[0])).map(([file, start, end, parameters, method, types, methodStart, owner]) => {
     const parameterNames = (parameters || '').split(',').filter(Boolean);
     const parameterTypes = (types || '').split(',').filter(Boolean).map(type => Buffer.from(type, 'base64').toString('utf8'));
     assert.equal(parameterNames.length, parameterTypes.length, 'all formal parameter types');
-    return {file, start: Number(start), end: Number(end), methodStart: Number(methodStart), parameterNames,
+    return {file, owner: owner || file.slice(0, -5), start: Number(start), end: Number(end), methodStart: Number(methodStart), parameterNames,
       parameters: parameterNames.map((name, index) => ({name, type: parameterTypes[index]}))};
   });
   const require = createRequire(import.meta.url);
@@ -442,7 +456,7 @@ public final class GeobloxBodyPositions {
   const lexical = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind));
   const originOrders = new Map(), originLocations = new Map(), changedFiles = new Set(), removedGuardRanges = new Map();
   const bareBreaks = source => { const text = tokens(source); return text.filter((token, index) => token === 'break' && text[index + 1] === ';').length; };
-  const counts = {}, sharedSelections = [], trailingSelections = [], tailSelections = [];
+  const counts = {}, sharedSelections = [], trailingSelections = [], tailSelections = [], fieldPredicateSelections = [];
   let methods = 0, files = 0, linesBefore = 0, linesAfter = 0, labelsBefore = 0, labelsAfter = 0;
   let bareBreaksBefore = 0, bareBreaksAfter = 0;
   for (const entry of beforeFiles) {
@@ -450,6 +464,7 @@ public final class GeobloxBodyPositions {
     const actual = fs.readFileSync(path.join(after, entry.path), 'utf8');
     const edits = [];
     for (const span of spans.filter(s => s.file === entry.path)) {
+      if (fieldPredicates && span.owner !== entry.path.slice(0, -5)) continue;
       const body = original.slice(span.start + 1, span.end - 1);
       const recover = source => {
         if (terminalTails) {
@@ -610,7 +625,7 @@ public final class GeobloxBodyPositions {
           const totals = {doubleNegations: 0, equalityComplements: 0, deMorganOperators: 0, booleanLiterals: 0, ...(proof.integralPredicates ? {relationalComplements: 0} : {})};
           let mappedCharacters = Array.from({length: source.length}, (_, index) => index);
           for (;;) {
-            const result = simplifyPredicateNegations(source, {retainDiagnostics: true, ...(proof.integralPredicates ? {parameters: span.parameters} : {})});
+            const result = simplifyPredicateNegations(source, {retainDiagnostics: true, ...(proof.integralPredicates ? {parameters: span.parameters, ...(fieldPredicates ? {ownedFields: ownedFieldEvidence.get(entry.path)} : {})} : {})});
             if (!result.predicatesSimplified) break;
             if (proof.integralPredicates) {
               const relationalEdits = result.diagnostics.tokenEdits.filter(edit => ['<', '<=', '>', '>='].includes(source.slice(edit.start, edit.end)));
@@ -821,6 +836,7 @@ public final class GeobloxBodyPositions {
       };
       const result = recover(body);
       if (!result.rewrites) continue;
+      if (fieldPredicates) fieldPredicateSelections.push({...span, comparisons: result.counts.relationalComplements});
       if (terminalTails) tailSelections.push({...span, tailLines: result.tailLines});
       assert.equal(recover(result.source).source, result.source, 'fixed point');
       if (proof.trailingLoopContinuations) trailingSelections.push(...result.labels.map(label => ({...span, label})));
@@ -1093,6 +1109,21 @@ public final class GeobloxBodyPositions {
     };
     assert.deepEqual(records(newAudit).map(row => positioned(row, false)), records(oldAudit).map(row => positioned(row, changedFiles.has(row[1]))),
       'every ordered lexical label declaration/reference, transfer kind and target follows the original token');
+  }
+  if (fieldPredicates) {
+    const rules = new Map(JSON.parse(fs.readFileSync(path.join(workflowRoot, 'geoblox-rules.json'))).renames.map(rule => [rule.symbol, rule]));
+    const selected = fieldPredicateSelections.map(span => {
+      const declarations = oldAudit.filter(row => row[0] === 'D' && row[1] === span.file && row[4].startsWith('M:')
+        && Number(row[2]) >= span.methodStart && Number(row[3]) <= span.start);
+      assert.equal(declarations.length, 1, 'one independently attributed method for each field predicate body');
+      const symbol = declarations[0][4], owner = symbol.slice(2, symbol.indexOf('.'));
+      assert.ok(rules.has(symbol) && rules.has('C:' + owner));
+      return {symbol, readableMethod: rules.get('C:' + owner).to + '.' + rules.get(symbol).to, comparisons: span.comparisons};
+    }).sort((a,b) => a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0);
+    assert.deepEqual(selected, proof.changedMethods, 'every affected full JVM method and comparison count');
+    assert.equal(selected.reduce((sum, method) => sum + method.comparisons, 0), proof.independentlyAttributedIntegralComparisons);
+  }
+  if (terminalTails || fieldPredicates) {
     const nextRows = run('java', ['-cp', helpers, 'GeobloxBodyPositions', after, stubs, 'tails']).toString().trim().split('\n').map(line => line.split('\t')).filter(row => row[0] === 'Q');
     assert.equal(oldTransferEvidence.length, proof.independentlyComparedTransferFacts);
     assert.equal(nextRows.length, oldTransferEvidence.length);
@@ -1143,7 +1174,7 @@ public final class GeobloxBodyPositions {
   console.log(JSON.stringify({filesChecked: 303, changedFiles: files, changedMethods: methods, labelsBefore, labelsAfter,
     declarations: proof.sourceDeclarationsAfter, references: proof.sourceReferenceOccurrencesAfter, overrides: proof.fullOverridePairsPreserved,
     counts, ...(proof.dominatedPredicates ? {independentlyProvenGuardComparisons: removedGuardReads.size} : {}), ...(proof.integralPredicates ? {independentlyAttributedIntegralComparisons: counts.relationalComplements} : {}), labelBindings: actualLabels.length, survivingLabelOrdinalMigrations: migrations, sourceArchiveSha256: proof.sourceArchiveSha256, exactExpectedTokenStreams: true,
-    orderedJavaDeclarationsUnchanged: true, ...(terminalTails ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, allTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : redundantGuards ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkPureGuardAndDestinationEvidence: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : terminalFrames ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : proof.dominatedPredicates ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : proof.predicateNegations ? {perOccurrenceJavaAndLabelBindingsPreserved: true, exactExpectedSourceBytes: true} : proof.scalarIfDispatches ? {survivingPerOccurrenceJavaBindingsPreserved: true, purePrimitiveReadsRemoved: proof.primitiveReferenceOccurrencesRemoved}
+    orderedJavaDeclarationsUnchanged: true, ...((terminalTails || fieldPredicates) ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, allTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : redundantGuards ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkPureGuardAndDestinationEvidence: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : terminalFrames ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : proof.dominatedPredicates ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : proof.predicateNegations ? {perOccurrenceJavaAndLabelBindingsPreserved: true, exactExpectedSourceBytes: true} : proof.scalarIfDispatches ? {survivingPerOccurrenceJavaBindingsPreserved: true, purePrimitiveReadsRemoved: proof.primitiveReferenceOccurrencesRemoved}
       : (proof.loopElseExitGuards || proof.terminalPrefixBreaks) ? {perOccurrenceJavaBindingsPreserved: true} : {orderedJavaBindingsUnchanged: true})}));
 } finally {
   fs.rmSync(temporary, {recursive: true, force: true});

@@ -39,7 +39,67 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current loop finishing tails (pass 184)
+## Current declared-field predicates (pass 185)
+
+The generic decompiler now uses current-class field descriptors to clarify
+22 negated integral comparisons in eleven methods across seven files. For
+example, `!(this.pointsPanelX < 640)` becomes `this.pointsPanelX >= 640`
+with the existing grouping retained. Menu selection, points-panel movement,
+cache/list bounds and audio-ramp predicates now state their comparison directly.
+Every operand, field/array read, increment and callback stays in its original
+order. No value or purity assumption is made. Unknown, arbitrary-receiver,
+inherited, unqualified and boxed/floating fields retain their old comparisons;
+class qualifiers shadowed by locals/formals also refuse. Generated nested
+executable helpers receive no outer-class field evidence.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/predicateNegationRecovery.test.js`
+passes all fifteen focused groups, including six new groups and seven
+independent native models matching 52,500 cases. These check signed overflow,
+volatile reads/writes, callback ordering, array/null/bounds failures, nullable
+unboxing, floating NaNs and protected/monitor completion. The selected regression
+command
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/predicateNegationRecovery.test.js test/javaAstEmitterLoopExits.test.js test/javaAstEmitterTrailingLoops.test.js test/cfrBranchMergeRegressions.test.js`
+passes 112 tests, with one existing optional corpus skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+proves exact expected operator edits and bytes/tokens for all 303 raw sources.
+Independent JDK attribution resolves the enclosing class's declarations and both
+operands of all 22 comparisons. It also compares all 5,204 lexical transfers,
+their destinations and enclosing try/catch/finally/monitor scopes, every retained
+ordinary/label occurrence and all 388 overrides. Both complete corpora compile.
+All 18,445 complete naming rules and 19,491 dictionary identities survive;
+19,253 declarations, 117,307 references, 238 label declarations and 769 lexical
+label records remain. No label or local ordinal migrates. The readable export
+retains 118,313 edits, reverses all 303 files byte exactly and reproduces from
+both current and fresh sibling checkouts. All 27 publication tests and the
+existing scoped gameplay/result-helper trace checks pass.
+
+| Method | Comparisons clarified |
+| --- | ---: |
+| `GameScreen.renderScreen` | 4 |
+| `GameScreen.handleMenuKey` | 2 |
+| `GameScreen.activateMenuItem` | 2 |
+| `GameplaySession.updateSession` | 2 |
+| `GameplaySession.requestSessionExitScreen` | 2 |
+| `WeightedObjectCache.putWeighted` | 1 |
+| `MidiPcmStream.computeNoteSampleStep` | 1 |
+| `PcmSampleStream.finishOrContinueVolumeRamp` | 3 |
+| `GrowableIntList.get` | 2 |
+| `GrowableIntList.set` | 2 |
+| `HotspotTextWidget.setHotspotHoverText` | 1 |
+
+The corpus and body line counts stay unchanged. Eight large labeled bodies and
+41 unsupported opaque fields remain. Whole renderer/game/assets/server/browser/
+phone and heap/presented-FPS acceptance, and catalog-wide effects, remain
+unverified. Original/transformed input trees, frozen naming/native evidence and
+all earlier reviewed proof objects stay pinned.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`e2a20041a4ef9c779d4c6dba94a5c701fb31f289ecef89763376bb585b552902`.
+
+## Previous loop finishing tails (pass 184)
 
 Six one-time finishing tails now follow their repeatable loops. The original
 final bare break moves before the finishing work; every other own transfer must
