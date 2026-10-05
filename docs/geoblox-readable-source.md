@@ -49,15 +49,16 @@ cache/list bounds and audio-ramp predicates now state their comparison directly.
 Every operand, field/array read, increment and callback stays in its original
 order. No value or purity assumption is made. Unknown, arbitrary-receiver,
 inherited, unqualified and boxed/floating fields retain their old comparisons;
-class qualifiers shadowed by locals/formals also refuse. Generated nested
+class-qualified access requires unshadowed fields across every superclass and
+interface. Unknown ancestors and field/member-type/local/formal shadowing refuse. Generated nested
 executable helpers receive no outer-class field evidence.
 
 From java-tools,
 `JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/predicateNegationRecovery.test.js`
-passes all fifteen focused groups, including six new groups and seven
-independent native models matching 52,500 cases. These check signed overflow,
+passes all fifteen focused groups, including six new groups and nine
+independent native models matching 52,502 cases. These check signed overflow,
 volatile reads/writes, callback ordering, array/null/bounds failures, nullable
-unboxing, floating NaNs and protected/monitor completion. The selected regression
+unboxing, class-qualifier shadowing by fields/inherited member types, floating NaNs and protected/monitor completion. The selected regression
 command
 `JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/predicateNegationRecovery.test.js test/javaAstEmitterLoopExits.test.js test/javaAstEmitterTrailingLoops.test.js test/cfrBranchMergeRegressions.test.js`
 passes 112 tests, with one existing optional corpus skip.
@@ -97,7 +98,7 @@ unverified. Original/transformed input trees, frozen naming/native evidence and
 all earlier reviewed proof objects stay pinned.
 
 The tracked **decompiler-source** Git tar SHA-256 is
-`e2a20041a4ef9c779d4c6dba94a5c701fb31f289ecef89763376bb585b552902`.
+`fba5c41afb5e3487c5bccc6550849a56a6865d017fdad16d54d46152299811d0`.
 
 ## Previous loop finishing tails (pass 184)
 
