@@ -39,7 +39,53 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current natural loop exits (pass 190)
+## Current late switch completion (pass 191)
+
+Late nested dispatch recovery can create a terminal switch after switch-frame
+cleanup has already run. The emitter now applies the existing destination and
+scope proof once more at the end. This removes the rotation-update label in
+`GameplaySession.updateSession` and changes its five outward breaks to local
+switch breaks. Every case, conditional fallthrough, callback, predicate and
+protected construct stays in place. No client control-flag value is assumed.
+
+The method falls from 562 to 560 body lines and nine to eight labels. The source
+change is confined to one method in one file. One obsolete label rule retires;
+four surviving label ordinals migrate explicitly. All other 18,398 complete
+naming objects remain intact. There are 18,402 rules and 19,448 dictionary
+identities, with 117,447 identifier edits, 11 literal edits and 676 label edits:
+118,134 edits total. All 136,470 ordinary bindings and 388 overrides are retained.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/cfrLateSwitchFrames.test.js`
+passes three focused groups, including 66,528 independent native comparisons
+across four completion contexts. The fixture exercises the actual emitter
+pipeline, tests work/protection boundaries and retained declaration scopes,
+and covers negative/zero/positive flags, callback failures, overflow, return
+snapshots, finally overrides and nullable monitors.
+The regression command
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/cfrLateSwitchFrames.test.js test/terminalControlCleanup.test.js test/naturalLoopExitRecovery.test.js test/booleanLocalAssignmentRecovery.test.js test/scalarIfDispatchRecovery.test.js test/predicateGroupingRecovery.test.js test/predicateNegationRecovery.test.js test/javaAstEmitterLoopExits.test.js test/javaAstEmitterTrailingLoops.test.js test/cfrBranchMergeRegressions.test.js`
+passes 166 tests with one existing optional corpus skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+verifies exact expected bytes/tokens for all 303 raw files. Independent javac
+certificates prove all five nearest-switch destinations and the transparent
+continuation to the old frame. The full 5,091 transfer records preserve their
+protected scopes and retain their destinations except for those five certified
+retargets. All ordinary and surviving label bindings, the label retirement,
+four ordinal migrations, complete rules, overrides and compilation are checked.
+
+All 303 readable files reverse byte exactly. The 27 publication tests, all 17
+scoped gameplay/result-helper native trace groups and current/fresh sibling
+reproduction checks pass. Six large labeled bodies and 41 unsupported opaque
+fields remain. Whole game/renderer/assets/server/browser/phone,
+heap/presented-FPS acceptance and catalog-wide effects remain unverified.
+Earlier proofs, frozen inputs, naming dependency and native pins are unchanged.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`d84e6bc8f57ec3c46a8fc88ca992fa3333e41abf57cf7a7bfbfde58a9abb15a1`.
+
+## Previous natural loop exits (pass 190)
 
 The generic decompiler now removes a continue at the end of its own loop body,
 where normal completion already takes the same update/header. When an inner
