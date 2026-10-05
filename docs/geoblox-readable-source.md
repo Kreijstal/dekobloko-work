@@ -39,7 +39,49 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current late switch completion (pass 191)
+## Current guarded value selection (pass 192)
+
+Two screen-render blocks now assign their values directly with conditional
+expressions. The generic java-tools rule retains each condition's evaluation
+and effects, then reads the original captured primitive keep-value guard.
+Both values must be total primitive expressions with the same Java type;
+neither the guard nor the fallback may read the destination. Calls, fields,
+arrays, unboxing, division, mutations and protected boundaries refuse this
+proof. No client control-flag value is assumed, and no game names are hardcoded.
+
+Only `c.java` changes: two methods lose two labels, six wrapper blocks,
+two duplicate local stores and 16 lines. `GameScreen.renderScreen` falls from
+304 to 296 body lines and four to three labels. Seven surviving label ordinals
+migrate explicitly. All 18,393 unaffected complete naming objects remain exact.
+There are 18,400 rules and 19,446 dictionary identities, with 117,445 identifier,
+11 literal and 672 label edits (118,128 total). The 303 sources compile and
+compare 136,468 ordinary bindings, preserving all 388 overrides.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/guardedLocalAssignmentRecovery.test.js`
+passes eight focused groups, including 30,240 independent native completion
+cases across six contexts and 378 primitive-type cases across nine models.
+They cover partial callback effects, null unboxing, overflow, finally overrides,
+monitor release, narrowing, NaN, signed zero and large integer precision.
+The selected regression suite passes 174 tests with one existing optional skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks exact expected bytes for all 303 raw files, independently attributed
+primitive guards/values/local stores, the two consumed exits, all 5,089 surviving
+transfer destinations and protected scopes, every surviving occurrence binding,
+retired/migrated labels, complete naming objects and compilation.
+The dictionary reverses all 303 files byte exactly. Publication tests, scoped
+native gameplay/result probes and current/fresh sibling reproduction checks pass.
+Earlier proof objects, fixed bytecode inputs and frozen naming/native pins remain.
+
+Five bodies still have labels and at least 300 lines; screen rendering remains
+labeled below that threshold. Forty-one unsupported field names remain.
+Whole-game/browser/phone equivalence and heap/presented-FPS targets are unverified.
+The tracked **decompiler-source** Git tar SHA-256 is
+`6fcfc89be07a6ea93b391b2cf5b847061f47b963a35d66088f5bba5350978fef`.
+
+## Previous late switch completion (pass 191)
 
 Late nested dispatch recovery can create a terminal switch after switch-frame
 cleanup has already run. The emitter now applies the existing destination and
