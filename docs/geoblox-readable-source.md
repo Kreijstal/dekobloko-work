@@ -39,7 +39,48 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current terminal switch frames (pass 182)
+## Current redundant exit guards (pass 183)
+
+The generic decompiler removes 14 effect-free guards whose outcomes reach the
+same lexical exit: two in screen update and twelve in session update. It proves
+primitive local/parameter operands and identical transfer kind, spelling and
+destination. Captured declarations and initializers stay intact; no flag is
+assumed zero. Case ordering/fallthrough, actions and protected completion stay
+in place. Calls, fields, arrays, casts, unboxing, mutation and division/remainder
+refuse cleanup, as do unknown or shadowed operands.
+
+Seven new focused groups include ten independent native completion/event
+models matching 192,000 cases: callbacks and failures, mutable/overflowing
+locals, negative/nonzero flags, NaNs/signed zero, finally overrides, monitor
+ownership and retained division/unboxing failures. From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/terminalControlCleanup.test.js test/javaAstEmitterLoopExits.test.js test/javaAstEmitterTrailingLoops.test.js test/cfrBranchMergeRegressions.test.js`
+passes 106 tests with one existing optional corpus skip. The diagnostic-only
+follow-up passes all 16 groups with
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/terminalControlCleanup.test.js`.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 raw files against exact original character deletions. Independent
+JDK attribution proves every removed primitive read and identical exit targets;
+both corpora compile. All 19,253 ordinary declarations, 388 overrides, 238 label
+declarations and 769 lexical label records survive. Exactly 14 pure reference
+occurrences disappear; every surviving per-occurrence binding/position remains.
+All 18,445 complete naming rules stay byte-equivalent as objects: no renames,
+retirements or ordinal migrations. The dictionary retains 19,491 identities,
+117,533 identifier, eleven literal and 769 label edits: 118,313 total. Raw/readable
+comparison checks 136,560 ordinary bindings. All 303 files reverse byte exactly;
+all 27 publication tests and scoped gameplay/result-helper trace checks pass.
+
+Screen update is 312 lines/four labels, down from 318/four. Session update is
+588 lines/nine labels, down from 624/nine. The complete raw tree loses 42 lines.
+Eight large labeled bodies and 41 unsupported opaque fields remain. Whole game,
+renderer/assets/server/browser/phone and heap/presented-FPS acceptance remain
+unverified; catalog-wide effects remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`43cea09a37a0b45081df835a143b29114b2b055615f6109e93d106078ad962b2`.
+
+## Previous terminal switch frames (pass 182)
 
 The generic decompiler localizes 29 labeled breaks to their nearest switch in
 the screen and gameplay-session update methods. Each switch is terminal on
