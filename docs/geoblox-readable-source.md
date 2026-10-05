@@ -39,7 +39,58 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current predicate grouping (pass 186)
+## Current nested dispatch recovery (pass 187)
+
+Three nested integer ladders are now explicit ordered switches. The generic
+recovery keeps the complete preceding code outside each new switch, including
+earlier switches, selector calculations/writes and protected constructs. It
+classifies only a unique primitive int local that stays unmodified throughout
+the chosen suffix. All effectful actions, flag guards and existing transfers
+retain their original order. No control-flag value is assumed.
+
+| Method | Comparisons replaced | Result |
+| --- | ---: | --- |
+| `GameplaySession.updateSession` | 5 | Positive-rotation dispatch with its original guarded fallthrough |
+| `DisplayNamePanel.encodeTextSlice` | 16 | Explicit character-encoding cases and fallback |
+| `MultiHandleSliderRenderer.encodeTextBytes` | 16 | Explicit character-encoding cases and fallback |
+
+The raw corpus is 27 lines shorter. Gameplay update is 587 lines; its remaining
+labels still express the original control-flow flag paths. Repeated classifier
+reads fall by 34, while every action, ordinary declaration, label and override
+survives. All 18,445 complete naming rules and 19,491 dictionary identities remain
+unchanged. The readable export has 118,279 edits and compares 136,526 bindings.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/scalarIfDispatchRecovery.test.js`
+passes ten focused groups. Six new independent native models check 99,144 cases
+through opaque prefixes, signed overflow, nullable guards/monitors and
+break/continue/return/exception/finally completion. The existing 20,181 scalar
+dispatch cases also pass. The regression command
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test test/scalarIfDispatchRecovery.test.js test/predicateGroupingRecovery.test.js test/predicateNegationRecovery.test.js test/javaAstEmitterLoopExits.test.js test/javaAstEmitterTrailingLoops.test.js test/cfrBranchMergeRegressions.test.js`
+passes 129 tests with one existing optional corpus skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+proves the exact expected source bytes/tokens for all 303 raw files. Independent
+JDK attribution checks all 37 local/literal classifiers and proves no selected
+local is written inside its suffix. Every original transfer destination and
+enclosing try/catch/finally/monitor scope survives; one new bare switch exit is
+accounted for. Both complete corpora compile and retain all 388 overrides and
+769 lexical label records. The actual changed encoders also match the JDK
+charset oracle for 393,216 UTF-16-unit cases, with slice padding and negative,
+zero and positive control flags preserved.
+
+All 303 readable files reverse byte exactly. All 27 publication tests, existing
+scoped gameplay/result-helper native traces, and current/fresh sibling
+reproduction checks pass. Eight large labeled bodies and 41 unsupported opaque
+fields remain. Whole game/renderer/assets/server/browser/phone,
+heap/presented-FPS acceptance and catalog-wide effects remain unverified.
+Earlier reviewed proofs, frozen inputs and native/naming pins remain unchanged.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`2a0e6bff0eb83796d474716e426d9cdcf840592e6e2991c62948ead7348ccb57`.
+
+## Previous predicate grouping (pass 186)
 
 The generic decompiler removes 2,009 redundant parentheses pairs from 874
 control conditions in 387 methods across 162 files. Logical precedence is
