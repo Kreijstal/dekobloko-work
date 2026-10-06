@@ -39,7 +39,47 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current exclusive guarded fallbacks (pass 197)
+## Current terminal loop frames (pass 198)
+
+Twenty-one terminal labeled blocks across fourteen methods now share the name
+of their actual loop exit: fifteen existing labels move onto loops, and six
+merge into existing loop labels. All thirty-two selected breaks exit the same
+loop, with no intervening action or protected boundary. Declaration-free bodies
+lose an unnecessary nesting level; declaration scopes retain their braces.
+Loading/rendering, board reconciliation, nine-slice generation and entropy
+copying benefit. Loop headers and updates, nested exits, outer continues,
+finally overrides and monitor scopes remain. No new condition or action is added.
+
+Independent javac certifies every frame, adjacent bare loop exit and resolved
+jump destination. Every original ordinary binding, label reference, transfer
+and protected scope is checked by exact token origin. Six label rules retire;
+3 surviving ordinals migrate. All 18,364 unaffected
+complete naming objects remain exact. There are 18,367 rules,
+19,413 dictionary identities, 117,374 identifier,
+11 literal and 612 label edits (117,997 total).
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/terminalLoopFrameRecovery.test.js`
+passes six focused groups. Native independent models compare 11,520 cases
+across 48 loop/protected/merge models, covering callback order, update suppression,
+aliases, overflow, partial failures, finally priority and monitor release.
+The selected regression command passes 142 tests, with one optional skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact CLI/source bytes, independently certified loop exits,
+every original binding, moved and merged label identities, all 5,062 transfers
+and protected-scope facts, complete naming objects, migrations and compilation.
+All 303 readable files reverse byte exactly. Publication tests, scoped native
+probes and current/fresh sibling reproduction checks pass. Older proof records
+and frozen input/naming/native pins remain. Five large labeled bodies and 41
+unsupported fields remain; whole-game/browser/phone and heap/presented-FPS
+acceptance are unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`8207f4543e3261edc2a8b23b324c7c0cd6ccb33f78cb745b930fc2b225b7c00b`.
+
+## Previous exclusive guarded fallbacks (pass 197)
 
 Gameplay rendering, scene-transition update and entropy copying now use ordinary
 `if/else` continuations in place of three single-exit labels. Each original
