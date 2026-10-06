@@ -37,7 +37,49 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current final arithmetic conditions (pass 208)
+## Current conditional primitive continuations (pass 209)
+
+The generic decompiler now keeps a bounded continuation of primitive stores and
+complete if/else trees together. Three guarded continuations across menu press
+animation, gameplay update and result sequencing use exclusive source arms.
+8 store leaves and 5 conditions are copied as source sites,
+each still executing once on its original paths. Conditions, callbacks, unboxing,
+short circuits, writes, expression association and arithmetic failures preserve
+their original order. No predicate value or purity is assumed. Declarations,
+transfers, loops, protected regions and unsupported stores refuse reconstruction.
+
+Independent javac certifies every primitive store leaf and Boolean condition,
+the exact terminal plain-block/if corridors, all original/copied bindings and
+all 5,022 surviving transfer/protected-scope facts. One result-sequence
+frame retires, 0 surviving ordinals migrate, and all
+18,354 unaffected complete naming objects remain exact. There are
+18,354 rules and 19,400 dictionary identities, with
+117,440 identifier, 11 literal and 557 label edits
+(118,008 total).
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/conditionalStoreFallbackRecovery.test.js test/arithmeticStoreFallbackRecovery.test.js test/sharedStoreFallbackRecovery.test.js test/guardedStoreFallbackRecovery.test.js test/sharedGuardedFallbackRecovery.test.js test/terminalGuardedFrameRecovery.test.js test/terminalFrameLoopRecovery.test.js test/javaAstEmitterGuardedAbruptExits.test.js`
+passes all 48 groups. The conditional fixture compares 1,049,760 native cases
+across 36 models against independent oracles, including original/shared/
+subsequently structured forms, nullable tail predicates, short-circuit callbacks,
+mutations, partial writes, zero divisors, overflow, aliases, finally overrides
+and monitor release.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact CLI/source bytes, independent store/condition/corridor facts,
+every binding, consumed and surviving transfers/protected scopes, complete
+naming objects, retirement/ordinal migrations and compilation. All 303 readable
+files reverse byte exactly; all 27 publication tests, 17 scoped native trace
+groups and current/fresh sibling reproductions pass. Older proofs and frozen
+input/naming/native pins remain. Five large labeled methods and 41 unsupported
+fields remain. Whole-game/browser/phone equivalence and heap/presented-FPS
+acceptance remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`ae9e3a0ec8b890564b957c9ba1ffa6db370d9196301248725059772731aff512`.
+
+## Previous final arithmetic conditions (pass 208)
 
 The normal emitter now finishes predicate operators and grouping after arithmetic
 fallback reconstruction, including its newly exposed inverse guards. 3 exposed conditions simplify and
