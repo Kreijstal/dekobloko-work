@@ -18011,6 +18011,60 @@
       "evidence": "sc/ve/bf a(ILjava/awt/Graphics;II)V draws the owned image at x=param2, y=param0 using the supplied Graphics. bf first publishes pixels and uses itself as image observer; ve uses its component and clears it for a nonzero guard. Both overrides keep one virtual contract."
     },
     {
+      "symbol": "L:bf.addConsumer(Ljava/awt/image/ImageConsumer;)V#0",
+      "originalName": "runtimeException",
+      "to": "consumerRegistrationFailure",
+      "evidence": "ImageProducerRasterBuffer.addConsumer assigns imageConsumer then configures dimensions, properties, color model and hints. Its catch wraps the same RuntimeException in the unchanged bf.addConsumer diagnostic. Name only; preserve receiver identity, configuration order and handler behavior."
+    },
+    {
+      "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#0",
+      "originalName": "var7",
+      "to": "imageUpdateFailureForContext",
+      "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+    },
+    {
+      "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#1",
+      "originalName": "stackIn_4_0",
+      "to": "imageUpdateFailureBeforeDescription",
+      "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+    },
+    {
+      "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#2",
+      "originalName": "stackIn_4_1",
+      "to": "imageUpdateMessagePrefix",
+      "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+    },
+    {
+      "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#3",
+      "originalName": "stackIn_5_2",
+      "to": "observedImageDescription",
+      "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+    },
+    {
+      "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtImageUpdateFailure",
+      "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+    },
+    {
+      "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "imageUpdateFailure",
+      "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+    },
+    {
+      "symbol": "L:bf.removeConsumer(Ljava/awt/image/ImageConsumer;)V#0",
+      "originalName": "runtimeException",
+      "to": "consumerRemovalFailure",
+      "evidence": "ImageProducerRasterBuffer.removeConsumer clears the registered imageConsumer only for the same consumer identity. Its catch wraps the same RuntimeException in the unchanged bf.removeConsumer diagnostic. Name only; preserve receiver identity, configuration order and handler behavior."
+    },
+    {
+      "symbol": "L:bf.startProduction(Ljava/awt/image/ImageConsumer;)V#0",
+      "originalName": "runtimeException",
+      "to": "productionStartFailure",
+      "evidence": "ImageProducerRasterBuffer.startProduction delegates to addConsumer. Its catch wraps the same RuntimeException in the unchanged bf.startProduction diagnostic. Name only; preserve receiver identity, configuration order and handler behavior."
+    },
+    {
       "symbol": "L:bg.a(IIIIIIIZ)V#0",
       "originalName": "var13",
       "to": "clippedPixels",
@@ -33221,6 +33275,18 @@
       "evidence": "vk is the abstract mouse-wheel input attachment/detachment/drain contract; gl extends it and implements AWT MouseWheelListener. Synchronized callback accumulates getWheelRotation and consumes event; drain(true) snapshots then resets0. gl is reflectively loaded by the literal Class.forName(\"gl\"), so its class and AWT mouseWheelMoved spelling remain original. False guard first calls mouseWheelMoved(null), preserving failure before the snapshot/reset. Local var3 follows guardedNullWheelEventSnapshot. Names only; full JVM identity, original spelling and local ordinal remain guarded. Preserve raw/generator/native pins, exact arithmetic, list cursors, child ownership and focus state, scopes, guard effects, partial writes, exceptions, rendering order and original diagnostic literals. Source audit does not add widget/cursor/input/login/network/browser/device execution coverage."
     },
     {
+      "symbol": "L:h.<init>(Ljava/lang/String;)V#0",
+      "originalName": "runtimeException",
+      "to": "queryInitializationFailure",
+      "evidence": "EmailAvailabilityQuery constructor initializes completed/available false, then assigns candidateEmail. Preserve the RuntimeException caught around that assignment and the unchanged h.<init> diagnostic. Name only."
+    },
+    {
+      "symbol": "L:h.a(B)Z#0",
+      "originalName": "var3",
+      "to": "nullAppletForInvalidGuard",
+      "evidence": "EmailAvailabilityQuery.isAvailable retains the unused null Applet declaration and navigateToReloadPage(null,true) on its invalid-guard path before returning available. Name only; preserve the original branch and all calls."
+    },
+    {
       "symbol": "L:h.a(Ljava/applet/Applet;Z)V#0",
       "originalName": "var2",
       "to": "documentFile",
@@ -48257,6 +48323,96 @@
       "evidence": "Exact applet/navigation callers and source audit. Preserve URL construction and session overrides, target windows, script names/arguments, cookie text and timestamp/age arithmetic, duplicate assignments, catches/printing and guard/partial effects. Names describe attempted operations and do not guarantee browser/script/storage success. Original updatelinks calls for home/gamelist/serverlist/options/terms/privacy remain sequential in one Throwable-protected region. Wrong guard releases references before overrides. Pass172 audited names only. Original JVM identity/spelling and declaration ordinal guard each rule. Preserve statements/constants/guards, every client-control value, aliases/read/unused snapshots, integer overflow/floating order, callbacks/partial effects, exception/finally/monitor scopes and diagnostic literals. No body/bytecode/runtime policy repair. All unaffected previous complete rules and raw/decompiler/naming/workflow/stub/native/text pins remain exact. Source compilation, bindings/overrides/lexical targets, deterministic reproduction and byte-exact dictionary reversal verify renaming. No new native runtime cases/probes; whole game/assets/server/browser/phone and heap/presented-FPS acceptance remain unverified."
     },
     {
+      "symbol": "L:ol.a(B)I#0",
+      "originalName": "var2",
+      "to": "handleCountGuardQuotient",
+      "evidence": "MultiHandleSliderWidget.handleCount evaluates -85/((36-methodGuard)/49) before querying list size. Retain the unused result and all division-failure behavior; name only."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#0",
+      "originalName": "var13",
+      "to": "handleSearchIndex",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#1",
+      "originalName": "stackIn_26_0",
+      "to": "pointerPressFailureBeforeDescription",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#10",
+      "originalName": "var12",
+      "to": "selectedHandleIndex",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#11",
+      "originalName": "var14",
+      "to": "valueDeltaThenSquaredDistance",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#12",
+      "originalName": "var15",
+      "to": "clientControlFlowSnapshot",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#13",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "pointerPressFailure",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#2",
+      "originalName": "stackIn_26_1",
+      "to": "pointerPressMessagePrefix",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#3",
+      "originalName": "stackIn_27_2",
+      "to": "eventContextDescription",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtPointerPressFailure",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#5",
+      "originalName": "var8_int",
+      "to": "pointerPressGuardResidue",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#6",
+      "originalName": "var8",
+      "to": "pointerPressFailureForContext",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#7",
+      "originalName": "var9",
+      "to": "railOffsetThenHandleValue",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#8",
+      "originalName": "var10",
+      "to": "usableRailWidth",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
+      "symbol": "L:ol.a(IIIIIILel;)Z#9",
+      "originalName": "var11",
+      "to": "smallestSquaredDistance",
+      "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+    },
+    {
       "symbol": "L:ol.a(ILp;I)V#0",
       "originalName": "var5",
       "to": "packet",
@@ -48315,6 +48471,12 @@
       "originalName": "decompiledCaughtParameter0",
       "to": "parseFailure",
       "evidence": "Exact source and callers of ReflectionCheckRequest numeric parsing, MessageDialog signed-decimal validation, mesh material-index bit counts and UI markup consumers reviewed. Preserve radix/sign/overflow policy, range failures, arithmetic guards and every original read/mutation. Delegates to parseSignedInt(text,39,10,true); true first clears sessionServerHost. Pass171 naming only: original JVM identity/spelling and declaration ordinal are guarded. Preserve every statement/constant/guard, aliases/read/unused snapshots, integer overflow and floating operation order, callbacks, partial effects, exception/finally/monitor scopes, diagnostic literals and every client-control value. No assumption that the control flag is zero. All17462 previous complete rules and raw/decompiler/naming/workflow/stub/native/text pins remain exact. Full-source compilation, bindings/overrides/lexical targets, deterministic reproduction and byte-exact dictionary reversal verify renaming. No new native runtime cases or probes; whole game/assets/server/browser/phone and heap/presented-FPS acceptance remain unverified."
+    },
+    {
+      "symbol": "L:ol.c(II)I#0",
+      "originalName": "var3",
+      "to": "handleLookupGuardQuotient",
+      "evidence": "MultiHandleSliderWidget.handleValueAt returns -1 for an invalid index; otherwise evaluates 34/((methodGuard-88)/32) before reading handleValues.get. Retain the unused result and division failures; name only."
     },
     {
       "symbol": "L:p.<init>(IIIIII)V#0",
@@ -59535,6 +59697,84 @@
       "to": "firstNode",
       "evidence": "Head read from the sentinel next link; initializes forward traversal.",
       "originalName": "var2"
+    },
+    {
+      "symbol": "L:tg.a(III)V#0",
+      "originalName": "var5",
+      "to": "nullComponentForInvalidGuard",
+      "evidence": "WindowsCursorController.moveCursor calls SetCursorPos(x,y); its invalid-guard path retains an unused null Component declaration before setCursorVisible(74,true,null). Name only; preserve both operations and the guard."
+    },
+    {
+      "symbol": "L:tg.a(IZLjava/awt/Component;)V#0",
+      "originalName": "var5",
+      "to": "targetWindowHandle",
+      "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+    },
+    {
+      "symbol": "L:tg.a(IZLjava/awt/Component;)V#1",
+      "originalName": "var6",
+      "to": "cursorControllerMonitor",
+      "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+    },
+    {
+      "symbol": "L:tg.a(IZLjava/awt/Component;)V#2",
+      "originalName": "var8",
+      "to": "unusedCursorThrowable",
+      "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+    },
+    {
+      "symbol": "L:tg.a(IZLjava/awt/Component;)V#3",
+      "originalName": "var9",
+      "to": "windowComponentPeer",
+      "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+    },
+    {
+      "symbol": "L:tg.a(IZLjava/awt/Component;)V#4",
+      "originalName": "stackIn_6_0",
+      "to": "invertedCurrentVisibilityBit",
+      "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+    },
+    {
+      "symbol": "L:tg.a(IZLjava/awt/Component;)V#5",
+      "originalName": "stackIn_22_1",
+      "to": "replacementWindowVisibilitySnapshot",
+      "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+    },
+    {
+      "symbol": "L:tg.a(IZLjava/awt/Component;)V#6",
+      "originalName": "stackIn_28_1",
+      "to": "sameWindowVisibilitySnapshot",
+      "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+    },
+    {
+      "symbol": "L:tg.a(IZLjava/awt/Component;)V#7",
+      "originalName": "decompiledCaughtException",
+      "to": "unusedCaughtCursorThrowable",
+      "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+    },
+    {
+      "symbol": "L:tg.callback(IIII)I#0",
+      "originalName": "stackIn_7_0",
+      "to": "cursorHandleForPrivateMessage",
+      "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
+    },
+    {
+      "symbol": "L:tg.callback(IIII)I#1",
+      "originalName": "stackIn_16_0",
+      "to": "cursorHandleForClientHitTest",
+      "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
+    },
+    {
+      "symbol": "L:tg.callback(IIII)I#2",
+      "originalName": "stackIn_21_0",
+      "to": "cursorHandleForFallbackMessage",
+      "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
+    },
+    {
+      "symbol": "L:tg.callback(IIII)I#3",
+      "originalName": "var5",
+      "to": "previousProcedureOrHitTestCode",
+      "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
     },
     {
       "symbol": "L:tj.a(IILse;)V#0",
@@ -109955,8 +110195,8 @@
       "evidence": "Input source audit: wl queues translated key presses/typed characters and encoded releases; re.b(Z)V replays held-key changes and snapshots the keyboard-event frame end; hh.a(I)Z polls that frame. le AWT mouse/focus callbacks update live pointer state; mc.a(B)V copies it under the listener monitor and consumes pending presses/activity. Numeric internal codes,128-slot queues,112 held-key flags,guards,handlers and original diagnostic strings remain. The2184-case native matrix checks controlled-event/queue scopes; real concurrent AWT delivery and complete gameplay remain unverified."
     }
   ],
-  "revision": 144,
-  "version": 214,
+  "revision": 145,
+  "version": 215,
   "generators": {
     "dekoblokoWork": {
       "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
@@ -109991,140 +110231,410 @@
     "format": 1,
     "previousRules": {
       "repository": "Kreijstal/dekobloko-work",
-      "commit": "a2ba10ac0963176d9899a29d2fb6bd62949c8a27",
+      "commit": "47532cb29478aae98c5cc3aa36e58410b97fb580",
       "path": "readable/geoblox-rules.json",
-      "sha256": "d9c407d99b8164c4d1adf052065fd824876f4c6e7ab6e78ffe814c917943541c"
+      "sha256": "c43a14c5c27dda4500eeb974d86672614be4691c965f6480bc73dcecb8dffd28"
     },
     "ruleChanges": [
       {
-        "symbol": "B:c.b(I)V#0",
-        "before": {
-          "symbol": "B:c.b(I)V#0",
-          "originalName": "L1",
-          "to": "highscoreTitleSelection",
-          "evidence": "Chooses title sprites3/2/1 for selectedHighscoreView1/2/0 with original flag fallthrough. Pass175 lexical label naming only: full original JVM enclosing-method identity, label spelling and declaration ordinal remain guarded. Every existing break/continue target, statement, branch, flag read, snapshot, arithmetic order, callback, partial effect, exception/finally/monitor scope and diagnostic literal remains. All18,304 previous complete rules and raw/decompiler/naming/workflow/stub/native pins remain exact; the reversible dictionary holds original names. No hand-edited generated Java, state-machine repair, new native runtime cases or whole-game/server/browser/phone/performance claim."
-        },
+        "symbol": "L:bf.addConsumer(Ljava/awt/image/ImageConsumer;)V#0",
+        "before": null,
         "after": {
-          "symbol": "B:c.b(I)V#0",
-          "originalName": "L5",
-          "to": "highscoreEntriesAndStatus",
-          "evidence": "Renders fetching status, returned entries/current score, or unavailable/no-score status before later friend-tip handling. Pass175 lexical label naming only: full original JVM enclosing-method identity, label spelling and declaration ordinal remain guarded. Every existing break/continue target, statement, branch, flag read, snapshot, arithmetic order, callback, partial effect, exception/finally/monitor scope and diagnostic literal remains. All18,304 previous complete rules and raw/decompiler/naming/workflow/stub/native pins remain exact; the reversible dictionary holds original names. No hand-edited generated Java, state-machine repair, new native runtime cases or whole-game/server/browser/phone/performance claim."
-        },
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
+          "symbol": "L:bf.addConsumer(Ljava/awt/image/ImageConsumer;)V#0",
+          "originalName": "runtimeException",
+          "to": "consumerRegistrationFailure",
+          "evidence": "ImageProducerRasterBuffer.addConsumer assigns imageConsumer then configures dimensions, properties, color model and hints. Its catch wraps the same RuntimeException in the unchanged bf.addConsumer diagnostic. Name only; preserve receiver identity, configuration order and handler behavior."
+        }
       },
       {
-        "symbol": "B:c.b(I)V#1",
-        "before": {
-          "symbol": "B:c.b(I)V#1",
-          "originalName": "L5",
-          "to": "highscoreEntriesAndStatus",
-          "evidence": "Renders fetching status, returned entries/current score, or unavailable/no-score status before later friend-tip handling. Pass175 lexical label naming only: full original JVM enclosing-method identity, label spelling and declaration ordinal remain guarded. Every existing break/continue target, statement, branch, flag read, snapshot, arithmetic order, callback, partial effect, exception/finally/monitor scope and diagnostic literal remains. All18,304 previous complete rules and raw/decompiler/naming/workflow/stub/native pins remain exact; the reversible dictionary holds original names. No hand-edited generated Java, state-machine repair, new native runtime cases or whole-game/server/browser/phone/performance claim."
-        },
-        "after": null,
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
-      },
-      {
-        "symbol": "B:c.e(B)V#0",
-        "before": {
-          "symbol": "B:c.e(B)V#0",
-          "originalName": "L2",
-          "to": "tutorialSlideInitialSelection",
-          "evidence": "At slide offset0, preserves keyboard selection of final item or pointer hit testing before advancing the slide by8. Pass175 lexical label naming only: full original JVM enclosing-method identity, label spelling and declaration ordinal remain guarded. Every existing break/continue target, statement, branch, flag read, snapshot, arithmetic order, callback, partial effect, exception/finally/monitor scope and diagnostic literal remains. All18,304 previous complete rules and raw/decompiler/naming/workflow/stub/native pins remain exact; the reversible dictionary holds original names. No hand-edited generated Java, state-machine repair, new native runtime cases or whole-game/server/browser/phone/performance claim."
-        },
-        "after": null,
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
-      },
-      {
-        "symbol": "B:c.h(B)V#1",
-        "before": {
-          "symbol": "B:c.h(B)V#1",
-          "originalName": "L15",
-          "to": "pointerPressDebounce",
-          "evidence": "Menu update: keyboard draining, tutorial orbit/theme animation, pointer debounce/fullscreen handling and input-derived bookkeeping. Pass127 label naming: describes the exact existing lexical scope, not a reconstructed state or proof that the control flag is zero. The full enclosing method descriptor and per-method label ordinal guard the declaration; every labeled break/continue is resolved to that same AST target and transfer kind before/after naming. All statements, exception/finally/monitor boundaries, guard values, numeric state, read/write order, aliasing, arithmetic and original diagnostic literals remain. Separate reversible label edits; no raw-body or bytecode rewrite. Existing native fixture scopes add no full-game/assets/server/browser/phone or performance claim."
-        },
+        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#0",
+        "before": null,
         "after": {
-          "symbol": "B:c.h(B)V#1",
-          "originalName": "L21",
-          "to": "fullscreenPointerHandling",
-          "evidence": "Menu update: keyboard draining, tutorial orbit/theme animation, pointer debounce/fullscreen handling and input-derived bookkeeping. Pass127 label naming: describes the exact existing lexical scope, not a reconstructed state or proof that the control flag is zero. The full enclosing method descriptor and per-method label ordinal guard the declaration; every labeled break/continue is resolved to that same AST target and transfer kind before/after naming. All statements, exception/finally/monitor boundaries, guard values, numeric state, read/write order, aliasing, arithmetic and original diagnostic literals remain. Separate reversible label edits; no raw-body or bytecode rewrite. Existing native fixture scopes add no full-game/assets/server/browser/phone or performance claim."
-        },
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
+          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#0",
+          "originalName": "var7",
+          "to": "imageUpdateFailureForContext",
+          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+        }
       },
       {
-        "symbol": "B:c.h(B)V#2",
-        "before": {
-          "symbol": "B:c.h(B)V#2",
-          "originalName": "L21",
-          "to": "fullscreenPointerHandling",
-          "evidence": "Menu update: keyboard draining, tutorial orbit/theme animation, pointer debounce/fullscreen handling and input-derived bookkeeping. Pass127 label naming: describes the exact existing lexical scope, not a reconstructed state or proof that the control flag is zero. The full enclosing method descriptor and per-method label ordinal guard the declaration; every labeled break/continue is resolved to that same AST target and transfer kind before/after naming. All statements, exception/finally/monitor boundaries, guard values, numeric state, read/write order, aliasing, arithmetic and original diagnostic literals remain. Separate reversible label edits; no raw-body or bytecode rewrite. Existing native fixture scopes add no full-game/assets/server/browser/phone or performance claim."
-        },
-        "after": null,
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
-      },
-      {
-        "symbol": "B:gh.a(B)V#0",
-        "before": {
-          "symbol": "B:gh.a(B)V#0",
-          "originalName": "L13",
-          "to": "boardRasterPreparation",
-          "evidence": "Gameplay render: board raster, game-over panel/title, tutorial/count boxes, debug entity queues/overlays and settled-result rendering. Pass127 label naming: describes the exact existing lexical scope, not a reconstructed state or proof that the control flag is zero. The full enclosing method descriptor and per-method label ordinal guard the declaration; every labeled break/continue is resolved to that same AST target and transfer kind before/after naming. All statements, exception/finally/monitor boundaries, guard values, numeric state, read/write order, aliasing, arithmetic and original diagnostic literals remain. Separate reversible label edits; no raw-body or bytecode rewrite. Existing native fixture scopes add no full-game/assets/server/browser/phone or performance claim."
-        },
+        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#1",
+        "before": null,
         "after": {
-          "symbol": "B:gh.a(B)V#0",
-          "originalName": "L43",
-          "to": "debugCounterPanelSelection",
-          "evidence": "Gameplay render: board raster, game-over panel/title, tutorial/count boxes, debug entity queues/overlays and settled-result rendering. Pass127 label naming: describes the exact existing lexical scope, not a reconstructed state or proof that the control flag is zero. The full enclosing method descriptor and per-method label ordinal guard the declaration; every labeled break/continue is resolved to that same AST target and transfer kind before/after naming. All statements, exception/finally/monitor boundaries, guard values, numeric state, read/write order, aliasing, arithmetic and original diagnostic literals remain. Separate reversible label edits; no raw-body or bytecode rewrite. Existing native fixture scopes add no full-game/assets/server/browser/phone or performance claim."
-        },
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
+          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#1",
+          "originalName": "stackIn_4_0",
+          "to": "imageUpdateFailureBeforeDescription",
+          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+        }
       },
       {
-        "symbol": "B:gh.a(B)V#1",
-        "before": {
-          "symbol": "B:gh.a(B)V#1",
-          "originalName": "L43",
-          "to": "debugCounterPanelSelection",
-          "evidence": "Gameplay render: board raster, game-over panel/title, tutorial/count boxes, debug entity queues/overlays and settled-result rendering. Pass127 label naming: describes the exact existing lexical scope, not a reconstructed state or proof that the control flag is zero. The full enclosing method descriptor and per-method label ordinal guard the declaration; every labeled break/continue is resolved to that same AST target and transfer kind before/after naming. All statements, exception/finally/monitor boundaries, guard values, numeric state, read/write order, aliasing, arithmetic and original diagnostic literals remain. Separate reversible label edits; no raw-body or bytecode rewrite. Existing native fixture scopes add no full-game/assets/server/browser/phone or performance claim."
-        },
-        "after": null,
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
-      },
-      {
-        "symbol": "B:gh.a(I)V#2",
-        "before": {
-          "symbol": "B:gh.a(I)V#2",
-          "originalName": "L67",
-          "to": "tutorialKeyAdvance",
-          "evidence": "Gameplay update: points-panel animation/slide, progression/ending, rotation/input bookkeeping, achievement tracking, fast-forward, board-clear and tutorial advancement. Pass127 label naming: describes the exact existing lexical scope, not a reconstructed state or proof that the control flag is zero. The full enclosing method descriptor and per-method label ordinal guard the declaration; every labeled break/continue is resolved to that same AST target and transfer kind before/after naming. All statements, exception/finally/monitor boundaries, guard values, numeric state, read/write order, aliasing, arithmetic and original diagnostic literals remain. Separate reversible label edits; no raw-body or bytecode rewrite. Existing native fixture scopes add no full-game/assets/server/browser/phone or performance claim."
-        },
+        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#2",
+        "before": null,
         "after": {
-          "symbol": "B:gh.a(I)V#2",
-          "originalName": "L100",
-          "to": "tutorialAutoAdvance",
-          "evidence": "Gameplay update: points-panel animation/slide, progression/ending, rotation/input bookkeeping, achievement tracking, fast-forward, board-clear and tutorial advancement. Pass127 label naming: describes the exact existing lexical scope, not a reconstructed state or proof that the control flag is zero. The full enclosing method descriptor and per-method label ordinal guard the declaration; every labeled break/continue is resolved to that same AST target and transfer kind before/after naming. All statements, exception/finally/monitor boundaries, guard values, numeric state, read/write order, aliasing, arithmetic and original diagnostic literals remain. Separate reversible label edits; no raw-body or bytecode rewrite. Existing native fixture scopes add no full-game/assets/server/browser/phone or performance claim."
-        },
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
+          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#2",
+          "originalName": "stackIn_4_1",
+          "to": "imageUpdateMessagePrefix",
+          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+        }
       },
       {
-        "symbol": "B:gh.a(I)V#3",
-        "before": {
-          "symbol": "B:gh.a(I)V#3",
-          "originalName": "L100",
-          "to": "tutorialAutoAdvance",
-          "evidence": "Gameplay update: points-panel animation/slide, progression/ending, rotation/input bookkeeping, achievement tracking, fast-forward, board-clear and tutorial advancement. Pass127 label naming: describes the exact existing lexical scope, not a reconstructed state or proof that the control flag is zero. The full enclosing method descriptor and per-method label ordinal guard the declaration; every labeled break/continue is resolved to that same AST target and transfer kind before/after naming. All statements, exception/finally/monitor boundaries, guard values, numeric state, read/write order, aliasing, arithmetic and original diagnostic literals remain. Separate reversible label edits; no raw-body or bytecode rewrite. Existing native fixture scopes add no full-game/assets/server/browser/phone or performance claim."
-        },
-        "after": null,
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
+        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#3",
+        "before": null,
+        "after": {
+          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#3",
+          "originalName": "stackIn_5_2",
+          "to": "observedImageDescription",
+          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+        }
       },
       {
-        "symbol": "B:jb.c(I)I#0",
-        "before": {
-          "symbol": "B:jb.c(I)I#0",
-          "originalName": "L2",
-          "to": "systemExclusiveEventSelection",
-          "evidence": "System-exclusive MIDI event selection; unsupported escaped status leaves the block for payload skipping. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null,
-        "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
+        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#4",
+        "before": null,
+        "after": {
+          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#4",
+          "originalName": "decompiledCaughtException",
+          "to": "caughtImageUpdateFailure",
+          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+        }
+      },
+      {
+        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#5",
+        "before": null,
+        "after": {
+          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#5",
+          "originalName": "decompiledCaughtParameter0",
+          "to": "imageUpdateFailure",
+          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
+        }
+      },
+      {
+        "symbol": "L:bf.removeConsumer(Ljava/awt/image/ImageConsumer;)V#0",
+        "before": null,
+        "after": {
+          "symbol": "L:bf.removeConsumer(Ljava/awt/image/ImageConsumer;)V#0",
+          "originalName": "runtimeException",
+          "to": "consumerRemovalFailure",
+          "evidence": "ImageProducerRasterBuffer.removeConsumer clears the registered imageConsumer only for the same consumer identity. Its catch wraps the same RuntimeException in the unchanged bf.removeConsumer diagnostic. Name only; preserve receiver identity, configuration order and handler behavior."
+        }
+      },
+      {
+        "symbol": "L:bf.startProduction(Ljava/awt/image/ImageConsumer;)V#0",
+        "before": null,
+        "after": {
+          "symbol": "L:bf.startProduction(Ljava/awt/image/ImageConsumer;)V#0",
+          "originalName": "runtimeException",
+          "to": "productionStartFailure",
+          "evidence": "ImageProducerRasterBuffer.startProduction delegates to addConsumer. Its catch wraps the same RuntimeException in the unchanged bf.startProduction diagnostic. Name only; preserve receiver identity, configuration order and handler behavior."
+        }
+      },
+      {
+        "symbol": "L:h.<init>(Ljava/lang/String;)V#0",
+        "before": null,
+        "after": {
+          "symbol": "L:h.<init>(Ljava/lang/String;)V#0",
+          "originalName": "runtimeException",
+          "to": "queryInitializationFailure",
+          "evidence": "EmailAvailabilityQuery constructor initializes completed/available false, then assigns candidateEmail. Preserve the RuntimeException caught around that assignment and the unchanged h.<init> diagnostic. Name only."
+        }
+      },
+      {
+        "symbol": "L:h.a(B)Z#0",
+        "before": null,
+        "after": {
+          "symbol": "L:h.a(B)Z#0",
+          "originalName": "var3",
+          "to": "nullAppletForInvalidGuard",
+          "evidence": "EmailAvailabilityQuery.isAvailable retains the unused null Applet declaration and navigateToReloadPage(null,true) on its invalid-guard path before returning available. Name only; preserve the original branch and all calls."
+        }
+      },
+      {
+        "symbol": "L:ol.a(B)I#0",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(B)I#0",
+          "originalName": "var2",
+          "to": "handleCountGuardQuotient",
+          "evidence": "MultiHandleSliderWidget.handleCount evaluates -85/((36-methodGuard)/49) before querying list size. Retain the unused result and all division-failure behavior; name only."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#0",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#0",
+          "originalName": "var13",
+          "to": "handleSearchIndex",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#1",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#1",
+          "originalName": "stackIn_26_0",
+          "to": "pointerPressFailureBeforeDescription",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#10",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#10",
+          "originalName": "var12",
+          "to": "selectedHandleIndex",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#11",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#11",
+          "originalName": "var14",
+          "to": "valueDeltaThenSquaredDistance",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#12",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#12",
+          "originalName": "var15",
+          "to": "clientControlFlowSnapshot",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#13",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#13",
+          "originalName": "decompiledCaughtParameter0",
+          "to": "pointerPressFailure",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#2",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#2",
+          "originalName": "stackIn_26_1",
+          "to": "pointerPressMessagePrefix",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#3",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#3",
+          "originalName": "stackIn_27_2",
+          "to": "eventContextDescription",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#4",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#4",
+          "originalName": "decompiledCaughtException",
+          "to": "caughtPointerPressFailure",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#5",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#5",
+          "originalName": "var8_int",
+          "to": "pointerPressGuardResidue",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#6",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#6",
+          "originalName": "var8",
+          "to": "pointerPressFailureForContext",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#7",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#7",
+          "originalName": "var9",
+          "to": "railOffsetThenHandleValue",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#8",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#8",
+          "originalName": "var10",
+          "to": "usableRailWidth",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.a(IIIIIILel;)Z#9",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.a(IIIIIILel;)Z#9",
+          "originalName": "var11",
+          "to": "smallestSquaredDistance",
+          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
+        }
+      },
+      {
+        "symbol": "L:ol.c(II)I#0",
+        "before": null,
+        "after": {
+          "symbol": "L:ol.c(II)I#0",
+          "originalName": "var3",
+          "to": "handleLookupGuardQuotient",
+          "evidence": "MultiHandleSliderWidget.handleValueAt returns -1 for an invalid index; otherwise evaluates 34/((methodGuard-88)/32) before reading handleValues.get. Retain the unused result and division failures; name only."
+        }
+      },
+      {
+        "symbol": "L:tg.a(III)V#0",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.a(III)V#0",
+          "originalName": "var5",
+          "to": "nullComponentForInvalidGuard",
+          "evidence": "WindowsCursorController.moveCursor calls SetCursorPos(x,y); its invalid-guard path retains an unused null Component declaration before setCursorVisible(74,true,null). Name only; preserve both operations and the guard."
+        }
+      },
+      {
+        "symbol": "L:tg.a(IZLjava/awt/Component;)V#0",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.a(IZLjava/awt/Component;)V#0",
+          "originalName": "var5",
+          "to": "targetWindowHandle",
+          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+        }
+      },
+      {
+        "symbol": "L:tg.a(IZLjava/awt/Component;)V#1",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.a(IZLjava/awt/Component;)V#1",
+          "originalName": "var6",
+          "to": "cursorControllerMonitor",
+          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+        }
+      },
+      {
+        "symbol": "L:tg.a(IZLjava/awt/Component;)V#2",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.a(IZLjava/awt/Component;)V#2",
+          "originalName": "var8",
+          "to": "unusedCursorThrowable",
+          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+        }
+      },
+      {
+        "symbol": "L:tg.a(IZLjava/awt/Component;)V#3",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.a(IZLjava/awt/Component;)V#3",
+          "originalName": "var9",
+          "to": "windowComponentPeer",
+          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+        }
+      },
+      {
+        "symbol": "L:tg.a(IZLjava/awt/Component;)V#4",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.a(IZLjava/awt/Component;)V#4",
+          "originalName": "stackIn_6_0",
+          "to": "invertedCurrentVisibilityBit",
+          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+        }
+      },
+      {
+        "symbol": "L:tg.a(IZLjava/awt/Component;)V#5",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.a(IZLjava/awt/Component;)V#5",
+          "originalName": "stackIn_22_1",
+          "to": "replacementWindowVisibilitySnapshot",
+          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+        }
+      },
+      {
+        "symbol": "L:tg.a(IZLjava/awt/Component;)V#6",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.a(IZLjava/awt/Component;)V#6",
+          "originalName": "stackIn_28_1",
+          "to": "sameWindowVisibilitySnapshot",
+          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+        }
+      },
+      {
+        "symbol": "L:tg.a(IZLjava/awt/Component;)V#7",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.a(IZLjava/awt/Component;)V#7",
+          "originalName": "decompiledCaughtException",
+          "to": "unusedCaughtCursorThrowable",
+          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
+        }
+      },
+      {
+        "symbol": "L:tg.callback(IIII)I#0",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.callback(IIII)I#0",
+          "originalName": "stackIn_7_0",
+          "to": "cursorHandleForPrivateMessage",
+          "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
+        }
+      },
+      {
+        "symbol": "L:tg.callback(IIII)I#1",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.callback(IIII)I#1",
+          "originalName": "stackIn_16_0",
+          "to": "cursorHandleForClientHitTest",
+          "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
+        }
+      },
+      {
+        "symbol": "L:tg.callback(IIII)I#2",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.callback(IIII)I#2",
+          "originalName": "stackIn_21_0",
+          "to": "cursorHandleForFallbackMessage",
+          "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
+        }
+      },
+      {
+        "symbol": "L:tg.callback(IIII)I#3",
+        "before": null,
+        "after": {
+          "symbol": "L:tg.callback(IIII)I#3",
+          "originalName": "var5",
+          "to": "previousProcedureOrHitTestCode",
+          "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
+        }
       }
     ],
     "stubJarSha256": "8d919fd8540d49cc2e78f7d8277ad0150b48a455cedf3f105bda2c1f82855ae2",
@@ -113717,7 +114227,7 @@
       "sourceDeclarations": 19253,
       "bindingsCompared": 136981,
       "overrideRelationships": 388,
-      "identifierEdits": 117929,
+      "identifierEdits": 118061,
       "dictionaryRestorationFiles": 303,
       "wholeGameEquivalenceVerified": false,
       "nativeMatchingScenarios": 708,
@@ -113889,7 +114399,7 @@
         641
       ],
       "nativeBoundaryIndependentOracle": true,
-      "guardedNamingRules": 18324,
+      "guardedNamingRules": 18364,
       "namedLocalDeclarations": 9065,
       "nonselectorDeclarationsPreserved": 19549,
       "generatedSelectorsBefore": 265,
@@ -113944,7 +114454,7 @@
       "difficultyMethodLinesBefore": 38,
       "difficultyMethodLinesAfter": 38,
       "allGuardedNamesUnchanged": true,
-      "ruleChangesInCurrentPass": 10,
+      "ruleChangesInCurrentPass": 40,
       "genericNestedContinuationTestGroups": 2,
       "nativeNestedContinuationComparisons": 2520,
       "nestedContinuationChangedJavaFiles": 7,
@@ -113964,7 +114474,7 @@
       "namedAssetLoadingMethodsAdded": 6,
       "namedAssetLoadingParametersAdded": 24,
       "namedAssetPreparationAndLookupLocalsAdded": 28,
-      "identifierEditsAddedInCurrentPass": 0,
+      "identifierEditsAddedInCurrentPass": 132,
       "lastStructuralPassVersion": 191,
       "namingRulesRefinedInCurrentPass": 4,
       "allUnaffectedPriorRulesPreserved": true,
@@ -124703,118 +125213,240 @@
             "flat": 1
           }
         ]
+      },
+      "sliderRasterLocalNames": {
+        "version": 215,
+        "namingOnly": true,
+        "namedDeclarationsAdded": 40,
+        "changedReadableJavaFiles": 4,
+        "previousCompleteRules": 18324,
+        "unaffectedCompleteRulesPreserved": 18324,
+        "allUnaffectedCompleteNamingRulesPreserved": true,
+        "sourceTreeSha256": "966c498146038e6c2b81b6056569420aba995edf15219e9f3fe309056322d43d",
+        "sourceCommit": "c66b27f36c6b49e6546a7a131bd1888e6de7f190",
+        "javaToolsCommit": "c2a48445b625e64235f123e3f6777faf254769b6",
+        "sourceArchiveSha256": "6b7d983b3e8d24f36d4d6808afa6ed735bfcdf4b1c503b56af2f99204f2765b4",
+        "bytecodeChanged": false,
+        "sourceBodyEditedByHand": false,
+        "remainingOpaqueFields": 41,
+        "rawCompilerLocalsBefore": 534,
+        "rawCompilerLocalsAfter": 498,
+        "identifierEditsAdded": 132,
+        "readableIdentifierEdits": 118061,
+        "readableClassNameLiteralEdits": 11,
+        "readableLabelEdits": 454,
+        "readableTotalEdits": 118526,
+        "stableDictionaryIdentities": 19370,
+        "bindingsCompared": 136981,
+        "overrideRelationshipsPreserved": 388,
+        "publicationTestGroupsPassed": 27,
+        "matchingNativeTraceGroups": 17,
+        "dictionaryReversalByteExact": true,
+        "wholeGameEquivalenceVerified": false,
+        "scope": "Name slider pointer/value selection, image-consumer failure context, Windows cursor/monitor/native-message roles and email-query guard/constructor temporaries from their current source operations. Preserve every complete existing rule and dictionary identity, the fixed raw/compiler inputs, all bindings and callback/error/monitor/guard behavior. Retain reused slots in combined role names, unused temporaries, current null native peer behavior, original diagnostics and arithmetic failure/overflow paths. All 303 files compile, reproduce and reverse byte exactly; scoped native evidence does not establish whole-game/browser/phone behavior.",
+        "symbols": [
+          {
+            "symbol": "L:bf.addConsumer(Ljava/awt/image/ImageConsumer;)V#0",
+            "originalName": "runtimeException",
+            "to": "consumerRegistrationFailure"
+          },
+          {
+            "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#0",
+            "originalName": "var7",
+            "to": "imageUpdateFailureForContext"
+          },
+          {
+            "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#1",
+            "originalName": "stackIn_4_0",
+            "to": "imageUpdateFailureBeforeDescription"
+          },
+          {
+            "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#2",
+            "originalName": "stackIn_4_1",
+            "to": "imageUpdateMessagePrefix"
+          },
+          {
+            "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#3",
+            "originalName": "stackIn_5_2",
+            "to": "observedImageDescription"
+          },
+          {
+            "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#4",
+            "originalName": "decompiledCaughtException",
+            "to": "caughtImageUpdateFailure"
+          },
+          {
+            "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#5",
+            "originalName": "decompiledCaughtParameter0",
+            "to": "imageUpdateFailure"
+          },
+          {
+            "symbol": "L:bf.removeConsumer(Ljava/awt/image/ImageConsumer;)V#0",
+            "originalName": "runtimeException",
+            "to": "consumerRemovalFailure"
+          },
+          {
+            "symbol": "L:bf.startProduction(Ljava/awt/image/ImageConsumer;)V#0",
+            "originalName": "runtimeException",
+            "to": "productionStartFailure"
+          },
+          {
+            "symbol": "L:h.<init>(Ljava/lang/String;)V#0",
+            "originalName": "runtimeException",
+            "to": "queryInitializationFailure"
+          },
+          {
+            "symbol": "L:h.a(B)Z#0",
+            "originalName": "var3",
+            "to": "nullAppletForInvalidGuard"
+          },
+          {
+            "symbol": "L:ol.a(B)I#0",
+            "originalName": "var2",
+            "to": "handleCountGuardQuotient"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#0",
+            "originalName": "var13",
+            "to": "handleSearchIndex"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#1",
+            "originalName": "stackIn_26_0",
+            "to": "pointerPressFailureBeforeDescription"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#10",
+            "originalName": "var12",
+            "to": "selectedHandleIndex"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#11",
+            "originalName": "var14",
+            "to": "valueDeltaThenSquaredDistance"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#12",
+            "originalName": "var15",
+            "to": "clientControlFlowSnapshot"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#13",
+            "originalName": "decompiledCaughtParameter0",
+            "to": "pointerPressFailure"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#2",
+            "originalName": "stackIn_26_1",
+            "to": "pointerPressMessagePrefix"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#3",
+            "originalName": "stackIn_27_2",
+            "to": "eventContextDescription"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#4",
+            "originalName": "decompiledCaughtException",
+            "to": "caughtPointerPressFailure"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#5",
+            "originalName": "var8_int",
+            "to": "pointerPressGuardResidue"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#6",
+            "originalName": "var8",
+            "to": "pointerPressFailureForContext"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#7",
+            "originalName": "var9",
+            "to": "railOffsetThenHandleValue"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#8",
+            "originalName": "var10",
+            "to": "usableRailWidth"
+          },
+          {
+            "symbol": "L:ol.a(IIIIIILel;)Z#9",
+            "originalName": "var11",
+            "to": "smallestSquaredDistance"
+          },
+          {
+            "symbol": "L:ol.c(II)I#0",
+            "originalName": "var3",
+            "to": "handleLookupGuardQuotient"
+          },
+          {
+            "symbol": "L:tg.a(III)V#0",
+            "originalName": "var5",
+            "to": "nullComponentForInvalidGuard"
+          },
+          {
+            "symbol": "L:tg.a(IZLjava/awt/Component;)V#0",
+            "originalName": "var5",
+            "to": "targetWindowHandle"
+          },
+          {
+            "symbol": "L:tg.a(IZLjava/awt/Component;)V#1",
+            "originalName": "var6",
+            "to": "cursorControllerMonitor"
+          },
+          {
+            "symbol": "L:tg.a(IZLjava/awt/Component;)V#2",
+            "originalName": "var8",
+            "to": "unusedCursorThrowable"
+          },
+          {
+            "symbol": "L:tg.a(IZLjava/awt/Component;)V#3",
+            "originalName": "var9",
+            "to": "windowComponentPeer"
+          },
+          {
+            "symbol": "L:tg.a(IZLjava/awt/Component;)V#4",
+            "originalName": "stackIn_6_0",
+            "to": "invertedCurrentVisibilityBit"
+          },
+          {
+            "symbol": "L:tg.a(IZLjava/awt/Component;)V#5",
+            "originalName": "stackIn_22_1",
+            "to": "replacementWindowVisibilitySnapshot"
+          },
+          {
+            "symbol": "L:tg.a(IZLjava/awt/Component;)V#6",
+            "originalName": "stackIn_28_1",
+            "to": "sameWindowVisibilitySnapshot"
+          },
+          {
+            "symbol": "L:tg.a(IZLjava/awt/Component;)V#7",
+            "originalName": "decompiledCaughtException",
+            "to": "unusedCaughtCursorThrowable"
+          },
+          {
+            "symbol": "L:tg.callback(IIII)I#0",
+            "originalName": "stackIn_7_0",
+            "to": "cursorHandleForPrivateMessage"
+          },
+          {
+            "symbol": "L:tg.callback(IIII)I#1",
+            "originalName": "stackIn_16_0",
+            "to": "cursorHandleForClientHitTest"
+          },
+          {
+            "symbol": "L:tg.callback(IIII)I#2",
+            "originalName": "stackIn_21_0",
+            "to": "cursorHandleForFallbackMessage"
+          },
+          {
+            "symbol": "L:tg.callback(IIII)I#3",
+            "originalName": "var5",
+            "to": "previousProcedureOrHitTestCode"
+          }
+        ]
       }
-    },
-    "sourceChange": {
-      "before": {
-        "source": {
-          "repository": "Kreijstal/funorb-decompiled",
-          "commit": "b83e57ac2e921b00ecedbdc156e7c8a16583a246",
-          "subdirectory": "games/geoblox"
-        },
-        "generators": {
-          "dekoblokoWork": {
-            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
-            "trackedClean": true
-          },
-          "javaTools": {
-            "commit": "bfcf629fca59c91ff981c66d4cd8531c030ae657",
-            "trackedClean": true,
-            "sourceArchive": {
-              "sha256": "128dc4e51bc9c67af7e22b3d93ecc4e688a922bfb8ac8ef6ae35c95baf2e400f",
-              "reproduce": "git archive --format=tar bfcf629fca59c91ff981c66d4cd8531c030ae657 | sha256sum",
-              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
-            }
-          },
-          "namingTool": {
-            "repository": "Kreijstal/dekobloko-work",
-            "commit": "7d339941e604dd19c040490e33a8fd5de0938a0b",
-            "files": {
-              "readable-java.mjs": "21151d0ac37ba5b6d53e2b09d9305f9a788d60fef45fcac1aebae8d72a76d2f7",
-              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
-              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
-            },
-            "sourceArchive": {
-              "sha256": "1d0657a4052656a747abedab1cf491ebb97140bd68ad9389e25763443ab158a9",
-              "reproduce": "git archive --format=tar 7d339941e604dd19c040490e33a8fd5de0938a0b -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
-              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
-            }
-          }
-        },
-        "inputTreeSha256": "69b6fac93de9292c9ac1e0699d9916af2b03829aaf43ddf29c992d0371f2dfde",
-        "readabilityWorkflow": {
-          "repository": "Kreijstal/dekobloko-work",
-          "files": {
-            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
-            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
-            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
-            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
-          }
-        },
-        "classNameLiterals": {
-          "policy": "direct-owned-class-for-name",
-          "expectedEdits": 11
-        },
-        "labels": {
-          "policy": "lexical-targets",
-          "expectedEdits": 475
-        }
-      },
-      "after": {
-        "source": {
-          "repository": "Kreijstal/funorb-decompiled",
-          "commit": "c66b27f36c6b49e6546a7a131bd1888e6de7f190",
-          "subdirectory": "games/geoblox"
-        },
-        "generators": {
-          "dekoblokoWork": {
-            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
-            "trackedClean": true
-          },
-          "javaTools": {
-            "commit": "c2a48445b625e64235f123e3f6777faf254769b6",
-            "trackedClean": true,
-            "sourceArchive": {
-              "sha256": "6b7d983b3e8d24f36d4d6808afa6ed735bfcdf4b1c503b56af2f99204f2765b4",
-              "reproduce": "git archive --format=tar c2a48445b625e64235f123e3f6777faf254769b6 | sha256sum",
-              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
-            }
-          },
-          "namingTool": {
-            "repository": "Kreijstal/dekobloko-work",
-            "commit": "7d339941e604dd19c040490e33a8fd5de0938a0b",
-            "files": {
-              "readable-java.mjs": "21151d0ac37ba5b6d53e2b09d9305f9a788d60fef45fcac1aebae8d72a76d2f7",
-              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
-              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
-            },
-            "sourceArchive": {
-              "sha256": "1d0657a4052656a747abedab1cf491ebb97140bd68ad9389e25763443ab158a9",
-              "reproduce": "git archive --format=tar 7d339941e604dd19c040490e33a8fd5de0938a0b -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
-              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
-            }
-          }
-        },
-        "inputTreeSha256": "966c498146038e6c2b81b6056569420aba995edf15219e9f3fe309056322d43d",
-        "readabilityWorkflow": {
-          "repository": "Kreijstal/dekobloko-work",
-          "files": {
-            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
-            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
-            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
-            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
-          }
-        },
-        "classNameLiterals": {
-          "policy": "direct-owned-class-for-name",
-          "expectedEdits": 11
-        },
-        "labels": {
-          "policy": "lexical-targets",
-          "expectedEdits": 454
-        }
-      },
-      "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
     }
   },
   "readabilityWorkflow": {
