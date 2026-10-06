@@ -39,7 +39,44 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current late shared-frame conditions (pass 203)
+## Current shared primitive-store fallbacks (pass 204)
+
+Five guarded fallback assignments across four gameplay-session methods now use
+exclusive if/else arms. Every other exit retains its original frame name, braces
+and destination. Conditions, prefixes, guard evaluation and store order remain
+once on the original paths. The generic decompiler requires scoped integral or
+boolean destination/operand evidence and a terminal plain-block/if corridor;
+unknown/boxed/floating/computed stores and crossed protected/loop/monitor
+corridors refuse reconstruction. No control-flag value is assumed.
+
+Independent javac attribution certifies all selected stores, continuations,
+original/copied bindings and 5,032 remaining transfers/protected scopes.
+All 18,357 complete naming objects remain exact; no label retires
+or ordinal migrates. There are 18,357 rules, 19,403 dictionary identities,
+117,393 identifier, 11 literal and 570 label edits
+(117,974 total).
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/sharedStoreFallbackRecovery.test.js test/guardedStoreFallbackRecovery.test.js test/sharedGuardedFallbackRecovery.test.js test/terminalGuardedFrameRecovery.test.js test/terminalFrameLoopRecovery.test.js test/javaAstEmitterGuardedAbruptExits.test.js`
+passes all 36 groups. The shared-store fixture compares 174,960 native cases
+across 24 models with independent oracles, including original/shared/subsequently
+structured forms, nullable conditions and guards, early exits, mutations, partial
+writes, overflow, volatile fields, aliases, finally priority and monitor release.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact CLI/source bytes, independently attributed primitive stores
+and corridors, all bindings, five consumed exits, complete naming objects and
+compilation. All 303 readable files reverse byte exactly; all 27 publication
+checks, 17 scoped native trace groups and current/fresh sibling reproductions
+pass. Older proof records and frozen input/naming/native pins remain intact.
+Five large labeled methods and 41 unsupported fields remain. Whole-game/browser/
+phone equivalence and heap/presented-FPS acceptance remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`39d4fb6149ae4129dcc270c0e0fc12935b8b8fa29a4339edb65208716ba6b0dd`.
+
+## Previous late shared-frame conditions (pass 203)
 
 Shared-callback recovery exposed two early exits with complete terminal suffixes.
 Menu-action dispatch and gameplay rendering now guard those whole suffixes under
