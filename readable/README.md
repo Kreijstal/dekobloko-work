@@ -37,7 +37,44 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current shared primitive-store fallbacks (pass 204)
+## Current final shared-store conditions (pass 205)
+
+Four early frame exits exposed by shared-store recovery now guard their complete
+suffixes under the original inverse conditions. Tutorial rendering, tutorial
+advancement and gameplay update use ordinary conditions; the theme-bounce frame
+retires when its last exit disappears. Other exits retain their frames. Original
+predicates, prefixes, guards and stores occur once on the original paths. No
+control-flag value is assumed and no arithmetic is reassociated.
+
+Independent javac reattributes the actual intermediate source and certifies
+terminal plain-block/if corridors, every original binding and all
+5,028 remaining transfers/protected scopes. One frame label retires,
+5 surviving ordinals migrate, and all 18,351 unaffected
+complete naming objects remain exact. There are 18,356 rules and
+19,402 dictionary identities, with 117,393 identifier,
+11 literal and 565 label edits (117,969 total).
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/sharedStoreFallbackRecovery.test.js test/guardedStoreFallbackRecovery.test.js test/sharedGuardedFallbackRecovery.test.js test/terminalGuardedFrameRecovery.test.js test/terminalFrameLoopRecovery.test.js test/javaAstEmitterGuardedAbruptExits.test.js`
+passes all 36 groups. The shared-store fixture compares 174,960 native cases
+across 24 models against independent oracles, including original/shared/final
+forms, nullable predicates/guards, early exits, mutations, partial writes,
+overflow, volatile fields, aliases, finally priority and monitor release.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact CLI/source bytes, independent corridor/destination facts,
+every binding, four consumed exits, complete naming objects, retirement/ordinal
+migrations and compilation. All 303 readable files reverse byte exactly; all 27
+publication tests, 17 scoped native trace groups and current/fresh sibling
+reproductions pass. Older proofs and frozen input/naming/native pins remain.
+Five large labeled methods and 41 unsupported fields remain. Whole-game/browser/
+phone equivalence and heap/presented-FPS acceptance remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`51826fc9c20a87bb45de6e208d1b9cb7d3b98dc663af9fdd1dda45932062b0b6`.
+
+## Previous shared primitive-store fallbacks (pass 204)
 
 Five guarded fallback assignments across four gameplay-session methods now use
 exclusive if/else arms. Every other exit retains its original frame name, braces
