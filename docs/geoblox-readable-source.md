@@ -39,7 +39,50 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current guarded value selection (pass 192)
+## Current stable guarded fallbacks (pass 193)
+
+The generic decompiler replaces 23 single-exit labeled fallback blocks with
+ordinary conditions in 11 methods across three files: screen rendering, PCM
+audio bounds and triangle rasterization. Each prefix, guard and fallback action stays in one place. A repeated predicate reads only proven
+primitive locals/formals that the complete prefix cannot change; no field value
+or client control-flag value is assumed. Effectful guards retain their original
+evaluation order. Empty prefixes need one condition evaluation. Floating
+arithmetic is repeated only in an actual FP-strict source context. No selector
+variable, callback copy or reassociated arithmetic is introduced.
+
+Java declarations remain exact. The 26 additional primitive read occurrences
+are independently attributed by javac; all 5,066 surviving transfer targets and
+protected scopes retain their identities. Twenty-three label rules retire and
+two surviving ordinals migrate; all 18,375 unaffected complete naming objects
+remain exact. There are 18,377 rules, 19,423 dictionary identities, 117,471
+identifier edits, 11 literal edits and 626 label edits (118,108 total). All 303
+sources compile, comparing 136,494 ordinary bindings and preserving 388 overrides.
+The raw corpus loses 66 lines. The large triangle rasterizer is 357 lines with
+six labels; five bodies still have labels and at least 300 lines. Forty-one
+unsupported opaque fields remain.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none --test-reporter=tap test/stableGuardedFallbackRecovery.test.js`
+passes nine groups, including 207,360 independent native completion cases
+across 12 models/six contexts and 55 FP-strict arithmetic cases. The selected
+regression suite passes 189 tests with one existing optional corpus skip.
+Callback order, partial writes, nullable unboxing, NaNs, overflow, guard mutations,
+finally overrides, monitor release and declaration scopes are covered.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact raw source bytes, independently proven predicate invariants
+and copies, every original binding, sole consumed exits, surviving targets/scopes,
+complete naming objects, label migrations and compilation. All 303 readable files
+reverse byte exactly. Publication tests, scoped native gameplay/result probes
+and current/fresh sibling reproduction checks pass. Older proof objects, fixed
+bytecode inputs and frozen naming/native pins remain. Whole-game/browser/phone
+equivalence and heap/presented-FPS acceptance are unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`657bdbd19ffd0658856fe4021d70dffe76b1405292c586823a125745b88f0ec3`.
+
+## Previous guarded value selection (pass 192)
 
 Two screen-render blocks now assign their values directly with conditional
 expressions. The generic java-tools rule retains each condition's evaluation
