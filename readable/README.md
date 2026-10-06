@@ -37,7 +37,50 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current guarded primitive-store fallbacks (pass 199)
+## Current terminal guarded remainders (pass 200)
+
+Fifteen guarded frame exits across eight methods become inverse guards around
+their complete original suffixes. Board reconciliation, menu rendering, mesh-depth queueing, applet execution
+and MIDI event/audio updates benefit. Every original condition and action
+keeps one source occurrence and its original evaluation order. Whole protected
+suffixes stay together. Terminal plain-block/if corridors are independently
+certified; intervening work and corridors crossing loops, try/catch/finally or
+monitors refuse. No predicate or action copy, selector, new name, arithmetic
+reassociation or control-flag assumption is introduced.
+
+The last eligible guard recovers first. Other exits keep their frame name;
+three last references retire their labels. Declaration and scalar-statement
+scopes retain braces. Independent javac proves each consumed exit and complete
+terminal corridor. All original binding occurrences and surviving targets/
+protected scopes remain exact. 2 surviving label ordinals migrate; all
+18,357 unaffected complete naming objects remain exact.
+There are 18,359 rules, 19,405 dictionary identities,
+117,382 identifier, 11 literal and 584 label edits
+(117,977 total).
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/terminalGuardedFrameRecovery.test.js`
+passes six focused groups. Independent native models compare 77,760 cases
+across 24 direct/nested/chained/protected contexts. Nullable/effectful guards,
+partial writes, aliases, overflow, nested loop exits, finally priority and
+monitor release retain their traces. Selected regression commands pass 106
+tests, with one optional skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact CLI/source bytes, independent continuation evidence,
+every original binding, 15 consumed exits, all 5,042 surviving transfer/protected
+scope facts, complete naming objects, label migrations and compilation.
+All 303 readable files reverse byte exactly. All 27 publication tests, 17 scoped
+native trace groups and current/fresh sibling reproduction checks pass. Older
+proof records and frozen input/naming/native pins remain. Five large labeled
+bodies and 41 unsupported fields remain; whole-game/browser/phone and heap/
+presented-FPS acceptance are unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`d1eba2a03c51fad0009b1f7b039da230ba8253d074033abb32b712ee2baccf8b`.
+
+## Previous guarded primitive-store fallbacks (pass 199)
 
 Five sole-exit labels across four methods become ordinary exclusive `if/else`
 continuations. Gameplay rendering, gameplay update, session-end initialization
