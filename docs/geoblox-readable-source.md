@@ -39,7 +39,48 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current exact self-cast cleanup (pass 195)
+## Current single-pass inner loops (pass 196)
+
+The generic decompiler removes artificial inner loops in board reconciliation
+and nine-slice generation. Their bodies execute at most once; two bare breaks
+now continue the immediately enclosing traversal at exactly the original next
+update/test point. Both declaration-free bodies flatten, removing a nesting
+level. All actions, condition evaluations, aliases and arithmetic stay once and
+in order. No selector, new name, duplicated predicate or flag value is added.
+
+Recovery requires independent evidence that the inner body cannot fall through
+or continue to its own header, and that its terminal corridor contains no
+intervening action. Whole blocks, branches, labels, catches, try bodies and
+monitors may remain on that corridor. An enclosing finally refuses: changing
+its normal completion to a continue could override a pending return/throw.
+Protected inner constructs stay whole; an inner finally's own break can override
+a pending completion at the same outer iteration boundary. Inner labels, own
+backedges, switch fallthrough, suffix actions and unsupported syntax refuse.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/singlePassInnerLoopRecovery.test.js`
+passes eight focused groups. Native models compare 31,104 cases across 48
+outer-loop/protected contexts, plus 50 inner-finally override cases. They cover
+outer updates and condition effects, nullable guards, aliases, overflow, partial
+writes, returns, throws, close callbacks, finally priority and monitor release.
+The selected regression command passes 129 tests with one existing optional skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks independently parsed completion, corridors and destinations; all 303
+exact CLI/source bytes; every original binding; all 5,065 protected transfer
+facts with only the two certified kind/target redirects; complete naming objects
+and compilation. All 18,376 rules and 19,422 dictionary identities remain exact.
+All 303 readable files reverse byte exactly. Publication tests, scoped native
+probes and current/fresh sibling reproduction checks pass. Earlier proofs and
+frozen input/naming/native pins remain exact. Five large labeled bodies and
+41 unsupported fields remain; browser/phone and heap/presented-FPS acceptance
+are unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`3376de75585aad84c1b49cfa0085dc22e25131c058a124af31819bb77158ecb0`.
+
+## Previous exact self-cast cleanup (pass 195)
 
 The generic decompiler removes 103 redundant self casts in 48 methods across
 30 files, including seven in gameplay update. For example,
