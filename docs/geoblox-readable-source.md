@@ -39,7 +39,49 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current terminal guarded remainders (pass 200)
+## Current terminal frame loops (pass 201)
+
+Board connectivity traversal now uses two ordinary breaks of its existing
+queue-processing loop. Its enclosing block label and unnecessary scope disappear.
+Independent javac proves that every old frame reference is inside that loop,
+that each bare destination is the loop itself, and that the loop ends the frame
+through an action-free terminal block/if corridor. Prefix allocations, iterator
+work, loop headers and updates, aliases and protected loop bodies stay once.
+
+The generic recovery also handles while/for/enhanced-for/do loops. Nonlocal exits
+reuse the existing frame name on the loop or merge into its existing name.
+Declaration and scalar-statement scopes retain braces. Prefix references,
+nonterminal work, crossed loops or protected corridors, nested execution and
+unsupported structure refuse. No new label, selector, condition, action or
+control-flag assumption is introduced. The old connectivity-frame rule retires;
+3 surviving ordinals migrate. All 18,355 unaffected complete
+naming objects remain exact. There are 18,358 rules,
+19,404 dictionary identities, 117,382 identifier,
+11 literal and 581 label edits (117,974 total).
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/terminalFrameLoopRecovery.test.js`
+passes six focused groups. Independent native models compare 69,120 cases across
+96 loop/protected/merge/exit contexts, covering nullable headers, suppressed
+updates, iterator work, aliases, overflow, partial failures, nested exits,
+pending returns/throws, finally priority and monitor release. The selected
+regression command passes 106 tests, with one optional skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact CLI/source bytes, independent loop/corridor/bare-destination
+evidence, every original binding, all 5,042 transfers and protected scopes,
+complete naming objects, the retired label and ordinal migrations, and compilation.
+All 303 readable files reverse byte exactly. All 27 publication tests, 17 scoped
+native trace groups and current/fresh sibling reproduction checks pass. Older
+proof records and frozen input/naming/native pins remain. Five large labeled
+bodies and 41 unsupported fields remain; whole-game/browser/phone and heap/
+presented-FPS acceptance are unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`8ea7bde8e790b43a20c1912d6d05fab29c07d8b20a12c8cf33d8d031499b5029`.
+
+## Previous terminal guarded remainders (pass 200)
 
 Fifteen guarded frame exits across eight methods become inverse guards around
 their complete original suffixes. Board reconciliation, menu rendering, mesh-depth queueing, applet execution
