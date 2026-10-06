@@ -39,7 +39,47 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current integral arithmetic fallbacks (pass 207)
+## Current final arithmetic conditions (pass 208)
+
+The normal emitter now finishes predicate operators and grouping after arithmetic
+fallback reconstruction, including its newly exposed inverse guards. 3 exposed conditions simplify and
+3 redundant condition-parenthesis pairs disappear across
+3 methods and 3 files. The recovered guards now express
+`!(controlFlag == 0)` directly as `controlFlag != 0`. Operand/read/call order, short circuits, boxed identity,
+floating NaN behavior and arithmetic association remain intact. Unknown and
+floating relations remain explicit; no control-flag value is assumed.
+
+The exact equality complements are checked without assuming control-flag values.
+The source proof checks every permitted operator edit, then compares all 303
+complete javac trees before/after grouping modulo parentheses. Every ordinary
+and label binding, all 5,025 transfer/protected-scope facts and all
+18,355 complete naming objects remain exact. No label retires or ordinal
+migrates. There are 18,355 rules and 19,401 dictionary identities,
+with 117,422 identifier, 11 literal and 561 label edits
+(117,994 total).
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/arithmeticStoreFallbackRecovery.test.js test/latePredicateCleanup.test.js test/predicateNegationRecovery.test.js test/predicateGroupingRecovery.test.js test/sharedStoreFallbackRecovery.test.js test/guardedStoreFallbackRecovery.test.js test/sharedGuardedFallbackRecovery.test.js test/terminalGuardedFrameRecovery.test.js test/terminalFrameLoopRecovery.test.js test/javaAstEmitterGuardedAbruptExits.test.js`
+passes all 65 groups. Arithmetic and predicate/grouping fixtures compare
+1,943,852 native cases with independent oracles for nullable unboxing, boxed identity, effects,
+overflow, NaNs, volatile fields, exceptions, finally priority and monitor release.
+The arithmetic fixture compares original, shared and final structured forms
+against independent oracles; the structural native fixtures also pass.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact CLI/source bytes, independently attributed operand types,
+all bindings/transfers/protected scopes, complete naming objects, full intermediate/
+final ASTs and compilation. All 303 readable files reverse byte exactly; all 27
+publication tests, 17 scoped native trace groups and current/fresh sibling
+reproductions pass. Older proofs and frozen input/naming/native pins remain.
+Five large labeled methods and 41 unsupported fields remain. Whole-game/browser/
+phone equivalence and heap/presented-FPS acceptance remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`d4e10cda150529147bcc143d9aaac147b0b2cfb758dc8350147a7128045cdded`.
+
+## Previous integral arithmetic fallbacks (pass 207)
 
 The generic decompiler now recovers guarded assignment fallbacks containing
 proven integral arithmetic. Three continuations across menu press animation,
