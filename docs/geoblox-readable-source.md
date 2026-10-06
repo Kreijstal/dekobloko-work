@@ -39,7 +39,50 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current stable guarded fallbacks (pass 193)
+## Current guarded assignment sequences (pass 194)
+
+The generic decompiler reconstructs rotation-key selection in
+`GameplaySession.updateSession` as an ordinary `if/else`. The original
+condition and captured keep-value guard each occur once. Both assignment
+sequences retain their statement order and assignment conversions. All selected
+destinations are primitive locals or parameters, both arms overwrite the same
+set, and every value/guard is total. The guard and fallback cannot read any
+selected destination. Effectful conditions still execute once before stores.
+No predicate copy, selector, assumed flag value or arithmetic reassociation is
+introduced. The rule applies to arbitrary Java; only naming is game-specific.
+
+One label rule retires and 4 surviving ordinals migrate;
+18,372 unaffected complete naming objects remain exact.
+There are 18,376 rules, 19,422 dictionary identities,
+117,471 identifier edits, 11 literal edits and
+624 label edits (118,106 total). The raw corpus
+loses 4 lines. Session update is 556 lines with
+7 labels. Five bodies still have labels and at least 300 lines;
+41 unsupported opaque fields remain.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/guardedAssignmentSequenceRecovery.test.js test/guardedLocalAssignmentRecovery.test.js`
+passes 17 groups, including nine sequence groups, 10,800 independent sequence
+completion cases across six contexts and 294 sequence primitive cases across
+seven models. They cover partial writes, null unboxing, overflow, finally
+priority, monitor release, narrowing, signed zero, NaN and long precision.
+The selected regression command passes 197 groups with one existing optional skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact raw bytes, independently typed destinations and dependencies,
+every original binding occurrence, the consumed exit, all
+5,065 surviving transfer targets/protected scopes,
+complete naming objects, migrations and compilation. The readable dictionary
+reverses all 303 files byte exactly. Publication tests, scoped native probes
+and current/fresh sibling reproduction checks pass. Older proof objects and
+frozen input/naming/native pins remain exact. Whole-game/browser/phone equivalence
+and heap/presented-FPS acceptance remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`5f50584da8d550da35a19b1288e65f7fde5c190f80eb022f67ccd65a54dbe874`.
+
+## Previous stable guarded fallbacks (pass 193)
 
 The generic decompiler replaces 23 single-exit labeled fallback blocks with
 ordinary conditions in 11 methods across three files: screen rendering, PCM
