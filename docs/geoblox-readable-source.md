@@ -39,11 +39,51 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current final shared-store conditions (pass 205)
+## Current final predicate cleanup (pass 206)
+
+The generic emitter now finishes predicate operators and grouping after late
+structural reconstruction. 53 exposed conditions simplify and
+57 redundant condition-parenthesis pairs disappear across
+27 methods and 10 files. Examples include changing
+`!(state != value)` to `state == value` and expressing inverted integral
+relations directly. Operand/read/call order, short circuits, boxed identity,
+floating NaN behavior and arithmetic association remain intact. Unknown and
+floating relations remain explicit; no control-flag value is assumed.
+
+Independent javac proves all 20 integral relational complements.
+The source proof checks every permitted operator edit, then compares all 303
+complete javac trees before/after grouping modulo parentheses. Every ordinary
+and label binding, all 5,028 transfer/protected-scope facts and all
+18,356 complete naming objects remain exact. No label retires or ordinal
+migrates. There are 18,356 rules and 19,402 dictionary identities,
+with 117,393 identifier, 11 literal and 565 label edits
+(117,969 total).
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/latePredicateCleanup.test.js test/predicateNegationRecovery.test.js test/predicateGroupingRecovery.test.js test/sharedStoreFallbackRecovery.test.js test/guardedStoreFallbackRecovery.test.js test/sharedGuardedFallbackRecovery.test.js test/terminalGuardedFrameRecovery.test.js test/terminalFrameLoopRecovery.test.js test/javaAstEmitterGuardedAbruptExits.test.js`
+passes all 59 groups. The predicate/grouping fixtures compare 1,681,412 native
+cases with independent oracles for nullable unboxing, boxed identity, effects,
+overflow, NaNs, volatile fields, exceptions, finally priority and monitor release.
+The structural native fixtures also pass with the final normal emitter.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact CLI/source bytes, independently attributed operand types,
+all bindings/transfers/protected scopes, complete naming objects, full intermediate/
+final ASTs and compilation. All 303 readable files reverse byte exactly; all 27
+publication tests, 17 scoped native trace groups and current/fresh sibling
+reproductions pass. Older proofs and frozen input/naming/native pins remain.
+Five large labeled methods and 41 unsupported fields remain. Whole-game/browser/
+phone equivalence and heap/presented-FPS acceptance remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`bcd4e1fb42ac04b86ac84ccf75f8d2375af28bc26379b449157523106a50c9e2`.
+
+## Previous final shared-store conditions (pass 205)
 
 Four early frame exits exposed by shared-store recovery now guard their complete
 suffixes under the original inverse conditions. Tutorial rendering, tutorial
-advancement and gameplay update use ordinary conditions; the theme-bounce frame
+advancement and gameplay update use ordinary conditions; the points-panel animation frame
 retires when its last exit disappears. Other exits retain their frames. Original
 predicates, prefixes, guards and stores occur once on the original paths. No
 control-flag value is assumed and no arithmetic is reassociated.
