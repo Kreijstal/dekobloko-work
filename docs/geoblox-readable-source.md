@@ -39,7 +39,49 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current mixed statement continuations (pass 213)
+## Current terminal mixed-statement frames (pass 214)
+
+Mixed statement reconstruction exposes more complete terminal frame remainders.
+The generic emitter now rechecks those corridors and guards 15
+complete suffixes across 10 methods and 3 files. Every original
+predicate and action stays once, in its original order and lexical/protected
+scope. No condition value or purity is assumed. Six labels retire only after
+their last reference is consumed; other exits retain their frame. The generic
+native fixture compares original, shared and final structured forms against
+independent ordered models, including earlier exits and nullable predicates.
+
+Independent javac certifies every complete terminal block/if corridor and
+consumed transfer. Every original ordinary/label binding and all
+4,949 surviving destinations/protected-scope facts remain exact.
+4 surviving label ordinals migrate; every one of the
+18,320 unaffected complete naming objects stays unchanged. The export
+has 18,324 rules and 19,370 dictionary identities, with
+117,929 identifier, 11 literal and 454 label edits
+(118,394 total). No references or callback sites are copied in this
+finishing stage. Plain block labels fall from 95 to 89; source length
+changes from 75,829 to 75,802 lines.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/sharedStatementFallbackRecovery.test.js test/sharedGuardedFallbackRecovery.test.js test/terminalGuardedFrameRecovery.test.js test/nestedIfConditionRecovery.test.js`
+passes all 27 groups. The updated mixed-statement fixture compares 641,520
+native cases across 18 contexts, including receiver/index/argument ordering,
+boxing, aliases, partial writes, failures, finally overrides and monitor release.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 expected source bytes, independent corridor/transfer evidence,
+every binding, complete naming objects, retirement/ordinal migrations and
+compilation. A clean tracked compiler archive reproduces all 303 CLI bytes and
+unchanged diagnostics. All 303 readable files reverse byte exactly; all 27
+publication tests, 17 scoped native trace groups and current/fresh sibling
+reproductions pass. Older proofs and frozen input/naming/native pins remain.
+5 large labeled methods and 41 unsupported fields remain. Whole-game/
+browser/phone equivalence and heap/presented-FPS acceptance remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`6b7d983b3e8d24f36d4d6808afa6ed735bfcdf4b1c503b56af2f99204f2765b4`.
+
+## Previous mixed statement continuations (pass 213)
 
 The generic decompiler reconstructs 55 shared exits across
 25 methods and 6 files using explicit, exclusive if/else arms.
