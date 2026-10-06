@@ -37,7 +37,52 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current terminal loop frames (pass 198)
+## Current guarded primitive-store fallbacks (pass 199)
+
+Five sole-exit labels across four methods become ordinary exclusive `if/else`
+continuations. Gameplay rendering, gameplay update, session-end initialization
+and UI-widget pointer handling benefit. The eight original integral/boolean
+fallback assignments occupy exclusive source sites; each still executes once on
+its original paths and in its original order. Original conditions, prefixes and
+guards are never reevaluated. Floating prefix arithmetic stays at its one
+original site. No selector, new name or control-flag assumption is introduced.
+
+A terminal plain-block/if corridor can connect the selected branch to the frame
+exit. Extra work, loops and protected corridors refuse. Scoped primitive
+local/formal bindings or exact owned-field metadata prove store types. Boxing,
+floating stores, computed/cast/call/array operands, unknown receivers and shadowed
+class qualifiers refuse. Prefix-owned declarations refuse; outer declaration
+scopes retain their braces. Independent javac certifies the corridor, exact
+continuation and every primitive store; all original and eight copied bindings
+retain their targets. Five labels retire and 6 surviving ordinals migrate.
+All 18,356 unaffected complete naming objects remain exact.
+There are 18,362 rules, 19,408 dictionary identities,
+117,382 identifier, 11 literal and 602 label edits
+(117,995 total).
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/guardedStoreFallbackRecovery.test.js`
+passes six focused groups. Native independent models compare 77,760 cases
+across 24 direct/nested/protected/store contexts, covering nullable conditions
+and guards, volatile stores, partial failures, overflow, finally priority,
+monitor release and alias identity. The selected regression command passes
+110 tests, with one optional skip.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-guarded-abrupt-source.mjs ../java-tools`
+checks all 303 exact CLI/source bytes, independent primitive-store/corridor
+evidence, every original/copied binding, five consumed exits, all 5,057 surviving
+transfer/protected-scope facts, complete naming objects, label migrations and
+compilation. All 303 readable files reverse byte exactly. All 27 publication
+tests, 17 scoped native trace groups and current/fresh sibling reproduction
+checks pass. Older proof records and frozen input/naming/native pins remain.
+Five large labeled bodies and 41 unsupported fields remain; whole-game/browser/
+phone and heap/presented-FPS acceptance are unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`446ca7880602a3d8e2e01a44c7f30cc06a8d243d9c325a518fb72437eecb24fd`.
+
+## Previous terminal loop frames (pass 198)
 
 Twenty-one terminal labeled blocks across fourteen methods now share the name
 of their actual loop exit: fifteen existing labels move onto loops, and six
