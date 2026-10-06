@@ -16,7 +16,8 @@ const repository = funorbRepository;
 const javaTools = process.argv[2] && path.resolve(process.argv[2]);
 if (!javaTools) throw new Error('Usage: node readable/tests/test-geoblox-guarded-abrupt-source.mjs JAVA_TOOLS_REPOSITORY');
 const provenance = JSON.parse(fs.readFileSync(path.join(repository, 'decompilation/geoblox-provenance.json')));
-const proof = provenance.singlePassInnerLoopRecovery ?? provenance.exactSelfCastCleanup ?? provenance.guardedAssignmentSequenceRecovery ?? provenance.stableGuardedFallbackRecovery ?? provenance.guardedLocalAssignmentRecovery ?? provenance.lateTerminalSwitchFrameCleanup ?? provenance.naturalLoopExitRecovery ?? provenance.booleanLocalAssignmentRecovery ?? provenance.scalarSwitchPrefixRecovery ?? provenance.nestedScalarDispatchRecovery ?? provenance.predicateGroupingRecovery ?? provenance.ownedFieldPredicateRecovery ?? provenance.terminalLoopTailRecovery ?? provenance.redundantExitGuardRecovery ?? provenance.terminalSwitchFrameCleanup ?? provenance.terminalControlFrameCleanup ?? provenance.dominatedPredicateRecovery ?? provenance.integralPredicateNegationRecovery ?? provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const proof = provenance.smallGuardedFallbackRecovery ?? provenance.singlePassInnerLoopRecovery ?? provenance.exactSelfCastCleanup ?? provenance.guardedAssignmentSequenceRecovery ?? provenance.stableGuardedFallbackRecovery ?? provenance.guardedLocalAssignmentRecovery ?? provenance.lateTerminalSwitchFrameCleanup ?? provenance.naturalLoopExitRecovery ?? provenance.booleanLocalAssignmentRecovery ?? provenance.scalarSwitchPrefixRecovery ?? provenance.nestedScalarDispatchRecovery ?? provenance.predicateGroupingRecovery ?? provenance.ownedFieldPredicateRecovery ?? provenance.terminalLoopTailRecovery ?? provenance.redundantExitGuardRecovery ?? provenance.terminalSwitchFrameCleanup ?? provenance.terminalControlFrameCleanup ?? provenance.dominatedPredicateRecovery ?? provenance.integralPredicateNegationRecovery ?? provenance.predicateNegationRecovery ?? provenance.scalarIfDispatchRecovery ?? provenance.terminalPrefixBreakRecovery ?? provenance.loopElseExitGuardRecovery ?? provenance.nonlocalLoopExitRecovery ?? provenance.terminalLoopExitRecovery ?? provenance.loopExitContinuationRecovery ?? provenance.trailingLoopRecovery ?? provenance.nonrepeatingLoopRecovery ?? provenance.guardedLoopContinuationRecovery ?? provenance.guardedAbruptSharedExitRecovery ?? provenance.guardedAbruptSuffixRecovery ?? provenance.guardedAbruptExitRecovery;
+const smallFallbacks = proof.smallGuardedFallbacks;
 const singlePassInner = proof.singlePassInnerLoops;
 const selfCasts = proof.exactSelfCasts;
 const assignmentSequences = proof.guardedAssignmentSequences;
@@ -110,6 +111,7 @@ public final class GeobloxBodyPositions {
             if(args.length>2&&args[2].equals("guarded-values"))guardedAssignment(unit,trees,positions,file,tree);
             if(args.length>2&&args[2].equals("stable-fallbacks"))stableFallback(unit,trees,positions,file,tree);
             if(args.length>2&&args[2].equals("assignment-sequences"))assignmentSequence(unit,trees,positions,file,tree);
+            if(args.length>2&&args[2].equals("small-fallbacks"))smallFallback(unit,trees,positions,file,tree);
             return super.visitLabeledStatement(tree,unused);
           }
           @Override public Void visitIf(IfTree tree,Void unused) {
@@ -137,7 +139,7 @@ public final class GeobloxBodyPositions {
             for(Tree member:tree.getMembers())if(member instanceof BlockTree) {
               System.out.println(file+"\\t"+source.indexOf("{",(int)positions.getStartPosition(unit,member))+"\\t"+positions.getEndPosition(unit,member)+"\\t\\tinitializer");
               if(args.length>2 && args[2].equals("late-switch")){verifyTerminalTransfers(unit,positions,file,new TreePath(getCurrentPath(),member));verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),member));}
-              else if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields") || args[2].equals("grouping") || args[2].equals("dispatch") || args[2].equals("booleans") || args[2].equals("natural") || args[2].equals("guarded-values") || args[2].equals("stable-fallbacks") || args[2].equals("assignment-sequences") || args[2].equals("self-casts") || args[2].equals("single-pass-inner")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),member));
+              else if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields") || args[2].equals("grouping") || args[2].equals("dispatch") || args[2].equals("booleans") || args[2].equals("natural") || args[2].equals("guarded-values") || args[2].equals("stable-fallbacks") || args[2].equals("assignment-sequences") || args[2].equals("self-casts") || args[2].equals("single-pass-inner") || args[2].equals("small-fallbacks")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),member));
               else if(args.length>2 && args[2].equals("redundant"))verifyRedundantGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),member));
               else if(args.length>2 && args[2].equals("terminal"))verifyTerminalTransfers(unit,positions,file,new TreePath(getCurrentPath(),member));
               else if(args.length>2)verifyGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),member));
@@ -147,7 +149,7 @@ public final class GeobloxBodyPositions {
           @Override public Void visitMethod(MethodTree tree,Void unused) {
             if(tree.getBody()!=null && positions.getStartPosition(unit,tree.getBody())>=0 && positions.getEndPosition(unit,tree.getBody())>positions.getStartPosition(unit,tree.getBody())) { System.out.println(file+"\\t"+positions.getStartPosition(unit,tree.getBody())+"\\t"+positions.getEndPosition(unit,tree.getBody())+"\\t"+tree.getParameters().stream().map(p->p.getName().toString()).collect(Collectors.joining(","))+"\\t"+tree.getName()+"\\t"+tree.getParameters().stream().map(p->Base64.getEncoder().encodeToString(p.getType().toString().getBytes(StandardCharsets.UTF_8))).collect(Collectors.joining(","))+"\\t"+positions.getStartPosition(unit,tree)+"\\t"+enclosingClass(getCurrentPath())+"\\t"+tree.getModifiers().getFlags().contains(javax.lang.model.element.Modifier.STRICTFP));
               if(args.length>2 && args[2].equals("late-switch")){verifyTerminalTransfers(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));}
-              else if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields") || args[2].equals("grouping") || args[2].equals("dispatch") || args[2].equals("booleans") || args[2].equals("natural") || args[2].equals("guarded-values") || args[2].equals("stable-fallbacks") || args[2].equals("assignment-sequences") || args[2].equals("self-casts") || args[2].equals("single-pass-inner")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
+              else if(args.length>2 && (args[2].equals("tails") || args[2].equals("fields") || args[2].equals("grouping") || args[2].equals("dispatch") || args[2].equals("booleans") || args[2].equals("natural") || args[2].equals("guarded-values") || args[2].equals("stable-fallbacks") || args[2].equals("assignment-sequences") || args[2].equals("self-casts") || args[2].equals("single-pass-inner") || args[2].equals("small-fallbacks")))verifyLoopTails(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
               else if(args.length>2 && args[2].equals("redundant"))verifyRedundantGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
               else if(args.length>2 && args[2].equals("terminal"))verifyTerminalTransfers(unit,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
               else if(args.length>2)verifyGuards(unit,trees,positions,file,new TreePath(getCurrentPath(),tree.getBody()));
@@ -332,6 +334,33 @@ public final class GeobloxBodyPositions {
     catch(java.security.NoSuchAlgorithmException impossible){throw new AssertionError(impossible);}
   }
 
+
+
+  static boolean simpleFallbackOperand(ExpressionTree expression){
+    if(expression instanceof ParenthesizedTree)return simpleFallbackOperand(((ParenthesizedTree)expression).getExpression());
+    if(expression instanceof IdentifierTree||expression instanceof LiteralTree)return true;
+    if(expression instanceof UnaryTree&&Arrays.asList(Tree.Kind.UNARY_MINUS,Tree.Kind.UNARY_PLUS).contains(expression.getKind())){ExpressionTree operand=((UnaryTree)expression).getExpression();if(operand instanceof LiteralTree){Object value=((LiteralTree)operand).getValue();if(value instanceof Integer||value instanceof Long)return true;}}
+    return expression instanceof MemberSelectTree&&simpleFallbackOperand(((MemberSelectTree)expression).getExpression());
+  }
+  static void smallFallback(CompilationUnitTree unit,Trees trees,SourcePositions positions,String file,LabeledStatementTree frame){
+    if(!(frame.getStatement() instanceof BlockTree))return;List<? extends StatementTree> ss=((BlockTree)frame.getStatement()).getStatements();
+    if(ss.size()<2||!(ss.get(ss.size()-2) instanceof IfTree)||!(ss.get(ss.size()-1) instanceof ExpressionStatementTree))return;
+    IfTree branch=(IfTree)ss.get(ss.size()-2);StatementTree fallback=ss.get(ss.size()-1);ExpressionTree expression=((ExpressionStatementTree)fallback).getExpression();
+    if(branch.getElseStatement()!=null||!(branch.getThenStatement() instanceof BlockTree)||!(expression instanceof MethodInvocationTree))return;
+    MethodInvocationTree call=(MethodInvocationTree)expression;
+    if(!call.getTypeArguments().isEmpty()||!(call.getMethodSelect() instanceof IdentifierTree||call.getMethodSelect() instanceof MemberSelectTree&&simpleFallbackOperand(((MemberSelectTree)call.getMethodSelect()).getExpression()))||call.getArguments().stream().anyMatch(arg->!simpleFallbackOperand(arg)))return;
+    List<? extends StatementTree> arm=((BlockTree)branch.getThenStatement()).getStatements();
+    if(arm.size()<2||!(arm.get(arm.size()-1) instanceof IfTree)||arm.subList(0,arm.size()-1).stream().anyMatch(statement->statement instanceof VariableTree||statement instanceof ClassTree))return;
+    IfTree guard=(IfTree)arm.get(arm.size()-1);if(guard.getElseStatement()!=null)return;StatementTree exit=guard.getThenStatement();
+    if(exit instanceof BlockTree){List<? extends StatementTree> exits=((BlockTree)exit).getStatements();if(exits.size()!=1)return;exit=exits.get(0);}
+    if(!(exit instanceof BreakTree)||((BreakTree)exit).getLabel()==null||!frame.getLabel().contentEquals(((BreakTree)exit).getLabel()))return;
+    final int[] refs={0};new TreeScanner<Void,Void>(){
+      @Override public Void visitBreak(BreakTree tree,Void unused){if(tree.getLabel()!=null&&frame.getLabel().contentEquals(tree.getLabel()))refs[0]++;return super.visitBreak(tree,unused);}
+      @Override public Void visitContinue(ContinueTree tree,Void unused){if(tree.getLabel()!=null&&frame.getLabel().contentEquals(tree.getLabel()))refs[0]++;return super.visitContinue(tree,unused);}
+    }.scan(frame,null);if(refs[0]!=1)return;
+    boolean scoped=!(TreePath.getPath(unit,frame).getParentPath().getLeaf() instanceof BlockTree)||ss.subList(0,ss.size()-2).stream().anyMatch(statement->statement instanceof VariableTree||statement instanceof ClassTree);
+    System.out.println("SMALL\\t"+file+"\\t"+positions.getStartPosition(unit,frame)+"\\t"+positions.getEndPosition(unit,frame)+"\\t"+positions.getStartPosition(unit,branch)+"\\t"+positions.getEndPosition(unit,branch)+"\\t"+positions.getStartPosition(unit,branch.getCondition())+"\\t"+positions.getEndPosition(unit,branch.getCondition())+"\\t"+positions.getStartPosition(unit,guard.getCondition())+"\\t"+positions.getEndPosition(unit,guard.getCondition())+"\\t"+positions.getStartPosition(unit,exit)+"\\t"+positions.getEndPosition(unit,exit)+"\\t"+positions.getStartPosition(unit,fallback)+"\\t"+positions.getEndPosition(unit,fallback)+"\\t"+(arm.size()-1)+"\\t"+frame.getLabel()+"\\t"+scoped);
+  }
 
   static boolean isLoop(Tree tree){return tree!=null&&Arrays.asList(Tree.Kind.WHILE_LOOP,Tree.Kind.DO_WHILE_LOOP,Tree.Kind.FOR_LOOP,Tree.Kind.ENHANCED_FOR_LOOP).contains(tree.getKind());}
   static Tree transferTarget(TreePath path){
@@ -769,7 +798,7 @@ public final class GeobloxBodyPositions {
   fs.mkdirSync(helpers);
   run('javac', ['-d', helpers, helper, path.join(workflowRoot, 'tools/lib/ReadableJava.java')]);
   const positionRows = run('java', ['-cp', helpers, 'GeobloxBodyPositions', before,
-    ...((proof.integralPredicates || proof.dominatedPredicates || terminalFrames || redundantGuards || terminalTails || fieldPredicates || grouping || nestedDispatch || localAssignments || naturalExits || stableFallbacks || assignmentSequences || selfCasts || singlePassInner) ? [path.join(repository, 'readable/funorb-stubs.jar')] : []), ...(singlePassInner ? ['single-pass-inner'] : selfCasts ? ['self-casts'] : assignmentSequences ? ['assignment-sequences'] : stableFallbacks ? ['stable-fallbacks'] : guardedAssignments ? ['guarded-values'] : lateSwitchFrames ? ['late-switch'] : naturalExits ? ['natural'] : booleanAssignments ? ['booleans'] : nestedDispatch ? ['dispatch'] : grouping ? ['grouping'] : fieldPredicates ? ['fields'] : terminalTails ? ['tails'] : redundantGuards ? ['redundant'] : terminalFrames ? ['terminal'] : proof.dominatedPredicates ? ['dominated'] : [])]).toString().trim().split('\n').map(line => line.split('\t'));
+    ...((proof.integralPredicates || proof.dominatedPredicates || terminalFrames || redundantGuards || terminalTails || fieldPredicates || grouping || nestedDispatch || localAssignments || naturalExits || stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) ? [path.join(repository, 'readable/funorb-stubs.jar')] : []), ...(smallFallbacks ? ['small-fallbacks'] : singlePassInner ? ['single-pass-inner'] : selfCasts ? ['self-casts'] : assignmentSequences ? ['assignment-sequences'] : stableFallbacks ? ['stable-fallbacks'] : guardedAssignments ? ['guarded-values'] : lateSwitchFrames ? ['late-switch'] : naturalExits ? ['natural'] : booleanAssignments ? ['booleans'] : nestedDispatch ? ['dispatch'] : grouping ? ['grouping'] : fieldPredicates ? ['fields'] : terminalTails ? ['tails'] : redundantGuards ? ['redundant'] : terminalFrames ? ['terminal'] : proof.dominatedPredicates ? ['dominated'] : [])]).toString().trim().split('\n').map(line => line.split('\t'));
   const ownedFieldEvidence = new Map(beforeFiles.map(entry => {
     const owner = entry.path.slice(0, -5);
     const fields = positionRows.filter(row => row[0] === 'W' && row[1] === entry.path && row[2] === owner);
@@ -784,7 +813,7 @@ public final class GeobloxBodyPositions {
   const oldTransferEvidence = positionRows.filter(row => row[0] === 'Q');
   const dispatchReads = new Map(positionRows.filter(row => row[0] === 'I').map(row => [row[1] + ':' + row[2], row]));
   const dispatchWrites = positionRows.filter(row => row[0] === 'J');
-  const spans = positionRows.filter(row => !['C', 'G', 'E', 'U', 'F', 'S', 'H', 'V', 'Q', 'Y', 'W', 'A', 'I', 'J', 'Z', 'K', 'X', 'DUP', 'SEQ', 'STORE', 'SELF', 'SC_AST', 'SP', 'SP_JUMP'].includes(row[0])).map(([file, start, end, parameters, method, types, methodStart, owner, strict]) => {
+  const spans = positionRows.filter(row => !['C', 'G', 'E', 'U', 'F', 'S', 'H', 'V', 'Q', 'Y', 'W', 'A', 'I', 'J', 'Z', 'K', 'X', 'DUP', 'SEQ', 'STORE', 'SELF', 'SC_AST', 'SP', 'SP_JUMP', 'SMALL'].includes(row[0])).map(([file, start, end, parameters, method, types, methodStart, owner, strict]) => {
     const parameterNames = (parameters || '').split(',').filter(Boolean);
     const parameterTypes = (types || '').split(',').filter(Boolean).map(type => Buffer.from(type, 'base64').toString('utf8'));
     assert.equal(parameterNames.length, parameterTypes.length, 'all formal parameter types');
@@ -792,7 +821,7 @@ public final class GeobloxBodyPositions {
       parameters: parameterNames.map((name, index) => ({name, type: parameterTypes[index]})), fpStrict: strict === 'true'};
   });
   const require = createRequire(import.meta.url);
-  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits, foldNonlocalLoopExits, foldLoopElseExitGuards, recoverScalarIfDispatches, simplifyPredicateNegations, simplifyDominatedPredicates, finalizeControlFrames, finalizeTerminalSwitchFrames, foldRedundantExitGuards, foldTerminalLoopTails, simplifyPredicateGrouping, foldScalarSwitchPrefixes, foldBooleanLocalAssignments, foldNaturalLoopExits, foldGuardedLocalAssignments, foldStableGuardedFallbacks, foldGuardedAssignmentSequences, simplifySelfCasts, foldSinglePassInnerLoops} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
+  const {recoverPostGuardExits, foldGuardedAbruptPlainBlockExits, foldGuardedLoopContinuations, foldNonrepeatingWhileLoops, foldTrailingLoopContinuations, foldLoopExitContinuations, foldTerminalLoopExits, foldNonlocalLoopExits, foldLoopElseExitGuards, recoverScalarIfDispatches, simplifyPredicateNegations, simplifyDominatedPredicates, finalizeControlFrames, finalizeTerminalSwitchFrames, foldRedundantExitGuards, foldTerminalLoopTails, simplifyPredicateGrouping, foldScalarSwitchPrefixes, foldBooleanLocalAssignments, foldNaturalLoopExits, foldGuardedLocalAssignments, foldStableGuardedFallbacks, foldGuardedAssignmentSequences, simplifySelfCasts, foldSinglePassInnerLoops, foldSmallGuardedFallbacks} = require(path.join(tools.directory, 'src/decompiler/javaAstEmitter.js'));
   const {tokenizeJava} = require(path.join(tools.directory, 'src/java-frontend/lexer.js'));
   const tokens = source => tokenizeJava(source).tokens.filter(t => !['whitespace', 'eof'].includes(t.kind)).map(t => t.text);
   const lexical = source => {
@@ -820,6 +849,8 @@ public final class GeobloxBodyPositions {
   const naturalSelections = [], naturalTransfers = new Map(), naturalRetiredLabels = new Set(), naturalConsumedLabelReferences = new Set();
   const naturalFacts = new Map(positionRows.filter(row => row[0] === 'Z').map(row => [row[1] + ':' + row[2] + ':' + row[4], row]));
   const booleanAssignmentSelections = [], booleanAssignmentsProven = [];
+  const smallFacts=new Map(positionRows.filter(row=>row[0]==='SMALL').map(row=>[row[1]+':'+row[2],row]));
+  const smallSelections=[],smallCertificates=[],smallConsumedTransfers=new Set();
   const singlePassFacts=new Map(positionRows.filter(row=>row[0]==='SP').map(row=>[row[1]+':'+row[2],row])),singlePassJumps=positionRows.filter(row=>row[0]==='SP_JUMP');
   const singlePassSelections=[],singlePassCertificates=[],redirectedInnerBreaks=new Map();
   const selfFacts = positionRows.filter(row=>row[0]==='SELF');
@@ -841,12 +872,37 @@ public final class GeobloxBodyPositions {
     const actual = fs.readFileSync(path.join(after, entry.path), 'utf8');
     const edits = [];
     for (const span of spans.filter(s => s.file === entry.path)) {
-      if ((fieldPredicates || grouping || nestedDispatch || localAssignments || naturalExits || lateSwitchFrames || stableFallbacks || assignmentSequences || selfCasts || singlePassInner) && span.owner !== entry.path.slice(0, -5)) continue;
+      if ((fieldPredicates || grouping || nestedDispatch || localAssignments || naturalExits || lateSwitchFrames || stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) && span.owner !== entry.path.slice(0, -5)) continue;
       const body = original.slice(span.start + 1, span.end - 1);
       const recover = source => {
 
 
 
+
+        if(smallFallbacks){
+          let mappedTokens=lexical(source).map(token=>({text:token.text,origin:token.range.startOffset,originEnd:token.range.endOffset-1}));
+          const localCounts={smallGuardedFallbacks:0,fallbackCallSitesAdded:0,fallbackIdentifierCopiesAdded:0},base=span.start+1;
+          for(;;){const result=foldSmallGuardedFallbacks(source,{retainDiagnostics:true});if(!result.framesRecovered)break;
+            const d=result.diagnostics,oldTokens=lexical(source),originalAt=offset=>{const index=oldTokens.findIndex(token=>token.range.startOffset===offset);assert.ok(index>=0);assert.notEqual(mappedTokens[index].origin,null);return base+mappedTokens[index].origin;},originalEnd=offset=>{const index=oldTokens.findIndex(token=>token.range.endOffset===offset);assert.ok(index>=0);return base+mappedTokens[index].originEnd+1;};
+            const fact=smallFacts.get(entry.path+':'+originalAt(d.range.start));assert.ok(fact,'independent javac proves the exact sole guarded exit, bounded simple callback and unshadowed copy scope');
+            for(const[r,index]of[[d.range,2],[d.branchRange,4],[d.conditionRange,6],[d.guardRange,8],[d.jumpRange,10],[d.fallbackRange,12]])assert.deepEqual([originalAt(r.start),originalEnd(r.end)],[Number(fact[index]),Number(fact[index+1])]);
+            assert.equal(d.prefixStatements,Number(fact[14]));assert.equal(d.label,fact[15]);assert.equal(String(d.frameScopeRetained),fact[16]);
+            const fallbackBytes=source.slice(d.fallbackRange.start,d.fallbackRange.end);assert.ok(fallbackBytes.length<=512&&!fallbackBytes.includes('\n'));assert.ok(lexical(fallbackBytes).length<=32);
+            const jumps=oldTransferEvidence.filter(row=>row[1]===entry.path&&Number(row[2])===Number(fact[10]));assert.equal(jumps.length,1);assert.deepEqual(jumps[0].slice(4,9),['BREAK',d.label,'LABELED_STATEMENT',fact[2],fact[3]]);smallConsumedTransfers.add(entry.path+':'+fact[10]);smallCertificates.push({file:entry.path,fact});
+            const slice=r=>oldTokens.flatMap((token,index)=>token.range.startOffset>=r.start&&token.range.endOffset<=r.end?[{token,mapped:mappedTokens[index]}]:[]),rebuilt=[];let bytes='',copiedIdentifiers=0,copies=0;
+            for(const segment of d.segments){
+              if(segment.text!==undefined){const generated=lexical(segment.text);assert.ok(generated.every(token=>['if','else','!','(',')','{','}'].includes(token.text)));bytes+=segment.text;rebuilt.push(...generated.map(token=>({text:token.text,origin:null})));continue;}
+              assert.ok(segment.range.start>=d.range.start&&segment.range.end<=d.range.end);if(segment.copy){assert.deepEqual(segment.range,d.fallbackRange);copies++;}
+              bytes+=source.slice(segment.range.start,segment.range.end);
+              for(const{token,mapped}of slice(segment.range)){const next={...mapped};if(segment.copy){const origin=mapped.copyOf??mapped.origin;assert.notEqual(origin,null);next.origin=null;next.copyOf=origin;if(token.kind==='identifier')copiedIdentifiers++;}rebuilt.push(next);}
+            }
+            assert.equal(copies,1);assert.equal(copiedIdentifiers,result.fallbackIdentifierCopiesAdded);
+            if(d.dedent)bytes=bytes.split('\n').map((line,index)=>index&&line.startsWith(d.dedent.indent)?line.slice(d.dedent.delta):line).join('\n');assert.equal(result.source,source.slice(0,d.range.start)+bytes+source.slice(d.range.end),'exact bounded callback clone and unchanged condition/prefix/guard fragments');
+            mappedTokens=[...slice({start:0,end:d.range.start}).map(item=>item.mapped),...rebuilt,...slice({start:d.range.end,end:source.length}).map(item=>item.mapped)];assert.deepEqual(mappedTokens.map(token=>token.text),tokens(result.source),'only one certified source clone and selection syntax is added');
+            source=result.source;localCounts.smallGuardedFallbacks++;localCounts.fallbackCallSitesAdded++;localCounts.fallbackIdentifierCopiesAdded+=result.fallbackIdentifierCopiesAdded;
+          }
+          return{source,rewrites:localCounts.smallGuardedFallbacks,mappedTokens,counts:localCounts};
+        }
         if(singlePassInner){
           let mappedTokens=lexical(source).map(token=>({text:token.text,origin:token.range.startOffset,originEnd:token.range.endOffset-1}));
           const localCounts={singlePassInnerLoops:0,breaksContinued:0,bodyScopesFlattened:0,conditionalBodiesRecovered:0},base=span.start+1;
@@ -1516,6 +1572,7 @@ public final class GeobloxBodyPositions {
       if (nestedDispatch) dispatchSelections.push({...span, ...result.counts});
       if (lateSwitchFrames) lateSwitchSelections.push({...span, ...result.counts});
       if (naturalExits) {assert.ok(!/\\u/.test(body), 'reconstructed body has direct raw token positions');naturalSelections.push({...span, ...result.counts});}
+      if(smallFallbacks)smallSelections.push({...span,...result.counts});
       if(singlePassInner)singlePassSelections.push({...span,...result.counts});
       if (selfCasts) selfSelections.push({...span,...result.counts});
       if (assignmentSequences) sequenceSelections.push({...span,...result.counts});
@@ -1548,7 +1605,7 @@ public final class GeobloxBodyPositions {
       // Frontend token offsets refer to Unicode-translated input. Require direct
       // source offsets for changed files; byte-identical files can retain their
       // original compiler positions without interpreting that translation.
-      if (proof.loopElseExitGuards || proof.terminalPrefixBreaks || proof.scalarIfDispatches || terminalFrames || terminalTails || localAssignments || stableFallbacks || assignmentSequences || selfCasts || singlePassInner) assert.ok(!/\\u/.test(original), 'changed file has direct source/token offsets');
+      if (proof.loopElseExitGuards || proof.terminalPrefixBreaks || proof.scalarIfDispatches || terminalFrames || terminalTails || localAssignments || stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) assert.ok(!/\\u/.test(original), 'changed file has direct source/token offsets');
     }
     if (characterPredicates || proof.dominatedPredicates || redundantGuards) {
       let characters = Array.from({length: original.length}, (_, index) => index);
@@ -1563,7 +1620,7 @@ public final class GeobloxBodyPositions {
       });
       originLocations.set(entry.path, locations);
     }
-    if (proof.nonlocalLoopExits || proof.loopElseExitGuards || proof.terminalPrefixBreaks || proof.scalarIfDispatches || terminalFrames || terminalTails || localAssignments || naturalExits || stableFallbacks || assignmentSequences || selfCasts || singlePassInner) {
+    if (proof.nonlocalLoopExits || proof.loopElseExitGuards || proof.terminalPrefixBreaks || proof.scalarIfDispatches || terminalFrames || terminalTails || localAssignments || naturalExits || stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) {
       const originalTokens = lexical(original);
       let expectedTokens = originalTokens.map(token => ({text: token.text, origin: token.range.startOffset, ...((naturalExits || stableFallbacks) ? {originEnd: token.range.endOffset - 1} : {})}));
       for (const edit of edits.slice().reverse()) {
@@ -1581,16 +1638,16 @@ public final class GeobloxBodyPositions {
         if (token.origin === null) return;
         assert.ok(!order.has(token.origin), 'retained original token occurs once'); order.set(token.origin, index);
         locations.set(token.origin, actualTokens[index].range.startOffset);
-        if (nestedDispatch || localAssignments || naturalExits || lateSwitchFrames || stableFallbacks || assignmentSequences || selfCasts || singlePassInner) locations.set(token.originEnd ?? token.origin + token.text.length - 1, actualTokens[index].range.endOffset - 1);
+        if (nestedDispatch || localAssignments || naturalExits || lateSwitchFrames || stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) locations.set(token.originEnd ?? token.origin + token.text.length - 1, actualTokens[index].range.endOffset - 1);
       });
-      if(stableFallbacks)copiedOrigins.set(entry.path,expectedTokens.flatMap((token,index)=>token.copyOf===undefined?[]:[{origin:token.copyOf,text:token.text,start:actualTokens[index].range.startOffset,end:actualTokens[index].range.endOffset}]));
+      if(stableFallbacks||smallFallbacks)copiedOrigins.set(entry.path,expectedTokens.flatMap((token,index)=>token.copyOf===undefined?[]:[{origin:token.copyOf,text:token.text,start:actualTokens[index].range.startOffset,end:actualTokens[index].range.endOffset}]));
       originOrders.set(entry.path, order);
       originLocations.set(entry.path, locations);
     }
     let expected = original;
     for (const edit of edits.reverse()) expected = expected.slice(0, edit.start + 1) + edit.source + expected.slice(edit.end - 1);
     assert.deepEqual(tokens(actual), tokens(expected), entry.path + ' complete expected token stream');
-    if (characterPredicates || proof.dominatedPredicates || redundantGuards || terminalFrames || terminalTails || nestedDispatch || localAssignments || naturalExits || stableFallbacks || assignmentSequences || selfCasts || singlePassInner) assert.equal(actual, expected, entry.path + ' exact expected source bytes');
+    if (characterPredicates || proof.dominatedPredicates || redundantGuards || terminalFrames || terminalTails || nestedDispatch || localAssignments || naturalExits || stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) assert.equal(actual, expected, entry.path + ' exact expected source bytes');
     if (!edits.length) assert.equal(actual, original, entry.path + ' unchanged bytes');
     else files++;
     linesBefore += original.split('\n').length - 1; linesAfter += actual.split('\n').length - 1;
@@ -1707,19 +1764,20 @@ public class DispatchEncodingProbe {
       const position=(row,transform)=>{const start=transform?originLocations.get(row[1]).get(Number(row[2])):Number(row[2]);assert.notEqual(start,undefined,'every surviving original binding occurrence remains');return[row[1],start,start+Number(row[3])-Number(row[2]),row[4],row[5]];};
       assert.deepEqual(newAudit.filter(row=>row[0]===kind).map(row=>position(row,false)),oldAudit.filter(row=>row[0]===kind&&kept(row)).map(row=>position(row,changedFiles.has(row[1]))),'all surviving field, method, value and type bindings resolve identically at each mapped occurrence');
       if(kind==='R')assert.equal(count-proof.sourceReferenceOccurrencesAfter,removedSelfReads.size);
-    } else if (stableFallbacks || assignmentSequences || singlePassInner) {
+    } else if (stableFallbacks || assignmentSequences || singlePassInner || smallFallbacks) {
       const position=(row,transform)=>{const start=transform?originLocations.get(row[1]).get(Number(row[2])):Number(row[2]);assert.notEqual(start,undefined,'every original ordinary binding survives');return[row[1],start,start+Number(row[3])-Number(row[2]),row[4],row[5]];};
       const expected=oldAudit.filter(row=>row[0]===kind).map(row=>position(row,changedFiles.has(row[1])));
       if(kind==='R')for(const[file,copies]of copiedOrigins)for(const copy of copies){
         const rows=oldAudit.filter(row=>row[0]==='R'&&row[1]===file&&Number(row[2])===copy.origin);
         if(!rows.length)continue;assert.equal(rows.length,1);assert.equal(rows[0][5],copy.text);
+        if(smallFallbacks){assert.ok(smallCertificates.some(({file,fact})=>file===rows[0][1]&&Number(rows[0][2])>=Number(fact[12])&&Number(rows[0][3])<=Number(fact[13])),'only certified fallback references are copied');expected.push([file,copy.start,copy.end,rows[0][4],copy.text]);continue;}
         const typed=stableReads.filter(row=>row[1]===file&&Number(row[3])===copy.origin&&row[5]===copy.text);assert.ok(typed.length);
         for(const fact of typed){const declarations=oldAudit.filter(row=>row[0]==='D'&&row[1]===file&&row[4]===rows[0][4]&&row[5]===copy.text&&Number(row[2])>=Number(fact[6])&&Number(row[3])<=Number(fact[7]));assert.equal(declarations.length,1);assert.ok(['BOOLEAN','BYTE','SHORT','CHAR','INT','LONG','FLOAT','DOUBLE'].includes(fact[8]));}
         expected.push([file,copy.start,copy.end,rows[0][4],copy.text]);
       }
       const sort=rows=>rows.sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:a[1]-b[1]);
       assert.deepEqual(sort(newAudit.filter(row=>row[0]===kind).map(row=>position(row,false))),sort(expected),'every original occurrence and every certified primitive copy resolves to its exact binding');
-      if(kind==='R')assert.equal(expected.length-count,assignmentSequences||singlePassInner?0:proof.counts.primitiveReadCopiesAdded);
+      if(kind==='R')assert.equal(expected.length-count,smallFallbacks?proof.sourceReferenceOccurrencesAdded:assignmentSequences||singlePassInner?0:proof.counts.primitiveReadCopiesAdded);
     } else if (localAssignments) {
       for (const row of oldAudit.filter(row => row[0] === kind && changedFiles.has(row[1])))
         assert.equal(!originLocations.get(row[1]).has(Number(row[2])), kind === 'R' && removedBooleanWrites.has(row[1] + ':' + row[2]), 'only the independently attributed duplicate local stores disappear');
@@ -1785,7 +1843,7 @@ public class DispatchEncodingProbe {
   let migrations = 0;
   for (const [before, after] of mapping) if (after && before !== after) migrations++;
   assert.equal(migrations, proof.survivingLabelOrdinalMigrations);
-  if (terminalFrames || redundantGuards || terminalTails || naturalExits || guardedAssignments || stableFallbacks || assignmentSequences || selfCasts || singlePassInner) {
+  if (terminalFrames || redundantGuards || terminalTails || naturalExits || guardedAssignments || stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) {
     assert.deepEqual(oldLabels.filter(row => mapping.get(row[4]) && mapping.get(row[4]) !== row[4])
       .map(row => ({before: row[4], after: mapping.get(row[4]), originalName: row[5]})), proof.labelOrdinalMigrations);
     assert.deepEqual(oldLabels.filter(row => !mapping.get(row[4]))
@@ -1900,6 +1958,10 @@ public class DispatchEncodingProbe {
     assert.deepEqual(selected, proof.changedMethods, 'every affected full JVM method and comparison count');
     assert.equal(selected.reduce((sum, method) => sum + method.comparisons, 0), proof.independentlyAttributedIntegralComparisons);
   }
+  if(smallFallbacks){
+    assert.equal(smallCertificates.length,proof.counts.smallGuardedFallbacks);assert.equal(smallConsumedTransfers.size,proof.counts.smallGuardedFallbacks);
+    const selected=smallSelections.map(span=>{const declarations=oldAudit.filter(row=>row[0]==='D'&&row[1]===span.file&&row[4].startsWith('M:')&&Number(row[2])>=span.methodStart&&Number(row[3])<=span.start);assert.equal(declarations.length,1);return{symbol:declarations[0][4],frames:span.smallGuardedFallbacks,identifiers:span.fallbackIdentifierCopiesAdded};}).sort((a,b)=>a.symbol<b.symbol?-1:a.symbol>b.symbol?1:0);assert.deepEqual(selected,proof.changedMethods);
+  }
   if(singlePassInner){
     assert.equal(singlePassCertificates.length,proof.counts.singlePassInnerLoops);assert.equal(redirectedInnerBreaks.size,proof.counts.breaksContinued);
     const selected=singlePassSelections.map(span=>{const declarations=oldAudit.filter(row=>row[0]==='D'&&row[1]===span.file&&row[4].startsWith('M:')&&Number(row[2])>=span.methodStart&&Number(row[3])<=span.start);assert.equal(declarations.length,1);return{symbol:declarations[0][4],loops:span.singlePassInnerLoops,jumps:span.breaksContinued,flat:span.bodyScopesFlattened,conditional:span.conditionalBodiesRecovered};}).sort((a,b)=>a.symbol<b.symbol?-1:a.symbol>b.symbol?1:0);assert.deepEqual(selected,proof.changedMethods);
@@ -1996,10 +2058,10 @@ public class DispatchEncodingProbe {
     assert.deepEqual(sort(nextRows.map(row => fact(row,false))),sort(expected), 'complete independent JDK proof of exact surviving destinations, certified inner-loop retargets and protected-scope identities');
     assert.equal(new Set(nextRows.map(row => row[1] + ':' + row[2])).size,nextRows.length);
   }
-  if (terminalTails || fieldPredicates || grouping || nestedDispatch || localAssignments || stableFallbacks || assignmentSequences || selfCasts || singlePassInner) {
+  if (terminalTails || fieldPredicates || grouping || nestedDispatch || localAssignments || stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) {
     const nextRows = run('java', ['-cp', helpers, 'GeobloxBodyPositions', after, stubs, 'tails']).toString().trim().split('\n').map(line => line.split('\t')).filter(row => row[0] === 'Q');
     assert.equal(oldTransferEvidence.length, proof.independentlyComparedTransferFacts);
-    assert.equal(nextRows.length, oldTransferEvidence.length - consumedValueTransfers.size - stableConsumedTransfers.size - sequenceConsumedTransfers.size + (nestedDispatch ? proof.counts.bareSwitchExitsAdded : 0));
+    assert.equal(nextRows.length, oldTransferEvidence.length - consumedValueTransfers.size - stableConsumedTransfers.size - sequenceConsumedTransfers.size - smallConsumedTransfers.size + (nestedDispatch ? proof.counts.bareSwitchExitsAdded : 0));
     const facts = (rows, before) => rows.map(row => {
       const changed = before && changedFiles.has(row[1]);
       const position = offset => {const value = changed ? originLocations.get(row[1]).get(Number(offset)) : Number(offset);assert.notEqual(value, undefined, 'transfer/target/scope origin survives');return value;};
@@ -2007,7 +2069,7 @@ public class DispatchEncodingProbe {
       const redirected=before&&singlePassInner&&redirectedInnerBreaks.get(row[1]+':'+row[2]);
       return [row[1], position(row[2]), position(Number(row[3]) - 1) + 1, redirected?'CONTINUE':row[4], row[5], redirected?redirected.kind:row[6], position(redirected?redirected.start:row[7]), position((redirected?redirected.end:Number(row[8])) - 1) + 1, scopes];
     }).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] - b[1]);
-    const expected = facts(oldTransferEvidence.filter(row=>!consumedValueTransfers.has(row[1]+':'+row[2])&&!stableConsumedTransfers.has(row[1]+':'+row[2])&&!sequenceConsumedTransfers.has(row[1]+':'+row[2])), true);
+    const expected = facts(oldTransferEvidence.filter(row=>!consumedValueTransfers.has(row[1]+':'+row[2])&&!stableConsumedTransfers.has(row[1]+':'+row[2])&&!sequenceConsumedTransfers.has(row[1]+':'+row[2])&&!smallConsumedTransfers.has(row[1]+':'+row[2])), true);
     let retained = nextRows;
     if (nestedDispatch) {
       const starts = new Set(expected.map(row => row[0] + ':' + row[1]));
@@ -2055,7 +2117,7 @@ public class DispatchEncodingProbe {
       assert.ok(labels.every(row => row[4].slice(2, row[4].lastIndexOf('#')) === enclosingMethod), 'no nested executable inventory ambiguity');
       inventory.push({rawFile: file, enclosingMethod, lines, labels: labels.length});
     }
-    if (proof.terminalPrefixBreaks || proof.scalarIfDispatches || characterPredicates || proof.dominatedPredicates || redundantGuards || terminalFrames || terminalTails || localAssignments || naturalExits || stableFallbacks || assignmentSequences || selfCasts || singlePassInner) {
+    if (proof.terminalPrefixBreaks || proof.scalarIfDispatches || characterPredicates || proof.dominatedPredicates || redundantGuards || terminalFrames || terminalTails || localAssignments || naturalExits || stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) {
       assert.equal(methodBodies, proof.methodBodiesAfter);
       assert.equal(largeMethodBodies, proof.largeMethodBodiesAfter);
       assert.equal(largePlainBlockMethodBodies, proof.largeMethodBodiesWithPlainBlockLabelsAfter);
@@ -2071,9 +2133,9 @@ public class DispatchEncodingProbe {
     run('git', ['show', proof.previousSourceCommit + ':decompilation/geoblox-decompiler-diagnostics.json']).toString(), 'diagnostics unchanged');
   console.log(JSON.stringify({filesChecked: 303, changedFiles: files, changedMethods: methods, labelsBefore, labelsAfter,
     declarations: proof.sourceDeclarationsAfter, references: proof.sourceReferenceOccurrencesAfter, overrides: proof.fullOverridePairsPreserved,
-    counts, ...(singlePassInner ? {independentlyProvenSinglePassLoops:singlePassCertificates.length,independentlyRedirectedInnerBreaks:redirectedInnerBreaks.size,allOriginalBindingOccurrencesPreserved:true,allSurvivingTransfersAndProtectedScopesPreserved:true,exactExpectedSourceBytes:true} : {}), ...(selfCasts ? {independentlyProvenSelfCasts:selfCertificates.length,onlyCertifiedCastTypeReferencesRemoved:removedSelfReads.size,allSurvivingBindingOccurrencesPreserved:true,completeJavacAstModuloSelfCastsPreserved:true,allSurvivingTransfersAndProtectedScopesPreserved:true,exactExpectedSourceBytes:true} : {}), ...(assignmentSequences ? {independentlyProvenAssignmentSequences:sequenceCertificates.length,consumedLabeledTransfers:sequenceConsumedTransfers.size,allSurvivingTransfersAndProtectedScopesPreserved:true,allOriginalBindingOccurrencesPreserved:true,exactExpectedSourceBytes:true,independentJdkInvariantAndTransferEvidence:true} : {}), ...(stableFallbacks ? {independentlyProvenStableFrames:stableCertificates.length,certifiedPrimitiveReadCopies:counts.primitiveReadCopiesAdded,consumedLabeledTransfers:stableConsumedTransfers.size,allSurvivingTransfersAndProtectedScopesPreserved:true,exactExpectedSourceBytes:true} : {}), ...(guardedAssignments ? {independentlyAttributedGuardedAssignments:booleanAssignmentsProven.length,duplicateLocalWriteOccurrencesRemoved:removedBooleanWrites.size,consumedLabeledTransfers:consumedValueTransfers.size,allSurvivingTransfersAndProtectedScopesPreserved:true,exactExpectedSourceBytes:true} : {}), ...(lateSwitchFrames ? {independentlyProvenSwitchBreakDestinations:localizedSwitchTransfers.size,allSurvivingTransfersAndCertifiedDestinationsProven:true,allProtectedScopesPreserved:true,independentlyComparedTransferFacts:oldTransferEvidence.length} : {}), ...(naturalExits ? {independentlyCertifiedContinueTransfers: naturalTransfers.size, terminalContinuesRemoved: proof.counts.terminalContinuesRemoved, outerContinuesLocalized: proof.counts.outerContinuesLocalized, allSurvivingTransfersAndCertifiedDestinationsProven: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : {}), ...(booleanAssignments ? {independentlyAttributedBooleanAssignments: booleanAssignmentsProven.length, duplicateLocalWriteOccurrencesRemoved: removedBooleanWrites.size, survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, allTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : {}), ...(nestedDispatch ? {independentlyAttributedClassifierReads, capturedLocalsUnmodifiedInDispatch: true, independentlyEncodedUtf16Units: 393216, allOriginalTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : {}), ...(grouping ? {completeJavaAstModuloParenthesesPreserved: true, independentlyComparedAstFiles: 303} : {}), ...(proof.dominatedPredicates ? {independentlyProvenGuardComparisons: removedGuardReads.size} : {}), ...(proof.integralPredicates ? {independentlyAttributedIntegralComparisons: counts.relationalComplements} : {}), labelBindings: actualLabels.length, survivingLabelOrdinalMigrations: migrations, sourceArchiveSha256: proof.sourceArchiveSha256, exactExpectedTokenStreams: true,
+    counts, ...(smallFallbacks ? {independentlyCertifiedExclusiveFallbacks:smallCertificates.length,consumedLabeledTransfers:smallConsumedTransfers.size,allOriginalAndCopiedBindingOccurrencesPreserved:true,allSurvivingTransfersAndProtectedScopesPreserved:true,exactExpectedSourceBytes:true} : {}), ...(singlePassInner ? {independentlyProvenSinglePassLoops:singlePassCertificates.length,independentlyRedirectedInnerBreaks:redirectedInnerBreaks.size,allOriginalBindingOccurrencesPreserved:true,allSurvivingTransfersAndProtectedScopesPreserved:true,exactExpectedSourceBytes:true} : {}), ...(selfCasts ? {independentlyProvenSelfCasts:selfCertificates.length,onlyCertifiedCastTypeReferencesRemoved:removedSelfReads.size,allSurvivingBindingOccurrencesPreserved:true,completeJavacAstModuloSelfCastsPreserved:true,allSurvivingTransfersAndProtectedScopesPreserved:true,exactExpectedSourceBytes:true} : {}), ...(assignmentSequences ? {independentlyProvenAssignmentSequences:sequenceCertificates.length,consumedLabeledTransfers:sequenceConsumedTransfers.size,allSurvivingTransfersAndProtectedScopesPreserved:true,allOriginalBindingOccurrencesPreserved:true,exactExpectedSourceBytes:true,independentJdkInvariantAndTransferEvidence:true} : {}), ...(stableFallbacks ? {independentlyProvenStableFrames:stableCertificates.length,certifiedPrimitiveReadCopies:counts.primitiveReadCopiesAdded,consumedLabeledTransfers:stableConsumedTransfers.size,allSurvivingTransfersAndProtectedScopesPreserved:true,exactExpectedSourceBytes:true} : {}), ...(guardedAssignments ? {independentlyAttributedGuardedAssignments:booleanAssignmentsProven.length,duplicateLocalWriteOccurrencesRemoved:removedBooleanWrites.size,consumedLabeledTransfers:consumedValueTransfers.size,allSurvivingTransfersAndProtectedScopesPreserved:true,exactExpectedSourceBytes:true} : {}), ...(lateSwitchFrames ? {independentlyProvenSwitchBreakDestinations:localizedSwitchTransfers.size,allSurvivingTransfersAndCertifiedDestinationsProven:true,allProtectedScopesPreserved:true,independentlyComparedTransferFacts:oldTransferEvidence.length} : {}), ...(naturalExits ? {independentlyCertifiedContinueTransfers: naturalTransfers.size, terminalContinuesRemoved: proof.counts.terminalContinuesRemoved, outerContinuesLocalized: proof.counts.outerContinuesLocalized, allSurvivingTransfersAndCertifiedDestinationsProven: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : {}), ...(booleanAssignments ? {independentlyAttributedBooleanAssignments: booleanAssignmentsProven.length, duplicateLocalWriteOccurrencesRemoved: removedBooleanWrites.size, survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, allTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : {}), ...(nestedDispatch ? {independentlyAttributedClassifierReads, capturedLocalsUnmodifiedInDispatch: true, independentlyEncodedUtf16Units: 393216, allOriginalTransferTargetsAndProtectedScopesPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : {}), ...(grouping ? {completeJavaAstModuloParenthesesPreserved: true, independentlyComparedAstFiles: 303} : {}), ...(proof.dominatedPredicates ? {independentlyProvenGuardComparisons: removedGuardReads.size} : {}), ...(proof.integralPredicates ? {independentlyAttributedIntegralComparisons: counts.relationalComplements} : {}), labelBindings: actualLabels.length, survivingLabelOrdinalMigrations: migrations, sourceArchiveSha256: proof.sourceArchiveSha256, exactExpectedTokenStreams: true,
     orderedJavaDeclarationsUnchanged: true, ...(stableFallbacks ? {allOriginalBindingsAndCertifiedPrimitiveCopiesPreserved:true,independentJdkInvariantAndTransferEvidence:true} : {}), ...((terminalTails || fieldPredicates || grouping || localAssignments || naturalExits) ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, ...(naturalExits ? {allSurvivingTransfersAndCertifiedDestinationsProven: true} : guardedAssignments ? {allSurvivingTransfersAndProtectedScopesPreserved:true} : {allTransferTargetsAndProtectedScopesPreserved: true}), independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : redundantGuards ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkPureGuardAndDestinationEvidence: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : terminalFrames ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, independentJdkTransferAndScopeEvidence: true, exactExpectedSourceBytes: true} : proof.dominatedPredicates ? {survivingPerOccurrenceJavaAndLabelBindingsPreserved: true, purePrimitiveReadsRemoved: removedGuardReads.size, exactExpectedSourceBytes: true} : characterPredicates ? {perOccurrenceJavaAndLabelBindingsPreserved: true, exactExpectedSourceBytes: true} : proof.scalarIfDispatches ? {survivingPerOccurrenceJavaBindingsPreserved: true, purePrimitiveReadsRemoved: proof.primitiveReferenceOccurrencesRemoved}
-      : (proof.loopElseExitGuards || proof.terminalPrefixBreaks) ? {perOccurrenceJavaBindingsPreserved: true} : (stableFallbacks || assignmentSequences || selfCasts || singlePassInner) ? {} : {orderedJavaBindingsUnchanged: true})}));
+      : (proof.loopElseExitGuards || proof.terminalPrefixBreaks) ? {perOccurrenceJavaBindingsPreserved: true} : (stableFallbacks || assignmentSequences || selfCasts || singlePassInner || smallFallbacks) ? {} : {orderedJavaBindingsUnchanged: true})}));
 } finally {
   fs.rmSync(temporary, {recursive: true, force: true});
 }
