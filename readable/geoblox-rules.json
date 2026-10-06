@@ -4,10 +4,10 @@
   "purpose": "Offline readable source mirror; not a runtime patch",
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
-    "commit": "c66b27f36c6b49e6546a7a131bd1888e6de7f190",
+    "commit": "16b62019ef79afa0cc5ca8693b72206bfe722e9f",
     "subdirectory": "games/geoblox"
   },
-  "inputTreeSha256": "966c498146038e6c2b81b6056569420aba995edf15219e9f3fe309056322d43d",
+  "inputTreeSha256": "bf6759d05dff386a545e66df9abdb0e40f5327dcfda55870b73433ef8622c219",
   "namingPolicy": "Confirmed semantic names without opaque suffixes; unknown symbols stay unchanged. Original spellings and JVM identities remain in the reverse symbol map. Every rule guards the original spelling. Local identities also use declaration ordinals; reused variables retain all supported roles. Numeric screen/action IDs and decompiler state remain unchanged.",
   "renames": [
     {
@@ -110195,19 +110195,19 @@
       "evidence": "Input source audit: wl queues translated key presses/typed characters and encoded releases; re.b(Z)V replays held-key changes and snapshots the keyboard-event frame end; hh.a(I)Z polls that frame. le AWT mouse/focus callbacks update live pointer state; mc.a(B)V copies it under the listener monitor and consumes pending presses/activity. Numeric internal codes,128-slot queues,112 held-key flags,guards,handlers and original diagnostic strings remain. The2184-case native matrix checks controlled-event/queue scopes; real concurrent AWT delivery and complete gameplay remain unverified."
     }
   ],
-  "revision": 145,
-  "version": 215,
+  "revision": 146,
+  "version": 216,
   "generators": {
     "dekoblokoWork": {
       "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
       "trackedClean": true
     },
     "javaTools": {
-      "commit": "c2a48445b625e64235f123e3f6777faf254769b6",
+      "commit": "03a5aa806452458c8d2f19718f16a0c37ff78abf",
       "trackedClean": true,
       "sourceArchive": {
-        "sha256": "6b7d983b3e8d24f36d4d6808afa6ed735bfcdf4b1c503b56af2f99204f2765b4",
-        "reproduce": "git archive --format=tar c2a48445b625e64235f123e3f6777faf254769b6 | sha256sum",
+        "sha256": "0d5006fd3d9321c254252d94f322f97c13ee4a6cca4549bcc03b48a597fbb6c6",
+        "reproduce": "git archive --format=tar 03a5aa806452458c8d2f19718f16a0c37ff78abf | sha256sum",
         "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
       }
     },
@@ -110231,412 +110231,11 @@
     "format": 1,
     "previousRules": {
       "repository": "Kreijstal/dekobloko-work",
-      "commit": "47532cb29478aae98c5cc3aa36e58410b97fb580",
+      "commit": "7f3d87237e5f4fcab093c368284f4cf24d877555",
       "path": "readable/geoblox-rules.json",
-      "sha256": "c43a14c5c27dda4500eeb974d86672614be4691c965f6480bc73dcecb8dffd28"
+      "sha256": "a6ca18545a430e2a11eea0ad491f12a6c5de4900917eaf8c491bab93288d5c36"
     },
-    "ruleChanges": [
-      {
-        "symbol": "L:bf.addConsumer(Ljava/awt/image/ImageConsumer;)V#0",
-        "before": null,
-        "after": {
-          "symbol": "L:bf.addConsumer(Ljava/awt/image/ImageConsumer;)V#0",
-          "originalName": "runtimeException",
-          "to": "consumerRegistrationFailure",
-          "evidence": "ImageProducerRasterBuffer.addConsumer assigns imageConsumer then configures dimensions, properties, color model and hints. Its catch wraps the same RuntimeException in the unchanged bf.addConsumer diagnostic. Name only; preserve receiver identity, configuration order and handler behavior."
-        }
-      },
-      {
-        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#0",
-        "before": null,
-        "after": {
-          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#0",
-          "originalName": "var7",
-          "to": "imageUpdateFailureForContext",
-          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
-        }
-      },
-      {
-        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#1",
-        "before": null,
-        "after": {
-          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#1",
-          "originalName": "stackIn_4_0",
-          "to": "imageUpdateFailureBeforeDescription",
-          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
-        }
-      },
-      {
-        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#2",
-        "before": null,
-        "after": {
-          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#2",
-          "originalName": "stackIn_4_1",
-          "to": "imageUpdateMessagePrefix",
-          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
-        }
-      },
-      {
-        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#3",
-        "before": null,
-        "after": {
-          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#3",
-          "originalName": "stackIn_5_2",
-          "to": "observedImageDescription",
-          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
-        }
-      },
-      {
-        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#4",
-        "before": null,
-        "after": {
-          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#4",
-          "originalName": "decompiledCaughtException",
-          "to": "caughtImageUpdateFailure",
-          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
-        }
-      },
-      {
-        "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#5",
-        "before": null,
-        "after": {
-          "symbol": "L:bf.imageUpdate(Ljava/awt/Image;IIIII)Z#5",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "imageUpdateFailure",
-          "evidence": "ImageProducerRasterBuffer.imageUpdate returns true in its try body. Preserve its existing RuntimeException handler and aliases: bf.imageUpdate diagnostic prefix, observed-image null/object description, then infoFlags and update rectangle arguments. Names only; do not remove the currently unexecuted handler or its declarations."
-        }
-      },
-      {
-        "symbol": "L:bf.removeConsumer(Ljava/awt/image/ImageConsumer;)V#0",
-        "before": null,
-        "after": {
-          "symbol": "L:bf.removeConsumer(Ljava/awt/image/ImageConsumer;)V#0",
-          "originalName": "runtimeException",
-          "to": "consumerRemovalFailure",
-          "evidence": "ImageProducerRasterBuffer.removeConsumer clears the registered imageConsumer only for the same consumer identity. Its catch wraps the same RuntimeException in the unchanged bf.removeConsumer diagnostic. Name only; preserve receiver identity, configuration order and handler behavior."
-        }
-      },
-      {
-        "symbol": "L:bf.startProduction(Ljava/awt/image/ImageConsumer;)V#0",
-        "before": null,
-        "after": {
-          "symbol": "L:bf.startProduction(Ljava/awt/image/ImageConsumer;)V#0",
-          "originalName": "runtimeException",
-          "to": "productionStartFailure",
-          "evidence": "ImageProducerRasterBuffer.startProduction delegates to addConsumer. Its catch wraps the same RuntimeException in the unchanged bf.startProduction diagnostic. Name only; preserve receiver identity, configuration order and handler behavior."
-        }
-      },
-      {
-        "symbol": "L:h.<init>(Ljava/lang/String;)V#0",
-        "before": null,
-        "after": {
-          "symbol": "L:h.<init>(Ljava/lang/String;)V#0",
-          "originalName": "runtimeException",
-          "to": "queryInitializationFailure",
-          "evidence": "EmailAvailabilityQuery constructor initializes completed/available false, then assigns candidateEmail. Preserve the RuntimeException caught around that assignment and the unchanged h.<init> diagnostic. Name only."
-        }
-      },
-      {
-        "symbol": "L:h.a(B)Z#0",
-        "before": null,
-        "after": {
-          "symbol": "L:h.a(B)Z#0",
-          "originalName": "var3",
-          "to": "nullAppletForInvalidGuard",
-          "evidence": "EmailAvailabilityQuery.isAvailable retains the unused null Applet declaration and navigateToReloadPage(null,true) on its invalid-guard path before returning available. Name only; preserve the original branch and all calls."
-        }
-      },
-      {
-        "symbol": "L:ol.a(B)I#0",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(B)I#0",
-          "originalName": "var2",
-          "to": "handleCountGuardQuotient",
-          "evidence": "MultiHandleSliderWidget.handleCount evaluates -85/((36-methodGuard)/49) before querying list size. Retain the unused result and all division-failure behavior; name only."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#0",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#0",
-          "originalName": "var13",
-          "to": "handleSearchIndex",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#1",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#1",
-          "originalName": "stackIn_26_0",
-          "to": "pointerPressFailureBeforeDescription",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#10",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#10",
-          "originalName": "var12",
-          "to": "selectedHandleIndex",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#11",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#11",
-          "originalName": "var14",
-          "to": "valueDeltaThenSquaredDistance",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#12",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#12",
-          "originalName": "var15",
-          "to": "clientControlFlowSnapshot",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#13",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#13",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "pointerPressFailure",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#2",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#2",
-          "originalName": "stackIn_26_1",
-          "to": "pointerPressMessagePrefix",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#3",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#3",
-          "originalName": "stackIn_27_2",
-          "to": "eventContextDescription",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#4",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#4",
-          "originalName": "decompiledCaughtException",
-          "to": "caughtPointerPressFailure",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#5",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#5",
-          "originalName": "var8_int",
-          "to": "pointerPressGuardResidue",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#6",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#6",
-          "originalName": "var8",
-          "to": "pointerPressFailureForContext",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#7",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#7",
-          "originalName": "var9",
-          "to": "railOffsetThenHandleValue",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#8",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#8",
-          "originalName": "var10",
-          "to": "usableRailWidth",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.a(IIIIIILel;)Z#9",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.a(IIIIIILel;)Z#9",
-          "originalName": "var11",
-          "to": "smallestSquaredDistance",
-          "evidence": "MultiHandleSliderWidget.handlePointerPress first preserves the modulo guard expression and calls superclass hit handling. Computes pointerX-parentX-railInset, clamps to [0, widgetWidth-2*railInset], then reuses the same int as maximumValue*offset/usableRailWidth. Button 1 adds that value; button 2 scans handleValues using the original signed-int squared-distance calculation, strict minimum comparison and first-match tie behavior before removing the selected index. Preserve integer overflow, division failures and all original writes, callbacks and order. Exception aliases build the unchanged ol.D diagnostic with the event-context null/object description. The control-flow snapshot is assigned from Geoblox.clientControlFlowFlag even though this emitted body never reads it. Names only; JVM method, original spelling and local ordinal remain guarded."
-        }
-      },
-      {
-        "symbol": "L:ol.c(II)I#0",
-        "before": null,
-        "after": {
-          "symbol": "L:ol.c(II)I#0",
-          "originalName": "var3",
-          "to": "handleLookupGuardQuotient",
-          "evidence": "MultiHandleSliderWidget.handleValueAt returns -1 for an invalid index; otherwise evaluates 34/((methodGuard-88)/32) before reading handleValues.get. Retain the unused result and division failures; name only."
-        }
-      },
-      {
-        "symbol": "L:tg.a(III)V#0",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.a(III)V#0",
-          "originalName": "var5",
-          "to": "nullComponentForInvalidGuard",
-          "evidence": "WindowsCursorController.moveCursor calls SetCursorPos(x,y); its invalid-guard path retains an unused null Component declaration before setCursorVisible(74,true,null). Name only; preserve both operations and the guard."
-        }
-      },
-      {
-        "symbol": "L:tg.a(IZLjava/awt/Component;)V#0",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.a(IZLjava/awt/Component;)V#0",
-          "originalName": "var5",
-          "to": "targetWindowHandle",
-          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
-        }
-      },
-      {
-        "symbol": "L:tg.a(IZLjava/awt/Component;)V#1",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.a(IZLjava/awt/Component;)V#1",
-          "originalName": "var6",
-          "to": "cursorControllerMonitor",
-          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
-        }
-      },
-      {
-        "symbol": "L:tg.a(IZLjava/awt/Component;)V#2",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.a(IZLjava/awt/Component;)V#2",
-          "originalName": "var8",
-          "to": "unusedCursorThrowable",
-          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
-        }
-      },
-      {
-        "symbol": "L:tg.a(IZLjava/awt/Component;)V#3",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.a(IZLjava/awt/Component;)V#3",
-          "originalName": "var9",
-          "to": "windowComponentPeer",
-          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
-        }
-      },
-      {
-        "symbol": "L:tg.a(IZLjava/awt/Component;)V#4",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.a(IZLjava/awt/Component;)V#4",
-          "originalName": "stackIn_6_0",
-          "to": "invertedCurrentVisibilityBit",
-          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
-        }
-      },
-      {
-        "symbol": "L:tg.a(IZLjava/awt/Component;)V#5",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.a(IZLjava/awt/Component;)V#5",
-          "originalName": "stackIn_22_1",
-          "to": "replacementWindowVisibilitySnapshot",
-          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
-        }
-      },
-      {
-        "symbol": "L:tg.a(IZLjava/awt/Component;)V#6",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.a(IZLjava/awt/Component;)V#6",
-          "originalName": "stackIn_28_1",
-          "to": "sameWindowVisibilitySnapshot",
-          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
-        }
-      },
-      {
-        "symbol": "L:tg.a(IZLjava/awt/Component;)V#7",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.a(IZLjava/awt/Component;)V#7",
-          "originalName": "decompiledCaughtException",
-          "to": "unusedCaughtCursorThrowable",
-          "evidence": "WindowsCursorController.setCursorVisible retains the emitted null WComponentPeer initialization and getTopHwnd call; targetWindowHandle drives window comparisons, SendMessage and procedure replacement. cursorControllerMonitor aliases this for both synchronized blocks. The current-visibility bit is cursorVisible?0:1; two distinct Boolean snapshots retain !(!visible) for same-window and replacement-window assignments. Both Throwable declarations are unused in this body. Names only: preserve the current unsupported peer path, guards, monitor identity/order, native arguments, fields and every source operation."
-        }
-      },
-      {
-        "symbol": "L:tg.callback(IIII)I#0",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.callback(IIII)I#0",
-          "originalName": "stackIn_7_0",
-          "to": "cursorHandleForPrivateMessage",
-          "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
-        }
-      },
-      {
-        "symbol": "L:tg.callback(IIII)I#1",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.callback(IIII)I#1",
-          "originalName": "stackIn_16_0",
-          "to": "cursorHandleForClientHitTest",
-          "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
-        }
-      },
-      {
-        "symbol": "L:tg.callback(IIII)I#2",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.callback(IIII)I#2",
-          "originalName": "stackIn_21_0",
-          "to": "cursorHandleForFallbackMessage",
-          "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
-        }
-      },
-      {
-        "symbol": "L:tg.callback(IIII)I#3",
-        "before": null,
-        "after": {
-          "symbol": "L:tg.callback(IIII)I#3",
-          "originalName": "var5",
-          "to": "previousProcedureOrHitTestCode",
-          "evidence": "WindowsCursorController.callback uses three separately allocated int snapshots for cursorVisible?arrowCursorHandle:0 before SetCursor. The reused var5 first stores GetWindowLong(windowHandle,-4) on the foreign-window path, then stores lParam&65535 as the hit-test code on the matching-window path. Preserve both roles, message constants, native arguments, delegation, synchronization and visible-state writes. Names only; no native-platform behavior is repaired or inferred."
-        }
-      }
-    ],
+    "ruleChanges": [],
     "stubJarSha256": "8d919fd8540d49cc2e78f7d8277ad0150b48a455cedf3f105bda2c1f82855ae2",
     "sourceEvidence": [
       {
@@ -110741,7 +110340,7 @@
       },
       {
         "file": "bj.java",
-        "sha256": "75795007f93b445d4f06e0038ab5fdb0ac2734880ab23436c4d211acd09274c0"
+        "sha256": "5e2f88293d7d6ec909f08e2b2cf8dfca472cd4c6d724605ebabc92648d675dd2"
       },
       {
         "file": "bk.java",
@@ -110753,11 +110352,11 @@
       },
       {
         "file": "bm.java",
-        "sha256": "9b797b19ab102b76c3acd24f19023194ae5b78aa0e6ed3f156631cf506990665"
+        "sha256": "262cff19334b494ecf042ff0a1c4ba2a745abec9ec5fd814767bbab47107fba6"
       },
       {
         "file": "c.java",
-        "sha256": "a13e56ab298fc96c28cd9570de1b49ecd35d80190d7790266435bbd591d44471"
+        "sha256": "495e58560e7bf749dbc54d5c2898a7d880469d0bccb9877f7d68434d8a21fd4a"
       },
       {
         "file": "ca.java",
@@ -110789,7 +110388,7 @@
       },
       {
         "file": "ch.java",
-        "sha256": "191aa702dc19becfdce63d47d0ae811ae25ea15487f7fe11c66959fc03aa31be"
+        "sha256": "69b58bad1804f41aaf689212f37152b7505d0df126d11e1908d2ffcdbf4ff7d1"
       },
       {
         "file": "ci.java",
@@ -110809,11 +110408,11 @@
       },
       {
         "file": "cm.java",
-        "sha256": "0843d6a5934153762de2238987c00b62395020ff448b70f3a7a331f2fa42d72f"
+        "sha256": "9db44295331c71ad3cd26eaf663e0a10805bf12f747de26cd901ffe88be1c773"
       },
       {
         "file": "d.java",
-        "sha256": "c39b853fc3b2863b5a236c95f274e904d48511f4e39bfcbf9ec85c864201332d"
+        "sha256": "42ab96299e28a73ff429bd1384d53e9811631d757089054538cc6855390994da"
       },
       {
         "file": "da.java",
@@ -110857,7 +110456,7 @@
       },
       {
         "file": "dk.java",
-        "sha256": "f981bb2b078e02f5fb094ce2e5f2aef8e3471d115f3a5245dba4346cc1d8c9e6"
+        "sha256": "a668cd6c9a4bf04c282134771ed44d5498a4669f87542aaf72242c1e5a3b9399"
       },
       {
         "file": "dl.java",
@@ -110881,7 +110480,7 @@
       },
       {
         "file": "ec.java",
-        "sha256": "e9e680bb2e97081f0f2c720bdd60db33438b4b97a06885b10af652c4c6a5c5c9"
+        "sha256": "2c3883cb298c03816c8a06fd2ff4d82a9a8194d2e61ddb6bbcc90c955373446b"
       },
       {
         "file": "ed.java",
@@ -111005,7 +110604,7 @@
       },
       {
         "file": "gh.java",
-        "sha256": "994df43cd65bdfd82fd5699b5957c63926eeaf2313c50d5956377e7a561c94c6"
+        "sha256": "74df14f238de75399d39932ebe96445837ad7567871bef7261887e74f5383c4c"
       },
       {
         "file": "gi.java",
@@ -111085,7 +110684,7 @@
       },
       {
         "file": "ib.java",
-        "sha256": "2ac626b826923cffe5d4fa2250595d97256101b8632fdeb122db4384365f7b66"
+        "sha256": "0372a25827fb9b5bea682e909c52676df48c7d5df0d9fd1c8cf531cac2000a15"
       },
       {
         "file": "ic.java",
@@ -111157,7 +110756,7 @@
       },
       {
         "file": "jh.java",
-        "sha256": "45aecdcef9809b20f13fef6527687a89875d55cef475aa84619b66e617396acd"
+        "sha256": "3c400c9a7244b55653125b4333fdb4bdb2f72c378448336b10f39012db5f6ba7"
       },
       {
         "file": "ji.java",
@@ -111241,7 +110840,7 @@
       },
       {
         "file": "lc.java",
-        "sha256": "d7f3adc8442a82de1de6e68c94f0c6682d7cfc55b7d3d7b477871a368c710c70"
+        "sha256": "775d527606302e6a07a3de784224d33e056ef23cfa9e853fa76c26862ffcd6d3"
       },
       {
         "file": "ld.java",
@@ -111357,7 +110956,7 @@
       },
       {
         "file": "nf.java",
-        "sha256": "9be04e88e809c0da45b442f18691a6c9f95e28d5c51f02d9f17c358d68df9944"
+        "sha256": "2482afb411db62f4fe18ddc4711ee9177fcb092a2b8e182602b5fe92a3d7bd96"
       },
       {
         "file": "ng.java",
@@ -111389,7 +110988,7 @@
       },
       {
         "file": "oa.java",
-        "sha256": "dacd97de563dfa691f69b5f2db9992cf48bac7cb8bb589c08ee0060f8c1cd6a2"
+        "sha256": "8ace6ffc6dc55a2e74c65a6f8de84d701057ed6e34bc250dd9992d6bd90e7995"
       },
       {
         "file": "ob.java",
@@ -111405,7 +111004,7 @@
       },
       {
         "file": "oe.java",
-        "sha256": "3c0fff2dd3d3d1a7da6401e4ad104bcb3b612c7f0377fd0690fe3b54902968f0"
+        "sha256": "97e30e85de582b56130ba415816ff2f74e54930e405f515f34fb20f553761abc"
       },
       {
         "file": "of.java",
@@ -111433,15 +111032,15 @@
       },
       {
         "file": "ol.java",
-        "sha256": "9380e3f50f686def417d6053d056528a77f60cd61956bef312c01d0bcb911acc"
+        "sha256": "e31bcb114090174d1164c9fd6fe0f7dd19954eb5a8b6332a8d1f53815254039b"
       },
       {
         "file": "p.java",
-        "sha256": "6fc7339fd9f6360cf3f66f74d6dbe5e4e9dfce6be641ff3d1606466bab57c657"
+        "sha256": "b0611a02a96e3afeb368ff40f849d1234ee2465fa911af6b9e265da7fd951ca1"
       },
       {
         "file": "pa.java",
-        "sha256": "65da81e3761dc8630aa94a523fb157a88334cda2ebb46baf444f190cb8ecfad5"
+        "sha256": "41582b7addc7e564b6bf58ac3aca1589b267f5e0cf92441b62944e3f744e7a11"
       },
       {
         "file": "pb.java",
@@ -111637,7 +111236,7 @@
       },
       {
         "file": "sk.java",
-        "sha256": "ed8a2be1a816d53ea997d6eb0f982b0b516da5965bdb27239f45eca2b8107a00"
+        "sha256": "1035e0d5d8cf570119481d3471e35beb938a2f276528408a0030af58bd96e6f3"
       },
       {
         "file": "sl.java",
@@ -111729,7 +111328,7 @@
       },
       {
         "file": "uh.java",
-        "sha256": "2721f77f4d087f6af02e8a1f39e966bac53e7c34ed3703e647bb0c90d5e69189"
+        "sha256": "f232cb78bde4ddff8a0fd7cc998657a13dff2d010c5d8c4decde00bae58ab889"
       },
       {
         "file": "ui.java",
@@ -111825,7 +111424,7 @@
       },
       {
         "file": "wf.java",
-        "sha256": "f610c20a619077b15a5d2ad360a89d96c522c10cf66008ca4accabea49a85f46"
+        "sha256": "9cd6c77eac54fce83069d159c0202c4b11e58643ccf89b7b4562e5247c2260cb"
       },
       {
         "file": "wg.java",
@@ -111833,7 +111432,7 @@
       },
       {
         "file": "wh.java",
-        "sha256": "e2340d96cdbf4539704c52686db903b8f6ef29d62041f216f7714b44273d7209"
+        "sha256": "2e0528db6d3934d66ea18907d852fad80d3cbe0d712e61d07fbcb6080a27ec06"
       },
       {
         "file": "wi.java",
@@ -114454,7 +114053,7 @@
       "difficultyMethodLinesBefore": 38,
       "difficultyMethodLinesAfter": 38,
       "allGuardedNamesUnchanged": true,
-      "ruleChangesInCurrentPass": 40,
+      "ruleChangesInCurrentPass": 0,
       "genericNestedContinuationTestGroups": 2,
       "nativeNestedContinuationComparisons": 2520,
       "nestedContinuationChangedJavaFiles": 7,
@@ -114474,7 +114073,7 @@
       "namedAssetLoadingMethodsAdded": 6,
       "namedAssetLoadingParametersAdded": 24,
       "namedAssetPreparationAndLookupLocalsAdded": 28,
-      "identifierEditsAddedInCurrentPass": 132,
+      "identifierEditsAddedInCurrentPass": 0,
       "lastStructuralPassVersion": 191,
       "namingRulesRefinedInCurrentPass": 4,
       "allUnaffectedPriorRulesPreserved": true,
@@ -125446,7 +125045,389 @@
             "to": "previousProcedureOrHitTestCode"
           }
         ]
+      },
+      "complementedRelationRecovery": {
+        "version": 216,
+        "complementedRelations": true,
+        "changedJavaFiles": 22,
+        "changedMethodBodies": 32,
+        "counts": {
+          "comparisonsSimplified": 73,
+          "complementsRemoved": 146
+        },
+        "sourceLinesBefore": 75802,
+        "sourceLinesAfter": 75802,
+        "genericFocusedTestGroupsPassed": 6,
+        "genericSelectedTestGroupsPassed": 33,
+        "genericSelectedTestGroupsSkipped": 0,
+        "nativeComparisons": 2612736,
+        "nativeContextVariants": 672,
+        "sourceProofTest": "readable/tests/test-geoblox-complemented-relations-source.mjs",
+        "sourceProofTestSha256": "34cc5c9309f9f84cd97d81bf3b5516512da0d9a06dedc540c4fc68c2aa3893e1",
+        "bodyPositionFixture": "readable/tests/test-geoblox-guarded-abrupt-source.mjs",
+        "bodyPositionFixtureSha256": "bd055a5b54cc29b307cf4cfc584509741a18d283a8ed53a284e2d629c40471cd",
+        "sourceProofTestRepository": "Kreijstal/dekobloko-work",
+        "previousSourceCommit": "c66b27f36c6b49e6546a7a131bd1888e6de7f190",
+        "sourceCommit": "16b62019ef79afa0cc5ca8693b72206bfe722e9f",
+        "previousSourceTreeSha256": "966c498146038e6c2b81b6056569420aba995edf15219e9f3fe309056322d43d",
+        "sourceTreeSha256": "bf6759d05dff386a545e66df9abdb0e40f5327dcfda55870b73433ef8622c219",
+        "javaToolsCommit": "03a5aa806452458c8d2f19718f16a0c37ff78abf",
+        "sourceArchiveSha256": "0d5006fd3d9321c254252d94f322f97c13ee4a6cca4549bcc03b48a597fbb6c6",
+        "sourceDeclarationsBefore": 19253,
+        "sourceDeclarationsAfter": 19253,
+        "sourceReferenceOccurrencesBefore": 117728,
+        "sourceReferenceOccurrencesAfter": 117728,
+        "sourceReferenceOccurrencesAdded": 0,
+        "fullOverridePairsPreserved": 388,
+        "plainBlockLabelsBefore": 89,
+        "plainBlockLabelsAfter": 89,
+        "labelDeclarationsBefore": 117,
+        "labelDeclarationsAfter": 117,
+        "labelBindingsBefore": 454,
+        "labelBindingsAfter": 454,
+        "survivingLabelOrdinalMigrations": 0,
+        "labelOrdinalMigrations": [],
+        "retiredLabelIdentities": [],
+        "namedLabelsRetired": 0,
+        "namedLabelReferencesRemoved": 0,
+        "previousCompleteRules": 18364,
+        "unaffectedCompleteRulesPreserved": 18364,
+        "allUnaffectedCompleteNamingRulesPreserved": true,
+        "methodBodiesAfter": 2080,
+        "largeMethodBodiesAfter": 19,
+        "largeMethodBodiesWithPlainBlockLabelsAfter": 4,
+        "largeLabeledBodiesAfter": {
+          "minimumBodyLines": 300,
+          "bodies": 5,
+          "inventory": [
+            {
+              "file": "GameScreen.java",
+              "method": "updateScreen",
+              "lines": 334,
+              "labels": 2,
+              "rawFile": "c.java",
+              "enclosingMethod": "c.h(B)V"
+            },
+            {
+              "file": "GameplaySession.java",
+              "method": "renderSession",
+              "lines": 341,
+              "labels": 1,
+              "rawFile": "gh.java",
+              "enclosingMethod": "gh.a(B)V"
+            },
+            {
+              "file": "GameplaySession.java",
+              "method": "updateSession",
+              "lines": 567,
+              "labels": 3,
+              "rawFile": "gh.java",
+              "enclosingMethod": "gh.a(I)V"
+            },
+            {
+              "file": "BoardReconciliationSupport.java",
+              "method": "reconcileBoardEntities",
+              "lines": 314,
+              "labels": 5,
+              "rawFile": "kc.java",
+              "enclosingMethod": "kc.b(I)V"
+            },
+            {
+              "file": "SpriteState.java",
+              "method": "drawSortedHalfBlendRgbTriangle",
+              "lines": 362,
+              "labels": 5,
+              "rawFile": "wh.java",
+              "enclosingMethod": "wh.a(IIIIIIIIIII[IIIIII)V"
+            }
+          ]
+        },
+        "remainingOpaqueFields": 41,
+        "remainingSingleLetterMethods": 0,
+        "remainingOpaqueLabels": 0,
+        "cleanSourceArchiveReproducesSourcesAndDiagnostics": true,
+        "diagnosticsUnchanged": true,
+        "bytecodeChanged": false,
+        "sourceBodyEditedByHand": false,
+        "wholeGameEquivalenceVerified": false,
+        "scope": "Normalize paired complemented relational operands into reversed comparisons, preserving all operands, casts, association and parentheses. Legal Java complement produces signed int/long values; sign extension commutes with complement, which reverses that order. Equality remains unchanged to retain boxed identity semantics. Independent javac attributes every original unary result as int/long and compares all 303 complete ASTs against the exact intended rewrite. Every original binding, label, transfer and protected scope, complete naming object, compiler byte, diagnostic and dictionary reversal is checked. The 2612736 native cases compare original/recovered forms against independent ordered models across 672 models, including byte/short/char/int/long promotion, boxed/null values, callbacks, failures, finally and monitor release. Scoped probes do not establish whole-game/browser/phone or heap/presented-FPS acceptance",
+        "publicationTestGroupsPassed": 27,
+        "completeCorpusExpectedTokensVerified": true,
+        "exactExpectedSourceBytesVerified": true,
+        "allOriginalBindingOccurrencesPreserved": true,
+        "completeIndependentJdkAstModuloCertifiedComplementsPreserved": true,
+        "independentlyComparedAstFiles": 303,
+        "integralUnaryTypesProven": true,
+        "rawCompilerLocalsAfter": 498,
+        "independentlyComparedTransferFacts": 4949,
+        "independentlyComparedTransferFactsAfter": 4949,
+        "allSurvivingTransfersAndProtectedScopesPreserved": true,
+        "allProtectedScopesPreserved": true,
+        "dictionaryReversalByteExact": true,
+        "stableDictionaryIdentities": 19370,
+        "readableIdentifierEdits": 118061,
+        "readableClassNameLiteralEdits": 11,
+        "readableLabelEdits": 454,
+        "readableTotalEdits": 118526,
+        "previousNativeGameplayAndResultHelperPinsReverified": true,
+        "nativeScopeProbesRerun": [
+          {
+            "file": "readable/tests/test-geoblox-gameplay.mjs",
+            "sha256": "8992682ba5137d4a7f58ce5af975488add1f90dc90a982c52187d0e161ae74c9",
+            "nativeOutputSha256": "42be694a3c2f9a7a80ec7e0ec910bd312bdba5bc38f30293eb00faddcb17ac79",
+            "additionalTracesPreserved": true,
+            "nativeRawReadableTracesMatch": true
+          },
+          {
+            "file": "readable/tests/test-geoblox-result-helpers.mjs",
+            "sha256": "6a4359c062c12b9caf664f4805f8f9a52c64a87997b74e5eddf9aa588f74640a",
+            "nativeOutputSha256": "ec3c627a2eec22d24549607b97ae8c3b6d735e24217b26c61e8a5e510872ace6",
+            "additionalTracesPreserved": true,
+            "nativeRawReadableTracesMatch": true
+          }
+        ],
+        "changedMethods": [
+          {
+            "symbol": "M:bj.b(B)V",
+            "comparisons": 2
+          },
+          {
+            "symbol": "M:bm.a(B[B)V",
+            "comparisons": 2
+          },
+          {
+            "symbol": "M:c.a(IIZIZI)V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:c.b(Z)V",
+            "comparisons": 3
+          },
+          {
+            "symbol": "M:c.e(B)V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:ch.paint(Ljava/awt/Graphics;)V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:ch.run()V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:cm.a(B)J",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:cm.a(I)V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:cm.a(II)V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:cm.a(ZJ)I",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:d.run()V",
+            "comparisons": 3
+          },
+          {
+            "symbol": "M:dk.a(II)I",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:ec.b(I)Z",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:gh.f(I)V",
+            "comparisons": 2
+          },
+          {
+            "symbol": "M:ib.a(B)Llh;",
+            "comparisons": 2
+          },
+          {
+            "symbol": "M:jh.a(IB)[B",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:jh.a(III[BZ)Z",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:lc.a(I)V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:nf.a(B)V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:oa.a(I)J",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:oe.b(III)V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:ol.a(IIIIIILel;)Z",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:p.a([I[ILnf;ZZZZ)V",
+            "comparisons": 3
+          },
+          {
+            "symbol": "M:pa.<init>(Ljava/io/File;Ljava/lang/String;J)V",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:sk.a(II[BZ)V",
+            "comparisons": 13
+          },
+          {
+            "symbol": "M:sk.a([BIII)V",
+            "comparisons": 8
+          },
+          {
+            "symbol": "M:sk.b(B)V",
+            "comparisons": 6
+          },
+          {
+            "symbol": "M:uh.a(Lpk;B)Lnf;",
+            "comparisons": 1
+          },
+          {
+            "symbol": "M:wf.b(ZI)V",
+            "comparisons": 2
+          },
+          {
+            "symbol": "M:wh.a(IIIIIIIIIII[IIIIII)V",
+            "comparisons": 7
+          },
+          {
+            "symbol": "M:wh.a(II[BI)[B",
+            "comparisons": 1
+          }
+        ]
       }
+    },
+    "sourceChange": {
+      "before": {
+        "source": {
+          "repository": "Kreijstal/funorb-decompiled",
+          "commit": "c66b27f36c6b49e6546a7a131bd1888e6de7f190",
+          "subdirectory": "games/geoblox"
+        },
+        "generators": {
+          "dekoblokoWork": {
+            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
+            "trackedClean": true
+          },
+          "javaTools": {
+            "commit": "c2a48445b625e64235f123e3f6777faf254769b6",
+            "trackedClean": true,
+            "sourceArchive": {
+              "sha256": "6b7d983b3e8d24f36d4d6808afa6ed735bfcdf4b1c503b56af2f99204f2765b4",
+              "reproduce": "git archive --format=tar c2a48445b625e64235f123e3f6777faf254769b6 | sha256sum",
+              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
+            }
+          },
+          "namingTool": {
+            "repository": "Kreijstal/dekobloko-work",
+            "commit": "7d339941e604dd19c040490e33a8fd5de0938a0b",
+            "files": {
+              "readable-java.mjs": "21151d0ac37ba5b6d53e2b09d9305f9a788d60fef45fcac1aebae8d72a76d2f7",
+              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
+              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
+            },
+            "sourceArchive": {
+              "sha256": "1d0657a4052656a747abedab1cf491ebb97140bd68ad9389e25763443ab158a9",
+              "reproduce": "git archive --format=tar 7d339941e604dd19c040490e33a8fd5de0938a0b -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
+              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
+            }
+          }
+        },
+        "inputTreeSha256": "966c498146038e6c2b81b6056569420aba995edf15219e9f3fe309056322d43d",
+        "readabilityWorkflow": {
+          "repository": "Kreijstal/dekobloko-work",
+          "files": {
+            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
+            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
+            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
+            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
+          }
+        },
+        "classNameLiterals": {
+          "policy": "direct-owned-class-for-name",
+          "expectedEdits": 11
+        },
+        "labels": {
+          "policy": "lexical-targets",
+          "expectedEdits": 454
+        }
+      },
+      "after": {
+        "source": {
+          "repository": "Kreijstal/funorb-decompiled",
+          "commit": "16b62019ef79afa0cc5ca8693b72206bfe722e9f",
+          "subdirectory": "games/geoblox"
+        },
+        "generators": {
+          "dekoblokoWork": {
+            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
+            "trackedClean": true
+          },
+          "javaTools": {
+            "commit": "03a5aa806452458c8d2f19718f16a0c37ff78abf",
+            "trackedClean": true,
+            "sourceArchive": {
+              "sha256": "0d5006fd3d9321c254252d94f322f97c13ee4a6cca4549bcc03b48a597fbb6c6",
+              "reproduce": "git archive --format=tar 03a5aa806452458c8d2f19718f16a0c37ff78abf | sha256sum",
+              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
+            }
+          },
+          "namingTool": {
+            "repository": "Kreijstal/dekobloko-work",
+            "commit": "7d339941e604dd19c040490e33a8fd5de0938a0b",
+            "files": {
+              "readable-java.mjs": "21151d0ac37ba5b6d53e2b09d9305f9a788d60fef45fcac1aebae8d72a76d2f7",
+              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
+              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
+            },
+            "sourceArchive": {
+              "sha256": "1d0657a4052656a747abedab1cf491ebb97140bd68ad9389e25763443ab158a9",
+              "reproduce": "git archive --format=tar 7d339941e604dd19c040490e33a8fd5de0938a0b -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
+              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
+            }
+          }
+        },
+        "inputTreeSha256": "bf6759d05dff386a545e66df9abdb0e40f5327dcfda55870b73433ef8622c219",
+        "readabilityWorkflow": {
+          "repository": "Kreijstal/dekobloko-work",
+          "files": {
+            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
+            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
+            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
+            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
+          }
+        },
+        "classNameLiterals": {
+          "policy": "direct-owned-class-for-name",
+          "expectedEdits": 11
+        },
+        "labels": {
+          "policy": "lexical-targets",
+          "expectedEdits": 454
+        }
+      },
+      "reason": "Guard each complete terminal frame remainder under its inverse condition, preserving every original condition and action once. Independently certify the original terminal plain-block/if corridor and consumed transfer; preserve labels used by other exits and retire only their last reference, with explicit ordinal migrations and every unaffected complete naming object unchanged."
     }
   },
   "readabilityWorkflow": {

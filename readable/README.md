@@ -37,7 +37,50 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current slider, raster and cursor local names (pass 215)
+## Current complemented integer comparisons (pass 216)
+
+The generic decompiler replaces 73 paired complemented relations across
+32 methods and 22 files with direct comparisons: \~a < \~b becomes a > b,
+with the matching reversal for <=, > and >=. Legal Java complement yields
+signed int/long values; sign extension commutes with complement, which reverses
+that signed order. All complete original operands, casts and parentheses stay
+intact, including callback order and nullable unboxing. Equality stays unchanged
+to preserve boxed reference identity semantics. The normal emitter repeats the
+bounded cleanup until redundant nested complements stop exposing comparisons.
+
+Every lexical selection is checked against the complete intended parsed AST
+change. Independent javac attributes both original unary results as int/long
+and compares all 303 complete trees against that precise rewrite. Every
+original ordinary/label binding and all 4,949 transfer/protected-scope facts
+remain exact. All 18,364 complete naming objects and 19,370 dictionary identities
+remain unchanged, including pass215 names. No labels or references change.
+The export still has 118,061 identifier, 11 literal and 454 label edits
+(118,526 total), 89 plain block labels and 75,802 source lines.
+
+From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/complementedRelationRecovery.test.js test/sharedStatementFallbackRecovery.test.js test/sharedGuardedFallbackRecovery.test.js test/terminalGuardedFrameRecovery.test.js test/nestedIfConditionRecovery.test.js`
+passes all 33 groups. The new fixture compares 2,612,736 native cases across
+672 models against independent ordered comparisons. It covers byte/short/char/
+int/long promotion, boxed/null values, extreme and truncated values, callback
+order, failures, finally overrides and monitor release. The updated emitter's
+nested-complement regression and all six focused groups also pass.
+
+From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-complemented-relations-source.mjs ../java-tools`
+checks independent complete javac trees and unary types, exact source edits,
+every binding and transfer/protected scope, all 303 compiler bytes and compilation.
+A clean tracked compiler archive reproduces all 303 CLI bytes with unchanged
+diagnostics. All 303 files reverse byte exactly; all 27 publication tests,
+17 scoped native trace groups and current/fresh sibling reproductions pass.
+Older proofs and frozen input/naming/native pins remain intact. Four large
+methods with plain block frames, 498 compiler-named declarations and 41
+unsupported fields remain. Whole-game/browser/phone equivalence and heap/
+presented-FPS acceptance remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`0d5006fd3d9321c254252d94f322f97c13ee4a6cca4549bcc03b48a597fbb6c6`.
+
+## Previous slider, raster and cursor local names (pass 215)
 
 Forty remaining unnamed declarations now describe their source roles in
 MultiHandleSliderWidget, ImageProducerRasterBuffer, WindowsCursorController and
