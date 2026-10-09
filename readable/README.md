@@ -37,7 +37,57 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current applet callback names (pass 219)
+## Current loading, text, audio and renderer names (pass 220)
+
+A single naming pass covers 141 declarations across nine classes: 123 locals
+and 18 constructor parameters. TextTemplateDefinition now names opcode/count/
+entry/value/type traversal, allocated argument arrays, literal-summary builder
+aliases and ignored append results. ArchiveLoadSequence names its current step,
+progress fraction and invalid-guard snapshots. ArchiveIndex's score packet
+writer names its two retained buffer aliases, payload start and score index.
+SynthesizedSoundInstrument names its deterministic wave-table initialization,
+optional envelope tags, rate/modulation state, mute/echo/filter stages and their
+reused slots. UnderlinedButtonRenderer, MultiHandleSliderRenderer,
+SpriteButtonRenderer, SpriteCheckboxRenderer and DialRenderer name widget/color/
+cast snapshots, screen/rail/marker geometry, raster snapshots, constructor fields
+and all remaining diagnostic aliases. Existing null dereferences, guard effects,
+partial buffer/array writes, signed overflow, FP association and original
+owner diagnostic strings stay intact; naming does not repair those paths.
+
+The synthesizer's combined names make compiler slot reuse explicit: one slot
+holds initialization/sample indices, gate counter, echo delay and filter-envelope
+value; others hold pitch/threshold/index/filter order or volume/mute/filter order.
+No lifetime is split in this pass. Making those phase bodies idiomatic needs a
+generic def-use/definite-assignment reconstruction with independent proofs at
+phase boundaries, including every exceptional and loop edge. Cosmetic variable
+splitting would risk reading a value from the wrong phase.
+
+Every new rule guards the original JVM declaration, ordinal and spelling.
+All 18,514 previous complete naming rules and 19,366 dictionary identities remain
+exact. Only 141 selected renamedName fields change in dictionary symbols; source
+positions and every other metadata field remain intact. Only nine readable Java
+files change, adding 736 identifier edits. The export now has 18,655 guarded rules,
+119,361 identifier edits, 11 literal and 442 label edits (119,814 total).
+Compiler-style declarations fall from 378 to 265; the nine classes have no
+remaining unnamed local/parameter declarations. The 41 opaque fields, 85 plain
+block labels and four large framed methods remain unchanged.
+
+From Deko, `node readable/build-geoblox-rules.mjs --check` validates all 141
+explicit additions against the previous Git manifest. Both
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` compile
+all 303 sources with 136,992 binding and 388 override checks. All 303 files
+reverse byte exactly; 27 publication tests, 17 scoped native trace groups and
+fresh sibling reproductions pass. All 73 historical source-proof pins remain
+intact. This pass does not newly establish actual audio/AWT/network/browser/phone,
+whole-game or heap/presented-FPS acceptance. Raw source, bytecode, compiler,
+environment, frozen naming dependency and native inputs are unchanged.
+
+The unchanged tracked **decompiler-source** Git tar SHA-256 is
+`f1e8f58da7530b79bdba98ee1292dcb2ef29b0ef2e9f2d0f95ff9c46393fff95`; the pinned compiler environment still records
+`CFR_JS_DISABLE_LOOP_TAIL_MERGE=1`.
+
+## Previous applet callback names (pass 219)
 
 Eighty-four remaining declarations in GameApplet now describe their source
 roles: 66 locals and 18 callback/abstract parameters. Canvas painting names the
