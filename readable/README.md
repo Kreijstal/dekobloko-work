@@ -37,7 +37,76 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current shared dynamic continuations (pass 246)
+## Current reference-cast cleanup (pass 247)
+
+The generic decompiler can now omit an intermediate `(Object)` bridge when
+class/array hierarchy metadata proves a direct narrowing reference cast is
+legal. The original target cast remains. Unknown/unrelated types keep their
+bridges, and explicit bytecode widening casts retain their previous output.
+The selected profile adds `CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES=1`;
+the generic default is unchanged. This is a generic compiler change, with
+its game-specific profile and certificate maintained in Deko.
+
+294 bridge casts disappear across 66 raw/readable files, including 15 in board
+reconciliation and ten in GameplaySession. All other source characters remain;
+2,646 characters and 294 external `java.lang.Object` type references disappear.
+No source lines, declarations, naming rules, dictionary identities or labels
+are removed. The target casts and every operand evaluation remain explicit.
+
+The independent certificate compiles the old/new raw sources and the old/
+expected readable sources with javac. All 304 class files in each pair are
+**byte-identical**, including constant pools, instructions, stack maps,
+exception tables and debug metadata. It also compares the resolved instructions
+and exception tables of all 2,513 methods and character-projected source
+bindings. The actual export matches an independent reconstruction that deletes
+only those bridges from the previous readable dictionary. This establishes the
+selected cleanup relative to the previous source, not whole-game equivalence
+to the original gamepack or phone/FPS performance.
+
+All 20,133 complete naming objects and 20,440 dictionary identities are
+preserved. The export retains 121,837 identifier edits, 11 literal edits and
+423 label edits (122,271 total); 137,772 source bindings compare after the
+294 external type references disappear. All 303 sources compile, reproduce and
+reverse byte exactly. The previous current field-purpose audit is retained
+inside this pass record; the current selector is repinned to the new raw tree.
+The 41-field inventory is unchanged.
+
+Five large framed methods, 77 plain block labels and 41 finer field purposes
+still remain. Their current line counts remain 336, 314, 328, 555 and 368.
+A temporary generic prototype permitting terminal frame corridors through
+try/catch/finally and monitor bodies found **zero additional candidates** among
+the current top-level method bodies. It was not enabled or published. Further
+frame recovery needs stronger edge/scope/definite-assignment evidence; this pass
+cleans cast clutter without assuming any control flag is zero.
+
+From Deko, verify the pinned source pass and canonical export:
+
+```sh
+node readable/tests/test-geoblox-reference-bridges-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+The certificate archives its two raw inputs and previous readable export from
+Git, verifies the tracked compiler-source tar and frozen binding auditor,
+attributes the removed reference casts independently, and reconstructs the
+expected readable sources with the previous dictionary. It creates no maintained
+preview. Earlier proofs and their compiler/source pins remain intact.
+
+The focused generic command (from java-tools) passes 17 groups, including six
+new groups and six independent native mutation/failure/monitor oracle cases:
+
+```sh
+NODE_PATH=/path/to/java-tools/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/provenReferenceCastBridges.test.js test/javaAstEmitterIdentityCasts.test.js test/selfCastRecovery.test.js
+```
+
+The source certificate, field audit, manifest check, 13 rule-builder groups,
+dictionary reversal and canonical reproduction pass. Existing native coverage
+is retained through byte-identical independently compiled class files; no new
+whole-game runtime coverage is claimed.
+
+## Previous shared dynamic continuations (pass 246)
 
 A generic, opt-in decompiler pass now shares eight duplicated continuation
 bodies across GameScreen, GameApplet, GameplaySession and
