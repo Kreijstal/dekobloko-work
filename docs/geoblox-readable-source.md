@@ -39,7 +39,62 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current remaining local and parameter names (pass 222)
+## Current property mechanisms and helper names (pass 223)
+
+This pass names 41 fields, five private helper methods and one local helper
+class across seven Java files. VisualPropertyOverrides' 35 fields now state their
+observed merge predicates: copy when nonzero, nonnegative, non-null, true, false,
+or different from the MIN_VALUE/256 sentinel. Group numbering follows original
+declaration order. These names do not infer a rendering role. GameApplet's six
+fields have no bound ordinary source uses, so their names state that observation;
+external, native or reflective access is not excluded. All 41 functional field
+purposes remain unresolved, and no field is removed.
+
+AccountWelcomePanel's local InterfaceTextLoadSteps class retains its staged
+resource-loading implementation. Four private throwUnchecked methods throw the
+same supplied Throwable through the original generic throws-T boundary;
+compareSignedLongs retains its signed-long comparisons and call operands.
+
+The generic naming dependency now supports named member/local classes. It uses
+javac's resolved simple names to preserve binary local ordinals and dollar
+characters, composes renamed ancestors, and preserves unrelated top-level dollar
+names. All constructors, member owners and type descriptors are checked after
+recompilation. Renames that change javac local ordinals are refused. Fixtures compare runtime output, reflection loading, exact reversal
+and collision/ordinal-change refusal. The changed naming dependency has an explicit sourceChange;
+raw Java, bytecode, java-tools, environment, workflow and native pins are fixed.
+
+All 19,012 complete prior naming rules and 19,366 original dictionary identities
+are preserved. Only selected names, the helper constructor and derived renamed
+identities change. The export has 19,059 rules, 120,770 identifier edits, 11
+literal edits and 442 label edits (121,223 total). There are no remaining opaque
+field spellings or conventional compiler local/parameter placeholders. Naming
+mechanisms does not establish the unknown property purposes or finish structural
+readability: mixed audio live ranges, 85 plain block labels and four large framed
+methods remain. Required platform API names are preserved.
+
+Validation from Deko:
+
+- `node readable/build-geoblox-rules.mjs --check`
+- `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check`
+- `node readable/tools/restore-original.mjs ../funorb-decompiled/readable/geoblox /tmp/restored-geoblox`
+- `JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs`
+- `JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none readable/tests/test-geoblox-rule-builder.mjs readable/tests/test-geoblox-migration-source.mjs readable/tests/test-geoblox-text-rules.mjs`
+- `JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-gameplay.mjs TRANSFORMED_CLASSES` and
+  `JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-result-helpers.mjs TRANSFORMED_CLASSES`
+
+All 303 sources compile with 136,992 binding and 388 override checks and reverse
+byte exactly. All 21 generic naming/capture tests, 27 publication tests, 17 scoped
+native trace groups and fresh sibling reproduction pass; 73 historical source
+proofs retain their pins. These checks do not establish whole-game, actual platform/
+server/browser/phone equivalence or heap/presented-FPS acceptance.
+
+The unchanged tracked **decompiler-source** Git tar SHA-256 is
+`f1e8f58da7530b79bdba98ee1292dcb2ef29b0ef2e9f2d0f95ff9c46393fff95`. The new generic **naming-source** six-file Git tar
+SHA-256 is `f78aea10f71f1629ef799417f7b2025495b32a8ca1deaad656948a047c69b2b9` at Deko
+`59c17f5bbf3f10aec41fbe64df8d656d64b7884a`. Neither is a game JAR hash.
+
+## Previous remaining local and parameter names (pass 222)
 
 A whole-dictionary audit names 228 declarations across 28 readable classes:
 181 locals and 47 parameters. All 150 remaining var/stackIn/decompiledCaught
