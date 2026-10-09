@@ -37,7 +37,46 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current patch, envelope and filter names (pass 235)
+## Current array-dimension lifetime recovery (pass 236)
+
+The generic decompiler now optionally analyzes explicit array-allocation
+dimensions in their original left-to-right order. It only inserts uninitialized
+primitive declarations and renames independently bound uses; expressions,
+allocations, failures and original literal initializers stay in place. Array
+initializers, ambiguous bindings, loop-carried reads and reaching values across
+handlers/finally/monitors remain outside this reconstruction. Existing lifetime
+and control-frame modes retain their previous refusal behavior. The new
+`CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES=1` option defaults off.
+
+18 reused locals now expose 34 additional roles in 11 methods across ten classes.
+All new names have reviewed purposes: crop width, mixed-sample count, glyph
+indexes, archive lengths/write offsets, response opcode/read length/port,
+Vorbis counts and envelope/curve allocation sizes. The first 18 names are also
+refined; no new phase-family placeholders are added. The export has 20,078 rules,
+20,385 dictionary identities, 138,074 binding checks and 388 override pairs.
+Identifier edits are 121,835, with 11 literal and 423 label edits (122,269 total).
+All 20,013 completely unaffected rules, 13 explicit ordinal migrations and
+20,351 previous dictionary identities are independently accounted for.
+
+Validation:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/arrayDimensionLifetimeRecovery.test.js test/initializedPrimitiveLifetimeRecovery.test.js test/referenceLocalLifetimeRecovery.test.js test/primitiveLocalLifetimeRecovery.test.js test/nestedPrimitiveLocalLifetimeRecovery.test.js test/loopFrameCompletionRecovery.test.js` — 31 groups, including three new groups and 3,072 new independent native dimension-order, negative-size, partial-effect, cleanup and monitor cases.
+- `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-initialized-primitives-source.mjs ../java-tools` now selects the current array-dimension proof. Javac certifies every exact declaration/identifier change, type/definite assignment, original binding and all 4,941 transfers/protected scopes. Earlier proof fixtures and compiler snapshots remain available at their recorded Git commits.
+- `node readable/build-geoblox-rules.mjs --check`, `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass for all 303 files. Reversal is byte exact. All 27 publication groups and 24 existing result/rendering trace groups pass against fixed bytecode, raw and readable Java.
+- Clean tracked compiler source reproduces the 303 raw files and unchanged diagnostics with all eleven recorded flags. A temporary runner initially dropped those flags; exact-source comparison rejected that build. The corrected build explicitly forwarded and verified the flags before publication.
+
+The same five framed methods remain above 300 lines, with 77 plain block labels,
+214 LiteralPhase names and 41 unknown field purposes. The unpublished second
+primitive-pass opportunity still needs generic reconstruction work. Whole-game,
+real assets/network/audio devices, browser/phone and heap/presented-FPS acceptance
+remain unverified; native fixtures retain their existing coverage limits.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`45948f090f7e8a747b8aee5b5e74382c3fbd3977c9d7666c1ece6b14ecdafd5f`
+at java-tools `c8744d5267da25eae3df9a46a91a6e6c77559cfa`.
+This identifies tracked compiler source, not a game JAR.
+
+## Previous patch, envelope and filter names (pass 235)
 
 79 guarded local names now describe audio roles in InstrumentPatch, MidiPcmStream
 and SynthesizedSoundInstrument. Patch decoding distinguishes pitch-byte

@@ -1,6 +1,6 @@
 import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import assert from 'node:assert/strict';import crypto from 'node:crypto';import {createRequire} from 'node:module';import {fileURLToPath} from 'node:url';
 import {funorbRepository,workflowRoot} from '../layout.mjs';import {captureProcess} from '../tools/lib/capture-process.mjs';import {sourceInventory,sourceIdentity} from '../tools/readable-java.mjs';
-const tools=path.resolve(process.argv[2]||'../java-tools'),preview=process.argv.includes('--preview'),root=JSON.parse(fs.readFileSync(path.join(funorbRepository,'decompilation/geoblox-provenance.json'))),proof=preview?null:root.initializedPrimitiveLocalLifetimeRecovery;
+const tools=path.resolve(process.argv[2]||'../java-tools'),preview=process.argv.includes('--preview'),root=JSON.parse(fs.readFileSync(path.join(funorbRepository,'decompilation/geoblox-provenance.json'))),arrayDimensions=process.argv.includes('--array-dimensions')||!!root.arrayDimensionPrimitiveLocalLifetimeRecovery&&!preview,proof=preview?null:arrayDimensions?root.arrayDimensionPrimitiveLocalLifetimeRecovery:root.initializedPrimitiveLocalLifetimeRecovery;
 assert.ok(preview||proof,'current initialized primitive proof required');const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'geoblox-initialized-primitives-')),hash=b=>crypto.createHash('sha256').update(b).digest('hex'),run=(cmd,args)=>capture(cmd,args),rows=s=>s.trim().split('\n').filter(Boolean).map(l=>l.split('\t'));
 function capture(cmd,args){try{return captureProcess(cmd,args,{maxBuffer:128*1024*1024}).stdout.toString();}catch(error){throw new Error(error.stderr?.toString()||error.message);}}
 try{
@@ -8,7 +8,7 @@ try{
  const compiler=preview?{directory:tools}:archive(tools,proof.javaToolsCommit,'tools');if(proof){assert.equal(compiler.sha256,proof.sourceArchiveSha256);assert.equal(hash(fs.readFileSync(fileURLToPath(import.meta.url))),proof.sourceProofTestSha256);}
  const before=preview?path.join(funorbRepository,'games/geoblox'):path.join(archive(funorbRepository,proof.previousSourceCommit,'before','games/geoblox').directory,'games/geoblox');
  const input=sourceInventory(before);assert.equal(input.length,303);if(proof)assert.equal(sourceIdentity(input),proof.previousSourceTreeSha256);
- const require=createRequire(import.meta.url),recovery=require(path.join(compiler.directory,'src/decompiler/primitiveLocalLifetimeRecovery.js')),split=recovery.splitInitializedPrimitiveLocalLifetimes;
+ const require=createRequire(import.meta.url),recovery=require(path.join(compiler.directory,'src/decompiler/primitiveLocalLifetimeRecovery.js')),split=arrayDimensions?recovery.splitArrayDimensionPrimitiveLocalLifetimes:recovery.splitInitializedPrimitiveLocalLifetimes;
  const helpers=path.join(temporary,'helpers'),stubs=path.join(funorbRepository,'readable/funorb-stubs.jar');fs.mkdirSync(helpers);
  // Javac provides method spans, declaration types and all resolved bindings;
  // the compiler's parser/flow diagnostics are not used as that certificate.

@@ -39,7 +39,15 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current audio naming (pass 235)
+## Current array-dimension recovery (pass 236)
+
+The generic opt-in compiler pass exposes 34 additional roles across 18 reused
+locals in ten classes. All new roles and their first phases have reviewed names;
+20,078 rules reproduce the one 303-file export. The workflow records the tracked
+compiler-source SHA, source/binding certificates, native checks and unchanged
+five large framed methods, 214 LiteralPhase names and 41 unknown field purposes.
+
+## Previous audio naming (pass 235)
 
 79 patch/MIDI/filter locals now describe run streams, envelope/curve stages and
 forward versus feedback filtering. All 53 LiteralPhase names in these three
