@@ -37,7 +37,77 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current direct natural loop headers (pass 249)
+## Current guarded frame continuations (pass 250)
+
+Forty plain labeled frames now use scoped continuation decisions and ordinary
+conditional blocks. Ninety nonlocal breaks disappear across 23 methods in 12
+files. Every original condition remains once at its original evaluation site;
+all remaining suffixes on its path are guarded. The new names describe the
+reviewed frame purposes, such as `connectivityRebuildFrameContinues` and
+`sessionProgressionAndEndingFrameContinues`. These are temporary control values,
+not additional game states. Original game fields and methods remain.
+
+Four of the five large framed methods now have no plain block labels: board
+reconciliation (344 lines), screen update (330), session update (561) and
+half-blend RGB triangle drawing (370). Screen rendering remains framed at 314
+lines with one block label. Across all sources, 37 plain block labels remain,
+down from 77. Long bodies, nested guards and mixed-purpose aliases still need
+work; removing labels alone does not establish complete readability.
+
+The generic `CFR_JS_GUARDED_FRAME_COMPLETION=1` option is disabled by default.
+Reconstruction requires guarded breaks through lexical block/if/plain-label
+corridors. Crossed loops, switches, handlers, finally blocks and monitors,
+captures, crossing suffix ranges and ambiguous assignment refuse. Enclosing
+protected scopes and whole constructs inside guarded suffixes stay intact.
+Game profiles, names and this source certificate belong in Deko.
+
+An independent javac certificate derives each original break target and every
+complete suffix from the old Java trees. It verifies the bound Boolean flags,
+all other ordered syntax and surviving bindings/overrides, plus all 4,838
+remaining transfer destinations and protected scopes. The clean tracked compiler
+tar reproduces all 303 sources and unchanged diagnostics with zero hard failures
+or fallbacks. Its SHA-256 is
+`75b9313e562a48654916f8e395a532969835e91936f511305fb3106182da640b`;
+this is the decompiler-source tar hash, not the gamepack hash.
+
+All 20,099 surviving complete rule objects and 20,406 surviving dictionary
+identities remain exact apart from 52 certified declaration-ordinal migrations.
+Forty obsolete label identities retire explicitly, and 40 named Boolean locals
+are added. All 174 other provenance object records, including 95 source proof
+records, remain unchanged. Previous field-purpose evidence is retained; only
+the current input hashes change. The independently rechecked inventory still
+contains 41 unresolved finer field purposes.
+
+The one current export has 20,139 guarded rules, 122,120 identifier edits,
+11 literal edits and 293 label edits (122,424 total), 138,055 binding comparisons
+and 388 override pairs. All 303 files compile, reproduce and reverse byte exactly.
+The new generic tests cover 63,180 independent native cases; all 12 focused
+generic groups and 27 publication groups pass. The existing gameplay, rendering
+and result probes retain their 3, 10 and 14 trace groups in native, raw and
+readable variants. Their previous coverage limits remain. Full-game equivalence,
+real assets/platform/server behavior and phone/FPS acceptance remain unverified.
+
+From Deko, recheck the pinned source pass and canonical export:
+
+```sh
+NODE_PATH=/path/to/java-tools/node_modules node readable/tests/test-geoblox-guarded-frame-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools, the focused command is:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/guardedFrameCompletionRecovery.test.js test/loopFrameCompletionRecovery.test.js
+```
+
+No maintained preview, extra naming manifest or hand-edited Java is created.
+The dictionary reverses the generated naming changes. The remaining rendering
+frame needs stronger definite-assignment reconstruction, and the newly explicit
+guard nesting can be simplified in a subsequent generic pass.
+
+## Previous direct natural loop headers (pass 249)
 
 Seven natural-exit captures introduced in pass248 are redundant: their loops
 have no own break, and the Boolean has only its declaration, header assignment
