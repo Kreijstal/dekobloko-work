@@ -37,7 +37,78 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current leading loop exits (pass 248)
+## Current direct natural loop headers (pass 249)
+
+Seven natural-exit captures introduced in pass248 are redundant: their loops
+have no own break, and the Boolean has only its declaration, header assignment
+and completion guard. They now use a direct `while (!(originalCondition))`
+followed by the original completion-work block. Each condition, body and work
+sequence remains once. Six captures remain where another exit can skip the work.
+The related-entity scan and six raster loops lose this temporary state.
+
+The generic option `CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES=1` is disabled by
+default. A direct header requires lexical evidence that the condition is not a
+Java constant expression. Unknown/final constants, qualified constant fields,
+annotations, other breaks (including finally overrides), extra flag uses,
+ambiguous declarations and captures refuse cleanup. Original work scopes, labels
+and continues remain intact. Game-specific profile/rules/proofs stay in Deko.
+
+The independent javac certificate recognizes both forms in all 303 sources,
+proves nonconstant references, resolves the sole normal loop exit, verifies the
+removed locals' exact uses, and checks every retained binding, all 4,928 transfer
+destinations and protected scopes. Only seven declarations and their 21 bound
+identifier occurrences disappear. One surviving local ordinal migrates. The
+clean compiler tar reproduces all 303 sources and unchanged diagnostics, with
+zero hard failures and zero fallbacks. Four raw/readable files change.
+
+All 20,139 surviving complete naming objects and 20,446 surviving dictionary
+identities are preserved with the certified ordinal migration. Seven obsolete
+synthetic capture identities are explicitly removed. All historical proof
+records remain; the previous current field-purpose selector is retained inside
+this pass record. The 41-field purpose inventory is unchanged. No original game
+field or method is deleted.
+
+The export has 121,855 identifier edits, 11 literal edits and 423 label edits
+(122,289 total), 137,790 binding comparisons and 388 override pairs. All 303
+files compile, reproduce and reverse byte exactly. Zero LiteralPhase/numbered
+Phase-family names remain. Seven source lines disappear; the five large framed
+methods and 77 plain block labels remain, with frame lengths 340, 314, 328,
+557 and 368. Their methods are unchanged by this cleanup.
+
+From Deko, recheck the pinned source pass and canonical export:
+
+```sh
+NODE_PATH=/path/to/java-tools/node_modules node readable/tests/test-geoblox-sole-loop-exit-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+The certificate archives its old/new raw inputs and tracked compiler source,
+checks the source-tar/frozen auditor/body-position fixture hashes, replays the
+cleanup with character provenance, independently attributes/compiles both trees
+and compares exact compiler bytes. No maintained preview or second manifest is
+created. Prior compiler/source/proof pins remain historical records.
+
+The focused generic command (from java-tools) passes 17 groups, including six
+new groups and 38,880 independent native oracle cases:
+
+```sh
+NODE_PATH=/path/to/java-tools/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/naturalLoopExitCaptureCleanup.test.js test/leadingLoopExitWorkRecovery.test.js test/loopFrameCompletionRecovery.test.js
+```
+
+Native cases cover nullable conditions, overflow, partial failures, early
+returns/throws, finally continue/return/throw overrides and monitor ownership/
+release. Existing leading-exit/frame tests retain their scopes. The rule-builder
+passes 13 groups; existing native/raw/readable gameplay and rendering probes
+match three and ten trace groups with their previous coverage limits. Whole-
+game equivalence to original bytecode and phone/FPS acceptance remain unverified.
+
+The remaining frames, shared joins, exception-region exits and mixed-purpose
+aliases still need further work. Captured decisions remain explicit when their
+original exit paths require them.
+
+## Previous leading loop exits (pass 248)
 
 Thirteen forever loops now evaluate their original leading exit condition in
 an explicit loop header. A Boolean captures that decision on each entry. The
