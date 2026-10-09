@@ -37,7 +37,53 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current compound guards and indentation (pass 252)
+## Current exhaustive switch frames (pass 253)
+
+The two bulk text encoders now use ordinary switch breaks and an explicit
+fallback arm. Their original predicate, selector, prefix character read, case
+stores and fallback store remain once in the same order. No Boolean locals or
+copied operations are introduced. Two smaller plain frames disappear, localizing
+56 exits; 33 smaller frames and 41 finer field purposes remain. There are still
+zero methods over 300 lines with plain block labels.
+
+The generic opt-in option is `CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS=1`.
+Missing defaults, fallthrough, other frame/switch exits, terminal exits crossed
+by protection, captures and ambiguous targets refuse recovery. Generic recovery
+and agent guidance remain in java-tools; game rules and source proofs stay in Deko.
+The tracked decompiler-source tar SHA-256 is
+`7fce66e335643f894682ca00040d2a446b4cf316676e0583580cd14a153196ff`.
+
+The independent javac certificate checks both exhaustive switches, every other
+ordered operation, 138,048 bindings, 388 override pairs and all 4,835 protected
+transfers across 303 sources. The clean compiler archive reproduces every file
+and unchanged diagnostics with zero hard failures or fallbacks. All 20,137
+surviving complete rules and 20,444 surviving dictionary identities retain their
+metadata; only the two obsolete label rules are removed. All 176 historical
+object records, including 95 directly recorded source certificates, remain exact.
+Text-resource evidence and the field-purpose inventory remain unchanged.
+
+Twenty focused generic groups pass, including 46,800 new independent native
+cases for nullable predicates/selectors, aliases, partial stores, failures,
+finally overrides and monitor release. The export has 122,113 identifier edits,
+11 literal edits and 230 label edits (122,354 total). Reproduction and reversal
+are byte exact. Full-game equivalence and phone/FPS behavior remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-exhaustive-switch-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/exhaustiveSwitchFrameRecovery.test.js test/guardedFrameCompletionRecovery.test.js test/localBooleanGuardCompaction.test.js
+```
+
+## Previous compound guards and indentation (pass 252)
 
 Fifteen nested primitive-local guards in the menu hit-test method now form nine
 ordered compound guards. Each flag assignment still runs only when its preceding
