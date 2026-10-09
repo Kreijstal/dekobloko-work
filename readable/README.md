@@ -37,7 +37,39 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current startup, widget, timing and raster names (pass 238)
+## Current reviewed literal-phase roles (pass 239)
+
+The final 83 LiteralPhase names now identify source-reviewed roles in gameplay
+contact/detach and avatar tint paths, sprite/mesh decoding, ranked records, MIDI,
+Vorbis/filter/resampling, buffered reads, cipher setup, account parsing and text
+marker building. Names expose unused snapshots and retain combined names for
+values still reused within one phase. No expressions, guard arithmetic, callback
+order, signed-byte behavior, floating association or partial effects are changed.
+
+All LiteralPhase suffixes are gone from the current rules and Java. This is a
+naming milestone, not complete readability: 286 older numbered phase-family
+names (matching Phase followed by a digit), mixed roles, five large framed methods
+and 41 unknown field purposes remain. Generic repeated lifetime reconstruction
+is still open. Source/compiler/workflow pins and historical proofs are unchanged.
+
+83 guarded rules replace 520 bound identifiers in 39 classes. All 19,995 other
+complete rules and all 20,385 dictionary identities are preserved. Current-pass
+counters correctly record naming-only refinements.
+
+Validation: `node readable/build-geoblox-rules.mjs --check`,
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass.
+All 303 sources compile with 138,074 binding comparisons and 388 override pairs;
+reversal is byte exact. The rule-builder suite passes 13 groups. Existing result,
+rendering and gameplay probes match 14, 10 and three fixed native/raw/readable
+trace groups. Their original independent-oracle/trace-only distinctions and
+scope remain unchanged. Live login/network, real assets/audio/COM devices,
+whole-game/browser/phone and heap/presented-FPS acceptance remain unverified.
+
+The tracked decompiler-source tar SHA-256 remains
+`45948f090f7e8a747b8aee5b5e74382c3fbd3977c9d7666c1ece6b14ecdafd5f`.
+
+## Previous startup, widget, timing and raster names (pass 238)
 
 97 guarded local names now describe startup sprite/theme/frame indexes,
 widget focus and render paths, ranking response values, timestamps and raster

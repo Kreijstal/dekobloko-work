@@ -39,7 +39,15 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current startup and widget naming (pass 238)
+## Current literal-phase naming milestone (pass 239)
+
+The final 83 LiteralPhase names are replaced with source-reviewed roles.
+The current export has no LiteralPhase suffixes, but 286 older numbered phase
+families, mixed roles, five large framed methods and 41 unknown field purposes
+still need work. The workflow records preserved source/proof identities and
+complete compilation/reproduction/reversal plus unchanged native probes.
+
+## Previous startup and widget naming (pass 238)
 
 97 startup/widget/timestamp/raster names replace 73 LiteralPhase names;
 83 remain. All source/compiler pins and historical proofs remain unchanged.
