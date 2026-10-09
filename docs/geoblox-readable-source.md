@@ -39,7 +39,14 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current archive and mesh naming (pass 237)
+## Current startup and widget naming (pass 238)
+
+97 startup/widget/timestamp/raster names replace 73 LiteralPhase names;
+83 remain. All source/compiler pins and historical proofs remain unchanged.
+The workflow records complete export verification, unchanged native probes and
+the still-open five large framed methods and 41 unknown field purposes.
+
+## Previous archive and mesh naming (pass 237)
 
 99 local names now describe archive decoding/unpacking, prefix-code bits and
 mesh projection/lighting/depth queues. 58 LiteralPhase names are replaced;

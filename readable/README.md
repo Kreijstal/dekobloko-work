@@ -37,7 +37,41 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current archive, prefix and mesh role names (pass 237)
+## Current startup, widget, timing and raster names (pass 238)
+
+97 guarded local names now describe startup sprite/theme/frame indexes,
+widget focus and render paths, ranking response values, timestamps and raster
+geometry. Dotted focus rectangles identify their four edge indexes/counters;
+nine-slice panels identify top/bottom/left/right/center tiles. Text rendering
+separates horizontal/vertical alignment and glyph clips. Stripes distinguish
+primary/alternate channels, and ranked sorting identifies adjacent entries.
+
+The timestamp bad-guard path still recursively sets the shared calendar to
+-99 milliseconds before reading fallback calendar fields; its saved weekday
+still comes from the requested timestamp. Names expose this behavior without
+repairing it. Unused snapshots, effectful guard quotients/remainders, callbacks,
+partial effects and remaining mixed coordinate/alpha roles stay in place.
+
+73 LiteralPhase names are replaced; 83 remain. Only 496 bound identifiers in
+26 classes change. All 19,981 unaffected complete rules and all 20,385 dictionary
+identities are preserved. Source/compiler/workflow pins and historical proof
+objects are unchanged. Current-pass counters record 97 naming-only refinements.
+
+Validation: `node readable/build-geoblox-rules.mjs --check`,
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass.
+All 303 sources compile with 138,074 binding comparisons and 388 override pairs;
+reversal is byte exact. The rule-builder suite passes 13 groups. Existing result,
+rendering and reflection probes match 14, 10 and one fixed native/raw/readable
+trace groups. Their original coverage limits remain, including headless wheel
+factory/event checks; no new full archive loading, live account/login, assets,
+AWT/device/audio or whole-game coverage is claimed.
+
+Five large framed methods, 41 unknown field purposes and repeated primitive
+lifetime reconstruction remain. The tracked decompiler-source tar SHA-256 is
+unchanged: `45948f090f7e8a747b8aee5b5e74382c3fbd3977c9d7666c1ece6b14ecdafd5f`.
+
+## Previous archive, prefix and mesh role names (pass 237)
 
 99 guarded local names now identify archive metadata/retention stages,
 prefix-code bit snapshots and mesh projection/lighting/depth-queue roles.
