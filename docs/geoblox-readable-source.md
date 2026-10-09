@@ -39,7 +39,55 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current final Boolean conditions (pass 227)
+## Current action-preserving local guards (pass 228)
+
+Twenty redundant true guards in 13 methods across GameScreen, GameplaySession
+and GameApplet now keep their selected block directly. Repeated nested checks
+of an unchanged captured control flag no longer obscure fullscreen pointer work,
+menu/tutorial updates, gameplay rendering, session updates and result preparation.
+Every original action, assignment, declaration and selected brace scope remains.
+No discarded arm or newly unreachable suffix is removed.
+
+The generic opt-in `CFR_JS_FINAL_LOCAL_GUARDS=1` reapplies existing path facts
+after late continuation/lifetime and Boolean cleanup. Its new
+`preserveActions` mode refuses a discarded arm, an unbraced selected action
+or any completion-driven suffix pruning. Existing broader specialization stays
+unchanged. Fields, boxed/shadowed values and later/cyclic writes cannot justify
+specialization; no global control-flag value is assumed. The option defaults off.
+
+Independent attributed JDK certificates prove the exact selected enclosing
+branches, primitive local binding and absence of later/cyclic writes. Complete
+JDK AST fingerprints compare all 303 classes after erasing only those certified
+conditions. Exactly 20 pure local reads disappear; all 137,471 surviving value
+bindings, 388 override pairs and 4,941 transfer targets/protected scopes retain
+their identities. All 19,521 complete naming rules and 19,828 dictionary
+identities stay unchanged. Labels remain at 77. The export records 121,249
+identifier, 11 literal and 423 label edits (121,683 total).
+
+Validation:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/javaAstEmitterPathGuards.test.js test/javaAstEmitterPathGuardSwitches.test.js` — nine groups pass, including 39,960 native comparisons. The new action-preserving mode contributes 8,280 comparisons across zero/nonzero flags, nullable locks, effect failures, loops, cleanup overrides and monitors.
+- Deko: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-final-local-guards-source.mjs ../java-tools` — independently certified local/branch facts, full ASTs, exact compiler bytes, surviving bindings and protected transfers.
+- `node readable/build-geoblox-rules.mjs --check` and
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` /
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass
+  for all 303 files. Dictionary reversal is byte exact. All 27 publication groups
+  and 17 scoped gameplay/result trace groups pass. Fresh sibling checkouts
+  reproduce the complete committed export.
+- A clean tracked compiler-source tar reproduces all raw files and unchanged
+  diagnostics. Fixed bytecode, stubs, naming dependency, native probes, four
+  workflow files and complete historical proof objects remain unchanged.
+
+Four large framed methods and 41 unknown functional field purposes remain.
+This pass reduces repeated decision nesting without establishing whole-game,
+browser/phone behavior or heap/presented-FPS acceptance. Real nonlocal skips and
+protected/outer-loop corridors still require structural work.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`19a69a0d2c9bcdd9fe25ed9f6665359cb7617ea83f97d69fadc78105fd1223b0` at java-tools `0153fbdbb826119efbc2c92eaa9d4ca7cc6721b8`.
+It identifies compiler source, not a game JAR.
+
+## Previous final Boolean conditions (pass 227)
 
 The final cleanup simplifies 80 control conditions and removes 107 redundant
 parenthesis pairs in 42 methods across 18 classes. Menu/tutorial/fullscreen
