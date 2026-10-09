@@ -39,7 +39,15 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current renderer naming (pass 234)
+## Current audio naming (pass 235)
+
+79 patch/MIDI/filter locals now describe run streams, envelope/curve stages and
+forward versus feedback filtering. All 53 LiteralPhase names in these three
+owners are replaced; 214 remain elsewhere. The current workflow records
+validation and two further generic lifetime-analysis opportunities. Five large
+framed methods and 41 unknown field purposes remain.
+
+## Previous renderer naming (pass 234)
 
 277 renderer locals now describe sampling direction, clipping, trimming and
 lower triangle spans. All 84 LiteralPhase names in the four sprite/triangle

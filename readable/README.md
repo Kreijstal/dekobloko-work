@@ -37,7 +37,45 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current renderer direction and clipping names (pass 234)
+## Current patch, envelope and filter names (pass 235)
+
+79 guarded local names now describe audio roles in InstrumentPatch, MidiPcmStream
+and SynthesizedSoundInstrument. Patch decoding distinguishes pitch-byte
+accumulators, independent sample/group/pan/envelope/volume run cursors and values,
+envelope time/value bytes, Q6 volume interpolation and clamped pan curves.
+MIDI distinguishes volume/release segments, vibrato depth and computed sample step.
+Synthesis distinguishes forward/feedback coefficient loops and noise/sine tables.
+Unused snapshots and mixed curve-stage roles remain explicitly named and intact.
+
+All 53 LiteralPhase names in these three owners are replaced; 214 remain across
+the export. Only 451 bound identifier occurrences change. All 19,965 unaffected
+complete rules and all 20,351 dictionary identities survive unchanged. Source,
+compiler, naming, workflow, stubs and historical source/native proof pins stay fixed.
+
+Validation: `node readable/build-geoblox-rules.mjs --check`,
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass.
+All 303 sources compile, compare 138,040 bindings and 388 override pairs, reproduce
+and reverse byte-for-byte. The rule-builder suite passes 13 groups. Existing
+result-helper and scene probes match 14 and 10 native/raw/readable trace groups,
+including 1,759 instrument-patch and 134 synthesized-sound cases. Their original
+independent-oracle/trace-only distinctions and coverage limits stay unchanged;
+actual sound assets/devices and whole-game behavior remain unverified.
+
+Two diagnostic findings guide further generic reconstruction. A second call to
+the existing literal-initialized lifetime helper on the current readable patch
+constructor exposes eight additional locals/nine declarations; those bodies are
+not yet published or runtime-certified. Separately, the flow analyzer's expression
+switch has no NewArrayExpression case: a local read in an allocation dimension
+makes that candidate refuse analysis. That explains the retained
+instrument-envelope index/curve-point-count family. These need generic, tested
+compiler work rather than game-specific body rewrites. Five large framed methods
+and 41 unknown field purposes still remain.
+
+The tracked decompiler-source tar SHA-256 remains
+`6fa9e00942517d37f35330c93ebbbd3ed421ef9815ee54550cfdaea28734b424`.
+
+## Previous renderer direction and clipping names (pass 234)
 
 277 guarded local names now expose renderer roles in Sprite, ArgbSprite,
 IndexedSprite and SpriteState. Nearest rotation's nine source-sampling directions
