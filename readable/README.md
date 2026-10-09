@@ -37,7 +37,88 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current reference-cast cleanup (pass 247)
+## Current leading loop exits (pass 248)
+
+Thirteen forever loops now evaluate their original leading exit condition in
+an explicit loop header. A Boolean captures that decision on each entry. The
+original repeating body remains once in the loop; the original exit-only work
+remains once after it and runs only when that leading decision ended the loop.
+Other breaks skip it. Body continues and finally overrides retain their targets.
+No predicate is repeated after field writes or callbacks.
+
+The generic option is `CFR_JS_LEADING_LOOP_EXIT_WORK=1`, disabled by default.
+Self transfers inside exit-only work, uninitialized values used there, captures,
+unknown syntax and ambiguous source scopes refuse reconstruction. Each new
+Boolean is scoped to its replacement block. The selected game profile, names
+and independent certificate belong in Deko; reconstruction belongs in java-tools.
+
+Twelve methods in seven files change. Natural exits now identify completion of
+related-entity scans, raster columns, keyboard event polling, URL validation,
+mesh-face scans, connectivity scans and the transient queue. Thirteen reviewed
+names are added, with nine independently certified local-ordinal migrations.
+All 20,133 previous complete naming objects and 20,440 dictionary identities are
+preserved with those migrations. All other historical proof records remain intact;
+the prior current field-purpose selector is preserved inside this pass record.
+
+The independent javac certificate recognizes both control recipes in all 303
+source trees. It validates every original declaration and operation, accounts for
+13 consumed leading loop exits, and compares all 4,928 retained transfers with
+their exact original destinations and exception/monitor scopes. All surviving
+bindings retain their identities and character provenance; the 13 new locals
+are independently Boolean and definitely assigned. Label declarations and bound
+label references remain unchanged. The clean pinned compiler tar reproduces all
+303 sources and unchanged diagnostics: zero hard failures and zero fallbacks.
+
+The export has 20,146 rules, 20,453 dictionary identities, 121,876 identifier
+edits, 11 literal and 423 label edits (122,310 total), 137,811 binding comparisons
+and 388 override pairs. All 303 sources compile, reproduce and reverse exactly.
+The 41-field purpose inventory and zero numbered Phase-family names remain.
+
+Five large framed methods and 77 plain block labels remain. The explicit
+replacement scopes add 26 source lines across this pass. Current framed methods:
+
+| Method | Lines | Block labels |
+| --- | ---: | ---: |
+| BoardReconciliationSupport.reconcileBoardEntities | 340 | 2 |
+| GameScreen.renderScreen | 314 | 1 |
+| GameScreen.updateScreen | 328 | 2 |
+| GameplaySession.updateSession | 557 | 2 |
+| SpriteState.drawSortedHalfBlendRgbTriangle | 368 | 2 |
+
+From Deko, reproduce the selected source certificate and export:
+
+```sh
+NODE_PATH=/path/to/java-tools/node_modules node readable/tests/test-geoblox-leading-loop-work-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+The certificate archives its inputs and compiler from Git, verifies the tracked
+compiler-source tar, frozen binding auditor and body-position fixture, replays
+the reconstruction with character provenance, compiles both trees, recognizes
+both forms independently and compares exact compiler bytes. No maintained
+preview or second manifest is created.
+
+The focused generic command from java-tools passes 17 groups, including five
+new groups and 155,520 independent native oracle cases:
+
+```sh
+NODE_PATH=/path/to/java-tools/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/leadingLoopExitWorkRecovery.test.js test/loopFrameCompletionRecovery.test.js test/terminalGuardedFrameRecovery.test.js
+```
+
+Native cases cover nullable guards, signed overflow, early exits, partial
+failures, finally return/throw/continue overrides and monitor ownership/release.
+The rule-builder passes 13 groups. Existing native/raw/readable gameplay and
+rendering probes pass three and ten trace groups with their previous coverage
+limits. These checks certify this source recipe and recorded scenarios; whole-
+game equivalence to the original bytecode and phone/FPS acceptance remain unverified.
+
+Further work includes the five remaining frames, shared joins, exception-region
+loop exits and mixed-purpose aliases. Captures without other loop exits may
+also admit a simpler form with an independent constant/assignment proof.
+
+## Previous reference-cast cleanup (pass 247)
 
 The generic decompiler can now omit an intermediate `(Object)` bridge when
 class/array hierarchy metadata proves a direct narrowing reference cast is
