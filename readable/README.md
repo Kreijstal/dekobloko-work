@@ -37,7 +37,58 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current exhaustive switch frames (pass 253)
+## Current ordered frame decisions (pass 254)
+
+The character encoder now expresses its 27 ordered predicates as an ordinary
+if/else-if/else chain with explicit inner and outer fallbacks. Each original
+predicate, character read, store and arm scope remains; no classifier capture,
+predicate inversion or new local is introduced. One frame and 28 terminal breaks
+disappear, shortening the method from 125 to 73 lines. There are zero methods
+over 300 lines with plain block labels,
+32 smaller frames and 41 finer field purposes left.
+
+The generic opt-in flag is `CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS=1`, disabled by
+default. It supports 2–64 direct terminal arms. Extra frame exits, exits crossed
+by protection, captures and uncertain targets refuse. Generic recovery and agent
+guidance stay in java-tools; game names and source/native proofs stay in Deko.
+The tracked decompiler-source tar SHA-256 is
+`60ca1558de777974d984970a9bbbd204f2335fb2c376acb4623896bf50c9a484`.
+
+Independent javac trees resolve every original exit and complete fallback,
+comparing all other ordered syntax, 138,048 bindings, 388 override pairs and
+4,807 surviving protected transfers. The tracked compiler archive reproduces
+all 303 files and unchanged diagnostics with zero hard failures or fallbacks.
+All 20,136 surviving complete rules and 20,443 surviving dictionary objects
+retain their metadata. All 177 historical object records and
+96 directly recorded source certificates remain exact. Text resources
+and the 41-field purpose inventory remain unchanged.
+
+Eleven focused compiler groups pass, including 177,872 new independent native
+cases for wide character decisions, nullable/effectful predicates, aliases,
+partial stores, failures, finally overrides and monitor release. The complete
+original/recovered character bodies additionally match 131,072 JDK Windows-1252
+oracle cases, retaining NUL replacement 63 and false-return-guard value 50.
+That body check does not execute original bytecode or class initialization.
+The export has 122,113 identifier, 11 literal and 201 label edits (122,325 total).
+All 303 sources compile, reproduce and reverse byte exactly. Whole-game and
+phone/FPS behavior remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-exhaustive-if-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/exhaustiveIfFrameRecovery.test.js test/exhaustiveSwitchFrameRecovery.test.js
+```
+
+## Previous exhaustive switch frames (pass 253)
 
 The two bulk text encoders now use ordinary switch breaks and an explicit
 fallback arm. Their original predicate, selector, prefix character read, case
