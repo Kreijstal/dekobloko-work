@@ -39,7 +39,20 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current Vorbis setup and packet roles (pass 243)
+## Current MIDI, hash and menu-avatar roles (pass 244)
+
+67 source-reviewed names distinguish MIDI event/status branches and packed-score
+stream offsets, hash words/rounds/table bytes/publication, and menu-avatar tint
+paths. 49 numbered names and 18 superseded combined/context names are replaced.
+Exact reconstruction proves only 468 selected identifier occurrences changed in
+four files. All 303 sources compile, reproduce and reverse exactly; existing
+score/rendering native probes retain their traces and documented coverage limits.
+All source/compiler pins, dictionary identities, field-purpose inventory and
+historical records are preserved. Five large framed methods, 69 numbered phase-
+family names and 41 unresolved field purposes remain. The workflow records
+commands, evidence and limits; full dispatcher/hash/device behavior is not claimed.
+
+## Previous Vorbis setup and packet roles (pass 243)
 
 87 source-reviewed names distinguish packet selection, codeword/tree setup,
 floor prediction/lines, transform rotations and butterflies, bit-reversal swaps,

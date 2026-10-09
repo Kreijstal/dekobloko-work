@@ -37,7 +37,57 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current Vorbis setup and packet roles (pass 243)
+## Current MIDI, hash and menu-avatar roles (pass 244)
+
+67 source-reviewed local names now distinguish MIDI note-off/on, polyphonic
+pressure, program change, controller, channel-pressure and pitch-bend branches;
+MSB/LSB parameter selection; packed score event/track/controller scans, delta
+stream offsets and instrument-note collection; hash message/key/state words,
+rounds, table bytes, publication and feed-forward; and menu-avatar held/blink,
+steering, neutral movement/hold and left-fallback tint paths. PrefixCodeDecoder
+owns the menu-avatar helper as an unrelated shared static routine; its prefix-
+decoding algorithm is not changed in this pass.
+
+49 numbered phase-family names and 18 superseded combined/context names are
+replaced. The names follow actual reads and writes, including unusual MIDI masks,
+unused pressure/release consumers and hash state-start snapshots. Mask constants,
+signed byte deltas, shifts/overflow, controller order, callbacks, repeated steering
+reads, tint floating association and monitor/protected behavior are unchanged.
+No normal-MIDI, stable-field-read or zero client-control flag assumption is made.
+
+67 guarded rules rename 468 bound occurrences in four files. All 20,058
+unaffected complete rules, all 20,432 dictionary identities, the 41-field
+purpose inventory and every prior provenance record outside the current workflow
+summary are preserved. Independent reconstruction from the old dictionary
+substitutes only the 67 reviewed names and matches every character of all 303
+new readable files. Reversal also recovers every raw byte. Source/compiler/frozen
+naming/workflow/stub/native pins are unchanged. The export retains 20,125 rules,
+121,882 identifier edits, 11 literal and 423 label edits (122,316 total),
+138,121 binding comparisons and 388 override pairs.
+
+Validation: `node readable/build-geoblox-rules.mjs --check`,
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass for
+all 303 files. `node --test readable/tests/test-geoblox-rule-builder.mjs` passes
+13 groups. With the fixed transformed classes as the final argument,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-result-helpers.mjs`
+and `...test-geoblox-nine-slice.mjs` retain 14 and ten native/raw/readable trace
+groups, including existing packed-score and menu-avatar probes. Their previous
+independent-oracle/trace-only distinctions and limits remain. Fresh committed
+sibling checkouts reproduce the complete export.
+
+The existing probes do not newly certify every MIDI-dispatch or hash path, live
+audio devices or whole-game behavior. Their naming changes also have the exact
+source/binding/reversal certificate. Five large framed methods, 77 plain block
+labels, 69 older numbered phase-family names and 41 unresolved field purposes
+remain. LiteralPhase names stay at zero. The remaining large frames still need
+proved continuation or safe method decomposition; browser/phone and heap/
+presented-FPS acceptance remain unverified.
+
+The tracked decompiler-source tar SHA-256 remains
+`d7a2128763a993e939f7809b9a33626cae6d4189f47ab0a30c0e7e3e4342c221`.
+
+## Previous Vorbis setup and packet roles (pass 243)
 
 87 local names in MusicDecoder, VorbisCodebook and MusicDecodeStage now identify
 packet mux/floor/residue selection, codeword and Huffman-tree construction,
