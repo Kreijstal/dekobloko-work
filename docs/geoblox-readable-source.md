@@ -39,7 +39,15 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current gameplay and screen phase names (pass 233)
+## Current renderer naming (pass 234)
+
+277 renderer locals now describe sampling direction, clipping, trimming and
+lower triangle spans. All 84 LiteralPhase names in the four sprite/triangle
+owners are replaced; 267 remain elsewhere. The current workflow documents
+validation, preserved identities and limits. Five large framed methods and
+41 unknown field purposes remain.
+
+## Previous gameplay and screen phase names (pass 233)
 
 54 guarded local names now describe their source-supported roles in
 EntityMotionSupport, MatchScoringSupport and GameScreen. Motion distinguishes

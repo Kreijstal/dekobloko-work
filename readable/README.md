@@ -37,7 +37,37 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current gameplay and screen phase names (pass 233)
+## Current renderer direction and clipping names (pass 234)
+
+277 guarded local names now expose renderer roles in Sprite, ArgbSprite,
+IndexedSprite and SpriteState. Nearest rotation's nine source-sampling directions
+use fixed/forward/reverse X/Y names for coordinates, counters, samples and ARGB
+blend values. Clipping distinguishes leading skip pixels from negative stop
+counters and preserves names for offsets overwritten by skip counts. Scaled
+blits distinguish horizontal/vertical trim steps from destination indexes;
+clockwise rotation distinguishes original geometry from its pixel column.
+Sorted RGB triangles identify their lower-segment row base and span/channel steps.
+
+All 84 LiteralPhase names in these four classes are replaced; 267 remain across
+the export. Only 1,691 bound identifier occurrences change. All 19,767 unaffected
+complete rules and all 20,351 dictionary identities are preserved. No expression,
+statement, control frame, source/compiler/workflow pin or historical proof changes.
+
+Validation: `node readable/build-geoblox-rules.mjs --check`,
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass.
+All 303 sources compile, compare 138,040 bindings and 388 override pairs, reproduce
+and reverse byte-for-byte. The rule-builder suite passes 13 groups. The existing
+`test-geoblox-nine-slice.mjs` probe matches all ten fixed native/raw/readable trace
+groups, including 45,074 pixel, 33,168 transform and 5,266 RGB triangle cases.
+Its existing independent-oracle/trace-only distinctions and fixture limits remain.
+Real assets, arbitrary malformed geometry and whole-game/device behavior remain
+unverified. Five large framed methods and 41 unknown field purposes remain.
+
+The tracked decompiler-source tar SHA-256 remains
+`6fa9e00942517d37f35330c93ebbbd3ed421ef9815ee54550cfdaea28734b424`.
+
+## Previous gameplay and screen phase names (pass 233)
 
 54 guarded local names now describe their source-supported roles in
 EntityMotionSupport, MatchScoringSupport and GameScreen. Motion distinguishes
