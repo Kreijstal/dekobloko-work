@@ -39,7 +39,72 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current nested primitive lifetimes (pass 225)
+## Current explicit loop completion (pass 226)
+
+Eleven loop-to-frame exits in ten methods and seven classes now use explicit
+completion locals and guarded remainders. Eight block labels retire, leaving
+77 plain block labels. Each old predicate/action retains one occurrence and its
+original order. A completion local starts true and becomes false only at the
+selected nonlocal exit, which becomes a local loop break. Every remaining block
+suffix on the path to the frame is guarded. An unentered loop still runs its
+continuation. Other frame exits retain their original target and scope.
+
+GameplaySession's rotationKeySnapshotEnabled keeps the detached-entity snapshot
+on the interrupted fast-forward path and reads the rotation key on normal
+completion. Moving/transient board-routing flags skip their original neighbor
+resets and queue clear on interruption; the outside raster-dirty update stays
+outside those guards. SpriteState's upper-segment remainder is gated explicitly.
+Applet version parsing, dispatcher task waiting, archive request lookup, socket
+reading, result preparation and seed/Whirlpool helpers also improve.
+
+The generic compiler refuses crossed protected regions, switches, a second
+outer loop, captures and lost definite assignment. A full-source check found
+that Java cannot infer arbitrary correlations through a new completion flag;
+therefore a guarded suffix using an uninitialized local must assign it
+independently before reading it. No default values are invented to make such a
+case compile. Guards read only the new primitive local; no old field, callback,
+nullable predicate or loop condition is copied. Guard indentation and local
+break formatting are generated reproducibly.
+
+The opt-in environment adds `CFR_JS_LOOP_FRAME_COMPLETION=1` to the existing
+loop-tail compatibility and two lifetime options. This new option defaults to
+disabled and contains no game identifiers. Clean tracked compiler source
+reproduces all 303 independently certified raw files and unchanged diagnostics.
+Fixed bytecode, stubs, naming dependency, native fixtures and workflow remain
+unchanged. Raw source/compiler/environment and label policies migrate explicitly.
+
+Independent JDK certificates verify every selected frame/loop target and every
+block suffix at each intermediate rewrite. All original value bindings remain;
+4,941 transfer destinations and protected-scope facts are compared, with only the
+selected frame jumps changing to their certified local loop targets. Eight label
+identities retire and all 32 surviving label/local ordinal migrations are explicit.
+The 19,478 unaffected complete rules stay exact. Eleven flags receive guarded
+semantic names. The export has 19,521 rules, 19,828 dictionary identities,
+137,491 binding checks and 388 preserved override pairs. It records 121,269
+identifier, 11 literal and 423 label edits (121,703 total).
+
+Validation:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/loopFrameCompletionRecovery.test.js test/primitiveLocalLifetimeRecovery.test.js test/nestedPrimitiveLocalLifetimeRecovery.test.js` — 18 groups, including six completion groups and 528,768 new native cases against independent loop-outcome oracles. Nullable failures, partial effects, zero iterations, ordinary breaks, for updates and caller finally/monitor behavior match.
+- Deko: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-loop-completion-source.mjs ../java-tools` — independent full-source and intermediate-step certificates.
+- Deko: `node readable/build-geoblox-rules.mjs --check` and
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` /
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` — all 303 files compile and regenerate deterministically.
+- Deko: `node readable/tools/restore-original.mjs ../funorb-decompiled/readable/geoblox /tmp/restored-geoblox` — all 303 files reverse byte exactly.
+- All 27 publication tests and 17 scoped native trace groups match; fresh sibling
+  checkouts reproduce the complete committed export. Historical proof pins and
+  unaffected complete naming/dictionary identities stay intact.
+
+Four large framed methods and 41 unknown functional field purposes remain.
+Explicit completion flags reduce nonlocal jump indirection; they do not establish
+idiomatic structure everywhere, whole-game/platform/server/browser/phone
+correctness or heap/presented-FPS acceptance.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`0819866e4f81c570cf69f43578055cd68bceb5857929b00d44234f4c4653ca90` at java-tools `c7d22893f95bfe07da508185eb1f7c3d4a49743d`.
+It identifies compiler source, not a game JAR.
+
+## Previous nested primitive lifetimes (pass 225)
 
 The generic compiler now separates independently defined phases inside a nested
 block containing every use of a local. Loop headers and outgoing references keep
