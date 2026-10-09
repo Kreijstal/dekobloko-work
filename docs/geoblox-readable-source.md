@@ -39,7 +39,19 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current literal-phase naming milestone (pass 239)
+## Current nested primitive recovery (pass 240)
+
+The opt-in generic second nested pass separates 47 additional roles from 40
+reused locals in 14 classes. Reviewed names distinguish dialog layout, avatar
+tints, corner/edge/accent scans, archive and buffered-read stages, patch curves
+and triangle edges/spans. The current 20,125-rule export compiles and reproduces
+from a clean tracked compiler archive and committed sibling checkouts. All
+original bindings, protected transfers, dictionary identities and historical
+proof objects are accounted for. The workflow records exact commands, hashes,
+native probes and coverage limits. Five large framed methods, 285 older numbered
+phase-family names and 41 unresolved field purposes remain.
+
+## Previous literal-phase naming milestone (pass 239)
 
 The final 83 LiteralPhase names are replaced with source-reviewed roles.
 The current export has no LiteralPhase suffixes, but 286 older numbered phase

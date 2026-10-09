@@ -37,7 +37,58 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current reviewed literal-phase roles (pass 239)
+## Current nested initialized-primitive recovery (pass 240)
+
+The generic decompiler has a second, opt-in nested initialized-primitive pass.
+Earlier lifetime passes expose smaller independently assigned phases; one
+additional analysis can separate their remaining reuse. The new
+`CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES=1` option defaults off and
+requires `CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES=1`. Its shared safety
+analysis retains original initializers, reads, stores, expressions, calls and
+protected transfers. Loop incoming values, captures, ambiguous resets and values
+crossing handlers/finally/monitors still refuse separation. Game names and
+profiles remain outside java-tools.
+
+40 reused locals in 15 method bodies across 14 classes expose 47 further
+purpose-named declarations. The first 40 roles are reviewed, with 38 names
+refined. Dialog text, button geometry, fullscreen alpha and tutorial curtain
+positions are separate. Avatar begin/middle/hold/tail tint paths, corner/edge/
+accent scans, archive hash slots/copy positions, buffered reads, patch envelope/
+curve indexes and triangle edge/span values now have distinct names. Combined
+names remain where one phase still shares purposes. No numbered placeholder
+names are added.
+
+The export has 20,125 rules, 20,432 dictionary identities, 138,121 binding checks
+and 388 override pairs. Identifier edits are 121,882, with 11 literal and 423
+label edits (122,316 total). The audit preserves 20,021 completely unaffected
+rules, explicitly accounts for 17 original ordinal migrations, retains all
+20,385 previous dictionary identities and leaves 90 historical proof objects
+unchanged. Rule/local counts here come from the current manifest; older summary
+counts do not describe this publication.
+
+Validation:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/nestedInitializedPrimitiveLifetimeRecovery.test.js test/arrayDimensionLifetimeRecovery.test.js test/initializedPrimitiveLifetimeRecovery.test.js test/referenceLocalLifetimeRecovery.test.js test/primitiveLocalLifetimeRecovery.test.js test/nestedPrimitiveLocalLifetimeRecovery.test.js test/loopFrameCompletionRecovery.test.js` — 35 groups, including four new groups and 15,360 new independent native cases covering integer overflow, raw floating bits, labeled continues, zero iterations, partial failures, cleanup overrides and monitor release.
+- `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-initialized-primitives-source.mjs ../java-tools` selects the current nested proof. Independent javac facts certify exact inserted declarations/identifier replacements, types/definite assignment, original bindings and all 4,941 transfers/protected scopes. Earlier proofs replay through their recorded Git snapshots.
+- `node readable/build-geoblox-rules.mjs --check`, `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` compile and reproduce all 303 files; dictionary reversal is byte exact.
+- `node --test readable/tests/test-geoblox-rule-builder.mjs readable/tests/test-geoblox-migration-source.mjs readable/tests/test-geoblox-text-rules.mjs` passes 27 publication groups. With the fixed transformed classes as the final argument, `JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-result-helpers.mjs`, `...test-geoblox-nine-slice.mjs` and `...test-geoblox-gameplay.mjs` preserve 14, ten and three native/raw/readable trace groups, with their existing independent-oracle/trace-only coverage limits.
+- The working compiler and clean tracked-source archive reproduce identical 303-file raw trees and unchanged diagnostics with all twelve recorded flags. Fresh committed sibling checkouts reproduce the complete export.
+
+Five framed methods still exceed 300 lines: board reconciliation 338, screen
+rendering 318, screen update 328, gameplay update 567 and RGB half-blend triangle
+rendering 368. Explicit declarations add eight lines to screen rendering and
+five to the triangle renderer; this pass does not shrink their control frames.
+77 plain block labels, 285 older numbered phase-family names and 41 unknown
+field purposes remain. LiteralPhase names remain at zero. Whole-game equivalence,
+real assets/network/audio devices, browser/phone and heap/presented-FPS acceptance
+remain unverified.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`d7a2128763a993e939f7809b9a33626cae6d4189f47ab0a30c0e7e3e4342c221`
+at java-tools `ad6182796608a0bd498ddcf5877d51a80eb9530a`.
+This identifies tracked compiler source, not a game JAR.
+
+## Previous reviewed literal-phase roles (pass 239)
 
 The final 83 LiteralPhase names now identify source-reviewed roles in gameplay
 contact/detach and avatar tint paths, sprite/mesh decoding, ranked records, MIDI,
