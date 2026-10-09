@@ -16,7 +16,7 @@ import {sourceInventory, sourceIdentity} from '../tools/readable-java.mjs';
 const preview = process.argv.includes('--preview');
 const javaTools = path.resolve(process.argv.slice(2).find(a => a !== '--preview') || '../java-tools');
 const root = JSON.parse(fs.readFileSync(path.join(funorbRepository, 'decompilation/geoblox-provenance.json')));
-const proof = preview ? null : root.guardedFrameCompletionRecovery;
+const proof = preview ? null : root.guardedFramePrefixAssignmentRecovery ?? root.guardedFrameCompletionRecovery;
 assert.ok(preview || proof);
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guarded-frame-proof-'));
 const hash = b => crypto.createHash('sha256').update(b).digest('hex');
@@ -50,7 +50,7 @@ public class GuardedFrameTrees {
  static Tree peel(Tree n){while(n instanceof ParenthesizedTree)n=((ParenthesizedTree)n).getExpression();return n;}
  static class Recipe {
   String key,name,label;long before,after,body;Element flag;
-  Set<String> suffixes=new HashSet<>();Map<Long,Long> decisions=new HashMap<>();
+  Set<String> suffixes=new HashSet<>();Map<Long,Long> decisions=new HashMap<>();Map<String,long[]> prefixes=new HashMap<>();
  }
  static class Audit {
   CompilationUnitTree unit;Trees trees;SourcePositions positions;boolean after;Map<Long,Long> origins;
@@ -64,8 +64,26 @@ public class GuardedFrameTrees {
   Long project(Tree n){return origins.get(start(n));}
   Tree parent(Tree n){TreePath p=TreePath.getPath(unit,n);check(p!=null&&p.getParentPath()!=null,"parent");return p.getParentPath().getLeaf();}
   String suffix(Recipe r,BlockTree block,List<Long> statements){return r.key+":"+start(block)+":"+statements;}
+  void checkPrefixes(Recipe r,LabeledStatementTree frame){
+   for(Map.Entry<String,long[]> evidence:r.prefixes.entrySet()){
+    String name=evidence.getKey();long[] offsets=evidence.getValue();List<VariableTree> declarations=new ArrayList<>();
+    new TreeScanner<Void,Void>(){@Override public Void visitVariable(VariableTree n,Void ignored){if(start(n)==offsets[0]&&n.getName().contentEquals(name))declarations.add(n);return super.visitVariable(n,ignored);}}.scan(unit,null);
+    check(declarations.size()==1,"one original declaration");VariableTree declaration=declarations.get(0);Element local=element(declaration);Tree scope=parent(declaration);
+    check(local.getKind()==ElementKind.LOCAL_VARIABLE&&declaration.getInitializer()==null&&scope instanceof BlockTree,"uninitialized local scope");
+    Tree cursor=frame.getStatement();while(cursor!=scope)cursor=parent(cursor);
+    boolean matched=false;
+    for(StatementTree n:((BlockTree)frame.getStatement()).getStatements()){
+     if(!(n instanceof VariableTree||n instanceof ExpressionStatementTree))break;
+     if(start(n)!=offsets[1])continue;
+     check(n instanceof ExpressionStatementTree,"straight assignment");Tree expression=peel(((ExpressionStatementTree)n).getExpression());
+     check(expression instanceof AssignmentTree&&element(((AssignmentTree)expression).getVariable()).equals(local)&&offsets[0]<offsets[1],"dominating bound assignment");matched=true;break;
+    }
+    check(matched,"assignment precedes every branch/exit");
+   }
+  }
   void derive(Recipe r,LabeledStatementTree frame){
    check(frame.getLabel().contentEquals(r.label)&&frame.getStatement() instanceof BlockTree,"original frame");
+   checkPrefixes(r,frame);
    r.body=start(frame.getStatement());oldFrames.put(frame,r);bodies.put(r.body,r);
    new TreeScanner<Void,Void>(){
     @Override public Void visitBreak(BreakTree jump,Void ignored){
@@ -121,7 +139,7 @@ public class GuardedFrameTrees {
  }
  public static void main(String[]args)throws Exception{
   Map<String,Map<Long,Recipe>> markers=new HashMap<>();
-  for(String line:Files.readAllLines(Paths.get(args[3]))){String[]r=line.split("\\t",-1);Recipe p=new Recipe();p.before=Long.parseLong(r[1]);p.after=Long.parseLong(r[2]);p.name=r[3];p.label=r[4];p.key=r[0]+":"+r[1];markers.computeIfAbsent(r[0],k->new HashMap<>()).put(p.before,p);}
+  for(String line:Files.readAllLines(Paths.get(args[3]))){String[]r=line.split("\\t",-1);Recipe p=new Recipe();p.before=Long.parseLong(r[1]);p.after=Long.parseLong(r[2]);p.name=r[3];p.label=r[4];p.key=r[0]+":"+r[1];if(r.length>5&&!r[5].isEmpty())for(String prefix:r[5].split(",")){String[]e=prefix.split(":");check(e.length==3,"prefix marker");p.prefixes.put(e[0],new long[]{Long.parseLong(e[1]),Long.parseLong(e[2])});}markers.computeIfAbsent(r[0],k->new HashMap<>()).put(p.before,p);}
   Map<String,Map<Long,Long>> origins=new HashMap<>();for(String line:Files.readAllLines(Paths.get(args[4]))){String[]r=line.split("\\t");origins.computeIfAbsent(r[0],k->new HashMap<>()).put(Long.parseLong(r[1]),Long.parseLong(r[2]));}
   Map<String,Audit> before=new TreeMap<>();
   for(int mode=0;mode<2;mode++){JavaCompiler c=ToolProvider.getSystemJavaCompiler();DiagnosticCollector<JavaFileObject> errors=new DiagnosticCollector<>();try(StandardJavaFileManager fm=c.getStandardFileManager(errors,null,StandardCharsets.UTF_8);Stream<Path> paths=Files.list(Paths.get(args[mode]))){List<File> files=paths.filter(p->p.toString().endsWith(".java")).sorted().map(Path::toFile).collect(Collectors.toList());JavacTask task=(JavacTask)c.getTask(null,fm,errors,Arrays.asList("--release","8","-proc:none","-sourcepath","","-classpath",args[2]),null,fm.getJavaFileObjectsFromFiles(files));List<CompilationUnitTree> units=new ArrayList<>();task.parse().forEach(units::add);task.analyze();for(Diagnostic<?> d:errors.getDiagnostics())if(d.getKind()==Diagnostic.Kind.ERROR)throw new AssertionError(d);Trees trees=Trees.instance(task);
@@ -142,7 +160,7 @@ public class GuardedFrameTrees {
       for (;;) {
         const r = foldGuardedFrameCompletion(body, {reservedNames: span[3].split(',').filter(Boolean), retainDiagnostics: true}); if (!r.framesRecovered) break;
         const d = r.diagnostics, position = n => {const v = origins[base + n]; assert.ok(Number.isInteger(v)); return v;}, range = r => ({start: position(r.start), end: position(r.end - 1) + 1});
-        const selection = {file: entry.path, methodStart: +span[6], name: d.name, label: d.label, region: range(d.range), guards: d.guards.map(g => ({range: range(g.range), condition: range(g.conditionRange), jump: range(g.jumpRange), corridorKinds: g.corridorKinds})), guardsAdded: d.suffixes.length};
+        const selection = {file: entry.path, methodStart: +span[6], name: d.name, label: d.label, region: range(d.range), guards: d.guards.map(g => ({range: range(g.range), condition: range(g.conditionRange), jump: range(g.jumpRange), corridorKinds: g.corridorKinds})), guardsAdded: d.suffixes.length, prefixAssignments: (d.prefixAssignments || []).map(p => ({name: p.name, declarationOffset: position(p.declarationOffset), assignmentOffset: position(p.assignmentOffset)}))};
         let candidate = body;
         for (const e of d.edits) {
           let replacement = Array(e.text.length).fill(null);
@@ -157,7 +175,8 @@ public class GuardedFrameTrees {
     }
     fs.writeFileSync(path.join(expected, entry.path), text); maps.set(entry.path, origins);
   }
-  assert.equal(selections.length, 40);
+  if (proof) assert.equal(selections.length, proof.framesRecovered);
+  else assert.ok(selections.length > 0, 'preview must make structural progress');
   const list = path.join(temporary, 'sources.txt'); fs.writeFileSync(list, entries.map(e => e.path).join('\n') + '\n');
   const audit = dir => {const report = path.join(temporary, 'bindings.tsv'), classes = fs.mkdtempSync(path.join(temporary, 'classes-')); run('java', ['-cp', helpers, 'ReadableJava', dir, list, report, classes, stubs, '--class-name-literals', '--labels']); return rows(fs.readFileSync(report, 'utf8'));};
   const old = audit(before), after = audit(expected), positional = new Set(['D', 'R', 'T', 'B', 'N', 'S', 'U']);
@@ -183,7 +202,7 @@ public class GuardedFrameTrees {
   const transfers = initial.filter(r => r[0] === 'Q'), nextTransfers = facts(expected).filter(r => r[0] === 'Q').map(r => {const scopes = (r[9] || '').split(',').filter(Boolean).map(s => {const [k, role, start] = s.split(':'); return [k, role, originalPosition(r[1], +start)].join(':');}).join(','); return ['Q', r[1], String(originalPosition(r[1], +r[2])), String(originalPosition(r[1], +r[3] - 1) + 1), ...r.slice(4, 7), String(originalPosition(r[1], +r[7])), String(originalPosition(r[1], +r[8] - 1) + 1), scopes];});
   assert.deepEqual(ordered(nextTransfers), ordered(transfers.filter(r => !removed(r))), 'all retained targets and protected scopes');
   for (const s of selections) for (const g of s.guards) {const q = transfers.filter(r => r[1] === s.file && +r[2] === g.jump.start); assert.equal(q.length, 1); assert.equal(q[0][4], 'BREAK'); assert.equal(q[0][5], s.label); assert.equal(+q[0][7], s.region.start); assert.equal(+q[0][8], s.region.end);}
-  const markers = path.join(temporary, 'markers.tsv'); fs.writeFileSync(markers, selections.map(s => [s.file, s.region.start, s.afterStart, s.name, s.label].join('\t')).join('\n') + '\n');
+  const markers = path.join(temporary, 'markers.tsv'); fs.writeFileSync(markers, selections.map(s => [s.file, s.region.start, s.afterStart, s.name, s.label, s.prefixAssignments.map(p => [p.name, p.declarationOffset, p.assignmentOffset].join(':')).join(',')].join('\t')).join('\n') + '\n');
   const originsFile = path.join(temporary, 'origins.tsv'), originRows = [];
   for (const e of entries) {const offsets = new Set(tokenizeJava(fs.readFileSync(path.join(expected, e.path), 'utf8')).tokens.flatMap(t => [t.range.startOffset, t.range.endOffset - 1])); for (const n of offsets) if (maps.get(e.path)[n] !== null) originRows.push([e.path, n, maps.get(e.path)[n]].join('\t'));}
   fs.writeFileSync(originsFile, originRows.join('\n') + '\n');
@@ -191,7 +210,7 @@ public class GuardedFrameTrees {
   const candidate = preview ? process.env.GEOBLOX_GUARDED_FRAME_CANDIDATE_DIR : path.join(archive(funorbRepository, proof.sourceCommit, 'after', 'games/geoblox').directory, 'games/geoblox');
   if (candidate) for (const e of entries) assert.ok(fs.readFileSync(path.join(expected, e.path)).equals(fs.readFileSync(path.join(candidate, e.path))), e.path + ' exact selected compiler bytes');
   if (preview && process.env.GEOBLOX_GUARDED_FRAME_OUTPUT_DIR) {const output = process.env.GEOBLOX_GUARDED_FRAME_OUTPUT_DIR; fs.mkdirSync(output, {recursive: true}); for (const e of entries) fs.copyFileSync(path.join(expected, e.path), path.join(output, e.path));}
-  const result = {files: 303, changedFiles: new Set(selections.map(s => s.file)).size, changedMethods: new Set(selections.map(s => s.method)).size, framesRecovered: selections.length, newDecisionLocals: flags.length, newFlagOccurrences: added.length, removedLabelBindings: old.filter(r => r[0] === 'B' && removedSymbols.has(r[4])).length, bindingsBefore: old.filter(r => ['D', 'R'].includes(r[0])).length, bindingsAfter: after.filter(r => ['D', 'R'].includes(r[0])).length, transfersBefore: transfers.length, transfersAfter: nextTransfers.length, frameExitsConsumed: transfers.filter(removed).length, sourceTreeSha256: sourceIdentity(sourceInventory(expected)), symbolMigrations: [...oldToNext].filter(([a, b]) => a !== b).map(([before, after]) => ({before, after})), selections};
+  const result = {files: 303, changedFiles: new Set(selections.map(s => s.file)).size, changedMethods: new Set(selections.map(s => s.method)).size, framesRecovered: selections.length, prefixAssignmentsCompared: selections.reduce((n, s) => n + s.prefixAssignments.length, 0), newDecisionLocals: flags.length, newFlagOccurrences: added.length, removedLabelBindings: old.filter(r => r[0] === 'B' && removedSymbols.has(r[4])).length, bindingsBefore: old.filter(r => ['D', 'R'].includes(r[0])).length, bindingsAfter: after.filter(r => ['D', 'R'].includes(r[0])).length, transfersBefore: transfers.length, transfersAfter: nextTransfers.length, frameExitsConsumed: transfers.filter(removed).length, sourceTreeSha256: sourceIdentity(sourceInventory(expected)), symbolMigrations: [...oldToNext].filter(([a, b]) => a !== b).map(([before, after]) => ({before, after})), selections};
   if (proof) {assert.equal(result.sourceTreeSha256, proof.sourceTreeSha256); assert.deepEqual(result.selections, proof.selections);}
   console.log(JSON.stringify(result));
 } finally {fs.rmSync(temporary, {recursive: true, force: true});}

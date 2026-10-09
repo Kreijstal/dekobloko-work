@@ -37,7 +37,72 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current guarded frame continuations (pass 250)
+## Current initialized frame prefixes (pass 251)
+
+The remaining large rendering frame and a smaller tutorial-step frame now use
+ordinary guards with named continuation decisions. The curtain position and
+client-control snapshot are assigned by an unconditional prefix before any
+possible exit. Their original declarations, assignments, initializer effects
+and values remain intact. `tutorialSlideRenderingFrameContinues` and
+`tutorialStepPhaseUpdateFrameContinues` capture the original exit decisions at
+the original evaluation sites, including nonzero client-control paths.
+
+There are zero methods over 300 lines that contain plain block labels. Long
+methods remain: rendering is 315 lines, board reconciliation 344, screen update
+330, session update 561 and triangle drawing 370. There are 35 smaller plain
+frames, nested guards, mixed-purpose aliases and 41 finer field purposes left.
+This milestone does not establish complete readability.
+
+The existing generic `CFR_JS_GUARDED_FRAME_COMPLETION=1` option now recognizes
+straight prefix assignments to uniquely declared locals in an enclosing block.
+Conditional/loop/protected initialization, shadowed or later declarations,
+formal-name conflicts and reads before initialization refuse this evidence.
+The generic default remains unchanged; game-specific names and proofs stay in
+Deko. The independent javac certificate resolves both locals, their dominating
+assignments and the complete guarded exit/suffix recipes, then compares every
+other ordered operation, binding, override and remaining protected transfer.
+
+Two methods in two files change, consuming three exits and adding two temporary
+Boolean locals. One surviving catch-local ordinal migrates. All 20,137 surviving
+complete naming objects and 20,444 surviving dictionary identities remain exact
+with that migration. All 176 other provenance object records, including 96
+historical source proofs, remain. The field-purpose inventory is unchanged.
+All 303 sources compile, reproduce and reverse byte exactly. The clean tracked
+compiler tar reproduces all sources and unchanged diagnostics with zero hard
+failures or fallbacks. Its decompiler-source SHA-256 is
+`71641f8aa6702247b168ba4f3c086c171b7e6328c948520ac172d2ce6b947c4f`.
+
+The export has 20,139 naming rules, 122,128 identifier edits, 11 literal edits
+and 288 label edits (122,427 total), 138,063 binding comparisons and 388 override
+pairs. Fifteen focused generic groups pass, including 7,020 new independent
+native cases for initializer failures, snapshots, aliases, overflow, nullable
+conditions, finally overrides and monitor ownership/release. The prior 63,180
+frame cases are reverified. All 27 publication groups and the previous 3/10/14
+native/raw/readable gameplay/rendering/result trace groups pass with their
+existing coverage limits. Full-game and phone/FPS equivalence remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/java-tools/node_modules node readable/tests/test-geoblox-guarded-frame-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/guardedFrameCompletionRecovery.test.js test/loopFrameCompletionRecovery.test.js
+```
+
+The current source certificate selects this prefix pass. The previous frame
+certificate remains available in its pinned Deko Git commit, and every previous
+proof record retains its input/tool/workflow hashes. One manifest and one
+readable Java tree are maintained; generated Java is never edited by hand.
+Further work should simplify guard nesting and the remaining small frames.
+
+## Previous guarded frame continuations (pass 250)
 
 Forty plain labeled frames now use scoped continuation decisions and ordinary
 conditional blocks. Ninety nonlocal breaks disappear across 23 methods in 12
