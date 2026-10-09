@@ -37,7 +37,39 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current array-dimension lifetime recovery (pass 236)
+## Current archive, prefix and mesh role names (pass 237)
+
+99 guarded local names now identify archive metadata/retention stages,
+prefix-code bit snapshots and mesh projection/lighting/depth-queue roles.
+ArchiveIndex distinguishes group/file delta IDs, CRC/digest/revision ordinals
+and name-hash slots. ResourceArchive distinguishes requested-only versus all-file
+chunk counts, length/copy/publication indexes and destination file IDs.
+PrefixCodeDecoder names each bit's saved node value. Mesh helpers distinguish
+camera basis/translation/projected coordinates, light and half vectors, queued
+face indexes and priority prefix sums, including the full-integer guard bridge.
+Phases still reused for different purposes retain explicit combined names.
+
+58 LiteralPhase names are replaced; 156 remain. Only 600 bound identifiers in
+six files change. All 19,979 unaffected complete rules and all 20,385 dictionary
+identities are preserved. Source/compiler/workflow pins and historical proofs
+remain unchanged. Stale current-pass verification counters are reset to this
+naming-only pass: 99 refinements, zero additions/removals or source/body edits.
+
+Validation: `node readable/build-geoblox-rules.mjs --check`,
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass.
+All 303 sources compile with 138,074 binding comparisons and 388 override pairs;
+reversal is byte exact. The rule-builder suite passes 13 groups. Existing
+result/rendering probes match 14 and 10 trace groups against fixed bytecode,
+raw Java and readable Java. Their original oracle/trace-only distinctions and
+coverage limits remain; no new live archive/network, asset/device or full-game
+coverage is claimed. Five large framed methods and 41 unknown field purposes
+remain. Repeated primitive-lifetime reconstruction is still an open generic task.
+
+The tracked decompiler-source tar SHA-256 remains
+`45948f090f7e8a747b8aee5b5e74382c3fbd3977c9d7666c1ece6b14ecdafd5f`.
+
+## Previous array-dimension lifetime recovery (pass 236)
 
 The generic decompiler now optionally analyzes explicit array-allocation
 dimensions in their original left-to-right order. It only inserts uninitialized

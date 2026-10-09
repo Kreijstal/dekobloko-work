@@ -39,7 +39,15 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current array-dimension recovery (pass 236)
+## Current archive and mesh naming (pass 237)
+
+99 local names now describe archive decoding/unpacking, prefix-code bits and
+mesh projection/lighting/depth queues. 58 LiteralPhase names are replaced;
+156 remain. Current-pass counters now describe naming-only changes, while
+historical source proofs stay intact. The workflow records all-file verification
+and unchanged five large framed methods and 41 unknown field purposes.
+
+## Previous array-dimension recovery (pass 236)
 
 The generic opt-in compiler pass exposes 34 additional roles across 18 reused
 locals in ten classes. All new roles and their first phases have reviewed names;
