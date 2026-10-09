@@ -37,7 +37,52 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current renderer and avatar purposes (pass 241)
+## Current sprite sampling and field inventory (pass 242)
+
+43 remaining numbered names in Sprite and ArgbSprite now describe rotation
+sampling directions, padding/excess versus skip counts, source coordinates and
+sample gates; top/right/left trim scans; half-size sample quadrants; quarter-size
+background substitution; and ARGB sample alpha, block alpha sums, average alpha
+and modulated RGB. Unused alpha initialization still executes. Rotation direction
+names follow source-coordinate steps: left/up are negative cosine/sine, while
+right/down include zero in their original nonnegative branch. No positivity,
+valid geometry or zero client-control flag is assumed.
+
+43 rules rename 305 bound occurrences in two classes. All 20,082 unaffected
+complete rules and all 20,432 dictionary identities are preserved. Raw source,
+tracked compiler archive, frozen naming/workflow/stub/native evidence and all
+historical provenance records are unchanged. There are still 20,125 rules,
+121,882 identifier edits, 11 literal and 423 label edits (122,316 total), 138,121
+binding comparisons and 388 override pairs. Current-pass counters record naming
+refinements rather than structural source changes.
+
+The unresolved-field count is now backed by a current, independently resolved
+inventory in the single naming manifest. The new fixture compiles all 303 pinned
+raw sources and uses javac field identity and enclosing-method facts: six public
+static GameApplet fields have no ordinary source references, and 35 private
+VisualPropertyOverrides fields have 118 references confined to their constructor
+and merge method. The latter already have names describing their merge/sentinel
+mechanisms; source does not supply their specific UI meanings. The six public
+fields also have observational names. These are 41 unresolved purposes, not 41
+unrenamed identifiers. Reflection, native access and external artifacts remain
+outside this source certificate; no field is removed or given an invented role.
+
+Validation:
+
+- `JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-unresolved-fields.mjs` passes against the recorded 41-field inventory, including source-tree identity, visibility, declaration initializers, original JVM field bindings, owner methods and read/write counts.
+- `node readable/build-geoblox-rules.mjs --check`, `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` compile and reproduce all 303 files. Dictionary reversal is byte exact; fresh committed sibling checkouts reproduce the complete export.
+- `node --test readable/tests/test-geoblox-rule-builder.mjs` passes 13 groups. `JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-nine-slice.mjs TRANSFORMED_CLASSES` retains all ten native/raw/readable trace groups, including the existing sprite pixel/transform probes with their independent-oracle versus trace-only distinctions.
+
+Five large framed methods, 77 plain block labels, 175 older numbered phase-family
+names and 41 unresolved field purposes remain. LiteralPhase names remain zero.
+The previous structural investigation still applies: the remaining frames have
+real skips and shared state. Whole-game equivalence, real assets/network/audio
+devices, browser/phone and heap/presented-FPS acceptance remain unverified.
+
+The tracked decompiler-source tar SHA-256 remains
+`d7a2128763a993e939f7809b9a33626cae6d4189f47ab0a30c0e7e3e4342c221`.
+
+## Previous renderer and avatar purposes (pass 241)
 
 71 local names in SoftwareRasterizer and MessageDialog now identify their
 source-reviewed purposes. 67 numbered phase-family names are replaced: horizontal/

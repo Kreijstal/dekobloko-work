@@ -39,7 +39,22 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current renderer and avatar purposes (pass 241)
+## Current sprite sampling and field inventory (pass 242)
+
+43 source-reviewed names describe rotation directions, sample quadrants, trim
+edges, background substitution and alpha weighting. All 303 sources compile,
+reproduce and reverse exactly; existing native rendering traces match.
+
+The 41 unresolved purposes now have an independently resolved inventory in the
+single manifest: six public fields without ordinary source references and 35
+private constructor/merge-only slots. All already have observational/mechanism
+names; the source does not establish finer UI meanings or external runtime use.
+The fixture verifies 118 private references and every original field/method
+binding. Five large framed methods and 175 numbered phase-family names remain;
+source/compiler pins and historical provenance are preserved. The workflow
+records exact commands, hashes, evidence and limits.
+
+## Previous renderer and avatar purposes (pass 241)
 
 71 source-reviewed names distinguish blur windows, RGB outputs, circle/rounded
 spans, line axes, outline edges and avatar tint branches. Four misleading
