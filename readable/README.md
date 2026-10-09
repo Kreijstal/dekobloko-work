@@ -37,7 +37,66 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current nested initialized-primitive recovery (pass 240)
+## Current renderer and avatar purposes (pass 241)
+
+71 local names in SoftwareRasterizer and MessageDialog now identify their
+source-reviewed purposes. 67 numbered phase-family names are replaced: horizontal/
+vertical blur distinguishes growing, full and shrinking windows, column scans,
+RGB outputs and sums before clamping; circle and rounded-rectangle fill separates
+middle/lower spans and their exclusive/inclusive limits; line drawing identifies
+the Y step and pixel in an X-major line; rounded outlines identify right/top/
+bottom edges. Unused middle-offset and lower-destination snapshots are explicit
+and still execute.
+
+Avatar tint names now distinguish held/steered/stepped begin, cry-start, middle
+and tail branches. Source review caught misleading pass240 names: held/steered
+cry-start factors had been called tail factors, while their begin factors still
+claimed both begin/start. These four names are corrected against the actual cry
+phase transition, sound callback and start-tick snapshots. The existing tail
+factors receive their proper names. This fixes the readable description; all
+original expressions, branches, callbacks and floating association are retained.
+
+71 rules rename 448 bound occurrences in two classes. All 20,054 unaffected
+complete rule objects, all 20,432 dictionary identities and 91 historical proof
+objects are preserved. The source/compiler/frozen workflow/native/stub pins are
+unchanged. The export still has 20,125 rules, 121,882 identifier edits, 11 literal
+and 423 label edits (122,316 total), 138,121 binding comparisons and 388 override
+pairs. Current-pass counters describe naming-only refinements.
+
+Validation: `node readable/build-geoblox-rules.mjs --check`,
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass for
+all 303 sources; dictionary reversal is byte exact. The narrow rule-builder
+command, `node --test readable/tests/test-geoblox-rule-builder.mjs`, passes 13
+groups. With the fixed transformed classes as the final argument,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-nine-slice.mjs`
+and `...test-geoblox-result-helpers.mjs` preserve ten and 14 native/raw/readable
+trace groups with their existing independent-oracle/trace-only coverage limits.
+Fresh committed sibling checkouts reproduce the complete export. Cry-ending
+names are source-reviewed; the existing native animation fixture's limitations,
+including ending-message selection, remain unchanged.
+
+Structural investigation: current diagnostics have zero state-machine fallbacks.
+The remaining large methods are structured code with genuine skipped work,
+not failed decompilation. An in-memory preview allowed try/catch corridors without
+finally/resources in loop-completion recovery and scanned 2,005 top-level emitted
+method bodies in the 303 raw files. It found zero additional eligible methods,
+so no compiler extension is published. Adding that option would not simplify the
+current remaining frames. Their own-loop/outer-loop skips and shared state still
+need explicit continuation or independently verified method decomposition.
+Extraction must retain cross-phase values, whole-method returns, protected
+regions and failure order; introducing carrier allocations or merely replacing
+labels with flags is not established as an improvement.
+
+Five large framed methods, 77 plain block labels, 218 older numbered phase-family
+names and 41 unresolved field purposes remain; LiteralPhase names stay at zero.
+Whole-game equivalence, real assets/network/audio devices, browser/phone and
+heap/presented-FPS acceptance remain unverified.
+
+The tracked decompiler-source tar SHA-256 remains
+`d7a2128763a993e939f7809b9a33626cae6d4189f47ab0a30c0e7e3e4342c221`.
+
+## Previous nested initialized-primitive recovery (pass 240)
 
 The generic decompiler has a second, opt-in nested initialized-primitive pass.
 Earlier lifetime passes expose smaller independently assigned phases; one

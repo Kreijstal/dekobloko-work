@@ -39,7 +39,22 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current nested primitive recovery (pass 240)
+## Current renderer and avatar purposes (pass 241)
+
+71 source-reviewed names distinguish blur windows, RGB outputs, circle/rounded
+spans, line axes, outline edges and avatar tint branches. Four misleading
+begin/start/tail names from pass240 are corrected. Source and compiler pins are
+unchanged. All 303 sources compile, reproduce and reverse byte exactly, with
+existing native traces matching and complete rule/dictionary/proof preservation.
+
+The current diagnostics have no state-machine fallback. A try/catch-without-
+finally loop-completion preview found zero additional eligible methods among
+2,005 top-level emitted bodies, so it is not published. Remaining large frames
+have real skips and shared state; they require proved continuation or safe method
+decomposition. Five large framed methods, 218 numbered phase-family names and
+41 unresolved field purposes remain. The workflow records commands and limits.
+
+## Previous nested primitive recovery (pass 240)
 
 The opt-in generic second nested pass separates 47 additional roles from 40
 reused locals in 14 classes. Reviewed names distinguish dialog layout, avatar
