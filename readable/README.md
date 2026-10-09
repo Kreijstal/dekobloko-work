@@ -37,7 +37,61 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current nested reference roles and loop carries (pass 231)
+## Current literal-initialized primitive phases (pass 232)
+
+258 reused primitive locals now have 386 independently assigned later phases in
+118 methods across 81 classes. Original literal initializers, widths, overflow,
+floating-point bits, every assignment/call and partial effect remain intact.
+Board reconciliation separates avatarContactBitSnapshot from
+componentDetachDecision, and connectivityNeighborIndex from
+relationRemovalNeighborIndex. Other phases retain their reviewed role families
+with deterministic LiteralPhase ordinals; narrower purpose names remain review
+work. No name ends in its original opaque spelling.
+
+The generic opt-in `CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES=1` accepts
+literal numeric/boolean/character initializers and uninitialized primitive
+locals. It selects one block containing every use, including a protected body.
+Later phases define every read independently; loop-body phases cannot borrow a
+root initializer or previous iteration's value. Reaching values across handlers,
+finally/monitor boundaries, conditional resets and loop carries remain together.
+Original declarations stay unchanged and added declarations have no initializer.
+The option defaults off; earlier primitive/reference modes remain unchanged.
+
+Independent javac certificates verify exact new declarations and bound local
+identifier replacements, original/copy types, definite assignment, every
+original binding occurrence under explicit ordinal/phase maps, and all 4,941
+transfers/protected scopes. Complete source bytes match the tracked compiler.
+The export has 20,044 rules, 20,351 dictionary identities, 138,040 binding checks
+and 388 override pairs. Naming records 121,801 identifier, 11 literal and 423
+label edits (122,235 total). Block labels remain at 77.
+
+Validation:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/initializedPrimitiveLifetimeRecovery.test.js test/referenceLocalLifetimeRecovery.test.js test/primitiveLocalLifetimeRecovery.test.js test/nestedPrimitiveLocalLifetimeRecovery.test.js` — 22 groups, including four new groups and 16,128 new native oracle cases covering literal snapshots, overflows, NaN/signed-zero bits, primitive widths, effect failures, cleanup overrides and monitors.
+- Deko: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-initialized-primitives-source.mjs ../java-tools` — exact declarations/identifier changes, resolved types, every original binding and all protected transfers.
+- `node readable/build-geoblox-rules.mjs --check` and
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` /
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass
+  for all 303 files. Dictionary reversal is byte exact. All 27 publication groups
+  and 17 scoped gameplay/result trace groups pass. Fresh sibling checkouts
+  reproduce the complete committed export.
+- A clean tracked compiler-source tar reproduces all raw files and unchanged
+  diagnostics. Fixed bytecode, stubs, naming dependency, native probes and four
+  workflow files remain unchanged. Every unaffected complete naming/dictionary
+  identity survives explicit ordinal migrations and the two first-role refinements.
+
+Five large framed methods, mixed roles within phases, phase-family names that
+need further purpose review and 41 unknown functional field purposes remain.
+Whole-game/browser/phone behavior and heap/presented-FPS acceptance are not
+established. Real nonlocal skips and protected/outer-loop boundaries still need
+further reconstruction. GameScreen.renderScreen crosses the 300-line threshold
+through added declarations; no new control frame or block label is introduced.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`6fa9e00942517d37f35330c93ebbbd3ed421ef9815ee54550cfdaea28734b424` at java-tools `976bcb994f3124a0964b69f4525746f3c116bbd7`.
+It identifies compiler source, not a game JAR.
+
+## Previous nested reference roles and loop carries (pass 231)
 
 An initial reference split exposes two further roles inside nested blocks.
 Board reconciliation now uses connectivityNeighbor for neighbor searches and
