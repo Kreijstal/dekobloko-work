@@ -61,7 +61,6 @@ function validateRules(rules, audit) {
       throw new Error(`Label rename requires originalName: ${rule.symbol}`);
     if (rule.originalName !== undefined && declarations.get(rule.symbol).name !== rule.originalName)
       throw new Error(`Original name mismatch: ${rule.symbol}: expected ${rule.originalName}, got ${declarations.get(rule.symbol).name}`);
-    if (rule.symbol.startsWith('C:') && rule.symbol.includes('$')) throw new Error('Nested/local class renaming is not supported');
     // Constructor parameters have ordinary resolved parameter identities. Only
     // the constructor name itself must follow a class rename, never a method rule.
     if (rule.symbol.startsWith('M:') && (rule.symbol.includes('.<init>') || rule.symbol.includes('.<clinit>')))
@@ -75,14 +74,22 @@ function validateRules(rules, audit) {
   return renames;
 }
 
-function identityMapper(renames) {
-  const classes = [...renames].filter(([key]) => key.startsWith('C:')).map(([key, name]) => {
+function identityMapper(renames, bindings) {
+  const declarations = new Map(bindings.filter(row => row.kind === 'D').map(row => [row.key, row]));
+  const classes = [...declarations].filter(([key]) => key.startsWith('C:')).map(([key, declaration]) => {
     const original = key.slice(2);
-    return [original, original.slice(0, original.lastIndexOf('.') + 1) + name];
+    // Javac's binary name includes member separators and local-class ordinals.
+    // Use the resolved declaration's simple name: '$' can also be part of that
+    // name, so splitting at the last '$' would lose information.
+    const simple = declaration.name;
+    if (!original.endsWith(simple)) throw new Error(`Unresolved class identity: ${key}`);
+    return [original, original.slice(0, -simple.length), renames.get(key) ?? simple];
   }).sort((a, b) => b[0].length - a[0].length || order(a[0], b[0]));
   const owner = value => {
     const found = classes.find(([old]) => value === old || value.startsWith(old + '$'));
-    return found ? found[1] + value.slice(found[0].length) : value;
+    // Map the containing class independently, including simultaneously renamed
+    // ancestors. The prefix is strictly shorter, so recursion terminates.
+    return found ? owner(found[1]) + found[2] + value.slice(found[0].length) : value;
   };
   const descriptor = value => value.replace(/L([^;]+);/g, (_, name) => `L${owner(name.replaceAll('/', '.')).replaceAll('.', '/')};`);
   return key => {
@@ -193,7 +200,7 @@ export function generateReadable({input, output, rulesFile, classpath = '', chec
     }
     const before = audit(input, inventory, 'original');
     const renames = validateRules(rules, before);
-    const mapIdentity = identityMapper(renames);
+    const mapIdentity = identityMapper(renames, before.bindings);
     const editsByFile = new Map();
     for (const binding of before.bindings) {
       let renamed = renames.get(binding.key);

@@ -214,6 +214,71 @@ test('constructor identities still require a class rule rather than a method ren
   } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
 });
 
+test('nested and local class names preserve binary owners, descriptors, constructors and effects', () => {
+  const context = fixture({
+    'p/a.java': `package p; class a {
+      static class $b {
+        int value; $b(int value) { this.value = value; }
+        static class c { c() {} int value() { return 3; } }
+        $b copy() { return new $b(value + new c().value()); }
+      }
+      static int compute(int input) {
+        class $Step {
+          int value; $Step(int value) { this.value = value; }
+          $Step next() { return new $Step(value + input); }
+          class d { int value() { return $Step.this.value; } }
+          int result() { return new d().value(); }
+        }
+        $Step step = new $Step(new $b(input).copy().value);
+        return step.next().result();
+      }
+    }`,
+    'p/$Dollar.java': 'package p; class $Dollar { $Dollar() {} int value() { return 11; } }',
+    'p/a$Unrelated.java': 'package p; class a$Unrelated { a$Unrelated copy() { return this; } int value() { return 5; } }',
+    'p/Main.java': `package p; public class Main {
+      public static void main(String[] args) throws Exception {
+        System.out.println(a.compute(7) + ":" + new $Dollar().value() + ":" + new a$Unrelated().copy().value() + ":" +
+          (Class.forName("p.a$$b") == a.$b.class));
+      }
+    }`,
+  }, [['C:p.a', 'Outer', 'a'], ['C:p.a$$b', 'Member', '$b'],
+      ['C:p.a$$b$c', 'Leaf', 'c'], ['C:p.a$1$Step', 'Stage', '$Step'],
+      ['C:p.a$1$Step$d', 'Reader', 'd'], ['C:p.$Dollar', 'Dollar', '$Dollar']],
+    {classNameLiterals: {policy: 'direct-owned-class-for-name', expectedEdits: 1}});
+  try {
+    generateReadable(context);
+    const mapping = JSON.parse(fs.readFileSync(path.join(context.output, 'mapping.json')));
+    const identities = new Map(mapping.symbols.map(row => [row.symbol, row.renamedSymbol]));
+    assert.equal(identities.get('M:p.a$$b.copy()Lp/a$$b;'), 'M:p.Outer$Member.copy()Lp/Outer$Member;');
+    assert.equal(identities.get('M:p.a$1$Step.next()Lp/a$1$Step;'), 'M:p.Outer$1Stage.next()Lp/Outer$1Stage;');
+    assert.equal(identities.get('C:p.a$1$Step$d'), 'C:p.Outer$1Stage$Reader');
+    assert.equal(identities.get('C:p.a$$b$c'), 'C:p.Outer$Member$Leaf');
+    assert.equal(identities.get('M:p.a$Unrelated.copy()Lp/a$Unrelated;'), 'M:p.a$Unrelated.copy()Lp/a$Unrelated;');
+    assert.equal(mapping.symbols.find(row => row.symbol === 'M:p.a$1$Step.<init>(I)V').renamedName, 'Stage');
+    assert.equal(run(context.root, context.input, 'original'), '17:11:5:true\n');
+    assert.equal(run(context.root, path.join(context.output, 'src'), 'renamed'), '17:11:5:true\n');
+    assert.equal(generateReadable({...context, check: true}).check, true);
+    const restored = path.join(context.root, 'restored');
+    captureProcess(process.execPath, [new URL('./restore-original.mjs', import.meta.url).pathname, context.output, restored]);
+    for (const file of sourceInventory(context.input))
+      assert.deepEqual(fs.readFileSync(path.join(restored, file.path)), fs.readFileSync(path.join(context.input, file.path)));
+  } finally { fs.rmSync(context.root, {recursive: true, force: true}); }
+});
+
+test('local class collisions and changed javac ordinals cannot publish an export', () => {
+  const contexts = [
+    fixture({'a.java': 'class a { void m() { class b {} class c {} new b(); new c(); } }'},
+      [['C:a$1b', 'c', 'b']]),
+    fixture({'a.java': 'class a { void first() { class b {} new b(); } void second() { class b {} new b(); } }'},
+      [['C:a$2b', 'Renamed', 'b']]),
+  ];
+  try {
+    assert.throws(() => generateReadable(contexts[0]));
+    assert.throws(() => generateReadable(contexts[1]), /Binding changed:.*expected C:a\$2Renamed, got C:a\$1Renamed/);
+    for (const context of contexts) assert.equal(fs.existsSync(context.output), false);
+  } finally { for (const context of contexts) fs.rmSync(context.root, {recursive: true, force: true}); }
+});
+
 test('owned Class.forName literals preserve loading, initialization, reflection calls and exact reversal', () => {
   const context = fixture({
     'p/a.java': `package p; public class a {
