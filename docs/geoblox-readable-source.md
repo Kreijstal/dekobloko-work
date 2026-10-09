@@ -39,7 +39,69 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current property mechanisms and helper names (pass 223)
+## Current independent primitive lifetimes (pass 224)
+
+A generic decompiler reconstruction separates 132 reused primitive locals into
+386 independently defined lifetimes, adding 254 declarations across 43 methods
+and 32 files. Each phase assigns its local before every read; branch joins,
+zero-iteration loops, loop updates, breaks and labeled continues participate in
+the proof. Conditional resets that still need an incoming value remain in the
+preceding lifetime. All original statements, primitive types, operators and
+effects stay in their original order. Captures, protected regions, unsupported
+syntax and ambiguous lexical identities are refused.
+
+SynthesizedSoundInstrument.synthesize now distinguishes oscillatorSetupIndex,
+sampleIndex, gateCounterQ8, echoDelaySamples, filterEnvelopeValue and
+clippingSampleIndex. Pitch/volume values, mute flag and threshold, echo index,
+forward/feedback filter order, gated/filter sample indices, mute/unmute envelope
+values, filter chunk end and filtered sample receive separate phase names.
+Two intra-phase locals still combine modulation values with oscillator indices
+and modulation amplitudes with output offsets. Further separation needs the
+same proof inside nested blocks. Other new locals retain their previously
+reviewed semantic role families with deterministic phase numbering; those phase
+names can be refined from their individual bodies later.
+
+The opt-in generic compiler environment records both
+`CFR_JS_DISABLE_LOOP_TAIL_MERGE=1` and
+`CFR_JS_SPLIT_PRIMITIVE_LIFETIMES=1`. The lifetime option defaults to disabled;
+it contains no game names or branch rules. A clean tracked compiler-source
+archive reproduces all 303 certified raw files and unchanged diagnostics.
+Fixed bytecode, stubs, frozen naming dependency, workflow and native fixtures
+remain unchanged. Source/compiler/environment identities migrate explicitly.
+
+The independent JDK certificate recompiles the full original and recovered
+corpora, resolves every original declaration/reference and labeled transfer target,
+checks each new local's original primitive type and absence of an initializer,
+and verifies definite assignment. Every edit replaces a resolved local token
+or inserts only uninitialized primitive declarations. All 136,992 original
+binding occurrences remain accounted for; the new total is 137,246. One
+surviving local ordinal migrates explicitly. The 19,052 unaffected complete
+rules stay exact; six synthesis names are refined and 254 rules are added.
+The export has 19,313 guarded rules, 19,620 dictionary identities, 121,024
+identifier edits, 11 literal and 442 label edits (121,477 total).
+
+Validation from the owning repositories:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/primitiveLocalLifetimeRecovery.test.js test/nestedStableGuardedFallbackRecovery.test.js` — 12 groups, including seven lifetime groups and 70,400 new native original/recovered/oracle cases.
+- Deko: `JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-primitive-lifetimes-source.mjs ../java-tools` — independent attribution and exact certified bytes across all 303 sources.
+- Deko: `node readable/build-geoblox-rules.mjs --check` and
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` /
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` — full compilation, bindings and deterministic regeneration.
+- Deko: `node readable/tools/restore-original.mjs ../funorb-decompiled/readable/geoblox /tmp/restored-geoblox` — all 303 files reverse byte exactly.
+- Deko: `JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none readable/tests/test-geoblox-rule-builder.mjs readable/tests/test-geoblox-migration-source.mjs readable/tests/test-geoblox-text-rules.mjs` — 27 groups.
+- The unchanged gameplay/result helpers match all 17 scoped native trace groups;
+  fresh sibling checkouts reproduce the complete committed export.
+
+There are still 85 plain block labels, four large framed methods and 41 unknown
+functional field purposes. Whole-game, actual platform/server/browser/phone and
+heap/presented-FPS acceptance remain unverified. Declarations and phase names
+alone do not establish those outcomes.
+
+The new tracked **decompiler-source** Git tar SHA-256 is
+`51923d64c90319051a0f3ae4de530aeac9df06ef18cb2d1a569025efe896ecbf` at java-tools `bec08ca258ed3f787606631b5ec8e7b0c79f1672`.
+It identifies compiler source, not a game JAR.
+
+## Previous property mechanisms and helper names (pass 223)
 
 This pass names 41 fields, five private helper methods and one local helper
 class across seven Java files. VisualPropertyOverrides' 35 fields now state their
