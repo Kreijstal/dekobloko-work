@@ -39,7 +39,57 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current action-preserving local guards (pass 228)
+## Current standalone block flattening (pass 229)
+
+Twenty-seven standalone blocks in 19 methods across eight classes now expose
+their original statements directly. This removes 54 brace lines and unnecessary
+indentation from menu/fullscreen handling, gameplay rendering/update/results,
+applet loading, dialog/connection helpers and triangle rasterization. The
+redundant control-flag guards removed in pass 228 no longer leave nested empty
+scope wrappers around their original field writes and calls.
+
+The generic opt-in `CFR_JS_FLATTEN_STANDALONE_BLOCKS=1` runs after late guard
+recovery. A block must be a direct statement of another block. Its immediate
+children must declare nothing in the erased scope or retain their own scopes.
+Direct declarations and branch, loop, label, try/catch/finally and synchronized
+bodies retain their braces. Captures, pattern scopes, comments and uncertain
+syntax refuse cleanup. Only braces and whitespace are deleted; every original
+action, value, assignment and declaration remains. The option defaults off and
+contains no game identifiers.
+
+Independent attributed JDK certificates verify each exact direct-block range
+and its declaration-scope eligibility. Complete JDK AST fingerprints compare
+all 303 classes after flattening only those certified block statement lists.
+Every ordinary statement/operand and declaration scope stays exact. All 137,471
+value bindings, 388 override pairs and 4,941 transfer targets/protected scopes
+remain. All 19,521 complete naming rules and 19,828 dictionary identities are
+preserved. Labels remain at 77. Naming still records 121,249 identifier,
+11 literal and 423 label edits (121,683 total). Raw lines fall 76,305 to 76,251.
+
+Validation:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/standaloneBlockRecovery.test.js` — five groups pass, including 38,880 native cases against independent action models. Nullable predicates/locks, partial writes, nonzero flags, loop exits, local shadowing, cleanup overrides and monitor release match.
+- Deko: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-standalone-blocks-source.mjs ../java-tools` — independent block/scope facts, complete ASTs, every binding and protected transfer, and exact compiler bytes.
+- `node readable/build-geoblox-rules.mjs --check` and
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` /
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass
+  for all 303 files. Dictionary reversal is byte exact. All 27 publication groups
+  and 17 scoped gameplay/result trace groups pass. Fresh sibling checkouts
+  reproduce the complete committed export.
+- A clean tracked compiler-source tar reproduces all raw files and unchanged
+  diagnostics. Fixed bytecode, stubs, naming dependency, native probes, four
+  workflow files and complete historical proof objects remain unchanged.
+
+Four large framed methods and 41 unknown functional field purposes remain.
+This pass removes unnecessary wrappers without establishing whole-game,
+browser/phone behavior or heap/presented-FPS acceptance. Real nonlocal skips and
+protected/outer-loop corridors still require structural work.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`e60ac7c91b38f8349bd5b11c24a044c2f74034a3f8e19c0bd807681c7fe468b3` at java-tools `dcea9909c4156d877e3f40ba3e33124460a43fba`.
+It identifies compiler source, not a game JAR.
+
+## Previous action-preserving local guards (pass 228)
 
 Twenty redundant true guards in 13 methods across GameScreen, GameplaySession
 and GameApplet now keep their selected block directly. Repeated nested checks
