@@ -37,7 +37,57 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current ranked-response and stripe local names (pass 217)
+## Current terminal nested continuations (pass 218)
+
+The generic decompiler now guards complete terminal nested continuations using
+primitive-local predicates proved total and unchanged across their prefixes.
+Other exits retain the same label until its last reference is recovered.
+Eight rewrites in five methods and four files remove four block labels and
+14 source lines. They copy eight proved conditions and eleven primitive reads;
+no drawing, callback or field-write sequence is copied. The large
+SpriteState.drawSortedHalfBlendRgbTriangle body falls from five labels and
+362 lines to three labels and 356 lines. MeshDepthSupport's two depth-queue helpers,
+ReflectionCheckRequest's numeric parser and LimitedRandomAccessFile's character
+validator also improve. Four large bodies with plain block labels remain.
+
+A focused native fixture compares 51,840 original/recovered/oracle cases across
+24 models, including nullable unboxing, partial writes, other frame exits,
+monitors, injected failures and overriding finally completions. From java-tools,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --test --experimental-test-isolation=none test/nestedStableGuardedFallbackRecovery.test.js test/stableGuardedFallbackRecovery.test.js test/terminalGuardedFrameRecovery.test.js test/sharedStatementFallbackRecovery.test.js test/sharedGuardedFallbackRecovery.test.js test/cfrLoopTailMerge.test.js test/exceptionRegionSplitting.test.js test/exceptionStructurer.test.js`
+passes 75 Node groups and 12 loop-tail checks. From Deko,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/home/kreijstal/git/java-tools/node_modules node readable/tests/test-geoblox-nested-stable-source.mjs ../java-tools`
+uses independent javac attribution at every intermediate rewrite to prove the
+terminal corridor, primitive inputs, complete prefix mutation set and moved
+guard's scope. All original ordinary bindings and surviving transfer/handler/
+monitor targets are preserved; all 303 original/readable files compile and
+reverse byte exactly. All 27 publication tests, 17 scoped native trace groups
+and fresh sibling reproduction checks pass. Historical proofs remain pinned.
+
+The export has 18,430 guarded names, 118,402 identifier edits,
+11 literal and 442 label edits (118,855 total), 85 plain block labels
+and 75,788 source lines. Four labels retire and two surviving
+label ordinals migrate explicitly; every unaffected complete rule and dictionary
+object remains intact. The 436 compiler-style declarations and 41 unsupported
+fields are unchanged. Whole-game/server/browser/phone and heap/presented-FPS
+acceptance remain unverified.
+
+The remaining large frames have real skips: gameplay fast-forward exits skip
+the later rotation-key snapshot; board-routing exits skip later queue clears;
+menu/tutorial exits skip later animation or pointer effects. Replacing those
+jumps with an inner-loop break would execute different work. Repeating field or
+callback predicates across writes is also unsafe. Further recovery needs a
+proved continuation or an independently verified method decomposition; no
+clientControlFlowFlag value is assumed.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`f1e8f58da7530b79bdba98ee1292dcb2ef29b0ef2e9f2d0f95ff9c46393fff95` at java-tools `433ff77e11140811703f28a56e22efa35fc64e07`.
+The raw compiler invocation records `CFR_JS_DISABLE_LOOP_TAIL_MERGE=1` in both
+the generator and fresh-decompilation provenance. Upstream master's loop-tail
+optimization changes 49 additional files; that reconstruction is excluded from
+this pass's independently proved four-file change. All other normal CLI flags
+and fixed transformed classes/stubs remain unchanged.
+
+## Previous ranked-response and stripe local names (pass 217)
 
 Seventy previously unnamed declarations now describe their source roles in
 DelegatingCanvas and ProgressBarWidget. Contact conversion names its failure
