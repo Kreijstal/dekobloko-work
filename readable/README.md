@@ -37,7 +37,37 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current literal-initialized primitive phases (pass 232)
+## Current gameplay and screen phase names (pass 233)
+
+54 guarded local names now describe their source-supported roles in
+EntityMotionSupport, MatchScoringSupport and GameScreen. Motion distinguishes
+contacted, moving and midpoint center offsets. Scoring distinguishes the sort
+cursor/packed candidate from first/second entity IDs and popup coordinates.
+Menus distinguish background/foreground tiles, fullscreen dialog buttons and
+tutorial orbit coordinates from text/page/line-height values.
+
+33 LiteralPhase names are retired; 351 remain across the export. Phases that
+still serve multiple roles retain explicit combined names. Unused snapshots,
+resets and the motion guard remainder remain executed; the remainder can throw.
+Only 285 bound identifier occurrences in three Java files change. Raw source,
+compiler/naming/workflow pins, all 19,990 unaffected complete rules and all
+20,351 dictionary identities are preserved. Historical source proofs are unchanged.
+
+Validation: `node readable/build-geoblox-rules.mjs --check`,
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass.
+All 303 files compile with 138,040 binding comparisons and 388 override pairs;
+the dictionary restores every raw file byte-for-byte. The rule-builder suite
+passes 13 groups. Existing gameplay and matching/scoring probes pass against
+fixed transformed bytecode, raw Java and readable Java. Their fixture scopes
+remain unchanged; these names do not establish new whole-game/device coverage.
+
+Five large framed methods and 41 unknown field purposes remain. Source bodies,
+control-flow frames, protected scopes, floating-point associations and original
+effects are unchanged. The tracked decompiler-source tar SHA-256 remains
+`6fa9e00942517d37f35330c93ebbbd3ed421ef9815ee54550cfdaea28734b424`.
+
+## Previous literal-initialized primitive phases (pass 232)
 
 258 reused primitive locals now have 386 independently assigned later phases in
 118 methods across 81 classes. Original literal initializers, widths, overflow,
