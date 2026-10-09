@@ -37,7 +37,71 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current initialized frame prefixes (pass 251)
+## Current compound guards and indentation (pass 252)
+
+Fifteen nested primitive-local guards in the menu hit-test method now form nine
+ordered compound guards. Each flag assignment still runs only when its preceding
+guard succeeds; the assignment value replaces its immediate subsequent local
+read. Right-hand-side failures preserve any partial local updates. Conditions,
+conditional stores, callbacks, aliases, original snapshots and nonzero control
+paths retain their order. Each assignment is displayed on its own predicate
+line, and nested bodies have consistent indentation.
+
+The generic options are `CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS=1` and
+`CFR_JS_REINDENT_STRUCTURED_BODIES=1`, both disabled by default. Boxed or field
+guards, shadowed/later/out-of-scope locals, intervening actions, else arms,
+captures and direct labeled guards refuse compaction. Final rendering also
+normalizes wrappers introduced after statement recovery. Indentation changes
+only leading horizontal whitespace; tokens and line endings remain exact.
+Game profiles, names and proof fixtures stay in Deko.
+
+The independent javac certificate resolves the primitive locals and conditional
+store chains, validates all other ordered operations/bindings/overrides and all
+4,835 protected transfer destinations. Exactly 15 redundant local reads disappear;
+no declaration or naming object changes. Formatting corrects 11,148 lines in
+1,253 bodies; 275 raw/readable files change. The tracked compiler tar reproduces
+all 303 files and unchanged diagnostics with zero hard failures or fallbacks.
+Its decompiler-source SHA-256 is
+`ee67d76058d27a23dec52d4e93e2c11224b27a62343df06136915f7557fa3f15`.
+
+All 20,139 complete naming objects and 20,446 dictionary identities remain.
+All 176 other provenance object records, including 97 source proofs, remain.
+Previous current text-resource and field-purpose evidence is retained; only
+source hashes change. Resource assignments, counts, keys and line positions
+remain exact. The 41-field purpose inventory is independently rechecked.
+The export has 122,113 identifier edits, 11 literal edits and 288 label edits
+(122,412 total), 138,048 binding comparisons and 388 override pairs. All 303
+files compile, reproduce and reverse byte exactly.
+
+Twenty-one focused generic groups pass, including 14,040 new independent native
+cases for false initial flags, nullable RHS values, intermediate flag writes,
+initializer/condition failures, overflow, finally overrides and monitor release.
+All 27 publication groups and the prior 3/10/14 native/raw/readable gameplay,
+rendering and result trace groups pass with their existing coverage limits.
+Full-game and phone/FPS behavior remain unverified. There are still zero methods
+over 300 lines with plain block labels; 35 smaller frames, nested guards and
+mixed-purpose aliases remain.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/java-tools/node_modules node readable/tests/test-geoblox-boolean-guards-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/localBooleanGuardCompaction.test.js test/guardedFrameCompletionRecovery.test.js test/loopFrameCompletionRecovery.test.js
+```
+
+One current manifest and one readable tree are maintained. Previous structural
+certificates remain available from their pinned Git commits. Generated Java is
+never edited by hand. Further work should reduce the remaining control scaffolding.
+
+## Previous initialized frame prefixes (pass 251)
 
 The remaining large rendering frame and a smaller tutorial-step frame now use
 ordinary guards with named continuation decisions. The curtain position and
