@@ -23,7 +23,8 @@ const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 try {
   if (!preview) {
     const provenance = JSON.parse(fs.readFileSync(path.join(funorbRepository, 'decompilation/geoblox-provenance.json')));
-    const proof = provenance.spriteDirectionAndAlphaPurposeNaming?.unresolvedFieldSourceAudit;
+    const proof = provenance.currentUnresolvedFieldSourceAudit ??
+      provenance.spriteDirectionAndAlphaPurposeNaming?.unresolvedFieldSourceAudit;
     assert.ok(proof, 'recorded field-purpose source audit required');
     assert.equal(hash(fs.readFileSync(new URL(import.meta.url))), proof.fixtureSha256);
     assert.equal(manifest.source.commit, proof.sourceCommit);
