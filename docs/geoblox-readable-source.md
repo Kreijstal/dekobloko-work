@@ -39,7 +39,75 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current independent primitive lifetimes (pass 224)
+## Current nested primitive lifetimes (pass 225)
+
+The generic compiler now separates independently defined phases inside a nested
+block containing every use of a local. Loop headers and outgoing references keep
+reaching values connected to their enclosing lifetime. Each block execution is
+checked from an unassigned entry state, so a phase cannot borrow a prior iteration's
+value. Enclosing break/continue label and loop contexts remain intact. The opt-in
+nested stage runs after the existing root stage and contains no game identifiers.
+
+Across 31 methods and one static initializer in 23 files, 125 reused locals
+become 330 independently defined lifetimes, adding 205 declarations. The two
+remaining combined synthesis locals now have distinct pitchModulationValue,
+volumeModulationValue, oscillatorIndex, pitchModulationAmplitude,
+volumeModulationAmplitude and oscillatorSampleOffset names. Filter coefficient
+indices and filtered samples distinguish warmup, chunk and tail phases;
+filterWarmupEnd differs from filterChunkEnd. The original zero assignment to
+unusedInitialGateThreshold stays in place, with gateThreshold used by the later
+sample loop. No dead assignment, callback, field access or arithmetic is removed.
+
+Other new names retain reviewed semantic role families with deterministic nested
+phase numbering. Individual phase names can still be refined. All primitive
+types, operators, expression/effect order, aliases and exception/monitor behavior
+are preserved. Protected regions, captures and unsupported/ambiguous syntax
+remain outside the reconstruction's supported contract.
+
+The environment records three generic options:
+`CFR_JS_DISABLE_LOOP_TAIL_MERGE=1`,
+`CFR_JS_SPLIT_PRIMITIVE_LIFETIMES=1` and
+`CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES=1`. Both lifetime options default to
+disabled. Clean tracked compiler source reproduces all 303 certified raw files
+and unchanged diagnostics. Raw source/compiler/environment identities migrate
+explicitly; fixed bytecode, stubs, naming dependency, workflow and native fixtures
+stay fixed.
+
+The independent JDK certificate now includes initializer blocks as well as
+methods. Javac's static-block position starts at the static keyword; the
+certificate selects the actual opening brace and ignores synthetic bodies without
+source endpoints. It independently confirms the selected nested block span and
+that every resolved use of each split local stays inside it. All original bindings
+are preserved; each new local has the original primitive type, no initializer and
+verified definite assignment. Edits only replace resolved local tokens or insert
+uninitialized primitive declarations. One surviving local ordinal migrates
+explicitly. All 19,306 unaffected complete rules stay exact; six synthesis names
+are refined and 205 rules added. There are 19,518 guarded names, 19,825 dictionary
+identities, 137,451 binding checks and 388 unchanged override pairs. The export
+records 121,229 identifier, 11 literal and 442 label edits (121,682 total).
+
+Validation:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/primitiveLocalLifetimeRecovery.test.js test/nestedPrimitiveLocalLifetimeRecovery.test.js` — all 12 groups, including five nested groups and 50,688 new native original/recovered/oracle cases with independent event lists, partial writes, exception identity and finally/monitor effects.
+- Deko: `JAVA_TOOL_OPTIONS=-XX:-UsePerfData NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-primitive-lifetimes-source.mjs ../java-tools` — independent full-source attribution and exact certified bytes, including the initializer.
+- Deko: `node readable/build-geoblox-rules.mjs --check` and
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` /
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` — complete compilation and deterministic regeneration.
+- Deko: `node readable/tools/restore-original.mjs ../funorb-decompiled/readable/geoblox /tmp/restored-geoblox` — all 303 files reverse byte exactly.
+- All 27 publication tests and 17 unchanged scoped native trace groups pass;
+  fresh sibling checkouts reproduce the committed export. Historical proof pins
+  and every unaffected complete dictionary identity remain intact.
+
+Four large framed methods, 85 plain block labels and 41 unknown functional field
+purposes remain. The synthesis naming milestone does not establish idiomatic
+structure everywhere, whole-game/platform/server/browser/phone equivalence or
+heap/presented-FPS acceptance.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`ff694e2b663e7cbf666d1f466d5cde1ab7e4da04c2c75f4d5a0b6db5e030635e` at java-tools `c6726c0b44589e46c5a52c7782ca9d7865c326ec`.
+It identifies compiler source, not a game JAR.
+
+## Previous independent primitive lifetimes (pass 224)
 
 A generic decompiler reconstruction separates 132 reused primitive locals into
 386 independently defined lifetimes, adding 254 declarations across 43 methods
