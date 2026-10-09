@@ -37,7 +37,56 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current ordered frame decisions (pass 254)
+## Current visible character literals (pass 255)
+
+Four raw controls in three files now use visible Java character escapes.
+NUL is written as `'\0'`; control 25 is `'\031'`. This makes the affected
+Java sources readable as ordinary text, including future Git diffs. No literal
+value, statement, declaration, predicate, read/store or scope changes.
+
+The generic compiler formatter also escapes lone UTF-16 surrogates before UTF-8
+serialization, which otherwise substitutes U+FFFD. Ordinary Java escapes cover
+NUL/backspace/tab/newline/form-feed/carriage-return; other C0/C1 controls and DEL
+use octal escapes. Printable characters retain their spelling. This is a general
+source-emission fix; no game rules or runtime policies are added to java-tools.
+Its tracked decompiler-source tar SHA-256 is
+`4d274378adf563e66dbc9c3c69967550b1f3b1e00d349e68bd93b70000769b7c`.
+
+Four focused compiler groups pass. All 65,536 emitted Java character literals
+compile and match their independent numeric values. Decompile/recompile fixtures
+also cover fields, annotations, returns, narrow calls and String character-search
+calls; integer-to-char narrowing retains its existing behavior. The game-specific
+javac certificate compares all literal values and ordered syntax in 303 files,
+138,048 bindings, 388 override pairs and 4,807 protected transfers. All 304
+compiled classes, including their debug metadata, are byte identical. The tracked
+compiler archive reproduces every file and unchanged diagnostics with zero hard
+failures or fallbacks.
+
+All 20,136 complete naming objects and 20,443 dictionary identities remain.
+All 178 historical object records and 97 directly recorded source certificates
+remain exact. Text resources and the 41-field purpose inventory are unchanged.
+All 27 publication groups pass. The export still has 122,113 identifier,
+11 literal and 201 label edits
+(122,325 total). All sources compile, reproduce and reverse byte exactly.
+There are still 32 smaller plain frames and 41 finer field purposes; whole-game
+and phone/FPS behavior remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-character-literals-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/cfrCharacterLiterals.test.js
+```
+
+## Previous ordered frame decisions (pass 254)
 
 The character encoder now expresses its 27 ordered predicates as an ordinary
 if/else-if/else chain with explicit inner and outer fallbacks. Each original
