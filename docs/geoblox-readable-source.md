@@ -39,7 +39,20 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current MIDI, hash and menu-avatar roles (pass 244)
+## Current numbered-name milestone (pass 245)
+
+The final 69 numbered Phase-family names have reviewed UI/font/archive/bootstrap/
+audio/decoder purposes. Exactly 410 bound occurrences change in 27 files, with
+no other source-character changes. The current rules and dictionary have zero
+numbered Phase-family or LiteralPhase names. All 303 sources compile, reproduce
+and reverse byte exactly; existing native result/rendering traces match.
+
+This does not complete readability: other mixed roles, aliases/guard expressions,
+five large framed methods and 41 unresolved field purposes remain. All source/
+compiler pins, dictionary identities, field inventory and historical records are
+preserved. The workflow records commands, source hashes, evidence and limits.
+
+## Previous MIDI, hash and menu-avatar roles (pass 244)
 
 67 source-reviewed names distinguish MIDI event/status branches and packed-score
 stream offsets, hash words/rounds/table bytes/publication, and menu-avatar tint

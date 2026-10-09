@@ -37,7 +37,59 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current MIDI, hash and menu-avatar roles (pass 244)
+## Current final numbered-phase purposes (pass 245)
+
+The final 69 numbered phase-family names now describe source-reviewed purposes
+across 27 classes. UI names distinguish reconnect results, pending-panel phase
+snapshots, spinner geometry, hotspot IDs, caret guard arithmetic, hit tests,
+aspect recomputation and upper/lower dialog side bands. Font names distinguish
+left/right clipping, trailing mask skips, wrapped lines, profile offsets/delta
+sums, second kerning glyphs and palette-glyph traversal. Archive/bootstrap names
+identify background downloads, group/archive indexes, percentages and readiness
+snapshots; other names identify ratio-sort terms, theme-color insertion, PCM loop
+crossing, audio cleanup buckets, filter variants, Bzip2 base/limit construction
+and Vorbis residue classifications.
+
+Names retain mixed gray/RGB units and unused arithmetic/snapshots explicitly.
+Original reads/stores, masks, shifts/overflow, clipping, allocation/callback
+order, repeated field reads, floating association, invalid-guard paths and
+protected/monitor transfers remain. No valid-input, stable-field or zero client-
+control assumption is introduced. The dictionary preserves every original name.
+
+69 guarded rules rename 410 bound occurrences. All 20,056 unaffected complete
+rule objects, all 20,432 dictionary identities, the 41-field purpose inventory
+and every prior provenance record outside the current workflow summary remain
+unchanged. Independent reconstruction from the old dictionary substitutes only
+the reviewed identifiers and matches every character of all 303 new readable
+files. Reversal recovers every raw byte. Source/compiler/frozen naming/workflow/
+stub/native pins are unchanged. The export retains 20,125 rules, 121,882
+identifier edits, 11 literal and 423 label edits (122,316 total), 138,121 binding
+comparisons and 388 override pairs.
+
+Validation: `node readable/build-geoblox-rules.mjs --check`,
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass.
+`node --test readable/tests/test-geoblox-rule-builder.mjs` passes 13 groups.
+With the fixed transformed classes as the final argument,
+`JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-result-helpers.mjs`
+and `...test-geoblox-nine-slice.mjs` retain 14 and ten native/raw/readable trace
+groups and their existing independent-oracle/trace-only coverage limits.
+Fresh committed sibling checkouts reproduce the complete export. Current-pass
+counters record naming-only refinements.
+
+There are zero LiteralPhase or numbered Phase-family names in the current rules
+and reversible dictionary. This is a naming milestone, not a complete readability
+or runtime-equivalence claim: other combined roles, aliases/guard expressions,
+five large framed methods, 77 plain block labels and 41 unresolved field purposes
+remain. The field inventory describes observed source mechanisms rather than
+unproved UI semantics. Large frames still require proved continuation or safe
+method decomposition. Whole-game, real assets/network/audio devices, browser/
+phone and heap/presented-FPS acceptance remain unverified.
+
+The tracked decompiler-source tar SHA-256 remains
+`d7a2128763a993e939f7809b9a33626cae6d4189f47ab0a30c0e7e3e4342c221`.
+
+## Previous MIDI, hash and menu-avatar roles (pass 244)
 
 67 source-reviewed local names now distinguish MIDI note-off/on, polyphonic
 pressure, program change, controller, channel-pressure and pitch-bend branches;
