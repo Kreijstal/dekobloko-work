@@ -39,7 +39,60 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current independent reference phases (pass 230)
+## Current nested reference roles and loop carries (pass 231)
+
+An initial reference split exposes two further roles inside nested blocks.
+Board reconciliation now uses connectivityNeighbor for neighbor searches and
+comparison, and detachingEntityForVariantReset for the detached component's
+variant-count reset. Its former neighborThenCountResetEntity name is retired.
+Pointer handling separates releasedDragWithWheelAndNoPressAlias from
+releasedDragAfterPressWithWheelAlias, retaining both original unused assignments.
+Every original object identity, null initializer and partial effect remains.
+
+The generic opt-in `CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES=1` adds one nested
+pass after reference recovery. The same exact type, binding and independent
+assignment rules apply. Investigation also found a generic safety gap: a root
+null initializer cannot justify the incoming value of the first phase in every
+loop iteration. That value may come from the previous iteration's later phase.
+The checker now requires those reads to be independently defined within each
+iteration and preserves incoming loop carries. A native regression contrasts
+old/recovered code with an independently modeled incoming-reference sequence.
+
+Independent javac certificates prove both new uninitialized declarations,
+original/copy type bindings, every original reference occurrence under explicit
+phase/ordinal maps and all 4,941 protected transfers. The complete source edits
+contain only reviewed declarations and bound identifier replacements. The
+safety fix leaves the previous corpus's initial reference split unchanged;
+only the two independently certified nested roles change its emitted code.
+The export has 19,658 guarded rules, 19,965 dictionary identities, 137,654 binding
+checks and 388 override pairs. Naming records 121,415 identifier, 11 literal
+and 423 label edits (121,849 total). Plain block labels remain at 77.
+
+Validation:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/referenceLocalLifetimeRecovery.test.js test/primitiveLocalLifetimeRecovery.test.js test/nestedPrimitiveLocalLifetimeRecovery.test.js` — 18 groups, including six reference groups, 11,200 new native oracle cases and the reverified 192,000 earlier reference cases. Nested roles and loop carries match through nullable/shared references, effect failures, cleanup overrides and monitor release.
+- Deko: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-reference-lifetimes-source.mjs ../java-tools` — exact new declarations/identifier edits, resolved types, all original bindings, copied type references and protected transfers for the latest nested pass. Previous proof objects and their archived workflow/hash pins remain intact.
+- `node readable/build-geoblox-rules.mjs --check` and
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` /
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass
+  for all 303 files. Dictionary reversal is byte exact. All 27 publication groups
+  and 17 scoped gameplay/result trace groups pass. Fresh sibling checkouts
+  reproduce the complete committed export.
+- A clean tracked compiler-source tar reproduces all raw files and unchanged
+  diagnostics. Fixed bytecode, stubs, naming dependency, native probes and four
+  workflow files remain unchanged. Every unaffected complete naming/dictionary
+  identity survives the explicit local ordinal and role refinements.
+
+Four large framed methods, other mixed reference/primitive roles and 41 unknown
+functional field purposes remain. Whole-game/browser/phone behavior and
+heap/presented-FPS acceptance are not established. Real nonlocal skips and
+protected/outer-loop boundaries still require further reconstruction.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`f7c04f521e715d39807639045c40858287f87139340cc38d7f145746e174088e` at java-tools `94697aa4c0c1e51ac75120577c633dfdb22e4df7`.
+It identifies compiler source, not a game JAR.
+
+## Previous independent reference phases (pass 230)
 
 Forty-one reused reference locals now have 135 independently assigned later
 phases in 28 methods across 26 classes. Board reconciliation separates popped
