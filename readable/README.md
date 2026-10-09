@@ -37,7 +37,55 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current dialog and validation names (pass 221)
+## Current remaining local and parameter names (pass 222)
+
+A whole-dictionary audit names 228 declarations across 28 readable classes:
+181 locals and 47 parameters. All 150 remaining var/stackIn/decompiledCaught
+names receive source-supported roles. The audit also names nine fieldTemp
+snapshots, the socket writer region selector, every leftover generic exception
+local and opaque constructor/callback arguments that the narrower inventory
+missed. Only already descriptive throwable and left/right helper parameters
+remain unrenamed among locals and formals. This is a naming milestone, not
+proof that the entire source is idiomatic or that all field meanings are known.
+
+Roles now distinguish account/terms/welcome/fullscreen panel geometry, callback
+arguments from their actual interfaces/callers, cookie/method/payload snapshots,
+pointer angles and highscore queries, score/submission IDs and returns, pending
+query retries, list capacities/aliases, cascade errors, audio registration,
+DirectDraw enumeration/native peers and canvas constraints/countdown branches.
+A fullscreen constructor's Object slot retains its combined message-or-failure
+role. Window callbacks with empty bodies explicitly name unused inputs. The
+socket route remains an int assigned inside the monitor and consumed outside it;
+its naming does not remove that dispatch. Native null peers, invalid-guard
+recursion, partial writes, unused aliases, volatile/control fields, counters,
+FP association and original cookie/diagnostic strings remain unchanged.
+
+All 18,784 previous complete rules and 19,366 dictionary identities stay exact.
+Only 228 selected renamedName fields change in dictionary symbols; raw source
+positions and every other metadata field are preserved. The pass adds 787
+identifier edits in 28 files. The export has 19,012 guarded rules, 120,592
+identifier edits, 11 literal and 442 label edits (121,045 total). No opaque
+local/parameter placeholders remain in the bound dictionary. The 41 unresolved
+fields, compiler helper class/method spellings, mixed audio live ranges, 85 plain
+block labels and four large framed methods still need their own readability work.
+Required Java/platform API method names remain intact.
+
+From Deko, `node readable/build-geoblox-rules.mjs --check` validates all 228
+explicit additions against the previous Git manifest. Both
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` and
+`env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` compile
+all 303 sources with 136,992 binding and 388 override checks. All 303 files
+reverse byte exactly; 27 publication tests, 17 scoped native trace groups and
+fresh sibling reproductions pass. All 73 historical source-proof pins remain
+intact. This naming pass does not newly establish actual platform/server/browser/
+phone, whole-game or heap/presented-FPS acceptance. Raw source, bytecode, compiler,
+environment, frozen naming dependency and native inputs are unchanged.
+
+The unchanged tracked **decompiler-source** Git tar SHA-256 is
+`f1e8f58da7530b79bdba98ee1292dcb2ef29b0ef2e9f2d0f95ff9c46393fff95`; the pinned compiler environment still records
+`CFR_JS_DISABLE_LOOP_TAIL_MERGE=1`.
+
+## Previous dialog and validation names (pass 221)
 
 A naming pass covers 129 declarations in five classes: 123 locals and six
 callback parameters. MessageDialogContent now names button-array capacity/copy/
