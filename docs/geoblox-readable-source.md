@@ -39,7 +39,55 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current explicit loop completion (pass 226)
+## Current final Boolean conditions (pass 227)
+
+The final cleanup simplifies 80 control conditions and removes 107 redundant
+parenthesis pairs in 42 methods across 18 classes. Menu/tutorial/fullscreen
+handling, gameplay updates/results, board reconciliation, applet loading,
+text validation and codec/archive helpers become easier to follow. For example,
+`if (!(clientControlFlowGuard == 0))` becomes
+`if (clientControlFlowGuard != 0)`, preserving nonzero control-flag behavior.
+
+Earlier condition cleanup ran before late continuation/lifetime reconstruction.
+The opt-in `CFR_JS_FINAL_BOOLEAN_PREDICATES=1` runs the existing proven Boolean
+and grouping passes at the end. It complements equality, applies ordered
+short-circuit Boolean algebra and removes one double negation. No relational
+operator changes; floating/unknown relations retain their original NaN behavior.
+Ordinary operands, boxed identity, unboxing failures, effects and partial writes
+retain their order. The generic option defaults off and has no game identifiers.
+
+Independent attributed JDK tree fingerprints compare all 303 complete classes,
+normalizing Boolean algebra only in primitive control conditions. Every ordinary
+operand remains structurally exact. All 137,491 value bindings, label/class-name
+bindings, 388 override pairs and 4,941 transfer targets/protected scopes remain.
+All 19,521 complete naming rules and 19,828 dictionary identities are preserved;
+there are no new declarations, names or ordinal migrations. Labels remain at 77.
+The export still records 121,269 identifier, 11 literal and 423 label edits.
+
+Validation:
+
+- java-tools: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node --test --experimental-test-isolation=none test/predicateNegationRecovery.test.js test/predicateGroupingRecovery.test.js` — 22 groups pass, including 708,750 Boolean and 466,560 grouping cases against independent native oracles.
+- Deko: `NODE_PATH=/path/to/node_modules JAVA_TOOL_OPTIONS=-XX:-UsePerfData node readable/tests/test-geoblox-final-boolean-source.mjs ../java-tools` — complete attributed AST, binding, transfer and byte-exact compiler-source certificates.
+- `node readable/build-geoblox-rules.mjs --check` and
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --update` /
+  `env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check` pass
+  for all 303 files. Dictionary reversal is byte exact. All 27 publication groups
+  and 17 scoped gameplay/result trace groups pass. Fresh sibling checkouts
+  reproduce the complete committed export.
+- A clean tracked compiler-source tar reproduces the certified raw files and
+  unchanged diagnostics. Fixed bytecode, stubs, naming dependency, native probes,
+  four workflow files and historical proof objects remain unchanged.
+
+Four large framed methods and 41 unknown functional field purposes remain.
+This cleanup does not establish whole-game/browser/phone behavior or
+heap/presented-FPS acceptance. The next structural work must address real skips
+and protected/outer-loop corridors without assuming a zero control flag.
+
+The tracked **decompiler-source** Git tar SHA-256 is
+`ea7284d4cc58f21048c3eb42f6bc122fdbeb6195d27431e704b09466e265ae12` at java-tools `956de36de517ce4fbbf8bddd55224ccaec140367`.
+It identifies compiler source, not a game JAR.
+
+## Previous explicit loop completion (pass 226)
 
 Eleven loop-to-frame exits in ten methods and seven classes now use explicit
 completion locals and guarded remainders. Eight block labels retire, leaving
