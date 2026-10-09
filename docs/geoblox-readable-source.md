@@ -39,7 +39,21 @@ An input change requires an explicit source migration; a naming change requires
 an explicit rule change preserving every unaffected complete rule. The decompiler
 SHA identifies its tracked source archive, not a game JAR.
 
-## Current sprite sampling and field inventory (pass 242)
+## Current Vorbis setup and packet roles (pass 243)
+
+87 source-reviewed names distinguish packet selection, codeword/tree setup,
+floor prediction/lines, transform rotations and butterflies, bit-reversal swaps,
+windowing and overlap. 57 numbered names and 30 superseded combined names are
+replaced. An independent old-dictionary reconstruction proves that only the
+selected 512 identifier occurrences changed across three files. All 303 sources
+compile, reproduce and reverse exactly. All original operations, source/compiler
+pins, dictionary identities, field-purpose inventory and historical records are
+preserved. Existing native probes do not cover these Vorbis routines; playback
+and whole-decoder runtime equivalence are not claimed. Five large framed methods,
+118 numbered phase-family names and 41 unresolved field purposes remain.
+The workflow records exact commands, evidence and limits.
+
+## Previous sprite sampling and field inventory (pass 242)
 
 43 source-reviewed names describe rotation directions, sample quadrants, trim
 edges, background substitution and alpha weighting. All 303 sources compile,
