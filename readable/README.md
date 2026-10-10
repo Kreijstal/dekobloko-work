@@ -37,7 +37,63 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current switch exits and effectful prefixes (pass 256)
+## Current menu-key alternatives (pass 257)
+
+`GameScreen.handleMenuKey` now uses `menuKeyDispatchFrameContinues`
+instead of its 21 nonlocal frame exits. The original conditional alternatives
+and effectful prefixes remain in their scopes. Every predicate/read stays at
+its original evaluation site; complete suffixes use the captured continuation.
+Six redundant reads of the new primitive Boolean are removed by ordered,
+short-circuit assignment guards. Original effects, snapshots, aliases, control
+flags, callbacks/failures and finally/monitor behavior remain.
+There are 18 smaller plain frames, zero large framed methods and 41 finer
+field purposes left.
+
+The generic opt-in policy is `CFR_JS_GUARDED_FRAME_ALTERNATES=1`, with
+`CFR_JS_GUARDED_FRAME_COMPLETION=1`. It raises only this policy's exit limit
+from 16 to 64; source-size, depth, complete-suffix, definite-assignment and
+protected-corridor checks still apply. Earlier policies retain their defaults
+and generated-local naming order. Recovery, tests and agent guidance remain
+generic in java-tools. Game names and source proof fixtures stay in Deko.
+The tracked decompiler-source tar SHA-256 is
+`f5b62fe511e7b1059acc3c83e8267a34f29833a0e803b348091e99f1cc2d288f`.
+
+Independent javac recipes verify frame reconstruction and subsequent guard
+compaction separately, deriving original exit/suffix identities, conditional
+assignment order, fresh Boolean bindings and every other ordered operation.
+All 303 compiler files match the certificate; diagnostics are unchanged.
+The final source compares 138,135 bindings, 388 override pairs and 4,772
+protected transfers. Nineteen focused compiler groups pass, including 50,544
+new independent native early-return oracle cases for nullable predicates,
+alternatives, partial aliased stores, overflow, failures, finally and monitors.
+
+One flag rule replaces one obsolete label rule. All 20,135 surviving complete
+rules and 20,442 surviving dictionary identities retain their metadata with two
+recorded local-ordinal migrations. Totals remain 20,136 rules and 20,443
+identities. All 180 historical object records and 99 directly recorded source
+certificates remain exact; text resources and the 41-field purpose inventory
+remain. The export has 122,200 identifier, 11 literal and 133 label edits
+(122,344 total). All 27 publication groups and existing native/raw/readable
+3/10/14 gameplay, rendering and result trace groups pass. All 303 sources
+compile, reproduce and reverse byte exactly. Whole-game and phone/FPS
+behavior remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-alternate-frame-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/guardedFrameAlternates.test.js test/guardedFrameCompletionRecovery.test.js test/switchExitTailRecovery.test.js
+```
+
+## Previous switch exits and effectful prefixes (pass 256)
 
 Menu activation uses ordinary switch breaks for its 19 case exits. The original
 highscore-view update belongs only to the sole normal case; it now sits there

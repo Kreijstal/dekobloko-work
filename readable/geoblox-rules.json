@@ -4,10 +4,10 @@
   "purpose": "Offline readable source mirror; not a runtime patch",
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
-    "commit": "6e364298f2479598a7aad7fb00b387a923a81f89",
+    "commit": "83031939921cb2a32467bf3b99b42e19d94873c1",
     "subdirectory": "games/geoblox"
   },
-  "inputTreeSha256": "431801b29c355cdd1c62aff59e2716d3721d41861b39da182f454154accbb8a9",
+  "inputTreeSha256": "5c0d2b999655fdd15812aad44e9e0570b275b5e24bdbd992ff58b22f0b15d79c",
   "namingPolicy": "Confirmed semantic names without opaque suffixes; unknown symbols stay unchanged. Original spellings and JVM identities remain in the reverse symbol map. Every rule guards the original spelling. Local identities also use declaration ordinals; reused variables retain all supported roles. Numeric screen/action IDs and decompiler state remain unchanged.",
   "renames": [
     {
@@ -51,12 +51,6 @@
       "originalName": "L13",
       "to": "backgroundDownloadScanStep",
       "evidence": "One archive-group download scan step; full background queue or exhausted groups leaves this step before the loop exits. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-    },
-    {
-      "symbol": "B:c.a(II)V#0",
-      "originalName": "L0",
-      "to": "menuKeyDispatch",
-      "evidence": "Contains volume, back-screen, fullscreen and inherited menu-key handling before the method-guard transition update. Pass175 lexical label naming only: full original JVM enclosing-method identity, label spelling and declaration ordinal remain guarded. Every existing break/continue target, statement, branch, flag read, snapshot, arithmetic order, callback, partial effect, exception/finally/monitor scope and diagnostic literal remains. All18,304 previous complete rules and raw/decompiler/naming/workflow/stub/native pins remain exact; the reversible dictionary holds original names. No hand-edited generated Java, state-machine repair, new native runtime cases or whole-game/server/browser/phone/performance claim."
     },
     {
       "symbol": "B:c.b(Z)V#0",
@@ -20124,12 +20118,18 @@
     },
     {
       "symbol": "L:c.a(II)V#4",
+      "originalName": "decompiledFrameRemainder1",
+      "to": "menuKeyDispatchFrameContinues",
+      "evidence": "Pass257 continuation eligibility for the original menu-key dispatch remainder. Preserve each original conditional and complete alternative, every predicate/read, effectful true-arm prefix, source operation/snapshot, nonzero control flag, callback/failure order and protected scope. The new Boolean becomes false at the old true-arm exit; exact original suffixes run under that captured decision. Independent javac recipes derive all original exit/suffix identities, bind the new flag and retain all other operations, bindings, overrides and protected destinations. Generic recovery/native models stay in java-tools; this game name and source proof stay in Deko. No whole-game or phone/FPS claim."
+    },
+    {
+      "symbol": "L:c.a(II)V#5",
       "originalName": "decompiledFrameRemainder0",
       "to": "volumeKeyHandlingFrameContinues",
       "evidence": "Scoped continuation decision for the source-reviewed volumeKeyHandling frame. Replaces B:c.a(II)V#1 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
     },
     {
-      "symbol": "L:c.a(II)V#5",
+      "symbol": "L:c.a(II)V#6",
       "originalName": "decompiledCaughtParameter0",
       "to": "caughtParameter",
       "evidence": "c.field_C is set when the fullscreen action starts without InstrumentPatch.field_n and selects membership/unavailable/acceptance overlays in rendering. Keyboard/mouse handlers close it or accept/cancel, and update expires the acceptance state after1500 ticks. c.field_o defaults-1, is set0/1 for dialog keyboard buttons and reset-1 whenever live pointer X/Y moves; negative selection uses pointer hit tests. handleMenuKey dispatches volume end-point keys102/103 for actions8/9, escape13 navigation, dialog activation keys84/83 and then the inherited selected-item handler. Guard>-26 retains updateTransition(59). Local decompiledCaughtParameter0 follows its declaration, stores and reads as caughtParameter. Source-audited names only. Raw bytecode/source, exact arithmetic/masks, slot reuse, guard/control paths, numeric sentinels, strict hit boundaries, call/exception order and diagnostic literals remain. Compilation/binding/reversal verifies naming consistency; this pass adds no dynamic screen/menu/fullscreen/asset/device coverage."
@@ -120828,18 +120828,18 @@
     }
   ],
   "revision": 182,
-  "version": 256,
+  "version": 257,
   "generators": {
     "dekoblokoWork": {
       "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
       "trackedClean": true
     },
     "javaTools": {
-      "commit": "5cfac9209842c294b29b743ed01ff109e3ab5747",
+      "commit": "5722977b5e34919811b9644e99c4ed2b32212379",
       "trackedClean": true,
       "sourceArchive": {
-        "sha256": "ffba3cd4c15e34d8c3770d485cec94ee1204ff25d687ab0c80094d3892ac302f",
-        "reproduce": "git archive --format=tar 5cfac9209842c294b29b743ed01ff109e3ab5747 | sha256sum",
+        "sha256": "f5b62fe511e7b1059acc3c83e8267a34f29833a0e803b348091e99f1cc2d288f",
+        "reproduce": "git archive --format=tar 5722977b5e34919811b9644e99c4ed2b32212379 | sha256sum",
         "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
       },
       "environment": {
@@ -120865,7 +120865,8 @@
         "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
         "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1",
         "CFR_JS_SWITCH_EXIT_TAILS": "1",
-        "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1"
+        "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1",
+        "CFR_JS_GUARDED_FRAME_ALTERNATES": "1"
       }
     },
     "namingTool": {
@@ -120888,719 +120889,59 @@
     "format": 1,
     "previousRules": {
       "repository": "Kreijstal/dekobloko-work",
-      "commit": "296338b0563d9d00cdedea50677bd0472e7f950d",
+      "commit": "0e95bc27a6ca939148be805dff2ad4c058b03c4e",
       "path": "readable/geoblox-rules.json",
-      "sha256": "880baf8e994bb26c640a6d78ca04e3d90ea4420f0b7e9bc448ef6b35b8f65ca8"
+      "sha256": "1ec9f85e826a88c7f31b5427368388ca69740a4fa29d467f14d377b579722f9f"
     },
     "ruleChanges": [
       {
-        "symbol": "B:ab.a(IF)V#0",
+        "symbol": "B:c.a(II)V#0",
         "before": {
-          "symbol": "B:ab.a(IF)V#0",
-          "originalName": "L2",
-          "to": "movingEntityContactResolution",
-          "evidence": "EntityMotionSupport.moveEntitiesAndCollectContacts existing plain block encloses per-entity board/contact resolution. Its breaks skip to the original shared iterator advance; one detachment branch advances then continues the enclosing while. No transfer is retargeted. Pass169 guarded naming only. Preserve every previous complete rule, full original JVM identity/spelling and declaration ordinal, guards/constants, read and unused snapshots, aliases, evaluation/callback order, partial effects, integer overflow/floating associativity, protocol bytes, recursion and exception/finally/monitor scopes. Diagnostic literals remain original. No client-control-zero assumption, Java-body/bytecode/policy repair or new native runtime cases. Both303-source compilation, binding/override/lexical-target audits, deterministic reproduction and byte-exact dictionary reversal verify names; full game/assets/server/browser/phone and heap/presented-FPS acceptance remain unverified."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:ba.run()V#0",
-        "before": {
-          "symbol": "B:ba.run()V#0",
-          "originalName": "L2",
-          "to": "writerChunkSelection",
-          "evidence": "Within the socket writer monitor, select a contiguous queued chunk or leave on a requested close without a chunk. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:bj.b(B)V#0",
-        "before": {
-          "symbol": "B:bj.b(B)V#0",
-          "originalName": "L2",
-          "to": "completedRequestSweep",
-          "evidence": "Completed-request selection, seen/priority checks and unlinking; alternate sweep path rejoins deadline publication. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": {
-          "symbol": "B:bj.b(B)V#0",
-          "originalName": "L3",
-          "to": "backgroundGroupLoading",
-          "evidence": "Disk verification or background-download processing before common sweep checks, retaining queue bounds and phase resets. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        }
-      },
-      {
-        "symbol": "B:bj.b(B)V#1",
-        "before": {
-          "symbol": "B:bj.b(B)V#1",
-          "originalName": "L3",
-          "to": "backgroundGroupLoading",
-          "evidence": "Disk verification or background-download processing before common sweep checks, retaining queue bounds and phase resets. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": {
-          "symbol": "B:bj.b(B)V#1",
-          "originalName": "L13",
-          "to": "backgroundDownloadScanStep",
-          "evidence": "One archive-group download scan step; full background queue or exhausted groups leaves this step before the loop exits. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        }
-      },
-      {
-        "symbol": "B:bj.b(B)V#2",
-        "before": {
-          "symbol": "B:bj.b(B)V#2",
-          "originalName": "L13",
-          "to": "backgroundDownloadScanStep",
-          "evidence": "One archive-group download scan step; full background queue or exhausted groups leaves this step before the loop exits. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:c.b(IB)V#0",
-        "before": {
-          "symbol": "B:c.b(IB)V#0",
-          "originalName": "L1",
-          "to": "menuActionDispatch",
-          "evidence": "Contains action dispatch and new-session initialization; all exits retain the later press-animation and previous-screen bookkeeping. Pass175 lexical label naming only: full original JVM enclosing-method identity, label spelling and declaration ordinal remain guarded. Every existing break/continue target, statement, branch, flag read, snapshot, arithmetic order, callback, partial effect, exception/finally/monitor scope and diagnostic literal remains. All18,304 previous complete rules and raw/decompiler/naming/workflow/stub/native pins remain exact; the reversible dictionary holds original names. No hand-edited generated Java, state-machine repair, new native runtime cases or whole-game/server/browser/phone/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:eg.a(Ljava/lang/CharSequence;BIZ)I#0",
-        "before": {
-          "symbol": "B:eg.a(Ljava/lang/CharSequence;BIZ)I#0",
-          "originalName": "L3",
-          "to": "signedIntegerCharacter",
-          "evidence": "Per-character signed integer parsing; accepted leading signs leave the scope without digit accumulation. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:pa.a(Ljava/lang/CharSequence;ZII)Z#0",
-        "before": {
-          "symbol": "B:pa.a(Ljava/lang/CharSequence;ZII)Z#0",
-          "originalName": "L3",
-          "to": "signedNumberCharacter",
-          "evidence": "Exact source and callers of ReflectionCheckRequest numeric parsing, MessageDialog signed-decimal validation, mesh material-index bit counts and UI markup consumers reviewed. Preserve radix/sign/overflow policy, range failures, arithmetic guards and every original read/mutation. Both original leading-sign breaks target this plain per-character block; no loop exit is changed. Pass171 naming only: original JVM identity/spelling and declaration ordinal are guarded. Preserve every statement/constant/guard, aliases/read/unused snapshots, integer overflow and floating operation order, callbacks, partial effects, exception/finally/monitor scopes, diagnostic literals and every client-control value. No assumption that the control flag is zero. All17462 previous complete rules and raw/decompiler/naming/workflow/stub/native/text pins remain exact. Full-source compilation, bindings/overrides/lexical targets, deterministic reproduction and byte-exact dictionary reversal verify renaming. No new native runtime cases or probes; whole game/assets/server/browser/phone and heap/presented-FPS acceptance remain unverified."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:pf.f(I)V#0",
-        "before": {
-          "symbol": "B:pf.f(I)V#0",
+          "symbol": "B:c.a(II)V#0",
           "originalName": "L0",
-          "to": "intRecordReplyDispatch",
-          "evidence": "Login and suggestions audit (pass160), pf.java:58: Existing plain-block boundary encloses reply-type dispatch; the matched submission breaks to its guard/cleanup continuation. Every labeled break retains the same compiler-checked AST destination; no loop or exception-region reconstruction. Reply type0 consumes the first queued int-array query and accumulates bytes into response words using the original shift/mask, then unlinks it. Type1 searches matching byte/signed-smart keys and unlinks only a match; missing requests and unknown types close the session socket. Byte limits, existing word aliases, error reports and guard-after-dispatch archive clearing remain. Guarded naming only: full original JVM identity, spelling and declaration ordinal. All previous complete rules, statements/constants/guards, overflow, aliases, partial effects, evaluation/callback order, exception/finally/monitor scopes and diagnostic string literals remain. No client-control-zero assumption, network protocol change, discarded-effect cleanup or hand-edited generated Java. Whole-corpus compilation/binding/override/label audits and byte-exact reversal do not establish live UI/network/server/assets/game/browser/phone or heap/presented-FPS acceptance."
+          "to": "menuKeyDispatch",
+          "evidence": "Contains volume, back-screen, fullscreen and inherited menu-key handling before the method-guard transition update. Pass175 lexical label naming only: full original JVM enclosing-method identity, label spelling and declaration ordinal remain guarded. Every existing break/continue target, statement, branch, flag read, snapshot, arithmetic order, callback, partial effect, exception/finally/monitor scope and diagnostic literal remains. All18,304 previous complete rules and raw/decompiler/naming/workflow/stub/native pins remain exact; the reversible dictionary holds original names. No hand-edited generated Java, state-machine repair, new native runtime cases or whole-game/server/browser/phone/performance claim."
         },
         "after": null
       },
       {
-        "symbol": "B:pg.a(ILd;ILqc;)V#0",
+        "symbol": "L:c.a(II)V#4",
         "before": {
-          "symbol": "B:pg.a(ILd;ILqc;)V#0",
-          "originalName": "L2",
-          "to": "reflectionOperationDecode",
-          "evidence": "One reflection-check operation decode; unknown operation types leave after the original guarded index increment. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:r.a(Ljava/lang/String;Z)Lnd;#0",
-        "before": {
-          "symbol": "B:r.a(Ljava/lang/String;Z)Lnd;#0",
-          "originalName": "L1",
-          "to": "unquotedLocalPartCharacter",
-          "evidence": "Exact source/caller audit of EmailValidator, EmailAvailabilityValidator, active query initialization and account/display-name consumers. Existing null handling, first-at-sign split, offset argument, validation failure identities, short circuits, callback order, pending query reuse and wrong-guard recursion remain. This does not assert RFC completeness or server availability. The original plain block separates valid-dot handling from ordinary allowed-character handling; its one break retains its lexical target. Pass171 naming only: original JVM identity/spelling and declaration ordinal are guarded. Preserve every statement/constant/guard, aliases/read/unused snapshots, integer overflow and floating operation order, callbacks, partial effects, exception/finally/monitor scopes, diagnostic literals and every client-control value. No assumption that the control flag is zero. All17462 previous complete rules and raw/decompiler/naming/workflow/stub/native/text pins remain exact. Full-source compilation, bindings/overrides/lexical targets, deterministic reproduction and byte-exact dictionary reversal verify renaming. No new native runtime cases or probes; whole game/assets/server/browser/phone and heap/presented-FPS acceptance remain unverified."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:rh.a(II[II)Z#0",
-        "before": {
-          "symbol": "B:rh.a(II[II)Z#0",
-          "originalName": "L4",
-          "to": "packedGroupDecryptionSelection",
-          "evidence": "Packed resource group selection; a nonzero XTEA key selects a copied/decrypted buffer before common decompression. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:sd.a(IIII[IIIII)V#0",
-        "before": {
-          "symbol": "B:sd.a(IIII[IIIII)V#0",
-          "originalName": "L6",
-          "to": "upperTriangleSegmentClipAndScan",
-          "evidence": "Upper solid-triangle segment top clipping and row scanning; an entirely clipped upper segment leaves for lower-edge setup. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:uf.run()V#0",
-        "before": {
-          "symbol": "B:uf.run()V#0",
-          "originalName": "L4",
-          "to": "diskRequestOperationDispatch",
-          "evidence": "Disk-worker request read/write selection; read requests leave for shared completion publication. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:wf.b(ZI)V#0",
-        "before": {
-          "symbol": "B:wf.b(ZI)V#0",
-          "originalName": "L30",
-          "to": "bootstrapTextArchiveGate",
-          "evidence": "Bootstrap stage-eleven text archive readiness gate; pending archives leave before game-request publication. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "L:ab.a(IF)V#31",
-        "before": {
-          "symbol": "L:ab.a(IF)V#31",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "motionFailure",
-          "evidence": "Moving-contact source: advance moving entities, remove old neighbor links on attachment, resolve contacted entity from raster ID, normalize averaged velocity, test outward movement and optionally redirect toward the pair midpoint; redraw/erase trails afterward. Reused integer spans neighbor index, kind2 flag, contact ID and sentinel remainder. Reused floats retain averaged velocity/cross-product and velocity/direction-scale roles. These contact-producer branches remain source-audited, outside the new leaf motion fixtures."
-        },
-        "after": {
-          "symbol": "L:ab.a(IF)V#31",
+          "symbol": "L:c.a(II)V#4",
           "originalName": "decompiledFrameRemainder0",
-          "to": "movingEntityContactResolutionFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original movingEntityContactResolution frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:ab.a(IF)V#32",
-        "before": null,
-        "after": {
-          "symbol": "L:ab.a(IF)V#32",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "motionFailure",
-          "evidence": "Moving-contact source: advance moving entities, remove old neighbor links on attachment, resolve contacted entity from raster ID, normalize averaged velocity, test outward movement and optionally redirect toward the pair midpoint; redraw/erase trails afterward. Reused integer spans neighbor index, kind2 flag, contact ID and sentinel remainder. Reused floats retain averaged velocity/cross-product and velocity/direction-scale roles. These contact-producer branches remain source-audited, outside the new leaf motion fixtures."
-        }
-      },
-      {
-        "symbol": "L:ba.run()V#10",
-        "before": {
-          "symbol": "L:ba.run()V#10",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "waitInterruption",
-          "evidence": "Resolved declaration in run()V; waitInterruption names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
+          "to": "volumeKeyHandlingFrameContinues",
+          "evidence": "Scoped continuation decision for the source-reviewed volumeKeyHandling frame. Replaces B:c.a(II)V#1 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
         },
         "after": {
-          "symbol": "L:ba.run()V#10",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "writerChunkSelectionFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original writerChunkSelection frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:ba.run()V#11",
-        "before": {
-          "symbol": "L:ba.run()V#11",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "closeFailure",
-          "evidence": "Resolved declaration in run()V; closeFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        },
-        "after": {
-          "symbol": "L:ba.run()V#11",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "waitInterruption",
-          "evidence": "Resolved declaration in run()V; waitInterruption names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        }
-      },
-      {
-        "symbol": "L:ba.run()V#12",
-        "before": {
-          "symbol": "L:ba.run()V#12",
-          "originalName": "decompiledCaughtParameter2",
-          "to": "writeFailure",
-          "evidence": "Resolved declaration in run()V; writeFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        },
-        "after": {
-          "symbol": "L:ba.run()V#12",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "closeFailure",
-          "evidence": "Resolved declaration in run()V; closeFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        }
-      },
-      {
-        "symbol": "L:ba.run()V#13",
-        "before": {
-          "symbol": "L:ba.run()V#13",
-          "originalName": "decompiledCaughtParameter3",
-          "to": "flushFailure",
-          "evidence": "Resolved declaration in run()V; flushFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        },
-        "after": {
-          "symbol": "L:ba.run()V#13",
-          "originalName": "decompiledCaughtParameter2",
-          "to": "writeFailure",
-          "evidence": "Resolved declaration in run()V; writeFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        }
-      },
-      {
-        "symbol": "L:ba.run()V#14",
-        "before": {
-          "symbol": "L:ba.run()V#14",
-          "originalName": "decompiledCaughtParameter4",
-          "to": "unexpectedWorkerFailure",
-          "evidence": "Resolved declaration in run()V; unexpectedWorkerFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        },
-        "after": {
-          "symbol": "L:ba.run()V#14",
-          "originalName": "decompiledCaughtParameter3",
-          "to": "flushFailure",
-          "evidence": "Resolved declaration in run()V; flushFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        }
-      },
-      {
-        "symbol": "L:ba.run()V#15",
-        "before": {
-          "symbol": "L:ba.run()V#15",
-          "originalName": "decompiledUncheckedException",
-          "to": "uncheckedFailure",
-          "evidence": "Resolved declaration in run()V; uncheckedFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        },
-        "after": {
-          "symbol": "L:ba.run()V#15",
-          "originalName": "decompiledCaughtParameter4",
-          "to": "unexpectedWorkerFailure",
-          "evidence": "Resolved declaration in run()V; unexpectedWorkerFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        }
-      },
-      {
-        "symbol": "L:ba.run()V#16",
-        "before": {
-          "symbol": "L:ba.run()V#16",
-          "originalName": "decompiledCheckedException",
-          "to": "checkedFailure",
-          "evidence": "Resolved declaration in run()V; checkedFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        },
-        "after": {
-          "symbol": "L:ba.run()V#16",
-          "originalName": "decompiledUncheckedException",
-          "to": "uncheckedFailure",
-          "evidence": "Resolved declaration in run()V; uncheckedFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        }
-      },
-      {
-        "symbol": "L:ba.run()V#17",
-        "before": null,
-        "after": {
-          "symbol": "L:ba.run()V#17",
-          "originalName": "decompiledCheckedException",
-          "to": "checkedFailure",
-          "evidence": "Resolved declaration in run()V; checkedFailure names its observed stream, monitor, exception/catch, diagnostic-message or loop role. Existing catch carriers and error-message string literals are preserved."
-        }
-      },
-      {
-        "symbol": "L:bj.b(B)V#17",
-        "before": null,
-        "after": {
-          "symbol": "L:bj.b(B)V#17",
-          "originalName": "decompiledFrameRemainder2",
-          "to": "completedRequestSweepFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original completedRequestSweep frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:c.b(IB)V#10",
-        "before": {
-          "symbol": "L:c.b(IB)V#10",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "caughtParameter",
-          "evidence": "activateMenuItem dispatches the action snapshot to screen/gameplay/fullscreen/tutorial and score-category operations. new-session tutorial mode is selected by action15 or existing eligibility/cache/category checks. Invalid/active tutorial page moves suppress the press animation. All branch labels, shared-state effects and guard!=-2 transition call remain. Local decompiledCaughtParameter0 follows its declaration, stores and reads as caughtParameter. Source-audited names only. Raw bytecode/source, exact arithmetic/masks, slot reuse, guard/control paths, numeric sentinels, strict hit boundaries, call/exception order and diagnostic literals remain. Compilation/binding/reversal verifies naming consistency; this pass adds no dynamic screen/menu/fullscreen/asset/device coverage."
-        },
-        "after": {
-          "symbol": "L:c.b(IB)V#10",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "sessionResultScreenSelectionFrameContinues",
-          "evidence": "Scoped continuation decision for the source-reviewed sessionResultScreenSelection frame. Replaces B:c.b(IB)V#1 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
-        }
-      },
-      {
-        "symbol": "L:c.b(IB)V#11",
-        "before": null,
-        "after": {
-          "symbol": "L:c.b(IB)V#11",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "caughtParameter",
-          "evidence": "activateMenuItem dispatches the action snapshot to screen/gameplay/fullscreen/tutorial and score-category operations. new-session tutorial mode is selected by action15 or existing eligibility/cache/category checks. Invalid/active tutorial page moves suppress the press animation. All branch labels, shared-state effects and guard!=-2 transition call remain. Local decompiledCaughtParameter0 follows its declaration, stores and reads as caughtParameter. Source-audited names only. Raw bytecode/source, exact arithmetic/masks, slot reuse, guard/control paths, numeric sentinels, strict hit boundaries, call/exception order and diagnostic literals remain. Compilation/binding/reversal verifies naming consistency; this pass adds no dynamic screen/menu/fullscreen/asset/device coverage."
-        }
-      },
-      {
-        "symbol": "L:c.b(IB)V#9",
-        "before": {
-          "symbol": "L:c.b(IB)V#9",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "sessionResultScreenSelectionFrameContinues",
-          "evidence": "Scoped continuation decision for the source-reviewed sessionResultScreenSelection frame. Replaces B:c.b(IB)V#1 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
-        },
-        "after": {
-          "symbol": "L:c.b(IB)V#9",
+          "symbol": "L:c.a(II)V#4",
           "originalName": "decompiledFrameRemainder1",
-          "to": "menuSessionStartupFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original menuActionDispatch frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
+          "to": "menuKeyDispatchFrameContinues",
+          "evidence": "Pass257 continuation eligibility for the original menu-key dispatch remainder. Preserve each original conditional and complete alternative, every predicate/read, effectful true-arm prefix, source operation/snapshot, nonzero control flag, callback/failure order and protected scope. The new Boolean becomes false at the old true-arm exit; exact original suffixes run under that captured decision. Independent javac recipes derive all original exit/suffix identities, bind the new flag and retain all other operations, bindings, overrides and protected destinations. Generic recovery/native models stay in java-tools; this game name and source proof stay in Deko. No whole-game or phone/FPS claim."
         }
       },
       {
-        "symbol": "L:eg.a(Ljava/lang/CharSequence;BIZ)I#14",
+        "symbol": "L:c.a(II)V#5",
         "before": {
-          "symbol": "L:eg.a(Ljava/lang/CharSequence;BIZ)I#14",
+          "symbol": "L:c.a(II)V#5",
           "originalName": "decompiledCaughtParameter0",
-          "to": "parseFailure",
-          "evidence": "Supports radix2..36 ASCII digits/letters, leading minus or optional plus, signed accumulation and division overflow check; preserves explicit numeric flags and L3 block. Pass124 source/caller audit: names only, full original JVM identity/spelling/local ordinal guarded and reversible. Preserve numeric guards, overflow, read/write order, aliasing, partial state, recursive wrong-guard paths, exceptions, monitors and diagnostic literals. Mixed-purpose statics stay on their existing owners. Binding, compilation and exact reversal validate naming; existing native probes retain their documented scopes and add no live clock, cookie, archive, server, browser, phone or full-game coverage."
+          "to": "caughtParameter",
+          "evidence": "c.field_C is set when the fullscreen action starts without InstrumentPatch.field_n and selects membership/unavailable/acceptance overlays in rendering. Keyboard/mouse handlers close it or accept/cancel, and update expires the acceptance state after1500 ticks. c.field_o defaults-1, is set0/1 for dialog keyboard buttons and reset-1 whenever live pointer X/Y moves; negative selection uses pointer hit tests. handleMenuKey dispatches volume end-point keys102/103 for actions8/9, escape13 navigation, dialog activation keys84/83 and then the inherited selected-item handler. Guard>-26 retains updateTransition(59). Local decompiledCaughtParameter0 follows its declaration, stores and reads as caughtParameter. Source-audited names only. Raw bytecode/source, exact arithmetic/masks, slot reuse, guard/control paths, numeric sentinels, strict hit boundaries, call/exception order and diagnostic literals remain. Compilation/binding/reversal verifies naming consistency; this pass adds no dynamic screen/menu/fullscreen/asset/device coverage."
         },
         "after": {
-          "symbol": "L:eg.a(Ljava/lang/CharSequence;BIZ)I#14",
+          "symbol": "L:c.a(II)V#5",
           "originalName": "decompiledFrameRemainder0",
-          "to": "signedIntegerCharacterFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original signedIntegerCharacter frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
+          "to": "volumeKeyHandlingFrameContinues",
+          "evidence": "Scoped continuation decision for the source-reviewed volumeKeyHandling frame. Replaces B:c.a(II)V#1 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
         }
       },
       {
-        "symbol": "L:eg.a(Ljava/lang/CharSequence;BIZ)I#15",
+        "symbol": "L:c.a(II)V#6",
         "before": null,
         "after": {
-          "symbol": "L:eg.a(Ljava/lang/CharSequence;BIZ)I#15",
+          "symbol": "L:c.a(II)V#6",
           "originalName": "decompiledCaughtParameter0",
-          "to": "parseFailure",
-          "evidence": "Supports radix2..36 ASCII digits/letters, leading minus or optional plus, signed accumulation and division overflow check; preserves explicit numeric flags and L3 block. Pass124 source/caller audit: names only, full original JVM identity/spelling/local ordinal guarded and reversible. Preserve numeric guards, overflow, read/write order, aliasing, partial state, recursive wrong-guard paths, exceptions, monitors and diagnostic literals. Mixed-purpose statics stay on their existing owners. Binding, compilation and exact reversal validate naming; existing native probes retain their documented scopes and add no live clock, cookie, archive, server, browser, phone or full-game coverage."
-        }
-      },
-      {
-        "symbol": "L:pa.a(Ljava/lang/CharSequence;ZII)Z#13",
-        "before": {
-          "symbol": "L:pa.a(Ljava/lang/CharSequence;ZII)Z#13",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "validationFailure",
-          "evidence": "Exact source and callers of ReflectionCheckRequest numeric parsing, MessageDialog signed-decimal validation, mesh material-index bit counts and UI markup consumers reviewed. Preserve radix/sign/overflow policy, range failures, arithmetic guards and every original read/mutation. Radix2..36 or throws; accepts a leading minus and optional plus, requires at least one digit, accumulates signed values and checks oldValue==nextValue/radix for overflow. Guard87 retains the existing resource clear on other arguments. Pass171 naming only: original JVM identity/spelling and declaration ordinal are guarded. Preserve every statement/constant/guard, aliases/read/unused snapshots, integer overflow and floating operation order, callbacks, partial effects, exception/finally/monitor scopes, diagnostic literals and every client-control value. No assumption that the control flag is zero. All17462 previous complete rules and raw/decompiler/naming/workflow/stub/native/text pins remain exact. Full-source compilation, bindings/overrides/lexical targets, deterministic reproduction and byte-exact dictionary reversal verify renaming. No new native runtime cases or probes; whole game/assets/server/browser/phone and heap/presented-FPS acceptance remain unverified."
-        },
-        "after": {
-          "symbol": "L:pa.a(Ljava/lang/CharSequence;ZII)Z#13",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "signedNumberCharacterFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original signedNumberCharacter frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:pa.a(Ljava/lang/CharSequence;ZII)Z#14",
-        "before": null,
-        "after": {
-          "symbol": "L:pa.a(Ljava/lang/CharSequence;ZII)Z#14",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "validationFailure",
-          "evidence": "Exact source and callers of ReflectionCheckRequest numeric parsing, MessageDialog signed-decimal validation, mesh material-index bit counts and UI markup consumers reviewed. Preserve radix/sign/overflow policy, range failures, arithmetic guards and every original read/mutation. Radix2..36 or throws; accepts a leading minus and optional plus, requires at least one digit, accumulates signed values and checks oldValue==nextValue/radix for overflow. Guard87 retains the existing resource clear on other arguments. Pass171 naming only: original JVM identity/spelling and declaration ordinal are guarded. Preserve every statement/constant/guard, aliases/read/unused snapshots, integer overflow and floating operation order, callbacks, partial effects, exception/finally/monitor scopes, diagnostic literals and every client-control value. No assumption that the control flag is zero. All17462 previous complete rules and raw/decompiler/naming/workflow/stub/native/text pins remain exact. Full-source compilation, bindings/overrides/lexical targets, deterministic reproduction and byte-exact dictionary reversal verify renaming. No new native runtime cases or probes; whole game/assets/server/browser/phone and heap/presented-FPS acceptance remain unverified."
-        }
-      },
-      {
-        "symbol": "L:pf.f(I)V#14",
-        "before": {
-          "symbol": "L:pf.f(I)V#14",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "intRecordReplyFailure",
-          "evidence": "Login and suggestions audit (pass160), pf.java:106: Local intRecordReplyFailure follows the complete original source role. Reply type0 consumes the first queued int-array query and accumulates bytes into response words using the original shift/mask, then unlinks it. Type1 searches matching byte/signed-smart keys and unlinks only a match; missing requests and unknown types close the session socket. Byte limits, existing word aliases, error reports and guard-after-dispatch archive clearing remain. Guarded naming only: full original JVM identity, spelling and declaration ordinal. All previous complete rules, statements/constants/guards, overflow, aliases, partial effects, evaluation/callback order, exception/finally/monitor scopes and diagnostic string literals remain. No client-control-zero assumption, network protocol change, discarded-effect cleanup or hand-edited generated Java. Whole-corpus compilation/binding/override/label audits and byte-exact reversal do not establish live UI/network/server/assets/game/browser/phone or heap/presented-FPS acceptance."
-        },
-        "after": {
-          "symbol": "L:pf.f(I)V#14",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "intRecordReplyDispatchFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original intRecordReplyDispatch frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:pf.f(I)V#15",
-        "before": null,
-        "after": {
-          "symbol": "L:pf.f(I)V#15",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "intRecordReplyFailure",
-          "evidence": "Login and suggestions audit (pass160), pf.java:106: Local intRecordReplyFailure follows the complete original source role. Reply type0 consumes the first queued int-array query and accumulates bytes into response words using the original shift/mask, then unlinks it. Type1 searches matching byte/signed-smart keys and unlinks only a match; missing requests and unknown types close the session socket. Byte limits, existing word aliases, error reports and guard-after-dispatch archive clearing remain. Guarded naming only: full original JVM identity, spelling and declaration ordinal. All previous complete rules, statements/constants/guards, overflow, aliases, partial effects, evaluation/callback order, exception/finally/monitor scopes and diagnostic string literals remain. No client-control-zero assumption, network protocol change, discarded-effect cleanup or hand-edited generated Java. Whole-corpus compilation/binding/override/label audits and byte-exact reversal do not establish live UI/network/server/assets/game/browser/phone or heap/presented-FPS acceptance."
-        }
-      },
-      {
-        "symbol": "L:pg.a(ILd;ILqc;)V#35",
-        "before": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#35",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "operationClassResolutionFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#35",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "reflectionOperationDecodeFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original reflectionOperationDecode frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:pg.a(ILd;ILqc;)V#36",
-        "before": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#36",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "operationSecurityFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#36",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "operationClassResolutionFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:pg.a(ILd;ILqc;)V#37",
-        "before": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#37",
-          "originalName": "decompiledCaughtParameter2",
-          "to": "operationNullFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#37",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "operationSecurityFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:pg.a(ILd;ILqc;)V#38",
-        "before": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#38",
-          "originalName": "decompiledCaughtParameter3",
-          "to": "operationException",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#38",
-          "originalName": "decompiledCaughtParameter2",
-          "to": "operationNullFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:pg.a(ILd;ILqc;)V#39",
-        "before": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#39",
-          "originalName": "decompiledCaughtParameter4",
-          "to": "operationThrowable",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#39",
-          "originalName": "decompiledCaughtParameter3",
-          "to": "operationException",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:pg.a(ILd;ILqc;)V#40",
-        "before": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#40",
-          "originalName": "decompiledCaughtParameter5",
-          "to": "requestFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#40",
-          "originalName": "decompiledCaughtParameter4",
-          "to": "operationThrowable",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:pg.a(ILd;ILqc;)V#41",
-        "before": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#41",
-          "originalName": "decompiledUncheckedException",
-          "to": "uncheckedRequestFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#41",
-          "originalName": "decompiledCaughtParameter5",
-          "to": "requestFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:pg.a(ILd;ILqc;)V#42",
-        "before": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#42",
-          "originalName": "decompiledCheckedException",
-          "to": "checkedRequestFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#42",
-          "originalName": "decompiledUncheckedException",
-          "to": "uncheckedRequestFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:pg.a(ILd;ILqc;)V#43",
-        "before": null,
-        "after": {
-          "symbol": "L:pg.a(ILd;ILqc;)V#43",
-          "originalName": "decompiledCheckedException",
-          "to": "checkedRequestFailure",
-          "evidence": "Read count/requestId and allocate operation arrays before processing operation bytes.0/1/2 read owner+field and optional int write value;3/4 read owner+method+argument type names, with length-prefixed serialized arguments only for3, then resolve classes and request asynchronous lookups. Unknown op increments its index before the retained generated state suppresses the ordinary increment. Per-op ClassNotFound/Security/NullPointer/Exception/Throwable map to-1..-5. Accepted-4 guard queues the request; invalid guard recurses first. No wire values, generic reflection string lookup, allocator/loop/state/handler order or errors are changed. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:r.a(Ljava/lang/String;Z)Lnd;#21",
-        "before": {
-          "symbol": "L:r.a(Ljava/lang/String;Z)Lnd;#21",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "validationFailure",
-          "evidence": "Exact source/caller audit of EmailValidator, EmailAvailabilityValidator, active query initialization and account/display-name consumers. Existing null handling, first-at-sign split, offset argument, validation failure identities, short circuits, callback order, pending query reuse and wrong-guard recursion remain. This does not assert RFC completeness or server availability. Limits length to64, preserves quoted escape toggling and unquoted character/dot checks, including existing edge cases. False preservation argument clears notLoggedInText only at the original successful unquoted tail. Pass171 naming only: original JVM identity/spelling and declaration ordinal are guarded. Preserve every statement/constant/guard, aliases/read/unused snapshots, integer overflow and floating operation order, callbacks, partial effects, exception/finally/monitor scopes, diagnostic literals and every client-control value. No assumption that the control flag is zero. All17462 previous complete rules and raw/decompiler/naming/workflow/stub/native/text pins remain exact. Full-source compilation, bindings/overrides/lexical targets, deterministic reproduction and byte-exact dictionary reversal verify renaming. No new native runtime cases or probes; whole game/assets/server/browser/phone and heap/presented-FPS acceptance remain unverified."
-        },
-        "after": {
-          "symbol": "L:r.a(Ljava/lang/String;Z)Lnd;#21",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "unquotedLocalPartCharacterFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original unquotedLocalPartCharacter frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:r.a(Ljava/lang/String;Z)Lnd;#22",
-        "before": null,
-        "after": {
-          "symbol": "L:r.a(Ljava/lang/String;Z)Lnd;#22",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "validationFailure",
-          "evidence": "Exact source/caller audit of EmailValidator, EmailAvailabilityValidator, active query initialization and account/display-name consumers. Existing null handling, first-at-sign split, offset argument, validation failure identities, short circuits, callback order, pending query reuse and wrong-guard recursion remain. This does not assert RFC completeness or server availability. Limits length to64, preserves quoted escape toggling and unquoted character/dot checks, including existing edge cases. False preservation argument clears notLoggedInText only at the original successful unquoted tail. Pass171 naming only: original JVM identity/spelling and declaration ordinal are guarded. Preserve every statement/constant/guard, aliases/read/unused snapshots, integer overflow and floating operation order, callbacks, partial effects, exception/finally/monitor scopes, diagnostic literals and every client-control value. No assumption that the control flag is zero. All17462 previous complete rules and raw/decompiler/naming/workflow/stub/native/text pins remain exact. Full-source compilation, bindings/overrides/lexical targets, deterministic reproduction and byte-exact dictionary reversal verify renaming. No new native runtime cases or probes; whole game/assets/server/browser/phone and heap/presented-FPS acceptance remain unverified."
-        }
-      },
-      {
-        "symbol": "L:rh.a(II[II)Z#61",
-        "before": {
-          "symbol": "L:rh.a(II[II)Z#61",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "decompressionFailure",
-          "evidence": "Validate group and packed payload before allocating decoded slots or scanning actual files. All cached files returntrue. Non-null key with any nonzero first four words copies packed bytes and decrypts range[5,length); null/allzero key uses original storage. Guard4 is tested only after that extraction/decryption. Decompression failure retains key presence, group,length,two checksums,group/index CRC context. discardPackedGroups clears only after decompression succeeds. Multi-file payload ends with chunk count and BE32 cumulative length-delta table. Policy2 sums/copies only requested file; zero selected length returns true without entry assignment. Other policies allocate every file then copy chunks and store wrapped/raw outputs. Original aliases, signed arithmetic, reused loop slots, sparse mapped IDs, invalid table/key behavior and partial storage changes remain. Source-audited resource archive wrapper, names only. Preserve sparse slot counts versus actual file counts, default-locale lowercasing and signed encoded-byte hashes, all monitors/guards, packed storage aliases, XTEA copy-before-decrypt, decompression diagnostic context, chunk-delta passes, selective retention, integer overflow, allocation/cursor/write order and partial failures. Existing native fixtures retain their original gameplay/text/helper scopes without new archive/decompression/real-asset coverage."
-        },
-        "after": {
-          "symbol": "L:rh.a(II[II)Z#61",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "packedGroupDecryptionSelectionFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original packedGroupDecryptionSelection frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:rh.a(II[II)Z#62",
-        "before": {
-          "symbol": "L:rh.a(II[II)Z#62",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "unpackFailure",
-          "evidence": "Validate group and packed payload before allocating decoded slots or scanning actual files. All cached files returntrue. Non-null key with any nonzero first four words copies packed bytes and decrypts range[5,length); null/allzero key uses original storage. Guard4 is tested only after that extraction/decryption. Decompression failure retains key presence, group,length,two checksums,group/index CRC context. discardPackedGroups clears only after decompression succeeds. Multi-file payload ends with chunk count and BE32 cumulative length-delta table. Policy2 sums/copies only requested file; zero selected length returns true without entry assignment. Other policies allocate every file then copy chunks and store wrapped/raw outputs. Original aliases, signed arithmetic, reused loop slots, sparse mapped IDs, invalid table/key behavior and partial storage changes remain. Source-audited resource archive wrapper, names only. Preserve sparse slot counts versus actual file counts, default-locale lowercasing and signed encoded-byte hashes, all monitors/guards, packed storage aliases, XTEA copy-before-decrypt, decompression diagnostic context, chunk-delta passes, selective retention, integer overflow, allocation/cursor/write order and partial failures. Existing native fixtures retain their original gameplay/text/helper scopes without new archive/decompression/real-asset coverage."
-        },
-        "after": {
-          "symbol": "L:rh.a(II[II)Z#62",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "decompressionFailure",
-          "evidence": "Validate group and packed payload before allocating decoded slots or scanning actual files. All cached files returntrue. Non-null key with any nonzero first four words copies packed bytes and decrypts range[5,length); null/allzero key uses original storage. Guard4 is tested only after that extraction/decryption. Decompression failure retains key presence, group,length,two checksums,group/index CRC context. discardPackedGroups clears only after decompression succeeds. Multi-file payload ends with chunk count and BE32 cumulative length-delta table. Policy2 sums/copies only requested file; zero selected length returns true without entry assignment. Other policies allocate every file then copy chunks and store wrapped/raw outputs. Original aliases, signed arithmetic, reused loop slots, sparse mapped IDs, invalid table/key behavior and partial storage changes remain. Source-audited resource archive wrapper, names only. Preserve sparse slot counts versus actual file counts, default-locale lowercasing and signed encoded-byte hashes, all monitors/guards, packed storage aliases, XTEA copy-before-decrypt, decompression diagnostic context, chunk-delta passes, selective retention, integer overflow, allocation/cursor/write order and partial failures. Existing native fixtures retain their original gameplay/text/helper scopes without new archive/decompression/real-asset coverage."
-        }
-      },
-      {
-        "symbol": "L:rh.a(II[II)Z#63",
-        "before": null,
-        "after": {
-          "symbol": "L:rh.a(II[II)Z#63",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "unpackFailure",
-          "evidence": "Validate group and packed payload before allocating decoded slots or scanning actual files. All cached files returntrue. Non-null key with any nonzero first four words copies packed bytes and decrypts range[5,length); null/allzero key uses original storage. Guard4 is tested only after that extraction/decryption. Decompression failure retains key presence, group,length,two checksums,group/index CRC context. discardPackedGroups clears only after decompression succeeds. Multi-file payload ends with chunk count and BE32 cumulative length-delta table. Policy2 sums/copies only requested file; zero selected length returns true without entry assignment. Other policies allocate every file then copy chunks and store wrapped/raw outputs. Original aliases, signed arithmetic, reused loop slots, sparse mapped IDs, invalid table/key behavior and partial storage changes remain. Source-audited resource archive wrapper, names only. Preserve sparse slot counts versus actual file counts, default-locale lowercasing and signed encoded-byte hashes, all monitors/guards, packed storage aliases, XTEA copy-before-decrypt, decompression diagnostic context, chunk-delta passes, selective retention, integer overflow, allocation/cursor/write order and partial failures. Existing native fixtures retain their original gameplay/text/helper scopes without new archive/decompression/real-asset coverage."
-        }
-      },
-      {
-        "symbol": "L:sd.a(IIII[IIIII)V#23",
-        "before": {
-          "symbol": "L:sd.a(IIII[IIIII)V#23",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "caughtTriangleParameter",
-          "evidence": "sd.E traverses sorted triangle upper/lower segments with Q16 X edges, clips against TriangleRasterState dimensions/row offsets and calls ib.AA for each solid half-blended span. Existing clipping, zero-width handling, partial writes and guard arithmetic remain; the guard remainder is evaluated after upper rows, before lower-row rendering. This static helper stays on the original NetworkArchiveRequest owner. Local follows its arithmetic, stores or context construction; reused roles stay explicit."
-        },
-        "after": {
-          "symbol": "L:sd.a(IIII[IIIII)V#23",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "upperTriangleSegmentClipAndScanFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original upperTriangleSegmentClipAndScan frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:sd.a(IIII[IIIII)V#24",
-        "before": null,
-        "after": {
-          "symbol": "L:sd.a(IIII[IIIII)V#24",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "caughtTriangleParameter",
-          "evidence": "sd.E traverses sorted triangle upper/lower segments with Q16 X edges, clips against TriangleRasterState dimensions/row offsets and calls ib.AA for each solid half-blended span. Existing clipping, zero-width handling, partial writes and guard arithmetic remain; the guard remainder is evaluated after upper rows, before lower-row rendering. This static helper stays on the original NetworkArchiveRequest owner. Local follows its arithmetic, stores or context construction; reused roles stay explicit."
-        }
-      },
-      {
-        "symbol": "L:uf.run()V#10",
-        "before": {
-          "symbol": "L:uf.run()V#10",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "requestOperationFailure",
-          "evidence": "Runnable.run stays unchanged. While stop flagfalse, dequeue/removeFirst(true) under queue monitor; empty queue waits, ignoring interruption, then continues via requestSelected0. Selected request decrements queued count under monitor, then operation2 writes/marks complete outside monitor; operation3 reads and uses completeRequestAfterOperation1 for completion after protected region; other codes simply complete. Caught Exception reports with original gi helper then completes; errors retain outer rethrow/wrapping. Both int0/1 selectors retain their full continuation routing, monitor/catch boundaries and completion order. Source-audited disk-cache worker and secondary queue, names only. Preserve queue/monitor ownership, FIFO ordering, retained byte aliases, queued-only count, volatile request completion but nonvolatile worker stop/count fields, constructor polling, guards and partial effects, exception coverage, continuation routing and original literal diagnostics. Existing fixture scopes do not newly execute live disk-worker concurrency, storage I/O, asset loading or whole-game/device behavior."
-        },
-        "after": {
-          "symbol": "L:uf.run()V#10",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "diskRequestOperationDispatchFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original diskRequestOperationDispatch frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
-        }
-      },
-      {
-        "symbol": "L:uf.run()V#11",
-        "before": {
-          "symbol": "L:uf.run()V#11",
-          "originalName": "decompiledUncheckedException",
-          "to": "uncheckedWorkerFailure",
-          "evidence": "Runnable.run stays unchanged. While stop flagfalse, dequeue/removeFirst(true) under queue monitor; empty queue waits, ignoring interruption, then continues via requestSelected0. Selected request decrements queued count under monitor, then operation2 writes/marks complete outside monitor; operation3 reads and uses completeRequestAfterOperation1 for completion after protected region; other codes simply complete. Caught Exception reports with original gi helper then completes; errors retain outer rethrow/wrapping. Both int0/1 selectors retain their full continuation routing, monitor/catch boundaries and completion order. Source-audited disk-cache worker and secondary queue, names only. Preserve queue/monitor ownership, FIFO ordering, retained byte aliases, queued-only count, volatile request completion but nonvolatile worker stop/count fields, constructor polling, guards and partial effects, exception coverage, continuation routing and original literal diagnostics. Existing fixture scopes do not newly execute live disk-worker concurrency, storage I/O, asset loading or whole-game/device behavior."
-        },
-        "after": {
-          "symbol": "L:uf.run()V#11",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "requestOperationFailure",
-          "evidence": "Runnable.run stays unchanged. While stop flagfalse, dequeue/removeFirst(true) under queue monitor; empty queue waits, ignoring interruption, then continues via requestSelected0. Selected request decrements queued count under monitor, then operation2 writes/marks complete outside monitor; operation3 reads and uses completeRequestAfterOperation1 for completion after protected region; other codes simply complete. Caught Exception reports with original gi helper then completes; errors retain outer rethrow/wrapping. Both int0/1 selectors retain their full continuation routing, monitor/catch boundaries and completion order. Source-audited disk-cache worker and secondary queue, names only. Preserve queue/monitor ownership, FIFO ordering, retained byte aliases, queued-only count, volatile request completion but nonvolatile worker stop/count fields, constructor polling, guards and partial effects, exception coverage, continuation routing and original literal diagnostics. Existing fixture scopes do not newly execute live disk-worker concurrency, storage I/O, asset loading or whole-game/device behavior."
-        }
-      },
-      {
-        "symbol": "L:uf.run()V#12",
-        "before": {
-          "symbol": "L:uf.run()V#12",
-          "originalName": "decompiledCheckedException",
-          "to": "checkedWorkerFailure",
-          "evidence": "Runnable.run stays unchanged. While stop flagfalse, dequeue/removeFirst(true) under queue monitor; empty queue waits, ignoring interruption, then continues via requestSelected0. Selected request decrements queued count under monitor, then operation2 writes/marks complete outside monitor; operation3 reads and uses completeRequestAfterOperation1 for completion after protected region; other codes simply complete. Caught Exception reports with original gi helper then completes; errors retain outer rethrow/wrapping. Both int0/1 selectors retain their full continuation routing, monitor/catch boundaries and completion order. Source-audited disk-cache worker and secondary queue, names only. Preserve queue/monitor ownership, FIFO ordering, retained byte aliases, queued-only count, volatile request completion but nonvolatile worker stop/count fields, constructor polling, guards and partial effects, exception coverage, continuation routing and original literal diagnostics. Existing fixture scopes do not newly execute live disk-worker concurrency, storage I/O, asset loading or whole-game/device behavior."
-        },
-        "after": {
-          "symbol": "L:uf.run()V#12",
-          "originalName": "decompiledUncheckedException",
-          "to": "uncheckedWorkerFailure",
-          "evidence": "Runnable.run stays unchanged. While stop flagfalse, dequeue/removeFirst(true) under queue monitor; empty queue waits, ignoring interruption, then continues via requestSelected0. Selected request decrements queued count under monitor, then operation2 writes/marks complete outside monitor; operation3 reads and uses completeRequestAfterOperation1 for completion after protected region; other codes simply complete. Caught Exception reports with original gi helper then completes; errors retain outer rethrow/wrapping. Both int0/1 selectors retain their full continuation routing, monitor/catch boundaries and completion order. Source-audited disk-cache worker and secondary queue, names only. Preserve queue/monitor ownership, FIFO ordering, retained byte aliases, queued-only count, volatile request completion but nonvolatile worker stop/count fields, constructor polling, guards and partial effects, exception coverage, continuation routing and original literal diagnostics. Existing fixture scopes do not newly execute live disk-worker concurrency, storage I/O, asset loading or whole-game/device behavior."
-        }
-      },
-      {
-        "symbol": "L:uf.run()V#13",
-        "before": null,
-        "after": {
-          "symbol": "L:uf.run()V#13",
-          "originalName": "decompiledCheckedException",
-          "to": "checkedWorkerFailure",
-          "evidence": "Runnable.run stays unchanged. While stop flagfalse, dequeue/removeFirst(true) under queue monitor; empty queue waits, ignoring interruption, then continues via requestSelected0. Selected request decrements queued count under monitor, then operation2 writes/marks complete outside monitor; operation3 reads and uses completeRequestAfterOperation1 for completion after protected region; other codes simply complete. Caught Exception reports with original gi helper then completes; errors retain outer rethrow/wrapping. Both int0/1 selectors retain their full continuation routing, monitor/catch boundaries and completion order. Source-audited disk-cache worker and secondary queue, names only. Preserve queue/monitor ownership, FIFO ordering, retained byte aliases, queued-only count, volatile request completion but nonvolatile worker stop/count fields, constructor polling, guards and partial effects, exception coverage, continuation routing and original literal diagnostics. Existing fixture scopes do not newly execute live disk-worker concurrency, storage I/O, asset loading or whole-game/device behavior."
-        }
-      },
-      {
-        "symbol": "L:wf.b(ZI)V#12",
-        "before": null,
-        "after": {
-          "symbol": "L:wf.b(ZI)V#12",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "bootstrapTextArchiveGateFrameContinues",
-          "evidence": "Pass256 continuation eligibility for the original bootstrapTextArchiveGate frame remainder. The original guarded prefix and predicate remain in their scopes; the new Boolean becomes false only after that prefix completes at the original terminal exit. The complete old remainder runs under the captured continuation decision. Independent javac trees derive all suffixes and exits, resolve the new flag and original bindings, and preserve all other operations, predicates, reads/stores, callbacks/failures, aliases and protected scopes. Generic recovery and native models stay in java-tools; game-specific naming and proofs stay in Deko. No whole-game or phone/FPS claim."
+          "to": "caughtParameter",
+          "evidence": "c.field_C is set when the fullscreen action starts without InstrumentPatch.field_n and selects membership/unavailable/acceptance overlays in rendering. Keyboard/mouse handlers close it or accept/cancel, and update expires the acceptance state after1500 ticks. c.field_o defaults-1, is set0/1 for dialog keyboard buttons and reset-1 whenever live pointer X/Y moves; negative selection uses pointer hit tests. handleMenuKey dispatches volume end-point keys102/103 for actions8/9, escape13 navigation, dialog activation keys84/83 and then the inherited selected-item handler. Guard>-26 retains updateTransition(59). Local decompiledCaughtParameter0 follows its declaration, stores and reads as caughtParameter. Source-audited names only. Raw bytecode/source, exact arithmetic/masks, slot reuse, guard/control paths, numeric sentinels, strict hit boundaries, call/exception order and diagnostic literals remain. Compilation/binding/reversal verifies naming consistency; this pass adds no dynamic screen/menu/fullscreen/asset/device coverage."
         }
       }
     ],
@@ -121724,7 +121065,7 @@
       },
       {
         "file": "c.java",
-        "sha256": "1af3b023d0135ce2e2b8b429b2cbf8a1135859314fbaee07f04ed0c8938286cf"
+        "sha256": "a23b056a5e1f73d3b225cdd4da1773f3566c835d9aae5d7bab9f988420e8ef0f"
       },
       {
         "file": "ca.java",
@@ -125191,10 +124532,10 @@
       ]
     },
     "verification": {
-      "sourceDeclarations": 20396,
-      "bindingsCompared": 138098,
+      "sourceDeclarations": 20397,
+      "bindingsCompared": 138135,
       "overrideRelationships": 388,
-      "identifierEdits": 122163,
+      "identifierEdits": 122200,
       "dictionaryRestorationFiles": 303,
       "wholeGameEquivalenceVerified": false,
       "nativeMatchingScenarios": 708,
@@ -125330,7 +124671,8 @@
         "Pass253 recovers only exhaustive colon-label switches whose every case ends in a direct exit from one plain frame. Fallthrough, missing defaults, other exits to the frame or switch, crossed terminal protection, captures and ambiguous scopes refuse. Independent native coverage preserves predicates, nullable selectors, aliases, partial stores, failures, enclosing finally overrides and monitors; whole-game and phone/FPS behavior remain unverified.",
         "Pass254 recovers only guarded linear decisions whose every arm and unconditional tail end in a direct exit to one plain frame. Every predicate/read and original arm scope remains; extra/crossed exits, captures, uncertain targets and excessive width/depth refuse. Full extracted encoding bodies are checked against the JDK charset oracle with documented game exceptions; original class initialization, whole-game and phone/FPS behavior remain unverified.",
         "Pass255 changes only character literal spelling in the game export. Independent full-source javac trees, bindings and transfer scopes preserve every operation/value. Generic native tests cover every UTF-16 character, serialization and char-emission contexts. No new full-game/device, original-game class initialization or phone/FPS validation is claimed.",
-        "Pass256 switch-tail recovery requires one direct normal case exit, an exhaustive switch, no implicit final fallthrough or case/tail declaration scope changes. Effectful frame prefixes retain every original operation and scope; other prefix exits to the same frame refuse. Independent source recipes and native original/switch-only/full/oracle variants preserve zero/nonzero flags, fallthrough, partial stores/failures and protection. Full-game and phone/FPS behavior remain unverified."
+        "Pass256 switch-tail recovery requires one direct normal case exit, an exhaustive switch, no implicit final fallthrough or case/tail declaration scope changes. Effectful frame prefixes retain every original operation and scope; other prefix exits to the same frame refuse. Independent source recipes and native original/switch-only/full/oracle variants preserve zero/nonzero flags, fallthrough, partial stores/failures and protection. Full-game and phone/FPS behavior remain unverified.",
+        "Pass257 retains complete original conditional alternatives and records continuation at terminal true-arm exits. The opt-in 64-exit bound does not relax source-size, depth, suffix, scope/definite-assignment or protected-corridor proofs. Generic native alternatives/partial-failure coverage and full game source/binding/target certificates pass; no new whole-game or phone/FPS proof."
       ],
       "checks": {
         "ruleBuilderTests": 13,
@@ -125371,7 +124713,7 @@
       ],
       "nativeBoundaryIndependentOracle": true,
       "guardedNamingRules": 20136,
-      "namedLocalDeclarations": 10808,
+      "namedLocalDeclarations": 10809,
       "nonselectorDeclarationsPreserved": 19549,
       "generatedSelectorsBefore": 265,
       "generatedSelectorsAfter": 9,
@@ -125392,7 +124734,7 @@
       "genericEarlyExitTestGroups": 11,
       "nativeEmitterComparisons": 54549,
       "sourceReferenceOccurrencesRemoved": 0,
-      "sourceReferenceOccurrencesAdded": 50,
+      "sourceReferenceOccurrencesAdded": 37,
       "nativeDifficultyFlagCases": 82944,
       "nativeDifficultyBoundsCases": 56,
       "nativeDifficultySequenceTicks": 60,
@@ -125425,7 +124767,7 @@
       "difficultyMethodLinesBefore": 38,
       "difficultyMethodLinesAfter": 38,
       "allGuardedNamesUnchanged": false,
-      "ruleChangesInCurrentPass": 56,
+      "ruleChangesInCurrentPass": 4,
       "genericNestedContinuationTestGroups": 2,
       "nativeNestedContinuationComparisons": 2520,
       "nestedContinuationChangedJavaFiles": 7,
@@ -125439,14 +124781,14 @@
       "ambiguousPredicateComplementsRefused": true,
       "difficultyCategoryAndRecursiveAdvanceClonesEliminated": true,
       "allPriorGuardedNamesPreserved": false,
-      "namingRulesAddedInCurrentPass": 13,
+      "namingRulesAddedInCurrentPass": 1,
       "sourceInputChangedInCurrentPass": true,
       "namedVisualAssetFieldsAdded": 59,
       "namedAssetLoadingMethodsAdded": 6,
       "namedAssetLoadingParametersAdded": 24,
       "namedAssetPreparationAndLookupLocalsAdded": 28,
-      "identifierEditsAddedInCurrentPass": 50,
-      "lastStructuralPassVersion": 256,
+      "identifierEditsAddedInCurrentPass": 37,
+      "lastStructuralPassVersion": 257,
       "namingRulesRefinedInCurrentPass": 0,
       "allUnaffectedPriorRulesPreserved": true,
       "namedRenderingClassRulesAdded": 0,
@@ -125531,7 +124873,7 @@
       "allSessionUpdateParametersAndLocalsNamed": true,
       "allMovingContactAndAttachedUpdateParametersAndLocalsNamed": true,
       "allEntityConstructorAndMotionInitializationParametersAndLocalsNamed": true,
-      "namingRulesRemovedInCurrentPass": 13,
+      "namingRulesRemovedInCurrentPass": 1,
       "allSurvivingGuardedNamesPreserved": true,
       "guardedLocalOrdinalMigrations": 0,
       "receiverLocalsRemoved": 75,
@@ -126563,10 +125905,10 @@
       "allAuditedSharedStateSocketParametersAndLocalsNamed": true,
       "historicalManifestCaptureLimitMiB": 32,
       "historicalManifestCaptureLimitChangedInCurrentPass": false,
-      "labelEdits": 155,
+      "labelEdits": 133,
       "labelEditsAddedInCurrentPass": 0,
-      "labelDeclarationsCompared": 47,
-      "labelBindingsCompared": 155,
+      "labelDeclarationsCompared": 46,
+      "labelBindingsCompared": 133,
       "namedLargeBodyLabelRulesAdded": {
         "B": 52
       },
@@ -153339,7 +152681,7 @@
           }
         ]
       },
-      "currentVerificationPass": 256,
+      "currentVerificationPass": 257,
       "nestedInitializedPrimitiveLocalLifetimeRecovery": {
         "version": 240,
         "nestedInitializedPrimitiveLifetimes": true,
@@ -162860,7 +162202,7 @@
         ],
         "historicalRecordsPreserved": 174
       },
-      "labelEditsRemovedInCurrentPass": 46,
+      "labelEditsRemovedInCurrentPass": 22,
       "guardedFramePrefixAssignmentRecovery": {
         "version": 251,
         "changedJavaFiles": 2,
@@ -168449,87 +167791,663 @@
           "original",
           "renamed"
         ]
+      },
+      "alternateGuardedFrameRecovery": {
+        "version": 257,
+        "changedJavaFiles": 1,
+        "changedMethodBodies": 1,
+        "framesRecovered": 1,
+        "frameExitsConsumed": 21,
+        "newDecisionLocals": 1,
+        "newFlagOccurrences": 37,
+        "intermediateFlagOccurrences": 43,
+        "redundantFlagReadsRemoved": 6,
+        "removedLabelOccurrences": 22,
+        "maximumExits": 64,
+        "sourceProofTest": "readable/tests/test-geoblox-alternate-frame-source.mjs",
+        "sourceProofTestSha256": "cc57885e640cc5416f65ec7c42af4888ad0d1ed0a5c78ff4a13aa2dc38576cc4",
+        "sourceProofTestRepository": "Kreijstal/dekobloko-work",
+        "booleanGuardFixtureSha256": "1ae2770a29f185c0212f5cb1ea84116157cb8bbe797e45b85a90a3bf3dcad2c3",
+        "bodyPositionFixtureSha256": "bd055a5b54cc29b307cf4cfc584509741a18d283a8ed53a284e2d629c40471cd",
+        "previousSourceCommit": "6e364298f2479598a7aad7fb00b387a923a81f89",
+        "sourceCommit": "83031939921cb2a32467bf3b99b42e19d94873c1",
+        "previousSourceTreeSha256": "431801b29c355cdd1c62aff59e2716d3721d41861b39da182f454154accbb8a9",
+        "sourceTreeSha256": "5c0d2b999655fdd15812aad44e9e0570b275b5e24bdbd992ff58b22f0b15d79c",
+        "javaToolsCommit": "5722977b5e34919811b9644e99c4ed2b32212379",
+        "sourceArchiveSha256": "f5b62fe511e7b1059acc3c83e8267a34f29833a0e803b348091e99f1cc2d288f",
+        "compilerEnvironment": {
+          "CFR_JS_DISABLE_LOOP_TAIL_MERGE": "1",
+          "CFR_JS_SPLIT_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_LOOP_FRAME_COMPLETION": "1",
+          "CFR_JS_FINAL_BOOLEAN_PREDICATES": "1",
+          "CFR_JS_FINAL_LOCAL_GUARDS": "1",
+          "CFR_JS_FLATTEN_STANDALONE_BLOCKS": "1",
+          "CFR_JS_SPLIT_REFERENCE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES": "1",
+          "CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_SHARE_DYNAMIC_GUARDED_TAILS": "1",
+          "CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES": "1",
+          "CFR_JS_LEADING_LOOP_EXIT_WORK": "1",
+          "CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES": "1",
+          "CFR_JS_GUARDED_FRAME_COMPLETION": "1",
+          "CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS": "1",
+          "CFR_JS_REINDENT_STRUCTURED_BODIES": "1",
+          "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
+          "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1",
+          "CFR_JS_SWITCH_EXIT_TAILS": "1",
+          "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1",
+          "CFR_JS_GUARDED_FRAME_ALTERNATES": "1"
+        },
+        "bindingsBefore": 138098,
+        "bindingsCompared": 138135,
+        "transfersBefore": 4793,
+        "transfersCompared": 4772,
+        "originalIdentityMigrations": [
+          {
+            "before": "L:c.a(II)V#4",
+            "after": "L:c.a(II)V#5"
+          },
+          {
+            "before": "L:c.a(II)V#5",
+            "after": "L:c.a(II)V#6"
+          }
+        ],
+        "removedSymbols": [
+          "B:c.a(II)V#0"
+        ],
+        "allOtherOperationsBindingsTargetsAndScopesPreserved": true,
+        "independentlyAttributedAstFiles": 303,
+        "originalConditionsAlternativesAndCompleteSuffixesIndependentlyDerived": true,
+        "newFlagsIndependentlyTypedAndDefinitelyAssigned": true,
+        "cleanSourceArchiveReproducesSourcesAndDiagnostics": true,
+        "diagnosticsUnchanged": true,
+        "genericFocusedTestGroupsPassed": 19,
+        "genericAlternateTestGroupsPassed": 4,
+        "newIndependentNativeOracleCases": 50544,
+        "remainingLargeFramedMethods": 0,
+        "plainBlockLabelsAfter": 18,
+        "remainingUnresolvedFieldPurposes": 41,
+        "remainingLiteralPhaseNames": 0,
+        "remainingNumberedPhaseNames": 0,
+        "previousUnresolvedFieldSourceAudit": {
+          "fixture": "readable/tests/test-geoblox-unresolved-fields.mjs",
+          "fixtureSha256": "481dfb6193bc4226434c89e0b9f6330f355adea396acc6e64ca00d65158a79e3",
+          "sourceCommit": "6e364298f2479598a7aad7fb00b387a923a81f89",
+          "sourceTreeSha256": "431801b29c355cdd1c62aff59e2716d3721d41861b39da182f454154accbb8a9",
+          "previousAuditRetained": true,
+          "unresolvedFieldPurposes": 41,
+          "compiledSourceFiles": 303,
+          "workflowCommit": "0e95bc27a6ca939148be805dff2ad4c058b03c4e"
+        },
+        "bytecodeChanged": false,
+        "recompiledSourceBytecodeChanged": true,
+        "sourceBodyEditedByHand": false,
+        "wholeGameEquivalenceVerified": false,
+        "scope": "Pass257 reconstructs the menu-key dispatch frame while retaining each conditional and complete alternative. A fresh Boolean becomes false at each original selected true-arm exit; prefixes and alternatives remain in their original scopes and every predicate/read stays at its original evaluation site. Complete suffixes use captured continuation eligibility. Twenty-one exits are consumed without copying effects, reevaluating predicates, dropping snapshots or specializing control flags. Independent javac recipes compare all other ordered syntax, bindings, overrides and protected targets; generic native early-return oracles cover alternatives and failures. The explicit 64-exit policy stays bounded; ordinary/effectful policies retain their names and defaults. Original bytecode is unchanged; generated source is never hand-edited. Whole-game and phone/FPS behavior remain unverified.",
+        "selections": [
+          {
+            "file": "c.java",
+            "methodStart": 1052,
+            "name": "decompiledFrameRemainder1",
+            "label": "L0",
+            "region": {
+              "start": 1292,
+              "end": 7574
+            },
+            "guards": [
+              {
+                "range": {
+                  "start": 1440,
+                  "end": 1845
+                },
+                "condition": {
+                  "start": 1443,
+                  "end": 1487
+                },
+                "jump": {
+                  "start": 1820,
+                  "end": 1829
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "BlockStatement"
+                ],
+                "effectful": true,
+                "prefix": {
+                  "start": 1506,
+                  "end": 1803
+                },
+                "alternate": true
+              },
+              {
+                "range": {
+                  "start": 2124,
+                  "end": 2194
+                },
+                "condition": {
+                  "start": 2127,
+                  "end": 2138
+                },
+                "jump": {
+                  "start": 2163,
+                  "end": 2172
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 2269,
+                  "end": 2335
+                },
+                "condition": {
+                  "start": 2272,
+                  "end": 2283
+                },
+                "jump": {
+                  "start": 2306,
+                  "end": 2315
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 2403,
+                  "end": 2465
+                },
+                "condition": {
+                  "start": 2406,
+                  "end": 2417
+                },
+                "jump": {
+                  "start": 2438,
+                  "end": 2447
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 2823,
+                  "end": 2900
+                },
+                "condition": {
+                  "start": 2826,
+                  "end": 2856
+                },
+                "jump": {
+                  "start": 2875,
+                  "end": 2884
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 2915,
+                  "end": 3018
+                },
+                "condition": {
+                  "start": 2918,
+                  "end": 2974
+                },
+                "jump": {
+                  "start": 2993,
+                  "end": 3002
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 3074,
+                  "end": 3132
+                },
+                "condition": {
+                  "start": 3077,
+                  "end": 3088
+                },
+                "jump": {
+                  "start": 3107,
+                  "end": 3116
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 3664,
+                  "end": 3750
+                },
+                "condition": {
+                  "start": 3667,
+                  "end": 3686
+                },
+                "jump": {
+                  "start": 3715,
+                  "end": 3724
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 3775,
+                  "end": 3861
+                },
+                "condition": {
+                  "start": 3778,
+                  "end": 3797
+                },
+                "jump": {
+                  "start": 3826,
+                  "end": 3835
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 3886,
+                  "end": 3972
+                },
+                "condition": {
+                  "start": 3889,
+                  "end": 3908
+                },
+                "jump": {
+                  "start": 3937,
+                  "end": 3946
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 3997,
+                  "end": 4083
+                },
+                "condition": {
+                  "start": 4000,
+                  "end": 4019
+                },
+                "jump": {
+                  "start": 4048,
+                  "end": 4057
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 4217,
+                  "end": 4291
+                },
+                "condition": {
+                  "start": 4220,
+                  "end": 4231
+                },
+                "jump": {
+                  "start": 4258,
+                  "end": 4267
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 4727,
+                  "end": 4801
+                },
+                "condition": {
+                  "start": 4730,
+                  "end": 4741
+                },
+                "jump": {
+                  "start": 4768,
+                  "end": 4777
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 4891,
+                  "end": 4973
+                },
+                "condition": {
+                  "start": 4894,
+                  "end": 4913
+                },
+                "jump": {
+                  "start": 4940,
+                  "end": 4949
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 4996,
+                  "end": 5078
+                },
+                "condition": {
+                  "start": 4999,
+                  "end": 5018
+                },
+                "jump": {
+                  "start": 5045,
+                  "end": 5054
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 5101,
+                  "end": 5183
+                },
+                "condition": {
+                  "start": 5104,
+                  "end": 5123
+                },
+                "jump": {
+                  "start": 5150,
+                  "end": 5159
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 5206,
+                  "end": 5288
+                },
+                "condition": {
+                  "start": 5209,
+                  "end": 5228
+                },
+                "jump": {
+                  "start": 5255,
+                  "end": 5264
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 5311,
+                  "end": 5393
+                },
+                "condition": {
+                  "start": 5314,
+                  "end": 5333
+                },
+                "jump": {
+                  "start": 5360,
+                  "end": 5369
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 5519,
+                  "end": 5589
+                },
+                "condition": {
+                  "start": 5522,
+                  "end": 5533
+                },
+                "jump": {
+                  "start": 5558,
+                  "end": 5567
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 5707,
+                  "end": 5773
+                },
+                "condition": {
+                  "start": 5710,
+                  "end": 5721
+                },
+                "jump": {
+                  "start": 5744,
+                  "end": 5753
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              },
+              {
+                "range": {
+                  "start": 6136,
+                  "end": 6202
+                },
+                "condition": {
+                  "start": 6139,
+                  "end": 6150
+                },
+                "jump": {
+                  "start": 6173,
+                  "end": 6182
+                },
+                "corridorKinds": [
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement",
+                  "IfStatement",
+                  "BlockStatement"
+                ]
+              }
+            ],
+            "guardsAdded": 21,
+            "prefixAssignments": [],
+            "removedSymbol": "B:c.a(II)V#0",
+            "method": "M:c.a(II)V",
+            "symbol": "L:c.a(II)V#4",
+            "afterStart": 1292
+          }
+        ],
+        "dictionaryIdentities": 20443,
+        "survivingCompleteRulesPreserved": 20135,
+        "survivingDictionaryIdentitiesPreserved": 20442,
+        "historicalSourceProofsPreserved": 99,
+        "historicalRecordsPreserved": 180,
+        "readableIdentifierEdits": 122200,
+        "readableTotalEdits": 122344,
+        "publicationTestGroupsPassed": 27,
+        "existingGameplayTraceGroupsPassed": 3,
+        "existingRenderingTraceGroupsPassed": 10,
+        "existingResultTraceGroupsPassed": 14,
+        "allSourcesCompileReproduceAndReverseByteExactly": true,
+        "allSurvivingCompleteNamesDictionaryObjectsAndHistoricalCertificatesPreserved": true,
+        "originalConditionalStoresIndependentlyVerifiedAfterCompaction": true
       }
     },
     "sourceChange": {
       "before": {
-        "source": {
-          "repository": "Kreijstal/funorb-decompiled",
-          "commit": "ac39cdbbb180ee5af13fbe34106de30da5f5b4ec",
-          "subdirectory": "games/geoblox"
-        },
-        "generators": {
-          "dekoblokoWork": {
-            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
-            "trackedClean": true
-          },
-          "javaTools": {
-            "commit": "89f618a5ef5a715aa9799939cc2469a09a1e163e",
-            "trackedClean": true,
-            "sourceArchive": {
-              "sha256": "4d274378adf563e66dbc9c3c69967550b1f3b1e00d349e68bd93b70000769b7c",
-              "reproduce": "git archive --format=tar 89f618a5ef5a715aa9799939cc2469a09a1e163e | sha256sum",
-              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
-            },
-            "environment": {
-              "CFR_JS_DISABLE_LOOP_TAIL_MERGE": "1",
-              "CFR_JS_SPLIT_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_LOOP_FRAME_COMPLETION": "1",
-              "CFR_JS_FINAL_BOOLEAN_PREDICATES": "1",
-              "CFR_JS_FINAL_LOCAL_GUARDS": "1",
-              "CFR_JS_FLATTEN_STANDALONE_BLOCKS": "1",
-              "CFR_JS_SPLIT_REFERENCE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES": "1",
-              "CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_SHARE_DYNAMIC_GUARDED_TAILS": "1",
-              "CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES": "1",
-              "CFR_JS_LEADING_LOOP_EXIT_WORK": "1",
-              "CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES": "1",
-              "CFR_JS_GUARDED_FRAME_COMPLETION": "1",
-              "CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS": "1",
-              "CFR_JS_REINDENT_STRUCTURED_BODIES": "1",
-              "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
-              "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1"
-            }
-          },
-          "namingTool": {
-            "repository": "Kreijstal/dekobloko-work",
-            "commit": "59c17f5bbf3f10aec41fbe64df8d656d64b7884a",
-            "files": {
-              "readable-java.mjs": "033ca6ccc592b781e3045aecc33389149b31bd1c8d2a88879f0103e06b14f177",
-              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
-              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
-            },
-            "sourceArchive": {
-              "sha256": "f78aea10f71f1629ef799417f7b2025495b32a8ca1deaad656948a047c69b2b9",
-              "reproduce": "git archive --format=tar 59c17f5bbf3f10aec41fbe64df8d656d64b7884a -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
-              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
-            }
-          }
-        },
-        "inputTreeSha256": "626404f1f94e64946075bf692b6c8f944526b542f206206c5b9b6fc3a4b09a82",
-        "readabilityWorkflow": {
-          "repository": "Kreijstal/dekobloko-work",
-          "files": {
-            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
-            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
-            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
-            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
-          }
-        },
-        "classNameLiterals": {
-          "policy": "direct-owned-class-for-name",
-          "expectedEdits": 11
-        },
-        "labels": {
-          "policy": "lexical-targets",
-          "expectedEdits": 201
-        }
-      },
-      "after": {
         "source": {
           "repository": "Kreijstal/funorb-decompiled",
           "commit": "6e364298f2479598a7aad7fb00b387a923a81f89",
@@ -168607,6 +168525,86 @@
           "policy": "lexical-targets",
           "expectedEdits": 155
         }
+      },
+      "after": {
+        "source": {
+          "repository": "Kreijstal/funorb-decompiled",
+          "commit": "83031939921cb2a32467bf3b99b42e19d94873c1",
+          "subdirectory": "games/geoblox"
+        },
+        "generators": {
+          "dekoblokoWork": {
+            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
+            "trackedClean": true
+          },
+          "javaTools": {
+            "commit": "5722977b5e34919811b9644e99c4ed2b32212379",
+            "trackedClean": true,
+            "sourceArchive": {
+              "sha256": "f5b62fe511e7b1059acc3c83e8267a34f29833a0e803b348091e99f1cc2d288f",
+              "reproduce": "git archive --format=tar 5722977b5e34919811b9644e99c4ed2b32212379 | sha256sum",
+              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
+            },
+            "environment": {
+              "CFR_JS_DISABLE_LOOP_TAIL_MERGE": "1",
+              "CFR_JS_SPLIT_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_LOOP_FRAME_COMPLETION": "1",
+              "CFR_JS_FINAL_BOOLEAN_PREDICATES": "1",
+              "CFR_JS_FINAL_LOCAL_GUARDS": "1",
+              "CFR_JS_FLATTEN_STANDALONE_BLOCKS": "1",
+              "CFR_JS_SPLIT_REFERENCE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES": "1",
+              "CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_SHARE_DYNAMIC_GUARDED_TAILS": "1",
+              "CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES": "1",
+              "CFR_JS_LEADING_LOOP_EXIT_WORK": "1",
+              "CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES": "1",
+              "CFR_JS_GUARDED_FRAME_COMPLETION": "1",
+              "CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS": "1",
+              "CFR_JS_REINDENT_STRUCTURED_BODIES": "1",
+              "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
+              "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1",
+              "CFR_JS_SWITCH_EXIT_TAILS": "1",
+              "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1",
+              "CFR_JS_GUARDED_FRAME_ALTERNATES": "1"
+            }
+          },
+          "namingTool": {
+            "repository": "Kreijstal/dekobloko-work",
+            "commit": "59c17f5bbf3f10aec41fbe64df8d656d64b7884a",
+            "files": {
+              "readable-java.mjs": "033ca6ccc592b781e3045aecc33389149b31bd1c8d2a88879f0103e06b14f177",
+              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
+              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
+            },
+            "sourceArchive": {
+              "sha256": "f78aea10f71f1629ef799417f7b2025495b32a8ca1deaad656948a047c69b2b9",
+              "reproduce": "git archive --format=tar 59c17f5bbf3f10aec41fbe64df8d656d64b7884a -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
+              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
+            }
+          }
+        },
+        "inputTreeSha256": "5c0d2b999655fdd15812aad44e9e0570b275b5e24bdbd992ff58b22f0b15d79c",
+        "readabilityWorkflow": {
+          "repository": "Kreijstal/dekobloko-work",
+          "files": {
+            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
+            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
+            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
+            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
+          }
+        },
+        "classNameLiterals": {
+          "policy": "direct-owned-class-for-name",
+          "expectedEdits": 11
+        },
+        "labels": {
+          "policy": "lexical-targets",
+          "expectedEdits": 133
+        }
       }
     }
   },
@@ -168625,6 +168623,6 @@
   },
   "labels": {
     "policy": "lexical-targets",
-    "expectedEdits": 155
+    "expectedEdits": 133
   }
 }
