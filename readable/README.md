@@ -37,7 +37,63 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current direct Boolean alternatives (pass 264)
+## Current negated equality values (pass 265)
+
+106 Boolean value expressions in 48 methods across 26 files complement their
+root equality operator instead of negating its result: for example,
+`!(clientControlFlowGuard == 0)` becomes `(clientControlFlowGuard != 0)`.
+Both complete operands, their evaluation/unboxing order, numeric promotion,
+primitive result, boxing identity, overload selection and original parentheses
+remain. Assignments, snapshots, callbacks, aliases, nonzero paths, partial effects,
+failures and protected actions remain. No names or declaration ordinals change.
+No plain block labels or large framed methods remain; 41 finer field purposes
+and long ordinary bodies remain to review.
+
+The generic opt-in policy is `CFR_JS_NEGATED_EQUALITY_VALUES=1`. It recognizes
+only an equality at the root of a parenthesized logical-negation operand.
+Equality chains complement their root operator; repeated calls can simplify
+negation chains whose base is equality. Ordering comparisons and arbitrary
+logical/boxed atoms remain, so `Object x = !!boxedBoolean` cannot turn into a
+reference assignment. Equality outcomes retain NaNs and signed zero. Generic
+recovery/native models/agent guidance stay in java-tools; game rules and source
+certificates stay in Deko. The tracked decompiler-source tar SHA-256 is
+`0db415c3e9bbf1a72cffc7fb2706a807305adb50cbfd24f152da97709ad19931`.
+
+Independent javac trees prove primitive negation/equality results and compare
+complete ordered operand work and all other ASTs, bindings, 388 overrides and
+4,757 transfers with their protected scopes. Four new and 15 existing predicate
+groups pass, including 25,920 new native oracle cases across integer, double,
+reference and boxed operands. NaN payloads, signed zero, reference identity,
+nullable unboxing, primitive overload choice, canonical boxing, callbacks,
+partial failures, finally overrides and monitor ownership are covered. All 303
+clean compiler sources match exactly with unchanged diagnostics.
+
+All 20,133 complete rules and 20,440 dictionary identities keep their metadata
+without ordinal migrations. All 188 historical records and 107 source certificates
+remain exact. Text resources and all 41 field observations remain; only six
+current applet field file hashes refresh, and historical inventories stay in Git.
+The export still has 122,233 identifier, 11 literal and 76 label edits (122,320
+in total), comparing 138,168 bindings. All 303 sources compile, reproduce and
+reverse byte exactly. All 27 publication groups and existing native/raw/readable
+3/10/14 gameplay, rendering and result trace groups pass. Whole-game/browser/phone
+and heap/presented-FPS acceptance remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-equality-value-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-current-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/negatedEqualityValueRecovery.test.js test/predicateNegationRecovery.test.js
+```
+
+## Previous direct Boolean alternatives (pass 264)
 
 Twenty adjacent remainder guards become direct `else` work in 17 methods across
 16 files, including login, finite PCM, menu/session preparation, tutorial text,
