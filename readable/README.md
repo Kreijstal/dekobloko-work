@@ -52,11 +52,13 @@ pair, with an attributed block parent and primitive type. Original selectors sta
 write-free throughout the classified suffix. Opaque switches and protected loop
 actions retain their complete syntax; existing bare exits must target a frame
 inside that action. Unconditional loops, unknown constant completion, scope
-merges, classifier writes and external bare exits refuse. Existing budgets and
+merges, classifier writes and external bare exits refuse. Do-while loops and
+conditional or protected exits to an opaque switch also refuse until their
+normal completion can be proved. Existing budgets and
 ordinary recovery defaults remain. Generic code, tests and agent guidance stay
 in java-tools; game metadata and source certificates stay in Deko.
 The tracked decompiler-source tar SHA-256 is
-`41fbc90963c3af1ebd3f3ff4b4b86d2e77b08e2318ea8bc0b1646a7b44390848`.
+`5b640a006820bf5fadbd39c0887461c46a78c513cb4feb4909c8261e7f7ce798`.
 
 Independent javac recipes attribute every removed equality to its original
 primitive local, prove write-free suffixes, and compare ordered syntax for every
