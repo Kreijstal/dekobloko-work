@@ -37,6 +37,34 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
+## Run the readable build on HotSpot
+
+The desktop smoke runner compiles the current 303 readable sources without game
+patches and opens a real AWT canvas under `xvfb-run`. It checks all five
+instruction pages, their Next/Previous/Menu controls, tutorial Continue/rotation/
+Space-to-skip, live shape releases and scoring, and Escape/pause/resume. Reflection
+calls the existing menu handlers; real keyboard events exercise gameplay. Robot
+captures the visible 640×480 canvas rather than a synthetic framebuffer.
+
+```sh
+env -u JAVA_TOOL_OPTIONS node readable/tests/test-geoblox-hotspot.mjs \
+  --assets /path/to/static-root/jvm-assets/geoblox-js5 \
+  --output /tmp/geoblox-hotspot-verification --seconds 60
+```
+
+Requirements: Node.js 22+, a HotSpot JDK supporting `--release 8`, `xvfb-run`,
+and the existing GeoBlox JS5 containers. The optional `--cache` selects the game
+cache directory; otherwise the runner copies `~/.alterorb/caches/geoblox` when
+available. The real launcher cache hook points to that temporary copy. Both the
+local JS5 server and display are isolated, and build/cache files are removed on
+exit. Screenshots, compiler/runtime logs and one current `report.json` stay in
+the requested output directory. The report pins readable sources, stubs, harness,
+seed cache and served asset bytes.
+
+This uses the supported `simplemode` guest route. It verifies desktop behavior
+under steering, not login, multiplayer, all tutorial completion conditions,
+audio playback, original-game equivalence or browser/phone/FPS acceptance.
+
 ## Current ordered Boolean assignment chains (pass 272)
 
 Nineteen assignment/guard pairs in seven files become ordered short-circuit
