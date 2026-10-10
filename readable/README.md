@@ -37,7 +37,69 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current visible character literals (pass 255)
+## Current switch exits and effectful prefixes (pass 256)
+
+Menu activation uses ordinary switch breaks for its 19 case exits. The original
+highscore-view update belongs only to the sole normal case; it now sits there
+once, retaining fallthrough and every zero/nonzero client-control check.
+`menuSessionStartupFrameContinues` controls the original session-start remainder.
+The other menu paths retain their effects and skip that remainder as before.
+
+Thirteen plain frames in thirteen methods/files use named continuation decisions.
+Each original guarded prefix stays in its original arm, including whole loops,
+switches and protected actions. Its Boolean becomes false only after that prefix
+finishes at the old terminal exit. Original predicates, snapshots, reads/stores,
+aliases, callbacks/failures and finally/monitor scopes remain. No action is copied.
+Remaining smaller plain frames fall from 32 to 19; there are still zero methods
+over 300 lines with plain labels and 41 finer field purposes.
+
+The generic opt-in policies are `CFR_JS_SWITCH_EXIT_TAILS=1` and
+`CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS=1`, with the existing guarded-frame option.
+Missing/excess normal switch exits, implicit final fallthrough, declaration/scope
+changes, crossed normal-exit protection and intervening break frames refuse.
+Prefixes with another exit to the same plain frame refuse. Game names and source
+proof fixtures stay in Deko; recovery and agent guidance remain generic.
+The tracked decompiler-source tar SHA-256 is
+`ffba3cd4c15e34d8c3770d485cec94ee1204ff25d687ab0c80094d3892ac302f`.
+
+Independent javac recipes derive the sole normal switch exit, its full effectful
+tail, each retained guarded prefix and complete suffix, and the fresh Boolean
+bindings. Every other ordered operation, original binding, 388 override pairs
+and 4,793 surviving protected transfers retains its identity. The clean compiler
+archive reproduces all 303 files and unchanged diagnostics without hard failures
+or fallbacks. Fifteen focused groups pass, including 421,200 new independent
+native cases across original, switch-only, complete and oracle models. Nullable/
+effectful predicates/selectors, zero/nonzero flags, fallthrough, partial aliased
+stores, overflow, failures, finally overrides and monitors are covered.
+
+All 20,123 surviving complete naming objects and 20,430 surviving dictionary
+objects retain their metadata with the 30 recorded ordinal migrations. Thirteen
+flag rules replace thirteen obsolete label rules; totals remain 20,136 rules and
+20,443 dictionary identities. All 179 historical object records and
+98 directly recorded source certificates remain exact. Text resources and the
+41-field purpose inventory remain unchanged. The export has 122,163 identifier,
+11 literal and 155 label edits (122,329 total), comparing 138,098 bindings.
+All 27 publication groups and the existing native/raw/readable 3/10/14 gameplay,
+rendering and result trace groups pass. All 303 sources compile, reproduce and
+reverse byte exactly. Full-game and
+phone/FPS behavior remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-switch-prefix-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/switchExitTailRecovery.test.js test/guardedFrameCompletionRecovery.test.js
+```
+
+## Previous visible character literals (pass 255)
 
 Four raw controls in three files now use visible Java character escapes.
 NUL is written as `'\0'`; control 25 is `'\031'`. This makes the affected
