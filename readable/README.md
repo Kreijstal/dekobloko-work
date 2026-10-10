@@ -37,6 +37,36 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
+## Generic recovery runs by default
+
+Current java-tools applies the generic control-flow, local-lifetime,
+predicate/cast and formatting recoveries automatically. Callers do not need a
+`CFR_JS_*` transformation profile. Each pass still proves its scope and preserves
+unsupported input; the compiler retains supported execution fallbacks.
+Application-specific names and relocations stay in the consuming workflow.
+
+The numbered exports below record the compiler settings used to produce their
+pinned sources. Those historical settings remain part of their provenance,
+including the single current GeoBlox manifest; they are not required to invoke
+the current compiler. Rebuilding another game uses the same default recoveries,
+then its own naming evidence and validation. Existing Java exports are not
+silently repinned when the compiler changes.
+
+The default integration check rebuilt all 343 Deko Bloko classes without a
+readability profile. Javac found one escaping-local assignment issue; after the
+generic frame proof was corrected, that constructor class was rebuilt against
+the same complete class model and all 343 sources compiled with
+`javac --release 8 -proc:none -encoding UTF-8 -classpath funorb-stubs.jar`.
+The temporary Java and class files are validation outputs, not a published
+or maintained Deko Bloko source export. Updating the publication remains a
+separate reproducible pass.
+
+This default compiler change is java-tools `1d183d3`; its tracked-source Git tar
+SHA-256 is `7230d95fc7b957c8c56c76ed8203e42c1808e0084711cfd0495f47d8a692e8cd`.
+The focused default/assignment checks pass 26 groups, including 116,640 native
+combined-pass comparisons. The broader native decompiler checks pass 76 groups,
+and the CLI/structured/latch fixtures pass 54 assertions.
+
 ## Run the readable build on HotSpot
 
 The desktop smoke runner compiles the current 303 readable sources without game
