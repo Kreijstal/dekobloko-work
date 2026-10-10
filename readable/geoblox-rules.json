@@ -4,10 +4,10 @@
   "purpose": "Offline readable source mirror; not a runtime patch",
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
-    "commit": "471006e0c6bff910b0b3f4731475163e038c58d4",
+    "commit": "d0918dfdcadc7779a4a26c7aac631efd9cca9f96",
     "subdirectory": "games/geoblox"
   },
-  "inputTreeSha256": "eaa3e4898e4584346692405b4f9544b263b5cf8979b1e3a5ce599d5f5ccd577b",
+  "inputTreeSha256": "ce33825df92919e777409765730f6d635da8e4e467434e7e92ccc7fc72fd04f5",
   "namingPolicy": "Confirmed semantic names without opaque suffixes; unknown symbols stay unchanged. Original spellings and JVM identities remain in the reverse symbol map. Every rule guards the original spelling. Local identities also use declaration ordinals; reused variables retain all supported roles. Numeric screen/action IDs and decompiler state remain unchanged.",
   "renames": [
     {
@@ -15,12 +15,6 @@
       "originalName": "L1",
       "to": "noteSkipCompletion",
       "evidence": "MidiNoteMixer mixes fading old streams first, then traverses notes in deque order, consuming note update countdowns and delegating completion decisions to MidiPcmStream. Flag bit4 enables held-note sample retriggering with 20-bit phase; phase wraps recreate streams using original step/volume/pan, sample offset and loop sign. Old streams fade over min(sampleRate/100,262144/phaseIncrement) frames and mix to the original destination end before enqueue when a ramp remains. Skip path retains its distinct phase and remainder arithmetic. Existing plain L1 exits a completed note and preserves traversal. Applet shutdown flag is established under the GameApplet monitor; wrong logo guard still resets it. Shared fullscreen text cleanup retains its guard-triggered glow call. Pass140 naming only: exact original JVM owner/descriptors, spellings and per-method declaration ordinals guard every rule. Preserve every prior complete rule and all statements, numeric values, control-flow flags, arithmetic/overflow, guards, aliasing, partial effects, callback order, exception/finally/monitor scopes, synchronized methods and volatile state. Original bytes remain recoverable through the dictionary. No hand-edited generated Java, bytecode or runtime changes; no live device/full-game/performance claim."
-    },
-    {
-      "symbol": "B:ae.c()V#0",
-      "originalName": "L7",
-      "to": "shorterLengthCarryResolution",
-      "evidence": "Vorbis setup/residue audit (pass163), ae.java:45: Lexical plain block encloses shorter-length carry resolution; its three breaks keep their exact existing destination. Assigns MSB-aligned codewords using the33-slot next-codeword array and shorter-length carry resolution. Builds/grows the original flattened Huffman tree, storing complemented entry leaves. Reused codeword/tree/mask/index locals, alias stages, unused copy-cursor snapshot, original shifts and allocation/store order remain. Guarded naming only: exact original JVM identity, spelling and declaration ordinal. All16192 prior complete rules, statements/constants/guards, partial effects, integer/floating arithmetic and evaluation order, aliases, exception/finally/monitor scopes and diagnostic strings remain. No source-body edits, client-control-zero assumption or runtime/game/browser/phone/heap/FPS acceptance claim."
     },
     {
       "symbol": "B:bg.a([I[BIIIIIII)V#0",
@@ -45,12 +39,6 @@
       "originalName": "L1",
       "to": "backgroundTileColumns",
       "evidence": "Outer background tile-column traversal; labeled continue increments tileX after drawing rows. Pass175 lexical label naming only: full original JVM enclosing-method identity, label spelling and declaration ordinal remain guarded. Every existing break/continue target, statement, branch, flag read, snapshot, arithmetic order, callback, partial effect, exception/finally/monitor scope and diagnostic literal remains. All18,304 previous complete rules and raw/decompiler/naming/workflow/stub/native pins remain exact; the reversible dictionary holds original names. No hand-edited generated Java, state-machine repair, new native runtime cases or whole-game/server/browser/phone/performance claim."
-    },
-    {
-      "symbol": "B:ch.run()V#0",
-      "originalName": "L1",
-      "to": "appletExecutionBoundary",
-      "evidence": "Applet frame/lifecycle audit (pass157), ch.java:281: Lexical plain-block boundary appletExecutionBoundary; declaration and every labeled break retain exactly the same compiler-checked destination. No loop or exception-region reconstruction. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
     },
     {
       "symbol": "B:dm.a([I[IIIIIIII)V#0",
@@ -141,12 +129,6 @@
       "originalName": "L3",
       "to": "retainedRecordSelection",
       "evidence": "Per-record history retention; excess matching-category records leave without copying into the compacted list. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-    },
-    {
-      "symbol": "B:kj.b(IIII)V#0",
-      "originalName": "L1",
-      "to": "portamentoReleaseSelection",
-      "evidence": "MidiPcmStream and MidiNote names follow actual constructors, event dispatch, controller storage/consumers, gain/pan/step computations, note start/reuse/release, envelope update and earliest-track timing. Channel/key-held note and key-group tables remain distinct; bank offsets/default/current instrument ids, volume/expression/pan/pitch bend/modulation/portamento/gain/selected-parameter/retrigger arrays retain original controller numbers, bit masks and shifts. Signed held/release time, velocity-squared gain, note age/vibrato/decay/volume/release indexes, portamento delta/scale and sample aliases remain. Pending-score storage/branches retain their actual absence of an owned queue producer; pressure handlers remain guarded stubs. Shared MIDI-holder input/sprite/keyboard cleanup retains ordering and wrong-guard effects. MidiNote static field_f is the staged incoming packet opcode consumed by SingleChildWidget; its wrong-guard audio-clear store41, -1 sentinels and dispatch/delay transitions remain. Pass142 naming only: exact JVM owner/descriptors, spellings and declaration ordinals guard rules; all previous complete rules stay identical. Existing block/loop labels and transfers are named without restructuring. All statements, numeric values, overflow/division/floating arithmetic, client flags, callbacks, synchronized/monitor/exception/finally scopes, diagnostics, aliases and partial failures remain. Original bytes are recoverable via the dictionary; no hand-edited generated Java or bytecode/runtime change. Existing native fixtures cover factory/position/music-data/helper scopes, not full MIDI controller/envelope/event timing, live input/network/audio/device services or full-game/FPS behavior."
     },
     {
       "symbol": "B:kl.a([III)V#0",
@@ -22824,39 +22806,39 @@
     },
     {
       "symbol": "L:ch.run()V#14",
+      "originalName": "decompiledFrameRemainder3",
+      "to": "appletExecutionFrameContinues",
+      "evidence": "Pass261 eligibility for the original applet execution remainder after legacy Java-version errors. Four same-continuation loop exits become local breaks without reevaluating tests/updates or crossing extra work/cleanup. Two audio frames use explicit true/false work; this applet frame captures the old guarded decisions once. Preserve every original read/store, unused snapshot, alias, nonzero client-control path, callback/failure, arithmetic and protected scope. Independent javac recipes derive loop/common destinations and complete conditional arms; the frozen frame/compaction verifier attributes this Boolean and all original operations, bindings, override pairs and targets. Game naming/proof metadata stay in Deko; generic recovery/native models stay in java-tools. Original bytecode is unchanged; no generated source is hand-edited and no full-game or phone/FPS claim is made."
+    },
+    {
+      "symbol": "L:ch.run()V#15",
       "originalName": "decompiledFrameRemainder2",
       "to": "legacyJavaVersionCheckFrameContinues",
       "evidence": "Scoped continuation decision for the source-reviewed legacyJavaVersionCheck frame. Replaces B:ch.run()V#1 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
     },
     {
-      "symbol": "L:ch.run()V#15",
+      "symbol": "L:ch.run()V#16",
       "originalName": "decompiledFrameCompleted0",
       "to": "digitOrLegacyVersionDecisionRemainderEnabled",
       "evidence": "Completion local for the original B:ch.run()V#2 (digitOrLegacyVersionDecision). True on entry and false only at the selected old loop-to-frame jump; an unentered loop keeps its remainder enabled. Replace one nonlocal frame exit from a loop with a local loop break and a primitive boolean completion value. Guard every block suffix on its independently certified path to the frame. Preserve each original condition/action once and every other transfer/protected scope. Refuse crossed protected, switch or outer-loop corridors and lost definite assignment. Preserve all original values, types, assignment/call order, aliases, exceptions, monitors and diagnostics; no source body is hand edited."
     },
     {
-      "symbol": "L:ch.run()V#16",
+      "symbol": "L:ch.run()V#17",
       "originalName": "decompiledFrameRemainder1",
       "to": "majorVersionComparisonFrameContinues",
       "evidence": "Scoped continuation decision for the source-reviewed majorVersionComparison frame. Replaces B:ch.run()V#2 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
     },
     {
-      "symbol": "L:ch.run()V#17",
+      "symbol": "L:ch.run()V#18",
       "originalName": "decompiledCaughtParameter0",
       "to": "focusRootSetupFailure",
       "evidence": "Applet frame/lifecycle audit (pass157), ch.java:378: Run-loop local focusRootSetupFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
     },
     {
-      "symbol": "L:ch.run()V#18",
+      "symbol": "L:ch.run()V#19",
       "originalName": "decompiledFrameRemainder0",
       "to": "stopDeadlineOrTickDecisionFrameContinues",
       "evidence": "Scoped continuation decision for the source-reviewed stopDeadlineOrTickDecision frame. Replaces B:ch.run()V#3 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
-    },
-    {
-      "symbol": "L:ch.run()V#19",
-      "originalName": "decompiledCaughtParameter1",
-      "to": "appletLoopFailure",
-      "evidence": "Applet frame/lifecycle audit (pass157), ch.java:419: Run-loop local appletLoopFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
     },
     {
       "symbol": "L:ch.run()V#2",
@@ -22866,18 +22848,24 @@
     },
     {
       "symbol": "L:ch.run()V#20",
+      "originalName": "decompiledCaughtParameter1",
+      "to": "appletLoopFailure",
+      "evidence": "Applet frame/lifecycle audit (pass157), ch.java:419: Run-loop local appletLoopFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+    },
+    {
+      "symbol": "L:ch.run()V#21",
       "originalName": "decompiledCaughtParameter2",
       "to": "runContextFailure",
       "evidence": "Applet frame/lifecycle audit (pass157), ch.java:427: Run-loop local runContextFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
     },
     {
-      "symbol": "L:ch.run()V#21",
+      "symbol": "L:ch.run()V#22",
       "originalName": "decompiledUncheckedException",
       "to": "uncheckedRunFailure",
       "evidence": "Applet frame/lifecycle audit (pass157), ch.java:432: Run-loop local uncheckedRunFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
     },
     {
-      "symbol": "L:ch.run()V#22",
+      "symbol": "L:ch.run()V#23",
       "originalName": "decompiledCheckedException",
       "to": "checkedRunFailure",
       "evidence": "Applet frame/lifecycle audit (pass157), ch.java:434: Run-loop local checkedRunFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
@@ -120822,18 +120810,18 @@
     }
   ],
   "revision": 182,
-  "version": 260,
+  "version": 261,
   "generators": {
     "dekoblokoWork": {
       "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
       "trackedClean": true
     },
     "javaTools": {
-      "commit": "5bd94a0d7d6c79b103aed92705e71b8ddd8a787c",
+      "commit": "384352acc22564077a8023538cd47d870a749f51",
       "trackedClean": true,
       "sourceArchive": {
-        "sha256": "80654bd40f8b71232a497fb1e992a979f7700cb45d3693fb726a15f50b620776",
-        "reproduce": "git archive --format=tar 5bd94a0d7d6c79b103aed92705e71b8ddd8a787c | sha256sum",
+        "sha256": "edf18cdbc116f6845878ac9730978a11ba8b9b8fd58aa2fee67b397a4157c339",
+        "reproduce": "git archive --format=tar 384352acc22564077a8023538cd47d870a749f51 | sha256sum",
         "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
       },
       "environment": {
@@ -120864,7 +120852,8 @@
         "CFR_JS_OPAQUE_CONTROL_DISPATCHES": "1",
         "CFR_JS_SHARED_FRAME_EXIT_GUARDS": "1",
         "CFR_JS_SHARED_SWITCH_FRAME_EXITS": "1",
-        "CFR_JS_SPLIT_MULTILINE_BLOCK_HEADERS": "1"
+        "CFR_JS_SPLIT_MULTILINE_BLOCK_HEADERS": "1",
+        "CFR_JS_SHARED_LOOP_FRAME_EXITS": "1"
       }
     },
     "namingTool": {
@@ -120887,20 +120876,185 @@
     "format": 1,
     "previousRules": {
       "repository": "Kreijstal/dekobloko-work",
-      "commit": "ce5c7a012293a13a84819713bb72ca7c45a273b9",
+      "commit": "5fa8aee91d24371274fe6649b16e57deae9de2ee",
       "path": "readable/geoblox-rules.json",
-      "sha256": "1a11727c651f936dd4d9b1288fb2174ed907e17adca9e0fcd0681a52fb4fa412"
+      "sha256": "25fd6151bc507cfd6817da7790c82d779cbc8072c62d7daf97f0fe10b39aa5e9"
     },
     "ruleChanges": [
       {
-        "symbol": "B:d.run()V#0",
+        "symbol": "B:ae.c()V#0",
         "before": {
-          "symbol": "B:d.run()V#0",
+          "symbol": "B:ae.c()V#0",
           "originalName": "L7",
-          "to": "platformTaskDispatch",
-          "evidence": "Platform task-type dispatch; cursor backend branches leave this scope before shared task completion handling. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
+          "to": "shorterLengthCarryResolution",
+          "evidence": "Vorbis setup/residue audit (pass163), ae.java:45: Lexical plain block encloses shorter-length carry resolution; its three breaks keep their exact existing destination. Assigns MSB-aligned codewords using the33-slot next-codeword array and shorter-length carry resolution. Builds/grows the original flattened Huffman tree, storing complemented entry leaves. Reused codeword/tree/mask/index locals, alias stages, unused copy-cursor snapshot, original shifts and allocation/store order remain. Guarded naming only: exact original JVM identity, spelling and declaration ordinal. All16192 prior complete rules, statements/constants/guards, partial effects, integer/floating arithmetic and evaluation order, aliases, exception/finally/monitor scopes and diagnostic strings remain. No source-body edits, client-control-zero assumption or runtime/game/browser/phone/heap/FPS acceptance claim."
         },
         "after": null
+      },
+      {
+        "symbol": "B:ch.run()V#0",
+        "before": {
+          "symbol": "B:ch.run()V#0",
+          "originalName": "L1",
+          "to": "appletExecutionBoundary",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:281: Lexical plain-block boundary appletExecutionBoundary; declaration and every labeled break retain exactly the same compiler-checked destination. No loop or exception-region reconstruction. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        },
+        "after": null
+      },
+      {
+        "symbol": "B:kj.b(IIII)V#0",
+        "before": {
+          "symbol": "B:kj.b(IIII)V#0",
+          "originalName": "L1",
+          "to": "portamentoReleaseSelection",
+          "evidence": "MidiPcmStream and MidiNote names follow actual constructors, event dispatch, controller storage/consumers, gain/pan/step computations, note start/reuse/release, envelope update and earliest-track timing. Channel/key-held note and key-group tables remain distinct; bank offsets/default/current instrument ids, volume/expression/pan/pitch bend/modulation/portamento/gain/selected-parameter/retrigger arrays retain original controller numbers, bit masks and shifts. Signed held/release time, velocity-squared gain, note age/vibrato/decay/volume/release indexes, portamento delta/scale and sample aliases remain. Pending-score storage/branches retain their actual absence of an owned queue producer; pressure handlers remain guarded stubs. Shared MIDI-holder input/sprite/keyboard cleanup retains ordering and wrong-guard effects. MidiNote static field_f is the staged incoming packet opcode consumed by SingleChildWidget; its wrong-guard audio-clear store41, -1 sentinels and dispatch/delay transitions remain. Pass142 naming only: exact JVM owner/descriptors, spellings and declaration ordinals guard rules; all previous complete rules stay identical. Existing block/loop labels and transfers are named without restructuring. All statements, numeric values, overflow/division/floating arithmetic, client flags, callbacks, synchronized/monitor/exception/finally scopes, diagnostics, aliases and partial failures remain. Original bytes are recoverable via the dictionary; no hand-edited generated Java or bytecode/runtime change. Existing native fixtures cover factory/position/music-data/helper scopes, not full MIDI controller/envelope/event timing, live input/network/audio/device services or full-game/FPS behavior."
+        },
+        "after": null
+      },
+      {
+        "symbol": "L:ch.run()V#14",
+        "before": {
+          "symbol": "L:ch.run()V#14",
+          "originalName": "decompiledFrameRemainder2",
+          "to": "legacyJavaVersionCheckFrameContinues",
+          "evidence": "Scoped continuation decision for the source-reviewed legacyJavaVersionCheck frame. Replaces B:ch.run()V#1 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
+        },
+        "after": {
+          "symbol": "L:ch.run()V#14",
+          "originalName": "decompiledFrameRemainder3",
+          "to": "appletExecutionFrameContinues",
+          "evidence": "Pass261 eligibility for the original applet execution remainder after legacy Java-version errors. Four same-continuation loop exits become local breaks without reevaluating tests/updates or crossing extra work/cleanup. Two audio frames use explicit true/false work; this applet frame captures the old guarded decisions once. Preserve every original read/store, unused snapshot, alias, nonzero client-control path, callback/failure, arithmetic and protected scope. Independent javac recipes derive loop/common destinations and complete conditional arms; the frozen frame/compaction verifier attributes this Boolean and all original operations, bindings, override pairs and targets. Game naming/proof metadata stay in Deko; generic recovery/native models stay in java-tools. Original bytecode is unchanged; no generated source is hand-edited and no full-game or phone/FPS claim is made."
+        }
+      },
+      {
+        "symbol": "L:ch.run()V#15",
+        "before": {
+          "symbol": "L:ch.run()V#15",
+          "originalName": "decompiledFrameCompleted0",
+          "to": "digitOrLegacyVersionDecisionRemainderEnabled",
+          "evidence": "Completion local for the original B:ch.run()V#2 (digitOrLegacyVersionDecision). True on entry and false only at the selected old loop-to-frame jump; an unentered loop keeps its remainder enabled. Replace one nonlocal frame exit from a loop with a local loop break and a primitive boolean completion value. Guard every block suffix on its independently certified path to the frame. Preserve each original condition/action once and every other transfer/protected scope. Refuse crossed protected, switch or outer-loop corridors and lost definite assignment. Preserve all original values, types, assignment/call order, aliases, exceptions, monitors and diagnostics; no source body is hand edited."
+        },
+        "after": {
+          "symbol": "L:ch.run()V#15",
+          "originalName": "decompiledFrameRemainder2",
+          "to": "legacyJavaVersionCheckFrameContinues",
+          "evidence": "Scoped continuation decision for the source-reviewed legacyJavaVersionCheck frame. Replaces B:ch.run()V#1 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
+        }
+      },
+      {
+        "symbol": "L:ch.run()V#16",
+        "before": {
+          "symbol": "L:ch.run()V#16",
+          "originalName": "decompiledFrameRemainder1",
+          "to": "majorVersionComparisonFrameContinues",
+          "evidence": "Scoped continuation decision for the source-reviewed majorVersionComparison frame. Replaces B:ch.run()V#2 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
+        },
+        "after": {
+          "symbol": "L:ch.run()V#16",
+          "originalName": "decompiledFrameCompleted0",
+          "to": "digitOrLegacyVersionDecisionRemainderEnabled",
+          "evidence": "Completion local for the original B:ch.run()V#2 (digitOrLegacyVersionDecision). True on entry and false only at the selected old loop-to-frame jump; an unentered loop keeps its remainder enabled. Replace one nonlocal frame exit from a loop with a local loop break and a primitive boolean completion value. Guard every block suffix on its independently certified path to the frame. Preserve each original condition/action once and every other transfer/protected scope. Refuse crossed protected, switch or outer-loop corridors and lost definite assignment. Preserve all original values, types, assignment/call order, aliases, exceptions, monitors and diagnostics; no source body is hand edited."
+        }
+      },
+      {
+        "symbol": "L:ch.run()V#17",
+        "before": {
+          "symbol": "L:ch.run()V#17",
+          "originalName": "decompiledCaughtParameter0",
+          "to": "focusRootSetupFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:378: Run-loop local focusRootSetupFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        },
+        "after": {
+          "symbol": "L:ch.run()V#17",
+          "originalName": "decompiledFrameRemainder1",
+          "to": "majorVersionComparisonFrameContinues",
+          "evidence": "Scoped continuation decision for the source-reviewed majorVersionComparison frame. Replaces B:ch.run()V#2 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
+        }
+      },
+      {
+        "symbol": "L:ch.run()V#18",
+        "before": {
+          "symbol": "L:ch.run()V#18",
+          "originalName": "decompiledFrameRemainder0",
+          "to": "stopDeadlineOrTickDecisionFrameContinues",
+          "evidence": "Scoped continuation decision for the source-reviewed stopDeadlineOrTickDecision frame. Replaces B:ch.run()V#3 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
+        },
+        "after": {
+          "symbol": "L:ch.run()V#18",
+          "originalName": "decompiledCaughtParameter0",
+          "to": "focusRootSetupFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:378: Run-loop local focusRootSetupFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        }
+      },
+      {
+        "symbol": "L:ch.run()V#19",
+        "before": {
+          "symbol": "L:ch.run()V#19",
+          "originalName": "decompiledCaughtParameter1",
+          "to": "appletLoopFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:419: Run-loop local appletLoopFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        },
+        "after": {
+          "symbol": "L:ch.run()V#19",
+          "originalName": "decompiledFrameRemainder0",
+          "to": "stopDeadlineOrTickDecisionFrameContinues",
+          "evidence": "Scoped continuation decision for the source-reviewed stopDeadlineOrTickDecision frame. Replaces B:ch.run()V#3 without changing its original exit condition or following operations. Pass250 reconstructs guarded plain-frame exits using one scoped remainder Boolean per frame. Each original condition is evaluated once at its original site; its original remainder suffixes are guarded. Independent javac trees derive every exact break target and complete suffix, attribute the synthetic flag, and certify all other ordered operations/bindings/overrides/protected transfer targets. Original reads, stores, snapshots, aliases, guards/nonzero flags, evaluation/callback/failure order, overflow/float association and finally/monitor scopes remain. No original bytecode or generated Java is hand-edited; full-game equivalence is not claimed."
+        }
+      },
+      {
+        "symbol": "L:ch.run()V#20",
+        "before": {
+          "symbol": "L:ch.run()V#20",
+          "originalName": "decompiledCaughtParameter2",
+          "to": "runContextFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:427: Run-loop local runContextFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        },
+        "after": {
+          "symbol": "L:ch.run()V#20",
+          "originalName": "decompiledCaughtParameter1",
+          "to": "appletLoopFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:419: Run-loop local appletLoopFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        }
+      },
+      {
+        "symbol": "L:ch.run()V#21",
+        "before": {
+          "symbol": "L:ch.run()V#21",
+          "originalName": "decompiledUncheckedException",
+          "to": "uncheckedRunFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:432: Run-loop local uncheckedRunFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        },
+        "after": {
+          "symbol": "L:ch.run()V#21",
+          "originalName": "decompiledCaughtParameter2",
+          "to": "runContextFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:427: Run-loop local runContextFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        }
+      },
+      {
+        "symbol": "L:ch.run()V#22",
+        "before": {
+          "symbol": "L:ch.run()V#22",
+          "originalName": "decompiledCheckedException",
+          "to": "checkedRunFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:434: Run-loop local checkedRunFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        },
+        "after": {
+          "symbol": "L:ch.run()V#22",
+          "originalName": "decompiledUncheckedException",
+          "to": "uncheckedRunFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:432: Run-loop local uncheckedRunFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        }
+      },
+      {
+        "symbol": "L:ch.run()V#23",
+        "before": null,
+        "after": {
+          "symbol": "L:ch.run()V#23",
+          "originalName": "decompiledCheckedException",
+          "to": "checkedRunFailure",
+          "evidence": "Applet frame/lifecycle audit (pass157), ch.java:434: Run-loop local checkedRunFailure follows vendor/version checks, optional focus setup, deadline/tick loop and error cleanup; shared registers keep every original role. Guarded names only: full original JVM identity, spelling and local/label ordinal; all previous complete rules, statements, constants, guards, overflow, callback/evaluation order, aliases/partial effects, exception/finally/monitor scopes and diagnostic strings remain. No client-control-zero assumption, timing-policy change or hand-edited generated Java. Native/source probes do not establish live applet/assets/browser/phone or heap/presented-FPS acceptance."
+        }
       }
     ],
     "stubJarSha256": "8d919fd8540d49cc2e78f7d8277ad0150b48a455cedf3f105bda2c1f82855ae2",
@@ -120931,7 +121085,7 @@
       },
       {
         "file": "ae.java",
-        "sha256": "9bf737c224325eb2cc1deb7f8235ac9cb341bad24d5f4fbcfcd9bca1808531a1"
+        "sha256": "822f62a30c8f983e325efad53e0f8d323e6f94b5eaf1a65584c3d322459991a9"
       },
       {
         "file": "af.java",
@@ -121055,7 +121209,7 @@
       },
       {
         "file": "ch.java",
-        "sha256": "01ef7509f4431d0843c3dbd5f6e3c641a7ab1c070a2d816a624956fde8757a66"
+        "sha256": "638f41e01a7a8b3a14016e5943562697a02125de2c4fcb3dba4ba8a7e2bfd0b6"
       },
       {
         "file": "ci.java",
@@ -121483,7 +121637,7 @@
       },
       {
         "file": "kj.java",
-        "sha256": "08abf1ee61cd0e806448da4262cc75f40a1d25d3a9dda2ff55d27fa7c5f600b5"
+        "sha256": "35be9a2d3da605014c9572e7bdf3fc9eb2eeaa9436f9482f1609eef8d5eb225f"
       },
       {
         "file": "kk.java",
@@ -124490,10 +124644,10 @@
       ]
     },
     "verification": {
-      "sourceDeclarations": 20402,
-      "bindingsCompared": 138143,
+      "sourceDeclarations": 20403,
+      "bindingsCompared": 138150,
       "overrideRelationships": 388,
-      "identifierEdits": 122208,
+      "identifierEdits": 122215,
       "dictionaryRestorationFiles": 303,
       "wholeGameEquivalenceVerified": false,
       "nativeMatchingScenarios": 708,
@@ -124633,7 +124787,8 @@
         "Pass257 retains complete original conditional alternatives and records continuation at terminal true-arm exits. The opt-in 64-exit bound does not relax source-size, depth, suffix, scope/definite-assignment or protected-corridor proofs. Generic native alternatives/partial-failure coverage and full game source/binding/target certificates pass; no new whole-game or phone/FPS proof.",
         "Pass258 checks protected-local classification and complete opaque control actions through independent javac syntax/binding/target recipes and native direct-dispatch oracles. Platform I/O and complete worker/game execution are not verified; plain frames and finer field purposes remain.",
         "Pass259 derives shared terminal destinations and compares complete original true/false work independently before continuation recovery. The frozen verifier adapter handles empty compaction marker files without weakening full syntax comparison. Generic native and source/binding/target certificates pass; no new whole-game or phone/FPS proof.",
-        "Pass260 derives each zero-effect nested-switch continuation independently and preserves all original protected scopes and operations. Header changes are token-exact whitespace edits. Source/native certificates pass; complete worker/game execution and phone/FPS behavior remain unverified."
+        "Pass260 derives each zero-effect nested-switch continuation independently and preserves all original protected scopes and operations. Header changes are token-exact whitespace edits. Source/native certificates pass; complete worker/game execution and phone/FPS behavior remain unverified.",
+        "Pass261 derives loop and conditional-frame continuations independently, then preserves complete source operations/bindings/protected targets with the frozen continuation certificate. Native loop tests include nullable predicates, exact tests/updates and pending cleanup. No complete applet/audio/game execution or phone/FPS claim."
       ],
       "checks": {
         "ruleBuilderTests": 13,
@@ -124673,8 +124828,8 @@
         641
       ],
       "nativeBoundaryIndependentOracle": true,
-      "guardedNamingRules": 20135,
-      "namedLocalDeclarations": 10814,
+      "guardedNamingRules": 20133,
+      "namedLocalDeclarations": 10815,
       "nonselectorDeclarationsPreserved": 19549,
       "generatedSelectorsBefore": 265,
       "generatedSelectorsAfter": 9,
@@ -124695,7 +124850,7 @@
       "genericEarlyExitTestGroups": 11,
       "nativeEmitterComparisons": 54549,
       "sourceReferenceOccurrencesRemoved": 0,
-      "sourceReferenceOccurrencesAdded": 0,
+      "sourceReferenceOccurrencesAdded": 7,
       "nativeDifficultyFlagCases": 82944,
       "nativeDifficultyBoundsCases": 56,
       "nativeDifficultySequenceTicks": 60,
@@ -124728,7 +124883,7 @@
       "difficultyMethodLinesBefore": 38,
       "difficultyMethodLinesAfter": 38,
       "allGuardedNamesUnchanged": false,
-      "ruleChangesInCurrentPass": 1,
+      "ruleChangesInCurrentPass": 13,
       "genericNestedContinuationTestGroups": 2,
       "nativeNestedContinuationComparisons": 2520,
       "nestedContinuationChangedJavaFiles": 7,
@@ -124742,14 +124897,14 @@
       "ambiguousPredicateComplementsRefused": true,
       "difficultyCategoryAndRecursiveAdvanceClonesEliminated": true,
       "allPriorGuardedNamesPreserved": false,
-      "namingRulesAddedInCurrentPass": 0,
+      "namingRulesAddedInCurrentPass": 1,
       "sourceInputChangedInCurrentPass": true,
       "namedVisualAssetFieldsAdded": 59,
       "namedAssetLoadingMethodsAdded": 6,
       "namedAssetLoadingParametersAdded": 24,
       "namedAssetPreparationAndLookupLocalsAdded": 28,
-      "identifierEditsAddedInCurrentPass": 0,
-      "lastStructuralPassVersion": 260,
+      "identifierEditsAddedInCurrentPass": 7,
+      "lastStructuralPassVersion": 261,
       "namingRulesRefinedInCurrentPass": 0,
       "allUnaffectedPriorRulesPreserved": true,
       "namedRenderingClassRulesAdded": 0,
@@ -124834,7 +124989,7 @@
       "allSessionUpdateParametersAndLocalsNamed": true,
       "allMovingContactAndAttachedUpdateParametersAndLocalsNamed": true,
       "allEntityConstructorAndMotionInitializationParametersAndLocalsNamed": true,
-      "namingRulesRemovedInCurrentPass": 1,
+      "namingRulesRemovedInCurrentPass": 3,
       "allSurvivingGuardedNamesPreserved": true,
       "guardedLocalOrdinalMigrations": 0,
       "receiverLocalsRemoved": 75,
@@ -125866,10 +126021,10 @@
       "allAuditedSharedStateSocketParametersAndLocalsNamed": true,
       "historicalManifestCaptureLimitMiB": 32,
       "historicalManifestCaptureLimitChangedInCurrentPass": false,
-      "labelEdits": 109,
+      "labelEdits": 98,
       "labelEditsAddedInCurrentPass": 0,
-      "labelDeclarationsCompared": 40,
-      "labelBindingsCompared": 109,
+      "labelDeclarationsCompared": 37,
+      "labelBindingsCompared": 98,
       "namedLargeBodyLabelRulesAdded": {
         "B": 52
       },
@@ -152642,7 +152797,7 @@
           }
         ]
       },
-      "currentVerificationPass": 260,
+      "currentVerificationPass": 261,
       "nestedInitializedPrimitiveLocalLifetimeRecovery": {
         "version": 240,
         "nestedInitializedPrimitiveLifetimes": true,
@@ -153511,7 +153666,7 @@
           "symbol": "F:ch.field_c:Z",
           "name": "sourceUnreferencedFlag3",
           "file": "ch.java",
-          "sourceSha256": "01ef7509f4431d0843c3dbd5f6e3c641a7ab1c070a2d816a624956fde8757a66",
+          "sourceSha256": "638f41e01a7a8b3a14016e5943562697a02125de2c4fcb3dba4ba8a7e2bfd0b6",
           "modifiers": [
             "public",
             "static"
@@ -153526,7 +153681,7 @@
           "symbol": "F:ch.field_e:Z",
           "name": "sourceUnreferencedFlag1",
           "file": "ch.java",
-          "sourceSha256": "01ef7509f4431d0843c3dbd5f6e3c641a7ab1c070a2d816a624956fde8757a66",
+          "sourceSha256": "638f41e01a7a8b3a14016e5943562697a02125de2c4fcb3dba4ba8a7e2bfd0b6",
           "modifiers": [
             "public",
             "static"
@@ -153541,7 +153696,7 @@
           "symbol": "F:ch.field_f:Z",
           "name": "sourceUnreferencedFlag4",
           "file": "ch.java",
-          "sourceSha256": "01ef7509f4431d0843c3dbd5f6e3c641a7ab1c070a2d816a624956fde8757a66",
+          "sourceSha256": "638f41e01a7a8b3a14016e5943562697a02125de2c4fcb3dba4ba8a7e2bfd0b6",
           "modifiers": [
             "public",
             "static"
@@ -153556,7 +153711,7 @@
           "symbol": "F:ch.field_g:I",
           "name": "sourceUnreferencedInteger",
           "file": "ch.java",
-          "sourceSha256": "01ef7509f4431d0843c3dbd5f6e3c641a7ab1c070a2d816a624956fde8757a66",
+          "sourceSha256": "638f41e01a7a8b3a14016e5943562697a02125de2c4fcb3dba4ba8a7e2bfd0b6",
           "modifiers": [
             "public",
             "static"
@@ -153571,7 +153726,7 @@
           "symbol": "F:ch.field_i:Z",
           "name": "sourceUnreferencedFlag2",
           "file": "ch.java",
-          "sourceSha256": "01ef7509f4431d0843c3dbd5f6e3c641a7ab1c070a2d816a624956fde8757a66",
+          "sourceSha256": "638f41e01a7a8b3a14016e5943562697a02125de2c4fcb3dba4ba8a7e2bfd0b6",
           "modifiers": [
             "public",
             "static"
@@ -153586,7 +153741,7 @@
           "symbol": "F:ch.field_j:Z",
           "name": "sourceUnreferencedFlag5",
           "file": "ch.java",
-          "sourceSha256": "01ef7509f4431d0843c3dbd5f6e3c641a7ab1c070a2d816a624956fde8757a66",
+          "sourceSha256": "638f41e01a7a8b3a14016e5943562697a02125de2c4fcb3dba4ba8a7e2bfd0b6",
           "modifiers": [
             "public",
             "static"
@@ -162163,7 +162318,7 @@
         ],
         "historicalRecordsPreserved": 174
       },
-      "labelEditsRemovedInCurrentPass": 3,
+      "labelEditsRemovedInCurrentPass": 11,
       "guardedFramePrefixAssignmentRecovery": {
         "version": 251,
         "changedJavaFiles": 2,
@@ -169475,92 +169630,408 @@
         "existingResultTraceGroupsPassed": 14,
         "allSourcesCompileReproduceAndReverseByteExactly": true,
         "allCompleteSurvivingNamesDictionaryObjectsAndHistoricalCertificatesPreserved": true
+      },
+      "sharedLoopExitRecovery": {
+        "version": 261,
+        "changedJavaFiles": 3,
+        "changedMethodBodies": 3,
+        "loopBreaksLocalized": 4,
+        "conditionalFramesRecovered": 2,
+        "guardedFramesRecovered": 1,
+        "framesRemoved": 3,
+        "newDecisionLocals": 1,
+        "newFlagOccurrences": 7,
+        "removedLabelOccurrences": 11,
+        "sourceProofTest": "readable/tests/test-geoblox-shared-loop-source.mjs",
+        "sourceProofTestSha256": "a1b4b8ead19655424f16b134adf8a6e826f8d1854cf36ab88c3fa8709d17f12e",
+        "sourceProofTestRepository": "Kreijstal/dekobloko-work",
+        "bodyPositionFixtureSha256": "bd055a5b54cc29b307cf4cfc584509741a18d283a8ed53a284e2d629c40471cd",
+        "frameFixtureSha256": "cc57885e640cc5416f65ec7c42af4888ad0d1ed0a5c78ff4a13aa2dc38576cc4",
+        "booleanGuardFixtureSha256": "1ae2770a29f185c0212f5cb1ea84116157cb8bbe797e45b85a90a3bf3dcad2c3",
+        "previousSourceCommit": "471006e0c6bff910b0b3f4731475163e038c58d4",
+        "sourceCommit": "d0918dfdcadc7779a4a26c7aac631efd9cca9f96",
+        "previousSourceTreeSha256": "eaa3e4898e4584346692405b4f9544b263b5cf8979b1e3a5ce599d5f5ccd577b",
+        "sourceTreeSha256": "ce33825df92919e777409765730f6d635da8e4e467434e7e92ccc7fc72fd04f5",
+        "localizedSourceTreeSha256": "1ebdfd14b7f387efc3a02af1c3f41684316d9b9e4cbc3262607aead93c9d207c",
+        "conditionalSourceTreeSha256": "f6897c2e9495ab97d908cdde207fd6fb6545c831c1440ba90e9c2b02ce083dbf",
+        "javaToolsCommit": "384352acc22564077a8023538cd47d870a749f51",
+        "sourceArchiveSha256": "edf18cdbc116f6845878ac9730978a11ba8b9b8fd58aa2fee67b397a4157c339",
+        "compilerEnvironment": {
+          "CFR_JS_DISABLE_LOOP_TAIL_MERGE": "1",
+          "CFR_JS_SPLIT_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_LOOP_FRAME_COMPLETION": "1",
+          "CFR_JS_FINAL_BOOLEAN_PREDICATES": "1",
+          "CFR_JS_FINAL_LOCAL_GUARDS": "1",
+          "CFR_JS_FLATTEN_STANDALONE_BLOCKS": "1",
+          "CFR_JS_SPLIT_REFERENCE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES": "1",
+          "CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_SHARE_DYNAMIC_GUARDED_TAILS": "1",
+          "CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES": "1",
+          "CFR_JS_LEADING_LOOP_EXIT_WORK": "1",
+          "CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES": "1",
+          "CFR_JS_GUARDED_FRAME_COMPLETION": "1",
+          "CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS": "1",
+          "CFR_JS_REINDENT_STRUCTURED_BODIES": "1",
+          "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
+          "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1",
+          "CFR_JS_SWITCH_EXIT_TAILS": "1",
+          "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1",
+          "CFR_JS_GUARDED_FRAME_ALTERNATES": "1",
+          "CFR_JS_OPAQUE_CONTROL_DISPATCHES": "1",
+          "CFR_JS_SHARED_FRAME_EXIT_GUARDS": "1",
+          "CFR_JS_SHARED_SWITCH_FRAME_EXITS": "1",
+          "CFR_JS_SPLIT_MULTILINE_BLOCK_HEADERS": "1",
+          "CFR_JS_SHARED_LOOP_FRAME_EXITS": "1"
+        },
+        "bindingsBefore": 138143,
+        "bindingsCompared": 138150,
+        "transfersBefore": 4773,
+        "transfersCompared": 4769,
+        "loopSelections": [
+          {
+            "file": "ae.java",
+            "methodStart": 413,
+            "jump": {
+              "start": 1602,
+              "end": 1611
+            },
+            "frame": {
+              "start": 1270,
+              "end": 1997
+            },
+            "loopStart": 1461,
+            "loopKind": "ForStatement",
+            "label": "L7",
+            "bridge": {
+              "start": 1917,
+              "end": 1926
+            }
+          },
+          {
+            "file": "ae.java",
+            "methodStart": 413,
+            "jump": {
+              "start": 1802,
+              "end": 1811
+            },
+            "frame": {
+              "start": 1270,
+              "end": 1997
+            },
+            "loopStart": 1461,
+            "loopKind": "ForStatement",
+            "label": "L7",
+            "bridge": {
+              "start": 1917,
+              "end": 1926
+            }
+          },
+          {
+            "file": "ch.java",
+            "methodStart": 10380,
+            "jump": {
+              "start": 16394,
+              "end": 16403
+            },
+            "frame": {
+              "start": 10985,
+              "end": 17103
+            },
+            "loopStart": 15993,
+            "loopKind": "DoWhileStatement",
+            "label": "L1",
+            "bridge": null
+          },
+          {
+            "file": "kj.java",
+            "methodStart": 32445,
+            "jump": {
+              "start": 33100,
+              "end": 33109
+            },
+            "frame": {
+              "start": 32776,
+              "end": 33266
+            },
+            "loopStart": 32909,
+            "loopKind": "WhileStatement",
+            "label": "L1",
+            "bridge": {
+              "start": 33207,
+              "end": 33216
+            }
+          }
+        ],
+        "branchSelections": [
+          {
+            "file": "ae.java",
+            "label": "L7",
+            "frame": {
+              "start": 1270,
+              "end": 1991
+            },
+            "body": {
+              "start": 1274,
+              "end": 1991
+            },
+            "jump": {
+              "start": 1911,
+              "end": 1920
+            },
+            "prefixStatements": 3,
+            "trueStatements": 2,
+            "falseStatements": 1,
+            "inverted": false,
+            "removedSymbol": "B:ae.c()V#0",
+            "afterStart": 1270
+          },
+          {
+            "file": "kj.java",
+            "label": "L1",
+            "frame": {
+              "start": 32776,
+              "end": 33263
+            },
+            "body": {
+              "start": 32780,
+              "end": 33263
+            },
+            "jump": {
+              "start": 33204,
+              "end": 33213
+            },
+            "prefixStatements": 0,
+            "trueStatements": 2,
+            "falseStatements": 1,
+            "inverted": false,
+            "removedSymbol": "B:kj.b(IIII)V#0",
+            "afterStart": 32776
+          }
+        ],
+        "frameRecovery": {
+          "files": 303,
+          "changedFiles": 1,
+          "changedMethods": 1,
+          "framesRecovered": 1,
+          "prefixAssignmentsCompared": 0,
+          "newDecisionLocals": 1,
+          "newFlagOccurrences": 7,
+          "intermediateFlagOccurrences": 7,
+          "redundantFlagReadsRemoved": 0,
+          "removedLabelBindings": 2,
+          "bindingsBefore": 138143,
+          "bindingsAfter": 138150,
+          "transfersBefore": 4771,
+          "transfersAfter": 4769,
+          "frameExitsConsumed": 2,
+          "sourceTreeSha256": "ce33825df92919e777409765730f6d635da8e4e467434e7e92ccc7fc72fd04f5",
+          "symbolMigrations": [
+            {
+              "before": "L:ch.run()V#14",
+              "after": "L:ch.run()V#15"
+            },
+            {
+              "before": "L:ch.run()V#15",
+              "after": "L:ch.run()V#16"
+            },
+            {
+              "before": "L:ch.run()V#16",
+              "after": "L:ch.run()V#17"
+            },
+            {
+              "before": "L:ch.run()V#17",
+              "after": "L:ch.run()V#18"
+            },
+            {
+              "before": "L:ch.run()V#18",
+              "after": "L:ch.run()V#19"
+            },
+            {
+              "before": "L:ch.run()V#19",
+              "after": "L:ch.run()V#20"
+            },
+            {
+              "before": "L:ch.run()V#20",
+              "after": "L:ch.run()V#21"
+            },
+            {
+              "before": "L:ch.run()V#21",
+              "after": "L:ch.run()V#22"
+            },
+            {
+              "before": "L:ch.run()V#22",
+              "after": "L:ch.run()V#23"
+            }
+          ],
+          "selections": [
+            {
+              "file": "ch.java",
+              "methodStart": 10380,
+              "name": "decompiledFrameRemainder3",
+              "label": "L1",
+              "region": {
+                "start": 10985,
+                "end": 17100
+              },
+              "guards": [
+                {
+                  "range": {
+                    "start": 12069,
+                    "end": 12151
+                  },
+                  "condition": {
+                    "start": 12072,
+                    "end": 12083
+                  },
+                  "jump": {
+                    "start": 12114,
+                    "end": 12123
+                  },
+                  "corridorKinds": [
+                    "BlockStatement",
+                    "IfStatement",
+                    "BlockStatement",
+                    "IfStatement",
+                    "BlockStatement",
+                    "IfStatement",
+                    "BlockStatement",
+                    "BlockStatement",
+                    "BlockStatement"
+                  ]
+                },
+                {
+                  "range": {
+                    "start": 13148,
+                    "end": 13238
+                  },
+                  "condition": {
+                    "start": 13151,
+                    "end": 13162
+                  },
+                  "jump": {
+                    "start": 13197,
+                    "end": 13206
+                  },
+                  "corridorKinds": [
+                    "BlockStatement",
+                    "IfStatement",
+                    "BlockStatement",
+                    "IfStatement",
+                    "BlockStatement",
+                    "IfStatement",
+                    "BlockStatement",
+                    "IfStatement",
+                    "BlockStatement",
+                    "IfStatement",
+                    "BlockStatement",
+                    "BlockStatement",
+                    "BlockStatement"
+                  ]
+                }
+              ],
+              "guardsAdded": 4,
+              "prefixAssignments": [],
+              "removedSymbol": "B:ch.run()V#0",
+              "method": "M:ch.run()V",
+              "symbol": "L:ch.run()V#14",
+              "afterStart": 10985
+            }
+          ]
+        },
+        "originalIdentityMigrations": [
+          {
+            "before": "L:ch.run()V#14",
+            "after": "L:ch.run()V#15"
+          },
+          {
+            "before": "L:ch.run()V#15",
+            "after": "L:ch.run()V#16"
+          },
+          {
+            "before": "L:ch.run()V#16",
+            "after": "L:ch.run()V#17"
+          },
+          {
+            "before": "L:ch.run()V#17",
+            "after": "L:ch.run()V#18"
+          },
+          {
+            "before": "L:ch.run()V#18",
+            "after": "L:ch.run()V#19"
+          },
+          {
+            "before": "L:ch.run()V#19",
+            "after": "L:ch.run()V#20"
+          },
+          {
+            "before": "L:ch.run()V#20",
+            "after": "L:ch.run()V#21"
+          },
+          {
+            "before": "L:ch.run()V#21",
+            "after": "L:ch.run()V#22"
+          },
+          {
+            "before": "L:ch.run()V#22",
+            "after": "L:ch.run()V#23"
+          }
+        ],
+        "removedSymbols": [
+          "B:ae.c()V#0",
+          "B:kj.b(IIII)V#0",
+          "B:ch.run()V#0"
+        ],
+        "allOtherOperationsBindingsTargetsAndScopesPreserved": true,
+        "independentlyAttributedAstFiles": 303,
+        "sharedLoopContinuationsAndCompleteConditionalArmsIndependentlyDerived": true,
+        "newFlagIndependentlyTypedAndDefinitelyAssigned": true,
+        "cleanSourceArchiveReproducesSourcesAndDiagnostics": true,
+        "diagnosticsUnchanged": true,
+        "genericFocusedTestGroupsPassed": 10,
+        "existingConditionalTestGroupsPassed": 2,
+        "newIndependentNativeOracleCases": 74358,
+        "remainingLargeFramedMethods": 0,
+        "plainBlockLabelsAfter": 9,
+        "remainingUnresolvedFieldPurposes": 41,
+        "previousUnresolvedFieldSourceAudit": {
+          "fixture": "readable/tests/test-geoblox-unresolved-fields.mjs",
+          "fixtureSha256": "481dfb6193bc4226434c89e0b9f6330f355adea396acc6e64ca00d65158a79e3",
+          "sourceCommit": "471006e0c6bff910b0b3f4731475163e038c58d4",
+          "sourceTreeSha256": "eaa3e4898e4584346692405b4f9544b263b5cf8979b1e3a5ce599d5f5ccd577b",
+          "previousAuditRetained": true,
+          "unresolvedFieldPurposes": 41,
+          "compiledSourceFiles": 303,
+          "workflowCommit": "5fa8aee91d24371274fe6649b16e57deae9de2ee"
+        },
+        "bytecodeChanged": false,
+        "recompiledSourceBytecodeChanged": true,
+        "sourceBodyEditedByHand": false,
+        "wholeGameEquivalenceVerified": false,
+        "scope": "Pass261 derives same-continuation exits after while/for/do/enhanced-for loops. Local breaks skip the same update/test; only empty terminal corridors or a direct same-frame break are accepted. Original predicates, callbacks, aliases, snapshots, stores, arithmetic, nonzero flags and protected actions remain. Existing single-exit if/else reconstruction removes note-release and Huffman carry frames; guarded-frame recovery removes the applet execution boundary using captured continuation. Independent javac recipes derive both loop destinations and complete original true/false work. The frozen continuation/Boolean verifier is reused with the empty-marker adapter, retaining full syntax comparison when compaction makes no edits. Generic native models compare original/localized/conditional/direct forms; no source is hand-edited. Game metadata stays in Deko and generic recovery/agent guidance stays in java-tools. Whole-game and phone/FPS behavior remain unverified.",
+        "dictionaryIdentities": 20440,
+        "survivingCompleteRulesPreserved": 20132,
+        "survivingDictionaryIdentitiesPreserved": 20439,
+        "historicalSourceProofsPreserved": 103,
+        "historicalRecordsPreserved": 184,
+        "readableIdentifierEdits": 122215,
+        "readableTotalEdits": 122324,
+        "publicationTestGroupsPassed": 27,
+        "existingNativeGameplayScenarios": 3,
+        "existingNativeNineSliceScenarios": 10,
+        "existingNativeResultHelperScenarios": 14,
+        "currentFieldSourceAuditFixture": "readable/tests/test-geoblox-current-unresolved-fields.mjs",
+        "currentFieldSourceAuditFixtureSha256": "82e4ec470846f64d6d06046a0cd8c9b825abfe287df6fab9e32fb94495550880",
+        "currentFieldSourceAuditObserverSha256": "481dfb6193bc4226434c89e0b9f6330f355adea396acc6e64ca00d65158a79e3",
+        "fieldObservationsPreserved": true,
+        "refreshedFieldSourceHashes": 6
       }
     },
     "sourceChange": {
       "before": {
-        "source": {
-          "repository": "Kreijstal/funorb-decompiled",
-          "commit": "23084e6bf04d5af26fcec29fc033a5b49c792799",
-          "subdirectory": "games/geoblox"
-        },
-        "generators": {
-          "dekoblokoWork": {
-            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
-            "trackedClean": true
-          },
-          "javaTools": {
-            "commit": "8f162a04c4d373da886976006cebdbc75312c1e4",
-            "trackedClean": true,
-            "sourceArchive": {
-              "sha256": "caeb0d73ac4e1c765837ab8bac8f9b78a83353e0b2a20962a8e9d55abd119f2f",
-              "reproduce": "git archive --format=tar 8f162a04c4d373da886976006cebdbc75312c1e4 | sha256sum",
-              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
-            },
-            "environment": {
-              "CFR_JS_DISABLE_LOOP_TAIL_MERGE": "1",
-              "CFR_JS_SPLIT_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_LOOP_FRAME_COMPLETION": "1",
-              "CFR_JS_FINAL_BOOLEAN_PREDICATES": "1",
-              "CFR_JS_FINAL_LOCAL_GUARDS": "1",
-              "CFR_JS_FLATTEN_STANDALONE_BLOCKS": "1",
-              "CFR_JS_SPLIT_REFERENCE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES": "1",
-              "CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_SHARE_DYNAMIC_GUARDED_TAILS": "1",
-              "CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES": "1",
-              "CFR_JS_LEADING_LOOP_EXIT_WORK": "1",
-              "CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES": "1",
-              "CFR_JS_GUARDED_FRAME_COMPLETION": "1",
-              "CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS": "1",
-              "CFR_JS_REINDENT_STRUCTURED_BODIES": "1",
-              "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
-              "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1",
-              "CFR_JS_SWITCH_EXIT_TAILS": "1",
-              "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1",
-              "CFR_JS_GUARDED_FRAME_ALTERNATES": "1",
-              "CFR_JS_OPAQUE_CONTROL_DISPATCHES": "1",
-              "CFR_JS_SHARED_FRAME_EXIT_GUARDS": "1"
-            }
-          },
-          "namingTool": {
-            "repository": "Kreijstal/dekobloko-work",
-            "commit": "59c17f5bbf3f10aec41fbe64df8d656d64b7884a",
-            "files": {
-              "readable-java.mjs": "033ca6ccc592b781e3045aecc33389149b31bd1c8d2a88879f0103e06b14f177",
-              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
-              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
-            },
-            "sourceArchive": {
-              "sha256": "f78aea10f71f1629ef799417f7b2025495b32a8ca1deaad656948a047c69b2b9",
-              "reproduce": "git archive --format=tar 59c17f5bbf3f10aec41fbe64df8d656d64b7884a -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
-              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
-            }
-          }
-        },
-        "inputTreeSha256": "a042f2919456d57e009b4ca778199aae2da93a64e4cc450958e0c82aa3814708",
-        "readabilityWorkflow": {
-          "repository": "Kreijstal/dekobloko-work",
-          "files": {
-            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
-            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
-            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
-            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
-          }
-        },
-        "classNameLiterals": {
-          "policy": "direct-owned-class-for-name",
-          "expectedEdits": 11
-        },
-        "labels": {
-          "policy": "lexical-targets",
-          "expectedEdits": 112
-        }
-      },
-      "after": {
         "source": {
           "repository": "Kreijstal/funorb-decompiled",
           "commit": "471006e0c6bff910b0b3f4731475163e038c58d4",
@@ -169643,6 +170114,91 @@
           "policy": "lexical-targets",
           "expectedEdits": 109
         }
+      },
+      "after": {
+        "source": {
+          "repository": "Kreijstal/funorb-decompiled",
+          "commit": "d0918dfdcadc7779a4a26c7aac631efd9cca9f96",
+          "subdirectory": "games/geoblox"
+        },
+        "generators": {
+          "dekoblokoWork": {
+            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
+            "trackedClean": true
+          },
+          "javaTools": {
+            "commit": "384352acc22564077a8023538cd47d870a749f51",
+            "trackedClean": true,
+            "sourceArchive": {
+              "sha256": "edf18cdbc116f6845878ac9730978a11ba8b9b8fd58aa2fee67b397a4157c339",
+              "reproduce": "git archive --format=tar 384352acc22564077a8023538cd47d870a749f51 | sha256sum",
+              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
+            },
+            "environment": {
+              "CFR_JS_DISABLE_LOOP_TAIL_MERGE": "1",
+              "CFR_JS_SPLIT_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_LOOP_FRAME_COMPLETION": "1",
+              "CFR_JS_FINAL_BOOLEAN_PREDICATES": "1",
+              "CFR_JS_FINAL_LOCAL_GUARDS": "1",
+              "CFR_JS_FLATTEN_STANDALONE_BLOCKS": "1",
+              "CFR_JS_SPLIT_REFERENCE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES": "1",
+              "CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_SHARE_DYNAMIC_GUARDED_TAILS": "1",
+              "CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES": "1",
+              "CFR_JS_LEADING_LOOP_EXIT_WORK": "1",
+              "CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES": "1",
+              "CFR_JS_GUARDED_FRAME_COMPLETION": "1",
+              "CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS": "1",
+              "CFR_JS_REINDENT_STRUCTURED_BODIES": "1",
+              "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
+              "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1",
+              "CFR_JS_SWITCH_EXIT_TAILS": "1",
+              "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1",
+              "CFR_JS_GUARDED_FRAME_ALTERNATES": "1",
+              "CFR_JS_OPAQUE_CONTROL_DISPATCHES": "1",
+              "CFR_JS_SHARED_FRAME_EXIT_GUARDS": "1",
+              "CFR_JS_SHARED_SWITCH_FRAME_EXITS": "1",
+              "CFR_JS_SPLIT_MULTILINE_BLOCK_HEADERS": "1",
+              "CFR_JS_SHARED_LOOP_FRAME_EXITS": "1"
+            }
+          },
+          "namingTool": {
+            "repository": "Kreijstal/dekobloko-work",
+            "commit": "59c17f5bbf3f10aec41fbe64df8d656d64b7884a",
+            "files": {
+              "readable-java.mjs": "033ca6ccc592b781e3045aecc33389149b31bd1c8d2a88879f0103e06b14f177",
+              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
+              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
+            },
+            "sourceArchive": {
+              "sha256": "f78aea10f71f1629ef799417f7b2025495b32a8ca1deaad656948a047c69b2b9",
+              "reproduce": "git archive --format=tar 59c17f5bbf3f10aec41fbe64df8d656d64b7884a -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
+              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
+            }
+          }
+        },
+        "inputTreeSha256": "ce33825df92919e777409765730f6d635da8e4e467434e7e92ccc7fc72fd04f5",
+        "readabilityWorkflow": {
+          "repository": "Kreijstal/dekobloko-work",
+          "files": {
+            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
+            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
+            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
+            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
+          }
+        },
+        "classNameLiterals": {
+          "policy": "direct-owned-class-for-name",
+          "expectedEdits": 11
+        },
+        "labels": {
+          "policy": "lexical-targets",
+          "expectedEdits": 98
+        }
       }
     }
   },
@@ -169661,6 +170217,6 @@
   },
   "labels": {
     "policy": "lexical-targets",
-    "expectedEdits": 109
+    "expectedEdits": 98
   }
 }

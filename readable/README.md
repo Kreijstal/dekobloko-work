@@ -37,7 +37,68 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current nested-switch continuations and block headers (pass 260)
+## Current shared loop exits and applet/audio continuations (pass 261)
+
+Four nonlocal loop exits become ordinary loop breaks. Their normal continuation
+is either empty or one direct exit to the same original frame, so no loop update,
+condition, callback or extra action is evaluated after the old exit. MIDI note
+release and Vorbis Huffman carry handling now use explicit true/false work.
+The applet execution boundary uses `appletExecutionFrameContinues` for its
+original early-version-error remainder. All snapshots, nonzero client-control
+paths, reads/stores, aliases, arithmetic, failure order and protected actions
+remain. There are nine smaller plain frames, zero large framed methods and
+41 finer field purposes left.
+
+The generic opt-in policy is `CFR_JS_SHARED_LOOP_FRAME_EXITS=1`. It accepts only
+terminal blocks/if arms or one direct same-frame break after the nearest loop.
+Work, cleanup, another loop, switches and other destinations refuse. Existing
+single-exit if/else and enabled guarded-frame proofs run afterward, retaining
+prior decision names. Optional if/else diagnostics support the independent
+certificate; default behavior stays unchanged. Generic recovery, native tests and
+agent guidance stay in java-tools. Game names and source proofs stay in Deko.
+The tracked decompiler-source tar SHA-256 is
+`edf18cdbc116f6845878ac9730978a11ba8b9b8fd58aa2fee67b397a4157c339`.
+
+Independent javac recipes derive each original/new loop target, complete
+conditional arms and retained scopes. The frozen continuation/Boolean certificate
+verifies fresh flags and all other ordered operations, bindings, 388 override
+pairs and protected targets. The empty-marker adapter still compares all syntax
+when compaction makes no edits. All 303 clean compiler files match exactly, with
+unchanged diagnostics. Ten focused groups plus two existing conditional groups
+pass, including 74,358 new independent native cases across original, localized,
+conditional and direct-model while/for/do forms. Nullable predicates, test/update
+order, partial aliased stores, overflow, nonzero flags, exceptions, finally
+overrides and monitor ownership are covered.
+
+Three obsolete labels are removed and one continuation flag is added. All 20,132
+surviving complete naming objects and 20,439 dictionary objects retain their
+metadata with nine recorded local-ordinal migrations. Totals are 20,133 rules and
+20,440 dictionary identities. All 184 historical records and 103 source
+certificates remain exact; text resources and all 41 field observations
+remain. A current-source audit refreshes only the six applet field file hashes
+and compares every field observation with the unchanged prior inventory. The export has 122,215 identifier, 11 literal and 98 label edits
+(122,324 total), comparing 138,150 bindings and 4,769 transfers. All 27 publication
+groups and existing native/raw/readable 3/10/14 gameplay, rendering and result
+trace groups pass. All 303 sources compile, reproduce and reverse byte exactly.
+Complete applet/audio/game execution and phone/FPS behavior remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-shared-loop-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-current-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/sharedLoopExitRecovery.test.js test/loopFrameCompletionRecovery.test.js
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none --test-name-pattern='labeled (conditional|if/else) exits' test/javaAstEmitterLoopExits.test.js
+```
+
+## Previous nested-switch continuations and block headers (pass 260)
 
 `PlatformTaskDispatcher.run` uses ordinary inner-switch breaks for its cursor
 service exits. The original following outer-switch break reaches exactly the
