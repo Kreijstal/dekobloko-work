@@ -4,10 +4,10 @@
   "purpose": "Offline readable source mirror; not a runtime patch",
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
-    "commit": "b88f9cd000c9e7b57263324e3aaadca1dd39c0b9",
+    "commit": "cf6289dfe675f5f1be19c3b1f3e6e2f39a104bcf",
     "subdirectory": "games/geoblox"
   },
-  "inputTreeSha256": "9f4128780d7315be9b32627f4121e66cdbf258fee83a51cf5e04bbf34f514948",
+  "inputTreeSha256": "0a8a8602ea20a13aad67495089a43ec6206790b902b5b3f0baa8168c980147e6",
   "namingPolicy": "Confirmed semantic names without opaque suffixes; unknown symbols stay unchanged. Original spellings and JVM identities remain in the reverse symbol map. Every rule guards the original spelling. Local identities also use declaration ordinals; reused variables retain all supported roles. Numeric screen/action IDs and decompiler state remain unchanged.",
   "renames": [
     {
@@ -120810,18 +120810,18 @@
     }
   ],
   "revision": 184,
-  "version": 263,
+  "version": 264,
   "generators": {
     "dekoblokoWork": {
       "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
       "trackedClean": true
     },
     "javaTools": {
-      "commit": "ced76d82a44b4ce691240ed0bf13594bb72fa05e",
+      "commit": "d4ca4017b64a0cc328b3cfd118d05d6fbec74a0d",
       "trackedClean": true,
       "sourceArchive": {
-        "sha256": "ff118507494d0d2dfad2f67221801ba2dfa4aa962665a79f27e231da88bb1d3f",
-        "reproduce": "git archive --format=tar ced76d82a44b4ce691240ed0bf13594bb72fa05e | sha256sum",
+        "sha256": "9ae27480a3c48f27e6ea96d0e03f18bceddf6a32a1bea95502726eeeff90691d",
+        "reproduce": "git archive --format=tar d4ca4017b64a0cc328b3cfd118d05d6fbec74a0d | sha256sum",
         "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
       },
       "environment": {
@@ -120855,7 +120855,8 @@
         "CFR_JS_SPLIT_MULTILINE_BLOCK_HEADERS": "1",
         "CFR_JS_SHARED_LOOP_FRAME_EXITS": "1",
         "CFR_JS_GUARDED_FRAME_DOMINATING_ASSIGNMENTS": "1",
-        "CFR_JS_SCOPED_FRAME_INITIALIZATION": "1"
+        "CFR_JS_SCOPED_FRAME_INITIALIZATION": "1",
+        "CFR_JS_KNOWN_BOOLEAN_ALTERNATIVES": "1"
       }
     },
     "namingTool": {
@@ -120878,172 +120879,16 @@
     "format": 1,
     "previousRules": {
       "repository": "Kreijstal/dekobloko-work",
-      "commit": "07f3f425b976426ed0783a1fb0372f6912fb57e5",
+      "commit": "76c16defb04ab66170a57de803980b7e8f0d5958",
       "path": "readable/geoblox-rules.json",
-      "sha256": "9429624b01755e10454c1d53bb811ace734f1eb642a28d25ccad90c19ff38815"
+      "sha256": "6949598042dcef0268e5383a5498a1030f9a32b5087839e1364e108e4913092a"
     },
-    "ruleChanges": [
-      {
-        "symbol": "B:ad.b(I)V#0",
-        "before": {
-          "symbol": "B:ad.b(I)V#0",
-          "originalName": "L1",
-          "to": "noteSkipCompletion",
-          "evidence": "MidiNoteMixer mixes fading old streams first, then traverses notes in deque order, consuming note update countdowns and delegating completion decisions to MidiPcmStream. Flag bit4 enables held-note sample retriggering with 20-bit phase; phase wraps recreate streams using original step/volume/pan, sample offset and loop sign. Old streams fade over min(sampleRate/100,262144/phaseIncrement) frames and mix to the original destination end before enqueue when a ramp remains. Skip path retains its distinct phase and remainder arithmetic. Existing plain L1 exits a completed note and preserves traversal. Applet shutdown flag is established under the GameApplet monitor; wrong logo guard still resets it. Shared fullscreen text cleanup retains its guard-triggered glow call. Pass140 naming only: exact original JVM owner/descriptors, spellings and per-method declaration ordinals guard every rule. Preserve every prior complete rule and all statements, numeric values, control-flow flags, arithmetic/overflow, guards, aliasing, partial effects, callback order, exception/finally/monitor scopes, synchronized methods and volatile state. Original bytes remain recoverable through the dictionary. No hand-edited generated Java, bytecode or runtime changes; no live device/full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:kl.a([III)V#0",
-        "before": {
-          "symbol": "B:kl.a([III)V#0",
-          "originalName": "L4",
-          "to": "finiteLoopMixing",
-          "evidence": "PcmSampleStream state is established by both sample constructors, target/current volume refresh, equal-power pan helpers, signed ramp reconciliation, sample skip/mix loop branches and the two kernel dispatchers. Forward/reverse dispatch selects16 distinct mono/stereo, aligned +/-256-step versus interpolated, fixed versus ramped-volume kernels. Parameters preserve reused units/roles: fixed-point position becomes integer sample index in aligned kernels, stereo frame indexes become interleaved array indexes, interpolation source indexes can become boundary sample or copied step. Saved array-index locals preserve original increment/decrement order. Signed target MIN_VALUE marks fade-and-unlink; negative loop counts retain infinite looping, ping-pong reflection and ordinary wrap remain distinct. Preserve fractional interpolation, boundary sample choice, += accumulation, shifts, division/remainder, overflow, gain-step updates, unrolled/tail writes, ramp convergence and unlink timing, all locks/guards/partial effects. Naming only: exact original JVM owner/descriptors, spellings, per-method local/label ordinals guard each rule; all prior complete rules stay identical. Only identifiers/labels change and the dictionary restores original bytes. No hand-edited generated Java, bytecode or runtime changes. Existing native fixtures cover factory/position/music-data scopes, not complete sample mixing/ramp/loop execution, live audio devices or full-game/FPS behavior."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:kl.b(I)V#0",
-        "before": {
-          "symbol": "B:kl.b(I)V#0",
-          "originalName": "L5",
-          "to": "finiteLoopSkipping",
-          "evidence": "PcmSampleStream state is established by both sample constructors, target/current volume refresh, equal-power pan helpers, signed ramp reconciliation, sample skip/mix loop branches and the two kernel dispatchers. Forward/reverse dispatch selects16 distinct mono/stereo, aligned +/-256-step versus interpolated, fixed versus ramped-volume kernels. Parameters preserve reused units/roles: fixed-point position becomes integer sample index in aligned kernels, stereo frame indexes become interleaved array indexes, interpolation source indexes can become boundary sample or copied step. Saved array-index locals preserve original increment/decrement order. Signed target MIN_VALUE marks fade-and-unlink; negative loop counts retain infinite looping, ping-pong reflection and ordinary wrap remain distinct. Preserve fractional interpolation, boundary sample choice, += accumulation, shifts, division/remainder, overflow, gain-step updates, unrolled/tail writes, ramp convergence and unlink timing, all locks/guards/partial effects. Naming only: exact original JVM owner/descriptors, spellings, per-method local/label ordinals guard each rule; all prior complete rules stay identical. Only identifiers/labels change and the dictionary restores original bytes. No hand-edited generated Java, bytecode or runtime changes. Existing native fixtures cover factory/position/music-data scopes, not complete sample mixing/ramp/loop execution, live audio devices or full-game/FPS behavior."
-        },
-        "after": null
-      },
-      {
-        "symbol": "B:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#0",
-        "before": {
-          "symbol": "B:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#0",
-          "originalName": "L6",
-          "to": "loginResultDispatch",
-          "evidence": "Login response-byte dispatch; failure-text setup leaves before the following handshake stages. Pass179 naming only: the full JVM method/initializer identity, original spelling and lexical declaration ordinal guard this label. The compiler verifies every break/continue target and transfer kind. Preserve all statements, branches, guard/nonzero-control paths, aliases, snapshots, callback and arithmetic order, protected scopes and diagnostic literals. No control flag value is assumed; source and tool pins are unchanged. The dictionary reverses all edits; no generated Java is edited by hand. No new runtime-equivalence or full-game/performance claim."
-        },
-        "after": null
-      },
-      {
-        "symbol": "L:ad.b(I)V#2",
-        "before": null,
-        "after": {
-          "symbol": "L:ad.b(I)V#2",
-          "originalName": "decompiledFrameCompleted0",
-          "to": "noteSkipTailEnabled",
-          "evidence": "Pass263 scoped continuation for noteSkipTailEnabled. Generic frame recovery proves prior bound initialization for each remainder and post-test-loop condition reads. MIDI captures completion of its note-update scan and skips the old tail on the original nonlocal-exit path; login and finite PCM loop work use their original decisions once. No assignment, prior snapshot, callback, unused read, alias, store, nonzero flag path, arithmetic or protected action is copied or moved. Independent Java target/suffix certificates derive the original destinations; every MIDI token and exact tail are checked against their origins, and complete login/PCM ASTs, old bindings, override pairs and protected transfers compare. Fresh flags are independently typed and assigned. Original bytecode is unchanged; no source body is hand-edited and no whole-game or browser/phone/FPS equivalence is claimed. Generic recovery/native models remain in java-tools; game naming/proof metadata remain in Deko."
-        }
-      },
-      {
-        "symbol": "L:kl.a([III)V#13",
-        "before": null,
-        "after": {
-          "symbol": "L:kl.a([III)V#13",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "finiteLoopMixingContinues",
-          "evidence": "Pass263 scoped continuation for finiteLoopMixingContinues. Generic frame recovery proves prior bound initialization for each remainder and post-test-loop condition reads. MIDI captures completion of its note-update scan and skips the old tail on the original nonlocal-exit path; login and finite PCM loop work use their original decisions once. No assignment, prior snapshot, callback, unused read, alias, store, nonzero flag path, arithmetic or protected action is copied or moved. Independent Java target/suffix certificates derive the original destinations; every MIDI token and exact tail are checked against their origins, and complete login/PCM ASTs, old bindings, override pairs and protected transfers compare. Fresh flags are independently typed and assigned. Original bytecode is unchanged; no source body is hand-edited and no whole-game or browser/phone/FPS equivalence is claimed. Generic recovery/native models remain in java-tools; game naming/proof metadata remain in Deko."
-        }
-      },
-      {
-        "symbol": "L:kl.b(I)V#9",
-        "before": null,
-        "after": {
-          "symbol": "L:kl.b(I)V#9",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "finiteLoopSkippingContinues",
-          "evidence": "Pass263 scoped continuation for finiteLoopSkippingContinues. Generic frame recovery proves prior bound initialization for each remainder and post-test-loop condition reads. MIDI captures completion of its note-update scan and skips the old tail on the original nonlocal-exit path; login and finite PCM loop work use their original decisions once. No assignment, prior snapshot, callback, unused read, alias, store, nonzero flag path, arithmetic or protected action is copied or moved. Independent Java target/suffix certificates derive the original destinations; every MIDI token and exact tail are checked against their origins, and complete login/PCM ASTs, old bindings, override pairs and protected transfers compare. Fresh flags are independently typed and assigned. Original bytecode is unchanged; no source body is hand-edited and no whole-game or browser/phone/FPS equivalence is claimed. Generic recovery/native models remain in java-tools; game naming/proof metadata remain in Deko."
-        }
-      },
-      {
-        "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#28",
-        "before": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#28",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "unzapScriptFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#28",
-          "originalName": "decompiledFrameRemainder0",
-          "to": "loginResultDispatchContinues",
-          "evidence": "Pass263 scoped continuation for loginResultDispatchContinues. Generic frame recovery proves prior bound initialization for each remainder and post-test-loop condition reads. MIDI captures completion of its note-update scan and skips the old tail on the original nonlocal-exit path; login and finite PCM loop work use their original decisions once. No assignment, prior snapshot, callback, unused read, alias, store, nonzero flag path, arithmetic or protected action is copied or moved. Independent Java target/suffix certificates derive the original destinations; every MIDI token and exact tail are checked against their origins, and complete login/PCM ASTs, old bindings, override pairs and protected transfers compare. Fresh flags are independently typed and assigned. Original bytecode is unchanged; no source body is hand-edited and no whole-game or browser/phone/FPS equivalence is claimed. Generic recovery/native models remain in java-tools; game naming/proof metadata remain in Deko."
-        }
-      },
-      {
-        "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#29",
-        "before": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#29",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "zapScriptFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#29",
-          "originalName": "decompiledCaughtParameter0",
-          "to": "unzapScriptFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#30",
-        "before": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#30",
-          "originalName": "decompiledCaughtParameter2",
-          "to": "loginFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#30",
-          "originalName": "decompiledCaughtParameter1",
-          "to": "zapScriptFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#31",
-        "before": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#31",
-          "originalName": "decompiledUncheckedException",
-          "to": "uncheckedLoginFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#31",
-          "originalName": "decompiledCaughtParameter2",
-          "to": "loginFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#32",
-        "before": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#32",
-          "originalName": "decompiledCheckedException",
-          "to": "checkedLoginFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        },
-        "after": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#32",
-          "originalName": "decompiledUncheckedException",
-          "to": "uncheckedLoginFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      },
-      {
-        "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#33",
-        "before": null,
-        "after": {
-          "symbol": "L:ri.a(ZLjava/lang/String;IZLjava/lang/String;I)I#33",
-          "originalName": "decompiledCheckedException",
-          "to": "checkedLoginFailure",
-          "evidence": "SessionGameApplet uses this staged login/reconnect advance. True payload flag selects the long-and-text payload using existing shared long; false selects the two-text payload. Affiliate integer comes from applet affid. The option flag is forwarded to request bit8, with no additional meaning inferred. Consume accepted response sizes/stages, settings cookie, optional extension bytes, shared name, outgoing seeds and incoming seeds shifted by50; retain retry response7 handling, port swap, invalid-guard recursion, zap/unzap Throwable swallowing and ri.B wrapper. Names expose source roles without a live-server or full handshake correctness claim. Progression/session support audit (pass121): names only through guarded JVM declarations and bound references. Original spellings/local ordinals remain reversible. Numeric guards, protocol/state values, integer/floating arithmetic, allocation/evaluation order, aliasing, partial writes, exception/monitor scopes and diagnostic strings remain unchanged. Raw/decompiler/naming-tool and native probe source/trace pins remain; existing native fixture scopes do not establish new full login/reflection/server, asset/audio/AWT/browser/phone or heap/FPS equivalence."
-        }
-      }
-    ],
+    "ruleChanges": [],
     "stubJarSha256": "8d919fd8540d49cc2e78f7d8277ad0150b48a455cedf3f105bda2c1f82855ae2",
     "sourceEvidence": [
       {
         "file": "Geoblox.java",
-        "sha256": "bb17be92fdceb6be5c2eef3a43292d00a8ea1425b2f334eb103e18ce6506076d"
+        "sha256": "c412b41997c532327e071e630920be0646b086e71b6f4b6d7f916a0cd79511b6"
       },
       {
         "file": "a.java",
@@ -121055,7 +120900,7 @@
       },
       {
         "file": "ab.java",
-        "sha256": "e57a2832f449ae7b768580417db9c42e9c48e693cb38814fed6ddc535c8c91b4"
+        "sha256": "5bc453dd7069662ea48c66fb9f6d80dec6f7a82f9e69c55e8b83af216cc15b69"
       },
       {
         "file": "ac.java",
@@ -121107,7 +120952,7 @@
       },
       {
         "file": "ba.java",
-        "sha256": "c144e4b886cb3f1d6eebe6b4ef9c431b617a0789e7fce856682e7364898d1bd5"
+        "sha256": "13f7deb5821385c13a9c5bac0aa16e9716e54ab20159437ac022fd0bbd470799"
       },
       {
         "file": "bb.java",
@@ -121143,7 +120988,7 @@
       },
       {
         "file": "bj.java",
-        "sha256": "017feedd380a04675fc5d7b943d8dab81c7a5d8fdd43e655c058524f0ca5488b"
+        "sha256": "2e03f2a50a27458d9e9dd890962c574a31a32993a67f7189abe2a0b45e2e585e"
       },
       {
         "file": "bk.java",
@@ -121351,7 +121196,7 @@
       },
       {
         "file": "ff.java",
-        "sha256": "1122bb09506154597998337c5ca24985eebc9d0d2f669301a9957f8540fff81a"
+        "sha256": "5717d9f2fa2b35e5d34029550aa0f32d18f61cdb004dca383a1b8080f2511b27"
       },
       {
         "file": "fg.java",
@@ -121407,7 +121252,7 @@
       },
       {
         "file": "gh.java",
-        "sha256": "077401599a4cdec94901cd4883d8c83bb1d47afbce73e0994e8d83c5164428f0"
+        "sha256": "e9eca4a1785d184536eca4646e034779349b7fb465dbb6a063f7321b9e309820"
       },
       {
         "file": "gi.java",
@@ -121583,7 +121428,7 @@
       },
       {
         "file": "ka.java",
-        "sha256": "9ff206a85993c20b55875746ba8365e524f4fb8d86ee21b744c1a43ebfe0b96b"
+        "sha256": "4da27fd64825355ae6713594d51a6b9b697a5d08cb5033304539cd28f3c8ec8c"
       },
       {
         "file": "kb.java",
@@ -121627,7 +121472,7 @@
       },
       {
         "file": "kl.java",
-        "sha256": "256ca447dec99e0288080389c58e5ec987961ac18f74a60b7b5b7f0a1fe16b60"
+        "sha256": "4be35cdf6b86e208797f55c25bef3952b4a5547a5be8b0596348ff2fc93e52a1"
       },
       {
         "file": "l.java",
@@ -121863,11 +121708,11 @@
       },
       {
         "file": "pf.java",
-        "sha256": "2b49cdc201aee05fcab145176b11deca8094e0c16f59fe37be3c91656cb4cfb5"
+        "sha256": "924d6c8089770dc47be8fddf2b31a5e7c1de189c38c7acce43d0bb59abec23ff"
       },
       {
         "file": "pg.java",
-        "sha256": "b4da4a3c6c8fd76b8382973e5e8dc6ba74743ac3b32bb64fcf382e68b2e37dda"
+        "sha256": "e7fd5ecc89e49363541cea21c891bb9c90543efb05bab4381331f73c2c7e496e"
       },
       {
         "file": "ph.java",
@@ -121943,7 +121788,7 @@
       },
       {
         "file": "r.java",
-        "sha256": "e5f4959e9a3dac583dec981082df3a7493705b4c5b39b3d8bbf289ae329d05be"
+        "sha256": "d6c0ce59deb6ed7df9d3ce5d6de8d180f34534e013a3ac6f309ddcf2a6a8a6f4"
       },
       {
         "file": "ra.java",
@@ -121975,11 +121820,11 @@
       },
       {
         "file": "rh.java",
-        "sha256": "e357ef2b122b2d786717a9bd590d50e59f2da661c91508c12f75678b9c00c4be"
+        "sha256": "31041439df49a9eeed73b48b1cb2cfb1865f1d95be2e6fcd18808079bab907da"
       },
       {
         "file": "ri.java",
-        "sha256": "0dfcd0a7b8ae972eaf5091e4254140e55029a0372a538fa13d5cf92a35cf2abf"
+        "sha256": "eb8dcd265491565462ed28fe9b88f98875ba7890c55d22c366a14d7e8bab9e02"
       },
       {
         "file": "rj.java",
@@ -122011,7 +121856,7 @@
       },
       {
         "file": "sd.java",
-        "sha256": "1e51dfc83b30a97d30cbdc59699a8f9491759bc36fb665ef23c1359a26223009"
+        "sha256": "18d5fead8dcd36b3bc8426c3c7dc1be491e5fc6c81a2e1fdddcec98b547d08e3"
       },
       {
         "file": "se.java",
@@ -122123,7 +121968,7 @@
       },
       {
         "file": "uf.java",
-        "sha256": "a227144ed3511a7bab78aab9910626abf1a1173d125de747d10df59dc6e1cc50"
+        "sha256": "c1517215eca1a9cfdb6f8280899255cf75d5ef53bb04f3dabe4a4c4da32b2b19"
       },
       {
         "file": "ug.java",
@@ -122227,7 +122072,7 @@
       },
       {
         "file": "wf.java",
-        "sha256": "63537399b13e69a58e1ff4361a2e70a16bcc5348e7e55dbf1f35f759976ca7ca"
+        "sha256": "4f82c088aa5757505b356b65212c70d439d00f80fce404999923d16a42092809"
       },
       {
         "file": "wg.java",
@@ -124627,9 +124472,9 @@
     },
     "verification": {
       "sourceDeclarations": 20412,
-      "bindingsCompared": 138188,
+      "bindingsCompared": 138168,
       "overrideRelationships": 388,
-      "identifierEdits": 122253,
+      "identifierEdits": 122233,
       "dictionaryRestorationFiles": 303,
       "wholeGameEquivalenceVerified": false,
       "nativeMatchingScenarios": 708,
@@ -152779,7 +152624,7 @@
           }
         ]
       },
-      "currentVerificationPass": 263,
+      "currentVerificationPass": 264,
       "nestedInitializedPrimitiveLocalLifetimeRecovery": {
         "version": 240,
         "nestedInitializedPrimitiveLifetimes": true,
@@ -162300,7 +162145,7 @@
         ],
         "historicalRecordsPreserved": 174
       },
-      "labelEditsRemovedInCurrentPass": 11,
+      "labelEditsRemovedInCurrentPass": 0,
       "guardedFramePrefixAssignmentRecovery": {
         "version": 251,
         "changedJavaFiles": 2,
@@ -170808,96 +170653,617 @@
         "existingNativeResultHelperScenarios": 14,
         "reverseByteExactFiles": 303,
         "fieldObservationsPreserved": true
+      },
+      "knownBooleanAlternativeRecovery": {
+        "version": 264,
+        "files": 303,
+        "changedFiles": 16,
+        "alternativesRecovered": 20,
+        "removedPureLocalReads": 20,
+        "bindingsBefore": 138188,
+        "bindingsAfter": 138168,
+        "transfersCompared": 4757,
+        "sourceTreeSha256": "0a8a8602ea20a13aad67495089a43ec6206790b902b5b3f0baa8168c980147e6",
+        "selections": [
+          {
+            "file": "Geoblox.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 22840,
+              "end": 23716
+            },
+            "second": {
+              "start": 23733,
+              "end": 27884
+            },
+            "falseBody": {
+              "start": 23764,
+              "end": 27884
+            },
+            "witness": {
+              "kind": "guard",
+              "start": 22691
+            },
+            "removedRead": {
+              "start": 23737,
+              "end": 23762
+            },
+            "afterStart": 22814
+          },
+          {
+            "file": "Geoblox.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 22365,
+              "end": 22548
+            },
+            "second": {
+              "start": 22563,
+              "end": 22664
+            },
+            "falseBody": {
+              "start": 22594,
+              "end": 22664
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 22234
+            },
+            "removedRead": {
+              "start": 22567,
+              "end": 22592
+            },
+            "afterStart": 22365
+          },
+          {
+            "file": "ab.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 8235,
+              "end": 8379
+            },
+            "second": {
+              "start": 8398,
+              "end": 8531
+            },
+            "falseBody": {
+              "start": 8429,
+              "end": 8531
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 6981
+            },
+            "removedRead": {
+              "start": 8402,
+              "end": 8427
+            },
+            "afterStart": 8235
+          },
+          {
+            "file": "ba.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 7190,
+              "end": 7341
+            },
+            "second": {
+              "start": 7362,
+              "end": 7767
+            },
+            "falseBody": {
+              "start": 7393,
+              "end": 7767
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 7074
+            },
+            "removedRead": {
+              "start": 7366,
+              "end": 7391
+            },
+            "afterStart": 7190
+          },
+          {
+            "file": "bj.java",
+            "name": "decompiledFrameRemainder3",
+            "first": {
+              "start": 18082,
+              "end": 18282
+            },
+            "second": {
+              "start": 18305,
+              "end": 19549
+            },
+            "falseBody": {
+              "start": 18336,
+              "end": 19549
+            },
+            "witness": {
+              "kind": "guard",
+              "start": 16221
+            },
+            "removedRead": {
+              "start": 18309,
+              "end": 18334
+            },
+            "afterStart": 18056
+          },
+          {
+            "file": "bj.java",
+            "name": "decompiledFrameRemainder3",
+            "first": {
+              "start": 14421,
+              "end": 16202
+            },
+            "second": {
+              "start": 16221,
+              "end": 19964
+            },
+            "falseBody": {
+              "start": 16252,
+              "end": 19964
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 14177
+            },
+            "removedRead": {
+              "start": 16225,
+              "end": 16250
+            },
+            "afterStart": 14421
+          },
+          {
+            "file": "ff.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 3166,
+              "end": 3804
+            },
+            "second": {
+              "start": 3819,
+              "end": 4021
+            },
+            "falseBody": {
+              "start": 3850,
+              "end": 4021
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 2274
+            },
+            "removedRead": {
+              "start": 3823,
+              "end": 3848
+            },
+            "afterStart": 3166
+          },
+          {
+            "file": "gh.java",
+            "name": "decompiledFrameRemainder8",
+            "first": {
+              "start": 43868,
+              "end": 44188
+            },
+            "second": {
+              "start": 44211,
+              "end": 44333
+            },
+            "falseBody": {
+              "start": 44242,
+              "end": 44333
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 43553
+            },
+            "removedRead": {
+              "start": 44215,
+              "end": 44240
+            },
+            "afterStart": 43868
+          },
+          {
+            "file": "ka.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 5221,
+              "end": 5543
+            },
+            "second": {
+              "start": 5556,
+              "end": 6051
+            },
+            "falseBody": {
+              "start": 5587,
+              "end": 6051
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 4423
+            },
+            "removedRead": {
+              "start": 5560,
+              "end": 5585
+            },
+            "afterStart": 5221
+          },
+          {
+            "file": "kl.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 42488,
+              "end": 43965
+            },
+            "second": {
+              "start": 43978,
+              "end": 45556
+            },
+            "falseBody": {
+              "start": 44009,
+              "end": 45556
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 42400
+            },
+            "removedRead": {
+              "start": 43982,
+              "end": 44007
+            },
+            "afterStart": 42436
+          },
+          {
+            "file": "kl.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 32871,
+              "end": 33074
+            },
+            "second": {
+              "start": 33091,
+              "end": 33256
+            },
+            "falseBody": {
+              "start": 33122,
+              "end": 33256
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 31997
+            },
+            "removedRead": {
+              "start": 33095,
+              "end": 33120
+            },
+            "afterStart": 32845
+          },
+          {
+            "file": "kl.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 32301,
+              "end": 32504
+            },
+            "second": {
+              "start": 32521,
+              "end": 32686
+            },
+            "falseBody": {
+              "start": 32552,
+              "end": 32686
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 31997
+            },
+            "removedRead": {
+              "start": 32525,
+              "end": 32550
+            },
+            "afterStart": 32301
+          },
+          {
+            "file": "pf.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 2606,
+              "end": 2729
+            },
+            "second": {
+              "start": 2746,
+              "end": 2859
+            },
+            "falseBody": {
+              "start": 2777,
+              "end": 2859
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 1368
+            },
+            "removedRead": {
+              "start": 2750,
+              "end": 2775
+            },
+            "afterStart": 2606
+          },
+          {
+            "file": "pg.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 2823,
+              "end": 3044
+            },
+            "second": {
+              "start": 3065,
+              "end": 4501
+            },
+            "falseBody": {
+              "start": 3096,
+              "end": 4501
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 2598
+            },
+            "removedRead": {
+              "start": 3069,
+              "end": 3094
+            },
+            "afterStart": 2823
+          },
+          {
+            "file": "r.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 5843,
+              "end": 6068
+            },
+            "second": {
+              "start": 6085,
+              "end": 6219
+            },
+            "falseBody": {
+              "start": 6116,
+              "end": 6219
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 5684
+            },
+            "removedRead": {
+              "start": 6089,
+              "end": 6114
+            },
+            "afterStart": 5843
+          },
+          {
+            "file": "rh.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 13602,
+              "end": 14036
+            },
+            "second": {
+              "start": 14049,
+              "end": 14164
+            },
+            "falseBody": {
+              "start": 14080,
+              "end": 14164
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 13548
+            },
+            "removedRead": {
+              "start": 14053,
+              "end": 14078
+            },
+            "afterStart": 13602
+          },
+          {
+            "file": "ri.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 3271,
+              "end": 3456
+            },
+            "second": {
+              "start": 3475,
+              "end": 3701
+            },
+            "falseBody": {
+              "start": 3506,
+              "end": 3701
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 2857
+            },
+            "removedRead": {
+              "start": 3479,
+              "end": 3504
+            },
+            "afterStart": 3271
+          },
+          {
+            "file": "sd.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 4913,
+              "end": 5198
+            },
+            "second": {
+              "start": 5217,
+              "end": 5449
+            },
+            "falseBody": {
+              "start": 5248,
+              "end": 5449
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 4819
+            },
+            "removedRead": {
+              "start": 5221,
+              "end": 5246
+            },
+            "afterStart": 4913
+          },
+          {
+            "file": "uf.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 11166,
+              "end": 11398
+            },
+            "second": {
+              "start": 11417,
+              "end": 11511
+            },
+            "falseBody": {
+              "start": 11448,
+              "end": 11511
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 11065
+            },
+            "removedRead": {
+              "start": 11421,
+              "end": 11446
+            },
+            "afterStart": 11166
+          },
+          {
+            "file": "wf.java",
+            "name": "decompiledFrameRemainder0",
+            "first": {
+              "start": 12921,
+              "end": 13152
+            },
+            "second": {
+              "start": 13165,
+              "end": 13275
+            },
+            "falseBody": {
+              "start": 13196,
+              "end": 13275
+            },
+            "witness": {
+              "kind": "initializer",
+              "start": 12833
+            },
+            "removedRead": {
+              "start": 13169,
+              "end": 13194
+            },
+            "afterStart": 12921
+          }
+        ],
+        "changedJavaFiles": 16,
+        "changedMethodBodies": 17,
+        "sourceProofTest": "readable/tests/test-geoblox-boolean-alternative-source.mjs",
+        "sourceProofTestRepository": "Kreijstal/dekobloko-work",
+        "sourceProofTestSha256": "bf5ec65d906d71fb780e49e89155d2324761579c35ba0a51e4e2c383007cbff6",
+        "bodyPositionFixtureSha256": "bd055a5b54cc29b307cf4cfc584509741a18d283a8ed53a284e2d629c40471cd",
+        "previousSourceCommit": "b88f9cd000c9e7b57263324e3aaadca1dd39c0b9",
+        "sourceCommit": "cf6289dfe675f5f1be19c3b1f3e6e2f39a104bcf",
+        "previousSourceTreeSha256": "9f4128780d7315be9b32627f4121e66cdbf258fee83a51cf5e04bbf34f514948",
+        "javaToolsCommit": "d4ca4017b64a0cc328b3cfd118d05d6fbec74a0d",
+        "sourceArchiveSha256": "9ae27480a3c48f27e6ea96d0e03f18bceddf6a32a1bea95502726eeeff90691d",
+        "compilerEnvironment": {
+          "CFR_JS_DISABLE_LOOP_TAIL_MERGE": "1",
+          "CFR_JS_SPLIT_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_LOOP_FRAME_COMPLETION": "1",
+          "CFR_JS_FINAL_BOOLEAN_PREDICATES": "1",
+          "CFR_JS_FINAL_LOCAL_GUARDS": "1",
+          "CFR_JS_FLATTEN_STANDALONE_BLOCKS": "1",
+          "CFR_JS_SPLIT_REFERENCE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES": "1",
+          "CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+          "CFR_JS_SHARE_DYNAMIC_GUARDED_TAILS": "1",
+          "CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES": "1",
+          "CFR_JS_LEADING_LOOP_EXIT_WORK": "1",
+          "CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES": "1",
+          "CFR_JS_GUARDED_FRAME_COMPLETION": "1",
+          "CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS": "1",
+          "CFR_JS_REINDENT_STRUCTURED_BODIES": "1",
+          "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
+          "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1",
+          "CFR_JS_SWITCH_EXIT_TAILS": "1",
+          "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1",
+          "CFR_JS_GUARDED_FRAME_ALTERNATES": "1",
+          "CFR_JS_OPAQUE_CONTROL_DISPATCHES": "1",
+          "CFR_JS_SHARED_FRAME_EXIT_GUARDS": "1",
+          "CFR_JS_SHARED_SWITCH_FRAME_EXITS": "1",
+          "CFR_JS_SPLIT_MULTILINE_BLOCK_HEADERS": "1",
+          "CFR_JS_SHARED_LOOP_FRAME_EXITS": "1",
+          "CFR_JS_GUARDED_FRAME_DOMINATING_ASSIGNMENTS": "1",
+          "CFR_JS_SCOPED_FRAME_INITIALIZATION": "1",
+          "CFR_JS_KNOWN_BOOLEAN_ALTERNATIVES": "1"
+        },
+        "genericFocusedTestGroupsPassed": 4,
+        "existingBooleanCompactionTestGroupsPassed": 6,
+        "newIndependentNativeOracleCases": 324000,
+        "independentlyAttributedAstFiles": 303,
+        "entryTruthAndCompleteAlternativesIndependentlyDerived": true,
+        "allOtherOperationsBindingsTargetsAndScopesPreserved": true,
+        "declarationsInitializersAndFalseStoresPreserved": true,
+        "cleanSourceArchiveReproducesSourcesAndDiagnostics": true,
+        "diagnosticsUnchanged": true,
+        "completeRulesPreserved": 20133,
+        "dictionaryIdentitiesPreserved": 20440,
+        "historicalSourceProofsPreserved": 106,
+        "historicalRecordsPreserved": 187,
+        "ordinalMigrations": 0,
+        "readableIdentifierEdits": 122233,
+        "readableTotalEdits": 122320,
+        "bindingsCompared": 138168,
+        "plainBlockLabelsAfter": 0,
+        "remainingLargeFramedMethods": 0,
+        "remainingUnresolvedFieldPurposes": 41,
+        "previousUnresolvedFieldSourceAudit": {
+          "fixture": "readable/tests/test-geoblox-current-unresolved-fields.mjs",
+          "fixtureSha256": "82e4ec470846f64d6d06046a0cd8c9b825abfe287df6fab9e32fb94495550880",
+          "sourceCommit": "b88f9cd000c9e7b57263324e3aaadca1dd39c0b9",
+          "sourceTreeSha256": "9f4128780d7315be9b32627f4121e66cdbf258fee83a51cf5e04bbf34f514948",
+          "previousAuditRetained": true,
+          "unresolvedFieldPurposes": 41,
+          "compiledSourceFiles": 303,
+          "observerFixture": "readable/tests/test-geoblox-unresolved-fields.mjs",
+          "observerFixtureSha256": "481dfb6193bc4226434c89e0b9f6330f355adea396acc6e64ca00d65158a79e3",
+          "previousInventoryCommit": "5fa8aee91d24371274fe6649b16e57deae9de2ee",
+          "refreshedSourceHashes": 6,
+          "refreshedSourceFiles": [
+            "ch.java"
+          ],
+          "fieldObservationsPreserved": true,
+          "workflowCommit": "76c16defb04ab66170a57de803980b7e8f0d5958"
+        },
+        "bytecodeChanged": false,
+        "recompiledSourceBytecodeChanged": true,
+        "sourceBodyEditedByHand": false,
+        "wholeGameEquivalenceVerified": false,
+        "scope": "Twenty immediately adjacent Boolean remainder guards become direct else work when the original local is known true before the decision. Independent javac trees bind the primitive local, derive prior true initialization/positive-guard entry without intervening writes, and retain the complete original predicate, true prefix, terminal false store and false block. Full ordered ASTs, all retained bindings, overrides and protected transfers compare. No declarations, assignments, snapshots, callbacks, aliases, nonzero client-control paths, arithmetic, failure order or protected actions are copied or moved; only twenty pure local reads are retired. Native work oracles cover initial/guard entry, nullable predicates, later Boolean stores, aliases, nonzero flags, overflow, failures, finally overrides and monitors. Whole-game/browser/phone and heap/presented-FPS acceptance remain unverified.",
+        "publicationTestGroupsPassed": 27,
+        "existingNativeGameplayScenarios": 3,
+        "existingNativeNineSliceScenarios": 10,
+        "existingNativeResultHelperScenarios": 14,
+        "reverseByteExactFiles": 303,
+        "fieldObservationsPreserved": true
       }
     },
     "sourceChange": {
       "before": {
-        "source": {
-          "repository": "Kreijstal/funorb-decompiled",
-          "commit": "ea4d0762d7963a3f496571eecd90bf1f8e4973df",
-          "subdirectory": "games/geoblox"
-        },
-        "generators": {
-          "dekoblokoWork": {
-            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
-            "trackedClean": true
-          },
-          "javaTools": {
-            "commit": "3a1d555885334b7cdc94d8233c685555b7ee1cee",
-            "trackedClean": true,
-            "sourceArchive": {
-              "sha256": "69a95c10167e0a7492cdbc05a7f527da2b23bafd5f1bccfc7412f22be0273753",
-              "reproduce": "git archive --format=tar 3a1d555885334b7cdc94d8233c685555b7ee1cee | sha256sum",
-              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
-            },
-            "environment": {
-              "CFR_JS_DISABLE_LOOP_TAIL_MERGE": "1",
-              "CFR_JS_SPLIT_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_LOOP_FRAME_COMPLETION": "1",
-              "CFR_JS_FINAL_BOOLEAN_PREDICATES": "1",
-              "CFR_JS_FINAL_LOCAL_GUARDS": "1",
-              "CFR_JS_FLATTEN_STANDALONE_BLOCKS": "1",
-              "CFR_JS_SPLIT_REFERENCE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES": "1",
-              "CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
-              "CFR_JS_SHARE_DYNAMIC_GUARDED_TAILS": "1",
-              "CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES": "1",
-              "CFR_JS_LEADING_LOOP_EXIT_WORK": "1",
-              "CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES": "1",
-              "CFR_JS_GUARDED_FRAME_COMPLETION": "1",
-              "CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS": "1",
-              "CFR_JS_REINDENT_STRUCTURED_BODIES": "1",
-              "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
-              "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1",
-              "CFR_JS_SWITCH_EXIT_TAILS": "1",
-              "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1",
-              "CFR_JS_GUARDED_FRAME_ALTERNATES": "1",
-              "CFR_JS_OPAQUE_CONTROL_DISPATCHES": "1",
-              "CFR_JS_SHARED_FRAME_EXIT_GUARDS": "1",
-              "CFR_JS_SHARED_SWITCH_FRAME_EXITS": "1",
-              "CFR_JS_SPLIT_MULTILINE_BLOCK_HEADERS": "1",
-              "CFR_JS_SHARED_LOOP_FRAME_EXITS": "1",
-              "CFR_JS_GUARDED_FRAME_DOMINATING_ASSIGNMENTS": "1"
-            }
-          },
-          "namingTool": {
-            "repository": "Kreijstal/dekobloko-work",
-            "commit": "59c17f5bbf3f10aec41fbe64df8d656d64b7884a",
-            "files": {
-              "readable-java.mjs": "033ca6ccc592b781e3045aecc33389149b31bd1c8d2a88879f0103e06b14f177",
-              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
-              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
-            },
-            "sourceArchive": {
-              "sha256": "f78aea10f71f1629ef799417f7b2025495b32a8ca1deaad656948a047c69b2b9",
-              "reproduce": "git archive --format=tar 59c17f5bbf3f10aec41fbe64df8d656d64b7884a -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
-              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
-            }
-          }
-        },
-        "inputTreeSha256": "c6407b211782c3aa26209a63cdf3ba3342954a880d21d56c9039b85a90f48917",
-        "readabilityWorkflow": {
-          "repository": "Kreijstal/dekobloko-work",
-          "files": {
-            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
-            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
-            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
-            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
-          }
-        },
-        "classNameLiterals": {
-          "policy": "direct-owned-class-for-name",
-          "expectedEdits": 11
-        },
-        "labels": {
-          "policy": "lexical-targets",
-          "expectedEdits": 87
-        }
-      },
-      "after": {
         "source": {
           "repository": "Kreijstal/funorb-decompiled",
           "commit": "b88f9cd000c9e7b57263324e3aaadca1dd39c0b9",
@@ -170966,6 +171332,94 @@
           }
         },
         "inputTreeSha256": "9f4128780d7315be9b32627f4121e66cdbf258fee83a51cf5e04bbf34f514948",
+        "readabilityWorkflow": {
+          "repository": "Kreijstal/dekobloko-work",
+          "files": {
+            "build-geoblox-rules.mjs": "52731c04dc967e2b5a5c9bea766a8ff2367c016538ccc8968443a51686cb1359",
+            "layout.mjs": "2a9b891a257b9bf089dbf23d77ca788e7e76c8ca5f161b25df4dad0453af630f",
+            "reproduce-geoblox.mjs": "b5f18f72b5ddfb008f4e9dfd52facc95b3347d06f5af83bf6e856a3f7a64c98f",
+            "text-resource-evidence.mjs": "b3df24bd91653055689544164cce208e5544f7558eb4cb5c2b8512e35ccce496"
+          }
+        },
+        "classNameLiterals": {
+          "policy": "direct-owned-class-for-name",
+          "expectedEdits": 11
+        },
+        "labels": {
+          "policy": "lexical-targets",
+          "expectedEdits": 76
+        }
+      },
+      "after": {
+        "source": {
+          "repository": "Kreijstal/funorb-decompiled",
+          "commit": "cf6289dfe675f5f1be19c3b1f3e6e2f39a104bcf",
+          "subdirectory": "games/geoblox"
+        },
+        "generators": {
+          "dekoblokoWork": {
+            "commit": "a572c4dd0f0174bfcd7777be53d7ceba2f970f18",
+            "trackedClean": true
+          },
+          "javaTools": {
+            "commit": "d4ca4017b64a0cc328b3cfd118d05d6fbec74a0d",
+            "trackedClean": true,
+            "sourceArchive": {
+              "sha256": "9ae27480a3c48f27e6ea96d0e03f18bceddf6a32a1bea95502726eeeff90691d",
+              "reproduce": "git archive --format=tar d4ca4017b64a0cc328b3cfd118d05d6fbec74a0d | sha256sum",
+              "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
+            },
+            "environment": {
+              "CFR_JS_DISABLE_LOOP_TAIL_MERGE": "1",
+              "CFR_JS_SPLIT_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_NESTED_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_LOOP_FRAME_COMPLETION": "1",
+              "CFR_JS_FINAL_BOOLEAN_PREDICATES": "1",
+              "CFR_JS_FINAL_LOCAL_GUARDS": "1",
+              "CFR_JS_FLATTEN_STANDALONE_BLOCKS": "1",
+              "CFR_JS_SPLIT_REFERENCE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_NESTED_REFERENCE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_SPLIT_ARRAY_DIMENSION_LIFETIMES": "1",
+              "CFR_JS_SPLIT_NESTED_INITIALIZED_PRIMITIVE_LIFETIMES": "1",
+              "CFR_JS_SHARE_DYNAMIC_GUARDED_TAILS": "1",
+              "CFR_JS_AVOID_PROVEN_REFERENCE_CAST_BRIDGES": "1",
+              "CFR_JS_LEADING_LOOP_EXIT_WORK": "1",
+              "CFR_JS_SIMPLIFY_NATURAL_LOOP_EXIT_CAPTURES": "1",
+              "CFR_JS_GUARDED_FRAME_COMPLETION": "1",
+              "CFR_JS_COMPACT_LOCAL_BOOLEAN_GUARDS": "1",
+              "CFR_JS_REINDENT_STRUCTURED_BODIES": "1",
+              "CFR_JS_EXHAUSTIVE_SWITCH_FRAME_EXITS": "1",
+              "CFR_JS_EXHAUSTIVE_IF_FRAME_EXITS": "1",
+              "CFR_JS_SWITCH_EXIT_TAILS": "1",
+              "CFR_JS_GUARDED_FRAME_PREFIX_EFFECTS": "1",
+              "CFR_JS_GUARDED_FRAME_ALTERNATES": "1",
+              "CFR_JS_OPAQUE_CONTROL_DISPATCHES": "1",
+              "CFR_JS_SHARED_FRAME_EXIT_GUARDS": "1",
+              "CFR_JS_SHARED_SWITCH_FRAME_EXITS": "1",
+              "CFR_JS_SPLIT_MULTILINE_BLOCK_HEADERS": "1",
+              "CFR_JS_SHARED_LOOP_FRAME_EXITS": "1",
+              "CFR_JS_GUARDED_FRAME_DOMINATING_ASSIGNMENTS": "1",
+              "CFR_JS_SCOPED_FRAME_INITIALIZATION": "1",
+              "CFR_JS_KNOWN_BOOLEAN_ALTERNATIVES": "1"
+            }
+          },
+          "namingTool": {
+            "repository": "Kreijstal/dekobloko-work",
+            "commit": "59c17f5bbf3f10aec41fbe64df8d656d64b7884a",
+            "files": {
+              "readable-java.mjs": "033ca6ccc592b781e3045aecc33389149b31bd1c8d2a88879f0103e06b14f177",
+              "lib/ReadableJava.java": "26a540f76255ecd08977f685867511746b32239199049e02e26dbbd9be2635eb",
+              "lib/capture-process.mjs": "8c389d508513b71012df56312ec3cfcbfedef2f16be77aeb4f32f0c60e9cfca7"
+            },
+            "sourceArchive": {
+              "sha256": "f78aea10f71f1629ef799417f7b2025495b32a8ca1deaad656948a047c69b2b9",
+              "reproduce": "git archive --format=tar 59c17f5bbf3f10aec41fbe64df8d656d64b7884a -- readable/tools/readable-java.mjs readable/tools/lib/ReadableJava.java readable/tools/lib/capture-process.mjs readable/tools/restore-original.mjs readable/tools/test-readable-java.mjs readable/tools/test-capture-process.mjs | sha256sum",
+              "format": "Git-generated tar archive of the six tracked generic naming source, reversal, capture and test files listed in reproduce; excludes old PIN, game inputs and generated exports."
+            }
+          }
+        },
+        "inputTreeSha256": "0a8a8602ea20a13aad67495089a43ec6206790b902b5b3f0baa8168c980147e6",
         "readabilityWorkflow": {
           "repository": "Kreijstal/dekobloko-work",
           "files": {

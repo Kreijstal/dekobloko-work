@@ -37,7 +37,62 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current scoped login/audio continuations (pass 263)
+## Current direct Boolean alternatives (pass 264)
+
+Twenty adjacent remainder guards become direct `else` work in 17 methods across
+16 files, including login, finite PCM, menu/session preparation, tutorial text,
+HUD, glyph/widget/raster and entity helpers. The original primitive local is
+known true before each decision. Its complete true arm ends with the original
+false store, so the following work belongs directly to the false arm. No predicate,
+block, declaration, initializer or store moves or is copied. Only twenty pure
+local reads are retired; later writes/reads retain their values. All names stay
+unchanged. No plain block labels or large framed methods remain; 41 finer field
+purposes and long ordinary bodies remain to review.
+
+The generic opt-in policy is `CFR_JS_KNOWN_BOOLEAN_ALTERNATIVES=1`. Truth comes
+from a prior literal-true declaration with no intervening writes, or a containing
+positive guard on the same bound primitive Boolean. Loops and protected entries
+stop inference; declarations inside loops can establish per-iteration truth.
+Writes in another initializer, the original predicate or earlier true-arm work
+refuse, as do boxing, shadowing, captures, nonadjacent guards and old alternatives.
+Generic recovery, native models and agent guidance stay in java-tools; game
+metadata and source certificates stay in Deko. The tracked decompiler-source tar
+SHA-256 is `9ae27480a3c48f27e6ea96d0e03f18bceddf6a32a1bea95502726eeeff90691d`.
+
+Independent javac trees bind each primitive local, derive true entry and both
+complete original alternatives, then compare all ordered ASTs. All other
+bindings, 388 override pairs, 4,757 original transfers and their protected scopes
+remain. Four focused
+and six existing compaction groups pass, including 324,000 new independent
+native work-oracle cases. Nullable predicates, later Boolean stores, aliases,
+nonzero flags, overflow, partial failures, finally overrides and monitor ownership
+are covered. All 303 clean compiler files match exactly with unchanged diagnostics.
+
+All 20,133 complete rule objects and 20,440 dictionary identities retain their
+metadata without ordinal migrations. All 187 historical records and 106 source
+certificates remain exact. Text resources and all 41 field observations remain.
+The export has 122,233 identifier, 11 literal and 76 label edits (122,320 total),
+comparing 138,168 retained bindings. All 303 sources compile, reproduce and reverse
+byte exactly. All 27 publication groups and existing native/raw/readable 3/10/14
+gameplay, rendering and result trace groups pass. Whole-game/browser/phone and
+heap/presented-FPS acceptance remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-boolean-alternative-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-current-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/knownBooleanAlternativeRecovery.test.js test/localBooleanGuardCompaction.test.js
+```
+
+## Previous scoped login/audio continuations (pass 263)
 
 The last four plain frames are reconstructed. MIDI note skipping uses
 `noteSkipTailEnabled` after its note-update scan; finite PCM skip/mix and login
