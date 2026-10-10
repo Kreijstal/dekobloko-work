@@ -37,7 +37,60 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current negated equality values (pass 265)
+## Current primitive Boolean value copies (pass 266)
+
+Fourteen parenthesized double-negation pairs in nine methods across eight files
+become direct primitive Boolean value copies: for example, `!(!visible)` becomes
+`(visible)`. Scoped local/formal/array/cast and exact owning-field type evidence
+establishes primitive operands. Both original parentheses and each operand's
+single evaluation remain. Snapshots, assignments, callbacks, volatile reads,
+indexing, primitive result type, canonical boxing and overload selection remain.
+Unknown/boxed operands retain unboxing and null failures. No names change;
+41 finer field purposes and long ordinary bodies remain to review.
+
+The generic opt-in is `CFR_JS_PRIMITIVE_BOOLEAN_VALUES=1`. The existing predicate
+helper has a separate `primitiveValueDoubleNegations` value-only mode, leaving
+its default control-condition behavior unchanged. Scoped type evidence refuses
+shadowed/out-of-scope names, inherited fields, unproven class qualifiers and
+arbitrary call return types. No declaration, snapshot or store is removed.
+Generic recovery, native models and agent guidance stay in java-tools; game
+names and source certificates stay in Deko. The tracked decompiler-source tar
+SHA-256 is `cb7ee81441f8fa9b787ebf97e9811eb7e3f774156d9e56b6fd7888539011b5fa`.
+
+Independent javac types normalize double-negation pairs only for primitive
+Boolean operands and compare complete ordered ASTs. All 138,168 bindings,
+388 overrides and 4,757 transfers with protected scopes remain. Four new and
+15 existing predicate groups pass, including 3,888 new native oracle cases for
+primitive parameter/local/array/volatile-field values, canonical boxing,
+primitive overload choice, callback/index failures, finally overrides and monitor
+ownership. Boxed/unknown refusal cases retain their null and reference behavior.
+All 303 clean compiler files match exactly with unchanged diagnostics.
+
+All 20,133 complete rules and 20,440 dictionary identities keep their metadata
+without ordinal migrations. All 189 historical records and 108 source certificates
+remain exact. Text resources and all 41 field observations remain unchanged.
+The export still has 122,233 identifier, 11 literal and 76 label edits (122,320
+in total). All 303 sources compile, reproduce and reverse byte exactly. No plain
+block labels or large framed methods remain. All 27 publication groups and existing native/raw/readable 3/10/14 gameplay,
+rendering and result trace groups pass. Whole-game/browser/phone and
+heap/presented-FPS acceptance remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-primitive-value-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-current-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/primitiveBooleanValueRecovery.test.js test/predicateNegationRecovery.test.js
+```
+
+## Previous negated equality values (pass 265)
 
 106 Boolean value expressions in 48 methods across 26 files complement their
 root equality operator instead of negating its result: for example,
