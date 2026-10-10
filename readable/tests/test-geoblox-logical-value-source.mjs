@@ -1,0 +1,70 @@
+import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import crypto from 'node:crypto';import assert from 'node:assert/strict';import {createRequire} from 'node:module';import {fileURLToPath} from 'node:url';
+import {funorbRepository,workflowRoot} from '../layout.mjs';import {captureProcess} from '../tools/lib/capture-process.mjs';import {sourceInventory,sourceIdentity} from '../tools/readable-java.mjs';
+
+// Compare complete ordered javac trees modulo Boolean logical negation only
+// inside primitive Boolean operand contexts. Bare boxed value double negations
+// remain exact. Every binding and protected transfer keeps its original identity.
+const preview=process.argv.includes('--preview'),javaTools=path.resolve(process.argv.slice(2).find(a=>a!=='--preview')||'../java-tools'),root=JSON.parse(fs.readFileSync(path.join(funorbRepository,'decompilation/geoblox-provenance.json'))),proof=preview?null:root.booleanLogicalValueRecovery;
+assert.ok(preview||proof);const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'geoblox-logical-value-proof-')),hash=b=>crypto.createHash('sha256').update(b).digest('hex'),run=(c,a)=>{try{return captureProcess(c,a,{maxBuffer:128*1024*1024}).stdout.toString();}catch(e){throw new Error(e.stderr?.toString()||e.message);}},rows=s=>s.trim().split('\n').filter(Boolean).map(s=>s.split('\t')),ordered=a=>a.map(r=>JSON.stringify(r)).sort();
+try {
+ function archive(repo,commit,name,subpath){const tar=path.join(temporary,name+'.tar'),directory=path.join(temporary,name);run('git',['-C',repo,'archive','--format=tar','--output='+tar,commit,...(subpath?[subpath]:[])]);fs.mkdirSync(directory);run('tar',['-xf',tar,'-C',directory]);return {directory,sha256:hash(fs.readFileSync(tar))};}
+ const pin=JSON.parse(fs.readFileSync(path.join(workflowRoot,'tools/PIN.json')));assert.equal(hash(fs.readFileSync(path.join(workflowRoot,'tools/lib/ReadableJava.java'))),pin.files['lib/ReadableJava.java']);
+ const tools=preview?{directory:javaTools}:archive(javaTools,proof.javaToolsCommit,'tools');if(proof){assert.equal(tools.sha256,proof.sourceArchiveSha256);assert.equal(hash(fs.readFileSync(fileURLToPath(import.meta.url))),proof.sourceProofTestSha256);}
+ const before=preview?path.join(funorbRepository,'games/geoblox'):path.join(archive(funorbRepository,proof.previousSourceCommit,'before','games/geoblox').directory,'games/geoblox'),entries=sourceInventory(before);assert.equal(entries.length,303);if(proof)assert.equal(sourceIdentity(entries),proof.previousSourceTreeSha256);
+ const require=createRequire(import.meta.url),{simplifyPredicateNegations:fold}=require(path.join(tools.directory,'src/decompiler/javaAstEmitter.js')),{tokenizeJava}=require(path.join(tools.directory,'src/java-frontend/lexer.js'));
+ const fixture=path.join(workflowRoot,'tests/test-geoblox-guarded-abrupt-source.mjs');if(proof)assert.equal(hash(fs.readFileSync(fixture)),proof.bodyPositionFixtureSha256);const template=fs.readFileSync(fixture,'utf8').match(/fs\.writeFileSync\(helper, (`import com\.sun[\s\S]*?`\);)/);assert.ok(template);fs.writeFileSync(path.join(temporary,'GeobloxBodyPositions.java'),new Function('return '+template[1].slice(0,-2))());
+ const helpers=path.join(temporary,'helpers'),expected=path.join(temporary,'expected'),stubs=path.join(funorbRepository,'readable/funorb-stubs.jar');fs.mkdirSync(helpers);fs.mkdirSync(expected);run('javac',['-d',helpers,path.join(temporary,'GeobloxBodyPositions.java'),path.join(workflowRoot,'tools/lib/ReadableJava.java')]);
+ const maps=new Map(),selections=[];
+ const facts=dir=>rows(run('java',['-cp',helpers,'GeobloxBodyPositions',dir,stubs,'fields'])),initial=facts(before),spans=initial.filter(r=>r[0].endsWith('.java')&&(!r[7]||r[7]===r[0].slice(0,-5)));
+ for(const entry of entries){let text=fs.readFileSync(path.join(before,entry.path),'utf8'),origins=Array.from({length:text.length},(_,i)=>i);
+  for(const span of spans.filter(r=>r[0]===entry.path).sort((a,b)=>+b[1]-+a[1])){const base=+span[1]+1,end=+span[2]-1;let body=text.slice(base,end);const names=span[3].split(',').filter(Boolean),types=(span[5]||'').split(',').filter(Boolean).map(t=>Buffer.from(t,'base64').toString('utf8')),parameters=names.map((name,i)=>({name,type:types[i]})),owner=entry.path.slice(0,-5),ownedFields={owner,fields:initial.filter(r=>r[0]==='W'&&r[1]===entry.path&&r[2]===owner).map(r=>({name:r[3],type:r[4],static:r[5]==='true'}))};
+   for(;;){const r=fold(body,{retainDiagnostics:true,parameters,ownedFields,complementIntegralRelations:false,booleanValueLogicalNegations:true});if(!r.predicatesSimplified)break;const d=r.diagnostics,project=n=>{const p=origins[base+n];assert.ok(Number.isInteger(p));return p;};selections.push({file:entry.path,methodStart:+span[6],edits:d.tokenEdits.map(e=>({start:project(e.start),end:e.end===e.start?project(e.start):project(e.end-1)+1,text:e.text})),counts:d.counts});for(const e of d.tokenEdits.slice().reverse()){const replacement=Array(e.text.length).fill(null);origins=[...origins.slice(0,base+e.start),...replacement,...origins.slice(base+e.end)];}body=r.source;}
+   text=text.slice(0,base)+body+text.slice(end);
+  }
+  fs.writeFileSync(path.join(expected,entry.path),text);maps.set(entry.path,origins);
+ }
+ assert.ok(selections.length>0,'Boolean logical value progress');
+ const equalityHelper=path.join(temporary,'BooleanLogicalValueTrees.java');
+ fs.writeFileSync(equalityHelper,String.raw`import java.io.*;import java.nio.file.*;import java.util.*;
+import javax.tools.*;import javax.lang.model.type.*;import com.sun.source.tree.*;import com.sun.source.util.*;
+public class BooleanLogicalValueTrees{
+ static Tree peel(Tree n){while(n instanceof ParenthesizedTree)n=((ParenthesizedTree)n).getExpression();return n;}
+ static class Audit extends TreeScanner<Void,Void>{
+  CompilationUnitTree unit;Trees trees;StringBuilder out=new StringBuilder();Audit(CompilationUnitTree u,Trees t){unit=u;trees=t;}
+  void atom(Object v){String s=String.valueOf(v);out.append(s.length()).append(':').append(s);}
+  void booleanTree(Tree n,boolean inverse){
+   n=peel(n);
+   if(n instanceof UnaryTree&&n.getKind()==Tree.Kind.LOGICAL_COMPLEMENT){booleanTree(((UnaryTree)n).getExpression(),!inverse);return;}
+   if(n instanceof BinaryTree&&(n.getKind()==Tree.Kind.CONDITIONAL_AND||n.getKind()==Tree.Kind.CONDITIONAL_OR)){
+    BinaryTree b=(BinaryTree)n;Tree.Kind kind=n.getKind();if(inverse)kind=kind==Tree.Kind.CONDITIONAL_AND?Tree.Kind.CONDITIONAL_OR:Tree.Kind.CONDITIONAL_AND;
+    out.append('(');atom(kind);booleanTree(b.getLeftOperand(),inverse);booleanTree(b.getRightOperand(),inverse);out.append(')');return;
+   }
+   if(n instanceof BinaryTree&&(n.getKind()==Tree.Kind.EQUAL_TO||n.getKind()==Tree.Kind.NOT_EQUAL_TO)){
+    BinaryTree b=(BinaryTree)n;Tree.Kind kind=n.getKind();if(inverse)kind=kind==Tree.Kind.EQUAL_TO?Tree.Kind.NOT_EQUAL_TO:Tree.Kind.EQUAL_TO;
+    out.append('(');atom(kind);scan(b.getLeftOperand(),null);scan(b.getRightOperand(),null);out.append(')');return;
+   }
+   if(n instanceof LiteralTree&&n.getKind()==Tree.Kind.BOOLEAN_LITERAL){out.append('(');atom("BOOLEAN_LITERAL");atom(((Boolean)((LiteralTree)n).getValue())^inverse);out.append(')');return;}
+   TypeMirror type=trees.getTypeMirror(TreePath.getPath(unit,n));if(type.getKind()!=TypeKind.BOOLEAN&&!type.toString().equals("java.lang.Boolean"))throw new AssertionError("unproven Boolean conversion "+n);
+   out.append('(');atom("BOOLEAN_CONVERSION");atom(inverse);atom(type.toString());scan(n,null);out.append(')');
+  }
+  @Override public Void scan(Tree n,Void unused){
+   if(n==null){out.append("nil;");return null;}if(n instanceof ParenthesizedTree)return scan(((ParenthesizedTree)n).getExpression(),null);
+   if(n instanceof BinaryTree&&(n.getKind()==Tree.Kind.CONDITIONAL_AND||n.getKind()==Tree.Kind.CONDITIONAL_OR)||n instanceof UnaryTree&&n.getKind()==Tree.Kind.LOGICAL_COMPLEMENT&&(peel(((UnaryTree)n).getExpression()).getKind()==Tree.Kind.CONDITIONAL_AND||peel(((UnaryTree)n).getExpression()).getKind()==Tree.Kind.CONDITIONAL_OR)){booleanTree(n,false);return null;}
+   out.append('(');atom(n.getKind());
+   if(n instanceof IdentifierTree)atom(((IdentifierTree)n).getName());else if(n instanceof MemberSelectTree)atom(((MemberSelectTree)n).getIdentifier());else if(n instanceof LiteralTree){Object v=((LiteralTree)n).getValue();atom(v==null?null:v.getClass().getName());atom(v);}else if(n instanceof VariableTree)atom(((VariableTree)n).getName());else if(n instanceof MethodTree)atom(((MethodTree)n).getName());else if(n instanceof ClassTree)atom(((ClassTree)n).getSimpleName());else if(n instanceof LabeledStatementTree)atom(((LabeledStatementTree)n).getLabel());else if(n instanceof BreakTree)atom(((BreakTree)n).getLabel());else if(n instanceof ContinueTree)atom(((ContinueTree)n).getLabel());else if(n instanceof PrimitiveTypeTree)atom(((PrimitiveTypeTree)n).getPrimitiveTypeKind());else if(n instanceof ModifiersTree)atom(new TreeSet<>(((ModifiersTree)n).getFlags().stream().map(Object::toString).collect(java.util.stream.Collectors.toList())));else if(n instanceof ImportTree)atom(((ImportTree)n).isStatic());else if(n instanceof TypeParameterTree)atom(((TypeParameterTree)n).getName());else if(n instanceof MemberReferenceTree){atom(((MemberReferenceTree)n).getName());atom(((MemberReferenceTree)n).getMode());}
+   super.scan(n,null);out.append(')');return null;
+  }
+ }
+ public static void main(String[]args)throws Exception{Path root=Paths.get(args[0]);List<File> files=new ArrayList<>();try(java.util.stream.Stream<Path> s=Files.walk(root)){s.filter(p->p.toString().endsWith(".java")).sorted().forEach(p->files.add(p.toFile()));}JavaCompiler compiler=ToolProvider.getSystemJavaCompiler();DiagnosticCollector<JavaFileObject> errors=new DiagnosticCollector<>();try(StandardJavaFileManager fm=compiler.getStandardFileManager(errors,null,null)){JavacTask task=(JavacTask)compiler.getTask(null,fm,errors,Arrays.asList("--release","8","-proc:none","-encoding","UTF-8","-sourcepath","","-classpath",args[1]),null,fm.getJavaFileObjectsFromFiles(files));List<CompilationUnitTree> units=new ArrayList<>();for(CompilationUnitTree u:task.parse())units.add(u);task.analyze();for(Diagnostic<?> d:errors.getDiagnostics())if(d.getKind()==Diagnostic.Kind.ERROR)throw new AssertionError(d.toString());Trees trees=Trees.instance(task);for(CompilationUnitTree unit:units){Audit a=new Audit(unit,trees);a.scan(unit,null);System.out.println("A\t"+root.relativize(Paths.get(unit.getSourceFile().toUri()))+"\t"+a.out);}}}
+}
+`);
+ run('javac',['-d',helpers,equalityHelper]);
+ const fingerprint=dir=>rows(run('java',['-Xmx768m','-cp',helpers,'BooleanLogicalValueTrees',dir,stubs]));assert.deepEqual(fingerprint(expected),fingerprint(before),'all ordered Java syntax modulo Boolean negation in independently typed operand contexts');
+ const position=(file,n)=>{const p=maps.get(file)[n];assert.ok(Number.isInteger(p),file+':'+n+' original token');return p;},project=r=>[r[0],r[1],String(position(r[1],+r[2])),String(position(r[1],+r[3]-1)+1),...r.slice(4)];
+ const generated=[];const list=path.join(temporary,'sources.txt');fs.writeFileSync(list,entries.map(e=>e.path).join('\n')+'\n');const audit=dir=>{const file=path.join(temporary,'bindings.tsv'),classes=fs.mkdtempSync(path.join(temporary,'classes-'));generated.push(classes);run('java',['-cp',helpers,'ReadableJava',dir,list,file,classes,stubs,'--class-name-literals','--labels']);return rows(fs.readFileSync(file,'utf8'));},old=audit(before),after=audit(expected),positional=new Set(['D','R','T','B','N','S','U']);assert.deepEqual(ordered(after.filter(r=>positional.has(r[0])).map(project)),ordered(old.filter(r=>positional.has(r[0]))));assert.deepEqual(after.filter(r=>r[0]==='O'),old.filter(r=>r[0]==='O'));
+ const next=facts(expected);
+ const transfers=initial.filter(r=>r[0]==='Q'),projected=next.filter(r=>r[0]==='Q').map(r=>{const scopes=(r[9]||'').split(',').filter(Boolean).map(s=>{const[k,role,p]=s.split(':');return[k,role,position(r[1],+p)].join(':');}).join(',');return['Q',r[1],String(position(r[1],+r[2])),String(position(r[1],+r[3]-1)+1),...r.slice(4,7),String(position(r[1],+r[7])),String(position(r[1],+r[8]-1)+1),scopes];});assert.deepEqual(ordered(projected),ordered(transfers),'every original transfer destination and protection scope');
+ const candidate=preview?process.env.GEOBLOX_LOGICAL_VALUE_CANDIDATE_DIR:path.join(archive(funorbRepository,proof.sourceCommit,'after','games/geoblox').directory,'games/geoblox');if(candidate)for(const e of entries)assert.ok(fs.readFileSync(path.join(expected,e.path)).equals(fs.readFileSync(path.join(candidate,e.path))),e.path+' exact compiler source');
+ if(preview&&process.env.GEOBLOX_LOGICAL_VALUE_OUTPUT_DIR){fs.mkdirSync(process.env.GEOBLOX_LOGICAL_VALUE_OUTPUT_DIR,{recursive:true});for(const e of entries)fs.copyFileSync(path.join(expected,e.path),path.join(process.env.GEOBLOX_LOGICAL_VALUE_OUTPUT_DIR,e.path));}
+ const result={files:303,changedFiles:new Set(selections.map(s=>s.file)).size,changedMethods:new Set(selections.map(s=>s.file+':'+s.methodStart)).size,logicalValuesSimplified:selections.length,deMorganOperators:selections.reduce((n,s)=>n+s.counts.deMorganOperators,0),equalityComplements:selections.reduce((n,s)=>n+s.counts.equalityComplements,0),doubleNegations:selections.reduce((n,s)=>n+s.counts.doubleNegations,0),bindingsBefore:old.filter(r=>['D','R'].includes(r[0])).length,bindingsAfter:after.filter(r=>['D','R'].includes(r[0])).length,transfersCompared:projected.length,sourceTreeSha256:sourceIdentity(sourceInventory(expected)),selections};if(proof){assert.equal(result.sourceTreeSha256,proof.sourceTreeSha256);assert.deepEqual(result.selections,proof.selections);}console.log(JSON.stringify(result));
+} finally {fs.rmSync(temporary,{recursive:true,force:true});}
