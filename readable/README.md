@@ -37,7 +37,73 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current platform task switches (pass 258)
+## Current shared exits and continuation frames (pass 259)
+
+Nine shared-exit guards in seven methods retain one terminal destination and
+all original effects. A plain early exit becomes an inverse guard around its
+complete remainder. An effectful early arm retains its original prefix and
+uses an explicit else arm for the complete false-path work. Every original
+predicate/read occurs once, including volatile fields and nullable unboxing.
+No callback, unused snapshot, alias, nonzero control flag, arithmetic operation
+or failure is dropped, copied or reordered.
+
+Five frames now use named continuation eligibility: asset/session preparation,
+background archive loading, text drawing, tutorial placement and menu pointer
+handling. Smaller shared exits also improve in platform and PCM code. There are
+13 smaller plain frames, zero large framed methods and 41 finer field purposes
+left. The new flag names describe the original remainder, with dictionary entries
+for every original spelling and JVM identity.
+
+The generic opt-in policy is `CFR_JS_SHARED_FRAME_EXIT_GUARDS=1`. It resolves both
+exits to the same plain frame in the same lexical/protected block. Complete true
+prefixes (at most eight statements) stay in their original scope; complete false
+work (one to 32 statements) stays conditional. Top-level false-work declarations,
+other destinations, crossed corridors, conditional terminal exits and unsupported
+captures refuse. Existing recovery policies allocate their decisions first;
+new continuations keep that naming order. Generic code, tests and agent guidance
+remain in java-tools. Game names and source certificates stay in Deko.
+The tracked decompiler-source tar SHA-256 is
+`caeb0d73ac4e1c765837ab8bac8f9b78a83353e0b2a20962a8e9d55abd119f2f`.
+
+Independent javac recipes derive original common destinations and complete arms,
+then compare all ordered syntax. The frozen frame/compaction certificate checks
+fresh Boolean bindings, exact suffixes, every other operation and 388 override
+pairs. Its adapter handles empty compaction marker files while still comparing
+all syntax. All 303 clean compiler files exactly match the certificate and
+unchanged diagnostics. All 4,773 surviving protected transfers retain their
+original identities; 16 frame exits are consumed. Fifteen focused compiler groups
+pass, including 58,320 new independent native cases across original, normalized,
+combined and direct-model forms. Nullable predicates, partial aliased stores,
+overflow, zero/nonzero flags, loops, exceptions, finally overrides and monitors
+are covered.
+
+Five flag rules replace five obsolete labels. All 20,131 surviving complete
+rules and 20,438 surviving dictionary objects retain their metadata with nine
+recorded ordinal migrations. Totals remain 20,136 rules and 20,443 identities.
+All 182 historical object records and 101 direct source certificates remain
+exact; text resources and the 41-field purpose inventory remain. The export has
+122,208 identifier, 11 literal and 112 label edits (122,331 total), comparing
+138,143 bindings. All 27 publication groups and existing native/raw/readable
+3/10/14 gameplay, rendering and result trace groups pass. All 303 sources compile,
+reproduce and reverse byte exactly. Whole-game and phone/FPS behavior remain
+unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-shared-exit-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/sharedFrameExitGuardRecovery.test.js test/guardedFrameCompletionRecovery.test.js
+```
+
+## Previous platform task switches (pass 258)
 
 `PlatformTaskDispatcher.run` classifies its captured task type with two switches.
 The shared permission check remains before the service switch. Cursor/backend
