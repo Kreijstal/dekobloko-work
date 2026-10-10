@@ -37,7 +37,62 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current shared loop exits and applet/audio continuations (pass 261)
+## Current prior assignments and gameplay continuations (pass 262)
+
+Five former frames use named continuation decisions: tutorial prompt placement,
+result-sequence rendering, theme-progress HUD rendering, exit-screen selection
+and retained-text record selection. `GameplaySession` has no plain block labels
+left. The earlier client-control/write-index assignments remain in place; their
+snapshots, nonzero paths and partial effects remain. Four small frames and
+41 finer field purposes remain elsewhere.
+
+The generic opt-in policy is
+`CFR_JS_GUARDED_FRAME_DOMINATING_ASSIGNMENTS=1`, with the ordinary guarded-frame
+policy. It derives initialization from direct earlier siblings in containing
+blocks and preserves every declaration/assignment. The lexical path may follow
+conditional, loop and label bodies; case entries and protected entries stop the
+search. Existing prefix evidence and earlier decision names stay unchanged.
+Game-specific names and source proofs stay in Deko; generic recovery, native
+models and agent guidance stay in java-tools. The tracked decompiler-source tar
+SHA-256 is `69a95c10167e0a7492cdbc05a7f527da2b23bafd5f1bccfc7412f22be0273753`.
+
+Independent javac trees derive all five earlier bound assignments, six original
+exits and complete remainder suffixes. All other ordered operations, bindings,
+388 overrides and protected transfers compare. Fresh flags are independently
+typed and definitely assigned; no assignment or snapshot moves. Four new and
+nine existing focused groups pass, including 35,100 new independent native cases
+with an early-return work oracle. Prior primitive/reference snapshots, aliases,
+nullable predicates, nonzero flags, overflow, partial failures, finally overrides
+and monitor ownership are covered. All 303 clean compiler sources match exactly
+with unchanged diagnostics. All 303 readable sources compile, reproduce and
+reverse byte exactly.
+
+All 20,128 surviving complete rules and 20,435 dictionary objects retain their
+metadata, with one recorded ordinal migration. Five obsolete frame rules are
+replaced by five named decisions; totals remain 20,133 rules and 20,440 identities.
+All 185 historical records and 104 source certificates remain exact; text
+resources and all 41 field observations remain unchanged. The export has
+122,232 identifier, 11 literal and 87 label edits (122,330 total), comparing
+138,167 bindings and 4,763 transfers. All 27 publication groups and existing
+native/raw/readable 3/10/14 gameplay, rendering and result trace groups pass.
+Whole-game/app/browser/phone behavior and FPS remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-dominating-frame-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-current-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/dominatingFrameAssignments.test.js test/guardedFrameCompletionRecovery.test.js
+```
+
+## Previous shared loop exits and applet/audio continuations (pass 261)
 
 Four nonlocal loop exits become ordinary loop breaks. Their normal continuation
 is either empty or one direct exit to the same original frame, so no loop update,
