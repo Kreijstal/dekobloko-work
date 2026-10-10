@@ -37,7 +37,64 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current shared exits and continuation frames (pass 259)
+## Current nested-switch continuations and block headers (pass 260)
+
+`PlatformTaskDispatcher.run` uses ordinary inner-switch breaks for its cursor
+service exits. The original following outer-switch break reaches exactly the
+old frame continuation. Both selectors, shared permission checks, backend
+conditions, complete case bodies, callbacks/failures and protected actions remain
+in place. The unused plain label disappears while its original block scope stays.
+There are 12 smaller plain frames, zero large framed methods and 41 finer field
+purposes left.
+
+Five multiline block headers in platform, text, tutorial and PCM methods place
+their first statement on a separate line. Only horizontal trivia is replaced;
+every Java token, quoted value and operation remains exact. Existing single-line
+bodies stay intact, and structural indentation aligns the new first line.
+
+The generic opt-in policies are `CFR_JS_SHARED_SWITCH_FRAME_EXITS=1` and
+`CFR_JS_SPLIT_MULTILINE_BLOCK_HEADERS=1`. Nested exit recovery accepts only
+terminal blocks/if arms, final-case fallthrough or one direct enclosing-switch
+break between its two destinations. Intervening work, cleanup, loops, nonfinal
+fallthrough and other continuations refuse. Generic code, tests and agent guidance
+remain in java-tools; game proof metadata stays in Deko. The tracked
+decompiler-source tar SHA-256 is
+`80654bd40f8b71232a497fb1e992a979f7700cb45d3693fb726a15f50b620776`.
+
+Independent javac recipes derive both original/new targets and each zero-effect
+continuation, then compare all ordered syntax. All other bindings, 388 override
+pairs and protected scopes remain. The clean compiler source archive reproduces
+all 303 files and unchanged diagnostics. Twenty-one focused groups pass, including
+174,960 new independent native pending-completion cases for selector callbacks,
+nullable predicates, partial aliased stores, overflow, failures, finally overrides
+and monitor ownership. Header edits are independently token exact.
+
+Only one obsolete label rule and dictionary identity are removed. All 20,135
+surviving complete naming objects and 20,442 dictionary identities retain their
+metadata; there are no ordinal migrations. All 183 historical object records and
+102 source certificates remain exact. Text resources and the 41-field purpose
+inventory remain. The export has 122,208 identifier, 11 literal and 109 label edits
+(122,328 total), comparing 138,143 bindings and 4,773 transfers. All 27 publication
+groups and existing native/raw/readable 3/10/14 gameplay, rendering and result
+trace groups pass. All 303 sources compile, reproduce and reverse byte exactly.
+Complete worker/game execution and phone/FPS behavior remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-shared-switch-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/sharedSwitchExitRecovery.test.js test/terminalControlCleanup.test.js
+```
+
+## Previous shared exits and continuation frames (pass 259)
 
 Nine shared-exit guards in seven methods retain one terminal destination and
 all original effects. A plain early exit becomes an inverse guard around its
