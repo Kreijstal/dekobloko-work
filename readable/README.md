@@ -37,7 +37,36 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current gameplay reading guide and name context (pass 271)
+## Current ordered Boolean assignment chains (pass 272)
+
+Nineteen assignment/guard pairs in seven files become ordered short-circuit
+assignment chains. The six-level theme-selection ladder now keeps its decisions
+in one condition. All declarations, initial values, stores, snapshots, RHSs and
+complete work remain at their original conditional evaluation points. Only
+nineteen immediate primitive-local reads disappear. Both current code and the
+74-line gameplay guide regenerate through the same reproduction command.
+
+The generic opt-in is `CFR_JS_CHAIN_LOCAL_BOOLEAN_ASSIGNMENTS=1`. Unique bound
+primitive Boolean locals permit each immediate read to use its assignment value;
+boxed/formal/field targets, duplicate names, unknown scope, intervening effects,
+else arms and unsupported captures refuse. Defaults retain the same-local proof.
+Generic recovery and guidance stay in java-tools; game rules/certificates stay
+in Deko. The decompiler-source tar SHA-256 is `ae472b9a682af8c8f10f569bf2a115e7a5c4c2b377ebc8fa331ea1fe0ec7c428`.
+
+Independent javac compares all 303 complete ordered trees modulo only these
+proved conditional stores. All 138,149 surviving bindings, 388 overrides and
+4,757 protected transfers remain. Four new and six existing groups pass, including
+171,072 new independent native oracle cases for mutable flags, nullable callbacks,
+unboxing, partial failures, catch/finally paths and monitors. Clean tracked
+compiler output reproduces every source byte and unchanged diagnostics. All 29
+publication groups and 27 native trace groups pass; 303 sources reverse exactly.
+
+All 20,133 complete rules and 20,440 dictionary identities remain unchanged.
+No plain block labels or large framed methods remain. Forty-one finer field
+purposes and long ordinary methods remain to review; original-game/browser/phone
+and heap/presented-FPS acceptance remain unverified.
+
+## Previous gameplay reading guide and name context (pass 271)
 
 The current guide is generated from the symbol dictionary and actual declarations.
 It replaces 9,974 lines of accumulated pass narratives with 74 lines covering
