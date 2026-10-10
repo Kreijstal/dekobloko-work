@@ -37,7 +37,64 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current menu-key alternatives (pass 257)
+## Current platform task switches (pass 258)
+
+`PlatformTaskDispatcher.run` classifies its captured task type with two switches.
+The shared permission check remains before the service switch. Cursor/backend
+conditions, reflection/network/platform operations, original loop headers and
+updates, exception snapshots, callbacks/failures and catch/finally/monitor scopes
+remain intact. No action is copied. The method's maximum body brace nesting falls
+from 23 levels to 10; 18 smaller plain frames and 41 finer field purposes remain.
+
+The generic opt-in policy is `CFR_JS_OPAQUE_CONTROL_DISPATCHES=1`. Missing parser
+ranges for protected local scopes are recovered from the nearest original brace
+pair, with an attributed block parent and primitive type. Original selectors stay
+write-free throughout the classified suffix. Opaque switches and protected loop
+actions retain their complete syntax; existing bare exits must target a frame
+inside that action. Unconditional loops, unknown constant completion, scope
+merges, classifier writes and external bare exits refuse. Existing budgets and
+ordinary recovery defaults remain. Generic code, tests and agent guidance stay
+in java-tools; game metadata and source certificates stay in Deko.
+The tracked decompiler-source tar SHA-256 is
+`41fbc90963c3af1ebd3f3ff4b4b86d2e77b08e2318ea8bc0b1646a7b44390848`.
+
+Independent javac recipes attribute every removed equality to its original
+primitive local, prove write-free suffixes, and compare ordered syntax for every
+represented constant and the unmatched class. All other operations, bindings,
+388 override pairs and all 4,772 original protected transfers remain. Seventeen
+new bare exits target only generated switches; final transfers total 4,789.
+The 303-file clean compiler rebuild exactly matches the certificate and unchanged
+diagnostics. Twenty-one focused groups pass, including 27,324 new independent
+native direct-dispatch oracle cases covering opaque loops/switches, permission
+callbacks, nullable predicates, partial aliased stores, overflow, failures,
+finally overrides and monitor ownership.
+
+All 20,136 complete naming rules and 20,443 dictionary identities remain, without
+ordinal migrations. All 181 historical object records and 100 direct source
+certificates remain exact. Text resources and the 41-field purpose inventory
+remain. Thirteen pure classifier reads disappear, giving 122,187 identifier,
+11 literal and 133 label edits (122,331 total), comparing 138,122 bindings.
+All 27 publication groups and existing native/raw/readable 3/10/14 gameplay,
+rendering and result trace groups pass. All 303 sources compile, reproduce and
+reverse byte exactly. Complete worker/game execution, actual platform I/O and
+phone/FPS behavior remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-opaque-dispatch-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/opaqueControlDispatchRecovery.test.js test/scalarIfDispatchRecovery.test.js
+```
+
+## Previous menu-key alternatives (pass 257)
 
 `GameScreen.handleMenuKey` now uses `menuKeyDispatchFrameContinues`
 instead of its 21 nonlocal frame exits. The original conditional alternatives
