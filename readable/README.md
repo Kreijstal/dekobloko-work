@@ -37,7 +37,69 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current prior assignments and gameplay continuations (pass 262)
+## Current scoped login/audio continuations (pass 263)
+
+The last four plain frames are reconstructed. MIDI note skipping uses
+`noteSkipTailEnabled` after its note-update scan; finite PCM skip/mix and login
+response dispatch use named continuation decisions for their original remainders.
+There are no plain block labels or large framed methods in the 303-file corpus.
+All old operations, prior assignments and snapshots remain in place; nonzero
+client-control paths, aliases, partial stores, failure order and protected actions
+remain. Forty-one finer field purposes and long ordinary methods remain to review.
+
+The generic opt-in policy is `CFR_JS_SCOPED_FRAME_INITIALIZATION=1`, with the
+corresponding enabled loop/guarded-frame policies. Prior initialization is proved
+for each selected remainder within its original branch. Post-test-loop flow tests
+only normal/continue paths after the body; break paths skip the condition. Case,
+catch/finally and protected entry inference remain refused, as do crossed cleanup,
+switch and extra-loop corridors. No assignment, predicate or action moves or is
+copied. Default lifetime and frame policies retain their existing refusal.
+Game metadata stays in Deko; generic recovery, native models and agent guidance
+stay in java-tools. The tracked decompiler-source tar SHA-256 is
+`ff118507494d0d2dfad2f67221801ba2dfa4aa962665a79f27e231da88bb1d3f`.
+
+Independent javac certificates derive the original MIDI loop/frame destination
+and complete tail. All 2,211 original MIDI tokens retain their order, text and
+origins apart from the retired label and retargeted break. The fresh bound Boolean
+starts in the original frame scope and guards exactly the old tail. Full
+independently attributed login/PCM ASTs derive their six former exits and complete
+suffixes, preserving all other ordered syntax, bindings, 388 overrides and
+protected transfers. New flags are independently typed and assigned. Four new,
+19 existing frame and seven existing primitive-lifetime groups pass, including
+202,500 new native oracle cases and independent javac assignment judgments.
+Prior snapshots, aliases, nullable predicates, nonzero flags, overflow, partial
+failures, finally overrides and monitor ownership are covered. All 303 clean
+compiler files match exactly with unchanged diagnostics.
+
+All 20,129 surviving complete rule objects and 20,436 dictionary objects retain
+their metadata, with five recorded ordinal migrations. Four obsolete frames are
+replaced by four named locals; totals remain 20,133 rules and 20,440 identities.
+All 186 historical records and 105 source certificates remain exact. Text
+resources and all 41 field observations remain unchanged. The export has 122,253
+identifier, 11 literal and 76 label edits (122,340 total), comparing 138,188
+bindings and 4,757 retained transfers. All 303 sources compile, reproduce and
+reverse byte exactly. All 27 publication groups and existing native/raw/readable
+3/10/14 gameplay, rendering and result trace groups pass. Whole-game,
+browser/phone, memory and presented-FPS acceptance remain unverified.
+
+From Deko:
+
+```sh
+NODE_PATH=/path/to/node_modules node readable/tests/test-geoblox-scoped-frame-source.mjs /path/to/java-tools
+node readable/tests/test-geoblox-current-unresolved-fields.mjs
+node readable/build-geoblox-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
+```
+
+From java-tools:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/scopedFrameInitialization.test.js
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/guardedFrameCompletionRecovery.test.js test/dominatingFrameAssignments.test.js test/loopFrameCompletionRecovery.test.js
+NODE_PATH=/path/to/node_modules node --test --experimental-test-isolation=none test/primitiveLocalLifetimeRecovery.test.js
+```
+
+## Previous prior assignments and gameplay continuations (pass 262)
 
 Five former frames use named continuation decisions: tutorial prompt placement,
 result-sequence rendering, theme-progress HUD rendering, exit-screen selection
