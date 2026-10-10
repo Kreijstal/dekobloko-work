@@ -2,6 +2,7 @@ import {funorbRepository} from '../layout.mjs';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
@@ -14,7 +15,7 @@ function rejection(change, message, update = false) {
   try {
     captureProcess('git', ['clone', '--shared', '--no-checkout', '--quiet', path.resolve(root, '..'), temporary]);
     const directory = path.join(temporary, 'readable');
-    for (const file of ['reproduce-geoblox.mjs', 'build-geoblox-rules.mjs', 'layout.mjs', 'text-resource-evidence.mjs',
+    for (const file of ['reproduce-geoblox.mjs', 'build-geoblox-reading-guide.mjs', 'build-geoblox-rules.mjs', 'layout.mjs', 'text-resource-evidence.mjs',
       'geoblox-rules.json', ...current.publication.nativeEvidence.map(item => item.file),
       'tools/PIN.json', 'tools/readable-java.mjs',
       'tools/lib/ReadableJava.java', 'tools/lib/capture-process.mjs']) {
@@ -106,4 +107,49 @@ test('refresh targets only the current export and cannot be combined with check'
       try { captureProcess('env', ['FUNORB_DECOMPILED_DIR=' + funorbRepository, process.execPath, path.join(root, 'reproduce-geoblox.mjs'), ...args]); }
       catch (error) { throw new Error(error.stderr?.toString() || error.message); }
     }, /Usage:/);
+});
+
+// A guide failure is an export failure: preserve both prior artifacts, including
+// when installing the guide fails after the verified Java directory was swapped.
+for (const failure of ['guide-generation', 'guide-installation']) test(`guide ${failure} preserves the previous Java export and guide`, () => {
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'geoblox-guide-rollback-'));
+  try {
+    captureProcess('git', ['clone', '--shared', '--no-checkout', '--quiet', path.resolve(root, '..'), temporary]);
+    const directory = path.join(temporary, 'readable');
+    const dependencies = [...Object.keys(current.readabilityWorkflow.files), 'geoblox-rules.json',
+      ...current.publication.nativeEvidence.map(item => item.file), 'tools/PIN.json', 'tools/readable-java.mjs',
+      'tools/lib/ReadableJava.java', 'tools/lib/capture-process.mjs'];
+    for (const file of dependencies) {
+      const destination = path.join(directory, file);fs.mkdirSync(path.dirname(destination), {recursive: true});
+      fs.copyFileSync(path.join(root, file), destination);
+    }
+    const fixtureFunorb = path.join(temporary, 'funorb');
+    captureProcess('git', ['clone', '--shared', '--no-checkout', '--quiet', funorbRepository, fixtureFunorb]);
+    fs.mkdirSync(path.join(fixtureFunorb, 'readable/geoblox/src'), {recursive: true});
+    fs.copyFileSync(path.join(funorbRepository, 'readable/funorb-stubs.jar'), path.join(fixtureFunorb, 'readable/funorb-stubs.jar'));
+    const retained = path.join(fixtureFunorb, 'readable/geoblox/src/Retained.java');
+    const guide = path.join(fixtureFunorb, 'readable/GEOBLOX-READING-GUIDE.md');
+    fs.writeFileSync(retained, 'previous reviewed Java\n');fs.writeFileSync(guide, 'previous reviewed guide\n');
+    const target = failure === 'guide-generation' ? 'build-geoblox-reading-guide.mjs' : 'reproduce-geoblox.mjs';
+    const sourceFile = path.join(directory, target);let source = fs.readFileSync(sourceFile, 'utf8');
+    const original = failure === 'guide-generation' ? 'const mapping = JSON.parse' : "fs.renameSync(path.join(refresh, 'guide.md'), guidePath);";
+    assert.equal(source.split(original).length - 1, 1);
+    source = source.replace(original, failure === 'guide-generation'
+      ? "throw new Error('injected guide-generation failure');\n  const mapping = JSON.parse"
+      : "throw new Error('injected guide-installation failure');");
+    fs.writeFileSync(sourceFile, source);
+    const file = path.join(directory, 'geoblox-rules.json'),manifest = JSON.parse(fs.readFileSync(file));
+    manifest.readabilityWorkflow.files[target] = crypto.createHash('sha256').update(source).digest('hex');
+    manifest.publication.sourceChange.after.readabilityWorkflow = structuredClone(manifest.readabilityWorkflow);
+    fs.writeFileSync(file, JSON.stringify(manifest, null, 2) + '\n');
+    assert.throws(() => {
+      try {captureProcess('env', ['-u','JAVA_TOOL_OPTIONS','FUNORB_DECOMPILED_DIR=' + fixtureFunorb, process.execPath,
+        path.join(directory, 'reproduce-geoblox.mjs'), '--update'], {maxBuffer: 128 * 1024 * 1024});}
+      catch (error) {throw new Error(error.stderr?.toString() || error.message);}
+    }, new RegExp('injected ' + failure + ' failure'));
+    assert.equal(fs.readFileSync(retained, 'utf8'), 'previous reviewed Java\n');
+    assert.deepEqual(fs.readdirSync(path.dirname(retained)), ['Retained.java']);
+    assert.equal(fs.readFileSync(guide, 'utf8'), 'previous reviewed guide\n');
+    assert.ok(!fs.readdirSync(path.dirname(guide)).some(name => name.startsWith('.geoblox-refresh-')));
+  } finally {fs.rmSync(temporary, {recursive: true, force: true});}
 });

@@ -15,7 +15,7 @@ function fixture(change, check = true) {
   try {
     captureProcess('git', ['clone', '--shared', '--no-checkout', '--quiet', path.resolve(root, '..'), temporary]);
     const directory = path.join(temporary, 'readable');
-    for (const file of ['build-geoblox-rules.mjs', 'layout.mjs', 'reproduce-geoblox.mjs', 'text-resource-evidence.mjs', 'geoblox-rules.json',
+    for (const file of ['build-geoblox-reading-guide.mjs', 'build-geoblox-rules.mjs', 'layout.mjs', 'reproduce-geoblox.mjs', 'text-resource-evidence.mjs', 'geoblox-rules.json',
       ...current.publication.nativeEvidence.map(item => item.file),
       'tools/PIN.json', 'tools/readable-java.mjs', 'tools/lib/ReadableJava.java', 'tools/lib/capture-process.mjs']) {
       const destination = path.join(directory, file);

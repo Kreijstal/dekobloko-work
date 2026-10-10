@@ -18,7 +18,7 @@ node readable/tools/restore-original.mjs /path/to/funorb-decompiled/readable/geo
 
 Do not set `JAVA_TOOL_OPTIONS` during export regeneration: the exact JDK
 version output is recorded in the generated provenance. The update stages,
-compiles and checks the complete export before replacing
+compiles and checks the complete export and current reading guide before replacing
 `funorb-decompiled/readable/geoblox`. Failed updates preserve the previous export;
 unmanaged files in it prevent replacement. Temporary check copies are removed.
 
@@ -37,7 +37,34 @@ original tracked-source archive remain in [PIN.json](tools/PIN.json). The older
 `scripts/readable-java.mjs` entry point delegates to this same dependency.
 Game-specific rules are never inserted into the decompiler or JVM runtime.
 
-## Current logical condition lines (pass 270)
+## Current gameplay reading guide and name context (pass 271)
+
+The current guide is generated from the symbol dictionary and actual declarations.
+It replaces 9,974 lines of accumulated pass narratives with 74 lines covering
+the game loop, session tasks, transitions/themes/achievements, tutorials, matches,
+scoring, ending and the 41 uncertain field purposes. Earlier pass narratives remain
+in Git and the existing workflow record; no extra historical guide is maintained.
+
+The same `readable/reproduce-geoblox.mjs --update/--check` command now covers both
+Java and the guide. An explicit workflow-source migration pins five executable
+files, adding `build-geoblox-reading-guide.mjs`. Guide generation and installation
+failures preserve the previous Java export and guide; both injected failures pass.
+
+The retained `gh.b(B)V#7` continuation is `precedingThemeLookupFrameContinues`,
+correcting its misplaced tutorial name. Its existing frame evidence and source
+show the preceding-theme lookup; the initialized/written but unread snapshot
+remains. Only two identifier occurrences change. All 20,132 other complete rules
+and 20,439 other dictionary entries remain exact. Raw source, decompiler and frozen
+naming dependency pins remain unchanged. The decompiler-source tar SHA-256 stays
+`940df31b58deca6107af7ef21724766b276a5ab73d4738adf9101c1d5013d831`.
+
+All 303 sources compile, reproduce and reverse exactly, with 138,168 bindings and
+388 overrides preserved. All 304 no-debug compiled classes are byte-identical.
+The 27 existing publication groups, two new rollback groups and 27 native trace
+groups pass. Forty-one finer field purposes and long ordinary methods remain to
+review; original-game/browser/phone and heap/presented-FPS acceptance remain unverified.
+
+## Previous logical condition lines (pass 270)
 
 90 single-line control conditions in 54 methods across 34 files gain 125
 logical operand line breaks. The achievement continuation ladder now places

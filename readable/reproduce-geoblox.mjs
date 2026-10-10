@@ -7,6 +7,7 @@ import {generateReadable} from './tools/readable-java.mjs';
 import {captureProcess} from './tools/lib/capture-process.mjs';
 import {validateManifest} from './build-geoblox-rules.mjs';
 import {validateTextResourceEvidence} from './text-resource-evidence.mjs';
+import {buildReadingGuide} from './build-geoblox-reading-guide.mjs';
 import {funorbRepository, publishedReadableRoot} from './layout.mjs';
 
 const root = fileURLToPath(new URL('./', import.meta.url));
@@ -59,17 +60,31 @@ try {
   if (update) refresh = fs.mkdtempSync(path.join(path.dirname(output), '.geoblox-refresh-'));
   const result = generateReadable({input, output: update ? path.join(refresh, 'generated') : output,
     rulesFile, classpath, check});
+  const guidePath = path.join(publishedReadableRoot, 'GEOBLOX-READING-GUIDE.md');
+  let guide;
+  if (update || check && !positional.length) {
+    guide = buildReadingGuide(rules, update ? path.join(refresh, 'generated') : output);
+    if (fs.existsSync(guidePath) && !fs.lstatSync(guidePath).isFile())
+      throw new Error('Current reading guide must be a regular file');
+    if (check && fs.readFileSync(guidePath, 'utf8') !== guide)
+      throw new Error('Current reading guide differs from its reproducible source');
+    if (update) fs.writeFileSync(path.join(refresh, 'guide.md'), guide);
+  }
   if (update) {
     const backup = path.join(refresh, 'previous');
     if (fs.existsSync(output)) fs.renameSync(output, backup);
-    try { fs.renameSync(path.join(refresh, 'generated'), output); }
+    try {
+      fs.renameSync(path.join(refresh, 'generated'), output);
+      fs.renameSync(path.join(refresh, 'guide.md'), guidePath);
+    }
     catch (error) {
+      if (fs.existsSync(output)) fs.rmSync(output, {recursive: true, force: true});
       if (fs.existsSync(backup)) fs.renameSync(backup, output);
       throw error;
     }
     fs.rmSync(backup, {recursive: true, force: true});
   }
-  console.log(JSON.stringify({...result, ...(update ? {updatedCurrentExport: true} : {})}));
+  console.log(JSON.stringify({...result, ...(guide !== undefined ? {readingGuideChecked: true} : {}), ...(update ? {updatedCurrentExport: true} : {})}));
 } catch (error) {
   console.error(error.stderr?.toString() || error.message);
   process.exitCode = 1;
