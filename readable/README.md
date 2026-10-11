@@ -37,27 +37,34 @@ The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
 
 ## Steel Sentinels
 
-The current pass names 27 reviewed classes: world/sentinel state, gameplay,
+The current pass names 28 reviewed classes: world/sentinel state, gameplay,
 engineering, terrain, projectiles, explosions, effects, commands, articulated
 parts and the supporting packet/rendering/collection roots. One current
 `steelsentinels-rules.json` records evidence and exact input/workflow identities.
 Unresolved meanings remain opaque or carry qualified role names. Physics
 velocity is distinct from armour; module alias encodings and charge edge cases
 remain unchanged. Command scheduling, target coordinates and aim angles now
-have reviewed names; scheduling is separate from ability activation.
+have reviewed names; scheduling is separate from ability activation. Packet
+byte/slice operations, MSB-first bit reading, opcode encryption/decryption,
+ISAAC block state and bounded random sampling now have reviewed names and
+parameters. `NodeHashTable` exposes intrusive bucket lookup and traversal.
 
 Every export compares raw and named module checks/bonuses, armour and charge
 mutations, terrain boundaries, recursive part armour and synchronization checksums
 against independent expectations. Command probes cover duration/activation,
 queue routing and ordering, equal-tick replacement, stale command removal and
-queue clearing. Controlled fixtures bypass game constructors
+queue clearing. Wire fixtures check every bit alignment/width, primitive byte
+order, slice offsets and cipher block boundaries, including ciphertext equality.
+Bounded random probes exercise rejection and invalid bounds; table probes check
+collisions, duplicate keys, moving nodes and traversal order.
+Controlled fixtures bypass game constructors
 and Applet initialization; they do not establish full gameplay, projectile
 simulation or server compatibility. Three dispatcher files and large methods
 remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 88 reviewed classes around battlefield state, units, map
+The current pass names 92 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -87,6 +94,13 @@ MapLayout name tagged metadata and map decoding; finer numerical settings
 remain unresolved. The elimination dispatcher is retained with clearer
 parameters and local names.
 
+The packet layer names MSB-first bit reads/writes, read/write cursor transitions,
+ISAAC opcode ciphering, compact signed integer tiers and tagged record factories.
+TaggedMapData identifies version-2 map dimensions/theme/player count and tiles.
+Length headers can temporarily relocate leading payload bits; dispatch restores
+the original header and skips unknown fields. Snapshot and special/combat event
+entry points have reviewed names, with existing wire ordering preserved.
+
 Combat event payloads and the main consequence routine have reviewed field, parameter
 and local names. SpellCastEvent corrects the earlier trinket label using the
 actual spell-table dispatch. Reviewed fields and operations carry evidence in
@@ -115,7 +129,12 @@ checks execute ordinary non-team elimination, ownership cleanup, elimination
 ranks, recorded outcomes, structure income, concrete match predicates and
 registry aggregation/removal. Layout checks read a controlled cached terrain grid and hand-encoded legacy,
 version-0 and version-1 terrain headers. They do not validate campaign resource
-loading, tagged version-2 maps or saved unit/item placement.
+loading or saved unit/item placement. Bit-codec fixtures cover all start offsets
+and widths through 32 bits, signed compact tier boundaries, header relocation,
+unknown/zero-length fields and nested version-2 maps. Opcode cipher checks cross
+ISAAC block boundaries. Combat packet fixtures check signed offsets, packed death/
+animation flags and parasite dispatch. Complete legacy snapshots, live transport
+and server compatibility remain unverified.
 The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Three dispatcher files
 and large methods remain; this is a semantic naming pass, not control-flow recovery.

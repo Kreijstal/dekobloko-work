@@ -26,6 +26,7 @@ const classes = {
   ul:['NodeDeque','Sentinel, prepend/append, traversal and size.'],
   ra:['DualNodeDeque','Sentinel and traversal over the second intrusive links.'],
   jc:['NodeIterator','Independent traversal cursor over NodeDeque.'],
+  uh:['NodeHashTable','Power-of-two bucket sentinels, long-key lookup, intrusive insertion and bucket traversal.'],
   gi:['PacketBuffer','Byte payload, position and primitive reads/writes.'],
   kj:['CipherPacketBuffer','Ciphered opcodes and bit-position reads on PacketBuffer.'],
   ie:['IsaacRandom','256-word ISAAC generator; used for opcode encryption and seeded world generation.'],
@@ -44,7 +45,9 @@ function field(owner,original,descriptor,to,evidence) {
 }
 function method(owner,original,descriptor,to,evidence,parameters) {
   const key=`${owner}.${original}${descriptor}`;
-  members['M:'+key]={to,evidence};
+  // Constructor names follow their owning class; only their parameters have
+  // independent identities to rename.
+  if(original!=='<init>')members['M:'+key]={to,evidence};
   for(const [ordinal,name] of Object.entries(parameters||{}))members[`P:${key}#${ordinal}`]={to:name,evidence};
 }
 for(const [original,to,type] of [
@@ -166,6 +169,61 @@ for(const [owner,signature,ordinal,originalName,to] of [
 ])members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName:originalName,
   evidence:'Reviewed lexical declaration ordinal and command duration/queue traversal data flow.'};
 
+// Packet operations keep their original guard parameters and arithmetic.
+// ISAAC also supplies deterministic terrain/world randomness, not only opcodes.
+field('kj','A','Lie;','opcodeCipher','Ciphered reads subtract and writes add the next ISAAC word modulo 256.');
+field('kj','F','I','readBitPosition','beginBitReading derives this from position; readBits advances it; endBitReading rounds up to bytes.');
+field('kd','r','[I','bitMasks','Constant masks for widths 0 through 32, used by the packet bit reader.');
+for(const [original,to,type] of [
+  ['h','results','[I'],['b','memory','[I'],['i','remainingResults','I'],
+  ['e','accumulator','I'],['j','lastResult','I'],['g','generationCounter','I'],
+])field('ie',original,type,to,'ISAAC initialization/generation and reverse-order consumption of each 256-word result block.');
+method('kj','a','(IB)V','writeCipheredOpcode','Adds an ISAAC word and writes the low byte.',{0:'opcode',1:'obfuscationGuard'});
+method('kj','f','(Z)I','readCipheredOpcode','Subtracts an ISAAC word and masks to an unsigned opcode; true guard returns -93 without consuming data.',{0:'obfuscationGuard'});
+method('kj','a','(II[BI)V','readCipheredBytes','Decrypts each byte into the destination slice using successive ISAAC words.',{0:'destinationOffset',1:'length',2:'destination',3:'obfuscationGuard'});
+method('kj','a','(I[I)V','initializeOpcodeCipher','Constructs the packet ISAAC generator with this seed.',{0:'obfuscationGuard',1:'seed'});
+method('kj','d','(Z)V','beginBitReading','Sets readBitPosition to the byte cursor times eight.',{0:'obfuscationGuard'});
+method('kj','i','(B)V','endBitReading','Rounds readBitPosition up to the next byte for subsequent byte reads.',{0:'obfuscationGuard'});
+method('kj','g','(II)I','readBits','Reads an MSB-first unsigned bit field, retaining Java int representation for width 32.',{0:'obfuscationGuard',1:'bitCount'});
+method('ie','c','(I)I','nextInt','Consumes results backwards; regenerates after 256 words. Noncanonical guards retain their extra generation.',{0:'obfuscationGuard'});
+method('ie','a','(II)I','nextIntBounded','Rejects the signed high tail to make the 32-bit population divisible by a positive bound, then returns a nonnegative remainder.',{0:'obfuscationGuard',1:'bound'});
+method('ie','a','(I)V','generateResults','Generates the next ISAAC result block, advancing the counter and accumulator.',{0:'obfuscationGuard'});
+method('ie','b','(I)V','initializeState','Mixes the seed into both ISAAC arrays and generates the first result block.',{0:'obfuscationGuard'});
+method('ie','<init>','([I)V','<init>','Copies the seed into results before ISAAC initialization.',{0:'seed'});
+method('uh','a','(ZII)I','nonnegativeRemainder','Produces the floor-modulo result for a positive divisor, including negative integers.',{0:'obfuscationGuard',1:'value',2:'divisor'});
+for(const [original,descriptor,to,parameters] of [
+  ['i','(I)I','readInt',{0:'obfuscationGuard'}],
+  ['c','(B)I','readUnsignedShort',{0:'obfuscationGuard'}],
+  ['f','(B)I','readUnsignedByte',{0:'obfuscationGuard'}],
+  ['d','(B)B','readByte',{0:'obfuscationGuard'}],
+  ['b','(ZI)V','writeInt',{0:'obfuscationGuard',1:'value'}],
+  ['d','(II)V','writeShort',{0:'value',1:'obfuscationGuard'}],
+  ['a','(BI)V','writeByte',{0:'obfuscationGuard',1:'value'}],
+  ['a','(IBI[B)V','writeBytes',{0:'length',1:'obfuscationGuard',2:'sourceOffset',3:'source'}],
+  ['a','(I[BII)V','readBytes',{0:'destinationOffset',1:'destination',2:'obfuscationGuard',3:'length'}],
+])method('gi',original,descriptor,to,'Packet cursor progression and big-endian primitive/slice byte assignments.',parameters);
+for(const [original,to,type] of [
+  ['d','buckets','[Lck;'],['b','bucketCount','I'],['g','nextBucketIndex','I'],
+  ['a','iterationCursor','Lck;'],['c','lookupCursor','Lck;'],
+])field('uh',original,type,to,'NodeHashTable constructor, key-mask lookup and bucket-sentinel iteration.');
+method('uh','a','(JLck;I)V','put','Unlinks an already linked node and appends it to the key-masked bucket; duplicate keys remain distinct nodes.',{0:'key',1:'node',2:'obfuscationGuard'});
+method('uh','a','(JI)Lck;','get','Traverses the key-masked bucket and returns the first matching node.',{0:'key',1:'obfuscationGuard'});
+method('uh','b','(I)Lck;','first','Resets the bucket index to the argument before starting traversal; canonical value is zero.',{0:'startBucketIndex'});
+method('uh','a','(B)Lck;','next','Traverses each bucket in ascending order and follows next links within it.',{0:'obfuscationGuard'});
+method('uh','<init>','(I)V','<init>','Allocates a sentinel for every bucket; key masking requires a power-of-two count.',{0:'bucketCount'});
+for(const [owner,signature,ordinal,originalName,to] of [
+  ['kj','g(II)I',0,'incrementValue$0','consumedByteIndex'],
+  ['kj','g(II)I',2,'var3','byteIndex'],
+  ['kj','g(II)I',3,'var4','bitsAvailable'],
+  ['kj','g(II)I',4,'var5','value'],
+  ['kj','g(II)I',5,'var6','guardArithmetic'],
+  ['kj','a(II[BI)V',0,'var5_int','byteIndex'],
+  ['ie','a(II)I',0,'var4','sample'],
+  ['ie','a(II)I',2,'var5','guardArithmetic'],
+  ['ie','a(II)I',3,'var3','maximumAcceptedSample'],
+])members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName:originalName,
+  evidence:'Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.'};
+
 export function buildSteelRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -233,10 +291,13 @@ export function buildSteelGuide(rules,mapping) {
     `| ${link('wl')} / ${link('jb')} / ${link('qb')} | Projectiles, explosions and visual effects. |`,
     `| ${link('hd')} | Terrain layout, ground/secondary/surface profiles and spawn positions. |`,
     `| ${link('ji')} → ${link('nk')} / ${link('qd')} | Engineering UI and sprite-backed articulated part configuration. |`,
-    `| ${link('gi')} / ${link('kj')} / ${link('ie')} | Packet data, ciphered opcodes and deterministic seeded random generation. |`, '',
+    `| ${link('gi')} / ${link('kj')} / ${link('ie')} | Big-endian primitive/slice data, MSB-first bit fields, ciphered opcodes and deterministic seeded random generation. |`,
+    `| ${link('uh')} | Long-key intrusive buckets, collision lookup and traversal. |`, '',
     'Start with `Sentinel.scheduleCommand`, `advanceCommandQueues`, `executeCommand`, `CombatWorld.advanceSimulation`, `Sentinel.advanceCombatState`, `configureDesign`, `hasModuleType`, `reduceArmour` and `consumeCharge`. Positions retain their fixed-point scale: ground contacts index `worldX >> 4`, and terrain heights convert to inverted world Y with `-(height << 4)`. Physics velocities are distinct from armour; the sentinel constructor starts vertical velocity at 1000.','',
     '`computeSyncChecksum` retains Java integer wrapping and the original state fields. Module aliases, noncanonical dummy-guard behaviour, negative armour and unusual charge values are preserved. `ArticulatedPart.getTotalArmour` recursively aggregates attachment contributions.','',
-    'Compilation and symbol/override checks cover the complete game. The raw/named core probe independently checks module aliases/bonuses, armour and charge mutations, terrain boundaries, part aggregation, synchronization checksums, command timing, queue routing, ordering and equal-tick replacement. It allocates controlled world/sentinel/terrain fixtures without game construction and replaces only the client branch-control flag at runtime. It does not prove whole-game playability, projectile simulation, rendering or server compatibility. Dictionary reversal recovers every original source byte.','',
+    '`CipherPacketBuffer.beginBitReading`, `readBits` and `endBitReading` use a separate read bit cursor: bits are consumed most-significant first, then the byte cursor rounds up. `writeCipheredOpcode`, `readCipheredOpcode` and `readCipheredBytes` add/subtract successive ISAAC words modulo 256. `IsaacRandom.nextInt` consumes each 256-word block backwards; `nextIntBounded` rejects a tail of the 32-bit population before returning a nonnegative remainder. These names expose the existing wire/random behaviour without changing it. Dummy guards remain part of the original signatures.','',
+    '`NodeHashTable` uses power-of-two bucket counts and intrusive nodes. `put` moves an already linked node; it does not replace a distinct node with the same key. `get` returns the first matching node and iteration visits buckets in ascending order. The packet/random/table classes retain unrelated static UI helpers from the original class layout.','',
+    'Compilation and symbol/override checks cover the complete game. The raw/named core probe independently checks module aliases/bonuses, armour and charge mutations, terrain boundaries, part aggregation, synchronization checksums, command timing, queue routing, ordering and equal-tick replacement. Packet fixtures cover every bit alignment/width, primitive byte order, slice offsets, cipher consumption across block boundaries, bounded-random rejection and hash collisions/duplicate keys. Ciphertext traces must also match the raw export; round trips alone are insufficient. It allocates controlled world/sentinel/terrain fixtures without game construction and replaces only the client branch-control flag at runtime. It does not prove whole-game playability, projectile simulation, rendering or live server compatibility. Dictionary reversal recovers every original source byte.','',
     'This is a naming pass. Three files still contain compiler dispatcher fallbacks, and large methods remain. Further work should explain weapon/projectile variants, command dispatch, physics/collision, tutorial flow and multiplayer packets.',''].join('\n');
 }
 export function buildSteelManifest() {
@@ -244,7 +305,7 @@ export function buildSteelManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.steelsentinels;
-    const rules={schema:1,game:'steelsentinels',version:2,
+    const rules={schema:1,game:'steelsentinels',version:3,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/steelsentinels'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

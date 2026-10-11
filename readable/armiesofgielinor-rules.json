@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 6,
+  "version": 7,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1809,6 +1809,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bb",
+      "originalName": "bb",
+      "to": "NodeIterator",
+      "evidence": "bb.java: Independent forward/reverse deque traversal, preserving a cursor while nodes unlink.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bd",
       "originalName": "bd",
       "to": "PreparedAction",
@@ -1883,6 +1890,13 @@
       "originalName": "fi",
       "to": "UnitInfoPopup",
       "evidence": "fi.java: Owns one unit popup, layout coordinates, fade animation and scrolling unit-name feedback; static helpers also generate terrain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ga",
+      "originalName": "ga",
+      "to": "IsaacRandom",
+      "evidence": "ga.java: 256-word ISAAC state, golden-ratio seed mixing and opcode cipher output.",
       "confidence": "reviewed"
     },
     {
@@ -2096,6 +2110,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mt",
+      "originalName": "mt",
+      "to": "TextCursor",
+      "evidence": "mt.java: Instance owns a string, character position and end test; static helpers also decode short tagged-field names.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ne",
       "originalName": "ne",
       "to": "MapTile",
@@ -2226,6 +2247,13 @@
       "originalName": "rt",
       "to": "RevivalEvent",
       "evidence": "rt.java: Application moves a defeated unit to a destination, restores maximum strength, clears poison and consumes the revival modifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sc",
+      "originalName": "sc",
+      "to": "TaggedMapData",
+      "evidence": "sc.java: Tagged nump/w/h/them/map fields decode player count, dimensions, theme and tile objects for version-2 maps.",
       "confidence": "reviewed"
     },
     {
@@ -2551,6 +2579,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bb.field_e:Lat;",
+      "originalName": "field_e",
+      "to": "deque",
+      "evidence": "bb.java: Iterator constructor and forward/reverse sentinel checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bb.field_f:Ltc;",
+      "originalName": "field_f",
+      "to": "cursor",
+      "evidence": "bb.java: Traversal captures the next/previous node before returning the current one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bd.field_m:I",
       "originalName": "field_m",
       "to": "actingPlayer",
@@ -2604,6 +2646,20 @@
       "originalName": "field_w",
       "to": "currentBattlefield",
       "evidence": "bv.java: Shared reference used by gameplay overlays and input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bv.field_y:I",
+      "originalName": "field_y",
+      "to": "writeBitsRemaining",
+      "evidence": "bv.java: Bit-write cursor counts unused bits in the current payload byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bv.field_z:Lga;",
+      "originalName": "field_z",
+      "to": "opcodeCipher",
+      "evidence": "bv.java: ISAAC output adds/subtracts from byte opcodes.",
       "confidence": "reviewed"
     },
     {
@@ -2933,6 +2989,48 @@
       "originalName": "field_d",
       "to": "matchupDamagePercent",
       "evidence": "fk.java: Combat power multiplies attacker-category/defender-category table entries by effective strength. The owning class also renders widgets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_b:I",
+      "originalName": "field_b",
+      "to": "remainingResults",
+      "evidence": "ga.java: ISAAC initialization, 256-word state generation and decrementing output cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_c:[I",
+      "originalName": "field_c",
+      "to": "memory",
+      "evidence": "ga.java: ISAAC initialization, 256-word state generation and decrementing output cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_e:[I",
+      "originalName": "field_e",
+      "to": "results",
+      "evidence": "ga.java: ISAAC initialization, 256-word state generation and decrementing output cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_f:I",
+      "originalName": "field_f",
+      "to": "accumulator",
+      "evidence": "ga.java: ISAAC initialization, 256-word state generation and decrementing output cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_h:I",
+      "originalName": "field_h",
+      "to": "generationCounter",
+      "evidence": "ga.java: ISAAC initialization, 256-word state generation and decrementing output cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_j:I",
+      "originalName": "field_j",
+      "to": "lastResult",
+      "evidence": "ga.java: ISAAC initialization, 256-word state generation and decrementing output cursor.",
       "confidence": "reviewed"
     },
     {
@@ -4049,6 +4147,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:md.field_B:I",
+      "originalName": "field_B",
+      "to": "sourceY",
+      "evidence": "md.java: ParasiteEvent constructor adds signed deltas to source coordinates; battlefield application uses absolute destination coordinates despite the d diagnostic label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:md.field_C:I",
+      "originalName": "field_C",
+      "to": "newOwnerPlayer",
+      "evidence": "md.java: ParasiteEvent constructor adds signed deltas to source coordinates; battlefield application uses absolute destination coordinates despite the d diagnostic label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:md.field_D:I",
+      "originalName": "field_D",
+      "to": "sourceX",
+      "evidence": "md.java: ParasiteEvent constructor adds signed deltas to source coordinates; battlefield application uses absolute destination coordinates despite the d diagnostic label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:md.field_E:I",
+      "originalName": "field_E",
+      "to": "destinationX",
+      "evidence": "md.java: ParasiteEvent constructor adds signed deltas to source coordinates; battlefield application uses absolute destination coordinates despite the d diagnostic label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:md.field_z:I",
+      "originalName": "field_z",
+      "to": "destinationY",
+      "evidence": "md.java: ParasiteEvent constructor adds signed deltas to source coordinates; battlefield application uses absolute destination coordinates despite the d diagnostic label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mn.field_o:I",
       "originalName": "field_o",
       "to": "spellId",
@@ -4067,6 +4200,27 @@
       "originalName": "field_u",
       "to": "allowOtherPlayer",
       "evidence": "mn.java: MoveAttackRequest bypasses ownership rejection when true; SphinxActionRequest sets this on its delegate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mt.field_a:I",
+      "originalName": "field_a",
+      "to": "length",
+      "evidence": "mt.java: Constructor caches string length; end-of-text test compares position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mt.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "text",
+      "evidence": "mt.java: String constructor and cursor character reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mt.field_c:I",
+      "originalName": "field_c",
+      "to": "position",
+      "evidence": "mt.java: Advances one character per read; used in parser diagnostic rendering.",
       "confidence": "reviewed"
     },
     {
@@ -4326,6 +4480,13 @@
       "originalName": "field_m",
       "to": "eventKind",
       "evidence": "oj.java: EventPresenter dispatch selects concrete presentation classes by this numeric event kind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_n:[I",
+      "originalName": "field_n",
+      "to": "bitMasks",
+      "evidence": "oj.java: Shared masks indexed by width, including mask zero and the full 32-bit mask.",
       "confidence": "reviewed"
     },
     {
@@ -4697,6 +4858,41 @@
       "originalName": "field_y",
       "to": "destinationX",
       "evidence": "rt.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sc.field_a:I",
+      "originalName": "field_a",
+      "to": "mapTheme",
+      "evidence": "sc.java: Tagged map keys nump/w/h/them/map and MapLayout version-2 header bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sc.field_c:[Lne;",
+      "originalName": "field_c",
+      "to": "tiles",
+      "evidence": "sc.java: Tagged map keys nump/w/h/them/map and MapLayout version-2 header bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sc.field_e:I",
+      "originalName": "field_e",
+      "to": "mapHeight",
+      "evidence": "sc.java: Tagged map keys nump/w/h/them/map and MapLayout version-2 header bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sc.field_j:I",
+      "originalName": "field_j",
+      "to": "playerCount",
+      "evidence": "sc.java: Tagged map keys nump/w/h/them/map and MapLayout version-2 header bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sc.field_k:I",
+      "originalName": "field_k",
+      "to": "mapWidth",
+      "evidence": "sc.java: Tagged map keys nump/w/h/them/map and MapLayout version-2 header bindings.",
       "confidence": "reviewed"
     },
     {
@@ -5778,6 +5974,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:a.a(IILbv;)Ljd;",
+      "originalName": "a",
+      "to": "readTaggedUnit",
+      "evidence": "a.java: Returns null for an empty record, otherwise decodes Unit fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ag.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -5789,6 +5992,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(Lbv;Z)I",
+      "originalName": "a",
+      "to": "readCompactInt",
+      "evidence": "ai.java: Standard signed compact integer decoder used for list counts.",
       "confidence": "reviewed"
     },
     {
@@ -5855,6 +6065,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ao.a(IIILbv;I)V",
+      "originalName": "a",
+      "to": "finishTaggedPayload",
+      "evidence": "ao.java: Restores the original compact length header if relocated, then seeks to the next field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:as.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -5911,6 +6128,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bb.a(I)Ltc;",
+      "originalName": "a",
+      "to": "last",
+      "evidence": "bb.java: Starts independent reverse traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.b(B)Ltc;",
+      "originalName": "b",
+      "to": "previous",
+      "evidence": "bb.java: Continues reverse traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.b(I)Ltc;",
+      "originalName": "b",
+      "to": "next",
+      "evidence": "bb.java: Continues forward traversal, including after current node unlink.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.c(I)Ltc;",
+      "originalName": "c",
+      "to": "first",
+      "evidence": "bb.java: Starts independent forward traversal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bd.a(ILha;)V",
       "originalName": "a",
       "to": "applyToBattlefield",
@@ -5922,6 +6167,76 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.a(III)V",
+      "originalName": "a",
+      "to": "writeBits",
+      "evidence": "bv.java: Writes a masked value at the bit-write cursor, preserving surrounding payload bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.a(Z)I",
+      "originalName": "a",
+      "to": "getReadBitPosition",
+      "evidence": "bv.java: Returns read bit cursor for canonical false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.a([II)V",
+      "originalName": "a",
+      "to": "initializeOpcodeCipher",
+      "evidence": "bv.java: Constructs ISAAC from the supplied seed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.c(IB)V",
+      "originalName": "c",
+      "to": "setWriteBitPosition",
+      "evidence": "bv.java: Sets byte position and remaining write bits from an absolute bit offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.d(BI)V",
+      "originalName": "d",
+      "to": "setReadBitPosition",
+      "evidence": "bv.java: Sets the read bit cursor; preserves the original noncanonical guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.g(II)I",
+      "originalName": "g",
+      "to": "readBits",
+      "evidence": "bv.java: Reads MSB-first bits across bytes and advances only the bit cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.h(II)V",
+      "originalName": "h",
+      "to": "writeCipheredOpcode",
+      "evidence": "bv.java: Adds the next ISAAC value to a byte opcode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.m(I)I",
+      "originalName": "m",
+      "to": "readCipheredOpcode",
+      "evidence": "bv.java: Subtracts the next ISAAC value from a byte opcode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.n(I)V",
+      "originalName": "n",
+      "to": "endBitReading",
+      "evidence": "bv.java: Rounds read bit position up to the next byte position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.o(I)V",
+      "originalName": "o",
+      "to": "beginBitReading",
+      "evidence": "bv.java: Initializes read bit cursor from byte position.",
       "confidence": "reviewed"
     },
     {
@@ -5988,6 +6303,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:de.a(ILbv;IIII)I",
+      "originalName": "a",
+      "to": "readTieredSignedInt",
+      "evidence": "de.java: Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.a(ILha;)V",
       "originalName": "a",
       "to": "applyToBattlefield",
@@ -6044,6 +6366,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.a(Lbv;Z)I",
+      "originalName": "a",
+      "to": "readCompactInt",
+      "evidence": "ej.java: Standard signed compact integer decoder used for field lengths.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.a(Lcl;B)Lsm;",
       "originalName": "a",
       "to": "getSelectionStrategy",
@@ -6076,6 +6405,13 @@
       "originalName": "a",
       "to": "advanceAnimation",
       "evidence": "fi.java: Shows/hides the popup in steps of four and scrolls long names with endpoint pauses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(I)I",
+      "originalName": "a",
+      "to": "nextInt",
+      "evidence": "ga.java: Consumes ISAAC results backwards and generates another block when exhausted.",
       "confidence": "reviewed"
     },
     {
@@ -6268,6 +6604,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(Lvh;I)V",
+      "originalName": "a",
+      "to": "readCombatEvent",
+      "evidence": "ha.java: Decodes combat or parasite event flags, coordinates, signed deltas and paired damage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(Lvh;II)V",
+      "originalName": "a",
+      "to": "writeLegacySnapshot",
+      "evidence": "ha.java: Writes the legacy snapshot for the selected player, preserving original field order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(ZII)V",
       "originalName": "a",
       "to": "applyTurnChange",
@@ -6328,6 +6678,20 @@
       "originalName": "b",
       "to": "eliminatePlayer",
       "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(ILvh;)V",
+      "originalName": "b",
+      "to": "readLegacySnapshot",
+      "evidence": "ha.java: Reads seed, turn limit, player designs, turn/player state and tile/unit data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(Lvh;B)V",
+      "originalName": "b",
+      "to": "readSpecialEvent",
+      "evidence": "ha.java: Decodes special turn, teleport, revival, deployment and spell-related event packets.",
       "confidence": "reviewed"
     },
     {
@@ -6496,6 +6860,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ir.a(IIIIIILbv;)I",
+      "originalName": "a",
+      "to": "writeTieredSignedInt",
+      "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
       "confidence": "reviewed"
     },
     {
@@ -6814,6 +7185,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kq.a(IIIILbv;)V",
+      "originalName": "a",
+      "to": "enterTaggedPayload",
+      "evidence": "kq.java: If payload exceeds length-header width, temporarily rotates its leading bits over the header and seeks to payload start.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kr.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -6965,6 +7343,27 @@
       "originalName": "a",
       "to": "formatIllegalMove",
       "evidence": "mn.java: Formats player, action kind and concatenated diagnostic fragments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mt.a(B)Z",
+      "originalName": "a",
+      "to": "isAtEnd",
+      "evidence": "mt.java: Tests position against string length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mt.a(Lbv;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "readTagName",
+      "evidence": "mt.java: Two-bit name length plus one, followed by encoded character values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mt.b(I)C",
+      "originalName": "b",
+      "to": "readCharacter",
+      "evidence": "mt.java: Returns and advances the string cursor.",
       "confidence": "reviewed"
     },
     {
@@ -7164,6 +7563,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:no.a(Lbv;Luo;II)V",
+      "originalName": "a",
+      "to": "readTaggedFields",
+      "evidence": "no.java: Reads name/length fields, exposes their payload and restores relocated length headers after dispatch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ns.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -7315,6 +7721,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:po.a(Lbv;I)Lsc;",
+      "originalName": "a",
+      "to": "readLengthPrefixedMap",
+      "evidence": "po.java: Reads a four-byte bit length, decodes the tagged map and restores byte alignment.",
       "confidence": "reviewed"
     },
     {
@@ -7493,6 +7906,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rb.a(IBLbv;)Lne;",
+      "originalName": "a",
+      "to": "readTaggedMapTile",
+      "evidence": "rb.java: Decodes a tile record and initializes god metadata.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rl.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -7521,10 +7941,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sa.a(Lbv;II)J",
+      "originalName": "a",
+      "to": "readTagCharacter",
+      "evidence": "sa.java: Decodes a tagged name character with unsigned 4/8-bit tiers; keeps unused argument.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sc.a(ILbv;Ljava/lang/String;B)V",
       "originalName": "a",
       "to": "decodeTaggedField",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I",
+      "originalName": "$cfr$intArgs$a$eb6d2a313bbb",
+      "to": "readTieredSignedBits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(IIBIIIIIILbv;)I",
+      "originalName": "a",
+      "to": "readTieredSignedBits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
       "confidence": "reviewed"
     },
     {
@@ -7717,6 +8158,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tn.a(ZILbv;)J",
+      "originalName": "a",
+      "to": "readTaggedInteger",
+      "evidence": "tn.java: Uses the standard signed 4/14/20/30-bit tiers; encoded-length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:to.a(ILha;)Lbd;",
       "originalName": "a",
       "to": "prepareAction",
@@ -7787,6 +8235,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ui.a(Lbv;II)Lca;",
+      "originalName": "a",
+      "to": "readTaggedTileMetadata",
+      "evidence": "ui.java: Returns null for an empty record, otherwise decodes tile metadata.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uo.a(ILbv;Ljava/lang/String;B)V",
       "originalName": "a",
       "to": "decodeTaggedField",
@@ -7822,6 +8277,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ut.a(Lbv;BI)Lsc;",
+      "originalName": "a",
+      "to": "readTaggedMap",
+      "evidence": "ut.java: Returns null for an empty record, otherwise decodes TaggedMapData.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vb.a(B)Z",
       "originalName": "a",
       "to": "isCombatViewReady",
@@ -7847,6 +8309,55 @@
       "originalName": "e",
       "to": "initialize",
       "evidence": "vb.java: Dispatches event kind to a presentation and initializes it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.a(B)B",
+      "originalName": "a",
+      "to": "readByte",
+      "evidence": "vh.java: Reads the next signed byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.a(BI)V",
+      "originalName": "a",
+      "to": "writeInt",
+      "evidence": "vh.java: Writes four big-endian bytes for canonical guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.b(II)V",
+      "originalName": "b",
+      "to": "writeByte",
+      "evidence": "vh.java: Writes the low byte for canonical guard 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.b(ZI)V",
+      "originalName": "b",
+      "to": "writeShort",
+      "evidence": "vh.java: Writes two big-endian bytes when enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.e(B)I",
+      "originalName": "e",
+      "to": "readUnsignedShort",
+      "evidence": "vh.java: Reads two big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.i(I)I",
+      "originalName": "i",
+      "to": "readInt",
+      "evidence": "vh.java: Reads four big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.k(I)I",
+      "originalName": "k",
+      "to": "readUnsignedByte",
+      "evidence": "vh.java: Reads the next byte as 0..255.",
       "confidence": "reviewed"
     },
     {
@@ -7878,6 +8389,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vt.a(IIILbv;)I",
+      "originalName": "a",
+      "to": "readTwoTierUnsignedInt",
+      "evidence": "vt.java: One-bit selector chooses short width or long width plus the short range.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wa.a(BLha;)V",
       "originalName": "a",
       "to": "prepareEffect",
@@ -7906,10 +8424,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wa.a(Lbv;II)I",
+      "originalName": "a",
+      "to": "readSignedBits",
+      "evidence": "wa.java: Reads a fixed-width two-complement signed value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wa.a(Lha;I)V",
       "originalName": "a",
       "to": "finishEffect",
       "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(IILbv;)Ljd;#0",
+      "originalName": "param0",
+      "to": "recordBitLength",
+      "evidence": "a.java: Returns null for an empty record, otherwise decodes Unit fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(IILbv;)Ljd;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "a.java: Returns null for an empty record, otherwise decodes Unit fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(IILbv;)Ljd;#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "a.java: Returns null for an empty record, otherwise decodes Unit fields.",
       "confidence": "reviewed"
     },
     {
@@ -8036,6 +8582,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ai.a(Lbv;Z)I#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ai.java: Standard signed compact integer decoder used for list counts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ai.a(Lbv;Z)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ai.java: Standard signed compact integer decoder used for list counts.",
       "confidence": "reviewed"
     },
     {
@@ -8249,6 +8809,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ao.a(IIILbv;I)V#0",
+      "originalName": "param0",
+      "to": "headerBitPosition",
+      "evidence": "ao.java: Restores the original compact length header if relocated, then seeks to the next field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ao.a(IIILbv;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ao.java: Restores the original compact length header if relocated, then seeks to the next field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ao.a(IIILbv;I)V#2",
+      "originalName": "param2",
+      "to": "headerBitLength",
+      "evidence": "ao.java: Restores the original compact length header if relocated, then seeks to the next field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ao.a(IIILbv;I)V#3",
+      "originalName": "param3",
+      "to": "packet",
+      "evidence": "ao.java: Restores the original compact length header if relocated, then seeks to the next field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ao.a(IIILbv;I)V#4",
+      "originalName": "param4",
+      "to": "payloadBitLength",
+      "evidence": "ao.java: Restores the original compact length header if relocated, then seeks to the next field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:as.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -8347,6 +8942,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bb.<init>(Lat;)V#0",
+      "originalName": "param0",
+      "to": "deque",
+      "evidence": "bb.java: Iterator captures the deque without changing its shared cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bb.a(I)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bb.java: Starts independent reverse traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bb.b(B)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bb.java: Continues reverse traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bb.b(I)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bb.java: Continues forward traversal, including after current node unlink.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bb.c(I)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bb.java: Starts independent forward traversal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bd.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -8407,6 +9037,125 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.a(III)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Writes a masked value at the bit-write cursor, preserving surrounding payload bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.a(III)V#1",
+      "originalName": "param1",
+      "to": "bitCount",
+      "evidence": "bv.java: Writes a masked value at the bit-write cursor, preserving surrounding payload bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.a(III)V#2",
+      "originalName": "param2",
+      "to": "value",
+      "evidence": "bv.java: Writes a masked value at the bit-write cursor, preserving surrounding payload bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.a(Z)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Returns read bit cursor for canonical false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.a([II)V#0",
+      "originalName": "param0",
+      "to": "seed",
+      "evidence": "bv.java: Constructs ISAAC from the supplied seed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.a([II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Constructs ISAAC from the supplied seed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.c(IB)V#0",
+      "originalName": "param0",
+      "to": "bitPosition",
+      "evidence": "bv.java: Sets byte position and remaining write bits from an absolute bit offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.c(IB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Sets byte position and remaining write bits from an absolute bit offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.d(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Sets the read bit cursor; preserves the original noncanonical guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.d(BI)V#1",
+      "originalName": "param1",
+      "to": "bitPosition",
+      "evidence": "bv.java: Sets the read bit cursor; preserves the original noncanonical guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.g(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Reads MSB-first bits across bytes and advances only the bit cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.g(II)I#1",
+      "originalName": "param1",
+      "to": "bitCount",
+      "evidence": "bv.java: Reads MSB-first bits across bytes and advances only the bit cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.h(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Adds the next ISAAC value to a byte opcode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.h(II)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "bv.java: Adds the next ISAAC value to a byte opcode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.m(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Subtracts the next ISAAC value from a byte opcode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.n(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Rounds read bit position up to the next byte position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bv.o(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bv.java: Initializes read bit cursor from byte position.",
       "confidence": "reviewed"
     },
     {
@@ -8568,6 +9317,48 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "cl.java: Executes a valid selected candidate and clears action movement state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(ILbv;IIII)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "de.java: Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(ILbv;IIII)I#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "de.java: Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(ILbv;IIII)I#2",
+      "originalName": "param2",
+      "to": "tier0Bits",
+      "evidence": "de.java: Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(ILbv;IIII)I#3",
+      "originalName": "param3",
+      "to": "tier1Bits",
+      "evidence": "de.java: Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(ILbv;IIII)I#4",
+      "originalName": "param4",
+      "to": "tier3Bits",
+      "evidence": "de.java: Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(ILbv;IIII)I#5",
+      "originalName": "param5",
+      "to": "tier2Bits",
+      "evidence": "de.java: Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.",
       "confidence": "reviewed"
     },
     {
@@ -8837,6 +9628,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ej.a(Lbv;Z)I#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ej.java: Standard signed compact integer decoder used for field lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(Lbv;Z)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ej.java: Standard signed compact integer decoder used for field lengths.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ej.a(Lcl;B)Lsm;#0",
       "originalName": "param0",
       "to": "unitPlanner",
@@ -8904,6 +9709,20 @@
       "originalName": "param1",
       "to": "show",
       "evidence": "fi.java: Shows/hides the popup in steps of four and scrolls long names with endpoint pauses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ga.<init>([I)V#0",
+      "originalName": "param0",
+      "to": "seed",
+      "evidence": "ga.java: Copies supplied seed words and initializes ISAAC state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ga.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ga.java: Consumes ISAAC results backwards and generates another block when exhausted.",
       "confidence": "reviewed"
     },
     {
@@ -9446,6 +10265,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.a(Lvh;I)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ha.java: Decodes combat or parasite event flags, coordinates, signed deltas and paired damage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Lvh;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Decodes combat or parasite event flags, coordinates, signed deltas and paired damage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Lvh;II)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ha.java: Writes the legacy snapshot for the selected player, preserving original field order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Lvh;II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Writes the legacy snapshot for the selected player, preserving original field order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Lvh;II)V#2",
+      "originalName": "param2",
+      "to": "playerId",
+      "evidence": "ha.java: Writes the legacy snapshot for the selected player, preserving original field order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.a(ZII)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -9632,6 +10486,34 @@
       "originalName": "param2",
       "to": "removeUnits",
       "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(ILvh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Reads seed, turn limit, player designs, turn/player state and tile/unit data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(ILvh;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "ha.java: Reads seed, turn limit, player designs, turn/player state and tile/unit data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(Lvh;B)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ha.java: Decodes special turn, teleport, revival, deployment and spell-related event packets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(Lvh;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Decodes special turn, teleport, revival, deployment and spell-related event packets.",
       "confidence": "reviewed"
     },
     {
@@ -10052,6 +10934,55 @@
       "originalName": "param2",
       "to": "mapHeight",
       "evidence": "ir.java: Influence-map constructor stores rectangular geometry and allocates packed costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a(IIIIIILbv;)I#0",
+      "originalName": "param0",
+      "to": "tier1Bits",
+      "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a(IIIIIILbv;)I#1",
+      "originalName": "param1",
+      "to": "tier2Bits",
+      "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a(IIIIIILbv;)I#2",
+      "originalName": "param2",
+      "to": "value",
+      "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a(IIIIIILbv;)I#3",
+      "originalName": "param3",
+      "to": "tier3Bits",
+      "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a(IIIIIILbv;)I#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a(IIIIIILbv;)I#5",
+      "originalName": "param5",
+      "to": "tier0Bits",
+      "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a(IIIIIILbv;)I#6",
+      "originalName": "param6",
+      "to": "packet",
+      "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
       "confidence": "reviewed"
     },
     {
@@ -10671,6 +11602,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kq.a(IIIILbv;)V#0",
+      "originalName": "param0",
+      "to": "headerBitPosition",
+      "evidence": "kq.java: If payload exceeds length-header width, temporarily rotates its leading bits over the header and seeks to payload start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(IIIILbv;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kq.java: If payload exceeds length-header width, temporarily rotates its leading bits over the header and seeks to payload start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(IIIILbv;)V#2",
+      "originalName": "param2",
+      "to": "headerBitLength",
+      "evidence": "kq.java: If payload exceeds length-header width, temporarily rotates its leading bits over the header and seeks to payload start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(IIIILbv;)V#3",
+      "originalName": "param3",
+      "to": "payloadBitLength",
+      "evidence": "kq.java: If payload exceeds length-header width, temporarily rotates its leading bits over the header and seeks to payload start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(IIIILbv;)V#4",
+      "originalName": "param4",
+      "to": "packet",
+      "evidence": "kq.java: If payload exceeds length-header width, temporarily rotates its leading bits over the header and seeks to payload start.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kr.<init>(II[I)V#0",
       "originalName": "param0",
       "to": "startX",
@@ -10951,6 +11917,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:md.<init>(IIIII)V#0",
+      "originalName": "param0",
+      "to": "sourceX",
+      "evidence": "md.java: Parasite payload is decoded from the combat packet when flag 4 is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:md.<init>(IIIII)V#1",
+      "originalName": "param1",
+      "to": "sourceY",
+      "evidence": "md.java: Parasite payload is decoded from the combat packet when flag 4 is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:md.<init>(IIIII)V#2",
+      "originalName": "param2",
+      "to": "targetDeltaX",
+      "evidence": "md.java: Parasite payload is decoded from the combat packet when flag 4 is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:md.<init>(IIIII)V#3",
+      "originalName": "param3",
+      "to": "targetDeltaY",
+      "evidence": "md.java: Parasite payload is decoded from the combat packet when flag 4 is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:md.<init>(IIIII)V#4",
+      "originalName": "param4",
+      "to": "newOwnerPlayer",
+      "evidence": "md.java: Parasite payload is decoded from the combat packet when flag 4 is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:md.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -11025,6 +12026,41 @@
       "originalName": "param2",
       "to": "actionKind",
       "evidence": "mn.java: Formats player, action kind and concatenated diagnostic fragments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mt.<init>(Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "mt.java: TextCursor constructor stores text, length and initial position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mt.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mt.java: Tests position against string length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mt.a(Lbv;Z)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "mt.java: Two-bit name length plus one, followed by encoded character values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mt.a(Lbv;Z)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "mt.java: Two-bit name length plus one, followed by encoded character values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mt.b(I)C#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mt.java: Returns and advances the string cursor.",
       "confidence": "reviewed"
     },
     {
@@ -11399,6 +12435,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:no.a(Lbv;Luo;II)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "no.java: Reads name/length fields, exposes their payload and restores relocated length headers after dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:no.a(Lbv;Luo;II)V#1",
+      "originalName": "param1",
+      "to": "target",
+      "evidence": "no.java: Reads name/length fields, exposes their payload and restores relocated length headers after dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:no.a(Lbv;Luo;II)V#2",
+      "originalName": "param2",
+      "to": "recordBitLength",
+      "evidence": "no.java: Reads name/length fields, exposes their payload and restores relocated length headers after dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:no.a(Lbv;Luo;II)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "no.java: Reads name/length fields, exposes their payload and restores relocated length headers after dispatch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ns.<init>(IIIILjd;II)V#0",
       "originalName": "param0",
       "to": "attackerX",
@@ -11770,6 +12834,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:po.a(Lbv;I)Lsc;#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "po.java: Reads a four-byte bit length, decodes the tagged map and restores byte alignment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:po.a(Lbv;I)Lsc;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "po.java: Reads a four-byte bit length, decodes the tagged map and restores byte alignment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:q.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -12106,6 +13184,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rb.a(IBLbv;)Lne;#0",
+      "originalName": "param0",
+      "to": "recordBitLength",
+      "evidence": "rb.java: Decodes a tile record and initializes god metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(IBLbv;)Lne;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "rb.java: Decodes a tile record and initializes god metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(IBLbv;)Lne;#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "rb.java: Decodes a tile record and initializes god metadata.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rl.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -12162,6 +13261,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sa.a(Lbv;II)J#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "sa.java: Decodes a tagged name character with unsigned 4/8-bit tiers; keeps unused argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(Lbv;II)J#1",
+      "originalName": "param1",
+      "to": "unusedValue",
+      "evidence": "sa.java: Decodes a tagged name character with unsigned 4/8-bit tiers; keeps unused argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(Lbv;II)J#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Decodes a tagged name character with unsigned 4/8-bit tiers; keeps unused argument.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sc.a(ILbv;Ljava/lang/String;B)V#0",
       "originalName": "param0",
       "to": "encodedLength",
@@ -12187,6 +13307,146 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#0",
+      "originalName": "param0",
+      "to": "unusedTier3HalfRange",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#1",
+      "originalName": "param1",
+      "to": "tier2HalfRange",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#3",
+      "originalName": "param3",
+      "to": "tier3Bits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#4",
+      "originalName": "param4",
+      "to": "tier2Bits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#5",
+      "originalName": "param5",
+      "to": "tier1HalfRange",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#6",
+      "originalName": "param6",
+      "to": "tier0HalfRange",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#7",
+      "originalName": "param7",
+      "to": "tier1Bits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#8",
+      "originalName": "param8",
+      "to": "tier0Bits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.$cfr$intArgs$a$eb6d2a313bbb(IIIIIIIIILbv;)I#9",
+      "originalName": "param9",
+      "to": "packet",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#0",
+      "originalName": "param0",
+      "to": "unusedTier3HalfRange",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#1",
+      "originalName": "param1",
+      "to": "tier2HalfRange",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#3",
+      "originalName": "param3",
+      "to": "tier3Bits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#4",
+      "originalName": "param4",
+      "to": "tier2Bits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#5",
+      "originalName": "param5",
+      "to": "tier1HalfRange",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#6",
+      "originalName": "param6",
+      "to": "tier0HalfRange",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#7",
+      "originalName": "param7",
+      "to": "tier1Bits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#8",
+      "originalName": "param8",
+      "to": "tier0Bits",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIBIIIIIILbv;)I#9",
+      "originalName": "param9",
+      "to": "packet",
+      "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
       "confidence": "reviewed"
     },
     {
@@ -12617,6 +13877,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tn.a(ZILbv;)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tn.java: Uses the standard signed 4/14/20/30-bit tiers; encoded-length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(ZILbv;)J#1",
+      "originalName": "param1",
+      "to": "encodedLength",
+      "evidence": "tn.java: Uses the standard signed 4/14/20/30-bit tiers; encoded-length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(ZILbv;)J#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "tn.java: Uses the standard signed 4/14/20/30-bit tiers; encoded-length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:to.<init>(Lik;II)V#0",
       "originalName": "param0",
       "to": "spell",
@@ -12806,6 +14087,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ui.a(Lbv;II)Lca;#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ui.java: Returns null for an empty record, otherwise decodes tile metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ui.a(Lbv;II)Lca;#1",
+      "originalName": "param1",
+      "to": "recordBitLength",
+      "evidence": "ui.java: Returns null for an empty record, otherwise decodes tile metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ui.a(Lbv;II)Lca;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ui.java: Returns null for an empty record, otherwise decodes tile metadata.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:uo.a(ILbv;Ljava/lang/String;B)V#0",
       "originalName": "param0",
       "to": "encodedLength",
@@ -12932,6 +14234,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ut.a(Lbv;BI)Lsc;#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ut.java: Returns null for an empty record, otherwise decodes TaggedMapData.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(Lbv;BI)Lsc;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ut.java: Returns null for an empty record, otherwise decodes TaggedMapData.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(Lbv;BI)Lsc;#2",
+      "originalName": "param2",
+      "to": "recordBitLength",
+      "evidence": "ut.java: Returns null for an empty record, otherwise decodes TaggedMapData.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vb.<init>(Lic;Lha;Leo;Loj;Z)V#0",
       "originalName": "param0",
       "to": "controller",
@@ -13006,6 +14329,76 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "vb.java: Dispatches event kind to a presentation and initializes it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(B)B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads the next signed byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Writes four big-endian bytes for canonical guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(BI)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "vh.java: Writes four big-endian bytes for canonical guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.b(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Writes the low byte for canonical guard 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.b(II)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "vh.java: Writes the low byte for canonical guard 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.b(ZI)V#0",
+      "originalName": "param0",
+      "to": "enabled",
+      "evidence": "vh.java: Writes two big-endian bytes when enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.b(ZI)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "vh.java: Writes two big-endian bytes when enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.e(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads two big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.i(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads four big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.k(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads the next byte as 0..255.",
       "confidence": "reviewed"
     },
     {
@@ -13086,6 +14479,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vt.a(IIILbv;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vt.java: One-bit selector chooses short width or long width plus the short range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIILbv;)I#1",
+      "originalName": "param1",
+      "to": "longBits",
+      "evidence": "vt.java: One-bit selector chooses short width or long width plus the short range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIILbv;)I#2",
+      "originalName": "param2",
+      "to": "shortBits",
+      "evidence": "vt.java: One-bit selector chooses short width or long width plus the short range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIILbv;)I#3",
+      "originalName": "param3",
+      "to": "packet",
+      "evidence": "vt.java: One-bit selector chooses short width or long width plus the short range.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wa.<init>(III)V#0",
       "originalName": "param0",
       "to": "spellId",
@@ -13163,6 +14584,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wa.a(Lbv;II)I#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "wa.java: Reads a fixed-width two-complement signed value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(Lbv;II)I#1",
+      "originalName": "param1",
+      "to": "bitCount",
+      "evidence": "wa.java: Reads a fixed-width two-complement signed value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(Lbv;II)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wa.java: Reads a fixed-width two-complement signed value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wa.a(Lha;I)V#0",
       "originalName": "param0",
       "to": "battlefield",
@@ -13192,9 +14634,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "f23572c2aa838495c7eee2b58c732868ab0325a18459ef2c2ce3e1bc77a08456",
+      "build-armiesofgielinor-rules.mjs": "34a84a82ddfd61d0f1e448bc308f0513f953d1cfcc8c031fe3f924dc9bcc253d",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "2e6929580e29dc738fe61d4cf154ab11a275db3c796d861c5b8fad370a154b67",
+      "tests/test-armiesofgielinor-core.mjs": "1936a6c341611267ab38f55ab70b20d895b6de33e5346abec87396d2ebd4e432",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

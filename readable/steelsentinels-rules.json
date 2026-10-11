@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "steelsentinels",
-  "version": 2,
+  "version": 3,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1662,6 +1662,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:uh",
+      "originalName": "uh",
+      "to": "NodeHashTable",
+      "evidence": "uh.java: Power-of-two bucket sentinels, long-key lookup, intrusive insertion and bucket traversal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ul",
       "originalName": "ul",
       "to": "NodeDeque",
@@ -1844,6 +1851,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ie.field_b:[I",
+      "originalName": "field_b",
+      "to": "memory",
+      "evidence": "ie.java: ISAAC initialization/generation and reverse-order consumption of each 256-word result block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_e:I",
+      "originalName": "field_e",
+      "to": "accumulator",
+      "evidence": "ie.java: ISAAC initialization/generation and reverse-order consumption of each 256-word result block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_g:I",
+      "originalName": "field_g",
+      "to": "generationCounter",
+      "evidence": "ie.java: ISAAC initialization/generation and reverse-order consumption of each 256-word result block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_h:[I",
+      "originalName": "field_h",
+      "to": "results",
+      "evidence": "ie.java: ISAAC initialization/generation and reverse-order consumption of each 256-word result block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_i:I",
+      "originalName": "field_i",
+      "to": "remainingResults",
+      "evidence": "ie.java: ISAAC initialization/generation and reverse-order consumption of each 256-word result block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_j:I",
+      "originalName": "field_j",
+      "to": "lastResult",
+      "evidence": "ie.java: ISAAC initialization/generation and reverse-order consumption of each 256-word result block.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jb.field_H:I",
       "originalName": "field_H",
       "to": "worldX",
@@ -1977,10 +2026,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kd.field_r:[I",
+      "originalName": "field_r",
+      "to": "bitMasks",
+      "evidence": "kd.java: Constant masks for widths 0 through 32, used by the packet bit reader.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kd.field_v:Lkd;",
       "originalName": "field_v",
       "to": "dualPrevious",
       "evidence": "kd.java: Dual unlink updates both neighbouring secondary links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kj.field_A:Lie;",
+      "originalName": "field_A",
+      "to": "opcodeCipher",
+      "evidence": "kj.java: Ciphered reads subtract and writes add the next ISAAC word modulo 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kj.field_F:I",
+      "originalName": "field_F",
+      "to": "readBitPosition",
+      "evidence": "kj.java: beginBitReading derives this from position; readBits advances it; endBitReading rounds up to bytes.",
       "confidence": "reviewed"
     },
     {
@@ -2215,6 +2285,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uh.field_a:Lck;",
+      "originalName": "field_a",
+      "to": "iterationCursor",
+      "evidence": "uh.java: NodeHashTable constructor, key-mask lookup and bucket-sentinel iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uh.field_b:I",
+      "originalName": "field_b",
+      "to": "bucketCount",
+      "evidence": "uh.java: NodeHashTable constructor, key-mask lookup and bucket-sentinel iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uh.field_c:Lck;",
+      "originalName": "field_c",
+      "to": "lookupCursor",
+      "evidence": "uh.java: NodeHashTable constructor, key-mask lookup and bucket-sentinel iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uh.field_d:[Lck;",
+      "originalName": "field_d",
+      "to": "buckets",
+      "evidence": "uh.java: NodeHashTable constructor, key-mask lookup and bucket-sentinel iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uh.field_g:I",
+      "originalName": "field_g",
+      "to": "nextBucketIndex",
+      "evidence": "uh.java: NodeHashTable constructor, key-mask lookup and bucket-sentinel iteration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ul.field_e:Lck;",
       "originalName": "field_e",
       "to": "sentinel",
@@ -2299,10 +2404,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ie.a(II)I#0",
+      "originalName": "var4",
+      "to": "sample",
+      "evidence": "ie.java: Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ie.a(II)I#2",
+      "originalName": "var5",
+      "to": "guardArithmetic",
+      "evidence": "ie.java: Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ie.a(II)I#3",
+      "originalName": "var3",
+      "to": "maximumAcceptedSample",
+      "evidence": "ie.java: Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:je.<init>(III)V#0",
       "originalName": "var4",
       "to": "durationTicks",
       "evidence": "je.java: Reviewed lexical declaration ordinal and command duration/queue traversal data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kj.a(II[BI)V#0",
+      "originalName": "var5_int",
+      "to": "byteIndex",
+      "evidence": "kj.java: Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kj.g(II)I#0",
+      "originalName": "incrementValue$0",
+      "to": "consumedByteIndex",
+      "evidence": "kj.java: Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kj.g(II)I#2",
+      "originalName": "var3",
+      "to": "byteIndex",
+      "evidence": "kj.java: Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kj.g(II)I#3",
+      "originalName": "var4",
+      "to": "bitsAvailable",
+      "evidence": "kj.java: Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kj.g(II)I#4",
+      "originalName": "var5",
+      "to": "value",
+      "evidence": "kj.java: Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kj.g(II)I#5",
+      "originalName": "var6",
+      "to": "guardArithmetic",
+      "evidence": "kj.java: Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.",
       "confidence": "reviewed"
     },
     {
@@ -2369,6 +2537,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gi.a(BI)V",
+      "originalName": "a",
+      "to": "writeByte",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a(IBI[B)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a(I[BII)V",
+      "originalName": "a",
+      "to": "readBytes",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.b(ZI)V",
+      "originalName": "b",
+      "to": "writeInt",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.c(B)I",
+      "originalName": "c",
+      "to": "readUnsignedShort",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.d(B)B",
+      "originalName": "d",
+      "to": "readByte",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.d(II)V",
+      "originalName": "d",
+      "to": "writeShort",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.f(B)I",
+      "originalName": "f",
+      "to": "readUnsignedByte",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.i(I)I",
+      "originalName": "i",
+      "to": "readInt",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.a()Lwk;",
       "originalName": "a",
       "to": "toRgbSprite",
@@ -2411,10 +2642,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ie.a(I)V",
+      "originalName": "a",
+      "to": "generateResults",
+      "evidence": "ie.java: Generates the next ISAAC result block, advancing the counter and accumulator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(II)I",
+      "originalName": "a",
+      "to": "nextIntBounded",
+      "evidence": "ie.java: Rejects the signed high tail to make the 32-bit population divisible by a positive bound, then returns a nonnegative remainder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ie.a(Lck;ILck;)V",
       "originalName": "a",
       "to": "insertNodeBefore",
       "evidence": "ie.java: Splices a node before an existing intrusive node; command scheduling uses guard 30.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.b(I)V",
+      "originalName": "b",
+      "to": "initializeState",
+      "evidence": "ie.java: Mixes the seed into both ISAAC arrays and generates the first result block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.c(I)I",
+      "originalName": "c",
+      "to": "nextInt",
+      "evidence": "ie.java: Consumes results backwards; regenerates after 256 words. Noncanonical guards retain their extra generation.",
       "confidence": "reviewed"
     },
     {
@@ -2429,6 +2688,55 @@
       "originalName": "e",
       "to": "unlinkDual",
       "evidence": "kd.java: Unlinks the secondary intrusive links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a(IB)V",
+      "originalName": "a",
+      "to": "writeCipheredOpcode",
+      "evidence": "kj.java: Adds an ISAAC word and writes the low byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a(II[BI)V",
+      "originalName": "a",
+      "to": "readCipheredBytes",
+      "evidence": "kj.java: Decrypts each byte into the destination slice using successive ISAAC words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a(I[I)V",
+      "originalName": "a",
+      "to": "initializeOpcodeCipher",
+      "evidence": "kj.java: Constructs the packet ISAAC generator with this seed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.d(Z)V",
+      "originalName": "d",
+      "to": "beginBitReading",
+      "evidence": "kj.java: Sets readBitPosition to the byte cursor times eight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.f(Z)I",
+      "originalName": "f",
+      "to": "readCipheredOpcode",
+      "evidence": "kj.java: Subtracts an ISAAC word and masks to an unsigned opcode; true guard returns -93 without consuming data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.g(II)I",
+      "originalName": "g",
+      "to": "readBits",
+      "evidence": "kj.java: Reads an MSB-first unsigned bit field, retaining Java int representation for width 32.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.i(B)V",
+      "originalName": "i",
+      "to": "endBitReading",
+      "evidence": "kj.java: Rounds readBitPosition up to the next byte for subsequent byte reads.",
       "confidence": "reviewed"
     },
     {
@@ -2551,6 +2859,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uh.a(B)Lck;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "uh.java: Traverses each bucket in ascending order and follows next links within it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.a(JI)Lck;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "uh.java: Traverses the key-masked bucket and returns the first matching node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.a(JLck;I)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "uh.java: Unlinks an already linked node and appends it to the key-masked bucket; duplicate keys remain distinct nodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.a(ZII)I",
+      "originalName": "a",
+      "to": "nonnegativeRemainder",
+      "evidence": "uh.java: Produces the floor-modulo result for a positive divisor, including negative integers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.b(I)Lck;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "uh.java: Resets the bucket index to the argument before starting traversal; canonical value is zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ul.a(B)Lck;",
       "originalName": "a",
       "to": "next",
@@ -2635,6 +2978,132 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gi.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.a(BI)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.a(IBI[B)V#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.a(IBI[B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.a(IBI[B)V#2",
+      "originalName": "param2",
+      "to": "sourceOffset",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.a(IBI[B)V#3",
+      "originalName": "param3",
+      "to": "source",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.a(I[BII)V#0",
+      "originalName": "param0",
+      "to": "destinationOffset",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.a(I[BII)V#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.a(I[BII)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.a(I[BII)V#3",
+      "originalName": "param3",
+      "to": "length",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.b(ZI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.b(ZI)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.c(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.d(B)B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.d(II)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.d(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.f(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gi.i(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gi.java: Packet cursor progression and big-endian primitive/slice byte assignments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hd.a(BI)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -2691,6 +3160,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ie.<init>([I)V#0",
+      "originalName": "param0",
+      "to": "seed",
+      "evidence": "ie.java: Copies the seed into results before ISAAC initialization.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Generates the next ISAAC result block, advancing the counter and accumulator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Rejects the signed high tail to make the 32-bit population divisible by a positive bound, then returns a nonnegative remainder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(II)I#1",
+      "originalName": "param1",
+      "to": "bound",
+      "evidence": "ie.java: Rejects the signed high tail to make the 32-bit population divisible by a positive bound, then returns a nonnegative remainder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ie.a(Lck;ILck;)V#0",
       "originalName": "param0",
       "to": "existingNode",
@@ -2709,6 +3206,20 @@
       "originalName": "param2",
       "to": "node",
       "evidence": "ie.java: Splices a node before an existing intrusive node; command scheduling uses guard 30.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Mixes the seed into both ISAAC arrays and generates the first result block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.c(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Consumes results backwards; regenerates after 256 words. Noncanonical guards retain their extra generation.",
       "confidence": "reviewed"
     },
     {
@@ -2800,6 +3311,97 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "kd.java: Unlinks the secondary intrusive links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(IB)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "kj.java: Adds an ISAAC word and writes the low byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(IB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kj.java: Adds an ISAAC word and writes the low byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(II[BI)V#0",
+      "originalName": "param0",
+      "to": "destinationOffset",
+      "evidence": "kj.java: Decrypts each byte into the destination slice using successive ISAAC words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(II[BI)V#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "kj.java: Decrypts each byte into the destination slice using successive ISAAC words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(II[BI)V#2",
+      "originalName": "param2",
+      "to": "destination",
+      "evidence": "kj.java: Decrypts each byte into the destination slice using successive ISAAC words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(II[BI)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "kj.java: Decrypts each byte into the destination slice using successive ISAAC words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(I[I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kj.java: Constructs the packet ISAAC generator with this seed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(I[I)V#1",
+      "originalName": "param1",
+      "to": "seed",
+      "evidence": "kj.java: Constructs the packet ISAAC generator with this seed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.d(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kj.java: Sets readBitPosition to the byte cursor times eight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.f(Z)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kj.java: Subtracts an ISAAC word and masks to an unsigned opcode; true guard returns -93 without consuming data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.g(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kj.java: Reads an MSB-first unsigned bit field, retaining Java int representation for width 32.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.g(II)I#1",
+      "originalName": "param1",
+      "to": "bitCount",
+      "evidence": "kj.java: Reads an MSB-first unsigned bit field, retaining Java int representation for width 32.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.i(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kj.java: Rounds readBitPosition up to the next byte for subsequent byte reads.",
       "confidence": "reviewed"
     },
     {
@@ -3020,6 +3622,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:uh.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "bucketCount",
+      "evidence": "uh.java: Allocates a sentinel for every bucket; key masking requires a power-of-two count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.a(B)Lck;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uh.java: Traverses each bucket in ascending order and follows next links within it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.a(JI)Lck;#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "uh.java: Traverses the key-masked bucket and returns the first matching node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.a(JI)Lck;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "uh.java: Traverses the key-masked bucket and returns the first matching node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.a(JLck;I)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "uh.java: Unlinks an already linked node and appends it to the key-masked bucket; duplicate keys remain distinct nodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.a(JLck;I)V#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "uh.java: Unlinks an already linked node and appends it to the key-masked bucket; duplicate keys remain distinct nodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.a(JLck;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "uh.java: Unlinks an already linked node and appends it to the key-masked bucket; duplicate keys remain distinct nodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.a(ZII)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uh.java: Produces the floor-modulo result for a positive divisor, including negative integers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.a(ZII)I#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "uh.java: Produces the floor-modulo result for a positive divisor, including negative integers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.a(ZII)I#2",
+      "originalName": "param2",
+      "to": "divisor",
+      "evidence": "uh.java: Produces the floor-modulo result for a positive divisor, including negative integers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uh.b(I)Lck;#0",
+      "originalName": "param0",
+      "to": "startBucketIndex",
+      "evidence": "uh.java: Resets the bucket index to the argument before starting traversal; canonical value is zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ul.a(B)Lck;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -3084,9 +3763,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-steelsentinels-rules.mjs": "9a0fe17f9ebf7e904816eccd94502f7c1d99d49ef67ac02f507e047858793aca",
+      "build-steelsentinels-rules.mjs": "dcc4d674563cd1e69b81595d214d61452a153c8afb71737c81feee7d56339573",
       "reproduce-steelsentinels.mjs": "6dd69838b697249fd7c99bc8469e53b7306265e77588f8b1df18348a9ebead28",
-      "tests/test-steelsentinels-core.mjs": "304dbe72ad9ade2af63c64d84f77f1064b5c97ad110955e22a8c3c062d0394c9",
+      "tests/test-steelsentinels-core.mjs": "98f6a84cf38209f6c7e98ef0c1c9810dd6780d282af63501ed400e827be7e9ea",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

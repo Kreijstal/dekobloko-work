@@ -90,6 +90,10 @@ const classes = {
   gm:['LeaderEscortCondition','Own Win: Leader Escort diagnostic; succeeds when every tracked leader has reached its goal.'],
   om:['CampaignMission','Tagged campaign mission identity, metadata, player slots and lazy map loading.'],
   lo:['MapLayout','Map format version, dimensions, terrain decoding, saved units and tagged map items.'],
+  sc:['TaggedMapData','Tagged nump/w/h/them/map fields decode player count, dimensions, theme and tile objects for version-2 maps.'],
+  mt:['TextCursor','Instance owns a string, character position and end test; static helpers also decode short tagged-field names.'],
+  bb:['NodeIterator','Independent forward/reverse deque traversal, preserving a cursor while nodes unlink.'],
+  ga:['IsaacRandom','256-word ISAAC state, golden-ratio seed mixing and opcode cipher output.'],
   tc:['IntrusiveNode','Two node links and unlink update both neighbours.'],
   at:['NodeDeque','Sentinel node, prepend/append, pop and bidirectional traversal.'],
   vh:['PacketBuffer','Byte payload, cursor and primitive read/write methods.'],
@@ -591,6 +595,71 @@ for(const [owner,signature,items] of [
   ['ha','k(I)V',[[9,'var2','hasEscortGoals'],[10,'var3','hasPortals'],[11,'var4','portalOwners'],[12,'var5','captureUnitOwners'],[13,'var6','leaderGroups'],[15,'var7','needsUnitLossCheck'],[16,'var8_ref_ne','tile'],[21,'var13','leaders'],[23,'var15','leaderArray']]],
 ])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.');
 
+for(const [original,to,type] of [['j','playerCount','I'],['k','mapWidth','I'],['e','mapHeight','I'],['a','mapTheme','I'],['c','tiles','[Lne;']])field('sc',original,type,to,'Tagged map keys nump/w/h/them/map and MapLayout version-2 header bindings.');
+field('mt','b','Ljava/lang/String;','text','String constructor and cursor character reads.');
+field('mt','c','I','position','Advances one character per read; used in parser diagnostic rendering.');
+field('mt','a','I','length','Constructor caches string length; end-of-text test compares position.');
+field('bb','e','Lat;','deque','Iterator constructor and forward/reverse sentinel checks.');
+field('bb','f','Ltc;','cursor','Traversal captures the next/previous node before returning the current one.');
+for(const [original,to,type] of [['e','results','[I'],['c','memory','[I'],['b','remainingResults','I'],['f','accumulator','I'],['j','lastResult','I'],['h','generationCounter','I']])field('ga',original,type,to,'ISAAC initialization, 256-word state generation and decrementing output cursor.');
+field('bv','y','I','writeBitsRemaining','Bit-write cursor counts unused bits in the current payload byte.');
+field('bv','z','Lga;','opcodeCipher','ISAAC output adds/subtracts from byte opcodes.');
+field('oj','n','[I','bitMasks','Shared masks indexed by width, including mask zero and the full 32-bit mask.');
+method('bv','g','(II)I','readBits','Reads MSB-first bits across bytes and advances only the bit cursor.',{0:'obfuscationGuard',1:'bitCount'});
+method('bv','a','(III)V','writeBits','Writes a masked value at the bit-write cursor, preserving surrounding payload bits.',{0:'obfuscationGuard',1:'bitCount',2:'value'});
+method('bv','d','(BI)V','setReadBitPosition','Sets the read bit cursor; preserves the original noncanonical guard side effect.',{0:'obfuscationGuard',1:'bitPosition'});
+method('bv','a','(Z)I','getReadBitPosition','Returns read bit cursor for canonical false.',{0:'obfuscationGuard'});
+method('bv','o','(I)V','beginBitReading','Initializes read bit cursor from byte position.',{0:'obfuscationGuard'});
+method('bv','n','(I)V','endBitReading','Rounds read bit position up to the next byte position.',{0:'obfuscationGuard'});
+method('bv','c','(IB)V','setWriteBitPosition','Sets byte position and remaining write bits from an absolute bit offset.',{0:'bitPosition',1:'obfuscationGuard'});
+method('bv','h','(II)V','writeCipheredOpcode','Adds the next ISAAC value to a byte opcode.',{0:'obfuscationGuard',1:'opcode'});
+method('bv','m','(I)I','readCipheredOpcode','Subtracts the next ISAAC value from a byte opcode.',{0:'obfuscationGuard'});
+method('bv','a','([II)V','initializeOpcodeCipher','Constructs ISAAC from the supplied seed.',{0:'seed',1:'obfuscationGuard'});
+method('ga','a','(I)I','nextInt','Consumes ISAAC results backwards and generates another block when exhausted.',{0:'obfuscationGuard'});
+constructorParameters('ga','([I)V',['seed'],'Copies supplied seed words and initializes ISAAC state.');
+method('mt','b','(I)C','readCharacter','Returns and advances the string cursor.',{0:'obfuscationGuard'});
+method('mt','a','(B)Z','isAtEnd','Tests position against string length.',{0:'obfuscationGuard'});
+constructorParameters('mt','(Ljava/lang/String;)V',['text'],'TextCursor constructor stores text, length and initial position.');
+method('vh','i','(I)I','readInt','Reads four big-endian bytes.',{0:'obfuscationGuard'});
+method('vh','e','(B)I','readUnsignedShort','Reads two big-endian bytes.',{0:'obfuscationGuard'});
+method('vh','k','(I)I','readUnsignedByte','Reads the next byte as 0..255.',{0:'obfuscationGuard'});
+method('vh','a','(B)B','readByte','Reads the next signed byte.',{0:'obfuscationGuard'});
+method('vh','a','(BI)V','writeInt','Writes four big-endian bytes for canonical guards.',{0:'obfuscationGuard',1:'value'});
+method('vh','b','(ZI)V','writeShort','Writes two big-endian bytes when enabled.',{0:'enabled',1:'value'});
+method('vh','b','(II)V','writeByte','Writes the low byte for canonical guard 1.',{0:'obfuscationGuard',1:'value'});
+method('de','a','(ILbv;IIII)I','readTieredSignedInt','Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.',{0:'obfuscationGuard',1:'packet',2:'tier0Bits',3:'tier1Bits',4:'tier3Bits',5:'tier2Bits'});
+method('ir','a','(IIIIIILbv;)I','writeTieredSignedInt','Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.',{0:'tier1Bits',1:'tier2Bits',2:'value',3:'tier3Bits',4:'obfuscationGuard',5:'tier0Bits',6:'packet'});
+method('wa','a','(Lbv;II)I','readSignedBits','Reads a fixed-width two-complement signed value.',{0:'packet',1:'bitCount',2:'obfuscationGuard'});
+method('vt','a','(IIILbv;)I','readTwoTierUnsignedInt','One-bit selector chooses short width or long width plus the short range.',{0:'obfuscationGuard',1:'longBits',2:'shortBits',3:'packet'});
+method('sa','a','(Lbv;II)J','readTagCharacter','Decodes a tagged name character with unsigned 4/8-bit tiers; keeps unused argument.',{0:'packet',1:'unusedValue',2:'obfuscationGuard'});
+method('mt','a','(Lbv;Z)Ljava/lang/String;','readTagName','Two-bit name length plus one, followed by encoded character values.',{0:'packet',1:'obfuscationGuard'});
+method('tn','a','(ZILbv;)J','readTaggedInteger','Uses the standard signed 4/14/20/30-bit tiers; encoded-length argument is unused.',{0:'obfuscationGuard',1:'encodedLength',2:'packet'});
+method('ai','a','(Lbv;Z)I','readCompactInt','Standard signed compact integer decoder used for list counts.',{0:'packet',1:'obfuscationGuard'});
+method('ej','a','(Lbv;Z)I','readCompactInt','Standard signed compact integer decoder used for field lengths.',{0:'packet',1:'obfuscationGuard'});
+method('no','a','(Lbv;Luo;II)V','readTaggedFields','Reads name/length fields, exposes their payload and restores relocated length headers after dispatch.',{0:'packet',1:'target',2:'recordBitLength',3:'obfuscationGuard'});
+method('kq','a','(IIIILbv;)V','enterTaggedPayload','If payload exceeds length-header width, temporarily rotates its leading bits over the header and seeks to payload start.',{0:'headerBitPosition',1:'obfuscationGuard',2:'headerBitLength',3:'payloadBitLength',4:'packet'});
+method('ao','a','(IIILbv;I)V','finishTaggedPayload','Restores the original compact length header if relocated, then seeks to the next field.',{0:'headerBitPosition',1:'obfuscationGuard',2:'headerBitLength',3:'packet',4:'payloadBitLength'});
+method('a','a','(IILbv;)Ljd;','readTaggedUnit','Returns null for an empty record, otherwise decodes Unit fields.',{0:'recordBitLength',1:'obfuscationGuard',2:'packet'});
+method('ui','a','(Lbv;II)Lca;','readTaggedTileMetadata','Returns null for an empty record, otherwise decodes tile metadata.',{0:'packet',1:'recordBitLength',2:'obfuscationGuard'});
+method('rb','a','(IBLbv;)Lne;','readTaggedMapTile','Decodes a tile record and initializes god metadata.',{0:'recordBitLength',1:'obfuscationGuard',2:'packet'});
+method('ut','a','(Lbv;BI)Lsc;','readTaggedMap','Returns null for an empty record, otherwise decodes TaggedMapData.',{0:'packet',1:'obfuscationGuard',2:'recordBitLength'});
+method('po','a','(Lbv;I)Lsc;','readLengthPrefixedMap','Reads a four-byte bit length, decodes the tagged map and restores byte alignment.',{0:'packet',1:'obfuscationGuard'});
+method('ha','b','(ILvh;)V','readLegacySnapshot','Reads seed, turn limit, player designs, turn/player state and tile/unit data.',{0:'obfuscationGuard',1:'packet'});
+method('ha','a','(Lvh;II)V','writeLegacySnapshot','Writes the legacy snapshot for the selected player, preserving original field order.',{0:'packet',1:'obfuscationGuard',2:'playerId'});
+method('ha','b','(Lvh;B)V','readSpecialEvent','Decodes special turn, teleport, revival, deployment and spell-related event packets.',{0:'packet',1:'obfuscationGuard'});
+method('ha','a','(Lvh;I)V','readCombatEvent','Decodes combat or parasite event flags, coordinates, signed deltas and paired damage.',{0:'packet',1:'obfuscationGuard'});
+
+method('bb','c','(I)Ltc;','first','Starts independent forward traversal.',{0:'obfuscationGuard'});
+method('bb','b','(I)Ltc;','next','Continues forward traversal, including after current node unlink.',{0:'obfuscationGuard'});
+method('bb','a','(I)Ltc;','last','Starts independent reverse traversal.',{0:'obfuscationGuard'});
+method('bb','b','(B)Ltc;','previous','Continues reverse traversal.',{0:'obfuscationGuard'});
+constructorParameters('bb','(Lat;)V',['deque'],'Iterator captures the deque without changing its shared cursor.');
+for(const [original,descriptor] of [['a','(IIBIIIIIILbv;)I'],['$cfr$intArgs$a$eb6d2a313bbb','(IIIIIIIIILbv;)I']])
+  method('sj',original,descriptor,'readTieredSignedBits','Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.',{0:'unusedTier3HalfRange',1:'tier2HalfRange',2:'obfuscationGuard',3:'tier3Bits',4:'tier2Bits',5:'tier1HalfRange',6:'tier0HalfRange',7:'tier1Bits',8:'tier0Bits',9:'packet'});
+
+for(const [original,to] of [['D','sourceX'],['B','sourceY'],['E','destinationX'],['z','destinationY'],['C','newOwnerPlayer']])field('md',original,'I',to,'ParasiteEvent constructor adds signed deltas to source coordinates; battlefield application uses absolute destination coordinates despite the d diagnostic label.');
+constructorParameters('md','(IIIII)V',['sourceX','sourceY','targetDeltaX','targetDeltaY','newOwnerPlayer'],'Parasite payload is decoded from the combat packet when flag 4 is set.');
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -678,6 +747,7 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('vn')} / ${link('fi')} | Standalone combat sandbox and animated unit information popups. |`,
     `| ${link('tt')} → ${link('lv')} / ${link('up')} / ${link('mc')} / ${link('gm')} | Registered portal-loss, unit-loss and leader-escort conditions. |`,
     `| ${link('om')} → ${link('lo')} | Campaign metadata and encoded/decoded map layouts. |`,
+    `| ${link('sc')} / ${link('bv')} / ${link('ga')} | Tagged version-2 map records, bit cursors and ISAAC ciphered opcodes. |`,
     `| ${link('ci')} | Tutorial stages, prompts and flashing controls. |`,
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
     'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
@@ -685,15 +755,16 @@ export function buildArmiesGuide(rules,mapping) {
     'ActionRequest and PreparedAction replace the overly narrow SpellArea names: all five request subclasses and ten prepared-action subclasses have been reviewed. ActionSpell wraps an action rather than defining a geometric area. AI summoningPlayer and summonUnitType replace the misleading spellId/selectionVariant pair. Teleport target deltas are relative offsets, not absolute destination coordinates. PreparedAction.playerFlags is indexed by player, not by tile. Unused constructor arguments and no-op marker application remain unchanged.', '',
     'Battlefield.predictCombat returns [defenderDamage, attackerDamage, deathFlags], where flags 1/2 mean attacker/defender death. computeAttackPower, scaleIncomingDamage and getDamageTakenPercent expose matchup strength, cover and protection; integer truncation, damage caps and unusual protected-target behavior are preserved. Unit capability names distinguish flying eligibility, anti-flying bonus, structure capture and Sea Slug parasitism. Tile effects are indexed by team, while summoning permissions and local god favour are separate checks.', '',
     'Turn/match names expose condition initialization, per-player victory/defeat queries, survivor masks, elimination order, participant rankings and collected-mana/turn limits. MatchConditionRegistry uses any-condition aggregation: portal and unit conditions can defeat a player, and leader escort can win. Escort completion and removal from active play are separate unit flags. CampaignMission and MapLayout retain tagged-field encodings, lazy loading and unused arguments.', '',
+    'The wire layer names MSB-first bit I/O, opcode ciphering, compact signed integers and tagged record factories. Compact tier widths are 4/14/20/30 bits with a two-bit selector and cumulative signed offsets. Field names have one to four encoded characters. Tagged payload access can temporarily rotate bits over a length header; finishTaggedPayload restores the header and advances to the next field. Unknown field names still skip their declared payload. ParasiteEvent converts incoming signed deltas into stored absolute destination coordinates despite its legacy d diagnostic label. Legacy snapshot and event entry points now have names; this pass does not establish a complete multiplayer protocol.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, legacy/version-0/version-1 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, combat packet decoding, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:6,
+    const rules={schema:1,game:'armiesofgielinor',version:7,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

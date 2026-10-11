@@ -134,6 +134,97 @@ set(sentinel,queuedSentinel,"${f('mb','V','Z')}",true);
 call(sentinel,queuedSentinel,"${m('mb','a','(BI)V')}",new Class<?>[]{byte.class,int.class},(byte)75,50);
 check("primary-cleared",call(deque,primary,"${m('ul','b','(B)I')}",new Class<?>[]{byte.class},(byte)-128),0);
 check("secondary-cleared",call(deque,secondary,"${m('ul','b','(B)I')}",new Class<?>[]{byte.class},(byte)-128),0);
+// Independent MSB-first reference: a bit at a time, across every alignment
+// and width. Byte reads resume only after rounding up the consumed bit count.
+Class<?> packet=Class.forName("${className('gi')}"),cipher=Class.forName("${className('kj')}"),isaac=Class.forName("${className('ie')}");
+Random wireRandom=new Random(884422);
+for(int offset=0;offset<8;offset++)for(int width=0;width<=32;width++){
+byte[] bytes=new byte[16];wireRandom.nextBytes(bytes);byte[] original=bytes.clone();Object reader=make(cipher,new Class<?>[]{byte[].class},(Object)bytes);
+set(packet,reader,"${f('gi','p','I')}",2);call(cipher,reader,"${m('kj','d','(Z)V')}",new Class<?>[]{boolean.class},false);
+call(cipher,reader,"${m('kj','g','(II)I')}",new Class<?>[]{int.class,int.class},100,offset);
+int expectedBits=0;for(int bit=16+offset;bit<16+offset+width;bit++)expectedBits=(expectedBits<<1)|((bytes[bit/8]>>(7-bit%8))&1);
+String label="bits/"+offset+"/"+width;
+check(label,call(cipher,reader,"${m('kj','g','(II)I')}",new Class<?>[]{int.class,int.class},100,width),expectedBits);
+check(label+"/bit-cursor",get(cipher,reader,"${f('kj','F','I')}"),16+offset+width);
+check(label+"/byte-cursor",get(packet,reader,"${f('gi','p','I')}"),2);
+call(cipher,reader,"${m('kj','i','(B)V')}",new Class<?>[]{byte.class},(byte)-3);
+check(label+"/aligned",get(packet,reader,"${f('gi','p','I')}"),(16+offset+width+7)/8);
+check(label+"/payload",Arrays.equals(bytes,original),true);
+}
+// Primitive writes are checked against literal network-order bytes, then read
+// through the independently selected unsigned/signed reader entry points.
+for(int value:new int[]{0,1,127,128,255,256,65535,Integer.MIN_VALUE,Integer.MAX_VALUE,-1}){
+byte[] bytes=new byte[12];Arrays.fill(bytes,(byte)85);Object p=make(packet,new Class<?>[]{byte[].class},(Object)bytes);set(packet,p,"${f('gi','p','I')}",1);
+call(packet,p,"${m('gi','b','(ZI)V')}",new Class<?>[]{boolean.class,int.class},true,value);
+call(packet,p,"${m('gi','d','(II)V')}",new Class<?>[]{int.class,int.class},value,43);
+call(packet,p,"${m('gi','a','(BI)V')}",new Class<?>[]{byte.class,int.class},(byte)124,value);
+check("primitive-bytes/"+value,Arrays.toString(bytes),Arrays.toString(new byte[]{85,(byte)(value>>>24),(byte)(value>>>16),(byte)(value>>>8),(byte)value,(byte)(value>>>8),(byte)value,(byte)value,85,85,85,85}));
+check("primitive-write-position/"+value,get(packet,p,"${f('gi','p','I')}"),8);set(packet,p,"${f('gi','p','I')}",1);
+check("read-int/"+value,call(packet,p,"${m('gi','i','(I)I')}",new Class<?>[]{int.class},0),value);
+check("read-short/"+value,call(packet,p,"${m('gi','c','(B)I')}",new Class<?>[]{byte.class},(byte)-60),value&65535);
+check("read-unsigned-byte/"+value,call(packet,p,"${m('gi','f','(B)I')}",new Class<?>[]{byte.class},(byte)-120),value&255);
+set(packet,p,"${f('gi','p','I')}",7);check("read-signed-byte/"+value,call(packet,p,"${m('gi','d','(B)B')}",new Class<?>[]{byte.class},(byte)-2),(byte)value);
+}
+byte[] sliceSource={9,8,7,6,5,4},sliceWire=new byte[12],sliceDestination=new byte[10];Arrays.fill(sliceWire,(byte)33);Arrays.fill(sliceDestination,(byte)44);
+Object slicePacket=make(packet,new Class<?>[]{byte[].class},(Object)sliceWire);set(packet,slicePacket,"${f('gi','p','I')}",3);
+call(packet,slicePacket,"${m('gi','a','(IBI[B)V')}",new Class<?>[]{int.class,byte.class,int.class,byte[].class},4,(byte)-122,1,sliceSource);
+check("slice-write",Arrays.toString(sliceWire),Arrays.toString(new byte[]{33,33,33,8,7,6,5,33,33,33,33,33}));
+set(packet,slicePacket,"${f('gi','p','I')}",3);
+call(packet,slicePacket,"${m('gi','a','(I[BII)V')}",new Class<?>[]{int.class,byte[].class,int.class,int.class},2,sliceDestination,28,4);
+check("slice-read",Arrays.toString(sliceDestination),Arrays.toString(new byte[]{44,44,8,7,6,5,44,44,44,44}));
+check("slice-position",get(packet,slicePacket,"${f('gi','p','I')}"),7);
+// More than two ISAAC blocks: compare ciphertext traces as well as round trips
+// so an identically changed encrypt/decrypt pair cannot hide a wire change.
+int[][] cipherSeeds={{},{1,2,3,4},{Integer.MIN_VALUE,-1,0,Integer.MAX_VALUE}};
+for(int seedIndex=0;seedIndex<cipherSeeds.length;seedIndex++){
+byte[] bytes=new byte[610];Arrays.fill(bytes,(byte)66);Object writer=make(cipher,new Class<?>[]{byte[].class},(Object)bytes);
+call(cipher,writer,"${m('kj','a','(I[I)V')}",new Class<?>[]{int.class,int[].class},-1833430685,cipherSeeds[seedIndex]);set(packet,writer,"${f('gi','p','I')}",3);
+for(int i=0;i<600;i++)call(cipher,writer,"${m('kj','a','(IB)V')}",new Class<?>[]{int.class,byte.class},i*73+19,(byte)-117);
+check("cipher-write-position/"+seedIndex,get(packet,writer,"${f('gi','p','I')}"),603);
+check("cipher-prefix/"+seedIndex,bytes[2],(byte)66);check("cipher-suffix/"+seedIndex,bytes[603],(byte)66);
+System.out.println("cipher-bytes/"+seedIndex+":"+Arrays.toString(bytes));
+Object reader=make(cipher,new Class<?>[]{byte[].class},(Object)bytes);
+call(cipher,reader,"${m('kj','a','(I[I)V')}",new Class<?>[]{int.class,int[].class},-1833430685,cipherSeeds[seedIndex]);set(packet,reader,"${f('gi','p','I')}",3);
+check("cipher-guard/"+seedIndex,call(cipher,reader,"${m('kj','f','(Z)I')}",new Class<?>[]{boolean.class},true),-93);
+check("cipher-guard-position/"+seedIndex,get(packet,reader,"${f('gi','p','I')}"),3);
+for(int i=0;i<600;i++)check("opcode/"+seedIndex+"/"+i,call(cipher,reader,"${m('kj','f','(Z)I')}",new Class<?>[]{boolean.class},false),(i*73+19)&255);
+Object bulkReader=make(cipher,new Class<?>[]{byte[].class},(Object)bytes);
+call(cipher,bulkReader,"${m('kj','a','(I[I)V')}",new Class<?>[]{int.class,int[].class},-1833430685,cipherSeeds[seedIndex]);set(packet,bulkReader,"${f('gi','p','I')}",3);
+byte[] destination=new byte[608];Arrays.fill(destination,(byte)22);
+call(cipher,bulkReader,"${m('kj','a','(II[BI)V')}",new Class<?>[]{int.class,int.class,byte[].class,int.class},4,600,destination,49);
+for(int i=0;i<600;i++)check("cipher-slice/"+seedIndex+"/"+i,destination[i+4],(byte)(i*73+19));
+check("cipher-slice-prefix/"+seedIndex,destination[3],(byte)22);check("cipher-slice-suffix/"+seedIndex,destination[604],(byte)22);
+check("cipher-slice-position/"+seedIndex,get(packet,bulkReader,"${f('gi','p','I')}"),603);
+}
+// The accepted sample population must be divisible by the bound. Express it
+// as an interval in the unsigned 32-bit population, then use Math.floorMod.
+int rejectedSamples=0;for(int seedIndex=0;seedIndex<cipherSeeds.length;seedIndex++)for(int bound:new int[]{1,2,3,7,256,65537,1073741825,Integer.MAX_VALUE}){
+Object bounded=make(isaac,new Class<?>[]{int[].class},(Object)cipherSeeds[seedIndex]),reference=make(isaac,new Class<?>[]{int[].class},(Object)cipherSeeds[seedIndex]);
+long population=1L<<32,acceptedPopulation=population-population%bound;
+for(int i=0;i<300;i++){int sample;long slot;do{sample=(Integer)call(isaac,reference,"${m('ie','c','(I)I')}",new Class<?>[]{int.class},-104);slot=(long)sample-Integer.MIN_VALUE;if(slot>=acceptedPopulation)rejectedSamples++;}while(slot>=acceptedPopulation);
+check("bounded/"+seedIndex+"/"+bound+"/"+i,call(isaac,bounded,"${m('ie','a','(II)I')}",new Class<?>[]{int.class,int.class},-104,bound),Math.floorMod(sample,bound));}
+check("bounded-next/"+seedIndex+"/"+bound,call(isaac,bounded,"${m('ie','c','(I)I')}",new Class<?>[]{int.class},-104),call(isaac,reference,"${m('ie','c','(I)I')}",new Class<?>[]{int.class},-104));
+for(int invalid:new int[]{0,-1,Integer.MIN_VALUE}){try{call(isaac,bounded,"${m('ie','a','(II)I')}",new Class<?>[]{int.class,int.class},-104,invalid);throw new AssertionError("invalid bound accepted");}catch(InvocationTargetException failure){check("invalid-bound/"+seedIndex+"/"+bound+"/"+invalid,failure.getCause() instanceof IllegalArgumentException,true);}}
+}
+check("bounded-rejection-exercised",rejectedSamples>0,true);
+Class<?> table=Class.forName("${className('uh')}");
+for(int value:new int[]{Integer.MIN_VALUE,-100000,-7,-1,0,1,7,100000,Integer.MAX_VALUE})for(int divisor:new int[]{1,2,3,65537,Integer.MAX_VALUE})
+check("remainder/"+value+"/"+divisor,call(table,null,"${m('uh','a','(ZII)I')}",new Class<?>[]{boolean.class,int.class,int.class},false,value,divisor),Math.floorMod(value,divisor));
+// Collisions and duplicate keys preserve insertion order; reinserting one
+// node moves it between buckets without leaving its old links behind.
+for(int bucketCount:new int[]{2,8,32}){
+Object hash=make(table,new Class<?>[]{int.class},bucketCount);long[] keys={0,32,0,-1,Long.MIN_VALUE,Long.MAX_VALUE,1};Object[] nodes=new Object[keys.length];
+for(int i=0;i<keys.length;i++){nodes[i]=make(node,new Class<?>[]{});call(table,hash,"${m('uh','a','(JLck;I)V')}",new Class<?>[]{long.class,node,int.class},keys[i],nodes[i],-1816);}
+keys[1]=3;call(table,hash,"${m('uh','a','(JLck;I)V')}",new Class<?>[]{long.class,node,int.class},keys[1],nodes[1],-1816);
+int[] insertionOrder={0,2,3,4,5,6,1};
+for(long key:new long[]{0,32,-1,Long.MIN_VALUE,Long.MAX_VALUE,1,3,99}){Object expectedNode=null;for(int i:insertionOrder)if(keys[i]==key){expectedNode=nodes[i];break;}
+check("hash-get/"+bucketCount+"/"+key,call(table,hash,"${m('uh','a','(JI)Lck;')}",new Class<?>[]{long.class,int.class},key,122)==expectedNode,true);}
+Object item=call(table,hash,"${m('uh','b','(I)Lck;')}",new Class<?>[]{int.class},0);
+for(int bucket=0;bucket<bucketCount;bucket++)for(int i:insertionOrder)if((keys[i]&(bucketCount-1))==bucket){check("hash-order/"+bucketCount+"/"+i,item==nodes[i],true);item=call(table,hash,"${m('uh','a','(B)Lck;')}",new Class<?>[]{byte.class},(byte)113);}
+check("hash-end/"+bucketCount,item==null,true);
+call(node,nodes[0],"${m('ck','b','(I)V')}",new Class<?>[]{int.class},4);
+check("hash-duplicate-survives/"+bucketCount,call(table,hash,"${m('uh','a','(JI)Lck;')}",new Class<?>[]{long.class,int.class},0L,122)==nodes[2],true);
+}
 System.out.println("checks:"+cases);
 }}
 `);

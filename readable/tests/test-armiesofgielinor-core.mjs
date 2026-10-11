@@ -39,6 +39,22 @@ static Object get(Class<?> c,Object o,String n)throws Exception{return field(c,n
 static Object call(Class<?> c,Object o,String n,Class<?>[] p,Object...v)throws Exception{Method m=c.getDeclaredMethod(n,p);m.setAccessible(true);return m.invoke(o,v);}
 static Object make(Class<?> c,Class<?>[] p,Object...v)throws Exception{Constructor<?> k=c.getDeclaredConstructor(p);k.setAccessible(true);return k.newInstance(v);}
 static void check(String label,Object actual,Object expected){if(!Objects.equals(actual,expected))throw new AssertionError(label+": "+actual+" != "+expected);System.out.println(label+":"+actual);cases++;}
+// A deliberately simple bit-by-bit encoder provides independent wire fixtures.
+static class Bits {
+final ArrayList<Integer> data=new ArrayList<>();
+Bits write(int value,int width){for(int bit=width-1;bit>=0;bit--)data.add((value>>>bit)&1);return this;}
+Bits append(Bits other){data.addAll(other.data);return this;}
+byte[] bytes(){byte[] result=new byte[(data.size()+7)/8];for(int i=0;i<data.size();i++)result[i/8]|=(byte)(data.get(i)<<(7-i%8));return result;}
+Bits field(String name,Bits payload){write(name.length()-1,2);for(char c:name.toCharArray()){if(c<16){write(0,1);write(c,4);}else{write(1,1);write(c-16,8);}}
+Bits length=compact(payload.data.size());append(length);
+// Long fields store their leading header-width payload bits at the end.
+if(payload.data.size()>length.data.size()){data.addAll(payload.data.subList(length.data.size(),payload.data.size()));data.addAll(payload.data.subList(0,length.data.size()));}else append(payload);
+return this;}
+}
+static Bits compact(int value){int[] widths={4,14,20,30};int[] offsets={0,8,8200,532488};
+for(int tier=0;tier<4;tier++){long minimum=-(1L<<(widths[tier]-1))-offsets[tier],maximum=(1L<<(widths[tier]-1))-1+offsets[tier];
+if(value>=minimum&&value<=maximum)return new Bits().write(tier,2).write(value<0?value+offsets[tier]:value-offsets[tier],widths[tier]);}
+throw new IllegalArgumentException("Fixture value out of range");}
 public static void main(String[] args)throws Exception{
 Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);
 board=Class.forName("${className('ha')}");unit=Class.forName("${className('jd')}");tile=Class.forName("${className('ne')}");meta=Class.forName("${className('ca')}");
@@ -411,6 +427,73 @@ for(int index=0;index<mapBytes.length;index++){Object parsed=make(layout,new Cla
 check("layout-header/"+index+"/width",get(layout,parsed,"${f('lo','l','I')}"),3);check("layout-header/"+index+"/height",get(layout,parsed,"${f('lo','n','I')}"),2);
 check("layout-header/"+index+"/version",get(layout,parsed,"${f('lo','t','I')}"),index-1);
 check("layout-header/"+index+"/terrain",Arrays.deepToString((int[][])call(layout,parsed,"${m('lo','e','(I)[[I')}",new Class<?>[]{int.class},28554)),"[[1, 2, 3], [4, 5, 6]]");}
+// MSB-first bit reads/writes across every start offset and width through 32 bits.
+Class<?> bitsPacket=Class.forName("${className('bv')}");Random bitRandom=new Random(441122);
+for(int offset=0;offset<8;offset++)for(int width=0;width<=32;width++){byte[] before=new byte[12];bitRandom.nextBytes(before);byte[] expectedBits=before.clone();int value=bitRandom.nextInt();
+for(int bit=0;bit<width;bit++){int index=offset+bit,maskBit=1<<(7-index%8);if(((value>>>(width-1-bit))&1)!=0)expectedBits[index/8]|=(byte)maskBit;else expectedBits[index/8]&=(byte)~maskBit;}
+Object out=make(bitsPacket,new Class<?>[]{byte[].class},(Object)before);call(bitsPacket,out,"${m('bv','c','(IB)V')}",new Class<?>[]{int.class,byte.class},offset,(byte)0);
+call(bitsPacket,out,"${m('bv','a','(III)V')}",new Class<?>[]{int.class,int.class,int.class},-16807,width,value);
+String label="bits/"+offset+"/"+width;check(label+"/bytes",Arrays.toString(before),Arrays.toString(expectedBits));
+call(bitsPacket,out,"${m('bv','d','(BI)V')}",new Class<?>[]{byte.class,int.class},(byte)-83,offset);
+int expectedValue=width==32?value:width==0?0:(int)(value&((1L<<width)-1));
+check(label+"/read",call(bitsPacket,out,"${m('bv','g','(II)I')}",new Class<?>[]{int.class,int.class},-108,width),expectedValue);
+check(label+"/cursor",get(bitsPacket,out,"${f('bv','v','I')}"),offset+width);
+call(bitsPacket,out,"${m('bv','n','(I)V')}",new Class<?>[]{int.class},-2);check(label+"/alignment",get(packet,out,"${f('vh','q','I')}"),(offset+width+7)/8);}
+// Tier boundaries have independent encodings, including both signed extremes.
+Class<?> compactReader=Class.forName("${className('de')}"),compactWriter=Class.forName("${className('ir')}");
+int[] values={-537403400,-537403399,-532489,-532488,-532487,-8201,-8200,-8199,-9,-8,-7,-1,0,1,6,7,8,9,8198,8199,8200,8201,532486,532487,532488,532489,537403398,537403399};
+for(int offset=0;offset<8;offset++)for(int value:values){Bits encoded=new Bits().write(0,offset).append(compact(value));byte[] reference=Arrays.copyOf(encoded.bytes(),12);
+Object read=make(bitsPacket,new Class<?>[]{byte[].class},(Object)reference);call(bitsPacket,read,"${m('bv','d','(BI)V')}",new Class<?>[]{byte.class,int.class},(byte)-83,offset);
+check("compact/read/"+offset+"/"+value,call(compactReader,null,"${m('de','a','(ILbv;IIII)I')}",new Class<?>[]{int.class,bitsPacket,int.class,int.class,int.class,int.class},-111,read,4,14,30,20),value);
+check("compact/cursor/"+offset+"/"+value,get(bitsPacket,read,"${f('bv','v','I')}"),encoded.data.size());
+byte[] written=new byte[12];Object write=make(bitsPacket,new Class<?>[]{byte[].class},(Object)written);call(bitsPacket,write,"${m('bv','c','(IB)V')}",new Class<?>[]{int.class,byte.class},offset,(byte)0);
+int size=(Integer)call(compactWriter,null,"${m('ir','a','(IIIIIILbv;)I')}",new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class,bitsPacket},14,20,value,30,1,4,write);
+check("compact/write/"+offset+"/"+value,Arrays.toString(written),Arrays.toString(reference));check("compact/length/"+offset+"/"+value,size,compact(value).data.size());}
+// Unknown and zero-length fields are skipped; relocated headers restore bytes.
+Bits unitRecord=new Bits().field("c",compact(0)).field("o",compact(1)).field("str",compact(1000000)).field("max",compact(1500000)).field("x",compact(2)).field("zz",new Bits().write(0x12345678,32).write(5,3)).field("y",compact(1)).field("x",new Bits());
+Class<?> unitReader=Class.forName("${className('a')}");
+for(int offset=0;offset<8;offset++){Bits wire=new Bits().write(0,offset).append(unitRecord);byte[] payload=wire.bytes(),originalBytes=payload.clone();Object input=make(bitsPacket,new Class<?>[]{byte[].class},(Object)payload);
+call(bitsPacket,input,"${m('bv','d','(BI)V')}",new Class<?>[]{byte.class,int.class},(byte)-83,offset);
+Object decoded=call(unitReader,null,"${m('a','a','(IILbv;)Ljd;')}",new Class<?>[]{int.class,int.class,bitsPacket},unitRecord.data.size(),32,input);
+check("tagged-unit/"+offset+"/strength",get(unit,decoded,"${f('jd','Y','I')}"),1000000);check("tagged-unit/"+offset+"/max",get(unit,decoded,"${f('jd','t','I')}"),1500000);
+check("tagged-unit/"+offset+"/x",get(unit,decoded,"${f('jd','J','I')}"),2);check("tagged-unit/"+offset+"/y",get(unit,decoded,"${f('jd','w','I')}"),1);
+check("tagged-unit/"+offset+"/owner",get(unit,decoded,"${f('jd','O','I')}"),1);
+check("tagged-unit/"+offset+"/cursor",get(bitsPacket,input,"${f('bv','v','I')}"),wire.data.size());check("tagged-unit/"+offset+"/restored",Arrays.toString(payload),Arrays.toString(originalBytes));}
+Bits tileList=compact(6);for(int i=0;i<6;i++)tileList.field("item",new Bits().field("type",compact(i)).field("own",compact(1)));
+Bits mapRecord=new Bits().field("w",compact(3)).field("h",compact(2)).field("nump",compact(2)).field("them",compact(1)).field("map",tileList);
+Class<?> taggedMap=Class.forName("${className('sc')}"),mapReader=Class.forName("${className('ut')}");
+byte[] mapPayload=mapRecord.bytes(),mapOriginal=mapPayload.clone();Object mapInput=make(bitsPacket,new Class<?>[]{byte[].class},(Object)mapPayload);
+Object mapData=call(mapReader,null,"${m('ut','a','(Lbv;BI)Lsc;')}",new Class<?>[]{bitsPacket,byte.class,int.class},mapInput,(byte)-85,mapRecord.data.size());
+check("tagged-map/width",get(taggedMap,mapData,"${f('sc','k','I')}"),3);check("tagged-map/height",get(taggedMap,mapData,"${f('sc','e','I')}"),2);check("tagged-map/players",get(taggedMap,mapData,"${f('sc','j','I')}"),2);check("tagged-map/theme",get(taggedMap,mapData,"${f('sc','a','I')}"),1);
+Object taggedTiles=get(taggedMap,mapData,"${f('sc','c','[Lne;')}");check("tagged-map/tile-count",Array.getLength(taggedTiles),6);
+for(int i=0;i<6;i++){check("tagged-map/terrain/"+i,get(tile,Array.get(taggedTiles,i),"${f('ne','h','I')}"),i);check("tagged-map/owner/"+i,get(tile,Array.get(taggedTiles,i),"${f('ne','a','I')}"),1);}
+check("tagged-map/restored",Arrays.toString(mapPayload),Arrays.toString(mapOriginal));check("tagged-map/cursor",get(bitsPacket,mapInput,"${f('bv','v','I')}"),mapRecord.data.size());
+Bits layoutBytes=new Bits().write(65,8).write(79,8).write(71,8).write(2,8).write(mapRecord.data.size(),32).append(mapRecord);
+Object v2Layout=make(layout,new Class<?>[]{int.class,byte[].class},999,layoutBytes.bytes());
+check("layout-header/2/version",get(layout,v2Layout,"${f('lo','t','I')}"),2);
+check("layout-header/2/terrain",Arrays.deepToString((int[][])call(layout,v2Layout,"${m('lo','e','(I)[[I')}",new Class<?>[]{int.class},28554)),"[[0, 1, 2], [3, 4, 5]]");
+// Opcode cipher consumes the same ISAAC stream in each direction across blocks.
+for(int[] seed:new int[][]{{},{1,2,3,4},{-1,Integer.MIN_VALUE,0,Integer.MAX_VALUE}}){byte[] opcodes=new byte[300];Object encode=make(bitsPacket,new Class<?>[]{byte[].class},(Object)opcodes);
+call(bitsPacket,encode,"${m('bv','a','([II)V')}",new Class<?>[]{int[].class,int.class},seed,-100);
+for(int i=0;i<300;i++)call(bitsPacket,encode,"${m('bv','h','(II)V')}",new Class<?>[]{int.class,int.class},32161,(i*37)&255);
+System.out.println("cipher-bytes/"+Arrays.toString(seed)+":"+Arrays.toString(opcodes));
+Object decode=make(bitsPacket,new Class<?>[]{byte[].class},(Object)opcodes);call(bitsPacket,decode,"${m('bv','a','([II)V')}",new Class<?>[]{int[].class,int.class},seed,-100);
+for(int i=0;i<300;i++)check("cipher/"+Arrays.toString(seed)+"/"+i,call(bitsPacket,decode,"${m('bv','m','(I)I')}",new Class<?>[]{int.class},255),(i*37)&255);}
+// Fixed combat packet layout: ten bytes, signed deltas, death and animation flags.
+Class<?> parasiteEvent=Class.forName("${className('md')}");Object packetBattle=unsafe.allocateInstance(board),packetQueue=make(deque,new Class<?>[]{});set(board,packetBattle,"${f('ha','l','Lat;')}",packetQueue);
+for(int combatFlags=0;combatFlags<8;combatFlags++)for(int animation:new int[]{0,7,8,15,112,127,128,255})for(int dx:new int[]{-128,-1,0,127}){
+byte[] combatBytes={(byte)combatFlags,27,31,12,(byte)dx,(byte)-1,13,17,(byte)animation,77};Object in=make(packet,new Class<?>[]{byte[].class},(Object)combatBytes);
+call(board,packetBattle,"${m('ha','a','(Lvh;I)V')}",new Class<?>[]{packet,int.class},in,-1);
+Object payload=call(deque,packetQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0);String label="combat-wire/"+combatFlags+"/"+animation+"/"+dx;
+check(label+"/cursor",get(packet,in,"${f('vh','q','I')}"),10);
+if((combatFlags&4)!=0){check(label+"/parasite",parasiteEvent.isInstance(payload),true);
+String[] names={"${f('md','D','I')}","${f('md','B','I')}","${f('md','E','I')}","${f('md','z','I')}","${f('md','C','I')}"};int[] expected={31,12,31+dx,11,13};for(int i=0;i<names.length;i++)check(label+"/parasite-field/"+i,get(parasiteEvent,payload,names[i]),expected[i]);}
+else{check(label+"/combat",combat.isInstance(payload),true);
+String[] names={"${f('ag','z','I')}","${f('ag','Q','I')}","${f('ag','G','I')}","${f('ag','F','I')}","${f('ag','B','I')}","${f('ag','K','I')}","${f('ag','R','I')}","${f('ag','H','I')}","${f('ag','y','I')}","${f('ag','D','I')}"};int[] expected={27,31,12,dx,-1,13,17,animation&7,(animation&127)>>4,77};
+for(int i=0;i<names.length;i++)check(label+"/combat-field/"+i,get(combat,payload,names[i]),expected[i]);
+check(label+"/attacker-death",get(combat,payload,"${f('ag','N','Z')}"),(combatFlags&1)!=0);check(label+"/defender-death",get(combat,payload,"${f('ag','M','Z')}"),(combatFlags&2)!=0);
+check(label+"/attacker-deployed",get(combat,payload,"${f('ag','J','Z')}"),(animation&8)!=0);check(label+"/defender-deployed",get(combat,payload,"${f('ag','E','Z')}"),(animation&128)!=0);}
+check(label+"/single-event",call(deque,packetQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0)==null,true);}
 System.out.println("checks:"+cases);
 }}
 `);
