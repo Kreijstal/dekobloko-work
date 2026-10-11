@@ -80,6 +80,8 @@ const classes = {
   ge:['WeightedScoreStrategy','Samples candidates using fourth-power normalized score weights.'],
   ir:['AiInfluenceMap','Tile cost propagation and distance-weighted power/influence accumulation.'],
   id:['CampaignUnitOverride','Instance data override unit type/name/strength when AiPlanner registers a campaign unit; static helpers also load assets.'],
+  vn:['CombatSandbox','Own Attacker/Defender/Run Attack controls and six selectors; runs a standalone combat presentation.'],
+  fi:['UnitInfoPopup','Owns one unit popup, layout coordinates, fade animation and scrolling unit-name feedback; static helpers also generate terrain.'],
   tc:['IntrusiveNode','Two node links and unlink update both neighbours.'],
   at:['NodeDeque','Sentinel node, prepend/append, pop and bidirectional traversal.'],
   vh:['PacketBuffer','Byte payload, cursor and primitive read/write methods.'],
@@ -374,7 +376,7 @@ method('lf','b','(B)Z','isIdle','Requires animation state zero and frame -1.',{0
 method('lf','a','(IB)V','setAnimationState','Assigns the animation state while preserving the guard side effect.',{0:'animationState',1:'obfuscationGuard'});
 method('sr','a','(B)Z','isExpanded','Tests the completed 256 transition factor.',{0:'obfuscationGuard'});
 method('mm','a','(Ljd;B)V','onUnitRegistered','Battlefield unit-registration notification propagated to AI observer implementations.',{0:'unit',1:'obfuscationGuard'});
-method('ej','a','(Lmn;I)Z','executeSelection','Creates and applies an effect for an AI-selected target shape.',{0:'selection',1:'obfuscationGuard'});
+method('ej','a','(Lmn;I)Z','executeActionRequest','Prepares and applies an AI action request, preserving the original guard-dependent failure result.',{0:'request',1:'obfuscationGuard'});
 method('ej','b','(Ljd;B)Lcl;','registerUnitPlanner','Applies campaign overrides and adds an AI unit planner.',{0:'unit',1:'obfuscationGuard'});
 method('ej','a','(Lcl;B)Lsm;','getSelectionStrategy','Returns the strategy currently used for per-unit decisions.',{0:'unitPlanner',1:'obfuscationGuard'});
 method('ej','a','(IIIB)F','scoreSpellAtTile','Scores damage, raising and occupancy effects at a target tile; returns -Float.MAX_VALUE outside the map.',{0:'tileX',1:'spellId',2:'tileY',3:'obfuscationGuard'});
@@ -466,6 +468,49 @@ method('hw','a','([Ljava/lang/String;B)Ljava/lang/String;','formatSummonRejectio
 method('jc','a','([Ljava/lang/String;Z)Ljava/lang/String;','formatDeployRejection','Formats a rejected deployment request.',{0:'messageParts',1:'obfuscationGuard'});
 method('ee','a','([Ljava/lang/String;I)Ljava/lang/String;','formatMindControlRejection','Formats a rejected Sphinx action using the original mind-control diagnostic.',{0:'messageParts',1:'obfuscationGuard'});
 
+field('fk','d','[[I','matchupDamagePercent','Combat power multiplies attacker-category/defender-category table entries by effective strength. The owning class also renders widgets.');
+field('ri','c','[I','terrainDamageTakenPercent','Combat damage scales by this terrain-indexed percentage; gameplay renders its complement as cover.');
+field('hh','e','[I','statusProtectionMasks','Damage reduction applies when the attack mask is a subset of the selected status mask.');
+field('dn','Pb','[Ljava/lang/String;','unitDisplayNames','Unit construction uses this type-indexed name table; identifies type 27 as Sea slug and type 39 as Jade vine.');
+field('ne','k','[I','teamEffectFlags','Allocated by teamCount, projected by player team and aggregated with separate own/other-team masks.');
+field('ne','m','I','captureStrength','Capture-capable units reduce this each turn; tile reset restores its default.');
+field('ne','j','I','godFavourLevel','An allied god-specific portal raises local summoning favour to this value.');
+for(const [original,to] of [['v','hasTileEffect16'],['Z','hasTileEffect4'],['eb','hasTileEffect8']])field('jd',original,'Z',to,'Battlefield.refreshUnitTileEffects projects bits 16/4/8 from the current tile effects onto the unit.');
+field('vn','k','Lsk;','combatPresentation','Sandbox update/draw delegates to this standalone combat presentation and clears it at completion.');
+for(const [original,to,type] of [['r','unit','Ljd;'],['k','screenX','I'],['t','screenY','I'],['m','fadeOffset','I'],['q','nameScrollOffset','I'],['o','maximumNameScroll','I'],['n','scrollPauseFrames','I'],['p','scrollForward','Z']])field('fi',original,type,to,'Unit popup constructor, draw, show/hide fade and scrolling-name animation.');
+method('ha','a','(Ljd;IBILjd;II)[I','predictCombat','Returns defender damage, attacker counter-damage and death flags (bit 1 attacker, bit 2 defender), without applying events.',{0:'defender',1:'attackOriginY',2:'obfuscationGuard',3:'targetDeltaY',4:'attacker',5:'targetDeltaX',6:'attackOriginX'});
+method('ha','a','(IIILjd;Ljd;B)I','computeAttackPower','Scales remaining attacker strength by matchup percent, with tile-effect and anti-flying overrides; protective target statuses reset prior damage.',{0:'attackerY',1:'priorDamage',2:'attackerX',3:'defender',4:'attacker',5:'obfuscationGuard'});
+method('ha','a','(Ljd;BII)I','scaleIncomingDamage','Applies terrain/ownership cover and status protection to incoming attack power.',{0:'defender',1:'obfuscationGuard',2:'attackTypeMask',3:'attackPower'});
+method('ha','a','(IILjd;)I','getDamageTakenPercent','Explicit allied ownership gives 60 percent; tile effect 8 negates cover; god-2 units have special terrain-3 cover.',{0:'tileIndex',1:'obfuscationGuard',2:'unit'});
+method('ha','a','(Ljd;I)V','refreshUnitTileEffects','Projects current tile-effect bits into the unit state.',{0:'unit',1:'obfuscationGuard'});
+method('ha','b','(IIII)I','getTileEffects','Projects team-indexed tile effects for a player.',{0:'obfuscationGuard',1:'tileY',2:'tileX',3:'playerId'});
+method('ne','a','(BII)I','getEffectsForPlayer','Own team contributes bit 16, other teams bits 0..3; an unspecified player receives all bits.',{0:'obfuscationGuard',1:'playerId',2:'teamIndex'});
+method('ne','a','(Z)Z','isStructure','Recognizes the structure terrain types through ck.isStructureTerrain.',{0:'obfuscationGuard'});
+method('ck','a','(II)Z','isStructureTerrain','Canonical terrain values 7, 8, 9, 11 and 14 are structures.',{0:'terrainType',1:'obfuscationGuard'});
+method('ne','e','(I)I','getDefaultCaptureStrength','Terrain types 9/14 use 15; other terrain types use 10.',{0:'obfuscationGuard'});
+method('jd','x','(I)Z','isFlying','Definition category 4; used by attack eligibility and anti-flying damage rules.',{0:'obfuscationGuard'});
+method('jd','j','(B)Z','canAttackFlying','Categories 2/3/4, deployed dwarf cannon, definition flag 2048 or accessory 2 can hit flying units.',{0:'obfuscationGuard'});
+method('jd','n','(I)Z','hasAntiFlyingBonus','Definition flag 2048 or accessory 2 selects 90-percent power against flying units.',{0:'obfuscationGuard'});
+method('jd','i','(I)Z','canCaptureStructures','Definition flag 512 or accessory 1 enables capture-strength reduction.',{0:'obfuscationGuard'});
+method('jd','k','(B)Z','isSeaSlug','Type 27 in unitDisplayNames; parasite attacks also count as capture-capable units in game-end checks.',{0:'obfuscationGuard'});
+method('jd','a','(Ljd;B)Z','canParasitize','Sea slug with enough effective strength can parasitize a target that is not deployed, except type zero.',{0:'target',1:'obfuscationGuard'});
+method('jd','e','(B)Z','isJadeVine','Type 39 in the original name table; its action grows or removes a vine.',{0:'obfuscationGuard'});
+method('ha','c','(IIII)I','getSummoningGodMaskAt','Returns all gods for an empty allied portal or its god bit for terrain 11; occupied/out-of-bounds tiles reject summoning.',{0:'tileX',1:'obfuscationGuard',2:'tileY',3:'playerId'});
+method('ha','a','(IBII)[I','getSummoningFavourAt','An allied portal copies player favour; a god-specific portal raises its own god favour to the tile level.',{0:'tileY',1:'obfuscationGuard',2:'tileX',3:'playerId'});
+method('ha','b','(IIIII)Z','canSummonUnitAt','Checks unlocked unit, mana and required local favour; god selection and tile mask are checked by SummonRequest.',{0:'tileY',1:'obfuscationGuard',2:'unitType',3:'tileX',4:'playerId'});
+method('ha','a','(IIIII)I','getSummonFailureFlags','Flags 1/2/4 describe insufficient mana, favour and locked unit.',{0:'playerId',1:'obfuscationGuard',2:'unitType',3:'tileY',4:'tileX'});
+method('fi','a','(BZ)V','advanceAnimation','Shows/hides the popup in steps of four and scrolls long names with endpoint pauses.',{0:'obfuscationGuard',1:'show'});
+method('vn','c','(I)V','draw','Draws the active combat presentation or sandbox controls.',{0:'obfuscationGuard'});
+method('vn','a','(IIIZIZ)V','advanceFrame','Updates the active combat presentation or sandbox input; preserves the original argument order.',{0:'inputValue',1:'obfuscationGuard',2:'screenY',3:'inputActive',4:'screenX',5:'secondaryInput'});
+
+for(const [owner,signature,items] of [
+  ['ha','a(Ljd;IBILjd;II)[I',[[13,'var8','attackerUnit'],[15,'var9','defenderUnit'],[16,'var10','combatPrediction'],[17,'var11','effectiveAttackerType'],[18,'var12','attackDistance'],[19,'var13','attackerDamageMask'],[20,'var14','defenderDamageMask'],[21,'var15','attackerEquipmentBonus'],[22,'var16','defenderEquipmentBonus'],[23,'var17','meleeRange'],[24,'var18','maximumRange'],[25,'var19','minimumRange'],[26,'var20','defenderDamage'],[27,'var21','attackerDamage'],[30,'var19Lifetime1','defenderMinimumRange']]],
+  ['ha','a(IIILjd;Ljd;B)I',[[8,'var7_int','matchupPercent'],[10,'var8','attackPower']]],
+  ['ha','a(Ljd;BII)I',[[0,'var5_int','damageTakenPercent']]],
+  ['ne','a(BII)I',[[0,'var4','effectFlags'],[1,'var5','effectTeamIndex']]],
+  ['cl','a(IIII)F',[[4,'var5','score'],[5,'var6','battlefield'],[6,'var7','targetX'],[7,'var8','targetY'],[8,'var9','targetTile'],[9,'var10','targetUnit'],[10,'var11','targetDeltaX'],[11,'var12','targetDeltaY'],[12,'var13','meleeRange'],[13,'var15','targetDamage'],[14,'var16','unitDamage'],[15,'var17','unitHealing'],[16,'var18','targetHealing'],[17,'var19','netTargetDamage'],[18,'var20','netUnitDamage'],[20,'var25','combatPrediction']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and combat power, range, cover, effect-mask or AI net-damage data flow.');
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -548,20 +593,22 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('sk')} / ${link('qv')} / ${link('tb')} / ${link('ql')} | Combat, movement, effects and popups. |`,
     `| ${link('ej')} → ${link('cl')} / ${link('jb')} | Per-unit AI evaluation and selected actions. |`,
     `| ${link('sm')} → ${link('aw')} / ${link('ge')} | Highest-score and weighted candidate selection, recycling and reset. |`,
+    `| ${link('vn')} / ${link('fi')} | Standalone combat sandbox and animated unit information popups. |`,
     `| ${link('ci')} | Tutorial stages, prompts and flashing controls. |`,
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
     'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
     'Combat payloads now name attacker/defender positions, offsets, damage, death flags and animation counts. The central consequence routine names its attacker/defender and healing/poison locals. Unit movement-spent and attacks-remaining state are separate; spell status and equipment descriptors are also separate. `SpellCastEvent` replaces the earlier trinket label: its legacy diagnostic says Trinketused, but the concrete implementations read the spell definition table.','',
     'ActionRequest and PreparedAction replace the overly narrow SpellArea names: all five request subclasses and ten prepared-action subclasses have been reviewed. ActionSpell wraps an action rather than defining a geometric area. AI summoningPlayer and summonUnitType replace the misleading spellId/selectionVariant pair. Teleport target deltas are relative offsets, not absolute destination coordinates. PreparedAction.playerFlags is indexed by player, not by tile. Unused constructor arguments and no-op marker application remain unchanged.', '',
+    'Battlefield.predictCombat returns [defenderDamage, attackerDamage, deathFlags], where flags 1/2 mean attacker/defender death. computeAttackPower, scaleIncomingDamage and getDamageTakenPercent expose matchup strength, cover and protection; integer truncation, damage caps and unusual protected-target behavior are preserved. Unit capability names distinguish flying eligibility, anti-flying bonus, structure capture and Sea Slug parasitism. Tile effects are indexed by team, while summoning permissions and local god favour are separate checks.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:4,
+    const rules={schema:1,game:'armiesofgielinor',version:5,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

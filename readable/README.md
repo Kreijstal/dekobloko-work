@@ -57,7 +57,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 78 reviewed classes around battlefield state, units, map
+The current pass names 80 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -68,7 +68,15 @@ contract handles movement, attacks, summoning, deployment and spell casts.
 AI summoningPlayer and summonUnitType describe the actual SummonRequest arguments;
 teleport offsets are signed deltas. PreparedAction.playerFlags has one entry per
 player. Turn markers retain canonical no-op application and unused constructor
-arguments stay unused.
+arguments stay unused. CombatSandbox and UnitInfoPopup identify the
+standalone combat controls and animated unit popup.
+
+Combat prediction and its power/cover helpers now have reviewed method,
+parameter and local names. The result tuple holds defender damage, attacker
+damage and two death flags. Flying eligibility, anti-flying bonuses, structure
+capture and Sea Slug parasitism have distinct capability names. Terrain damage
+percentages, status masks and team tile effects retain their original encodings.
+Summoning permission, local god favour and affordability are separate checks.
 
 Combat event payloads and the main consequence routine have reviewed field, parameter
 and local names. SpellCastEvent corrects the earlier trinket label using the
@@ -88,6 +96,11 @@ Packed movement request fixtures cover partial four-direction groups and signed
 target offsets. Prepared-action fixtures check queued movement/attack, deployment,
 growth, teleport and spell payloads; all four marker classes preserve no-op
 application. These checks inspect queued events without applying later game state.
+Combat fixtures independently specify complete damage/counterattack/death tuples,
+including range rejection, minimum damage, the 255 cap and protected statuses.
+Additional checks cover terrain/status scaling, team-effect projection, summoning
+permissions/favour, parasite eligibility and popup fade animation. They do not
+exercise rendering, sandbox controls or a complete match.
 The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Three dispatcher files
 and large methods remain; this is a semantic naming pass, not control-flow recovery.

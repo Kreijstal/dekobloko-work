@@ -258,6 +258,78 @@ Object action=owner.equals("il")?make(marker,new Class<?>[]{int.class,int.class,
 String apply=owner.equals("il")?"${m('il','a','(ILha;)V')}":"${m('ss','a','(ILha;)V')}";
 call(marker,action,apply,new Class<?>[]{int.class,board},64,actionBattle);check("marker-no-event/"+owner,call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0)==null,true);}
 check("illegal-action/player",call(request,copiedRequest,"${m('mn','a','(I[Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;')}",new Class<?>[]{int.class,String[].class,String.class},118,new String[]{"bad tile"},"move"),"Illegal move (move); player 2: bad tile.");
+// Projection of effects distinguishes one's own team from other teams.
+Object effectsTile=make(tile,new Class<?>[]{});
+for(int own=0;own<32;own++)for(int other=0;other<32;other++){
+set(tile,effectsTile,"${f('ne','k','[I')}",new int[]{own,other});
+check("team-effects/"+own+"/"+other,call(tile,effectsTile,"${m('ne','a','(BII)I')}",new Class<?>[]{byte.class,int.class,int.class},(byte)97,0,0),(own&16)|(other&15));
+check("all-effects/"+own+"/"+other,call(tile,effectsTile,"${m('ne','a','(BII)I')}",new Class<?>[]{byte.class,int.class,int.class},(byte)97,-1,-1),own|other);}
+Object combatBattle=unsafe.allocateInstance(board);Object combatTiles=Array.newInstance(tile,64);
+for(int i=0;i<64;i++)Array.set(combatTiles,i,make(tile,new Class<?>[]{}));
+set(board,combatBattle,"${f('ha','v','I')}",8);set(board,combatBattle,"${f('ha','db','I')}",8);set(board,combatBattle,"${f('ha','Eb','[Lne;')}",combatTiles);
+set(board,combatBattle,"${f('ha','yb','[I')}",new int[]{0,1});
+Object striking=make(unit,new Class<?>[]{int.class,int.class,int.class},1,1,0),receiving=make(unit,new Class<?>[]{int.class,int.class,int.class},2,1,0);
+for(Object fighter:new Object[]{striking,receiving}){set(unit,fighter,"${f('jd','l','Lha;')}",combatBattle);set(unit,fighter,"${f('jd','r','I')}",-1);}
+set(unit,striking,"${f('jd','O','I')}",0);set(unit,receiving,"${f('jd','O','I')}",1);
+// Fixed arithmetic examples specify the complete result without reimplementing prediction.
+// attacker type/strength, defender type/strength, distance, attacker/defender status, expected tuple.
+// A protected attacking unit resets the counterattack prior-damage input;
+// a protected defending unit does not reset that input (the target is different).
+int[][] examples={{0,12,0,10,1,0,0,6,2,0},{0,1,0,100,1,0,0,1,49,1},{0,1,0,1,1,0,0,1,0,2},
+{0,10,2,10,1,0,0,2,7,0},{2,20,0,10,1,0,0,18,0,2},
+{11,30,0,10,1,0,0,0,5,0},{11,30,0,10,2,0,0,0,0,0},{11,30,0,10,3,0,0,27,0,2},{11,30,0,10,6,0,0,0,0,0},
+{0,12,0,10,1,7,0,6,5,0},{0,12,0,10,1,0,7,6,2,0},{0,12,1,10,1,0,0,0,0,0},
+{0,1000,0,10,1,0,0,255,0,2}};
+for(int index=0;index<examples.length;index++){int[] ex=examples[index];
+set(unit,striking,"${f('jd','N','I')}",ex[0]);set(unit,striking,"${f('jd','Y','I')}",ex[1]);set(unit,receiving,"${f('jd','N','I')}",ex[2]);set(unit,receiving,"${f('jd','Y','I')}",ex[3]);
+set(unit,striking,"${f('jd','P','I')}",ex[5]);set(unit,receiving,"${f('jd','P','I')}",ex[6]);
+int[] prediction=(int[])call(board,combatBattle,"${m('ha','a','(Ljd;IBILjd;II)[I')}",new Class<?>[]{unit,int.class,byte.class,int.class,unit,int.class,int.class},receiving,1,(byte)-128,0,striking,ex[4],1);
+check("combat-prediction/"+index,Arrays.toString(prediction),Arrays.toString(new int[]{ex[7],ex[8],ex[9]}));}
+// Cover percentages, protective masks and original integer truncation.
+Object coveredTile=Array.get(combatTiles,10);int[] terrainPercent={100,100,60,80,90,90,100,100,80,70,100,100,90,100,70,90};
+set(unit,receiving,"${f('jd','N','I')}",0);set(unit,receiving,"${f('jd','P','I')}",0);
+for(int terrainType=0;terrainType<16;terrainType++){set(tile,coveredTile,"${f('ne','h','I')}",terrainType);
+check("cover-percent/"+terrainType,call(board,combatBattle,"${m('ha','a','(IILjd;)I')}",new Class<?>[]{int.class,int.class,unit},10,-4,receiving),terrainPercent[terrainType]);}
+set(tile,coveredTile,"${f('ne','h','I')}",0);
+int[] protectionMasks={0,1,2,4,8,31,16,0,0};
+for(int status=0;status<9;status++)for(int mask:new int[]{1,2,4,8,16,32})for(int charges:new int[]{0,1,4}){
+set(unit,receiving,"${f('jd','P','I')}",status);set(unit,receiving,"${f('jd','o','I')}",charges);
+int percent=100;if((mask&~protectionMasks[status])==0)percent-=charges*10;
+check("damage-scale/"+status+"/"+mask+"/"+charges,call(board,combatBattle,"${m('ha','a','(Ljd;BII)I')}",new Class<?>[]{unit,byte.class,int.class,int.class},receiving,(byte)-123,mask,37),percent*37/100);}
+Object ownership=make(meta,new Class<?>[]{});set(meta,ownership,"${f('ca','c','I')}",16);set(meta,ownership,"${f('ca','b','I')}",1);set(tile,coveredTile,"${f('ne','n','Lca;')}",ownership);
+check("cover-allied-owner",call(board,combatBattle,"${m('ha','a','(IILjd;)I')}",new Class<?>[]{int.class,int.class,unit},10,-4,receiving),60);
+set(meta,ownership,"${f('ca','b','I')}",0);set(tile,coveredTile,"${f('ne','h','I')}",3);
+check("cover-enemy-owner",call(board,combatBattle,"${m('ha','a','(IILjd;)I')}",new Class<?>[]{int.class,int.class,unit},10,-4,receiving),80);
+set(tile,coveredTile,"${f('ne','k','[I')}",new int[]{8,0});
+check("cover-negated",call(board,combatBattle,"${m('ha','a','(IILjd;)I')}",new Class<?>[]{int.class,int.class,unit},10,-4,receiving),100);
+set(tile,coveredTile,"${f('ne','k','[I')}",null);set(tile,coveredTile,"${f('ne','n','Lca;')}",null);set(tile,coveredTile,"${f('ne','h','I')}",0);
+// Structure summoning permissions and local favour are separate mechanisms.
+Object permissionBattle=unsafe.allocateInstance(board);Object permissionTiles=Array.newInstance(tile,6);
+for(int i=0;i<6;i++)Array.set(permissionTiles,i,make(tile,new Class<?>[]{}));
+set(board,permissionBattle,"${f('ha','v','I')}",3);set(board,permissionBattle,"${f('ha','db','I')}",2);set(board,permissionBattle,"${f('ha','Eb','[Lne;')}",permissionTiles);
+set(board,permissionBattle,"${f('ha','yb','[I')}",new int[]{0,1,0});set(board,permissionBattle,"${f('ha','E','[[I')}",new int[][]{{1,2,3,4,5,6,7},{7,6,5,4,3,2,1},{0,0,0,0,0,0,0}});
+Object portal=Array.get(permissionTiles,4);set(tile,portal,"${f('ne','a','I')}",0);
+for(int terrainType:new int[]{0,7,11})for(int ownerPlayer:new int[]{0,1,2})for(boolean occupied:new boolean[]{false,true}){
+set(tile,portal,"${f('ne','h','I')}",terrainType);set(tile,portal,"${f('ne','a','I')}",ownerPlayer);set(tile,portal,"${f('ne','c','Ljd;')}",occupied?receiving:null);set(tile,portal,"${f('ne','g','I')}",3);
+int expected=occupied||ownerPlayer==1?0:terrainType==7?65535:terrainType==11?8:0;
+check("summoning-mask/"+terrainType+"/"+ownerPlayer+"/"+occupied,call(board,permissionBattle,"${m('ha','c','(IIII)I')}",new Class<?>[]{int.class,int.class,int.class,int.class},1,-27300,1,0),expected);}
+for(int[] xy:new int[][]{{-1,0},{0,-1},{3,0},{0,2}})check("summoning-bounds/"+Arrays.toString(xy),call(board,permissionBattle,"${m('ha','c','(IIII)I')}",new Class<?>[]{int.class,int.class,int.class,int.class},xy[0],-27300,xy[1],0),0);
+set(tile,portal,"${f('ne','c','Ljd;')}",null);set(tile,portal,"${f('ne','a','I')}",0);set(tile,portal,"${f('ne','h','I')}",7);
+check("summoning-favour/all",Arrays.toString((int[])call(board,permissionBattle,"${m('ha','a','(IBII)[I')}",new Class<?>[]{int.class,byte.class,int.class,int.class},1,(byte)118,1,0)),"[1, 2, 3, 4, 5, 6, 7]");
+set(tile,portal,"${f('ne','h','I')}",11);set(tile,portal,"${f('ne','j','I')}",9);
+check("summoning-favour/portal",Arrays.toString((int[])call(board,permissionBattle,"${m('ha','a','(IBII)[I')}",new Class<?>[]{int.class,byte.class,int.class,int.class},1,(byte)118,1,0)),"[0, 0, 0, 9, 0, 0, 0]");
+// Sea Slug parasitism permits only sufficiently weak, undeployed targets.
+set(unit,striking,"${f('jd','N','I')}",27);set(unit,striking,"${f('jd','Y','I')}",10);set(unit,receiving,"${f('jd','N','I')}",2);set(unit,receiving,"${f('jd','Y','I')}",10);
+check("parasite/equal",call(unit,striking,"${m('jd','a','(Ljd;B)Z')}",new Class<?>[]{unit,byte.class},receiving,(byte)119),true);
+set(unit,receiving,"${f('jd','Y','I')}",11);check("parasite/stronger",call(unit,striking,"${m('jd','a','(Ljd;B)Z')}",new Class<?>[]{unit,byte.class},receiving,(byte)119),false);
+set(unit,receiving,"${f('jd','Y','I')}",1);set(unit,receiving,"${f('jd','W','Z')}",true);check("parasite/deployed",call(unit,striking,"${m('jd','a','(Ljd;B)Z')}",new Class<?>[]{unit,byte.class},receiving,(byte)119),false);
+set(unit,receiving,"${f('jd','N','I')}",0);check("parasite/type-zero",call(unit,striking,"${m('jd','a','(Ljd;B)Z')}",new Class<?>[]{unit,byte.class},receiving,(byte)119),true);
+// Popup fade animation can be checked independently of assets and font rendering.
+Class<?> popup=Class.forName("${className('fi')}");Object popupFixture=unsafe.allocateInstance(popup);set(popup,popupFixture,"${f('fi','m','I')}",32);
+Object popupQueue=make(deque,new Class<?>[]{});call(deque,popupQueue,"${m('at','a','(BLtc;)V')}",new Class<?>[]{byte.class,Class.forName("${className('tc')}")},(byte)-119,popupFixture);
+for(int frame=1;frame<=8;frame++){call(popup,popupFixture,"${m('fi','a','(BZ)V')}",new Class<?>[]{byte.class,boolean.class},(byte)-110,true);check("popup-show/"+frame,get(popup,popupFixture,"${f('fi','m','I')}"),32-frame*4);}
+for(int frame=1;frame<=8;frame++){call(popup,popupFixture,"${m('fi','a','(BZ)V')}",new Class<?>[]{byte.class,boolean.class},(byte)-110,false);check("popup-hide/"+frame,get(popup,popupFixture,"${f('fi','m','I')}"),frame*4);}
+check("popup-hidden-unlinked",call(deque,popupQueue,"${m('at','e','(B)Ltc;')}",new Class<?>[]{byte.class},(byte)96)==null,true);
 System.out.println("checks:"+cases);
 }}
 `);
