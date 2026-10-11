@@ -31,7 +31,7 @@ export function buildReadingGuide(manifest, exportRoot) {
     const matcher = new RegExp('^\\s*(?:(?:public|private|protected|static|final|synchronized|native|abstract|strictfp)\\s+)*[\\w$.[\\]<>?,]+\\s+' + escaped + '\\s*\\(');
     const lines = source.split('\n').flatMap((line, i) => matcher.test(line) ? [i + 1] : []);
     assert.equal(lines.length, 1, symbol + ' unique current declaration');
-    return `[${label || className(owner) + '.' + name}](geoblox/src/${sourceName}#L${lines[0]})`;
+    return `[${label || className(owner) + '.' + name}](${sourceName}#L${lines[0]})`;
   };
   const row = (symbol, purpose) => '| ' + sourceLink(symbol) + ' | ' + purpose + ' |';
   const compiler = manifest.generators.javaTools;
@@ -45,7 +45,7 @@ export function buildReadingGuide(manifest, exportRoot) {
     '',
     'This guide is generated from the current export by Deko’s `build-geoblox-reading-guide.mjs`. It follows the game code; previous pass narratives remain in Git history and the existing [workflow record](README.md).',
     '',
-    'The only maintained readable tree is [geoblox/src](geoblox/src). Its 303 top-level classes have meaningful names; 302 are renamed and `Geoblox` keeps its original name. The manifest contains ' + manifest.renames.length.toLocaleString('en-US') + ' guarded names and the dictionary preserves ' + mapping.symbols.length.toLocaleString('en-US') + ' complete identities.',
+    'The Java in [this directory](.) is the only maintained GeoBlox source, published directly in `games/geoblox`. Its 303 top-level classes have meaningful names; 302 are renamed and `Geoblox` keeps its original name. The manifest contains ' + manifest.renames.length.toLocaleString('en-US') + ' guarded names and the dictionary preserves ' + mapping.symbols.length.toLocaleString('en-US') + ' complete identities.',
     '',
     '## Start with the game loop',
     '',
@@ -110,7 +110,7 @@ export function buildReadingGuide(manifest, exportRoot) {
     'env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check',
     '```',
     '',
-    'Both commands cover the current Java export and this guide. No generated Java belongs in Deko or the cloner. Read [SYMBOLS.md](geoblox/SYMBOLS.md) for the symbol index and [mapping.json](geoblox/mapping.json) for original spellings, full JVM descriptors, declaration ordinals and UTF-16 edit positions. Reverse the dictionary with Deko’s `readable/tools/restore-original.mjs`; do not append opaque spellings to readable names.',
+    'Both commands cover the current Java export and this guide. The [current naming dictionary](../../decompilation/geoblox-naming.json) contains original spellings, full JVM descriptors, declaration ordinals, UTF-16 edit positions and provenance. Reverse it with Deko’s `readable/restore-game.mjs geoblox OUTPUT`; do not append opaque spellings to readable names.',
     '',
     'Current raw source: `' + manifest.source.commit + '`; tree SHA-256: `' + manifest.inputTreeSha256 + '`.',
     '',

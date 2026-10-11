@@ -19,7 +19,7 @@ const sourceIdentity = rules => ({source: rules.source, generators: rules.genera
 export function validateManifest(rules, directory = root) {
   const publication = rules.publication;
   const workflow = rules.readabilityWorkflow;
-  const workflowFiles = ['build-geoblox-reading-guide.mjs', 'build-geoblox-rules.mjs', 'layout.mjs', 'reproduce-geoblox.mjs', 'text-resource-evidence.mjs'];
+  const workflowFiles = ['build-geoblox-reading-guide.mjs', 'build-geoblox-rules.mjs', 'compilation-stubs.mjs', 'game-export.mjs', 'layout.mjs', 'reproduce-geoblox.mjs', 'text-resource-evidence.mjs'];
   if (workflow?.repository !== 'Kreijstal/dekobloko-work' ||
       JSON.stringify(Object.keys(workflow.files ?? {}).sort()) !== JSON.stringify(workflowFiles))
     throw new Error('Invalid readable workflow identity');

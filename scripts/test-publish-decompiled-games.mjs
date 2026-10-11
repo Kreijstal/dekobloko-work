@@ -3,7 +3,33 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {inventory, validateReport, pipelineCheckEnvironment} from './publish-decompiled-games.mjs';
+import {inventory, validateReport, pipelineCheckEnvironment, validateNamedExport} from './publish-decompiled-games.mjs';
+import {createHash} from 'node:crypto';
+
+test('named catalog publication verifies its Java, guide and reverse dictionary together', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'named-catalog-test-'));
+  const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+  try {
+    const game = path.join(root, 'games/fixture');fs.mkdirSync(game, {recursive: true});fs.mkdirSync(path.join(root, 'decompilation'));
+    fs.writeFileSync(path.join(game, 'Named.java'), 'class Named {}');fs.writeFileSync(path.join(game, 'README.md'), 'Current guide');
+    const sources = inventory(game, '.java', ['README.md']);
+    const source = {commit: 'a'.repeat(40), subdirectory: 'games/fixture'};
+    const dictionary = JSON.stringify({inputTreeSha256: 'b'.repeat(64), files: [{}], provenance: {source, outputTreeSha256: sources.sha256}});
+    fs.writeFileSync(path.join(root, 'decompilation/fixture-naming.json'), dictionary);
+    const receipt = {source, inputTreeSha256: 'b'.repeat(64), sources,
+      dictionary: {path: 'decompilation/fixture-naming.json', sha256: hash(dictionary)},
+      readingGuide: {path: 'games/fixture/README.md', sha256: hash('Current guide')}};
+    assert.equal(validateNamedExport(root, 'fixture', receipt).files, 1);
+    fs.writeFileSync(path.join(game, 'Named.java'), 'class Named { int changed; }');
+    assert.throws(() => validateNamedExport(root, 'fixture', receipt), /identity differs/);
+    fs.writeFileSync(path.join(game, 'Named.java'), 'class Named {}');
+    fs.writeFileSync(path.join(game, 'README.md'), 'Stale guide');
+    assert.throws(() => validateNamedExport(root, 'fixture', receipt), /identity differs/);
+    assert.throws(() => validateNamedExport(root, 'fixture', {...receipt, dictionary: {...receipt.dictionary, path: '../escape'}}), /paths/);
+    fs.writeFileSync(path.join(game, 'dependency.jar'), 'binary');
+    assert.throws(() => inventory(game, '.java', ['README.md']), /Unexpected entry/);
+  } finally {fs.rmSync(root, {recursive: true, force: true});}
+});
 
 test('pipeline retries may change recorded execution timeouts but never transformation gates', () => {
   const batch = {PIPELINE_ALLOW_MUTUALLY_GUARDED_FALSE_CYCLES: '1'};

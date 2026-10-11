@@ -102,9 +102,16 @@ Only `funorb-decompiled` owns the emitted Java. Its single
 `decompilation-provenance.json` records each game's input/output identities,
 fallback counts, static validation, generator commits and the **Git-generated
 tracked compiler-source tar SHA-256**. This checksum identifies the decompiler
-source, not a game JAR. Named readable exports retain their separately pinned
-source commits and proof records; updating raw `games/` does not silently repin
-their dictionaries. Remove the owned temporary batch after export validation.
+source, not a game JAR. Named Java is published directly under `games/<game>`. The `namedExports`
+receipts and one current reverse dictionary per named game identify its pinned
+raw source and its published source hash. Full-catalog publication verifies and
+compiles those named sources separately, then preserves them while refreshing
+raw exports for other games; it does not silently repin naming rules. Only
+reading guides are permitted beside the game Java. Run
+`node scripts/check-source-catalog.mjs FUNORB_REPO` to verify the installed
+catalog without retaining a build batch. Compilation stubs for naming are built
+from source in temporary storage; no stub JAR belongs in the publication.
+Remove the owned temporary batch after export validation.
 
 If a generic compiler fix lands during a long batch, preserve the verified
 bytecode and rebuild compiler-only failures with:

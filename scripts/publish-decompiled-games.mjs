@@ -14,7 +14,7 @@ const run = (command, args, options = {}) => execFileSync(command, args, {
 const git = (root, ...args) => run('git', ['-C', root, ...args]).toString().trim();
 const json = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 
-export function inventory(root, extension) {
+export function inventory(root, extension, allowedFiles = []) {
   const result = [];
   const visit = (directory, prefix = '') => {
     for (const entry of fs.readdirSync(directory, {withFileTypes: true}).sort((a, b) => a.name < b.name ? -1 : 1)) {
@@ -23,12 +23,28 @@ export function inventory(root, extension) {
       if (entry.isDirectory()) visit(path.join(directory, entry.name), relative + '/');
       else if (entry.isFile() && entry.name.endsWith(extension))
         result.push([relative, hash(fs.readFileSync(path.join(root, relative)))]);
-      else throw new Error(`Unexpected entry: ${relative}`);
+      else if (!entry.isFile() || !allowedFiles.includes(relative)) throw new Error(`Unexpected entry: ${relative}`);
     }
   };
   visit(root);
   result.sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0);
   return {files: result.length, sha256: hash(JSON.stringify(result)), entries: result};
+}
+
+export function validateNamedExport(repository, game, receipt) {
+  const dictionaryPath = `decompilation/${game}-naming.json`, guidePath = `games/${game}/README.md`;
+  if (!/^[a-z0-9_]+$/.test(game) || receipt?.dictionary?.path !== dictionaryPath || receipt?.readingGuide?.path !== guidePath)
+    throw new Error(`Invalid named export paths: ${game}`);
+  const dictionaryBytes = fs.readFileSync(path.join(repository, dictionaryPath));
+  const guide = fs.readFileSync(path.join(repository, guidePath));
+  const dictionary = JSON.parse(dictionaryBytes);
+  const sources = inventory(path.join(repository, 'games', game), '.java', ['README.md']);
+  if (hash(dictionaryBytes) !== receipt.dictionary.sha256 || hash(guide) !== receipt.readingGuide.sha256 ||
+      sources.sha256 !== receipt.sources?.sha256 || sources.files !== receipt.sources?.files ||
+      dictionary.inputTreeSha256 !== receipt.inputTreeSha256 || dictionary.provenance?.outputTreeSha256 !== sources.sha256 ||
+      dictionary.files?.length !== sources.files || JSON.stringify(dictionary.provenance.source) !== JSON.stringify(receipt.source))
+    throw new Error(`Named export identity differs: ${game}`);
+  return sources;
 }
 
 export function validateReport(game, report, diagnostics, inputs, sources) {
@@ -77,6 +93,9 @@ export function publish({batch, destination, javaTools, update = false}) {
   if (!fs.existsSync(stub)) throw new Error('Missing batch compilation stubs');
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'funorb-publish-validation-'));
   const records = {};
+  const namedExports = fs.existsSync(path.join(destination, 'decompilation-provenance.json'))
+    ? json(path.join(destination, 'decompilation-provenance.json')).namedExports ?? {} : {};
+  if (Object.keys(namedExports).some(game => !games.includes(game))) throw new Error('Unknown named game');
   try {
     for (const game of games) {
       const root = path.join(batch, game);
@@ -108,6 +127,15 @@ export function publish({batch, destination, javaTools, update = false}) {
       fs.writeFileSync(argumentsFile, sources.entries.map(([file]) => JSON.stringify(path.join(owned, 'java', file))).join('\n') + '\n');
       run('javac', ['--release', '8', '-proc:none', '-encoding', 'UTF-8', '-sourcepath', '', '-classpath', stub,
         '-d', classes, '@' + argumentsFile]);
+      let namedSources;
+      if (namedExports[game]) {
+        namedSources = validateNamedExport(destination, game, namedExports[game]);
+        const namedClasses = path.join(temporary, game + '-named');fs.mkdirSync(namedClasses);
+        const namedArguments = path.join(temporary, game + '-named.args');
+        fs.writeFileSync(namedArguments, namedSources.entries.map(([file]) => JSON.stringify(path.join(destination, 'games', game, file))).join('\n') + '\n');
+        run('javac', ['--release', '8', '-proc:none', '-encoding', 'UTF-8', '-sourcepath', '', '-classpath', stub,
+          '-d', namedClasses, '@' + namedArguments]);
+      }
       const {entries: inputEntries, ...inputIdentity} = inputs;
       const {entries: transformedEntries, ...transformedIdentity} = transformed;
       const {entries: sourceEntries, ...sourceIdentity} = sources;
@@ -118,11 +146,12 @@ export function publish({batch, destination, javaTools, update = false}) {
         diagnostics: {hardFailures: diagnostics.hardFailures, validFallbacks: diagnostics.validFallbacks,
           totals: diagnostics.totals}, validation: {bytecodeVerifier: 'pass', javac: 'pass',
           javacArguments: ['--release', '8', '-proc:none', '-encoding', 'UTF-8', '-sourcepath', '', '-classpath', 'batch-stubs']}};
-      if (!update && inventory(path.join(destination, 'games', game), '.java').sha256 !== sources.sha256)
+      if (namedSources) records[game].publishedSources = {files: namedSources.files, sha256: namedSources.sha256};
+      if (!update && !namedSources && inventory(path.join(destination, 'games', game), '.java', ['README.md']).sha256 !== sources.sha256)
         throw new Error(`Published source differs: ${game}`);
       console.log(`${game}\t${sources.files}\tcompiled\tfallbacks=${diagnostics.validFallbacks}`);
     }
-    const manifest = {...provenance, generators: {...provenance.generators,
+    const manifest = {...provenance, ...(Object.keys(namedExports).length ? {namedExports} : {}), generators: {...provenance.generators,
       javaTools: {...compiler, sourceArchive: {sha256: hash(archive),
         reproduce: `git archive --format=tar ${compiler.commit} | sha256sum`,
         format: 'Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies'}}},
@@ -131,14 +160,15 @@ export function publish({batch, destination, javaTools, update = false}) {
         stubJarSha256: hash(fs.readFileSync(stub)),
         publisher: {repository: 'Kreijstal/dekobloko-work', commit: git(repository, 'rev-parse', 'HEAD'),
           sourceSha256: hash(fs.readFileSync(script))},
-        readableExports: 'Separately pinned named exports retain their own input commits and provenance.', games: records}};
+        readableExports: 'Named Java is published directly in games/; pinned input and reverse dictionaries are recorded in namedExports.', games: records}};
     const manifestFile = path.join(destination, 'decompilation-provenance.json');
     if (update) {
       const refresh = fs.mkdtempSync(path.join(destination, '.catalog-refresh-'));
       try {
         const generated = path.join(refresh, 'games');
         fs.mkdirSync(generated);
-        for (const game of games) fs.cpSync(path.join(batch, game, 'decompile-owned/java'), path.join(generated, game), {recursive: true});
+        for (const game of games) fs.cpSync(namedExports[game] ? path.join(destination, 'games', game)
+          : path.join(batch, game, 'decompile-owned/java'), path.join(generated, game), {recursive: true});
         const bytes = JSON.stringify(manifest, null, 2) + '\n';
         fs.writeFileSync(path.join(refresh, 'provenance.json'), bytes);
         const current = path.join(destination, 'games');
