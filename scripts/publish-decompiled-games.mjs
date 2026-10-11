@@ -75,6 +75,11 @@ export function publish({batch, destination, javaTools, update = false}) {
       const report = json(path.join(owned, 'logs/report.json'));
       const diagnostics = json(path.join(owned, 'logs/diagnostics.json'));
       validateReport(game, report, diagnostics, inputs, sources);
+      if (report.decompiler && (report.decompiler.trackedClean !== true ||
+          report.decompiler.sourceTreeSha256 !== sources.sha256 ||
+          !/^[a-f0-9]{40}$/.test(report.decompiler.commit) ||
+          hash(run('git', ['-C', javaTools, 'archive', '--format=tar', report.decompiler.commit])) !== report.decompiler.sourceArchive?.sha256))
+        throw new Error(`Repaired source compiler identity differs: ${game}`);
       const stamp = json(path.join(owned, 'pipeline-provenance.json'));
       if (JSON.stringify(stamp.snapshot.generators) !== JSON.stringify(provenance.generators))
         throw new Error(`Pipeline generators differ: ${game}`);
@@ -95,6 +100,7 @@ export function publish({batch, destination, javaTools, update = false}) {
       const {entries: sourceEntries, ...sourceIdentity} = sources;
       records[game] = {originalClasses: inputIdentity, transformedClasses: transformedIdentity,
         sources: sourceIdentity, pipelineFingerprint: stamp.fingerprint,
+        sourceGenerator: report.decompiler ?? {commit: compiler.commit},
         diagnostics: {hardFailures: diagnostics.hardFailures, validFallbacks: diagnostics.validFallbacks,
           totals: diagnostics.totals}, validation: {bytecodeVerifier: 'pass', javac: 'pass',
           javacArguments: ['--release', '8', '-proc:none', '-encoding', 'UTF-8', '-sourcepath', '', '-classpath', 'batch-stubs']}};

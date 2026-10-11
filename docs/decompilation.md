@@ -106,6 +106,24 @@ source, not a game JAR. Named readable exports retain their separately pinned
 source commits and proof records; updating raw `games/` does not silently repin
 their dictionaries. Remove the owned temporary batch after export validation.
 
+If a generic compiler fix lands during a long batch, preserve the verified
+bytecode and rebuild compiler-only failures with:
+
+```bash
+node scripts/repair-decompiled-games.mjs BATCH CLEAN_FIXED_JAVA_TOOLS
+```
+
+This emits each failed game completely into temporary staging, checks diagnostics
+and compiles against stubs alone before replacing its previous staged Java and
+reports. Pipeline or verifier failures require an authoritative pipeline retry
+instead. Each repaired game records its exact clean compiler commit and tracked
+source tar SHA-256 in the existing report; the publisher verifies that archive
+from Git and includes the per-game `sourceGenerator` in the single catalog
+manifest. Keep those compiler Git objects available in the publication's
+java-tools checkout. A reproduction uses the initial pipeline/compiler pins,
+then repeats the recorded repairs with their own source pins. No failed outputs
+or earlier diagnostics are presented as current successful validation.
+
 ## Running the bytecode pipeline directly
 
 ```bash
