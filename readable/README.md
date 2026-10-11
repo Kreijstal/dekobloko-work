@@ -64,7 +64,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 98 reviewed classes around battlefield state, units, map
+The current pass names 103 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -110,6 +110,11 @@ MatchSetupPanel and InstructionsPanel expose stage-5 option validation and
 stage-7 instruction rows/page state; IntPair records their shared integer pair
 without confusing positions with dimensions. Preview and option-33 encodings
 remain qualified rather than assigned unsupported gameplay meanings.
+Instruction tables now name section titles, row headings, paragraph lines and
+parallel illustration metadata. UnitModelPreview, AnimationSequence and
+AnimationPlayer expose model selection and frame playback; TickCounter and
+TrianglePulse expose call-based timing and highlight fades. Navigation
+availability/highlight state and page update/drawing entry points have names.
 
 Combat event payloads and the main consequence routine have reviewed field, parameter
 and local names. SpellCastEvent corrects the earlier trinket label using the
@@ -158,6 +163,13 @@ sentinels, odd-size centering, missing bounds, negative instruction heights and
 detached preview-unit strengths. The headless client shim preserves its Applet
 subtype for bytecode verification without constructing the client or loading its
 original UI/audio graph.
+Instruction fixtures verify all parallel table dimensions and page navigation
+boundaries. Sequence fixtures decode packed frame IDs/durations and retained
+opcode data, exercise finite/unlimited playback and reflection-populated delayed
+slots, and retain post-completion state. Timing fixtures preserve counter guards,
+integer wrapping, pulse defaults/odd periods and zero-half-period errors. Model
+fixtures verify type/yaw/coordinate setters; full mesh rendering, asset loading
+and complete instruction-page execution remain unverified.
 The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Three dispatcher files
 and large methods remain; this is a semantic naming pass, not control-flow recovery.

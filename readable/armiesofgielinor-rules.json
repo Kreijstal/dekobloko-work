@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 9,
+  "version": 10,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1907,6 +1907,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:em",
+      "originalName": "em",
+      "to": "TickCounter",
+      "evidence": "em.java: Instance counts calls up to a limit and resets; unrelated static methods load client assets and handle client messages.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fi",
       "originalName": "fi",
       "to": "UnitInfoPopup",
@@ -1963,10 +1970,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hh",
+      "originalName": "hh",
+      "to": "TrianglePulse",
+      "evidence": "hh.java: Interpolates an integer pulse over two halves of a TickCounter period, with original byte-range defaults/clamps.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hp",
       "originalName": "hp",
       "to": "DeathEvent",
       "evidence": "hp.java: Diagnostic EventDeath and battlefield application of unit death.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hr",
+      "originalName": "hr",
+      "to": "UnitModelPreview",
+      "evidence": "hr.java: Unit-model selection, yaw, screen position, animation player and projection used by instruction illustrations.",
       "confidence": "reviewed"
     },
     {
@@ -2222,6 +2243,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qb",
+      "originalName": "qb",
+      "to": "AnimationSequence",
+      "evidence": "qb.java: Opcode-decoded packed frame IDs, durations, loop start/count and additional retained sequence data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qj",
       "originalName": "qj",
       "to": "UpkeepEvent",
@@ -2422,6 +2450,13 @@
       "originalName": "vh",
       "to": "PacketBuffer",
       "evidence": "vh.java: Byte payload, cursor and primitive read/write methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vj",
+      "originalName": "vj",
+      "to": "AnimationPlayer",
+      "evidence": "vj.java: Current sequence/frame/countdown with an optional delayed ring of sequence slots.",
       "confidence": "reviewed"
     },
     {
@@ -2866,6 +2901,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:da.field_a:[[[I",
+      "originalName": "field_a",
+      "to": "instructionIllustrationArguments",
+      "evidence": "da.java: Parallel per-row arguments select illustrated types/variants; negative markers retain their original meaning.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dl.field_a:I",
       "originalName": "field_a",
       "to": "buttonPress",
@@ -3167,6 +3209,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:em.field_a:I",
+      "originalName": "field_a",
+      "to": "elapsedTicks",
+      "evidence": "em.java: advanceAndCheck increments this once; reset clears it and constructor starts at zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:em.field_f:I",
+      "originalName": "field_f",
+      "to": "limit",
+      "evidence": "em.java: Counter completion compares elapsedTicks against this unchanged constructor argument.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fi.field_k:I",
       "originalName": "field_k",
       "to": "screenX",
@@ -3325,6 +3381,13 @@
       "originalName": "field_b",
       "to": "teamName",
       "evidence": "go.java: TeamRoster constructor and name accessor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:go.field_f:[[[I",
+      "originalName": "field_f",
+      "to": "instructionIllustrationModes",
+      "evidence": "go.java: InstructionsPanel dispatches these per-page/section/row mode values to illustration layout.",
       "confidence": "reviewed"
     },
     {
@@ -3580,10 +3643,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hh.field_b:I",
+      "originalName": "field_b",
+      "to": "maximum",
+      "evidence": "hh.java: Pulse initialization, two-half integer interpolation and ordered minimum/maximum clamp assignments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hh.field_e:[I",
       "originalName": "field_e",
       "to": "statusProtectionMasks",
       "evidence": "hh.java: Damage reduction applies when the attack mask is a subset of the selected status mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hh.field_g:I",
+      "originalName": "field_g",
+      "to": "value",
+      "evidence": "hh.java: Pulse initialization, two-half integer interpolation and ordered minimum/maximum clamp assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hh.field_h:I",
+      "originalName": "field_h",
+      "to": "minimum",
+      "evidence": "hh.java: Pulse initialization, two-half integer interpolation and ordered minimum/maximum clamp assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hh.field_k:Lem;",
+      "originalName": "field_k",
+      "to": "counter",
+      "evidence": "hh.java: Pulse initialization, two-half integer interpolation and ordered minimum/maximum clamp assignments.",
       "confidence": "reviewed"
     },
     {
@@ -3598,6 +3689,62 @@
       "originalName": "field_y",
       "to": "tileX",
       "evidence": "hp.java: Position diagnostic, coordinate constructor and source-unit lookup use these tile coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_a:Lgd;",
+      "originalName": "field_a",
+      "to": "model",
+      "evidence": "hr.java: Preview model/animation selection, yaw bounds, screen placement and alternate projection depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_c:I",
+      "originalName": "field_c",
+      "to": "unitType",
+      "evidence": "hr.java: Preview model/animation selection, yaw bounds, screen placement and alternate projection depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_e:[I",
+      "originalName": "field_e",
+      "to": "screenPosition",
+      "evidence": "hr.java: Preview model/animation selection, yaw bounds, screen placement and alternate projection depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_f:I",
+      "originalName": "field_f",
+      "to": "animationIndex",
+      "evidence": "hr.java: Preview model/animation selection, yaw bounds, screen placement and alternate projection depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_g:Lvj;",
+      "originalName": "field_g",
+      "to": "animationPlayer",
+      "evidence": "hr.java: Preview model/animation selection, yaw bounds, screen placement and alternate projection depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_j:I",
+      "originalName": "field_j",
+      "to": "yaw",
+      "evidence": "hr.java: Preview model/animation selection, yaw bounds, screen placement and alternate projection depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_k:Z",
+      "originalName": "field_k",
+      "to": "projectionVariant",
+      "evidence": "hr.java: Preview model/animation selection, yaw bounds, screen placement and alternate projection depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_l:Z",
+      "originalName": "field_l",
+      "to": "animationAvailable",
+      "evidence": "hr.java: Preview model/animation selection, yaw bounds, screen placement and alternate projection depth.",
       "confidence": "reviewed"
     },
     {
@@ -4483,6 +4630,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mn.field_k:[[Lkk;",
+      "originalName": "field_k",
+      "to": "unitModels",
+      "evidence": "mn.java: UnitModelPreview selects model zero from the unit-type indexed model table.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mn.field_o:I",
       "originalName": "field_o",
       "to": "spellId",
@@ -4585,6 +4739,13 @@
       "originalName": "field_n",
       "to": "metadata",
       "evidence": "ne.java: MapTile tagged decoder, constructors and god metadata accessor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nh.field_D:[Z",
+      "originalName": "field_D",
+      "to": "unitProjectionVariants",
+      "evidence": "nh.java: UnitModelPreview uses the selected unit-type flag to choose its projection depth.",
       "confidence": "reviewed"
     },
     {
@@ -5022,6 +5183,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qb.field_a:[I",
+      "originalName": "field_a",
+      "to": "frameIds",
+      "evidence": "qb.java: Sequence opcode decoder and AnimationPlayer frame/loop consumption; opcode-3/13 data retains qualified names because its finer role is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_b:Z",
+      "originalName": "field_b",
+      "to": "unlimitedLoops",
+      "evidence": "qb.java: Sequence opcode decoder and AnimationPlayer frame/loop consumption; opcode-3/13 data retains qualified names because its finer role is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_d:[I",
+      "originalName": "field_d",
+      "to": "frameDurations",
+      "evidence": "qb.java: Sequence opcode decoder and AnimationPlayer frame/loop consumption; opcode-3/13 data retains qualified names because its finer role is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_e:[[I",
+      "originalName": "field_e",
+      "to": "opcode13Rows",
+      "evidence": "qb.java: Sequence opcode decoder and AnimationPlayer frame/loop consumption; opcode-3/13 data retains qualified names because its finer role is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_g:I",
+      "originalName": "field_g",
+      "to": "loopStartFrame",
+      "evidence": "qb.java: Sequence opcode decoder and AnimationPlayer frame/loop consumption; opcode-3/13 data retains qualified names because its finer role is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_i:[I",
+      "originalName": "field_i",
+      "to": "opcode3Values",
+      "evidence": "qb.java: Sequence opcode decoder and AnimationPlayer frame/loop consumption; opcode-3/13 data retains qualified names because its finer role is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_j:I",
+      "originalName": "field_j",
+      "to": "maximumLoops",
+      "evidence": "qb.java: Sequence opcode decoder and AnimationPlayer frame/loop consumption; opcode-3/13 data retains qualified names because its finer role is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ql.field_b:Lvb;",
       "originalName": "field_b",
       "to": "presenter",
@@ -5225,10 +5435,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rk.field_H:Lem;",
+      "originalName": "field_H",
+      "to": "secondaryIllustrationCounter",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_I:Z",
+      "originalName": "field_I",
+      "to": "nextEnabled",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_L:Lem;",
+      "originalName": "field_L",
+      "to": "progressCounter",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_M:Lhr;",
+      "originalName": "field_M",
+      "to": "secondPreviewModel",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rk.field_N:I",
       "originalName": "field_N",
       "to": "pageIndex",
       "evidence": "rk.java: Instruction table loading, page-sprite caching, sample-unit construction and item-ID-specific navigation/footer bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_O:Ljava/lang/String;",
+      "originalName": "field_O",
+      "to": "footerCaption",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_P:Z",
+      "originalName": "field_P",
+      "to": "footerHighlighted",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_Q:Z",
+      "originalName": "field_Q",
+      "to": "nextHighlighted",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
       "confidence": "reviewed"
     },
     {
@@ -5260,6 +5519,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rk.field_ab:Lvj;",
+      "originalName": "field_ab",
+      "to": "illustrationAnimation",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rk.field_b:Lft;",
       "originalName": "field_b",
       "to": "navigationEnd",
@@ -5274,6 +5540,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rk.field_eb:Ljava/lang/String;",
+      "originalName": "field_eb",
+      "to": "nextCaption",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rk.field_f:I",
       "originalName": "field_f",
       "to": "cachedPageIndex",
@@ -5281,10 +5554,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rk.field_h:Lhr;",
+      "originalName": "field_h",
+      "to": "firstPreviewModel",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_hb:Lhh;",
+      "originalName": "field_hb",
+      "to": "highlightPulse",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_j:Z",
+      "originalName": "field_j",
+      "to": "previousHighlighted",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_k:Ljava/lang/String;",
+      "originalName": "field_k",
+      "to": "previousCaption",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rk.field_n:Lft;",
       "originalName": "field_n",
       "to": "footerEnd",
       "evidence": "rk.java: Instruction table loading, page-sprite caching, sample-unit construction and item-ID-specific navigation/footer bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_o:Z",
+      "originalName": "field_o",
+      "to": "previousEnabled",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
       "confidence": "reviewed"
     },
     {
@@ -5299,6 +5607,20 @@
       "originalName": "field_q",
       "to": "secondPreviewUnit",
       "evidence": "rk.java: Instruction table loading, page-sprite caching, sample-unit construction and item-ID-specific navigation/footer bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_u:Lem;",
+      "originalName": "field_u",
+      "to": "illustrationCounter",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_v:Lhr;",
+      "originalName": "field_v",
+      "to": "auxiliaryPreviewModel",
+      "evidence": "rk.java: Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.",
       "confidence": "reviewed"
     },
     {
@@ -5610,10 +5932,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:up.field_b:[[Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "instructionSectionTitles",
+      "evidence": "up.java: InstructionsPanel indexes these by page and section before drawing its section title.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:up.field_c:[[[[Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "instructionParagraphs",
+      "evidence": "up.java: Page/section/row arrays contain paragraph lines and null illustration-only placeholders.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:up.field_d:Lha;",
       "originalName": "field_d",
       "to": "battlefield",
       "evidence": "up.java: Condition constructor bindings and victory/defeat predicates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:up.field_g:[[[Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "instructionRowHeadings",
+      "evidence": "up.java: InstructionsPanel indexes page/section/row heading strings, including null placeholders.",
       "confidence": "reviewed"
     },
     {
@@ -5761,6 +6104,69 @@
       "originalName": "field_q",
       "to": "position",
       "evidence": "vh.java: Primitive reads/writes increment the byte cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_c:Z",
+      "originalName": "field_c",
+      "to": "frameChanged",
+      "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_d:I",
+      "originalName": "field_d",
+      "to": "completedLoops",
+      "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_e:I",
+      "originalName": "field_e",
+      "to": "ticksRemaining",
+      "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_f:Lqb;",
+      "originalName": "field_f",
+      "to": "sequence",
+      "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_h:I",
+      "originalName": "field_h",
+      "to": "scheduledSlot",
+      "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_i:I",
+      "originalName": "field_i",
+      "to": "frameId",
+      "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_k:[I",
+      "originalName": "field_k",
+      "to": "scheduledDelays",
+      "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_l:[Lqb;",
+      "originalName": "field_l",
+      "to": "scheduledSequences",
+      "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_m:I",
+      "originalName": "field_m",
+      "to": "frameIndex",
+      "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
       "confidence": "reviewed"
     },
     {
@@ -6576,6 +6982,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:hh.b(B)V#0",
+      "originalName": "var2",
+      "to": "halfPhase",
+      "evidence": "hh.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hh.b(B)V#1",
+      "originalName": "var3",
+      "to": "halfPeriod",
+      "evidence": "hh.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hh.b(B)V#2",
+      "originalName": "var4",
+      "to": "risingHalf",
+      "evidence": "hh.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hh.b(B)V#3",
+      "originalName": "var5",
+      "to": "phaseStart",
+      "evidence": "hh.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hh.b(B)V#4",
+      "originalName": "var6",
+      "to": "phaseEnd",
+      "evidence": "hh.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:hw.a(ILha;)Lbd;#0",
       "originalName": "var6",
       "to": "godIndex",
@@ -6664,6 +7105,41 @@
       "originalName": "var5",
       "to": "effectTeamIndex",
       "evidence": "ne.java: Reviewed lexical ordinal and combat power, range, cover, effect-mask or AI net-damage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qb.a(ILvh;I)V#0",
+      "originalName": "array$0",
+      "to": "rowValues",
+      "evidence": "qb.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qb.a(ILvh;I)V#1",
+      "originalName": "var7",
+      "to": "wordIndex",
+      "evidence": "qb.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qb.a(ILvh;I)V#6",
+      "originalName": "var4_int",
+      "to": "elementCount",
+      "evidence": "qb.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qb.a(ILvh;I)V#8",
+      "originalName": "var5",
+      "to": "elementIndex",
+      "evidence": "qb.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qb.a(ILvh;I)V#9",
+      "originalName": "var6",
+      "to": "rowLength",
+      "evidence": "qb.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
       "confidence": "reviewed"
     },
     {
@@ -6811,6 +7287,69 @@
       "originalName": "var13",
       "to": "previewUnit",
       "evidence": "rk.java: Reviewed lexical ordinal and radial layout, hierarchy linking, reverse item lookup or detached preview construction data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.k(I)V#0",
+      "originalName": "var8",
+      "to": "sectionIndex",
+      "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.k(I)V#1",
+      "originalName": "var2",
+      "to": "titles",
+      "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.k(I)V#2",
+      "originalName": "var3",
+      "to": "rowHeadings",
+      "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.k(I)V#3",
+      "originalName": "var4",
+      "to": "paragraphs",
+      "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.k(I)V#4",
+      "originalName": "var5",
+      "to": "illustrationModes",
+      "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.k(I)V#5",
+      "originalName": "var6",
+      "to": "illustrationArguments",
+      "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.k(I)V#6",
+      "originalName": "var7",
+      "to": "topY",
+      "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.k(I)V#7",
+      "originalName": "var9",
+      "to": "sectionHeight",
+      "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.k(I)V#9",
+      "originalName": "var11",
+      "to": "sectionTitles",
+      "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
       "confidence": "reviewed"
     },
     {
@@ -7185,6 +7724,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.a(BI)Z",
+      "originalName": "a",
+      "to": "isItemEnabled",
+      "evidence": "ci.java: Disables instruction previous/next items at the page boundaries; other stages retain their existing availability.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.a(II)I",
       "originalName": "a",
       "to": "getItemRightX",
@@ -7241,10 +7787,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.e(I)V",
+      "originalName": "e",
+      "to": "updateInstructionsPanel",
+      "evidence": "ci.java: Derives previous/next availability from stage item IDs and updates the selected instruction page.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.e(II)Ljava/lang/String;",
       "originalName": "e",
       "to": "getItemText",
       "evidence": "ci.java: Looks up an item text ID and applies its stage/client-state substitutions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.f(I)V",
+      "originalName": "f",
+      "to": "drawInstructionsPanel",
+      "evidence": "ci.java: Draws the initialized instruction panel with its original guards.",
       "confidence": "reviewed"
     },
     {
@@ -7574,6 +8134,27 @@
       "originalName": "b",
       "to": "registerUnitPlanner",
       "evidence": "ej.java: Applies campaign overrides and adds an AI unit planner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.a(Lkl;I)V",
+      "originalName": "a",
+      "to": "loadClientAssets",
+      "evidence": "em.java: Partitioned static asset/configuration loader; unrelated to the instance tick counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.b(I)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "em.java: Clears elapsedTicks, retaining the original noncanonical static-string side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.c(I)Z",
+      "originalName": "c",
+      "to": "advanceAndCheck",
+      "evidence": "em.java: Advances the counter unless the original complement-based guard rejects it; returns whether limit is reached.",
       "confidence": "reviewed"
     },
     {
@@ -8018,6 +8599,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hh.a(I)Z",
+      "originalName": "a",
+      "to": "isRisingHalf",
+      "evidence": "hh.java: Reports whether the counter is at or before half its period.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.a(IBII)V",
+      "originalName": "a",
+      "to": "configure",
+      "evidence": "hh.java: Applies original range/period defaults; maximum fallback can remain below a large minimum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.b(B)V",
+      "originalName": "b",
+      "to": "advance",
+      "evidence": "hh.java: Advances/resets the counter and interpolates/clamps the pulse; half-period zero still divides by zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.c(I)I",
+      "originalName": "c",
+      "to": "getValue",
+      "evidence": "hh.java: Returns a valid byte-range value for the canonical guard, otherwise the original sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hp.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -8029,6 +8638,62 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(B)V",
+      "originalName": "a",
+      "to": "loadSequence",
+      "evidence": "hr.java: Loads the unit-type/animation-index sequence and selects it when available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(BI)V",
+      "originalName": "a",
+      "to": "setUnitType",
+      "evidence": "hr.java: Clamps out-of-range types to zero and selects the first model and projection flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(I)V",
+      "originalName": "a",
+      "to": "installFrameSet",
+      "evidence": "hr.java: Loads the frame set using the high 16 bits of the current packed frame ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(IB)V",
+      "originalName": "a",
+      "to": "selectAnimationAndAdvance",
+      "evidence": "hr.java: Selects the animation, advances one call and installs its frame set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(II)V",
+      "originalName": "a",
+      "to": "selectAnimation",
+      "evidence": "hr.java: Selects an animation index with original invalid-index fallback and sequence loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(IIB)V",
+      "originalName": "a",
+      "to": "setScreenPosition",
+      "evidence": "hr.java: Stores both screen coordinates without clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(ZI)V",
+      "originalName": "a",
+      "to": "setYaw",
+      "evidence": "hr.java: Accepts only yaw values 0 through 2047; preserves the static guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(ZZII)V",
+      "originalName": "a",
+      "to": "drawModel",
+      "evidence": "hr.java: Copies/scales the current unit model and applies animation, yaw, projection and optional highlighting.",
       "confidence": "reviewed"
     },
     {
@@ -8977,6 +9642,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qb.a(ILvh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "qb.java: Reads opcode/payload records until the zero terminator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qb.a(ILvh;I)V",
+      "originalName": "a",
+      "to": "decodeOpcode",
+      "evidence": "qb.java: Decodes frame IDs/durations, loop settings, retained data and consumed legacy fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -9159,6 +9838,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rk.a(BIZZ)V",
+      "originalName": "a",
+      "to": "configureNavigation",
+      "evidence": "rk.java: Clears prior flags, sets previous/next availability and highlights the selected item ID.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rk.a(IB)I",
       "originalName": "a",
       "to": "getItemLeftX",
@@ -9173,6 +9859,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rk.a(Ljava/lang/String;ZIIZI)V",
+      "originalName": "a",
+      "to": "updatePageState",
+      "evidence": "rk.java: Selects a valid page, configures navigation, advances illustration counters and rebuilds page-specific assets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I",
+      "originalName": "a",
+      "to": "drawInstructionSection",
+      "evidence": "rk.java: Draws an optional section title, then its heading/paragraph rows and illustration metadata.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rk.a(ZI)I",
       "originalName": "a",
       "to": "getItemRightX",
@@ -9180,10 +9880,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rk.a([Ljava/lang/String;[[Ljava/lang/String;I[I[IBI)I",
+      "originalName": "a",
+      "to": "drawInstructionRows",
+      "evidence": "rk.java: Draws row headings, paragraphs and illustrations from their parallel arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rk.b(IIII)Ljd;",
       "originalName": "b",
       "to": "createPreviewUnit",
       "evidence": "rk.java: Validates unit type and player palette, then creates a detached unit with base maximum and one-less strength clamped to one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.d(B)V",
+      "originalName": "d",
+      "to": "drawPanel",
+      "evidence": "rk.java: Draws instruction content, navigation and footer when page count has been initialized.",
       "confidence": "reviewed"
     },
     {
@@ -9198,6 +9912,13 @@
       "originalName": "g",
       "to": "getItemTopY",
       "evidence": "rk.java: Selects the navigation or footer Y for IDs 22/23 and 8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.k(I)V",
+      "originalName": "k",
+      "to": "drawPageSections",
+      "evidence": "rk.java: Draws each available section from the parallel instruction tables; retains the special page-9 skip.",
       "confidence": "reviewed"
     },
     {
@@ -9681,6 +10402,41 @@
       "originalName": "k",
       "to": "readUnsignedByte",
       "evidence": "vh.java: Reads the next byte as 0..255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(B)Z",
+      "originalName": "a",
+      "to": "advanceFrame",
+      "evidence": "vj.java: Advances frame index and loop count, honoring finite/unlimited and invalid-loop-start behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(I)Z",
+      "originalName": "a",
+      "to": "advance",
+      "evidence": "vj.java: Advances delays/countdown, changes frames and reports completion; preserves post-completion state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(ILqb;)V",
+      "originalName": "a",
+      "to": "selectSequence",
+      "evidence": "vj.java: Resets frame state, selects frame zero and stores the supplied scheduled-slot value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(Z)V",
+      "originalName": "a",
+      "to": "resetFrameState",
+      "evidence": "vj.java: Resets frame index/ID, countdown and loop count without clearing the selected sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(ZZZLkk;)Lkk;",
+      "originalName": "a",
+      "to": "applyCurrentFrame",
+      "evidence": "vj.java: Copies the supplied model and applies its current packed frame ID using the existing frame set.",
       "confidence": "reviewed"
     },
     {
@@ -10720,6 +11476,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ci.a(BI)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ci.java: Disables instruction previous/next items at the page boundaries; other stages retain their existing availability.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.a(BI)Z#1",
+      "originalName": "param1",
+      "to": "itemIndex",
+      "evidence": "ci.java: Disables instruction previous/next items at the page boundaries; other stages retain their existing availability.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ci.a(II)I#0",
       "originalName": "param0",
       "to": "itemIndex",
@@ -10846,6 +11616,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ci.e(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ci.java: Derives previous/next availability from stage item IDs and updates the selected instruction page.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ci.e(II)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "itemId",
@@ -10857,6 +11634,13 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ci.java: Looks up an item text ID and applies its stage/client-state substitutions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ci.java: Draws the initialized instruction panel with its original guards.",
       "confidence": "reviewed"
     },
     {
@@ -11690,6 +12474,41 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ej.java: Applies campaign overrides and adds an AI unit planner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:em.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "limit",
+      "evidence": "em.java: Stores the limit without clamping zero or negative values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:em.a(Lkl;I)V#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "em.java: Partitioned static asset/configuration loader; unrelated to the instance tick counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:em.a(Lkl;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "em.java: Partitioned static asset/configuration loader; unrelated to the instance tick counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:em.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "em.java: Clears elapsedTicks, retaining the original noncanonical static-string side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:em.c(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "em.java: Advances the counter unless the original complement-based guard rejects it; returns whether limit is reached.",
       "confidence": "reviewed"
     },
     {
@@ -12883,6 +13702,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hh.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "minimum",
+      "evidence": "hh.java: Delegates to pulse configuration with canonical byte guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "maximum",
+      "evidence": "hh.java: Delegates to pulse configuration with canonical byte guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "period",
+      "evidence": "hh.java: Delegates to pulse configuration with canonical byte guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hh.java: Reports whether the counter is at or before half its period.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(IBII)V#0",
+      "originalName": "param0",
+      "to": "minimum",
+      "evidence": "hh.java: Applies original range/period defaults; maximum fallback can remain below a large minimum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(IBII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "hh.java: Applies original range/period defaults; maximum fallback can remain below a large minimum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(IBII)V#2",
+      "originalName": "param2",
+      "to": "maximum",
+      "evidence": "hh.java: Applies original range/period defaults; maximum fallback can remain below a large minimum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(IBII)V#3",
+      "originalName": "param3",
+      "to": "period",
+      "evidence": "hh.java: Applies original range/period defaults; maximum fallback can remain below a large minimum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hh.java: Advances/resets the counter and interpolates/clamps the pulse; half-period zero still divides by zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.c(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hh.java: Returns a valid byte-range value for the canonical guard, otherwise the original sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hp.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -12908,6 +13797,153 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "unitType",
+      "evidence": "hr.java: Creates the preview with default yaw 1792.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.<init>([III)V#0",
+      "originalName": "param0",
+      "to": "unusedColors",
+      "evidence": "hr.java: The original constructor ignores its array and initializes model type and yaw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.<init>([III)V#1",
+      "originalName": "param1",
+      "to": "unitType",
+      "evidence": "hr.java: The original constructor ignores its array and initializes model type and yaw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.<init>([III)V#2",
+      "originalName": "param2",
+      "to": "yaw",
+      "evidence": "hr.java: The original constructor ignores its array and initializes model type and yaw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hr.java: Loads the unit-type/animation-index sequence and selects it when available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hr.java: Clamps out-of-range types to zero and selects the first model and projection flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(BI)V#1",
+      "originalName": "param1",
+      "to": "unitType",
+      "evidence": "hr.java: Clamps out-of-range types to zero and selects the first model and projection flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hr.java: Loads the frame set using the high 16 bits of the current packed frame ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(IB)V#0",
+      "originalName": "param0",
+      "to": "animationIndex",
+      "evidence": "hr.java: Selects the animation, advances one call and installs its frame set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(IB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "hr.java: Selects the animation, advances one call and installs its frame set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hr.java: Selects an animation index with original invalid-index fallback and sequence loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(II)V#1",
+      "originalName": "param1",
+      "to": "animationIndex",
+      "evidence": "hr.java: Selects an animation index with original invalid-index fallback and sequence loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(IIB)V#0",
+      "originalName": "param0",
+      "to": "screenX",
+      "evidence": "hr.java: Stores both screen coordinates without clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(IIB)V#1",
+      "originalName": "param1",
+      "to": "screenY",
+      "evidence": "hr.java: Stores both screen coordinates without clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(IIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "hr.java: Stores both screen coordinates without clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hr.java: Accepts only yaw values 0 through 2047; preserves the static guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "yaw",
+      "evidence": "hr.java: Accepts only yaw values 0 through 2047; preserves the static guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(ZZII)V#0",
+      "originalName": "param0",
+      "to": "copyVariant",
+      "evidence": "hr.java: Copies/scales the current unit model and applies animation, yaw, projection and optional highlighting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(ZZII)V#1",
+      "originalName": "param1",
+      "to": "highlighted",
+      "evidence": "hr.java: Copies/scales the current unit model and applies animation, yaw, projection and optional highlighting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(ZZII)V#2",
+      "originalName": "param2",
+      "to": "screenX",
+      "evidence": "hr.java: Copies/scales the current unit model and applies animation, yaw, projection and optional highlighting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(ZZII)V#3",
+      "originalName": "param3",
+      "to": "screenY",
+      "evidence": "hr.java: Copies/scales the current unit model and applies animation, yaw, projection and optional highlighting.",
       "confidence": "reviewed"
     },
     {
@@ -15158,6 +16194,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qb.a(ILvh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qb.java: Reads opcode/payload records until the zero terminator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(ILvh;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "qb.java: Reads opcode/payload records until the zero terminator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(ILvh;I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qb.java: Decodes frame IDs/durations, loop settings, retained data and consumed legacy fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(ILvh;I)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "qb.java: Decodes frame IDs/durations, loop settings, retained data and consumed legacy fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(ILvh;I)V#2",
+      "originalName": "param2",
+      "to": "opcode",
+      "evidence": "qb.java: Decodes frame IDs/durations, loop settings, retained data and consumed legacy fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qj.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -15627,6 +16698,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rk.a(BIZZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rk.java: Clears prior flags, sets previous/next availability and highlights the selected item ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(BIZZ)V#1",
+      "originalName": "param1",
+      "to": "selectedItem",
+      "evidence": "rk.java: Clears prior flags, sets previous/next availability and highlights the selected item ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(BIZZ)V#2",
+      "originalName": "param2",
+      "to": "nextEnabled",
+      "evidence": "rk.java: Clears prior flags, sets previous/next availability and highlights the selected item ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(BIZZ)V#3",
+      "originalName": "param3",
+      "to": "previousEnabled",
+      "evidence": "rk.java: Clears prior flags, sets previous/next availability and highlights the selected item ID.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rk.a(IB)I#0",
       "originalName": "param0",
       "to": "itemIndex",
@@ -15655,6 +16754,104 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rk.a(Ljava/lang/String;ZIIZI)V#0",
+      "originalName": "param0",
+      "to": "footerCaption",
+      "evidence": "rk.java: Selects a valid page, configures navigation, advances illustration counters and rebuilds page-specific assets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;ZIIZI)V#1",
+      "originalName": "param1",
+      "to": "previousEnabled",
+      "evidence": "rk.java: Selects a valid page, configures navigation, advances illustration counters and rebuilds page-specific assets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;ZIIZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "rk.java: Selects a valid page, configures navigation, advances illustration counters and rebuilds page-specific assets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;ZIIZI)V#3",
+      "originalName": "param3",
+      "to": "selectedItem",
+      "evidence": "rk.java: Selects a valid page, configures navigation, advances illustration counters and rebuilds page-specific assets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;ZIIZI)V#4",
+      "originalName": "param4",
+      "to": "nextEnabled",
+      "evidence": "rk.java: Selects a valid page, configures navigation, advances illustration counters and rebuilds page-specific assets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;ZIIZI)V#5",
+      "originalName": "param5",
+      "to": "pageIndex",
+      "evidence": "rk.java: Selects a valid page, configures navigation, advances illustration counters and rebuilds page-specific assets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I#0",
+      "originalName": "param0",
+      "to": "title",
+      "evidence": "rk.java: Draws an optional section title, then its heading/paragraph rows and illustration metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I#1",
+      "originalName": "param1",
+      "to": "paragraphs",
+      "evidence": "rk.java: Draws an optional section title, then its heading/paragraph rows and illustration metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I#2",
+      "originalName": "param2",
+      "to": "sectionIndex",
+      "evidence": "rk.java: Draws an optional section title, then its heading/paragraph rows and illustration metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I#3",
+      "originalName": "param3",
+      "to": "illustrationModes",
+      "evidence": "rk.java: Draws an optional section title, then its heading/paragraph rows and illustration metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I#4",
+      "originalName": "param4",
+      "to": "topY",
+      "evidence": "rk.java: Draws an optional section title, then its heading/paragraph rows and illustration metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "rk.java: Draws an optional section title, then its heading/paragraph rows and illustration metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I#6",
+      "originalName": "param6",
+      "to": "rowHeadings",
+      "evidence": "rk.java: Draws an optional section title, then its heading/paragraph rows and illustration metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I#7",
+      "originalName": "param7",
+      "to": "illustrationArguments",
+      "evidence": "rk.java: Draws an optional section title, then its heading/paragraph rows and illustration metadata.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rk.a(ZI)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -15666,6 +16863,55 @@
       "originalName": "param1",
       "to": "itemIndex",
       "evidence": "rk.java: Returns navigation/footer right X, with item 22 stopping before the surface midpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a([Ljava/lang/String;[[Ljava/lang/String;I[I[IBI)I#0",
+      "originalName": "param0",
+      "to": "headings",
+      "evidence": "rk.java: Draws row headings, paragraphs and illustrations from their parallel arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a([Ljava/lang/String;[[Ljava/lang/String;I[I[IBI)I#1",
+      "originalName": "param1",
+      "to": "paragraphs",
+      "evidence": "rk.java: Draws row headings, paragraphs and illustrations from their parallel arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a([Ljava/lang/String;[[Ljava/lang/String;I[I[IBI)I#2",
+      "originalName": "param2",
+      "to": "topY",
+      "evidence": "rk.java: Draws row headings, paragraphs and illustrations from their parallel arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a([Ljava/lang/String;[[Ljava/lang/String;I[I[IBI)I#3",
+      "originalName": "param3",
+      "to": "illustrationModes",
+      "evidence": "rk.java: Draws row headings, paragraphs and illustrations from their parallel arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a([Ljava/lang/String;[[Ljava/lang/String;I[I[IBI)I#4",
+      "originalName": "param4",
+      "to": "illustrationArguments",
+      "evidence": "rk.java: Draws row headings, paragraphs and illustrations from their parallel arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a([Ljava/lang/String;[[Ljava/lang/String;I[I[IBI)I#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "rk.java: Draws row headings, paragraphs and illustrations from their parallel arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a([Ljava/lang/String;[[Ljava/lang/String;I[I[IBI)I#6",
+      "originalName": "param6",
+      "to": "sectionIndex",
+      "evidence": "rk.java: Draws row headings, paragraphs and illustrations from their parallel arrays.",
       "confidence": "reviewed"
     },
     {
@@ -15697,6 +16943,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rk.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rk.java: Draws instruction content, navigation and footer when page count has been initialized.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rk.e(B)Lft;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -15715,6 +16968,13 @@
       "originalName": "param1",
       "to": "itemIndex",
       "evidence": "rk.java: Selects the navigation or footer Y for IDs 22/23 and 8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.k(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rk.java: Draws each available section from the parallel instruction tables; retains the special page-9 skip.",
       "confidence": "reviewed"
     },
     {
@@ -16978,6 +18238,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vj.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "scheduledCapacity",
+      "evidence": "vj.java: Creates parallel sequence/delay ring arrays and starts scheduledSlot at -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vj.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vj.java: Advances frame index and loop count, honoring finite/unlimited and invalid-loop-start behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vj.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vj.java: Advances delays/countdown, changes frames and reports completion; preserves post-completion state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vj.a(ILqb;)V#0",
+      "originalName": "param0",
+      "to": "scheduledSlot",
+      "evidence": "vj.java: Resets frame state, selects frame zero and stores the supplied scheduled-slot value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vj.a(ILqb;)V#1",
+      "originalName": "param1",
+      "to": "sequence",
+      "evidence": "vj.java: Resets frame state, selects frame zero and stores the supplied scheduled-slot value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vj.a(Z)V#0",
+      "originalName": "param0",
+      "to": "frameChanged",
+      "evidence": "vj.java: Resets frame index/ID, countdown and loop count without clearing the selected sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vj.a(ZZZLkk;)Lkk;#0",
+      "originalName": "param0",
+      "to": "copyVariant",
+      "evidence": "vj.java: Copies the supplied model and applies its current packed frame ID using the existing frame set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vj.a(ZZZLkk;)Lkk;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "vj.java: Copies the supplied model and applies its current packed frame ID using the existing frame set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vj.a(ZZZLkk;)Lkk;#2",
+      "originalName": "param2",
+      "to": "frameVariant",
+      "evidence": "vj.java: Copies the supplied model and applies its current packed frame ID using the existing frame set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vj.a(ZZZLkk;)Lkk;#3",
+      "originalName": "param3",
+      "to": "model",
+      "evidence": "vj.java: Copies the supplied model and applies its current packed frame ID using the existing frame set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vn.a(IIIZIZ)V#0",
       "originalName": "param0",
       "to": "inputValue",
@@ -17210,9 +18540,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "1994e403705a35c77543b848b5fdca29ee1d32861849601432501b704ea4c165",
+      "build-armiesofgielinor-rules.mjs": "3f44dc81f45ab2744071326f46ac831965df6532cc9e78d8352c2ce032129ded",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "ac50ebcd57f22f04bd31bb45bc8626246c5618d2b4a2f7bbcc190e73f272b982",
+      "tests/test-armiesofgielinor-core.mjs": "d4dcc992e62de7d6ef42ff8ab6369ce1e9e44a7c4a2088ac4b495024e115dea3",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

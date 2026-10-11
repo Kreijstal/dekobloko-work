@@ -100,6 +100,11 @@ const classes = {
   dm:['MatchSetupPanel','Tutorial stage-5 match options: player counts, map size, preview choices, item labels and per-item geometry.'],
   rk:['InstructionsPanel','Tutorial stage-7 instruction pages, text tables, illustrative unit previews and navigation/footer geometry.'],
   ft:['IntPair','Two integer components used as both positions and dimensions by panel layout helpers; retains its intrusive-node links and unrelated static helpers.'],
+  em:['TickCounter','Instance counts calls up to a limit and resets; unrelated static methods load client assets and handle client messages.'],
+  hh:['TrianglePulse','Interpolates an integer pulse over two halves of a TickCounter period, with original byte-range defaults/clamps.'],
+  qb:['AnimationSequence','Opcode-decoded packed frame IDs, durations, loop start/count and additional retained sequence data.'],
+  vj:['AnimationPlayer','Current sequence/frame/countdown with an optional delayed ring of sequence slots.'],
+  hr:['UnitModelPreview','Unit-model selection, yaw, screen position, animation player and projection used by instruction illustrations.'],
   tc:['IntrusiveNode','Two node links and unlink update both neighbours.'],
   at:['NodeDeque','Sentinel node, prepend/append, pop and bidirectional traversal.'],
   vh:['PacketBuffer','Byte payload, cursor and primitive read/write methods.'],
@@ -797,6 +802,76 @@ for(const [owner,signature,items] of [
   ['rk','b(IIII)Ljd;',[[0,'var5','tileX'],[1,'var6','tileY'],[2,'var7','maximumStrength'],[3,'var8','strength'],[4,'var9','packedStatusFlags'],[5,'var10','bonusStrength'],[6,'var11','battlefield'],[7,'var12','detached'],[8,'var13','previewUnit']]],
 ])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and radial layout, hierarchy linking, reverse item lookup or detached preview construction data flow.');
 
+field('up','b','[[Ljava/lang/String;','instructionSectionTitles','InstructionsPanel indexes these by page and section before drawing its section title.');
+field('up','g','[[[Ljava/lang/String;','instructionRowHeadings','InstructionsPanel indexes page/section/row heading strings, including null placeholders.');
+field('up','c','[[[[Ljava/lang/String;','instructionParagraphs','Page/section/row arrays contain paragraph lines and null illustration-only placeholders.');
+field('go','f','[[[I','instructionIllustrationModes','InstructionsPanel dispatches these per-page/section/row mode values to illustration layout.');
+field('da','a','[[[I','instructionIllustrationArguments','Parallel per-row arguments select illustrated types/variants; negative markers retain their original meaning.');
+method('rk','k','(I)V','drawPageSections','Draws each available section from the parallel instruction tables; retains the special page-9 skip.',{0:'obfuscationGuard'});
+method('rk','a','(Ljava/lang/String;[[Ljava/lang/String;I[III[Ljava/lang/String;[I)I','drawInstructionSection','Draws an optional section title, then its heading/paragraph rows and illustration metadata.',{0:'title',1:'paragraphs',2:'sectionIndex',3:'illustrationModes',4:'topY',5:'obfuscationGuard',6:'rowHeadings',7:'illustrationArguments'});
+method('rk','a','([Ljava/lang/String;[[Ljava/lang/String;I[I[IBI)I','drawInstructionRows','Draws row headings, paragraphs and illustrations from their parallel arrays.',{0:'headings',1:'paragraphs',2:'topY',3:'illustrationModes',4:'illustrationArguments',5:'obfuscationGuard',6:'sectionIndex'});
+for(const [original,to,type] of [
+  ['hb','highlightPulse','Lhh;'],['u','illustrationCounter','Lem;'],['H','secondaryIllustrationCounter','Lem;'],['L','progressCounter','Lem;'],['ab','illustrationAnimation','Lvj;'],
+  ['h','firstPreviewModel','Lhr;'],['M','secondPreviewModel','Lhr;'],['v','auxiliaryPreviewModel','Lhr;'],
+  ['o','previousEnabled','Z'],['I','nextEnabled','Z'],['j','previousHighlighted','Z'],['Q','nextHighlighted','Z'],['P','footerHighlighted','Z'],
+  ['O','footerCaption','Ljava/lang/String;'],['k','previousCaption','Ljava/lang/String;'],['eb','nextCaption','Ljava/lang/String;'],
+])field('rk',original,type,to,'Instruction page setup, illustration updates and navigation drawing; TutorialController passes availability for item IDs 22/23 and selection highlights ID 8 in the footer.');
+method('rk','a','(BIZZ)V','configureNavigation','Clears prior flags, sets previous/next availability and highlights the selected item ID.',{0:'obfuscationGuard',1:'selectedItem',2:'nextEnabled',3:'previousEnabled'});
+method('rk','a','(Ljava/lang/String;ZIIZI)V','updatePageState','Selects a valid page, configures navigation, advances illustration counters and rebuilds page-specific assets.',{0:'footerCaption',1:'previousEnabled',2:'obfuscationGuard',3:'selectedItem',4:'nextEnabled',5:'pageIndex'});
+method('rk','d','(B)V','drawPanel','Draws instruction content, navigation and footer when page count has been initialized.',{0:'obfuscationGuard'});
+method('ci','a','(BI)Z','isItemEnabled','Disables instruction previous/next items at the page boundaries; other stages retain their existing availability.',{0:'obfuscationGuard',1:'itemIndex'});
+method('ci','e','(I)V','updateInstructionsPanel','Derives previous/next availability from stage item IDs and updates the selected instruction page.',{0:'obfuscationGuard'});
+method('ci','f','(I)V','drawInstructionsPanel','Draws the initialized instruction panel with its original guards.',{0:'obfuscationGuard'});
+field('em','a','I','elapsedTicks','advanceAndCheck increments this once; reset clears it and constructor starts at zero.');
+field('em','f','I','limit','Counter completion compares elapsedTicks against this unchanged constructor argument.');
+method('em','c','(I)Z','advanceAndCheck','Advances the counter unless the original complement-based guard rejects it; returns whether limit is reached.',{0:'obfuscationGuard'});
+method('em','b','(I)V','reset','Clears elapsedTicks, retaining the original noncanonical static-string side effect.',{0:'obfuscationGuard'});
+method('em','a','(Lkl;I)V','loadClientAssets','Partitioned static asset/configuration loader; unrelated to the instance tick counter.',{0:'archive',1:'obfuscationGuard'});
+constructorParameters('em','(I)V',['limit'],'Stores the limit without clamping zero or negative values.');
+for(const [original,to,type] of [['k','counter','Lem;'],['h','minimum','I'],['b','maximum','I'],['g','value','I']])field('hh',original,type,to,'Pulse initialization, two-half integer interpolation and ordered minimum/maximum clamp assignments.');
+method('hh','a','(IBII)V','configure','Applies original range/period defaults; maximum fallback can remain below a large minimum.',{0:'minimum',1:'obfuscationGuard',2:'maximum',3:'period'});
+method('hh','b','(B)V','advance','Advances/resets the counter and interpolates/clamps the pulse; half-period zero still divides by zero.',{0:'obfuscationGuard'});
+method('hh','a','(I)Z','isRisingHalf','Reports whether the counter is at or before half its period.',{0:'obfuscationGuard'});
+method('hh','c','(I)I','getValue','Returns a valid byte-range value for the canonical guard, otherwise the original sentinels.',{0:'obfuscationGuard'});
+constructorParameters('hh','(III)V',['minimum','maximum','period'],'Delegates to pulse configuration with canonical byte guard.');
+for(const [original,to,type] of [
+  ['a','frameIds','[I'],['d','frameDurations','[I'],['g','loopStartFrame','I'],['j','maximumLoops','I'],['b','unlimitedLoops','Z'],
+  ['i','opcode3Values','[I'],['e','opcode13Rows','[[I'],
+])field('qb',original,type,to,'Sequence opcode decoder and AnimationPlayer frame/loop consumption; opcode-3/13 data retains qualified names because its finer role is unresolved.');
+method('qb','a','(ILvh;)V','decode','Reads opcode/payload records until the zero terminator.',{0:'obfuscationGuard',1:'packet'});
+method('qb','a','(ILvh;I)V','decodeOpcode','Decodes frame IDs/durations, loop settings, retained data and consumed legacy fields.',{0:'obfuscationGuard',1:'packet',2:'opcode'});
+for(const [original,to,type] of [
+  ['f','sequence','Lqb;'],['m','frameIndex','I'],['i','frameId','I'],['e','ticksRemaining','I'],['d','completedLoops','I'],
+  ['c','frameChanged','Z'],['l','scheduledSequences','[Lqb;'],['k','scheduledDelays','[I'],['h','scheduledSlot','I'],
+])field('vj',original,type,to,'Sequence selection, per-call frame countdown and delayed sequence-ring consumption.');
+method('vj','a','(I)Z','advance','Advances delays/countdown, changes frames and reports completion; preserves post-completion state.',{0:'obfuscationGuard'});
+method('vj','a','(B)Z','advanceFrame','Advances frame index and loop count, honoring finite/unlimited and invalid-loop-start behavior.',{0:'obfuscationGuard'});
+method('vj','a','(Z)V','resetFrameState','Resets frame index/ID, countdown and loop count without clearing the selected sequence.',{0:'frameChanged'});
+method('vj','a','(ILqb;)V','selectSequence','Resets frame state, selects frame zero and stores the supplied scheduled-slot value.',{0:'scheduledSlot',1:'sequence'});
+method('vj','a','(ZZZLkk;)Lkk;','applyCurrentFrame','Copies the supplied model and applies its current packed frame ID using the existing frame set.',{0:'copyVariant',1:'obfuscationGuard',2:'frameVariant',3:'model'});
+constructorParameters('vj','(I)V',['scheduledCapacity'],'Creates parallel sequence/delay ring arrays and starts scheduledSlot at -1.');
+for(const [original,to,type] of [
+  ['a','model','Lgd;'],['c','unitType','I'],['f','animationIndex','I'],['j','yaw','I'],['e','screenPosition','[I'],
+  ['g','animationPlayer','Lvj;'],['l','animationAvailable','Z'],['k','projectionVariant','Z'],
+])field('hr',original,type,to,'Preview model/animation selection, yaw bounds, screen placement and alternate projection depth.');
+field('mn','k','[[Lkk;','unitModels','UnitModelPreview selects model zero from the unit-type indexed model table.');
+field('nh','D','[Z','unitProjectionVariants','UnitModelPreview uses the selected unit-type flag to choose its projection depth.');
+method('hr','a','(BI)V','setUnitType','Clamps out-of-range types to zero and selects the first model and projection flag.',{0:'obfuscationGuard',1:'unitType'});
+method('hr','a','(ZI)V','setYaw','Accepts only yaw values 0 through 2047; preserves the static guard side effect.',{0:'obfuscationGuard',1:'yaw'});
+method('hr','a','(IIB)V','setScreenPosition','Stores both screen coordinates without clamping.',{0:'screenX',1:'screenY',2:'obfuscationGuard'});
+method('hr','a','(II)V','selectAnimation','Selects an animation index with original invalid-index fallback and sequence loading.',{0:'obfuscationGuard',1:'animationIndex'});
+method('hr','a','(IB)V','selectAnimationAndAdvance','Selects the animation, advances one call and installs its frame set.',{0:'animationIndex',1:'obfuscationGuard'});
+method('hr','a','(B)V','loadSequence','Loads the unit-type/animation-index sequence and selects it when available.',{0:'obfuscationGuard'});
+method('hr','a','(I)V','installFrameSet','Loads the frame set using the high 16 bits of the current packed frame ID.',{0:'obfuscationGuard'});
+method('hr','a','(ZZII)V','drawModel','Copies/scales the current unit model and applies animation, yaw, projection and optional highlighting.',{0:'copyVariant',1:'highlighted',2:'screenX',3:'screenY'});
+constructorParameters('hr','(I)V',['unitType'],'Creates the preview with default yaw 1792.');
+constructorParameters('hr','([III)V',['unusedColors','unitType','yaw'],'The original constructor ignores its array and initializes model type and yaw.');
+for(const [owner,signature,items] of [
+  ['hh','b(B)V',[[0,'var2','halfPhase'],[1,'var3','halfPeriod'],[2,'var4','risingHalf'],[3,'var5','phaseStart'],[4,'var6','phaseEnd']]],
+  ['qb','a(ILvh;I)V',[[0,'array$0','rowValues'],[1,'var7','wordIndex'],[6,'var4_int','elementCount'],[8,'var5','elementIndex'],[9,'var6','rowLength']]],
+  ['rk','k(I)V',[[0,'var8','sectionIndex'],[1,'var2','titles'],[2,'var3','rowHeadings'],[3,'var4','paragraphs'],[4,'var5','illustrationModes'],[5,'var6','illustrationArguments'],[6,'var7','topY'],[7,'var9','sectionHeight'],[9,'var11','sectionTitles']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.');
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -887,6 +962,8 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('sc')} / ${link('bv')} / ${link('ga')} | Tagged version-2 map records, bit cursors and ISAAC ciphered opcodes. |`,
     `| ${link('ci')} → ${link('bo')} / ${link('dl')} | Tutorial stages, centered stage layout, keyboard/pointer selection, prompts and flashing controls. |`,
     `| ${link('rg')} / ${link('dm')} / ${link('rk')} | Nested spell-menu choices, match setup options and instruction-page layout/illustrations. |`,
+    `| ${link('hr')} → ${link('vj')} / ${link('qb')} | Unit-model previews, animation playback and opcode-decoded frame sequences. |`,
+    `| ${link('em')} / ${link('hh')} | Tick-based counters and triangular highlight pulses. |`,
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
     'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
     'Combat payloads now name attacker/defender positions, offsets, damage, death flags and animation counts. The central consequence routine names its attacker/defender and healing/poison locals. Unit movement-spent and attacks-remaining state are separate; spell status and equipment descriptors are also separate. `SpellCastEvent` replaces the earlier trinket label: its legacy diagnostic says Trinketused, but the concrete implementations read the spell definition table.','',
@@ -898,15 +975,17 @@ export function buildArmiesGuide(rules,mapping) {
     '`TutorialLayout` stores 29 stage layouts and centers coordinates on the original 640 by 480 surface. Setters accept current surface coordinates; odd negative size differences retain arithmetic-shift rounding. `UiSelectionState` is shared with other menus: it tracks selected index, pointer presses, repeat countdown and captured keys. Navigation wraps within item count; pointer presses suppress keyboard/programmatic changes until release. Internal key IDs and their existing guard effects remain unchanged; the pass does not assign unverified physical key names.', '',
     '`SpellMenuGroup` forms the original 36-group tree with 27 leaves covering all 135 spell IDs. Branches link each child to its parent/index; leaves register in spellMenuById. Constructors retain supplied arrays, and duplicate IDs overwrite the lookup with the last leaf. Icons and descriptions are separate from spell effects. MatchSetupPanel exposes stage-5 option validation, localized item labels and geometry; selectedPreviewIndex and option33Enabled describe their observed roles without inventing finer gameplay encodings. InstructionsPanel exposes stage-7 instruction rows, page state and detached illustrative units. IntPair deliberately names its components first/second because callers use the same type for both positions and dimensions.', '',
     'Panel geometry preserves component-wise minima/maxima, centered coordinates, missing-bound sentinels and unusual negative heights. Setup options validate player, computer, map-size and selection fields independently; invalid values retain current state. Instruction preview units use base strength minus one, clamped to one, and skip tile placement. The core probe runs the actual spell hierarchy builder and panel accessors. Its client shim preserves the Applet subtype for bytecode verification without constructing the client; this still does not initialize the full UI or load instruction fonts/illustrations.', '',
+    'Instruction text tables now name page/section titles, row headings, paragraph lines and parallel illustration modes/arguments. updateInstructionsPanel derives previous/next availability at the page boundaries; configureNavigation clears old state and highlights the selected item. UnitModelPreview identifies model/yaw/screen state and the animation path behind illustrative units. AnimationSequence decodes packed frame IDs, durations and loop settings; opcode3Values/opcode13Rows deliberately retain qualified names where finer meanings are unresolved.', '',
+    'AnimationPlayer preserves countdown boundaries, finite/unlimited loops, invalid loop-start fallback and the last frame ID after completion. Its retained delayed-ring branch is tested with reflection-populated slots; this does not establish that normal gameplay fills that ring. TickCounter counts calls and preserves guard checks and Java integer wrapping. TrianglePulse keeps its original byte-range defaults, ordered clamps, odd-period endpoint duplication and zero-half-period division errors. For example, a requested maximum of 256 falls back to 224. These observed edge cases are documented and tested rather than changed by the naming pass. Model-preview setter fixtures do not prove full mesh rendering, asset loading or complete instruction-page execution.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, spell-menu hierarchy, setup option validation, instruction bounds and preview units, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, spell-menu hierarchy, setup option validation, instruction bounds and preview units, instruction table shapes/navigation, animation decoding/playback, timing pulses and model-preview setters, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:9,
+    const rules={schema:1,game:'armiesofgielinor',version:10,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
