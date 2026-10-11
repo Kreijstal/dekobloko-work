@@ -96,6 +96,10 @@ const classes = {
   ga:['IsaacRandom','256-word ISAAC state, golden-ratio seed mixing and opcode cipher output.'],
   bo:['TutorialLayout','Five 29-entry arrays store stage positions and spacing; accessors center coordinates on a 640 by 480 reference surface. Static helpers also decode spells.'],
   dl:['UiSelectionState','Shared tutorial/menu selection, keyboard input, pointer press state and repeat countdown; also used outside the tutorial.'],
+  rg:['SpellMenuGroup','Nested spell-menu groups with icons, labels, descriptions, parent/child indices and leaf spell-ID lists.'],
+  dm:['MatchSetupPanel','Tutorial stage-5 match options: player counts, map size, preview choices, item labels and per-item geometry.'],
+  rk:['InstructionsPanel','Tutorial stage-7 instruction pages, text tables, illustrative unit previews and navigation/footer geometry.'],
+  ft:['IntPair','Two integer components used as both positions and dimensions by panel layout helpers; retains its intrusive-node links and unrelated static helpers.'],
   tc:['IntrusiveNode','Two node links and unlink update both neighbours.'],
   at:['NodeDeque','Sentinel node, prepend/append, pop and bidirectional traversal.'],
   vh:['PacketBuffer','Byte payload, cursor and primitive read/write methods.'],
@@ -734,6 +738,65 @@ method('ci','d','(II)I','getItemHeight','Default height 30, stage-16 height 20, 
 method('ci','e','(II)Ljava/lang/String;','getItemText','Looks up an item text ID and applies its stage/client-state substitutions.',{0:'itemId',1:'obfuscationGuard'});
 method('ci','b','(ZII)V','drawStageItem','Draws the item text, highlight palette, optional icon and volume percentage bars.',{0:'highlighted',1:'itemIndex',2:'obfuscationGuard'});
 
+field('ft','k','I','first','Constructor stores the first component, used for X coordinates or widths by layout callers.');
+field('ft','n','I','second','Constructor stores the second component, used for Y coordinates or heights by layout callers.');
+constructorParameters('ft','(II)V',['first','second'],'The pair constructor stores both components unchanged.');
+for(const [original,to,type] of [
+  ['f','iconIndex','I'],['c','icon','Lwk;'],['k','label','Ljava/lang/String;'],['g','description','Ljava/lang/String;'],
+  ['j','parent','Lrg;'],['e','indexInParent','I'],['a','children','[Lrg;'],['i','spellIds','[I'],
+])field('rg',original,type,to,'SpellMenuGroup constructors link child groups or register leaf spell IDs; radial rendering uses these icons and labels.');
+field('ct','o','[Lrg;','spellMenuById','Leaf SpellMenuGroup constructors register each of their spell IDs in this lookup.');
+field('bm','D','Lrg;','spellMenuRoot','ul builds the complete spell-menu hierarchy here.');
+field('ts','j','Lrg;','currentSpellMenu','Tutorial spell selection reads this group, its parent and its leaf/child entries.');
+constructorParameters('rg','(ILjava/lang/String;Ljava/lang/String;[I)V',['iconIndex','label','description','spellIds'],'Leaf constructor stores icon/labels and registers spell IDs; it retains the supplied array.');
+constructorParameters('rg','(ILjava/lang/String;Ljava/lang/String;[Lrg;)V',['iconIndex','label','description','children'],'Branch constructor assigns each child parent and index, retaining the supplied array.');
+method('ul','a','(I)V','buildSpellMenu','Constructs the complete nested menu; the caller supplies spell ID 17 for the final entry in the first weakness group.',{0:'finalWeaknessSpellId'});
+method('rg','a','(IIIILci;II)I','drawRadialMenu','Draws children or leaf spells around a circle and returns the hovered selection code.',{0:'transition',1:'selectionFade',2:'horizontalOffset',3:'obfuscationGuard',4:'unusedTutorial',5:'previousSelection',6:'selectedChild'});
+field('kr','E','Ldm;','matchSetupPanel','Stage-5 tutorial layout/text methods delegate to this initialized panel.');
+field('kr','G','Lrk;','instructionsPanel','Stage-7 tutorial layout/text methods delegate to the instruction-page panel.');
+for(const [original,to,type] of [
+  ['N','itemIds','[I'],['j','itemIndexById','[I'],['t','itemLabels','[Ljava/lang/String;'],
+  ['i','itemStarts','[Lft;'],['T','itemEnds','[Lft;'],['r','selectedIndex','I'],
+  ['e','playerCount','I'],['I','computerPlayerCount','I'],['E','mapSizeSetting','I'],
+  ['K','selectedPreviewIndex','I'],['v','option33Enabled','Z'],['q','previewSize','Lft;'],['l','previewRowSpacing','I'],
+])field('dm',original,type,to,'Panel option setter, caption dispatch, item-ID lookup and item-bound accessors establish these roles; option 33 and preview encodings remain qualified.');
+method('dm','a','(IBIIZIILjava/lang/String;)V','setOptions','Validates selection/count/size fields independently, then applies a nonempty start-caption override.',{0:'selectedIndex',1:'obfuscationGuard',2:'mapSizeSetting',3:'previewIndex',4:'option33Enabled',5:'computerPlayerCount',6:'playerCount',7:'startCaption'});
+method('dm','j','(I)V','resetOptions','Resets selection, two-player count, size, computers, preview and option 33.',{0:'obfuscationGuard'});
+method('dm','a','(I)V','initializeItemIds','Builds the setup item-ID table, including the four consecutive preview choices.',{0:'obfuscationGuard'});
+method('dm','a','(B)V','buildItemIndex','Builds ID-to-index lookup with -1 for missing IDs; duplicate IDs retain the last index.',{0:'obfuscationGuard'});
+method('dm','b','(II)I','findItemIndex','Looks up an item ID; preserves the original complement-based guard check.',{0:'obfuscationGuard',1:'itemId'});
+method('dm','a','(Ljava/lang/String;B)V','setStartCaption','Updates item 7 only for a nonnull, nonempty caption and an available lookup/label table.',{0:'caption',1:'obfuscationGuard'});
+method('dm','e','(B)V','loadItemLabels','Copies valid localized labels and the final preview heading from the source table.',{0:'obfuscationGuard'});
+method('dm','i','(I)V','initializePanel','Sets default bounds, item IDs, geometry, options and transient panel state.',{0:'obfuscationGuard'});
+method('dm','a','(IZ)I','getItemLeftX','Returns centered item start X or sentinel 1 for missing/negative coordinates.',{0:'itemIndex',1:'obfuscationGuard'});
+method('dm','b','(ZI)I','getItemRightX','Returns centered item end X or sentinel 1; a false guard can return 39.',{0:'obfuscationGuard',1:'itemIndex'});
+method('dm','a','(II)I','getItemTopY','Returns centered item start Y or sentinel 1; preserves the noncanonical guard return.',{0:'itemIndex',1:'obfuscationGuard'});
+method('dm','a','(ZI)I','getItemHeight','Returns positive raw end Y minus start Y, otherwise sentinel 1.',{0:'obfuscationGuard',1:'itemIndex'});
+method('dm','b','(B)Lft;','getPanelStart','Returns component-wise nonnegative minima from itemStarts; incomplete bounds return (1,1).',{0:'obfuscationGuard'});
+method('dm','h','(B)Lft;','getPanelEnd','Returns component-wise nonnegative maxima from itemEnds; incomplete bounds return (1,1).',{0:'obfuscationGuard'});
+method('dm','h','(I)I','getPreviewRowHeight','Adds the preview height and spacing, preserving negative/overflow sentinel handling.',{0:'obfuscationGuard'});
+for(const [original,to,type] of [
+  ['w','itemIds','[I'],['N','pageIndex','I'],['p','pageCount','I'],['X','cachedPageSprites','[Lwk;'],['f','cachedPageIndex','I'],
+  ['Z','footerStart','Lft;'],['n','footerEnd','Lft;'],['R','navigationStart','Lft;'],['b','navigationEnd','Lft;'],
+  ['d','firstPreviewUnit','Ljd;'],['q','secondPreviewUnit','Ljd;'],['W','auxiliaryPreviewUnit','Ljd;'],
+])field('rk',original,type,to,'Instruction table loading, page-sprite caching, sample-unit construction and item-ID-specific navigation/footer bounds.');
+method('rk','n','(I)V','initializePanel','Sets page zero, missing page count, default navigation/footer bounds and item IDs, then clears interaction flags.',{0:'obfuscationGuard'});
+method('rk','b','(IIII)Ljd;','createPreviewUnit','Validates unit type and player palette, then creates a detached unit with base maximum and one-less strength clamped to one.',{0:'unitType',1:'obfuscationGuard',2:'unusedValue',3:'playerId'});
+method('rk','a','(IB)I','getItemLeftX','Returns navigation/footer left X, with item 23 centered on the surface.',{0:'itemIndex',1:'obfuscationGuard'});
+method('rk','a','(ZI)I','getItemRightX','Returns navigation/footer right X, with item 22 stopping before the surface midpoint.',{0:'obfuscationGuard',1:'itemIndex'});
+method('rk','g','(II)I','getItemTopY','Selects the navigation or footer Y for IDs 22/23 and 8.',{0:'obfuscationGuard',1:'itemIndex'});
+method('rk','a','(IZ)I','getItemHeight','Returns the selected row end Y minus start Y, preserving negative heights.',{0:'itemIndex',1:'obfuscationGuard'});
+method('rk','e','(B)Lft;','getPanelStart','Returns minima of navigation/footer starts, requiring all four bounds.',{0:'obfuscationGuard'});
+method('rk','a','(B)Lft;','getPanelEnd','Returns maxima of navigation/footer ends, requiring all four bounds.',{0:'obfuscationGuard'});
+method('rk','o','(I)I','getRowSpacing','Returns the difference between row start Y coordinates when both are valid and distinct.',{0:'obfuscationGuard'});
+for(const [owner,signature,items] of [
+  ['rg','a(IIIILci;II)I',[[15,'var8_int','angularPhase'],[17,'var9','hoveredSelection'],[18,'var10','extraRadius'],[19,'var11','opacity'],[20,'var12','entryCount'],[21,'var13','spellIndex'],[22,'var14','iconX'],[23,'var15','iconY'],[24,'var16','branchControl'],[25,'var17','childIndex']]],
+  ['rg','<init>(ILjava/lang/String;Ljava/lang/String;[I)V',[[0,'var5_int','spellIndex']]],
+  ['rg','<init>(ILjava/lang/String;Ljava/lang/String;[Lrg;)V',[[0,'var5_int','childIndex']]],
+  ['dm','a(B)V',[[0,'var2','maximumId'],[1,'var3','maximumScanIndex'],[2,'var4','itemId'],[3,'var3Lifetime1','lookupIndex'],[4,'var3Lifetime2','itemIndex']]],
+  ['rk','b(IIII)Ljd;',[[0,'var5','tileX'],[1,'var6','tileY'],[2,'var7','maximumStrength'],[3,'var8','strength'],[4,'var9','packedStatusFlags'],[5,'var10','bonusStrength'],[6,'var11','battlefield'],[7,'var12','detached'],[8,'var13','previewUnit']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and radial layout, hierarchy linking, reverse item lookup or detached preview construction data flow.');
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -823,6 +886,7 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('om')} → ${link('lo')} | Campaign metadata and encoded/decoded map layouts. |`,
     `| ${link('sc')} / ${link('bv')} / ${link('ga')} | Tagged version-2 map records, bit cursors and ISAAC ciphered opcodes. |`,
     `| ${link('ci')} → ${link('bo')} / ${link('dl')} | Tutorial stages, centered stage layout, keyboard/pointer selection, prompts and flashing controls. |`,
+    `| ${link('rg')} / ${link('dm')} / ${link('rk')} | Nested spell-menu choices, match setup options and instruction-page layout/illustrations. |`,
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
     'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
     'Combat payloads now name attacker/defender positions, offsets, damage, death flags and animation counts. The central consequence routine names its attacker/defender and healing/poison locals. Unit movement-spent and attacks-remaining state are separate; spell status and equipment descriptors are also separate. `SpellCastEvent` replaces the earlier trinket label: its legacy diagnostic says Trinketused, but the concrete implementations read the spell definition table.','',
@@ -832,15 +896,17 @@ export function buildArmiesGuide(rules,mapping) {
     'The wire layer names MSB-first bit I/O, opcode ciphering, compact signed integers and tagged record factories. Compact tier widths are 4/14/20/30 bits with a two-bit selector and cumulative signed offsets. Field names have one to four encoded characters. Tagged payload access can temporarily rotate bits over a length header; finishTaggedPayload restores the header and advances to the next field. Unknown field names still skip their declared payload. ParasiteEvent converts incoming signed deltas into stored absolute destination coordinates despite its legacy d diagnostic label. Legacy snapshot and event entry points now have names; this pass does not establish a complete multiplayer protocol.', '',
     'Follow `Battlefield.readGameEvent`: it peeks at the header, then delegates cursor advancement to movement, summon, combat, state-change or special-event readers. Movement packs four directions per byte from the low two-bit pair; summon packets pack a signed five-bit bonus and three-bit player. Stored-unit decoding distinguishes detached tile placement from removal of an active unit, and versioned records can add names, tags and objective IDs. Snapshot chunks append to a length-prefixed buffer. `TutorialLayout.readSpell` is an unrelated original static helper: it decodes global, targeted or action-wrapped spells. The raw decompiled special spell branch consumes two coordinate bytes after queuing its spell; this continuation is preserved and does not establish original-bytecode or live-server correctness.', '',
     '`TutorialLayout` stores 29 stage layouts and centers coordinates on the original 640 by 480 surface. Setters accept current surface coordinates; odd negative size differences retain arithmetic-shift rounding. `UiSelectionState` is shared with other menus: it tracks selected index, pointer presses, repeat countdown and captured keys. Navigation wraps within item count; pointer presses suppress keyboard/programmatic changes until release. Internal key IDs and their existing guard effects remain unchanged; the pass does not assign unverified physical key names.', '',
+    '`SpellMenuGroup` forms the original 36-group tree with 27 leaves covering all 135 spell IDs. Branches link each child to its parent/index; leaves register in spellMenuById. Constructors retain supplied arrays, and duplicate IDs overwrite the lookup with the last leaf. Icons and descriptions are separate from spell effects. MatchSetupPanel exposes stage-5 option validation, localized item labels and geometry; selectedPreviewIndex and option33Enabled describe their observed roles without inventing finer gameplay encodings. InstructionsPanel exposes stage-7 instruction rows, page state and detached illustrative units. IntPair deliberately names its components first/second because callers use the same type for both positions and dimensions.', '',
+    'Panel geometry preserves component-wise minima/maxima, centered coordinates, missing-bound sentinels and unusual negative heights. Setup options validate player, computer, map-size and selection fields independently; invalid values retain current state. Instruction preview units use base strength minus one, clamped to one, and skip tile placement. The core probe runs the actual spell hierarchy builder and panel accessors. Its client shim preserves the Applet subtype for bytecode verification without constructing the client; this still does not initialize the full UI or load instruction fonts/illustrations.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, spell-menu hierarchy, setup option validation, instruction bounds and preview units, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:8,
+    const rules={schema:1,game:'armiesofgielinor',version:9,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

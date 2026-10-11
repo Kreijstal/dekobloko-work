@@ -64,7 +64,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 94 reviewed classes around battlefield state, units, map
+The current pass names 98 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -105,6 +105,11 @@ categories. Movement/summon/state-change payloads, stored units, snapshot chunks
 and spell factories have reviewed parameter/local names. TutorialLayout names
 29 stage bounds and spacing; UiSelectionState names shared keyboard/pointer
 selection, repeat countdown and selection restoration.
+SpellMenuGroup identifies the complete nested spell chooser and leaf lookup.
+MatchSetupPanel and InstructionsPanel expose stage-5 option validation and
+stage-7 instruction rows/page state; IntPair records their shared integer pair
+without confusing positions with dimensions. Preview and option-33 encodings
+remain qualified rather than assigned unsupported gameplay meanings.
 
 Combat event payloads and the main consequence routine have reviewed field, parameter
 and local names. SpellCastEvent corrects the earlier trinket label using the
@@ -147,6 +152,12 @@ cover centered bounds/setters at odd surface sizes, navigation wrapping,
 fallback selection, pointer press/hold/release and upper index bounds. The
 decompiled special spell branch's extra coordinate reads are preserved; the
 probe does not verify those reads against original bytecode or a live server.
+Additional fixtures execute the full 36-group/135-spell menu builder, duplicate
+leaf lookup and parent links, independent setup validation, panel coordinate
+sentinels, odd-size centering, missing bounds, negative instruction heights and
+detached preview-unit strengths. The headless client shim preserves its Applet
+subtype for bytecode verification without constructing the client or loading its
+original UI/audio graph.
 The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Three dispatcher files
 and large methods remain; this is a semantic naming pass, not control-flow recovery.
