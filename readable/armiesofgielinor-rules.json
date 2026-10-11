@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 5,
+  "version": 6,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1900,6 +1900,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gm",
+      "originalName": "gm",
+      "to": "LeaderEscortCondition",
+      "evidence": "gm.java: Own Win: Leader Escort diagnostic; succeeds when every tracked leader has reached its goal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:go",
       "originalName": "go",
       "to": "TeamRoster",
@@ -2040,10 +2047,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:lo",
+      "originalName": "lo",
+      "to": "MapLayout",
+      "evidence": "lo.java: Map format version, dimensions, terrain decoding, saved units and tagged map items.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lv",
+      "originalName": "lv",
+      "to": "MatchCondition",
+      "evidence": "lv.java: Victory/defeat predicate and diagnostic-description contract shared by three concrete match conditions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mb",
       "originalName": "mb",
       "to": "SummonEvent",
       "evidence": "mb.java: Diagnostic EventSummon with position, bonus and player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mc",
+      "originalName": "mc",
+      "to": "UnitLossCondition",
+      "evidence": "mc.java: Own Defeat: Total Unit Loss diagnostic; checks allied units and usable portals, with campaign restrictions.",
       "confidence": "reviewed"
     },
     {
@@ -2100,6 +2128,13 @@
       "originalName": "oj",
       "to": "GameEvent",
       "evidence": "oj.java: Abstract battlefield application and gameplay presentation of unit events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:om",
+      "originalName": "om",
+      "to": "CampaignMission",
+      "evidence": "om.java: Tagged campaign mission identity, metadata, player slots and lazy map loading.",
       "confidence": "reviewed"
     },
     {
@@ -2257,6 +2292,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tt",
+      "originalName": "tt",
+      "to": "MatchConditionRegistry",
+      "evidence": "tt.java: Per-player condition deques, any-victory/any-defeat checks and selective portal-loss removal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:u",
+      "originalName": "u",
+      "to": "MatchConditionEntry",
+      "evidence": "u.java: Intrusive node wrapping one MatchCondition; static helpers also handle common client messages.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ua",
       "originalName": "ua",
       "to": "SpellCastAction",
@@ -2268,6 +2317,13 @@
       "originalName": "uo",
       "to": "TaggedFieldReader",
       "evidence": "uo.java: Shared named-field decoding contract implemented by Unit, MapTile and TileMetadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:up",
+      "originalName": "up",
+      "to": "PortalLossCondition",
+      "evidence": "up.java: Own Defeat: Total Portal Loss diagnostic; requires no usable portal and no possible capturing unit. Static fields also contain tutorial text.",
       "confidence": "reviewed"
     },
     {
@@ -2901,6 +2957,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gm.field_c:[Ljd;",
+      "originalName": "field_c",
+      "to": "leaders",
+      "evidence": "gm.java: Condition constructor bindings and victory/defeat predicates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:go.field_a:[I",
       "originalName": "field_a",
       "to": "playerIds",
@@ -2950,6 +3013,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ha.field_K:Lom;",
+      "originalName": "field_K",
+      "to": "campaignMission",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_O:I",
+      "originalName": "field_O",
+      "to": "turnLimit",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_P:Ltt;",
+      "originalName": "field_P",
+      "to": "matchConditions",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_R:I",
+      "originalName": "field_R",
+      "to": "winnerCount",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ha.field_W:I",
       "originalName": "field_W",
       "to": "playerCount",
@@ -2975,6 +3066,13 @@
       "originalName": "field_db",
       "to": "mapHeight",
       "evidence": "ha.java: Battlefield constructor, rectangular tile indexing and seed/player/mana/turn diagnostic dump.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_e:I",
+      "originalName": "field_e",
+      "to": "eliminatedPlayerMask",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
       "confidence": "reviewed"
     },
     {
@@ -3041,6 +3139,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ha.field_n:[I",
+      "originalName": "field_n",
+      "to": "eliminationOrder",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_p:[I",
+      "originalName": "field_p",
+      "to": "rankedParticipants",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ha.field_sb:I",
       "originalName": "field_sb",
       "to": "localPlayer",
@@ -3059,6 +3171,13 @@
       "originalName": "field_tb",
       "to": "teamCount",
       "evidence": "ha.java: Battlefield constructor, rectangular tile indexing and seed/player/mana/turn diagnostic dump.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_u:I",
+      "originalName": "field_u",
+      "to": "inactivePlayerMask",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
       "confidence": "reviewed"
     },
     {
@@ -3083,10 +3202,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ha.field_xb:I",
+      "originalName": "field_xb",
+      "to": "collectedManaTarget",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ha.field_yb:[I",
       "originalName": "field_yb",
       "to": "playerTeamIndices",
       "evidence": "ha.java: Battlefield constructor, rectangular tile indexing and seed/player/mana/turn diagnostic dump.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_z:[[I",
+      "originalName": "field_z",
+      "to": "teamStructureCounts",
+      "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
       "confidence": "reviewed"
     },
     {
@@ -3363,6 +3496,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jd.field_G:Z",
+      "originalName": "field_G",
+      "to": "escortComplete",
+      "evidence": "jd.java: MoveEvent sets this when a unit reaches its own marked objective tile; LeaderEscortCondition requires it on every tracked leader.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jd.field_H:I",
       "originalName": "field_H",
       "to": "objectiveId",
@@ -3416,6 +3556,13 @@
       "originalName": "field_P",
       "to": "statusEffectType",
       "evidence": "jd.java: UnitSpell assigns spellDefinitions[id][5]; this is spell status, separate from the equipmentDescriptor field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_S:Z",
+      "originalName": "field_S",
+      "to": "removedFromActivePlay",
+      "evidence": "jd.java: Escort completion unlinks the unit and sets this flag; capture and loss checks exclude removed units.",
       "confidence": "reviewed"
     },
     {
@@ -3811,6 +3958,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lo.field_l:I",
+      "originalName": "field_l",
+      "to": "mapWidth",
+      "evidence": "lo.java: Layout header decoding and row-major terrain/placement readers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lo.field_n:I",
+      "originalName": "field_n",
+      "to": "mapHeight",
+      "evidence": "lo.java: Layout header decoding and row-major terrain/placement readers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lo.field_r:[Lne;",
+      "originalName": "field_r",
+      "to": "decodedTiles",
+      "evidence": "lo.java: Layout header decoding and row-major terrain/placement readers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lo.field_s:[B",
+      "originalName": "field_s",
+      "to": "encodedMap",
+      "evidence": "lo.java: Layout header decoding and row-major terrain/placement readers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lo.field_t:I",
+      "originalName": "field_t",
+      "to": "formatVersion",
+      "evidence": "lo.java: Layout header decoding and row-major terrain/placement readers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mb.field_A:I",
       "originalName": "field_A",
       "to": "unitType",
@@ -3850,6 +4032,20 @@
       "originalName": "field_z",
       "to": "tileX",
       "evidence": "mb.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mc.field_b:I",
+      "originalName": "field_b",
+      "to": "playerId",
+      "evidence": "mc.java: Condition constructor bindings and victory/defeat predicates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mc.field_e:Lha;",
+      "originalName": "field_e",
+      "to": "battlefield",
+      "evidence": "mc.java: Condition constructor bindings and victory/defeat predicates.",
       "confidence": "reviewed"
     },
     {
@@ -4151,6 +4347,125 @@
       "originalName": "field_w",
       "to": "unit",
       "evidence": "oj.java: GameEvent and its subclasses store the affected unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_B:[I",
+      "originalName": "field_B",
+      "to": "participantIds",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_C:Llo;",
+      "originalName": "field_C",
+      "to": "cachedLayout",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_D:[I",
+      "originalName": "field_D",
+      "to": "rewardIds",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_E:I",
+      "originalName": "field_E",
+      "to": "difficulty",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_F:I",
+      "originalName": "field_F",
+      "to": "godSetting",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_J:Ljava/lang/String;",
+      "originalName": "field_J",
+      "to": "name",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_k:I",
+      "originalName": "field_k",
+      "to": "flags",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_m:I",
+      "originalName": "field_m",
+      "to": "gameType",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_n:Ljava/lang/String;",
+      "originalName": "field_n",
+      "to": "description",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_o:I",
+      "originalName": "field_o",
+      "to": "mapSizeSetting",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_q:I",
+      "originalName": "field_q",
+      "to": "musicId",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_t:I",
+      "originalName": "field_t",
+      "to": "mapResourceId",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_v:I",
+      "originalName": "field_v",
+      "to": "missionId",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_w:I",
+      "originalName": "field_w",
+      "to": "playerSlot",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_x:[I",
+      "originalName": "field_x",
+      "to": "teamAssignments",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_y:[I",
+      "originalName": "field_y",
+      "to": "neighborMissionIds",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_z:I",
+      "originalName": "field_z",
+      "to": "mapTheme",
+      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
       "confidence": "reviewed"
     },
     {
@@ -4581,6 +4896,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tt.field_b:[Lat;",
+      "originalName": "field_b",
+      "to": "conditionsByPlayer",
+      "evidence": "tt.java: Registry constructor creates one deque per player; all checks and removal use this array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:u.field_m:Llv;",
+      "originalName": "field_m",
+      "to": "condition",
+      "evidence": "u.java: Entry constructor captures the predicate evaluated by MatchConditionRegistry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ua.field_w:I",
       "originalName": "field_w",
       "to": "selectionMode",
@@ -4599,6 +4928,20 @@
       "originalName": "field_d",
       "to": "spellDefinitions",
       "evidence": "uc.java: AI and gameplay inspect chant type, cost and effect columns; class has other mixed helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:up.field_a:I",
+      "originalName": "field_a",
+      "to": "playerId",
+      "evidence": "up.java: Condition constructor bindings and victory/defeat predicates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:up.field_d:Lha;",
+      "originalName": "field_d",
+      "to": "battlefield",
+      "evidence": "up.java: Condition constructor bindings and victory/defeat predicates.",
       "confidence": "reviewed"
     },
     {
@@ -5176,6 +5519,146 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ha.b(IIZ)V#17",
+      "originalName": "var4",
+      "to": "orderIndex",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.b(IIZ)V#23",
+      "originalName": "var10",
+      "to": "receivingPlayers",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.b(IIZ)V#24",
+      "originalName": "var11",
+      "to": "unitToRemove",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.b(IIZ)V#25",
+      "originalName": "var12",
+      "to": "campaignUnit",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.e(B)Z#0",
+      "originalName": "var2",
+      "to": "survivingTeams",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.e(B)Z#1",
+      "originalName": "var3",
+      "to": "teams",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.e(B)Z#2",
+      "originalName": "var4",
+      "to": "teamIndex",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.e(B)Z#3",
+      "originalName": "var5",
+      "to": "team",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.e(B)Z#4",
+      "originalName": "var6",
+      "to": "players",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.e(B)Z#5",
+      "originalName": "var7",
+      "to": "playerIndex",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.e(B)Z#6",
+      "originalName": "var8",
+      "to": "playerId",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.k(I)V#10",
+      "originalName": "var3",
+      "to": "hasPortals",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.k(I)V#11",
+      "originalName": "var4",
+      "to": "portalOwners",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.k(I)V#12",
+      "originalName": "var5",
+      "to": "captureUnitOwners",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.k(I)V#13",
+      "originalName": "var6",
+      "to": "leaderGroups",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.k(I)V#15",
+      "originalName": "var7",
+      "to": "needsUnitLossCheck",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.k(I)V#16",
+      "originalName": "var8_ref_ne",
+      "to": "tile",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.k(I)V#21",
+      "originalName": "var13",
+      "to": "leaders",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.k(I)V#23",
+      "originalName": "var15",
+      "to": "leaderArray",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.k(I)V#9",
+      "originalName": "var2",
+      "to": "hasEscortGoals",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:hw.a(ILha;)Lbd;#0",
       "originalName": "var6",
       "to": "godIndex",
@@ -5264,6 +5747,34 @@
       "originalName": "var5",
       "to": "effectTeamIndex",
       "evidence": "ne.java: Reviewed lexical ordinal and combat power, range, cover, effect-mask or AI net-damage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tt.a(BI)Z#1",
+      "originalName": "var3",
+      "to": "iterator",
+      "evidence": "tt.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tt.a(BI)Z#2",
+      "originalName": "var4",
+      "to": "entry",
+      "evidence": "tt.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tt.a(II)Z#1",
+      "originalName": "var3",
+      "to": "iterator",
+      "evidence": "tt.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tt.a(II)Z#2",
+      "originalName": "var4",
+      "to": "entry",
+      "evidence": "tt.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
       "confidence": "reviewed"
     },
     {
@@ -5589,10 +6100,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gm.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "describeCondition",
+      "evidence": "lv.java: Own condition diagnostics identify portal loss, unit loss and leader escort. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.b(I)Z",
+      "originalName": "b",
+      "to": "isVictory",
+      "evidence": "lv.java: Canonical guard zero evaluates victory; noncanonical arguments retain their original effects. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.c(I)Z",
+      "originalName": "c",
+      "to": "isDefeat",
+      "evidence": "lv.java: Canonical guard -128 evaluates defeat. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:go.a(IB)Z",
       "originalName": "a",
       "to": "containsPlayer",
       "evidence": "go.java: Scans playerIds for equality.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.a(ILha;)V",
+      "originalName": "a",
+      "to": "eliminateAllPlayers",
+      "evidence": "go.java: Calls battlefield elimination for every player in the roster.",
       "confidence": "reviewed"
     },
     {
@@ -5610,6 +6149,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(B)I",
+      "originalName": "a",
+      "to": "getSurvivingPlayerMask",
+      "evidence": "ha.java: Complements eliminated bits and restricts them to the declared player count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(BI)V",
+      "originalName": "a",
+      "to": "eliminatePlayerTeam",
+      "evidence": "ha.java: Looks up the player team and eliminates all its participants.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(BIII)V",
       "originalName": "a",
       "to": "healOrRaiseSkeletonAt",
@@ -5617,10 +6170,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(I)V",
+      "originalName": "a",
+      "to": "updateMatchOutcome",
+      "evidence": "ha.java: Updates participant rankings and winner count from collected mana, turn limits, eliminations and campaign conditions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(IBII)[I",
       "originalName": "a",
       "to": "getSummoningFavourAt",
       "evidence": "ha.java: An allied portal copies player favour; a god-specific portal raises its own god favour to the tile level.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(II)V",
+      "originalName": "a",
+      "to": "setInactivePlayerMask",
+      "evidence": "ha.java: Reconciles changed secondary mask bits through elimination and stores the mask.",
       "confidence": "reviewed"
     },
     {
@@ -5666,6 +6233,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(IZ)Z",
+      "originalName": "a",
+      "to": "hasCapturingUnit",
+      "evidence": "ha.java: Checks unremoved capture units/Sea Slugs, including allies in ordinary team matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(IZ[I)V",
+      "originalName": "a",
+      "to": "applyMatchOutcome",
+      "evidence": "ha.java: Stores winner count, outcome flag and ranked participants; one winner becomes currentPlayer, otherwise -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(Ljd;BII)I",
       "originalName": "a",
       "to": "scaleIncomingDamage",
@@ -5694,10 +6275,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(ZZI)Lat;",
+      "originalName": "a",
+      "to": "prepareTurnConsequences",
+      "evidence": "ha.java: Refreshes captures/unit turn consequences and optionally collects prepared marker actions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.b(BIII)V",
       "originalName": "b",
       "to": "setTerrainType",
       "evidence": "ha.java: Writes tile terrain and marks it dirty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(I)V",
+      "originalName": "b",
+      "to": "recountStructures",
+      "evidence": "ha.java: Recounts team-owned portals/towers/villages, then updates the match outcome.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(IB)Z",
+      "originalName": "b",
+      "to": "hasUsablePortal",
+      "evidence": "ha.java: Checks own/allied portal tiles, god favour and the original campaign restriction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(II)Z",
+      "originalName": "b",
+      "to": "isPlayerInactive",
+      "evidence": "ha.java: Tests either eliminated or secondary inactive mask.",
       "confidence": "reviewed"
     },
     {
@@ -5712,6 +6321,13 @@
       "originalName": "b",
       "to": "canSummonUnitAt",
       "evidence": "ha.java: Checks unlocked unit, mana and required local favour; god selection and tile mask are checked by SummonRequest.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(IIZ)V",
+      "originalName": "b",
+      "to": "eliminatePlayer",
+      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
       "confidence": "reviewed"
     },
     {
@@ -5736,6 +6352,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.d(I)[I",
+      "originalName": "d",
+      "to": "getEliminationRanks",
+      "evidence": "ha.java: Inverts elimination order; players not in the order receive playerCount.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.d(II)Lgo;",
       "originalName": "d",
       "to": "getPlayerTeam",
@@ -5743,10 +6366,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.e(B)Z",
+      "originalName": "e",
+      "to": "hasSingleSurvivor",
+      "evidence": "ha.java: Exactly one player, or one team with surviving members, remains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.f(II)Lat;",
+      "originalName": "f",
+      "to": "getUnitsForPlayer",
+      "evidence": "ha.java: Returns the owner deque or null for missing/out-of-bounds player storage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.g(II)V",
+      "originalName": "g",
+      "to": "setEliminatedPlayerMask",
+      "evidence": "ha.java: Reconciles changed player bits with elimination, then installs the supplied mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.h(B)V",
+      "originalName": "h",
+      "to": "applyPendingEvents",
+      "evidence": "ha.java: Pops and applies queued events until the deque is empty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.j(II)Ljava/lang/String;",
       "originalName": "j",
       "to": "describeBattlefield",
       "evidence": "ha.java: Dumps seed, map settings, players, tiles and units.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.k(I)V",
+      "originalName": "k",
+      "to": "initializeMatchConditions",
+      "evidence": "ha.java: Scans portals, capture units and leaders, then registers the applicable loss/escort conditions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.k(II)I",
+      "originalName": "k",
+      "to": "getStructureIncome",
+      "evidence": "ha.java: Returns 50 per portal, 75 per tower and 25 per village, with campaign scaling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.m(II)Z",
+      "originalName": "m",
+      "to": "checkPlayerVictory",
+      "evidence": "ha.java: When any player condition wins, eliminates opposing participants.",
       "confidence": "reviewed"
     },
     {
@@ -6023,6 +6695,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jd.k(I)V",
+      "originalName": "k",
+      "to": "queueTurnConsequences",
+      "evidence": "jd.java: Queues upkeep, tile-state effects and displacement telefrag consequences for the unit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jd.l(B)I",
       "originalName": "l",
       "to": "getMinimumAttackRange",
@@ -6177,6 +6856,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lo.a(B)Lvh;",
+      "originalName": "a",
+      "to": "readHeader",
+      "evidence": "lo.java: Reads version and dimensions, with tagged-map and legacy-format branches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.a(ILha;)[Lne;",
+      "originalName": "a",
+      "to": "createTiles",
+      "evidence": "lo.java: Decodes/binds layout tiles and saved units to the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.e(I)[[I",
+      "originalName": "e",
+      "to": "getTerrainGrid",
+      "evidence": "lo.java: Returns rows of terrain type IDs from decoded tiles or encoded bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lv.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "describeCondition",
+      "evidence": "lv.java: Own condition diagnostics identify portal loss, unit loss and leader escort.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lv.b(I)Z",
+      "originalName": "b",
+      "to": "isVictory",
+      "evidence": "lv.java: Canonical guard zero evaluates victory; noncanonical arguments retain their original effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lv.c(I)Z",
+      "originalName": "c",
+      "to": "isDefeat",
+      "evidence": "lv.java: Canonical guard -128 evaluates defeat.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mb.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -6188,6 +6909,27 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "describeCondition",
+      "evidence": "lv.java: Own condition diagnostics identify portal loss, unit loss and leader escort. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.b(I)Z",
+      "originalName": "b",
+      "to": "isVictory",
+      "evidence": "lv.java: Canonical guard zero evaluates victory; noncanonical arguments retain their original effects. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.c(I)Z",
+      "originalName": "c",
+      "to": "isDefeat",
+      "evidence": "lv.java: Canonical guard -128 evaluates defeat. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6293,6 +7035,13 @@
       "originalName": "c",
       "to": "hasCorpse",
       "evidence": "ne.java: Tests modifier bit 8 consumed by the skeleton-raising path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.d(I)Z",
+      "originalName": "d",
+      "to": "isPortal",
+      "evidence": "ne.java: Terrain types 7 and 11 are portals.",
       "confidence": "reviewed"
     },
     {
@@ -6464,10 +7213,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:om.a(B)[I",
+      "originalName": "a",
+      "to": "getTeamAssignments",
+      "evidence": "om.java: Returns the original stored team assignment array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.a(I)Llo;",
+      "originalName": "a",
+      "to": "getMapLayout",
+      "evidence": "om.java: Loads the map once and caches the resulting layout.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:om.a(ILbv;Ljava/lang/String;B)V",
       "originalName": "a",
       "to": "decodeTaggedField",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.d(B)Llo;",
+      "originalName": "d",
+      "to": "loadMapLayout",
+      "evidence": "om.java: Reads the mission map resource and creates a MapLayout.",
       "confidence": "reviewed"
     },
     {
@@ -6968,6 +7738,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tt.a(B)V",
+      "originalName": "a",
+      "to": "removePortalLossConditions",
+      "evidence": "tt.java: Removes only PortalLossCondition entries from every player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.a(BI)Z",
+      "originalName": "a",
+      "to": "hasDefeat",
+      "evidence": "tt.java: Returns true if any registered condition reports defeat.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.a(I)[Ljava/lang/String;",
+      "originalName": "a",
+      "to": "describeConditions",
+      "evidence": "tt.java: Lists player headings and condition diagnostics in deque order; canonical initial count is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.a(II)Z",
+      "originalName": "a",
+      "to": "hasVictory",
+      "evidence": "tt.java: Returns true if any registered condition reports victory.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.a(Llv;BI)V",
+      "originalName": "a",
+      "to": "addCondition",
+      "evidence": "tt.java: Prepends the condition wrapper to one player deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.b(II)V",
+      "originalName": "b",
+      "to": "removePlayerPortalLossConditions",
+      "evidence": "tt.java: Removes only PortalLossCondition entries for one player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ua.a(ILha;)V",
       "originalName": "a",
       "to": "applyToBattlefield",
@@ -6979,6 +7791,27 @@
       "originalName": "a",
       "to": "decodeTaggedField",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "describeCondition",
+      "evidence": "lv.java: Own condition diagnostics identify portal loss, unit loss and leader escort. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.b(I)Z",
+      "originalName": "b",
+      "to": "isVictory",
+      "evidence": "lv.java: Canonical guard zero evaluates victory; noncanonical arguments retain their original effects. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.c(I)Z",
+      "originalName": "c",
+      "to": "isDefeat",
+      "evidence": "lv.java: Canonical guard -128 evaluates defeat. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8109,6 +8942,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gm.<init>(I[Ljd;)V#0",
+      "originalName": "param0",
+      "to": "suppliedPlayerId",
+      "evidence": "gm.java: The player argument is unused; victory examines the supplied leader array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gm.<init>(I[Ljd;)V#1",
+      "originalName": "param1",
+      "to": "leaders",
+      "evidence": "gm.java: The player argument is unused; victory examines the supplied leader array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gm.a(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Own condition diagnostics identify portal loss, unit loss and leader escort. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gm.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Canonical guard zero evaluates victory; noncanonical arguments retain their original effects. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gm.c(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Canonical guard -128 evaluates defeat. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:go.a(IB)Z#0",
       "originalName": "param0",
       "to": "playerId",
@@ -8123,6 +8991,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:go.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "go.java: Calls battlefield elimination for every player in the roster.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:go.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "go.java: Calls battlefield elimination for every player in the roster.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:go.c(I)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -8134,6 +9016,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "go.java: Returns the constructor-supplied team name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Complements eliminated bits and restricts them to the declared player count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Looks up the player team and eliminates all its participants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BI)V#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ha.java: Looks up the player team and eliminates all its participants.",
       "confidence": "reviewed"
     },
     {
@@ -8165,6 +9068,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Updates participant rankings and winner count from collected mana, turn limits, eliminations and campaign conditions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.a(IBII)[I#0",
       "originalName": "param0",
       "to": "tileY",
@@ -8190,6 +9100,20 @@
       "originalName": "param3",
       "to": "playerId",
       "evidence": "ha.java: An allied portal copies player favour; a god-specific portal raises its own god favour to the tile level.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(II)V#0",
+      "originalName": "param0",
+      "to": "startPlayer",
+      "evidence": "ha.java: Reconciles changed secondary mask bits through elimination and stores the mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(II)V#1",
+      "originalName": "param1",
+      "to": "playerMask",
+      "evidence": "ha.java: Reconciles changed secondary mask bits through elimination and stores the mask.",
       "confidence": "reviewed"
     },
     {
@@ -8396,6 +9320,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.a(IZ)Z#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "ha.java: Checks unremoved capture units/Sea Slugs, including allies in ordinary team matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IZ)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Checks unremoved capture units/Sea Slugs, including allies in ordinary team matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IZ[I)V#0",
+      "originalName": "param0",
+      "to": "winnerCount",
+      "evidence": "ha.java: Stores winner count, outcome flag and ranked participants; one winner becomes currentPlayer, otherwise -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IZ[I)V#1",
+      "originalName": "param1",
+      "to": "outcomeFlag",
+      "evidence": "ha.java: Stores winner count, outcome flag and ranked participants; one winner becomes currentPlayer, otherwise -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IZ[I)V#2",
+      "originalName": "param2",
+      "to": "rankedParticipants",
+      "evidence": "ha.java: Stores winner count, outcome flag and ranked participants; one winner becomes currentPlayer, otherwise -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.a(Ljd;BII)I#0",
       "originalName": "param0",
       "to": "defender",
@@ -8508,6 +9467,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.a(ZZI)Lat;#0",
+      "originalName": "param0",
+      "to": "skipUnitProcessing",
+      "evidence": "ha.java: Refreshes captures/unit turn consequences and optionally collects prepared marker actions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(ZZI)Lat;#1",
+      "originalName": "param1",
+      "to": "collectMarkers",
+      "evidence": "ha.java: Refreshes captures/unit turn consequences and optionally collects prepared marker actions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(ZZI)Lat;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Refreshes captures/unit turn consequences and optionally collects prepared marker actions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.b(BIII)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -8533,6 +9513,41 @@
       "originalName": "param3",
       "to": "tileY",
       "evidence": "ha.java: Writes tile terrain and marks it dirty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Recounts team-owned portals/towers/villages, then updates the match outcome.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IB)Z#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "ha.java: Checks own/allied portal tiles, god favour and the original campaign restriction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IB)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Checks own/allied portal tiles, god favour and the original campaign restriction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(II)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Tests either eliminated or secondary inactive mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(II)Z#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ha.java: Tests either eliminated or secondary inactive mask.",
       "confidence": "reviewed"
     },
     {
@@ -8596,6 +9611,27 @@
       "originalName": "param4",
       "to": "playerId",
       "evidence": "ha.java: Checks unlocked unit, mana and required local favour; god selection and tile mask are checked by SummonRequest.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IIZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IIZ)V#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IIZ)V#2",
+      "originalName": "param2",
+      "to": "removeUnits",
+      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
       "confidence": "reviewed"
     },
     {
@@ -8669,6 +9705,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.d(I)[I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Inverts elimination order; players not in the order receive playerCount.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.d(II)Lgo;#0",
       "originalName": "param0",
       "to": "playerId",
@@ -8683,6 +9726,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.e(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Exactly one player, or one team with surviving members, remains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.f(II)Lat;#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "ha.java: Returns the owner deque or null for missing/out-of-bounds player storage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.f(II)Lat;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Returns the owner deque or null for missing/out-of-bounds player storage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.g(II)V#0",
+      "originalName": "param0",
+      "to": "playerMask",
+      "evidence": "ha.java: Reconciles changed player bits with elimination, then installs the supplied mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.g(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Reconciles changed player bits with elimination, then installs the supplied mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.h(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Pops and applies queued events until the deque is empty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.j(II)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "playerId",
@@ -8694,6 +9779,41 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ha.java: Dumps seed, map settings, players, tiles and units.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.k(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Scans portals, capture units and leaders, then registers the applicable loss/escort conditions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.k(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Returns 50 per portal, 75 per tower and 25 per village, with campaign scaling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.k(II)I#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ha.java: Returns 50 per portal, 75 per tower and 25 per village, with campaign scaling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.m(II)Z#0",
+      "originalName": "param0",
+      "to": "startPlayer",
+      "evidence": "ha.java: When any player condition wins, eliminates opposing participants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.m(II)Z#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ha.java: When any player condition wins, eliminates opposing participants.",
       "confidence": "reviewed"
     },
     {
@@ -9369,6 +10489,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jd.k(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Queues upkeep, tile-state effects and displacement telefrag consequences for the unit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jd.l(B)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -9698,6 +10825,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:lo.<init>(I[B)V#0",
+      "originalName": "param0",
+      "to": "suppliedMapId",
+      "evidence": "lo.java: Map ID argument is unused; the encoded byte header determines layout data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.<init>(I[B)V#1",
+      "originalName": "param1",
+      "to": "encodedMap",
+      "evidence": "lo.java: Map ID argument is unused; the encoded byte header determines layout data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(B)Lvh;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lo.java: Reads version and dimensions, with tagged-map and legacy-format branches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(ILha;)[Lne;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lo.java: Decodes/binds layout tiles and saved units to the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(ILha;)[Lne;#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "lo.java: Decodes/binds layout tiles and saved units to the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.e(I)[[I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lo.java: Returns rows of terrain type IDs from decoded tiles or encoded bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lv.a(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Own condition diagnostics identify portal loss, unit loss and leader escort.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lv.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Canonical guard zero evaluates victory; noncanonical arguments retain their original effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lv.c(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Canonical guard -128 evaluates defeat.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mb.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -9723,6 +10913,41 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mc.<init>(ILha;)V#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "mc.java: Loss condition stores player and battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mc.<init>(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "mc.java: Loss condition stores player and battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mc.a(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Own condition diagnostics identify portal loss, unit loss and leader escort. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mc.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Canonical guard zero evaluates victory; noncanonical arguments retain their original effects. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mc.c(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Canonical guard -128 evaluates defeat. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -9926,6 +11151,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ne.java: Tests modifier bit 8 consumed by the skeleton-raising path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ne.d(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ne.java: Terrain types 7 and 11 are portals.",
       "confidence": "reviewed"
     },
     {
@@ -10307,6 +11539,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:om.a(B)[I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Returns the original stored team assignment array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(I)Llo;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Loads the map once and caches the resulting layout.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:om.a(ILbv;Ljava/lang/String;B)V#0",
       "originalName": "param0",
       "to": "encodedLength",
@@ -10332,6 +11578,13 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.d(B)Llo;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Reads the mission map resource and creates a MapLayout.",
       "confidence": "reviewed"
     },
     {
@@ -11427,6 +12680,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tt.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "playerCount",
+      "evidence": "tt.java: Registry creates a deque for each player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tt.java: Removes only PortalLossCondition entries from every player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.a(BI)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tt.java: Returns true if any registered condition reports defeat.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.a(BI)Z#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "tt.java: Returns true if any registered condition reports defeat.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.a(I)[Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "initialCount",
+      "evidence": "tt.java: Lists player headings and condition diagnostics in deque order; canonical initial count is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.a(II)Z#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "tt.java: Returns true if any registered condition reports victory.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.a(II)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "tt.java: Returns true if any registered condition reports victory.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.a(Llv;BI)V#0",
+      "originalName": "param0",
+      "to": "condition",
+      "evidence": "tt.java: Prepends the condition wrapper to one player deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.a(Llv;BI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "tt.java: Prepends the condition wrapper to one player deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.a(Llv;BI)V#2",
+      "originalName": "param2",
+      "to": "playerId",
+      "evidence": "tt.java: Prepends the condition wrapper to one player deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.b(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tt.java: Removes only PortalLossCondition entries for one player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tt.b(II)V#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "tt.java: Removes only PortalLossCondition entries for one player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:u.<init>(Llv;)V#0",
+      "originalName": "param0",
+      "to": "condition",
+      "evidence": "u.java: Intrusive wrapper stores the condition.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ua.<init>(Lik;II)V#0",
       "originalName": "param0",
       "to": "spell",
@@ -11487,6 +12831,41 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:up.<init>(ILha;)V#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "up.java: Loss condition stores player and battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:up.<init>(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "up.java: Loss condition stores player and battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:up.a(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Own condition diagnostics identify portal loss, unit loss and leader escort. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:up.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Canonical guard zero evaluates victory; noncanonical arguments retain their original effects. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:up.c(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lv.java: Canonical guard -128 evaluates defeat. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -11813,9 +13192,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "33ec4efe8cf5dc9e2bf7586ce153f5e97e649e1e646fb5a14718b353fbd16731",
+      "build-armiesofgielinor-rules.mjs": "f23572c2aa838495c7eee2b58c732868ab0325a18459ef2c2ce3e1bc77a08456",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "5629303dc60bebf7154ee4a378bb7cb773a8b226a8a08c248ab1e2f1775cfcea",
+      "tests/test-armiesofgielinor-core.mjs": "2e6929580e29dc738fe61d4cf154ab11a275db3c796d861c5b8fad370a154b67",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

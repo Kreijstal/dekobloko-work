@@ -330,6 +330,87 @@ Object popupQueue=make(deque,new Class<?>[]{});call(deque,popupQueue,"${m('at','
 for(int frame=1;frame<=8;frame++){call(popup,popupFixture,"${m('fi','a','(BZ)V')}",new Class<?>[]{byte.class,boolean.class},(byte)-110,true);check("popup-show/"+frame,get(popup,popupFixture,"${f('fi','m','I')}"),32-frame*4);}
 for(int frame=1;frame<=8;frame++){call(popup,popupFixture,"${m('fi','a','(BZ)V')}",new Class<?>[]{byte.class,boolean.class},(byte)-110,false);check("popup-hide/"+frame,get(popup,popupFixture,"${f('fi','m','I')}"),frame*4);}
 check("popup-hidden-unlinked",call(deque,popupQueue,"${m('at','e','(B)Ltc;')}",new Class<?>[]{byte.class},(byte)96)==null,true);
+// Survivor queries use the declared player count, not all Java integer bits.
+for(int count=1;count<=8;count++)for(int eliminated=0;eliminated<(1<<count);eliminated++){
+Object state=unsafe.allocateInstance(board);set(board,state,"${f('ha','W','I')}",count);set(board,state,"${f('ha','e','I')}",eliminated);
+int surviving=((1<<count)-1)^eliminated;
+check("survivor-mask/"+count+"/"+eliminated,call(board,state,"${m('ha','a','(B)I')}",new Class<?>[]{byte.class},(byte)78),surviving);
+check("single-player/"+count+"/"+eliminated,call(board,state,"${m('ha','e','(B)Z')}",new Class<?>[]{byte.class},(byte)-42),Integer.bitCount(surviving)==1);}
+Class<?> rosterClass=Class.forName("${className('go')}");Object teamArray=Array.newInstance(rosterClass,2);
+Array.set(teamArray,0,make(rosterClass,new Class<?>[]{String.class,int[].class},"a",new int[]{0,2}));Array.set(teamArray,1,make(rosterClass,new Class<?>[]{String.class,int[].class},"b",new int[]{1,3}));
+for(int eliminated=0;eliminated<16;eliminated++){Object state=unsafe.allocateInstance(board);set(board,state,"${f('ha','W','I')}",4);set(board,state,"${f('ha','e','I')}",eliminated);set(board,state,"${f('ha','wb','Z')}",true);set(board,state,"${f('ha','w','[Lgo;')}",teamArray);
+int remaining=15^eliminated;int teamsLeft=((remaining&5)!=0?1:0)+((remaining&10)!=0?1:0);
+check("single-team/"+eliminated,call(board,state,"${m('ha','e','(B)Z')}",new Class<?>[]{byte.class},(byte)-42),teamsLeft==1);}
+// Execute the canonical elimination dispatcher with an ordinary non-team fixture.
+Object elimination=unsafe.allocateInstance(board),eliminationTiles=Array.newInstance(tile,6);int[] tileOwners={0,1,2,3,0,2},tileTypes={7,11,0,11,9,8};
+for(int i=0;i<6;i++){Object cell=make(tile,new Class<?>[]{});set(tile,cell,"${f('ne','a','I')}",tileOwners[i]);set(tile,cell,"${f('ne','h','I')}",tileTypes[i]);Array.set(eliminationTiles,i,cell);}
+set(board,elimination,"${f('ha','W','I')}",4);set(board,elimination,"${f('ha','v','I')}",3);set(board,elimination,"${f('ha','db','I')}",2);set(board,elimination,"${f('ha','Eb','[Lne;')}",eliminationTiles);set(board,elimination,"${f('ha','n','[I')}",new int[]{-1,-1,-1,-1});
+int[] order={2,0,3,1};int mask=0;for(int index=0;index<order.length;index++){int player=order[index];mask|=1<<player;
+call(board,elimination,"${m('ha','b','(IIZ)V')}",new Class<?>[]{int.class,int.class,boolean.class},10001,player,false);
+check("eliminated-bits/"+index,get(board,elimination,"${f('ha','e','I')}"),mask);
+int[] expectedOrder={-1,-1,-1,-1};System.arraycopy(order,0,expectedOrder,0,index+1);check("elimination-order/"+index,Arrays.toString((int[])get(board,elimination,"${f('ha','n','[I')}")),Arrays.toString(expectedOrder));
+for(int i=0;i<6;i++){Object cell=Array.get(eliminationTiles,i);boolean removed=(mask&(1<<tileOwners[i]))!=0;check("elimination-owner/"+index+"/"+i,get(tile,cell,"${f('ne','a','I')}"),removed?-1:tileOwners[i]);check("elimination-terrain/"+index+"/"+i,get(tile,cell,"${f('ne','h','I')}"),removed&&tileTypes[i]==11?0:tileTypes[i]);}}
+check("elimination-ranks",Arrays.toString((int[])call(board,elimination,"${m('ha','d','(I)[I')}",new Class<?>[]{int.class},10326)),"[1, 3, 0, 2]");
+call(board,elimination,"${m('ha','b','(IIZ)V')}",new Class<?>[]{int.class,int.class,boolean.class},10001,2,false);
+check("elimination-repeat",Arrays.toString((int[])get(board,elimination,"${f('ha','n','[I')}")),"[2, 0, 3, 1]");
+for(int secondary=0;secondary<16;secondary++){set(board,elimination,"${f('ha','e','I')}",5);set(board,elimination,"${f('ha','u','I')}",secondary);
+for(int player=0;player<4;player++)check("inactive/"+secondary+"/"+player,call(board,elimination,"${m('ha','b','(II)Z')}",new Class<?>[]{int.class,int.class},-1,player),((5|secondary)&(1<<player))!=0);}
+// Recorded outcomes and per-turn structure income preserve the original numeric rules.
+Object recorded=unsafe.allocateInstance(board);int[] ranks={3,1,0,2};
+for(int winners:new int[]{0,1,2,4}){call(board,recorded,"${m('ha','a','(IZ[I)V')}",new Class<?>[]{int.class,boolean.class,int[].class},winners,true,ranks);
+check("outcome-winners/"+winners,get(board,recorded,"${f('ha','R','I')}"),winners);check("outcome-current/"+winners,get(board,recorded,"${f('ha','gb','I')}"),winners==1?3:-1);check("outcome-ranks/"+winners,get(board,recorded,"${f('ha','p','[I')}")==ranks,true);}
+set(board,recorded,"${f('ha','yb','[I')}",new int[]{0,1,0});set(board,recorded,"${f('ha','z','[[I')}",new int[][]{{2,3,4},{1,0,2}});
+for(int player=0;player<3;player++)check("structure-income/"+player,call(board,recorded,"${m('ha','k','(II)I')}",new Class<?>[]{int.class,int.class},-100,player),player==1?100:425);
+// Concrete match predicates and any-condition registry aggregation.
+Class<?> conditionType=Class.forName("${className('lv')}"),registryType=Class.forName("${className('tt')}"),unitLoss=Class.forName("${className('mc')}"),portalLoss=Class.forName("${className('up')}"),escort=Class.forName("${className('gm')}");
+Object match=unsafe.allocateInstance(board),matchTiles=Array.newInstance(tile,2),playerLists=Array.newInstance(deque,4);
+for(int i=0;i<2;i++)Array.set(matchTiles,i,make(tile,new Class<?>[]{}));for(int i=0;i<4;i++)Array.set(playerLists,i,make(deque,new Class<?>[]{}));
+set(board,match,"${f('ha','W','I')}",4);set(board,match,"${f('ha','v','I')}",2);set(board,match,"${f('ha','db','I')}",1);set(board,match,"${f('ha','Eb','[Lne;')}",matchTiles);set(board,match,"${f('ha','t','[Lat;')}",playerLists);set(board,match,"${f('ha','yb','[I')}",new int[]{0,1,0,1});set(board,match,"${f('ha','wb','Z')}",true);
+Object unitCondition=make(unitLoss,new Class<?>[]{int.class,board},0,match),portalCondition=make(portalLoss,new Class<?>[]{int.class,board},0,match);
+check("unit-loss/empty",call(unitLoss,unitCondition,"${m('mc','c','(I)Z')}",new Class<?>[]{int.class},-128),true);
+check("portal-loss/empty",call(portalLoss,portalCondition,"${m('up','c','(I)Z')}",new Class<?>[]{int.class},-128),true);
+Object ally=make(unit,new Class<?>[]{int.class,int.class,int.class},0,0,0);set(unit,ally,"${f('jd','O','I')}",2);
+call(deque,Array.get(playerLists,2),"${m('at','a','(BLtc;)V')}",new Class<?>[]{byte.class,Class.forName("${className('tc')}")},(byte)-119,ally);
+check("unit-loss/allied-unit",call(unitLoss,unitCondition,"${m('mc','c','(I)Z')}",new Class<?>[]{int.class},-128),false);
+check("portal-loss/allied-capturer",call(portalLoss,portalCondition,"${m('up','c','(I)Z')}",new Class<?>[]{int.class},-128),false);
+Class<?> mission=Class.forName("${className('om')}");Object missionFixture=make(mission,new Class<?>[]{});set(board,match,"${f('ha','K','Lom;')}",missionFixture);
+check("unit-loss/campaign",call(unitLoss,unitCondition,"${m('mc','c','(I)Z')}",new Class<?>[]{int.class},-128),true);
+check("portal-loss/campaign",call(portalLoss,portalCondition,"${m('up','c','(I)Z')}",new Class<?>[]{int.class},-128),true);set(board,match,"${f('ha','K','Lom;')}",null);
+Object ownPortal=Array.get(matchTiles,1);set(tile,ownPortal,"${f('ne','a','I')}",0);set(tile,ownPortal,"${f('ne','h','I')}",7);
+check("portal-loss/portal",call(portalLoss,portalCondition,"${m('up','c','(I)Z')}",new Class<?>[]{int.class},-128),false);
+Object leaderA=make(unit,new Class<?>[]{int.class,int.class,int.class},0,0,0),leaderB=make(unit,new Class<?>[]{int.class,int.class,int.class},0,0,0);Object leaders=Array.newInstance(unit,2);Array.set(leaders,0,leaderA);Array.set(leaders,1,leaderB);
+Object escortCondition=make(escort,new Class<?>[]{int.class,leaders.getClass()},0,leaders),emptyEscort=make(escort,new Class<?>[]{int.class,leaders.getClass()},0,Array.newInstance(unit,0));
+check("escort/empty",call(escort,emptyEscort,"${m('gm','b','(I)Z')}",new Class<?>[]{int.class},0),true);
+for(int completed=0;completed<4;completed++){set(unit,leaderA,"${f('jd','G','Z')}",(completed&1)!=0);set(unit,leaderB,"${f('jd','G','Z')}",(completed&2)!=0);check("escort/"+completed,call(escort,escortCondition,"${m('gm','b','(I)Z')}",new Class<?>[]{int.class},0),completed==3);}
+Object registry=make(registryType,new Class<?>[]{int.class},2);
+check("registry/no-victory",call(registryType,registry,"${m('tt','a','(II)Z')}",new Class<?>[]{int.class,int.class},0,-96),false);
+for(Object condition:new Object[]{unitCondition,portalCondition,escortCondition})call(registryType,registry,"${m('tt','a','(Llv;BI)V')}",new Class<?>[]{conditionType,byte.class,int.class},condition,(byte)99,0);
+check("registry/victory",call(registryType,registry,"${m('tt','a','(II)Z')}",new Class<?>[]{int.class,int.class},0,-96),true);
+check("registry/no-defeat",call(registryType,registry,"${m('tt','a','(BI)Z')}",new Class<?>[]{byte.class,int.class},(byte)-96,0),false);
+String[] descriptions=(String[])call(registryType,registry,"${m('tt','a','(I)[Ljava/lang/String;')}",new Class<?>[]{int.class},0);
+check("registry/descriptions",Arrays.toString(descriptions),"[player [0], Win: Leader Escort, Defeat: Total Portal Loss, Defeat: Total Unit Loss, player [1]]");
+Object otherPortalCondition=make(portalLoss,new Class<?>[]{int.class,board},1,match);
+call(registryType,registry,"${m('tt','a','(Llv;BI)V')}",new Class<?>[]{conditionType,byte.class,int.class},otherPortalCondition,(byte)99,1);
+check("registry/other-defeat",call(registryType,registry,"${m('tt','a','(BI)Z')}",new Class<?>[]{byte.class,int.class},(byte)-96,1),true);
+call(registryType,registry,"${m('tt','b','(II)V')}",new Class<?>[]{int.class,int.class},244,0);
+check("registry/remove-portal",Arrays.toString((String[])call(registryType,registry,"${m('tt','a','(I)[Ljava/lang/String;')}",new Class<?>[]{int.class},0)),"[player [0], Win: Leader Escort, Defeat: Total Unit Loss, player [1], Defeat: Total Portal Loss]");
+check("registry/other-defeat-preserved",call(registryType,registry,"${m('tt','a','(BI)Z')}",new Class<?>[]{byte.class,int.class},(byte)-96,1),true);
+call(registryType,registry,"${m('tt','a','(B)V')}",new Class<?>[]{byte.class},(byte)43);
+check("registry/global-removal",Arrays.toString((String[])call(registryType,registry,"${m('tt','a','(I)[Ljava/lang/String;')}",new Class<?>[]{int.class},0)),"[player [0], Win: Leader Escort, Defeat: Total Unit Loss, player [1]]");
+check("registry/global-no-defeat",call(registryType,registry,"${m('tt','a','(BI)Z')}",new Class<?>[]{byte.class,int.class},(byte)-96,1),false);
+check("registry/escort-preserved",call(registryType,registry,"${m('tt','a','(II)Z')}",new Class<?>[]{int.class,int.class},0,-96),true);
+// Cached map layouts expose row-major terrain without assets or map generation.
+Class<?> layout=Class.forName("${className('lo')}");Object layoutFixture=unsafe.allocateInstance(layout);Object cachedTiles=Array.newInstance(tile,6);
+for(int i=0;i<6;i++){Object cell=make(tile,new Class<?>[]{});set(tile,cell,"${f('ne','h','I')}",i+1);Array.set(cachedTiles,i,cell);}
+set(layout,layoutFixture,"${f('lo','l','I')}",3);set(layout,layoutFixture,"${f('lo','n','I')}",2);set(layout,layoutFixture,"${f('lo','r','[Lne;')}",cachedTiles);
+check("layout/terrain",Arrays.deepToString((int[][])call(layout,layoutFixture,"${m('lo','e','(I)[[I')}",new Class<?>[]{int.class},28554)),"[[1, 2, 3], [4, 5, 6]]");
+check("mission/music-default",get(mission,missionFixture,"${f('om','q','I')}"),-1);check("mission/difficulty-default",get(mission,missionFixture,"${f('om','E','I')}"),1);
+// Explicit map headers and row-major terrain payloads for three supported paths.
+byte[][] mapBytes={{3,2,1,2,3,4,5,6,2},{65,79,71,0,3,2,2,1,2,3,4,5,6},{65,79,71,1,3,2,0,2,1,2,3,4,5,6}};
+for(int index=0;index<mapBytes.length;index++){Object parsed=make(layout,new Class<?>[]{int.class,byte[].class},999,mapBytes[index]);
+check("layout-header/"+index+"/width",get(layout,parsed,"${f('lo','l','I')}"),3);check("layout-header/"+index+"/height",get(layout,parsed,"${f('lo','n','I')}"),2);
+check("layout-header/"+index+"/version",get(layout,parsed,"${f('lo','t','I')}"),index-1);
+check("layout-header/"+index+"/terrain",Arrays.deepToString((int[][])call(layout,parsed,"${m('lo','e','(I)[[I')}",new Class<?>[]{int.class},28554)),"[[1, 2, 3], [4, 5, 6]]");}
 System.out.println("checks:"+cases);
 }}
 `);

@@ -57,7 +57,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 80 reviewed classes around battlefield state, units, map
+The current pass names 88 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -77,6 +77,15 @@ damage and two death flags. Flying eligibility, anti-flying bonuses, structure
 capture and Sea Slug parasitism have distinct capability names. Terrain damage
 percentages, status masks and team tile effects retain their original encodings.
 Summoning permission, local god favour and affordability are separate checks.
+
+MatchCondition, its registry/entry and all three concrete conditions now have
+reviewed names. Portal loss and unit loss can defeat a player; all tracked
+leaders completing an escort can win. Turn preparation, pending-event
+application, player elimination, survivor masks, elimination order, rankings
+and structure income have reviewed methods and state. CampaignMission and
+MapLayout name tagged metadata and map decoding; finer numerical settings
+remain unresolved. The elimination dispatcher is retained with clearer
+parameters and local names.
 
 Combat event payloads and the main consequence routine have reviewed field, parameter
 and local names. SpellCastEvent corrects the earlier trinket label using the
@@ -100,7 +109,13 @@ Combat fixtures independently specify complete damage/counterattack/death tuples
 including range rejection, minimum damage, the 255 cap and protected statuses.
 Additional checks cover terrain/status scaling, team-effect projection, summoning
 permissions/favour, parasite eligibility and popup fade animation. They do not
-exercise rendering, sandbox controls or a complete match.
+exercise rendering, sandbox controls or a complete match. Survivor fixtures
+cover all masks through eight players and two-team combinations. Additional
+checks execute ordinary non-team elimination, ownership cleanup, elimination
+ranks, recorded outcomes, structure income, concrete match predicates and
+registry aggregation/removal. Layout checks read a controlled cached terrain grid and hand-encoded legacy,
+version-0 and version-1 terrain headers. They do not validate campaign resource
+loading, tagged version-2 maps or saved unit/item placement.
 The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Three dispatcher files
 and large methods remain; this is a semantic naming pass, not control-flow recovery.

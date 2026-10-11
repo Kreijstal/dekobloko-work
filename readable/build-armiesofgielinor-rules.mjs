@@ -82,6 +82,14 @@ const classes = {
   id:['CampaignUnitOverride','Instance data override unit type/name/strength when AiPlanner registers a campaign unit; static helpers also load assets.'],
   vn:['CombatSandbox','Own Attacker/Defender/Run Attack controls and six selectors; runs a standalone combat presentation.'],
   fi:['UnitInfoPopup','Owns one unit popup, layout coordinates, fade animation and scrolling unit-name feedback; static helpers also generate terrain.'],
+  lv:['MatchCondition','Victory/defeat predicate and diagnostic-description contract shared by three concrete match conditions.'],
+  tt:['MatchConditionRegistry','Per-player condition deques, any-victory/any-defeat checks and selective portal-loss removal.'],
+  u:['MatchConditionEntry','Intrusive node wrapping one MatchCondition; static helpers also handle common client messages.'],
+  up:['PortalLossCondition','Own Defeat: Total Portal Loss diagnostic; requires no usable portal and no possible capturing unit. Static fields also contain tutorial text.'],
+  mc:['UnitLossCondition','Own Defeat: Total Unit Loss diagnostic; checks allied units and usable portals, with campaign restrictions.'],
+  gm:['LeaderEscortCondition','Own Win: Leader Escort diagnostic; succeeds when every tracked leader has reached its goal.'],
+  om:['CampaignMission','Tagged campaign mission identity, metadata, player slots and lazy map loading.'],
+  lo:['MapLayout','Map format version, dimensions, terrain decoding, saved units and tagged map items.'],
   tc:['IntrusiveNode','Two node links and unlink update both neighbours.'],
   at:['NodeDeque','Sentinel node, prepend/append, pop and bidirectional traversal.'],
   vh:['PacketBuffer','Byte payload, cursor and primitive read/write methods.'],
@@ -511,6 +519,78 @@ for(const [owner,signature,items] of [
   ['cl','a(IIII)F',[[4,'var5','score'],[5,'var6','battlefield'],[6,'var7','targetX'],[7,'var8','targetY'],[8,'var9','targetTile'],[9,'var10','targetUnit'],[10,'var11','targetDeltaX'],[11,'var12','targetDeltaY'],[12,'var13','meleeRange'],[13,'var15','targetDamage'],[14,'var16','unitDamage'],[15,'var17','unitHealing'],[16,'var18','targetHealing'],[17,'var19','netTargetDamage'],[18,'var20','netUnitDamage'],[20,'var25','combatPrediction']]],
 ])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and combat power, range, cover, effect-mask or AI net-damage data flow.');
 
+field('tt','b','[Lat;','conditionsByPlayer','Registry constructor creates one deque per player; all checks and removal use this array.');
+field('u','m','Llv;','condition','Entry constructor captures the predicate evaluated by MatchConditionRegistry.');
+for(const [owner,items] of Object.entries({
+  up:[['a','playerId','I'],['d','battlefield','Lha;']],
+  mc:[['b','playerId','I'],['e','battlefield','Lha;']],
+  gm:[['c','leaders','[Ljd;']],
+}))for(const [original,to,type] of items)field(owner,original,type,to,'Condition constructor bindings and victory/defeat predicates.');
+field('jd','G','Z','escortComplete','MoveEvent sets this when a unit reaches its own marked objective tile; LeaderEscortCondition requires it on every tracked leader.');
+field('jd','S','Z','removedFromActivePlay','Escort completion unlinks the unit and sets this flag; capture and loss checks exclude removed units.');
+for(const [original,to,type] of [
+  ['P','matchConditions','Ltt;'],['K','campaignMission','Lom;'],['e','eliminatedPlayerMask','I'],
+  ['u','inactivePlayerMask','I'],['n','eliminationOrder','[I'],['p','rankedParticipants','[I'],
+  ['R','winnerCount','I'],['O','turnLimit','I'],['xb','collectedManaTarget','I'],['z','teamStructureCounts','[[I'],
+])field('ha',original,type,to,'Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.');
+method('lv','b','(I)Z','isVictory','Canonical guard zero evaluates victory; noncanonical arguments retain their original effects.',{0:'obfuscationGuard'});
+method('lv','c','(I)Z','isDefeat','Canonical guard -128 evaluates defeat.',{0:'obfuscationGuard'});
+method('lv','a','(I)Ljava/lang/String;','describeCondition','Own condition diagnostics identify portal loss, unit loss and leader escort.',{0:'obfuscationGuard'});
+method('tt','a','(Llv;BI)V','addCondition','Prepends the condition wrapper to one player deque.',{0:'condition',1:'obfuscationGuard',2:'playerId'});
+method('tt','a','(BI)Z','hasDefeat','Returns true if any registered condition reports defeat.',{0:'obfuscationGuard',1:'playerId'});
+method('tt','a','(II)Z','hasVictory','Returns true if any registered condition reports victory.',{0:'playerId',1:'obfuscationGuard'});
+method('tt','a','(I)[Ljava/lang/String;','describeConditions','Lists player headings and condition diagnostics in deque order; canonical initial count is zero.',{0:'initialCount'});
+method('tt','a','(B)V','removePortalLossConditions','Removes only PortalLossCondition entries from every player.',{0:'obfuscationGuard'});
+method('tt','b','(II)V','removePlayerPortalLossConditions','Removes only PortalLossCondition entries for one player.',{0:'obfuscationGuard',1:'playerId'});
+constructorParameters('tt','(I)V',['playerCount'],'Registry creates a deque for each player.');
+constructorParameters('u','(Llv;)V',['condition'],'Intrusive wrapper stores the condition.');
+for(const owner of ['up','mc'])constructorParameters(owner,'(ILha;)V',['playerId','battlefield'],'Loss condition stores player and battlefield.');
+constructorParameters('gm','(I[Ljd;)V',['suppliedPlayerId','leaders'],'The player argument is unused; victory examines the supplied leader array.');
+method('ha','k','(I)V','initializeMatchConditions','Scans portals, capture units and leaders, then registers the applicable loss/escort conditions.',{0:'obfuscationGuard'});
+method('ha','a','(ZZI)Lat;','prepareTurnConsequences','Refreshes captures/unit turn consequences and optionally collects prepared marker actions.',{0:'skipUnitProcessing',1:'collectMarkers',2:'obfuscationGuard'});
+method('ha','h','(B)V','applyPendingEvents','Pops and applies queued events until the deque is empty.',{0:'obfuscationGuard'});
+method('ha','f','(II)Lat;','getUnitsForPlayer','Returns the owner deque or null for missing/out-of-bounds player storage.',{0:'playerId',1:'obfuscationGuard'});
+method('ha','b','(IB)Z','hasUsablePortal','Checks own/allied portal tiles, god favour and the original campaign restriction.',{0:'playerId',1:'obfuscationGuard'});
+method('ha','a','(IZ)Z','hasCapturingUnit','Checks unremoved capture units/Sea Slugs, including allies in ordinary team matches.',{0:'playerId',1:'obfuscationGuard'});
+method('ha','b','(IIZ)V','eliminatePlayer','Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.',{0:'obfuscationGuard',1:'playerId',2:'removeUnits'});
+method('ha','g','(II)V','setEliminatedPlayerMask','Reconciles changed player bits with elimination, then installs the supplied mask.',{0:'playerMask',1:'obfuscationGuard'});
+method('ha','a','(II)V','setInactivePlayerMask','Reconciles changed secondary mask bits through elimination and stores the mask.',{0:'startPlayer',1:'playerMask'});
+method('ha','b','(II)Z','isPlayerInactive','Tests either eliminated or secondary inactive mask.',{0:'obfuscationGuard',1:'playerId'});
+method('ha','a','(B)I','getSurvivingPlayerMask','Complements eliminated bits and restricts them to the declared player count.',{0:'obfuscationGuard'});
+method('ha','e','(B)Z','hasSingleSurvivor','Exactly one player, or one team with surviving members, remains.',{0:'obfuscationGuard'});
+method('ha','d','(I)[I','getEliminationRanks','Inverts elimination order; players not in the order receive playerCount.',{0:'obfuscationGuard'});
+method('ha','a','(I)V','updateMatchOutcome','Updates participant rankings and winner count from collected mana, turn limits, eliminations and campaign conditions.',{0:'obfuscationGuard'});
+method('ha','a','(IZ[I)V','applyMatchOutcome','Stores winner count, outcome flag and ranked participants; one winner becomes currentPlayer, otherwise -1.',{0:'winnerCount',1:'outcomeFlag',2:'rankedParticipants'});
+method('ha','b','(I)V','recountStructures','Recounts team-owned portals/towers/villages, then updates the match outcome.',{0:'obfuscationGuard'});
+method('ha','k','(II)I','getStructureIncome','Returns 50 per portal, 75 per tower and 25 per village, with campaign scaling.',{0:'obfuscationGuard',1:'playerId'});
+method('ha','m','(II)Z','checkPlayerVictory','When any player condition wins, eliminates opposing participants.',{0:'startPlayer',1:'playerId'});
+method('ha','a','(BI)V','eliminatePlayerTeam','Looks up the player team and eliminates all its participants.',{0:'obfuscationGuard',1:'playerId'});
+method('go','a','(ILha;)V','eliminateAllPlayers','Calls battlefield elimination for every player in the roster.',{0:'obfuscationGuard',1:'battlefield'});
+for(const [original,to,type] of [
+  ['v','missionId','I'],['k','flags','I'],['J','name','Ljava/lang/String;'],['n','description','Ljava/lang/String;'],
+  ['w','playerSlot','I'],['o','mapSizeSetting','I'],['z','mapTheme','I'],['q','musicId','I'],
+  ['m','gameType','I'],['F','godSetting','I'],['E','difficulty','I'],['t','mapResourceId','I'],
+  ['C','cachedLayout','Llo;'],['y','neighborMissionIds','[I'],['B','participantIds','[I'],['D','rewardIds','[I'],['x','teamAssignments','[I'],
+])field('om',original,type,to,'Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.');
+method('om','a','(I)Llo;','getMapLayout','Loads the map once and caches the resulting layout.',{0:'obfuscationGuard'});
+method('om','d','(B)Llo;','loadMapLayout','Reads the mission map resource and creates a MapLayout.',{0:'obfuscationGuard'});
+method('om','a','(B)[I','getTeamAssignments','Returns the original stored team assignment array.',{0:'obfuscationGuard'});
+for(const [original,to,type] of [['s','encodedMap','[B'],['r','decodedTiles','[Lne;'],['l','mapWidth','I'],['n','mapHeight','I'],['t','formatVersion','I']])field('lo',original,type,to,'Layout header decoding and row-major terrain/placement readers.');
+method('lo','a','(B)Lvh;','readHeader','Reads version and dimensions, with tagged-map and legacy-format branches.',{0:'obfuscationGuard'});
+method('lo','e','(I)[[I','getTerrainGrid','Returns rows of terrain type IDs from decoded tiles or encoded bytes.',{0:'obfuscationGuard'});
+method('lo','a','(ILha;)[Lne;','createTiles','Decodes/binds layout tiles and saved units to the battlefield.',{0:'obfuscationGuard',1:'battlefield'});
+constructorParameters('lo','(I[B)V',['suppliedMapId','encodedMap'],'Map ID argument is unused; the encoded byte header determines layout data.');
+
+method('jd','k','(I)V','queueTurnConsequences','Queues upkeep, tile-state effects and displacement telefrag consequences for the unit.',{0:'obfuscationGuard'});
+method('ne','d','(I)Z','isPortal','Terrain types 7 and 11 are portals.',{0:'obfuscationGuard'});
+for(const [owner,signature,items] of [
+  ['tt','a(II)Z',[[1,'var3','iterator'],[2,'var4','entry']]],
+  ['tt','a(BI)Z',[[1,'var3','iterator'],[2,'var4','entry']]],
+  ['ha','b(IIZ)V',[[17,'var4','orderIndex'],[23,'var10','receivingPlayers'],[24,'var11','unitToRemove'],[25,'var12','campaignUnit']]],
+  ['ha','e(B)Z',[[0,'var2','survivingTeams'],[1,'var3','teams'],[2,'var4','teamIndex'],[3,'var5','team'],[4,'var6','players'],[5,'var7','playerIndex'],[6,'var8','playerId']]],
+  ['ha','k(I)V',[[9,'var2','hasEscortGoals'],[10,'var3','hasPortals'],[11,'var4','portalOwners'],[12,'var5','captureUnitOwners'],[13,'var6','leaderGroups'],[15,'var7','needsUnitLossCheck'],[16,'var8_ref_ne','tile'],[21,'var13','leaders'],[23,'var15','leaderArray']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.');
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -550,6 +630,8 @@ export function buildArmiesRules(input, rows) {
   const sources=new Map(sourceInventory(input).map(file=>[file.path,fs.readFileSync(path.join(input,file.path),'utf8')]));
   for(const source of sources.values()) {
     const event=source.match(/\bclass\s+(\w+)\s+extends\s+(?:oj|mn|bd)\b/)?.[1];
+    const condition=source.match(/\bclass\s+(\w+)\s+implements\s+lv\b/)?.[1];
+    if(condition&&!classes[condition])throw new Error('Unreviewed match condition: '+condition);
     if(event&&!classes[event]) throw new Error('Unreviewed gameplay event: '+event);
   }
   for(const row of rows.filter(row=>row[0]==='T')) {
@@ -594,21 +676,24 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('ej')} → ${link('cl')} / ${link('jb')} | Per-unit AI evaluation and selected actions. |`,
     `| ${link('sm')} → ${link('aw')} / ${link('ge')} | Highest-score and weighted candidate selection, recycling and reset. |`,
     `| ${link('vn')} / ${link('fi')} | Standalone combat sandbox and animated unit information popups. |`,
+    `| ${link('tt')} → ${link('lv')} / ${link('up')} / ${link('mc')} / ${link('gm')} | Registered portal-loss, unit-loss and leader-escort conditions. |`,
+    `| ${link('om')} → ${link('lo')} | Campaign metadata and encoded/decoded map layouts. |`,
     `| ${link('ci')} | Tutorial stages, prompts and flashing controls. |`,
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
     'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
     'Combat payloads now name attacker/defender positions, offsets, damage, death flags and animation counts. The central consequence routine names its attacker/defender and healing/poison locals. Unit movement-spent and attacks-remaining state are separate; spell status and equipment descriptors are also separate. `SpellCastEvent` replaces the earlier trinket label: its legacy diagnostic says Trinketused, but the concrete implementations read the spell definition table.','',
     'ActionRequest and PreparedAction replace the overly narrow SpellArea names: all five request subclasses and ten prepared-action subclasses have been reviewed. ActionSpell wraps an action rather than defining a geometric area. AI summoningPlayer and summonUnitType replace the misleading spellId/selectionVariant pair. Teleport target deltas are relative offsets, not absolute destination coordinates. PreparedAction.playerFlags is indexed by player, not by tile. Unused constructor arguments and no-op marker application remain unchanged.', '',
     'Battlefield.predictCombat returns [defenderDamage, attackerDamage, deathFlags], where flags 1/2 mean attacker/defender death. computeAttackPower, scaleIncomingDamage and getDamageTakenPercent expose matchup strength, cover and protection; integer truncation, damage caps and unusual protected-target behavior are preserved. Unit capability names distinguish flying eligibility, anti-flying bonus, structure capture and Sea Slug parasitism. Tile effects are indexed by team, while summoning permissions and local god favour are separate checks.', '',
+    'Turn/match names expose condition initialization, per-player victory/defeat queries, survivor masks, elimination order, participant rankings and collected-mana/turn limits. MatchConditionRegistry uses any-condition aggregation: portal and unit conditions can defeat a player, and leader escort can win. Escort completion and removal from active play are separate unit flags. CampaignMission and MapLayout retain tagged-field encodings, lazy loading and unused arguments.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, legacy/version-0/version-1 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:5,
+    const rules={schema:1,game:'armiesofgielinor',version:6,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
