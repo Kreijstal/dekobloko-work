@@ -3,7 +3,21 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {inventory, validateReport} from './publish-decompiled-games.mjs';
+import {inventory, validateReport, pipelineCheckEnvironment} from './publish-decompiled-games.mjs';
+
+test('pipeline retries may change recorded execution timeouts but never transformation gates', () => {
+  const batch = {PIPELINE_ALLOW_MUTUALLY_GUARDED_FALSE_CYCLES: '1'};
+  const retry = {...batch, PIPELINE_TIMEOUT_SECONDS: '7200'};
+  assert.deepEqual(pipelineCheckEnvironment(batch, retry, {
+    PATH: '/bin', PIPELINE_TIMEOUT_SECONDS: '1', BULK_PIPELINE_UNRECORDED: '1', SKIP_PIPELINE_PASSES: 'unsafe',
+  }), {PATH: '/bin', ...retry});
+  assert.deepEqual(pipelineCheckEnvironment(retry, batch, {}), batch);
+  for (const changed of [{...retry, PIPELINE_ALLOW_MUTUALLY_GUARDED_FALSE_CYCLES: '0'},
+    {...retry, BULK_PIPELINE_UNKNOWN_GATE: '1'}, {}, null])
+    assert.throws(() => pipelineCheckEnvironment(batch, changed, {}), /environment/);
+  for (const value of ['0', '-1', 'NaN', '7200.5', '9007199254740992', 7200])
+    assert.throws(() => pipelineCheckEnvironment(batch, {...batch, PIPELINE_TIMEOUT_SECONDS: value}, {}), /timeout/);
+});
 
 test('catalog publisher rejects failed, missing and inconsistent validation', () => {
   const report = {game: 'fixture', status: 'pass', hardFailures: 0, classes: 2, sources: 2,

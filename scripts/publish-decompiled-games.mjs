@@ -42,6 +42,23 @@ export function validateReport(game, report, diagnostics, inputs, sources) {
     throw new Error(`Incomplete or failed export: ${game}`);
 }
 
+export function pipelineCheckEnvironment(batchEnvironment, recordedEnvironment, currentEnvironment = process.env) {
+  if (!recordedEnvironment || typeof recordedEnvironment !== 'object' || Array.isArray(recordedEnvironment))
+    throw new Error('Missing recorded pipeline environment');
+  for (const key of new Set([...Object.keys(batchEnvironment), ...Object.keys(recordedEnvironment)])) {
+    if (key === 'PIPELINE_TIMEOUT_SECONDS') {
+      for (const value of [batchEnvironment[key], recordedEnvironment[key]])
+        if (value !== undefined && (typeof value !== 'string' || !/^[1-9][0-9]*$/.test(value) || !Number.isSafeInteger(Number(value))))
+          throw new Error('Invalid recorded pipeline timeout');
+    } else if (batchEnvironment[key] !== recordedEnvironment[key])
+      throw new Error(`Pipeline transformation environment differs: ${key}`);
+  }
+  const result = {...currentEnvironment};
+  for (const key of Object.keys(result))
+    if (key.startsWith('PIPELINE_') || key.startsWith('BULK_PIPELINE_') || key === 'SKIP_PIPELINE_PASSES') delete result[key];
+  return Object.assign(result, recordedEnvironment);
+}
+
 export function publish({batch, destination, javaTools, update = false}) {
   batch = path.resolve(batch);
   destination = path.resolve(destination);
@@ -60,11 +77,6 @@ export function publish({batch, destination, javaTools, update = false}) {
   if (!fs.existsSync(stub)) throw new Error('Missing batch compilation stubs');
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'funorb-publish-validation-'));
   const records = {};
-  const pipelineEnvironment = {...process.env};
-  for (const key of Object.keys(pipelineEnvironment))
-    if (key.startsWith('PIPELINE_') || key.startsWith('BULK_PIPELINE_') || key === 'SKIP_PIPELINE_PASSES')
-      delete pipelineEnvironment[key];
-  Object.assign(pipelineEnvironment, provenance.invocation.environment);
   try {
     for (const game of games) {
       const root = path.join(batch, game);
@@ -83,6 +95,7 @@ export function publish({batch, destination, javaTools, update = false}) {
       const stamp = json(path.join(owned, 'pipeline-provenance.json'));
       if (JSON.stringify(stamp.snapshot.generators) !== JSON.stringify(provenance.generators))
         throw new Error(`Pipeline generators differ: ${game}`);
+      const pipelineEnvironment = pipelineCheckEnvironment(provenance.invocation.environment, stamp.snapshot.pipeline.environment);
       run(process.execPath, [path.join(batch, 'tooling/dekobloko-work/scripts/pipeline-cache-provenance.js'),
         'check', path.join(owned, 'pipeline-provenance.json'), '--repo', path.join(batch, 'tooling/dekobloko-work'),
         '--java-tools', javaTools, '--input', path.join(root, 'classes'),
@@ -100,6 +113,7 @@ export function publish({batch, destination, javaTools, update = false}) {
       const {entries: sourceEntries, ...sourceIdentity} = sources;
       records[game] = {originalClasses: inputIdentity, transformedClasses: transformedIdentity,
         sources: sourceIdentity, pipelineFingerprint: stamp.fingerprint,
+        pipelineEnvironment: stamp.snapshot.pipeline.environment,
         sourceGenerator: report.decompiler ?? {commit: compiler.commit},
         diagnostics: {hardFailures: diagnostics.hardFailures, validFallbacks: diagnostics.validFallbacks,
           totals: diagnostics.totals}, validation: {bytecodeVerifier: 'pass', javac: 'pass',
