@@ -2,7 +2,7 @@
 
 Deko owns the naming scripts and one current rule manifest per named game.
 `java-tools` owns generic decompiler recovery. `funorb-decompiled` publishes
-Java directly in `games/geoblox` and `games/dekobloko`, with a reading guide
+Java directly in `games/<game>`, with a reading guide
 beside the sources. There is no second published Java tree or committed stub
 JAR. One current `decompilation/<game>-naming.json` dictionary records reverse
 edits, source/compiler identities, symbol verification and export provenance.
@@ -16,6 +16,9 @@ env -u JAVA_TOOL_OPTIONS node readable/reproduce-geoblox.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/build-dekobloko-rules.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-dekobloko.mjs --update
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-dekobloko.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/build-armiesofgielinor-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-armiesofgielinor.mjs --update
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-armiesofgielinor.mjs --check
 node readable/restore-game.mjs dekobloko /tmp/restored-dekobloko
 node scripts/check-source-catalog.mjs /absolute/path/to/funorb-decompiled
 node --test scripts/test-publish-decompiled-games.mjs readable/tests/test-game-publication.mjs
@@ -28,6 +31,23 @@ stages Java, guide, dictionary and catalog receipt before replacing the current
 game; failed metadata installation restores the previous game and receipt.
 Checks and reverse reconstruction also use temporary storage, never `.work`.
 The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
+
+## Armies of Gielinor
+
+The first pass names 39 reviewed classes around battlefield state, units, map
+tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
+decoding. Reviewed fields and operations carry source evidence in the one
+current `armiesofgielinor-rules.json` manifest. Unknown names remain unknown;
+packed flags use bit-position names until their gameplay meanings are proved.
+Override names propagate through resolved contracts, and label targets remain
+unchanged. The frozen Java compiler input is read from Git, not the current
+named export.
+
+Every export compares raw and named core execution with independent expected
+results for rectangular map lookup, alliances, unit flags and damage, and tile
+metadata. The probe bypasses battlefield construction and Applet initialization,
+so it is not a full gameplay or multiplayer-server test. Three dispatcher files
+and large methods remain; this is a semantic naming pass, not control-flow recovery.
 
 ## Deko Bloko
 
