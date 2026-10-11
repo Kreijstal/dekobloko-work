@@ -19,6 +19,9 @@ env -u JAVA_TOOL_OPTIONS node readable/reproduce-dekobloko.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/build-armiesofgielinor-rules.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-armiesofgielinor.mjs --update
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-armiesofgielinor.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/build-steelsentinels-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-steelsentinels.mjs --update
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-steelsentinels.mjs --check
 node readable/restore-game.mjs dekobloko /tmp/restored-dekobloko
 node scripts/check-source-catalog.mjs /absolute/path/to/funorb-decompiled
 node --test scripts/test-publish-decompiled-games.mjs readable/tests/test-game-publication.mjs
@@ -31,6 +34,23 @@ stages Java, guide, dictionary and catalog receipt before replacing the current
 game; failed metadata installation restores the previous game and receipt.
 Checks and reverse reconstruction also use temporary storage, never `.work`.
 The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
+
+## Steel Sentinels
+
+The first pass names 27 reviewed classes: world/sentinel state, gameplay,
+engineering, terrain, projectiles, explosions, effects, commands, articulated
+parts and the supporting packet/rendering/collection roots. One current
+`steelsentinels-rules.json` records evidence and exact input/workflow identities.
+Unresolved meanings remain opaque or carry qualified role names. Physics
+velocity is distinct from armour; module alias encodings and charge edge cases
+remain unchanged.
+
+Every export compares raw and named module checks/bonuses, armour and charge
+mutations, terrain boundaries, recursive part armour and synchronization checksums
+against independent expectations. Controlled fixtures bypass game constructors
+and Applet initialization; they do not establish full gameplay, projectile
+simulation or server compatibility. Three dispatcher files and large methods
+remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
