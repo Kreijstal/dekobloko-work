@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 2,
+  "version": 3,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1795,6 +1795,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:aw",
+      "originalName": "aw",
+      "to": "BestScoreStrategy",
+      "evidence": "aw.java: Retains the highest-score candidate; equal scores retain the previous choice.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bd",
       "originalName": "bd",
       "to": "SpellAreaEffect",
@@ -1823,6 +1830,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cl",
+      "originalName": "cl",
+      "to": "AiUnitPlanner",
+      "evidence": "cl.java: Scores movement/attack choices for one unit, orders unit decisions and executes the selected candidate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ec",
       "originalName": "ec",
       "to": "TeleportEvent",
@@ -1834,6 +1848,20 @@
       "originalName": "ej",
       "to": "AiPlanner",
       "evidence": "ej.java: Evaluates own/enemy power, capture and summoning scores against Battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gd",
+      "originalName": "gd",
+      "to": "ModelMesh",
+      "evidence": "gd.java: Vertex/face arrays and transformed mesh used by combat characters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ge",
+      "originalName": "ge",
+      "to": "WeightedScoreStrategy",
+      "evidence": "ge.java: Samples candidates using fourth-power normalized score weights.",
       "confidence": "reviewed"
     },
     {
@@ -1865,10 +1893,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:id",
+      "originalName": "id",
+      "to": "CampaignUnitOverride",
+      "evidence": "id.java: Instance data override unit type/name/strength when AiPlanner registers a campaign unit; static helpers also load assets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ik",
       "originalName": "ik",
       "to": "Spell",
       "evidence": "ik.java: Abstract spell ID, payload size/serialization and effect lifecycle; concrete implementations read spellDefinitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ir",
+      "originalName": "ir",
+      "to": "AiInfluenceMap",
+      "evidence": "ir.java: Tile cost propagation and distance-weighted power/influence accumulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jb",
+      "originalName": "jb",
+      "to": "AiActionCandidate",
+      "evidence": "jb.java: Movement/attack/spell target coordinates, score and execution result for an AI choice.",
       "confidence": "reviewed"
     },
     {
@@ -1914,6 +1963,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:lf",
+      "originalName": "lf",
+      "to": "BattleCharacter",
+      "evidence": "lf.java: Own BattleCharacter diagnostic; animated combat character model, current/destination coordinates and animation state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mb",
       "originalName": "mb",
       "to": "SummonEvent",
@@ -1925,6 +1981,13 @@
       "originalName": "md",
       "to": "ParasiteEvent",
       "evidence": "md.java: Diagnostic EventParasite with position, destination and owner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mm",
+      "originalName": "mm",
+      "to": "UnitObserver",
+      "evidence": "mm.java: Callback notified when Battlefield registers a unit; AiPlanner updates its unit-planner list.",
       "confidence": "reviewed"
     },
     {
@@ -1970,6 +2033,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pa",
+      "originalName": "pa",
+      "to": "EventPresentation",
+      "evidence": "pa.java: Shared initialization, frame advancement, drawing and completion contract for four event presentations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pj",
       "originalName": "pj",
       "to": "SpellCastEvent",
@@ -1991,6 +2061,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ql",
+      "originalName": "ql",
+      "to": "PopupPresentation",
+      "evidence": "ql.java: Short-lived overlays for damage, ownership, spell and status feedback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qn",
       "originalName": "qn",
       "to": "SoftwareRaster",
@@ -2002,6 +2079,13 @@
       "originalName": "qq",
       "to": "StateChangeEvent",
       "evidence": "qq.java: Diagnostic EventStateChange with position, effect type and player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qv",
+      "originalName": "qv",
+      "to": "MovementPresentation",
+      "evidence": "qv.java: Interpolates movement paths and parasite movement while updating unit presentation coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -2026,10 +2110,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sk",
+      "originalName": "sk",
+      "to": "CombatPresentation",
+      "evidence": "sk.java: Full combat scene with attacker/defender characters, combat phases and camera transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sm",
+      "originalName": "sm",
+      "to": "AiPlanningStrategy",
+      "evidence": "sm.java: Candidate queue/pool with interchangeable action selection strategies.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sr",
+      "originalName": "sr",
+      "to": "CombatViewTransition",
+      "evidence": "sr.java: Interpolates the camera/display transition with a 0..256 completion factor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:st",
       "originalName": "st",
       "to": "TurnEffectEvent",
       "evidence": "st.java: Diagnostic EventTurnEffect and strength/status changes in apply.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tb",
+      "originalName": "tb",
+      "to": "EffectPresentation",
+      "evidence": "tb.java: Unit/map effects for death, summoning, growth, teleportation and deployment.",
       "confidence": "reviewed"
     },
     {
@@ -2051,6 +2163,20 @@
       "originalName": "uo",
       "to": "TaggedFieldReader",
       "evidence": "uo.java: Shared named-field decoding contract implemented by Unit, MapTile and TileMetadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:v",
+      "originalName": "v",
+      "to": "BattleCamera",
+      "evidence": "v.java: Map focus, projected screen coordinates and smoothly interpolated camera position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vb",
+      "originalName": "vb",
+      "to": "EventPresenter",
+      "evidence": "vb.java: Selects a presentation from event kind, advances it, acknowledges completion and guards against stalled presentations.",
       "confidence": "reviewed"
     },
     {
@@ -2278,6 +2404,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cl.field_k:Ljb;",
+      "originalName": "field_k",
+      "to": "selectedAction",
+      "evidence": "cl.java: Per-unit AI construction, candidate scoring, target lookup and decision comparator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cl.field_l:Ljd;",
+      "originalName": "field_l",
+      "to": "selectedTarget",
+      "evidence": "cl.java: Per-unit AI construction, candidate scoring, target lookup and decision comparator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cl.field_o:Ljd;",
+      "originalName": "field_o",
+      "to": "unit",
+      "evidence": "cl.java: Per-unit AI construction, candidate scoring, target lookup and decision comparator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cl.field_r:Lej;",
+      "originalName": "field_r",
+      "to": "planner",
+      "evidence": "cl.java: Per-unit AI construction, candidate scoring, target lookup and decision comparator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cl.field_y:I",
+      "originalName": "field_y",
+      "to": "decisionPriority",
+      "evidence": "cl.java: Per-unit AI construction, candidate scoring, target lookup and decision comparator.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ec.field_A:I",
       "originalName": "field_A",
       "to": "sourceX",
@@ -2317,6 +2478,111 @@
       "originalName": "field_D",
       "to": "battlefield",
       "evidence": "ej.java: AI scoring uses tile grid, players, owners and strength.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_F:Lsm;",
+      "originalName": "field_F",
+      "to": "weightedScoreStrategy",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_I:[[[F",
+      "originalName": "field_I",
+      "to": "objectiveInfluence",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_J:Lcl;",
+      "originalName": "field_J",
+      "to": "currentUnitPlanner",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_N:[F",
+      "originalName": "field_N",
+      "to": "tileEvaluationCache",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_P:[F",
+      "originalName": "field_P",
+      "to": "weights",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_Q:Lsm;",
+      "originalName": "field_Q",
+      "to": "bestScoreStrategy",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_U:Lnn;",
+      "originalName": "field_U",
+      "to": "actionMovement",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_l:Lnn;",
+      "originalName": "field_l",
+      "to": "evaluationMovement",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_m:Lir;",
+      "originalName": "field_m",
+      "to": "influenceMap",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_p:Lat;",
+      "originalName": "field_p",
+      "to": "unitPlanners",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_u:[Lid;",
+      "originalName": "field_u",
+      "to": "campaignOverrides",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_z:I",
+      "originalName": "field_z",
+      "to": "playerId",
+      "evidence": "ej.java: AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ge.field_j:F",
+      "originalName": "field_j",
+      "to": "totalWeight",
+      "evidence": "ge.java: Sums fourth-power sampling weights before drawing a random threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ge.field_k:F",
+      "originalName": "field_k",
+      "to": "minimumScore",
+      "evidence": "ge.java: Tracks the smallest submitted score and normalizes sampling weights.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ge.field_l:I",
+      "originalName": "field_l",
+      "to": "candidateCount",
+      "evidence": "ge.java: Sampling diagnostic reports this candidate count.",
       "confidence": "reviewed"
     },
     {
@@ -2516,10 +2782,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ic.field_M:Lv;",
+      "originalName": "field_M",
+      "to": "camera",
+      "evidence": "ic.java: Shared camera passed to every concrete event presentation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ic.field_T:Ljd;",
       "originalName": "field_T",
       "to": "selectedUnit",
       "evidence": "ic.java: Input selection and movement overlay reference the selected unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_pc:Lat;",
+      "originalName": "field_pc",
+      "to": "eventPresenters",
+      "evidence": "ic.java: GameplayController iterates active event presenters for update/drawing.",
       "confidence": "reviewed"
     },
     {
@@ -2537,10 +2817,143 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:id.field_a:I",
+      "originalName": "field_a",
+      "to": "unitType",
+      "evidence": "id.java: AiPlanner matches overrides by unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_b:I",
+      "originalName": "field_b",
+      "to": "strength",
+      "evidence": "id.java: Positive override strengths replace both maximum/current unit strength.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_e:Ljava/lang/String;",
+      "originalName": "field_e",
+      "to": "displayName",
+      "evidence": "id.java: AI unit registration applies the override display name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ik.field_c:I",
       "originalName": "field_c",
       "to": "spellId",
       "evidence": "ik.java: Every concrete spell indexes spellDefinitions with this ID and writes it as a big-endian short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ir.field_a:I",
+      "originalName": "field_a",
+      "to": "mapWidth",
+      "evidence": "ir.java: Influence-map constructor and bounded row/column cost propagation loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ir.field_b:I",
+      "originalName": "field_b",
+      "to": "minimumY",
+      "evidence": "ir.java: Influence-map constructor and bounded row/column cost propagation loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ir.field_c:I",
+      "originalName": "field_c",
+      "to": "maximumX",
+      "evidence": "ir.java: Influence-map constructor and bounded row/column cost propagation loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ir.field_e:I",
+      "originalName": "field_e",
+      "to": "minimumX",
+      "evidence": "ir.java: Influence-map constructor and bounded row/column cost propagation loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ir.field_g:I",
+      "originalName": "field_g",
+      "to": "mapHeight",
+      "evidence": "ir.java: Influence-map constructor and bounded row/column cost propagation loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ir.field_i:[I",
+      "originalName": "field_i",
+      "to": "packedCosts",
+      "evidence": "ir.java: Influence-map constructor and bounded row/column cost propagation loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ir.field_m:[Lne;",
+      "originalName": "field_m",
+      "to": "tiles",
+      "evidence": "ir.java: Influence-map constructor and bounded row/column cost propagation loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ir.field_n:I",
+      "originalName": "field_n",
+      "to": "maximumY",
+      "evidence": "ir.java: Influence-map constructor and bounded row/column cost propagation loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_k:I",
+      "originalName": "field_k",
+      "to": "targetX",
+      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_l:I",
+      "originalName": "field_l",
+      "to": "selectionVariant",
+      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_m:I",
+      "originalName": "field_m",
+      "to": "spellId",
+      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_o:I",
+      "originalName": "field_o",
+      "to": "targetY",
+      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_q:I",
+      "originalName": "field_q",
+      "to": "destinationY",
+      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_r:I",
+      "originalName": "field_r",
+      "to": "executionResult",
+      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_s:I",
+      "originalName": "field_s",
+      "to": "destinationX",
+      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_t:F",
+      "originalName": "field_t",
+      "to": "score",
+      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
       "confidence": "reviewed"
     },
     {
@@ -2726,6 +3139,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jd.field_p:Lcl;",
+      "originalName": "field_p",
+      "to": "aiPlanner",
+      "evidence": "jd.java: AiUnitPlanner constructor associates its planner with the unit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jd.field_q:I",
       "originalName": "field_q",
       "to": "tankId",
@@ -2849,6 +3269,76 @@
       "originalName": "field_I",
       "to": "startY",
       "evidence": "kr.java: EventMove start-position diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_A:Lgd;",
+      "originalName": "field_A",
+      "to": "model",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_C:I",
+      "originalName": "field_C",
+      "to": "unitType",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_D:I",
+      "originalName": "field_D",
+      "to": "animationState",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_G:I",
+      "originalName": "field_G",
+      "to": "modelIndex",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_a:I",
+      "originalName": "field_a",
+      "to": "destinationX",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_f:I",
+      "originalName": "field_f",
+      "to": "animationFrame",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_j:I",
+      "originalName": "field_j",
+      "to": "currentX",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_m:I",
+      "originalName": "field_m",
+      "to": "animationDelay",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_p:I",
+      "originalName": "field_p",
+      "to": "currentY",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_s:I",
+      "originalName": "field_s",
+      "to": "destinationY",
+      "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
       "confidence": "reviewed"
     },
     {
@@ -3111,6 +3601,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oj.field_m:I",
+      "originalName": "field_m",
+      "to": "eventKind",
+      "evidence": "oj.java: EventPresenter dispatch selects concrete presentation classes by this numeric event kind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_o:Z",
+      "originalName": "field_o",
+      "to": "presentationComplete",
+      "evidence": "oj.java: Set when the outstanding presentation count is exhausted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_s:I",
+      "originalName": "field_s",
+      "to": "pendingPresentations",
+      "evidence": "oj.java: Acknowledgement decrements this count; event completes when it reaches zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oj.field_w:Ljd;",
       "originalName": "field_w",
       "to": "unit",
@@ -3136,6 +3647,41 @@
       "originalName": "field_z",
       "to": "castingPlayer",
       "evidence": "pj.java: Passed to Spell.applyEffect and battlefield spell accounting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_b:Lvb;",
+      "originalName": "field_b",
+      "to": "presenter",
+      "evidence": "ql.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_d:Ljd;",
+      "originalName": "field_d",
+      "to": "unit",
+      "evidence": "ql.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_h:I",
+      "originalName": "field_h",
+      "to": "elapsedFrames",
+      "evidence": "ql.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_k:Lv;",
+      "originalName": "field_k",
+      "to": "camera",
+      "evidence": "ql.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_o:Lha;",
+      "originalName": "field_o",
+      "to": "battlefield",
+      "evidence": "ql.java: Presentation constructor bindings and frame/drawing/completion data flow.",
       "confidence": "reviewed"
     },
     {
@@ -3174,6 +3720,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qv.field_h:[I",
+      "originalName": "field_h",
+      "to": "pathDirections",
+      "evidence": "qv.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qv.field_o:Lha;",
+      "originalName": "field_o",
+      "to": "battlefield",
+      "evidence": "qv.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qv.field_p:I",
+      "originalName": "field_p",
+      "to": "pathLength",
+      "evidence": "qv.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qv.field_q:Lvb;",
+      "originalName": "field_q",
+      "to": "presenter",
+      "evidence": "qv.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qv.field_s:I",
+      "originalName": "field_s",
+      "to": "durationFrames",
+      "evidence": "qv.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qv.field_u:I",
+      "originalName": "field_u",
+      "to": "elapsedFrames",
+      "evidence": "qv.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qv.field_v:Lv;",
+      "originalName": "field_v",
+      "to": "camera",
+      "evidence": "qv.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qv.field_w:I",
+      "originalName": "field_w",
+      "to": "pathIndex",
+      "evidence": "qv.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ra.field_g:Lmn;",
       "originalName": "field_g",
       "to": "selection",
@@ -3202,6 +3804,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sk.field_B:Lv;",
+      "originalName": "field_B",
+      "to": "camera",
+      "evidence": "sk.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sk.field_F:I",
+      "originalName": "field_F",
+      "to": "phaseFrame",
+      "evidence": "sk.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sk.field_H:Lwk;",
+      "originalName": "field_H",
+      "to": "framebuffer",
+      "evidence": "sk.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sk.field_i:[Llf;",
+      "originalName": "field_i",
+      "to": "defenders",
+      "evidence": "sk.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sk.field_k:Lvb;",
+      "originalName": "field_k",
+      "to": "presenter",
+      "evidence": "sk.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sk.field_n:I",
+      "originalName": "field_n",
+      "to": "phase",
+      "evidence": "sk.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sk.field_r:I",
+      "originalName": "field_r",
+      "to": "mapWidth",
+      "evidence": "sk.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sk.field_s:[Llf;",
+      "originalName": "field_s",
+      "to": "attackers",
+      "evidence": "sk.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sk.field_x:Lha;",
+      "originalName": "field_x",
+      "to": "battlefield",
+      "evidence": "sk.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sm.field_a:Lat;",
+      "originalName": "field_a",
+      "to": "candidates",
+      "evidence": "sm.java: Strategy submission and selection traverse this candidate deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sm.field_f:Lat;",
+      "originalName": "field_f",
+      "to": "recycledCandidates",
+      "evidence": "sm.java: Strategy reset transfers previous candidates into the reuse pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sr.field_k:Lv;",
+      "originalName": "field_k",
+      "to": "camera",
+      "evidence": "sr.java: CombatPresentation creates and updates the transition for this camera.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sr.field_n:I",
+      "originalName": "field_n",
+      "to": "transitionFactor",
+      "evidence": "sr.java: Combat view readiness tests factor 256; transition updates interpolate it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:st.field_D:I",
       "originalName": "field_D",
       "to": "effectType",
@@ -3213,6 +3906,41 @@
       "originalName": "field_G",
       "to": "applied",
       "evidence": "st.java: Apply returns if already true, then sets true before mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_c:Lha;",
+      "originalName": "field_c",
+      "to": "battlefield",
+      "evidence": "tb.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_f:Lvb;",
+      "originalName": "field_f",
+      "to": "presenter",
+      "evidence": "tb.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_i:Lv;",
+      "originalName": "field_i",
+      "to": "camera",
+      "evidence": "tb.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_l:Z",
+      "originalName": "field_l",
+      "to": "finished",
+      "evidence": "tb.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_m:I",
+      "originalName": "field_m",
+      "to": "mapWidth",
+      "evidence": "tb.java: Presentation constructor bindings and frame/drawing/completion data flow.",
       "confidence": "reviewed"
     },
     {
@@ -3262,6 +3990,111 @@
       "originalName": "field_d",
       "to": "spellDefinitions",
       "evidence": "uc.java: AI and gameplay inspect chant type, cost and effect columns; class has other mixed helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_d:Lvb;",
+      "originalName": "field_d",
+      "to": "focusedPresenter",
+      "evidence": "v.java: Camera smoothing moves currentPosition toward targetPosition with the per-axis velocity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_k:[I",
+      "originalName": "field_k",
+      "to": "targetPosition",
+      "evidence": "v.java: Camera smoothing moves currentPosition toward targetPosition with the per-axis velocity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_l:[I",
+      "originalName": "field_l",
+      "to": "velocity",
+      "evidence": "v.java: Camera smoothing moves currentPosition toward targetPosition with the per-axis velocity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_p:[I",
+      "originalName": "field_p",
+      "to": "currentPosition",
+      "evidence": "v.java: Camera smoothing moves currentPosition toward targetPosition with the per-axis velocity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_B:Lpa;",
+      "originalName": "field_B",
+      "to": "presentation",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_k:Lha;",
+      "originalName": "field_k",
+      "to": "battlefield",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_m:I",
+      "originalName": "field_m",
+      "to": "screenX",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_n:Z",
+      "originalName": "field_n",
+      "to": "presentationActive",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_p:I",
+      "originalName": "field_p",
+      "to": "elapsedFrames",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_r:Loj;",
+      "originalName": "field_r",
+      "to": "event",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_s:Z",
+      "originalName": "field_s",
+      "to": "acknowledged",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_v:I",
+      "originalName": "field_v",
+      "to": "screenY",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_x:I",
+      "originalName": "field_x",
+      "to": "tileIndex",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_y:Lic;",
+      "originalName": "field_y",
+      "to": "controller",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_z:Z",
+      "originalName": "field_z",
+      "to": "fullCombatScene",
+      "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
       "confidence": "reviewed"
     },
     {
@@ -3489,6 +4322,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aw.a(B)Ljb;",
+      "originalName": "a",
+      "to": "selectCandidate",
+      "evidence": "sm.java: Selection contract implemented by maximum-score and weighted-sampling strategies. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.a(ILjb;)V",
+      "originalName": "a",
+      "to": "submitCandidate",
+      "evidence": "sm.java: Submits a candidate using the concrete selection policy. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bd.a(ILha;)V",
       "originalName": "a",
       "to": "applyEffect",
@@ -3507,6 +4354,34 @@
       "originalName": "a",
       "to": "decodeTaggedField",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(BLcl;)Z",
+      "originalName": "a",
+      "to": "shouldFollow",
+      "evidence": "cl.java: Decision ordering by priority then the unit coordinate sum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(ZB)F",
+      "originalName": "a",
+      "to": "evaluateActions",
+      "evidence": "cl.java: Scores candidate tiles with action or evaluation movement data and stores a selected action.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.e(I)Ljd;",
+      "originalName": "e",
+      "to": "getSelectedTarget",
+      "evidence": "cl.java: Looks up the selected candidate target unit when one is present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.g(I)V",
+      "originalName": "g",
+      "to": "executeSelectedAction",
+      "evidence": "cl.java: Executes a valid selected candidate and clears action movement state.",
       "confidence": "reviewed"
     },
     {
@@ -3535,6 +4410,76 @@
       "originalName": "a",
       "to": "createEffect",
       "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(III)F",
+      "originalName": "a",
+      "to": "scoreSummoningAtTile",
+      "evidence": "ej.java: Combines category matchup influence and vulnerability/power weights for a summoning score.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(IIIB)F",
+      "originalName": "a",
+      "to": "scoreSpellAtTile",
+      "evidence": "ej.java: Scores damage, raising and occupancy effects at a target tile; returns -Float.MAX_VALUE outside the map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(Lat;I)V",
+      "originalName": "a",
+      "to": "sortUnitPlanners",
+      "evidence": "ej.java: Orders per-unit planners by priority and coordinate tie breaker.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(Lcl;B)Lsm;",
+      "originalName": "a",
+      "to": "getSelectionStrategy",
+      "evidence": "ej.java: Returns the strategy currently used for per-unit decisions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(Ljd;B)V",
+      "originalName": "a",
+      "to": "onUnitRegistered",
+      "evidence": "mm.java: Battlefield unit-registration notification propagated to AI observer implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(Lmn;I)Z",
+      "originalName": "a",
+      "to": "executeSelection",
+      "evidence": "ej.java: Creates and applies an effect for an AI-selected target shape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.b(Ljd;B)Lcl;",
+      "originalName": "b",
+      "to": "registerUnitPlanner",
+      "evidence": "ej.java: Applies campaign overrides and adds an AI unit planner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.a(B)Ljb;",
+      "originalName": "a",
+      "to": "selectCandidate",
+      "evidence": "sm.java: Selection contract implemented by maximum-score and weighted-sampling strategies. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.a(ILjb;)V",
+      "originalName": "a",
+      "to": "submitCandidate",
+      "evidence": "sm.java: Submits a candidate using the concrete selection policy. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.b(B)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "sm.java: Transfers candidates to the reuse pool and resets strategy state. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -3696,6 +4641,34 @@
       "originalName": "a",
       "to": "applyEffect",
       "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(BLej;)I",
+      "originalName": "a",
+      "to": "execute",
+      "evidence": "jb.java: Reconstructs the candidate path/target and executes its selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(I)Z",
+      "originalName": "a",
+      "to": "hasDestination",
+      "evidence": "jb.java: Tests whether destination X is not -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.g(I)Z",
+      "originalName": "g",
+      "to": "hasTarget",
+      "evidence": "jb.java: Tests whether target X is not -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.h(I)V",
+      "originalName": "h",
+      "to": "reset",
+      "evidence": "jb.java: Restores original -1 sentinels and Float.MIN_VALUE score.",
       "confidence": "reviewed"
     },
     {
@@ -3944,6 +4917,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lf.a(IB)V",
+      "originalName": "a",
+      "to": "setAnimationState",
+      "evidence": "lf.java: Assigns the animation state while preserving the guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.b(B)Z",
+      "originalName": "b",
+      "to": "isIdle",
+      "evidence": "lf.java: Requires animation state zero and frame -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.b(I)Z",
+      "originalName": "b",
+      "to": "isAtDestination",
+      "evidence": "lf.java: Compares current and destination X/Y.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mb.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -3969,6 +4963,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a(Ljd;B)V",
+      "originalName": "a",
+      "to": "onUnitRegistered",
+      "evidence": "mm.java: Battlefield unit-registration notification propagated to AI observer implementations.",
       "confidence": "reviewed"
     },
     {
@@ -4182,10 +5183,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oj.c(B)V",
+      "originalName": "c",
+      "to": "acknowledgePresentation",
+      "evidence": "oj.java: Decrements pending presentations and clears unit presentation state at completion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:om.a(ILbv;Ljava/lang/String;B)V",
       "originalName": "a",
       "to": "decodeTaggedField",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a(B)V",
+      "originalName": "a",
+      "to": "drawOverlayLayer",
+      "evidence": "pa.java: Draws overlay feedback where supported.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a(I)V",
+      "originalName": "a",
+      "to": "requestFinish",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a(Loj;B)Z",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "pa.java: Initializes presentation data for the event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.b(B)Z",
+      "originalName": "b",
+      "to": "isCombatViewReady",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.b(I)Z",
+      "originalName": "b",
+      "to": "isFinished",
+      "evidence": "pa.java: Tests completion in all four presentation implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.b(Loj;B)V",
+      "originalName": "b",
+      "to": "advanceFrame",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.c(B)V",
+      "originalName": "c",
+      "to": "drawBaseLayer",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer.",
       "confidence": "reviewed"
     },
     {
@@ -4245,6 +5302,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ql.a(B)V",
+      "originalName": "a",
+      "to": "drawOverlayLayer",
+      "evidence": "pa.java: Draws overlay feedback where supported. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(I)V",
+      "originalName": "a",
+      "to": "requestFinish",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(Loj;B)Z",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.b(B)Z",
+      "originalName": "b",
+      "to": "isCombatViewReady",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.b(I)Z",
+      "originalName": "b",
+      "to": "isFinished",
+      "evidence": "pa.java: Tests completion in all four presentation implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.b(Loj;B)V",
+      "originalName": "b",
+      "to": "advanceFrame",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.c(B)V",
+      "originalName": "c",
+      "to": "drawBaseLayer",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qq.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -4256,6 +5362,55 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.a(B)V",
+      "originalName": "a",
+      "to": "drawOverlayLayer",
+      "evidence": "pa.java: Draws overlay feedback where supported. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.a(I)V",
+      "originalName": "a",
+      "to": "requestFinish",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.a(Loj;B)Z",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.b(B)Z",
+      "originalName": "b",
+      "to": "isCombatViewReady",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.b(I)Z",
+      "originalName": "b",
+      "to": "isFinished",
+      "evidence": "pa.java: Tests completion in all four presentation implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.b(Loj;B)V",
+      "originalName": "b",
+      "to": "advanceFrame",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.c(B)V",
+      "originalName": "c",
+      "to": "drawBaseLayer",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4329,6 +5484,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sk.a(B)V",
+      "originalName": "a",
+      "to": "drawOverlayLayer",
+      "evidence": "pa.java: Draws overlay feedback where supported. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.a(I)V",
+      "originalName": "a",
+      "to": "requestFinish",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.a(Loj;B)Z",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.b(B)Z",
+      "originalName": "b",
+      "to": "isCombatViewReady",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.b(I)Z",
+      "originalName": "b",
+      "to": "isFinished",
+      "evidence": "pa.java: Tests completion in all four presentation implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.b(Loj;B)V",
+      "originalName": "b",
+      "to": "advanceFrame",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.c(B)V",
+      "originalName": "c",
+      "to": "drawBaseLayer",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(B)Ljb;",
+      "originalName": "a",
+      "to": "selectCandidate",
+      "evidence": "sm.java: Selection contract implemented by maximum-score and weighted-sampling strategies.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(ILjb;)V",
+      "originalName": "a",
+      "to": "submitCandidate",
+      "evidence": "sm.java: Submits a candidate using the concrete selection policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.b(B)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "sm.java: Transfers candidates to the reuse pool and resets strategy state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.b(I)Ljb;",
+      "originalName": "b",
+      "to": "acquireCandidate",
+      "evidence": "sm.java: Reuses a pooled candidate or constructs one, then restores its original sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.a(B)Z",
+      "originalName": "a",
+      "to": "isExpanded",
+      "evidence": "sr.java: Tests the completed 256 transition factor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ss.a(ILha;)V",
       "originalName": "a",
       "to": "applyEffect",
@@ -4347,6 +5586,55 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(B)V",
+      "originalName": "a",
+      "to": "drawOverlayLayer",
+      "evidence": "pa.java: Draws overlay feedback where supported. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(I)V",
+      "originalName": "a",
+      "to": "requestFinish",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(Loj;B)Z",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.b(B)Z",
+      "originalName": "b",
+      "to": "isCombatViewReady",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.b(I)Z",
+      "originalName": "b",
+      "to": "isFinished",
+      "evidence": "pa.java: Tests completion in all four presentation implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.b(Loj;B)V",
+      "originalName": "b",
+      "to": "advanceFrame",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.c(B)V",
+      "originalName": "c",
+      "to": "drawBaseLayer",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4396,6 +5684,34 @@
       "originalName": "a",
       "to": "applyEffect",
       "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(B)Z",
+      "originalName": "a",
+      "to": "isCombatViewReady",
+      "evidence": "vb.java: Delegates combat-view readiness to the current presentation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(I)V",
+      "originalName": "a",
+      "to": "advanceFrame",
+      "evidence": "vb.java: Advances the presentation, acknowledges once, and applies the original 1000-frame limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(IIZ)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "vb.java: Delegates drawing or draws the unanimated unit fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.e(I)Z",
+      "originalName": "e",
+      "to": "initialize",
+      "evidence": "vb.java: Dispatches event kind to a presentation and initializes it.",
       "confidence": "reviewed"
     },
     {
@@ -4735,6 +6051,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:aw.<init>(Lej;)V#0",
+      "originalName": "param0",
+      "to": "planner",
+      "evidence": "aw.java: Best-score strategy delegates candidate storage construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:aw.a(B)Ljb;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Selection contract implemented by maximum-score and weighted-sampling strategies. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:aw.a(ILjb;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Submits a candidate using the concrete selection policy. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:aw.a(ILjb;)V#1",
+      "originalName": "param1",
+      "to": "candidate",
+      "evidence": "sm.java: Submits a candidate using the concrete selection policy. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bd.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4791,6 +6135,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cl.<init>(Lej;Ljd;)V#0",
+      "originalName": "param0",
+      "to": "planner",
+      "evidence": "cl.java: AI unit planner constructor links the unit to its planner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.<init>(Lej;Ljd;)V#1",
+      "originalName": "param1",
+      "to": "unit",
+      "evidence": "cl.java: AI unit planner constructor links the unit to its planner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(BLcl;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cl.java: Decision ordering by priority then the unit coordinate sum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(BLcl;)Z#1",
+      "originalName": "param1",
+      "to": "otherPlanner",
+      "evidence": "cl.java: Decision ordering by priority then the unit coordinate sum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(ZB)F#0",
+      "originalName": "param0",
+      "to": "selectAction",
+      "evidence": "cl.java: Scores candidate tiles with action or evaluation movement data and stores a selected action.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(ZB)F#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "cl.java: Scores candidate tiles with action or evaluation movement data and stores a selected action.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.e(I)Ljd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cl.java: Looks up the selected candidate target unit when one is present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.g(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cl.java: Executes a valid selected candidate and clears action movement state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dk.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4844,6 +6244,188 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.<init>(Lha;IZ[Lid;)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "ej.java: AI constructor stores battlefield/player/override data; boolean configuration meaning is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.<init>(Lha;IZ[Lid;)V#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ej.java: AI constructor stores battlefield/player/override data; boolean configuration meaning is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.<init>(Lha;IZ[Lid;)V#2",
+      "originalName": "param2",
+      "to": "configurationFlag",
+      "evidence": "ej.java: AI constructor stores battlefield/player/override data; boolean configuration meaning is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.<init>(Lha;IZ[Lid;)V#3",
+      "originalName": "param3",
+      "to": "campaignOverrides",
+      "evidence": "ej.java: AI constructor stores battlefield/player/override data; boolean configuration meaning is unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(III)F#0",
+      "originalName": "param0",
+      "to": "unitType",
+      "evidence": "ej.java: Combines category matchup influence and vulnerability/power weights for a summoning score.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(III)F#1",
+      "originalName": "param1",
+      "to": "baseCost",
+      "evidence": "ej.java: Combines category matchup influence and vulnerability/power weights for a summoning score.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(III)F#2",
+      "originalName": "param2",
+      "to": "tileIndex",
+      "evidence": "ej.java: Combines category matchup influence and vulnerability/power weights for a summoning score.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(IIIB)F#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "ej.java: Scores damage, raising and occupancy effects at a target tile; returns -Float.MAX_VALUE outside the map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(IIIB)F#1",
+      "originalName": "param1",
+      "to": "spellId",
+      "evidence": "ej.java: Scores damage, raising and occupancy effects at a target tile; returns -Float.MAX_VALUE outside the map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(IIIB)F#2",
+      "originalName": "param2",
+      "to": "tileY",
+      "evidence": "ej.java: Scores damage, raising and occupancy effects at a target tile; returns -Float.MAX_VALUE outside the map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(IIIB)F#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ej.java: Scores damage, raising and occupancy effects at a target tile; returns -Float.MAX_VALUE outside the map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(Lat;I)V#0",
+      "originalName": "param0",
+      "to": "planners",
+      "evidence": "ej.java: Orders per-unit planners by priority and coordinate tie breaker.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(Lat;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ej.java: Orders per-unit planners by priority and coordinate tie breaker.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(Lcl;B)Lsm;#0",
+      "originalName": "param0",
+      "to": "unitPlanner",
+      "evidence": "ej.java: Returns the strategy currently used for per-unit decisions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(Lcl;B)Lsm;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ej.java: Returns the strategy currently used for per-unit decisions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(Ljd;B)V#0",
+      "originalName": "param0",
+      "to": "unit",
+      "evidence": "mm.java: Battlefield unit-registration notification propagated to AI observer implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(Ljd;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "mm.java: Battlefield unit-registration notification propagated to AI observer implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(Lmn;I)Z#0",
+      "originalName": "param0",
+      "to": "selection",
+      "evidence": "ej.java: Creates and applies an effect for an AI-selected target shape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(Lmn;I)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ej.java: Creates and applies an effect for an AI-selected target shape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.b(Ljd;B)Lcl;#0",
+      "originalName": "param0",
+      "to": "unit",
+      "evidence": "ej.java: Applies campaign overrides and adds an AI unit planner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.b(Ljd;B)Lcl;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ej.java: Applies campaign overrides and adds an AI unit planner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.<init>(Lej;)V#0",
+      "originalName": "param0",
+      "to": "planner",
+      "evidence": "ge.java: Weighted strategy initializes its normalization bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.a(B)Ljb;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Selection contract implemented by maximum-score and weighted-sampling strategies. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.a(ILjb;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Submits a candidate using the concrete selection policy. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.a(ILjb;)V#1",
+      "originalName": "param1",
+      "to": "candidate",
+      "evidence": "sm.java: Submits a candidate using the concrete selection policy. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Transfers candidates to the reuse pool and resets strategy state. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -5271,6 +6853,62 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.<init>([Lne;II)V#0",
+      "originalName": "param0",
+      "to": "tiles",
+      "evidence": "ir.java: Influence-map constructor stores rectangular geometry and allocates packed costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.<init>([Lne;II)V#1",
+      "originalName": "param1",
+      "to": "mapWidth",
+      "evidence": "ir.java: Influence-map constructor stores rectangular geometry and allocates packed costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.<init>([Lne;II)V#2",
+      "originalName": "param2",
+      "to": "mapHeight",
+      "evidence": "ir.java: Influence-map constructor stores rectangular geometry and allocates packed costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jb.a(BLej;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jb.java: Reconstructs the candidate path/target and executes its selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jb.a(BLej;)I#1",
+      "originalName": "param1",
+      "to": "planner",
+      "evidence": "jb.java: Reconstructs the candidate path/target and executes its selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jb.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jb.java: Tests whether destination X is not -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jb.g(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jb.java: Tests whether target X is not -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jb.h(I)V#0",
+      "originalName": "param0",
+      "to": "targetY",
+      "evidence": "jb.java: Restores original -1 sentinels and Float.MIN_VALUE score.",
       "confidence": "reviewed"
     },
     {
@@ -5799,6 +7437,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:lf.a(IB)V#0",
+      "originalName": "param0",
+      "to": "animationState",
+      "evidence": "lf.java: Assigns the animation state while preserving the guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lf.a(IB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lf.java: Assigns the animation state while preserving the guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lf.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lf.java: Requires animation state zero and frame -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lf.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lf.java: Compares current and destination X/Y.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mb.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -5852,6 +7518,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mm.a(Ljd;B)V#0",
+      "originalName": "param0",
+      "to": "unit",
+      "evidence": "mm.java: Battlefield unit-registration notification propagated to AI observer implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mm.a(Ljd;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "mm.java: Battlefield unit-registration notification propagated to AI observer implementations.",
       "confidence": "reviewed"
     },
     {
@@ -6268,6 +7948,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oj.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "oj.java: Decrements pending presentations and clears unit presentation state at completion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:om.a(ILbv;Ljava/lang/String;B)V#0",
       "originalName": "param0",
       "to": "encodedLength",
@@ -6293,6 +7980,69 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws overlay feedback where supported.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.a(Loj;B)Z#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Initializes presentation data for the event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.a(Loj;B)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Initializes presentation data for the event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Tests completion in all four presentation implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.b(Loj;B)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.b(Loj;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer.",
       "confidence": "reviewed"
     },
     {
@@ -6408,6 +8158,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ql.<init>(Lha;Lv;Lvb;)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "ql.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.<init>(Lha;Lv;Lvb;)V#1",
+      "originalName": "param1",
+      "to": "camera",
+      "evidence": "ql.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.<init>(Lha;Lv;Lvb;)V#2",
+      "originalName": "param2",
+      "to": "presenter",
+      "evidence": "ql.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws overlay feedback where supported. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.a(Loj;B)Z#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.a(Loj;B)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Tests completion in all four presentation implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.b(Loj;B)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.b(Loj;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ql.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qq.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -6433,6 +8267,90 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.<init>(Lha;Lv;Lvb;)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "qv.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.<init>(Lha;Lv;Lvb;)V#1",
+      "originalName": "param1",
+      "to": "camera",
+      "evidence": "qv.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.<init>(Lha;Lv;Lvb;)V#2",
+      "originalName": "param2",
+      "to": "presenter",
+      "evidence": "qv.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws overlay feedback where supported. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.a(Loj;B)Z#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.a(Loj;B)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Tests completion in all four presentation implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.b(Loj;B)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.b(Loj;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qv.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -6604,6 +8522,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sk.<init>(Lha;Lv;Lvb;)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "sk.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.<init>(Lha;Lv;Lvb;)V#1",
+      "originalName": "param1",
+      "to": "camera",
+      "evidence": "sk.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.<init>(Lha;Lv;Lvb;)V#2",
+      "originalName": "param2",
+      "to": "presenter",
+      "evidence": "sk.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws overlay feedback where supported. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a(Loj;B)Z#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a(Loj;B)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Tests completion in all four presentation implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.b(Loj;B)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.b(Loj;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.<init>(Lej;)V#0",
+      "originalName": "param0",
+      "to": "planner",
+      "evidence": "sm.java: Selection strategy constructor allocates candidate and recycling deques.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(B)Ljb;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Selection contract implemented by maximum-score and weighted-sampling strategies.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(ILjb;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Submits a candidate using the concrete selection policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(ILjb;)V#1",
+      "originalName": "param1",
+      "to": "candidate",
+      "evidence": "sm.java: Submits a candidate using the concrete selection policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Transfers candidates to the reuse pool and resets strategy state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.b(I)Ljb;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Reuses a pooled candidate or constructs one, then restores its original sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sr.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sr.java: Tests the completed 256 transition factor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ss.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -6643,6 +8694,90 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.<init>(Lha;Lv;Lvb;)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "tb.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.<init>(Lha;Lv;Lvb;)V#1",
+      "originalName": "param1",
+      "to": "camera",
+      "evidence": "tb.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.<init>(Lha;Lv;Lvb;)V#2",
+      "originalName": "param2",
+      "to": "presenter",
+      "evidence": "tb.java: All presentation constructors bind battlefield, camera and presenter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws overlay feedback where supported. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a(Loj;B)Z#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a(Loj;B)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Initializes presentation data for the event. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Combat presentation tests its transition factor; other presentations return false for canonical guards. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Tests completion in all four presentation implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.b(Loj;B)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.b(Loj;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Advances event presentation and its current projected coordinates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pa.java: Draws base event/framebuffer presentation layer. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -6748,6 +8883,83 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.<init>(Lic;Lha;Leo;Loj;Z)V#0",
+      "originalName": "param0",
+      "to": "controller",
+      "evidence": "vb.java: EventPresenter constructor bindings; blocking mode preserves its original flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.<init>(Lic;Lha;Leo;Loj;Z)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "vb.java: EventPresenter constructor bindings; blocking mode preserves its original flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.<init>(Lic;Lha;Leo;Loj;Z)V#2",
+      "originalName": "param2",
+      "to": "effectSprites",
+      "evidence": "vb.java: EventPresenter constructor bindings; blocking mode preserves its original flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.<init>(Lic;Lha;Leo;Loj;Z)V#3",
+      "originalName": "param3",
+      "to": "event",
+      "evidence": "vb.java: EventPresenter constructor bindings; blocking mode preserves its original flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.<init>(Lic;Lha;Leo;Loj;Z)V#4",
+      "originalName": "param4",
+      "to": "blocking",
+      "evidence": "vb.java: EventPresenter constructor bindings; blocking mode preserves its original flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vb.java: Delegates combat-view readiness to the current presentation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.a(I)V#0",
+      "originalName": "param0",
+      "to": "excludedEventKind",
+      "evidence": "vb.java: Advances the presentation, acknowledges once, and applies the original 1000-frame limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.a(IIZ)V#0",
+      "originalName": "param0",
+      "to": "frameNumber",
+      "evidence": "vb.java: Delegates drawing or draws the unanimated unit fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.a(IIZ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "vb.java: Delegates drawing or draws the unanimated unit fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.a(IIZ)V#2",
+      "originalName": "param2",
+      "to": "overlayLayer",
+      "evidence": "vb.java: Delegates drawing or draws the unanimated unit fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.e(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vb.java: Dispatches event kind to a presentation and initializes it.",
       "confidence": "reviewed"
     },
     {
@@ -6885,9 +9097,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "47580b365b3ac8f25ef7d64fc55a569476310dc4b9037303803ce86acae58689",
+      "build-armiesofgielinor-rules.mjs": "a23b148c61e398d62025a7c6820f8a3a5c086502bbf2e14250835112780692ba",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "3d732dbf90c7bf2464c0de35b89e786b2a3a88b23895423a34d13500fd692418",
+      "tests/test-armiesofgielinor-core.mjs": "f9baf09ebab0f98ad9b5b627b8a9220bae6bd58b473f9af1fd212b28a7bbf8bc",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

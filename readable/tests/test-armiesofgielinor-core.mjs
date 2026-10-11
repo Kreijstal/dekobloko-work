@@ -139,6 +139,48 @@ check("planner-width/"+dimensions[0],get(planner,plan,"${f('nn','x','I')}"),dime
 for(String grid:new String[]{"${f('nn','q','[I')}","${f('nn','k','[I')}","${f('nn','e','[I')}"}){int[] cells=(int[])get(planner,plan,grid);check("planner-grid-size/"+dimensions[0]+"/"+grid.equals("${f('nn','q','[I')}"),cells.length,dimensions[0]*dimensions[1]);for(int i=0;i<cells.length;i++)if(cells[i]!=(grid.equals("${f('nn','e','[I')}")?0:1000000))throw new AssertionError("Uninitialized cost grid");}
 set(planner,plan,"${f('nn','i','Ljd;')}",v);set(planner,plan,"${f('nn','p','I')}",120);set(planner,plan,"${f('nn','h','[I')}",new int[]{0,1});
 call(planner,plan,"${m('nn','d','(I)V')}",new Class<?>[]{int.class},-20);check("planner-unit-cleared/"+dimensions[0],get(planner,plan,"${f('nn','i','Ljd;')}")==null,true);check("planner-spell-cleared/"+dimensions[0],get(planner,plan,"${f('nn','p','I')}"),-1);check("planner-path-cleared/"+dimensions[0],get(planner,plan,"${f('nn','h','[I')}")==null,true);}
+// Highest-score selection and recycling have independently specified results.
+Class<?> ai=Class.forName("${className('ej')}"),candidate=Class.forName("${className('jb')}"),strategy=Class.forName("${className('sm')}"),best=Class.forName("${className('aw')}"),weighted=Class.forName("${className('ge')}");
+Object bestStrategy=make(best,new Class<?>[]{ai},(Object)null);
+check("best-empty",call(best,bestStrategy,"${m('aw','a','(B)Ljb;')}",new Class<?>[]{byte.class},(byte)-40)==null,true);
+for(float[] scores:new float[][]{{-10,-20,-1},{5,5,4},{-1,0,8,3}}){Object winner=null;float maximum=-Float.MAX_VALUE;
+for(float score:scores){Object choice=make(candidate,new Class<?>[]{});set(candidate,choice,"${f('jb','t','F')}",score);if(score>maximum){maximum=score;winner=choice;}
+call(best,bestStrategy,"${m('aw','a','(ILjb;)V')}",new Class<?>[]{int.class,candidate},16777062,choice);}
+check("best-selected/"+Arrays.toString(scores),call(best,bestStrategy,"${m('aw','a','(B)Ljb;')}",new Class<?>[]{byte.class},(byte)-40)==winner,true);
+check("best-drained/"+Arrays.toString(scores),call(best,bestStrategy,"${m('aw','a','(B)Ljb;')}",new Class<?>[]{byte.class},(byte)-40)==null,true);}
+Object recycled=make(candidate,new Class<?>[]{});set(candidate,recycled,"${f('jb','t','F')}",9.0f);
+call(best,bestStrategy,"${m('aw','a','(ILjb;)V')}",new Class<?>[]{int.class,candidate},16777062,recycled);
+call(strategy,bestStrategy,"${m('sm','b','(B)V')}",new Class<?>[]{byte.class},(byte)111);
+check("reset-empty",call(best,bestStrategy,"${m('aw','a','(B)Ljb;')}",new Class<?>[]{byte.class},(byte)-40)==null,true);
+Object reused=call(strategy,bestStrategy,"${m('sm','b','(I)Ljb;')}",new Class<?>[]{int.class},640);check("recycled-identity",reused==recycled,true);
+for(String sentinelField:new String[]{"${f('jb','s','I')}","${f('jb','q','I')}","${f('jb','k','I')}","${f('jb','o','I')}","${f('jb','m','I')}","${f('jb','l','I')}","${f('jb','r','I')}"})check("candidate-reset/"+cases,get(candidate,reused,sentinelField),-1);
+check("candidate-reset-score",get(candidate,reused,"${f('jb','t','F')}"),Float.MIN_VALUE);
+for(int coordinate:new int[]{-1,0,7}){set(candidate,reused,"${f('jb','k','I')}",coordinate);set(candidate,reused,"${f('jb','s','I')}",coordinate);
+check("candidate-target/"+coordinate,call(candidate,reused,"${m('jb','g','(I)Z')}",new Class<?>[]{int.class},81),coordinate!=-1);
+check("candidate-destination/"+coordinate,call(candidate,reused,"${m('jb','a','(I)Z')}",new Class<?>[]{int.class},0),coordinate!=-1);}
+Object weightedStrategy=make(weighted,new Class<?>[]{ai},(Object)null);
+check("weighted-empty",call(weighted,weightedStrategy,"${m('ge','a','(B)Ljb;')}",new Class<?>[]{byte.class},(byte)-40)==null,true);
+// One candidate yields deterministic selection despite the random threshold.
+set(candidate,reused,"${f('jb','t','F')}",-3.0f);
+call(weighted,weightedStrategy,"${m('ge','a','(ILjb;)V')}",new Class<?>[]{int.class,candidate},16777062,reused);
+check("weighted-single",call(weighted,weightedStrategy,"${m('ge','a','(B)Ljb;')}",new Class<?>[]{byte.class},(byte)-40)==reused,true);
+check("weighted-normalized",get(candidate,reused,"${f('jb','t','F')}"),1.0f);
+// Presentation lifecycle uses a controlled interface implementation, without rendering.
+Class<?> presenter=Class.forName("${className('vb')}"),presentation=Class.forName("${className('pa')}"),manaEvent=Class.forName("${className('vp')}");
+for(int pending:new int[]{1,3}){Object event=unsafe.allocateInstance(manaEvent),runner=unsafe.allocateInstance(presenter);final boolean[] finished={false};final int[] advanced={0};
+Object visual=Proxy.newProxyInstance(presentation.getClassLoader(),new Class<?>[]{presentation},(proxy,method,args0)->{
+if(method.getReturnType()==boolean.class&&method.getName().equals("${m('pa','b','(I)Z')}"))return finished[0];
+if(method.getName().equals("${m('pa','b','(Loj;B)V')}")){advanced[0]++;return null;}throw new AssertionError("Unexpected presentation call");});
+set(gameEvent,event,"${f('oj','m','I')}",11);set(gameEvent,event,"${f('oj','s','I')}",pending);
+set(presenter,runner,"${f('vb','r','Loj;')}",event);set(presenter,runner,"${f('vb','B','Lpa;')}",visual);
+call(presenter,runner,"${m('vb','a','(I)V')}",new Class<?>[]{int.class},0);check("presentation-advance/"+pending,advanced[0],1);
+check("presentation-pending/"+pending,get(gameEvent,event,"${f('oj','s','I')}"),pending);
+finished[0]=true;call(presenter,runner,"${m('vb','a','(I)V')}",new Class<?>[]{int.class},0);
+check("presentation-ack/"+pending,get(gameEvent,event,"${f('oj','s','I')}"),pending-1);
+check("presentation-complete/"+pending,get(gameEvent,event,"${f('oj','o','Z')}"),pending==1);
+check("presentation-released/"+pending,get(presenter,runner,"${f('vb','B','Lpa;')}")==null,true);
+call(presenter,runner,"${m('vb','a','(I)V')}",new Class<?>[]{int.class},0);
+check("presentation-ack-once/"+pending,get(gameEvent,event,"${f('oj','s','I')}"),pending-1);}
 System.out.println("checks:"+cases);
 }}
 `);

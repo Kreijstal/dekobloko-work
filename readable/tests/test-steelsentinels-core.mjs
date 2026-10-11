@@ -96,6 +96,44 @@ expected+=(3*state[1]+2*state[0])&65535;expected+=state[2]&65535;expected+=(stat
 check("find/"+seed+"/"+i,call(world,w,"${m('ee','f','(II)Lmb;')}",new Class<?>[]{int.class,int.class},i,-127)==value,true);}
 check("checksum/"+seed,call(world,w,"${m('ee','b','(Z)I')}",new Class<?>[]{boolean.class},false),expected);
 check("missing/"+seed,call(world,w,"${m('ee','f','(II)Lmb;')}",new Class<?>[]{int.class,int.class},123,-127)==null,true);}
+// Independent command duration table, including unknown variants and Java overflow.
+Class<?> command=Class.forName("${className('je')}");
+int[] weaponDuration={25,20,35,50,75,75,40,50,100,30,20};
+for(int type=-1;type<=13;type++)for(int variant=-1;variant<=11;variant++)for(int start:new int[]{-100,0,27,Integer.MAX_VALUE}){
+int duration=50;boolean active=false;
+switch(type){case 0:duration=variant>=0&&variant<weaponDuration.length?weaponDuration[variant]:10;active=variant>=6&&variant<=10;break;
+case 3:duration=100;active=true;break;case 5:duration=125;active=true;break;case 6:case 12:duration=5;break;
+case 7:duration=variant==3?100:25;active=true;break;case 8:case 9:duration=25;active=true;break;case 10:duration=1;break;case 11:duration=25;break;}
+Object c=make(command,new Class<?>[]{int.class,int.class,int.class},type,variant,start);
+String label="command/"+type+"/"+variant+"/"+start;
+check(label+"/type",get(command,c,"${f('je','s','I')}"),type);check(label+"/variant",get(command,c,"${f('je','A','I')}"),variant);
+check(label+"/start",get(command,c,"${f('je','x','I')}"),start);check(label+"/end",get(command,c,"${f('je','r','I')}"),start+duration);
+check(label+"/active",get(command,c,"${f('je','z','Z')}"),active);check(label+"/scheduled",get(command,c,"${f('je','p','Z')}"),false);}
+// Both scheduling queues independently remain sorted; equal ticks replace.
+Object queuedSentinel=unsafe.allocateInstance(sentinel),primary=make(deque,new Class<?>[]{}),secondary=make(deque,new Class<?>[]{});
+set(sentinel,queuedSentinel,"${f('mb','B','Lul;')}",primary);set(sentinel,queuedSentinel,"${f('mb','Ec','Lul;')}",secondary);
+TreeMap<Integer,Object> primaryExpected=new TreeMap<>(),secondaryExpected=new TreeMap<>();
+int[] ticks={20,10,30,20,5,40,30};
+for(int type:new int[]{0,3,4,6,7,11})for(int tick:ticks){Object c=make(command,new Class<?>[]{int.class,int.class,int.class},type,0,tick);
+TreeMap<Integer,Object> expected=(type==3||type==4||type==6)?secondaryExpected:primaryExpected;Object replaced=expected.put(tick,c);
+call(sentinel,queuedSentinel,"${m('mb','d','(BLje;)V')}",new Class<?>[]{byte.class,command},(byte)100,c);
+check("scheduled/"+type+"/"+tick,get(command,c,"${f('je','p','Z')}"),true);
+if(replaced!=null)check("replacement-unlinked/"+type+"/"+tick,get(node,replaced,"${f('ck','i','Lck;')}")==null,true);
+for(int q=0;q<2;q++){Object queue=q==0?primary:secondary;Object item=call(deque,queue,"${m('ul','e','(I)Lck;')}",new Class<?>[]{int.class},13058);
+for(Object want:(q==0?primaryExpected:secondaryExpected).values()){check("queue/"+type+"/"+tick+"/"+q+"/"+get(command,want,"${f('je','x','I')}"),item==want,true);item=call(deque,queue,"${m('ul','a','(B)Lck;')}",new Class<?>[]{byte.class},(byte)-36);}
+check("queue-end/"+type+"/"+tick+"/"+q,item==null,true);}}
+// A noncanonical guard rejects insertion; stale unscheduled entries are removed.
+Object rejected=make(command,new Class<?>[]{int.class,int.class,int.class},0,0,50);
+call(sentinel,queuedSentinel,"${m('mb','d','(BLje;)V')}",new Class<?>[]{byte.class,command},(byte)45,rejected);
+check("rejected-scheduled",get(command,rejected,"${f('je','p','Z')}"),false);check("rejected-link",get(node,rejected,"${f('ck','i','Lck;')}")==null,true);
+Object stale=primaryExpected.firstEntry().getValue();set(command,stale,"${f('je','p','Z')}",false);
+Object next=make(command,new Class<?>[]{int.class,int.class,int.class},0,0,50);
+call(sentinel,queuedSentinel,"${m('mb','d','(BLje;)V')}",new Class<?>[]{byte.class,command},(byte)100,next);
+check("stale-unlinked",get(node,stale,"${f('ck','i','Lck;')}")==null,true);
+set(sentinel,queuedSentinel,"${f('mb','V','Z')}",true);
+call(sentinel,queuedSentinel,"${m('mb','a','(BI)V')}",new Class<?>[]{byte.class,int.class},(byte)75,50);
+check("primary-cleared",call(deque,primary,"${m('ul','b','(B)I')}",new Class<?>[]{byte.class},(byte)-128),0);
+check("secondary-cleared",call(deque,secondary,"${m('ul','b','(B)I')}",new Class<?>[]{byte.class},(byte)-128),0);
 System.out.println("checks:"+cases);
 }}
 `);

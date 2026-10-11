@@ -37,26 +37,31 @@ The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
 
 ## Steel Sentinels
 
-The first pass names 27 reviewed classes: world/sentinel state, gameplay,
+The current pass names 27 reviewed classes: world/sentinel state, gameplay,
 engineering, terrain, projectiles, explosions, effects, commands, articulated
 parts and the supporting packet/rendering/collection roots. One current
 `steelsentinels-rules.json` records evidence and exact input/workflow identities.
 Unresolved meanings remain opaque or carry qualified role names. Physics
 velocity is distinct from armour; module alias encodings and charge edge cases
-remain unchanged.
+remain unchanged. Command scheduling, target coordinates and aim angles now
+have reviewed names; scheduling is separate from ability activation.
 
 Every export compares raw and named module checks/bonuses, armour and charge
 mutations, terrain boundaries, recursive part armour and synchronization checksums
-against independent expectations. Controlled fixtures bypass game constructors
+against independent expectations. Command probes cover duration/activation,
+queue routing and ordering, equal-tick replacement, stale command removal and
+queue clearing. Controlled fixtures bypass game constructors
 and Applet initialization; they do not establish full gameplay, projectile
 simulation or server compatibility. Three dispatcher files and large methods
 remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 45 reviewed classes around battlefield state, units, map
+The current pass names 63 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
-decoding, including unit/area/global spells and prepared area effects. Combat
+decoding, including unit/area/global spells and prepared area effects. This pass
+also names event presentations, combat camera/characters, per-unit AI candidates,
+selection strategies, influence maps and campaign overrides. Combat
 event payloads and the main consequence routine have reviewed field, parameter
 and local names. SpellCastEvent corrects the earlier trinket label using the
 actual spell-table dispatch. Reviewed fields and operations carry evidence in
@@ -69,6 +74,8 @@ named export.
 Every export compares raw and named core execution with independent expected
 results for rectangular map lookup, alliances, unit flags/damage, equipment and
 ranges, spell wire bytes, combat payloads/consequence queues, and tile metadata.
+Additional fixtures check best-score selection, candidate recycling/reset,
+single-candidate weighted selection and presentation completion acknowledgement.
 The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Three dispatcher files
 and large methods remain; this is a semantic naming pass, not control-flow recovery.

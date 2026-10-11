@@ -47,6 +47,24 @@ const classes = {
   al:['GlobalSpell','Spell-table dispatch for effects that do not carry target coordinates.'],
   mn:['SpellAreaSelection','Abstract targeting shape that creates a SpellAreaEffect.'],
   bd:['SpellAreaEffect','Affected tile indices and abstract battlefield application of a prepared area effect.'],
+  pa:['EventPresentation','Shared initialization, frame advancement, drawing and completion contract for four event presentations.'],
+  vb:['EventPresenter','Selects a presentation from event kind, advances it, acknowledges completion and guards against stalled presentations.'],
+  sk:['CombatPresentation','Full combat scene with attacker/defender characters, combat phases and camera transition.'],
+  qv:['MovementPresentation','Interpolates movement paths and parasite movement while updating unit presentation coordinates.'],
+  tb:['EffectPresentation','Unit/map effects for death, summoning, growth, teleportation and deployment.'],
+  ql:['PopupPresentation','Short-lived overlays for damage, ownership, spell and status feedback.'],
+  lf:['BattleCharacter','Own BattleCharacter diagnostic; animated combat character model, current/destination coordinates and animation state.'],
+  v:['BattleCamera','Map focus, projected screen coordinates and smoothly interpolated camera position.'],
+  sr:['CombatViewTransition','Interpolates the camera/display transition with a 0..256 completion factor.'],
+  gd:['ModelMesh','Vertex/face arrays and transformed mesh used by combat characters.'],
+  mm:['UnitObserver','Callback notified when Battlefield registers a unit; AiPlanner updates its unit-planner list.'],
+  cl:['AiUnitPlanner','Scores movement/attack choices for one unit, orders unit decisions and executes the selected candidate.'],
+  jb:['AiActionCandidate','Movement/attack/spell target coordinates, score and execution result for an AI choice.'],
+  sm:['AiPlanningStrategy','Candidate queue/pool with interchangeable action selection strategies.'],
+  aw:['BestScoreStrategy','Retains the highest-score candidate; equal scores retain the previous choice.'],
+  ge:['WeightedScoreStrategy','Samples candidates using fourth-power normalized score weights.'],
+  ir:['AiInfluenceMap','Tile cost propagation and distance-weighted power/influence accumulation.'],
+  id:['CampaignUnitOverride','Instance data override unit type/name/strength when AiPlanner registers a campaign unit; static helpers also load assets.'],
   tc:['IntrusiveNode','Two node links and unlink update both neighbours.'],
   at:['NodeDeque','Sentinel node, prepend/append, pop and bidirectional traversal.'],
   vh:['PacketBuffer','Byte payload, cursor and primitive read/write methods.'],
@@ -180,6 +198,58 @@ field('bv','w','Lha;','currentBattlefield','Shared reference used by gameplay ov
 field('bw','m','[[I','unitDefinitions','Unit queries type-indexed speed/range/flag columns; class itself also owns unrelated crypto.');
 field('uc','d','[[I','spellDefinitions','AI and gameplay inspect chant type, cost and effect columns; class has other mixed helpers.');
 field('ArmiesOfGielinor','M','Z','obfuscationControl','Whole-corpus opaque branch-control flag.');
+field('oj','m','I','eventKind','EventPresenter dispatch selects concrete presentation classes by this numeric event kind.');
+field('oj','s','I','pendingPresentations','Acknowledgement decrements this count; event completes when it reaches zero.');
+field('oj','o','Z','presentationComplete','Set when the outstanding presentation count is exhausted.');
+for(const [original,to,type] of [
+  ['k','battlefield','Lha;'],['y','controller','Lic;'],['r','event','Loj;'],['B','presentation','Lpa;'],
+  ['p','elapsedFrames','I'],['s','acknowledged','Z'],['n','presentationActive','Z'],
+  ['z','fullCombatScene','Z'],['m','screenX','I'],['v','screenY','I'],['x','tileIndex','I'],
+])field('vb',original,type,to,'EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.');
+for(const [owner,items] of Object.entries({
+  sk:[['x','battlefield','Lha;'],['k','presenter','Lvb;'],['B','camera','Lv;'],['n','phase','I'],['F','phaseFrame','I'],['r','mapWidth','I'],['H','framebuffer','Lwk;'],['i','defenders','[Llf;'],['s','attackers','[Llf;']],
+  qv:[['o','battlefield','Lha;'],['q','presenter','Lvb;'],['v','camera','Lv;'],['u','elapsedFrames','I'],['s','durationFrames','I'],['p','pathLength','I'],['h','pathDirections','[I'],['w','pathIndex','I']],
+  tb:[['c','battlefield','Lha;'],['f','presenter','Lvb;'],['i','camera','Lv;'],['l','finished','Z'],['m','mapWidth','I']],
+  ql:[['o','battlefield','Lha;'],['b','presenter','Lvb;'],['k','camera','Lv;'],['h','elapsedFrames','I'],['d','unit','Ljd;']],
+}))for(const [original,to,type] of items)field(owner,original,type,to,'Presentation constructor bindings and frame/drawing/completion data flow.');
+for(const [original,to,type] of [
+  ['j','currentX','I'],['p','currentY','I'],['a','destinationX','I'],['s','destinationY','I'],
+  ['C','unitType','I'],['G','modelIndex','I'],['A','model','Lgd;'],['D','animationState','I'],
+  ['f','animationFrame','I'],['m','animationDelay','I'],
+])field('lf',original,type,to,'BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.');
+field('sr','n','I','transitionFactor','Combat view readiness tests factor 256; transition updates interpolate it.');
+field('sr','k','Lv;','camera','CombatPresentation creates and updates the transition for this camera.');
+for(const [original,to,type] of [
+  ['p','currentPosition','[I'],['k','targetPosition','[I'],['l','velocity','[I'],['d','focusedPresenter','Lvb;'],
+])field('v',original,type,to,'Camera smoothing moves currentPosition toward targetPosition with the per-axis velocity.');
+field('ic','M','Lv;','camera','Shared camera passed to every concrete event presentation.');
+field('ic','pc','Lat;','eventPresenters','GameplayController iterates active event presenters for update/drawing.');
+field('jd','p','Lcl;','aiPlanner','AiUnitPlanner constructor associates its planner with the unit.');
+for(const [original,to,type] of [
+  ['z','playerId','I'],['P','weights','[F'],['u','campaignOverrides','[Lid;'],['p','unitPlanners','Lat;'],
+  ['U','actionMovement','Lnn;'],['l','evaluationMovement','Lnn;'],['m','influenceMap','Lir;'],
+  ['Q','bestScoreStrategy','Lsm;'],['F','weightedScoreStrategy','Lsm;'],['J','currentUnitPlanner','Lcl;'],
+  ['N','tileEvaluationCache','[F'],['I','objectiveInfluence','[[[F'],
+])field('ej',original,type,to,'AI constructor and unit/candidate evaluation; numeric weight and influence-channel meanings remain partly unresolved.');
+for(const [original,to,type] of [
+  ['r','planner','Lej;'],['o','unit','Ljd;'],['k','selectedAction','Ljb;'],['l','selectedTarget','Ljd;'],['y','decisionPriority','I'],
+])field('cl',original,type,to,'Per-unit AI construction, candidate scoring, target lookup and decision comparator.');
+for(const [original,to,type] of [
+  ['s','destinationX','I'],['q','destinationY','I'],['k','targetX','I'],['o','targetY','I'],
+  ['m','spellId','I'],['l','selectionVariant','I'],['r','executionResult','I'],['t','score','F'],
+])field('jb',original,type,to,'Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.');
+field('sm','a','Lat;','candidates','Strategy submission and selection traverse this candidate deque.');
+field('sm','f','Lat;','recycledCandidates','Strategy reset transfers previous candidates into the reuse pool.');
+field('ge','k','F','minimumScore','Tracks the smallest submitted score and normalizes sampling weights.');
+field('ge','j','F','totalWeight','Sums fourth-power sampling weights before drawing a random threshold.');
+field('ge','l','I','candidateCount','Sampling diagnostic reports this candidate count.');
+for(const [original,to,type] of [
+  ['a','mapWidth','I'],['g','mapHeight','I'],['m','tiles','[Lne;'],['i','packedCosts','[I'],
+  ['b','minimumY','I'],['n','maximumY','I'],['e','minimumX','I'],['c','maximumX','I'],
+])field('ir',original,type,to,'Influence-map constructor and bounded row/column cost propagation loops.');
+field('id','a','I','unitType','AiPlanner matches overrides by unit type.');
+field('id','b','I','strength','Positive override strengths replace both maximum/current unit strength.');
+field('id','e','Ljava/lang/String;','displayName','AI unit registration applies the override display name.');
 
 method('ha','c','(IZI)Ljd;','getUnitAt','Bounds-checks y and x, then reads tiles[x+y*width].occupant.',{0:'tileY',1:'obfuscationGuard',2:'tileX'});
 method('ha','c','(III)Z','arePlayersAllied','Rejects -1/255 sentinels and compares player team indices.',{0:'firstPlayer',1:'obfuscationGuard',2:'secondPlayer'});
@@ -272,6 +342,49 @@ method('nn','e','(I)V','clearPath','Clears path availability and the direction a
 constructorParameters('nn','(Lha;)V',['battlefield'],'MovementPlanner constructor captures map geometry and initializes its cost grids.');
 method('at','a','(ILtc;)V','addFirst','Links the node immediately after the deque sentinel; combat uses guard 750.',{0:'obfuscationGuard',1:'node'});
 method('at','a','(BLtc;)V','addLast','Links the node immediately before the deque sentinel; keeps the original byte guard.',{0:'obfuscationGuard',1:'node'});
+method('pa','a','(Loj;B)Z','initialize','Initializes presentation data for the event.',{0:'event',1:'obfuscationGuard'});
+method('pa','b','(Loj;B)V','advanceFrame','Advances event presentation and its current projected coordinates.',{0:'event',1:'obfuscationGuard'});
+method('pa','b','(I)Z','isFinished','Tests completion in all four presentation implementations.',{0:'obfuscationGuard'});
+method('pa','a','(I)V','requestFinish','Combat presentation requests its terminal phase; other implementations retain their original no-op/guard behavior.',{0:'obfuscationGuard'});
+method('pa','c','(B)V','drawBaseLayer','Draws base event/framebuffer presentation layer.',{0:'obfuscationGuard'});
+method('pa','a','(B)V','drawOverlayLayer','Draws overlay feedback where supported.',{0:'obfuscationGuard'});
+method('pa','b','(B)Z','isCombatViewReady','Combat presentation tests its transition factor; other presentations return false for canonical guards.',{0:'obfuscationGuard'});
+method('vb','e','(I)Z','initialize','Dispatches event kind to a presentation and initializes it.',{0:'obfuscationGuard'});
+method('vb','a','(I)V','advanceFrame','Advances the presentation, acknowledges once, and applies the original 1000-frame limit.',{0:'excludedEventKind'});
+method('vb','a','(IIZ)V','draw','Delegates drawing or draws the unanimated unit fallback.',{0:'frameNumber',1:'obfuscationGuard',2:'overlayLayer'});
+method('vb','a','(B)Z','isCombatViewReady','Delegates combat-view readiness to the current presentation.',{0:'obfuscationGuard'});
+method('oj','c','(B)V','acknowledgePresentation','Decrements pending presentations and clears unit presentation state at completion.',{0:'obfuscationGuard'});
+method('lf','b','(I)Z','isAtDestination','Compares current and destination X/Y.',{0:'obfuscationGuard'});
+method('lf','b','(B)Z','isIdle','Requires animation state zero and frame -1.',{0:'obfuscationGuard'});
+method('lf','a','(IB)V','setAnimationState','Assigns the animation state while preserving the guard side effect.',{0:'animationState',1:'obfuscationGuard'});
+method('sr','a','(B)Z','isExpanded','Tests the completed 256 transition factor.',{0:'obfuscationGuard'});
+method('mm','a','(Ljd;B)V','onUnitRegistered','Battlefield unit-registration notification propagated to AI observer implementations.',{0:'unit',1:'obfuscationGuard'});
+method('ej','a','(Lmn;I)Z','executeSelection','Creates and applies an effect for an AI-selected target shape.',{0:'selection',1:'obfuscationGuard'});
+method('ej','b','(Ljd;B)Lcl;','registerUnitPlanner','Applies campaign overrides and adds an AI unit planner.',{0:'unit',1:'obfuscationGuard'});
+method('ej','a','(Lcl;B)Lsm;','getSelectionStrategy','Returns the strategy currently used for per-unit decisions.',{0:'unitPlanner',1:'obfuscationGuard'});
+method('ej','a','(IIIB)F','scoreSpellAtTile','Scores damage, raising and occupancy effects at a target tile; returns -Float.MAX_VALUE outside the map.',{0:'tileX',1:'spellId',2:'tileY',3:'obfuscationGuard'});
+method('ej','a','(III)F','scoreSummoningAtTile','Combines category matchup influence and vulnerability/power weights for a summoning score.',{0:'unitType',1:'baseCost',2:'tileIndex'});
+method('ej','a','(Lat;I)V','sortUnitPlanners','Orders per-unit planners by priority and coordinate tie breaker.',{0:'planners',1:'obfuscationGuard'});
+method('cl','a','(ZB)F','evaluateActions','Scores candidate tiles with action or evaluation movement data and stores a selected action.',{0:'selectAction',1:'obfuscationGuard'});
+method('cl','g','(I)V','executeSelectedAction','Executes a valid selected candidate and clears action movement state.',{0:'obfuscationGuard'});
+method('cl','a','(BLcl;)Z','shouldFollow','Decision ordering by priority then the unit coordinate sum.',{0:'obfuscationGuard',1:'otherPlanner'});
+method('cl','e','(I)Ljd;','getSelectedTarget','Looks up the selected candidate target unit when one is present.',{0:'obfuscationGuard'});
+method('jb','h','(I)V','reset','Restores original -1 sentinels and Float.MIN_VALUE score.',{0:'targetY'});
+method('jb','g','(I)Z','hasTarget','Tests whether target X is not -1.',{0:'obfuscationGuard'});
+method('jb','a','(I)Z','hasDestination','Tests whether destination X is not -1.',{0:'obfuscationGuard'});
+method('jb','a','(BLej;)I','execute','Reconstructs the candidate path/target and executes its selection.',{0:'obfuscationGuard',1:'planner'});
+method('sm','a','(B)Ljb;','selectCandidate','Selection contract implemented by maximum-score and weighted-sampling strategies.',{0:'obfuscationGuard'});
+method('sm','a','(ILjb;)V','submitCandidate','Submits a candidate using the concrete selection policy.',{0:'obfuscationGuard',1:'candidate'});
+method('sm','b','(B)V','reset','Transfers candidates to the reuse pool and resets strategy state.',{0:'obfuscationGuard'});
+method('sm','b','(I)Ljb;','acquireCandidate','Reuses a pooled candidate or constructs one, then restores its original sentinels.',{0:'obfuscationGuard'});
+constructorParameters('vb','(Lic;Lha;Leo;Loj;Z)V',['controller','battlefield','effectSprites','event','blocking'],'EventPresenter constructor bindings; blocking mode preserves its original flag.');
+for(const owner of ['sk','qv','tb','ql'])constructorParameters(owner,'(Lha;Lv;Lvb;)V',['battlefield','camera','presenter'],'All presentation constructors bind battlefield, camera and presenter.');
+constructorParameters('cl','(Lej;Ljd;)V',['planner','unit'],'AI unit planner constructor links the unit to its planner.');
+constructorParameters('ir','([Lne;II)V',['tiles','mapWidth','mapHeight'],'Influence-map constructor stores rectangular geometry and allocates packed costs.');
+constructorParameters('sm','(Lej;)V',['planner'],'Selection strategy constructor allocates candidate and recycling deques.');
+constructorParameters('aw','(Lej;)V',['planner'],'Best-score strategy delegates candidate storage construction.');
+constructorParameters('ge','(Lej;)V',['planner'],'Weighted strategy initializes its normalization bounds.');
+constructorParameters('ej','(Lha;IZ[Lid;)V',['battlefield','playerId','configurationFlag','campaignOverrides'],'AI constructor stores battlefield/player/override data; boolean configuration meaning is unresolved.');
 
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
@@ -348,19 +461,23 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('rt')} / ${link('pj')} / ${link('kc')} | Revival, spell casts and turn changes. All 21 concrete GameEvent subclasses have reviewed names. |`,
     `| ${link('ik')} → ${link('wa')} / ${link('ra')} / ${link('al')} | Unit, area and global spells: definition IDs, payload serialization and effect lifecycle. |`,
     `| ${link('mn')} / ${link('bd')} | Area selections and prepared area effects. |`,
+    `| ${link('vb')} → ${link('pa')} | Event dispatch, presentation frames and acknowledgement. |`,
+    `| ${link('sk')} / ${link('qv')} / ${link('tb')} / ${link('ql')} | Combat, movement, effects and popups. |`,
+    `| ${link('ej')} → ${link('cl')} / ${link('jb')} | Per-unit AI evaluation and selected actions. |`,
+    `| ${link('sm')} → ${link('aw')} / ${link('ge')} | Highest-score and weighted candidate selection, recycling and reset. |`,
     `| ${link('ci')} | Tutorial stages, prompts and flashing controls. |`,
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
     'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
     'Combat payloads now name attacker/defender positions, offsets, damage, death flags and animation counts. The central consequence routine names its attacker/defender and healing/poison locals. Unit movement-spent and attacks-remaining state are separate; spell status and equipment descriptors are also separate. `SpellCastEvent` replaces the earlier trinket label: its legacy diagnostic says Trinketused, but the concrete implementations read the spell definition table.','',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization and tile metadata against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:2,
+    const rules={schema:1,game:'armiesofgielinor',version:3,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
