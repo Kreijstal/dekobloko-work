@@ -181,6 +181,83 @@ check("presentation-complete/"+pending,get(gameEvent,event,"${f('oj','o','Z')}")
 check("presentation-released/"+pending,get(presenter,runner,"${f('vb','B','Lpa;')}")==null,true);
 call(presenter,runner,"${m('vb','a','(I)V')}",new Class<?>[]{int.class},0);
 check("presentation-ack-once/"+pending,get(gameEvent,event,"${f('oj','s','I')}"),pending-1);}
+// Independently encoded packed movement requests: partial groups and signed deltas.
+Class<?> request=Class.forName("${className('mn')}"),moveRequest=Class.forName("${className('am')}"),prepared=Class.forName("${className('bd')}");
+for(int length:new int[]{0,1,3,4,5,8,9,17})for(int dx:new int[]{-128,-1,0,1,127})for(int dy:new int[]{-128,-1,0,1,127}){
+int groups=(length+3)/4;byte[] encoded=new byte[6+groups];int header=length|0xe000;encoded[0]=(byte)(header>>>8);encoded[1]=(byte)header;encoded[2]=(byte)255;encoded[3]=(byte)31;
+int[] directions=new int[length];for(int i=0;i<length;i++){directions[i]=(i+length)%4;encoded[4+i/4]|=(byte)(directions[i]<<(2*(i%4)));}
+encoded[4+groups]=(byte)dx;encoded[5+groups]=(byte)dy;Object wire=make(packet,new Class<?>[]{byte[].class},(Object)encoded);
+Object action=make(moveRequest,new Class<?>[]{packet,int.class},wire,3);String label="request-wire/"+length+"/"+dx+"/"+dy;
+check(label+"/directions",Arrays.toString((int[])get(moveRequest,action,"${f('am','H','[I')}")),Arrays.toString(directions));
+check(label+"/x",get(moveRequest,action,"${f('am','J','I')}"),255);check(label+"/y",get(moveRequest,action,"${f('am','G','I')}"),31);
+check(label+"/dx",get(moveRequest,action,"${f('am','w','I')}"),dx);check(label+"/dy",get(moveRequest,action,"${f('am','E','I')}"),dy);
+check(label+"/player",get(request,action,"${f('mn','p','I')}"),3);check(label+"/cursor",get(packet,wire,"${f('vh','q','I')}"),encoded.length);}
+// The array constructor intentionally ignores the separate length argument.
+int[] originalPath={0,1,2};Object copiedRequest=make(moveRequest,new Class<?>[]{int.class,int.class,int[].class,int.class,int.class,int.class,int.class},2,999,originalPath,4,5,-1,2);
+check("request-array-identity",get(moveRequest,copiedRequest,"${f('am','H','[I')}")==originalPath,true);
+Class<?> sphinxRequest=Class.forName("${className('ee')}");make(sphinxRequest,new Class<?>[]{int.class,int.class,int.class,request},0,1,2,copiedRequest);
+check("sphinx-owner-bypass",get(request,copiedRequest,"${f('mn','u','Z')}"),true);
+// Prepared actions queue event payloads, without applying those later events.
+Class<?> movementAction=Class.forName("${className('ld')}"),moveEvent=Class.forName("${className('kr')}"),attackEvent=Class.forName("${className('ns')}");
+Object actionBattle=unsafe.allocateInstance(board),actionQueue=make(deque,new Class<?>[]{});set(board,actionBattle,"${f('ha','l','Lat;')}",actionQueue);
+Object mover=make(unit,new Class<?>[]{int.class,int.class,int.class},5,7,0);
+for(int[] steps:new int[][]{{},{0},{1},{2},{3},{0,0,2,1,3}})for(boolean attack:new boolean[]{false,true}){
+Object action=unsafe.allocateInstance(movementAction);set(movementAction,action,"${f('ld','u','I')}",5);set(movementAction,action,"${f('ld','v','I')}",7);
+set(movementAction,action,"${f('ld','C','[I')}",steps);set(movementAction,action,"${f('ld','D','I')}",steps.length);set(movementAction,action,"${f('ld','y','Ljd;')}",mover);
+set(movementAction,action,"${f('ld','w','I')}",attack?-2:0);set(movementAction,action,"${f('ld','t','I')}",attack?1:0);
+int endX=5,endY=7;for(int direction:steps){switch(direction){case 0:endX++;break;case 1:endY--;break;case 2:endY++;break;case 3:endX--;break;}}
+call(movementAction,action,"${m('ld','a','(ILha;)V')}",new Class<?>[]{int.class,board},64,actionBattle);
+Object event=call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0);
+String label="prepared-move/"+Arrays.toString(steps)+"/"+attack;check(label+"/event",moveEvent.isInstance(event),true);
+check(label+"/path",Arrays.toString((int[])get(moveEvent,event,"${f('kr','B','[I')}")),Arrays.toString(steps));
+check(label+"/path-copy",get(moveEvent,event,"${f('kr','B','[I')}")!=steps,true);
+check(label+"/origin-x",get(movementAction,action,"${f('ld','E','I')}"),endX);check(label+"/origin-y",get(movementAction,action,"${f('ld','F','I')}"),endY);
+if(attack){event=call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0);check(label+"/attack",attackEvent.isInstance(event),true);
+check(label+"/attack-dx",get(attackEvent,event,"${f('ns','z','I')}"),-2);check(label+"/attack-dy",get(attackEvent,event,"${f('ns','H','I')}"),1);}
+check(label+"/end",call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0)==null,true);}
+Class<?> teleportAction=Class.forName("${className('ur')}"),teleportEvent=Class.forName("${className('ec')}");
+for(int dx:new int[]{-128,-1,0,127})for(int dy:new int[]{-128,-1,0,127})for(boolean skip:new boolean[]{false,true}){
+Object action=make(teleportAction,new Class<?>[]{int.class,int.class,int.class,int.class,int.class,unit,boolean.class},99,88,dx,dy,2,mover,skip);
+call(teleportAction,action,"${m('ur','a','(ILha;)V')}",new Class<?>[]{int.class,board},64,actionBattle);
+Object event=call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0);String label="prepared-teleport/"+dx+"/"+dy+"/"+skip;
+check(label+"/source-x",get(teleportEvent,event,"${f('ec','A','I')}"),5);check(label+"/source-y",get(teleportEvent,event,"${f('ec','B','I')}"),7);
+check(label+"/dx",get(teleportEvent,event,"${f('ec','z','I')}"),dx);check(label+"/dy",get(teleportEvent,event,"${f('ec','y','I')}"),dy);check(label+"/skip",get(teleportEvent,event,"${f('ec','D','Z')}"),skip);}
+Class<?> growthAction=Class.forName("${className('pe')}"),growthEvent=Class.forName("${className('kf')}");
+Object growth=make(growthAction,new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class},4,5,1,2,19,3);
+call(growthAction,growth,"${m('pe','a','(ILha;)V')}",new Class<?>[]{int.class,board},64,actionBattle);
+Object growthPayload=call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0);
+String[] growthFields={"${f('kf','H','I')}","${f('kf','F','I')}","${f('kf','J','I')}","${f('kf','y','I')}","${f('kf','z','I')}","${f('kf','C','I')}"};int[] growthExpected={4,5,1,2,19,3};
+for(int i=0;i<growthFields.length;i++)check("prepared-growth/"+i,get(growthEvent,growthPayload,growthFields[i]),growthExpected[i]);
+Class<?> deployment=Class.forName("${className('pl')}"),deployEvent=Class.forName("${className('tr')}"),deathEvent=Class.forName("${className('hp')}");
+for(int type:new int[]{0,7,17,34,39}){set(unit,mover,"${f('jd','N','I')}",type);Object action=make(deployment,new Class<?>[]{int.class,unit,int.class},2,mover,13);
+call(deployment,action,"${m('pl','a','(ILha;)V')}",new Class<?>[]{int.class,board},64,actionBattle);
+Object event=call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0);
+if(type==0)check("prepared-deploy/0",event==null,true);else if(type==39)check("prepared-deploy/death",deathEvent.isInstance(event),true);
+else{check("prepared-deploy/"+type,deployEvent.isInstance(event),true);check("prepared-deploy/modifier/"+type,get(deployEvent,event,"${f('tr','B','I')}"),13);}
+check("prepared-deploy/end/"+type,call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0)==null,true);}
+// Turn markers keep their player-sized arrays and canonical no-op application.
+for(String owner:new String[]{"dk","kj"}){Class<?> marker=Class.forName(owner.equals("dk")?"${className('dk')}":"${className('kj')}");String apply=owner.equals("dk")?"${m('dk','a','(ILha;)V')}":"${m('kj','a','(ILha;)V')}";
+for(int player=0;player<4;player++){Object action=make(marker,new Class<?>[]{int.class,int.class},player,4);int[] expected=new int[4];expected[player]=owner.equals("dk")?1024:8192;
+check("marker-flags/"+owner+"/"+player,Arrays.toString((int[])get(prepared,action,"${f('bd','n','[I')}")),Arrays.toString(expected));
+call(marker,action,apply,new Class<?>[]{int.class,board},64,actionBattle);check("marker-no-event/"+owner+"/"+player,call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0)==null,true);}}
+call(strategy,bestStrategy,"${m('sm','a','(IIFIIZ)V')}",new Class<?>[]{int.class,int.class,float.class,int.class,int.class,boolean.class},7,74,2.5f,3,5,true);
+Object summonChoice=call(best,bestStrategy,"${m('aw','a','(B)Ljb;')}",new Class<?>[]{byte.class},(byte)-40);
+check("summon-candidate/player",get(candidate,summonChoice,"${f('jb','m','I')}"),3);check("summon-candidate/type",get(candidate,summonChoice,"${f('jb','l','I')}"),74);
+check("summon-candidate/x",get(candidate,summonChoice,"${f('jb','s','I')}"),5);check("summon-candidate/y",get(candidate,summonChoice,"${f('jb','q','I')}"),7);
+Class<?> spellRequest=Class.forName("${className('to')}"),castAction=Class.forName("${className('ua')}"),castEvent=Class.forName("${className('pj')}"),globalSpell=Class.forName("${className('al')}");
+Object spellObject=make(globalSpell,new Class<?>[]{int.class},9),spellOrder=make(spellRequest,new Class<?>[]{spell,int.class,int.class},spellObject,17,2);
+Object preparedCast=call(spellRequest,spellOrder,"${m('to','a','(ILha;)Lbd;')}",new Class<?>[]{int.class,board},100,actionBattle);
+check("spell-request/action",castAction.isInstance(preparedCast),true);
+call(castAction,preparedCast,"${m('ua','a','(ILha;)V')}",new Class<?>[]{int.class,board},64,actionBattle);
+Object castPayload=call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0);
+check("prepared-cast/spell",get(castEvent,castPayload,"${f('pj','B','Lik;')}")==spellObject,true);
+check("prepared-cast/player",get(castEvent,castPayload,"${f('pj','z','I')}"),2);
+check("prepared-cast/mode",get(castEvent,castPayload,"${f('pj','y','I')}"),17);
+for(String owner:new String[]{"il","ss"}){Class<?> marker=Class.forName(owner.equals("il")?"${className('il')}":"${className('ss')}");
+Object action=owner.equals("il")?make(marker,new Class<?>[]{int.class,int.class,unit,tile},1,2,mover,make(tile,new Class<?>[]{})):make(marker,new Class<?>[]{int.class,int.class,int.class,int.class},1,2,0,3);
+String apply=owner.equals("il")?"${m('il','a','(ILha;)V')}":"${m('ss','a','(ILha;)V')}";
+call(marker,action,apply,new Class<?>[]{int.class,board},64,actionBattle);check("marker-no-event/"+owner,call(deque,actionQueue,"${m('at','a','(I)Ltc;')}",new Class<?>[]{int.class},0)==null,true);}
+check("illegal-action/player",call(request,copiedRequest,"${m('mn','a','(I[Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;')}",new Class<?>[]{int.class,String[].class,String.class},118,new String[]{"bad tile"},"move"),"Illegal move (move); player 2: bad tile.");
 System.out.println("checks:"+cases);
 }}
 `);

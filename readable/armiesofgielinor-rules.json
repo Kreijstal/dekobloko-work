@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 3,
+  "version": 4,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1781,6 +1781,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:am",
+      "originalName": "am",
+      "to": "MoveAttackRequest",
+      "evidence": "am.java: Decodes packed paths and signed target deltas; validates movement, attacks, vine growth and teleportation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:as",
       "originalName": "as",
       "to": "OwnerChangeEvent",
@@ -1804,8 +1811,15 @@
     {
       "symbol": "C:bd",
       "originalName": "bd",
-      "to": "SpellAreaEffect",
-      "evidence": "bd.java: Affected tile indices and abstract battlefield application of a prepared area effect.",
+      "to": "PreparedAction",
+      "evidence": "bd.java: Prepared battlefield action; implementations queue events or represent turn-condition markers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:be",
+      "originalName": "be",
+      "to": "SummonAction",
+      "evidence": "be.java: Recomputes summoning bonus and queues SummonEvent.",
       "confidence": "reviewed"
     },
     {
@@ -1837,10 +1851,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dk",
+      "originalName": "dk",
+      "to": "CorpseConditionMarker",
+      "evidence": "dk.java: Turn preparation creates this for type-10 units on corpse tiles with maximum strength 19; player flag 1024.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ec",
       "originalName": "ec",
       "to": "TeleportEvent",
       "evidence": "ec.java: Diagnostic EventTeleport with source and destination positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ee",
+      "originalName": "ee",
+      "to": "SphinxActionRequest",
+      "evidence": "ee.java: Checks a type-72 Sphinx has an attack remaining, then prepares its delegated action with ownership bypass.",
       "confidence": "reviewed"
     },
     {
@@ -1886,6 +1914,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hw",
+      "originalName": "hw",
+      "to": "SummonRequest",
+      "evidence": "hw.java: Checks chosen gods, tile summoning permissions and affordability, then prepares a SummonAction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ic",
       "originalName": "ic",
       "to": "GameplayController",
@@ -1907,6 +1942,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:il",
+      "originalName": "il",
+      "to": "DisplacedUnitMarker",
+      "evidence": "il.java: Created during turn preparation for displaced units; canonical application has no battlefield mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ir",
       "originalName": "ir",
       "to": "AiInfluenceMap",
@@ -1918,6 +1960,13 @@
       "originalName": "jb",
       "to": "AiActionCandidate",
       "evidence": "jb.java: Movement/attack/spell target coordinates, score and execution result for an AI choice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jc",
+      "originalName": "jc",
+      "to": "DeployRequest",
+      "evidence": "jc.java: Checks ownership, movement-spent state, deploy capability and terrain before preparing a DeployAction.",
       "confidence": "reviewed"
     },
     {
@@ -1949,6 +1998,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kj",
+      "originalName": "kj",
+      "to": "SkeletonLimitMarker",
+      "evidence": "kj.java: Turn preparation creates this when at least 25 type-20 skeletons remain; player flag 8192.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kn",
       "originalName": "kn",
       "to": "TelefragEvent",
@@ -1960,6 +2016,13 @@
       "originalName": "kr",
       "to": "MoveEvent",
       "evidence": "kr.java: Diagnostic EventMove with start position and directional footsteps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ld",
+      "originalName": "ld",
+      "to": "MoveAttackAction",
+      "evidence": "ld.java: Copies path directions, computes attack origin and queues MoveEvent and optional AttackEvent.",
       "confidence": "reviewed"
     },
     {
@@ -1993,8 +2056,8 @@
     {
       "symbol": "C:mn",
       "originalName": "mn",
-      "to": "SpellAreaSelection",
-      "evidence": "mn.java: Abstract targeting shape that creates a SpellAreaEffect.",
+      "to": "ActionRequest",
+      "evidence": "mn.java: Abstract preparation contract shared by movement, summoning, deployment, spell casts and Sphinx-assisted actions.",
       "confidence": "reviewed"
     },
     {
@@ -2040,10 +2103,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pe",
+      "originalName": "pe",
+      "to": "VineGrowthAction",
+      "evidence": "pe.java: Queues GrowthEvent with destination, origin, strength and acting player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pj",
       "originalName": "pj",
       "to": "SpellCastEvent",
       "evidence": "pj.java: Legacy Trinketused diagnostic; dispatches Spell.applyEffect and battlefield spell-cost handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pl",
+      "originalName": "pl",
+      "to": "DeployAction",
+      "evidence": "pl.java: Queues DeathEvent for vine type 39 or DeployEvent for supported deployable units.",
       "confidence": "reviewed"
     },
     {
@@ -2091,8 +2168,8 @@
     {
       "symbol": "C:ra",
       "originalName": "ra",
-      "to": "AreaSpell",
-      "evidence": "ra.java: Stores a SpellAreaSelection, prepares its area effect and applies it to the battlefield.",
+      "to": "ActionSpell",
+      "evidence": "ra.java: Spell modifier wrapping an ActionRequest; prepares its action and applies it on spell completion.",
       "confidence": "reviewed"
     },
     {
@@ -2131,6 +2208,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ss",
+      "originalName": "ss",
+      "to": "StateChangeMarker",
+      "evidence": "ss.java: Turn preparation creates this instead of StateChangeEvent in its marker branch; canonical application is a no-op.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:st",
       "originalName": "st",
       "to": "TurnEffectEvent",
@@ -2152,6 +2236,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:to",
+      "originalName": "to",
+      "to": "SpellCastRequest",
+      "evidence": "to.java: Prepares a Spell then creates the action that queues its SpellCastEvent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tr",
       "originalName": "tr",
       "to": "DeployEvent",
@@ -2159,10 +2250,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ua",
+      "originalName": "ua",
+      "to": "SpellCastAction",
+      "evidence": "ua.java: Queues SpellCastEvent with spell, selection mode and casting player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:uo",
       "originalName": "uo",
       "to": "TaggedFieldReader",
       "evidence": "uo.java: Shared named-field decoding contract implemented by Unit, MapTile and TileMetadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ur",
+      "originalName": "ur",
+      "to": "TeleportAction",
+      "evidence": "ur.java: Queues TeleportEvent with live unit source position, signed target deltas and destination-placement mode.",
       "confidence": "reviewed"
     },
     {
@@ -2313,6 +2418,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:am.field_E:I",
+      "originalName": "field_E",
+      "to": "targetDeltaY",
+      "evidence": "am.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_G:I",
+      "originalName": "field_G",
+      "to": "startY",
+      "evidence": "am.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_H:[I",
+      "originalName": "field_H",
+      "to": "pathDirections",
+      "evidence": "am.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_J:I",
+      "originalName": "field_J",
+      "to": "startX",
+      "evidence": "am.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_w:I",
+      "originalName": "field_w",
+      "to": "targetDeltaX",
+      "evidence": "am.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:as.field_A:I",
       "originalName": "field_A",
       "to": "newOwnerPlayer",
@@ -2338,6 +2478,48 @@
       "originalName": "field_e",
       "to": "traversalCursor",
       "evidence": "at.java: Deque traversal methods update this cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bd.field_m:I",
+      "originalName": "field_m",
+      "to": "actingPlayer",
+      "evidence": "bd.java: Prepared action constructors store the player used in queued events or turn markers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bd.field_n:[I",
+      "originalName": "field_n",
+      "to": "playerFlags",
+      "evidence": "bd.java: Marker constructors allocate one entry per player and set only the acting player flag; not tile indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:be.field_B:I",
+      "originalName": "field_B",
+      "to": "tileY",
+      "evidence": "be.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:be.field_C:I",
+      "originalName": "field_C",
+      "to": "summoningBonus",
+      "evidence": "be.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:be.field_G:I",
+      "originalName": "field_G",
+      "to": "tileX",
+      "evidence": "be.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:be.field_t:I",
+      "originalName": "field_t",
+      "to": "unitType",
+      "evidence": "be.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
       "confidence": "reviewed"
     },
     {
@@ -2418,6 +2600,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cl.field_m:I",
+      "originalName": "field_m",
+      "to": "previousDestinationTile",
+      "evidence": "cl.java: AI execution stores source, target and selected destination before later influence-map refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cl.field_n:I",
+      "originalName": "field_n",
+      "to": "previousTargetTile",
+      "evidence": "cl.java: AI execution stores source, target and selected destination before later influence-map refresh.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cl.field_o:Ljd;",
       "originalName": "field_o",
       "to": "unit",
@@ -2429,6 +2625,13 @@
       "originalName": "field_r",
       "to": "planner",
       "evidence": "cl.java: Per-unit AI construction, candidate scoring, target lookup and decision comparator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cl.field_u:I",
+      "originalName": "field_u",
+      "to": "previousSourceTile",
+      "evidence": "cl.java: AI execution stores source, target and selected destination before later influence-map refresh.",
       "confidence": "reviewed"
     },
     {
@@ -2460,17 +2663,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ec.field_D:Z",
+      "originalName": "field_D",
+      "to": "skipDestinationPlacement",
+      "evidence": "ec.java: Teleport application and presentation skip destination handling when this flag is true.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ec.field_y:I",
       "originalName": "field_y",
-      "to": "destinationY",
+      "to": "targetDeltaY",
       "evidence": "ec.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:ec.field_z:I",
       "originalName": "field_z",
-      "to": "destinationX",
+      "to": "targetDeltaX",
       "evidence": "ec.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ee.field_w:I",
+      "originalName": "field_w",
+      "to": "sphinxY",
+      "evidence": "ee.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ee.field_y:Lmn;",
+      "originalName": "field_y",
+      "to": "delegatedRequest",
+      "evidence": "ee.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ee.field_z:I",
+      "originalName": "field_z",
+      "to": "sphinxX",
+      "evidence": "ee.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
       "confidence": "reviewed"
     },
     {
@@ -2775,6 +3006,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hw.field_A:I",
+      "originalName": "field_A",
+      "to": "tileY",
+      "evidence": "hw.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hw.field_E:I",
+      "originalName": "field_E",
+      "to": "tileX",
+      "evidence": "hw.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hw.field_v:I",
+      "originalName": "field_v",
+      "to": "unitType",
+      "evidence": "hw.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ic.field_Eb:[Lej;",
       "originalName": "field_Eb",
       "to": "aiPlanners",
@@ -2904,56 +3156,77 @@
       "symbol": "F:jb.field_k:I",
       "originalName": "field_k",
       "to": "targetX",
-      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "evidence": "jb.java: Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:jb.field_l:I",
       "originalName": "field_l",
-      "to": "selectionVariant",
-      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "to": "summonUnitType",
+      "evidence": "jb.java: Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:jb.field_m:I",
       "originalName": "field_m",
-      "to": "spellId",
-      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "to": "summoningPlayer",
+      "evidence": "jb.java: Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:jb.field_o:I",
       "originalName": "field_o",
       "to": "targetY",
-      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "evidence": "jb.java: Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:jb.field_q:I",
       "originalName": "field_q",
       "to": "destinationY",
-      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "evidence": "jb.java: Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:jb.field_r:I",
       "originalName": "field_r",
       "to": "executionResult",
-      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "evidence": "jb.java: Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:jb.field_s:I",
       "originalName": "field_s",
       "to": "destinationX",
-      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "evidence": "jb.java: Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:jb.field_t:F",
       "originalName": "field_t",
       "to": "score",
-      "evidence": "jb.java: Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.",
+      "evidence": "jb.java: Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jc.field_A:I",
+      "originalName": "field_A",
+      "to": "tileX",
+      "evidence": "jc.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jc.field_y:I",
+      "originalName": "field_y",
+      "to": "deployModifier",
+      "evidence": "jc.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jc.field_z:I",
+      "originalName": "field_z",
+      "to": "tileY",
+      "evidence": "jc.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
       "confidence": "reviewed"
     },
     {
@@ -3272,6 +3545,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ld.field_A:I",
+      "originalName": "field_A",
+      "to": "attackerAnimationCount",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_B:I",
+      "originalName": "field_B",
+      "to": "defenderAnimationCount",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_C:[I",
+      "originalName": "field_C",
+      "to": "pathDirections",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_D:I",
+      "originalName": "field_D",
+      "to": "pathLength",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_E:I",
+      "originalName": "field_E",
+      "to": "attackOriginX",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_F:I",
+      "originalName": "field_F",
+      "to": "attackOriginY",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_t:I",
+      "originalName": "field_t",
+      "to": "targetDeltaY",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_u:I",
+      "originalName": "field_u",
+      "to": "startX",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_v:I",
+      "originalName": "field_v",
+      "to": "startY",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_w:I",
+      "originalName": "field_w",
+      "to": "targetDeltaX",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_y:Ljd;",
+      "originalName": "field_y",
+      "to": "movingUnit",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ld.field_z:Ljd;",
+      "originalName": "field_z",
+      "to": "defenderSnapshot",
+      "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lf.field_A:Lgd;",
       "originalName": "field_A",
       "to": "model",
@@ -3381,6 +3738,27 @@
       "originalName": "field_z",
       "to": "tileX",
       "evidence": "mb.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_o:I",
+      "originalName": "field_o",
+      "to": "spellId",
+      "evidence": "mn.java: ActionSpell sets the optional spell definition ID on its wrapped request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_p:I",
+      "originalName": "field_p",
+      "to": "actingPlayer",
+      "evidence": "mn.java: Request constructors set the player used in ownership/summoning checks and illegal-move diagnostics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_u:Z",
+      "originalName": "field_u",
+      "to": "allowOtherPlayer",
+      "evidence": "mn.java: MoveAttackRequest bypasses ownership rejection when true; SphinxActionRequest sets this on its delegate.",
       "confidence": "reviewed"
     },
     {
@@ -3559,6 +3937,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ns.field_L:I",
+      "originalName": "field_L",
+      "to": "attackerX",
+      "evidence": "ns.java: AttackEvent constructor receives the prepared action attack origin and application looks up that unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ns.field_M:I",
+      "originalName": "field_M",
+      "to": "attackerY",
+      "evidence": "ns.java: AttackEvent constructor receives the prepared action attack origin and application looks up that unit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ns.field_N:Ljd;",
       "originalName": "field_N",
       "to": "targetUnit",
@@ -3629,6 +4021,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pe.field_A:I",
+      "originalName": "field_A",
+      "to": "originY",
+      "evidence": "pe.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_t:I",
+      "originalName": "field_t",
+      "to": "originX",
+      "evidence": "pe.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_u:I",
+      "originalName": "field_u",
+      "to": "tileX",
+      "evidence": "pe.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_y:I",
+      "originalName": "field_y",
+      "to": "tileY",
+      "evidence": "pe.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_z:I",
+      "originalName": "field_z",
+      "to": "strength",
+      "evidence": "pe.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pj.field_B:Lik;",
       "originalName": "field_B",
       "to": "spell",
@@ -3647,6 +4074,20 @@
       "originalName": "field_z",
       "to": "castingPlayer",
       "evidence": "pj.java: Passed to Spell.applyEffect and battlefield spell accounting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pl.field_u:Ljd;",
+      "originalName": "field_u",
+      "to": "unit",
+      "evidence": "pl.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pl.field_w:I",
+      "originalName": "field_w",
+      "to": "deployModifier",
+      "evidence": "pl.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
       "confidence": "reviewed"
     },
     {
@@ -3778,15 +4219,15 @@
     {
       "symbol": "F:ra.field_g:Lmn;",
       "originalName": "field_g",
-      "to": "selection",
-      "evidence": "ra.java: AreaSpell creates an area effect from this targeting selection.",
+      "to": "request",
+      "evidence": "ra.java: ActionSpell prepares this wrapped action request.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:ra.field_h:Lbd;",
       "originalName": "field_h",
-      "to": "preparedEffect",
-      "evidence": "ra.java: Preparation creates this effect; completion applies it and releases the reference.",
+      "to": "preparedAction",
+      "evidence": "ra.java: Spell preparation creates this action; completion applies it and releases the reference.",
       "confidence": "reviewed"
     },
     {
@@ -3965,6 +4406,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:to.field_v:Lik;",
+      "originalName": "field_v",
+      "to": "spell",
+      "evidence": "to.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:to.field_w:I",
+      "originalName": "field_w",
+      "to": "selectionMode",
+      "evidence": "to.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tr.field_B:I",
       "originalName": "field_B",
       "to": "modifiers",
@@ -3986,10 +4441,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ua.field_w:I",
+      "originalName": "field_w",
+      "to": "selectionMode",
+      "evidence": "ua.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ua.field_x:Lik;",
+      "originalName": "field_x",
+      "to": "spell",
+      "evidence": "ua.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uc.field_d:[[I",
       "originalName": "field_d",
       "to": "spellDefinitions",
       "evidence": "uc.java: AI and gameplay inspect chant type, cost and effect columns; class has other mixed helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ur.field_A:Z",
+      "originalName": "field_A",
+      "to": "skipDestinationPlacement",
+      "evidence": "ur.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ur.field_s:I",
+      "originalName": "field_s",
+      "to": "targetDeltaX",
+      "evidence": "ur.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ur.field_t:I",
+      "originalName": "field_t",
+      "to": "targetDeltaY",
+      "evidence": "ur.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ur.field_y:Ljd;",
+      "originalName": "field_y",
+      "to": "unit",
+      "evidence": "ur.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
       "confidence": "reviewed"
     },
     {
@@ -4140,6 +4637,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:am.<init>(Lvh;I)V#0",
+      "originalName": "var5",
+      "to": "pathIndex",
+      "evidence": "am.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(Lvh;I)V#1",
+      "originalName": "var3_int",
+      "to": "pathLength",
+      "evidence": "am.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(Lvh;I)V#2",
+      "originalName": "var4",
+      "to": "packedDirections",
+      "evidence": "am.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(Lvh;I)V#8",
+      "originalName": "var4Lifetime1",
+      "to": "packedTargetDelta",
+      "evidence": "am.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cl.a(IIZLnn;)F#19",
+      "originalName": "var7",
+      "to": "battlefield",
+      "evidence": "cl.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cl.a(IIZLnn;)F#20",
+      "originalName": "var8",
+      "to": "tileX",
+      "evidence": "cl.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cl.a(IIZLnn;)F#21",
+      "originalName": "var9",
+      "to": "tileY",
+      "evidence": "cl.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cl.a(IIZLnn;)F#22",
+      "originalName": "var10",
+      "to": "sourceTileIndex",
+      "evidence": "cl.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cl.a(IIZLnn;)F#24",
+      "originalName": "var12",
+      "to": "tile",
+      "evidence": "cl.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cl.a(IIZLnn;)F#25",
+      "originalName": "var13",
+      "to": "occupant",
+      "evidence": "cl.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ha.a(IIZIIIZIII)V#37",
       "originalName": "var12",
       "to": "defender",
@@ -4224,6 +4791,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:hw.a(ILha;)Lbd;#0",
+      "originalName": "var6",
+      "to": "godIndex",
+      "evidence": "hw.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hw.a(ILha;)Lbd;#12",
+      "originalName": "var3_int",
+      "to": "requiredGod",
+      "evidence": "hw.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hw.a(ILha;)Lbd;#14",
+      "originalName": "var4",
+      "to": "godSelected",
+      "evidence": "hw.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hw.a(ILha;)Lbd;#15",
+      "originalName": "var5",
+      "to": "chosenGods",
+      "evidence": "hw.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hw.a(ILha;)Lbd;#16",
+      "originalName": "var7",
+      "to": "chosenGod",
+      "evidence": "hw.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hw.a(ILha;)Lbd;#18",
+      "originalName": "var4Lifetime1",
+      "to": "summoningBonus",
+      "evidence": "hw.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ld.a(ILha;)V#0",
+      "originalName": "var4",
+      "to": "pathIndex",
+      "evidence": "ld.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ld.a(ILha;)V#10",
+      "originalName": "var8",
+      "to": "eventPath",
+      "evidence": "ld.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ld.a(ILha;)V#5",
+      "originalName": "var3",
+      "to": "copiedPath",
+      "evidence": "ld.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ld.a(ILha;)V#7",
+      "originalName": "var5",
+      "to": "direction",
+      "evidence": "ld.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ld.a(ILha;)V#9",
+      "originalName": "var7",
+      "to": "pathBuffer",
+      "evidence": "ld.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ag.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -4241,14 +4885,14 @@
       "symbol": "M:al.a(BLha;)V",
       "originalName": "a",
       "to": "prepareEffect",
-      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override family.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:al.a(I)I",
       "originalName": "a",
       "to": "getPayloadSize",
-      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override family.",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4269,14 +4913,35 @@
       "symbol": "M:al.a(Lha;I)V",
       "originalName": "a",
       "to": "finishEffect",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override family.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:am.a(ILha;)Lbd;",
       "originalName": "a",
-      "to": "createEffect",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
+      "to": "prepareAction",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(Lha;ILjd;)Lbd;",
+      "originalName": "a",
+      "to": "prepareTeleport",
+      "evidence": "am.java: Validates target delta bounds/terrain and chooses destination-placement mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(Ljd;BLha;)Lbd;",
+      "originalName": "a",
+      "to": "prepareVineGrowth",
+      "evidence": "am.java: Validates one-step vine growth, terrain and map bounds, then creates VineGrowthAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a([Ljava/lang/String;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatMoveRejection",
+      "evidence": "am.java: Formats a rejected movement request.",
       "confidence": "reviewed"
     },
     {
@@ -4338,15 +5003,15 @@
     {
       "symbol": "M:bd.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:be.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4364,6 +5029,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cl.a(IIII)F",
+      "originalName": "a",
+      "to": "scoreAttackFromTile",
+      "evidence": "cl.java: Scores expected target damage minus counter-damage, healing and weighted influence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(IIZLnn;)F",
+      "originalName": "a",
+      "to": "scoreTile",
+      "evidence": "cl.java: Scores movement, target combat, capture and influence at a tile; optionally submits a candidate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cl.a(ZB)F",
       "originalName": "a",
       "to": "evaluateActions",
@@ -4378,6 +5057,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cl.f(I)V",
+      "originalName": "f",
+      "to": "refreshDecisionPriority",
+      "evidence": "cl.java: Refreshes scoring weights and decision order for an unspent unit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cl.g(I)V",
       "originalName": "g",
       "to": "executeSelectedAction",
@@ -4387,8 +5073,8 @@
     {
       "symbol": "M:dk.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4408,8 +5094,15 @@
     {
       "symbol": "M:ee.a(ILha;)Lbd;",
       "originalName": "a",
-      "to": "createEffect",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
+      "to": "prepareAction",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a([Ljava/lang/String;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatMindControlRejection",
+      "evidence": "ee.java: Formats a rejected Sphinx action using the original mind-control diagnostic.",
       "confidence": "reviewed"
     },
     {
@@ -4597,22 +5290,29 @@
     {
       "symbol": "M:hw.a(ILha;)Lbd;",
       "originalName": "a",
-      "to": "createEffect",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
+      "to": "prepareAction",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hw.a([Ljava/lang/String;B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatSummonRejection",
+      "evidence": "hw.java: Formats a rejected summoning request.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:ik.a(BLha;)V",
       "originalName": "a",
       "to": "prepareEffect",
-      "evidence": "ik.java: Area spell creates its prepared effect before application.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:ik.a(I)I",
       "originalName": "a",
       "to": "getPayloadSize",
-      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two.",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two.",
       "confidence": "reviewed"
     },
     {
@@ -4633,14 +5333,14 @@
       "symbol": "M:ik.a(Lha;I)V",
       "originalName": "a",
       "to": "finishEffect",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:il.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4674,8 +5374,15 @@
     {
       "symbol": "M:jc.a(ILha;)Lbd;",
       "originalName": "a",
-      "to": "createEffect",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
+      "to": "prepareAction",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.a([Ljava/lang/String;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatDeployRejection",
+      "evidence": "jc.java: Formats a rejected deployment request.",
       "confidence": "reviewed"
     },
     {
@@ -4877,8 +5584,8 @@
     {
       "symbol": "M:kj.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4912,8 +5619,8 @@
     {
       "symbol": "M:ld.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4975,8 +5682,15 @@
     {
       "symbol": "M:mn.a(ILha;)Lbd;",
       "originalName": "a",
-      "to": "createEffect",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield.",
+      "to": "prepareAction",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mn.a(I[Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatIllegalMove",
+      "evidence": "mn.java: Formats player, action kind and concatenated diagnostic fragments.",
       "confidence": "reviewed"
     },
     {
@@ -5082,6 +5796,13 @@
       "originalName": "a",
       "to": "reconstructPath",
       "evidence": "nn.java: Walks the cost gradient backward and stores forward path directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(II)Lmn;",
+      "originalName": "a",
+      "to": "createActionRequest",
+      "evidence": "nn.java: Copies the selected path and wraps it in a SpellCastRequest when a spell modifier is present.",
       "confidence": "reviewed"
     },
     {
@@ -5248,8 +5969,8 @@
     {
       "symbol": "M:pe.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5269,8 +5990,8 @@
     {
       "symbol": "M:pl.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5417,14 +6138,14 @@
       "symbol": "M:ra.a(BLha;)V",
       "originalName": "a",
       "to": "prepareEffect",
-      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override family.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:ra.a(I)I",
       "originalName": "a",
       "to": "getPayloadSize",
-      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override family.",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5445,7 +6166,7 @@
       "symbol": "M:ra.a(Lha;I)V",
       "originalName": "a",
       "to": "finishEffect",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override family.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5540,6 +6261,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sm.a(BIF)V",
+      "originalName": "a",
+      "to": "submitResultCandidate",
+      "evidence": "sm.java: Submits a scored result without a destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(IIFIIZ)V",
+      "originalName": "a",
+      "to": "submitSummonCandidate",
+      "evidence": "sm.java: Sets summoning player/unit type and destination, with original -2 result sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(IIIF)V",
+      "originalName": "a",
+      "to": "submitMoveCandidate",
+      "evidence": "sm.java: Acquires and submits a scored movement destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(IIIIFI)V",
+      "originalName": "a",
+      "to": "submitAttackCandidate",
+      "evidence": "sm.java: Acquires and submits scored destination and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sm.a(ILjb;)V",
       "originalName": "a",
       "to": "submitCandidate",
@@ -5570,8 +6319,8 @@
     {
       "symbol": "M:ss.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5647,8 +6396,8 @@
     {
       "symbol": "M:to.a(ILha;)Lbd;",
       "originalName": "a",
-      "to": "createEffect",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
+      "to": "prepareAction",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5668,8 +6417,8 @@
     {
       "symbol": "M:ua.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5682,8 +6431,8 @@
     {
       "symbol": "M:ur.a(ILha;)V",
       "originalName": "a",
-      "to": "applyEffect",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "to": "applyToBattlefield",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5732,14 +6481,14 @@
       "symbol": "M:wa.a(BLha;)V",
       "originalName": "a",
       "to": "prepareEffect",
-      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override family.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:wa.a(I)I",
       "originalName": "a",
       "to": "getPayloadSize",
-      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override family.",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5760,7 +6509,7 @@
       "symbol": "M:wa.a(Lha;I)V",
       "originalName": "a",
       "to": "finishEffect",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override family.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5900,21 +6649,21 @@
       "symbol": "P:al.a(BLha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:al.a(BLha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:al.a(I)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override parameter.",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -5956,28 +6705,147 @@
       "symbol": "P:al.a(Lha;I)V#0",
       "originalName": "param0",
       "to": "battlefield",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:al.a(Lha;I)V#1",
       "originalName": "param1",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(II[IIIII)V#0",
+      "originalName": "param0",
+      "to": "actingPlayer",
+      "evidence": "am.java: Constructor stores the path array and coordinates; the declared length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(II[IIIII)V#1",
+      "originalName": "param1",
+      "to": "declaredPathLength",
+      "evidence": "am.java: Constructor stores the path array and coordinates; the declared length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(II[IIIII)V#2",
+      "originalName": "param2",
+      "to": "pathDirections",
+      "evidence": "am.java: Constructor stores the path array and coordinates; the declared length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(II[IIIII)V#3",
+      "originalName": "param3",
+      "to": "startX",
+      "evidence": "am.java: Constructor stores the path array and coordinates; the declared length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(II[IIIII)V#4",
+      "originalName": "param4",
+      "to": "startY",
+      "evidence": "am.java: Constructor stores the path array and coordinates; the declared length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(II[IIIII)V#5",
+      "originalName": "param5",
+      "to": "targetDeltaX",
+      "evidence": "am.java: Constructor stores the path array and coordinates; the declared length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(II[IIIII)V#6",
+      "originalName": "param6",
+      "to": "targetDeltaY",
+      "evidence": "am.java: Constructor stores the path array and coordinates; the declared length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(Lvh;I)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "am.java: Decodes path count, start coordinates, four packed directions per byte and signed target deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(Lvh;I)V#1",
+      "originalName": "param1",
+      "to": "actingPlayer",
+      "evidence": "am.java: Decodes path count, start coordinates, four packed directions per byte and signed target deltas.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:am.a(ILha;)Lbd;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:am.a(ILha;)Lbd;#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Lha;ILjd;)Lbd;#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "am.java: Validates target delta bounds/terrain and chooses destination-placement mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Lha;ILjd;)Lbd;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "am.java: Validates target delta bounds/terrain and chooses destination-placement mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Lha;ILjd;)Lbd;#2",
+      "originalName": "param2",
+      "to": "unit",
+      "evidence": "am.java: Validates target delta bounds/terrain and chooses destination-placement mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Ljd;BLha;)Lbd;#0",
+      "originalName": "param0",
+      "to": "unit",
+      "evidence": "am.java: Validates one-step vine growth, terrain and map bounds, then creates VineGrowthAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Ljd;BLha;)Lbd;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "am.java: Validates one-step vine growth, terrain and map bounds, then creates VineGrowthAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Ljd;BLha;)Lbd;#2",
+      "originalName": "param2",
+      "to": "battlefield",
+      "evidence": "am.java: Validates one-step vine growth, terrain and map bounds, then creates VineGrowthAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a([Ljava/lang/String;I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "messageParts",
+      "evidence": "am.java: Formats a rejected movement request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a([Ljava/lang/String;I)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "am.java: Formats a rejected movement request.",
       "confidence": "reviewed"
     },
     {
@@ -6082,28 +6950,63 @@
       "symbol": "P:bd.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:bd.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:be.<init>(IIIII)V#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "be.java: Prepared bonus argument is unused; apply recomputes it from the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:be.<init>(IIIII)V#1",
+      "originalName": "param1",
+      "to": "tileY",
+      "evidence": "be.java: Prepared bonus argument is unused; apply recomputes it from the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:be.<init>(IIIII)V#2",
+      "originalName": "param2",
+      "to": "unitType",
+      "evidence": "be.java: Prepared bonus argument is unused; apply recomputes it from the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:be.<init>(IIIII)V#3",
+      "originalName": "param3",
+      "to": "preparedBonus",
+      "evidence": "be.java: Prepared bonus argument is unused; apply recomputes it from the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:be.<init>(IIIII)V#4",
+      "originalName": "param4",
+      "to": "actingPlayer",
+      "evidence": "be.java: Prepared bonus argument is unused; apply recomputes it from the battlefield.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:be.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:be.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -6163,6 +7066,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cl.a(IIII)F#0",
+      "originalName": "param0",
+      "to": "targetTileIndex",
+      "evidence": "cl.java: Scores expected target damage minus counter-damage, healing and weighted influence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(IIII)F#1",
+      "originalName": "param1",
+      "to": "attackOriginX",
+      "evidence": "cl.java: Scores expected target damage minus counter-damage, healing and weighted influence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(IIII)F#2",
+      "originalName": "param2",
+      "to": "attackOriginY",
+      "evidence": "cl.java: Scores expected target damage minus counter-damage, healing and weighted influence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(IIII)F#3",
+      "originalName": "param3",
+      "to": "matchupCategory",
+      "evidence": "cl.java: Scores expected target damage minus counter-damage, healing and weighted influence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(IIZLnn;)F#0",
+      "originalName": "param0",
+      "to": "tileIndex",
+      "evidence": "cl.java: Scores movement, target combat, capture and influence at a tile; optionally submits a candidate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(IIZLnn;)F#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "cl.java: Scores movement, target combat, capture and influence at a tile; optionally submits a candidate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(IIZLnn;)F#2",
+      "originalName": "param2",
+      "to": "submitCandidate",
+      "evidence": "cl.java: Scores movement, target combat, capture and influence at a tile; optionally submits a candidate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cl.a(IIZLnn;)F#3",
+      "originalName": "param3",
+      "to": "movementPlanner",
+      "evidence": "cl.java: Scores movement, target combat, capture and influence at a tile; optionally submits a candidate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cl.a(ZB)F#0",
       "originalName": "param0",
       "to": "selectAction",
@@ -6184,6 +7143,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cl.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cl.java: Refreshes scoring weights and decision order for an unspent unit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cl.g(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -6191,17 +7157,94 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dk.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "actingPlayer",
+      "evidence": "dk.java: Marker flag array is sized by player count and indexed by acting player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dk.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "playerCount",
+      "evidence": "dk.java: Marker flag array is sized by player count and indexed by acting player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dk.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:dk.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ec.<init>(IIIIZ)V#0",
+      "originalName": "param0",
+      "to": "sourceX",
+      "evidence": "ec.java: Teleport offsets are added to source coordinates during application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ec.<init>(IIIIZ)V#1",
+      "originalName": "param1",
+      "to": "sourceY",
+      "evidence": "ec.java: Teleport offsets are added to source coordinates during application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ec.<init>(IIIIZ)V#2",
+      "originalName": "param2",
+      "to": "targetDeltaX",
+      "evidence": "ec.java: Teleport offsets are added to source coordinates during application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ec.<init>(IIIIZ)V#3",
+      "originalName": "param3",
+      "to": "targetDeltaY",
+      "evidence": "ec.java: Teleport offsets are added to source coordinates during application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ec.<init>(IIIIZ)V#4",
+      "originalName": "param4",
+      "to": "skipDestinationPlacement",
+      "evidence": "ec.java: Teleport offsets are added to source coordinates during application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ec.<init>(IIIZ)V#0",
+      "originalName": "param0",
+      "to": "sourceX",
+      "evidence": "ec.java: Packed signed X/Y deltas decode from high/low bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ec.<init>(IIIZ)V#1",
+      "originalName": "param1",
+      "to": "sourceY",
+      "evidence": "ec.java: Packed signed X/Y deltas decode from high/low bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ec.<init>(IIIZ)V#2",
+      "originalName": "param2",
+      "to": "packedTargetDelta",
+      "evidence": "ec.java: Packed signed X/Y deltas decode from high/low bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ec.<init>(IIIZ)V#3",
+      "originalName": "param3",
+      "to": "skipDestinationPlacement",
+      "evidence": "ec.java: Packed signed X/Y deltas decode from high/low bytes.",
       "confidence": "reviewed"
     },
     {
@@ -6233,17 +7276,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ee.<init>(IIILmn;)V#0",
+      "originalName": "param0",
+      "to": "actingPlayer",
+      "evidence": "ee.java: Sphinx wrapper records the Sphinx and marks its delegate as allowed to act on another player unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.<init>(IIILmn;)V#1",
+      "originalName": "param1",
+      "to": "sphinxX",
+      "evidence": "ee.java: Sphinx wrapper records the Sphinx and marks its delegate as allowed to act on another player unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.<init>(IIILmn;)V#2",
+      "originalName": "param2",
+      "to": "sphinxY",
+      "evidence": "ee.java: Sphinx wrapper records the Sphinx and marks its delegate as allowed to act on another player unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.<init>(IIILmn;)V#3",
+      "originalName": "param3",
+      "to": "delegatedRequest",
+      "evidence": "ee.java: Sphinx wrapper records the Sphinx and marks its delegate as allowed to act on another player unit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ee.a(ILha;)Lbd;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ee.a(ILha;)Lbd;#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.a([Ljava/lang/String;I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "messageParts",
+      "evidence": "ee.java: Formats a rejected Sphinx action using the original mind-control diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.a([Ljava/lang/String;I)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ee.java: Formats a rejected Sphinx action using the original mind-control diagnostic.",
       "confidence": "reviewed"
     },
     {
@@ -6751,17 +7836,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hw.<init>(IIII)V#0",
+      "originalName": "param0",
+      "to": "actingPlayer",
+      "evidence": "hw.java: SummonRequest stores the player, destination and requested unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hw.<init>(IIII)V#1",
+      "originalName": "param1",
+      "to": "tileX",
+      "evidence": "hw.java: SummonRequest stores the player, destination and requested unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hw.<init>(IIII)V#2",
+      "originalName": "param2",
+      "to": "tileY",
+      "evidence": "hw.java: SummonRequest stores the player, destination and requested unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hw.<init>(IIII)V#3",
+      "originalName": "param3",
+      "to": "unitType",
+      "evidence": "hw.java: SummonRequest stores the player, destination and requested unit type.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hw.a(ILha;)Lbd;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:hw.a(ILha;)Lbd;#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hw.a([Ljava/lang/String;B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "messageParts",
+      "evidence": "hw.java: Formats a rejected summoning request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hw.a([Ljava/lang/String;B)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "hw.java: Formats a rejected summoning request.",
       "confidence": "reviewed"
     },
     {
@@ -6775,21 +7902,21 @@
       "symbol": "P:ik.a(BLha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Area spell creates its prepared effect before application.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ik.a(BLha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "ik.java: Area spell creates its prepared effect before application.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ik.a(I)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two.",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two.",
       "confidence": "reviewed"
     },
     {
@@ -6831,28 +7958,56 @@
       "symbol": "P:ik.a(Lha;I)V#0",
       "originalName": "param0",
       "to": "battlefield",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ik.a(Lha;I)V#1",
       "originalName": "param1",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.<init>(IILjd;Lne;)V#0",
+      "originalName": "param0",
+      "to": "suppliedX",
+      "evidence": "il.java: Displaced-unit marker constructor inspects the supplied tile, without storing position/unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.<init>(IILjd;Lne;)V#1",
+      "originalName": "param1",
+      "to": "suppliedY",
+      "evidence": "il.java: Displaced-unit marker constructor inspects the supplied tile, without storing position/unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.<init>(IILjd;Lne;)V#2",
+      "originalName": "param2",
+      "to": "unit",
+      "evidence": "il.java: Displaced-unit marker constructor inspects the supplied tile, without storing position/unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.<init>(IILjd;Lne;)V#3",
+      "originalName": "param3",
+      "to": "tile",
+      "evidence": "il.java: Displaced-unit marker constructor inspects the supplied tile, without storing position/unit.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:il.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:il.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -6912,17 +8067,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jc.<init>(IIII)V#0",
+      "originalName": "param0",
+      "to": "actingPlayer",
+      "evidence": "jc.java: DeployRequest stores player, position and deploy modifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jc.<init>(IIII)V#1",
+      "originalName": "param1",
+      "to": "tileX",
+      "evidence": "jc.java: DeployRequest stores player, position and deploy modifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jc.<init>(IIII)V#2",
+      "originalName": "param2",
+      "to": "tileY",
+      "evidence": "jc.java: DeployRequest stores player, position and deploy modifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jc.<init>(IIII)V#3",
+      "originalName": "param3",
+      "to": "deployModifier",
+      "evidence": "jc.java: DeployRequest stores player, position and deploy modifier.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jc.a(ILha;)Lbd;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:jc.a(ILha;)Lbd;#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jc.a([Ljava/lang/String;Z)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "messageParts",
+      "evidence": "jc.java: Formats a rejected deployment request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jc.a([Ljava/lang/String;Z)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "jc.java: Formats a rejected deployment request.",
       "confidence": "reviewed"
     },
     {
@@ -7332,17 +8529,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kj.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "actingPlayer",
+      "evidence": "kj.java: Marker flag array is sized by player count and indexed by acting player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "playerCount",
+      "evidence": "kj.java: Marker flag array is sized by player count and indexed by acting player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kj.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:kj.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -7423,17 +8634,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#0",
+      "originalName": "param0",
+      "to": "startX",
+      "evidence": "ld.java: MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#1",
+      "originalName": "param1",
+      "to": "startY",
+      "evidence": "ld.java: MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#2",
+      "originalName": "param2",
+      "to": "pathDirections",
+      "evidence": "ld.java: MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#3",
+      "originalName": "param3",
+      "to": "pathLength",
+      "evidence": "ld.java: MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#4",
+      "originalName": "param4",
+      "to": "targetDeltaX",
+      "evidence": "ld.java: MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#5",
+      "originalName": "param5",
+      "to": "targetDeltaY",
+      "evidence": "ld.java: MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#6",
+      "originalName": "param6",
+      "to": "actingPlayer",
+      "evidence": "ld.java: MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#7",
+      "originalName": "param7",
+      "to": "movingUnit",
+      "evidence": "ld.java: MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#8",
+      "originalName": "param8",
+      "to": "defender",
+      "evidence": "ld.java: MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ld.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ld.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -7538,14 +8812,35 @@
       "symbol": "P:mn.a(ILha;)Lbd;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:mn.a(ILha;)Lbd;#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mn.a(I[Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mn.java: Formats player, action kind and concatenated diagnostic fragments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mn.a(I[Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "messageParts",
+      "evidence": "mn.java: Formats player, action kind and concatenated diagnostic fragments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mn.a(I[Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "actionKind",
+      "evidence": "mn.java: Formats player, action kind and concatenated diagnostic fragments.",
       "confidence": "reviewed"
     },
     {
@@ -7717,6 +9012,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nn.a(II)Lmn;#0",
+      "originalName": "param0",
+      "to": "actingPlayer",
+      "evidence": "nn.java: Copies the selected path and wraps it in a SpellCastRequest when a spell modifier is present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(II)Lmn;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Copies the selected path and wraps it in a SpellCastRequest when a spell modifier is present.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nn.a(III)V#0",
       "originalName": "param0",
       "to": "targetY",
@@ -7861,6 +9170,55 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "nn.java: Clears path availability and the direction array without changing target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ns.<init>(IIIILjd;II)V#0",
+      "originalName": "param0",
+      "to": "attackerX",
+      "evidence": "ns.java: AttackEvent payload from MoveAttackAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ns.<init>(IIIILjd;II)V#1",
+      "originalName": "param1",
+      "to": "attackerY",
+      "evidence": "ns.java: AttackEvent payload from MoveAttackAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ns.<init>(IIIILjd;II)V#2",
+      "originalName": "param2",
+      "to": "targetDeltaX",
+      "evidence": "ns.java: AttackEvent payload from MoveAttackAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ns.<init>(IIIILjd;II)V#3",
+      "originalName": "param3",
+      "to": "targetDeltaY",
+      "evidence": "ns.java: AttackEvent payload from MoveAttackAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ns.<init>(IIIILjd;II)V#4",
+      "originalName": "param4",
+      "to": "targetUnit",
+      "evidence": "ns.java: AttackEvent payload from MoveAttackAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ns.<init>(IIIILjd;II)V#5",
+      "originalName": "param5",
+      "to": "attackerAnimationCount",
+      "evidence": "ns.java: AttackEvent payload from MoveAttackAction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ns.<init>(IIIILjd;II)V#6",
+      "originalName": "param6",
+      "to": "defenderAnimationCount",
+      "evidence": "ns.java: AttackEvent payload from MoveAttackAction.",
       "confidence": "reviewed"
     },
     {
@@ -8046,17 +9404,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pe.<init>(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "pe.java: VineGrowthAction passes all six values to GrowthEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.<init>(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "tileY",
+      "evidence": "pe.java: VineGrowthAction passes all six values to GrowthEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.<init>(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "originX",
+      "evidence": "pe.java: VineGrowthAction passes all six values to GrowthEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.<init>(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "originY",
+      "evidence": "pe.java: VineGrowthAction passes all six values to GrowthEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.<init>(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "strength",
+      "evidence": "pe.java: VineGrowthAction passes all six values to GrowthEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.<init>(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "actingPlayer",
+      "evidence": "pe.java: VineGrowthAction passes all six values to GrowthEvent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pe.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:pe.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -8088,17 +9488,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pl.<init>(ILjd;I)V#0",
+      "originalName": "param0",
+      "to": "actingPlayer",
+      "evidence": "pl.java: DeployAction event queue uses these bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.<init>(ILjd;I)V#1",
+      "originalName": "param1",
+      "to": "unit",
+      "evidence": "pl.java: DeployAction event queue uses these bindings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.<init>(ILjd;I)V#2",
+      "originalName": "param2",
+      "to": "deployModifier",
+      "evidence": "pl.java: DeployAction event queue uses these bindings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pl.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:pl.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -8357,35 +9778,35 @@
       "symbol": "P:ra.<init>(ILmn;)V#0",
       "originalName": "param0",
       "to": "spellId",
-      "evidence": "ra.java: AreaSpell stores its selection and sets its spell ID.",
+      "evidence": "ra.java: ActionSpell stores its request and sets its spell ID.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ra.<init>(ILmn;)V#1",
       "originalName": "param1",
-      "to": "selection",
-      "evidence": "ra.java: AreaSpell stores its selection and sets its spell ID.",
+      "to": "request",
+      "evidence": "ra.java: ActionSpell stores its request and sets its spell ID.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ra.a(BLha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ra.a(BLha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ra.a(I)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override parameter.",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -8427,14 +9848,14 @@
       "symbol": "P:ra.a(Lha;I)V#0",
       "originalName": "param0",
       "to": "battlefield",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ra.a(Lha;I)V#1",
       "originalName": "param1",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -8620,6 +10041,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sm.a(BIF)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Submits a scored result without a destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(BIF)V#1",
+      "originalName": "param1",
+      "to": "executionResult",
+      "evidence": "sm.java: Submits a scored result without a destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(BIF)V#2",
+      "originalName": "param2",
+      "to": "score",
+      "evidence": "sm.java: Submits a scored result without a destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIFIIZ)V#0",
+      "originalName": "param0",
+      "to": "destinationY",
+      "evidence": "sm.java: Sets summoning player/unit type and destination, with original -2 result sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIFIIZ)V#1",
+      "originalName": "param1",
+      "to": "unitType",
+      "evidence": "sm.java: Sets summoning player/unit type and destination, with original -2 result sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIFIIZ)V#2",
+      "originalName": "param2",
+      "to": "score",
+      "evidence": "sm.java: Sets summoning player/unit type and destination, with original -2 result sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIFIIZ)V#3",
+      "originalName": "param3",
+      "to": "actingPlayer",
+      "evidence": "sm.java: Sets summoning player/unit type and destination, with original -2 result sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIFIIZ)V#4",
+      "originalName": "param4",
+      "to": "destinationX",
+      "evidence": "sm.java: Sets summoning player/unit type and destination, with original -2 result sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIFIIZ)V#5",
+      "originalName": "param5",
+      "to": "submit",
+      "evidence": "sm.java: Sets summoning player/unit type and destination, with original -2 result sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIF)V#0",
+      "originalName": "param0",
+      "to": "destinationY",
+      "evidence": "sm.java: Acquires and submits a scored movement destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIF)V#1",
+      "originalName": "param1",
+      "to": "destinationX",
+      "evidence": "sm.java: Acquires and submits a scored movement destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIF)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Acquires and submits a scored movement destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIF)V#3",
+      "originalName": "param3",
+      "to": "score",
+      "evidence": "sm.java: Acquires and submits a scored movement destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIIFI)V#0",
+      "originalName": "param0",
+      "to": "destinationY",
+      "evidence": "sm.java: Acquires and submits scored destination and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIIFI)V#1",
+      "originalName": "param1",
+      "to": "targetX",
+      "evidence": "sm.java: Acquires and submits scored destination and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIIFI)V#2",
+      "originalName": "param2",
+      "to": "destinationX",
+      "evidence": "sm.java: Acquires and submits scored destination and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIIFI)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Acquires and submits scored destination and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIIFI)V#4",
+      "originalName": "param4",
+      "to": "score",
+      "evidence": "sm.java: Acquires and submits scored destination and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIIFI)V#5",
+      "originalName": "param5",
+      "to": "targetY",
+      "evidence": "sm.java: Acquires and submits scored destination and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sm.a(ILjb;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -8655,17 +10209,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ss.<init>(IIII)V#0",
+      "originalName": "param0",
+      "to": "suppliedX",
+      "evidence": "ss.java: State-change marker stores only acting player; the other arguments are unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ss.<init>(IIII)V#1",
+      "originalName": "param1",
+      "to": "suppliedY",
+      "evidence": "ss.java: State-change marker stores only acting player; the other arguments are unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ss.<init>(IIII)V#2",
+      "originalName": "param2",
+      "to": "suppliedState",
+      "evidence": "ss.java: State-change marker stores only acting player; the other arguments are unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ss.<init>(IIII)V#3",
+      "originalName": "param3",
+      "to": "actingPlayer",
+      "evidence": "ss.java: State-change marker stores only acting player; the other arguments are unused.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ss.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ss.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -8788,17 +10370,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:to.<init>(Lik;II)V#0",
+      "originalName": "param0",
+      "to": "spell",
+      "evidence": "to.java: SpellCastRequest captures its spell and acting player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.<init>(Lik;II)V#1",
+      "originalName": "param1",
+      "to": "selectionMode",
+      "evidence": "to.java: SpellCastRequest captures its spell and acting player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.<init>(Lik;II)V#2",
+      "originalName": "param2",
+      "to": "actingPlayer",
+      "evidence": "to.java: SpellCastRequest captures its spell and acting player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:to.a(ILha;)Lbd;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:to.a(ILha;)Lbd;#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "evidence": "mn.java: Validates an action request and creates its prepared action; null means rejected. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -8830,17 +10433,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ua.<init>(Lik;II)V#0",
+      "originalName": "param0",
+      "to": "spell",
+      "evidence": "ua.java: SpellCastAction passes these bindings to SpellCastEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.<init>(Lik;II)V#1",
+      "originalName": "param1",
+      "to": "selectionMode",
+      "evidence": "ua.java: SpellCastAction passes these bindings to SpellCastEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.<init>(Lik;II)V#2",
+      "originalName": "param2",
+      "to": "actingPlayer",
+      "evidence": "ua.java: SpellCastAction passes these bindings to SpellCastEvent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ua.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ua.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -8872,17 +10496,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ur.<init>(IIIIILjd;Z)V#0",
+      "originalName": "param0",
+      "to": "suppliedSourceX",
+      "evidence": "ur.java: Source arguments are unused: application reads the live unit position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ur.<init>(IIIIILjd;Z)V#1",
+      "originalName": "param1",
+      "to": "suppliedSourceY",
+      "evidence": "ur.java: Source arguments are unused: application reads the live unit position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ur.<init>(IIIIILjd;Z)V#2",
+      "originalName": "param2",
+      "to": "targetDeltaX",
+      "evidence": "ur.java: Source arguments are unused: application reads the live unit position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ur.<init>(IIIIILjd;Z)V#3",
+      "originalName": "param3",
+      "to": "targetDeltaY",
+      "evidence": "ur.java: Source arguments are unused: application reads the live unit position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ur.<init>(IIIIILjd;Z)V#4",
+      "originalName": "param4",
+      "to": "actingPlayer",
+      "evidence": "ur.java: Source arguments are unused: application reads the live unit position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ur.<init>(IIIIILjd;Z)V#5",
+      "originalName": "param5",
+      "to": "unit",
+      "evidence": "ur.java: Source arguments are unused: application reads the live unit position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ur.<init>(IIIIILjd;Z)V#6",
+      "originalName": "param6",
+      "to": "skipDestinationPlacement",
+      "evidence": "ur.java: Source arguments are unused: application reads the live unit position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ur.a(ILha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ur.a(ILha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -9015,21 +10688,21 @@
       "symbol": "P:wa.a(BLha;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:wa.a(BLha;)V#1",
       "originalName": "param1",
       "to": "battlefield",
-      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell prepares its wrapped action before spell application. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:wa.a(I)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override parameter.",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -9071,14 +10744,14 @@
       "symbol": "P:wa.a(Lha;I)V#0",
       "originalName": "param0",
       "to": "battlefield",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:wa.a(Lha;I)V#1",
       "originalName": "param1",
       "to": "obfuscationGuard",
-      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override parameter.",
       "confidence": "reviewed"
     }
   ],
@@ -9097,9 +10770,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "a23b148c61e398d62025a7c6820f8a3a5c086502bbf2e14250835112780692ba",
+      "build-armiesofgielinor-rules.mjs": "27be6dabe326545aa8852d4058b296b40672dc5376efee478ffd69706d0c680b",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "f9baf09ebab0f98ad9b5b627b8a9220bae6bd58b473f9af1fd212b28a7bbf8bc",
+      "tests/test-armiesofgielinor-core.mjs": "daa224bca00798c14ddcf31243e6ce78146bbfae1a258770713fd5f134aabe50",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

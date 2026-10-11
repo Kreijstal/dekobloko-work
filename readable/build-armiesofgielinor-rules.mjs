@@ -43,10 +43,25 @@ const classes = {
   pj:['SpellCastEvent','Legacy Trinketused diagnostic; dispatches Spell.applyEffect and battlefield spell-cost handling.'],
   ik:['Spell','Abstract spell ID, payload size/serialization and effect lifecycle; concrete implementations read spellDefinitions.'],
   wa:['UnitSpell','Stores target tile coordinates and dispatches spell-table effects on the target unit.'],
-  ra:['AreaSpell','Stores a SpellAreaSelection, prepares its area effect and applies it to the battlefield.'],
+  ra:['ActionSpell','Spell modifier wrapping an ActionRequest; prepares its action and applies it on spell completion.'],
   al:['GlobalSpell','Spell-table dispatch for effects that do not carry target coordinates.'],
-  mn:['SpellAreaSelection','Abstract targeting shape that creates a SpellAreaEffect.'],
-  bd:['SpellAreaEffect','Affected tile indices and abstract battlefield application of a prepared area effect.'],
+  mn:['ActionRequest','Abstract preparation contract shared by movement, summoning, deployment, spell casts and Sphinx-assisted actions.'],
+  bd:['PreparedAction','Prepared battlefield action; implementations queue events or represent turn-condition markers.'],
+  am:['MoveAttackRequest','Decodes packed paths and signed target deltas; validates movement, attacks, vine growth and teleportation.'],
+  hw:['SummonRequest','Checks chosen gods, tile summoning permissions and affordability, then prepares a SummonAction.'],
+  jc:['DeployRequest','Checks ownership, movement-spent state, deploy capability and terrain before preparing a DeployAction.'],
+  to:['SpellCastRequest','Prepares a Spell then creates the action that queues its SpellCastEvent.'],
+  ee:['SphinxActionRequest','Checks a type-72 Sphinx has an attack remaining, then prepares its delegated action with ownership bypass.'],
+  ld:['MoveAttackAction','Copies path directions, computes attack origin and queues MoveEvent and optional AttackEvent.'],
+  be:['SummonAction','Recomputes summoning bonus and queues SummonEvent.'],
+  pl:['DeployAction','Queues DeathEvent for vine type 39 or DeployEvent for supported deployable units.'],
+  ua:['SpellCastAction','Queues SpellCastEvent with spell, selection mode and casting player.'],
+  pe:['VineGrowthAction','Queues GrowthEvent with destination, origin, strength and acting player.'],
+  ur:['TeleportAction','Queues TeleportEvent with live unit source position, signed target deltas and destination-placement mode.'],
+  il:['DisplacedUnitMarker','Created during turn preparation for displaced units; canonical application has no battlefield mutation.'],
+  ss:['StateChangeMarker','Turn preparation creates this instead of StateChangeEvent in its marker branch; canonical application is a no-op.'],
+  dk:['CorpseConditionMarker','Turn preparation creates this for type-10 units on corpse tiles with maximum strength 19; player flag 1024.'],
+  kj:['SkeletonLimitMarker','Turn preparation creates this when at least 25 type-20 skeletons remain; player flag 8192.'],
   pa:['EventPresentation','Shared initialization, frame advancement, drawing and completion contract for four event presentations.'],
   vb:['EventPresenter','Selects a presentation from event kind, advances it, acknowledges completion and guards against stalled presentations.'],
   sk:['CombatPresentation','Full combat scene with attacker/defender characters, combat phases and camera transition.'],
@@ -167,7 +182,7 @@ for(const [owner,items] of Object.entries({
   ns:[['J','applied','Z'],['N','targetUnit','Ljd;'],['z','targetDeltaX','I'],['H','targetDeltaY','I'],['C','attackerAnimationCount','I'],['Q','defenderAnimationCount','I']],
   mb:[['E','applied','Z'],['z','tileX','I'],['H','tileY','I'],['D','playerId','I'],['I','strengthBonus','I'],['A','unitType','I']],
   qq:[['C','applied','Z'],['I','tileX','I'],['J','tileY','I'],['F','effectType','I'],['G','playerId','I']],
-  ec:[['C','applied','Z'],['A','sourceX','I'],['B','sourceY','I'],['z','destinationX','I'],['y','destinationY','I']],
+  ec:[['C','applied','Z'],['A','sourceX','I'],['B','sourceY','I'],['z','targetDeltaX','I'],['y','targetDeltaY','I']],
   rt:[['y','destinationX','I'],['C','destinationY','I']],
   kf:[['H','tileX','I'],['F','tileY','I'],['J','originX','I'],['y','originY','I'],['z','strength','I'],['C','playerId','I'],['A','applied','Z']],
   tr:[['E','tileX','I'],['D','tileY','I'],['B','modifiers','I']],
@@ -175,8 +190,8 @@ for(const [owner,items] of Object.entries({
 field('ik','c','I','spellId','Every concrete spell indexes spellDefinitions with this ID and writes it as a big-endian short.');
 field('wa','g','I','targetX','UnitSpell constructor and serialization write target X before target Y.');
 field('wa','f','I','targetY','UnitSpell constructor and target-unit lookup.');
-field('ra','g','Lmn;','selection','AreaSpell creates an area effect from this targeting selection.');
-field('ra','h','Lbd;','preparedEffect','Preparation creates this effect; completion applies it and releases the reference.');
+field('ra','g','Lmn;','request','ActionSpell prepares this wrapped action request.');
+field('ra','h','Lbd;','preparedAction','Spell preparation creates this action; completion applies it and releases the reference.');
 field('pj','B','Lik;','spell','SpellCastEvent dispatches the spell-table based effect.');
 field('pj','C','Z','applied','Spell cast application is guarded against repeated mutation.');
 field('pj','z','I','castingPlayer','Passed to Spell.applyEffect and battlefield spell accounting.');
@@ -236,8 +251,8 @@ for(const [original,to,type] of [
 ])field('cl',original,type,to,'Per-unit AI construction, candidate scoring, target lookup and decision comparator.');
 for(const [original,to,type] of [
   ['s','destinationX','I'],['q','destinationY','I'],['k','targetX','I'],['o','targetY','I'],
-  ['m','spellId','I'],['l','selectionVariant','I'],['r','executionResult','I'],['t','score','F'],
-])field('jb',original,type,to,'Candidate reset, strategy insertion and execution reconstruct destination paths and target deltas.');
+  ['m','summoningPlayer','I'],['l','summonUnitType','I'],['r','executionResult','I'],['t','score','F'],
+])field('jb',original,type,to,'Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.');
 field('sm','a','Lat;','candidates','Strategy submission and selection traverse this candidate deque.');
 field('sm','f','Lat;','recycledCandidates','Strategy reset transfers previous candidates into the reuse pool.');
 field('ge','k','F','minimumScore','Tracks the smallest submitted score and normalizes sampling weights.');
@@ -318,17 +333,17 @@ method('jd','A','(I)V','resetMovementTarget','Writes target X and clears target 
 method('jd','y','(I)Z','hasPoisonousAttacks','Tests definition flag 64 used by combat damage poison propagation.',{0:'obfuscationGuard'});
 method('jd','r','(I)Z','grantsGrowthOnDeath','Excludes the summoned jade-vine type from combat kill-growth rewards.',{0:'obfuscationGuard'});
 method('jd','t','(I)Z','isDisplacedFromTile','Tests whether the unit differs from its tile occupant.',{0:'obfuscationGuard'});
-method('ik','a','(I)I','getPayloadSize','Unit spells serialize four bytes; global/area spells serialize two.',{0:'obfuscationGuard'});
+method('ik','a','(I)I','getPayloadSize','Unit spells serialize four bytes; global/action spells serialize two.',{0:'obfuscationGuard'});
 method('ik','a','(ILvh;)V','writePayload','Serializes spell ID and optional coordinates; propagates through all concrete spell implementations.',{0:'obfuscationGuard',1:'packet'});
 method('ik','a','(ILha;I)V','applyEffect','Concrete spell dispatch using casting player and spell definition.',{0:'castingPlayer',1:'battlefield',2:'obfuscationGuard'});
-method('ik','a','(BLha;)V','prepareEffect','Area spell creates its prepared effect before application.',{0:'obfuscationGuard',1:'battlefield'});
-method('ik','a','(Lha;I)V','finishEffect','Area spell applies and releases the prepared effect; other variants preserve their original completion hooks.',{0:'battlefield',1:'obfuscationGuard'});
-method('mn','a','(ILha;)Lbd;','createEffect','Targeting selection creates an area effect for the battlefield.',{0:'obfuscationGuard',1:'battlefield'});
-method('bd','a','(ILha;)V','applyEffect','Prepared spell area mutates its affected battlefield tiles.',{0:'obfuscationGuard',1:'battlefield'});
+method('ik','a','(BLha;)V','prepareEffect','ActionSpell prepares its wrapped action before spell application.',{0:'obfuscationGuard',1:'battlefield'});
+method('ik','a','(Lha;I)V','finishEffect','ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks.',{0:'battlefield',1:'obfuscationGuard'});
+method('mn','a','(ILha;)Lbd;','prepareAction','Validates an action request and creates its prepared action; null means rejected.',{0:'obfuscationGuard',1:'battlefield'});
+method('bd','a','(ILha;)V','applyToBattlefield','Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior.',{0:'obfuscationGuard',1:'battlefield'});
 constructorParameters('ik','(I)V',['spellId'],'Spell constructor stores its definition ID.');
 constructorParameters('wa','(III)V',['spellId','targetX','targetY'],'UnitSpell constructor assigns ID and target coordinates.');
 constructorParameters('al','(I)V',['spellId'],'GlobalSpell delegates ID to the base Spell constructor.');
-constructorParameters('ra','(ILmn;)V',['spellId','selection'],'AreaSpell stores its selection and sets its spell ID.');
+constructorParameters('ra','(ILmn;)V',['spellId','request'],'ActionSpell stores its request and sets its spell ID.');
 method('nn','a','(Lbv;BLjd;)I','writeAttackMovementPacket','Serializes selected path and target offsets for the attacked unit.',{0:'packet',1:'obfuscationGuard',2:'attackedUnit'});
 method('nn','a','(ZLbv;)I','writeMovementPacket','Serializes movement path and optional spell ID to the ciphered packet buffer.',{0:'obfuscationGuard',1:'packet'});
 method('nn','c','(I)I','getMovementBudget','Three times base movement, modified by selected spells/statuses and tile effects.',{0:'obfuscationGuard'});
@@ -386,6 +401,71 @@ constructorParameters('aw','(Lej;)V',['planner'],'Best-score strategy delegates 
 constructorParameters('ge','(Lej;)V',['planner'],'Weighted strategy initializes its normalization bounds.');
 constructorParameters('ej','(Lha;IZ[Lid;)V',['battlefield','playerId','configurationFlag','campaignOverrides'],'AI constructor stores battlefield/player/override data; boolean configuration meaning is unresolved.');
 
+field('mn','p','I','actingPlayer','Request constructors set the player used in ownership/summoning checks and illegal-move diagnostics.');
+field('mn','o','I','spellId','ActionSpell sets the optional spell definition ID on its wrapped request.');
+field('mn','u','Z','allowOtherPlayer','MoveAttackRequest bypasses ownership rejection when true; SphinxActionRequest sets this on its delegate.');
+field('bd','m','I','actingPlayer','Prepared action constructors store the player used in queued events or turn markers.');
+field('bd','n','[I','playerFlags','Marker constructors allocate one entry per player and set only the acting player flag; not tile indices.');
+field('ec','D','Z','skipDestinationPlacement','Teleport application and presentation skip destination handling when this flag is true.');
+for(const [owner,items] of Object.entries({
+  am:[['J','startX','I'],['G','startY','I'],['H','pathDirections','[I'],['w','targetDeltaX','I'],['E','targetDeltaY','I']],
+  hw:[['E','tileX','I'],['A','tileY','I'],['v','unitType','I']],
+  jc:[['A','tileX','I'],['z','tileY','I'],['y','deployModifier','I']],
+  to:[['v','spell','Lik;'],['w','selectionMode','I']],
+  ee:[['z','sphinxX','I'],['w','sphinxY','I'],['y','delegatedRequest','Lmn;']],
+  ld:[['u','startX','I'],['v','startY','I'],['C','pathDirections','[I'],['D','pathLength','I'],['w','targetDeltaX','I'],['t','targetDeltaY','I'],['y','movingUnit','Ljd;'],['z','defenderSnapshot','Ljd;'],['E','attackOriginX','I'],['F','attackOriginY','I'],['A','attackerAnimationCount','I'],['B','defenderAnimationCount','I']],
+  be:[['G','tileX','I'],['B','tileY','I'],['t','unitType','I'],['C','summoningBonus','I']],
+  pl:[['u','unit','Ljd;'],['w','deployModifier','I']],
+  ua:[['x','spell','Lik;'],['w','selectionMode','I']],
+  pe:[['u','tileX','I'],['y','tileY','I'],['t','originX','I'],['A','originY','I'],['z','strength','I']],
+  ur:[['y','unit','Ljd;'],['s','targetDeltaX','I'],['t','targetDeltaY','I'],['A','skipDestinationPlacement','Z']],
+}))for(const [original,to,type] of items)field(owner,original,type,to,'Reviewed request/action constructor bindings and validation/event queue data flow.');
+constructorParameters('am','(Lvh;I)V',['packet','actingPlayer'],'Decodes path count, start coordinates, four packed directions per byte and signed target deltas.');
+constructorParameters('am','(II[IIIII)V',['actingPlayer','declaredPathLength','pathDirections','startX','startY','targetDeltaX','targetDeltaY'],'Constructor stores the path array and coordinates; the declared length argument is unused.');
+constructorParameters('hw','(IIII)V',['actingPlayer','tileX','tileY','unitType'],'SummonRequest stores the player, destination and requested unit type.');
+constructorParameters('jc','(IIII)V',['actingPlayer','tileX','tileY','deployModifier'],'DeployRequest stores player, position and deploy modifier.');
+constructorParameters('to','(Lik;II)V',['spell','selectionMode','actingPlayer'],'SpellCastRequest captures its spell and acting player.');
+constructorParameters('ee','(IIILmn;)V',['actingPlayer','sphinxX','sphinxY','delegatedRequest'],'Sphinx wrapper records the Sphinx and marks its delegate as allowed to act on another player unit.');
+constructorParameters('ld','(II[IIIIILjd;Ljd;)V',['startX','startY','pathDirections','pathLength','targetDeltaX','targetDeltaY','actingPlayer','movingUnit','defender'],'MoveAttackAction constructor and queued MoveEvent/AttackEvent payload.');
+constructorParameters('be','(IIIII)V',['tileX','tileY','unitType','preparedBonus','actingPlayer'],'Prepared bonus argument is unused; apply recomputes it from the battlefield.');
+constructorParameters('pl','(ILjd;I)V',['actingPlayer','unit','deployModifier'],'DeployAction event queue uses these bindings.');
+constructorParameters('ua','(Lik;II)V',['spell','selectionMode','actingPlayer'],'SpellCastAction passes these bindings to SpellCastEvent.');
+constructorParameters('pe','(IIIIII)V',['tileX','tileY','originX','originY','strength','actingPlayer'],'VineGrowthAction passes all six values to GrowthEvent.');
+constructorParameters('ur','(IIIIILjd;Z)V',['suppliedSourceX','suppliedSourceY','targetDeltaX','targetDeltaY','actingPlayer','unit','skipDestinationPlacement'],'Source arguments are unused: application reads the live unit position.');
+for(const owner of ['dk','kj'])constructorParameters(owner,'(II)V',['actingPlayer','playerCount'],'Marker flag array is sized by player count and indexed by acting player.');
+method('nn','a','(II)Lmn;','createActionRequest','Copies the selected path and wraps it in a SpellCastRequest when a spell modifier is present.',{0:'actingPlayer',1:'obfuscationGuard'});
+method('mn','a','(I[Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;','formatIllegalMove','Formats player, action kind and concatenated diagnostic fragments.',{0:'obfuscationGuard',1:'messageParts',2:'actionKind'});
+method('sm','a','(IIIF)V','submitMoveCandidate','Acquires and submits a scored movement destination.',{0:'destinationY',1:'destinationX',2:'obfuscationGuard',3:'score'});
+method('sm','a','(IIIIFI)V','submitAttackCandidate','Acquires and submits scored destination and target coordinates.',{0:'destinationY',1:'targetX',2:'destinationX',3:'obfuscationGuard',4:'score',5:'targetY'});
+method('sm','a','(IIFIIZ)V','submitSummonCandidate','Sets summoning player/unit type and destination, with original -2 result sentinel.',{0:'destinationY',1:'unitType',2:'score',3:'actingPlayer',4:'destinationX',5:'submit'});
+method('sm','a','(BIF)V','submitResultCandidate','Submits a scored result without a destination.',{0:'obfuscationGuard',1:'executionResult',2:'score'});
+method('cl','a','(IIZLnn;)F','scoreTile','Scores movement, target combat, capture and influence at a tile; optionally submits a candidate.',{0:'tileIndex',1:'obfuscationGuard',2:'submitCandidate',3:'movementPlanner'});
+method('cl','a','(IIII)F','scoreAttackFromTile','Scores expected target damage minus counter-damage, healing and weighted influence.',{0:'targetTileIndex',1:'attackOriginX',2:'attackOriginY',3:'matchupCategory'});
+method('cl','f','(I)V','refreshDecisionPriority','Refreshes scoring weights and decision order for an unspent unit.',{0:'obfuscationGuard'});
+for(const [original,to] of [['u','previousSourceTile'],['n','previousTargetTile'],['m','previousDestinationTile']])field('cl',original,'I',to,'AI execution stores source, target and selected destination before later influence-map refresh.');
+
+for(const [owner,signature,items] of [
+  ['am','<init>(Lvh;I)V',[[0,'var5','pathIndex'],[1,'var3_int','pathLength'],[2,'var4','packedDirections'],[8,'var4Lifetime1','packedTargetDelta']]],
+  ['ld','a(ILha;)V',[[0,'var4','pathIndex'],[5,'var3','copiedPath'],[7,'var5','direction'],[9,'var7','pathBuffer'],[10,'var8','eventPath']]],
+  ['hw','a(ILha;)Lbd;',[[0,'var6','godIndex'],[12,'var3_int','requiredGod'],[14,'var4','godSelected'],[15,'var5','chosenGods'],[16,'var7','chosenGod'],[18,'var4Lifetime1','summoningBonus']]],
+  ['cl','a(IIZLnn;)F',[[19,'var7','battlefield'],[20,'var8','tileX'],[21,'var9','tileY'],[22,'var10','sourceTileIndex'],[24,'var12','tile'],[25,'var13','occupant']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.');
+
+field('ns','L','I','attackerX','AttackEvent constructor receives the prepared action attack origin and application looks up that unit.');
+field('ns','M','I','attackerY','AttackEvent constructor receives the prepared action attack origin and application looks up that unit.');
+constructorParameters('ns','(IIIILjd;II)V',['attackerX','attackerY','targetDeltaX','targetDeltaY','targetUnit','attackerAnimationCount','defenderAnimationCount'],'AttackEvent payload from MoveAttackAction.');
+constructorParameters('ec','(IIIIZ)V',['sourceX','sourceY','targetDeltaX','targetDeltaY','skipDestinationPlacement'],'Teleport offsets are added to source coordinates during application.');
+constructorParameters('ec','(IIIZ)V',['sourceX','sourceY','packedTargetDelta','skipDestinationPlacement'],'Packed signed X/Y deltas decode from high/low bytes.');
+constructorParameters('il','(IILjd;Lne;)V',['suppliedX','suppliedY','unit','tile'],'Displaced-unit marker constructor inspects the supplied tile, without storing position/unit.');
+constructorParameters('ss','(IIII)V',['suppliedX','suppliedY','suppliedState','actingPlayer'],'State-change marker stores only acting player; the other arguments are unused.');
+
+method('am','a','(Ljd;BLha;)Lbd;','prepareVineGrowth','Validates one-step vine growth, terrain and map bounds, then creates VineGrowthAction.',{0:'unit',1:'obfuscationGuard',2:'battlefield'});
+method('am','a','(Lha;ILjd;)Lbd;','prepareTeleport','Validates target delta bounds/terrain and chooses destination-placement mode.',{0:'battlefield',1:'obfuscationGuard',2:'unit'});
+method('am','a','([Ljava/lang/String;I)Ljava/lang/String;','formatMoveRejection','Formats a rejected movement request.',{0:'messageParts',1:'obfuscationGuard'});
+method('hw','a','([Ljava/lang/String;B)Ljava/lang/String;','formatSummonRejection','Formats a rejected summoning request.',{0:'messageParts',1:'obfuscationGuard'});
+method('jc','a','([Ljava/lang/String;Z)Ljava/lang/String;','formatDeployRejection','Formats a rejected deployment request.',{0:'messageParts',1:'obfuscationGuard'});
+method('ee','a','([Ljava/lang/String;I)Ljava/lang/String;','formatMindControlRejection','Formats a rejected Sphinx action using the original mind-control diagnostic.',{0:'messageParts',1:'obfuscationGuard'});
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -424,7 +504,7 @@ export function buildArmiesRules(input, rows) {
   }
   const sources=new Map(sourceInventory(input).map(file=>[file.path,fs.readFileSync(path.join(input,file.path),'utf8')]));
   for(const source of sources.values()) {
-    const event=source.match(/\bclass\s+(\w+)\s+extends\s+oj\b/)?.[1];
+    const event=source.match(/\bclass\s+(\w+)\s+extends\s+(?:oj|mn|bd)\b/)?.[1];
     if(event&&!classes[event]) throw new Error('Unreviewed gameplay event: '+event);
   }
   for(const row of rows.filter(row=>row[0]==='T')) {
@@ -459,8 +539,11 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('kr')} / ${link('ns')} / ${link('ag')} / ${link('nw')} / ${link('hp')} | Movement, attacks, combat records, damage/poison and death. |`,
     `| ${link('mb')} / ${link('ec')} / ${link('kn')} / ${link('q')} / ${link('qq')} | Summoning, teleport variants and state changes. Event names follow their own diagnostic text. |`,
     `| ${link('rt')} / ${link('pj')} / ${link('kc')} | Revival, spell casts and turn changes. All 21 concrete GameEvent subclasses have reviewed names. |`,
-    `| ${link('ik')} → ${link('wa')} / ${link('ra')} / ${link('al')} | Unit, area and global spells: definition IDs, payload serialization and effect lifecycle. |`,
-    `| ${link('mn')} / ${link('bd')} | Area selections and prepared area effects. |`,
+    `| ${link('ik')} → ${link('wa')} / ${link('ra')} / ${link('al')} | Unit, action and global spells: definition IDs, payload serialization and effect lifecycle. |`,
+    `| ${link('mn')} / ${link('bd')} | Action requests and prepared battlefield actions. |`,
+    `| ${link('am')} / ${link('hw')} / ${link('jc')} / ${link('to')} / ${link('ee')} | Movement/attack, summoning, deployment, spell and Sphinx-assisted requests. |`,
+    `| ${link('ld')} / ${link('be')} / ${link('pl')} / ${link('ua')} / ${link('pe')} / ${link('ur')} | Prepared actions queue their corresponding gameplay events. |`,
+    `| ${link('il')} / ${link('ss')} / ${link('dk')} / ${link('kj')} | Turn-condition markers; their canonical application is a no-op. |`,
     `| ${link('vb')} → ${link('pa')} | Event dispatch, presentation frames and acknowledgement. |`,
     `| ${link('sk')} / ${link('qv')} / ${link('tb')} / ${link('ql')} | Combat, movement, effects and popups. |`,
     `| ${link('ej')} → ${link('cl')} / ${link('jb')} | Per-unit AI evaluation and selected actions. |`,
@@ -469,15 +552,16 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
     'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
     'Combat payloads now name attacker/defender positions, offsets, damage, death flags and animation counts. The central consequence routine names its attacker/defender and healing/poison locals. Unit movement-spent and attacks-remaining state are separate; spell status and equipment descriptors are also separate. `SpellCastEvent` replaces the earlier trinket label: its legacy diagnostic says Trinketused, but the concrete implementations read the spell definition table.','',
+    'ActionRequest and PreparedAction replace the overly narrow SpellArea names: all five request subclasses and ten prepared-action subclasses have been reviewed. ActionSpell wraps an action rather than defining a geometric area. AI summoningPlayer and summonUnitType replace the misleading spellId/selectionVariant pair. Teleport target deltas are relative offsets, not absolute destination coordinates. PreparedAction.playerFlags is indexed by player, not by tile. Unused constructor arguments and no-op marker application remain unchanged.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:3,
+    const rules={schema:1,game:'armiesofgielinor',version:4,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
