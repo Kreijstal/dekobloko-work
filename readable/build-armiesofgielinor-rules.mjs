@@ -94,6 +94,8 @@ const classes = {
   mt:['TextCursor','Instance owns a string, character position and end test; static helpers also decode short tagged-field names.'],
   bb:['NodeIterator','Independent forward/reverse deque traversal, preserving a cursor while nodes unlink.'],
   ga:['IsaacRandom','256-word ISAAC state, golden-ratio seed mixing and opcode cipher output.'],
+  bo:['TutorialLayout','Five 29-entry arrays store stage positions and spacing; accessors center coordinates on a 640 by 480 reference surface. Static helpers also decode spells.'],
+  dl:['UiSelectionState','Shared tutorial/menu selection, keyboard input, pointer press state and repeat countdown; also used outside the tutorial.'],
   tc:['IntrusiveNode','Two node links and unlink update both neighbours.'],
   at:['NodeDeque','Sentinel node, prepend/append, pop and bidirectional traversal.'],
   vh:['PacketBuffer','Byte payload, cursor and primitive read/write methods.'],
@@ -660,6 +662,78 @@ for(const [original,descriptor] of [['a','(IIBIIIIIILbv;)I'],['$cfr$intArgs$a$eb
 for(const [original,to] of [['D','sourceX'],['B','sourceY'],['E','destinationX'],['z','destinationY'],['C','newOwnerPlayer']])field('md',original,'I',to,'ParasiteEvent constructor adds signed deltas to source coordinates; battlefield application uses absolute destination coordinates despite the d diagnostic label.');
 constructorParameters('md','(IIIII)V',['sourceX','sourceY','targetDeltaX','targetDeltaY','newOwnerPlayer'],'Parasite payload is decoded from the combat packet when flag 4 is set.');
 
+method('ha','a','(Lvh;B)V','readGameEvent','Peeks at the header and dispatches categories 0/1/3/5/6 without consuming it first.',{0:'packet',1:'obfuscationGuard'});
+method('ha','a','(BLvh;)V','readMoveEvent','Reads a 13-bit step count, source coordinates and four little-endian two-bit directions per byte.',{0:'obfuscationGuard',1:'packet'});
+method('ha','a','(Lvh;Z)V','readSummonEvent','Decodes unit type, signed five-bit strength bonus, three-bit owner and destination coordinates.',{0:'packet',1:'obfuscationGuard'});
+method('ha','a','(ILvh;)V','readStateChangeEvent','Decodes low-three-bit player ID and bits 3/4 effect type followed by tile coordinates.',{0:'obfuscationGuard',1:'packet'});
+method('ha','a','(IILvh;I)V','readStoredUnitAt','Decodes and appends a unit to its owner deque; placement and removed-state semantics are preserved.',{0:'tileX',1:'obfuscationGuard',2:'packet',3:'tileY'});
+method('ha','a','(ILvh;B)V','appendSnapshotChunk','Allocates a length-prefixed snapshot buffer on the first chunk, then appends payload slices.',{0:'chunkLength',1:'packet',2:'obfuscationGuard'});
+field('ha','Z','Lvh;','snapshotBuffer','appendSnapshotChunk initializes this from a two-byte total length and advances its append cursor.');
+method('mb','a','(IIIILvh;Lha;IZ)Ljd;','readStoredUnit','Decodes owner/flags, strength/status, counters, equipment, movement flags and optional tagged identifiers. Detached skips tile placement; it is distinct from removedFromActivePlay.',{0:'unitType',1:'formatVersion',2:'tileY',3:'tileX',4:'packet',5:'battlefield',6:'obfuscationGuard',7:'detached'});
+method('bo','a','(ILvh;I)Lik;','readSpell','Uses spell-table kind and targeting columns to decode global, coordinate-targeted or action-wrapped spells.',{0:'actingPlayer',1:'packet',2:'obfuscationGuard'});
+method('vh','a','(III[B)V','readBytes','Copies a sequential payload slice to the destination offset and advances position.',{0:'obfuscationGuard',1:'length',2:'destinationOffset',3:'destination'});
+method('vh','h','(B)Ljava/lang/String;','readNullCircumfixedString','Requires a leading zero and reads through the terminating zero; preserves its original text decoder.',{0:'obfuscationGuard'});
+field('pj','y','I','selectionMode','SpellCastAction/SpellCastEvent constructor and battlefield spell accounting pass this mode unchanged.');
+field('rl','B','I','playerId','KingBlackDragonEvent constructor, own diagnostic and application identify the summoning player.');
+for(const [owner,original,to] of [['hp','y','tileX'],['hp','D','tileY'],['q','z','tileX'],['q','E','tileY']])
+  field(owner,original,'I',to,'Position diagnostic, coordinate constructor and source-unit lookup use these tile coordinates.');
+for(const [owner,descriptor,names] of [
+  ['kr','(II[I)V',['startX','startY','pathDirections']],
+  ['mb','(IIIII)V',['unitType','tileX','tileY','strengthBonus','playerId']],
+  ['qq','(IIII)V',['effectType','tileX','tileY','playerId']],
+  ['rl','(I)V',['playerId']],
+  ['pj','(Lik;II)V',['spell','selectionMode','castingPlayer']],
+])constructorParameters(owner,descriptor,names,'Constructor assignments and event packet readers establish these payload roles.');
+for(const [owner,signature,items] of [
+  ['ha','a(Lvh;B)V',[[0,'var3_int','header'],[1,'var4','eventCategory']]],
+  ['ha','a(BLvh;)V',[[1,'var3_int','stepsRemaining'],[2,'var4','guardArithmetic'],[3,'var5','startX'],[4,'var6','startY'],[5,'var7','directions'],[6,'var8','stepIndex'],[7,'var9','packedDirections'],[8,'var10','stepsInByte'],[10,'var12','directionArray'],[11,'var13','decodedDirections']]],
+  ['ha','a(Lvh;Z)V',[[0,'var3_int','unitType'],[1,'var4','ownerAndBonus'],[2,'var5','tileX'],[3,'var6','tileY'],[4,'var7','strengthBonus']]],
+  ['ha','a(ILvh;)V',[[0,'var3_int','header'],[1,'var4','tileX'],[2,'var5','tileY'],[3,'var6','playerId'],[4,'var7','effectType']]],
+  ['ha','b(Lvh;B)V',[[4,'var3_int','specialKind'],[6,'var4','playerAndMode'],[7,'var5','selectionMode'],[8,'var6','dispatchKind'],[10,'var4Lifetime1','tileX'],[11,'var5Lifetime1','tileY']]],
+  ['bo','a(ILvh;I)Lik;',[[8,'var3_int','spellId'],[10,'var4','spellKind']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and packet header, coordinate, packed path or spell dispatch data flow.');
+
+for(const [original,to] of [['d','rightX'],['a','leftX'],['h','topY'],['e','bottomY'],['f','itemSpacing']])
+  field('bo',original,'[I',to,'TutorialLayout stage setter, centered getters and TutorialController bounds/spacing use.');
+method('bo','a','(IIBIIII)V','setStageLayout','Stores raw reference-surface positions and stage item spacing; tutorial panels draw width rightX minus leftX.',{0:'rightX',1:'bottomY',2:'obfuscationGuard',3:'topY',4:'leftX',5:'itemSpacing',6:'stage'});
+method('bo','a','(BI)I','getRightX','Adds half the surface width minus 640 to the stored right coordinate.',{0:'obfuscationGuard',1:'stage'});
+method('bo','b','(IB)I','getItemSpacing','Returns the stored stage spacing.',{0:'stage',1:'obfuscationGuard'});
+method('bo','b','(II)I','getLeftX','Adds horizontal centering to the stored left coordinate.',{0:'stage',1:'obfuscationGuard'});
+method('bo','a','(IB)I','getTopY','Adds half the surface height minus 480 to the stored top coordinate.',{0:'stage',1:'obfuscationGuard'});
+method('bo','a','(II)I','getBottomY','Returns the centered bottom coordinate for canonical guard -6.',{0:'obfuscationGuard',1:'stage'});
+method('bo','b','(III)V','setRightX','Adjusts the raw right coordinate so its centered getter returns screenX.',{0:'obfuscationGuard',1:'screenX',2:'stage'});
+method('bo','a','(III)V','setLeftX','Adjusts the raw left coordinate to screenX for canonical guard -1.',{0:'obfuscationGuard',1:'screenX',2:'stage'});
+method('bo','a','(IIB)V','setTopY','Adjusts the raw top coordinate so its centered getter returns screenY.',{0:'screenY',1:'stage',2:'obfuscationGuard'});
+field('kr','D','Lbo;','tutorialLayout','TutorialController reads stage bounds from this initialized 29-stage layout.');
+field('kr','y','[[I','tutorialStageItems','TutorialController indexes each stage item list, including its constructor selection count.');
+method('gb','a','(IIIIII[II)V','configureTutorialStage','Registers stage item IDs and sets its bounds/spacing; MoveEvent static initialization configures all tutorial stage presets.',{0:'itemSpacing',1:'stage',2:'leftX',3:'rightX',4:'topY',5:'bottomY',6:'itemIds',7:'obfuscationGuard'});
+field('ci','d','Ldl;','selectionState','Tutorial constructor builds the shared state for the current stage item count.');
+for(const [original,to,type] of [
+  ['a','buttonPress','I'],['b','pointerDrivenSelection','Z'],['j','keyCode','I'],
+  ['h','selectedIndex','I'],['g','repeatCountdown','I'],['k','itemCount','I'],['f','pressedPointerButton','I'],
+])field('dl',original,type,to,'Constructor, keyboard navigation, pointer update and explicit selection restore track these state roles.');
+method('dl','b','(B)V','pollNavigationKeys','Clears input and wraps selection for key codes 98/99 while no pointer button is held.',{0:'obfuscationGuard'});
+method('dl','a','(IB)V','pollNavigationKeysWithFallback','Wraps key codes 96/97 and uses fallback selection for 98/99 if current selection is negative.',{0:'fallbackIndex',1:'obfuscationGuard'});
+method('dl','a','(Z)Z','isPointerPressed','Reports nonzero pressedPointerButton for canonical false.',{0:'obfuscationGuard'});
+method('dl','d','(B)Z','hasActivationInput','Reports a new pointer press or key code 83/84.',{0:'obfuscationGuard'});
+method('dl','a','(IZ)V','selectIndex','Keyboard/programmatic selection changes only when a pointer button is not held.',{0:'index',1:'obfuscationGuard'});
+method('dl','c','(I)V','pollKeyForButtonState','Clears input and records the global key only when pointer state matches the argument.',{0:'pointerButton'});
+method('dl','a','(I)Z','isIncrementKeyPressed','Reports captured key code 97 for canonical -98.',{0:'obfuscationGuard'});
+method('dl','a','(B)Z','isDecrementKeyPressed','Reports captured key code 96; retains the original noncanonical state mutation.',{0:'obfuscationGuard'});
+method('dl','a','(III)V','updatePointerSelection','Captures new presses, counts repeat delay and updates hover selection after release; validates upper index bounds.',{0:'previousButton',1:'pressedIndex',2:'hoverIndex'});
+method('dl','a','(IZII)V','restoreSelection','Restores pointer state and chooses the pointer or fallback index according to its boolean.',{0:'fallbackIndex',1:'pointerDriven',2:'pointerIndex',3:'pointerButton'});
+constructorParameters('dl','(I)V',['itemCount'],'Constructor stores selectable item count and starts selection at zero.');
+constructorParameters('ci','(I)V',['tutorialStage'],'Constructor loads this stage item list and stage-specific resources.');
+method('ci','d','(Z)V','clearSelectionResources','Clears selected index and stage-specific transient resources.',{0:'obfuscationGuard'});
+method('ci','a','(IZI)V','restoreStageSelection','Restores selection, resets transient coordinates and reloads resources for relevant stages.',{0:'obfuscationGuard',1:'pointerDriven',2:'fallbackIndex'});
+method('ci','c','(III)Ljava/lang/String;','formatCoordinatePair','Formats two coordinates without changing their values.',{0:'x',1:'obfuscationGuard',2:'y'});
+method('ci','a','(ZI)I','getItemLeftX','Stage-specific left bound; defaults to the centered stage layout and delegates campaign panels to their existing layout helpers.',{0:'obfuscationGuard',1:'itemIndex'});
+method('ci','a','(II)I','getItemRightX','Stage-specific right bound, including special campaign/setup panels.',{0:'itemIndex',1:'obfuscationGuard'});
+method('ci','a','(IZ)I','getItemTopY','Stage-specific item Y; the default adds itemIndex times spacing to the centered top bound.',{0:'itemIndex',1:'obfuscationGuard'});
+method('ci','d','(II)I','getItemHeight','Default height 30, stage-16 height 20, with delegated setup/campaign row heights.',{0:'obfuscationGuard',1:'itemIndex'});
+method('ci','e','(II)Ljava/lang/String;','getItemText','Looks up an item text ID and applies its stage/client-state substitutions.',{0:'itemId',1:'obfuscationGuard'});
+method('ci','b','(ZII)V','drawStageItem','Draws the item text, highlight palette, optional icon and volume percentage bars.',{0:'highlighted',1:'itemIndex',2:'obfuscationGuard'});
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -748,7 +822,7 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('tt')} → ${link('lv')} / ${link('up')} / ${link('mc')} / ${link('gm')} | Registered portal-loss, unit-loss and leader-escort conditions. |`,
     `| ${link('om')} → ${link('lo')} | Campaign metadata and encoded/decoded map layouts. |`,
     `| ${link('sc')} / ${link('bv')} / ${link('ga')} | Tagged version-2 map records, bit cursors and ISAAC ciphered opcodes. |`,
-    `| ${link('ci')} | Tutorial stages, prompts and flashing controls. |`,
+    `| ${link('ci')} → ${link('bo')} / ${link('dl')} | Tutorial stages, centered stage layout, keyboard/pointer selection, prompts and flashing controls. |`,
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
     'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
     'Combat payloads now name attacker/defender positions, offsets, damage, death flags and animation counts. The central consequence routine names its attacker/defender and healing/poison locals. Unit movement-spent and attacks-remaining state are separate; spell status and equipment descriptors are also separate. `SpellCastEvent` replaces the earlier trinket label: its legacy diagnostic says Trinketused, but the concrete implementations read the spell definition table.','',
@@ -756,15 +830,17 @@ export function buildArmiesGuide(rules,mapping) {
     'Battlefield.predictCombat returns [defenderDamage, attackerDamage, deathFlags], where flags 1/2 mean attacker/defender death. computeAttackPower, scaleIncomingDamage and getDamageTakenPercent expose matchup strength, cover and protection; integer truncation, damage caps and unusual protected-target behavior are preserved. Unit capability names distinguish flying eligibility, anti-flying bonus, structure capture and Sea Slug parasitism. Tile effects are indexed by team, while summoning permissions and local god favour are separate checks.', '',
     'Turn/match names expose condition initialization, per-player victory/defeat queries, survivor masks, elimination order, participant rankings and collected-mana/turn limits. MatchConditionRegistry uses any-condition aggregation: portal and unit conditions can defeat a player, and leader escort can win. Escort completion and removal from active play are separate unit flags. CampaignMission and MapLayout retain tagged-field encodings, lazy loading and unused arguments.', '',
     'The wire layer names MSB-first bit I/O, opcode ciphering, compact signed integers and tagged record factories. Compact tier widths are 4/14/20/30 bits with a two-bit selector and cumulative signed offsets. Field names have one to four encoded characters. Tagged payload access can temporarily rotate bits over a length header; finishTaggedPayload restores the header and advances to the next field. Unknown field names still skip their declared payload. ParasiteEvent converts incoming signed deltas into stored absolute destination coordinates despite its legacy d diagnostic label. Legacy snapshot and event entry points now have names; this pass does not establish a complete multiplayer protocol.', '',
+    'Follow `Battlefield.readGameEvent`: it peeks at the header, then delegates cursor advancement to movement, summon, combat, state-change or special-event readers. Movement packs four directions per byte from the low two-bit pair; summon packets pack a signed five-bit bonus and three-bit player. Stored-unit decoding distinguishes detached tile placement from removal of an active unit, and versioned records can add names, tags and objective IDs. Snapshot chunks append to a length-prefixed buffer. `TutorialLayout.readSpell` is an unrelated original static helper: it decodes global, targeted or action-wrapped spells. The raw decompiled special spell branch consumes two coordinate bytes after queuing its spell; this continuation is preserved and does not establish original-bytecode or live-server correctness.', '',
+    '`TutorialLayout` stores 29 stage layouts and centers coordinates on the original 640 by 480 surface. Setters accept current surface coordinates; odd negative size differences retain arithmetic-shift rounding. `UiSelectionState` is shared with other menus: it tracks selected index, pointer presses, repeat countdown and captured keys. Navigation wraps within item count; pointer presses suppress keyboard/programmatic changes until release. Internal key IDs and their existing guard effects remain unchanged; the pass does not assign unverified physical key names.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, combat packet decoding, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:7,
+    const rules={schema:1,game:'armiesofgielinor',version:8,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

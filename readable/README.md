@@ -64,7 +64,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 92 reviewed classes around battlefield state, units, map
+The current pass names 94 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -100,6 +100,11 @@ TaggedMapData identifies version-2 map dimensions/theme/player count and tiles.
 Length headers can temporarily relocate leading payload bits; dispatch restores
 the original header and skips unknown fields. Snapshot and special/combat event
 entry points have reviewed names, with existing wire ordering preserved.
+The event dispatcher now exposes its non-consuming header peek and five decoder
+categories. Movement/summon/state-change payloads, stored units, snapshot chunks
+and spell factories have reviewed parameter/local names. TutorialLayout names
+29 stage bounds and spacing; UiSelectionState names shared keyboard/pointer
+selection, repeat countdown and selection restoration.
 
 Combat event payloads and the main consequence routine have reviewed field, parameter
 and local names. SpellCastEvent corrects the earlier trinket label using the
@@ -135,6 +140,13 @@ unknown/zero-length fields and nested version-2 maps. Opcode cipher checks cross
 ISAAC block boundaries. Combat packet fixtures check signed offsets, packed death/
 animation flags and parasite dispatch. Complete legacy snapshots, live transport
 and server compatibility remain unverified.
+Dispatcher fixtures cover every category and unknown categories, concatenated
+events, maximum packed path length, all signed summon bonuses, special payloads,
+stored-unit names/optional IDs and snapshot chunk assembly. Tutorial fixtures
+cover centered bounds/setters at odd surface sizes, navigation wrapping,
+fallback selection, pointer press/hold/release and upper index bounds. The
+decompiled special spell branch's extra coordinate reads are preserved; the
+probe does not verify those reads against original bytecode or a live server.
 The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Three dispatcher files
 and large methods remain; this is a semantic naming pass, not control-flow recovery.
