@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 1,
+  "version": 2,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1774,6 +1774,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:al",
+      "originalName": "al",
+      "to": "GlobalSpell",
+      "evidence": "al.java: Spell-table dispatch for effects that do not carry target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:as",
       "originalName": "as",
       "to": "OwnerChangeEvent",
@@ -1785,6 +1792,13 @@
       "originalName": "at",
       "to": "NodeDeque",
       "evidence": "at.java: Sentinel node, prepend/append, pop and bidirectional traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bd",
+      "originalName": "bd",
+      "to": "SpellAreaEffect",
+      "evidence": "bd.java: Affected tile indices and abstract battlefield application of a prepared area effect.",
       "confidence": "reviewed"
     },
     {
@@ -1851,6 +1865,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ik",
+      "originalName": "ik",
+      "to": "Spell",
+      "evidence": "ik.java: Abstract spell ID, payload size/serialization and effect lifecycle; concrete implementations read spellDefinitions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jd",
       "originalName": "jd",
       "to": "Unit",
@@ -1907,6 +1928,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mn",
+      "originalName": "mn",
+      "to": "SpellAreaSelection",
+      "evidence": "mn.java: Abstract targeting shape that creates a SpellAreaEffect.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ne",
       "originalName": "ne",
       "to": "MapTile",
@@ -1944,8 +1972,8 @@
     {
       "symbol": "C:pj",
       "originalName": "pj",
-      "to": "TrinketUseEvent",
-      "evidence": "pj.java: Trinketused diagnostic and trinket application to the battlefield.",
+      "to": "SpellCastEvent",
+      "evidence": "pj.java: Legacy Trinketused diagnostic; dispatches Spell.applyEffect and battlefield spell-cost handling.",
       "confidence": "reviewed"
     },
     {
@@ -1974,6 +2002,13 @@
       "originalName": "qq",
       "to": "StateChangeEvent",
       "evidence": "qq.java: Diagnostic EventStateChange with position, effect type and player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ra",
+      "originalName": "ra",
+      "to": "AreaSpell",
+      "evidence": "ra.java: Stores a SpellAreaSelection, prepares its area effect and applies it to the battlefield.",
       "confidence": "reviewed"
     },
     {
@@ -2033,6 +2068,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wa",
+      "originalName": "wa",
+      "to": "UnitSpell",
+      "evidence": "wa.java: Stores target tile coordinates and dispatches spell-table effects on the target unit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wk",
       "originalName": "wk",
       "to": "RgbSprite",
@@ -2047,10 +2089,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ag.field_B:I",
+      "originalName": "field_B",
+      "to": "targetDeltaY",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ag.field_D:I",
       "originalName": "field_D",
       "to": "battleId",
       "evidence": "ag.java: EventCombat battleid diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_E:Z",
+      "originalName": "field_E",
+      "to": "defenderDeployed",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_F:I",
+      "originalName": "field_F",
+      "to": "targetDeltaX",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_G:I",
+      "originalName": "field_G",
+      "to": "attackerY",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_H:I",
+      "originalName": "field_H",
+      "to": "attackerAnimationCount",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_J:Z",
+      "originalName": "field_J",
+      "to": "attackerDeployed",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_K:I",
+      "originalName": "field_K",
+      "to": "attackerDamage",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_M:Z",
+      "originalName": "field_M",
+      "to": "defenderDies",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_N:Z",
+      "originalName": "field_N",
+      "to": "attackerDies",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_Q:I",
+      "originalName": "field_Q",
+      "to": "attackerX",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_R:I",
+      "originalName": "field_R",
+      "to": "defenderDamage",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_y:I",
+      "originalName": "field_y",
+      "to": "defenderAnimationCount",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_z:I",
+      "originalName": "field_z",
+      "to": "unseenUnitType",
+      "evidence": "ag.java: CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.",
       "confidence": "reviewed"
     },
     {
@@ -2142,6 +2275,41 @@
       "originalName": "field_a",
       "to": "tutorialStage",
       "evidence": "ci.java: Indexes kr stage tables throughout the tutorial controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ec.field_A:I",
+      "originalName": "field_A",
+      "to": "sourceX",
+      "evidence": "ec.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ec.field_B:I",
+      "originalName": "field_B",
+      "to": "sourceY",
+      "evidence": "ec.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ec.field_C:Z",
+      "originalName": "field_C",
+      "to": "applied",
+      "evidence": "ec.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ec.field_y:I",
+      "originalName": "field_y",
+      "to": "destinationY",
+      "evidence": "ec.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ec.field_z:I",
+      "originalName": "field_z",
+      "to": "destinationX",
+      "evidence": "ec.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
       "confidence": "reviewed"
     },
     {
@@ -2369,17 +2537,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ik.field_c:I",
+      "originalName": "field_c",
+      "to": "spellId",
+      "evidence": "ik.java: Every concrete spell indexes spellDefinitions with this ID and writes it as a big-endian short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_A:I",
+      "originalName": "field_A",
+      "to": "bonusStrength",
+      "evidence": "jd.java: Unit getters/constructors, spell effect assignments, combat counters and facing/movement target operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jd.field_B:I",
       "originalName": "field_B",
-      "to": "packedLowFlags",
-      "evidence": "jd.java: Unit tagged decoder, constructor and h(byte) packing. Flag names describe bit positions; their gameplay meanings remain unresolved.",
+      "to": "attacksRemaining",
+      "evidence": "jd.java: Battlefield combat application decrements this attack count; turn refresh restores one or two attacks independently of the movement-spent flag.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:jd.field_C:Z",
       "originalName": "field_C",
-      "to": "packedFlag64",
-      "evidence": "jd.java: Unit tagged decoder, constructor and h(byte) packing. Flag names describe bit positions; their gameplay meanings remain unresolved.",
+      "to": "meleeLifeSteal",
+      "evidence": "jd.java: UnitSpell ID 120 sets this flag. Melee combat queues one healing event per damage point dealt while it is set.",
       "confidence": "reviewed"
     },
     {
@@ -2432,6 +2614,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jd.field_M:I",
+      "originalName": "field_M",
+      "to": "attacksReceived",
+      "evidence": "jd.java: Unit getters/constructors, spell effect assignments, combat counters and facing/movement target operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jd.field_N:I",
       "originalName": "field_N",
       "to": "unitType",
@@ -2443,6 +2632,13 @@
       "originalName": "field_O",
       "to": "ownerPlayer",
       "evidence": "jd.java: Unit tagged decoder, constructor and h(byte) packing. Flag names describe bit positions; their gameplay meanings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_P:I",
+      "originalName": "field_P",
+      "to": "statusEffectType",
+      "evidence": "jd.java: UnitSpell assigns spellDefinitions[id][5]; this is spell status, separate from the equipmentDescriptor field.",
       "confidence": "reviewed"
     },
     {
@@ -2467,10 +2663,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jd.field_ab:I",
+      "originalName": "field_ab",
+      "to": "accessoryType",
+      "evidence": "jd.java: Unit getters/constructors, spell effect assignments, combat counters and facing/movement target operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jd.field_bb:Z",
       "originalName": "field_bb",
       "to": "packedFlag256",
       "evidence": "jd.java: Unit tagged decoder, constructor and h(byte) packing. Flag names describe bit positions; their gameplay meanings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_cb:I",
+      "originalName": "field_cb",
+      "to": "immobilizedTurns",
+      "evidence": "jd.java: Immobilizing spell kind 21 increments this counter, spends movement/attacks and caps it at 100; turn refresh decrements it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_db:I",
+      "originalName": "field_db",
+      "to": "movementTargetX",
+      "evidence": "jd.java: Unit getters/constructors, spell effect assignments, combat counters and facing/movement target operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_fb:I",
+      "originalName": "field_fb",
+      "to": "facingAngle",
+      "evidence": "jd.java: Unit getters/constructors, spell effect assignments, combat counters and facing/movement target operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_k:I",
+      "originalName": "field_k",
+      "to": "movementTargetY",
+      "evidence": "jd.java: Unit getters/constructors, spell effect assignments, combat counters and facing/movement target operations.",
       "confidence": "reviewed"
     },
     {
@@ -2481,6 +2712,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jd.field_m:I",
+      "originalName": "field_m",
+      "to": "attacksMade",
+      "evidence": "jd.java: Unit getters/constructors, spell effect assignments, combat counters and facing/movement target operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_o:I",
+      "originalName": "field_o",
+      "to": "statusEffectValue",
+      "evidence": "jd.java: UnitSpell assigns spellDefinitions[id][6]; protective statuses consume this value as charges, other statuses use its magnitude.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jd.field_q:I",
       "originalName": "field_q",
       "to": "tankId",
@@ -2488,10 +2733,17 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jd.field_r:I",
+      "originalName": "field_r",
+      "to": "equipmentDescriptor",
+      "evidence": "jd.java: Unit getters/constructors, spell effect assignments, combat counters and facing/movement target operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jd.field_s:Z",
       "originalName": "field_s",
-      "to": "packedFlag4",
-      "evidence": "jd.java: Unit tagged decoder, constructor and h(byte) packing. Flag names describe bit positions; their gameplay meanings remain unresolved.",
+      "to": "movementSpent",
+      "evidence": "jd.java: MoveEvent sets this flag after moving; MovementPlanner rejects spent movement and Unit turn refresh resets it.",
       "confidence": "reviewed"
     },
     {
@@ -2523,6 +2775,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kf.field_A:Z",
+      "originalName": "field_A",
+      "to": "applied",
+      "evidence": "kf.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kf.field_C:I",
+      "originalName": "field_C",
+      "to": "playerId",
+      "evidence": "kf.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kf.field_F:I",
+      "originalName": "field_F",
+      "to": "tileY",
+      "evidence": "kf.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kf.field_H:I",
+      "originalName": "field_H",
+      "to": "tileX",
+      "evidence": "kf.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kf.field_J:I",
+      "originalName": "field_J",
+      "to": "originX",
+      "evidence": "kf.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kf.field_y:I",
+      "originalName": "field_y",
+      "to": "originY",
+      "evidence": "kf.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kf.field_z:I",
+      "originalName": "field_z",
+      "to": "strength",
+      "evidence": "kf.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kr.field_A:Z",
+      "originalName": "field_A",
+      "to": "applied",
+      "evidence": "kr.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kr.field_B:[I",
       "originalName": "field_B",
       "to": "pathDirections",
@@ -2541,6 +2849,48 @@
       "originalName": "field_I",
       "to": "startY",
       "evidence": "kr.java: EventMove start-position diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mb.field_A:I",
+      "originalName": "field_A",
+      "to": "unitType",
+      "evidence": "mb.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mb.field_D:I",
+      "originalName": "field_D",
+      "to": "playerId",
+      "evidence": "mb.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mb.field_E:Z",
+      "originalName": "field_E",
+      "to": "applied",
+      "evidence": "mb.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mb.field_H:I",
+      "originalName": "field_H",
+      "to": "tileY",
+      "evidence": "mb.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mb.field_I:I",
+      "originalName": "field_I",
+      "to": "strengthBonus",
+      "evidence": "mb.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mb.field_z:I",
+      "originalName": "field_z",
+      "to": "tileX",
+      "evidence": "mb.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
       "confidence": "reviewed"
     },
     {
@@ -2586,10 +2936,157 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nn.field_A:I",
+      "originalName": "field_A",
+      "to": "mapHeight",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_b:I",
+      "originalName": "field_b",
+      "to": "targetY",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_d:I",
+      "originalName": "field_d",
+      "to": "unitType",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_h:[I",
+      "originalName": "field_h",
+      "to": "pathDirections",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_i:Ljd;",
+      "originalName": "field_i",
+      "to": "unit",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_j:I",
+      "originalName": "field_j",
+      "to": "targetDeltaY",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_l:I",
+      "originalName": "field_l",
+      "to": "targetDeltaX",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_m:I",
+      "originalName": "field_m",
+      "to": "pathLength",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_n:I",
+      "originalName": "field_n",
+      "to": "targetX",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_o:I",
+      "originalName": "field_o",
+      "to": "actingPlayer",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_p:I",
+      "originalName": "field_p",
+      "to": "spellId",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_q:[I",
+      "originalName": "field_q",
+      "to": "movementCosts",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nn.field_r:Lha;",
       "originalName": "field_r",
       "to": "battlefield",
       "evidence": "nn.java: Movement costs and paths index the battlefield grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_t:Z",
+      "originalName": "field_t",
+      "to": "directAction",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_u:Z",
+      "originalName": "field_u",
+      "to": "actionAllowed",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_x:I",
+      "originalName": "field_x",
+      "to": "mapWidth",
+      "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ns.field_C:I",
+      "originalName": "field_C",
+      "to": "attackerAnimationCount",
+      "evidence": "ns.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ns.field_H:I",
+      "originalName": "field_H",
+      "to": "targetDeltaY",
+      "evidence": "ns.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ns.field_J:Z",
+      "originalName": "field_J",
+      "to": "applied",
+      "evidence": "ns.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ns.field_N:Ljd;",
+      "originalName": "field_N",
+      "to": "targetUnit",
+      "evidence": "ns.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ns.field_Q:I",
+      "originalName": "field_Q",
+      "to": "defenderAnimationCount",
+      "evidence": "ns.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ns.field_z:I",
+      "originalName": "field_z",
+      "to": "targetDeltaX",
+      "evidence": "ns.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
       "confidence": "reviewed"
     },
     {
@@ -2618,6 +3115,90 @@
       "originalName": "field_w",
       "to": "unit",
       "evidence": "oj.java: GameEvent and its subclasses store the affected unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pj.field_B:Lik;",
+      "originalName": "field_B",
+      "to": "spell",
+      "evidence": "pj.java: SpellCastEvent dispatches the spell-table based effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pj.field_C:Z",
+      "originalName": "field_C",
+      "to": "applied",
+      "evidence": "pj.java: Spell cast application is guarded against repeated mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pj.field_z:I",
+      "originalName": "field_z",
+      "to": "castingPlayer",
+      "evidence": "pj.java: Passed to Spell.applyEffect and battlefield spell accounting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_C:Z",
+      "originalName": "field_C",
+      "to": "applied",
+      "evidence": "qq.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_F:I",
+      "originalName": "field_F",
+      "to": "effectType",
+      "evidence": "qq.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_G:I",
+      "originalName": "field_G",
+      "to": "playerId",
+      "evidence": "qq.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_I:I",
+      "originalName": "field_I",
+      "to": "tileX",
+      "evidence": "qq.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_J:I",
+      "originalName": "field_J",
+      "to": "tileY",
+      "evidence": "qq.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ra.field_g:Lmn;",
+      "originalName": "field_g",
+      "to": "selection",
+      "evidence": "ra.java: AreaSpell creates an area effect from this targeting selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ra.field_h:Lbd;",
+      "originalName": "field_h",
+      "to": "preparedEffect",
+      "evidence": "ra.java: Preparation creates this effect; completion applies it and releases the reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rt.field_C:I",
+      "originalName": "field_C",
+      "to": "destinationY",
+      "evidence": "rt.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rt.field_y:I",
+      "originalName": "field_y",
+      "to": "destinationX",
+      "evidence": "rt.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
       "confidence": "reviewed"
     },
     {
@@ -2656,6 +3237,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tr.field_B:I",
+      "originalName": "field_B",
+      "to": "modifiers",
+      "evidence": "tr.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tr.field_D:I",
+      "originalName": "field_D",
+      "to": "tileY",
+      "evidence": "tr.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tr.field_E:I",
+      "originalName": "field_E",
+      "to": "tileX",
+      "evidence": "tr.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uc.field_d:[[I",
       "originalName": "field_d",
       "to": "spellDefinitions",
@@ -2691,6 +3293,104 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wa.field_f:I",
+      "originalName": "field_f",
+      "to": "targetY",
+      "evidence": "wa.java: UnitSpell constructor and target-unit lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_g:I",
+      "originalName": "field_g",
+      "to": "targetX",
+      "evidence": "wa.java: UnitSpell constructor and serialization write target X before target Y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#37",
+      "originalName": "var12",
+      "to": "defender",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#38",
+      "originalName": "var13",
+      "to": "attackDistance",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#39",
+      "originalName": "var14",
+      "to": "attackerEquipmentPoisons",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#40",
+      "originalName": "var15",
+      "to": "defenderEquipmentPoisons",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#41",
+      "originalName": "var16",
+      "to": "meleeAttack",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#42",
+      "originalName": "var17",
+      "to": "guardQuotient",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#43",
+      "originalName": "var18",
+      "to": "defenderHealingIndex",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#44",
+      "originalName": "var19",
+      "to": "obfuscationControlSnapshot",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#45",
+      "originalName": "var20",
+      "to": "attackerLookup",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#46",
+      "originalName": "var21",
+      "to": "attacker",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#59",
+      "originalName": "var18Lifetime1",
+      "to": "campaignKillMarker",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(IIZIIIZIII)V#60",
+      "originalName": "var18Lifetime2",
+      "to": "attackerHealingIndex",
+      "evidence": "ha.java: Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ag.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -2702,6 +3402,48 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(BLha;)V",
+      "originalName": "a",
+      "to": "prepareEffect",
+      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(I)I",
+      "originalName": "a",
+      "to": "getPayloadSize",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(ILha;I)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(ILvh;)V",
+      "originalName": "a",
+      "to": "writePayload",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(Lha;I)V",
+      "originalName": "a",
+      "to": "finishEffect",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(ILha;)Lbd;",
+      "originalName": "a",
+      "to": "createEffect",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -2726,6 +3468,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:at.a(BLtc;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "at.java: Links the node immediately before the deque sentinel; keeps the original byte guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.a(ILtc;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "at.java: Links the node immediately after the deque sentinel; combat uses guard 750.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:at.e(B)Ltc;",
       "originalName": "e",
       "to": "first",
@@ -2733,10 +3489,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bd.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:be.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ca.a(ILbv;Ljava/lang/String;B)V",
       "originalName": "a",
       "to": "decodeTaggedField",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -2751,6 +3528,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(ILha;)Lbd;",
+      "originalName": "a",
+      "to": "createEffect",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -2779,6 +3563,13 @@
       "originalName": "a",
       "to": "healOrRaiseSkeletonAt",
       "evidence": "ha.java: Heals allied type-20 unit or creates type-20 unit on a marked corpse tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(IIZIIIZIII)V",
+      "originalName": "a",
+      "to": "queueCombatConsequences",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
       "confidence": "reviewed"
     },
     {
@@ -2859,6 +3650,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hw.a(ILha;)Lbd;",
+      "originalName": "a",
+      "to": "createEffect",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(BLha;)V",
+      "originalName": "a",
+      "to": "prepareEffect",
+      "evidence": "ik.java: Area spell creates its prepared effect before application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(I)I",
+      "originalName": "a",
+      "to": "getPayloadSize",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(ILha;I)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(ILvh;)V",
+      "originalName": "a",
+      "to": "writePayload",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(Lha;I)V",
+      "originalName": "a",
+      "to": "finishEffect",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.a(ILha;)Lbd;",
+      "originalName": "a",
+      "to": "createEffect",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.A(I)V",
+      "originalName": "A",
+      "to": "resetMovementTarget",
+      "evidence": "jd.java: Writes target X and clears target Y; retains original sentinel argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.B(I)I",
+      "originalName": "B",
+      "to": "getMaximumAttackRange",
+      "evidence": "jd.java: Definition column seven adjusted by equipment category/properties.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jd.a(B)V",
       "originalName": "a",
       "to": "refreshTileEffects",
@@ -2880,10 +3741,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jd.a(Ljd;I)V",
+      "originalName": "a",
+      "to": "faceUnit",
+      "evidence": "jd.java: Faces another unit using its relative position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jd.b(II)Ljd;",
       "originalName": "b",
       "to": "replaceWithOwner",
       "evidence": "jd.java: Removes the old unit, copies its state under the new owner and registers the replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.b(Z)Ljd;",
+      "originalName": "b",
+      "to": "copyDetached",
+      "evidence": "jd.java: Copies full unit state without installing the copy on the tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.c(B)I",
+      "originalName": "c",
+      "to": "getEquipmentId",
+      "evidence": "jd.java: Extracts the low five equipment bits or returns zero.",
       "confidence": "reviewed"
     },
     {
@@ -2894,10 +3776,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jd.d(II)I",
+      "originalName": "d",
+      "to": "getEquipmentProperty",
+      "evidence": "jd.java: Reads the selected property of the equipment table row.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jd.e(I)V",
       "originalName": "e",
       "to": "removeFromBattlefield",
       "evidence": "jd.java: Clears the occupied tile, unlinks the unit and updates tile effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.e(II)V",
+      "originalName": "e",
+      "to": "setFacingAngle",
+      "evidence": "jd.java: Sets valid 0..2047 orientation and updates the visual actor when present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.g(B)I",
+      "originalName": "g",
+      "to": "getEffectiveStrength",
+      "evidence": "jd.java: Adds temporary bonus strength to current strength.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.g(I)I",
+      "originalName": "g",
+      "to": "getUnitCategory",
+      "evidence": "jd.java: Returns definition column zero; category encoding remains numeric.",
       "confidence": "reviewed"
     },
     {
@@ -2908,6 +3818,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jd.j(I)I",
+      "originalName": "j",
+      "to": "getEquipmentCategory",
+      "evidence": "jd.java: Extracts the high bits of equipmentDescriptor or returns -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.l(B)I",
+      "originalName": "l",
+      "to": "getMinimumAttackRange",
+      "evidence": "jd.java: Definition column six with deployed dwarf-cannon override.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jd.m(B)V",
       "originalName": "m",
       "to": "refreshForTurnChange",
@@ -2915,10 +3839,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jd.o(I)Z",
+      "originalName": "o",
+      "to": "hasMovementTarget",
+      "evidence": "jd.java: Clears a reached target and tests stored target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.r(I)Z",
+      "originalName": "r",
+      "to": "grantsGrowthOnDeath",
+      "evidence": "jd.java: Excludes the summoned jade-vine type from combat kill-growth rewards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.t(I)Z",
+      "originalName": "t",
+      "to": "isDisplacedFromTile",
+      "evidence": "jd.java: Tests whether the unit differs from its tile occupant.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jd.w(I)V",
       "originalName": "w",
       "to": "queueDeathOrRevival",
       "evidence": "jd.java: Checks effective strength, then queues a revival destination or a death event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.y(I)Z",
+      "originalName": "y",
+      "to": "hasPoisonousAttacks",
+      "evidence": "jd.java: Tests definition flag 64 used by combat damage poison propagation.",
       "confidence": "reviewed"
     },
     {
@@ -2950,6 +3902,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kj.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kn.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -2978,6 +3937,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ld.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mb.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -3003,6 +3969,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mn.a(ILha;)Lbd;",
+      "originalName": "a",
+      "to": "createEffect",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield.",
       "confidence": "reviewed"
     },
     {
@@ -3097,6 +4070,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nn.a(I)V",
+      "originalName": "a",
+      "to": "resetCosts",
+      "evidence": "nn.java: Initializes cost grids and clears tile selection state from the given offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(IBI)V",
+      "originalName": "a",
+      "to": "reconstructPath",
+      "evidence": "nn.java: Walks the cost gradient backward and stores forward path directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(III)V",
+      "originalName": "a",
+      "to": "selectDirectAction",
+      "evidence": "nn.java: Stores coordinate deltas when the required movement cost matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(IZIB)V",
+      "originalName": "a",
+      "to": "selectTarget",
+      "evidence": "nn.java: Chooses movement/direct action for target coordinates or clears an invalid target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(Lbv;BLjd;)I",
+      "originalName": "a",
+      "to": "writeAttackMovementPacket",
+      "evidence": "nn.java: Serializes selected path and target offsets for the attacked unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(ZIILjd;II)V",
+      "originalName": "a",
+      "to": "prepareForUnit",
+      "evidence": "nn.java: Sets acting player, selected unit and spell, then fills movement costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(ZLbv;)I",
+      "originalName": "a",
+      "to": "writeMovementPacket",
+      "evidence": "nn.java: Serializes movement path and optional spell ID to the ciphered packet buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.c(I)I",
+      "originalName": "c",
+      "to": "getMovementBudget",
+      "evidence": "nn.java: Three times base movement, modified by selected spells/statuses and tile effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.d(I)V",
+      "originalName": "d",
+      "to": "clearSelection",
+      "evidence": "nn.java: Clears path, selected unit and spell, then resets movement grids.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.e(I)V",
+      "originalName": "e",
+      "to": "clearPath",
+      "evidence": "nn.java: Clears path availability and the direction array without changing target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ns.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -3146,6 +4189,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pj.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -3157,6 +4207,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -3202,6 +4259,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ra.a(BLha;)V",
+      "originalName": "a",
+      "to": "prepareEffect",
+      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(I)I",
+      "originalName": "a",
+      "to": "getPayloadSize",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(ILha;I)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(ILvh;)V",
+      "originalName": "a",
+      "to": "writePayload",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(Lha;I)V",
+      "originalName": "a",
+      "to": "finishEffect",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rl.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -3237,6 +4329,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ss.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:st.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -3258,6 +4357,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:to.a(ILha;)Lbd;",
+      "originalName": "a",
+      "to": "createEffect",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tr.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -3272,10 +4378,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ua.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uo.a(ILbv;Ljava/lang/String;B)V",
       "originalName": "a",
       "to": "decodeTaggedField",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ur.a(ILha;)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -3290,6 +4410,139 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(BLha;)V",
+      "originalName": "a",
+      "to": "prepareEffect",
+      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(I)I",
+      "originalName": "a",
+      "to": "getPayloadSize",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(ILha;I)V",
+      "originalName": "a",
+      "to": "applyEffect",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(ILvh;)V",
+      "originalName": "a",
+      "to": "writePayload",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(Lha;I)V",
+      "originalName": "a",
+      "to": "finishEffect",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#0",
+      "originalName": "param0",
+      "to": "unseenUnitType",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#1",
+      "originalName": "param1",
+      "to": "attackerX",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#10",
+      "originalName": "param10",
+      "to": "defenderAnimationCount",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#11",
+      "originalName": "param11",
+      "to": "attackerDeployed",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#12",
+      "originalName": "param12",
+      "to": "defenderDeployed",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#13",
+      "originalName": "param13",
+      "to": "battleId",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#2",
+      "originalName": "param2",
+      "to": "attackerY",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#3",
+      "originalName": "param3",
+      "to": "targetDeltaX",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#4",
+      "originalName": "param4",
+      "to": "targetDeltaY",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#5",
+      "originalName": "param5",
+      "to": "attackerDamage",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#6",
+      "originalName": "param6",
+      "to": "defenderDamage",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#7",
+      "originalName": "param7",
+      "to": "attackerDies",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#8",
+      "originalName": "param8",
+      "to": "defenderDies",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ag.<init>(IIIIIIIZZIIZZI)V#9",
+      "originalName": "param9",
+      "to": "attackerAnimationCount",
+      "evidence": "ag.java: CombatEvent constructor assignments and labelled diagnostic fields.",
       "confidence": "reviewed"
     },
     {
@@ -3318,6 +4571,97 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "spellId",
+      "evidence": "al.java: GlobalSpell delegates ID to the base Spell constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(BLha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(BLha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(ILha;I)V#0",
+      "originalName": "param0",
+      "to": "castingPlayer",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(ILha;I)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(ILha;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(ILvh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(ILvh;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(Lha;I)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:al.a(Lha;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(ILha;)Lbd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(ILha;)Lbd;#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -3356,10 +4700,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:at.a(BLtc;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Links the node immediately before the deque sentinel; keeps the original byte guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(BLtc;)V#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "at.java: Links the node immediately before the deque sentinel; keeps the original byte guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(ILtc;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Links the node immediately after the deque sentinel; combat uses guard 750.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(ILtc;)V#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "at.java: Links the node immediately after the deque sentinel; combat uses guard 750.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:at.e(B)Ltc;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "at.java: Returns the first node and primes forward traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bd.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bd.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:be.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:be.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -3391,6 +4791,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dk.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dk.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ec.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -3416,6 +4830,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.a(ILha;)Lbd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.a(ILha;)Lbd;#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -3472,6 +4900,76 @@
       "originalName": "param3",
       "to": "tileX",
       "evidence": "ha.java: Heals allied type-20 unit or creates type-20 unit on a marked corpse tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#0",
+      "originalName": "param0",
+      "to": "attackerY",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#1",
+      "originalName": "param1",
+      "to": "targetDeltaX",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#2",
+      "originalName": "param2",
+      "to": "attackerDies",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#3",
+      "originalName": "param3",
+      "to": "attackerX",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#4",
+      "originalName": "param4",
+      "to": "targetDeltaY",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#6",
+      "originalName": "param6",
+      "to": "defenderDies",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#7",
+      "originalName": "param7",
+      "to": "attackerDamage",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#8",
+      "originalName": "param8",
+      "to": "defenderDamage",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIZIIIZIII)V#9",
+      "originalName": "param9",
+      "to": "unseenUnitType",
+      "evidence": "ha.java: CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.",
       "confidence": "reviewed"
     },
     {
@@ -3671,6 +5169,265 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hw.a(ILha;)Lbd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hw.a(ILha;)Lbd;#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "spellId",
+      "evidence": "ik.java: Spell constructor stores its definition ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(BLha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Area spell creates its prepared effect before application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(BLha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "ik.java: Area spell creates its prepared effect before application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(ILha;I)V#0",
+      "originalName": "param0",
+      "to": "castingPlayer",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(ILha;I)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(ILha;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(ILvh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(ILvh;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(Lha;I)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(Lha;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jc.a(ILha;)Lbd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jc.a(ILha;)Lbd;#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "jd.java: Unit constructor stores tile coordinates and type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "tileY",
+      "evidence": "jd.java: Unit constructor stores tile coordinates and type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "unitType",
+      "evidence": "jd.java: Unit constructor stores tile coordinates and type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#1",
+      "originalName": "param1",
+      "to": "tileY",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#10",
+      "originalName": "param10",
+      "to": "statusEffectType",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#11",
+      "originalName": "param11",
+      "to": "statusEffectValue",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#12",
+      "originalName": "param12",
+      "to": "equipmentDescriptor",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#13",
+      "originalName": "param13",
+      "to": "detached",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#14",
+      "originalName": "param14",
+      "to": "immobilizedTurns",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#2",
+      "originalName": "param2",
+      "to": "unitType",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#3",
+      "originalName": "param3",
+      "to": "ownerPlayer",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#4",
+      "originalName": "param4",
+      "to": "maximumStrength",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#5",
+      "originalName": "param5",
+      "to": "strength",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#6",
+      "originalName": "param6",
+      "to": "packedStatusFlags",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#7",
+      "originalName": "param7",
+      "to": "accessoryType",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#8",
+      "originalName": "param8",
+      "to": "bonusStrength",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.<init>(IIIIIIIIILha;IIIZI)V#9",
+      "originalName": "param9",
+      "to": "battlefield",
+      "evidence": "jd.java: Unit full constructor field assignments and detached tile-installation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.A(I)V#0",
+      "originalName": "param0",
+      "to": "targetX",
+      "evidence": "jd.java: Writes target X and clears target Y; retains original sentinel argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.B(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Definition column seven adjusted by equipment category/properties.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jd.a(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -3720,6 +5477,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jd.a(Ljd;I)V#0",
+      "originalName": "param0",
+      "to": "targetUnit",
+      "evidence": "jd.java: Faces another unit using its relative position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.a(Ljd;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Faces another unit using its relative position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jd.b(II)Ljd;#0",
       "originalName": "param0",
       "to": "newOwnerPlayer",
@@ -3734,10 +5505,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jd.b(Z)Ljd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Copies full unit state without installing the copy on the tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.c(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Extracts the low five equipment bits or returns zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jd.c(Z)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "jd.java: Tests movementFlags bit 1; retains original guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.d(II)I#0",
+      "originalName": "param0",
+      "to": "propertyIndex",
+      "evidence": "jd.java: Reads the selected property of the equipment table row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.d(II)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Reads the selected property of the equipment table row.",
       "confidence": "reviewed"
     },
     {
@@ -3748,10 +5547,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jd.e(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Sets valid 0..2047 orientation and updates the visual actor when present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.e(II)V#1",
+      "originalName": "param1",
+      "to": "angle",
+      "evidence": "jd.java: Sets valid 0..2047 orientation and updates the visual actor when present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.g(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Adds temporary bonus strength to current strength.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.g(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Returns definition column zero; category encoding remains numeric.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jd.h(B)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "jd.java: Reconstructs the constructor bit positions and low two bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.j(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Extracts the high bits of equipmentDescriptor or returns -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.l(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Definition column six with deployed dwarf-cannon override.",
       "confidence": "reviewed"
     },
     {
@@ -3762,10 +5603,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jd.o(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Clears a reached target and tests stored target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.r(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Excludes the summoned jade-vine type from combat kill-growth rewards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.t(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Tests whether the unit differs from its tile occupant.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jd.w(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "jd.java: Checks effective strength, then queues a revival destination or a death event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.y(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Tests definition flag 64 used by combat damage poison propagation.",
       "confidence": "reviewed"
     },
     {
@@ -3825,6 +5694,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kj.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kn.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -3853,6 +5736,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kr.<init>(II[I)V#0",
+      "originalName": "param0",
+      "to": "startX",
+      "evidence": "kr.java: MoveEvent constructor and labelled path diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kr.<init>(II[I)V#1",
+      "originalName": "param1",
+      "to": "startY",
+      "evidence": "kr.java: MoveEvent constructor and labelled path diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kr.<init>(II[I)V#2",
+      "originalName": "param2",
+      "to": "pathDirections",
+      "evidence": "kr.java: MoveEvent constructor and labelled path diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kr.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -3878,6 +5782,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ld.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -3934,6 +5852,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mn.a(ILha;)Lbd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mn.a(ILha;)Lbd;#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield.",
       "confidence": "reviewed"
     },
     {
@@ -4070,6 +6002,188 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nn.<init>(Lha;)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "nn.java: MovementPlanner constructor captures map geometry and initializes its cost grids.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(I)V#0",
+      "originalName": "param0",
+      "to": "startIndex",
+      "evidence": "nn.java: Initializes cost grids and clears tile selection state from the given offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IBI)V#0",
+      "originalName": "param0",
+      "to": "targetY",
+      "evidence": "nn.java: Walks the cost gradient backward and stores forward path directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IBI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Walks the cost gradient backward and stores forward path directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IBI)V#2",
+      "originalName": "param2",
+      "to": "targetX",
+      "evidence": "nn.java: Walks the cost gradient backward and stores forward path directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(III)V#0",
+      "originalName": "param0",
+      "to": "targetY",
+      "evidence": "nn.java: Stores coordinate deltas when the required movement cost matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(III)V#1",
+      "originalName": "param1",
+      "to": "targetX",
+      "evidence": "nn.java: Stores coordinate deltas when the required movement cost matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(III)V#2",
+      "originalName": "param2",
+      "to": "requiredCost",
+      "evidence": "nn.java: Stores coordinate deltas when the required movement cost matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IZIB)V#0",
+      "originalName": "param0",
+      "to": "targetY",
+      "evidence": "nn.java: Chooses movement/direct action for target coordinates or clears an invalid target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IZIB)V#1",
+      "originalName": "param1",
+      "to": "allowOtherPlayer",
+      "evidence": "nn.java: Chooses movement/direct action for target coordinates or clears an invalid target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IZIB)V#2",
+      "originalName": "param2",
+      "to": "targetX",
+      "evidence": "nn.java: Chooses movement/direct action for target coordinates or clears an invalid target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IZIB)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Chooses movement/direct action for target coordinates or clears an invalid target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(Lbv;BLjd;)I#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "nn.java: Serializes selected path and target offsets for the attacked unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(Lbv;BLjd;)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Serializes selected path and target offsets for the attacked unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(Lbv;BLjd;)I#2",
+      "originalName": "param2",
+      "to": "attackedUnit",
+      "evidence": "nn.java: Serializes selected path and target offsets for the attacked unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZIILjd;II)V#0",
+      "originalName": "param0",
+      "to": "allowOtherPlayer",
+      "evidence": "nn.java: Sets acting player, selected unit and spell, then fills movement costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZIILjd;II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Sets acting player, selected unit and spell, then fills movement costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZIILjd;II)V#2",
+      "originalName": "param2",
+      "to": "actingPlayer",
+      "evidence": "nn.java: Sets acting player, selected unit and spell, then fills movement costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZIILjd;II)V#3",
+      "originalName": "param3",
+      "to": "unit",
+      "evidence": "nn.java: Sets acting player, selected unit and spell, then fills movement costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZIILjd;II)V#4",
+      "originalName": "param4",
+      "to": "selectionMode",
+      "evidence": "nn.java: Sets acting player, selected unit and spell, then fills movement costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZIILjd;II)V#5",
+      "originalName": "param5",
+      "to": "spellId",
+      "evidence": "nn.java: Sets acting player, selected unit and spell, then fills movement costs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZLbv;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Serializes movement path and optional spell ID to the ciphered packet buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZLbv;)I#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "nn.java: Serializes movement path and optional spell ID to the ciphered packet buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.c(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Three times base movement, modified by selected spells/statuses and tile effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Clears path, selected unit and spell, then resets movement grids.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.e(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Clears path availability and the direction array without changing target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ns.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4182,6 +6296,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pe.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pj.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4207,6 +6335,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -4294,6 +6436,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ra.<init>(ILmn;)V#0",
+      "originalName": "param0",
+      "to": "spellId",
+      "evidence": "ra.java: AreaSpell stores its selection and sets its spell ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.<init>(ILmn;)V#1",
+      "originalName": "param1",
+      "to": "selection",
+      "evidence": "ra.java: AreaSpell stores its selection and sets its spell ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(BLha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(BLha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(ILha;I)V#0",
+      "originalName": "param0",
+      "to": "castingPlayer",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(ILha;I)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(ILha;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(ILvh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(ILvh;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(Lha;I)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(Lha;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rl.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4378,6 +6604,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ss.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ss.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:st.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4413,6 +6653,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:to.a(ILha;)Lbd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(ILha;)Lbd;#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "mn.java: Targeting selection creates an area effect for the battlefield. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tr.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4438,6 +6692,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -4469,6 +6737,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ur.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ur.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "bd.java: Prepared spell area mutates its affected battlefield tiles. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vp.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4495,6 +6777,97 @@
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "spellId",
+      "evidence": "wa.java: UnitSpell constructor assigns ID and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "targetX",
+      "evidence": "wa.java: UnitSpell constructor assigns ID and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "targetY",
+      "evidence": "wa.java: UnitSpell constructor assigns ID and target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(BLha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(BLha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "ik.java: Area spell creates its prepared effect before application. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Unit spells serialize four bytes; global/area spells serialize two. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(ILha;I)V#0",
+      "originalName": "param0",
+      "to": "castingPlayer",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(ILha;I)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(ILha;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Concrete spell dispatch using casting player and spell definition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(ILvh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(ILvh;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "ik.java: Serializes spell ID and optional coordinates; propagates through all concrete spell implementations. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(Lha;I)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(Lha;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Area spell applies and releases the prepared effect; other variants preserve their original completion hooks. Resolved override parameter.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -4512,9 +6885,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "6d15228329d7975bc05510a2143ea25ac97b13583fd84bf37f0b84d623da00b7",
+      "build-armiesofgielinor-rules.mjs": "47580b365b3ac8f25ef7d64fc55a569476310dc4b9037303803ce86acae58689",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "be66a5eff516a7f3d82781d96543dca08819c2fef0aafa0a6d45b44aea5017c1",
+      "tests/test-armiesofgielinor-core.mjs": "3d732dbf90c7bf2464c0de35b89e786b2a3a88b23895423a34d13500fd692418",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

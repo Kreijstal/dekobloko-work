@@ -40,7 +40,13 @@ const classes = {
   qq:['StateChangeEvent','Diagnostic EventStateChange with position, effect type and player.'],
   rl:['KingBlackDragonEvent','Diagnostic EventKBD with player and King Black Dragon summon state.'],
   tr:['DeployEvent','Diagnostic EventDeploy with position and modifiers.'],
-  pj:['TrinketUseEvent','Trinketused diagnostic and trinket application to the battlefield.'],
+  pj:['SpellCastEvent','Legacy Trinketused diagnostic; dispatches Spell.applyEffect and battlefield spell-cost handling.'],
+  ik:['Spell','Abstract spell ID, payload size/serialization and effect lifecycle; concrete implementations read spellDefinitions.'],
+  wa:['UnitSpell','Stores target tile coordinates and dispatches spell-table effects on the target unit.'],
+  ra:['AreaSpell','Stores a SpellAreaSelection, prepares its area effect and applies it to the battlefield.'],
+  al:['GlobalSpell','Spell-table dispatch for effects that do not carry target coordinates.'],
+  mn:['SpellAreaSelection','Abstract targeting shape that creates a SpellAreaEffect.'],
+  bd:['SpellAreaEffect','Affected tile indices and abstract battlefield application of a prepared area effect.'],
   tc:['IntrusiveNode','Two node links and unlink update both neighbours.'],
   at:['NodeDeque','Sentinel node, prepend/append, pop and bidirectional traversal.'],
   vh:['PacketBuffer','Byte payload, cursor and primitive read/write methods.'],
@@ -60,6 +66,12 @@ function method(owner, original, descriptor, to, evidence, parameters) {
   for (const [ordinal,name] of Object.entries(parameters || {}))
     members[`P:${key}#${ordinal}`] = {to:name,evidence};
 }
+function constructorParameters(owner,descriptor,names,evidence) {
+  for(const [ordinal,to] of Object.entries(names))members[`P:${owner}.<init>${descriptor}#${ordinal}`]={to,evidence};
+}
+function local(owner,signature,ordinal,originalName,to,evidence) {
+  members[`L:${owner}.${signature}#${ordinal}`]={to,evidence,expectedOriginalName:originalName};
+}
 for (const [original,to,type] of [
   ['v','mapWidth','I'],['db','mapHeight','I'],['Eb','tiles','[Lne;'],
   ['W','playerCount','I'],['tb','teamCount','I'],['w','teams','[Lgo;'],
@@ -76,11 +88,23 @@ for (const [original,to,type] of [
   ['Y','strength','I'],['t','maximumStrength','I'],['l','battlefield','Lha;'],
   ['K','displayName','Ljava/lang/String;'],['V','movementFlags','I'],
   ['E','tag','I'],['H','objectiveId','I'],['q','tankId','I'],
-  ['B','packedLowFlags','I'],['s','packedFlag4','Z'],['W','packedFlag8','Z'],
-  ['I','poisoned','Z'],['F','packedFlag32','Z'],['C','packedFlag64','Z'],
+  ['B','attacksRemaining','I'],['s','movementSpent','Z'],['W','packedFlag8','Z'],
+  ['I','poisoned','Z'],['F','packedFlag32','Z'],['C','meleeLifeSteal','Z'],
   ['bb','packedFlag256','Z'],['D','packedFlag512','Z'],
 ]) field('jd',original,type,to,'Unit tagged decoder, constructor and h(byte) packing. Flag names describe bit positions; their gameplay meanings remain unresolved.');
 members['F:jd.field_I:Z'].evidence='DamageEvent applies its diagnostic poison flag to this field; Unit.m(byte) suppresses regeneration while it is set.';
+members['F:jd.field_B:I'].evidence='Battlefield combat application decrements this attack count; turn refresh restores one or two attacks independently of the movement-spent flag.';
+members['F:jd.field_s:Z'].evidence='MoveEvent sets this flag after moving; MovementPlanner rejects spent movement and Unit turn refresh resets it.';
+members['F:jd.field_C:Z'].evidence='UnitSpell ID 120 sets this flag. Melee combat queues one healing event per damage point dealt while it is set.';
+for(const [original,to,type] of [
+  ['A','bonusStrength','I'],['r','equipmentDescriptor','I'],['ab','accessoryType','I'],
+  ['P','statusEffectType','I'],['o','statusEffectValue','I'],['cb','immobilizedTurns','I'],
+  ['fb','facingAngle','I'],['db','movementTargetX','I'],['k','movementTargetY','I'],
+  ['m','attacksMade','I'],['M','attacksReceived','I'],
+]) field('jd',original,type,to,'Unit getters/constructors, spell effect assignments, combat counters and facing/movement target operations.');
+members['F:jd.field_P:I'].evidence='UnitSpell assigns spellDefinitions[id][5]; this is spell status, separate from the equipmentDescriptor field.';
+members['F:jd.field_o:I'].evidence='UnitSpell assigns spellDefinitions[id][6]; protective statuses consume this value as charges, other statuses use its magnitude.';
+members['F:jd.field_cb:I'].evidence='Immobilizing spell kind 21 increments this counter, spends movement/attacks and caps it at 100; turn refresh decrements it.';
 for (const [original,to,type] of [
   ['h','terrainType','I'],['c','occupant','Ljd;'],['a','ownerPlayer','I'],
   ['n','metadata','Lca;'],['d','battlefield','Lha;'],['g','godId','I'],
@@ -114,6 +138,36 @@ field('kr','H','I','startX','EventMove start-position diagnostic.');
 field('kr','I','I','startY','EventMove start-position diagnostic.');
 field('kr','B','[I','pathDirections','EventMove footsteps array and North/South/East/West debug output.');
 field('ag','D','I','battleId','EventCombat battleid diagnostic.');
+for(const [original,to,type] of [
+  ['Q','attackerX','I'],['G','attackerY','I'],['F','targetDeltaX','I'],['B','targetDeltaY','I'],
+  ['K','attackerDamage','I'],['R','defenderDamage','I'],['N','attackerDies','Z'],['M','defenderDies','Z'],
+  ['H','attackerAnimationCount','I'],['y','defenderAnimationCount','I'],
+  ['J','attackerDeployed','Z'],['E','defenderDeployed','Z'],['z','unseenUnitType','I'],
+]) field('ag',original,type,to,'CombatEvent debug labels explicitly identify attacker position, target offset, damage, death, animation counts and deployment.');
+for(const [owner,items] of Object.entries({
+  kr:[['A','applied','Z']],
+  ns:[['J','applied','Z'],['N','targetUnit','Ljd;'],['z','targetDeltaX','I'],['H','targetDeltaY','I'],['C','attackerAnimationCount','I'],['Q','defenderAnimationCount','I']],
+  mb:[['E','applied','Z'],['z','tileX','I'],['H','tileY','I'],['D','playerId','I'],['I','strengthBonus','I'],['A','unitType','I']],
+  qq:[['C','applied','Z'],['I','tileX','I'],['J','tileY','I'],['F','effectType','I'],['G','playerId','I']],
+  ec:[['C','applied','Z'],['A','sourceX','I'],['B','sourceY','I'],['z','destinationX','I'],['y','destinationY','I']],
+  rt:[['y','destinationX','I'],['C','destinationY','I']],
+  kf:[['H','tileX','I'],['F','tileY','I'],['J','originX','I'],['y','originY','I'],['z','strength','I'],['C','playerId','I'],['A','applied','Z']],
+  tr:[['E','tileX','I'],['D','tileY','I'],['B','modifiers','I']],
+})) for(const [original,to,type] of items)field(owner,original,type,to,'Event constructors, position/debug labels and battlefield application/one-time guards.');
+field('ik','c','I','spellId','Every concrete spell indexes spellDefinitions with this ID and writes it as a big-endian short.');
+field('wa','g','I','targetX','UnitSpell constructor and serialization write target X before target Y.');
+field('wa','f','I','targetY','UnitSpell constructor and target-unit lookup.');
+field('ra','g','Lmn;','selection','AreaSpell creates an area effect from this targeting selection.');
+field('ra','h','Lbd;','preparedEffect','Preparation creates this effect; completion applies it and releases the reference.');
+field('pj','B','Lik;','spell','SpellCastEvent dispatches the spell-table based effect.');
+field('pj','C','Z','applied','Spell cast application is guarded against repeated mutation.');
+field('pj','z','I','castingPlayer','Passed to Spell.applyEffect and battlefield spell accounting.');
+for(const [original,to,type] of [
+  ['x','mapWidth','I'],['A','mapHeight','I'],['i','unit','Ljd;'],['d','unitType','I'],
+  ['o','actingPlayer','I'],['p','spellId','I'],['h','pathDirections','[I'],['m','pathLength','I'],
+  ['q','movementCosts','[I'],['n','targetX','I'],['b','targetY','I'],['l','targetDeltaX','I'],
+  ['j','targetDeltaY','I'],['t','directAction','Z'],['u','actionAllowed','Z'],
+]) field('nn',original,type,to,'MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.');
 field('tc','b','Ltc;','next','NodeDeque forward traversal follows this link.');
 field('tc','j','Ltc;','previous','Unlink updates both neighbouring links.');
 field('tc','i','J','key','Intrusive collection lookup key.');
@@ -167,6 +221,58 @@ method('tc','d','(I)V','unlink','Updates neighbouring links and clears this node
 method('at','e','(B)Ltc;','first','Returns the first node and primes forward traversal.',{0:'obfuscationGuard'});
 method('at','a','(B)Ltc;','next','Continues traversal through node links.',{0:'obfuscationGuard'});
 
+method('ha','a','(IIZIIIZIII)V','queueCombatConsequences','CombatEvent supplies attacker coordinates, target offset, death flags and paired damage. Queues healing/growth/damage and consumes one attack.',
+  {0:'attackerY',1:'targetDeltaX',2:'attackerDies',3:'attackerX',4:'targetDeltaY',5:'obfuscationGuard',6:'defenderDies',7:'attackerDamage',8:'defenderDamage',9:'unseenUnitType'});
+for(const [ordinal,originalName,to] of [
+  [37,'var12','defender'],[38,'var13','attackDistance'],[39,'var14','attackerEquipmentPoisons'],
+  [40,'var15','defenderEquipmentPoisons'],[41,'var16','meleeAttack'],[42,'var17','guardQuotient'],
+  [43,'var18','defenderHealingIndex'],[44,'var19','obfuscationControlSnapshot'],[45,'var20','attackerLookup'],
+  [46,'var21','attacker'],[59,'var18Lifetime1','campaignKillMarker'],[60,'var18Lifetime2','attackerHealingIndex'],
+])local('ha','a(IIZIIIZIII)V',ordinal,originalName,to,'Combat consequence data flow from attacker/defender lookup through poison, healing and campaign counters.');
+constructorParameters('ag','(IIIIIIIZZIIZZI)V',['unseenUnitType','attackerX','attackerY','targetDeltaX','targetDeltaY','attackerDamage','defenderDamage','attackerDies','defenderDies','attackerAnimationCount','defenderAnimationCount','attackerDeployed','defenderDeployed','battleId'],'CombatEvent constructor assignments and labelled diagnostic fields.');
+constructorParameters('kr','(II[I)V',['startX','startY','pathDirections'],'MoveEvent constructor and labelled path diagnostic.');
+constructorParameters('jd','(III)V',['tileX','tileY','unitType'],'Unit constructor stores tile coordinates and type.');
+constructorParameters('jd','(IIIIIIIIILha;IIIZI)V',['tileX','tileY','unitType','ownerPlayer','maximumStrength','strength','packedStatusFlags','accessoryType','bonusStrength','battlefield','statusEffectType','statusEffectValue','equipmentDescriptor','detached','immobilizedTurns'],'Unit full constructor field assignments and detached tile-installation guard.');
+method('jd','g','(B)I','getEffectiveStrength','Adds temporary bonus strength to current strength.',{0:'obfuscationGuard'});
+method('jd','g','(I)I','getUnitCategory','Returns definition column zero; category encoding remains numeric.',{0:'obfuscationGuard'});
+method('jd','l','(B)I','getMinimumAttackRange','Definition column six with deployed dwarf-cannon override.',{0:'obfuscationGuard'});
+method('jd','B','(I)I','getMaximumAttackRange','Definition column seven adjusted by equipment category/properties.',{0:'obfuscationGuard'});
+method('jd','j','(I)I','getEquipmentCategory','Extracts the high bits of equipmentDescriptor or returns -1.',{0:'obfuscationGuard'});
+method('jd','c','(B)I','getEquipmentId','Extracts the low five equipment bits or returns zero.',{0:'obfuscationGuard'});
+method('jd','d','(II)I','getEquipmentProperty','Reads the selected property of the equipment table row.',{0:'propertyIndex',1:'obfuscationGuard'});
+method('jd','e','(II)V','setFacingAngle','Sets valid 0..2047 orientation and updates the visual actor when present.',{0:'obfuscationGuard',1:'angle'});
+method('jd','a','(Ljd;I)V','faceUnit','Faces another unit using its relative position.',{0:'targetUnit',1:'obfuscationGuard'});
+method('jd','b','(Z)Ljd;','copyDetached','Copies full unit state without installing the copy on the tile.',{0:'obfuscationGuard'});
+method('jd','o','(I)Z','hasMovementTarget','Clears a reached target and tests stored target coordinates.',{0:'obfuscationGuard'});
+method('jd','A','(I)V','resetMovementTarget','Writes target X and clears target Y; retains original sentinel argument.',{0:'targetX'});
+method('jd','y','(I)Z','hasPoisonousAttacks','Tests definition flag 64 used by combat damage poison propagation.',{0:'obfuscationGuard'});
+method('jd','r','(I)Z','grantsGrowthOnDeath','Excludes the summoned jade-vine type from combat kill-growth rewards.',{0:'obfuscationGuard'});
+method('jd','t','(I)Z','isDisplacedFromTile','Tests whether the unit differs from its tile occupant.',{0:'obfuscationGuard'});
+method('ik','a','(I)I','getPayloadSize','Unit spells serialize four bytes; global/area spells serialize two.',{0:'obfuscationGuard'});
+method('ik','a','(ILvh;)V','writePayload','Serializes spell ID and optional coordinates; propagates through all concrete spell implementations.',{0:'obfuscationGuard',1:'packet'});
+method('ik','a','(ILha;I)V','applyEffect','Concrete spell dispatch using casting player and spell definition.',{0:'castingPlayer',1:'battlefield',2:'obfuscationGuard'});
+method('ik','a','(BLha;)V','prepareEffect','Area spell creates its prepared effect before application.',{0:'obfuscationGuard',1:'battlefield'});
+method('ik','a','(Lha;I)V','finishEffect','Area spell applies and releases the prepared effect; other variants preserve their original completion hooks.',{0:'battlefield',1:'obfuscationGuard'});
+method('mn','a','(ILha;)Lbd;','createEffect','Targeting selection creates an area effect for the battlefield.',{0:'obfuscationGuard',1:'battlefield'});
+method('bd','a','(ILha;)V','applyEffect','Prepared spell area mutates its affected battlefield tiles.',{0:'obfuscationGuard',1:'battlefield'});
+constructorParameters('ik','(I)V',['spellId'],'Spell constructor stores its definition ID.');
+constructorParameters('wa','(III)V',['spellId','targetX','targetY'],'UnitSpell constructor assigns ID and target coordinates.');
+constructorParameters('al','(I)V',['spellId'],'GlobalSpell delegates ID to the base Spell constructor.');
+constructorParameters('ra','(ILmn;)V',['spellId','selection'],'AreaSpell stores its selection and sets its spell ID.');
+method('nn','a','(Lbv;BLjd;)I','writeAttackMovementPacket','Serializes selected path and target offsets for the attacked unit.',{0:'packet',1:'obfuscationGuard',2:'attackedUnit'});
+method('nn','a','(ZLbv;)I','writeMovementPacket','Serializes movement path and optional spell ID to the ciphered packet buffer.',{0:'obfuscationGuard',1:'packet'});
+method('nn','c','(I)I','getMovementBudget','Three times base movement, modified by selected spells/statuses and tile effects.',{0:'obfuscationGuard'});
+method('nn','a','(IBI)V','reconstructPath','Walks the cost gradient backward and stores forward path directions.',{0:'targetY',1:'obfuscationGuard',2:'targetX'});
+method('nn','a','(IZIB)V','selectTarget','Chooses movement/direct action for target coordinates or clears an invalid target.',{0:'targetY',1:'allowOtherPlayer',2:'targetX',3:'obfuscationGuard'});
+method('nn','a','(III)V','selectDirectAction','Stores coordinate deltas when the required movement cost matches.',{0:'targetY',1:'targetX',2:'requiredCost'});
+method('nn','a','(I)V','resetCosts','Initializes cost grids and clears tile selection state from the given offset.',{0:'startIndex'});
+method('nn','a','(ZIILjd;II)V','prepareForUnit','Sets acting player, selected unit and spell, then fills movement costs.',{0:'allowOtherPlayer',1:'obfuscationGuard',2:'actingPlayer',3:'unit',4:'selectionMode',5:'spellId'});
+method('nn','d','(I)V','clearSelection','Clears path, selected unit and spell, then resets movement grids.',{0:'obfuscationGuard'});
+method('nn','e','(I)V','clearPath','Clears path availability and the direction array without changing target coordinates.',{0:'obfuscationGuard'});
+constructorParameters('nn','(Lha;)V',['battlefield'],'MovementPlanner constructor captures map geometry and initializes its cost grids.');
+method('at','a','(ILtc;)V','addFirst','Links the node immediately after the deque sentinel; combat uses guard 750.',{0:'obfuscationGuard',1:'node'});
+method('at','a','(BLtc;)V','addLast','Links the node immediately before the deque sentinel; keeps the original byte guard.',{0:'obfuscationGuard',1:'node'});
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -177,7 +283,10 @@ export function buildArmiesRules(input, rows) {
     if(row[5]!==to) rules.set(symbol,{symbol,originalName:row[5],to,evidence,confidence});
   };
   for(const [owner,[to,evidence]] of Object.entries(classes)) add('C:'+owner,to,`${owner}.java: ${evidence}`);
-  for(const [symbol,{to,evidence}] of Object.entries(members)) add(symbol,to,`${symbol.slice(2).split('.')[0]}.java: ${evidence}`);
+  for(const [symbol,{to,evidence,expectedOriginalName}] of Object.entries(members)) {
+    if(expectedOriginalName&&declared.get(symbol)?.[5]!==expectedOriginalName)throw new Error('Reviewed local identity differs: '+symbol);
+    add(symbol,to,`${symbol.slice(2).split('.')[0]}.java: ${evidence}`);
+  }
   // Follow resolved override edges in both directions. A name never crosses an
   // unresolved or external contract, and contradictory reviewed names fail.
   const edges=rows.filter(row=>row[0]==='O').map(row=>[row[1],row[2]]);
@@ -227,7 +336,7 @@ export function buildArmiesGuide(rules,mapping) {
   const link=owner=>`[${classes[owner][0]}](${classes[owner][0]}.java)`;
   return ['# Reading Armies of Gielinor','',
     'Java here is the single published version. Rebuild from pinned raw Git input using Deko’s `readable/reproduce-armiesofgielinor.mjs`. The current reverse dictionary is `../../decompilation/armiesofgielinor-naming.json`.','',
-    `This first gameplay pass reviews ${Object.keys(classes).length} class identities across all ${mapping.files.length} compiled classes. Other class/member names remain unresolved. Unresolved packed flags use bit-position names without guessing gameplay effects. Renamed identifiers have no opaque suffixes; the dictionary records their original identities.`, '',
+    `This gameplay naming pass reviews ${Object.keys(classes).length} class identities across all ${mapping.files.length} compiled classes. Other class/member names remain unresolved. Unresolved packed flags use bit-position names without guessing gameplay effects. Renamed identifiers have no opaque suffixes; the dictionary records their original identities.`, '',
     '| Start here | Follow |','| --- | --- |',
     `| ${link('ha')} | Map geometry, player/team state, mana, turns, god favour and unit/event collections. |`,
     `| ${link('jd')} / ${link('ne')} / ${link('ca')} | Unit coordinates and strength; tile occupants, terrain, owners and tagged metadata. |`,
@@ -236,19 +345,22 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('oj')} → ${link('st')} / ${link('as')} / ${link('vp')} | Event application, turn effects, ownership changes and mana. |`,
     `| ${link('kr')} / ${link('ns')} / ${link('ag')} / ${link('nw')} / ${link('hp')} | Movement, attacks, combat records, damage/poison and death. |`,
     `| ${link('mb')} / ${link('ec')} / ${link('kn')} / ${link('q')} / ${link('qq')} | Summoning, teleport variants and state changes. Event names follow their own diagnostic text. |`,
-    `| ${link('rt')} / ${link('pj')} / ${link('kc')} | Revival, trinket use and turn changes. All 21 concrete GameEvent subclasses have reviewed names. |`,
+    `| ${link('rt')} / ${link('pj')} / ${link('kc')} | Revival, spell casts and turn changes. All 21 concrete GameEvent subclasses have reviewed names. |`,
+    `| ${link('ik')} → ${link('wa')} / ${link('ra')} / ${link('al')} | Unit, area and global spells: definition IDs, payload serialization and effect lifecycle. |`,
+    `| ${link('mn')} / ${link('bd')} | Area selections and prepared area effects. |`,
     `| ${link('ci')} | Tutorial stages, prompts and flashing controls. |`,
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
-    'Start with `Battlefield.getUnitAt`, `arePlayersAllied`, `registerUnit` and `Unit.applyStrengthDamage`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
+    'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
+    'Combat payloads now name attacker/defender positions, offsets, damage, death flags and animation counts. The central consequence routine names its attacker/defender and healing/poison locals. Unit movement-spent and attacks-remaining state are separate; spell status and equipment descriptors are also separate. `SpellCastEvent` replaces the earlier trinket label: its legacy diagnostic says Trinketused, but the concrete implementations read the spell definition table.','',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage and tile metadata against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization and tile metadata against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:1,
+    const rules={schema:1,game:'armiesofgielinor',version:2,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

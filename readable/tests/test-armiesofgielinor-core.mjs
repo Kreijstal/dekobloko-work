@@ -86,6 +86,59 @@ check("modifier4/"+mask,call(tile,t,"${m('ne','e','(B)Z')}",new Class<?>[]{byte.
 check("corpse/"+mask,call(tile,t,"${m('ne','c','(I)Z')}",new Class<?>[]{int.class},89),(mask&8)!=0);
 check("explicitOwner/"+mask,call(tile,t,"${m('ne','c','(B)Z')}",new Class<?>[]{byte.class},(byte)-79),(mask&16)!=0);
 call(tile,t,"${m('ne','i','(I)V')}",new Class<?>[]{int.class},14);check("clearCorpse/"+mask,get(meta,md,"${f('ca','c','I')}"),mask&~8);}
+// Equipment identifiers and spell status occupy different fields. Check range
+// baselines with no equipment, including the deployed dwarf cannon override.
+for(int descriptor:new int[]{-1,0,1,31,32,63,64,255,1023}){
+set(unit,v,"${f('jd','r','I')}",descriptor);
+check("equipment-category/"+descriptor,call(unit,v,"${m('jd','j','(I)I')}",new Class<?>[]{int.class},20640),descriptor<0?-1:descriptor>>5);
+check("equipment-id/"+descriptor,call(unit,v,"${m('jd','c','(B)I')}",new Class<?>[]{byte.class},(byte)81),descriptor<0?0:descriptor&31);}
+set(unit,v,"${f('jd','r','I')}",-1);set(unit,v,"${f('jd','W','Z')}",false);
+for(int[] typeRange:new int[][]{{0,1,1},{3,2,3},{11,3,5},{16,2,3},{39,0,0},{81,1,2}}){
+set(unit,v,"${f('jd','N','I')}",typeRange[0]);
+check("minimum-range/"+typeRange[0],call(unit,v,"${m('jd','l','(B)I')}",new Class<?>[]{byte.class},(byte)-79),typeRange[1]);
+check("maximum-range/"+typeRange[0],call(unit,v,"${m('jd','B','(I)I')}",new Class<?>[]{int.class},3257),typeRange[2]);}
+set(unit,v,"${f('jd','N','I')}",34);set(unit,v,"${f('jd','W','Z')}",true);
+check("deployed-cannon-minimum",call(unit,v,"${m('jd','l','(B)I')}",new Class<?>[]{byte.class},(byte)-79),2);
+check("deployed-cannon-maximum",call(unit,v,"${m('jd','B','(I)I')}",new Class<?>[]{int.class},3257),7);
+for(int bonus:new int[]{-5,0,3,20}){set(unit,v,"${f('jd','Y','I')}",10);set(unit,v,"${f('jd','A','I')}",bonus);
+check("effective-strength/"+bonus,call(unit,v,"${m('jd','g','(B)I')}",new Class<?>[]{byte.class},(byte)122),10+bonus);}
+Class<?> combat=Class.forName("${className('ag')}");Class<?>[] combatTypes=new Class<?>[14];Arrays.fill(combatTypes,int.class);for(int i:new int[]{7,8,11,12})combatTypes[i]=boolean.class;
+String[] combatFields={"${f('ag','z','I')}","${f('ag','Q','I')}","${f('ag','G','I')}","${f('ag','F','I')}","${f('ag','B','I')}","${f('ag','K','I')}","${f('ag','R','I')}","${f('ag','N','Z')}","${f('ag','M','Z')}","${f('ag','H','I')}","${f('ag','y','I')}","${f('ag','J','Z')}","${f('ag','E','Z')}","${f('ag','D','I')}"};
+for(int seed=0;seed<16;seed++){Object[] payload={27,seed,seed+1,1,-1,seed*2,seed*3,(seed&1)!=0,(seed&2)!=0,4,5,(seed&4)!=0,(seed&8)!=0,100+seed};Object event=make(combat,combatTypes,payload);
+for(int i=0;i<14;i++)check("combat-payload/"+seed+"/"+i,get(combat,event,combatFields[i]),payload[i]);
+String expected="EventCombat: creature: 27, com:("+seed+","+(seed+1)+"), att:(1,-1), dam:("+(seed*2)+","+(seed*3)+")\\ndie:("+payload[7]+","+payload[8]+"), count:(4,5), deployed:("+payload[11]+","+payload[12]+"), battleid:"+(100+seed);
+check("combat-description/"+seed,call(combat,event,"${m('ag','a','(BZ)Ljava/lang/String;')}",new Class<?>[]{byte.class,boolean.class},(byte)0,false),expected);}
+// Check independently specified wire bytes, lengths and cursor movement.
+Class<?> packet=Class.forName("${className('vh')}"),spell=Class.forName("${className('ik')}");
+for(String owner:new String[]{"al","ra","wa"}){Class<?> concrete=Class.forName(owner.equals("al")?"${className('al')}":owner.equals("ra")?"${className('ra')}":"${className('wa')}");
+String writer=owner.equals("al")?"${m('al','a','(ILvh;)V')}":owner.equals("ra")?"${m('ra','a','(ILvh;)V')}":"${m('wa','a','(ILvh;)V')}";
+String length=owner.equals("al")?"${m('al','a','(I)I')}":owner.equals("ra")?"${m('ra','a','(I)I')}":"${m('wa','a','(I)I')}";
+for(int id:new int[]{0,1,120,133,255,65535})for(int coordinate:new int[]{0,31,255}){Object effect=unsafe.allocateInstance(concrete);set(spell,effect,"${f('ik','c','I')}",id);
+if(owner.equals("wa")){set(concrete,effect,"${f('wa','g','I')}",coordinate);set(concrete,effect,"${f('wa','f','I')}",255-coordinate);}
+byte[] bytes=new byte[10];Arrays.fill(bytes,(byte)77);Object out=make(packet,new Class<?>[]{byte[].class},(Object)bytes);set(packet,out,"${f('vh','q','I')}",1);
+call(concrete,effect,writer,new Class<?>[]{int.class,packet},-11637,out);int size=owner.equals("wa")?4:2;
+byte[] expected=new byte[10];Arrays.fill(expected,(byte)77);expected[1]=(byte)(id>>8);expected[2]=(byte)id;if(size==4){expected[3]=(byte)coordinate;expected[4]=(byte)(255-coordinate);}
+check("spell-bytes/"+owner+"/"+id+"/"+coordinate,Arrays.toString(bytes),Arrays.toString(expected));
+check("spell-cursor/"+owner+"/"+id+"/"+coordinate,get(packet,out,"${f('vh','q','I')}"),1+size);
+check("spell-length/"+owner+"/"+id+"/"+coordinate,call(concrete,effect,length,new Class<?>[]{int.class},25365),size);}}
+// Execute the central combat consequence routine and inspect queued events;
+// presentation and later event application are outside this fixture boundary.
+Class<?> deque=Class.forName("${className('at')}"),gameEvent=Class.forName("${className('oj')}"),damageEvent=Class.forName("${className('nw')}"),turnEvent=Class.forName("${className('st')}");
+for(int mask=0;mask<16;mask++){Object battle=unsafe.allocateInstance(board),queue=make(deque,new Class<?>[]{});Object tiles=Array.newInstance(tile,2);
+set(board,battle,"${f('ha','v','I')}",2);set(board,battle,"${f('ha','db','I')}",1);set(board,battle,"${f('ha','Eb','[Lne;')}",tiles);set(board,battle,"${f('ha','l','Lat;')}",queue);
+Object attacker=make(unit,new Class<?>[]{int.class,int.class,int.class},0,0,0),defender=make(unit,new Class<?>[]{int.class,int.class,int.class},1,0,0);
+for(int i=0;i<2;i++){Object fighter=i==0?attacker:defender,tileState=make(tile,new Class<?>[]{});set(tile,tileState,"${f('ne','c','Ljd;')}",fighter);Array.set(tiles,i,tileState);set(unit,fighter,"${f('jd','l','Lha;')}",battle);set(unit,fighter,"${f('jd','Y','I')}",10);set(unit,fighter,"${f('jd','t','I')}",20);set(unit,fighter,"${f('jd','r','I')}",-1);set(unit,fighter,"${f('jd','B','I')}",1);set(unit,fighter,"${f('jd','C','Z')}",(mask&(i==0?1:2))!=0);}
+call(board,battle,"${m('ha','a','(IIZIIIZIII)V')}",new Class<?>[]{int.class,int.class,boolean.class,int.class,int.class,int.class,boolean.class,int.class,int.class,int.class},0,1,(mask&4)!=0,0,0,111,(mask&8)!=0,3,2,0);
+int damageCount=0,attackerHealing=0,defenderHealing=0,attackerGrowth=0,defenderGrowth=0;
+Object event=call(deque,queue,"${m('at','e','(B)Ltc;')}",new Class<?>[]{byte.class},(byte)96);
+while(event!=null){Object affected=get(gameEvent,event,"${f('oj','w','Ljd;')}");if(damageEvent.isInstance(event)){damageCount++;check("queued-damage/"+mask+"/"+damageCount,get(damageEvent,event,"${f('nw','D','I')}"),affected==attacker?2:3);check("queued-poison/"+mask+"/"+damageCount,get(damageEvent,event,"${f('nw','A','Z')}"),false);}else if(turnEvent.isInstance(event)){int kind=(Integer)get(turnEvent,event,"${f('st','D','I')}");if(kind==1){if(affected==attacker)attackerHealing++;else defenderHealing++;}else if(kind==4){if(affected==attacker)attackerGrowth++;else defenderGrowth++;}else throw new AssertionError("Unexpected turn effect "+kind);}else throw new AssertionError("Unexpected queued event");event=call(deque,queue,"${m('at','a','(B)Ltc;')}",new Class<?>[]{byte.class},(byte)123);}
+check("combat-count/"+mask,damageCount,2);check("attacker-healing/"+mask,attackerHealing,(mask&1)!=0?3:0);check("defender-healing/"+mask,defenderHealing,(mask&2)!=0?2:0);check("attacker-growth/"+mask,attackerGrowth,(mask&8)!=0?1:0);check("defender-growth/"+mask,defenderGrowth,(mask&4)!=0?1:0);check("attacks-consumed/"+mask,get(unit,attacker,"${f('jd','B','I')}"),0);}
+Class<?> planner=Class.forName("${className('nn')}");
+for(int[] dimensions:new int[][]{{2,3},{5,2},{1,7}}){Object battle=unsafe.allocateInstance(board);set(board,battle,"${f('ha','v','I')}",dimensions[0]);set(board,battle,"${f('ha','db','I')}",dimensions[1]);Object plan=make(planner,new Class<?>[]{board},battle);
+check("planner-width/"+dimensions[0],get(planner,plan,"${f('nn','x','I')}"),dimensions[0]);check("planner-height/"+dimensions[0],get(planner,plan,"${f('nn','A','I')}"),dimensions[1]);
+for(String grid:new String[]{"${f('nn','q','[I')}","${f('nn','k','[I')}","${f('nn','e','[I')}"}){int[] cells=(int[])get(planner,plan,grid);check("planner-grid-size/"+dimensions[0]+"/"+grid.equals("${f('nn','q','[I')}"),cells.length,dimensions[0]*dimensions[1]);for(int i=0;i<cells.length;i++)if(cells[i]!=(grid.equals("${f('nn','e','[I')}")?0:1000000))throw new AssertionError("Uninitialized cost grid");}
+set(planner,plan,"${f('nn','i','Ljd;')}",v);set(planner,plan,"${f('nn','p','I')}",120);set(planner,plan,"${f('nn','h','[I')}",new int[]{0,1});
+call(planner,plan,"${m('nn','d','(I)V')}",new Class<?>[]{int.class},-20);check("planner-unit-cleared/"+dimensions[0],get(planner,plan,"${f('nn','i','Ljd;')}")==null,true);check("planner-spell-cleared/"+dimensions[0],get(planner,plan,"${f('nn','p','I')}"),-1);check("planner-path-cleared/"+dimensions[0],get(planner,plan,"${f('nn','h','[I')}")==null,true);}
 System.out.println("checks:"+cases);
 }}
 `);

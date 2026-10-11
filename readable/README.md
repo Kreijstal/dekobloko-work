@@ -54,18 +54,22 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The first pass names 39 reviewed classes around battlefield state, units, map
+The current pass names 45 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
-decoding. Reviewed fields and operations carry source evidence in the one
-current `armiesofgielinor-rules.json` manifest. Unknown names remain unknown;
+decoding, including unit/area/global spells and prepared area effects. Combat
+event payloads and the main consequence routine have reviewed field, parameter
+and local names. SpellCastEvent corrects the earlier trinket label using the
+actual spell-table dispatch. Reviewed fields and operations carry evidence in
+the one current `armiesofgielinor-rules.json` manifest. Unknown names remain unknown;
 packed flags use bit-position names until their gameplay meanings are proved.
 Override names propagate through resolved contracts, and label targets remain
 unchanged. The frozen Java compiler input is read from Git, not the current
 named export.
 
 Every export compares raw and named core execution with independent expected
-results for rectangular map lookup, alliances, unit flags and damage, and tile
-metadata. The probe bypasses battlefield construction and Applet initialization,
+results for rectangular map lookup, alliances, unit flags/damage, equipment and
+ranges, spell wire bytes, combat payloads/consequence queues, and tile metadata.
+The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Three dispatcher files
 and large methods remain; this is a semantic naming pass, not control-flow recovery.
 
