@@ -17,8 +17,9 @@ function run(command, args) {
   return Buffer.concat([result.stdout || Buffer.alloc(0), result.stderr || Buffer.alloc(0)]);
 }
 
-export function repairFailedGames(batch, javaTools) {
+export function repairFailedGames(batch, javaTools, selectedGame = null) {
   batch = path.resolve(batch); javaTools = path.resolve(javaTools);
+  if (selectedGame !== null && !/^[a-z0-9_]+$/.test(selectedGame)) throw new Error('Invalid selected game');
   if (git(javaTools, 'status', '--porcelain').toString().trim() || git(repository, 'status', '--porcelain', '--untracked-files=no').toString().trim())
     throw new Error('Repair tools and publisher must be clean committed sources');
   const commit = git(javaTools, 'rev-parse', 'HEAD').toString().trim();
@@ -29,7 +30,7 @@ export function repairFailedGames(batch, javaTools) {
   const runner = {repository: 'Kreijstal/dekobloko-work', commit: git(repository, 'rev-parse', 'HEAD').toString().trim(), sourceSha256: hash(fs.readFileSync(script))};
   const stub = path.join(batch, 'tooling/dekobloko-work/lib/dekobloko-stubs.jar');
   let repaired = 0;
-  for (const game of fs.readdirSync(batch).sort()) {
+  for (const game of selectedGame === null ? fs.readdirSync(batch).sort() : [selectedGame]) {
     const root = path.join(batch, game), owned = path.join(root, 'decompile-owned');
     const reportFile = path.join(owned, 'logs/report.json');
     if (!fs.existsSync(reportFile)) continue;
@@ -99,6 +100,6 @@ export function repairFailedGames(batch, javaTools) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === script) {
-  if (process.argv.length !== 4) throw new Error('Usage: node scripts/repair-decompiled-games.mjs BATCH JAVA_TOOLS');
-  console.log(JSON.stringify(repairFailedGames(process.argv[2], process.argv[3])));
+  if (![4, 5].includes(process.argv.length)) throw new Error('Usage: node scripts/repair-decompiled-games.mjs BATCH JAVA_TOOLS [GAME]');
+  console.log(JSON.stringify(repairFailedGames(process.argv[2], process.argv[3], process.argv[4] ?? null)));
 }

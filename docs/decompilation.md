@@ -113,6 +113,9 @@ bytecode and rebuild compiler-only failures with:
 node scripts/repair-decompiled-games.mjs BATCH CLEAN_FIXED_JAVA_TOOLS
 ```
 
+An optional final game name selects one failed game. Parallel repairs must
+select different games and use immutable clean compiler checkouts.
+
 This emits each failed game completely into temporary staging, checks diagnostics
 and compiles against stubs alone before replacing its previous staged Java and
 reports. Pipeline or verifier failures require an authoritative pipeline retry
