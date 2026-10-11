@@ -27,6 +27,7 @@ export function inventory(root, extension) {
     }
   };
   visit(root);
+  result.sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0);
   return {files: result.length, sha256: hash(JSON.stringify(result)), entries: result};
 }
 

@@ -31,8 +31,10 @@ test('catalog identity detects edits, renames and unsafe output entries', () => 
   try {
     fs.writeFileSync(path.join(root, 'b.java'), 'class B {}');
     fs.writeFileSync(path.join(root, 'a.java'), 'class A {}');
+    fs.mkdirSync(path.join(root, 'a'));
+    fs.writeFileSync(path.join(root, 'a', 'nested.java'), 'class Nested {}');
     const original = inventory(root, '.java');
-    assert.deepEqual(original.entries.map(([name]) => name), ['a.java', 'b.java']);
+    assert.deepEqual(original.entries.map(([name]) => name), ['a.java', 'a/nested.java', 'b.java']);
     assert.equal(inventory(root, '.java').sha256, original.sha256);
     fs.writeFileSync(path.join(root, 'b.java'), 'class B { int value; }');
     assert.notEqual(inventory(root, '.java').sha256, original.sha256);
