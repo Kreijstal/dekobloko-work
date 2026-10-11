@@ -74,6 +74,38 @@ Compilation is only the **static** gate. Operand-stack bugs that a clean
 `javac` cannot see appear at runtime; the launch-to-main-menu gate in
 [running.md](running.md) §2 is the runtime one.
 
+### Publishing the complete catalog
+
+Run the authoritative workflow in clean checkouts outside any parent Node
+package with `type: module`; the pipeline's `.js` entry points are CommonJS.
+Use one temporary batch directory containing the canonical 44 original class
+trees. Keep clean generator checkouts at `BATCH/tooling/dekobloko-work` and
+`BATCH/tooling/java-tools`. Generic readability runs automatically; no
+`CFR_JS_*` transformation flags are needed.
+
+After the batch finishes successfully, publish with:
+
+```bash
+node scripts/publish-decompiled-games.mjs BATCH FUNORB_REPO BATCH/tooling/java-tools --update
+node scripts/publish-decompiled-games.mjs BATCH FUNORB_REPO BATCH/tooling/java-tools --check
+```
+
+The publisher requires the complete canonical roster, clean matching generator
+commits, current pipeline input fingerprints, successful ASM verification,
+complete diagnostics and successful whole-game compilation. It independently
+recompiles every emitted source against stubs alone, without original game
+classes on the classpath. Failed or incomplete batches leave the publication
+untouched. It stages the full catalog before replacing `games/`, retaining the
+previous tree for rollback if installation fails.
+
+Only `funorb-decompiled` owns the emitted Java. Its single
+`decompilation-provenance.json` records each game's input/output identities,
+fallback counts, static validation, generator commits and the **Git-generated
+tracked compiler-source tar SHA-256**. This checksum identifies the decompiler
+source, not a game JAR. Named readable exports retain their separately pinned
+source commits and proof records; updating raw `games/` does not silently repin
+their dictionaries. Remove the owned temporary batch after export validation.
+
 ## Running the bytecode pipeline directly
 
 ```bash
