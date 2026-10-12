@@ -207,8 +207,25 @@ request failures, queue drain and shutdown. Constructor cache/property/fullscree
 setup remains outside the fixtures. ContextActionMenu now names its 256 action
 rows, IDs, spacing, popup placement and waiting/cancellation results. Native
 fixtures check icon/text measurement, clipped row presses, capture-disabled input,
-cancel behavior, empty placeholders and capacity failure. All 96,672 raw/named
-checks agree; complete rendered interaction and action dispatch remain unverified.
+cancel behavior, empty placeholders and capacity failure. Complete rendered
+interaction and action dispatch remain unverified.
+
+LobbyRoom, LobbyPlayer and DualNodeHashTable now expose room/account identities,
+capacity/options, owner/name data, invitation/request flags, index membership,
+ordered display lists and notification expiry. Native room wire fixtures cover
+all 256 flags, optional count retention, explicit name-list rewind and zero-count
+cursor behavior. Local lobby packets exercise update types 0–23, player reuse and
+rename gating, variable integer stats, room/player index removal, invitation and
+join-request transitions/counts, current-room members, setup masks, ownership and
+list clearing. The generated reading guide records the payload table; unresolved
+player low flags and type-22 status fields stay explicit. Sorted list insertion
+retains secondary-key identity, and removed rows expire from primary lists.
+TabbedPanel now names retained panels, integer tab geometry and ±10000 X-based
+switching. Native index and tab fixtures preserve duplicate keys, independent
+lookup/traversal, secondary moves retaining primary links and negative padded
+widths. All 115,902 raw/named checks agree. Live server compatibility, unknown-type
+disconnects, a full malformed packet matrix and rendered lobby interaction remain
+unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -242,7 +259,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 190 reviewed classes around battlefield state, units, map
+The current pass names 194 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
