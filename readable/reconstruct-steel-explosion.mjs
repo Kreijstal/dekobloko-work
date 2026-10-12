@@ -3,21 +3,23 @@ import os from 'node:os';
 import path from 'node:path';
 import Module,{createRequire} from 'node:module';
 import assert from 'node:assert/strict';
+import {fileURLToPath} from 'node:url';
 import {captureProcess} from './tools/lib/capture-process.mjs';
 import {archivedInput,digest,funorbRepository,workflowRoot} from './game-export.mjs';
-import {sourceInventory} from './tools/readable-java.mjs';
+import {sourceInventory,sourceIdentity} from './tools/readable-java.mjs';
 import {inventory} from '../scripts/publish-decompiled-games.mjs';
 import {buildCompilationStubs} from './compilation-stubs.mjs';
 
-// A read-only application fixture, not a publication or Java replacement rule.
-// Replay the documented pinned pipeline first; reject anything but its exact
-// verified corpus. Every generated source/class is owned temporary storage.
-const compilerCommit='4f9c0025375e51ef1fd9c58fa5ccc87476ebfcb0';
+// Application-owned method selection; the generic decompiler supplies both
+// reconstruction proofs. Compare against verified bytecode and historical Java
+// before returning a new raw corpus. All internal generated files are temporary.
+const compilerCommit='83acdd6beb2590213f8e4f0d2a5a4f7a52355b89';
 const oldCompilerCommit='92e6a69ec0692bf9e6b1f63a30406bfc5455e86c';
 const sourceCommit='1655ca853d0d4027018f3efcdc37be76ab7895f4';
 const expectedBytecode='73c5ce3191038cd4472776e90ab73049ba41ca39bea2d34b97b61f815333b353';
-const bytecode=path.resolve(process.argv[2]||'');
-if(process.argv.length!==3)throw new Error('Usage: node readable/probe-steel-explosion.mjs VERIFIED_BYTECODE');
+export function reconstructSteelExplosion(bytecode,output){
+bytecode=path.resolve(bytecode);
+if(output){output=path.resolve(output);assert.equal(fs.existsSync(output),false,'Reconstruction output already exists');}
 const compiler=path.resolve(workflowRoot,'../../java-tools');
 const git=(...args)=>captureProcess('git',['-C',compiler,...args],{maxBuffer:128*1024*1024}).stdout;
 assert.equal(git('rev-parse','HEAD').toString().trim(),compilerCommit,'Compiler source pin differs');
@@ -34,6 +36,8 @@ try{
   const {buildCfgFromCode}=req(path.join(compiler,'src/decompiler/structurer.js'));
   const {structureMethod}=req(path.join(compiler,'src/decompiler/exceptionStructurer.js'));
   const {verifyStructuredFlow}=req(path.join(compiler,'src/decompiler/structuredFlowVerifier.js'));
+  const {splitIrreducibleTerms}=req(path.join(compiler,'src/decompiler/exceptionStructurer.js'));
+  const {verifyCopiedFlow}=req(path.join(compiler,'src/decompiler/copiedFlowVerifier.js'));
   const {tokenizeJava}=req(path.join(compiler,'src/java-frontend/lexer.js'));
   const roots=bytecodeIdentity.entries.map(([file])=>{const p=getAST(new Uint8Array(fs.readFileSync(path.join(bytecode,file))));return convertJson(p.ast,p.constantPool);});
   const model=buildExceptionModel(roots.flatMap(root=>root.classes||[]));
@@ -43,6 +47,7 @@ try{
   assert.equal(code.exceptionTable.length,0);
   const cfg=buildCfgFromCode(code.codeItems),proof=structureMethod(code.codeItems,code.exceptionTable);
   assert.equal(proof.ok,true,proof.reason);assert.equal(proof.normalFlowVerified,true);
+  assert.equal(verifyCopiedFlow(cfg.term,cfg.entry,splitIrreducibleTerms(cfg.term,cfg.entry)),true);
   assert.equal(verifyStructuredFlow(proof.tree,{entry:cfg.entry,blocks:cfg.term.map((term,block)=>({block,term}))}),true);
   function candidate(){const diagnostics=[],source=decompileAstRoot(JSON.parse(JSON.stringify(selected)),{exceptionModel:model,diagnostics});assert.deepEqual(diagnostics,[]);assert.doesNotMatch(source,/switch\s*\(statePc\)/);return source;}
   const generated=candidate();assert.equal(candidate(),generated,'Generated candidate is not deterministic');
@@ -58,7 +63,7 @@ try{
   captureProcess('javac',['--release','8','-proc:none','-encoding','UTF-8','-sourcepath','','-cp',stubs.jar,'-d',raw,'@'+argsFile]);
   function body(text){const lexed=tokenizeJava(text);assert.deepEqual(lexed.diagnostics,[]);const ts=lexed.tokens,head=['void','a','(','boolean','param0',')','{'],found=[];for(let i=0;i<ts.length;i++)if(head.every((s,j)=>ts[i+j]?.text===s))found.push(i+head.length-1);assert.equal(found.length,1);const open=found[0];let depth=1,close=open+1;for(;close<ts.length;close++){if(ts[close].text==='{')depth++;if(ts[close].text==='}'&&!--depth)break;}assert.equal(depth,0);return [ts[open].range.startOffset,ts[close].range.endOffset];}
   const original=fs.readFileSync(path.join(source,'jb.java'),'utf8'),[start,end]=body(original),[newStart,newEnd]=body(generated),newBody=generated.slice(newStart,newEnd);
-  const changed=path.join(temporary,'jb.java');fs.writeFileSync(changed,original.slice(0,start)+newBody+original.slice(end));
+  const changed=path.join(source,'jb.java');fs.writeFileSync(changed,original.slice(0,start)+newBody+original.slice(end));
   captureProcess('javac',['--release','8','-proc:none','-encoding','UTF-8','-sourcepath','','-cp',[raw,stubs.jar].join(path.delimiter),'-d',rebuilt,changed]);
   const shim=path.join(temporary,'SteelSentinels.java');fs.writeFileSync(shim,'public final class SteelSentinels {public static int G;public static int field_G;}');captureProcess('javac',['--release','8','-d',shims,shim]);
   const harness=path.join(temporary,'ExplosionProbe.java');fs.writeFileSync(harness,`import java.lang.reflect.*;import java.util.*;import sun.misc.Unsafe;
@@ -91,5 +96,15 @@ System.out.println("cases:"+cases+"/checks:"+checks);
   captureProcess('javac',['-cp',shims,'-d',shims,harness]);
   const run=(directories,mode)=>captureProcess('java',['-Xverify:all','-Djava.awt.headless=true','-cp',[shims,...directories,stubs.jar].join(path.delimiter),'ExplosionProbe',mode],{maxBuffer:4*1024*1024}).stdout;
   const oracle=run([bytecode],'native'),oldTrace=run([raw],'source'),newTrace=run([rebuilt,raw],'source');assert.deepEqual(oldTrace,oracle,'Published dispatcher differs from verified bytecode');assert.deepEqual(newTrace,oracle,'Reconstructed Explosion differs from verified bytecode');
-  console.log(JSON.stringify({method:'jb.a(Z)V',bytecode:bytecodeIdentity.sha256,sourcePin:sourceCommit,compiler:{commit:compilerCommit,sourceArchiveSha256:digest(git('archive','--format=tar',compilerCommit))},baseline:{commit:oldCompilerCommit,reason:oldDiagnostics[0].reason,dispatchStates:oldDiagnostics[0].dispatchStatesAfter},reconstruction:{originalBlocks:cfg.n,clonedBlocks:proof.splitBlocks,originalEdgesVerified:true,stateMachine:false,deterministic:true,oldBodySha256:digest(original.slice(start,end)),newBodySha256:digest(newBody)},native:{summary:oracle.toString().trimEnd().split('\n').at(-1),bytecodeOldJavaNewJavaIdentical:true,traceSha256:digest(oracle),visualEmissionSuppressed:true,fullCollisionAndRenderingVerified:false},publishedExportChanged:false}));
-}catch(error){console.error(error.stderr?.toString()||error.message);process.exitCode=1;}finally{if(previousNodePath===undefined)delete process.env.NODE_PATH;else process.env.NODE_PATH=previousNodePath;Module._initPaths();fs.rmSync(temporary,{recursive:true,force:true});}
+  const rawSources={files:347,sha256:sourceIdentity(sourceInventory(source))};
+  const result={method:'jb.a(Z)V',bytecode:bytecodeIdentity.sha256,sourcePin:sourceCommit,compiler:{commit:compilerCommit,sourceArchiveSha256:digest(git('archive','--format=tar',compilerCommit))},baseline:{commit:oldCompilerCommit,reason:oldDiagnostics[0].reason,dispatchStates:oldDiagnostics[0].dispatchStatesAfter},reconstruction:{originalBlocks:cfg.n,clonedBlocks:proof.splitBlocks,originalEdgesVerified:true,copyCertificateVerified:true,stateMachine:false,deterministic:true,oldBodySha256:digest(original.slice(start,end)),newBodySha256:digest(newBody)},native:{summary:oracle.toString().trimEnd().split('\n').at(-1),bytecodeOldJavaNewJavaIdentical:true,traceSha256:digest(oracle),visualEmissionSuppressed:true,fullCollisionAndRenderingVerified:false},rawSources,runner:{repository:'Kreijstal/dekobloko-work',path:'readable/reconstruct-steel-explosion.mjs',sha256:digest(fs.readFileSync(fileURLToPath(import.meta.url)))},publishedExportChanged:false};
+  if(output)fs.cpSync(source,output,{recursive:true});
+  return result;
+}finally{if(previousNodePath===undefined)delete process.env.NODE_PATH;else process.env.NODE_PATH=previousNodePath;Module._initPaths();fs.rmSync(temporary,{recursive:true,force:true});}
+
+}
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
+  if(![3,4].includes(process.argv.length))throw new Error('Usage: node readable/reconstruct-steel-explosion.mjs VERIFIED_BYTECODE [NEW_RAW_OUTPUT]');
+  try{console.log(JSON.stringify(reconstructSteelExplosion(process.argv[2],process.argv[3])));}
+  catch(error){console.error(error.stderr?.toString()||error.message);process.exitCode=1;}
+}

@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "game": "steelsentinels",
-  "version": 6,
+  "version": 7,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
-    "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
+    "commit": "56c18e5fa3eda13b7324b0df50a3746fc39e3242",
     "subdirectory": "games/steelsentinels"
   },
-  "inputTreeSha256": "2713f45b1bf8186a4a2e4c283f1b1cca876716cb17a00318e3d87ceaa13e5399",
+  "inputTreeSha256": "6478eb5845afc293d37ad893c4eafe6eb3b6d55555de4c0af0c477822e7a4de1",
   "renames": [
     {
       "symbol": "B:SteelSentinels.a(B)V#0",
@@ -305,8 +305,8 @@
     },
     {
       "symbol": "B:jb.a(Z)V#0",
-      "originalName": "stateLoop",
-      "to": "scanLoop1",
+      "originalName": "L35",
+      "to": "regionExit1",
       "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
       "confidence": "structural"
     },
@@ -5315,7 +5315,7 @@
   },
   "labels": {
     "policy": "lexical-targets",
-    "expectedEdits": 1234
+    "expectedEdits": 1023
   },
   "publication": {
     "stubSourceTreeSha256": "6e22ce52f4c447f1593453075d7c63ed5a79a1e88a79e223e2386a58266d55f5",
@@ -5324,8 +5324,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-steelsentinels-rules.mjs": "c188bd295d9e6f18beb994fe8851be0080b6ed22a563fdd249dbf025a979e595",
+      "build-steelsentinels-rules.mjs": "dcf7e4375ced06d9dd4a39506d99fda726d7db06f203465718aafe71007d20e4",
       "reproduce-steelsentinels.mjs": "6dd69838b697249fd7c99bc8469e53b7306265e77588f8b1df18348a9ebead28",
+      "reconstruct-steel-explosion.mjs": "cadc0a0fec0a18c1282d769a399661a45868e207a3a2eb507c5f79ac233868f5",
       "tests/test-steelsentinels-core.mjs": "879d81107b2095edeed88cded1663381f5935fe167110fe76132b612e393a08d",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
@@ -5334,26 +5335,69 @@
   },
   "generators": {
     "javaTools": {
-      "repository": "Kreijstal/java-tools",
-      "commit": "92e6a69ec0692bf9e6b1f63a30406bfc5455e86c",
-      "trackedClean": true,
-      "sourceArchive": {
-        "sha256": "f268ab42f8acb99fe87c86e38819a820ce801510a2a388972021d2d046522775",
-        "reproduce": "git archive --format=tar 92e6a69ec0692bf9e6b1f63a30406bfc5455e86c | sha256sum",
-        "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
+      "base": {
+        "repository": "Kreijstal/java-tools",
+        "commit": "92e6a69ec0692bf9e6b1f63a30406bfc5455e86c",
+        "trackedClean": true,
+        "sourceArchive": {
+          "sha256": "f268ab42f8acb99fe87c86e38819a820ce801510a2a388972021d2d046522775",
+          "reproduce": "git archive --format=tar 92e6a69ec0692bf9e6b1f63a30406bfc5455e86c | sha256sum",
+          "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
+        },
+        "sourceTreeSha256": "2713f45b1bf8186a4a2e4c283f1b1cca876716cb17a00318e3d87ceaa13e5399",
+        "correctedFailures": {
+          "pipeline": 0,
+          "cli": 1,
+          "verify": 0,
+          "javac": 1
+        },
+        "runner": {
+          "repository": "Kreijstal/dekobloko-work",
+          "commit": "c1ee9703d1fe3c1e6d1c8f2503496ff59f72de7d",
+          "sourceSha256": "6f2fefbeb420abd0c0c80a286b676b55130acd3e8f83383085aaf50f83fd3880"
+        }
       },
-      "sourceTreeSha256": "2713f45b1bf8186a4a2e4c283f1b1cca876716cb17a00318e3d87ceaa13e5399",
-      "correctedFailures": {
-        "pipeline": 0,
-        "cli": 1,
-        "verify": 0,
-        "javac": 1
+      "methodReconstruction": {
+        "method": "jb.a(Z)V",
+        "bytecode": "73c5ce3191038cd4472776e90ab73049ba41ca39bea2d34b97b61f815333b353",
+        "sourcePin": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
+        "compiler": {
+          "commit": "83acdd6beb2590213f8e4f0d2a5a4f7a52355b89",
+          "sourceArchiveSha256": "263464ed40d91927f3977c2ee0f8b9d3fe4d3892752cb86deccaaf9e451d5bd6"
+        },
+        "baseline": {
+          "commit": "92e6a69ec0692bf9e6b1f63a30406bfc5455e86c",
+          "reason": "irreducible: irreducible CFG: 1 non-dominating retreating edge(s)",
+          "dispatchStates": 94
+        },
+        "reconstruction": {
+          "originalBlocks": 271,
+          "clonedBlocks": 4,
+          "originalEdgesVerified": true,
+          "copyCertificateVerified": true,
+          "stateMachine": false,
+          "deterministic": true,
+          "oldBodySha256": "67bf2f9f4afef0cf0a1a7c1001304dcb371662325fb5b78dd50d910a6421658d",
+          "newBodySha256": "90e177a033b6128f188831e1008b98c02ed0fe665a1db7b209d3637bb878f6a8"
+        },
+        "native": {
+          "summary": "cases:790/checks:2288",
+          "bytecodeOldJavaNewJavaIdentical": true,
+          "traceSha256": "747dde9cc5d4a7ed1dceef867ef3e57415266794ba25e8f6fbc5f5dac842283e",
+          "visualEmissionSuppressed": true,
+          "fullCollisionAndRenderingVerified": false
+        },
+        "rawSources": {
+          "files": 347,
+          "sha256": "6478eb5845afc293d37ad893c4eafe6eb3b6d55555de4c0af0c477822e7a4de1"
+        },
+        "runner": {
+          "repository": "Kreijstal/dekobloko-work",
+          "path": "readable/reconstruct-steel-explosion.mjs",
+          "sha256": "cadc0a0fec0a18c1282d769a399661a45868e207a3a2eb507c5f79ac233868f5"
+        }
       },
-      "runner": {
-        "repository": "Kreijstal/dekobloko-work",
-        "commit": "c1ee9703d1fe3c1e6d1c8f2503496ff59f72de7d",
-        "sourceSha256": "6f2fefbeb420abd0c0c80a286b676b55130acd3e8f83383085aaf50f83fd3880"
-      }
+      "sourceTreeSha256": "6478eb5845afc293d37ad893c4eafe6eb3b6d55555de4c0af0c477822e7a4de1"
     },
     "namingTool": {
       "schema": 1,
