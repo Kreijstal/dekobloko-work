@@ -101,9 +101,14 @@ Animation skeletons, sparse frames and frame sets now have names, along with
 mesh animation and blending methods. Fixtures check component defaults, malformed
 input, wrapped interpolation, flag gates, skeleton identity and grouped translation.
 The ModelMesh Y-coordinate rule is corrected; texture indices have separate names.
-Masked transforms and rendered animation remain unverified.
+Real frame loading now has delayed-dependency, sparse-ID and retention fixtures.
+Mesh fixtures cover group pivots, rotation/scale, masks, alpha and colour changes,
+plus matrix translation and decoder cleanup. TriangleRasterizer and TextureProvider
+name rendering roots; flat/constant-shade pixel and clip fixtures run real methods.
+Matrix-backed rotation/scale, textured triangles and rendered animation remain
+unverified.
 
-The current pass names 157 reviewed classes around battlefield state, units, map
+The current pass names 159 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 23,
+  "version": 24,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -2379,6 +2379,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:lh",
+      "originalName": "lh",
+      "to": "TextureProvider",
+      "evidence": "lh.java: Texture availability, pixel and colour queries used by mesh construction and textured rasterization; unresolved property queries retain their names.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ln",
       "originalName": "ln",
       "to": "CoatOfArms",
@@ -2733,6 +2740,13 @@
       "originalName": "tc",
       "to": "IntrusiveNode",
       "evidence": "tc.java: Two node links and unlink update both neighbours.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tm",
+      "originalName": "tm",
+      "to": "TriangleRasterizer",
+      "evidence": "tm.java: Static flat, shaded and textured triangle/scanline drawing, raster clip setup and fixed-point sine/cosine tables.",
       "confidence": "reviewed"
     },
     {
@@ -4325,6 +4339,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gd.field_A:S",
+      "originalName": "field_A",
+      "to": "boundingRadius",
+      "evidence": "gd.java: Stored as a short after sqrt(max squared XYZ radius) plus 0.99 in calculateBounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gd.field_F:[I",
       "originalName": "field_F",
       "to": "verticesZ",
@@ -4336,6 +4357,13 @@
       "originalName": "field_G",
       "to": "verticesX",
       "evidence": "gd.java: ModelMesh retains the geometry and grouped animation bindings from MeshData before calculating face lighting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gd.field_H:[B",
+      "originalName": "field_H",
+      "to": "faceAlpha",
+      "evidence": "gd.java: Group transforms average a shared pivot, test vertex/face mask intersection, clamp unsigned alpha and mark colour lighting dirty; finishAnimation invalidates bounds.",
       "confidence": "reviewed"
     },
     {
@@ -4374,6 +4402,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gd.field_cb:I",
+      "originalName": "field_cb",
+      "to": "animationPivotZ",
+      "evidence": "gd.java: Group transforms average a shared pivot, test vertex/face mask intersection, clamp unsigned alpha and mark colour lighting dirty; finishAnimation invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gd.field_db:Z",
+      "originalName": "field_db",
+      "to": "faceColorsDirty",
+      "evidence": "gd.java: Group transforms average a shared pivot, test vertex/face mask intersection, clamp unsigned alpha and mark colour lighting dirty; finishAnimation invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gd.field_e:[S",
+      "originalName": "field_e",
+      "to": "vertexTransformMasks",
+      "evidence": "gd.java: Group transforms average a shared pivot, test vertex/face mask intersection, clamp unsigned alpha and mark colour lighting dirty; finishAnimation invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gd.field_g:[S",
+      "originalName": "field_g",
+      "to": "faceTransformMasks",
+      "evidence": "gd.java: Group transforms average a shared pivot, test vertex/face mask intersection, clamp unsigned alpha and mark colour lighting dirty; finishAnimation invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gd.field_i:[[I",
       "originalName": "field_i",
       "to": "faceGroups",
@@ -4388,10 +4444,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gd.field_k:Z",
+      "originalName": "field_k",
+      "to": "boundsValid",
+      "evidence": "gd.java: Group transforms average a shared pivot, test vertex/face mask intersection, clamp unsigned alpha and mark colour lighting dirty; finishAnimation invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gd.field_l:I",
       "originalName": "field_l",
       "to": "textureTriangleCount",
       "evidence": "gd.java: Counts retained type-zero texture triangles referenced by faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gd.field_mb:I",
+      "originalName": "field_mb",
+      "to": "animationPivotY",
+      "evidence": "gd.java: Group transforms average a shared pivot, test vertex/face mask intersection, clamp unsigned alpha and mark colour lighting dirty; finishAnimation invalidates bounds.",
       "confidence": "reviewed"
     },
     {
@@ -4427,6 +4497,13 @@
       "originalName": "field_r",
       "to": "faceColors",
       "evidence": "gd.java: ModelMesh retains the geometry and grouped animation bindings from MeshData before calculating face lighting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gd.field_v:I",
+      "originalName": "field_v",
+      "to": "animationPivotX",
+      "evidence": "gd.java: Group transforms average a shared pivot, test vertex/face mask intersection, clamp unsigned alpha and mark colour lighting dirty; finishAnimation invalidates bounds.",
       "confidence": "reviewed"
     },
     {
@@ -5046,6 +5123,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ht.field_b:[S",
+      "originalName": "field_b",
+      "to": "scratchTransformZ",
+      "evidence": "ht.java: Shared fixed-capacity frame decoder scratch arrays; completed frames copy their populated prefix into owned arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_c:[B",
+      "originalName": "field_c",
+      "to": "scratchInterpolationFlags",
+      "evidence": "ht.java: Shared fixed-capacity frame decoder scratch arrays; completed frames copy their populated prefix into owned arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ht.field_d:I",
       "originalName": "field_d",
       "to": "transformCount",
@@ -5053,10 +5144,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ht.field_e:[S",
+      "originalName": "field_e",
+      "to": "scratchTransformY",
+      "evidence": "ht.java: Shared fixed-capacity frame decoder scratch arrays; completed frames copy their populated prefix into owned arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ht.field_f:[S",
       "originalName": "field_f",
       "to": "transformY",
       "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_g:[S",
+      "originalName": "field_g",
+      "to": "scratchPivotSlots",
+      "evidence": "ht.java: Shared fixed-capacity frame decoder scratch arrays; completed frames copy their populated prefix into owned arrays.",
       "confidence": "reviewed"
     },
     {
@@ -5071,6 +5176,20 @@
       "originalName": "field_i",
       "to": "precedingPivotSlots",
       "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_j:[S",
+      "originalName": "field_j",
+      "to": "scratchTransformSlots",
+      "evidence": "ht.java: Shared fixed-capacity frame decoder scratch arrays; completed frames copy their populated prefix into owned arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_k:[S",
+      "originalName": "field_k",
+      "to": "scratchTransformX",
+      "evidence": "ht.java: Shared fixed-capacity frame decoder scratch arrays; completed frames copy their populated prefix into owned arrays.",
       "confidence": "reviewed"
     },
     {
@@ -5869,6 +5988,13 @@
       "originalName": "field_F",
       "to": "blockPosition",
       "evidence": "jf.java: Resource response assembly excludes padding from completion/progress and tracks 512-byte transport block position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jj.field_c:Lkl;",
+      "originalName": "field_c",
+      "to": "animationFramesArchive",
+      "evidence": "jj.java: AnimationFrameSet obtains its encoded frame groups and file IDs from this archive.",
       "confidence": "reviewed"
     },
     {
@@ -8322,6 +8448,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tm.field_a:Z",
+      "originalName": "field_a",
+      "to": "clipHorizontalSpans",
+      "evidence": "tm.java: Span methods clamp left/right endpoints to 0 and clipWidth when enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_c:I",
+      "originalName": "field_c",
+      "to": "projectionCenterX",
+      "evidence": "tm.java: Raster clip setup computes width/height, absolute row offsets and local projection centre; model transforms read 2048-entry trigonometric tables generated at scale 65536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_e:[I",
+      "originalName": "field_e",
+      "to": "cosineTable",
+      "evidence": "tm.java: Raster clip setup computes width/height, absolute row offsets and local projection centre; model transforms read 2048-entry trigonometric tables generated at scale 65536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_f:I",
+      "originalName": "field_f",
+      "to": "blendAlpha",
+      "evidence": "tm.java: Span drawing weights existing pixels by this value and new colours by 256 minus it; the original flat-span special case at 254 remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_h:[I",
+      "originalName": "field_h",
+      "to": "colorPalette",
+      "evidence": "tm.java: Shaded spans map interpolated packed colour indices to integer RGB pixels through this table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_j:I",
+      "originalName": "field_j",
+      "to": "projectionCenterY",
+      "evidence": "tm.java: Raster clip setup computes width/height, absolute row offsets and local projection centre; model transforms read 2048-entry trigonometric tables generated at scale 65536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_k:[I",
+      "originalName": "field_k",
+      "to": "scanlineOffsets",
+      "evidence": "tm.java: Raster clip setup computes width/height, absolute row offsets and local projection centre; model transforms read 2048-entry trigonometric tables generated at scale 65536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_l:I",
+      "originalName": "field_l",
+      "to": "clipWidth",
+      "evidence": "tm.java: Raster clip setup computes width/height, absolute row offsets and local projection centre; model transforms read 2048-entry trigonometric tables generated at scale 65536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_n:[I",
+      "originalName": "field_n",
+      "to": "sineTable",
+      "evidence": "tm.java: Raster clip setup computes width/height, absolute row offsets and local projection centre; model transforms read 2048-entry trigonometric tables generated at scale 65536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_o:Llh;",
+      "originalName": "field_o",
+      "to": "textureProvider",
+      "evidence": "tm.java: Raster clip setup computes width/height, absolute row offsets and local projection centre; model transforms read 2048-entry trigonometric tables generated at scale 65536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_q:I",
+      "originalName": "field_q",
+      "to": "clipHeight",
+      "evidence": "tm.java: Raster clip setup computes width/height, absolute row offsets and local projection centre; model transforms read 2048-entry trigonometric tables generated at scale 65536.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:to.field_v:Lik;",
       "originalName": "field_v",
       "to": "spell",
@@ -8571,6 +8774,13 @@
       "originalName": "field_d",
       "to": "battlefield",
       "evidence": "up.java: Condition constructor bindings and victory/defeat predicates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:up.field_e:Lkl;",
+      "originalName": "field_e",
+      "to": "animationSkeletonsArchive",
+      "evidence": "up.java: AnimationFrameSet resolves skeleton IDs through this archive’s flat-file contract.",
       "confidence": "reviewed"
     },
     {
@@ -9967,6 +10177,468 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:gd.a(I[IIIIZ)V#0",
+      "originalName": "var7",
+      "to": "groupCount",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#1",
+      "originalName": "var8",
+      "to": "pivotVertexCount",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#10",
+      "originalName": "var35",
+      "to": "pivotVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#11",
+      "originalName": "var36",
+      "to": "translatedVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#12",
+      "originalName": "var37",
+      "to": "rotatedVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#13",
+      "originalName": "var38",
+      "to": "scaledVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#14",
+      "originalName": "var39",
+      "to": "alphaFaces",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#15",
+      "originalName": "var40",
+      "to": "colorFaces",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#16",
+      "originalName": "var8Lifetime1",
+      "to": "translationGroupOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#17",
+      "originalName": "var8Lifetime2",
+      "to": "rotationGroupOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#18",
+      "originalName": "var8Lifetime3",
+      "to": "scaleGroupOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#19",
+      "originalName": "var8Lifetime4",
+      "to": "faceGroupOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#2",
+      "originalName": "var9",
+      "to": "pivotGroupOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#20",
+      "originalName": "var9Lifetime1",
+      "to": "translationGroupId",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#21",
+      "originalName": "var9Lifetime2",
+      "to": "rotationGroupId",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#22",
+      "originalName": "var9Lifetime3",
+      "to": "scaleGroupId",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#23",
+      "originalName": "var9Lifetime4",
+      "to": "faceGroupId",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#24",
+      "originalName": "var11Lifetime1",
+      "to": "rotationVertexOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#25",
+      "originalName": "var11Lifetime2",
+      "to": "scaleVertexOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#26",
+      "originalName": "var11Lifetime3",
+      "to": "faceOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#27",
+      "originalName": "var12Lifetime1",
+      "to": "translationVertexIndex",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#28",
+      "originalName": "var12Lifetime2",
+      "to": "rotationVertexIndex",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#29",
+      "originalName": "var12Lifetime3",
+      "to": "scaleVertexIndex",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#3",
+      "originalName": "var10",
+      "to": "pivotGroupId",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#30",
+      "originalName": "var12Lifetime4",
+      "to": "faceIndex",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#31",
+      "originalName": "var13Lifetime1",
+      "to": "sinZ",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#32",
+      "originalName": "var13Lifetime2",
+      "to": "packedColorOrAlpha",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#33",
+      "originalName": "var14Lifetime1",
+      "to": "hue",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#34",
+      "originalName": "var15Lifetime1",
+      "to": "saturation",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#35",
+      "originalName": "var14Lifetime2",
+      "to": "cosX",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#36",
+      "originalName": "var14Lifetime3",
+      "to": "cosY",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#37",
+      "originalName": "var15Lifetime2",
+      "to": "rotatedYAfterX",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#38",
+      "originalName": "var15Lifetime3",
+      "to": "rotatedXAfterY",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#39",
+      "originalName": "var13Lifetime1Lifetime1",
+      "to": "sinX",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#4",
+      "originalName": "var11",
+      "to": "translationVertexOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#40",
+      "originalName": "var13Lifetime1Lifetime2",
+      "to": "sinY",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#5",
+      "originalName": "var12",
+      "to": "pivotVertexOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#6",
+      "originalName": "var13",
+      "to": "pivotVertexIndex",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#7",
+      "originalName": "var14",
+      "to": "cosZ",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#8",
+      "originalName": "var15",
+      "to": "rotatedXAfterZ",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZ)V#9",
+      "originalName": "var16",
+      "to": "lightness",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#2",
+      "originalName": "var9",
+      "to": "groupCount",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#3",
+      "originalName": "var10",
+      "to": "pivotVertexCount",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#38",
+      "originalName": "var43",
+      "to": "matrixRotationVertexIndex",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#4",
+      "originalName": "var11",
+      "to": "pivotGroupOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#49",
+      "originalName": "var78",
+      "to": "pivotVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#5",
+      "originalName": "var12",
+      "to": "pivotGroupId",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#50",
+      "originalName": "var79",
+      "to": "translatedVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#51",
+      "originalName": "var80",
+      "to": "matrixRotationVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#52",
+      "originalName": "var81",
+      "to": "rotatedVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#53",
+      "originalName": "var82",
+      "to": "matrixScaleVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#54",
+      "originalName": "var83",
+      "to": "scaledVertices",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#55",
+      "originalName": "var84",
+      "to": "alphaFaces",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#56",
+      "originalName": "var85",
+      "to": "colorFaces",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#57",
+      "originalName": "var10Lifetime1",
+      "to": "transformedTranslationX",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#58",
+      "originalName": "var10Lifetime2",
+      "to": "groupOrdinalOrBasisOffsetX",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#59",
+      "originalName": "var11Lifetime1",
+      "to": "transformedTranslationY",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#6",
+      "originalName": "var13",
+      "to": "translationVertexOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#60",
+      "originalName": "var11Lifetime2",
+      "to": "groupIdOrBasisOffsetY",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#61",
+      "originalName": "var12Lifetime1",
+      "to": "transformedTranslationZ",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#62",
+      "originalName": "var12Lifetime2",
+      "to": "basisOffsetZ",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#64",
+      "originalName": "var14Lifetime1",
+      "to": "translationVertexIndex",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#68",
+      "originalName": "var10Lifetime1Lifetime1",
+      "to": "translationGroupOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#69",
+      "originalName": "var11Lifetime1Lifetime1",
+      "to": "translationGroupId",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#7",
+      "originalName": "var14",
+      "to": "pivotVertexOrdinal",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gd.a(I[IIIIZI[I)V#8",
+      "originalName": "var15",
+      "to": "pivotVertexIndex",
+      "evidence": "gd.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ha.a(BLvh;)V#1",
       "originalName": "var3_int",
       "to": "stepsRemaining",
@@ -10597,6 +11269,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ht.<init>([BLig;)V#1",
+      "originalName": "var3",
+      "to": "decodeFailure",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#10",
+      "originalName": "var12",
+      "to": "defaultComponent",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#11",
+      "originalName": "var13",
+      "to": "copiedTransform",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#12",
+      "originalName": "var14",
+      "to": "flagsPacket",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#13",
+      "originalName": "var9Lifetime1",
+      "to": "initialCopyCursor",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#2",
+      "originalName": "var4",
+      "to": "componentPacket",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#3",
+      "originalName": "var5",
+      "to": "encodedSlotCount",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#4",
+      "originalName": "var6",
+      "to": "decodedTransformCount",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#5",
+      "originalName": "var7",
+      "to": "latestPivotSlot",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#6",
+      "originalName": "var8",
+      "to": "lastEmittedPivotSlot",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#7",
+      "originalName": "var9",
+      "to": "slot",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#8",
+      "originalName": "var10",
+      "to": "transformType",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ht.<init>([BLig;)V#9",
+      "originalName": "var11",
+      "to": "componentFlags",
+      "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:hw.a(ILha;)Lbd;#0",
       "originalName": "var6",
       "to": "godIndex",
@@ -11108,6 +11871,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ig.<init>(I[B)V#0",
+      "originalName": "array$0",
+      "to": "groupIndices",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ig.<init>(I[B)V#1",
+      "originalName": "var5",
+      "to": "groupIndexOrdinal",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ig.<init>(I[B)V#10",
+      "originalName": "var4",
+      "to": "typeSlot",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ig.<init>(I[B)V#11",
+      "originalName": "var7",
+      "to": "packet",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ig.<init>(I[B)V#12",
+      "originalName": "var8",
+      "to": "packetAlias",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ig.<init>(I[B)V#13",
+      "originalName": "var4Lifetime1",
+      "to": "flagSlot",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ig.<init>(I[B)V#14",
+      "originalName": "var4Lifetime2",
+      "to": "maskSlot",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ig.<init>(I[B)V#15",
+      "originalName": "var4Lifetime3",
+      "to": "groupSizeSlot",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ig.<init>(I[B)V#16",
+      "originalName": "var4Lifetime4",
+      "to": "groupSlot",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ig.<init>(I[B)V#9",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:iu.f(I)V#10",
       "originalName": "var4",
       "to": "heightToShrink",
@@ -11567,6 +12400,258 @@
       "originalName": "var9",
       "to": "edgeACY",
       "evidence": "js.java: Reviewed lexical declaration ordinal and projection, fixed-point quaternion arithmetic, animation variants or face-normal/skin grouping data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#0",
+      "originalName": "var11",
+      "to": "initialFrameCursor",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#1",
+      "originalName": "var12",
+      "to": "initialNextFrameCursor",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#10",
+      "originalName": "var21",
+      "to": "framePivotSlot",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#11",
+      "originalName": "var22",
+      "to": "frameFlags",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#12",
+      "originalName": "var23",
+      "to": "nextX",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#13",
+      "originalName": "var24",
+      "to": "nextY",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#14",
+      "originalName": "var25",
+      "to": "nextZ",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#15",
+      "originalName": "var26",
+      "to": "nextPivotSlot",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#16",
+      "originalName": "var27",
+      "to": "nextFlags",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#17",
+      "originalName": "var28",
+      "to": "blendedX",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#18",
+      "originalName": "var29",
+      "to": "blendedY",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#19",
+      "originalName": "var30",
+      "to": "blendedZ",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#2",
+      "originalName": "var13",
+      "to": "initialSlotCursor",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#20",
+      "originalName": "var31",
+      "to": "wrappedXOrHueDelta",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#21",
+      "originalName": "var32",
+      "to": "wrappedYDelta",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#22",
+      "originalName": "var33",
+      "to": "wrappedZDelta",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#23",
+      "originalName": "var34",
+      "to": "frameCursor",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#24",
+      "originalName": "var35",
+      "to": "nextFrameCursor",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#25",
+      "originalName": "var36",
+      "to": "slot",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#26",
+      "originalName": "var11Lifetime1",
+      "to": "singleFrameCursor",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#27",
+      "originalName": "var12Lifetime1",
+      "to": "singleFrameSlot",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#28",
+      "originalName": "var13Lifetime1",
+      "to": "singleFramePivotSlot",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#29",
+      "originalName": "var14Lifetime1",
+      "to": "singleFramePivotMask",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#3",
+      "originalName": "var14",
+      "to": "frameHasSlot",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#30",
+      "originalName": "var31Lifetime1",
+      "to": "pivotMask",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#31",
+      "originalName": "var31Lifetime2",
+      "to": "slotMask",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#32",
+      "originalName": "var14Lifetime1Lifetime1",
+      "to": "singleFrameSlotMask",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#4",
+      "originalName": "var15",
+      "to": "nextFrameHasSlot",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#5",
+      "originalName": "var16",
+      "to": "defaultComponent",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#6",
+      "originalName": "var17",
+      "to": "transformType",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#7",
+      "originalName": "var18",
+      "to": "frameX",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#8",
+      "originalName": "var19",
+      "to": "frameY",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#9",
+      "originalName": "var20",
+      "to": "frameZ",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lwp;ILwp;IIIZ)V#0",
+      "originalName": "var8",
+      "to": "frame",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lwp;ILwp;IIIZ)V#1",
+      "originalName": "var9",
+      "to": "skeleton",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kk.a(Lwp;ILwp;IIIZ)V#2",
+      "originalName": "var10",
+      "to": "compatibleNextFrame",
+      "evidence": "kk.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
       "confidence": "reviewed"
     },
     {
@@ -13131,6 +14216,132 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:wp.f(B)Z#0",
+      "originalName": "var2",
+      "to": "allSkeletonsAvailable",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#1",
+      "originalName": "var3_int",
+      "to": "encodedFileOrdinal",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#10",
+      "originalName": "var13",
+      "to": "dependencyOrdinal",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#11",
+      "originalName": "var16",
+      "to": "dependencyHeader",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#12",
+      "originalName": "var27",
+      "to": "encodedFileIds",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#13",
+      "originalName": "var28",
+      "to": "dependencyBytes",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#14",
+      "originalName": "var29",
+      "to": "frameFileIds",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#15",
+      "originalName": "var30",
+      "to": "frameBytes",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#16",
+      "originalName": "var3_intLifetime1",
+      "to": "initialDependencyCursor",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#17",
+      "originalName": "var6Lifetime1",
+      "to": "decodedFileOrdinal",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#2",
+      "originalName": "var3",
+      "to": "loadedSkeletons",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#3",
+      "originalName": "var4",
+      "to": "frameCapacity",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#4",
+      "originalName": "var6",
+      "to": "requiredSkeletonId",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#5",
+      "originalName": "var8",
+      "to": "frameHeader",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#6",
+      "originalName": "var9",
+      "to": "skeletonId",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#7",
+      "originalName": "var10",
+      "to": "resolvedSkeleton",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#8",
+      "originalName": "var11",
+      "to": "cachedSkeleton",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wp.f(B)Z#9",
+      "originalName": "var12",
+      "to": "obfuscationControl",
+      "evidence": "wp.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wq.a(I)V#0",
       "originalName": "var2",
       "to": "squaredMagnitude",
@@ -14566,6 +15777,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gd.d()V",
+      "originalName": "d",
+      "to": "calculateBounds",
+      "evidence": "gd.java: Calculates the spherical radius over referenced vertices, retaining Java-int square overflow and the short radius representation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.e()V",
+      "originalName": "e",
+      "to": "refreshFaceLighting",
+      "evidence": "gd.java: Retains packed brightness and recomputes the colour-dependent shade portions after face colours change.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.a(B)Ljb;",
       "originalName": "a",
       "to": "selectCandidate",
@@ -15186,6 +16411,13 @@
       "originalName": "b",
       "to": "setBattleScreenPosition",
       "evidence": "hr.java: Uses modelProjectionCamera when screenY is -1; otherwise uses the given coordinates, then applies X+39 and Y+7 offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ht.a()V",
+      "originalName": "a",
+      "to": "releaseDecoderScratch",
+      "evidence": "ht.java: Clears shared decoder scratch arrays; subsequent nonempty decoding retains the original caught-failure behavior.",
       "confidence": "reviewed"
     },
     {
@@ -16166,6 +17398,27 @@
       "originalName": "b",
       "to": "isAtDestination",
       "evidence": "lf.java: Compares current and destination X/Y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lh.a(IB)I",
+      "originalName": "a",
+      "to": "getAverageTextureColor",
+      "evidence": "lh.java: Missing texture pixels fall back to shaded triangles using this packed colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lh.a(IFI)[I",
+      "originalName": "a",
+      "to": "getTexturePixels",
+      "evidence": "lh.java: Textured triangle drawing requests this integer pixel array with the current brightness argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lh.a(ZI)Z",
+      "originalName": "a",
+      "to": "hasTexture",
+      "evidence": "lh.java: Mesh construction retains a texture ID only when this availability query succeeds.",
       "confidence": "reviewed"
     },
     {
@@ -17566,6 +18819,48 @@
       "originalName": "d",
       "to": "unlink",
       "evidence": "tc.java: Updates neighbouring links and clears this node links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a()V",
+      "originalName": "a",
+      "to": "useRasterClip",
+      "evidence": "tm.java: Copies the current SoftwareRaster clip into the triangle rasterizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a(IIII)V",
+      "originalName": "a",
+      "to": "setClip",
+      "evidence": "tm.java: Sets clip dimensions, resets projection centre and fills absolute scanline offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "drawFlatTriangle",
+      "evidence": "tm.java: Rasterizes the triangle into absolute scanline rows, using one RGB colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a(IIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawShadedTriangle",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.c()V",
+      "originalName": "c",
+      "to": "centerProjection",
+      "evidence": "tm.java: Resets the local projection centre to half the clip dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.c(II)V",
+      "originalName": "c",
+      "to": "setProjectionCenter",
+      "evidence": "tm.java: Converts the supplied raster coordinates to coordinates relative to the first scanline offset.",
       "confidence": "reviewed"
     },
     {
@@ -21703,6 +22998,48 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gb.java: For equipped spell IDs 34/35/109 accepts an unspent player-zero unit; ID 36 accepts an unspent nonzero-owner unit. Other IDs reject.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.<init>(Ljs;IIIII)V#0",
+      "originalName": "param0",
+      "to": "source",
+      "evidence": "gd.java: Retains source geometry and builds face lighting from ambient, contrast and the supplied light vector.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.<init>(Ljs;IIIII)V#1",
+      "originalName": "param1",
+      "to": "ambient",
+      "evidence": "gd.java: Retains source geometry and builds face lighting from ambient, contrast and the supplied light vector.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.<init>(Ljs;IIIII)V#2",
+      "originalName": "param2",
+      "to": "contrast",
+      "evidence": "gd.java: Retains source geometry and builds face lighting from ambient, contrast and the supplied light vector.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.<init>(Ljs;IIIII)V#3",
+      "originalName": "param3",
+      "to": "lightX",
+      "evidence": "gd.java: Retains source geometry and builds face lighting from ambient, contrast and the supplied light vector.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.<init>(Ljs;IIIII)V#4",
+      "originalName": "param4",
+      "to": "lightY",
+      "evidence": "gd.java: Retains source geometry and builds face lighting from ambient, contrast and the supplied light vector.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.<init>(Ljs;IIIII)V#5",
+      "originalName": "param5",
+      "to": "lightZ",
+      "evidence": "gd.java: Retains source geometry and builds face lighting from ambient, contrast and the supplied light vector.",
       "confidence": "reviewed"
     },
     {
@@ -26018,6 +27355,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:lh.a(IB)I#0",
+      "originalName": "param0",
+      "to": "textureId",
+      "evidence": "lh.java: Missing texture pixels fall back to shaded triangles using this packed colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lh.a(IB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lh.java: Missing texture pixels fall back to shaded triangles using this packed colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lh.a(IFI)[I#0",
+      "originalName": "param0",
+      "to": "textureId",
+      "evidence": "lh.java: Textured triangle drawing requests this integer pixel array with the current brightness argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lh.a(IFI)[I#1",
+      "originalName": "param1",
+      "to": "brightness",
+      "evidence": "lh.java: Textured triangle drawing requests this integer pixel array with the current brightness argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lh.a(IFI)[I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "lh.java: Textured triangle drawing requests this integer pixel array with the current brightness argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lh.a(ZI)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lh.java: Mesh construction retains a texture ID only when this availability query succeeds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lh.a(ZI)Z#1",
+      "originalName": "param1",
+      "to": "textureId",
+      "evidence": "lh.java: Mesh construction retains a texture ID only when this availability query succeeds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ln.<init>([I[I)V#0",
       "originalName": "param0",
       "to": "parts",
@@ -29686,6 +31072,160 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tm.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "tm.java: Sets clip dimensions, resets projection centre and fills absolute scanline offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "tm.java: Sets clip dimensions, resets projection centre and fills absolute scanline offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "tm.java: Sets clip dimensions, resets projection centre and fills absolute scanline offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "bottom",
+      "evidence": "tm.java: Sets clip dimensions, resets projection centre and fills absolute scanline offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIII)V#0",
+      "originalName": "param0",
+      "to": "yA",
+      "evidence": "tm.java: Rasterizes the triangle into absolute scanline rows, using one RGB colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIII)V#1",
+      "originalName": "param1",
+      "to": "yB",
+      "evidence": "tm.java: Rasterizes the triangle into absolute scanline rows, using one RGB colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIII)V#2",
+      "originalName": "param2",
+      "to": "yC",
+      "evidence": "tm.java: Rasterizes the triangle into absolute scanline rows, using one RGB colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIII)V#3",
+      "originalName": "param3",
+      "to": "xA",
+      "evidence": "tm.java: Rasterizes the triangle into absolute scanline rows, using one RGB colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIII)V#4",
+      "originalName": "param4",
+      "to": "xB",
+      "evidence": "tm.java: Rasterizes the triangle into absolute scanline rows, using one RGB colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIII)V#5",
+      "originalName": "param5",
+      "to": "xC",
+      "evidence": "tm.java: Rasterizes the triangle into absolute scanline rows, using one RGB colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIII)V#6",
+      "originalName": "param6",
+      "to": "rgbColor",
+      "evidence": "tm.java: Rasterizes the triangle into absolute scanline rows, using one RGB colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "yA",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "yB",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "yC",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "xA",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "xB",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "xC",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "colorA",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "colorB",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(IIIIIIIII)V#8",
+      "originalName": "param8",
+      "to": "colorC",
+      "evidence": "tm.java: Interpolates per-vertex packed colour indices and draws through colorPalette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.c(II)V#0",
+      "originalName": "param0",
+      "to": "rasterX",
+      "evidence": "tm.java: Converts the supplied raster coordinates to coordinates relative to the first scanline offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.c(II)V#1",
+      "originalName": "param1",
+      "to": "rasterY",
+      "evidence": "tm.java: Converts the supplied raster coordinates to coordinates relative to the first scanline offset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tn.a(ZILbv;)J#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -31479,9 +33019,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "6187f069b1ea69607eb350fcb7d118f1c74c54e018e92d2e17589257bd8f656b",
+      "build-armiesofgielinor-rules.mjs": "765fe7bafc905eb075cbbc6c7f7cb7a6e201aa40eaa6ffe4a91c2544096a570b",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
-      "tests/test-armiesofgielinor-core.mjs": "f7a8d32f14a36ed9a1ec38af48c1cc66873ab7bcafff3992f83a41619f2a2bcd",
+      "tests/test-armiesofgielinor-core.mjs": "dcb4e2ec556ac744552673044c92d28cf243a64aa2c21b687bbb920b9973ffea",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

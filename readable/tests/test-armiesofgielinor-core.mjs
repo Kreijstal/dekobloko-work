@@ -444,7 +444,183 @@ check("mesh-construction/y-alias",get(mesh,constructed,"${f('gd','o','[I')}")==g
 check("mesh-construction/no-texture-indices",get(mesh,constructed,"${f('gd','nb','[I')}"),null);
 }finally{for(int i=0;i<3;i++)set(mesh,null,pivotFields[i],pivots[i]);}
 }
-static void verifyBattleModelData()throws Exception{verifyFixedQuaternions();verifyMeshPreprocessing();verifyUnitAnimationSelection();verifyBattleProjectionAndModelLifetime();verifyModelCreationFallback();verifyAnimationFrames();}
+static void verifyAnimationLoading()throws Exception{
+Class<?> index=Class.forName("${className('jm')}"),archive=Class.forName("${className('kl')}"),provider=Class.forName("${className('ew')}"),frameSet=Class.forName("${className('wp')}"),frame=Class.forName("${className('ht')}"),framesOwner=Class.forName("${className('jj')}"),skeletonsOwner=Class.forName("${className('up')}");
+Object savedFrames=get(framesOwner,null,"${f('jj','c','Lkl;')}"),savedSkeletons=get(skeletonsOwner,null,"${f('up','e','Lkl;')}");
+try{for(int retention=0;retention<=2;retention++)for(int compression:new int[]{0,2})for(boolean malformed:new boolean[]{false,true}){
+int[] fileIds=malformed?new int[]{1,4,9,12}:new int[]{1,4,9};
+byte[] frameIndexBytes=archiveContainer(archiveIndexBody(7,0,new int[]{2},new int[][]{fileIds}),0);
+Object frameIndex=make(index,new Class<?>[]{byte[].class,int.class,byte[].class},frameIndexBytes,archiveCrc(frameIndexBytes),null);
+byte[][] encodedFiles=malformed?new byte[][]{{0,0,6,1,1,65},{0,0,10,1,1,66},{0,0,6,1,1,67},{0,0,6,1,1}}:new byte[][]{{0,0,6,1,1,65},{0,0,10,1,1,66},{0,0,6,1,1,67}};
+byte[] encodedGroup=archiveContainer(archiveGroupData(new byte[][][]{encodedFiles}),compression);byte[][] frameGroups=new byte[3][];
+ArchiveFixtureProvider frameProvider=new ArchiveFixtureProvider((${className('jm')})frameIndex,frameGroups);
+Object frameArchive=make(archive,new Class<?>[]{provider,boolean.class,int.class},frameProvider,false,retention);
+byte[] skeletonIndexBytes=archiveContainer(archiveIndexBody(7,0,new int[]{6,10},new int[][]{{0},{0}}),0);
+Object skeletonIndex=make(index,new Class<?>[]{byte[].class,int.class,byte[].class},skeletonIndexBytes,archiveCrc(skeletonIndexBytes),null);
+byte[][] skeletonGroups=new byte[11][];skeletonGroups[10]=archiveContainer(new byte[]{1,3,0,(byte)255,(byte)255,1,0},compression);
+ArchiveFixtureProvider skeletonProvider=new ArchiveFixtureProvider((${className('jm')})skeletonIndex,skeletonGroups);
+Object skeletonArchive=make(archive,new Class<?>[]{provider,boolean.class,int.class},skeletonProvider,false,retention);
+set(framesOwner,null,"${f('jj','c','Lkl;')}",frameArchive);set(skeletonsOwner,null,"${f('up','e','Lkl;')}",skeletonArchive);
+Object setObject=make(frameSet,new Class<?>[]{int.class},2);String label="animation-loading/"+retention+"/"+compression+"/"+malformed;
+check(label+"/group-pending",call(frameSet,setObject,"${m('wp','f','(B)Z')}",new Class<?>[]{byte.class},(byte)-65),false);
+check(label+"/no-encoded-files",get(frameSet,setObject,"${f('wp','x','[[B')}"),null);
+frameGroups[2]=encodedGroup;
+check(label+"/skeleton-pending",call(frameSet,setObject,"${m('wp','f','(B)Z')}",new Class<?>[]{byte.class},(byte)-65),false);
+Object retained=get(frameSet,setObject,"${f('wp','x','[[B')}");check(label+"/retained-count",Array.getLength(retained),fileIds.length);
+check(label+"/not-published",get(frameSet,setObject,"${f('wp','A','[Lht;')}"),null);
+// The second dependency must be checked even though the first is pending.
+Object[] packed=(Object[])get(archive,skeletonArchive,"${f('kl','h','[Ljava/lang/Object;')}");check(label+"/later-dependency-requested",packed[10]!=null,true);
+int frameReads=frameProvider.groupReads;
+check(label+"/still-pending",call(frameSet,setObject,"${m('wp','f','(B)Z')}",new Class<?>[]{byte.class},(byte)-65),false);
+check(label+"/same-retained-files",get(frameSet,setObject,"${f('wp','x','[[B')}")==retained,true);check(label+"/no-frame-refetch",frameProvider.groupReads,frameReads);
+skeletonGroups[6]=archiveContainer(new byte[]{1,1,0,(byte)255,(byte)255,1,0},compression);
+check(label+"/ready",call(frameSet,setObject,"${m('wp','f','(B)Z')}",new Class<?>[]{byte.class},(byte)-65),true);
+check(label+"/released-encoded-files",get(frameSet,setObject,"${f('wp','x','[[B')}"),null);
+Object frames=get(frameSet,setObject,"${f('wp','A','[Lht;')}");check(label+"/sparse-capacity",Array.getLength(frames),malformed?13:10);
+for(int id=0;id<Array.getLength(frames);id++)check(label+"/slot/"+id,Array.get(frames,id)!=null,id==1||id==4||id==9||(malformed&&id==12));
+Object first=Array.get(frames,1),middle=Array.get(frames,4),last=Array.get(frames,9);
+check(label+"/shared-skeleton",get(frame,first,"${f('ht','n','Lig;')}")==get(frame,last,"${f('ht','n','Lig;')}"),true);
+check(label+"/different-skeleton",get(frame,first,"${f('ht','n','Lig;')}")!=get(frame,middle,"${f('ht','n','Lig;')}"),true);
+for(int ordinal=0;ordinal<3;ordinal++){Object value=Array.get(frames,fileIds[ordinal]);check(label+"/x/"+ordinal,((short[])get(frame,value,"${f('ht','l','[S')}"))[0],(short)(ordinal+1));check(label+"/y/"+ordinal,((short[])get(frame,value,"${f('ht','f','[S')}"))[0],(short)(ordinal==1?128:0));}
+if(malformed)check(label+"/malformed-frame-empty",get(frame,Array.get(frames,12),"${f('ht','d','I')}"),0);
+int skeletonReads=skeletonProvider.groupReads;
+check(label+"/already-ready",call(frameSet,setObject,"${m('wp','f','(B)Z')}",new Class<?>[]{byte.class},(byte)-65),true);
+check(label+"/same-frame-array",get(frameSet,setObject,"${f('wp','A','[Lht;')}")==frames,true);
+check(label+"/ready-no-frame-read",frameProvider.groupReads,frameReads);check(label+"/ready-no-skeleton-read",skeletonProvider.groupReads,skeletonReads);
+Object separate=make(frameSet,new Class<?>[]{int.class},2);check(label+"/separate-set-ready",call(frameSet,separate,"${m('wp','f','(B)Z')}",new Class<?>[]{byte.class},(byte)-65),true);
+Object separateFrames=get(frameSet,separate,"${f('wp','A','[Lht;')}");check(label+"/identity-is-per-set",get(frame,Array.get(separateFrames,1),"${f('ht','n','Lig;')}")!=get(frame,first,"${f('ht','n','Lig;')}"),true);
+}}finally{set(framesOwner,null,"${f('jj','c','Lkl;')}",savedFrames);set(skeletonsOwner,null,"${f('up','e','Lkl;')}",savedSkeletons);}
+}
+static int[] referenceRotate(int[] point,int[] angles){
+int[] result=point.clone();int[][] planes={{0,1,2,-1},{1,2,0,1},{0,2,1,-1}};
+for(int[] plane:planes){int angle=angles[plane[2]];if(angle==0)continue;int sine=(int)(65536.0*Math.sin(angle*0.0030679615)),cosine=(int)(65536.0*Math.cos(angle*0.0030679615));
+int a=result[plane[0]],b=result[plane[1]],sign=plane[3];result[plane[0]]=(cosine*a-sign*sine*b+32767)>>16;result[plane[1]]=(sign*sine*a+cosine*b+32767)>>16;}
+return result;
+}
+static void verifyMeshTransforms()throws Exception{
+Class<?> mesh=Class.forName("${className('gd')}"),model=Class.forName("${className('kk')}");
+String[] pivots={"${f('gd','v','I')}","${f('gd','mb','I')}","${f('gd','cb','I')}"};Object[] saved=new Object[4];for(int i=0;i<3;i++)saved[i]=get(mesh,null,pivots[i]);saved[3]=get(mesh,null,"${f('gd','y','Z')}");
+int[][] base={{-17,50,101,23},{21,-31,0,65},{4,9,-13,77}};
+short[] masks={1,2,0,3},baseColors={(short)(60*1024+6*128+110),(short)(3*1024+128+20),(short)(30*1024+7*128+127),(short)(63*1024)};
+byte[] baseAlpha={0,127,(byte)255,40};int[][] groupTable={{0,1},{2,3}};
+int[][] operations={{1,13,-7,29},{2,512,1024,1536},{3,192,64,-128},{3,0,128,256},{5,-20,0,0},{5,40,0,0},{7,7,3,-40},{7,-70,-8,200}};
+try{for(boolean withMasks:new boolean[]{false,true})for(int mask:new int[]{-1,0,1,2,3,65535})for(int[] groups:new int[][]{{0,1},{1,1},{7},{}})for(int[] operation:operations){
+Object value=unsafe.allocateInstance(mesh);set(mesh,value,"${f('gd','I','I')}",4);set(mesh,value,"${f('gd','S','[[I')}",groupTable);set(mesh,value,"${f('gd','i','[[I')}",groupTable);
+String[] coordinateFields={"${f('gd','G','[I')}","${f('gd','o','[I')}","${f('gd','F','[I')}"};int[][] expected=new int[3][];
+for(int axis=0;axis<3;axis++){expected[axis]=base[axis].clone();set(mesh,value,coordinateFields[axis],base[axis].clone());}
+set(mesh,value,"${f('gd','e','[S')}",withMasks?masks:null);set(mesh,value,"${f('gd','g','[S')}",withMasks?masks:null);set(mesh,value,"${f('gd','H','[B')}",baseAlpha.clone());set(mesh,value,"${f('gd','r','[S')}",baseColors.clone());set(mesh,value,"${f('gd','k','Z')}",true);set(mesh,null,"${f('gd','y','Z')}",false);
+int[] repetitions=new int[4];for(int group:groups)if(group<groupTable.length)for(int vertex:groupTable[group])if(mask<0||!withMasks||(masks[vertex]&mask)!=0)repetitions[vertex]++;
+int count=0;int[] centre={5,-3,9};for(int repetitionsOfVertex:repetitions)count+=repetitionsOfVertex;
+if(count>0)for(int axis=0;axis<3;axis++){int sum=0;for(int vertex=0;vertex<4;vertex++)sum+=base[axis][vertex]*repetitions[vertex];centre[axis]+=sum/count;}
+if(mask<0)call(mesh,value,"${m('gd','a','(I[IIIIZ)V')}",new Class<?>[]{int.class,int[].class,int.class,int.class,int.class,boolean.class},0,groups,5,-3,9,false);
+else call(mesh,value,"${m('gd','a','(I[IIIIZI[I)V')}",new Class<?>[]{int.class,int[].class,int.class,int.class,int.class,boolean.class,int.class,int[].class},0,groups,5,-3,9,false,mask,null);
+String label="mesh-transform/"+withMasks+"/"+mask+"/"+Arrays.toString(groups)+"/"+Arrays.toString(operation);
+for(int axis=0;axis<3;axis++)check(label+"/pivot/"+axis,get(mesh,null,pivots[axis]),centre[axis]);
+if(mask<0)call(mesh,value,"${m('gd','a','(I[IIIIZ)V')}",new Class<?>[]{int.class,int[].class,int.class,int.class,int.class,boolean.class},operation[0],groups,operation[1],operation[2],operation[3],false);
+else call(mesh,value,"${m('gd','a','(I[IIIIZI[I)V')}",new Class<?>[]{int.class,int[].class,int.class,int.class,int.class,boolean.class,int.class,int[].class},operation[0],groups,operation[1],operation[2],operation[3],false,mask,null);
+short[] colors=baseColors.clone();byte[] alpha=baseAlpha.clone();
+for(int vertex=0;vertex<4;vertex++)for(int repeat=0;repeat<repetitions[vertex];repeat++){
+switch(operation[0]){case 1:for(int axis=0;axis<3;axis++)expected[axis][vertex]+=operation[axis+1];break;
+case 2:int[] local={expected[0][vertex]-centre[0],expected[1][vertex]-centre[1],expected[2][vertex]-centre[2]};int[] rotated=referenceRotate(local,new int[]{operation[1],operation[2],operation[3]});for(int axis=0;axis<3;axis++)expected[axis][vertex]=rotated[axis]+centre[axis];break;
+case 3:for(int axis=0;axis<3;axis++)expected[axis][vertex]=(expected[axis][vertex]-centre[axis])*operation[axis+1]/128+centre[axis];break;
+case 5:alpha[vertex]=(byte)Math.max(0,Math.min(255,(alpha[vertex]&255)+8*operation[1]));break;
+case 7:int packed=colors[vertex]&65535,hue=Math.floorMod(packed/1024+operation[1],64),saturation=Math.max(0,Math.min(7,packed/128%8+operation[2])),lightness=Math.max(0,Math.min(127,packed%128+operation[3]));colors[vertex]=(short)(hue*1024+saturation*128+lightness);break;}
+}
+for(int axis=0;axis<3;axis++)check(label+"/coordinates/"+axis,Arrays.toString((int[])get(mesh,value,coordinateFields[axis])),Arrays.toString(expected[axis]));
+check(label+"/alpha",Arrays.toString((byte[])get(mesh,value,"${f('gd','H','[B')}")),Arrays.toString(alpha));check(label+"/colors",Arrays.toString((short[])get(mesh,value,"${f('gd','r','[S')}")),Arrays.toString(colors));
+boolean matchedGroup=false;for(int group:groups)if(group<groupTable.length)matchedGroup=true;
+check(label+"/colors-dirty",get(mesh,value,"${f('gd','db','Z')}"),operation[0]==7&&matchedGroup);
+call(model,value,"${m('kk','a','()V')}",new Class<?>[]{});check(label+"/colors-refreshed",get(mesh,value,"${f('gd','db','Z')}"),false);check(label+"/bounds-invalid",get(mesh,value,"${f('gd','k','Z')}"),false);
+}
+// Matrix translation transforms the displacement before mask/group routing.
+for(int[] matrix:new int[][]{{32768,0,0,0,32768,0,0,0,32768},{0,0,32768,32768,0,0,0,32768,0},{16384,0,0,0,16384,0,0,0,16384}})for(int mask:new int[]{0,1,2,3}){
+Object value=unsafe.allocateInstance(mesh);set(mesh,value,"${f('gd','S','[[I')}",groupTable);set(mesh,value,"${f('gd','e','[S')}",masks);
+String[] fields={"${f('gd','G','[I')}","${f('gd','o','[I')}","${f('gd','F','[I')}"};for(int axis=0;axis<3;axis++)set(mesh,value,fields[axis],base[axis].clone());
+call(mesh,value,"${m('gd','a','(I[IIIIZI[I)V')}",new Class<?>[]{int.class,int[].class,int.class,int.class,int.class,boolean.class,int.class,int[].class},1,new int[]{0,1},13,-7,29,false,mask,matrix);
+for(int axis=0;axis<3;axis++){int delta=(int)Math.floorDiv((long)matrix[axis*3]*13+(long)matrix[axis*3+1]*-7+(long)matrix[axis*3+2]*29+16384,32768);int[] expected=base[axis].clone();for(int vertex=0;vertex<4;vertex++)if((mask&masks[vertex])!=0)expected[vertex]+=delta;
+check("mesh-matrix-translation/"+Arrays.toString(matrix)+"/"+mask+"/"+axis,Arrays.toString((int[])get(mesh,value,fields[axis])),Arrays.toString(expected));}
+}
+}finally{for(int i=0;i<3;i++)set(mesh,null,pivots[i],saved[i]);set(mesh,null,"${f('gd','y','Z')}",saved[3]);}
+}
+static void verifyAnimationDecoderScratch()throws Exception{
+Class<?> frame=Class.forName("${className('ht')}"),skeleton=Class.forName("${className('ig')}");
+String[] scratch={"${f('ht','j','[S')}","${f('ht','k','[S')}","${f('ht','e','[S')}","${f('ht','b','[S')}","${f('ht','g','[S')}","${f('ht','c','[B')}"};Object[] saved=new Object[scratch.length];for(int i=0;i<scratch.length;i++)saved[i]=get(frame,null,scratch[i]);
+Object sk=make(skeleton,new Class<?>[]{int.class,byte[].class},6,new byte[]{1,1,0,(byte)255,(byte)255,1,0}),decoded=make(frame,new Class<?>[]{byte[].class,skeleton},new byte[]{0,0,6,1,1,69},sk);
+Object ownedX=get(frame,decoded,"${f('ht','l','[S')}");check("animation-scratch/owned-components",ownedX!=saved[1],true);
+try{call(frame,null,"${m('ht','a','()V')}",new Class<?>[]{});for(int i=0;i<scratch.length;i++)check("animation-scratch/released/"+i,get(frame,null,scratch[i]),null);
+Object afterRelease=make(frame,new Class<?>[]{byte[].class,skeleton},new byte[]{0,0,6,1,1,69},sk);check("animation-scratch/decoder-fails-closed",get(frame,afterRelease,"${f('ht','d','I')}"),0);
+check("animation-scratch/prior-frame-retained",Arrays.toString((short[])ownedX),"[5]");
+}finally{for(int i=0;i<scratch.length;i++)set(frame,null,scratch[i],saved[i]);}
+}
+static void verifyTriangleClip()throws Exception{
+Class<?> triangles=Class.forName("${className('tm')}"),raster=Class.forName("${className('qn')}");
+String[] triangleFields={"${f('tm','l','I')}","${f('tm','q','I')}","${f('tm','c','I')}","${f('tm','j','I')}","${f('tm','k','[I')}"};
+String[] rasterFields={"${f('qn','l','I')}","${f('qn','j','I')}","${f('qn','a','I')}","${f('qn','e','I')}","${f('qn','f','I')}"};
+Object[] savedTriangles=new Object[5],savedRaster=new Object[5];for(int i=0;i<5;i++){savedTriangles[i]=get(triangles,null,triangleFields[i]);savedRaster[i]=get(raster,null,rasterFields[i]);}
+int[] savedOffsets=((int[])savedTriangles[4]).clone();
+try{set(raster,null,rasterFields[0],200);for(int height:new int[]{16,1040}){
+call(triangles,null,"${m('tm','a','(IIII)V')}",new Class<?>[]{int.class,int.class,int.class,int.class},3,4,103,4+height);
+check("triangle-clip/width/"+height,get(triangles,null,triangleFields[0]),100);check("triangle-clip/height/"+height,get(triangles,null,triangleFields[1]),height);
+check("triangle-clip/center-x/"+height,get(triangles,null,triangleFields[2]),50);check("triangle-clip/center-y/"+height,get(triangles,null,triangleFields[3]),height/2);
+int[] offsets=(int[])get(triangles,null,triangleFields[4]);check("triangle-clip/capacity/"+height,offsets.length>=height,true);
+for(int row:new int[]{0,1,height-1})check("triangle-clip/offset/"+height+"/"+row,offsets[row],200*(4+row)+3);
+call(triangles,null,"${m('tm','c','(II)V')}",new Class<?>[]{int.class,int.class},47,63);check("triangle-clip/custom-x/"+height,get(triangles,null,triangleFields[2]),44);check("triangle-clip/custom-y/"+height,get(triangles,null,triangleFields[3]),59);
+call(triangles,null,"${m('tm','c','()V')}",new Class<?>[]{});check("triangle-clip/recenter-x/"+height,get(triangles,null,triangleFields[2]),50);check("triangle-clip/recenter-y/"+height,get(triangles,null,triangleFields[3]),height/2);
+}
+int[] clip={7,9,71,89};for(int i=0;i<4;i++)set(raster,null,rasterFields[i+1],clip[i]);call(triangles,null,"${m('tm','a','()V')}",new Class<?>[]{});
+check("triangle-clip/raster-width",get(triangles,null,triangleFields[0]),64);check("triangle-clip/raster-height",get(triangles,null,triangleFields[1]),80);
+check("triangle-clip/raster-offset",((int[])get(triangles,null,triangleFields[4]))[0],1807);
+}finally{for(int i=0;i<5;i++){set(triangles,null,triangleFields[i],savedTriangles[i]);set(raster,null,rasterFields[i],savedRaster[i]);}System.arraycopy(savedOffsets,0,(int[])savedTriangles[4],0,savedOffsets.length);}
+}
+static void verifyAnimationSlotSelection()throws Exception{
+Class<?> frame=Class.forName("${className('ht')}"),skeleton=Class.forName("${className('ig')}"),model=Class.forName("${className('kk')}");
+Object sk=unsafe.allocateInstance(skeleton);set(skeleton,sk,"${f('ig','o','I')}",3);set(skeleton,sk,"${f('ig','p','[I')}",new int[]{0,1,3});set(skeleton,sk,"${f('ig','l','[[I')}",new int[][]{{0},{1},{2}});set(skeleton,sk,"${f('ig','s','[I')}",new int[]{65535,3,2});
+Object from=unsafe.allocateInstance(frame),to=unsafe.allocateInstance(frame);
+for(Object value:new Object[]{from,to}){set(frame,value,"${f('ht','n','Lig;')}",sk);set(frame,value,"${f('ht','d','I')}",2);set(frame,value,"${f('ht','i','[S')}",new short[]{-1,-1});set(frame,value,"${f('ht','m','[B')}",new byte[2]);}
+set(frame,from,"${f('ht','a','[S')}",new short[]{0,1});set(frame,from,"${f('ht','l','[S')}",new short[]{4,5});set(frame,from,"${f('ht','f','[S')}",new short[]{6,-7});set(frame,from,"${f('ht','h','[S')}",new short[]{-2,9});
+set(frame,to,"${f('ht','a','[S')}",new short[]{0,2});set(frame,to,"${f('ht','l','[S')}",new short[]{8,256});set(frame,to,"${f('ht','f','[S')}",new short[]{10,64});set(frame,to,"${f('ht','h','[S')}",new short[]{2,128});
+for(boolean interpolate:new boolean[]{false,true})for(boolean selected:new boolean[]{false,true})for(int mask:new int[]{0,1,2,3,65535}){
+RecordingMesh sink=new RecordingMesh();call(model,sink,"${m('kk','a','(Lig;Lht;Lht;II[ZZZI[I)V')}",new Class<?>[]{skeleton,frame,frame,int.class,int.class,boolean[].class,boolean.class,boolean.class,int.class,int[].class},sk,from,interpolate?to:null,2,4,new boolean[]{true,false,true},selected,false,mask,null);
+ArrayList<String> expected=new ArrayList<>();int pivotMask=65535&mask;
+expected.add("0:[0]:"+(interpolate?"6,8,0":"4,6,-2")+(pivotMask==65535?"":":mask="+pivotMask));
+if(!selected)expected.add("1:[1]:"+(interpolate?"3,-4,5":"5,-7,9")+":mask="+(mask&3));
+if(interpolate&&selected)expected.add("3:[2]:192,96,128:mask="+(mask&2));
+check("animation-selection/"+interpolate+"/"+selected+"/"+mask,sink.transforms.toString(),expected.toString());
+}
+}
+static void verifyTrianglePixels()throws Exception{
+Class<?> triangles=Class.forName("${className('tm')}"),raster=Class.forName("${className('qn')}");
+String[] triangleFields={"${f('tm','l','I')}","${f('tm','q','I')}","${f('tm','c','I')}","${f('tm','j','I')}","${f('tm','k','[I')}","${f('tm','f','I')}","${f('tm','a','Z')}","${f('tm','h','[I')}"};
+Object[] saved=new Object[triangleFields.length];for(int i=0;i<saved.length;i++)saved[i]=get(triangles,null,triangleFields[i]);int[] savedOffsets=((int[])saved[4]).clone();
+Object savedPixels=get(raster,null,"${f('qn','d','[I')}"),savedWidth=get(raster,null,"${f('qn','l','I')}");
+try{set(raster,null,"${f('qn','l','I')}",40);set(triangles,null,"${f('tm','a','Z')}",true);call(triangles,null,"${m('tm','a','(IIII)V')}",new Class<?>[]{int.class,int.class,int.class,int.class},4,5,36,37);
+int rgb=0x123456,background=0x101010;int[] palette=new int[64];palette[37]=rgb;set(triangles,null,"${f('tm','h','[I')}",palette);
+int[][] points={{3,3},{27,3},{3,27}},permutations={{0,1,2},{0,2,1},{1,0,2},{1,2,0},{2,0,1},{2,1,0}};
+for(boolean shaded:new boolean[]{false,true})for(int alpha:new int[]{0,128,255})for(int permutation=0;permutation<permutations.length;permutation++){
+int[] pixels=new int[1600];Arrays.fill(pixels,background);set(raster,null,"${f('qn','d','[I')}",pixels);set(triangles,null,"${f('tm','f','I')}",alpha);int[] order=permutations[permutation];
+int y0=points[order[0]][1],y1=points[order[1]][1],y2=points[order[2]][1],x0=points[order[0]][0],x1=points[order[1]][0],x2=points[order[2]][0];
+if(shaded)call(triangles,null,"${m('tm','a','(IIIIIIIII)V')}",new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class,int.class,int.class,int.class},y0,y1,y2,x0,x1,x2,37,37,37);
+else call(triangles,null,"${m('tm','a','(IIIIIII)V')}",new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class,int.class},y0,y1,y2,x0,x1,x2,rgb);
+int expected=0;for(int shift:new int[]{0,8,16})expected|=(((rgb>>>shift&255)*(256-alpha)/256)+((background>>>shift&255)*alpha/256))<<shift;
+String label="triangle-pixels/"+shaded+"/"+alpha+"/"+permutation;
+for(int[] local:new int[][]{{7,7},{7,12},{12,7}})check(label+"/inside/"+local[0]+"/"+local[1],pixels[(local[1]+5)*40+local[0]+4],expected);
+for(int[] local:new int[][]{{0,0},{24,24},{30,10},{10,30}})check(label+"/outside/"+local[0]+"/"+local[1],pixels[(local[1]+5)*40+local[0]+4],background);
+check(label+"/before-clip",pixels[0],background);
+// Compare every produced pixel in the raw/named trace, including edges.
+System.out.println(label+"/pixels:"+Arrays.toString(pixels));
+}
+}finally{for(int i=0;i<saved.length;i++)set(triangles,null,triangleFields[i],saved[i]);System.arraycopy(savedOffsets,0,(int[])saved[4],0,savedOffsets.length);set(raster,null,"${f('qn','d','[I')}",savedPixels);set(raster,null,"${f('qn','l','I')}",savedWidth);}
+}
+static void verifyModelBounds()throws Exception{
+Class<?> mesh=Class.forName("${className('gd')}");int[][] points={{5,12,0,13},{-5,-12,0,13},{1,1,1,2},{32767,32767,0,-19196},{50000,0,0,0},{32767,32767,32767,0}};
+for(int fixture=0;fixture<=points.length;fixture++){
+int[] point=fixture==points.length?new int[4]:points[fixture];Object value=unsafe.allocateInstance(mesh);set(mesh,value,"${f('gd','I','I')}",2);set(mesh,value,"${f('gd','p','I')}",fixture==points.length?0:1);
+String[] fields={"${f('gd','G','[I')}","${f('gd','o','[I')}","${f('gd','F','[I')}"};for(int axis=0;axis<3;axis++)set(mesh,value,fields[axis],new int[]{point[axis],40000});
+call(mesh,value,"${m('gd','d','()V')}",new Class<?>[]{});check("mesh-bounds/radius/"+fixture,get(mesh,value,"${f('gd','A','S')}"),(short)point[3]);check("mesh-bounds/valid/"+fixture,get(mesh,value,"${f('gd','k','Z')}"),true);
+call(mesh,value,"${m('gd','b','(III)V')}",new Class<?>[]{int.class,int.class,int.class},128,128,128);check("mesh-bounds/scale-invalidates/"+fixture,get(mesh,value,"${f('gd','k','Z')}"),false);
+}
+}
+static void verifyBattleModelData()throws Exception{verifyFixedQuaternions();verifyMeshPreprocessing();verifyUnitAnimationSelection();verifyBattleProjectionAndModelLifetime();verifyModelCreationFallback();verifyAnimationFrames();verifyAnimationLoading();verifyMeshTransforms();verifyAnimationDecoderScratch();verifyTriangleClip();verifyAnimationSlotSelection();verifyTrianglePixels();verifyModelBounds();}
 
 public static void main(String[] args)throws Exception{
 Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);
@@ -1211,7 +1387,7 @@ System.out.println("checks:"+cases);
   assert.deepEqual(outputs[1],outputs[0],'Named gameplay core differs from pinned raw Java');
   const checks=Number(outputs[0].toString().trimEnd().split('\n').at(-1).split(':')[1]);
   assert.ok(checks>900);
-  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,animationFrameDecodingFixtures:true,animationBlendFixtures:true,modelCoordinateStorageFixtures:true,traceSha256:digest(outputs[0])};
+  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,animationFrameDecodingFixtures:true,animationBlendFixtures:true,modelCoordinateStorageFixtures:true,animationArchiveLoadingFixtures:true,maskedMeshTransformFixtures:true,matrixTranslationFixtures:true,animationSlotSelectionFixtures:true,animationDecoderScratchFixtures:true,triangleClipFixtures:true,flatAndUniformShadedTriangleFixtures:true,modelBoundsFixtures:true,traceSha256:digest(outputs[0])};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-core-check-'));
