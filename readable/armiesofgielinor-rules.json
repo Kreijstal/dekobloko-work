@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 46,
+  "version": 47,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2232,6 +2232,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gr",
+      "originalName": "gr",
+      "to": "SoundEnvelope",
+      "evidence": "gr.java: Piecewise fixed-point amplitude/time segments, waveform type and start/end scalars; mutable reset/step cursor shared by synthesis envelopes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gs",
       "originalName": "gs",
       "to": "DropdownArrowPainter",
@@ -2306,6 +2313,13 @@
       "originalName": "ht",
       "to": "AnimationFrame",
       "evidence": "ht.java: Sparse signed-smart transform components, preceding pivot slots and interpolation flags decoded against a shared skeleton.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hu",
+      "originalName": "hu",
+      "to": "SynthesizerVoice",
+      "evidence": "hu.java: Pitch/amplitude envelopes, five oscillator slots, optional modulation/gating/echo and recursive filtering into shared signed PCM scratch.",
       "confidence": "reviewed"
     },
     {
@@ -2537,6 +2551,13 @@
       "originalName": "ks",
       "to": "ResourceRequest",
       "evidence": "ks.java: Abstract pending/data/progress contract shared by disk and network requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lc",
+      "originalName": "lc",
+      "to": "SoundFilter",
+      "evidence": "lc.java: Two-channel pole-pair filter endpoints and gain interpolation, producing shared float and 16.16 coefficient scratch.",
       "confidence": "reviewed"
     },
     {
@@ -5858,6 +5879,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gr.field_a:I",
+      "originalName": "field_a",
+      "to": "currentLevel",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_b:I",
+      "originalName": "field_b",
+      "to": "segmentEndSample",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_c:I",
+      "originalName": "field_c",
+      "to": "endValue",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_d:I",
+      "originalName": "field_d",
+      "to": "waveformType",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_e:I",
+      "originalName": "field_e",
+      "to": "levelStep",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_f:I",
+      "originalName": "field_f",
+      "to": "sampleIndex",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_g:I",
+      "originalName": "field_g",
+      "to": "segmentCount",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_h:I",
+      "originalName": "field_h",
+      "to": "nextSegmentIndex",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_i:[I",
+      "originalName": "field_i",
+      "to": "segmentLevels",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_j:[I",
+      "originalName": "field_j",
+      "to": "segmentTimes",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_k:I",
+      "originalName": "field_k",
+      "to": "startValue",
+      "evidence": "gr.java: Envelope header, segment decode and fixed-point stepping identify scalar endpoints, 0..65535 times/levels and mutable cursor state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ha.field_B:[[I",
       "originalName": "field_B",
       "to": "equippedSpellIds",
@@ -6744,6 +6842,181 @@
       "originalName": "field_n",
       "to": "skeleton",
       "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_a:Lgr;",
+      "originalName": "field_a",
+      "to": "amplitudeEnvelope",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_b:[I",
+      "originalName": "field_b",
+      "to": "oscillatorVolumes",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_c:[I",
+      "originalName": "field_c",
+      "to": "sampleScratch",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_d:[I",
+      "originalName": "field_d",
+      "to": "oscillatorBasePitchSteps",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_e:I",
+      "originalName": "field_e",
+      "to": "offsetMilliseconds",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_f:[I",
+      "originalName": "field_f",
+      "to": "oscillatorSampleDelays",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_g:Lgr;",
+      "originalName": "field_g",
+      "to": "pitchEnvelope",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_h:Lgr;",
+      "originalName": "field_h",
+      "to": "gateClosedEnvelope",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_i:[I",
+      "originalName": "field_i",
+      "to": "oscillatorPitchOffsets",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_j:[I",
+      "originalName": "field_j",
+      "to": "noiseTable",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_k:I",
+      "originalName": "field_k",
+      "to": "echoFeedbackPercent",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_l:Lgr;",
+      "originalName": "field_l",
+      "to": "gateOpenEnvelope",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_m:Lgr;",
+      "originalName": "field_m",
+      "to": "pitchModulationAmplitude",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_n:Lgr;",
+      "originalName": "field_n",
+      "to": "pitchModulationEnvelope",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_o:[I",
+      "originalName": "field_o",
+      "to": "oscillatorAmplitudeScales",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_p:I",
+      "originalName": "field_p",
+      "to": "echoDelayMilliseconds",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_q:[I",
+      "originalName": "field_q",
+      "to": "oscillatorDelays",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_r:I",
+      "originalName": "field_r",
+      "to": "durationMilliseconds",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_s:[I",
+      "originalName": "field_s",
+      "to": "sineTable",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_t:Llc;",
+      "originalName": "field_t",
+      "to": "filter",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_u:Lgr;",
+      "originalName": "field_u",
+      "to": "volumeModulationAmplitude",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_v:Lgr;",
+      "originalName": "field_v",
+      "to": "filterEnvelope",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_w:[I",
+      "originalName": "field_w",
+      "to": "oscillatorPhases",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_x:Lgr;",
+      "originalName": "field_x",
+      "to": "volumeModulationEnvelope",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hu.field_y:[I",
+      "originalName": "field_y",
+      "to": "oscillatorPitchSteps",
+      "evidence": "hu.java: Decode assignments and synthesis consumers identify oscillator/envelope/echo/filter state and shared scratch buffers; waveform noise is seeded with zero.",
       "confidence": "reviewed"
     },
     {
@@ -8704,6 +8977,62 @@
       "originalName": "field_c",
       "to": "activeCampaignMission",
       "evidence": "l.java: Campaign startup, progress reporting, result processing and quicksave paths share this selected mission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_a:[[I",
+      "originalName": "field_a",
+      "to": "coefficients",
+      "evidence": "lc.java: Filter decode and pole-pair polynomial expansion distinguish frequency/attenuation/gain endpoints and shared float/16.16 coefficient scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_b:[[[I",
+      "originalName": "field_b",
+      "to": "frequencyEndpoints",
+      "evidence": "lc.java: Filter decode and pole-pair polynomial expansion distinguish frequency/attenuation/gain endpoints and shared float/16.16 coefficient scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_c:[[[I",
+      "originalName": "field_c",
+      "to": "attenuationEndpoints",
+      "evidence": "lc.java: Filter decode and pole-pair polynomial expansion distinguish frequency/attenuation/gain endpoints and shared float/16.16 coefficient scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_d:[I",
+      "originalName": "field_d",
+      "to": "pairCounts",
+      "evidence": "lc.java: Filter decode and pole-pair polynomial expansion distinguish frequency/attenuation/gain endpoints and shared float/16.16 coefficient scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_e:F",
+      "originalName": "field_e",
+      "to": "forwardGain",
+      "evidence": "lc.java: Filter decode and pole-pair polynomial expansion distinguish frequency/attenuation/gain endpoints and shared float/16.16 coefficient scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_f:I",
+      "originalName": "field_f",
+      "to": "forwardMultiplier",
+      "evidence": "lc.java: Filter decode and pole-pair polynomial expansion distinguish frequency/attenuation/gain endpoints and shared float/16.16 coefficient scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_g:[[F",
+      "originalName": "field_g",
+      "to": "coefficientScratch",
+      "evidence": "lc.java: Filter decode and pole-pair polynomial expansion distinguish frequency/attenuation/gain endpoints and shared float/16.16 coefficient scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_h:[I",
+      "originalName": "field_h",
+      "to": "gainEndpoints",
+      "evidence": "lc.java: Filter decode and pole-pair polynomial expansion distinguish frequency/attenuation/gain endpoints and shared float/16.16 coefficient scratch.",
       "confidence": "reviewed"
     },
     {
@@ -16022,6 +16351,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:gr.a(I)I#0",
+      "originalName": "fieldTemp$0",
+      "to": "segmentIndex",
+      "evidence": "gr.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gr.b(Lvh;)V#0",
+      "originalName": "var2",
+      "to": "segmentIndex",
+      "evidence": "gr.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ha.a(BILne;)I#0",
       "originalName": "var4_int",
       "to": "checksum",
@@ -16943,6 +17286,349 @@
       "originalName": "var11",
       "to": "componentFlags",
       "evidence": "ht.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.<initializer>()V#0",
+      "originalName": "var1",
+      "to": "noiseIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.<initializer>()V#1",
+      "originalName": "var1Lifetime1",
+      "to": "sineIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.<initializer>()V#2",
+      "originalName": "var0",
+      "to": "noiseRandom",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#0",
+      "originalName": "stackIn_41_0",
+      "to": "nextGateClosed",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#1",
+      "originalName": "var3",
+      "to": "samplesPerMillisecond",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#10",
+      "originalName": "var13",
+      "to": "amplitudeLevel",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#11",
+      "originalName": "var14",
+      "to": "pitchModulationLevel",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#12",
+      "originalName": "var15",
+      "to": "pitchModulationDepth",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#13",
+      "originalName": "var16",
+      "to": "gateOpenLevel",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#14",
+      "originalName": "var17",
+      "to": "initialForwardCoefficientIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#15",
+      "originalName": "var11Lifetime1",
+      "to": "sampleIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#16",
+      "originalName": "var11Lifetime2",
+      "to": "gateCounter",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#17",
+      "originalName": "var11Lifetime3",
+      "to": "echoSampleDelay",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#18",
+      "originalName": "var11Lifetime4",
+      "to": "filterLevel",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#19",
+      "originalName": "var11Lifetime5",
+      "to": "clampSampleIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#2",
+      "originalName": "var5",
+      "to": "pitchModulationStep",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#20",
+      "originalName": "var12Lifetime1",
+      "to": "initialGateThreshold",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#21",
+      "originalName": "var12Lifetime2",
+      "to": "echoSampleIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#22",
+      "originalName": "var12Lifetime3",
+      "to": "forwardCoefficientCount",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#23",
+      "originalName": "var13Lifetime1",
+      "to": "gateClosed",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#24",
+      "originalName": "var13Lifetime2",
+      "to": "feedbackCoefficientCount",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#25",
+      "originalName": "var14Lifetime1",
+      "to": "gateSampleIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#26",
+      "originalName": "var14Lifetime2",
+      "to": "filterSampleIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#27",
+      "originalName": "var15Lifetime1",
+      "to": "gateClosedLevel",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#28",
+      "originalName": "var15Lifetime2",
+      "to": "initialFilterEnd",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#29",
+      "originalName": "var16Lifetime1",
+      "to": "initialFilteredSample",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#3",
+      "originalName": "var6",
+      "to": "pitchModulationBaseStep",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#30",
+      "originalName": "var14Lifetime3",
+      "to": "volumeModulationLevel",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#31",
+      "originalName": "var14Lifetime4",
+      "to": "mixOscillatorIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#32",
+      "originalName": "var15Lifetime3",
+      "to": "volumeModulationDepth",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#33",
+      "originalName": "var15Lifetime4",
+      "to": "delayedSampleIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#34",
+      "originalName": "var17Lifetime1",
+      "to": "forwardCoefficientIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#35",
+      "originalName": "var17Lifetime2",
+      "to": "tailForwardCoefficientIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#36",
+      "originalName": "var12Lifetime1Lifetime1",
+      "to": "gateThreshold",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#37",
+      "originalName": "var15Lifetime2Lifetime1",
+      "to": "filterBlockEnd",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#38",
+      "originalName": "var16Lifetime1Lifetime1",
+      "to": "filteredSample",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#39",
+      "originalName": "var16Lifetime1Lifetime2",
+      "to": "tailFilteredSample",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#4",
+      "originalName": "var7",
+      "to": "pitchModulationPhase",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#40",
+      "originalName": "var17Lifetime3",
+      "to": "initialFeedbackCoefficientIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#41",
+      "originalName": "var17Lifetime1Lifetime1",
+      "to": "feedbackCoefficientIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#42",
+      "originalName": "var17Lifetime2Lifetime1",
+      "to": "tailFeedbackCoefficientIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#5",
+      "originalName": "var8",
+      "to": "volumeModulationStep",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#6",
+      "originalName": "var9",
+      "to": "volumeModulationBaseStep",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#7",
+      "originalName": "var10",
+      "to": "volumeModulationPhase",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#8",
+      "originalName": "var11",
+      "to": "oscillatorIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(II)[I#9",
+      "originalName": "var12",
+      "to": "pitchLevel",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(Lvh;)V#0",
+      "originalName": "var3",
+      "to": "oscillatorIndex",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(Lvh;)V#1",
+      "originalName": "var4",
+      "to": "oscillatorVolume",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hu.a(Lvh;)V#2",
+      "originalName": "var2",
+      "to": "envelopeMarker",
+      "evidence": "hu.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -19141,6 +19827,174 @@
       "originalName": "var5",
       "to": "byteStorage",
       "evidence": "ko.java: Reviewed lexical declaration ordinal and archive name resolution, chunk sizing/copying, XTEA round arithmetic, progress or byte storage data flow. Reused size/offset roles retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(F)F#0",
+      "originalName": "var1",
+      "to": "frequencyHz",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#0",
+      "originalName": "var5",
+      "to": "pairLinearCoefficient",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#1",
+      "originalName": "var6",
+      "to": "pairQuadraticCoefficient",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#10",
+      "originalName": "var3Lifetime2",
+      "to": "pairRadius",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#11",
+      "originalName": "var4Lifetime1",
+      "to": "gainCoefficientIndex",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#12",
+      "originalName": "var4Lifetime2",
+      "to": "fixedCoefficientIndex",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#2",
+      "originalName": "var7",
+      "to": "coefficientIndex",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#3",
+      "originalName": "dupTemp$0",
+      "to": "pairCoefficients",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#4",
+      "originalName": "dupTemp$1",
+      "to": "quadraticCoefficients",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#5",
+      "originalName": "dupTemp$2",
+      "to": "linearCoefficients",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#6",
+      "originalName": "dupTemp$3",
+      "to": "gainCoefficients",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#7",
+      "originalName": "var3",
+      "to": "gainDecibels",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#8",
+      "originalName": "var4",
+      "to": "pairIndex",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IF)I#9",
+      "originalName": "var3Lifetime1",
+      "to": "firstPairRadius",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(IIF)F#0",
+      "originalName": "var4",
+      "to": "attenuationDecibels",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(Lvh;Lgr;)V#0",
+      "originalName": "var3",
+      "to": "packedPairCounts",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(Lvh;Lgr;)V#1",
+      "originalName": "var4",
+      "to": "endpointOverrideMask",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(Lvh;Lgr;)V#2",
+      "originalName": "var5",
+      "to": "channel",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(Lvh;Lgr;)V#3",
+      "originalName": "var6",
+      "to": "pairIndex",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(Lvh;Lgr;)V#4",
+      "originalName": "var7",
+      "to": "endpointPairIndex",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(Lvh;Lgr;)V#5",
+      "originalName": "var11",
+      "to": "zeroGainEndpoints",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(Lvh;Lgr;)V#6",
+      "originalName": "var5Lifetime1",
+      "to": "endpointChannel",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.a(Lvh;Lgr;)V#7",
+      "originalName": "var6Lifetime1",
+      "to": "initialEndpointPairIndex",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lc.b(IIF)F#0",
+      "originalName": "var4",
+      "to": "frequencyOctaves",
+      "evidence": "lc.java: Exact declaration and consumers in synthesized voice/envelope/filter data flow; diagnostic lifetimes remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -25521,6 +26375,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gr.a()V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "gr.java: Zeros all five mutable step cursor fields without replacing header/segment data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(I)I",
+      "originalName": "a",
+      "to": "step",
+      "evidence": "gr.java: Interpolates segment levels using a 15-bit fraction and truncated segment times; holds the last level after the final boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(Lvh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "gr.java: Reads waveform/start/end followed by segment arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.b(Lvh;)V",
+      "originalName": "b",
+      "to": "decodeSegments",
+      "evidence": "gr.java: Reads unsigned segment times/levels without resetting the existing step cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gs.a(B[I)Z",
       "originalName": "a",
       "to": "pollIncomingPacket",
@@ -26351,6 +27233,34 @@
       "originalName": "a",
       "to": "releaseDecoderScratch",
       "evidence": "ht.java: Clears shared decoder scratch arrays; subsequent nonempty decoding retains the original caught-failure behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hu.a()V",
+      "originalName": "a",
+      "to": "releaseScratch",
+      "evidence": "hu.java: Clears shared PCM, waveform and oscillator scratch references.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hu.a(II)[I",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "hu.java: Clears the requested shared scratch prefix, applies envelopes/oscillators/gate/echo/filter and clamps signed 16-bit samples; durations below ten milliseconds return silence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hu.a(III)I",
+      "originalName": "a",
+      "to": "evaluateWaveform",
+      "evidence": "hu.java: Evaluates square/sine/saw/noise for codes 1–4; unsupported waveform codes return zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hu.a(Lvh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "hu.java: Decodes envelopes, oscillator smart values, echo, duration/offset and filter; the ten-entry wire loop retains five-slot overflow behavior.",
       "confidence": "reviewed"
     },
     {
@@ -27639,6 +28549,48 @@
       "originalName": "b",
       "to": "openPublicTextChat",
       "evidence": "la.java: Selects outgoing channel 0 and enables text chat for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a()V",
+      "originalName": "a",
+      "to": "releaseScratch",
+      "evidence": "lc.java: Clears shared float/integer coefficient buffers; retained gain scalars are unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(F)F",
+      "originalName": "a",
+      "to": "angularFrequency",
+      "evidence": "lc.java: Converts octave-scaled frequency to radians at the 22050-Hz synthesis sample rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(IF)I",
+      "originalName": "a",
+      "to": "computeCoefficients",
+      "evidence": "lc.java: Interpolates gain and pole-pair factors, expands their polynomial and stores 16.16 coefficients; channel zero updates forward gain even when empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(IIF)F",
+      "originalName": "a",
+      "to": "interpolateRadius",
+      "evidence": "lc.java: Converts interpolated attenuation endpoints to a pole radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(Lvh;Lgr;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "lc.java: Reads packed pair counts, endpoint gains and selective endpoint overrides; conditionally decodes envelope segments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.b(IIF)F",
+      "originalName": "b",
+      "to": "interpolateFrequency",
+      "evidence": "lc.java: Interpolates octave frequency endpoints and converts to angular frequency.",
       "confidence": "reviewed"
     },
     {
@@ -37162,6 +38114,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gr.a(I)I#0",
+      "originalName": "param0",
+      "to": "sampleCount",
+      "evidence": "gr.java: Interpolates segment levels using a 15-bit fraction and truncated segment times; holds the last level after the final boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(Lvh;)V#0",
+      "originalName": "param0",
+      "to": "buffer",
+      "evidence": "gr.java: Reads waveform/start/end followed by segment arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.b(Lvh;)V#0",
+      "originalName": "param0",
+      "to": "buffer",
+      "evidence": "gr.java: Reads unsigned segment times/levels without resetting the existing step cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:gs.a(B[I)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -39518,6 +40491,48 @@
       "originalName": "param1",
       "to": "skeleton",
       "evidence": "ht.java: Decodes sparse transforms against the supplied skeleton; invalid/trailing input sets transformCount to zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hu.a(II)[I#0",
+      "originalName": "param0",
+      "to": "sampleCount",
+      "evidence": "hu.java: Clears the requested shared scratch prefix, applies envelopes/oscillators/gate/echo/filter and clamps signed 16-bit samples; durations below ten milliseconds return silence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hu.a(II)[I#1",
+      "originalName": "param1",
+      "to": "durationMilliseconds",
+      "evidence": "hu.java: Clears the requested shared scratch prefix, applies envelopes/oscillators/gate/echo/filter and clamps signed 16-bit samples; durations below ten milliseconds return silence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hu.a(III)I#0",
+      "originalName": "param0",
+      "to": "phase",
+      "evidence": "hu.java: Evaluates square/sine/saw/noise for codes 1–4; unsupported waveform codes return zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hu.a(III)I#1",
+      "originalName": "param1",
+      "to": "amplitude",
+      "evidence": "hu.java: Evaluates square/sine/saw/noise for codes 1–4; unsupported waveform codes return zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hu.a(III)I#2",
+      "originalName": "param2",
+      "to": "waveformType",
+      "evidence": "hu.java: Evaluates square/sine/saw/noise for codes 1–4; unsupported waveform codes return zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hu.a(Lvh;)V#0",
+      "originalName": "param0",
+      "to": "buffer",
+      "evidence": "hu.java: Decodes envelopes, oscillator smart values, echo, duration/offset and filter; the ten-entry wire loop retains five-slot overflow behavior.",
       "confidence": "reviewed"
     },
     {
@@ -43123,6 +44138,83 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "la.java: Selects outgoing channel 0 and enables text chat for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.a(F)F#0",
+      "originalName": "param0",
+      "to": "octaves",
+      "evidence": "lc.java: Converts octave-scaled frequency to radians at the 22050-Hz synthesis sample rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.a(IF)I#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "lc.java: Interpolates gain and pole-pair factors, expands their polynomial and stores 16.16 coefficients; channel zero updates forward gain even when empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.a(IF)I#1",
+      "originalName": "param1",
+      "to": "fraction",
+      "evidence": "lc.java: Interpolates gain and pole-pair factors, expands their polynomial and stores 16.16 coefficients; channel zero updates forward gain even when empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.a(IIF)F#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "lc.java: Converts interpolated attenuation endpoints to a pole radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.a(IIF)F#1",
+      "originalName": "param1",
+      "to": "pairIndex",
+      "evidence": "lc.java: Converts interpolated attenuation endpoints to a pole radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.a(IIF)F#2",
+      "originalName": "param2",
+      "to": "fraction",
+      "evidence": "lc.java: Converts interpolated attenuation endpoints to a pole radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.a(Lvh;Lgr;)V#0",
+      "originalName": "param0",
+      "to": "buffer",
+      "evidence": "lc.java: Reads packed pair counts, endpoint gains and selective endpoint overrides; conditionally decodes envelope segments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.a(Lvh;Lgr;)V#1",
+      "originalName": "param1",
+      "to": "envelope",
+      "evidence": "lc.java: Reads packed pair counts, endpoint gains and selective endpoint overrides; conditionally decodes envelope segments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.b(IIF)F#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "lc.java: Interpolates octave frequency endpoints and converts to angular frequency.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.b(IIF)F#1",
+      "originalName": "param1",
+      "to": "pairIndex",
+      "evidence": "lc.java: Interpolates octave frequency endpoints and converts to angular frequency.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.b(IIF)F#2",
+      "originalName": "param2",
+      "to": "fraction",
+      "evidence": "lc.java: Interpolates octave frequency endpoints and converts to angular frequency.",
       "confidence": "reviewed"
     },
     {
@@ -54271,10 +55363,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "0889af5d3eb95905fa21be3291526b169f02ce4c010e4906b112758d55af03c1",
+      "build-armiesofgielinor-rules.mjs": "e6cb5c6a0d19f7c85ea1bed961c0833695a9e087b94177b7469d7850f5ecdabe",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "62145950bae3d5bd1b0045fad872ae9963c3d8fdb23b97246334cd4c52986952",
+      "tests/test-armiesofgielinor-core.mjs": "4da2dc7411fdabe5d6289051e6e818fe04318275cfe7555d705de43d4ad71a7c",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
