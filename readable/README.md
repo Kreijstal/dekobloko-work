@@ -165,7 +165,16 @@ cache keys. Native wire fixtures check all 256 shortcut bytes, delimiters,
 unknown command rows and partial failures. Real archive/index fixtures verify
 missing defaults, caching, root selection and global-ID marking. Linked phrase
 list finer semantics, rendered UI and live message delivery remain unresolved.
-All 70,964 raw/named checks agree.
+Raw/named quick-chat definition traces agree.
+
+ClientUiNode, ClientUiComponent and IconTextComponent now name the separate
+client UI hierarchy, style overlay, bounds, children, font/text/sprite and
+clipped pointer state. QuickChatMenu exposes retained arrays, shortcut markup,
+row geometry, collapse interpolation and submenu navigation. Native fixtures
+construct real components/menus and verify recursive menu building, label
+mutation, style retention, input edges and submenu unlinking. The zero-button
+match and missing-shortcut numbering from 2 remain unchanged. All 71,086
+raw/named checks agree; rendered UI and message dispatch remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -199,7 +208,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 180 reviewed classes around battlefield state, units, map
+The current pass names 184 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
