@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 165,445 raw/named checks agree. Controlled cipher output does not constitute
+All 166,814 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -476,6 +476,17 @@ validation and controlled shutdown are checked. The optional second list has onl
 null-assignment writers. Live device startup, production sounds and audible full
 sessions remain unverified.
 
+KeyboardInputListener now names AWT-to-client mapping, separate held-state and
+polled key/character rings, cursors, frame snapshots, published input and idle
+count. Headless AWT vectors cover all 112 client codes, FIFO, focus reset, modifier
+consumption, capacity/wrap/overflow, polling-window boundaries and lifecycle.
+QuickChatHelpDialog names its six shortcut/action rows, prototypes, close button
+and width/geometry. Real component fixtures preserve fixed y=100 and unused
+centered-Y calculation, and check outside/body/close presses and shared closing.
+Default keyboard map and punctuation corrections remain intact. Concurrent input
+stress, operating-system layouts, production font rendering and complete Quick
+Chat gameplay flows remain unverified.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -508,7 +519,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 240 reviewed classes around battlefield state, units, map
+The current pass names 242 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
