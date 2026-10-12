@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 32,
+  "version": 33,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2029,6 +2029,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dn",
+      "originalName": "dn",
+      "to": "ScrollContainer",
+      "evidence": "dn.java: Retains a supplied content component inside a clipping viewport with a copied vertical scrollbar; clamps pending scroll offsets and consumes button/page/wheel/drag input. Unrelated static helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ec",
       "originalName": "ec",
       "to": "TeleportEvent",
@@ -2467,6 +2474,13 @@
       "originalName": "lh",
       "to": "TextureProvider",
       "evidence": "lh.java: Texture availability, pixel and colour queries used by mesh construction and textured rasterization; unresolved property queries retain their names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ll",
+      "originalName": "ll",
+      "to": "VerticalScrollbar",
+      "evidence": "ll.java: Linked up/down buttons, track halves and draggable thumb; proportional geometry, drag conversion and shared held-button repeat counter. Unrelated static helpers retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -4217,6 +4231,27 @@
       "originalName": "field_v",
       "to": "option33Enabled",
       "evidence": "dm.java: Panel option setter, caption dispatch, item-ID lookup and item-bound accessors establish these roles; option 33 and preview encodings remain qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dn.field_Ib:Lll;",
+      "originalName": "field_Ib",
+      "to": "scrollbar",
+      "evidence": "dn.java: Constructor retains the supplied content, nests it in a new viewport and copies scrollbar control styles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dn.field_Jb:Lje;",
+      "originalName": "field_Jb",
+      "to": "content",
+      "evidence": "dn.java: Constructor retains the supplied content, nests it in a new viewport and copies scrollbar control styles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dn.field_Nb:Lje;",
+      "originalName": "field_Nb",
+      "to": "viewport",
+      "evidence": "dn.java: Constructor retains the supplied content, nests it in a new viewport and copies scrollbar control styles.",
       "confidence": "reviewed"
     },
     {
@@ -6411,16 +6446,44 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:je.field_A:[Lwk;",
+      "originalName": "field_A",
+      "to": "disabledSkinSprites",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_Ab:I",
+      "originalName": "field_Ab",
+      "to": "dragGrabY",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_B:I",
+      "originalName": "field_B",
+      "to": "selectedOffsetX",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_Bb:I",
+      "originalName": "field_Bb",
+      "to": "heldPressOffsetX",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:je.field_C:I",
       "originalName": "field_C",
-      "to": "opacity",
+      "to": "textOpacity",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:je.field_Cb:Z",
       "originalName": "field_Cb",
-      "to": "inheritParentClip",
+      "to": "inheritParentVisualState",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
       "confidence": "reviewed"
     },
@@ -6432,10 +6495,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:je.field_Db:Z",
+      "originalName": "field_Db",
+      "to": "selectWhenFocused",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_E:I",
+      "originalName": "field_E",
+      "to": "matchedButtonOffsetY",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:je.field_Eb:I",
       "originalName": "field_Eb",
       "to": "horizontalAlignment",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_F:I",
+      "originalName": "field_F",
+      "to": "contentOffsetX",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
       "confidence": "reviewed"
     },
     {
@@ -6446,10 +6530,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:je.field_G:[Lwk;",
+      "originalName": "field_G",
+      "to": "skinSprites",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:je.field_Gb:Z",
       "originalName": "field_Gb",
       "to": "draggable",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_H:[Lwk;",
+      "originalName": "field_H",
+      "to": "selectedSkinSprites",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
       "confidence": "reviewed"
     },
     {
@@ -6460,10 +6558,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:je.field_I:Ljava/lang/String;",
+      "originalName": "field_I",
+      "to": "blinkTextSuffix",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:je.field_J:I",
       "originalName": "field_J",
       "to": "pendingXDelta",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_L:I",
+      "originalName": "field_L",
+      "to": "disabledTextColour",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_N:I",
+      "originalName": "field_N",
+      "to": "textColour",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_O:I",
+      "originalName": "field_O",
+      "to": "textHorizontalPadding",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_P:Lwk;",
+      "originalName": "field_P",
+      "to": "selectedSprite",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_R:I",
+      "originalName": "field_R",
+      "to": "heldPressOffsetY",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
       "confidence": "reviewed"
     },
     {
@@ -6474,6 +6614,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:je.field_T:I",
+      "originalName": "field_T",
+      "to": "heldPressTextColour",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_U:[Lwk;",
+      "originalName": "field_U",
+      "to": "heldPressSkinSprites",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:je.field_V:I",
       "originalName": "field_V",
       "to": "screenX",
@@ -6481,10 +6635,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:je.field_W:I",
+      "originalName": "field_W",
+      "to": "matchedButtonTextColour",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:je.field_X:Ljava/lang/String;",
       "originalName": "field_X",
       "to": "text",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_Y:Z",
+      "originalName": "field_Y",
+      "to": "focused",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
       "confidence": "reviewed"
     },
     {
@@ -6499,6 +6667,13 @@
       "originalName": "field_ab",
       "to": "y",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_bb:I",
+      "originalName": "field_bb",
+      "to": "dragGrabX",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
       "confidence": "reviewed"
     },
     {
@@ -6544,10 +6719,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:je.field_ib:I",
+      "originalName": "field_ib",
+      "to": "matchedButtonOffsetX",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:je.field_jb:Z",
       "originalName": "field_jb",
       "to": "hovered",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_kb:I",
+      "originalName": "field_kb",
+      "to": "spriteOpacity",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_mb:[Lwk;",
+      "originalName": "field_mb",
+      "to": "matchedButtonSkinSprites",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
       "confidence": "reviewed"
     },
     {
@@ -6565,10 +6761,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:je.field_pb:I",
+      "originalName": "field_pb",
+      "to": "textLineSpacing",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_qb:Lwk;",
+      "originalName": "field_qb",
+      "to": "heldPressSprite",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:je.field_rb:Z",
       "originalName": "field_rb",
       "to": "selected",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_sb:Lwk;",
+      "originalName": "field_sb",
+      "to": "disabledSprite",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_tb:I",
+      "originalName": "field_tb",
+      "to": "selectedOffsetY",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_ub:Z",
+      "originalName": "field_ub",
+      "to": "drawSkinInParentBounds",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_vb:Lwk;",
+      "originalName": "field_vb",
+      "to": "matchedButtonSprite",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_wb:I",
+      "originalName": "field_wb",
+      "to": "selectedTextColour",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
       "confidence": "reviewed"
     },
     {
@@ -6583,6 +6828,13 @@
       "originalName": "field_yb",
       "to": "pressedButton",
       "evidence": "je.java: Component construction, layout/measurement, sparse style overlay, clipped input and font/sprite rendering. heldButtonMatches preserves the zero-button equality case.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_z:I",
+      "originalName": "field_z",
+      "to": "contentOffsetY",
+      "evidence": "je.java: Component rendering chooses disabled, matching-button, held-press and selected alternatives in that order; offsets propagate to child origins, focus selects opted-in components, and drag grabs retain press-relative coordinates. Visual-state inheritance does not bypass clipping.",
       "confidence": "reviewed"
     },
     {
@@ -7353,6 +7605,55 @@
       "originalName": "field_f",
       "to": "pointerChangedSnapshot",
       "evidence": "lk.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ll.field_Ib:Lje;",
+      "originalName": "field_Ib",
+      "to": "upButton",
+      "evidence": "ll.java: Scrollbar constructor builds linked buttons, track halves and a draggable thumb; layout and repeat helpers consume these exact components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ll.field_Lb:Lje;",
+      "originalName": "field_Lb",
+      "to": "track",
+      "evidence": "ll.java: Scrollbar constructor builds linked buttons, track halves and a draggable thumb; layout and repeat helpers consume these exact components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ll.field_Ob:I",
+      "originalName": "field_Ob",
+      "to": "repeatTicks",
+      "evidence": "ll.java: One counter shared by arrow/page helpers; initial press sets 20, successful repeats reset to 3 and released holds do not decrement it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ll.field_Pb:Lje;",
+      "originalName": "field_Pb",
+      "to": "pageDownArea",
+      "evidence": "ll.java: Scrollbar constructor builds linked buttons, track halves and a draggable thumb; layout and repeat helpers consume these exact components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ll.field_Qb:Lje;",
+      "originalName": "field_Qb",
+      "to": "downButton",
+      "evidence": "ll.java: Scrollbar constructor builds linked buttons, track halves and a draggable thumb; layout and repeat helpers consume these exact components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ll.field_Ub:Lje;",
+      "originalName": "field_Ub",
+      "to": "thumb",
+      "evidence": "ll.java: Scrollbar constructor builds linked buttons, track halves and a draggable thumb; layout and repeat helpers consume these exact components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ll.field_Vb:Lje;",
+      "originalName": "field_Vb",
+      "to": "pageUpArea",
+      "evidence": "ll.java: Scrollbar constructor builds linked buttons, track halves and a draggable thumb; layout and repeat helpers consume these exact components.",
       "confidence": "reviewed"
     },
     {
@@ -13705,6 +14006,160 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:je.a(ZIII)V#0",
+      "originalName": "var10_ref_je",
+      "to": "child",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZIII)V#1",
+      "originalName": "var9",
+      "to": "stackEndY",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZIII)V#2",
+      "originalName": "var11",
+      "to": "obfuscationControl",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZIII)V#3",
+      "originalName": "var9Lifetime1",
+      "to": "maximumTargetScroll",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZIII)V#4",
+      "originalName": "var5",
+      "to": "currentScroll",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZIII)V#5",
+      "originalName": "var6",
+      "to": "targetScroll",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZIII)V#6",
+      "originalName": "var7",
+      "to": "currentHeight",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZIII)V#7",
+      "originalName": "var8",
+      "to": "targetHeight",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZIII)V#8",
+      "originalName": "var10",
+      "to": "maximumCurrentScroll",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#0",
+      "originalName": "stackIn_30_1",
+      "to": "pointerInsideClip",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#1",
+      "originalName": "stackIn_38_1",
+      "to": "buttonMatches",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#10",
+      "originalName": "var7Lifetime1",
+      "to": "yStep",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#11",
+      "originalName": "var7Lifetime2",
+      "to": "widthStep",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#12",
+      "originalName": "var7Lifetime3",
+      "to": "heightStep",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#2",
+      "originalName": "var7",
+      "to": "xStep",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#3",
+      "originalName": "var8",
+      "to": "savedClipLeft",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#4",
+      "originalName": "var9",
+      "to": "savedClipTop",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#5",
+      "originalName": "var10",
+      "to": "savedClipRight",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#6",
+      "originalName": "var11",
+      "to": "savedClipBottom",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#7",
+      "originalName": "var12",
+      "to": "pressCaptured",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#8",
+      "originalName": "var13",
+      "to": "child",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:je.a(ZZIIII)V#9",
+      "originalName": "var14",
+      "to": "obfuscationControl",
+      "evidence": "je.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:jm.a([BZ)V#16",
       "originalName": "var4",
       "to": "formatVersion",
@@ -14797,6 +15252,202 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ll.a(IIII)V#0",
+      "originalName": "var5",
+      "to": "upButtonHeight",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#1",
+      "originalName": "var6",
+      "to": "downButtonY",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#10",
+      "originalName": "var18",
+      "to": "nonpositiveContentPageDownArea",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#11",
+      "originalName": "var19",
+      "to": "nonpositiveContentThumb",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#12",
+      "originalName": "var14Lifetime1",
+      "to": "upButton",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#13",
+      "originalName": "var15Lifetime1",
+      "to": "downButton",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#14",
+      "originalName": "var16Lifetime1",
+      "to": "track",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#15",
+      "originalName": "var17Lifetime1",
+      "to": "pageUpArea",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#16",
+      "originalName": "var18Lifetime1",
+      "to": "pageDownArea",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#17",
+      "originalName": "var19Lifetime1",
+      "to": "thumb",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#18",
+      "originalName": "var9Lifetime1",
+      "to": "scrollOverflow",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#19",
+      "originalName": "var10Lifetime1",
+      "to": "thumbTravel",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#2",
+      "originalName": "var9",
+      "to": "nonpositiveContentOverflow",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#20",
+      "originalName": "var11Lifetime1",
+      "to": "thumbY",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#21",
+      "originalName": "var12Lifetime1",
+      "to": "trackSplitY",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#22",
+      "originalName": "var7",
+      "to": "trackHeight",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#23",
+      "originalName": "var8",
+      "to": "thumbHeight",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#3",
+      "originalName": "var10",
+      "to": "nonpositiveContentTravel",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#4",
+      "originalName": "var11",
+      "to": "nonpositiveContentThumbY",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#5",
+      "originalName": "var12",
+      "to": "nonpositiveContentSplitY",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#6",
+      "originalName": "var14",
+      "to": "nonpositiveContentUpButton",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#7",
+      "originalName": "var15",
+      "to": "nonpositiveContentDownButton",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#8",
+      "originalName": "var16",
+      "to": "nonpositiveContentTrack",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IIII)V#9",
+      "originalName": "var17",
+      "to": "nonpositiveContentPageUpArea",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IZII)I#0",
+      "originalName": "var5",
+      "to": "scrollOffset",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IZII)I#1",
+      "originalName": "var6",
+      "to": "thumbTravel",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IZII)I#2",
+      "originalName": "var7",
+      "to": "thumbY",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ll.a(IZII)I#3",
+      "originalName": "var8",
+      "to": "scrollOverflow",
+      "evidence": "ll.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:lr.<init>([I)V#0",
       "originalName": "var2_int",
       "to": "capacity",
@@ -14884,84 +15535,84 @@
       "symbol": "L:mq.<init>(JLje;Lje;Lje;[Lmq;[I[Ljava/lang/String;[C)V#0",
       "originalName": "var13",
       "to": "itemIndex",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.<init>(JLje;Lje;Lje;[Lmq;[I[Ljava/lang/String;[C)V#18",
       "originalName": "var11",
       "to": "shortcutPrefix",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.<init>(JLje;Lje;Lje;[Lmq;[I[Ljava/lang/String;[C)V#19",
       "originalName": "var12",
       "to": "shortcutSuffix",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.<init>(JLje;Lje;Lje;[Lmq;[I[Ljava/lang/String;[C)V#20",
       "originalName": "var14",
       "to": "arrow",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.<init>(JLje;Lje;Lje;[Lmq;[I[Ljava/lang/String;[C)V#21",
       "originalName": "var15",
       "to": "labelWidth",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.<init>(JLje;Lje;Lje;[Lmq;[I[Ljava/lang/String;[C)V#22",
       "originalName": "var17",
       "to": "measurementFont",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.<init>(JLje;Lje;Lje;[Lmq;[I[Ljava/lang/String;[C)V#23",
       "originalName": "var18",
       "to": "rowFont",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.c(II)V#0",
       "originalName": "var6",
       "to": "itemIndex",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.c(II)V#1",
       "originalName": "var4",
       "to": "expandedY",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.c(II)V#2",
       "originalName": "var5",
       "to": "ticksSquared",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.c(II)V#3",
       "originalName": "var7",
       "to": "obfuscationControl",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
       "symbol": "L:mq.c(II)V#4",
       "originalName": "var3",
       "to": "guardRemainder",
-      "evidence": "mq.java: Reviewed quick-chat row interpolation and item construction at this exact local declaration.",
+      "evidence": "mq.java: Reviewed client UI geometry/input, scrollbar proportional layout/drag conversion or quick-chat row construction at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
@@ -17695,6 +18346,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dn.a(IIZII)V",
+      "originalName": "a",
+      "to": "applyScrollInput",
+      "evidence": "dn.java: Updates pending content Y, preserving clamp order and drag precedence, then refreshes thumb layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(IZI)V",
+      "originalName": "a",
+      "to": "layoutViewport",
+      "evidence": "dn.java: Reserves scrollbar width and a gap on the right and sizes the scrollbar against current content geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(IZIIIII)V",
+      "originalName": "a",
+      "to": "setLayout",
+      "evidence": "dn.java: Sets container bounds, content/viewport width and scrollbar layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(IZIZ)V",
+      "originalName": "a",
+      "to": "advanceScroll",
+      "evidence": "dn.java: Consumes arrow/page/wheel/drag input and clamps pending content scroll against the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(ZIIIIIZ)Z",
+      "originalName": "a",
+      "to": "updateContentLayoutAndScroll",
+      "evidence": "dn.java: Selects existing versus stacked child layout from hold/force flags, clamps scrolling and reports the selected layout policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(ZIIZII)Z",
+      "originalName": "a",
+      "to": "updateContentLayout",
+      "evidence": "dn.java: A nonzero layout-state argument skips work; otherwise updates child layout and scroll input and reports whether existing child layout was preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ds.a(B)V",
       "originalName": "a",
       "to": "capturePointerInput",
@@ -19438,6 +20131,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:je.a(BIZIIZZZIZZ)V",
+      "originalName": "a",
+      "to": "drawTree",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:je.a(IIIII)V",
       "originalName": "a",
       "to": "setBounds",
@@ -19459,10 +20159,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:je.a(Lje;ZILje;)V",
+      "originalName": "a",
+      "to": "positionAfter",
+      "evidence": "je.java: Positions a supplied child below a preceding sibling, including pending sibling geometry; no sibling resets Y and its pending delta.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:je.a(ZI)I",
       "originalName": "a",
       "to": "measureContentWidth",
       "evidence": "je.java: Returns the maximum of bounded text width, sprite canvas width and child x+width; retains the false-guard Y change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.a(ZIII)V",
+      "originalName": "a",
+      "to": "layoutVerticalContent",
+      "evidence": "je.java: Optionally stacks children using pending heights and spacing, then clamps current and pending scroll offsets to the viewport.",
       "confidence": "reviewed"
     },
     {
@@ -19473,10 +20187,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:je.a(ZZIIII)V",
+      "originalName": "a",
+      "to": "updateInputTree",
+      "evidence": "je.java: Eases pending geometry by signed ceiling-quarter steps, traverses clipped input in reverse child order and clamps draggable components to parent bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.b(ILje;)V",
+      "originalName": "b",
+      "to": "setFocusedComponent",
+      "evidence": "je.java: Traverses all descendants, assigns focus by object identity and mirrors it to selection for opted-in components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.b(ZI)V",
+      "originalName": "b",
+      "to": "draw",
+      "evidence": "je.java: Draws the component tree in the current raster with optional blinking text suffix.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:je.i(I)V",
       "originalName": "i",
-      "to": "useParentClipForDescendants",
-      "evidence": "je.java: Recursively marks child components to retain their parent clipping region.",
+      "to": "inheritVisualStateForDescendants",
+      "evidence": "je.java: Recursively marks descendants to use inherited selected/held visual state; each component still intersects raster clipping with its own bounds.",
       "confidence": "reviewed"
     },
     {
@@ -20023,6 +20758,62 @@
       "originalName": "a",
       "to": "paintWidget",
       "evidence": "kh.java: Painter contract and Widget dispatch establish the widget and parent-origin offsets; rendering flag meaning remains qualified. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(IIII)V",
+      "originalName": "a",
+      "to": "layoutThumb",
+      "evidence": "ll.java: Sizes the thumb proportionally with a width-sized minimum bounded by track length, and positions it using rounded integer scroll ratios.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(IIIIIIII)V",
+      "originalName": "a",
+      "to": "setLayout",
+      "evidence": "ll.java: Sets scrollbar bounds then computes button, track and thumb geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(IZII)I",
+      "originalName": "a",
+      "to": "getDraggedScrollOffset",
+      "evidence": "ll.java: Converts thumb travel into a rounded scroll offset and preserves the two clamp orders, which differ for negative content overflow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(Z)Z",
+      "originalName": "a",
+      "to": "isThumbHeld",
+      "evidence": "ll.java: Checks the retained thumb press button, independently of hovered/matching-button state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.l(I)Z",
+      "originalName": "l",
+      "to": "pollPageDown",
+      "evidence": "ll.java: Repeats only while the pointer reaches or exceeds the pending thumb bottom; the initial press is unconditional.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.m(I)Z",
+      "originalName": "m",
+      "to": "pollScrollUp",
+      "evidence": "ll.java: Reports an initial up-button press or held repeat, retaining canonical guard arithmetic and shared countdown behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.n(I)Z",
+      "originalName": "n",
+      "to": "pollScrollDown",
+      "evidence": "ll.java: Reports an initial down-button press or held repeat using the same countdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.o(I)Z",
+      "originalName": "o",
+      "to": "pollPageUp",
+      "evidence": "ll.java: Repeats only while the pointer is strictly above the pending thumb top; the initial press is unconditional.",
       "confidence": "reviewed"
     },
     {
@@ -25395,6 +26186,258 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dn.<init>(JLje;Lje;Lll;)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "dn.java: Builds the viewport and scrollbar children around the supplied content identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.<init>(JLje;Lje;Lll;)V#1",
+      "originalName": "param1",
+      "to": "content",
+      "evidence": "dn.java: Builds the viewport and scrollbar children around the supplied content identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.<init>(JLje;Lje;Lll;)V#2",
+      "originalName": "param2",
+      "to": "viewportStyle",
+      "evidence": "dn.java: Builds the viewport and scrollbar children around the supplied content identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.<init>(JLje;Lje;Lll;)V#3",
+      "originalName": "param3",
+      "to": "scrollbarStyle",
+      "evidence": "dn.java: Builds the viewport and scrollbar children around the supplied content identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IIZII)V#0",
+      "originalName": "param0",
+      "to": "pageDownXHalf",
+      "evidence": "dn.java: Updates pending content Y, preserving clamp order and drag precedence, then refreshes thumb layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IIZII)V#1",
+      "originalName": "param1",
+      "to": "arrowStep",
+      "evidence": "dn.java: Updates pending content Y, preserving clamp order and drag precedence, then refreshes thumb layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IIZII)V#2",
+      "originalName": "param2",
+      "to": "clampMinimumFirst",
+      "evidence": "dn.java: Updates pending content Y, preserving clamp order and drag precedence, then refreshes thumb layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IIZII)V#3",
+      "originalName": "param3",
+      "to": "wheelDelta",
+      "evidence": "dn.java: Updates pending content Y, preserving clamp order and drag precedence, then refreshes thumb layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IIZII)V#4",
+      "originalName": "param4",
+      "to": "pageStep",
+      "evidence": "dn.java: Updates pending content Y, preserving clamp order and drag precedence, then refreshes thumb layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZI)V#0",
+      "originalName": "param0",
+      "to": "scrollbarWidth",
+      "evidence": "dn.java: Reserves scrollbar width and a gap on the right and sizes the scrollbar against current content geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "dn.java: Reserves scrollbar width and a gap on the right and sizes the scrollbar against current content geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZI)V#2",
+      "originalName": "param2",
+      "to": "scrollbarGap",
+      "evidence": "dn.java: Reserves scrollbar width and a gap on the right and sizes the scrollbar against current content geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "dn.java: Sets container bounds, content/viewport width and scrollbar layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIIIII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "dn.java: Sets container bounds, content/viewport width and scrollbar layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIIIII)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "dn.java: Sets container bounds, content/viewport width and scrollbar layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIIIII)V#3",
+      "originalName": "param3",
+      "to": "scrollbarGap",
+      "evidence": "dn.java: Sets container bounds, content/viewport width and scrollbar layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIIIII)V#4",
+      "originalName": "param4",
+      "to": "scrollbarWidth",
+      "evidence": "dn.java: Sets container bounds, content/viewport width and scrollbar layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIIIII)V#5",
+      "originalName": "param5",
+      "to": "y",
+      "evidence": "dn.java: Sets container bounds, content/viewport width and scrollbar layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIIIII)V#6",
+      "originalName": "param6",
+      "to": "height",
+      "evidence": "dn.java: Sets container bounds, content/viewport width and scrollbar layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIZ)V#0",
+      "originalName": "param0",
+      "to": "arrowStep",
+      "evidence": "dn.java: Consumes arrow/page/wheel/drag input and clamps pending content scroll against the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIZ)V#1",
+      "originalName": "param1",
+      "to": "clampMinimumFirst",
+      "evidence": "dn.java: Consumes arrow/page/wheel/drag input and clamps pending content scroll against the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIZ)V#2",
+      "originalName": "param2",
+      "to": "wheelDelta",
+      "evidence": "dn.java: Consumes arrow/page/wheel/drag input and clamps pending content scroll against the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(IZIZ)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "dn.java: Consumes arrow/page/wheel/drag input and clamps pending content scroll against the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIIIIZ)Z#0",
+      "originalName": "param0",
+      "to": "forceChildLayout",
+      "evidence": "dn.java: Selects existing versus stacked child layout from hold/force flags, clamps scrolling and reports the selected layout policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIIIIZ)Z#1",
+      "originalName": "param1",
+      "to": "wheelDelta",
+      "evidence": "dn.java: Selects existing versus stacked child layout from hold/force flags, clamps scrolling and reports the selected layout policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIIIIZ)Z#2",
+      "originalName": "param2",
+      "to": "pageStep",
+      "evidence": "dn.java: Selects existing versus stacked child layout from hold/force flags, clamps scrolling and reports the selected layout policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIIIIZ)Z#3",
+      "originalName": "param3",
+      "to": "arrowStep",
+      "evidence": "dn.java: Selects existing versus stacked child layout from hold/force flags, clamps scrolling and reports the selected layout policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIIIIZ)Z#4",
+      "originalName": "param4",
+      "to": "pageDownXHalf",
+      "evidence": "dn.java: Selects existing versus stacked child layout from hold/force flags, clamps scrolling and reports the selected layout policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIIIIZ)Z#5",
+      "originalName": "param5",
+      "to": "childSpacing",
+      "evidence": "dn.java: Selects existing versus stacked child layout from hold/force flags, clamps scrolling and reports the selected layout policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIIIIZ)Z#6",
+      "originalName": "param6",
+      "to": "preserveChildLayout",
+      "evidence": "dn.java: Selects existing versus stacked child layout from hold/force flags, clamps scrolling and reports the selected layout policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIZII)Z#0",
+      "originalName": "param0",
+      "to": "forceChildLayout",
+      "evidence": "dn.java: A nonzero layout-state argument skips work; otherwise updates child layout and scroll input and reports whether existing child layout was preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIZII)Z#1",
+      "originalName": "param1",
+      "to": "wheelDelta",
+      "evidence": "dn.java: A nonzero layout-state argument skips work; otherwise updates child layout and scroll input and reports whether existing child layout was preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIZII)Z#2",
+      "originalName": "param2",
+      "to": "arrowStep",
+      "evidence": "dn.java: A nonzero layout-state argument skips work; otherwise updates child layout and scroll input and reports whether existing child layout was preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIZII)Z#3",
+      "originalName": "param3",
+      "to": "preserveChildLayout",
+      "evidence": "dn.java: A nonzero layout-state argument skips work; otherwise updates child layout and scroll input and reports whether existing child layout was preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIZII)Z#4",
+      "originalName": "param4",
+      "to": "layoutState",
+      "evidence": "dn.java: A nonzero layout-state argument skips work; otherwise updates child layout and scroll input and reports whether existing child layout was preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ZIIZII)Z#5",
+      "originalName": "param5",
+      "to": "childSpacing",
+      "evidence": "dn.java: A nonzero layout-state argument skips work; otherwise updates child layout and scroll input and reports whether existing child layout was preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ds.a(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -29966,6 +31009,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#1",
+      "originalName": "param1",
+      "to": "parentHeight",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#10",
+      "originalName": "param10",
+      "to": "inheritedButtonMatch",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#2",
+      "originalName": "param2",
+      "to": "blinkOn",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#3",
+      "originalName": "param3",
+      "to": "parentWidth",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#4",
+      "originalName": "param4",
+      "to": "parentY",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#5",
+      "originalName": "param5",
+      "to": "inheritedHeldPress",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#6",
+      "originalName": "param6",
+      "to": "inheritedFocus",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#7",
+      "originalName": "param7",
+      "to": "inheritedSelection",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#8",
+      "originalName": "param8",
+      "to": "parentX",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(BIZIIZZZIZZ)V#9",
+      "originalName": "param9",
+      "to": "inputAllowed",
+      "evidence": "je.java: Intersects each component clip, chooses state-dependent skins/sprites/text/offsets and renders children with inherited visual state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:je.a(IIIII)V#0",
       "originalName": "param0",
       "to": "height",
@@ -30029,6 +31149,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:je.a(Lje;ZILje;)V#0",
+      "originalName": "param0",
+      "to": "child",
+      "evidence": "je.java: Positions a supplied child below a preceding sibling, including pending sibling geometry; no sibling resets Y and its pending delta.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(Lje;ZILje;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "je.java: Positions a supplied child below a preceding sibling, including pending sibling geometry; no sibling resets Y and its pending delta.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(Lje;ZILje;)V#2",
+      "originalName": "param2",
+      "to": "spacing",
+      "evidence": "je.java: Positions a supplied child below a preceding sibling, including pending sibling geometry; no sibling resets Y and its pending delta.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(Lje;ZILje;)V#3",
+      "originalName": "param3",
+      "to": "previousSibling",
+      "evidence": "je.java: Positions a supplied child below a preceding sibling, including pending sibling geometry; no sibling resets Y and its pending delta.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:je.a(ZI)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -30040,6 +31188,34 @@
       "originalName": "param1",
       "to": "maximumTextWidth",
       "evidence": "je.java: Returns the maximum of bounded text width, sprite canvas width and child x+width; retains the false-guard Y change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(ZIII)V#0",
+      "originalName": "param0",
+      "to": "preserveChildLayout",
+      "evidence": "je.java: Optionally stacks children using pending heights and spacing, then clamps current and pending scroll offsets to the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(ZIII)V#1",
+      "originalName": "param1",
+      "to": "viewportHeight",
+      "evidence": "je.java: Optionally stacks children using pending heights and spacing, then clamps current and pending scroll offsets to the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(ZIII)V#2",
+      "originalName": "param2",
+      "to": "childSpacing",
+      "evidence": "je.java: Optionally stacks children using pending heights and spacing, then clamps current and pending scroll offsets to the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(ZIII)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "je.java: Optionally stacks children using pending heights and spacing, then clamps current and pending scroll offsets to the viewport.",
       "confidence": "reviewed"
     },
     {
@@ -30057,10 +31233,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:je.a(ZZIIII)V#0",
+      "originalName": "param0",
+      "to": "inputAllowed",
+      "evidence": "je.java: Eases pending geometry by signed ceiling-quarter steps, traverses clipped input in reverse child order and clamps draggable components to parent bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(ZZIIII)V#1",
+      "originalName": "param1",
+      "to": "capturePress",
+      "evidence": "je.java: Eases pending geometry by signed ceiling-quarter steps, traverses clipped input in reverse child order and clamps draggable components to parent bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(ZZIIII)V#2",
+      "originalName": "param2",
+      "to": "parentY",
+      "evidence": "je.java: Eases pending geometry by signed ceiling-quarter steps, traverses clipped input in reverse child order and clamps draggable components to parent bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(ZZIIII)V#3",
+      "originalName": "param3",
+      "to": "parentHeight",
+      "evidence": "je.java: Eases pending geometry by signed ceiling-quarter steps, traverses clipped input in reverse child order and clamps draggable components to parent bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(ZZIIII)V#4",
+      "originalName": "param4",
+      "to": "parentWidth",
+      "evidence": "je.java: Eases pending geometry by signed ceiling-quarter steps, traverses clipped input in reverse child order and clamps draggable components to parent bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.a(ZZIIII)V#5",
+      "originalName": "param5",
+      "to": "parentX",
+      "evidence": "je.java: Eases pending geometry by signed ceiling-quarter steps, traverses clipped input in reverse child order and clamps draggable components to parent bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.b(ILje;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "je.java: Traverses all descendants, assigns focus by object identity and mirrors it to selection for opted-in components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.b(ILje;)V#1",
+      "originalName": "param1",
+      "to": "focusedComponent",
+      "evidence": "je.java: Traverses all descendants, assigns focus by object identity and mirrors it to selection for opted-in components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.b(ZI)V#0",
+      "originalName": "param0",
+      "to": "blinkOn",
+      "evidence": "je.java: Draws the component tree in the current raster with optional blinking text suffix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:je.b(ZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "je.java: Draws the component tree in the current raster with optional blinking text suffix.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:je.i(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "je.java: Recursively marks child components to retain their parent clipping region.",
+      "evidence": "je.java: Recursively marks descendants to use inherited selected/held visual state; each component still intersects raster clipping with its own bounds.",
       "confidence": "reviewed"
     },
     {
@@ -31723,6 +32969,202 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ll.<init>(JLje;Lje;Lje;Lje;)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "ll.java: Builds six real components; the two track halves draw their skins against parent bounds and the thumb is draggable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.<init>(JLje;Lje;Lje;Lje;)V#1",
+      "originalName": "param1",
+      "to": "upStyle",
+      "evidence": "ll.java: Builds six real components; the two track halves draw their skins against parent bounds and the thumb is draggable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.<init>(JLje;Lje;Lje;Lje;)V#2",
+      "originalName": "param2",
+      "to": "downStyle",
+      "evidence": "ll.java: Builds six real components; the two track halves draw their skins against parent bounds and the thumb is draggable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.<init>(JLje;Lje;Lje;Lje;)V#3",
+      "originalName": "param3",
+      "to": "trackStyle",
+      "evidence": "ll.java: Builds six real components; the two track halves draw their skins against parent bounds and the thumb is draggable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.<init>(JLje;Lje;Lje;Lje;)V#4",
+      "originalName": "param4",
+      "to": "thumbStyle",
+      "evidence": "ll.java: Builds six real components; the two track halves draw their skins against parent bounds and the thumb is draggable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.<init>(JLll;)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "ll.java: Copies styles from the source scrollbar controls, not its geometry or repeat counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.<init>(JLll;)V#1",
+      "originalName": "param1",
+      "to": "style",
+      "evidence": "ll.java: Copies styles from the source scrollbar controls, not its geometry or repeat counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "pageDownX",
+      "evidence": "ll.java: Sizes the thumb proportionally with a width-sized minimum bounded by track length, and positions it using rounded integer scroll ratios.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "contentHeight",
+      "evidence": "ll.java: Sizes the thumb proportionally with a width-sized minimum bounded by track length, and positions it using rounded integer scroll ratios.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "viewportHeight",
+      "evidence": "ll.java: Sizes the thumb proportionally with a width-sized minimum bounded by track length, and positions it using rounded integer scroll ratios.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "scrollOffset",
+      "evidence": "ll.java: Sizes the thumb proportionally with a width-sized minimum bounded by track length, and positions it using rounded integer scroll ratios.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ll.java: Sets scrollbar bounds then computes button, track and thumb geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "width",
+      "evidence": "ll.java: Sets scrollbar bounds then computes button, track and thumb geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "height",
+      "evidence": "ll.java: Sets scrollbar bounds then computes button, track and thumb geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "ll.java: Sets scrollbar bounds then computes button, track and thumb geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "contentHeight",
+      "evidence": "ll.java: Sets scrollbar bounds then computes button, track and thumb geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "viewportHeight",
+      "evidence": "ll.java: Sets scrollbar bounds then computes button, track and thumb geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "x",
+      "evidence": "ll.java: Sets scrollbar bounds then computes button, track and thumb geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "scrollOffset",
+      "evidence": "ll.java: Sets scrollbar bounds then computes button, track and thumb geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IZII)I#0",
+      "originalName": "param0",
+      "to": "viewportHeight",
+      "evidence": "ll.java: Converts thumb travel into a rounded scroll offset and preserves the two clamp orders, which differ for negative content overflow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IZII)I#1",
+      "originalName": "param1",
+      "to": "clampMinimumFirst",
+      "evidence": "ll.java: Converts thumb travel into a rounded scroll offset and preserves the two clamp orders, which differ for negative content overflow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IZII)I#2",
+      "originalName": "param2",
+      "to": "contentHeight",
+      "evidence": "ll.java: Converts thumb travel into a rounded scroll offset and preserves the two clamp orders, which differ for negative content overflow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(IZII)I#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ll.java: Converts thumb travel into a rounded scroll offset and preserves the two clamp orders, which differ for negative content overflow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.a(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ll.java: Checks the retained thumb press button, independently of hovered/matching-button state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.l(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ll.java: Repeats only while the pointer reaches or exceeds the pending thumb bottom; the initial press is unconditional.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.m(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ll.java: Reports an initial up-button press or held repeat, retaining canonical guard arithmetic and shared countdown behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.n(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ll.java: Reports an initial down-button press or held repeat using the same countdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ll.o(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ll.java: Repeats only while the pointer is strictly above the pending thumb top; the initial press is unconditional.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ln.<init>([I[I)V#0",
       "originalName": "param0",
       "to": "parts",
@@ -32755,42 +34197,42 @@
       "symbol": "P:nf.<init>(JLje;Lje;Lje;Lwk;Ljava/lang/String;)V#0",
       "originalName": "param0",
       "to": "key",
-      "evidence": "nf.java: Creates optional icon/text children and enables inherited clipping on descendants.",
+      "evidence": "nf.java: Creates optional icon/text children and enables inherited visual state on descendants.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:nf.<init>(JLje;Lje;Lje;Lwk;Ljava/lang/String;)V#1",
       "originalName": "param1",
       "to": "style",
-      "evidence": "nf.java: Creates optional icon/text children and enables inherited clipping on descendants.",
+      "evidence": "nf.java: Creates optional icon/text children and enables inherited visual state on descendants.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:nf.<init>(JLje;Lje;Lje;Lwk;Ljava/lang/String;)V#2",
       "originalName": "param2",
       "to": "iconStyle",
-      "evidence": "nf.java: Creates optional icon/text children and enables inherited clipping on descendants.",
+      "evidence": "nf.java: Creates optional icon/text children and enables inherited visual state on descendants.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:nf.<init>(JLje;Lje;Lje;Lwk;Ljava/lang/String;)V#3",
       "originalName": "param3",
       "to": "textStyle",
-      "evidence": "nf.java: Creates optional icon/text children and enables inherited clipping on descendants.",
+      "evidence": "nf.java: Creates optional icon/text children and enables inherited visual state on descendants.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:nf.<init>(JLje;Lje;Lje;Lwk;Ljava/lang/String;)V#4",
       "originalName": "param4",
       "to": "icon",
-      "evidence": "nf.java: Creates optional icon/text children and enables inherited clipping on descendants.",
+      "evidence": "nf.java: Creates optional icon/text children and enables inherited visual state on descendants.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:nf.<init>(JLje;Lje;Lje;Lwk;Ljava/lang/String;)V#5",
       "originalName": "param5",
       "to": "text",
-      "evidence": "nf.java: Creates optional icon/text children and enables inherited clipping on descendants.",
+      "evidence": "nf.java: Creates optional icon/text children and enables inherited visual state on descendants.",
       "confidence": "reviewed"
     },
     {
@@ -39074,10 +40516,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "7dad0bd4a7098f8432ebf0f06959e31d31b1a3e02cc97fa893d55f75bf1257fd",
+      "build-armiesofgielinor-rules.mjs": "68dce5f94904048c2073f6b0d42f4c65ef70ffc3c05f47ba2e29f77ef3764446",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "0011930b15d24463d72af5b9540cc3bc8e08467f0ca08f75425074dc06569182",
+      "tests/test-armiesofgielinor-core.mjs": "15bdb1447ad21f6d41b4f8fdf6da1cbf76af646d682b9299aacc0d3e6eb3a1b4",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

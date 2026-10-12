@@ -173,8 +173,22 @@ clipped pointer state. QuickChatMenu exposes retained arrays, shortcut markup,
 row geometry, collapse interpolation and submenu navigation. Native fixtures
 construct real components/menus and verify recursive menu building, label
 mutation, style retention, input edges and submenu unlinking. The zero-button
-match and missing-shortcut numbering from 2 remain unchanged. All 71,086
-raw/named checks agree; rendered UI and message dispatch remain unverified.
+match and missing-shortcut numbering from 2 remain unchanged. Full rendered UI
+and message dispatch remain unverified.
+
+VerticalScrollbar and ScrollContainer now expose arrow/page buttons, track halves,
+thumb geometry, retained content, viewport and scroll input. Native fixtures
+verify proportional sizing, drag conversion, initial delay 20 and repeat delay 3,
+shared repeat state, page boundaries and current/pending scroll offsets. Negative
+overflow preserves the original clamp-order difference. ClientUiComponent now
+names state-specific sprites, skins, colours and offsets, focus, text/sprite
+opacity, signed quarter-step geometry easing and drag grab coordinates.
+`inheritParentVisualState` replaces the misleading `inheritParentClip`: it
+inherits visual selection/hold state while each component still intersects its
+own bounds with the raster clip. Pixel fixtures verify sprite-state precedence,
+inherited selection and child clipping; geometry fixtures check easing, stacking
+and dragging. All 83,473 raw/named checks agree. Text/skin pixel rendering and
+complete interactive scrolling remain outside these fixtures.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -208,7 +222,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 184 reviewed classes around battlefield state, units, map
+The current pass names 186 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
