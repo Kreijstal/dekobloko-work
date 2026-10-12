@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 142,953 raw/named checks agree. Controlled cipher output does not constitute
+All 143,249 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -327,6 +327,22 @@ The native probe streams its complete ordered UTF-8 trace into SHA-256 and emits
 only the hash/count summary. Independent wire/pixel/component traces remain in
 the digest, and failed assertions retain their detailed values. The prior
 141,999-check trace digest was verified unchanged by this capture change.
+
+Global spell favour/mana/dragon effects now have native fixtures. addGodFavour
+names bounded updates and high-water slot six; fixture rows now match the real
+seven-value constructor shape. Spell consumption names rune costs, equipped
+slots, campaign gating, the defeat/consumption bypass and pending-cast lock.
+Native cases preserve successful idempotent casts and partial failures where
+applied stays set, an effect/slot change survives and the pending lock remains.
+
+Mana application now has fixtures for shared teams, ignored type codes, caps,
+negative values, overflow, invalid players and repeat application. The guide
+explains the local-player gate and discarded post-event checksum calculation.
+State/player/unit/tile checksum helpers, rune-cap options and contribution locals
+now have names and independent fixed vectors. Omitted fields, duplicate-god XOR
+cancellation and exhausted unit cursors remain visible in the documentation.
+Original-bytecode checksum matching, loaded spell definitions, casting eligibility
+and live server compatibility remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 43,
+  "version": 44,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -5669,6 +5669,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ha.field_J:Z",
+      "originalName": "field_J",
+      "to": "spellCastPending",
+      "evidence": "ha.java: Spell requests set this lock; successful post-effect bookkeeping clears it and gameplay selection refuses while it is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ha.field_K:Lom;",
       "originalName": "field_K",
       "to": "campaignMission",
@@ -5687,6 +5694,13 @@
       "originalName": "field_P",
       "to": "matchConditions",
       "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_Q:I",
+      "originalName": "field_Q",
+      "to": "runeCapOption",
+      "evidence": "ha.java: Constructor/snapshot stores this option index; diagnostics, initialization and player checksum read runeCapsByOption.",
       "confidence": "reviewed"
     },
     {
@@ -5757,6 +5771,13 @@
       "originalName": "field_e",
       "to": "eliminatedPlayerMask",
       "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_f:Z",
+      "originalName": "field_f",
+      "to": "bypassDefeatAndSpellConsumption",
+      "evidence": "ha.java: The two battlefield uses skip defeat elimination and equipped-spell/rune consumption; no unverified game-mode label is assigned.",
       "confidence": "reviewed"
     },
     {
@@ -8529,6 +8550,13 @@
       "originalName": "field_f",
       "to": "animationFrame",
       "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lf.field_i:[I",
+      "originalName": "field_i",
+      "to": "runeCapsByOption",
+      "evidence": "lf.java: Fixed option table 0/25/75/150/0 initializes rune caps and decides whether remaining cap enters the player checksum.",
       "confidence": "reviewed"
     },
     {
@@ -12515,6 +12543,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vp.field_z:I",
+      "originalName": "field_z",
+      "to": "manaTypeCode",
+      "evidence": "vp.java: Constructor retains the supplied numeric type, but applyToBattlefield does not branch on it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vt.field_l:I",
       "originalName": "field_l",
       "to": "lastQuickChatChannel",
@@ -15238,6 +15273,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ha.a(BILne;)I#0",
+      "originalName": "var4_int",
+      "to": "checksum",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(BLik;II)V#1",
+      "originalName": "var5_int",
+      "to": "consumeSlot",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(BLik;II)V#2",
+      "originalName": "stackIn_4_0",
+      "to": "consumptionEnabled",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ha.a(BLvh;)V#1",
       "originalName": "var3_int",
       "to": "stepsRemaining",
@@ -15602,6 +15658,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ha.a(ZI)I#1",
+      "originalName": "var3",
+      "to": "checksum",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#10",
+      "originalName": "var5Lifetime1",
+      "to": "unitOwner",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#11",
+      "originalName": "var7Lifetime1",
+      "to": "unitX",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#2",
+      "originalName": "var4",
+      "to": "tilePlayerScope",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#3",
+      "originalName": "var5",
+      "to": "tileX",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#4",
+      "originalName": "var6_int",
+      "to": "tileY",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#5",
+      "originalName": "var6",
+      "to": "unit",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#6",
+      "originalName": "var7",
+      "to": "tileIndex",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#7",
+      "originalName": "var8_ref_ne",
+      "to": "tile",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#8",
+      "originalName": "var8",
+      "to": "unitY",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.a(ZI)I#9",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.b(IIIB)V#0",
+      "originalName": "dupTemp$1",
+      "to": "playerFavour",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ha.b(IIZ)V#13",
       "originalName": "var10",
       "to": "receivingPlayers",
@@ -15627,6 +15767,13 @@
       "originalName": "var4",
       "to": "orderIndex",
       "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.b(ILjd;)I#0",
+      "originalName": "var3_int",
+      "to": "checksum",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -15781,6 +15928,34 @@
       "originalName": "var2",
       "to": "hasEscortGoals",
       "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.n(II)I#2",
+      "originalName": "var3",
+      "to": "checksum",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.n(II)I#3",
+      "originalName": "var4",
+      "to": "godSlot",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.n(II)I#4",
+      "originalName": "var5",
+      "to": "godId",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.n(II)I#5",
+      "originalName": "var6",
+      "to": "obfuscationControl",
+      "evidence": "ha.java: Reviewed spell resource policy or fixed state-checksum contribution at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -24051,6 +24226,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fl.a(Lha;I)V",
+      "originalName": "a",
+      "to": "recomputeClientStateChecksum",
+      "evidence": "fl.java: Delegates the post-event checksum hook; the pinned caller discards the computed value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fp.a(BIIIII)V",
       "originalName": "a",
       "to": "setLayout",
@@ -24380,6 +24562,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(BILne;)I",
+      "originalName": "a",
+      "to": "computeTileChecksum",
+      "evidence": "ha.java: Uses terrain, corpse/explicit owner and tile owner contributions when the inclusion helper is true; preserves the fallback terrain-only branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(BLik;II)V",
+      "originalName": "a",
+      "to": "consumeEquippedSpell",
+      "evidence": "ha.java: Conditionally clears the equipped slot and subtracts the definition rune cost, with campaign-player gating; clears the pending lock after success.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(BLvh;)V",
       "originalName": "a",
       "to": "readMoveEvent",
@@ -24478,6 +24674,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(ILne;I)Z",
+      "originalName": "a",
+      "to": "includesTileInChecksum",
+      "evidence": "ha.java: The pinned implementation always returns true after guard arithmetic, independent of player and tile arguments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(ILvh;)V",
       "originalName": "a",
       "to": "readStateChangeEvent",
@@ -24562,6 +24765,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(ZI)I",
+      "originalName": "a",
+      "to": "computeStateChecksum",
+      "evidence": "ha.java: XORs header/player/tile/unit contributions; negative player omits player-specific data and tile scope falls back to zero. Traversal consumes deque cursors.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(ZII)V",
       "originalName": "a",
       "to": "applyTurnChange",
@@ -24604,6 +24814,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.b(IIIB)V",
+      "originalName": "b",
+      "to": "addGodFavour",
+      "evidence": "ha.java: Checks player/god bounds, adds with Java-int wrap, caps above five and updates high-water slot six only for guard 92.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.b(IIII)I",
       "originalName": "b",
       "to": "getTileEffects",
@@ -24625,10 +24842,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.b(ILjd;)I",
+      "originalName": "b",
+      "to": "computeUnitChecksum",
+      "evidence": "ha.java: XORs owner, selected flags, attacks, coordinates, strength/bonus/type fields with fixed integer multipliers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.b(ILvh;)V",
       "originalName": "b",
       "to": "readLegacySnapshot",
       "evidence": "ha.java: Reads seed, turn limit, player designs, turn/player state and tile/unit data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(IZ)Z",
+      "originalName": "b",
+      "to": "checkPlayerDefeat",
+      "evidence": "ha.java: Returns false for bypass mode or an unmet defeat condition, otherwise eliminates the player; retains the boolean guard side effect.",
       "confidence": "reviewed"
     },
     {
@@ -24758,6 +24989,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.n(II)I",
+      "originalName": "n",
+      "to": "computePlayerChecksum",
+      "evidence": "ha.java: XORs selected god favour, positive mana/collected mana, turn count and optionally remaining rune cap.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.o(II)I",
       "originalName": "o",
       "to": "getPlayerTeamIndex",
@@ -24846,6 +25084,13 @@
       "originalName": "b",
       "to": "supportsFullscreen",
       "evidence": "hd.java: Requires privileged services and the selected Microsoft or reflective fullscreen adapter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(Lha;BZ)V",
+      "originalName": "a",
+      "to": "recomputeClientStateChecksum",
+      "evidence": "hf.java: Returns for null or battlefield flag b, otherwise computes the local-player checksum and discards it; the boolean parameter is unused.",
       "confidence": "reviewed"
     },
     {
@@ -34677,6 +34922,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fl.a(Lha;I)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "fl.java: Delegates the post-event checksum hook; the pinned caller discards the computed value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fl.a(Lha;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "fl.java: Delegates the post-event checksum hook; the pinned caller discards the computed value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fp.<init>(JLfp;Ljava/lang/String;)V#0",
       "originalName": "param0",
       "to": "key",
@@ -35678,6 +35937,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.a(BILne;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Uses terrain, corpse/explicit owner and tile owner contributions when the inclusion helper is true; preserves the fallback terrain-only branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BILne;)I#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ha.java: Uses terrain, corpse/explicit owner and tile owner contributions when the inclusion helper is true; preserves the fallback terrain-only branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BILne;)I#2",
+      "originalName": "param2",
+      "to": "tile",
+      "evidence": "ha.java: Uses terrain, corpse/explicit owner and tile owner contributions when the inclusion helper is true; preserves the fallback terrain-only branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BLik;II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Conditionally clears the equipped slot and subtracts the definition rune cost, with campaign-player gating; clears the pending lock after success.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BLik;II)V#1",
+      "originalName": "param1",
+      "to": "spell",
+      "evidence": "ha.java: Conditionally clears the equipped slot and subtracts the definition rune cost, with campaign-player gating; clears the pending lock after success.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BLik;II)V#2",
+      "originalName": "param2",
+      "to": "equippedSlot",
+      "evidence": "ha.java: Conditionally clears the equipped slot and subtracts the definition rune cost, with campaign-player gating; clears the pending lock after success.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BLik;II)V#3",
+      "originalName": "param3",
+      "to": "castingPlayer",
+      "evidence": "ha.java: Conditionally clears the equipped slot and subtracts the definition rune cost, with campaign-player gating; clears the pending lock after success.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.a(BLvh;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -36063,6 +36371,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.a(ILne;I)Z#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "ha.java: The pinned implementation always returns true after guard arithmetic, independent of player and tile arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(ILne;I)Z#1",
+      "originalName": "param1",
+      "to": "tile",
+      "evidence": "ha.java: The pinned implementation always returns true after guard arithmetic, independent of player and tile arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(ILne;I)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: The pinned implementation always returns true after guard arithmetic, independent of player and tile arguments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.a(ILvh;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -36336,6 +36665,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.a(ZI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: XORs header/player/tile/unit contributions; negative player omits player-specific data and tile scope falls back to zero. Traversal consumes deque cursors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(ZI)I#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ha.java: XORs header/player/tile/unit contributions; negative player omits player-specific data and tile scope falls back to zero. Traversal consumes deque cursors.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.a(ZII)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -36441,6 +36784,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.b(IIIB)V#0",
+      "originalName": "param0",
+      "to": "godId",
+      "evidence": "ha.java: Checks player/god bounds, adds with Java-int wrap, caps above five and updates high-water slot six only for guard 92.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IIIB)V#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ha.java: Checks player/god bounds, adds with Java-int wrap, caps above five and updates high-water slot six only for guard 92.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IIIB)V#2",
+      "originalName": "param2",
+      "to": "delta",
+      "evidence": "ha.java: Checks player/god bounds, adds with Java-int wrap, caps above five and updates high-water slot six only for guard 92.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IIIB)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Checks player/god bounds, adds with Java-int wrap, caps above five and updates high-water slot six only for guard 92.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.b(IIII)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -36525,6 +36896,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.b(ILjd;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: XORs owner, selected flags, attacks, coordinates, strength/bonus/type fields with fixed integer multipliers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(ILjd;)I#1",
+      "originalName": "param1",
+      "to": "unit",
+      "evidence": "ha.java: XORs owner, selected flags, attacks, coordinates, strength/bonus/type fields with fixed integer multipliers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.b(ILvh;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -36536,6 +36921,20 @@
       "originalName": "param1",
       "to": "packet",
       "evidence": "ha.java: Reads seed, turn limit, player designs, turn/player state and tile/unit data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IZ)Z#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "ha.java: Returns false for bypass mode or an unmet defeat condition, otherwise eliminates the player; retains the boolean guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.b(IZ)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Returns false for bypass mode or an unmet defeat condition, otherwise eliminates the player; retains the boolean guard side effect.",
       "confidence": "reviewed"
     },
     {
@@ -36812,6 +37211,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.n(II)I#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "ha.java: XORs selected god favour, positive mana/collected mana, turn count and optionally remaining rune cap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.n(II)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: XORs selected god favour, positive mana/collected mana, turn count and optionally remaining rune cap.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.o(II)I#0",
       "originalName": "param0",
       "to": "playerId",
@@ -37047,6 +37460,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "hd.java: Requires privileged services and the selected Microsoft or reflective fullscreen adapter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hf.a(Lha;BZ)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "hf.java: Returns for null or battlefield flag b, otherwise computes the local-player checksum and discards it; the boolean parameter is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hf.a(Lha;BZ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "hf.java: Returns for null or battlefield flag b, otherwise computes the local-player checksum and discards it; the boolean parameter is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hf.a(Lha;BZ)V#2",
+      "originalName": "param2",
+      "to": "unusedFlag",
+      "evidence": "hf.java: Returns for null or battlefield flag b, otherwise computes the local-player checksum and discards it; the boolean parameter is unused.",
       "confidence": "reviewed"
     },
     {
@@ -51316,6 +51750,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vp.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "manaTypeCode",
+      "evidence": "vp.java: Retains type/amount/player and event kind 9; application consumes only amount and player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "manaPoints",
+      "evidence": "vp.java: Retains type/amount/player and event kind 9; application consumes only amount and player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "playerId",
+      "evidence": "vp.java: Retains type/amount/player and event kind 9; application consumes only amount and player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vp.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -51954,10 +52409,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "2420bf6a377ac7eb5bce1f91202e2f2e02eadd23ba60365f77aa6acfe2bded25",
+      "build-armiesofgielinor-rules.mjs": "eb58c45e01e7267d3e2352e438e634fdae2695567e22b2ce61335d3f44f670e4",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "9f26f26a8e3eb34757ef13315e71cf59014c2da25c853d14b460aeb798dfdff1",
+      "tests/test-armiesofgielinor-core.mjs": "c2fb33418ce434a8e457ad9bf9878e986384ae9c4a543c6d5ae4af69261b8cd0",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
