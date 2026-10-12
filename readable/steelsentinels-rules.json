@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "steelsentinels",
-  "version": 5,
+  "version": 6,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1963,6 +1963,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hk.field_Zb:[I",
+      "originalName": "field_Zb",
+      "to": "quarterSine16",
+      "evidence": "hk.java: Literal quarter-wave sine values at 8192 angle units per turn, scaled by 65536.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ie.field_b:[I",
       "originalName": "field_b",
       "to": "memory",
@@ -3223,6 +3230,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cm.a(III)I",
+      "originalName": "a",
+      "to": "atan2Angle8192",
+      "evidence": "cm.java: Combines axis/quadrant cases with first-quadrant atan lookup to produce signed 8192-unit angles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cm.a(IILjava/lang/String;)I",
       "originalName": "a",
       "to": "getFileId",
@@ -3276,6 +3290,13 @@
       "originalName": "b",
       "to": "isValidGroup",
       "evidence": "cm.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(II)I",
+      "originalName": "a",
+      "to": "atanFixed16ToAngle8192",
+      "evidence": "df.java: Maps signed 16.16 tangent ratios through the existing quantized atan lookup.",
       "confidence": "reviewed"
     },
     {
@@ -3503,6 +3524,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jh.a(II)I",
+      "originalName": "a",
+      "to": "sine16",
+      "evidence": "jh.java: Wraps angles modulo 8192 and mirrors quarter-sine values; callers pass the half-turn boundary 4096.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jk.a(IB)I",
       "originalName": "a",
       "to": "get",
@@ -3521,6 +3549,13 @@
       "originalName": "e",
       "to": "unlinkDual",
       "evidence": "kd.java: Unlinks the secondary intrusive links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(IB)I",
+      "originalName": "a",
+      "to": "cosine16",
+      "evidence": "kg.java: Wraps angles modulo 8192 and mirrors the quarter-sine lookup to return 16.16 cosine.",
       "confidence": "reviewed"
     },
     {
@@ -3570,6 +3605,13 @@
       "originalName": "i",
       "to": "endBitReading",
       "evidence": "kj.java: Rounds readBitPosition up to the next byte for subsequent byte reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(III)I",
+      "originalName": "a",
+      "to": "approximateVectorLength",
+      "evidence": "kk.java: Computes a table-based approximate vector magnitude with scaling, integer truncation and original overflow behavior.",
       "confidence": "reviewed"
     },
     {
@@ -3769,6 +3811,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rb.a(III)I",
+      "originalName": "a",
+      "to": "firstQuadrantAngle8192",
+      "evidence": "rb.java: Reduces nonnegative X/Y by their ratio and mirrors around the quarter-turn angle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uh.a(B)Lck;",
       "originalName": "a",
       "to": "next",
@@ -3916,6 +3965,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cm.a(III)I#0",
+      "originalName": "param0",
+      "to": "deltaY",
+      "evidence": "cm.java: Combines axis/quadrant cases with first-quadrant atan lookup to produce signed 8192-unit angles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(III)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "cm.java: Combines axis/quadrant cases with first-quadrant atan lookup to produce signed 8192-unit angles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(III)I#2",
+      "originalName": "param2",
+      "to": "deltaX",
+      "evidence": "cm.java: Combines axis/quadrant cases with first-quadrant atan lookup to produce signed 8192-unit angles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cm.a(IILjava/lang/String;)I#0",
       "originalName": "param0",
       "to": "groupId",
@@ -4025,6 +4095,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "cm.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "df.java: Maps signed 16.16 tangent ratios through the existing quantized atan lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(II)I#1",
+      "originalName": "param1",
+      "to": "tangent16",
+      "evidence": "df.java: Maps signed 16.16 tangent ratios through the existing quantized atan lookup.",
       "confidence": "reviewed"
     },
     {
@@ -4469,6 +4553,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jh.a(II)I#0",
+      "originalName": "param0",
+      "to": "angle",
+      "evidence": "jh.java: Wraps angles modulo 8192 and mirrors quarter-sine values; callers pass the half-turn boundary 4096.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jh.a(II)I#1",
+      "originalName": "param1",
+      "to": "halfTurnBoundary",
+      "evidence": "jh.java: Wraps angles modulo 8192 and mirrors quarter-sine values; callers pass the half-turn boundary 4096.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jk.<init>([I)V#0",
       "originalName": "param0",
       "to": "keys",
@@ -4529,6 +4627,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "kd.java: Unlinks the secondary intrusive links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(IB)I#0",
+      "originalName": "param0",
+      "to": "angle",
+      "evidence": "kg.java: Wraps angles modulo 8192 and mirrors the quarter-sine lookup to return 16.16 cosine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(IB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kg.java: Wraps angles modulo 8192 and mirrors the quarter-sine lookup to return 16.16 cosine.",
       "confidence": "reviewed"
     },
     {
@@ -4620,6 +4732,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "kj.java: Rounds readBitPosition up to the next byte for subsequent byte reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(III)I#0",
+      "originalName": "param0",
+      "to": "deltaY",
+      "evidence": "kk.java: Computes a table-based approximate vector magnitude with scaling, integer truncation and original overflow behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(III)I#1",
+      "originalName": "param1",
+      "to": "deltaX",
+      "evidence": "kk.java: Computes a table-based approximate vector magnitude with scaling, integer truncation and original overflow behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(III)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "kk.java: Computes a table-based approximate vector magnitude with scaling, integer truncation and original overflow behavior.",
       "confidence": "reviewed"
     },
     {
@@ -5015,6 +5148,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rb.a(III)I#0",
+      "originalName": "param0",
+      "to": "deltaX",
+      "evidence": "rb.java: Reduces nonnegative X/Y by their ratio and mirrors around the quarter-turn angle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(III)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "rb.java: Reduces nonnegative X/Y by their ratio and mirrors around the quarter-turn angle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(III)I#2",
+      "originalName": "param2",
+      "to": "deltaY",
+      "evidence": "rb.java: Reduces nonnegative X/Y by their ratio and mirrors around the quarter-turn angle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:uh.<init>(I)V#0",
       "originalName": "param0",
       "to": "bucketCount",
@@ -5170,9 +5324,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-steelsentinels-rules.mjs": "2c834b5d5a2b1e1d2e39504c0ade59a26be03057ff50c8f10aad8ebeeeb88de3",
+      "build-steelsentinels-rules.mjs": "c188bd295d9e6f18beb994fe8851be0080b6ed22a563fdd249dbf025a979e595",
       "reproduce-steelsentinels.mjs": "6dd69838b697249fd7c99bc8469e53b7306265e77588f8b1df18348a9ebead28",
-      "tests/test-steelsentinels-core.mjs": "3474b437eb8e46012153ea834c09579d9dc5ecca591576bed7a0882bcef1b19a",
+      "tests/test-steelsentinels-core.mjs": "879d81107b2095edeed88cded1663381f5935fe167110fe76132b612e393a08d",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

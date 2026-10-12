@@ -72,14 +72,16 @@ particles/removals, gravity and cyclic object reuse. Fixtures cover damping,
 contact exceptions, strict expiry, type-10 child emission and linked-object
 reuse. Guided projectile motion names target and initial-direction state; launch
 and coasting fixtures preserve its zero-vector behavior and gravity gate.
-The tracking/turning phase and rendered effects remain unverified.
+Steering helpers now name 8192-unit angles, 16.16 sine/cosine and approximate vector length. Full-turn trig and quadrant fixtures compare mathematical expectations; guided-motion fixtures check bounded turning, target-coordinate refresh/removal and the age-128 coasting boundary. Rendered effects, the initial-direction reversal branch and complete projectile collisions remain unverified.
 
 ## Armies of Gielinor
+
+Widget, WidgetPainter, DropdownSelector, DropdownOptionList and DropdownArrowPainter now name bounds, painter dispatch, option selection, keyboard-prefix search and dropdown expansion. Independent fixtures check base pointer bounds, first-prefix matching, option validation/selection and complete arrow pixels. The option-list override retains its different inclusive hit bounds; full interactive dropdown behavior remains unverified.
 
 The raw naming input now reconstructs Battlefield.eliminatePlayer and
 AiPlanner.considerEquippedSpell with the generic compiler’s bounded plain-CFG
 splitting and original-edge proof. The named export has one remaining dispatcher
-file, gs.java. The reconstruction script changes only the two method bodies and
+file, DropdownArrowPainter.java (its unrelated static packet poller). The reconstruction script changes only the two method bodies and
 compares the complete old/new corpora with native fixtures.
 
 To rebuild that raw input, replay the original gamepack through the documented
@@ -124,7 +126,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 159 reviewed classes around battlefield state, units, map
+The current pass names 164 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

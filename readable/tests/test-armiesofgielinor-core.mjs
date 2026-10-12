@@ -310,8 +310,44 @@ set(controller,c,"${f('ic','T','Ljd;')}",null);check("equipment-lesson/no-select
 finally{set(groups,null,"${f('wp','H','[[I')}",oldGroups);}
 }
 
+static void verifyDropdownWidgets()throws Exception{
+Class<?> widget=Class.forName("${className('kb')}"),selector=Class.forName("${className('gh')}"),list=Class.forName("${className('pp')}");
+Object control=unsafe.allocateInstance(widget);
+call(widget,control,"${m('kb','a','(IIIII)V')}",new Class<?>[]{int.class,int.class,int.class,int.class,int.class},3,20,4,8192,12);
+for(int x:new int[]{12,13,14,32,33,34})for(int y:new int[]{23,24,25,35,36,37}){
+boolean expected=x>=13&&x<33&&y>=24&&y<36;
+check("widget/bounds/"+x+"/"+y,call(widget,control,"${m('kb','b','(IIIII)Z')}",new Class<?>[]{int.class,int.class,int.class,int.class,int.class},1,10,y,x,20),expected);
+}
+Object dropdown=unsafe.allocateInstance(selector),options=unsafe.allocateInstance(list);set(selector,dropdown,"${f('gh','O','Lpp;')}",options);
+Object[] values={"Alpha","ALPINE","Beta",Integer.valueOf(42)};
+call(list,options,"${m('pp','a','(II[Ljava/lang/Object;)V')}",new Class<?>[]{int.class,int.class,Object[].class},1,5526,values);
+check("dropdown/hover-reset",get(list,options,"${f('pp','O','I')}"),-1);
+for(int start:new int[]{0,1,2,4})for(String prefix:new String[]{"","al","ALP","beta","42","unknown"}){
+int expected=-1;for(int i=start;i<values.length;i++)if(values[i].toString().toLowerCase().startsWith(prefix.toLowerCase())){expected=i;break;}
+check("dropdown/prefix/"+start+"/"+prefix,call(selector,dropdown,"${m('gh','a','(ILjava/lang/String;)I')}",new Class<?>[]{int.class,String.class},start,prefix),expected);
+}
+for(int selected:new int[]{-1,0,1,3}){
+call(list,options,"${m('pp','a','(II[Ljava/lang/Object;)V')}",new Class<?>[]{int.class,int.class,Object[].class},selected,5526,values);
+check("dropdown/index/"+selected,call(selector,dropdown,"${m('gh','a','(B)I')}",new Class<?>[]{byte.class},(byte)71),selected);
+check("dropdown/value/"+selected,call(list,options,"${m('pp','j','(I)Ljava/lang/Object;')}",new Class<?>[]{int.class},-6508),selected<0?null:values[selected]);
+}
+for(int selected:new int[]{-2,4}){boolean rejected=false;try{call(list,options,"${m('pp','a','(II[Ljava/lang/Object;)V')}",new Class<?>[]{int.class,int.class,Object[].class},selected,5526,values);}catch(InvocationTargetException failure){Throwable cause=failure.getCause();rejected=Class.forName("${className('g')}").isInstance(cause)&&get(Class.forName("${className('g')}"),cause,"${f('g','b','Ljava/lang/Throwable;')}") instanceof IllegalStateException;}check("dropdown/reject/"+selected,rejected,true);}
+call(list,options,"${m('pp','a','(II[Ljava/lang/Object;)V')}",new Class<?>[]{int.class,int.class,Object[].class},4,5526,null);
+check("dropdown/null-options",call(list,options,"${m('pp','j','(I)Ljava/lang/Object;')}",new Class<?>[]{int.class},-6508),null);
+Class<?> raster=Class.forName("${className('qn')}"),arrow=Class.forName("${className('gs')}");
+String[] names={"${f('qn','d','[I')}","${f('qn','l','I')}","${f('qn','j','I')}","${f('qn','a','I')}","${f('qn','e','I')}","${f('qn','f','I')}"};Object[] saved=new Object[names.length];for(int i=0;i<names.length;i++)saved[i]=get(raster,null,names[i]);
+try{int[] pixels=new int[40*40];Arrays.fill(pixels,0x123456);set(raster,null,names[0],pixels);set(raster,null,names[1],40);set(raster,null,names[2],0);set(raster,null,names[3],0);set(raster,null,names[4],40);set(raster,null,names[5],40);
+call(arrow,unsafe.allocateInstance(arrow),"${m('gs','a','(Lkb;IIZI)V')}",new Class<?>[]{widget,int.class,int.class,boolean.class,int.class},control,2,-89,true,3);
+int[] expected=new int[40*40];Arrays.fill(expected,0x123456);
+for(int row=0;row<=12;row++){int grey=152+4*row;Arrays.fill(expected,(7+row)*40+5,(7+row)*40+25,grey*0x010101);}
+// Five shrinking spans with half-intensity edges, including the zero-width tip.
+int[][] arrowRows={{11,8},{12,6},{13,4},{14,2},{15,0}};
+for(int row=0;row<5;row++){int x=arrowRows[row][0],width=arrowRows[row][1],offset=(12+row)*40+x;expected[offset-1]=(expected[offset-1]&0xfefefe)>>>1;expected[offset+width]=(expected[offset+width]&0xfefefe)>>>1;Arrays.fill(expected,offset,offset+width,0);}
+check("dropdown/arrow-pixels",Arrays.toString(pixels),Arrays.toString(expected));
+}finally{for(int i=0;i<names.length;i++)set(raster,null,names[i],saved[i]);}
+}
 static void verifyGameplayFeedback()throws Exception{
-verifyRadialSummonMenus();verifyUnitCycler();verifySummonMenuRebuild();verifyTurnTimerDial();verifySpellConfirmationAndBattleHints();verifyEquipmentTutorialGates();
+verifyDropdownWidgets();verifyRadialSummonMenus();verifyUnitCycler();verifySummonMenuRebuild();verifyTurnTimerDial();verifySpellConfirmationAndBattleHints();verifyEquipmentTutorialGates();
 }
 
 
@@ -1420,7 +1456,7 @@ System.out.println("checks:"+cases);
   assert.deepEqual(outputs[1],outputs[0],'Named gameplay core differs from pinned raw Java');
   const checks=Number(outputs[0].toString().trimEnd().split('\n').at(-1).split(':')[1]);
   assert.ok(checks>900);
-  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,animationFrameDecodingFixtures:true,animationBlendFixtures:true,modelCoordinateStorageFixtures:true,animationArchiveLoadingFixtures:true,maskedMeshTransformFixtures:true,matrixTranslationFixtures:true,animationSlotSelectionFixtures:true,animationDecoderScratchFixtures:true,triangleClipFixtures:true,flatAndUniformShadedTriangleFixtures:true,modelBoundsFixtures:true,aiSpellCandidateFixtures:true,traceSha256:digest(outputs[0])};
+  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,animationFrameDecodingFixtures:true,animationBlendFixtures:true,modelCoordinateStorageFixtures:true,animationArchiveLoadingFixtures:true,maskedMeshTransformFixtures:true,matrixTranslationFixtures:true,animationSlotSelectionFixtures:true,animationDecoderScratchFixtures:true,triangleClipFixtures:true,flatAndUniformShadedTriangleFixtures:true,modelBoundsFixtures:true,aiSpellCandidateFixtures:true,dropdownWidgetFixtures:true,dropdownArrowPixelFixture:true,traceSha256:digest(outputs[0])};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-core-check-'));

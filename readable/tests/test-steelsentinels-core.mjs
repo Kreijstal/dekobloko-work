@@ -117,6 +117,46 @@ check(label+"/vx",get(projectile,p,"${f('wl','eb','I')}"),expectedX);check(label
 check(label+"/gravity",get(projectile,p,"${f('wl','H','Z')}"),age>=128);check(label+"/age",get(projectile,p,"${f('wl','Z','I')}"),age);
 }
 }
+static void verifySteering()throws Exception{
+Class<?> angles=Class.forName("${className('cm')}"),cosine=Class.forName("${className('kg')}"),sine=Class.forName("${className('jh')}"),projectile=Class.forName("${className('wl')}");
+// Mathematical values bound the literal lookup's one-unit rounding; full raw
+// and named result traces must also agree exactly, including wrapped angles.
+for(int angle=-17;angle<=8209;angle++){
+int sin=(Integer)call(sine,null,"${m('jh','a','(II)I')}",new Class<?>[]{int.class,int.class},angle,4096);
+int cos=(Integer)call(cosine,null,"${m('kg','a','(IB)I')}",new Class<?>[]{int.class,byte.class},angle,(byte)-127);
+check("trig/sin/"+angle,Math.abs(sin-65536*Math.sin(angle*Math.PI/4096))<=1.01,true);
+check("trig/cos/"+angle,Math.abs(cos-65536*Math.cos(angle*Math.PI/4096))<=1.01,true);
+System.out.println("trig/values/"+angle+":"+sin+","+cos);
+}
+for(int[] v:new int[][]{{0,0},{1,0},{0,1},{-1,0},{0,-1},{1,1},{-1,1},{-1,-1},{1,-1},{123,17},{-123,17},{123,-17},{-123,-17}}){
+int actual=(Integer)call(angles,null,"${m('cm','a','(III)I')}",new Class<?>[]{int.class,int.class,int.class},v[1],200,v[0]);
+int expected=(int)Math.round(Math.atan2(v[1],v[0])*4096/Math.PI);
+check("atan/"+Arrays.toString(v),Math.abs(actual-expected)<=2,true);System.out.println("atan/value:"+actual);
+}
+Object w=unsafe.allocateInstance(world);set(world,w,"${f('ee','h','Z')}",true);
+for(int age:new int[]{20,21,63,127,128})for(int targetMode=0;targetMode<3;targetMode++)for(int targetAngle:new int[]{0,2048,4096,-2048}){
+Object p=unsafe.allocateInstance(projectile),target=unsafe.allocateInstance(sentinel);
+set(projectile,p,"${f('wl','B','Lee;')}",w);set(projectile,p,"${f('wl','Z','I')}",age);
+set(projectile,p,"${f('wl','eb','I')}",64);set(projectile,p,"${f('wl','F','I')}",0);set(projectile,p,"${f('wl','H','Z')}",true);
+int x=1000+(int)Math.round(1000*Math.cos(targetAngle*Math.PI/4096)),y=2000+(int)Math.round(1000*Math.sin(targetAngle*Math.PI/4096));
+set(projectile,p,"${f('wl','U','I')}",1000);set(projectile,p,"${f('wl','A','I')}",2000);
+set(projectile,p,"${f('wl','K','I')}",targetMode==1?77:x);set(projectile,p,"${f('wl','S','I')}",targetMode==1?88:y);
+if(targetMode!=0){set(projectile,p,"${f('wl','nb','Lmb;')}",target);set(sentinel,target,"${f('mb','hc','I')}",x);set(sentinel,target,"${f('mb','Gb','I')}",y+24);set(sentinel,target,"${f('mb','Db','I')}",3);set(sentinel,target,"${f('mb','pc','Z')}",targetMode==2);}
+String label="steering/"+age+"/"+targetMode+"/"+targetAngle;
+check(label+"/result",call(projectile,p,"${m('wl','a','(BI)Z')}",new Class<?>[]{byte.class,int.class},(byte)-102,0),false);
+int delta=age==128?0:targetAngle==0?0:targetAngle==-2048||targetAngle==4096?-16:16;
+int speed=age==128?64:69;
+int vx=(Integer)get(projectile,p,"${f('wl','eb','I')}"),vy=(Integer)get(projectile,p,"${f('wl','F','I')}");
+check(label+"/vx",Math.abs(vx-speed*Math.cos(delta*Math.PI/4096))<=1.01,true);
+check(label+"/vy",Math.abs(vy-speed*Math.sin(delta*Math.PI/4096))<=1.01,true);
+check(label+"/gravity",get(projectile,p,"${f('wl','H','Z')}"),age==128);
+check(label+"/target",get(projectile,p,"${f('wl','nb','Lmb;')}")==target,targetMode!=0&&(targetMode!=2||age==128));
+check(label+"/target-x",get(projectile,p,"${f('wl','K','I')}"),targetMode==1&&age==128?77:x);
+check(label+"/target-y",get(projectile,p,"${f('wl','S','I')}"),targetMode==1&&age==128?88:y);
+check(label+"/age",get(projectile,p,"${f('wl','Z','I')}"),age);
+System.out.println(label+"/velocity:"+vx+","+vy);
+}
+}
 ${archiveIndexProbe({className,f,m},{
   index:{owner:'jl',fields:{groupCount:'b',groupIds:'h',groupCapacity:'u',revision:'k',indexCrc:'e',indexDigest:'l',groupNameHashes:'v',groupNameLookup:'n',groupCrcs:'a',groupDigests:'t',groupVersions:'m',fileCounts:'j',fileCapacities:'g',fileIds:'o',fileNameHashes:'q',fileNameLookups:'d'}},
   lookup:{owner:'jk',get:{identity:['a','(IB)I'],types:'int.class,byte.class',guard:'(byte)120'}},
@@ -315,7 +355,7 @@ call(node,nodes[0],"${m('ck','b','(I)V')}",new Class<?>[]{int.class},4);
 check("hash-duplicate-survives/"+bucketCount,call(table,hash,"${m('uh','a','(JI)Lck;')}",new Class<?>[]{long.class,int.class},0L,122)==nodes[2],true);
 }
 verifyArchiveIndexes(packet);
-verifyParticleMotion();verifyGuidedLaunch();
+verifyParticleMotion();verifyGuidedLaunch();verifySteering();
 System.out.println("checks:"+cases);
 }}
 `);
@@ -327,7 +367,7 @@ System.out.println("checks:"+cases);
   }
   assert.deepEqual(outputs[1],outputs[0],'Named Steel gameplay core differs from pinned raw Java');
   const checks=Number(outputs[0].toString().trimEnd().split('\n').at(-1).split(':')[1]);assert.ok(checks>1500);
-  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,gameConstructorsBypassed:true,particleMotionFixtures:true,cyclicParticleReuseFixtures:true,guidedLaunchFixtures:true,traceSha256:digest(outputs[0])};
+  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,gameConstructorsBypassed:true,particleMotionFixtures:true,cyclicParticleReuseFixtures:true,guidedLaunchFixtures:true,guidedSteeringFixtures:true,trigonometricFixtures:true,traceSha256:digest(outputs[0])};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'steel-core-check-'));

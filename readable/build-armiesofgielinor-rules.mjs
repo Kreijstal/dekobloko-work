@@ -10,6 +10,11 @@ import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} fr
 const SOURCE_COMMIT = 'b9cfce0e13ffae9ae44870e1d959c628663a96dc';
 // Evidence below refers to this immutable Java input, not to another game's map.
 const classes = {
+  kb:['Widget','Base UI node: position, width/height, painter dispatch and pointer hit testing; unrelated static helpers retain separate purposes.'],
+  kh:['WidgetPainter','Widget drawing contract invoked with parent-origin offsets, a guard and a rendering flag.'],
+  gs:['DropdownArrowPainter','Instance draws a shaded dropdown button and downward arrow; static packet polling and other helpers remain separate.'],
+  gh:['DropdownSelector','Text/arrow controls, option list, prefix selection and expandable dropdown viewport.'],
+  pp:['DropdownOptionList','Dropdown option storage, selected/hovered indices, row height and option rendering.'],
   tm:['TriangleRasterizer','Static flat, shaded and textured triangle/scanline drawing, raster clip setup and fixed-point sine/cosine tables.'],
   lh:['TextureProvider','Texture availability, pixel and colour queries used by mesh construction and textured rasterization; unresolved property queries retain their names.'],
   ig:['AnimationSkeleton','Decoded transform slots: type, mesh group indices and per-slot masks; frames share this object by identity.'],
@@ -176,7 +181,7 @@ function field(owner, original, descriptor, to, evidence) {
 }
 function method(owner, original, descriptor, to, evidence, parameters) {
   const key = `${owner}.${original}${descriptor}`;
-  members['M:'+key] = {to,evidence};
+  if(original!=='<init>')members['M:'+key] = {to,evidence};
   for (const [ordinal,name] of Object.entries(parameters || {}))
     members[`P:${key}#${ordinal}`] = {to:name,evidence};
 }
@@ -1553,6 +1558,30 @@ export function buildArmiesRules(input, rows) {
   return [...rules.values()].sort((a,b)=>a.symbol<b.symbol?-1:1);
 }
 
+// Widget identities are reviewed in this game's own input, including overrides.
+for(const [original,type,to] of [['B','I','x'],['p','I','y'],['l','I','width'],['w','I','height'],['k','Lkh;','painter']])
+  field('kb',original,type,to,'Widget constructor and setBounds assign x/y/width/height; drawing dispatch invokes the retained painter with parent offsets.');
+method('kb','<init>','(IIIILkh;Lqo;)V','<init>','Constructor stores widget bounds, painter and listener.',{0:'x',1:'y',2:'width',3:'height',4:'painter',5:'listener'});
+method('kb','a','(IIIII)V','setBounds','Assigns x, width, y and height in the original argument order; guard 8192 is canonical. DropdownSelector overrides this for its collapsed height.',{0:'x',1:'width',2:'y',3:'obfuscationGuard',4:'height'});
+method('kb','b','(IIIII)Z','containsPointer','Tests pointer coordinates against origin-offset widget bounds. Base bounds are half-open; the option-list override retains its inclusive edges.',{0:'obfuscationGuard',1:'originX',2:'pointerY',3:'pointerX',4:'originY'});
+method('kh','a','(Lkb;IIZI)V','paintWidget','Painter contract and Widget dispatch establish the widget and parent-origin offsets; rendering flag meaning remains qualified.',{0:'widget',1:'originX',2:'obfuscationGuard',3:'renderFlag',4:'originY'});
+for(const [original,type,to] of [['I','Ljava/lang/String;','typedPrefix'],['H','Z','expanded'],['J','I','collapsedHeight'],['G','I','maximumDropdownHeight'],['O','Lpp;','optionList'],['E','Lfw;','textButton'],['N','Lfw;','arrowButton'],['Q','Lai;','dropdownViewport'],['K','Lka;','font']])
+  field('gh',original,type,to,'Dropdown construction, keyboard prefix lookup, bounds updates and open/close viewport paths establish this role.');
+for(const [original,signature,to,evidence,parameters] of [
+ ['l','(I)Z','isExpanded','Returns expanded state; guard 11180 is canonical.',{0:'obfuscationGuard'}],
+ ['m','(I)V','openDropdown','Clamps option-list height, creates/attaches the viewport and scrolls selection into view.',{0:'obfuscationGuard'}],
+ ['k','(I)V','closeDropdown','Restores collapsed bounds, clears expanded state and unlinks the viewport.',{0:'obfuscationGuard'}],
+ ['n','(I)V','ensureSelectionVisible','Adjusts fixed-point scroll position to keep the selected option within the viewport.',{0:'obfuscationGuard'}],
+ ['a','(B)I','getSelectedIndex','Returns the option-list selected index; other guards return -94.',{0:'obfuscationGuard'}],
+ ['a','(ILjava/lang/String;)I','findOptionPrefix','Finds the first case-insensitive option string prefix, starting at the requested index.',{0:'startIndex',1:'prefix'}],
+])method('gh',original,signature,to,evidence,parameters);
+method('gh','<init>','([Ljava/lang/Object;II)V','<init>','Constructs the option list with initial selection and stores the dropdown height cap.',{0:'options',1:'selectedIndex',2:'maximumDropdownHeight'});
+for(const [original,type,to] of [['W','[Ljava/lang/Object;','options'],['T','I','selectedIndex'],['O','I','hoveredIndex'],['Z','I','rowHeight'],['V','Lgh;','selector'],['U','Lka;','font']])
+  field('pp',original,type,to,'Option-list initialization, rendering and pointer selection establish array/index/row and owner/font roles.');
+method('pp','a','(II[Ljava/lang/Object;)V','setOptions','Stores options/selection, resets hover and rejects an out-of-range non-null selection.',{0:'selectedIndex',1:'obfuscationGuard',2:'options'});
+method('pp','j','(I)Ljava/lang/Object;','getSelectedOption','Returns selected object or null for null options/no selection; noncanonical guard reads the first option.',{0:'obfuscationGuard'});
+method('pp','<init>','(Lgh;Lka;[Ljava/lang/Object;I)V','<init>','Stores selector/font, derives row height from font metrics and initializes options.',{0:'selector',1:'font',2:'options',3:'selectedIndex'});
+
 const workflowFiles=['build-armiesofgielinor-rules.mjs','reproduce-armiesofgielinor.mjs','reconstruct-armies-methods.mjs',
   'tests/test-armiesofgielinor-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs'];
 export function validateArmiesManifest(rules) {
@@ -1566,6 +1595,7 @@ export function buildArmiesGuide(rules,mapping) {
   return ['# Reading Armies of Gielinor','',
     'Java here is the single published version. Rebuild from pinned raw Git input using Deko’s `readable/reproduce-armiesofgielinor.mjs`. The current reverse dictionary is `../../decompilation/armiesofgielinor-naming.json`.','',
     `This gameplay naming pass reviews ${Object.keys(classes).length} class identities across all ${mapping.files.length} compiled classes. Other class/member names remain unresolved. Unresolved packed flags use bit-position names without guessing gameplay effects. Renamed identifiers have no opaque suffixes; the dictionary records their original identities.`, '',
+    'Widget, WidgetPainter, DropdownSelector, DropdownOptionList and DropdownArrowPainter expose the shared UI bounds and dropdown flow. Controlled fixtures check half-open base hit bounds, case-insensitive first-prefix matching, option validation/selection and the arrow painter’s pixels. The option-list hit override retains its different inclusive edges; complete interactive menu behavior remains unverified.','',
     '| Start here | Follow |','| --- | --- |',
     `| ${link('ha')} | Map geometry, player/team state, mana, turns, god favour and unit/event collections. |`,
     `| ${link('jd')} / ${link('ne')} / ${link('ca')} | Unit coordinates and strength; tile occupants, terrain, owners and tagged metadata. |`,
@@ -1631,7 +1661,7 @@ export function buildArmiesGuide(rules,mapping) {
     'submitCampaignResult updates the menu before comparing profile scores. It stores turns/damage and emits opcode 79 only for an improved candidate score or score 1; profile scores are subsequently calculated from those metrics, not stored as the candidate score. Every permitted submission then requests quicksave deletion, even without a result packet. The result carries campaign/mission IDs, score, turns, damage, loss flag and four campaignPacketWord integers. The words name packet positions only: their server validation meaning remains unresolved. reportCampaignTurn emits an opcode-16, type-zero record keyed by campaignIndex*1000+missionId. trackCampaignMetrics keeps XOR-996394 checkpoints, rejects decreases and preserves the original pointer-selected arithmetic mutations.', '',
     'DiskCacheWorker dispatches queued writes (2) and reads (3); immediate reads (1) reuse the first queued write for the same store/key or read synchronously. Queued writes retain caller arrays, and queuedCount excludes the operation already in flight. ResourceRequest.pending is volatile; disk access rejects pending data reads and reports progress as 0/100. requestFlag deliberately remains qualified because finer priority/cache semantics are unresolved. DualLinkedNode keeps primary and secondary memberships independent, and its setter rejects key changes while secondary-linked. SectorCacheStore uses six-byte index records and 520-byte data sectors: IDs up to 65535 use an eight-byte header with 512 payload bytes, larger IDs a ten-byte header with 510 bytes. The pinned decompiled writer retains a 512-byte next-link cutoff even for large-ID sectors with 510 payload bytes: 511/512-byte writes can report success but read back as null. The original gamepack bytecode confirms the same cutoff at bc.a(I[BZIB)Z offsets 766-780 and the 510-byte cap at 1087-1098; its 542-class identity matches the pinned original classes. BufferedFile and BoundedFile retain cached/pending I/O, length tracking, guard behavior and overflow/error paths. Controlled disk probes bypass the service launcher and exercise the real worker on owned temporary files, not full game asset loading.', '',
     'NetworkResourceRequest exposes padding, response bytes and block position. ResourceProtocolClient maintains queued/in-flight priority and normal lanes capped separately at twenty; SocketResourceClient sends six-byte request records and assembles padded responses from ten-byte headers and 512-byte transport blocks. Response flag 128 selects the normal lane, while the lower seven bits select compression. A nonzero xorByte decodes received bytes. Network getBytes retains the padded array and rejects pending/incomplete data; getProgress uses signed padding and is not clamped to 100. Controlled stream fixtures bypass real sockets and the thread launcher; they do not establish live server compatibility.', '',
-    'The naming stage changes identifiers and lexical labels. Its pinned raw input now incorporates two reconstructed method bodies from the generic compiler. Battlefield.eliminatePlayer and AiPlanner.considerEquippedSpell no longer use dispatcher fallbacks; gs.java still contains the protected-region fallback. Large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
+    'The naming stage changes identifiers and lexical labels. Its pinned raw input now incorporates two reconstructed method bodies from the generic compiler. Battlefield.eliminatePlayer and AiPlanner.considerEquippedSpell no longer use dispatcher fallbacks; DropdownArrowPainter.java still contains the protected-region fallback in its unrelated static packet poller. Large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
     'ArchiveIndex decodes formats 5–7: versions 6/7 carry a revision, version 7 uses large-smart integers, and IDs are delta-coded. Names and 64-byte group digests are separate flag-controlled tables. Arrays are indexed by actual group/file IDs, with null fileIds rows representing contiguous IDs. IntKeyLookup linear-probes interleaved key/index slots and returns the first matching input index, including negative and duplicate keys. ResourceArchive lowercases names, exposes index availability, separates packed groups from unpacked files and retains the three existing file-retention modes. CachedArchiveProvider supplies validated indexes and encoded groups from cache/network requests. Independent fixtures cover raw and gzip containers, every version/flag combination, sparse/contiguous/large IDs, checksum and digest-length rejection, name lookup and returned-file retention. This does not establish cache/network end-to-end loading or server compatibility.','',
     'Follow ResourceArchive.getFileWithKeys and unpackGroup: encrypted groups are copied before 32-round XTEA decryption beginning at container offset five. Decompression precedes chunk-table sizing and copying; signed table differences can make later file chunks smaller than earlier ones. Modes zero/one split every file, while mode two extracts only requestedFileId. storeBytes retains or copies arrays through 136 bytes and copies larger payloads to DirectByteStorage; getStoredBytes returns fresh arrays from direct storage. Mode one clears a single-file row after reading; mode two retains the pinned decoder’s null result for an empty file in a multi-file group. Availability methods can report packed bytes without unpacking. Flat access uses archive/file capacities and rejects ambiguous layouts. Independent ciphertext, range/tail, multi-chunk, sparse-ID, reload, copy-boundary and named/flat lookup probes use a controlled ArchiveProvider subclass, while exercising the real archive/index/storage implementation. They do not establish complete cache/network loading or server compatibility.','',
     'RadialSummonMenu and RadialSummonItem expose portal god tabs and summon choices. Menus retain their item arrays and assign integer-truncated circular offsets; pointer tests exclude the circle boundary and retain Java-int wrapping. Duplicate choice IDs return the first item. GameplayController.rebuildSummonMenus filters campaign neutral units and per-god unlock masks, retaining the type-4 to type-74 King Black Dragon substitution before the dragon has been summoned. UnitCycler wraps in both directions and refreshes after unlink; its accessor retains an unlinked selection until traversal validates it, and selectUnit does not enforce deque membership.','',
@@ -1651,7 +1681,7 @@ export function buildArmiesManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:25,
+    const rules={schema:1,game:'armiesofgielinor',version:26,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

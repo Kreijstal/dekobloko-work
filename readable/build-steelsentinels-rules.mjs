@@ -299,6 +299,15 @@ for(const [owner,signature,items] of [
  ['jk','a(IB)I',[[0,'var3','bucketMask'],[1,'var4','bucket'],[3,'var6','inputIndex']]],
 ])for(const [ordinal,originalName,to] of items)members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName:originalName,evidence:'Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.'};
 
+// Steering arithmetic helpers retain their original mixed-purpose owners.
+field('hk','Zb','[I','quarterSine16','Literal quarter-wave sine values at 8192 angle units per turn, scaled by 65536.');
+method('cm','a','(III)I','atan2Angle8192','Combines axis/quadrant cases with first-quadrant atan lookup to produce signed 8192-unit angles.',{0:'deltaY',1:'obfuscationGuard',2:'deltaX'});
+method('kg','a','(IB)I','cosine16','Wraps angles modulo 8192 and mirrors the quarter-sine lookup to return 16.16 cosine.',{0:'angle',1:'obfuscationGuard'});
+method('jh','a','(II)I','sine16','Wraps angles modulo 8192 and mirrors quarter-sine values; callers pass the half-turn boundary 4096.',{0:'angle',1:'halfTurnBoundary'});
+method('kk','a','(III)I','approximateVectorLength','Computes a table-based approximate vector magnitude with scaling, integer truncation and original overflow behavior.',{0:'deltaY',1:'deltaX',2:'obfuscationGuard'});
+method('rb','a','(III)I','firstQuadrantAngle8192','Reduces nonnegative X/Y by their ratio and mirrors around the quarter-turn angle.',{0:'deltaX',1:'obfuscationGuard',2:'deltaY'});
+method('df','a','(II)I','atanFixed16ToAngle8192','Maps signed 16.16 tangent ratios through the existing quantized atan lookup.',{0:'obfuscationGuard',1:'tangent16'});
+
 export function buildSteelRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -376,7 +385,7 @@ export function buildSteelGuide(rules,mapping) {
     'ArchiveIndex decodes formats 5–7: versions 6/7 carry a revision, version 7 uses large-smart integers, and IDs are delta-coded. Names and 64-byte group digests are separate flag-controlled tables. Arrays are indexed by actual group/file IDs, with null fileIds rows representing contiguous IDs. IntKeyLookup linear-probes interleaved key/index slots and returns the first matching input index, including negative and duplicate keys. ResourceArchive lowercases names, exposes index availability, separates packed groups from unpacked files and retains the three existing file-retention modes. CachedArchiveProvider supplies validated indexes and encoded groups from cache/network requests. Independent fixtures cover raw and gzip containers, every version/flag combination, sparse/contiguous/large IDs, checksum and digest-length rejection, name lookup and returned-file retention. This does not establish cache/network end-to-end loading or server compatibility.','',
     'Compilation and symbol/override checks cover the complete game. The raw/named core probe independently checks module aliases/bonuses, armour and charge mutations, terrain boundaries, part aggregation, synchronization checksums, command timing, queue routing, ordering and equal-tick replacement. Packet fixtures cover every bit alignment/width, primitive byte order, slice offsets, cipher consumption across block boundaries, bounded-random rejection and hash collisions/duplicate keys. Ciphertext traces must also match the raw export; round trips alone are insufficient. It allocates controlled world/sentinel/terrain fixtures without game construction and replaces only the client branch-control flag at runtime. It does not prove whole-game playability, projectile simulation, rendering or live server compatibility. Dictionary reversal recovers every original source byte.','',
     'ParticleEffect now names duration, age, effect type and its choice of terrain profile. Age gains a random 0–3 increment below 200, followed by the ordinary increment; duration is not a guaranteed count of updates. Fixtures check damping with Java truncation, terrain contact/exceptions, gravity and strict age > duration expiry. Type 10 emits a type-9 child. createParticle initializes an object from a 10,000-entry cyclic reuse buffer, not a free list: acquisition neither checks liveness nor unlinks existing membership. pendingRemovals uses DualNodeDeque secondary links until world simulation unlinks the primary links. Probes preserve those boundaries and restore the global buffer/cursor afterward.','',
-    'Projectile.advanceGuidedMotion exposes launch acceleration, target steering and the gravity gate. Its target and initial-direction fields and phase-dependent locals now have reviewed names. Independent launch/coasting fixtures cover zero vectors, signed motion and ages 0, 1, 19, 128 and 129 with transient visual emission suppressed. Tracking/turning at ages 20–127 and rendered effects remain unverified.','',
+    'Projectile.advanceGuidedMotion exposes launch acceleration, target steering and the gravity gate. Its target and initial-direction fields and phase-dependent locals now have reviewed names. Independent launch/coasting fixtures cover zero vectors, signed motion and ages 0, 1, 19, 128 and 129 with transient visual emission suppressed. Steering helpers now expose 8192-unit angles and 16.16 sine/cosine. Fixtures cover full-turn trig values, axis/quadrant angles, bounded turning at ages 20–127, target updates/removal and the coasting boundary. The initial-direction reversal branch, rendered effects and complete projectile collisions remain unverified.','',
     'This is a naming pass. Three files still contain compiler dispatcher fallbacks, and large methods remain. Further work should explain weapon/projectile variants, command dispatch, remaining physics/collision, tutorial flow and multiplayer packets.',''].join('\n');
 }
 export function buildSteelManifest() {
@@ -384,7 +393,7 @@ export function buildSteelManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.steelsentinels;
-    const rules={schema:1,game:'steelsentinels',version:5,
+    const rules={schema:1,game:'steelsentinels',version:6,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/steelsentinels'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
