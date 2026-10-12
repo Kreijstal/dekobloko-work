@@ -74,6 +74,26 @@ reuse. Guided projectile motion names target and initial-direction state; launch
 and coasting fixtures preserve its zero-vector behavior and gravity gate.
 Steering helpers now name 8192-unit angles, 16.16 sine/cosine and approximate vector length. Full-turn trig and quadrant fixtures compare mathematical expectations; guided-motion fixtures check bounded turning, target-coordinate refresh/removal and the age-128 coasting boundary. Rendered effects, the initial-direction reversal branch and complete projectile collisions remain unverified.
 
+Explosion also has a small, read-only structural proof of concept:
+`node readable/probe-steel-explosion.mjs VERIFIED_BYTECODE`. It requires the
+347-class historical transformed tree with SHA-256
+`73c5ce3191038cd4472776e90ab73049ba41ca39bea2d34b97b61f815333b353`,
+from the owned pipeline at Deko `3ca5318cf9852723bca4ff37712194947c0ec118`
+and java-tools `1d183d3ba75fc0a8cd3af1544591b8c463c0e1ff`.
+The pinned comparison compiler is `92e6a69ec0692bf9e6b1f63a30406bfc5455e86c`;
+the candidate compiler is `4f9c0025375e51ef1fd9c58fa5ccc87476ebfcb0`.
+Its tracked source tar SHA-256 is
+`2ff636829b2595db522c31c84bf535d1fbda4a31b923086850fb30e749d7c4d6`.
+The existing default splitter reconstructs 271 source blocks with four copies,
+verifies original edges and removes the dispatcher. Native verified bytecode,
+published dispatcher Java and reconstructed Java agree on 790 scenarios with
+2,288 checks: integration, terrain clamping, guard/control paths, strict expiry,
+affected-sentinel refresh and partial mutations on failures. Generated source
+is checked twice for determinism. Visual emission is suppressed; full collision
+and rendering remain unverified. All generated files are deleted, and the
+published export is unchanged. The probe prints one receipt to stdout.
+If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
+
 ## Armies of Gielinor
 
 Widget, WidgetPainter, DropdownSelector, DropdownOptionList and DropdownArrowPainter now name bounds, painter dispatch, option selection, keyboard-prefix search and dropdown expansion. Independent fixtures check base pointer bounds, first-prefix matching, option validation/selection and complete arrow pixels. The option-list override retains its different inclusive hit bounds; full interactive dropdown behavior remains unverified.
