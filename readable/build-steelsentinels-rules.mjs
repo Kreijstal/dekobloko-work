@@ -263,6 +263,36 @@ for(const [original,descriptor,to,parameters] of [
 method('cm','<init>','(Lfa;ZI)V','<init>','Stores the provider and validates fileRetentionMode in 0..2.',{0:'provider',1:'discardPackedGroups',2:'fileRetentionMode'});
 method('gi','c','(Z)I','readLargeSmart','Reads an unsigned short when the next byte is nonnegative, otherwise an int with the high bit cleared.',{0:'obfuscationGuard'});
 method('ln','a','([BB)[B','decompressContainer','Reads container type and lengths; type zero copies payload, type one dispatches the block decompressor, other types dispatch the stream decompressor.',{0:'encodedContainer',1:'obfuscationGuard'});
+// Particle integration, its cyclic reuse buffer and deferred removal are
+// separate mechanisms. Do not describe the reuse buffer as a free list.
+for(const [original,to,type] of [['D','durationTicks','I'],['I','ageTicks','I'],['M','effectType','I'],['G','usesSurfaceProfile','Z']])
+  field('qb',original,type,to,'Particle factory initializes these fields; drawing scales age by duration; integration chooses the surface or secondary terrain profile and expires strictly after duration. Age also receives a random 0..3 increment below 200.');
+for(const [original,to,type] of [['O','pendingParticles','Lul;'],['o','particles','Lul;'],['J','pendingRemovals','Lra;'],['z','gravityAcceleration','I']])
+  field('ee',original,type,to,'Simulation merges pending particles before updating them, then unlinks pending removals through their primary links. Projectile/particle gravity adds the acceleration to vertical velocity.');
+field('mg','hc','I','particleReuseCursor','ol.d decrements this cursor and wraps from -1 to 9999; no liveness check is performed.');
+field('k','Cb','[Lqb;','particleReuseBuffer','Preallocated 10000-object circular buffer returned by ol.d; reused particle fields are initialized by nk.a.');
+method('ol','d','(B)Lqb;','acquireCyclicParticle','Decrements and wraps the reuse cursor before returning the existing buffer entry; does not unlink or clear it.',{0:'obfuscationGuard'});
+method('nk','a','(IILee;IIZIIII)Lqb;','createParticle','Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.',{0:'effectType',1:'velocityX',2:'world',3:'obfuscationGuard',4:'worldY',5:'usesSurfaceProfile',6:'durationTicks',7:'velocityY',8:'worldX',9:'inheritedEffectValue'});
+method('qb','i','(I)V','detachWorld','Clears the particle world; subsequent integration returns immediately.',{0:'obfuscationGuard'});
+method('qb','a','(IIZB)V','drawParticle','Selects age-scaled particle sprites and render passes, using world coordinates shifted by eight.',{0:'screenOffsetX',1:'screenOffsetY',2:'alternateRenderPass',3:'obfuscationGuard'});
+field('ra','d','Lkd;','sentinel','Circular secondary-link sentinel; nodes remain independently linked in their primary collections.');
+field('ra','e','Lkd;','traversalCursor','Secondary-link iteration cursor.');
+for(const [original,descriptor,to,parameters] of [
+ ['a','(BLkd;)V','addLast',{0:'obfuscationGuard',1:'node'}],
+ ['b','(I)Lkd;','first',{0:'obfuscationGuard'}],
+ ['a','(Z)Lkd;','next',{0:'obfuscationGuard'}],
+ ['a','(I)V','clear',{0:'obfuscationGuard'}],
+ ['c','(I)Lkd;','removeFirst',{0:'obfuscationGuard'}],
+ ['a','(B)I','size',{0:'obfuscationGuard'}],
+])method('ra',original,descriptor,to,'Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.',parameters);
+for(const [original,to,type] of [['nb','targetSentinel','Lmb;'],['K','targetWorldX','I'],['S','targetWorldY','I'],['cb','initialDirectionX','I'],['Q','initialDirectionY','I'],['H','applyGravity','Z']])
+  field('wl',original,type,to,'Guided projectile acceleration/steering and advanceProjectile: tracks target position, uses constructor-derived velocity signs to resolve turn direction, and controls gravity application.');
+method('wl','a','(BI)Z','advanceGuidedMotion','Accelerates along the current vector before age 20; tracks the target and limits turning through age 127, then retains its velocity. Returns false; visual emission remains separately gated.',{0:'obfuscationGuard',1:'substepIndex'});
+for(const [owner,signature,items] of [
+ ['qb','c(B)V',[[0,'var2','spawnedParticle'],[1,'var3','obfuscationControl'],[2,'var4','unusedString']]],
+ ['nk','a(IILee;IIZIIII)Lqb;',[[0,'var10','particle'],[1,'var10_ref','failure'],[2,'var11','unusedWorld']]],
+ ['wl','a(BI)Z',[[0,'var3','maximumSpeed'],[1,'var4','velocityOrTargetDeltaX'],[2,'var4_ref_qb','coastingTrail'],[3,'var5','velocityOrTargetDeltaY'],[4,'var6','speedOrTargetAngle'],[5,'var7','launchTrail'],[6,'var7_int','heading'],[7,'var8','headingDelta'],[8,'var9','speed'],[9,'var10','guidedTrail'],[10,'var11','obfuscationControl'],[11,'var7Lifetime1','secondaryLaunchTrail'],[12,'var10Lifetime1','secondaryGuidedTrail']]],
+])for(const [ordinal,originalName,to] of items)members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName:originalName,evidence:'Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.'};
 for(const [owner,signature,items] of [
  ['jl','a([BI)V',[[16,'var4','formatVersion'],[17,'var5','flags'],[18,'var6','hasNames'],[19,'var7','hasGroupDigests'],[20,'var8','cumulativeGroupId'],[21,'var9','maximumGroupId'],[22,'var10','groupOrdinal'],[23,'var11','groupId'],[24,'var12','fileCount'],[25,'var13','maximumFileId'],[26,'var14','fileOrdinal'],[27,'var15','fileId'],[29,'var17','packet'],[30,'var21','groupDigest'],[31,'var8Lifetime1','cumulativeFileId'],[32,'var10Lifetime1','groupNameSlot'],[33,'var10Lifetime2','crcGroupOrdinal'],[34,'var10Lifetime3','digestGroupOrdinal'],[35,'var10Lifetime4','versionGroupOrdinal'],[36,'var10Lifetime5','fileGroupOrdinal'],[37,'var10Lifetime6','namedGroupOrdinal'],[38,'var13Lifetime1','fileNameSlot'],[39,'var14Lifetime1','namedFileId'],[40,'var11Lifetime1','namedGroupId'],[41,'var12Lifetime1','namedFileCount'],[42,'var10Lifetime1Lifetime1','groupNameOrdinal'],[43,'var13Lifetime1Lifetime1','namedFileOrdinal']]],
  ['jk','<init>([I)V',[[0,'var2_int','capacity'],[1,'var3','slotIndex'],[2,'var4','bucket'],[8,'var3Lifetime1','inputIndex']]],
@@ -345,14 +375,16 @@ export function buildSteelGuide(rules,mapping) {
     '`NodeHashTable` uses power-of-two bucket counts and intrusive nodes. `put` moves an already linked node; it does not replace a distinct node with the same key. `get` returns the first matching node and iteration visits buckets in ascending order. The packet/random/table classes retain unrelated static UI helpers from the original class layout.','',
     'ArchiveIndex decodes formats 5–7: versions 6/7 carry a revision, version 7 uses large-smart integers, and IDs are delta-coded. Names and 64-byte group digests are separate flag-controlled tables. Arrays are indexed by actual group/file IDs, with null fileIds rows representing contiguous IDs. IntKeyLookup linear-probes interleaved key/index slots and returns the first matching input index, including negative and duplicate keys. ResourceArchive lowercases names, exposes index availability, separates packed groups from unpacked files and retains the three existing file-retention modes. CachedArchiveProvider supplies validated indexes and encoded groups from cache/network requests. Independent fixtures cover raw and gzip containers, every version/flag combination, sparse/contiguous/large IDs, checksum and digest-length rejection, name lookup and returned-file retention. This does not establish cache/network end-to-end loading or server compatibility.','',
     'Compilation and symbol/override checks cover the complete game. The raw/named core probe independently checks module aliases/bonuses, armour and charge mutations, terrain boundaries, part aggregation, synchronization checksums, command timing, queue routing, ordering and equal-tick replacement. Packet fixtures cover every bit alignment/width, primitive byte order, slice offsets, cipher consumption across block boundaries, bounded-random rejection and hash collisions/duplicate keys. Ciphertext traces must also match the raw export; round trips alone are insufficient. It allocates controlled world/sentinel/terrain fixtures without game construction and replaces only the client branch-control flag at runtime. It does not prove whole-game playability, projectile simulation, rendering or live server compatibility. Dictionary reversal recovers every original source byte.','',
-    'This is a naming pass. Three files still contain compiler dispatcher fallbacks, and large methods remain. Further work should explain weapon/projectile variants, command dispatch, physics/collision, tutorial flow and multiplayer packets.',''].join('\n');
+    'ParticleEffect now names duration, age, effect type and its choice of terrain profile. Age gains a random 0–3 increment below 200, followed by the ordinary increment; duration is not a guaranteed count of updates. Fixtures check damping with Java truncation, terrain contact/exceptions, gravity and strict age > duration expiry. Type 10 emits a type-9 child. createParticle initializes an object from a 10,000-entry cyclic reuse buffer, not a free list: acquisition neither checks liveness nor unlinks existing membership. pendingRemovals uses DualNodeDeque secondary links until world simulation unlinks the primary links. Probes preserve those boundaries and restore the global buffer/cursor afterward.','',
+    'Projectile.advanceGuidedMotion exposes launch acceleration, target steering and the gravity gate. Its target and initial-direction fields and phase-dependent locals now have reviewed names. Independent launch/coasting fixtures cover zero vectors, signed motion and ages 0, 1, 19, 128 and 129 with transient visual emission suppressed. Tracking/turning at ages 20–127 and rendered effects remain unverified.','',
+    'This is a naming pass. Three files still contain compiler dispatcher fallbacks, and large methods remain. Further work should explain weapon/projectile variants, command dispatch, remaining physics/collision, tutorial flow and multiplayer packets.',''].join('\n');
 }
 export function buildSteelManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'steel-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.steelsentinels;
-    const rules={schema:1,game:'steelsentinels',version:4,
+    const rules={schema:1,game:'steelsentinels',version:5,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/steelsentinels'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

@@ -39,6 +39,84 @@ static Object get(Class<?> c,Object o,String n)throws Exception{return field(c,n
 static Object call(Class<?> c,Object o,String n,Class<?>[] p,Object...v)throws Exception{Method m=c.getDeclaredMethod(n,p);m.setAccessible(true);return m.invoke(o,v);}
 static Object make(Class<?> c,Class<?>[] p,Object...v)throws Exception{Constructor<?> k=c.getDeclaredConstructor(p);k.setAccessible(true);return k.newInstance(v);}
 static void check(String label,Object actual,Object expected){if(!Objects.equals(actual,expected))throw new AssertionError(label+": "+actual+" != "+expected);System.out.println(label+":"+actual);cases++;}
+static void verifyParticleMotion()throws Exception{
+Class<?> particle=Class.forName("${className('qb')}"),dualDeque=Class.forName("${className('ra')}"),dual=Class.forName("${className('kd')}");
+Class<?> poolOwner=Class.forName("${className('k')}"),cursorOwner=Class.forName("${className('mg')}"),allocator=Class.forName("${className('ol')}");
+Object savedPool=get(poolOwner,null,"${f('k','Cb','[Lqb;')}"),savedCursor=get(cursorOwner,null,"${f('mg','hc','I')}");
+Object pool=Array.newInstance(particle,10000);for(int index:new int[]{0,1,9998,9999})Array.set(pool,index,unsafe.allocateInstance(particle));
+try{
+set(poolOwner,null,"${f('k','Cb','[Lqb;')}",pool);
+for(int cursor:new int[]{0,1,2,9999}){
+set(cursorOwner,null,"${f('mg','hc','I')}",cursor);int wanted=(cursor+9999)%10000;
+check("particle-pool-index/"+cursor,call(allocator,null,"${m('ol','d','(B)Lqb;')}",new Class<?>[]{byte.class},(byte)-105)==Array.get(pool,wanted),true);
+check("particle-pool-cursor/"+cursor,get(cursorOwner,null,"${f('mg','hc','I')}"),wanted);
+}
+Object w=unsafe.allocateInstance(world),t=unsafe.allocateInstance(terrain),p=Array.get(pool,9999),primary=make(deque,new Class<?>[]{});
+set(world,w,"${f('ee','ab','Lhd;')}",t);set(terrain,t,"${f('hd','n','I')}",8);
+call(deque,primary,"${m('ul','a','(ILck;)V')}",new Class<?>[]{int.class,node},3,p);
+set(particle,p,"${f('qb','I','I')}",999);set(cursorOwner,null,"${f('mg','hc','I')}",0);
+Object made=call(part,null,"${m('nk','a','(IILee;IIZIIII)Lqb;')}",new Class<?>[]{int.class,int.class,world,int.class,int.class,boolean.class,int.class,int.class,int.class,int.class},3,-17,w,100,-1600,true,250,23,80,123);
+check("particle-factory-reuses",made==p,true);check("particle-factory-keeps-link",get(node,p,"${f('ck','i','Lck;')}")!=null,true);
+String[] fields={"${f('qb','M','I')}","${f('qb','A','I')}","${f('qb','B','I')}","${f('qb','I','I')}","${f('qb','D','I')}","${f('qb','O','I')}","${f('qb','F','I')}","${f('qb','P','I')}"};
+int[] initial={3,-17,-1600,0,250,23,80,123};for(int i=0;i<fields.length;i++)check("particle-factory/"+i,get(particle,p,fields[i]),initial[i]);
+check("particle-factory-world",get(particle,p,"${f('qb','z','Lee;')}")==w,true);
+// Independent contact scenarios: free flight, each profile, equal-profile
+// exceptions, water-like terrain and the terrain mode which skips contact.
+int[][] contacts={
+ {0,100,200,300,-6400,0,0,-6400,1,0},
+ {0,100,200,300,-1600,0,0,-3200,1,0},
+ {0,0,200,50,-1600,1,0,-800,1,1},
+ {0,0,50,50,-1600,1,0,-800,1,0},
+ {4,100,200,300,-1600,0,0,-1600,1,0},
+ {0,100,200,200,-1600,0,2,-1600,1,0},
+ {2,100,3000,3000,-1600,0,0,-1600,0,0},
+ {0,500,200,300,-1600,0,0,-8000,1,0}
+};
+for(int scenario=0;scenario<contacts.length;scenario++)for(int vx:new int[]{-17,0,17})for(int duration:new int[]{200,201,202}){
+int[] row=contacts[scenario];Object removal=make(dualDeque,new Class<?>[]{});set(world,w,"${f('ee','J','Lra;')}",removal);
+set(terrain,t,"${f('hd','b','I')}",row[0]);String[] profiles={"${f('hd','m','[I')}","${f('hd','e','[I')}","${f('hd','f','[I')}"};
+for(int i=0;i<3;i++){int[] heights=new int[8];Arrays.fill(heights,row[i+1]);set(terrain,t,profiles[i],heights);}
+set(particle,p,"${f('qb','z','Lee;')}",w);set(particle,p,"${f('qb','F','I')}",80);set(particle,p,"${f('qb','B','I')}",row[4]-19);
+set(particle,p,"${f('qb','A','I')}",vx);set(particle,p,"${f('qb','O','I')}",19);set(particle,p,"${f('qb','G','Z')}",row[5]!=0);
+set(particle,p,"${f('qb','M','I')}",row[6]);set(particle,p,"${f('qb','I','I')}",200);set(particle,p,"${f('qb','D','I')}",duration);
+call(particle,p,"${m('qb','c','(B)V')}",new Class<?>[]{byte.class},(byte)60);String label="particle-contact/"+scenario+"/"+vx+"/"+duration;
+check(label+"/x",get(particle,p,"${f('qb','F','I')}"),80+vx*row[8]);check(label+"/y",get(particle,p,"${f('qb','B','I')}"),row[7]);
+check(label+"/vx",get(particle,p,"${f('qb','A','I')}"),row[8]*vx*9/10);check(label+"/vy",get(particle,p,"${f('qb','O','I')}"),17);
+check(label+"/surface",get(particle,p,"${f('qb','G','Z')}"),row[9]!=0);check(label+"/age",get(particle,p,"${f('qb','I','I')}"),201);
+check(label+"/expired",call(dualDeque,removal,"${m('ra','b','(I)Lkd;')}",new Class<?>[]{int.class},22)==p,duration<201);
+check(label+"/primary-kept",get(node,p,"${f('ck','i','Lck;')}")!=null,true);
+call(dual,p,"${m('kd','e','(I)V')}",new Class<?>[]{int.class},480);
+}
+// Type 10 retains horizontal velocity, accelerates vertically and queues a
+// type-9 child; the child inherits the unresolved final factory value.
+Object pending=make(deque,new Class<?>[]{});set(world,w,"${f('ee','O','Lul;')}",pending);set(world,w,"${f('ee','z','I')}",4);set(terrain,t,"${f('hd','b','I')}",4);
+set(particle,p,"${f('qb','M','I')}",10);set(particle,p,"${f('qb','A','I')}",-17);set(particle,p,"${f('qb','O','I')}",19);
+set(particle,p,"${f('qb','I','I')}",200);set(particle,p,"${f('qb','D','I')}",202);set(cursorOwner,null,"${f('mg','hc','I')}",1);
+call(particle,p,"${m('qb','c','(B)V')}",new Class<?>[]{byte.class},(byte)60);
+check("particle-gravity/vx",get(particle,p,"${f('qb','A','I')}"),-17);check("particle-gravity/vy",get(particle,p,"${f('qb','O','I')}"),23);
+Object child=call(deque,pending,"${m('ul','e','(I)Lck;')}",new Class<?>[]{int.class},13058);
+check("particle-gravity/child",child==Array.get(pool,0),true);check("particle-gravity/type",get(particle,child,"${f('qb','M','I')}"),9);
+check("particle-gravity/inherited",get(particle,child,"${f('qb','P','I')}"),123);
+call(particle,p,"${m('qb','i','(I)V')}",new Class<?>[]{int.class},-15809);
+int previousX=(Integer)get(particle,p,"${f('qb','F','I')}");call(particle,p,"${m('qb','c','(B)V')}",new Class<?>[]{byte.class},(byte)60);
+check("particle-detached/x",get(particle,p,"${f('qb','F','I')}"),previousX);check("particle-detached/age",get(particle,p,"${f('qb','I','I')}"),201);
+}finally{set(poolOwner,null,"${f('k','Cb','[Lqb;')}",savedPool);set(cursorOwner,null,"${f('mg','hc','I')}",savedCursor);}
+}
+static void verifyGuidedLaunch()throws Exception{
+Class<?> projectile=Class.forName("${className('wl')}");Object w=unsafe.allocateInstance(world);set(world,w,"${f('ee','h','Z')}",true);
+for(int age:new int[]{0,1,19,128,129})for(int[] vector:new int[][]{{0,0},{3,4},{-3,4},{3,-4},{-3,-4},{1,0},{0,-1},{173,-29}}){
+Object p=unsafe.allocateInstance(projectile);set(projectile,p,"${f('wl','B','Lee;')}",w);set(projectile,p,"${f('wl','Z','I')}",age);
+set(projectile,p,"${f('wl','hb','I')}",19);set(projectile,p,"${f('wl','jb','I')}",23);set(projectile,p,"${f('wl','H','Z')}",true);
+int vx=vector[0],vy=vector[1];set(projectile,p,"${f('wl','cb','I')}",Integer.signum(vx));set(projectile,p,"${f('wl','Q','I')}",Integer.signum(vy));
+set(projectile,p,"${f('wl','eb','I')}",vx);set(projectile,p,"${f('wl','F','I')}",vy);
+int magnitude=Math.max(1,(int)Math.hypot(vx,vy));int expectedX=age<20?(age+5)*(vx*300)/(magnitude*25):vx;
+int expectedY=age<20?vy*((age+5)*300)/(magnitude*25):vy;
+String label="guided-launch/"+age+"/"+vx+"/"+vy;
+check(label+"/result",call(projectile,p,"${m('wl','a','(BI)Z')}",new Class<?>[]{byte.class,int.class},(byte)-102,0),false);
+check(label+"/vx",get(projectile,p,"${f('wl','eb','I')}"),expectedX);check(label+"/vy",get(projectile,p,"${f('wl','F','I')}"),expectedY);
+check(label+"/gravity",get(projectile,p,"${f('wl','H','Z')}"),age>=128);check(label+"/age",get(projectile,p,"${f('wl','Z','I')}"),age);
+}
+}
 ${archiveIndexProbe({className,f,m},{
   index:{owner:'jl',fields:{groupCount:'b',groupIds:'h',groupCapacity:'u',revision:'k',indexCrc:'e',indexDigest:'l',groupNameHashes:'v',groupNameLookup:'n',groupCrcs:'a',groupDigests:'t',groupVersions:'m',fileCounts:'j',fileCapacities:'g',fileIds:'o',fileNameHashes:'q',fileNameLookups:'d'}},
   lookup:{owner:'jk',get:{identity:['a','(IB)I'],types:'int.class,byte.class',guard:'(byte)120'}},
@@ -237,6 +315,7 @@ call(node,nodes[0],"${m('ck','b','(I)V')}",new Class<?>[]{int.class},4);
 check("hash-duplicate-survives/"+bucketCount,call(table,hash,"${m('uh','a','(JI)Lck;')}",new Class<?>[]{long.class,int.class},0L,122)==nodes[2],true);
 }
 verifyArchiveIndexes(packet);
+verifyParticleMotion();verifyGuidedLaunch();
 System.out.println("checks:"+cases);
 }}
 `);
@@ -248,7 +327,7 @@ System.out.println("checks:"+cases);
   }
   assert.deepEqual(outputs[1],outputs[0],'Named Steel gameplay core differs from pinned raw Java');
   const checks=Number(outputs[0].toString().trimEnd().split('\n').at(-1).split(':')[1]);assert.ok(checks>1500);
-  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,gameConstructorsBypassed:true,traceSha256:digest(outputs[0])};
+  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,gameConstructorsBypassed:true,particleMotionFixtures:true,cyclicParticleReuseFixtures:true,guidedLaunchFixtures:true,traceSha256:digest(outputs[0])};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'steel-core-check-'));

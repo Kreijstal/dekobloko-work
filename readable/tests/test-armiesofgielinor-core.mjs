@@ -375,7 +375,76 @@ for(int type:new int[]{0,34})for(boolean flag:new boolean[]{false,true}){Object 
 }
 finally{set(modelsOwner,null,"${f('mn','k','[[Lkk;')}",oldModels);set(projectionOwner,null,"${f('nh','D','[Z')}",oldProjection);set(variantsOwner,null,"${f('aw','j','[[[I')}",oldVariants);set(randomOwner,null,"${f('gg','J','Ljava/util/Random;')}",oldRandom);}
 }
-static void verifyBattleModelData()throws Exception{verifyFixedQuaternions();verifyMeshPreprocessing();verifyUnitAnimationSelection();verifyBattleProjectionAndModelLifetime();verifyModelCreationFallback();}
+static class RecordingMesh extends ${className('kk')} {
+final ArrayList<String> transforms=new ArrayList<>();int finishes;
+boolean ${m('kk','b','()Z')}(){return true;}
+void ${m('kk','a','()V')}(){finishes++;}
+void ${m('kk','a','(I[IIIIZ)V')}(int type,int[] groups,int x,int y,int z,boolean option){transforms.add(type+":"+Arrays.toString(groups)+":"+x+","+y+","+z);}
+void ${m('kk','a','(I[IIIIZI[I)V')}(int type,int[] groups,int x,int y,int z,boolean option,int mask,int[] matrix){transforms.add(type+":"+Arrays.toString(groups)+":"+x+","+y+","+z+":mask="+mask);}
+void ${m('kk','b','(III)V')}(int x,int y,int z){}
+void ${m('kk','a','(IIIIIIIJ)V')}(int a,int b,int c,int d,int e,int f,int g,long h){}
+${className('kk')} ${m('kk','a','(ZZZ)Lkk;')}(boolean a,boolean b,boolean c){return this;}
+}
+static void verifyAnimationFrames()throws Exception{
+Class<?> skeleton=Class.forName("${className('ig')}"),frame=Class.forName("${className('ht')}"),frameSet=Class.forName("${className('wp')}"),model=Class.forName("${className('kk')}"),mesh=Class.forName("${className('gd')}"),data=Class.forName("${className('js')}");
+byte[] skeletonBytes={3,0,1,3,0,1,0,(byte)255,(byte)255,(byte)255,(byte)255,0,1,1,1,1,0,0,1};
+Object skeletonObject=make(skeleton,new Class<?>[]{int.class,byte[].class},42,skeletonBytes);
+check("animation-skeleton/id",get(skeleton,skeletonObject,"${f('ig','k','I')}"),42);
+check("animation-skeleton/types",Arrays.toString((int[])get(skeleton,skeletonObject,"${f('ig','p','[I')}")),"[0, 1, 3]");
+check("animation-skeleton/groups",Arrays.deepToString((int[][])get(skeleton,skeletonObject,"${f('ig','l','[[I')}")),"[[0], [0], [1]]");
+check("animation-skeleton/masks",Arrays.toString((int[])get(skeleton,skeletonObject,"${f('ig','s','[I')}")),"[65535, 65535, 1]");
+check("animation-skeleton/flags",Arrays.toString((boolean[])get(skeleton,skeletonObject,"${f('ig','q','[Z')}")),"[false, true, false]");
+byte[] sparseBytes={0,0,42,3,0,7,1,69,57,73,80};
+Object sparse=make(frame,new Class<?>[]{byte[].class,skeleton},sparseBytes,skeletonObject);
+String[] arrays={"${f('ht','a','[S')}","${f('ht','l','[S')}","${f('ht','f','[S')}","${f('ht','h','[S')}","${f('ht','i','[S')}"};
+String[] expected={"[1, 2]","[5, 16]","[-7, 128]","[9, 128]","[0, -1]"};
+check("animation-frame/count",get(frame,sparse,"${f('ht','d','I')}"),2);
+for(int i=0;i<arrays.length;i++)check("animation-frame/array/"+i,Arrays.toString((short[])get(frame,sparse,arrays[i])),expected[i]);
+check("animation-frame/skeleton-identity",get(frame,sparse,"${f('ht','n','Lig;')}")==skeletonObject,true);
+for(byte[] malformed:new byte[][]{Arrays.copyOf(sparseBytes,sparseBytes.length+1),Arrays.copyOf(sparseBytes,sparseBytes.length-1),new byte[0]}){
+Object rejected=make(frame,new Class<?>[]{byte[].class,skeleton},malformed,skeletonObject);check("animation-frame/rejected/"+malformed.length,get(frame,rejected,"${f('ht','d','I')}"),0);
+}
+// Real blend logic, with a recording mesh boundary: wrapped rotation/hue,
+// scale defaults and flag-inhibited interpolation are observable directly.
+for(int type:new int[]{1,2,3,7})for(int flags=0;flags<4;flags++)for(int targetFlags=0;targetFlags<4;targetFlags++){
+byte[] wire={1,(byte)type,0,(byte)255,(byte)255,1,0};Object sk=make(skeleton,new Class<?>[]{int.class,byte[].class},7,wire);
+byte[] first=type==2?new byte[]{0,0,7,1,(byte)(1+(flags<<3)),(byte)192,(byte)255}:new byte[]{0,0,7,1,(byte)(1+(flags<<3)),(byte)(type==7?124:69)};
+byte[] second={0,0,7,1,(byte)(1+(targetFlags<<3)),(byte)(type==7?68:type==2?65:75)};
+Object from=make(frame,new Class<?>[]{byte[].class,skeleton},first,sk),to=make(frame,new Class<?>[]{byte[].class,skeleton},second,sk);
+Object firstSet=make(frameSet,new Class<?>[]{int.class},3),nextSet=make(frameSet,new Class<?>[]{int.class},4);
+Object firstFrames=Array.newInstance(frame,1),nextFrames=Array.newInstance(frame,1);Array.set(firstFrames,0,from);Array.set(nextFrames,0,to);
+set(frameSet,firstSet,"${f('wp','A','[Lht;')}",firstFrames);set(frameSet,nextSet,"${f('wp','A','[Lht;')}",nextFrames);
+for(int elapsed:new int[]{0,1,2,4}){
+RecordingMesh sink=new RecordingMesh();call(model,sink,"${m('kk','a','(Lwp;ILwp;IIIZ)V')}",new Class<?>[]{frameSet,int.class,frameSet,int.class,int.class,int.class,boolean.class},firstSet,0,nextSet,0,elapsed,4,false);
+int source=type==2?2040:type==7?60:5,target=type==2?8:type==7?4:11;
+int component=source;if((flags&2)==0&&(targetFlags&1)==0){int modulus=type==2?2048:type==7?64:0;int delta=target-source;if(modulus!=0)delta=Math.floorMod(delta+modulus/2,modulus)-modulus/2;component=source+delta*elapsed/4;if(modulus!=0)component=Math.floorMod(component,modulus);}
+int other=type==3?128:0;String label="animation-blend/"+type+"/"+flags+"/"+targetFlags+"/"+elapsed;
+check(label+"/transform",sink.transforms.toString(),"["+type+":[0]:"+component+","+other+","+other+"]");check(label+"/finish",sink.finishes,1);
+}
+// Distinct but equivalent skeleton objects are intentionally not blended.
+Object otherSkeleton=make(skeleton,new Class<?>[]{int.class,byte[].class},7,wire),otherFrame=make(frame,new Class<?>[]{byte[].class,skeleton},second,otherSkeleton);
+Array.set(nextFrames,0,otherFrame);RecordingMesh mismatch=new RecordingMesh();call(model,mismatch,"${m('kk','a','(Lwp;ILwp;IIIZ)V')}",new Class<?>[]{frameSet,int.class,frameSet,int.class,int.class,int.class,boolean.class},firstSet,0,nextSet,0,2,4,false);
+int source=type==2?2040:type==7?60:5,other=type==3?128:0;check("animation-identity/"+type+"/"+flags+"/"+targetFlags,mismatch.transforms.toString(),"["+type+":[0]:"+source+","+other+","+other+"]");
+}
+// Execute an actual ModelMesh translation. Keep texture indices separate
+// from coordinate storage, including the corrected Y declaration identity.
+Object translation=make(frame,new Class<?>[]{byte[].class,skeleton},new byte[]{0,0,42,3,0,7,0,69,57,73},skeletonObject);
+Object setObject=make(frameSet,new Class<?>[]{int.class},0),frames=Array.newInstance(frame,1);Array.set(frames,0,translation);set(frameSet,setObject,"${f('wp','A','[Lht;')}",frames);
+String[] pivotFields={"${f('gd','v','I')}","${f('gd','mb','I')}","${f('gd','cb','I')}"};Object[] pivots=new Object[3];for(int i=0;i<3;i++)pivots[i]=get(mesh,null,pivotFields[i]);
+try{
+Object geometry=unsafe.allocateInstance(mesh);set(mesh,geometry,"${f('gd','I','I')}",3);set(mesh,geometry,"${f('gd','S','[[I')}",new int[][]{{0,2}});
+set(mesh,geometry,"${f('gd','G','[I')}",new int[]{10,20,30});set(mesh,geometry,"${f('gd','o','[I')}",new int[]{100,200,300});set(mesh,geometry,"${f('gd','F','[I')}",new int[]{1,2,3});
+call(model,geometry,"${m('kk','a','(Lwp;ILwp;IIIZ)V')}",new Class<?>[]{frameSet,int.class,frameSet,int.class,int.class,int.class,boolean.class},setObject,0,null,0,0,1,false);
+check("animation-mesh/x",Arrays.toString((int[])get(mesh,geometry,"${f('gd','G','[I')}")),"[15, 20, 35]");
+check("animation-mesh/y",Arrays.toString((int[])get(mesh,geometry,"${f('gd','o','[I')}")),"[93, 200, 293]");
+check("animation-mesh/z",Arrays.toString((int[])get(mesh,geometry,"${f('gd','F','[I')}")),"[10, 2, 12]");
+byte[] triangle={0,1,3,1,64,65,65,0x12,0x34,65,63,65,0,3,0,1,0,0,0,0,0,0,0,2,0,1,0,0,0,3};Object meshData=make(data,new Class<?>[]{byte[].class},(Object)triangle);
+Object constructed=call(data,meshData,"${m('js','a','(IIIII)Lkk;')}",new Class<?>[]{int.class,int.class,int.class,int.class,int.class},64,768,0,0,256);
+check("mesh-construction/y-alias",get(mesh,constructed,"${f('gd','o','[I')}")==get(data,meshData,"${f('js','D','[I')}"),true);
+check("mesh-construction/no-texture-indices",get(mesh,constructed,"${f('gd','nb','[I')}"),null);
+}finally{for(int i=0;i<3;i++)set(mesh,null,pivotFields[i],pivots[i]);}
+}
+static void verifyBattleModelData()throws Exception{verifyFixedQuaternions();verifyMeshPreprocessing();verifyUnitAnimationSelection();verifyBattleProjectionAndModelLifetime();verifyModelCreationFallback();verifyAnimationFrames();}
 
 public static void main(String[] args)throws Exception{
 Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);
@@ -1142,7 +1211,7 @@ System.out.println("checks:"+cases);
   assert.deepEqual(outputs[1],outputs[0],'Named gameplay core differs from pinned raw Java');
   const checks=Number(outputs[0].toString().trimEnd().split('\n').at(-1).split(':')[1]);
   assert.ok(checks>900);
-  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,traceSha256:digest(outputs[0])};
+  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,animationFrameDecodingFixtures:true,animationBlendFixtures:true,modelCoordinateStorageFixtures:true,traceSha256:digest(outputs[0])};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-core-check-'));

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 22,
+  "version": 23,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -2176,6 +2176,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ht",
+      "originalName": "ht",
+      "to": "AnimationFrame",
+      "evidence": "ht.java: Sparse signed-smart transform components, preceding pivot slots and interpolation flags decoded against a shared skeleton.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hw",
       "originalName": "hw",
       "to": "SummonRequest",
@@ -2194,6 +2201,13 @@
       "originalName": "id",
       "to": "CampaignUnitOverride",
       "evidence": "id.java: Instance data override unit type/name/strength when AiPlanner registers a campaign unit; static helpers also load assets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ig",
+      "originalName": "ig",
+      "to": "AnimationSkeleton",
+      "evidence": "ig.java: Decoded transform slots: type, mesh group indices and per-slot masks; frames share this object by identity.",
       "confidence": "reviewed"
     },
     {
@@ -2873,6 +2887,13 @@
       "originalName": "wk",
       "to": "RgbSprite",
       "evidence": "wk.java: Integer pixels, clipping and SoftwareRaster blits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wp",
+      "originalName": "wp",
+      "to": "AnimationFrameSet",
+      "evidence": "wp.java: Loads an archive group of frames, resolves and reuses skeletons by ID, then releases retained encoded frame bytes.",
       "confidence": "reviewed"
     },
     {
@@ -4367,8 +4388,22 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gd.field_l:I",
+      "originalName": "field_l",
+      "to": "textureTriangleCount",
+      "evidence": "gd.java: Counts retained type-zero texture triangles referenced by faces.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gd.field_nb:[I",
       "originalName": "field_nb",
+      "to": "textureVertexA",
+      "evidence": "gd.java: Texture triangles copied from MeshData M/n/C for type-zero texture mappings; these are vertex indices, not geometry coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gd.field_o:[I",
+      "originalName": "field_o",
       "to": "verticesY",
       "evidence": "gd.java: ModelMesh retains the geometry and grouped animation bindings from MeshData before calculating face lighting.",
       "confidence": "reviewed"
@@ -4381,10 +4416,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gd.field_q:[I",
+      "originalName": "field_q",
+      "to": "textureVertexB",
+      "evidence": "gd.java: Texture triangles copied from MeshData M/n/C for type-zero texture mappings; these are vertex indices, not geometry coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gd.field_r:[S",
       "originalName": "field_r",
       "to": "faceColors",
       "evidence": "gd.java: ModelMesh retains the geometry and grouped animation bindings from MeshData before calculating face lighting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gd.field_w:[I",
+      "originalName": "field_w",
+      "to": "textureVertexC",
+      "evidence": "gd.java: Texture triangles copied from MeshData M/n/C for type-zero texture mappings; these are vertex indices, not geometry coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -4990,6 +5039,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ht.field_a:[S",
+      "originalName": "field_a",
+      "to": "transformSlots",
+      "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_d:I",
+      "originalName": "field_d",
+      "to": "transformCount",
+      "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_f:[S",
+      "originalName": "field_f",
+      "to": "transformY",
+      "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_h:[S",
+      "originalName": "field_h",
+      "to": "transformZ",
+      "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_i:[S",
+      "originalName": "field_i",
+      "to": "precedingPivotSlots",
+      "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_l:[S",
+      "originalName": "field_l",
+      "to": "transformX",
+      "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_m:[B",
+      "originalName": "field_m",
+      "to": "interpolationFlags",
+      "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ht.field_n:Lig;",
+      "originalName": "field_n",
+      "to": "skeleton",
+      "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hw.field_A:I",
       "originalName": "field_A",
       "to": "tileY",
@@ -5155,6 +5260,48 @@
       "originalName": "field_e",
       "to": "displayName",
       "evidence": "id.java: AI unit registration applies the override display name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ig.field_k:I",
+      "originalName": "field_k",
+      "to": "skeletonId",
+      "evidence": "ig.java: Skeleton constructor decodes transform types, encoded flags, unsigned-short masks and group index rows; frame blending consumes types/groups/masks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ig.field_l:[[I",
+      "originalName": "field_l",
+      "to": "transformGroups",
+      "evidence": "ig.java: Skeleton constructor decodes transform types, encoded flags, unsigned-short masks and group index rows; frame blending consumes types/groups/masks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ig.field_o:I",
+      "originalName": "field_o",
+      "to": "transformCount",
+      "evidence": "ig.java: Skeleton constructor decodes transform types, encoded flags, unsigned-short masks and group index rows; frame blending consumes types/groups/masks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ig.field_p:[I",
+      "originalName": "field_p",
+      "to": "transformTypes",
+      "evidence": "ig.java: Skeleton constructor decodes transform types, encoded flags, unsigned-short masks and group index rows; frame blending consumes types/groups/masks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ig.field_q:[Z",
+      "originalName": "field_q",
+      "to": "encodedTransformFlags",
+      "evidence": "ig.java: Skeleton constructor decodes transform types, encoded flags, unsigned-short masks and group index rows; frame blending consumes types/groups/masks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ig.field_s:[I",
+      "originalName": "field_s",
+      "to": "transformMasks",
+      "evidence": "ig.java: Skeleton constructor decodes transform types, encoded flags, unsigned-short masks and group index rows; frame blending consumes types/groups/masks.",
       "confidence": "reviewed"
     },
     {
@@ -8805,10 +8952,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wp.field_A:[Lht;",
+      "originalName": "field_A",
+      "to": "frames",
+      "evidence": "wp.java: Frame-set constructor and readiness method retain encoded archive files until all skeleton dependencies are available, build the sparse frame-ID array and release encoded bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wp.field_C:I",
+      "originalName": "field_C",
+      "to": "groupId",
+      "evidence": "wp.java: Frame-set constructor and readiness method retain encoded archive files until all skeleton dependencies are available, build the sparse frame-ID array and release encoded bytes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wp.field_H:[[I",
       "originalName": "field_H",
       "to": "unitUnlockGroups",
       "evidence": "wp.java: Unit group/ordinal lookup scans these rows before setting the corresponding unlock bit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wp.field_x:[[B",
+      "originalName": "field_x",
+      "to": "encodedFrames",
+      "evidence": "wp.java: Frame-set constructor and readiness method retain encoded archive files until all skeleton dependencies are available, build the sparse frame-ID array and release encoded bytes.",
       "confidence": "reviewed"
     },
     {
@@ -14363,6 +14531,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gd.a()V",
+      "originalName": "a",
+      "to": "finishAnimation",
+      "evidence": "kk.java: Refreshes modified face lighting when needed and invalidates mesh bounds. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.a(I[IIIIZ)V",
+      "originalName": "a",
+      "to": "applyGroupTransform",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.a(I[IIIIZI[I)V",
+      "originalName": "a",
+      "to": "applyMaskedGroupTransform",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.b()Z",
+      "originalName": "b",
+      "to": "beginAnimation",
+      "evidence": "kk.java: Returns false without vertex groups; otherwise resets the shared pivot coordinates. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.b(III)V",
+      "originalName": "b",
+      "to": "scaleGeometry",
+      "evidence": "kk.java: Scales vertex coordinates independently with 128 as unity; invalidates bounds. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.a(B)Ljb;",
       "originalName": "a",
       "to": "selectCandidate",
@@ -15627,6 +15830,55 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a()V",
+      "originalName": "a",
+      "to": "finishAnimation",
+      "evidence": "kk.java: Refreshes modified face lighting when needed and invalidates mesh bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(I[IIIIZ)V",
+      "originalName": "a",
+      "to": "applyGroupTransform",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(I[IIIIZI[I)V",
+      "originalName": "a",
+      "to": "applyMaskedGroupTransform",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(Lig;Lht;Lht;II[ZZZI[I)V",
+      "originalName": "a",
+      "to": "blendAnimationFrames",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(Lwp;ILwp;IIIZ)V",
+      "originalName": "a",
+      "to": "applyAnimationFrame",
+      "evidence": "kk.java: Begins animation, optionally blends a second frame sharing the exact skeleton object, then finishes animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.b()Z",
+      "originalName": "b",
+      "to": "beginAnimation",
+      "evidence": "kk.java: Returns false without vertex groups; otherwise resets the shared pivot coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.b(III)V",
+      "originalName": "b",
+      "to": "scaleGeometry",
+      "evidence": "kk.java: Scales vertex coordinates independently with 128 as unity; invalidates bounds.",
       "confidence": "reviewed"
     },
     {
@@ -17972,6 +18224,13 @@
       "originalName": "a",
       "to": "finishEffect",
       "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.f(B)Z",
+      "originalName": "f",
+      "to": "ensureFramesAvailable",
+      "evidence": "wp.java: Resolves skeleton dependencies, reuses skeleton identity within the set, and releases encodedFrames after construction.",
       "confidence": "reviewed"
     },
     {
@@ -21447,6 +21706,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gd.a(I[IIIIZ)V#0",
+      "originalName": "param0",
+      "to": "transformType",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZ)V#1",
+      "originalName": "param1",
+      "to": "groups",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZ)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZ)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZ)V#4",
+      "originalName": "param4",
+      "to": "z",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZ)V#5",
+      "originalName": "param5",
+      "to": "transformOption",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZI[I)V#0",
+      "originalName": "param0",
+      "to": "transformType",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZI[I)V#1",
+      "originalName": "param1",
+      "to": "groups",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZI[I)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZI[I)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZI[I)V#4",
+      "originalName": "param4",
+      "to": "z",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZI[I)V#5",
+      "originalName": "param5",
+      "to": "transformOption",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZI[I)V#6",
+      "originalName": "param6",
+      "to": "transformMask",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.a(I[IIIIZI[I)V#7",
+      "originalName": "param7",
+      "to": "transformMatrix",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.b(III)V#0",
+      "originalName": "param0",
+      "to": "scaleX",
+      "evidence": "kk.java: Scales vertex coordinates independently with 128 as unity; invalidates bounds. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.b(III)V#1",
+      "originalName": "param1",
+      "to": "scaleY",
+      "evidence": "kk.java: Scales vertex coordinates independently with 128 as unity; invalidates bounds. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gd.b(III)V#2",
+      "originalName": "param2",
+      "to": "scaleZ",
+      "evidence": "kk.java: Scales vertex coordinates independently with 128 as unity; invalidates bounds. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ge.<init>(Lej;)V#0",
       "originalName": "param0",
       "to": "planner",
@@ -23092,6 +23470,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ht.<init>([BLig;)V#0",
+      "originalName": "param0",
+      "to": "encodedFrame",
+      "evidence": "ht.java: Decodes sparse transforms against the supplied skeleton; invalid/trailing input sets transformCount to zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ht.<init>([BLig;)V#1",
+      "originalName": "param1",
+      "to": "skeleton",
+      "evidence": "ht.java: Decodes sparse transforms against the supplied skeleton; invalid/trailing input sets transformCount to zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hw.<init>(IIII)V#0",
       "originalName": "param0",
       "to": "actingPlayer",
@@ -23292,6 +23684,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ic.java: Resets planners, creates EquipmentBattleTutorial and installs the existing two-player tutorial setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ig.<init>(I[B)V#0",
+      "originalName": "param0",
+      "to": "skeletonId",
+      "evidence": "ig.java: Decodes the transform slot tables with this skeleton identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ig.<init>(I[B)V#1",
+      "originalName": "param1",
+      "to": "encodedSkeleton",
+      "evidence": "ig.java: Decodes the transform slot tables with this skeleton identity.",
       "confidence": "reviewed"
     },
     {
@@ -24622,6 +25028,244 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZ)V#0",
+      "originalName": "param0",
+      "to": "transformType",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZ)V#1",
+      "originalName": "param1",
+      "to": "groups",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZ)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZ)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZ)V#4",
+      "originalName": "param4",
+      "to": "z",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZ)V#5",
+      "originalName": "param5",
+      "to": "transformOption",
+      "evidence": "kk.java: Applies an encoded transform type to the listed mesh groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZI[I)V#0",
+      "originalName": "param0",
+      "to": "transformType",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZI[I)V#1",
+      "originalName": "param1",
+      "to": "groups",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZI[I)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZI[I)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZI[I)V#4",
+      "originalName": "param4",
+      "to": "z",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZI[I)V#5",
+      "originalName": "param5",
+      "to": "transformOption",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZI[I)V#6",
+      "originalName": "param6",
+      "to": "transformMask",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(I[IIIIZI[I)V#7",
+      "originalName": "param7",
+      "to": "transformMatrix",
+      "evidence": "kk.java: Applies a group transform with the per-slot mask and optional transform matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#0",
+      "originalName": "param0",
+      "to": "skeleton",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#1",
+      "originalName": "param1",
+      "to": "frame",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#2",
+      "originalName": "param2",
+      "to": "nextFrame",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#3",
+      "originalName": "param3",
+      "to": "elapsed",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#4",
+      "originalName": "param4",
+      "to": "duration",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#5",
+      "originalName": "param5",
+      "to": "slotSelection",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#6",
+      "originalName": "param6",
+      "to": "selectedValue",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#7",
+      "originalName": "param7",
+      "to": "transformOption",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#8",
+      "originalName": "param8",
+      "to": "transformMask",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lig;Lht;Lht;II[ZZZI[I)V#9",
+      "originalName": "param9",
+      "to": "transformMatrix",
+      "evidence": "kk.java: Interpolates sparse transforms by slot, applies preceding pivots and intersects skeleton masks; rotation differences wrap at 2048 and colour hue differences at 64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lwp;ILwp;IIIZ)V#0",
+      "originalName": "param0",
+      "to": "frameSet",
+      "evidence": "kk.java: Begins animation, optionally blends a second frame sharing the exact skeleton object, then finishes animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lwp;ILwp;IIIZ)V#1",
+      "originalName": "param1",
+      "to": "frameId",
+      "evidence": "kk.java: Begins animation, optionally blends a second frame sharing the exact skeleton object, then finishes animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lwp;ILwp;IIIZ)V#2",
+      "originalName": "param2",
+      "to": "nextFrameSet",
+      "evidence": "kk.java: Begins animation, optionally blends a second frame sharing the exact skeleton object, then finishes animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lwp;ILwp;IIIZ)V#3",
+      "originalName": "param3",
+      "to": "nextFrameId",
+      "evidence": "kk.java: Begins animation, optionally blends a second frame sharing the exact skeleton object, then finishes animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lwp;ILwp;IIIZ)V#4",
+      "originalName": "param4",
+      "to": "elapsed",
+      "evidence": "kk.java: Begins animation, optionally blends a second frame sharing the exact skeleton object, then finishes animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lwp;ILwp;IIIZ)V#5",
+      "originalName": "param5",
+      "to": "duration",
+      "evidence": "kk.java: Begins animation, optionally blends a second frame sharing the exact skeleton object, then finishes animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(Lwp;ILwp;IIIZ)V#6",
+      "originalName": "param6",
+      "to": "transformOption",
+      "evidence": "kk.java: Begins animation, optionally blends a second frame sharing the exact skeleton object, then finishes animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.b(III)V#0",
+      "originalName": "param0",
+      "to": "scaleX",
+      "evidence": "kk.java: Scales vertex coordinates independently with 128 as unity; invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.b(III)V#1",
+      "originalName": "param1",
+      "to": "scaleY",
+      "evidence": "kk.java: Scales vertex coordinates independently with 128 as unity; invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.b(III)V#2",
+      "originalName": "param2",
+      "to": "scaleZ",
+      "evidence": "kk.java: Scales vertex coordinates independently with 128 as unity; invalidates bounds.",
       "confidence": "reviewed"
     },
     {
@@ -30736,6 +31380,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wp.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "wp.java: Stores the archive group ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.f(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Resolves skeleton dependencies, reuses skeleton identity within the set, and releases encodedFrames after construction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wq.a(BIIII)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -30821,9 +31479,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "696f9c849e17bd1f009d028f4ea5698f1a6c60b274ea63b4f854818037052e84",
+      "build-armiesofgielinor-rules.mjs": "6187f069b1ea69607eb350fcb7d118f1c74c54e018e92d2e17589257bd8f656b",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
-      "tests/test-armiesofgielinor-core.mjs": "82950844a3bcddbf8d09c4b93c5e6866a2f684891f72e505cfa3c5aa4e5bfa16",
+      "tests/test-armiesofgielinor-core.mjs": "f7a8d32f14a36ed9a1ec38af48c1cc66873ab7bcafff3992f83a41619f2a2bcd",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

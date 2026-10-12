@@ -67,6 +67,13 @@ Archive loading now exposes `ResourceArchive`, `ArchiveProvider`,
 check versions 5–7, optional name/digest tables, raw/gzip containers, sparse and
 large IDs, checksum rejection and returned-file retention modes.
 
+Particle motion now names age/duration, terrain-profile selection, pending
+particles/removals, gravity and cyclic object reuse. Fixtures cover damping,
+contact exceptions, strict expiry, type-10 child emission and linked-object
+reuse. Guided projectile motion names target and initial-direction state; launch
+and coasting fixtures preserve its zero-vector behavior and gravity gate.
+The tracking/turning phase and rendered effects remain unverified.
+
 ## Armies of Gielinor
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
@@ -90,7 +97,13 @@ model creation. The pinned forward/inverse rectangular-map offset disagreement
 is retained. These headless checks do not verify rasterized mesh rendering or
 presented FPS.
 
-The current pass names 154 reviewed classes around battlefield state, units, map
+Animation skeletons, sparse frames and frame sets now have names, along with
+mesh animation and blending methods. Fixtures check component defaults, malformed
+input, wrapped interpolation, flag gates, skeleton identity and grouped translation.
+The ModelMesh Y-coordinate rule is corrected; texture indices have separate names.
+Masked transforms and rendered animation remain unverified.
+
+The current pass names 157 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

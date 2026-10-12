@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "steelsentinels",
-  "version": 4,
+  "version": 5,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1802,10 +1802,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ee.field_J:Lra;",
+      "originalName": "field_J",
+      "to": "pendingRemovals",
+      "evidence": "ee.java: Simulation merges pending particles before updating them, then unlinks pending removals through their primary links. Projectile/particle gravity adds the acceleration to vertical velocity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ee.field_K:Lul;",
       "originalName": "field_K",
       "to": "sentinels",
       "evidence": "ee.java: CombatWorld constructor and per-tick sentinel/projectile/explosion iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ee.field_O:Lul;",
+      "originalName": "field_O",
+      "to": "pendingParticles",
+      "evidence": "ee.java: Simulation merges pending particles before updating them, then unlinks pending removals through their primary links. Projectile/particle gravity adds the acceleration to vertical velocity.",
       "confidence": "reviewed"
     },
     {
@@ -1851,6 +1865,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ee.field_o:Lul;",
+      "originalName": "field_o",
+      "to": "particles",
+      "evidence": "ee.java: Simulation merges pending particles before updating them, then unlinks pending removals through their primary links. Projectile/particle gravity adds the acceleration to vertical velocity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ee.field_r:I",
       "originalName": "field_r",
       "to": "simulationTick",
@@ -1869,6 +1890,13 @@
       "originalName": "field_y",
       "to": "spawnedSpecialSentinel",
       "evidence": "ee.java: World update spawns the special oh.field_h design, stores it here and checks its score for progression. This is not the local controlled sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ee.field_z:I",
+      "originalName": "field_z",
+      "to": "gravityAcceleration",
+      "evidence": "ee.java: Simulation merges pending particles before updating them, then unlinks pending removals through their primary links. Projectile/particle gravity adds the acceleration to vertical velocity.",
       "confidence": "reviewed"
     },
     {
@@ -2222,6 +2250,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:k.field_Cb:[Lqb;",
+      "originalName": "field_Cb",
+      "to": "particleReuseBuffer",
+      "evidence": "k.java: Preallocated 10000-object circular buffer returned by ol.d; reused particle fields are initialized by nk.a.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kd.field_o:Lkd;",
       "originalName": "field_o",
       "to": "dualNext",
@@ -2390,6 +2425,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mg.field_hc:I",
+      "originalName": "field_hc",
+      "to": "particleReuseCursor",
+      "evidence": "mg.java: ol.d decrements this cursor and wraps from -1 to 9999; no liveness check is performed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nb.field_C:Lmb;",
       "originalName": "field_C",
       "to": "controlledSentinel",
@@ -2446,10 +2488,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qb.field_D:I",
+      "originalName": "field_D",
+      "to": "durationTicks",
+      "evidence": "qb.java: Particle factory initializes these fields; drawing scales age by duration; integration chooses the surface or secondary terrain profile and expires strictly after duration. Age also receives a random 0..3 increment below 200.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qb.field_F:I",
       "originalName": "field_F",
       "to": "worldX",
       "evidence": "qb.java: Particle update adds these velocities to the corresponding world coordinates before terrain contact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_G:Z",
+      "originalName": "field_G",
+      "to": "usesSurfaceProfile",
+      "evidence": "qb.java: Particle factory initializes these fields; drawing scales age by duration; integration chooses the surface or secondary terrain profile and expires strictly after duration. Age also receives a random 0..3 increment below 200.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_I:I",
+      "originalName": "field_I",
+      "to": "ageTicks",
+      "evidence": "qb.java: Particle factory initializes these fields; drawing scales age by duration; integration chooses the surface or secondary terrain profile and expires strictly after duration. Age also receives a random 0..3 increment below 200.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_M:I",
+      "originalName": "field_M",
+      "to": "effectType",
+      "evidence": "qb.java: Particle factory initializes these fields; drawing scales age by duration; integration chooses the surface or secondary terrain profile and expires strictly after duration. Age also receives a random 0..3 increment below 200.",
       "confidence": "reviewed"
     },
     {
@@ -2485,6 +2555,20 @@
       "originalName": "field_v",
       "to": "partName",
       "evidence": "qd.java: String constructor and recursive component name lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ra.field_d:Lkd;",
+      "originalName": "field_d",
+      "to": "sentinel",
+      "evidence": "ra.java: Circular secondary-link sentinel; nodes remain independently linked in their primary collections.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ra.field_e:Lkd;",
+      "originalName": "field_e",
+      "to": "traversalCursor",
+      "evidence": "ra.java: Secondary-link iteration cursor.",
       "confidence": "reviewed"
     },
     {
@@ -2565,6 +2649,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wl.field_H:Z",
+      "originalName": "field_H",
+      "to": "applyGravity",
+      "evidence": "wl.java: Guided projectile acceleration/steering and advanceProjectile: tracks target position, uses constructor-derived velocity signs to resolve turn direction, and controls gravity application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wl.field_K:I",
+      "originalName": "field_K",
+      "to": "targetWorldX",
+      "evidence": "wl.java: Guided projectile acceleration/steering and advanceProjectile: tracks target position, uses constructor-derived velocity signs to resolve turn direction, and controls gravity application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wl.field_Q:I",
+      "originalName": "field_Q",
+      "to": "initialDirectionY",
+      "evidence": "wl.java: Guided projectile acceleration/steering and advanceProjectile: tracks target position, uses constructor-derived velocity signs to resolve turn direction, and controls gravity application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wl.field_S:I",
+      "originalName": "field_S",
+      "to": "targetWorldY",
+      "evidence": "wl.java: Guided projectile acceleration/steering and advanceProjectile: tracks target position, uses constructor-derived velocity signs to resolve turn direction, and controls gravity application.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wl.field_U:I",
       "originalName": "field_U",
       "to": "worldX",
@@ -2586,6 +2698,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wl.field_cb:I",
+      "originalName": "field_cb",
+      "to": "initialDirectionX",
+      "evidence": "wl.java: Guided projectile acceleration/steering and advanceProjectile: tracks target position, uses constructor-derived velocity signs to resolve turn direction, and controls gravity application.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wl.field_eb:I",
       "originalName": "field_eb",
       "to": "velocityX",
@@ -2597,6 +2716,13 @@
       "originalName": "field_fb",
       "to": "affectedSentinels",
       "evidence": "wl.java: Projectile constructor and update/collision paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wl.field_nb:Lmb;",
+      "originalName": "field_nb",
+      "to": "targetSentinel",
+      "evidence": "wl.java: Guided projectile acceleration/steering and advanceProjectile: tracks target position, uses constructor-derived velocity signs to resolve turn direction, and controls gravity application.",
       "confidence": "reviewed"
     },
     {
@@ -2940,6 +3066,139 @@
       "originalName": "var4",
       "to": "queuedCommand",
       "evidence": "mb.java: Reviewed lexical declaration ordinal and command duration/queue traversal data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nk.a(IILee;IIZIIII)Lqb;#0",
+      "originalName": "var10",
+      "to": "particle",
+      "evidence": "nk.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nk.a(IILee;IIZIIII)Lqb;#1",
+      "originalName": "var10_ref",
+      "to": "failure",
+      "evidence": "nk.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nk.a(IILee;IIZIIII)Lqb;#2",
+      "originalName": "var11",
+      "to": "unusedWorld",
+      "evidence": "nk.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qb.c(B)V#0",
+      "originalName": "var2",
+      "to": "spawnedParticle",
+      "evidence": "qb.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qb.c(B)V#1",
+      "originalName": "var3",
+      "to": "obfuscationControl",
+      "evidence": "qb.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qb.c(B)V#2",
+      "originalName": "var4",
+      "to": "unusedString",
+      "evidence": "qb.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#0",
+      "originalName": "var3",
+      "to": "maximumSpeed",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#1",
+      "originalName": "var4",
+      "to": "velocityOrTargetDeltaX",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#10",
+      "originalName": "var11",
+      "to": "obfuscationControl",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#11",
+      "originalName": "var7Lifetime1",
+      "to": "secondaryLaunchTrail",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#12",
+      "originalName": "var10Lifetime1",
+      "to": "secondaryGuidedTrail",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#2",
+      "originalName": "var4_ref_qb",
+      "to": "coastingTrail",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#3",
+      "originalName": "var5",
+      "to": "velocityOrTargetDeltaY",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#4",
+      "originalName": "var6",
+      "to": "speedOrTargetAngle",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#5",
+      "originalName": "var7",
+      "to": "launchTrail",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#6",
+      "originalName": "var7_int",
+      "to": "heading",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#7",
+      "originalName": "var8",
+      "to": "headingDelta",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#8",
+      "originalName": "var9",
+      "to": "speed",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(BI)Z#9",
+      "originalName": "var10",
+      "to": "guidedTrail",
+      "evidence": "wl.java: Reviewed lexical identity in particle initialization/integration or guided projectile motion; shared locals retain qualified names for both phases.",
       "confidence": "reviewed"
     },
     {
@@ -3419,6 +3678,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nk.a(IILee;IIZIIII)Lqb;",
+      "originalName": "a",
+      "to": "createParticle",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nk.g(I)I",
       "originalName": "g",
       "to": "getTotalArmour",
@@ -3433,10 +3699,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ol.d(B)Lqb;",
+      "originalName": "d",
+      "to": "acquireCyclicParticle",
+      "evidence": "ol.java: Decrements and wraps the reuse cursor before returning the existing buffer entry; does not unlink or clear it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qb.a(IIZB)V",
+      "originalName": "a",
+      "to": "drawParticle",
+      "evidence": "qb.java: Selects age-scaled particle sprites and render passes, using world coordinates shifted by eight.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qb.c(B)V",
       "originalName": "c",
       "to": "advanceParticle",
       "evidence": "qb.java: Integrates world coordinates, applies terrain contact and updates particle motion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qb.i(I)V",
+      "originalName": "i",
+      "to": "detachWorld",
+      "evidence": "qb.java: Clears the particle world; subsequent integration returns immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(B)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(BLkd;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(I)V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(Z)Lkd;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.b(I)Lkd;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.c(I)Lkd;",
+      "originalName": "c",
+      "to": "removeFirst",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
       "confidence": "reviewed"
     },
     {
@@ -3507,6 +3836,13 @@
       "originalName": "g",
       "to": "clear",
       "evidence": "ul.java: Unlinks every node and resets the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(BI)Z",
+      "originalName": "a",
+      "to": "advanceGuidedMotion",
+      "evidence": "wl.java: Accelerates along the current vector before age 20; tracks the target and limits turning through age 127, then retains its velocity. Returns false; visual emission remains separately gated.",
       "confidence": "reviewed"
     },
     {
@@ -4497,6 +4833,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#0",
+      "originalName": "param0",
+      "to": "effectType",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#1",
+      "originalName": "param1",
+      "to": "velocityX",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#2",
+      "originalName": "param2",
+      "to": "world",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#4",
+      "originalName": "param4",
+      "to": "worldY",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#5",
+      "originalName": "param5",
+      "to": "usesSurfaceProfile",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#6",
+      "originalName": "param6",
+      "to": "durationTicks",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#7",
+      "originalName": "param7",
+      "to": "velocityY",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#8",
+      "originalName": "param8",
+      "to": "worldX",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IILee;IIZIIII)Lqb;#9",
+      "originalName": "param9",
+      "to": "inheritedEffectValue",
+      "evidence": "nk.java: Initializes a cyclically reused particle. The final integer is passed through to child particles; its meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nk.g(I)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4511,10 +4917,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ol.d(B)Lqb;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ol.java: Decrements and wraps the reuse cursor before returning the existing buffer entry; does not unlink or clear it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(IIZB)V#0",
+      "originalName": "param0",
+      "to": "screenOffsetX",
+      "evidence": "qb.java: Selects age-scaled particle sprites and render passes, using world coordinates shifted by eight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(IIZB)V#1",
+      "originalName": "param1",
+      "to": "screenOffsetY",
+      "evidence": "qb.java: Selects age-scaled particle sprites and render passes, using world coordinates shifted by eight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(IIZB)V#2",
+      "originalName": "param2",
+      "to": "alternateRenderPass",
+      "evidence": "qb.java: Selects age-scaled particle sprites and render passes, using world coordinates shifted by eight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(IIZB)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "qb.java: Selects age-scaled particle sprites and render passes, using world coordinates shifted by eight.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qb.c(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "qb.java: Integrates world coordinates, applies terrain contact and updates particle motion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.i(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qb.java: Clears the particle world; subsequent integration returns immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(BLkd;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(BLkd;)V#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(Z)Lkd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.b(I)Lkd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.c(I)Lkd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ra.java: Reviewed secondary-link insertion, iteration or unlinking. Clearing these links does not remove primary collection membership.",
       "confidence": "reviewed"
     },
     {
@@ -4637,6 +5134,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wl.a(BI)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wl.java: Accelerates along the current vector before age 20; tracks the target and limits turning through age 127, then retains its velocity. Returns false; visual emission remains separately gated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wl.a(BI)Z#1",
+      "originalName": "param1",
+      "to": "substepIndex",
+      "evidence": "wl.java: Accelerates along the current vector before age 20; tracks the target and limits turning through age 127, then retains its velocity. Returns false; visual emission remains separately gated.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wl.i(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -4659,9 +5170,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-steelsentinels-rules.mjs": "13e98da281ab03eca788956a4021eb1085f020465cd64f6becd3f57b859ee569",
+      "build-steelsentinels-rules.mjs": "2c834b5d5a2b1e1d2e39504c0ade59a26be03057ff50c8f10aad8ebeeeb88de3",
       "reproduce-steelsentinels.mjs": "6dd69838b697249fd7c99bc8469e53b7306265e77588f8b1df18348a9ebead28",
-      "tests/test-steelsentinels-core.mjs": "af3bf60e752f27f8549702d92d36796fb6d1927f9688f2ad030d6c212e52ea84",
+      "tests/test-steelsentinels-core.mjs": "3474b437eb8e46012153ea834c09579d9dc5ecca591576bed7a0882bcef1b19a",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
