@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 134,370 raw/named checks agree. Controlled cipher output does not constitute
+All 136,072 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -271,6 +271,15 @@ slots, and only accepted messages with response arrays change the shortcut targe
 Full network dispatch, malformed quick-chat reporting, rendered scrolling and
 shared community-control layout remain unverified.
 
+MapRepository now names free/member archive slots, theme/size candidate lists,
+player-capacity filtering and tutorial fallback. Native constructors use real
+named archive extraction and map headers behind a controlled I/O provider. Missing,
+empty and short files, membership threshold differences, retained lists, ordinal
+selection and tutorial stopping/fallback have focused fixtures. RasterState names
+pooled target/dimension/clip snapshots, nested restoration and release of retained
+pixel references. Production map loading, full battlefield setup and rendered
+raster behavior remain unverified.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -303,7 +312,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 204 reviewed classes around battlefield state, units, map
+The current pass names 206 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

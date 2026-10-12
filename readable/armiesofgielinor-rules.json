@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 39,
+  "version": 40,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2127,6 +2127,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fg",
+      "originalName": "fg",
+      "to": "RasterState",
+      "evidence": "fg.java: Pooled raster target/dimensions/clip snapshot used by nested save/restore helpers; unrelated quick-chat/reflection helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fi",
       "originalName": "fi",
       "to": "UnitInfoPopup",
@@ -2754,6 +2761,13 @@
       "originalName": "om",
       "to": "CampaignMission",
       "evidence": "om.java: Tagged campaign mission identity, metadata, player slots and lazy map loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ou",
+      "originalName": "ou",
+      "to": "MapRepository",
+      "evidence": "ou.java: Free/member map archives, retained maps by theme and size, player-capacity selection and tutorial maps. Unrelated static helpers retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -5032,10 +5046,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ew.field_e:Lou;",
+      "originalName": "field_e",
+      "to": "mapRepository",
+      "evidence": "ew.java: Repository construction reads named map resources; battlefield setup chooses by theme, size, player capacity and seed or tutorial index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:f.field_B:Ljava/lang/Object;",
       "originalName": "field_B",
       "to": "value",
       "evidence": "f.java: StrongCacheEntry retains this object directly without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_o:I",
+      "originalName": "field_o",
+      "to": "clipBottom",
+      "evidence": "fg.java: Raster save passes target/dimensions/clip into this record; restore rebinds target and clip, clears the pixel reference and returns the record to a pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_p:I",
+      "originalName": "field_p",
+      "to": "clipLeft",
+      "evidence": "fg.java: Raster save passes target/dimensions/clip into this record; restore rebinds target and clip, clears the pixel reference and returns the record to a pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_q:I",
+      "originalName": "field_q",
+      "to": "height",
+      "evidence": "fg.java: Raster save passes target/dimensions/clip into this record; restore rebinds target and clip, clears the pixel reference and returns the record to a pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_r:I",
+      "originalName": "field_r",
+      "to": "clipTop",
+      "evidence": "fg.java: Raster save passes target/dimensions/clip into this record; restore rebinds target and clip, clears the pixel reference and returns the record to a pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_s:I",
+      "originalName": "field_s",
+      "to": "clipRight",
+      "evidence": "fg.java: Raster save passes target/dimensions/clip into this record; restore rebinds target and clip, clears the pixel reference and returns the record to a pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_t:[I",
+      "originalName": "field_t",
+      "to": "pixels",
+      "evidence": "fg.java: Raster save passes target/dimensions/clip into this record; restore rebinds target and clip, clears the pixel reference and returns the record to a pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_u:I",
+      "originalName": "field_u",
+      "to": "width",
+      "evidence": "fg.java: Raster save passes target/dimensions/clip into this record; restore rebinds target and clip, clears the pixel reference and returns the record to a pool.",
       "confidence": "reviewed"
     },
     {
@@ -8546,6 +8616,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lo.field_k:I",
+      "originalName": "field_k",
+      "to": "playerCapacity",
+      "evidence": "lo.java: Legacy/versioned headers read the player count; repository count/selection require at least the battlefield player count.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lo.field_l:I",
       "originalName": "field_l",
       "to": "mapWidth",
@@ -8557,6 +8634,13 @@
       "originalName": "field_n",
       "to": "mapHeight",
       "evidence": "lo.java: Layout header decoding and row-major terrain/placement readers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lo.field_p:I",
+      "originalName": "field_p",
+      "to": "mapTheme",
+      "evidence": "lo.java: Version-1 and tagged headers read theme; older formats retain theme zero.",
       "confidence": "reviewed"
     },
     {
@@ -8578,6 +8662,13 @@
       "originalName": "field_t",
       "to": "formatVersion",
       "evidence": "lo.java: Layout header decoding and row-major terrain/placement readers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lp.field_a:[[I",
+      "originalName": "field_a",
+      "to": "mapThemesByArchive",
+      "evidence": "lp.java: Repository construction reads named map resources; battlefield setup chooses by theme, size, player capacity and seed or tutorial index.",
       "confidence": "reviewed"
     },
     {
@@ -8704,6 +8795,13 @@
       "originalName": "field_E",
       "to": "destinationX",
       "evidence": "md.java: ParasiteEvent constructor adds signed deltas to source coordinates; battlefield application uses absolute destination coordinates despite the d diagnostic label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:md.field_y:Lat;",
+      "originalName": "field_y",
+      "to": "rasterStateStack",
+      "evidence": "md.java: Raster save appends snapshots; restore pops the last snapshot for nested LIFO target/clip restoration.",
       "confidence": "reviewed"
     },
     {
@@ -9414,6 +9512,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ns.field_A:[[[Ljava/lang/String;",
+      "originalName": "field_A",
+      "to": "mapNamesByThemeAndSize",
+      "evidence": "ns.java: Repository construction reads named map resources; battlefield setup chooses by theme, size, player capacity and seed or tutorial index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ns.field_C:I",
       "originalName": "field_C",
       "to": "attackerAnimationCount",
@@ -9852,6 +9957,34 @@
       "originalName": "field_E",
       "to": "ignoreEntries",
       "evidence": "ot.java: Social update, lookup, addition/removal and reset data flow; state 0 is unavailable, 1 is loading/nonmodifiable, and 2 enables friend/ignore changes. Location labels are interned and compared by reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ou.field_b:[Llo;",
+      "originalName": "field_b",
+      "to": "tutorialMaps",
+      "evidence": "ou.java: Constructor installs two archive slots, loads eligible theme/size lists and sequential tutorial maps; count/selection use retained map player capacities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ou.field_d:Z",
+      "originalName": "field_d",
+      "to": "bypassMembershipChecks",
+      "evidence": "ou.java: Constructor installs two archive slots, loads eligible theme/size lists and sequential tutorial maps; count/selection use retained map player capacities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ou.field_e:[Lkl;",
+      "originalName": "field_e",
+      "to": "archives",
+      "evidence": "ou.java: Constructor installs two archive slots, loads eligible theme/size lists and sequential tutorial maps; count/selection use retained map player capacities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ou.field_i:[[Lat;",
+      "originalName": "field_i",
+      "to": "mapsByThemeAndSize",
+      "evidence": "ou.java: Constructor installs two archive slots, loads eligible theme/size lists and sequential tutorial maps; count/selection use retained map player capacities.",
       "confidence": "reviewed"
     },
     {
@@ -12004,6 +12137,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vb.field_q:Lat;",
+      "originalName": "field_q",
+      "to": "rasterStatePool",
+      "evidence": "vb.java: Raster save reuses its last record; restore appends records after clearing their pixel reference.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vb.field_r:Loj;",
       "originalName": "field_r",
       "to": "event",
@@ -12330,6 +12470,13 @@
       "originalName": "field_db",
       "to": "lastQuickChatRecipientName",
       "evidence": "wn.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wn.field_eb:[Ljava/lang/String;",
+      "originalName": "field_eb",
+      "to": "tutorialMapNames",
+      "evidence": "wn.java: Repository construction reads named map resources; battlefield setup chooses by theme, size, player capacity and seed or tutorial index.",
       "confidence": "reviewed"
     },
     {
@@ -18731,6 +18878,216 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ou.a(B)V#0",
+      "originalName": "var2_int",
+      "to": "tutorialIndex",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(B)V#1",
+      "originalName": "var3",
+      "to": "encodedMap",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(B)V#2",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(II)Lkl;#0",
+      "originalName": "var3_int",
+      "to": "archiveGroup",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(III)V#0",
+      "originalName": "var4",
+      "to": "archive",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(III)V#2",
+      "originalName": "var5",
+      "to": "mapIndex",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(III)V#3",
+      "originalName": "var6",
+      "to": "encodedMap",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(III)V#4",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(IIII)I#5",
+      "originalName": "var5_int",
+      "to": "matchingCount",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(IIII)I#7",
+      "originalName": "var6",
+      "to": "maps",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(IIII)I#8",
+      "originalName": "var7",
+      "to": "map",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(IIII)I#9",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(IIIII)Llo;#10",
+      "originalName": "var7",
+      "to": "map",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(IIIII)Llo;#11",
+      "originalName": "var8",
+      "to": "matchingIndex",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(IIIII)Llo;#12",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(IIIII)Llo;#8",
+      "originalName": "var6",
+      "to": "maps",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(ZI)V#0",
+      "originalName": "var3",
+      "to": "themeIndices",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(ZI)V#2",
+      "originalName": "var4",
+      "to": "themeIndex",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(ZI)V#3",
+      "originalName": "var5",
+      "to": "mapTheme",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(ZI)V#4",
+      "originalName": "var6",
+      "to": "sizeCount",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(ZI)V#5",
+      "originalName": "var7",
+      "to": "sizeIndex",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.a(ZI)V#6",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.b(I)V#0",
+      "originalName": "array$1",
+      "to": "sizeLists",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.b(I)V#1",
+      "originalName": "var2_int",
+      "to": "guardQuotient",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.b(I)V#3",
+      "originalName": "var3",
+      "to": "mapTheme",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.b(I)V#4",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.b(II)I#0",
+      "originalName": "var3_int",
+      "to": "archiveGroup",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.b(II)I#2",
+      "originalName": "var4",
+      "to": "groupIndex",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.b(II)I#3",
+      "originalName": "var5",
+      "to": "themeIndex",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ou.b(II)I#4",
+      "originalName": "var6",
+      "to": "obfuscationControl",
+      "evidence": "ou.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:pf.a(I[BZ)Ljava/lang/Object;#0",
       "originalName": "var3",
       "to": "directStorage",
@@ -19151,6 +19508,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:rf.b(I)V#0",
+      "originalName": "var1_ref",
+      "to": "guardedSnapshot",
+      "evidence": "rf.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rf.b(I)V#2",
+      "originalName": "var1_refLifetime1",
+      "to": "snapshot",
+      "evidence": "rf.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:rg.<init>(ILjava/lang/String;Ljava/lang/String;[I)V#0",
       "originalName": "var5_int",
       "to": "spellIndex",
@@ -19414,6 +19785,13 @@
       "originalName": "var11",
       "to": "sectionTitles",
       "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rq.a(B)V#0",
+      "originalName": "var1",
+      "to": "snapshot",
+      "evidence": "rq.java: Reviewed map archive/theme/size/player filtering or raster snapshot ownership at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -22151,6 +22529,13 @@
       "originalName": "a",
       "to": "paintWidget",
       "evidence": "kh.java: Painter contract and Widget dispatch establish the widget and parent-origin offsets; rendering flag meaning remains qualified. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(III[IIIII)V",
+      "originalName": "a",
+      "to": "capture",
+      "evidence": "fg.java: Retains target/dimensions and four clip edges without copying pixels.",
       "confidence": "reviewed"
     },
     {
@@ -25451,6 +25836,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ou.a(B)V",
+      "originalName": "a",
+      "to": "loadTutorialMaps",
+      "evidence": "ou.java: Reads tutorial names in order from archive zero and returns at the first null/empty resource, leaving subsequent slots null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.a(BI)Llo;",
+      "originalName": "a",
+      "to": "getTutorialMap",
+      "evidence": "ou.java: Returns the indexed tutorial when below array length, otherwise tutorial zero; negative indices retain array failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.a(II)Lkl;",
+      "originalName": "a",
+      "to": "getArchiveForTheme",
+      "evidence": "ou.java: Requires exactly two archive slots and a catalog theme; applies group-one positive-entitlement/bypass gating.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.a(III)V",
+      "originalName": "a",
+      "to": "loadMapList",
+      "evidence": "ou.java: Resolves archive, replaces the theme/size list and appends layouts for nonnull/nonempty named files in filename order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.a(IIII)I",
+      "originalName": "a",
+      "to": "countAvailableMaps",
+      "evidence": "ou.java: Counts retained maps in a theme/size list whose playerCapacity meets the minimum; does not recheck membership and preserves the initial count/iterator guard coupling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.a(IIIII)Llo;",
+      "originalName": "a",
+      "to": "selectAvailableMap",
+      "evidence": "ou.java: Selects the matching ordinal among eligible maps with exact catalog/list shape checks; theme 1 alone also rejects negative entitlement unless bypassed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.a(IILkl;)V",
+      "originalName": "a",
+      "to": "installArchive",
+      "evidence": "ou.java: Installs slot 0/1 only; slot 1 requires positive entitlement or bypass. Other slot indices and short/null archive arrays are ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.a(ZI)V",
+      "originalName": "a",
+      "to": "loadArchiveMaps",
+      "evidence": "ou.java: Walks the configured theme indices for archive group 0/1, skips invalid theme indices and loads each size row when membership permits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.b(I)V",
+      "originalName": "b",
+      "to": "initializeMapLists",
+      "evidence": "ou.java: Allocates nullable theme/size deque rows matching the configured filename catalog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.b(II)I",
+      "originalName": "b",
+      "to": "findArchiveGroup",
+      "evidence": "ou.java: Finds the theme in the two configured archive-group rows; canonical guard zero preserves group 0/1 or -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ov.a(III)V",
       "originalName": "a",
       "to": "writeSpectateRoomRequest",
@@ -25766,6 +26221,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qn.a([III)V",
+      "originalName": "a",
+      "to": "setTarget",
+      "evidence": "qn.java: Rebinds the raster pixel array and dimensions, then resets clip to full target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.f(IIII)V",
+      "originalName": "f",
+      "to": "setClip",
+      "evidence": "qn.java: Sets clip edges with the original left/top lower and right/bottom upper clamping, then updates derived state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qq.a(BIII)V",
       "originalName": "a",
       "to": "sendProgressRecord",
@@ -25917,6 +26386,13 @@
       "originalName": "a",
       "to": "insertLobbyRoomSorted",
       "evidence": "rf.java: Moves only primary membership into the sorted room deque using sortsBefore, retaining secondary index membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rf.b(I)V",
+      "originalName": "b",
+      "to": "popRasterState",
+      "evidence": "rf.java: Restores target/dimensions/clip from the last snapshot; empty stack throws, restored record clears pixels and is pooled.",
       "confidence": "reviewed"
     },
     {
@@ -26085,6 +26561,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rq.a(B)V",
+      "originalName": "a",
+      "to": "pushRasterState",
+      "evidence": "rq.java: Pops or allocates a RasterState, captures current target/dimensions/clip and appends to the active stack for the canonical guard.",
       "confidence": "reviewed"
     },
     {
@@ -32203,6 +32686,62 @@
       "originalName": "param4",
       "to": "originY",
       "evidence": "kh.java: Painter contract and Widget dispatch establish the widget and parent-origin offsets; rendering flag meaning remains qualified. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(III[IIIII)V#0",
+      "originalName": "param0",
+      "to": "clipBottom",
+      "evidence": "fg.java: Retains target/dimensions and four clip edges without copying pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(III[IIIII)V#1",
+      "originalName": "param1",
+      "to": "clipLeft",
+      "evidence": "fg.java: Retains target/dimensions and four clip edges without copying pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(III[IIIII)V#2",
+      "originalName": "param2",
+      "to": "clipRight",
+      "evidence": "fg.java: Retains target/dimensions and four clip edges without copying pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(III[IIIII)V#3",
+      "originalName": "param3",
+      "to": "pixels",
+      "evidence": "fg.java: Retains target/dimensions and four clip edges without copying pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(III[IIIII)V#4",
+      "originalName": "param4",
+      "to": "clipTop",
+      "evidence": "fg.java: Retains target/dimensions and four clip edges without copying pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(III[IIIII)V#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "fg.java: Retains target/dimensions and four clip edges without copying pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(III[IIIII)V#6",
+      "originalName": "param6",
+      "to": "width",
+      "evidence": "fg.java: Retains target/dimensions and four clip edges without copying pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(III[IIIII)V#7",
+      "originalName": "param7",
+      "to": "obfuscationGuard",
+      "evidence": "fg.java: Retains target/dimensions and four clip edges without copying pixels.",
       "confidence": "reviewed"
     },
     {
@@ -41845,6 +42384,202 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ou.<init>(Lkl;Lkl;Z)V#0",
+      "originalName": "param0",
+      "to": "freeArchive",
+      "evidence": "ou.java: Installs archive slots, allocates theme/size rows, loads permitted map groups and sequential tutorial layouts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.<init>(Lkl;Lkl;Z)V#1",
+      "originalName": "param1",
+      "to": "memberArchive",
+      "evidence": "ou.java: Installs archive slots, allocates theme/size rows, loads permitted map groups and sequential tutorial layouts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.<init>(Lkl;Lkl;Z)V#2",
+      "originalName": "param2",
+      "to": "bypassMembershipChecks",
+      "evidence": "ou.java: Installs archive slots, allocates theme/size rows, loads permitted map groups and sequential tutorial layouts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ou.java: Reads tutorial names in order from archive zero and returns at the first null/empty resource, leaving subsequent slots null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(BI)Llo;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ou.java: Returns the indexed tutorial when below array length, otherwise tutorial zero; negative indices retain array failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(BI)Llo;#1",
+      "originalName": "param1",
+      "to": "tutorialIndex",
+      "evidence": "ou.java: Returns the indexed tutorial when below array length, otherwise tutorial zero; negative indices retain array failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(II)Lkl;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ou.java: Requires exactly two archive slots and a catalog theme; applies group-one positive-entitlement/bypass gating.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(II)Lkl;#1",
+      "originalName": "param1",
+      "to": "mapTheme",
+      "evidence": "ou.java: Requires exactly two archive slots and a catalog theme; applies group-one positive-entitlement/bypass gating.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(III)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ou.java: Resolves archive, replaces the theme/size list and appends layouts for nonnull/nonempty named files in filename order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(III)V#1",
+      "originalName": "param1",
+      "to": "mapSizeSetting",
+      "evidence": "ou.java: Resolves archive, replaces the theme/size list and appends layouts for nonnull/nonempty named files in filename order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(III)V#2",
+      "originalName": "param2",
+      "to": "mapTheme",
+      "evidence": "ou.java: Resolves archive, replaces the theme/size list and appends layouts for nonnull/nonempty named files in filename order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IIII)I#0",
+      "originalName": "param0",
+      "to": "initialCount",
+      "evidence": "ou.java: Counts retained maps in a theme/size list whose playerCapacity meets the minimum; does not recheck membership and preserves the initial count/iterator guard coupling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IIII)I#1",
+      "originalName": "param1",
+      "to": "mapSizeSetting",
+      "evidence": "ou.java: Counts retained maps in a theme/size list whose playerCapacity meets the minimum; does not recheck membership and preserves the initial count/iterator guard coupling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IIII)I#2",
+      "originalName": "param2",
+      "to": "mapTheme",
+      "evidence": "ou.java: Counts retained maps in a theme/size list whose playerCapacity meets the minimum; does not recheck membership and preserves the initial count/iterator guard coupling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IIII)I#3",
+      "originalName": "param3",
+      "to": "minimumPlayerCapacity",
+      "evidence": "ou.java: Counts retained maps in a theme/size list whose playerCapacity meets the minimum; does not recheck membership and preserves the initial count/iterator guard coupling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IIIII)Llo;#0",
+      "originalName": "param0",
+      "to": "minimumPlayerCapacity",
+      "evidence": "ou.java: Selects the matching ordinal among eligible maps with exact catalog/list shape checks; theme 1 alone also rejects negative entitlement unless bypassed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IIIII)Llo;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ou.java: Selects the matching ordinal among eligible maps with exact catalog/list shape checks; theme 1 alone also rejects negative entitlement unless bypassed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IIIII)Llo;#2",
+      "originalName": "param2",
+      "to": "mapSizeSetting",
+      "evidence": "ou.java: Selects the matching ordinal among eligible maps with exact catalog/list shape checks; theme 1 alone also rejects negative entitlement unless bypassed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IIIII)Llo;#3",
+      "originalName": "param3",
+      "to": "mapTheme",
+      "evidence": "ou.java: Selects the matching ordinal among eligible maps with exact catalog/list shape checks; theme 1 alone also rejects negative entitlement unless bypassed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IIIII)Llo;#4",
+      "originalName": "param4",
+      "to": "matchingOrdinal",
+      "evidence": "ou.java: Selects the matching ordinal among eligible maps with exact catalog/list shape checks; theme 1 alone also rejects negative entitlement unless bypassed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IILkl;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ou.java: Installs slot 0/1 only; slot 1 requires positive entitlement or bypass. Other slot indices and short/null archive arrays are ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IILkl;)V#1",
+      "originalName": "param1",
+      "to": "archiveGroup",
+      "evidence": "ou.java: Installs slot 0/1 only; slot 1 requires positive entitlement or bypass. Other slot indices and short/null archive arrays are ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(IILkl;)V#2",
+      "originalName": "param2",
+      "to": "archive",
+      "evidence": "ou.java: Installs slot 0/1 only; slot 1 requires positive entitlement or bypass. Other slot indices and short/null archive arrays are ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ou.java: Walks the configured theme indices for archive group 0/1, skips invalid theme indices and loads each size row when membership permits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "archiveGroup",
+      "evidence": "ou.java: Walks the configured theme indices for archive group 0/1, skips invalid theme indices and loads each size row when membership permits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ou.java: Allocates nullable theme/size deque rows matching the configured filename catalog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.b(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ou.java: Finds the theme in the two configured archive-group rows; canonical guard zero preserves group 0/1 or -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ou.b(II)I#1",
+      "originalName": "param1",
+      "to": "mapTheme",
+      "evidence": "ou.java: Finds the theme in the two configured archive-group rows; canonical guard zero preserves group 0/1 or -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ov.a(III)V#0",
       "originalName": "param0",
       "to": "packetOpcode",
@@ -42748,6 +43483,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qn.a([III)V#0",
+      "originalName": "param0",
+      "to": "targetPixels",
+      "evidence": "qn.java: Rebinds the raster pixel array and dimensions, then resets clip to full target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qn.a([III)V#1",
+      "originalName": "param1",
+      "to": "targetWidth",
+      "evidence": "qn.java: Rebinds the raster pixel array and dimensions, then resets clip to full target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qn.a([III)V#2",
+      "originalName": "param2",
+      "to": "targetHeight",
+      "evidence": "qn.java: Rebinds the raster pixel array and dimensions, then resets clip to full target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qn.f(IIII)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "qn.java: Sets clip edges with the original left/top lower and right/bottom upper clamping, then updates derived state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qn.f(IIII)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "qn.java: Sets clip edges with the original left/top lower and right/bottom upper clamping, then updates derived state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qn.f(IIII)V#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "qn.java: Sets clip edges with the original left/top lower and right/bottom upper clamping, then updates derived state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qn.f(IIII)V#3",
+      "originalName": "param3",
+      "to": "bottom",
+      "evidence": "qn.java: Sets clip edges with the original left/top lower and right/bottom upper clamping, then updates derived state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qq.<init>(IIII)V#0",
       "originalName": "param0",
       "to": "effectType",
@@ -43200,6 +43984,13 @@
       "originalName": "param1",
       "to": "room",
       "evidence": "rf.java: Moves only primary membership into the sorted room deque using sortsBefore, retaining secondary index membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rf.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rf.java: Restores target/dimensions/clip from the last snapshot; empty stack throws, restored record clears pixels and is pooled.",
       "confidence": "reviewed"
     },
     {
@@ -43788,6 +44579,13 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rq.java: Pops or allocates a RasterState, captures current target/dimensions/clip and appends to the active stack for the canonical guard.",
       "confidence": "reviewed"
     },
     {
@@ -48230,10 +49028,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "c2fec7d010e602cdc7ac4853fe6b0a25c23631fbbc68c2216af470b58372ea3c",
+      "build-armiesofgielinor-rules.mjs": "67cc1060c651d7663e3ad0c5504fd504f4d40a8c50b65eb2099e7ca110e8aa5a",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "9ab202be4b9f7ccb3e33165453e25e2cbe1c16f90949fd5a4c1da3808b3dd7e7",
+      "tests/test-armiesofgielinor-core.mjs": "12f71080d1cf9a532e741d3feeb2a53c7069b7fad6262912719395073d0aeb86",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
