@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 16,
+  "version": 17,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1823,6 +1823,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bc",
+      "originalName": "bc",
+      "to": "SectorCacheStore",
+      "evidence": "bc.java: Six-byte entry index and chained 520-byte sectors with small/large entry headers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bd",
       "originalName": "bd",
       "to": "PreparedAction",
@@ -1939,6 +1946,13 @@
       "originalName": "ee",
       "to": "SphinxActionRequest",
       "evidence": "ee.java: Checks a type-72 Sphinx has an attack remaining, then prepares its delegated action with ownership bypass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ei",
+      "originalName": "ei",
+      "to": "BoundedFile",
+      "evidence": "ei.java: RandomAccessFile wrapper with position accounting and a maximum file length.",
       "confidence": "reviewed"
     },
     {
@@ -2173,6 +2187,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ks",
+      "originalName": "ks",
+      "to": "ResourceRequest",
+      "evidence": "ks.java: Abstract pending/data/progress contract shared by disk and network requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ld",
       "originalName": "ld",
       "to": "MoveAttackAction",
@@ -2243,6 +2264,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ms",
+      "originalName": "ms",
+      "to": "DualLinkedNode",
+      "evidence": "ms.java: IntrusiveNode plus independent secondary links and a key that cannot be changed while secondary-linked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mt",
       "originalName": "mt",
       "to": "TextCursor",
@@ -2254,6 +2282,13 @@
       "originalName": "ne",
       "to": "MapTile",
       "evidence": "ne.java: Tagged fields unit/own/type/mod decode occupant, owner, terrain and metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nh",
+      "originalName": "nh",
+      "to": "DiskCacheRequest",
+      "evidence": "nh.java: Disk request operation, store and byte payload with inherited pending state.",
       "confidence": "reviewed"
     },
     {
@@ -2537,6 +2572,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ue",
+      "originalName": "ue",
+      "to": "BufferedFile",
+      "evidence": "ue.java: Buffered seek/read/write with logical/physical lengths, cached reads and pending writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ui",
+      "originalName": "ui",
+      "to": "DualNodeDeque",
+      "evidence": "ui.java: Sentinel deque using independent secondary node links; supports append, pop and traversal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:uo",
       "originalName": "uo",
       "to": "TaggedFieldReader",
@@ -2590,6 +2639,13 @@
       "originalName": "vn",
       "to": "CombatSandbox",
       "evidence": "vn.java: Own Attacker/Defender/Run Attack controls and six selectors; runs a standalone combat presentation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vo",
+      "originalName": "vo",
+      "to": "DiskCacheWorker",
+      "evidence": "vo.java: Queued disk reads/writes, immediate reads that reuse pending writes and a worker thread.",
       "confidence": "reviewed"
     },
     {
@@ -2821,6 +2877,34 @@
       "originalName": "field_f",
       "to": "cursor",
       "evidence": "bb.java: Traversal captures the next/previous node before returning the current one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_b:I",
+      "originalName": "field_b",
+      "to": "archiveId",
+      "evidence": "bc.java: Cache constructor and index/sector header validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_c:I",
+      "originalName": "field_c",
+      "to": "maximumEntryLength",
+      "evidence": "bc.java: Cache constructor and index/sector header validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_g:Lue;",
+      "originalName": "field_g",
+      "to": "indexFile",
+      "evidence": "bc.java: Cache constructor and index/sector header validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_l:Lue;",
+      "originalName": "field_l",
+      "to": "dataFile",
+      "evidence": "bc.java: Cache constructor and index/sector header validation.",
       "confidence": "reviewed"
     },
     {
@@ -3563,6 +3647,27 @@
       "originalName": "field_z",
       "to": "sphinxX",
       "evidence": "ee.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ei.field_c:J",
+      "originalName": "field_c",
+      "to": "position",
+      "evidence": "ei.java: Bounded file constructor, read/write accounting, seek and close.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ei.field_f:J",
+      "originalName": "field_f",
+      "to": "maximumLength",
+      "evidence": "ei.java: Bounded file constructor, read/write accounting, seek and close.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ei.field_g:Ljava/io/RandomAccessFile;",
+      "originalName": "field_g",
+      "to": "file",
+      "evidence": "ei.java: Bounded file constructor, read/write accounting, seek and close.",
       "confidence": "reviewed"
     },
     {
@@ -4987,6 +5092,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ks.field_x:Z",
+      "originalName": "field_x",
+      "to": "pending",
+      "evidence": "ks.java: Volatile flag starts true and is cleared when a resource request completes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ks.field_z:Z",
+      "originalName": "field_z",
+      "to": "requestFlag",
+      "evidence": "ks.java: Retained queue-write argument; immediate disk reads set true unless they reuse a queued write. Finer flag semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kw.field_R:I",
       "originalName": "field_R",
       "to": "campaignPacketWord0",
@@ -5323,6 +5442,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ms.field_l:Lms;",
+      "originalName": "field_l",
+      "to": "secondaryPrevious",
+      "evidence": "ms.java: Independent backward secondary link; unlink updates the secondary neighbors only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ms.field_q:J",
+      "originalName": "field_q",
+      "to": "secondaryKey",
+      "evidence": "ms.java: Secondary-node key used as the disk entry ID in requests; cannot be assigned through the setter while secondary-linked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ms.field_s:Lms;",
+      "originalName": "field_s",
+      "to": "secondaryNext",
+      "evidence": "ms.java: Independent forward secondary link used by request queues and caches.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mt.field_a:I",
       "originalName": "field_a",
       "to": "length",
@@ -5407,10 +5547,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nh.field_C:Lbc;",
+      "originalName": "field_C",
+      "to": "store",
+      "evidence": "nh.java: Worker dispatches disk operations to this cache store.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nh.field_D:[Z",
       "originalName": "field_D",
       "to": "unitProjectionVariants",
       "evidence": "nh.java: UnitModelPreview uses the selected unit-type flag to choose its projection depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nh.field_F:[B",
+      "originalName": "field_F",
+      "to": "bytes",
+      "evidence": "nh.java: Queued writes retain the supplied array; reads install cache bytes here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nh.field_L:I",
+      "originalName": "field_L",
+      "to": "operation",
+      "evidence": "nh.java: Disk request codes: 1 immediate read, 2 queued write, 3 queued read.",
       "confidence": "reviewed"
     },
     {
@@ -6926,6 +7087,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ue.field_b:[B",
+      "originalName": "field_b",
+      "to": "writeBuffer",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_c:I",
+      "originalName": "field_c",
+      "to": "writeBufferLength",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_d:I",
+      "originalName": "field_d",
+      "to": "readBufferLength",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_f:[B",
+      "originalName": "field_f",
+      "to": "readBuffer",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_g:J",
+      "originalName": "field_g",
+      "to": "logicalLength",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_h:J",
+      "originalName": "field_h",
+      "to": "position",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_i:J",
+      "originalName": "field_i",
+      "to": "readBufferStart",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_j:Lei;",
+      "originalName": "field_j",
+      "to": "file",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_l:J",
+      "originalName": "field_l",
+      "to": "filePosition",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_m:J",
+      "originalName": "field_m",
+      "to": "writeBufferStart",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_n:J",
+      "originalName": "field_n",
+      "to": "physicalLength",
+      "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ui.field_d:Lms;",
+      "originalName": "field_d",
+      "to": "sentinel",
+      "evidence": "ui.java: Constructor self-links this node in the secondary chain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ui.field_j:Lms;",
+      "originalName": "field_j",
+      "to": "traversalCursor",
+      "evidence": "ui.java: First/next walk this independent cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:up.field_a:I",
       "originalName": "field_a",
       "to": "playerId",
@@ -7185,6 +7437,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vo.field_a:Z",
+      "originalName": "field_a",
+      "to": "stopRequested",
+      "evidence": "vo.java: Worker constructor, synchronized request queue, dispatch loop and stop/join lifecycle. queuedCount excludes the in-flight request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vo.field_b:I",
+      "originalName": "field_b",
+      "to": "queuedCount",
+      "evidence": "vo.java: Worker constructor, synchronized request queue, dispatch loop and stop/join lifecycle. queuedCount excludes the in-flight request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vo.field_c:Ljava/lang/Thread;",
+      "originalName": "field_c",
+      "to": "workerThread",
+      "evidence": "vo.java: Worker constructor, synchronized request queue, dispatch loop and stop/join lifecycle. queuedCount excludes the in-flight request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vo.field_g:Lui;",
+      "originalName": "field_g",
+      "to": "requests",
+      "evidence": "vo.java: Worker constructor, synchronized request queue, dispatch loop and stop/join lifecycle. queuedCount excludes the in-flight request.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vp.field_C:I",
       "originalName": "field_C",
       "to": "playerId",
@@ -7287,6 +7567,97 @@
       "originalName": "var6Lifetime1",
       "to": "damageScore",
       "evidence": "b.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#10",
+      "originalName": "var10",
+      "to": "headerEntryId",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#11",
+      "originalName": "var11",
+      "to": "headerChunkIndex",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#12",
+      "originalName": "var12",
+      "to": "nextSector",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#13",
+      "originalName": "var13",
+      "to": "headerArchiveId",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#14",
+      "originalName": "var14",
+      "to": "headerLength",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#15",
+      "originalName": "var15",
+      "to": "readEnd",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#3",
+      "originalName": "var3_ref",
+      "to": "dataMonitor",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#4",
+      "originalName": "var4_int",
+      "to": "entryLength",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#5",
+      "originalName": "var5",
+      "to": "sector",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#6",
+      "originalName": "var6",
+      "to": "bytes",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#7",
+      "originalName": "var7",
+      "to": "bytesRead",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#8",
+      "originalName": "var8",
+      "to": "chunkIndex",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(II)[B#9",
+      "originalName": "var9",
+      "to": "payloadLength",
+      "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
       "confidence": "reviewed"
     },
     {
@@ -9733,6 +10104,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:vo.a(ILbc;I)Lnh;#0",
+      "originalName": "var4",
+      "to": "request",
+      "evidence": "vo.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vo.a(ILbc;I)Lnh;#2",
+      "originalName": "var5",
+      "to": "queueMonitor",
+      "evidence": "vo.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vo.a(ILbc;I)Lnh;#3",
+      "originalName": "var6",
+      "to": "queuedRequest",
+      "evidence": "vo.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:vo.a(ZIILom;)V#0",
       "originalName": "var6",
       "to": "localTurnFlag",
@@ -9751,6 +10143,20 @@
       "originalName": "var5",
       "to": "missionId",
       "evidence": "vo.java: Reviewed lexical ordinal and campaign metrics, score submission, checkpoint deltas or shared-word mutation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vo.run()V#1",
+      "originalName": "var2",
+      "to": "queueMonitor",
+      "evidence": "vo.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vo.run()V#3",
+      "originalName": "var7",
+      "to": "request",
+      "evidence": "vo.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
       "confidence": "reviewed"
     },
     {
@@ -9954,6 +10360,27 @@
       "originalName": "c",
       "to": "first",
       "evidence": "bb.java: Starts independent forward traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a(II)[B",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "bc.java: Reads and validates the index/sector chain; malformed or missing data returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a(II[BI)Z",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "bc.java: Attempts sector reuse then allocation, rejecting negative or oversized lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a(I[BZIB)Z",
+      "originalName": "a",
+      "to": "writeSectors",
+      "evidence": "bc.java: Writes the index entry and chained sector headers/payloads using 8- or 10-byte headers.",
       "confidence": "reviewed"
     },
     {
@@ -10668,6 +11095,41 @@
       "originalName": "a",
       "to": "formatMindControlRejection",
       "evidence": "ee.java: Formats a rejected Sphinx action using the original mind-control diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(III[B)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "ei.java: Checks the maximum length before writing a source slice; overflow writes the original marker byte then throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(II[BI)I",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "ei.java: Reads a slice and advances position by the positive byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(JI)V",
+      "originalName": "a",
+      "to": "seek",
+      "evidence": "ei.java: Seeks to the supplied offset and tracks position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(Z)J",
+      "originalName": "a",
+      "to": "length",
+      "evidence": "ei.java: Returns the underlying file length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.b(I)V",
+      "originalName": "b",
+      "to": "close",
+      "evidence": "ei.java: Closes the file for canonical guard 783.",
       "confidence": "reviewed"
     },
     {
@@ -11742,6 +12204,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jf.d(B)[B",
+      "originalName": "d",
+      "to": "getBytes",
+      "evidence": "ks.java: Resource data accessor; disk implementation rejects reads while pending. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jf.g(I)I",
+      "originalName": "g",
+      "to": "getProgress",
+      "evidence": "ks.java: Reports resource progress; disk implementation returns zero or 100 from pending state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jr.a(Z)I",
       "originalName": "a",
       "to": "getCampaignPacketWord2",
@@ -11837,6 +12313,20 @@
       "originalName": "a",
       "to": "readCampaignParticipant",
       "evidence": "ks.java: Reads participant ID/name, retained integer arrays and coat; the campaign argument is diagnostic-only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.d(B)[B",
+      "originalName": "d",
+      "to": "getBytes",
+      "evidence": "ks.java: Resource data accessor; disk implementation rejects reads while pending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.g(I)I",
+      "originalName": "g",
+      "to": "getProgress",
+      "evidence": "ks.java: Reports resource progress; disk implementation returns zero or 100 from pending state.",
       "confidence": "reviewed"
     },
     {
@@ -12036,6 +12526,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ms.a(B)Z",
+      "originalName": "a",
+      "to": "isSecondaryLinked",
+      "evidence": "ms.java: Checks whether secondaryPrevious is present, retaining linked-only guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.a(I)J",
+      "originalName": "a",
+      "to": "getSecondaryKey",
+      "evidence": "ms.java: Returns the retained key with original guard side effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.a(ZJ)V",
+      "originalName": "a",
+      "to": "setSecondaryKey",
+      "evidence": "ms.java: Rejects changes while secondary-linked, then stores the supplied key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.c(B)V",
+      "originalName": "c",
+      "to": "unlinkSecondary",
+      "evidence": "ms.java: Unlinks only the independent secondary chain; primary IntrusiveNode membership survives.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mt.a(B)Z",
       "originalName": "a",
       "to": "isAtEnd",
@@ -12173,6 +12691,20 @@
       "originalName": "k",
       "to": "hasModifierFlag1",
       "evidence": "ne.java: Tests metadata modifier bit 1; meaning unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.d(B)[B",
+      "originalName": "d",
+      "to": "getBytes",
+      "evidence": "ks.java: Resource data accessor; disk implementation rejects reads while pending. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.g(I)I",
+      "originalName": "g",
+      "to": "getProgress",
+      "evidence": "ks.java: Reports resource progress; disk implementation returns zero or 100 from pending state. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13254,10 +13786,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ue.a(IIB[B)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "ue.java: Writes the source slice, updating buffers and logical length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(IJ)V",
+      "originalName": "a",
+      "to": "seek",
+      "evidence": "ue.java: Sets the logical position; negative offsets throw IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(I[B)V",
+      "originalName": "a",
+      "to": "readArray",
+      "evidence": "ue.java: Delegates a full array read to readFully.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(I[BBI)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "ue.java: Reads an exact destination slice or throws EOFException, including pending-write overlap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(Z)J",
+      "originalName": "a",
+      "to": "length",
+      "evidence": "ue.java: Returns the logical length including pending writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.c(B)V",
+      "originalName": "c",
+      "to": "close",
+      "evidence": "ue.java: Flushes pending bytes and closes the underlying file.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.d(B)V",
+      "originalName": "d",
+      "to": "flush",
+      "evidence": "ue.java: Writes pending buffered bytes and refreshes overlapping cached reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.e(B)V",
+      "originalName": "e",
+      "to": "refillReadBuffer",
+      "evidence": "ue.java: Refills cached reads from the current logical position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(B)Lms;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "ui.java: Returns the first node and primes secondary traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(I)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "ui.java: Counts secondary-linked nodes without modifying them.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ui.a(Lbv;II)Lca;",
       "originalName": "a",
       "to": "readTaggedTileMetadata",
       "evidence": "ui.java: Returns null for an empty record, otherwise decodes tile metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(Lms;Z)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "ui.java: Unlinks existing secondary membership before appending to this deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.b(I)Lms;",
+      "originalName": "b",
+      "to": "popFirst",
+      "evidence": "ui.java: Removes and returns the first secondary node; guard 11 is canonical.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.c(I)Lms;",
+      "originalName": "c",
+      "to": "next",
+      "evidence": "ui.java: Advances the secondary cursor even when a noncanonical guard returns null.",
       "confidence": "reviewed"
     },
     {
@@ -13475,6 +14098,41 @@
       "originalName": "c",
       "to": "draw",
       "evidence": "vn.java: Draws the active combat presentation or sandbox controls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vo.a(B)V",
+      "originalName": "a",
+      "to": "stop",
+      "evidence": "vo.java: Sets the original stop flag, notifies and joins the worker thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vo.a(BILbc;)Lnh;",
+      "originalName": "a",
+      "to": "queueRead",
+      "evidence": "vo.java: Creates a pending code-3 request and enqueues it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vo.a(BLnh;)V",
+      "originalName": "a",
+      "to": "enqueue",
+      "evidence": "vo.java: Appends under the request-queue monitor, increments queuedCount and notifies waiters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vo.a(ILbc;I)Lnh;",
+      "originalName": "a",
+      "to": "readNow",
+      "evidence": "vo.java: Reuses the first pending write for this store/key; otherwise performs a synchronous store read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vo.a(ILbc;Z[B)Lnh;",
+      "originalName": "a",
+      "to": "queueWrite",
+      "evidence": "vo.java: Retains the supplied byte array in a code-2 request and enqueues it.",
       "confidence": "reviewed"
     },
     {
@@ -14168,6 +14826,111 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "bb.java: Starts independent forward traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.<init>(ILue;Lue;I)V#0",
+      "originalName": "param0",
+      "to": "archiveId",
+      "evidence": "bc.java: Retains both buffered files and archive/entry-size limits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.<init>(ILue;Lue;I)V#1",
+      "originalName": "param1",
+      "to": "dataFile",
+      "evidence": "bc.java: Retains both buffered files and archive/entry-size limits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.<init>(ILue;Lue;I)V#2",
+      "originalName": "param2",
+      "to": "indexFile",
+      "evidence": "bc.java: Retains both buffered files and archive/entry-size limits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.<init>(ILue;Lue;I)V#3",
+      "originalName": "param3",
+      "to": "maximumEntryLength",
+      "evidence": "bc.java: Retains both buffered files and archive/entry-size limits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(II)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bc.java: Reads and validates the index/sector chain; malformed or missing data returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(II)[B#1",
+      "originalName": "param1",
+      "to": "entryId",
+      "evidence": "bc.java: Reads and validates the index/sector chain; malformed or missing data returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(II[BI)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bc.java: Attempts sector reuse then allocation, rejecting negative or oversized lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(II[BI)Z#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "bc.java: Attempts sector reuse then allocation, rejecting negative or oversized lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(II[BI)Z#2",
+      "originalName": "param2",
+      "to": "bytes",
+      "evidence": "bc.java: Attempts sector reuse then allocation, rejecting negative or oversized lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(II[BI)Z#3",
+      "originalName": "param3",
+      "to": "entryId",
+      "evidence": "bc.java: Attempts sector reuse then allocation, rejecting negative or oversized lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(I[BZIB)Z#0",
+      "originalName": "param0",
+      "to": "entryId",
+      "evidence": "bc.java: Writes the index entry and chained sector headers/payloads using 8- or 10-byte headers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(I[BZIB)Z#1",
+      "originalName": "param1",
+      "to": "bytes",
+      "evidence": "bc.java: Writes the index entry and chained sector headers/payloads using 8- or 10-byte headers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(I[BZIB)Z#2",
+      "originalName": "param2",
+      "to": "reuseSectors",
+      "evidence": "bc.java: Writes the index entry and chained sector headers/payloads using 8- or 10-byte headers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(I[BZIB)Z#3",
+      "originalName": "param3",
+      "to": "length",
+      "evidence": "bc.java: Writes the index entry and chained sector headers/payloads using 8- or 10-byte headers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(I[BZIB)Z#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "bc.java: Writes the index entry and chained sector headers/payloads using 8- or 10-byte headers.",
       "confidence": "reviewed"
     },
     {
@@ -15855,6 +16618,111 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ee.java: Formats a rejected Sphinx action using the original mind-control diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.<init>(Ljava/io/File;Ljava/lang/String;J)V#0",
+      "originalName": "param0",
+      "to": "path",
+      "evidence": "ei.java: Opens the file; -1 means unlimited, and an oversized existing file is deleted before opening.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.<init>(Ljava/io/File;Ljava/lang/String;J)V#1",
+      "originalName": "param1",
+      "to": "mode",
+      "evidence": "ei.java: Opens the file; -1 means unlimited, and an oversized existing file is deleted before opening.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.<init>(Ljava/io/File;Ljava/lang/String;J)V#2",
+      "originalName": "param2",
+      "to": "maximumLength",
+      "evidence": "ei.java: Opens the file; -1 means unlimited, and an oversized existing file is deleted before opening.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(III[B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ei.java: Checks the maximum length before writing a source slice; overflow writes the original marker byte then throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(III[B)V#1",
+      "originalName": "param1",
+      "to": "sourceOffset",
+      "evidence": "ei.java: Checks the maximum length before writing a source slice; overflow writes the original marker byte then throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(III[B)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "ei.java: Checks the maximum length before writing a source slice; overflow writes the original marker byte then throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(III[B)V#3",
+      "originalName": "param3",
+      "to": "source",
+      "evidence": "ei.java: Checks the maximum length before writing a source slice; overflow writes the original marker byte then throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(II[BI)I#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "ei.java: Reads a slice and advances position by the positive byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(II[BI)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ei.java: Reads a slice and advances position by the positive byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(II[BI)I#2",
+      "originalName": "param2",
+      "to": "destination",
+      "evidence": "ei.java: Reads a slice and advances position by the positive byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(II[BI)I#3",
+      "originalName": "param3",
+      "to": "destinationOffset",
+      "evidence": "ei.java: Reads a slice and advances position by the positive byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(JI)V#0",
+      "originalName": "param0",
+      "to": "position",
+      "evidence": "ei.java: Seeks to the supplied offset and tracks position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(JI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ei.java: Seeks to the supplied offset and tracks position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.a(Z)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ei.java: Returns the underlying file length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ei.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ei.java: Closes the file for canonical guard 783.",
       "confidence": "reviewed"
     },
     {
@@ -18581,6 +19449,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jf.d(B)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ks.java: Resource data accessor; disk implementation rejects reads while pending. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jf.g(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ks.java: Reports resource progress; disk implementation returns zero or 100 from pending state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jr.a(Z)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -18823,6 +19705,20 @@
       "originalName": "param2",
       "to": "packet",
       "evidence": "ks.java: Reads participant ID/name, retained integer arrays and coat; the campaign argument is diagnostic-only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ks.d(B)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ks.java: Resource data accessor; disk implementation rejects reads while pending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ks.g(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ks.java: Reports resource progress; disk implementation returns zero or 100 from pending state.",
       "confidence": "reviewed"
     },
     {
@@ -19386,6 +20282,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ms.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ms.java: Checks whether secondaryPrevious is present, retaining linked-only guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ms.a(I)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ms.java: Returns the retained key with original guard side effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ms.a(ZJ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ms.java: Rejects changes while secondary-linked, then stores the supplied key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ms.a(ZJ)V#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "ms.java: Rejects changes while secondary-linked, then stores the supplied key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ms.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ms.java: Unlinks only the independent secondary chain; primary IntrusiveNode membership survives.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mt.<init>(Ljava/lang/String;)V#0",
       "originalName": "param0",
       "to": "text",
@@ -19593,6 +20524,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ne.java: Tests metadata modifier bit 1; meaning unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nh.d(B)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ks.java: Resource data accessor; disk implementation rejects reads while pending. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nh.g(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ks.java: Reports resource progress; disk implementation returns zero or 100 from pending state. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -22641,6 +23586,153 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ue.<init>(Lei;II)V#0",
+      "originalName": "param0",
+      "to": "file",
+      "evidence": "ue.java: Retains the bounded file and allocates independent read/write buffers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.<init>(Lei;II)V#1",
+      "originalName": "param1",
+      "to": "readBufferSize",
+      "evidence": "ue.java: Retains the bounded file and allocates independent read/write buffers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.<init>(Lei;II)V#2",
+      "originalName": "param2",
+      "to": "writeBufferSize",
+      "evidence": "ue.java: Retains the bounded file and allocates independent read/write buffers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(IIB[B)V#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "ue.java: Writes the source slice, updating buffers and logical length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(IIB[B)V#1",
+      "originalName": "param1",
+      "to": "sourceOffset",
+      "evidence": "ue.java: Writes the source slice, updating buffers and logical length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(IIB[B)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ue.java: Writes the source slice, updating buffers and logical length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(IIB[B)V#3",
+      "originalName": "param3",
+      "to": "source",
+      "evidence": "ue.java: Writes the source slice, updating buffers and logical length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(IJ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ue.java: Sets the logical position; negative offsets throw IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(IJ)V#1",
+      "originalName": "param1",
+      "to": "position",
+      "evidence": "ue.java: Sets the logical position; negative offsets throw IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(I[B)V#0",
+      "originalName": "param0",
+      "to": "destinationOffset",
+      "evidence": "ue.java: Delegates a full array read to readFully.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(I[B)V#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "ue.java: Delegates a full array read to readFully.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(I[BBI)V#0",
+      "originalName": "param0",
+      "to": "destinationOffset",
+      "evidence": "ue.java: Reads an exact destination slice or throws EOFException, including pending-write overlap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(I[BBI)V#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "ue.java: Reads an exact destination slice or throws EOFException, including pending-write overlap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(I[BBI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ue.java: Reads an exact destination slice or throws EOFException, including pending-write overlap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(I[BBI)V#3",
+      "originalName": "param3",
+      "to": "length",
+      "evidence": "ue.java: Reads an exact destination slice or throws EOFException, including pending-write overlap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(Z)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ue.java: Returns the logical length including pending writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ue.java: Flushes pending bytes and closes the underlying file.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ue.java: Writes pending buffered bytes and refreshes overlapping cached reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.e(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ue.java: Refills cached reads from the current logical position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ui.a(B)Lms;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ui.java: Returns the first node and primes secondary traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ui.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ui.java: Counts secondary-linked nodes without modifying them.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ui.a(Lbv;II)Lca;#0",
       "originalName": "param0",
       "to": "packet",
@@ -22659,6 +23751,34 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "ui.java: Returns null for an empty record, otherwise decodes tile metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ui.a(Lms;Z)V#0",
+      "originalName": "param0",
+      "to": "node",
+      "evidence": "ui.java: Unlinks existing secondary membership before appending to this deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ui.a(Lms;Z)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ui.java: Unlinks existing secondary membership before appending to this deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ui.b(I)Lms;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ui.java: Removes and returns the first secondary node; guard 11 is canonical.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ui.c(I)Lms;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ui.java: Advances the secondary cursor even when a noncanonical guard returns null.",
       "confidence": "reviewed"
     },
     {
@@ -23180,6 +24300,104 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vo.<init>(Lhd;)V#0",
+      "originalName": "param0",
+      "to": "threadLauncher",
+      "evidence": "vo.java: Uses the existing launcher to start this Runnable and retain its thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vo.java: Sets the original stop flag, notifies and joins the worker thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(BILbc;)Lnh;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vo.java: Creates a pending code-3 request and enqueues it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(BILbc;)Lnh;#1",
+      "originalName": "param1",
+      "to": "entryId",
+      "evidence": "vo.java: Creates a pending code-3 request and enqueues it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(BILbc;)Lnh;#2",
+      "originalName": "param2",
+      "to": "store",
+      "evidence": "vo.java: Creates a pending code-3 request and enqueues it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(BLnh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vo.java: Appends under the request-queue monitor, increments queuedCount and notifies waiters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(BLnh;)V#1",
+      "originalName": "param1",
+      "to": "request",
+      "evidence": "vo.java: Appends under the request-queue monitor, increments queuedCount and notifies waiters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(ILbc;I)Lnh;#0",
+      "originalName": "param0",
+      "to": "entryId",
+      "evidence": "vo.java: Reuses the first pending write for this store/key; otherwise performs a synchronous store read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(ILbc;I)Lnh;#1",
+      "originalName": "param1",
+      "to": "store",
+      "evidence": "vo.java: Reuses the first pending write for this store/key; otherwise performs a synchronous store read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(ILbc;I)Lnh;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "vo.java: Reuses the first pending write for this store/key; otherwise performs a synchronous store read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(ILbc;Z[B)Lnh;#0",
+      "originalName": "param0",
+      "to": "entryId",
+      "evidence": "vo.java: Retains the supplied byte array in a code-2 request and enqueues it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(ILbc;Z[B)Lnh;#1",
+      "originalName": "param1",
+      "to": "store",
+      "evidence": "vo.java: Retains the supplied byte array in a code-2 request and enqueues it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(ILbc;Z[B)Lnh;#2",
+      "originalName": "param2",
+      "to": "requestFlag",
+      "evidence": "vo.java: Retains the supplied byte array in a code-2 request and enqueues it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(ILbc;Z[B)Lnh;#3",
+      "originalName": "param3",
+      "to": "bytes",
+      "evidence": "vo.java: Retains the supplied byte array in a code-2 request and enqueues it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vo.a(ZIILom;)V#0",
       "originalName": "param0",
       "to": "isLocalTurn",
@@ -23454,9 +24672,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "0a2513097fafb4b01be25d5757445772832a348b505fc7bde1691a80cb30db77",
+      "build-armiesofgielinor-rules.mjs": "d4fe20a41b89449fd2dcd35b98286b9c2f1b3f4ea922c8fa39db1e5ecea3c3c1",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "8a8b332e6c071dd0e31f577a697807c66c4736bafcebfcfa863256228403c057",
+      "tests/test-armiesofgielinor-core.mjs": "1a5acb66a232417e913c3e0467d5c4c0b4acb150fe9610a5bd9a637719c478f9",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

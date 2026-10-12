@@ -111,6 +111,14 @@ const classes = {
   cf:['CampaignDefinition','Named campaign container with mission and participant tables, archive index and local-player label.'],
   sd:['CampaignParticipant','Campaign participant ID/name/coat and shared unit-override array with an append count.'],
   ln:['CoatOfArms','Six part choices and colour indices, coat query string, layer setters and drawing helpers.'],
+  ms:['DualLinkedNode','IntrusiveNode plus independent secondary links and a key that cannot be changed while secondary-linked.'],
+  ui:['DualNodeDeque','Sentinel deque using independent secondary node links; supports append, pop and traversal.'],
+  ks:['ResourceRequest','Abstract pending/data/progress contract shared by disk and network requests.'],
+  nh:['DiskCacheRequest','Disk request operation, store and byte payload with inherited pending state.'],
+  vo:['DiskCacheWorker','Queued disk reads/writes, immediate reads that reuse pending writes and a worker thread.'],
+  bc:['SectorCacheStore','Six-byte entry index and chained 520-byte sectors with small/large entry headers.'],
+  ue:['BufferedFile','Buffered seek/read/write with logical/physical lengths, cached reads and pending writes.'],
+  ei:['BoundedFile','RandomAccessFile wrapper with position accounting and a maximum file length.'],
   sl:['CampaignQuicksave','Versioned campaign snapshot header, mana/loss/damage state and incremental snapshot reception.'],
   pr:['PaletteRegionMap','Maps image palette indices to regions, retains marker anchors, identifies clicked regions and renders masks.'],
   a:['RegionAnchor','Row/column anchor node collected from marker pixels; unrelated static helpers retain their separate purposes.'],
@@ -1100,6 +1108,62 @@ for(const [owner,signature,items] of [
  ['ic','j(Z)V',[[1,'var2_int','damageTaken'],[3,'var3','turnsTaken'],[4,'var4','previousDamage'],[5,'var5','previousTurns'],[6,'var6','currentDamageThenMutationSelector'],[7,'var7','currentTurnsThenMutationVariant'],[8,'var8','damageCheckpoint'],[9,'var9','turnCheckpoint'],[10,'var10','damageDelta'],[11,'var11','turnDelta'],[12,'var12','deltaMutationSelector'],[13,'var13','deltaMutationVariant']]],
 ])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and campaign metrics, score submission, checkpoint deltas or shared-word mutation data flow.');
 
+field('ms','l','Lms;','secondaryPrevious','Independent backward secondary link; unlink updates the secondary neighbors only.');
+field('ms','s','Lms;','secondaryNext','Independent forward secondary link used by request queues and caches.');
+field('ms','q','J','secondaryKey','Secondary-node key used as the disk entry ID in requests; cannot be assigned through the setter while secondary-linked.');
+method('ms','a','(B)Z','isSecondaryLinked','Checks whether secondaryPrevious is present, retaining linked-only guard arithmetic.',{0:'obfuscationGuard'});
+method('ms','c','(B)V','unlinkSecondary','Unlinks only the independent secondary chain; primary IntrusiveNode membership survives.',{0:'obfuscationGuard'});
+method('ms','a','(I)J','getSecondaryKey','Returns the retained key with original guard side effects.',{0:'obfuscationGuard'});
+method('ms','a','(ZJ)V','setSecondaryKey','Rejects changes while secondary-linked, then stores the supplied key.',{0:'obfuscationGuard',1:'key'});
+field('ui','d','Lms;','sentinel','Constructor self-links this node in the secondary chain.');
+field('ui','j','Lms;','traversalCursor','First/next walk this independent cursor.');
+method('ui','a','(Lms;Z)V','addLast','Unlinks existing secondary membership before appending to this deque.',{0:'node',1:'obfuscationGuard'});
+method('ui','b','(I)Lms;','popFirst','Removes and returns the first secondary node; guard 11 is canonical.',{0:'obfuscationGuard'});
+method('ui','a','(B)Lms;','first','Returns the first node and primes secondary traversal.',{0:'obfuscationGuard'});
+method('ui','c','(I)Lms;','next','Advances the secondary cursor even when a noncanonical guard returns null.',{0:'obfuscationGuard'});
+method('ui','a','(I)I','size','Counts secondary-linked nodes without modifying them.',{0:'obfuscationGuard'});
+field('ks','x','Z','pending','Volatile flag starts true and is cleared when a resource request completes.');
+field('ks','z','Z','requestFlag','Retained queue-write argument; immediate disk reads set true unless they reuse a queued write. Finer flag semantics remain unresolved.');
+method('ks','d','(B)[B','getBytes','Resource data accessor; disk implementation rejects reads while pending.',{0:'obfuscationGuard'});
+method('ks','g','(I)I','getProgress','Reports resource progress; disk implementation returns zero or 100 from pending state.',{0:'obfuscationGuard'});
+field('nh','F','[B','bytes','Queued writes retain the supplied array; reads install cache bytes here.');
+field('nh','C','Lbc;','store','Worker dispatches disk operations to this cache store.');
+field('nh','L','I','operation','Disk request codes: 1 immediate read, 2 queued write, 3 queued read.');
+for(const [original,to,type] of [['g','requests','Lui;'],['a','stopRequested','Z'],['b','queuedCount','I'],['c','workerThread','Ljava/lang/Thread;']])field('vo',original,type,to,'Worker constructor, synchronized request queue, dispatch loop and stop/join lifecycle. queuedCount excludes the in-flight request.');
+method('vo','a','(BILbc;)Lnh;','queueRead','Creates a pending code-3 request and enqueues it.',{0:'obfuscationGuard',1:'entryId',2:'store'});
+method('vo','a','(ILbc;Z[B)Lnh;','queueWrite','Retains the supplied byte array in a code-2 request and enqueues it.',{0:'entryId',1:'store',2:'requestFlag',3:'bytes'});
+method('vo','a','(BLnh;)V','enqueue','Appends under the request-queue monitor, increments queuedCount and notifies waiters.',{0:'obfuscationGuard',1:'request'});
+method('vo','a','(ILbc;I)Lnh;','readNow','Reuses the first pending write for this store/key; otherwise performs a synchronous store read.',{0:'entryId',1:'store',2:'obfuscationGuard'});
+method('vo','a','(B)V','stop','Sets the original stop flag, notifies and joins the worker thread.',{0:'obfuscationGuard'});
+constructorParameters('vo','(Lhd;)V',['threadLauncher'],'Uses the existing launcher to start this Runnable and retain its thread.');
+for(const [original,to,type] of [['b','archiveId','I'],['c','maximumEntryLength','I'],['l','dataFile','Lue;'],['g','indexFile','Lue;']])field('bc',original,type,to,'Cache constructor and index/sector header validation.');
+constructorParameters('bc','(ILue;Lue;I)V',['archiveId','dataFile','indexFile','maximumEntryLength'],'Retains both buffered files and archive/entry-size limits.');
+method('bc','a','(II[BI)Z','write','Attempts sector reuse then allocation, rejecting negative or oversized lengths.',{0:'obfuscationGuard',1:'length',2:'bytes',3:'entryId'});
+method('bc','a','(I[BZIB)Z','writeSectors','Writes the index entry and chained sector headers/payloads using 8- or 10-byte headers.',{0:'entryId',1:'bytes',2:'reuseSectors',3:'length',4:'obfuscationGuard'});
+method('bc','a','(II)[B','read','Reads and validates the index/sector chain; malformed or missing data returns null.',{0:'obfuscationGuard',1:'entryId'});
+for(const [original,to,type] of [['j','file','Lei;'],['f','readBuffer','[B'],['b','writeBuffer','[B'],['h','position','J'],['l','filePosition','J'],['g','logicalLength','J'],['n','physicalLength','J'],['i','readBufferStart','J'],['d','readBufferLength','I'],['m','writeBufferStart','J'],['c','writeBufferLength','I']])field('ue',original,type,to,'Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.');
+constructorParameters('ue','(Lei;II)V',['file','readBufferSize','writeBufferSize'],'Retains the bounded file and allocates independent read/write buffers.');
+method('ue','a','(Z)J','length','Returns the logical length including pending writes.',{0:'obfuscationGuard'});
+method('ue','a','(IJ)V','seek','Sets the logical position; negative offsets throw IOException.',{0:'obfuscationGuard',1:'position'});
+method('ue','a','(IIB[B)V','write','Writes the source slice, updating buffers and logical length.',{0:'length',1:'sourceOffset',2:'obfuscationGuard',3:'source'});
+method('ue','a','(I[BBI)V','readFully','Reads an exact destination slice or throws EOFException, including pending-write overlap.',{0:'destinationOffset',1:'destination',2:'obfuscationGuard',3:'length'});
+method('ue','a','(I[B)V','readArray','Delegates a full array read to readFully.',{0:'destinationOffset',1:'destination'});
+method('ue','d','(B)V','flush','Writes pending buffered bytes and refreshes overlapping cached reads.',{0:'obfuscationGuard'});
+method('ue','e','(B)V','refillReadBuffer','Refills cached reads from the current logical position.',{0:'obfuscationGuard'});
+method('ue','c','(B)V','close','Flushes pending bytes and closes the underlying file.',{0:'obfuscationGuard'});
+for(const [original,to,type] of [['g','file','Ljava/io/RandomAccessFile;'],['c','position','J'],['f','maximumLength','J']])field('ei',original,type,to,'Bounded file constructor, read/write accounting, seek and close.');
+constructorParameters('ei','(Ljava/io/File;Ljava/lang/String;J)V',['path','mode','maximumLength'],'Opens the file; -1 means unlimited, and an oversized existing file is deleted before opening.');
+method('ei','a','(II[BI)I','read','Reads a slice and advances position by the positive byte count.',{0:'length',1:'obfuscationGuard',2:'destination',3:'destinationOffset'});
+method('ei','a','(III[B)V','write','Checks the maximum length before writing a source slice; overflow writes the original marker byte then throws EOFException.',{0:'obfuscationGuard',1:'sourceOffset',2:'length',3:'source'});
+method('ei','a','(JI)V','seek','Seeks to the supplied offset and tracks position.',{0:'position',1:'obfuscationGuard'});
+method('ei','a','(Z)J','length','Returns the underlying file length.',{0:'obfuscationGuard'});
+method('ei','b','(I)V','close','Closes the file for canonical guard 783.',{0:'obfuscationGuard'});
+for(const [owner,signature,items] of [
+ ['vo','run()V',[[1,'var2','queueMonitor'],[3,'var7','request']]],
+ ['vo','a(ILbc;I)Lnh;',[[0,'var4','request'],[2,'var5','queueMonitor'],[3,'var6','queuedRequest']]],
+ ['bc','a(II)[B',[[3,'var3_ref','dataMonitor'],[4,'var4_int','entryLength'],[5,'var5','sector'],[6,'var6','bytes'],[7,'var7','bytesRead'],[8,'var8','chunkIndex'],[9,'var9','payloadLength'],[10,'var10','headerEntryId'],[11,'var11','headerChunkIndex'],[12,'var12','nextSector'],[13,'var13','headerArchiveId'],[14,'var14','headerLength'],[15,'var15','readEnd']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.');
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -1194,6 +1258,8 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('em')} / ${link('hh')} | Tick-based counters and triangular highlight pulses. |`,
     `| ${link('hm')} → ${link('cm')} / ${link('ho')} | Player inventory/rune accounting and versioned campaign results. |`,
     `| ${link('cf')} / ${link('sd')} / ${link('ln')} / ${link('fu')} | Campaign/participant metadata, loadouts, reward previews, shared unit overrides and coats of arms. |`,
+    `| ${link('vo')} → ${link('nh')} / ${link('bc')} / ${link('ue')} / ${link('ei')} | Disk-cache requests, sector storage and buffered/bounded file access. |`,
+    `| ${link('ms')} / ${link('ui')} / ${link('ks')} | Independent secondary links, request queues and pending data/progress contracts. |`,
     `| ${link('sl')} | Versioned quicksave header, snapshot chunks, stored mana and campaign damage/loss state. |`,
     `| ${link('pr')} → ${link('a')} / ${link('ru')} / ${link('si')} / ${link('qg')} | Palette region indexing, marker anchors, pixel lookup and indexed sprites. |`,
     `| ${link('cv')} → ${link('cq')} / ${link('iq')} / ${link('bg')} | Campaign selection, mission entries, buttons and intrusive lookup/traversal. |`,
@@ -1218,15 +1284,16 @@ export function buildArmiesGuide(rules,mapping) {
     'PaletteRegionMap assigns one region per encountered palette index, even when colours repeat or a region is disconnected. Marker-colour pixels attach to the latest region in row-major order; markers before any region belong to region -1. IndexedSprite/IndexedSpriteBase and RgbSprite expose full canvas bounds, pixel dimensions, offsets and retained palette/pixel arrays. Normal draw/conversion and selected-region rendering mask byte indices to unsigned values, while getRegionAt and extraction retain signed indexing. Alpha drawing retains arithmetic-shift sign extension of blended 24-bit colours. Region extraction also retains its omitted rightmost column and original padded offsets. These naming changes document and probe the existing decompiled behavior rather than repairing rendering semantics.', '',
     'CampaignQuicksave stores campaign/mission IDs, unsigned-short damage, a unit-loss flag, snapshot bytes and versioned extra state. Header versions above 7 carry mana values; versions above 8 also carry an eliminated-player mask. Only snapshot lengths 1 through 99999 allocate data. Streaming construction leaves receivedBytes at zero; eager construction reads all bytes and retains -1. appendSnapshotChunk consumes bytes even for noncanonical guards, which report completion without advancing the receive offset. Current serialization always writes the latest header and carries no embedded format-version byte. Quicksave deletion retains the original mode gate and opcode 81; upload uses opcode 80. Gameplay restoration names damageTakenByPlayer and unitLossCounts, while a save preserves only whether the loss count was positive. Codec fixtures do not establish full gameplay restoration or server compatibility.', '',
     'submitCampaignResult updates the menu before comparing profile scores. It stores turns/damage and emits opcode 79 only for an improved candidate score or score 1; profile scores are subsequently calculated from those metrics, not stored as the candidate score. Every permitted submission then requests quicksave deletion, even without a result packet. The result carries campaign/mission IDs, score, turns, damage, loss flag and four campaignPacketWord integers. The words name packet positions only: their server validation meaning remains unresolved. reportCampaignTurn emits an opcode-16, type-zero record keyed by campaignIndex*1000+missionId. trackCampaignMetrics keeps XOR-996394 checkpoints, rejects decreases and preserves the original pointer-selected arithmetic mutations.', '',
+    'DiskCacheWorker dispatches queued writes (2) and reads (3); immediate reads (1) reuse the first queued write for the same store/key or read synchronously. Queued writes retain caller arrays, and queuedCount excludes the operation already in flight. ResourceRequest.pending is volatile; disk access rejects pending data reads and reports progress as 0/100. requestFlag deliberately remains qualified because finer priority/cache semantics are unresolved. DualLinkedNode keeps primary and secondary memberships independent, and its setter rejects key changes while secondary-linked. SectorCacheStore uses six-byte index records and 520-byte data sectors: IDs up to 65535 use an eight-byte header with 512 payload bytes, larger IDs a ten-byte header with 510 bytes. The pinned decompiled writer retains a 512-byte next-link cutoff even for large-ID sectors with 510 payload bytes: 511/512-byte writes can report success but read back as null. This defect is documented/probed without claiming it originates in the original bytecode. BufferedFile and BoundedFile retain cached/pending I/O, length tracking, guard behavior and overflow/error paths. Controlled disk probes bypass the service launcher and exercise the real worker on owned temporary files, not full game asset loading.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, spell-menu hierarchy, setup option validation, instruction bounds and preview units, instruction table shapes/navigation, animation decoding/playback, timing pulses and model-preview setters, versioned profiles/campaign results, mission scoring, coats/participants/overrides, campaign loadouts/reward previews, menu entry/neighbor selection, button bounds, hash-table behavior, palette regions/anchors and clipped indexed rendering, versioned quicksave headers/chunks/deletion, campaign result packets/checkpoints/progress records, and contextual errors, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, spell-menu hierarchy, setup option validation, instruction bounds and preview units, instruction table shapes/navigation, animation decoding/playback, timing pulses and model-preview setters, versioned profiles/campaign results, mission scoring, coats/participants/overrides, campaign loadouts/reward previews, menu entry/neighbor selection, button bounds, hash-table behavior, palette regions/anchors and clipped indexed rendering, versioned quicksave headers/chunks/deletion, campaign result packets/checkpoints/progress records, secondary deque membership and disk sector/worker behavior, and contextual errors, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:16,
+    const rules={schema:1,game:'armiesofgielinor',version:17,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

@@ -64,7 +64,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 121 reviewed classes around battlefield state, units, map
+The current pass names 129 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -127,6 +127,16 @@ mutation variants, score gates, stored metrics versus candidate scores, deletion
 after rejected scores, progress-record bytes and decreasing-counter rejection.
 The four shared campaignPacketWord values identify wire positions; their server
 validation purpose remains unresolved.
+
+DiskCacheWorker/DiskCacheRequest and ResourceRequest expose queued and immediate
+reads, retained write arrays, pending/progress state and worker shutdown.
+DualLinkedNode/DualNodeDeque preserve independent primary/secondary membership.
+SectorCacheStore, BufferedFile and BoundedFile name the index/sector format and
+file I/O buffers. Real temporary-file probes cover both header widths, resizing,
+corruption rejection and worker ordering. The pinned decompiled large-ID writer
+retains a 512-byte link cutoff for 510-byte sectors; 511/512-byte writes report
+success but read as null. This is characterized, not attributed to original
+bytecode or claimed repaired by the naming pass.
 
 CampaignParticipant and CoatOfArms name parent/participant metadata, shared
 overrides and coat layers. ContextualRuntimeException exposes the original
