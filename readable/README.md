@@ -64,7 +64,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 120 reviewed classes around battlefield state, units, map
+The current pass names 121 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -114,6 +114,12 @@ marker placement. IndexedSprite/IndexedSpriteBase and RgbSprite/RgbSpriteBase
 expose pixel arrays, palettes, canvas dimensions, offsets and clipped drawing.
 The probes preserve signed-byte lookup failures and the extracted mask
 right-column omission from the original decompiled source.
+
+CampaignQuicksave names versioned header state, legacy snapshot bytes and
+incremental reception. Campaign damage/loss counters, stored save lookup and
+explicit upload/delete/restore methods now have reviewed names. Codec probes
+cover eager/chunked reads, version boundaries, length rejection, guard behavior
+and deletion opcodes in isolated buffers; they do not prove full restoration.
 
 CampaignParticipant and CoatOfArms name parent/participant metadata, shared
 overrides and coat layers. ContextualRuntimeException exposes the original

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 14,
+  "version": 15,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -2453,6 +2453,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sl",
+      "originalName": "sl",
+      "to": "CampaignQuicksave",
+      "evidence": "sl.java: Versioned campaign snapshot header, mana/loss/damage state and incremental snapshot reception.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sm",
       "originalName": "sm",
       "to": "AiPlanningStrategy",
@@ -2933,6 +2940,13 @@
       "originalName": "field_h",
       "to": "topY",
       "evidence": "bo.java: TutorialLayout stage setter, centered getters and TutorialController bounds/spacing use.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bu.field_b:Lsl;",
+      "originalName": "field_b",
+      "to": "storedQuicksave",
+      "evidence": "bu.java: Quicksave upload and inbound header assign this; campaign menu lookup and deletion consume it.",
       "confidence": "reviewed"
     },
     {
@@ -3986,6 +4000,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ha.field_h:[I",
+      "originalName": "field_h",
+      "to": "unitLossCounts",
+      "evidence": "ha.java: Unit removal increments this tracked count; quicksave stores/restores only whether the local count is positive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ha.field_hb:I",
       "originalName": "field_hb",
       "to": "mapTheme",
@@ -4116,6 +4137,13 @@
       "originalName": "field_z",
       "to": "teamStructureCounts",
       "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_zb:[I",
+      "originalName": "field_zb",
+      "to": "damageTakenByPlayer",
+      "evidence": "ha.java: DamageEvent accumulates damage capped at current strength+bonus; gameplay scoring/quicksave uses the local-player entry.",
       "confidence": "reviewed"
     },
     {
@@ -6611,6 +6639,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sl.field_b:I",
+      "originalName": "field_b",
+      "to": "receivedBytes",
+      "evidence": "sl.java: Quicksave header encoding, gameplay restoration and snapshot reception; receivedBytes is -1 for non-streaming data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sl.field_c:[B",
+      "originalName": "field_c",
+      "to": "snapshotBytes",
+      "evidence": "sl.java: Quicksave header encoding, gameplay restoration and snapshot reception; receivedBytes is -1 for non-streaming data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sl.field_d:I",
+      "originalName": "field_d",
+      "to": "damageTaken",
+      "evidence": "sl.java: Quicksave header encoding, gameplay restoration and snapshot reception; receivedBytes is -1 for non-streaming data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sl.field_e:I",
+      "originalName": "field_e",
+      "to": "missionId",
+      "evidence": "sl.java: Quicksave header encoding, gameplay restoration and snapshot reception; receivedBytes is -1 for non-streaming data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sl.field_f:Z",
+      "originalName": "field_f",
+      "to": "hasLostUnit",
+      "evidence": "sl.java: Quicksave header encoding, gameplay restoration and snapshot reception; receivedBytes is -1 for non-streaming data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sl.field_g:I",
+      "originalName": "field_g",
+      "to": "campaignIndex",
+      "evidence": "sl.java: Quicksave header encoding, gameplay restoration and snapshot reception; receivedBytes is -1 for non-streaming data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sl.field_h:I",
+      "originalName": "field_h",
+      "to": "eliminatedPlayerMask",
+      "evidence": "sl.java: Quicksave header encoding, gameplay restoration and snapshot reception; receivedBytes is -1 for non-streaming data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sl.field_j:[I",
+      "originalName": "field_j",
+      "to": "playerMana",
+      "evidence": "sl.java: Quicksave header encoding, gameplay restoration and snapshot reception; receivedBytes is -1 for non-streaming data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sm.field_a:Lat;",
       "originalName": "field_a",
       "to": "candidates",
@@ -7028,6 +7112,13 @@
       "originalName": "field_m",
       "to": "frameIndex",
       "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vl.field_n:Lbv;",
+      "originalName": "field_n",
+      "to": "outgoingPacket",
+      "evidence": "vl.java: Client requests append ciphered opcodes and payloads to this shared outgoing buffer.",
       "confidence": "reviewed"
     },
     {
@@ -7462,6 +7553,132 @@
       "originalName": "var4",
       "to": "score",
       "evidence": "cv.java: Reviewed lexical ordinal and campaign entry construction, neighbor scoring or layout data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#1",
+      "originalName": "var6",
+      "to": "sprite",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#10",
+      "originalName": "var14",
+      "to": "previewBattlefield",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#11",
+      "originalName": "var15",
+      "to": "tileIndex",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#12",
+      "originalName": "var16",
+      "to": "tileY",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#13",
+      "originalName": "var17",
+      "to": "tileX",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#14",
+      "originalName": "var18",
+      "to": "tile",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#15",
+      "originalName": "var19",
+      "to": "terrainType",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#2",
+      "originalName": "var7",
+      "to": "layout",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#27",
+      "originalName": "var20",
+      "to": "tileColour",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#28",
+      "originalName": "var21_ref_jd",
+      "to": "unit",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#29",
+      "originalName": "var21",
+      "to": "left",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#3",
+      "originalName": "var8",
+      "to": "tileHeight",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#30",
+      "originalName": "var22",
+      "to": "top",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#4",
+      "originalName": "var9",
+      "to": "tileWidth",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#5",
+      "originalName": "var10",
+      "to": "leftOffset",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#6",
+      "originalName": "var11",
+      "to": "topOffset",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#7",
+      "originalName": "var12",
+      "to": "terrain",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.a(Lom;Lsl;III)Lwk;#8",
+      "originalName": "var13",
+      "to": "participantNames",
+      "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
       "confidence": "reviewed"
     },
     {
@@ -8312,6 +8529,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ic.a(BLsl;Lom;)V#10",
+      "originalName": "var5_ref_ne__",
+      "to": "tiles",
+      "evidence": "ic.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(BLsl;Lom;)V#11",
+      "originalName": "var5",
+      "to": "turnReferencePlayer",
+      "evidence": "ic.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(BLsl;Lom;)V#12",
+      "originalName": "var6",
+      "to": "tileIndex",
+      "evidence": "ic.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(BLsl;Lom;)V#13",
+      "originalName": "var7_ref_ne",
+      "to": "tile",
+      "evidence": "ic.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(BLsl;Lom;)V#14",
+      "originalName": "var7",
+      "to": "playerId",
+      "evidence": "ic.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(BLsl;Lom;)V#16",
+      "originalName": "var6Lifetime1",
+      "to": "referenceTurnCount",
+      "evidence": "ic.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(BLsl;Lom;)V#8",
+      "originalName": "var4_int",
+      "to": "localPlayer",
+      "evidence": "ic.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ic.a(Lom;B[I[I)F#11",
       "originalName": "var5_float",
       "to": "manaMultiplier",
@@ -8603,6 +8869,20 @@
       "originalName": "var6",
       "to": "localGodId",
       "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:of.a(Lha;IIBII)V#0",
+      "originalName": "var9",
+      "to": "quicksave",
+      "evidence": "of.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:of.a(Lha;IIBII)V#1",
+      "originalName": "var7",
+      "to": "payloadStart",
+      "evidence": "of.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
       "confidence": "reviewed"
     },
     {
@@ -9114,6 +9394,34 @@
       "originalName": "var11",
       "to": "sectionTitles",
       "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sl.<init>(Lvh;IZ)V#0",
+      "originalName": "var5",
+      "to": "playerIndex",
+      "evidence": "sl.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sl.<init>(Lvh;IZ)V#6",
+      "originalName": "var4_int",
+      "to": "manaCount",
+      "evidence": "sl.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sl.<init>(Lvh;IZ)V#8",
+      "originalName": "var4_intLifetime1",
+      "to": "snapshotLength",
+      "evidence": "sl.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sl.b(ILvh;)V#0",
+      "originalName": "var3_int",
+      "to": "playerIndex",
+      "evidence": "sl.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
       "confidence": "reviewed"
     },
     {
@@ -9782,10 +10090,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cv.a(Lom;Lsl;III)Lwk;",
+      "originalName": "a",
+      "to": "renderMissionPreview",
+      "evidence": "cv.java: Renders terrain and saved/current mission occupants into the preview sprite, preserving width/height and original guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cv.a(ZLcf;)Lcq;",
       "originalName": "a",
       "to": "buildCampaignEntry",
       "evidence": "cv.java: Builds campaign title/description, availability, completion count and preview sprite, replacing a cached entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cv.b(B)V",
+      "originalName": "b",
+      "to": "selectMissionOrQuicksaveDialog",
+      "evidence": "cv.java: Starts a selected mission directly without a save, otherwise chooses matching-save or overwrite confirmation.",
       "confidence": "reviewed"
     },
     {
@@ -10734,10 +11056,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.a(BLsl;Lom;)V",
+      "originalName": "a",
+      "to": "restoreCampaignQuicksave",
+      "evidence": "ic.java: Reads the snapshot, restores score/loss/mana/mask fields, clears inactive ownership and reconstructs missing player turn counts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.a(Lom;B[I[I)F",
       "originalName": "a",
       "to": "buildCampaignLoadout",
       "evidence": "ic.java: Clears/rebuilds unit masks from initial units and scored missions, merges rewarded spells and returns the cumulative mana multiplier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.s(B)V",
+      "originalName": "s",
+      "to": "saveCampaignQuicksave",
+      "evidence": "ic.java: Uploads the current campaign/mission with damage/loss state and shows the existing feedback.",
       "confidence": "reviewed"
     },
     {
@@ -11172,6 +11508,13 @@
       "originalName": "a",
       "to": "readCampaignParticipant",
       "evidence": "ks.java: Reads participant ID/name, retained integer arrays and coat; the campaign argument is diagnostic-only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ku.j(I)Lsl;",
+      "originalName": "j",
+      "to": "getStoredQuicksave",
+      "evidence": "ku.java: Returns the retained save or null; keeps the original guard side effect.",
       "confidence": "reviewed"
     },
     {
@@ -11623,6 +11966,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:of.a(Lha;IIBII)V",
+      "originalName": "a",
+      "to": "uploadQuicksave",
+      "evidence": "of.java: When permitted by the original mode check, captures/stores a save and writes opcode 80 with a two-byte length prefix.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oj.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -11844,6 +12194,13 @@
       "originalName": "a",
       "to": "decodeOpcode",
       "evidence": "qb.java: Decodes frame IDs/durations, loop settings, retained data and consumed legacy fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.b(B)V",
+      "originalName": "b",
+      "to": "requestDeleteQuicksave",
+      "evidence": "qh.java: For guard 27 and the original permitted-mode state, queues opcode 81 and clears the stored save.",
       "confidence": "reviewed"
     },
     {
@@ -12288,6 +12645,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sl.a(IILbv;)Z",
+      "originalName": "a",
+      "to": "appendSnapshotChunk",
+      "evidence": "sl.java: Copies chunk data into the received offset and reports completion; noncanonical guards copy without advancing that offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.a(ILvh;)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "sl.java: Writes the current header followed by snapshot bytes using the supplied source offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.b(ILvh;)V",
+      "originalName": "b",
+      "to": "writeHeader",
+      "evidence": "sl.java: Writes the current header layout including mana values, elimination mask and snapshot length.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sm.a(B)Ljb;",
       "originalName": "a",
       "to": "selectCandidate",
@@ -12463,6 +12841,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ts.a(Lom;ILsl;)V",
+      "originalName": "a",
+      "to": "startCampaignMission",
+      "evidence": "ts.java: Creates gameplay for the mission, installs player coats and optionally restores a quicksave.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tt.a(B)V",
       "originalName": "a",
       "to": "removePortalLossConditions",
@@ -12624,6 +13009,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vh.a([BIII)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "vh.java: Copies a source slice into the payload and advances position, preserving guard arithmetic and bounds failures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vh.b(II)V",
       "originalName": "b",
       "to": "writeByte",
@@ -12642,6 +13034,13 @@
       "originalName": "e",
       "to": "readUnsignedShort",
       "evidence": "vh.java: Reads two big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.g(B)[B",
+      "originalName": "g",
+      "to": "copyWrittenBytes",
+      "evidence": "vh.java: Returns a new array containing payload bytes before position.",
       "confidence": "reviewed"
     },
     {
@@ -14444,6 +14843,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cv.a(Lom;Lsl;III)Lwk;#0",
+      "originalName": "param0",
+      "to": "mission",
+      "evidence": "cv.java: Renders terrain and saved/current mission occupants into the preview sprite, preserving width/height and original guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cv.a(Lom;Lsl;III)Lwk;#1",
+      "originalName": "param1",
+      "to": "quicksave",
+      "evidence": "cv.java: Renders terrain and saved/current mission occupants into the preview sprite, preserving width/height and original guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cv.a(Lom;Lsl;III)Lwk;#2",
+      "originalName": "param2",
+      "to": "height",
+      "evidence": "cv.java: Renders terrain and saved/current mission occupants into the preview sprite, preserving width/height and original guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cv.a(Lom;Lsl;III)Lwk;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "cv.java: Renders terrain and saved/current mission occupants into the preview sprite, preserving width/height and original guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cv.a(Lom;Lsl;III)Lwk;#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "cv.java: Renders terrain and saved/current mission occupants into the preview sprite, preserving width/height and original guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cv.a(ZLcf;)Lcq;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -14455,6 +14889,13 @@
       "originalName": "param1",
       "to": "campaign",
       "evidence": "cv.java: Builds campaign title/description, availability, completion count and preview sprite, replacing a cached entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cv.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cv.java: Starts a selected mission directly without a save, otherwise chooses matching-save or overwrite confirmation.",
       "confidence": "reviewed"
     },
     {
@@ -16908,6 +17349,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ic.a(BLsl;Lom;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Reads the snapshot, restores score/loss/mana/mask fields, clears inactive ownership and reconstructs missing player turn counts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(BLsl;Lom;)V#1",
+      "originalName": "param1",
+      "to": "quicksave",
+      "evidence": "ic.java: Reads the snapshot, restores score/loss/mana/mask fields, clears inactive ownership and reconstructs missing player turn counts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(BLsl;Lom;)V#2",
+      "originalName": "param2",
+      "to": "mission",
+      "evidence": "ic.java: Reads the snapshot, restores score/loss/mana/mask fields, clears inactive ownership and reconstructs missing player turn counts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ic.a(Lom;B[I[I)F#0",
       "originalName": "param0",
       "to": "mission",
@@ -16933,6 +17395,13 @@
       "originalName": "param3",
       "to": "unitUnlockMasks",
       "evidence": "ic.java: Clears/rebuilds unit masks from initial units and scored missions, merges rewarded spells and returns the cumulative mana multiplier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.s(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Uploads the current campaign/mission with damage/loss state and shows the existing feedback.",
       "confidence": "reviewed"
     },
     {
@@ -17955,6 +18424,13 @@
       "originalName": "param2",
       "to": "packet",
       "evidence": "ks.java: Reads participant ID/name, retained integer arrays and coat; the campaign argument is diagnostic-only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ku.j(I)Lsl;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ku.java: Returns the retained save or null; keeps the original guard side effect.",
       "confidence": "reviewed"
     },
     {
@@ -19071,6 +19547,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:of.a(Lha;IIBII)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "of.java: When permitted by the original mode check, captures/stores a save and writes opcode 80 with a two-byte length prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:of.a(Lha;IIBII)V#1",
+      "originalName": "param1",
+      "to": "damageTaken",
+      "evidence": "of.java: When permitted by the original mode check, captures/stores a save and writes opcode 80 with a two-byte length prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:of.a(Lha;IIBII)V#2",
+      "originalName": "param2",
+      "to": "unitLossCount",
+      "evidence": "of.java: When permitted by the original mode check, captures/stores a save and writes opcode 80 with a two-byte length prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:of.a(Lha;IIBII)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "of.java: When permitted by the original mode check, captures/stores a save and writes opcode 80 with a two-byte length prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:of.a(Lha;IIBII)V#4",
+      "originalName": "param4",
+      "to": "missionId",
+      "evidence": "of.java: When permitted by the original mode check, captures/stores a save and writes opcode 80 with a two-byte length prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:of.a(Lha;IIBII)V#5",
+      "originalName": "param5",
+      "to": "campaignIndex",
+      "evidence": "of.java: When permitted by the original mode check, captures/stores a save and writes opcode 80 with a two-byte length prefix.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oj.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -19607,6 +20125,13 @@
       "originalName": "param2",
       "to": "opcode",
       "evidence": "qb.java: Decodes frame IDs/durations, loop settings, retained data and consumed legacy fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qh.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qh.java: For guard 27 and the original permitted-mode state, queues opcode 81 and clears the stored save.",
       "confidence": "reviewed"
     },
     {
@@ -20926,6 +21451,111 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sl.<init>(IILha;IZ)V#0",
+      "originalName": "param0",
+      "to": "campaignIndex",
+      "evidence": "sl.java: Captures a legacy battlefield snapshot, copies mana values and stores campaign score/loss state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.<init>(IILha;IZ)V#1",
+      "originalName": "param1",
+      "to": "missionId",
+      "evidence": "sl.java: Captures a legacy battlefield snapshot, copies mana values and stores campaign score/loss state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.<init>(IILha;IZ)V#2",
+      "originalName": "param2",
+      "to": "battlefield",
+      "evidence": "sl.java: Captures a legacy battlefield snapshot, copies mana values and stores campaign score/loss state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.<init>(IILha;IZ)V#3",
+      "originalName": "param3",
+      "to": "damageTaken",
+      "evidence": "sl.java: Captures a legacy battlefield snapshot, copies mana values and stores campaign score/loss state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.<init>(IILha;IZ)V#4",
+      "originalName": "param4",
+      "to": "hasLostUnit",
+      "evidence": "sl.java: Captures a legacy battlefield snapshot, copies mana values and stores campaign score/loss state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.<init>(Lvh;IZ)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "sl.java: Reads common fields; version 8+ adds mana, version 9+ adds elimination mask, and valid lengths 1..99999 allocate the snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.<init>(Lvh;IZ)V#1",
+      "originalName": "param1",
+      "to": "formatVersion",
+      "evidence": "sl.java: Reads common fields; version 8+ adds mana, version 9+ adds elimination mask, and valid lengths 1..99999 allocate the snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.<init>(Lvh;IZ)V#2",
+      "originalName": "param2",
+      "to": "receiveInChunks",
+      "evidence": "sl.java: Reads common fields; version 8+ adds mana, version 9+ adds elimination mask, and valid lengths 1..99999 allocate the snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.a(IILbv;)Z#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "sl.java: Copies chunk data into the received offset and reports completion; noncanonical guards copy without advancing that offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.a(IILbv;)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "sl.java: Copies chunk data into the received offset and reports completion; noncanonical guards copy without advancing that offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.a(IILbv;)Z#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "sl.java: Copies chunk data into the received offset and reports completion; noncanonical guards copy without advancing that offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.a(ILvh;)V#0",
+      "originalName": "param0",
+      "to": "sourceOffset",
+      "evidence": "sl.java: Writes the current header followed by snapshot bytes using the supplied source offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.a(ILvh;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "sl.java: Writes the current header followed by snapshot bytes using the supplied source offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.b(ILvh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sl.java: Writes the current header layout including mana values, elimination mask and snapshot length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.b(ILvh;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "sl.java: Writes the current header layout including mana values, elimination mask and snapshot length.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sm.<init>(Lej;)V#0",
       "originalName": "param0",
       "to": "planner",
@@ -21381,6 +22011,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ts.a(Lom;ILsl;)V#0",
+      "originalName": "param0",
+      "to": "mission",
+      "evidence": "ts.java: Creates gameplay for the mission, installs player coats and optionally restores a quicksave.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ts.a(Lom;ILsl;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ts.java: Creates gameplay for the mission, installs player coats and optionally restores a quicksave.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ts.a(Lom;ILsl;)V#2",
+      "originalName": "param2",
+      "to": "quicksave",
+      "evidence": "ts.java: Creates gameplay for the mission, installs player coats and optionally restores a quicksave.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tt.<init>(I)V#0",
       "originalName": "param0",
       "to": "playerCount",
@@ -21822,6 +22473,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vh.a([BIII)V#0",
+      "originalName": "param0",
+      "to": "source",
+      "evidence": "vh.java: Copies a source slice into the payload and advances position, preserving guard arithmetic and bounds failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a([BIII)V#1",
+      "originalName": "param1",
+      "to": "sourceOffset",
+      "evidence": "vh.java: Copies a source slice into the payload and advances position, preserving guard arithmetic and bounds failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a([BIII)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "vh.java: Copies a source slice into the payload and advances position, preserving guard arithmetic and bounds failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a([BIII)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Copies a source slice into the payload and advances position, preserving guard arithmetic and bounds failures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vh.b(II)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -21854,6 +22533,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "vh.java: Reads two big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.g(B)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Returns a new array containing payload bytes before position.",
       "confidence": "reviewed"
     },
     {
@@ -22243,9 +22929,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "c11370c3d9661ab98edadce01597146ce4e6ee2c8a1415c84447410a72742237",
+      "build-armiesofgielinor-rules.mjs": "25083686233e17afbd8f145dc0fa480c0e0d57e9795135d2a87063627e330b9c",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "1620c42cd30c73ca08c8d39aa9bd5203d22c10c2a843caf4984907f615be5016",
+      "tests/test-armiesofgielinor-core.mjs": "9a9ddd35db7163986f5241f191238d890a62f473bbdfe9d4322331b3f6a9f88c",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
