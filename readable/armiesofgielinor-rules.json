@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 40,
+  "version": 41,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -3128,6 +3128,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ul",
+      "originalName": "ul",
+      "to": "LineOfSightGrid",
+      "evidence": "ul.java: Retained battlefield/tiles and a 30×30 local visibility mask; traces terrain-blocked rays and merges attack target flags. Unrelated spell-menu/map-generation helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:uo",
       "originalName": "uo",
       "to": "TaggedFieldReader",
@@ -5781,6 +5788,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ha.field_j:Lul;",
+      "originalName": "field_j",
+      "to": "lineOfSightGrid",
+      "evidence": "ha.java: Map installation binds this helper to the same tile array and dimensions used by attack visibility/target masks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ha.field_jb:I",
       "originalName": "field_jb",
       "to": "randomSeed",
@@ -5834,6 +5848,13 @@
       "originalName": "field_p",
       "to": "rankedParticipants",
       "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_s:[I",
+      "originalName": "field_s",
+      "to": "mapStructureTotals",
+      "evidence": "ha.java: Map installation recounts portal/tower/village terrain into three slots.",
       "confidence": "reviewed"
     },
     {
@@ -11847,6 +11868,62 @@
       "originalName": "field_j",
       "to": "traversalCursor",
       "evidence": "ui.java: First/next walk this independent cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_b:I",
+      "originalName": "field_b",
+      "to": "originY",
+      "evidence": "ul.java: Constructor retains board/tiles/dimensions; visibility methods reset and fill the local 900-cell mask centered at offset fifteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_c:[Z",
+      "originalName": "field_c",
+      "to": "visibilityMask",
+      "evidence": "ul.java: Constructor retains board/tiles/dimensions; visibility methods reset and fill the local 900-cell mask centered at offset fifteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_e:I",
+      "originalName": "field_e",
+      "to": "mapWidth",
+      "evidence": "ul.java: Constructor retains board/tiles/dimensions; visibility methods reset and fill the local 900-cell mask centered at offset fifteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_h:Lha;",
+      "originalName": "field_h",
+      "to": "battlefield",
+      "evidence": "ul.java: Constructor retains board/tiles/dimensions; visibility methods reset and fill the local 900-cell mask centered at offset fifteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_i:I",
+      "originalName": "field_i",
+      "to": "originX",
+      "evidence": "ul.java: Constructor retains board/tiles/dimensions; visibility methods reset and fill the local 900-cell mask centered at offset fifteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_k:[Lne;",
+      "originalName": "field_k",
+      "to": "tiles",
+      "evidence": "ul.java: Constructor retains board/tiles/dimensions; visibility methods reset and fill the local 900-cell mask centered at offset fifteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_l:I",
+      "originalName": "field_l",
+      "to": "mapHeight",
+      "evidence": "ul.java: Constructor retains board/tiles/dimensions; visibility methods reset and fill the local 900-cell mask centered at offset fifteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_n:I",
+      "originalName": "field_n",
+      "to": "maximumRange",
+      "evidence": "ul.java: Constructor retains board/tiles/dimensions; visibility methods reset and fill the local 900-cell mask centered at offset fifteen.",
       "confidence": "reviewed"
     },
     {
@@ -18626,6 +18703,160 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:nn.a(BLha;)V#0",
+      "originalName": "var2_int",
+      "to": "tileIndex",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#10",
+      "originalName": "var6",
+      "to": "sectorX",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#11",
+      "originalName": "var7",
+      "to": "sectorY",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#12",
+      "originalName": "var8",
+      "to": "structureX",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#13",
+      "originalName": "var9",
+      "to": "structureY",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#14",
+      "originalName": "var10",
+      "to": "villageIndex",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#15",
+      "originalName": "var11",
+      "to": "spawnY",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#16",
+      "originalName": "var12",
+      "to": "obfuscationControl",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#17",
+      "originalName": "var13",
+      "to": "random",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#18",
+      "originalName": "var3Lifetime1",
+      "to": "centerPattern",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#19",
+      "originalName": "var4Lifetime1",
+      "to": "villagesPerSector",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#20",
+      "originalName": "var5Lifetime1",
+      "to": "patternRoll",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#21",
+      "originalName": "var6Lifetime1",
+      "to": "emptyTileIndex",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#22",
+      "originalName": "var6Lifetime2",
+      "to": "preferredScatteredTerrain",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#23",
+      "originalName": "var7Lifetime1",
+      "to": "spawnSectorX",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#24",
+      "originalName": "var8Lifetime1",
+      "to": "spawnSectorY",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#25",
+      "originalName": "var9Lifetime1",
+      "to": "spawnPlayer",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#26",
+      "originalName": "var10Lifetime1",
+      "to": "spawnX",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#5",
+      "originalName": "var2",
+      "to": "fixedArena",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#7",
+      "originalName": "var3",
+      "to": "arenaIndex",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#8",
+      "originalName": "var4",
+      "to": "arenaX",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BLha;)V#9",
+      "originalName": "var5",
+      "to": "arenaY",
+      "evidence": "nn.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:np.a(BZ)I#0",
       "originalName": "var3",
       "to": "itemIndex",
@@ -18854,6 +19085,55 @@
       "originalName": "var7",
       "to": "payloadStart",
       "evidence": "of.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lha;IZLjava/util/Random;)V#0",
+      "originalName": "var4_int",
+      "to": "attempt",
+      "evidence": "on.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lha;IZLjava/util/Random;)V#10",
+      "originalName": "var7",
+      "to": "tileIndex",
+      "evidence": "on.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lha;IZLjava/util/Random;)V#11",
+      "originalName": "var8",
+      "to": "terrainRoll",
+      "evidence": "on.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lha;IZLjava/util/Random;)V#12",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "on.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lha;IZLjava/util/Random;)V#13",
+      "originalName": "var8Lifetime1",
+      "to": "neighborTerrainRoll",
+      "evidence": "on.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lha;IZLjava/util/Random;)V#8",
+      "originalName": "var5",
+      "to": "tileX",
+      "evidence": "on.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lha;IZLjava/util/Random;)V#9",
+      "originalName": "var6",
+      "to": "tileY",
+      "evidence": "on.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -20191,6 +20471,118 @@
       "originalName": "var6",
       "to": "dialogHeight",
       "evidence": "uf.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IIIZIIB)Z#0",
+      "originalName": "var10",
+      "to": "deltaY",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IIIZIIB)Z#1",
+      "originalName": "var11",
+      "to": "deltaX",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IIIZIIB)Z#2",
+      "originalName": "var8",
+      "to": "targetVisible",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IIIZIIB)Z#3",
+      "originalName": "var9",
+      "to": "guardQuotient",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IIIZIIB)Z#4",
+      "originalName": "var12",
+      "to": "manhattanDistance",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IIIZIIB)Z#5",
+      "originalName": "var13",
+      "to": "obfuscationControl",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#13",
+      "originalName": "var4_int",
+      "to": "patternOrTileX",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#15",
+      "originalName": "var5",
+      "to": "tileY",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#16",
+      "originalName": "var6",
+      "to": "horizontalDistance",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#17",
+      "originalName": "var7",
+      "to": "verticalDistance",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#18",
+      "originalName": "var8",
+      "to": "jitter",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#19",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#27",
+      "originalName": "var4_intLifetime1",
+      "to": "structureX",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#28",
+      "originalName": "var5Lifetime1",
+      "to": "structureY",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#29",
+      "originalName": "var6Lifetime1",
+      "to": "structureCount",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(Ljava/util/Random;Lha;BI)V#30",
+      "originalName": "var7Lifetime1",
+      "to": "structureIndex",
+      "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -22553,6 +22945,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fi.a(IBIIIZILha;Ljava/util/Random;)V",
+      "originalName": "a",
+      "to": "paintRandomTerrainPath",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fi.b(II)Lme;",
       "originalName": "b",
       "to": "getQuickChatCommand",
@@ -22889,6 +23288,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(BII[Lne;)V",
+      "originalName": "a",
+      "to": "installMap",
+      "evidence": "ha.java: Rebinds dimensions/tiles and line-of-sight grid, reconstructs active units, initializes match conditions and counts structures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(BLvh;)V",
       "originalName": "a",
       "to": "readMoveEvent",
@@ -23162,6 +23568,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.f(I)V",
+      "originalName": "f",
+      "to": "recountMapStructures",
+      "evidence": "ha.java: Counts terrain 7 as portals, 9/14 as towers and 8 as villages into the three retained totals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.f(II)Lat;",
       "originalName": "f",
       "to": "getUnitsForPlayer",
@@ -23201,6 +23614,13 @@
       "originalName": "k",
       "to": "getStructureIncome",
       "evidence": "ha.java: Returns 50 per portal, 75 per tower and 25 per village, with campaign scaling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.l(II)V",
+      "originalName": "l",
+      "to": "loadOrGenerateMap",
+      "evidence": "ha.java: Chooses catalog, tutorial or campaign layout, or procedural generation for noncatalog size settings; seed modulo chooses an eligible catalog map.",
       "confidence": "reviewed"
     },
     {
@@ -25360,6 +25780,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ne.b(I)Z",
+      "originalName": "b",
+      "to": "blocksLineOfSight",
+      "evidence": "ne.java: Recognizes terrain 2/3 for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ne.b(ZI)V",
       "originalName": "b",
       "to": "setExplicitOwner",
@@ -25476,6 +25903,13 @@
       "originalName": "a",
       "to": "setBounds",
       "evidence": "kb.java: Assigns x, width, y and height in the original argument order; guard 8192 is canonical. DropdownSelector overrides this for its collapsed height. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(BLha;)V",
+      "originalName": "a",
+      "to": "generateProceduralMap",
+      "evidence": "nn.java: Builds the fixed size-4 arena or seeded sector map, connects structures, places player leaders, scatters terrain and installs the result.",
       "confidence": "reviewed"
     },
     {
@@ -25630,6 +26064,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ns.a(ZILjava/util/Random;)I",
+      "originalName": "a",
+      "to": "nextBoundedInt",
+      "evidence": "ns.java: Draws full 32-bit random words: unsigned multiply for power-of-two bounds, rejection and floor modulus otherwise; rejects nonpositive bounds.",
       "confidence": "reviewed"
     },
     {
@@ -25815,6 +26256,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:on.a(Lha;IZLjava/util/Random;)V",
+      "originalName": "a",
+      "to": "scatterMapTerrain",
+      "evidence": "on.java: Attempts width*height/3 interior ground-cell decorations, retaining occupancy protection and neighboring preferred-terrain bias.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:op.a(ILjava/lang/String;I)Ljava/lang/String;",
       "originalName": "a",
       "to": "requestAddFriend",
@@ -25973,6 +26421,13 @@
       "originalName": "a",
       "to": "storeBytes",
       "evidence": "pf.java: Payloads above 136 bytes are copied to DirectByteStorage. Smaller arrays are retained or copied according to copySmallArrays; null stays null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pg.a(II)Z",
+      "originalName": "a",
+      "to": "isPowerOfTwoBits",
+      "evidence": "pg.java: Checks value&-value equality for canonical guard, retaining true for zero.",
       "confidence": "reviewed"
     },
     {
@@ -26232,6 +26687,13 @@
       "originalName": "f",
       "to": "setClip",
       "evidence": "qn.java: Sets clip edges with the original left/top lower and right/bottom upper clamping, then updates derived state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qp.a(IIIIIILha;ILjava/util/Random;)V",
+      "originalName": "a",
+      "to": "paintTerrainConnection",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
       "confidence": "reviewed"
     },
     {
@@ -26561,6 +27023,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(ILha;)V",
+      "originalName": "a",
+      "to": "generateProceduralMap",
+      "evidence": "rn.java: Delegates to the seeded procedural generator for guards below -1.",
       "confidence": "reviewed"
     },
     {
@@ -27075,6 +27544,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:th.a(III)I",
+      "originalName": "a",
+      "to": "floorModWithOffset",
+      "evidence": "th.java: Canonical offset 1 yields floor modulus for signed input and positive divisor using the original arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tj.a(IIIII)V",
       "originalName": "a",
       "to": "setBounds",
@@ -27453,10 +27929,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ul.a(B)V",
+      "originalName": "a",
+      "to": "resetVisibility",
+      "evidence": "ul.java: Clears 900 mask entries and marks center index 465 visible.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(BIIZIIZZ)I",
+      "originalName": "a",
+      "to": "getTargetFlags",
+      "evidence": "ul.java: Returns visible target flags 3 or 7 after range/tile-effect, alliance and unit-category checks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ul.a(I)V",
       "originalName": "a",
       "to": "buildSpellMenu",
       "evidence": "ul.java: Constructs the complete nested menu; the caller supplies spell ID 17 for the final entry in the first weakness group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(IBI)Z",
+      "originalName": "a",
+      "to": "isVisible",
+      "evidence": "ul.java: Looks up the local mask using origin-relative coordinates plus 15; preserves inclusive <=30 checks against a 900-element array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(IIIIIZ)V",
+      "originalName": "a",
+      "to": "traceVisibilityRay",
+      "evidence": "ul.java: Marks origin-to-offset cells with integer major-axis interpolation, including a blocking endpoint before stopping on terrain 2/3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(IIIZIIB)Z",
+      "originalName": "a",
+      "to": "computeVisibility",
+      "evidence": "ul.java: Resets the local mask, traces in-bounds cells within Manhattan range and returns visibility of the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(IZIIIIZ[IIIZ[III)V",
+      "originalName": "a",
+      "to": "mergeAttackTargetMask",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(Ljava/util/Random;Lha;BI)V",
+      "originalName": "a",
+      "to": "paintMapCenterPattern",
+      "evidence": "ul.java: Paints pattern modes 0–6, optional connecting roads and central structures using the supplied Random; mode values remain numeric.",
       "confidence": "reviewed"
     },
     {
@@ -32794,6 +33319,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fi.a(IBIIIZILha;Ljava/util/Random;)V#0",
+      "originalName": "param0",
+      "to": "startX",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.a(IBIIIZILha;Ljava/util/Random;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.a(IBIIIZILha;Ljava/util/Random;)V#2",
+      "originalName": "param2",
+      "to": "terrainType",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.a(IBIIIZILha;Ljava/util/Random;)V#3",
+      "originalName": "param3",
+      "to": "startY",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.a(IBIIIZILha;Ljava/util/Random;)V#4",
+      "originalName": "param4",
+      "to": "endX",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.a(IBIIIZILha;Ljava/util/Random;)V#5",
+      "originalName": "param5",
+      "to": "allowLavaCrossings",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.a(IBIIIZILha;Ljava/util/Random;)V#6",
+      "originalName": "param6",
+      "to": "endY",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.a(IBIIIZILha;Ljava/util/Random;)V#7",
+      "originalName": "param7",
+      "to": "battlefield",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.a(IBIIIZILha;Ljava/util/Random;)V#8",
+      "originalName": "param8",
+      "to": "random",
+      "evidence": "fi.java: Walks toward the endpoint, stopping at an existing matching path or adjacent matching terrain; preserves water/lava crossing conversion and endpoint exclusion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fi.b(II)Lme;#0",
       "originalName": "param0",
       "to": "startIndex",
@@ -33816,6 +34404,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.a(BII[Lne;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Rebinds dimensions/tiles and line-of-sight grid, reconstructs active units, initializes match conditions and counts structures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BII[Lne;)V#1",
+      "originalName": "param1",
+      "to": "mapWidth",
+      "evidence": "ha.java: Rebinds dimensions/tiles and line-of-sight grid, reconstructs active units, initializes match conditions and counts structures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BII[Lne;)V#2",
+      "originalName": "param2",
+      "to": "mapHeight",
+      "evidence": "ha.java: Rebinds dimensions/tiles and line-of-sight grid, reconstructs active units, initializes match conditions and counts structures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(BII[Lne;)V#3",
+      "originalName": "param3",
+      "to": "tiles",
+      "evidence": "ha.java: Rebinds dimensions/tiles and line-of-sight grid, reconstructs active units, initializes match conditions and counts structures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.a(BLvh;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -34649,6 +35265,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Counts terrain 7 as portals, 9/14 as towers and 8 as villages into the three retained totals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.f(II)Lat;#0",
       "originalName": "param0",
       "to": "playerId",
@@ -34716,6 +35339,20 @@
       "originalName": "param1",
       "to": "playerId",
       "evidence": "ha.java: Returns 50 per portal, 75 per tower and 25 per village, with campaign scaling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.l(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Chooses catalog, tutorial or campaign layout, or procedural generation for noncatalog size settings; seed modulo chooses an eligible catalog map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.l(II)V#1",
+      "originalName": "param1",
+      "to": "tutorialSelection",
+      "evidence": "ha.java: Chooses catalog, tutorial or campaign layout, or procedural generation for noncatalog size settings; seed modulo chooses an eligible catalog map.",
       "confidence": "reviewed"
     },
     {
@@ -40963,6 +41600,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ne.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ne.java: Recognizes terrain 2/3 for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ne.b(ZI)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -41289,6 +41933,20 @@
       "originalName": "param0",
       "to": "battlefield",
       "evidence": "nn.java: MovementPlanner constructor captures map geometry and initializes its cost grids.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(BLha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Builds the fixed size-4 arena or seeded sector map, connects structures, places player leaders, scatters terrain and installs the result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(BLha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "nn.java: Builds the fixed size-4 arena or seeded sector map, connects structures, places player leaders, scatters terrain and installs the result.",
       "confidence": "reviewed"
     },
     {
@@ -41817,6 +42475,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ns.a(ZILjava/util/Random;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ns.java: Draws full 32-bit random words: unsigned multiply for power-of-two bounds, rejection and floor modulus otherwise; rejects nonpositive bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ns.a(ZILjava/util/Random;)I#1",
+      "originalName": "param1",
+      "to": "bound",
+      "evidence": "ns.java: Draws full 32-bit random words: unsigned multiply for power-of-two bounds, rejection and floor modulus otherwise; rejects nonpositive bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ns.a(ZILjava/util/Random;)I#2",
+      "originalName": "param2",
+      "to": "random",
+      "evidence": "ns.java: Draws full 32-bit random words: unsigned multiply for power-of-two bounds, rejection and floor modulus otherwise; rejects nonpositive bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nu.a(ILkl;I)Lcf;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -42321,6 +43000,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:on.a(Lha;IZLjava/util/Random;)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "on.java: Attempts width*height/3 interior ground-cell decorations, retaining occupancy protection and neighboring preferred-terrain bias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(Lha;IZLjava/util/Random;)V#1",
+      "originalName": "param1",
+      "to": "preferredTerrainType",
+      "evidence": "on.java: Attempts width*height/3 interior ground-cell decorations, retaining occupancy protection and neighboring preferred-terrain bias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(Lha;IZLjava/util/Random;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "on.java: Attempts width*height/3 interior ground-cell decorations, retaining occupancy protection and neighboring preferred-terrain bias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(Lha;IZLjava/util/Random;)V#3",
+      "originalName": "param3",
+      "to": "random",
+      "evidence": "on.java: Attempts width*height/3 interior ground-cell decorations, retaining occupancy protection and neighboring preferred-terrain bias.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:op.a(ILjava/lang/String;I)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -42738,6 +43445,20 @@
       "originalName": "param2",
       "to": "copySmallArrays",
       "evidence": "pf.java: Payloads above 136 bytes are copied to DirectByteStorage. Smaller arrays are retained or copied according to copySmallArrays; null stays null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pg.a(II)Z#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "pg.java: Checks value&-value equality for canonical guard, retaining true for zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pg.a(II)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pg.java: Checks value&-value equality for canonical guard, retaining true for zero.",
       "confidence": "reviewed"
     },
     {
@@ -43529,6 +44250,69 @@
       "originalName": "param3",
       "to": "bottom",
       "evidence": "qn.java: Sets clip edges with the original left/top lower and right/bottom upper clamping, then updates derived state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIIIIILha;ILjava/util/Random;)V#0",
+      "originalName": "param0",
+      "to": "startY",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIIIIILha;ILjava/util/Random;)V#1",
+      "originalName": "param1",
+      "to": "endX",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIIIIILha;ILjava/util/Random;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIIIIILha;ILjava/util/Random;)V#3",
+      "originalName": "param3",
+      "to": "endY",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIIIIILha;ILjava/util/Random;)V#4",
+      "originalName": "param4",
+      "to": "startX",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIIIIILha;ILjava/util/Random;)V#5",
+      "originalName": "param5",
+      "to": "recursionDepth",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIIIIILha;ILjava/util/Random;)V#6",
+      "originalName": "param6",
+      "to": "battlefield",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIIIIILha;ILjava/util/Random;)V#7",
+      "originalName": "param7",
+      "to": "terrainType",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIIIIILha;ILjava/util/Random;)V#8",
+      "originalName": "param8",
+      "to": "random",
+      "evidence": "qp.java: Connects start/end coordinates using integer path geometry, stops on matching terrain and retries failed empty paths up to recursion depth five; unrelated class command behavior remains separate.",
       "confidence": "reviewed"
     },
     {
@@ -44579,6 +45363,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(ILha;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rn.java: Delegates to the seeded procedural generator for guards below -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(ILha;)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "rn.java: Delegates to the seeded procedural generator for guards below -1.",
       "confidence": "reviewed"
     },
     {
@@ -46164,6 +46962,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:th.a(III)I#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "th.java: Canonical offset 1 yields floor modulus for signed input and positive divisor using the original arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:th.a(III)I#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "th.java: Canonical offset 1 yields floor modulus for signed input and positive divisor using the original arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:th.a(III)I#2",
+      "originalName": "param2",
+      "to": "divisor",
+      "evidence": "th.java: Canonical offset 1 yields floor modulus for signed input and positive divisor using the original arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tj.a(IIIII)V#0",
       "originalName": "param0",
       "to": "x",
@@ -47221,10 +48040,339 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ul.<init>(Lha;[Lne;II)V#0",
+      "originalName": "param0",
+      "to": "battlefield",
+      "evidence": "ul.java: Retains inputs and allocates the 30×30 visibility mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.<init>(Lha;[Lne;II)V#1",
+      "originalName": "param1",
+      "to": "tiles",
+      "evidence": "ul.java: Retains inputs and allocates the 30×30 visibility mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.<init>(Lha;[Lne;II)V#2",
+      "originalName": "param2",
+      "to": "mapWidth",
+      "evidence": "ul.java: Retains inputs and allocates the 30×30 visibility mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.<init>(Lha;[Lne;II)V#3",
+      "originalName": "param3",
+      "to": "mapHeight",
+      "evidence": "ul.java: Retains inputs and allocates the 30×30 visibility mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ul.java: Clears 900 mask entries and marks center index 465 visible.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(BIIZIIZZ)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ul.java: Returns visible target flags 3 or 7 after range/tile-effect, alliance and unit-category checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(BIIZIIZZ)I#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ul.java: Returns visible target flags 3 or 7 after range/tile-effect, alliance and unit-category checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(BIIZIIZZ)I#2",
+      "originalName": "param2",
+      "to": "tileY",
+      "evidence": "ul.java: Returns visible target flags 3 or 7 after range/tile-effect, alliance and unit-category checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(BIIZIIZZ)I#3",
+      "originalName": "param3",
+      "to": "includeAllies",
+      "evidence": "ul.java: Returns visible target flags 3 or 7 after range/tile-effect, alliance and unit-category checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(BIIZIIZZ)I#4",
+      "originalName": "param4",
+      "to": "tileX",
+      "evidence": "ul.java: Returns visible target flags 3 or 7 after range/tile-effect, alliance and unit-category checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(BIIZIIZZ)I#5",
+      "originalName": "param5",
+      "to": "distance",
+      "evidence": "ul.java: Returns visible target flags 3 or 7 after range/tile-effect, alliance and unit-category checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(BIIZIIZZ)I#6",
+      "originalName": "param6",
+      "to": "ignoreBlockingTerrain",
+      "evidence": "ul.java: Returns visible target flags 3 or 7 after range/tile-effect, alliance and unit-category checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(BIIZIIZZ)I#7",
+      "originalName": "param7",
+      "to": "allowCategory4",
+      "evidence": "ul.java: Returns visible target flags 3 or 7 after range/tile-effect, alliance and unit-category checks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ul.a(I)V#0",
       "originalName": "param0",
       "to": "finalWeaknessSpellId",
       "evidence": "ul.java: Constructs the complete nested menu; the caller supplies spell ID 17 for the final entry in the first weakness group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IBI)Z#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "ul.java: Looks up the local mask using origin-relative coordinates plus 15; preserves inclusive <=30 checks against a 900-element array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IBI)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ul.java: Looks up the local mask using origin-relative coordinates plus 15; preserves inclusive <=30 checks against a 900-element array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IBI)Z#2",
+      "originalName": "param2",
+      "to": "tileY",
+      "evidence": "ul.java: Looks up the local mask using origin-relative coordinates plus 15; preserves inclusive <=30 checks against a 900-element array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ul.java: Marks origin-to-offset cells with integer major-axis interpolation, including a blocking endpoint before stopping on terrain 2/3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "deltaY",
+      "evidence": "ul.java: Marks origin-to-offset cells with integer major-axis interpolation, including a blocking endpoint before stopping on terrain 2/3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "originY",
+      "evidence": "ul.java: Marks origin-to-offset cells with integer major-axis interpolation, including a blocking endpoint before stopping on terrain 2/3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "deltaX",
+      "evidence": "ul.java: Marks origin-to-offset cells with integer major-axis interpolation, including a blocking endpoint before stopping on terrain 2/3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "originX",
+      "evidence": "ul.java: Marks origin-to-offset cells with integer major-axis interpolation, including a blocking endpoint before stopping on terrain 2/3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "ignoreBlockingTerrain",
+      "evidence": "ul.java: Marks origin-to-offset cells with integer major-axis interpolation, including a blocking endpoint before stopping on terrain 2/3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIZIIB)Z#0",
+      "originalName": "param0",
+      "to": "originY",
+      "evidence": "ul.java: Resets the local mask, traces in-bounds cells within Manhattan range and returns visibility of the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIZIIB)Z#1",
+      "originalName": "param1",
+      "to": "targetX",
+      "evidence": "ul.java: Resets the local mask, traces in-bounds cells within Manhattan range and returns visibility of the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIZIIB)Z#2",
+      "originalName": "param2",
+      "to": "originX",
+      "evidence": "ul.java: Resets the local mask, traces in-bounds cells within Manhattan range and returns visibility of the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIZIIB)Z#3",
+      "originalName": "param3",
+      "to": "ignoreBlockingTerrain",
+      "evidence": "ul.java: Resets the local mask, traces in-bounds cells within Manhattan range and returns visibility of the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIZIIB)Z#4",
+      "originalName": "param4",
+      "to": "maximumRange",
+      "evidence": "ul.java: Resets the local mask, traces in-bounds cells within Manhattan range and returns visibility of the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIZIIB)Z#5",
+      "originalName": "param5",
+      "to": "targetY",
+      "evidence": "ul.java: Resets the local mask, traces in-bounds cells within Manhattan range and returns visibility of the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IIIZIIB)Z#6",
+      "originalName": "param6",
+      "to": "obfuscationGuard",
+      "evidence": "ul.java: Resets the local mask, traces in-bounds cells within Manhattan range and returns visibility of the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#0",
+      "originalName": "param0",
+      "to": "minimumRange",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#1",
+      "originalName": "param1",
+      "to": "allowCategory4",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#10",
+      "originalName": "param10",
+      "to": "ignoreBlockingTerrain",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#11",
+      "originalName": "param11",
+      "to": "targetMask",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#12",
+      "originalName": "param12",
+      "to": "maximumMovementCost",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#13",
+      "originalName": "param13",
+      "to": "minimumY",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#3",
+      "originalName": "param3",
+      "to": "minimumX",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#4",
+      "originalName": "param4",
+      "to": "maximumY",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#5",
+      "originalName": "param5",
+      "to": "playerId",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#6",
+      "originalName": "param6",
+      "to": "includeAllies",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#7",
+      "originalName": "param7",
+      "to": "movementCosts",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#8",
+      "originalName": "param8",
+      "to": "maximumRange",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(IZIIIIZ[IIIZ[III)V#9",
+      "originalName": "param9",
+      "to": "maximumX",
+      "evidence": "ul.java: Visits reachable origins and merges visible/enemy target bits within the supplied rectangle/range/movement limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(Ljava/util/Random;Lha;BI)V#0",
+      "originalName": "param0",
+      "to": "random",
+      "evidence": "ul.java: Paints pattern modes 0–6, optional connecting roads and central structures using the supplied Random; mode values remain numeric.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(Ljava/util/Random;Lha;BI)V#1",
+      "originalName": "param1",
+      "to": "battlefield",
+      "evidence": "ul.java: Paints pattern modes 0–6, optional connecting roads and central structures using the supplied Random; mode values remain numeric.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(Ljava/util/Random;Lha;BI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ul.java: Paints pattern modes 0–6, optional connecting roads and central structures using the supplied Random; mode values remain numeric.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(Ljava/util/Random;Lha;BI)V#3",
+      "originalName": "param3",
+      "to": "patternMode",
+      "evidence": "ul.java: Paints pattern modes 0–6, optional connecting roads and central structures using the supplied Random; mode values remain numeric.",
       "confidence": "reviewed"
     },
     {
@@ -49028,10 +50176,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "67cc1060c651d7663e3ad0c5504fd504f4d40a8c50b65eb2099e7ca110e8aa5a",
+      "build-armiesofgielinor-rules.mjs": "65b43e537ad1a7d48346cc75fdcffe491ee75494da2122b6f192f9472808e1ea",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "12f71080d1cf9a532e741d3feeb2a53c7069b7fad6262912719395073d0aeb86",
+      "tests/test-armiesofgielinor-core.mjs": "1492da42d31145799fea60c3f16f85bbd77d5cd9c5d993863f04f4e7e564b075",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
