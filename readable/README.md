@@ -64,7 +64,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 103 reviewed classes around battlefield state, units, map
+The current pass names 110 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -93,6 +93,14 @@ and structure income have reviewed methods and state. CampaignMission and
 MapLayout name tagged metadata and map decoding; finer numerical settings
 remain unresolved. The elimination dispatcher is retained with clearer
 parameters and local names.
+PlayerProfile names versioned spell quantities/equipped IDs, unit-unlock masks
+and rune accounting formulas. CampaignProgress/CampaignResult expose three
+64-slot campaign tables, metric sentinels and score aggregation. Mission gt/gd
+fields are scoreTurnTarget/scoreDamageTarget; the prior gameType/godSetting
+names were unsupported by their use in scoring. CampaignDefinition,
+CampaignParticipant and CoatOfArms name parent/participant metadata, shared
+overrides and coat layers. ContextualRuntimeException exposes the original
+throwable stored separately from the standard Java cause chain.
 
 The packet layer names MSB-first bit reads/writes, read/write cursor transitions,
 ISAAC opcode ciphering, compact signed integer tiers and tagged record factories.
@@ -170,6 +178,13 @@ slots, and retain post-completion state. Timing fixtures preserve counter guards
 integer wrapping, pulse defaults/odd periods and zero-half-period errors. Model
 fixtures verify type/yaw/coordinate setters; full mesh rendering, asset loading
 and complete instruction-page execution remain unverified.
+Profile fixtures cover versions 0 through 9, optional quantity arrays, invalid
+equipped IDs, legacy level reconstruction and version rejection. Campaign
+fixtures cover every table mask, legacy turn defaults, record removal/preservation
+and fixed scoring examples. Coat fixtures distinguish signed campaign bytes
+from unsigned snapshots. Participant fixtures verify names, favour levels,
+shared override growth and duplicate appends; finer byte-array/ledger semantics
+and live server compatibility remain unresolved.
 The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Three dispatcher files
 and large methods remain; this is a semantic naming pass, not control-flow recovery.

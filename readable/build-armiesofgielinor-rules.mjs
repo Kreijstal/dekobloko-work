@@ -105,6 +105,13 @@ const classes = {
   qb:['AnimationSequence','Opcode-decoded packed frame IDs, durations, loop start/count and additional retained sequence data.'],
   vj:['AnimationPlayer','Current sequence/frame/countdown with an optional delayed ring of sequence slots.'],
   hr:['UnitModelPreview','Unit-model selection, yaw, screen position, animation player and projection used by instruction illustrations.'],
+  hm:['PlayerProfile','Versioned spell quantities, five equipped spell IDs, seven unit-unlock masks, rune accounting and campaign progress.'],
+  cm:['CampaignProgress','Three campaign result tables with 64 mission slots, versioned decoding, result updates and score aggregation.'],
+  ho:['CampaignResult','Own diagnostic names turnsTaken and damageTaken; consumed by campaign scoring.'],
+  cf:['CampaignDefinition','Named campaign container with mission and participant tables, archive index and local-player label.'],
+  sd:['CampaignParticipant','Campaign participant ID/name/coat and shared unit-override array with an append count.'],
+  ln:['CoatOfArms','Six part choices and colour indices, coat query string, layer setters and drawing helpers.'],
+  g:['ContextualRuntimeException','Stores the original throwable in its own field and accumulates a context string; it does not initialize the standard Java cause.'],
   tc:['IntrusiveNode','Two node links and unlink update both neighbours.'],
   at:['NodeDeque','Sentinel node, prepend/append, pop and bidirectional traversal.'],
   vh:['PacketBuffer','Byte payload, cursor and primitive read/write methods.'],
@@ -584,7 +591,7 @@ method('go','a','(ILha;)V','eliminateAllPlayers','Calls battlefield elimination 
 for(const [original,to,type] of [
   ['v','missionId','I'],['k','flags','I'],['J','name','Ljava/lang/String;'],['n','description','Ljava/lang/String;'],
   ['w','playerSlot','I'],['o','mapSizeSetting','I'],['z','mapTheme','I'],['q','musicId','I'],
-  ['m','gameType','I'],['F','godSetting','I'],['E','difficulty','I'],['t','mapResourceId','I'],
+  ['m','scoreTurnTarget','I'],['F','scoreDamageTarget','I'],['E','difficulty','I'],['t','mapResourceId','I'],
   ['C','cachedLayout','Llo;'],['y','neighborMissionIds','[I'],['B','participantIds','[I'],['D','rewardIds','[I'],['x','teamAssignments','[I'],
 ])field('om',original,type,to,'Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.');
 method('om','a','(I)Llo;','getMapLayout','Loads the map once and caches the resulting layout.',{0:'obfuscationGuard'});
@@ -872,6 +879,68 @@ for(const [owner,signature,items] of [
   ['rk','k(I)V',[[0,'var8','sectionIndex'],[1,'var2','titles'],[2,'var3','rowHeadings'],[3,'var4','paragraphs'],[4,'var5','illustrationModes'],[5,'var6','illustrationArguments'],[6,'var7','topY'],[7,'var9','sectionHeight'],[9,'var11','sectionTitles']]],
 ])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.');
 
+members['F:om.field_m:I'].evidence='Tagged key gt; CampaignProgress passes it as the target-turn denominator in calculateMissionScore. Earlier gameType naming was unsupported.';
+members['F:om.field_F:I'].evidence='Tagged key gd; CampaignProgress passes it as the target-damage denominator in calculateMissionScore. Earlier godSetting naming was unsupported.';
+for(const [original,to,type] of [
+  ['a','spellQuantities','[I'],['d','equippedSpellIds','[I'],['b','unitUnlockMasks','[I'],
+  ['c','runeCredit','I'],['k','runeDebit','I'],['j','progressionCredit','I'],['g','campaignProgress','Lcm;'],
+])field('hm',original,type,to,'Profile decoder and purchase UI: available runes are credit minus debit; unlock level uses progressionCredit plus runeCredit. Accounting names describe formulas without assuming server-side ledger semantics.');
+field('pg','d','Lhm;','playerProfile','Login/profile updates install this object; spell and unit purchase menus query it.');
+field('at','c','[I','unlockLevelCosts','Profile legacy-level reconstruction and cumulative unlock-level calculation use these per-level costs.');
+method('hm','a','(Lvh;IZ)I','decode','Reads profile versions 0 through 9, optional spell quantities and versioned campaign results.',{0:'packet',1:'obfuscationGuard',2:'includeSpellQuantities'});
+method('hm','a','(B)I','getAvailableRunes','Returns runeCredit minus runeDebit with original Java int wrapping.',{0:'obfuscationGuard'});
+method('hm','a','(IB)Z','tryDebitRunes','When available runes cover the amount, adds it to runeDebit; retains negative-amount behavior.',{0:'amount',1:'obfuscationGuard'});
+method('hm','a','(I)I','getUnlockLevel','Subtracts cumulative per-level costs from progressionCredit plus runeCredit, beginning at the supplied index.',{0:'startLevel'});
+constructorParameters('hm','(Lvh;Z)V',['packet','includeSpellQuantities'],'Initializes arrays/defaults then decodes a versioned profile.');
+field('cm','d','[[Lho;','resultsByCampaign','Three lazily allocated 64-slot result arrays indexed by campaign and mission.');
+field('ho','b','I','turnsTaken','Own toString diagnostic and campaign score argument.');
+field('ho','c','I','damageTaken','Own toString diagnostic and campaign score argument.');
+constructorParameters('ho','(II)V',['turnsTaken','damageTaken'],'Result constructor stores both scoring metrics unchanged.');
+method('cm','a','(ILvh;I)V','decode','Reads a campaign mask and byte-indexed result records terminated by 255; pre-version-7 results use turnsTaken 2000.',{0:'profileVersion',1:'packet',2:'obfuscationGuard'});
+method('cm','a','(IIIII)V','setResult','Creates campaign slots lazily; both -1 or both 65535 metrics remove the selected result.',{0:'obfuscationGuard',1:'missionIndex',2:'turnsTaken',3:'campaignIndex',4:'damageTaken'});
+method('cm','a','(III)I','getMissionScore','Looks up mission targets and result metrics, returning zero for an absent result.',{0:'campaignIndex',1:'obfuscationGuard',2:'missionIndex'});
+method('cm','a','(ZI)I','getCampaignScore','Sums mission scores using the cached campaign definition.',{0:'obfuscationGuard',1:'campaignIndex'});
+method('b','a','(IIIBI)I','calculateMissionScore','Normalizes turns and damage against their mission targets with separate bonus curves and score limits; zero targets return 1.',{0:'turnTarget',1:'damageTarget',2:'damageTaken',3:'obfuscationGuard',4:'turnsTaken'});
+field('cf','n','[Lom;','missions','Campaign loader and score lookup index this by mission ID.');
+field('cf','q','[Lsd;','participants','Campaign loader registers participants by their ID; mission names and overrides use this table.');
+field('cf','r','I','campaignIndex','Indexes loaded campaigns, map archive names and availability checks.');
+field('cf','l','Ljava/lang/String;','localPlayerName','CampaignMission participant-name construction uses this label for the local player slot.');
+constructorParameters('cf','(Ljava/lang/String;)V',['name'],'Campaign constructor retains the first header string as its name.');
+field('cf','k','Ljava/lang/String;','name','Constructor/header string displayed by campaign menu consumers.');
+field('om','G','Lcf;','campaign','Mission map loading and local/other participant names refer to this parent campaign.');
+field('cd','a','[Lcf;','campaigns','Campaign loader registers definitions here; br lookup retrieves them by index.');
+method('br','a','(IB)Lcf;','getCampaign','Returns the cached campaign at the supplied index.',{0:'campaignIndex',1:'obfuscationGuard'});
+method('om','e','(I)[Ljava/lang/String;','getParticipantNames','Uses the campaign local-player name or the referenced participant display name for each slot.',{0:'obfuscationGuard'});
+for(const [original,to,type] of [['m','participantId','I'],['u','displayName','Ljava/lang/String;'],['q','coatOfArms','Lln;'],['k','unitOverrides','[Lid;'],['o','overrideCount','I']])field('sd',original,type,to,'Participant packet reader, mission participant-name lookup and shared unit-override append loop.');
+method('ks','a','(ILcf;Lvh;)Lsd;','readCampaignParticipant','Reads participant ID/name, retained integer arrays and coat; the campaign argument is diagnostic-only.',{0:'obfuscationGuard',1:'campaign',2:'packet'});
+method('em','a','(Lcf;BLbv;)V','readCampaignUnitOverride','Reads one unit override and appends the same object to every referenced participant, growing arrays by ten.',{0:'campaign',1:'obfuscationGuard',2:'packet'});
+field('ln','a','[I','parts','Coat setters/query formatting and packet writer serialize six part choices.');
+field('ln','b','[I','colourIndices','Parallel colour indices are serialized directly beside the six part choices.');
+constructorParameters('ln','([I[I)V',['parts','colourIndices'],'Constructor retains both caller arrays without copying.');
+method('ln','a','(III)V','setPart','Updates a part for guard at least 52, preserving array bounds behavior.',{0:'obfuscationGuard',1:'partId',2:'layer'});
+method('ln','a','(IIB)V','setColour','Updates a layer colour; noncanonical guards retain their array-clearing side effect.',{0:'layer',1:'colourIndex',2:'obfuscationGuard'});
+method('ln','a','(B)Ljava/lang/String;','toQueryString','Formats coat= followed by colon-delimited part/colour pairs over the part-array length.',{0:'obfuscationGuard'});
+method('ln','b','(B)I','getMissingPartOffset','Returns -20 when layer 4 is absent, otherwise zero with the original guard arithmetic.',{0:'obfuscationGuard'});
+field('ha','T','[Lln;','playerCoats','Legacy snapshots read and write one coat for every player.');
+field('ah','a','Lln;','localCoat','Local coat editing and its outgoing packet use this instance.');
+method('ir','a','([IBLvh;[I)V','writeCoatOfArms','Writes six part/colour pairs as bytes; low-byte truncation remains unchanged.',{0:'parts',1:'obfuscationGuard',2:'packet',3:'colourIndices'});
+method('tb','a','([ILvh;Z[I)V','readCoatOfArms','Reads six part/colour byte pairs; part 255 becomes -1 and colours stay unsigned.',{0:'parts',1:'packet',2:'obfuscationGuard',3:'colourIndices'});
+for(const [owner,signature,items] of [
+  ['hm','a(Lvh;IZ)I',[[5,'var4_int','version'],[8,'var6','spellIndex'],[9,'var7','levelCost'],[11,'var5Lifetime1','legacyLevel'],[12,'var6Lifetime1','levelIndex'],[13,'var6Lifetime2','spellSlot'],[14,'var6Lifetime3','unlockGroup']]],
+  ['cm','a(ILvh;I)V',[[0,'dupTemp$1','nextMissionId'],[1,'var4_int','campaignMask'],[2,'var5','campaignIndex'],[3,'var6','missionIndex'],[4,'var7','turnsTaken'],[5,'var8','damageTaken'],[6,'var9','legacyDamage']]],
+  ['b','a(IIIBI)I',[[0,'var5','turnScore'],[1,'var6','turnBonus'],[2,'var7','damageBonus'],[3,'var6Lifetime1','damageScore']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.');
+field('g','b','Ljava/lang/Throwable;','originalCause','Constructor stores the wrapped throwable here rather than passing it to RuntimeException.');
+field('g','g','Ljava/lang/String;','context','addExceptionContext appends space-separated context to this field when reusing a wrapper.');
+constructorParameters('g','(Ljava/lang/Throwable;Ljava/lang/String;)V',['originalCause','context'],'Stores the supplied cause and context without changing standard exception-chain behavior.');
+method('ig','a','(Ljava/lang/Throwable;Ljava/lang/String;)Lg;','addExceptionContext','Reuses a contextual wrapper and appends context, or creates a new wrapper for another throwable.',{0:'cause',1:'context'});
+field('sd','t','[I','godFavourLevels','Battlefield campaign setup copies these six levels into each selected god favour slot.');
+field('cf','s','I','localGodId','Battlefield campaign setup uses this as the local player chosen-god entry.');
+method('uq','a','(Lvh;Z)Lln;','readSignedCoatOfArms','Reads six signed part/colour bytes for campaign participants; distinct from the unsigned snapshot reader.',{0:'packet',1:'obfuscationGuard'});
+method('ev','a','(Lvh;B)[I','readNullableUnsignedByteArray','Reads a byte count and unsigned elements, returning null for count zero.',{0:'packet',1:'obfuscationGuard'});
+method('en','a','(Lvh;B)[I','readUnsignedByteArray','Reads a byte count and unsigned elements, retaining an empty array for count zero.',{0:'packet',1:'obfuscationGuard'});
+method('gt','a','(ILvh;)[I','readSixUnsignedBytes','Reads exactly six unsigned byte values for campaign god favour levels.',{0:'obfuscationGuard',1:'packet'});
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -964,6 +1033,8 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('rg')} / ${link('dm')} / ${link('rk')} | Nested spell-menu choices, match setup options and instruction-page layout/illustrations. |`,
     `| ${link('hr')} → ${link('vj')} / ${link('qb')} | Unit-model previews, animation playback and opcode-decoded frame sequences. |`,
     `| ${link('em')} / ${link('hh')} | Tick-based counters and triangular highlight pulses. |`,
+    `| ${link('hm')} → ${link('cm')} / ${link('ho')} | Player inventory/rune accounting and versioned campaign results. |`,
+    `| ${link('cf')} / ${link('sd')} / ${link('ln')} | Campaign/participant metadata, shared unit overrides and coats of arms. |`,
     `| ${link('vh')} / ${link('bv')} / ${link('uo')} | Packet data, ciphered opcodes and tagged-field decoding. |`, '',
     'Start with `Battlefield.getUnitAt`, `queueCombatConsequences`, `Unit.applyStrengthDamage`, `Spell.applyEffect` and `MovementPlanner.reconstructPath`. Grid indexing is `tileX + tileY * mapWidth`; `getUnitAt` keeps the original argument order (y, guard, x). Dummy guards and their side effects remain intact. `GameEvent.applyToBattlefield` names the complete resolved override family.','',
     'Combat payloads now name attacker/defender positions, offsets, damage, death flags and animation counts. The central consequence routine names its attacker/defender and healing/poison locals. Unit movement-spent and attacks-remaining state are separate; spell status and equipment descriptors are also separate. `SpellCastEvent` replaces the earlier trinket label: its legacy diagnostic says Trinketused, but the concrete implementations read the spell definition table.','',
@@ -977,15 +1048,18 @@ export function buildArmiesGuide(rules,mapping) {
     'Panel geometry preserves component-wise minima/maxima, centered coordinates, missing-bound sentinels and unusual negative heights. Setup options validate player, computer, map-size and selection fields independently; invalid values retain current state. Instruction preview units use base strength minus one, clamped to one, and skip tile placement. The core probe runs the actual spell hierarchy builder and panel accessors. Its client shim preserves the Applet subtype for bytecode verification without constructing the client; this still does not initialize the full UI or load instruction fonts/illustrations.', '',
     'Instruction text tables now name page/section titles, row headings, paragraph lines and parallel illustration modes/arguments. updateInstructionsPanel derives previous/next availability at the page boundaries; configureNavigation clears old state and highlights the selected item. UnitModelPreview identifies model/yaw/screen state and the animation path behind illustrative units. AnimationSequence decodes packed frame IDs, durations and loop settings; opcode3Values/opcode13Rows deliberately retain qualified names where finer meanings are unresolved.', '',
     'AnimationPlayer preserves countdown boundaries, finite/unlimited loops, invalid loop-start fallback and the last frame ID after completion. Its retained delayed-ring branch is tested with reflection-populated slots; this does not establish that normal gameplay fills that ring. TickCounter counts calls and preserves guard checks and Java integer wrapping. TrianglePulse keeps its original byte-range defaults, ordered clamps, odd-period endpoint duplication and zero-half-period division errors. For example, a requested maximum of 256 falls back to 224. These observed edge cases are documented and tested rather than changed by the naming pass. Model-preview setter fixtures do not prove full mesh rendering, asset loading or complete instruction-page execution.', '',
+    'PlayerProfile decodes versions 0 through 9. Version 0 retains the legacy unlock level only; versions 1+ read five equipped spell IDs, rune credit and seven unlock masks. Spell quantities are always included before version 5 and otherwise depend on the includeSpellQuantities argument. Invalid equipped IDs become -1. Versions 6+ add rune debit, progression credit and campaign results; older levels reconstruct progression credit from cumulative unlockLevelCosts. Available runes are runeCredit minus runeDebit, while unlock level uses progressionCredit plus runeCredit. These names describe observed formulas; server ledger semantics remain unresolved. Negative debit requests and Java integer wrapping are preserved.', '',
+    'CampaignProgress has three campaign tables with 64 mission slots. A bit mask selects the tables present in a packet; byte mission indices end at 255. Before version 7, turnsTaken defaults to 2000 and only damageTaken is encoded. Unselected tables survive a decode, while selected tables are rebuilt. Both -1 or both 65535 metrics clear a result; mixed sentinels remain records. Mission gt/gd fields are scoreTurnTarget and scoreDamageTarget, correcting the unsupported gameType/godSetting interpretation. calculateMissionScore applies separate turn/damage bonus curves and limits, with score 1 for a zero target.', '',
+    'CoatOfArms retains caller arrays and serializes six part/colour pairs. Snapshot coat readers use unsigned bytes and map part 255 to -1; campaign participant coats read both arrays as signed bytes. The two readers retain their different signedness. CampaignParticipant also retains six god favour levels and two byte-array fields whose finer roles remain unresolved. Unit overrides share one decoded object across referenced participants, grow arrays by ten when filled and append duplicate participant references twice. ContextualRuntimeException stores originalCause separately from Java getCause; addExceptionContext reuses the wrapper and appends context. Profile-version rejection probes unwrap that original field to verify the actual failure reason.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
-    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, spell-menu hierarchy, setup option validation, instruction bounds and preview units, instruction table shapes/navigation, animation decoding/playback, timing pulses and model-preview setters, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
+    'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, spell-menu hierarchy, setup option validation, instruction bounds and preview units, instruction table shapes/navigation, animation decoding/playback, timing pulses and model-preview setters, versioned profiles/campaign results, mission scoring, coats/participants/overrides and contextual errors, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:10,
+    const rules={schema:1,game:'armiesofgielinor',version:11,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

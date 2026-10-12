@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 10,
+  "version": 11,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1851,6 +1851,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cf",
+      "originalName": "cf",
+      "to": "CampaignDefinition",
+      "evidence": "cf.java: Named campaign container with mission and participant tables, archive index and local-player label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ci",
       "originalName": "ci",
       "to": "TutorialController",
@@ -1862,6 +1869,13 @@
       "originalName": "cl",
       "to": "AiUnitPlanner",
       "evidence": "cl.java: Scores movement/attack choices for one unit, orders unit decisions and executes the selected candidate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cm",
+      "originalName": "cm",
+      "to": "CampaignProgress",
+      "evidence": "cm.java: Three campaign result tables with 64 mission slots, versioned decoding, result updates and score aggregation.",
       "confidence": "reviewed"
     },
     {
@@ -1928,6 +1942,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:g",
+      "originalName": "g",
+      "to": "ContextualRuntimeException",
+      "evidence": "g.java: Stores the original throwable in its own field and accumulates a context string; it does not initialize the standard Java cause.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ga",
       "originalName": "ga",
       "to": "IsaacRandom",
@@ -1974,6 +1995,20 @@
       "originalName": "hh",
       "to": "TrianglePulse",
       "evidence": "hh.java: Interpolates an integer pulse over two halves of a TickCounter period, with original byte-range defaults/clamps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hm",
+      "originalName": "hm",
+      "to": "PlayerProfile",
+      "evidence": "hm.java: Versioned spell quantities, five equipped spell IDs, seven unit-unlock masks, rune accounting and campaign progress.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ho",
+      "originalName": "ho",
+      "to": "CampaignResult",
+      "evidence": "ho.java: Own diagnostic names turnsTaken and damageTaken; consumed by campaign scoring.",
       "confidence": "reviewed"
     },
     {
@@ -2107,6 +2142,13 @@
       "originalName": "lf",
       "to": "BattleCharacter",
       "evidence": "lf.java: Own BattleCharacter diagnostic; animated combat character model, current/destination coordinates and animation state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ln",
+      "originalName": "ln",
+      "to": "CoatOfArms",
+      "evidence": "ln.java: Six part choices and colour indices, coat query string, layer setters and drawing helpers.",
       "confidence": "reviewed"
     },
     {
@@ -2324,6 +2366,13 @@
       "originalName": "sc",
       "to": "TaggedMapData",
       "evidence": "sc.java: Tagged nump/w/h/them/map fields decode player count, dimensions, theme and tile objects for version-2 maps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sd",
+      "originalName": "sd",
+      "to": "CampaignParticipant",
+      "evidence": "sd.java: Campaign participant ID/name/coat and shared unit-override array with an append count.",
       "confidence": "reviewed"
     },
     {
@@ -2593,6 +2642,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ah.field_a:Lln;",
+      "originalName": "field_a",
+      "to": "localCoat",
+      "evidence": "ah.java: Local coat editing and its outgoing packet use this instance.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:am.field_E:I",
       "originalName": "field_E",
       "to": "targetDeltaY",
@@ -2639,6 +2695,13 @@
       "originalName": "field_C",
       "to": "applied",
       "evidence": "as.java: Apply returns if already true, then sets true before mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:at.field_c:[I",
+      "originalName": "field_c",
+      "to": "unlockLevelCosts",
+      "evidence": "at.java: Profile legacy-level reconstruction and cumulative unlock-level calculation use these per-level costs.",
       "confidence": "reviewed"
     },
     {
@@ -2824,6 +2887,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cd.field_a:[Lcf;",
+      "originalName": "field_a",
+      "to": "campaigns",
+      "evidence": "cd.java: Campaign loader registers definitions here; br lookup retrieves them by index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_k:Ljava/lang/String;",
+      "originalName": "field_k",
+      "to": "name",
+      "evidence": "cf.java: Constructor/header string displayed by campaign menu consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_l:Ljava/lang/String;",
+      "originalName": "field_l",
+      "to": "localPlayerName",
+      "evidence": "cf.java: CampaignMission participant-name construction uses this label for the local player slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_n:[Lom;",
+      "originalName": "field_n",
+      "to": "missions",
+      "evidence": "cf.java: Campaign loader and score lookup index this by mission ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_q:[Lsd;",
+      "originalName": "field_q",
+      "to": "participants",
+      "evidence": "cf.java: Campaign loader registers participants by their ID; mission names and overrides use this table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_r:I",
+      "originalName": "field_r",
+      "to": "campaignIndex",
+      "evidence": "cf.java: Indexes loaded campaigns, map archive names and availability checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_s:I",
+      "originalName": "field_s",
+      "to": "localGodId",
+      "evidence": "cf.java: Battlefield campaign setup uses this as the local player chosen-god entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ci.field_a:I",
       "originalName": "field_a",
       "to": "tutorialStage",
@@ -2891,6 +3003,13 @@
       "originalName": "field_y",
       "to": "decisionPriority",
       "evidence": "cl.java: Per-unit AI construction, candidate scoring, target lookup and decision comparator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cm.field_d:[[Lho;",
+      "originalName": "field_d",
+      "to": "resultsByCampaign",
+      "evidence": "cm.java: Three lazily allocated 64-slot result arrays indexed by campaign and mission.",
       "confidence": "reviewed"
     },
     {
@@ -3300,6 +3419,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:g.field_b:Ljava/lang/Throwable;",
+      "originalName": "field_b",
+      "to": "originalCause",
+      "evidence": "g.java: Constructor stores the wrapped throwable here rather than passing it to RuntimeException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:g.field_g:Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "context",
+      "evidence": "g.java: addExceptionContext appends space-separated context to this field when reusing a wrapper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ga.field_b:I",
       "originalName": "field_b",
       "to": "remainingResults",
@@ -3451,6 +3584,13 @@
       "originalName": "field_R",
       "to": "winnerCount",
       "evidence": "ha.java: Match condition initialization, elimination-mask/order maintenance and outcome/ranking calculations. The secondary inactive mask meaning is limited to observed player exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_T:[Lln;",
+      "originalName": "field_T",
+      "to": "playerCoats",
+      "evidence": "ha.java: Legacy snapshots read and write one coat for every player.",
       "confidence": "reviewed"
     },
     {
@@ -3675,6 +3815,69 @@
       "originalName": "field_k",
       "to": "counter",
       "evidence": "hh.java: Pulse initialization, two-half integer interpolation and ordered minimum/maximum clamp assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hm.field_a:[I",
+      "originalName": "field_a",
+      "to": "spellQuantities",
+      "evidence": "hm.java: Profile decoder and purchase UI: available runes are credit minus debit; unlock level uses progressionCredit plus runeCredit. Accounting names describe formulas without assuming server-side ledger semantics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hm.field_b:[I",
+      "originalName": "field_b",
+      "to": "unitUnlockMasks",
+      "evidence": "hm.java: Profile decoder and purchase UI: available runes are credit minus debit; unlock level uses progressionCredit plus runeCredit. Accounting names describe formulas without assuming server-side ledger semantics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hm.field_c:I",
+      "originalName": "field_c",
+      "to": "runeCredit",
+      "evidence": "hm.java: Profile decoder and purchase UI: available runes are credit minus debit; unlock level uses progressionCredit plus runeCredit. Accounting names describe formulas without assuming server-side ledger semantics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hm.field_d:[I",
+      "originalName": "field_d",
+      "to": "equippedSpellIds",
+      "evidence": "hm.java: Profile decoder and purchase UI: available runes are credit minus debit; unlock level uses progressionCredit plus runeCredit. Accounting names describe formulas without assuming server-side ledger semantics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hm.field_g:Lcm;",
+      "originalName": "field_g",
+      "to": "campaignProgress",
+      "evidence": "hm.java: Profile decoder and purchase UI: available runes are credit minus debit; unlock level uses progressionCredit plus runeCredit. Accounting names describe formulas without assuming server-side ledger semantics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hm.field_j:I",
+      "originalName": "field_j",
+      "to": "progressionCredit",
+      "evidence": "hm.java: Profile decoder and purchase UI: available runes are credit minus debit; unlock level uses progressionCredit plus runeCredit. Accounting names describe formulas without assuming server-side ledger semantics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hm.field_k:I",
+      "originalName": "field_k",
+      "to": "runeDebit",
+      "evidence": "hm.java: Profile decoder and purchase UI: available runes are credit minus debit; unlock level uses progressionCredit plus runeCredit. Accounting names describe formulas without assuming server-side ledger semantics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_b:I",
+      "originalName": "field_b",
+      "to": "turnsTaken",
+      "evidence": "ho.java: Own toString diagnostic and campaign score argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_c:I",
+      "originalName": "field_c",
+      "to": "damageTaken",
+      "evidence": "ho.java: Own toString diagnostic and campaign score argument.",
       "confidence": "reviewed"
     },
     {
@@ -4504,6 +4707,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ln.field_a:[I",
+      "originalName": "field_a",
+      "to": "parts",
+      "evidence": "ln.java: Coat setters/query formatting and packet writer serialize six part choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ln.field_b:[I",
+      "originalName": "field_b",
+      "to": "colourIndices",
+      "evidence": "ln.java: Parallel colour indices are serialized directly beside the six part choices.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lo.field_l:I",
       "originalName": "field_l",
       "to": "mapWidth",
@@ -5003,8 +5220,15 @@
     {
       "symbol": "F:om.field_F:I",
       "originalName": "field_F",
-      "to": "godSetting",
-      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "to": "scoreDamageTarget",
+      "evidence": "om.java: Tagged key gd; CampaignProgress passes it as the target-damage denominator in calculateMissionScore. Earlier godSetting naming was unsupported.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_G:Lcf;",
+      "originalName": "field_G",
+      "to": "campaign",
+      "evidence": "om.java: Mission map loading and local/other participant names refer to this parent campaign.",
       "confidence": "reviewed"
     },
     {
@@ -5024,8 +5248,8 @@
     {
       "symbol": "F:om.field_m:I",
       "originalName": "field_m",
-      "to": "gameType",
-      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "to": "scoreTurnTarget",
+      "evidence": "om.java: Tagged key gt; CampaignProgress passes it as the target-turn denominator in calculateMissionScore. Earlier gameType naming was unsupported.",
       "confidence": "reviewed"
     },
     {
@@ -5124,6 +5348,13 @@
       "originalName": "field_z",
       "to": "strength",
       "evidence": "pe.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pg.field_d:Lhm;",
+      "originalName": "field_d",
+      "to": "playerProfile",
+      "evidence": "pg.java: Login/profile updates install this object; spell and unit purchase menus query it.",
       "confidence": "reviewed"
     },
     {
@@ -5687,6 +5918,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sd.field_k:[Lid;",
+      "originalName": "field_k",
+      "to": "unitOverrides",
+      "evidence": "sd.java: Participant packet reader, mission participant-name lookup and shared unit-override append loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_m:I",
+      "originalName": "field_m",
+      "to": "participantId",
+      "evidence": "sd.java: Participant packet reader, mission participant-name lookup and shared unit-override append loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_o:I",
+      "originalName": "field_o",
+      "to": "overrideCount",
+      "evidence": "sd.java: Participant packet reader, mission participant-name lookup and shared unit-override append loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_q:Lln;",
+      "originalName": "field_q",
+      "to": "coatOfArms",
+      "evidence": "sd.java: Participant packet reader, mission participant-name lookup and shared unit-override append loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_t:[I",
+      "originalName": "field_t",
+      "to": "godFavourLevels",
+      "evidence": "sd.java: Battlefield campaign setup copies these six levels into each selected god favour slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_u:Ljava/lang/String;",
+      "originalName": "field_u",
+      "to": "displayName",
+      "evidence": "sd.java: Participant packet reader, mission participant-name lookup and shared unit-override append loop.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sk.field_B:Lv;",
       "originalName": "field_B",
       "to": "camera",
@@ -6233,6 +6506,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:b.a(IIIBI)I#0",
+      "originalName": "var5",
+      "to": "turnScore",
+      "evidence": "b.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a(IIIBI)I#1",
+      "originalName": "var6",
+      "to": "turnBonus",
+      "evidence": "b.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a(IIIBI)I#2",
+      "originalName": "var7",
+      "to": "damageBonus",
+      "evidence": "b.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a(IIIBI)I#3",
+      "originalName": "var6Lifetime1",
+      "to": "damageScore",
+      "evidence": "b.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:bo.a(ILvh;I)Lik;#10",
       "originalName": "var4",
       "to": "spellKind",
@@ -6398,6 +6699,55 @@
       "originalName": "var13",
       "to": "occupant",
       "evidence": "cl.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cm.a(ILvh;I)V#0",
+      "originalName": "dupTemp$1",
+      "to": "nextMissionId",
+      "evidence": "cm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cm.a(ILvh;I)V#1",
+      "originalName": "var4_int",
+      "to": "campaignMask",
+      "evidence": "cm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cm.a(ILvh;I)V#2",
+      "originalName": "var5",
+      "to": "campaignIndex",
+      "evidence": "cm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cm.a(ILvh;I)V#3",
+      "originalName": "var6",
+      "to": "missionIndex",
+      "evidence": "cm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cm.a(ILvh;I)V#4",
+      "originalName": "var7",
+      "to": "turnsTaken",
+      "evidence": "cm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cm.a(ILvh;I)V#5",
+      "originalName": "var8",
+      "to": "damageTaken",
+      "evidence": "cm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cm.a(ILvh;I)V#6",
+      "originalName": "var9",
+      "to": "legacyDamage",
+      "evidence": "cm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
       "confidence": "reviewed"
     },
     {
@@ -7017,6 +7367,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:hm.a(Lvh;IZ)I#11",
+      "originalName": "var5Lifetime1",
+      "to": "legacyLevel",
+      "evidence": "hm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hm.a(Lvh;IZ)I#12",
+      "originalName": "var6Lifetime1",
+      "to": "levelIndex",
+      "evidence": "hm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hm.a(Lvh;IZ)I#13",
+      "originalName": "var6Lifetime2",
+      "to": "spellSlot",
+      "evidence": "hm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hm.a(Lvh;IZ)I#14",
+      "originalName": "var6Lifetime3",
+      "to": "unlockGroup",
+      "evidence": "hm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hm.a(Lvh;IZ)I#5",
+      "originalName": "var4_int",
+      "to": "version",
+      "evidence": "hm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hm.a(Lvh;IZ)I#8",
+      "originalName": "var6",
+      "to": "spellIndex",
+      "evidence": "hm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hm.a(Lvh;IZ)I#9",
+      "originalName": "var7",
+      "to": "levelCost",
+      "evidence": "hm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:hw.a(ILha;)Lbd;#0",
       "originalName": "var6",
       "to": "godIndex",
@@ -7535,6 +7934,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:b.a(IIIBI)I",
+      "originalName": "a",
+      "to": "calculateMissionScore",
+      "evidence": "b.java: Normalizes turns and damage against their mission targets with separate bonus curves and score limits; zero targets return 1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bb.a(I)Ltc;",
       "originalName": "a",
       "to": "last",
@@ -7644,6 +8050,13 @@
       "originalName": "b",
       "to": "setRightX",
       "evidence": "bo.java: Adjusts the raw right coordinate so its centered getter returns screenX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:br.a(IB)Lcf;",
+      "originalName": "a",
+      "to": "getCampaign",
+      "evidence": "br.java: Returns the cached campaign at the supplied index.",
       "confidence": "reviewed"
     },
     {
@@ -7861,6 +8274,34 @@
       "originalName": "g",
       "to": "executeSelectedAction",
       "evidence": "cl.java: Executes a valid selected candidate and clears action movement state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(III)I",
+      "originalName": "a",
+      "to": "getMissionScore",
+      "evidence": "cm.java: Looks up mission targets and result metrics, returning zero for an absent result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(IIIII)V",
+      "originalName": "a",
+      "to": "setResult",
+      "evidence": "cm.java: Creates campaign slots lazily; both -1 or both 65535 metrics remove the selected result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(ILvh;I)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "cm.java: Reads a campaign mask and byte-indexed result records terminated by 255; pre-version-7 results use turnsTaken 2000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(ZI)I",
+      "originalName": "a",
+      "to": "getCampaignScore",
+      "evidence": "cm.java: Sums mission scores using the cached campaign definition.",
       "confidence": "reviewed"
     },
     {
@@ -8137,6 +8578,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:em.a(Lcf;BLbv;)V",
+      "originalName": "a",
+      "to": "readCampaignUnitOverride",
+      "evidence": "em.java: Reads one unit override and appends the same object to every referenced participant, growing arrays by ten.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:em.a(Lkl;I)V",
       "originalName": "a",
       "to": "loadClientAssets",
@@ -8155,6 +8603,20 @@
       "originalName": "c",
       "to": "advanceAndCheck",
       "evidence": "em.java: Advances the counter unless the original complement-based guard rejects it; returns whether limit is reached.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(Lvh;B)[I",
+      "originalName": "a",
+      "to": "readUnsignedByteArray",
+      "evidence": "en.java: Reads a byte count and unsigned elements, retaining an empty array for count zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ev.a(Lvh;B)[I",
+      "originalName": "a",
+      "to": "readNullableUnsignedByteArray",
+      "evidence": "ev.java: Reads a byte count and unsigned elements, returning null for count zero.",
       "confidence": "reviewed"
     },
     {
@@ -8246,6 +8708,13 @@
       "originalName": "d",
       "to": "getTeamName",
       "evidence": "go.java: Returns the constructor-supplied team name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gt.a(ILvh;)[I",
+      "originalName": "a",
+      "to": "readSixUnsignedBytes",
+      "evidence": "gt.java: Reads exactly six unsigned byte values for campaign god favour levels.",
       "confidence": "reviewed"
     },
     {
@@ -8627,6 +9096,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hm.a(B)I",
+      "originalName": "a",
+      "to": "getAvailableRunes",
+      "evidence": "hm.java: Returns runeCredit minus runeDebit with original Java int wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.a(I)I",
+      "originalName": "a",
+      "to": "getUnlockLevel",
+      "evidence": "hm.java: Subtracts cumulative per-level costs from progressionCredit plus runeCredit, beginning at the supplied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.a(IB)Z",
+      "originalName": "a",
+      "to": "tryDebitRunes",
+      "evidence": "hm.java: When available runes cover the amount, adds it to runeDebit; retains negative-amount behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.a(Lvh;IZ)I",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "hm.java: Reads profile versions 0 through 9, optional spell quantities and versioned campaign results.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hp.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -8711,6 +9208,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ig.a(Ljava/lang/Throwable;Ljava/lang/String;)Lg;",
+      "originalName": "a",
+      "to": "addExceptionContext",
+      "evidence": "ig.java: Reuses a contextual wrapper and appends context, or creates a new wrapper for another throwable.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ik.a(BLha;)V",
       "originalName": "a",
       "to": "prepareEffect",
@@ -8757,6 +9261,13 @@
       "originalName": "a",
       "to": "writeTieredSignedInt",
       "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ir.a([IBLvh;[I)V",
+      "originalName": "a",
+      "to": "writeCoatOfArms",
+      "evidence": "ir.java: Writes six part/colour pairs as bytes; low-byte truncation remains unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -9096,6 +9607,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ks.a(ILcf;Lvh;)Lsd;",
+      "originalName": "a",
+      "to": "readCampaignParticipant",
+      "evidence": "ks.java: Reads participant ID/name, retained integer arrays and coat; the campaign argument is diagnostic-only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ld.a(ILha;)V",
       "originalName": "a",
       "to": "applyToBattlefield",
@@ -9121,6 +9639,34 @@
       "originalName": "b",
       "to": "isAtDestination",
       "evidence": "lf.java: Compares current and destination X/Y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "toQueryString",
+      "evidence": "ln.java: Formats coat= followed by colon-delimited part/colour pairs over the part-array length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(IIB)V",
+      "originalName": "a",
+      "to": "setColour",
+      "evidence": "ln.java: Updates a layer colour; noncanonical guards retain their array-clearing side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(III)V",
+      "originalName": "a",
+      "to": "setPart",
+      "evidence": "ln.java: Updates a part for guard at least 52, preserving array bounds behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.b(B)I",
+      "originalName": "b",
+      "to": "getMissingPartOffset",
+      "evidence": "ln.java: Returns -20 when layer 4 is absent, otherwise zero with the original guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -9541,6 +10087,13 @@
       "originalName": "d",
       "to": "loadMapLayout",
       "evidence": "om.java: Reads the mission map resource and creates a MapLayout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.e(I)[Ljava/lang/String;",
+      "originalName": "e",
+      "to": "getParticipantNames",
+      "evidence": "om.java: Uses the campaign local-player name or the referenced participant display name for each slot.",
       "confidence": "reviewed"
     },
     {
@@ -10146,6 +10699,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tb.a([ILvh;Z[I)V",
+      "originalName": "a",
+      "to": "readCoatOfArms",
+      "evidence": "tb.java: Reads six part/colour byte pairs; part 255 becomes -1 and colours stay unsigned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tb.b(B)Z",
       "originalName": "b",
       "to": "isCombatViewReady",
@@ -10297,6 +10857,13 @@
       "originalName": "c",
       "to": "isDefeat",
       "evidence": "lv.java: Canonical guard -128 evaluates defeat. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uq.a(Lvh;Z)Lln;",
+      "originalName": "a",
+      "to": "readSignedCoatOfArms",
+      "evidence": "uq.java: Reads six signed part/colour bytes for campaign participants; distinct from the unsigned snapshot reader.",
       "confidence": "reviewed"
     },
     {
@@ -11021,6 +11588,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:b.a(IIIBI)I#0",
+      "originalName": "param0",
+      "to": "turnTarget",
+      "evidence": "b.java: Normalizes turns and damage against their mission targets with separate bonus curves and score limits; zero targets return 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a(IIIBI)I#1",
+      "originalName": "param1",
+      "to": "damageTarget",
+      "evidence": "b.java: Normalizes turns and damage against their mission targets with separate bonus curves and score limits; zero targets return 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a(IIIBI)I#2",
+      "originalName": "param2",
+      "to": "damageTaken",
+      "evidence": "b.java: Normalizes turns and damage against their mission targets with separate bonus curves and score limits; zero targets return 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a(IIIBI)I#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "b.java: Normalizes turns and damage against their mission targets with separate bonus curves and score limits; zero targets return 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a(IIIBI)I#4",
+      "originalName": "param4",
+      "to": "turnsTaken",
+      "evidence": "b.java: Normalizes turns and damage against their mission targets with separate bonus curves and score limits; zero targets return 1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bb.<init>(Lat;)V#0",
       "originalName": "param0",
       "to": "deque",
@@ -11322,6 +11924,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:br.a(IB)Lcf;#0",
+      "originalName": "param0",
+      "to": "campaignIndex",
+      "evidence": "br.java: Returns the cached campaign at the supplied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:br.a(IB)Lcf;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "br.java: Returns the cached campaign at the supplied index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bv.a(III)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -11466,6 +12082,13 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cf.<init>(Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "name",
+      "evidence": "cf.java: Campaign constructor retains the first header string as its name.",
       "confidence": "reviewed"
     },
     {
@@ -11774,6 +12397,97 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "cl.java: Executes a valid selected candidate and clears action movement state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(III)I#0",
+      "originalName": "param0",
+      "to": "campaignIndex",
+      "evidence": "cm.java: Looks up mission targets and result metrics, returning zero for an absent result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(III)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "cm.java: Looks up mission targets and result metrics, returning zero for an absent result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(III)I#2",
+      "originalName": "param2",
+      "to": "missionIndex",
+      "evidence": "cm.java: Looks up mission targets and result metrics, returning zero for an absent result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(IIIII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cm.java: Creates campaign slots lazily; both -1 or both 65535 metrics remove the selected result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(IIIII)V#1",
+      "originalName": "param1",
+      "to": "missionIndex",
+      "evidence": "cm.java: Creates campaign slots lazily; both -1 or both 65535 metrics remove the selected result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(IIIII)V#2",
+      "originalName": "param2",
+      "to": "turnsTaken",
+      "evidence": "cm.java: Creates campaign slots lazily; both -1 or both 65535 metrics remove the selected result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(IIIII)V#3",
+      "originalName": "param3",
+      "to": "campaignIndex",
+      "evidence": "cm.java: Creates campaign slots lazily; both -1 or both 65535 metrics remove the selected result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(IIIII)V#4",
+      "originalName": "param4",
+      "to": "damageTaken",
+      "evidence": "cm.java: Creates campaign slots lazily; both -1 or both 65535 metrics remove the selected result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(ILvh;I)V#0",
+      "originalName": "param0",
+      "to": "profileVersion",
+      "evidence": "cm.java: Reads a campaign mask and byte-indexed result records terminated by 255; pre-version-7 results use turnsTaken 2000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(ILvh;I)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "cm.java: Reads a campaign mask and byte-indexed result records terminated by 255; pre-version-7 results use turnsTaken 2000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(ILvh;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "cm.java: Reads a campaign mask and byte-indexed result records terminated by 255; pre-version-7 results use turnsTaken 2000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(ZI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cm.java: Sums mission scores using the cached campaign definition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(ZI)I#1",
+      "originalName": "param1",
+      "to": "campaignIndex",
+      "evidence": "cm.java: Sums mission scores using the cached campaign definition.",
       "confidence": "reviewed"
     },
     {
@@ -12484,6 +13198,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:em.a(Lcf;BLbv;)V#0",
+      "originalName": "param0",
+      "to": "campaign",
+      "evidence": "em.java: Reads one unit override and appends the same object to every referenced participant, growing arrays by ten.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:em.a(Lcf;BLbv;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "em.java: Reads one unit override and appends the same object to every referenced participant, growing arrays by ten.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:em.a(Lcf;BLbv;)V#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "em.java: Reads one unit override and appends the same object to every referenced participant, growing arrays by ten.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:em.a(Lkl;I)V#0",
       "originalName": "param0",
       "to": "archive",
@@ -12512,6 +13247,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:en.a(Lvh;B)[I#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "en.java: Reads a byte count and unsigned elements, retaining an empty array for count zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(Lvh;B)[I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "en.java: Reads a byte count and unsigned elements, retaining an empty array for count zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ev.a(Lvh;B)[I#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ev.java: Reads a byte count and unsigned elements, returning null for count zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ev.a(Lvh;B)[I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ev.java: Reads a byte count and unsigned elements, returning null for count zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fi.a(BZ)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -12537,6 +13300,20 @@
       "originalName": "param1",
       "to": "second",
       "evidence": "ft.java: The pair constructor stores both components unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:g.<init>(Ljava/lang/Throwable;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "originalCause",
+      "evidence": "g.java: Stores the supplied cause and context without changing standard exception-chain behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:g.<init>(Ljava/lang/Throwable;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "context",
+      "evidence": "g.java: Stores the supplied cause and context without changing standard exception-chain behavior.",
       "confidence": "reviewed"
     },
     {
@@ -12719,6 +13496,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "go.java: Returns the constructor-supplied team name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gt.a(ILvh;)[I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gt.java: Reads exactly six unsigned byte values for campaign god favour levels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gt.a(ILvh;)[I#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "gt.java: Reads exactly six unsigned byte values for campaign god favour levels.",
       "confidence": "reviewed"
     },
     {
@@ -13772,6 +14563,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hm.<init>(Lvh;Z)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "hm.java: Initializes arrays/defaults then decodes a versioned profile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.<init>(Lvh;Z)V#1",
+      "originalName": "param1",
+      "to": "includeSpellQuantities",
+      "evidence": "hm.java: Initializes arrays/defaults then decodes a versioned profile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hm.java: Returns runeCredit minus runeDebit with original Java int wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(I)I#0",
+      "originalName": "param0",
+      "to": "startLevel",
+      "evidence": "hm.java: Subtracts cumulative per-level costs from progressionCredit plus runeCredit, beginning at the supplied index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(IB)Z#0",
+      "originalName": "param0",
+      "to": "amount",
+      "evidence": "hm.java: When available runes cover the amount, adds it to runeDebit; retains negative-amount behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(IB)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "hm.java: When available runes cover the amount, adds it to runeDebit; retains negative-amount behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lvh;IZ)I#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "hm.java: Reads profile versions 0 through 9, optional spell quantities and versioned campaign results.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lvh;IZ)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "hm.java: Reads profile versions 0 through 9, optional spell quantities and versioned campaign results.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lvh;IZ)I#2",
+      "originalName": "param2",
+      "to": "includeSpellQuantities",
+      "evidence": "hm.java: Reads profile versions 0 through 9, optional spell quantities and versioned campaign results.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "turnsTaken",
+      "evidence": "ho.java: Result constructor stores both scoring metrics unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "damageTaken",
+      "evidence": "ho.java: Result constructor stores both scoring metrics unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hp.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -14003,6 +14871,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ig.a(Ljava/lang/Throwable;Ljava/lang/String;)Lg;#0",
+      "originalName": "param0",
+      "to": "cause",
+      "evidence": "ig.java: Reuses a contextual wrapper and appends context, or creates a new wrapper for another throwable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ig.a(Ljava/lang/Throwable;Ljava/lang/String;)Lg;#1",
+      "originalName": "param1",
+      "to": "context",
+      "evidence": "ig.java: Reuses a contextual wrapper and appends context, or creates a new wrapper for another throwable.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ik.<init>(I)V#0",
       "originalName": "param0",
       "to": "spellId",
@@ -14189,6 +15071,34 @@
       "originalName": "param6",
       "to": "packet",
       "evidence": "ir.java: Chooses a signed integer tier, writes selector/payload and returns bit length; rejects out-of-range values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a([IBLvh;[I)V#0",
+      "originalName": "param0",
+      "to": "parts",
+      "evidence": "ir.java: Writes six part/colour pairs as bytes; low-byte truncation remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a([IBLvh;[I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ir.java: Writes six part/colour pairs as bytes; low-byte truncation remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a([IBLvh;[I)V#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "ir.java: Writes six part/colour pairs as bytes; low-byte truncation remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ir.a([IBLvh;[I)V#3",
+      "originalName": "param3",
+      "to": "colourIndices",
+      "evidence": "ir.java: Writes six part/colour pairs as bytes; low-byte truncation remains unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -14892,6 +15802,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ks.a(ILcf;Lvh;)Lsd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ks.java: Reads participant ID/name, retained integer arrays and coat; the campaign argument is diagnostic-only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ks.a(ILcf;Lvh;)Lsd;#1",
+      "originalName": "param1",
+      "to": "campaign",
+      "evidence": "ks.java: Reads participant ID/name, retained integer arrays and coat; the campaign argument is diagnostic-only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ks.a(ILcf;Lvh;)Lsd;#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "ks.java: Reads participant ID/name, retained integer arrays and coat; the campaign argument is diagnostic-only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#0",
       "originalName": "param0",
       "to": "startX",
@@ -14994,6 +15925,76 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "lf.java: Compares current and destination X/Y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.<init>([I[I)V#0",
+      "originalName": "param0",
+      "to": "parts",
+      "evidence": "ln.java: Constructor retains both caller arrays without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.<init>([I[I)V#1",
+      "originalName": "param1",
+      "to": "colourIndices",
+      "evidence": "ln.java: Constructor retains both caller arrays without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ln.java: Formats coat= followed by colon-delimited part/colour pairs over the part-array length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(IIB)V#0",
+      "originalName": "param0",
+      "to": "layer",
+      "evidence": "ln.java: Updates a layer colour; noncanonical guards retain their array-clearing side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(IIB)V#1",
+      "originalName": "param1",
+      "to": "colourIndex",
+      "evidence": "ln.java: Updates a layer colour; noncanonical guards retain their array-clearing side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(IIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ln.java: Updates a layer colour; noncanonical guards retain their array-clearing side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(III)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ln.java: Updates a part for guard at least 52, preserving array bounds behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(III)V#1",
+      "originalName": "param1",
+      "to": "partId",
+      "evidence": "ln.java: Updates a part for guard at least 52, preserving array bounds behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(III)V#2",
+      "originalName": "param2",
+      "to": "layer",
+      "evidence": "ln.java: Updates a part for guard at least 52, preserving array bounds behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.b(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ln.java: Returns -20 when layer 4 is absent, otherwise zero with the original guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -15946,6 +16947,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "om.java: Reads the mission map resource and creates a MapLayout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.e(I)[Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Uses the campaign local-player name or the referenced participant display name for each slot.",
       "confidence": "reviewed"
     },
     {
@@ -17629,6 +18637,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tb.a([ILvh;Z[I)V#0",
+      "originalName": "param0",
+      "to": "parts",
+      "evidence": "tb.java: Reads six part/colour byte pairs; part 255 becomes -1 and colours stay unsigned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a([ILvh;Z[I)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "tb.java: Reads six part/colour byte pairs; part 255 becomes -1 and colours stay unsigned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a([ILvh;Z[I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "tb.java: Reads six part/colour byte pairs; part 255 becomes -1 and colours stay unsigned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a([ILvh;Z[I)V#3",
+      "originalName": "param3",
+      "to": "colourIndices",
+      "evidence": "tb.java: Reads six part/colour byte pairs; part 255 becomes -1 and colours stay unsigned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tb.b(B)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -17969,6 +19005,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "lv.java: Canonical guard -128 evaluates defeat. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uq.a(Lvh;Z)Lln;#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "uq.java: Reads six signed part/colour bytes for campaign participants; distinct from the unsigned snapshot reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uq.a(Lvh;Z)Lln;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "uq.java: Reads six signed part/colour bytes for campaign participants; distinct from the unsigned snapshot reader.",
       "confidence": "reviewed"
     },
     {
@@ -18540,9 +19590,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "3f44dc81f45ab2744071326f46ac831965df6532cc9e78d8352c2ce032129ded",
+      "build-armiesofgielinor-rules.mjs": "f26fc4f2240fb229689ad313800780fe8ac86c617d8792aed24115e4bbf82f51",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "d4dcc992e62de7d6ef42ff8ab6369ce1e9e44a7c4a2088ac4b495024e115dea3",
+      "tests/test-armiesofgielinor-core.mjs": "72db3f1726cf11b00757bb65a718e05179779c9ddaee4cf7389787000e8515f2",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
