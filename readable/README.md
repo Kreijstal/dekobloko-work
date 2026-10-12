@@ -237,9 +237,18 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 116,945 raw/named checks agree. Controlled cipher output does not constitute
+All 119,616 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 decoded-chat snapshots and a full rendered report-dialog session remain unverified.
+
+SocialListEntry and AccountNameNormalizer now name shared friend/ignore rows,
+current/previous/account names, online location labels, canonical keys, collision
+lookup, list ordering and reset. Incoming social subtypes 0–4 and outgoing social
+commands 0–3 have reading-guide payload tables. Native fixtures retain reference
+comparison of interned location labels, renamed row reuse, equal-hash names,
+friend-aware chat filtering and removal before serialization. Name filtering
+(sharp-s folds to b), validation, capacity/rejection and guarded partial frames
+are tested; live delivery and rendered social-list interaction remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -273,7 +282,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 198 reviewed classes around battlefield state, units, map
+The current pass names 200 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
