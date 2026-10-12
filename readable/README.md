@@ -156,7 +156,16 @@ iteration. Independent bounded cache models verify value identity, order,
 entry counts and capacity refunds. Controlled reference-backed entries exercise
 promotion and clearing; this does not establish a particular GC reference type.
 Zero/negative weights, guard reservation failures and bucket-growth overshoot
-remain unchanged. All 68,018 raw/named checks agree.
+remain unchanged. Raw/named cache traces agree.
+
+QuickChatCategory, QuickChatPhrase and QuickChatCommandDefinition now name
+opcode decoding, shortcut arrays, text fragments and command argument rows.
+Their repositories name local/global group-zero/group-one routing and full-ID
+cache keys. Native wire fixtures check all 256 shortcut bytes, delimiters,
+unknown command rows and partial failures. Real archive/index fixtures verify
+missing defaults, caching, root selection and global-ID marking. Linked phrase
+list finer semantics, rendered UI and live message delivery remain unresolved.
+All 70,964 raw/named checks agree.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -190,7 +199,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 175 reviewed classes around battlefield state, units, map
+The current pass names 180 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 30,
+  "version": 31,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -1854,6 +1854,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ar",
+      "originalName": "ar",
+      "to": "QuickChatPhrase",
+      "evidence": "ar.java: Opcode-decoded text fragments, linked phrase IDs and command-definition argument rows; preview joins fragments with ellipses. Unrelated static helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:as",
       "originalName": "as",
       "to": "OwnerChangeEvent",
@@ -1907,6 +1914,13 @@
       "originalName": "bg",
       "to": "NodeHashTable",
       "evidence": "bg.java: Intrusive sentinel buckets with key lookup, traversal, insertion and clearing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bl",
+      "originalName": "bl",
+      "to": "QuickChatCategoryRepository",
+      "evidence": "bl.java: Loads and caches group-zero quick-chat categories from local/global archives; global IDs use bit 32768. Unrelated static helpers retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -2498,6 +2512,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:me",
+      "originalName": "me",
+      "to": "QuickChatCommandDefinition",
+      "evidence": "me.java: Quick-chat command ID and number of unsigned-short arguments retained by phrase definitions; the two other constructor integers are unused. Unrelated static helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mg",
       "originalName": "mg",
       "to": "ByteStorage",
@@ -2705,6 +2726,13 @@
       "originalName": "ra",
       "to": "ActionSpell",
       "evidence": "ra.java: Spell modifier wrapping an ActionRequest; prepares its action and applies it on spell completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rf",
+      "originalName": "rf",
+      "to": "QuickChatPhraseRepository",
+      "evidence": "rf.java: Loads and caches group-one quick-chat phrases from local/global archives and applies the global linked-ID bit. Unrelated static helpers retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -2957,6 +2985,13 @@
       "originalName": "v",
       "to": "BattleCamera",
       "evidence": "v.java: Map focus, projected screen coordinates and smoothly interpolated camera position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:va",
+      "originalName": "va",
+      "to": "QuickChatCategory",
+      "evidence": "va.java: Opcode-decoded title, subcategory/phrase IDs, shortcut characters and root-selection flag used to build the quick-chat menu. Unrelated static fields retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -3219,6 +3254,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ar.field_A:[I",
+      "originalName": "field_A",
+      "to": "linkedPhraseIds",
+      "evidence": "ar.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ar.field_B:[I",
+      "originalName": "field_B",
+      "to": "commandIds",
+      "evidence": "ar.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ar.field_u:[[I",
+      "originalName": "field_u",
+      "to": "commandArguments",
+      "evidence": "ar.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ar.field_z:[Ljava/lang/String;",
+      "originalName": "field_z",
+      "to": "textFragments",
+      "evidence": "ar.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:as.field_A:I",
       "originalName": "field_A",
       "to": "newOwnerPlayer",
@@ -3391,6 +3454,27 @@
       "originalName": "field_f",
       "to": "iterationNext",
       "evidence": "bg.java: Hash-table sentinel allocation, masked bucket lookup and independent lookup/traversal cursors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bl.field_c:Lkl;",
+      "originalName": "field_c",
+      "to": "globalArchive",
+      "evidence": "bl.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bl.field_d:Lkl;",
+      "originalName": "field_d",
+      "to": "localArchive",
+      "evidence": "bl.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bl.field_e:Lri;",
+      "originalName": "field_e",
+      "to": "categories",
+      "evidence": "bl.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
       "confidence": "reviewed"
     },
     {
@@ -3608,6 +3692,13 @@
       "originalName": "field_a",
       "to": "campaigns",
       "evidence": "cd.java: Campaign loader registers definitions here; br lookup retrieves them by index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_K:Lrf;",
+      "originalName": "field_K",
+      "to": "quickChatPhrases",
+      "evidence": "ce.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
       "confidence": "reviewed"
     },
     {
@@ -7230,10 +7321,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:me.field_b:I",
+      "originalName": "field_b",
+      "to": "commandId",
+      "evidence": "me.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:me.field_c:I",
       "originalName": "field_c",
       "to": "thirdPreviousOpcode",
       "evidence": "me.java: Oldest of three prior-opcode history positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:me.field_f:I",
+      "originalName": "field_f",
+      "to": "definitionArgumentCount",
+      "evidence": "me.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
       "confidence": "reviewed"
     },
     {
@@ -7276,6 +7381,13 @@
       "originalName": "field_u",
       "to": "allowOtherPlayer",
       "evidence": "mn.java: MoveAttackRequest bypasses ownership rejection when true; SphinxActionRequest sets this on its delegate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mp.field_Sb:Lbl;",
+      "originalName": "field_Sb",
+      "to": "quickChatCategories",
+      "evidence": "mp.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
       "confidence": "reviewed"
     },
     {
@@ -8305,6 +8417,27 @@
       "originalName": "field_h",
       "to": "preparedAction",
       "evidence": "ra.java: Spell preparation creates this action; completion applies it and releases the reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rf.field_b:Lri;",
+      "originalName": "field_b",
+      "to": "phrases",
+      "evidence": "rf.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rf.field_c:Lkl;",
+      "originalName": "field_c",
+      "to": "globalArchive",
+      "evidence": "rf.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rf.field_f:Lkl;",
+      "originalName": "field_f",
+      "to": "localArchive",
+      "evidence": "rf.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
       "confidence": "reviewed"
     },
     {
@@ -9624,6 +9757,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:va.field_C:[I",
+      "originalName": "field_C",
+      "to": "subcategoryIds",
+      "evidence": "va.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:va.field_E:Ljava/lang/String;",
+      "originalName": "field_E",
+      "to": "title",
+      "evidence": "va.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:va.field_H:Z",
+      "originalName": "field_H",
+      "to": "isRootCategory",
+      "evidence": "va.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:va.field_v:[C",
+      "originalName": "field_v",
+      "to": "phraseShortcuts",
+      "evidence": "va.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:va.field_x:[C",
+      "originalName": "field_x",
+      "to": "subcategoryShortcuts",
+      "evidence": "va.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:va.field_y:[I",
+      "originalName": "field_y",
+      "to": "phraseIds",
+      "evidence": "va.java: Quick-chat archive decoding, menu construction and definition-command lookup; linked phrase list finer response semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vb.field_B:Lpa;",
       "originalName": "field_B",
       "to": "presentation",
@@ -10100,6 +10275,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ar.a(BILvh;)V#1",
+      "originalName": "var9",
+      "to": "argumentIndex",
+      "evidence": "ar.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ar.a(BILvh;)V#10",
+      "originalName": "var7",
+      "to": "commandId",
+      "evidence": "ar.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ar.a(BILvh;)V#11",
+      "originalName": "var8",
+      "to": "command",
+      "evidence": "ar.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ar.a(BILvh;)V#12",
+      "originalName": "var10",
+      "to": "obfuscationControl",
+      "evidence": "ar.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ar.a(BILvh;)V#6",
+      "originalName": "var4_int",
+      "to": "guardRemainder",
+      "evidence": "ar.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ar.a(BILvh;)V#8",
+      "originalName": "var5",
+      "to": "entryCount",
+      "evidence": "ar.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ar.a(BILvh;)V#9",
+      "originalName": "var6",
+      "to": "entryIndex",
+      "evidence": "ar.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ar.a(Lvh;B)V#0",
+      "originalName": "var3_int",
+      "to": "opcode",
+      "evidence": "ar.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ar.a(Lvh;B)V#1",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "ar.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:at.a(I)Ltc;#0",
       "originalName": "var2",
       "to": "guardedFirstNode",
@@ -10328,6 +10566,20 @@
       "originalName": "var9",
       "to": "payloadLength",
       "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bl.a(IZ)Lva;#0",
+      "originalName": "var4",
+      "to": "encodedCategory",
+      "evidence": "bl.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bl.a(IZ)Lva;#1",
+      "originalName": "var3",
+      "to": "category",
+      "evidence": "bl.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -14839,6 +15091,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:rf.a(II)Lar;#0",
+      "originalName": "var5",
+      "to": "encodedPhrase",
+      "evidence": "rf.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rf.a(II)Lar;#1",
+      "originalName": "var4",
+      "to": "guardRemainder",
+      "evidence": "rf.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rf.a(II)Lar;#2",
+      "originalName": "var3",
+      "to": "cachedPhrase",
+      "evidence": "rf.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rf.a(II)Lar;#3",
+      "originalName": "var6",
+      "to": "phrase",
+      "evidence": "rf.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:rg.<init>(ILjava/lang/String;Ljava/lang/String;[I)V#0",
       "originalName": "var5_int",
       "to": "spellIndex",
@@ -15476,6 +15756,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:va.a(BLvh;)V#0",
+      "originalName": "var3_int",
+      "to": "opcode",
+      "evidence": "va.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:va.a(BLvh;)V#1",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "va.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:va.a(BLvh;I)V#10",
+      "originalName": "var4_int",
+      "to": "guardRemainder",
+      "evidence": "va.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:va.a(BLvh;I)V#12",
+      "originalName": "var5",
+      "to": "entryCount",
+      "evidence": "va.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:va.a(BLvh;I)V#13",
+      "originalName": "var6",
+      "to": "entryIndex",
+      "evidence": "va.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:va.a(BLvh;I)V#14",
+      "originalName": "var7",
+      "to": "encodedShortcut",
+      "evidence": "va.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:va.a(BLvh;I)V#15",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "va.java: Reviewed quick-chat opcode decoding, paired arrays, command argument rows and cached local/global archive lookup at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:vh.a(B[I)V#10",
       "originalName": "var7",
       "to": "sum",
@@ -15931,10 +16260,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ar.a(BILvh;)V",
+      "originalName": "a",
+      "to": "decodeOpcode",
+      "evidence": "ar.java: Splits text on <, reads linked phrase IDs and command IDs/argument rows; unknown command IDs leave default rows and consume no arguments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ar.a(III)Lom;",
       "originalName": "a",
       "to": "getCampaignMission",
       "evidence": "ar.java: Returns null for a missing campaign or mission outside the supplied lower bound and mission array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ar.a(Lvh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "ar.java: Reads phrase opcodes through zero, retaining guard and unknown-command cursor behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ar.a(Z)V",
+      "originalName": "a",
+      "to": "applyGlobalIds",
+      "evidence": "ar.java: ORs bit 32768 into linked phrase IDs before the original false-guard failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ar.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getPreviewText",
+      "evidence": "ar.java: Joins text fragments with literal ellipses; an undecoded phrase yields the empty string.",
       "confidence": "reviewed"
     },
     {
@@ -16194,6 +16551,13 @@
       "originalName": "c",
       "to": "clear",
       "evidence": "bg.java: Unlinks every stored node and clears both cursors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.a(IZ)Lva;",
+      "originalName": "a",
+      "to": "getCategory",
+      "evidence": "bl.java: Loads local IDs from group zero; IDs >=32768 select the global archive with file ID masked to 15 bits. Missing bytes still yield cached default definitions.",
       "confidence": "reviewed"
     },
     {
@@ -17244,6 +17608,13 @@
       "originalName": "a",
       "to": "advanceAnimation",
       "evidence": "fi.java: Shows/hides the popup in steps of four and scrolls long names with endpoint pauses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.b(II)Lme;",
+      "originalName": "b",
+      "to": "getQuickChatCommand",
+      "evidence": "fi.java: Scans the original fourteen-entry command registry from startIndex and returns its matching ID.",
       "confidence": "reviewed"
     },
     {
@@ -19137,6 +19508,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:l.a(Lva;Lje;ILje;Lje;)Lmq;",
+      "originalName": "a",
+      "to": "buildQuickChatCategoryMenu",
+      "evidence": "l.java: Builds subcategory menus recursively and phrase preview choices from decoded categories.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ld.a(ILha;)V",
       "originalName": "a",
       "to": "applyToBattlefield",
@@ -19239,6 +19617,13 @@
       "originalName": "a",
       "to": "createTiles",
       "evidence": "lo.java: Decodes/binds layout tiles and saved units to the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.a(Lva;I)V",
+      "originalName": "a",
+      "to": "addCustomQuickChatOption",
+      "evidence": "lo.java: Replaces root phrase choices with ID -1 and shortcut ? without changing subcategories.",
       "confidence": "reviewed"
     },
     {
@@ -20005,6 +20390,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ps.b(B)Lva;",
+      "originalName": "b",
+      "to": "findQuickChatRootCategory",
+      "evidence": "ps.java: Scans category IDs upward until the root flag is present; retains its unbounded scan and IllegalArgumentException handling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:q.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -20219,6 +20611,13 @@
       "originalName": "a",
       "to": "readTaggedMapTile",
       "evidence": "rb.java: Decodes a tile record and initializes god metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rf.a(II)Lar;",
+      "originalName": "a",
+      "to": "getPhrase",
+      "evidence": "rf.java: Loads local/global group-one definitions, applies the global bit to linked IDs and caches defaults for missing bytes. Guard arithmetic precedes cache lookup.",
       "confidence": "reviewed"
     },
     {
@@ -21048,6 +21447,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uj.c(B)[Lme;",
+      "originalName": "c",
+      "to": "getQuickChatCommands",
+      "evidence": "uj.java: Returns the original command-definition registry in its retained order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ul.a(I)V",
       "originalName": "a",
       "to": "buildSpellMenu",
@@ -21314,6 +21720,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:va.a(BLvh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "va.java: Reads category opcodes through zero; unrecognized opcodes consume only their opcode byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(BLvh;I)V",
+      "originalName": "a",
+      "to": "decodeOpcode",
+      "evidence": "va.java: Reads title, parallel ID/shortcut arrays or the root flag; zero shortcuts remain zero and other bytes use the existing character decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.g(I)V",
+      "originalName": "g",
+      "to": "applyGlobalIds",
+      "evidence": "va.java: ORs bit 32768 into subcategory and phrase IDs before the original bad-guard failure.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vb.a(B)Z",
       "originalName": "a",
       "to": "isCombatViewReady",
@@ -21437,6 +21864,13 @@
       "originalName": "g",
       "to": "copyWrittenBytes",
       "evidence": "vh.java: Returns a new array containing payload bytes before position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.g(I)Ljava/lang/String;",
+      "originalName": "g",
+      "to": "readNullTerminatedString",
+      "evidence": "vh.java: Reads through a zero byte and decodes the preceding text; retains cursor increments on truncated input.",
       "confidence": "reviewed"
     },
     {
@@ -21619,6 +22053,13 @@
       "originalName": "a",
       "to": "finishEffect",
       "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(IB)C",
+      "originalName": "a",
+      "to": "decodeSingleByteCharacter",
+      "evidence": "we.java: Rejects byte zero, maps extension bytes through the existing table and replaces unmapped characters with ?.",
       "confidence": "reviewed"
     },
     {
@@ -22175,6 +22616,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ar.a(BILvh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ar.java: Splits text on <, reads linked phrase IDs and command IDs/argument rows; unknown command IDs leave default rows and consume no arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ar.a(BILvh;)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "ar.java: Splits text on <, reads linked phrase IDs and command IDs/argument rows; unknown command IDs leave default rows and consume no arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ar.a(BILvh;)V#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "ar.java: Splits text on <, reads linked phrase IDs and command IDs/argument rows; unknown command IDs leave default rows and consume no arguments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ar.a(III)Lom;#0",
       "originalName": "param0",
       "to": "campaignIndex",
@@ -22193,6 +22655,34 @@
       "originalName": "param2",
       "to": "minimumMissionIndex",
       "evidence": "ar.java: Returns null for a missing campaign or mission outside the supplied lower bound and mission array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ar.a(Lvh;B)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ar.java: Reads phrase opcodes through zero, retaining guard and unknown-command cursor behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ar.a(Lvh;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ar.java: Reads phrase opcodes through zero, retaining guard and unknown-command cursor behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ar.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ar.java: ORs bit 32768 into linked phrase IDs before the original false-guard failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ar.d(B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ar.java: Joins text fragments with literal ellipses; an undecoded phrase yields the empty string.",
       "confidence": "reviewed"
     },
     {
@@ -22739,6 +23229,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "bg.java: Unlinks every stored node and clears both cursors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bl.<init>(ILkl;Lkl;)V#0",
+      "originalName": "param0",
+      "to": "unusedParameter",
+      "evidence": "bl.java: Retains both archives, creates a 64-entry cache and queries group-zero file capacities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bl.<init>(ILkl;Lkl;)V#1",
+      "originalName": "param1",
+      "to": "localArchive",
+      "evidence": "bl.java: Retains both archives, creates a 64-entry cache and queries group-zero file capacities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bl.<init>(ILkl;Lkl;)V#2",
+      "originalName": "param2",
+      "to": "globalArchive",
+      "evidence": "bl.java: Retains both archives, creates a 64-entry cache and queries group-zero file capacities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bl.a(IZ)Lva;#0",
+      "originalName": "param0",
+      "to": "categoryId",
+      "evidence": "bl.java: Loads local IDs from group zero; IDs >=32768 select the global archive with file ID masked to 15 bits. Missing bytes still yield cached default definitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bl.a(IZ)Lva;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "bl.java: Loads local IDs from group zero; IDs >=32768 select the global archive with file ID masked to 15 bits. Missing bytes still yield cached default definitions.",
       "confidence": "reviewed"
     },
     {
@@ -25182,6 +25707,20 @@
       "originalName": "param1",
       "to": "show",
       "evidence": "fi.java: Shows/hides the popup in steps of four and scrolls long names with endpoint pauses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.b(II)Lme;#0",
+      "originalName": "param0",
+      "to": "startIndex",
+      "evidence": "fi.java: Scans the original fourteen-entry command registry from startIndex and returns its matching ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fi.b(II)Lme;#1",
+      "originalName": "param1",
+      "to": "commandId",
+      "evidence": "fi.java: Scans the original fourteen-entry command registry from startIndex and returns its matching ID.",
       "confidence": "reviewed"
     },
     {
@@ -30246,6 +30785,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:l.a(Lva;Lje;ILje;Lje;)Lmq;#0",
+      "originalName": "param0",
+      "to": "category",
+      "evidence": "l.java: Builds subcategory menus recursively and phrase preview choices from decoded categories.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:l.a(Lva;Lje;ILje;Lje;)Lmq;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "l.java: Builds subcategory menus recursively and phrase preview choices from decoded categories.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#0",
       "originalName": "param0",
       "to": "startX",
@@ -30565,6 +31118,20 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "lo.java: Decodes/binds layout tiles and saved units to the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(Lva;I)V#0",
+      "originalName": "param0",
+      "to": "category",
+      "evidence": "lo.java: Replaces root phrase choices with ID -1 and shortcut ? without changing subcategories.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(Lva;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lo.java: Replaces root phrase choices with ID -1 and shortcut ? without changing subcategories.",
       "confidence": "reviewed"
     },
     {
@@ -30908,6 +31475,34 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.<init>(IIII)V#0",
+      "originalName": "param0",
+      "to": "commandId",
+      "evidence": "me.java: Only the command ID and definition argument count are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.<init>(IIII)V#1",
+      "originalName": "param1",
+      "to": "unusedParameter1",
+      "evidence": "me.java: Only the command ID and definition argument count are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.<init>(IIII)V#2",
+      "originalName": "param2",
+      "to": "unusedParameter2",
+      "evidence": "me.java: Only the command ID and definition argument count are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.<init>(IIII)V#3",
+      "originalName": "param3",
+      "to": "definitionArgumentCount",
+      "evidence": "me.java: Only the command ID and definition argument count are retained.",
       "confidence": "reviewed"
     },
     {
@@ -32605,6 +33200,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ps.b(B)Lva;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ps.java: Scans category IDs upward until the root flag is present; retains its unbounded scan and IllegalArgumentException handling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:q.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -33120,6 +33722,48 @@
       "originalName": "param2",
       "to": "packet",
       "evidence": "rb.java: Decodes a tile record and initializes god metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rf.<init>(ILkl;Lkl;Lgj;)V#0",
+      "originalName": "param0",
+      "to": "unusedParameter",
+      "evidence": "rf.java: Retains both archives, creates a 64-entry cache and queries group-one file capacities; the other arguments are unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rf.<init>(ILkl;Lkl;Lgj;)V#1",
+      "originalName": "param1",
+      "to": "localArchive",
+      "evidence": "rf.java: Retains both archives, creates a 64-entry cache and queries group-one file capacities; the other arguments are unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rf.<init>(ILkl;Lkl;Lgj;)V#2",
+      "originalName": "param2",
+      "to": "globalArchive",
+      "evidence": "rf.java: Retains both archives, creates a 64-entry cache and queries group-one file capacities; the other arguments are unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rf.<init>(ILkl;Lkl;Lgj;)V#3",
+      "originalName": "param3",
+      "to": "unusedMarker",
+      "evidence": "rf.java: Retains both archives, creates a 64-entry cache and queries group-one file capacities; the other arguments are unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rf.a(II)Lar;#0",
+      "originalName": "param0",
+      "to": "phraseId",
+      "evidence": "rf.java: Loads local/global group-one definitions, applies the global bit to linked IDs and caches defaults for missing bytes. Guard arithmetic precedes cache lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rf.a(II)Lar;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "rf.java: Loads local/global group-one definitions, applies the global bit to linked IDs and caches defaults for missing bytes. Guard arithmetic precedes cache lookup.",
       "confidence": "reviewed"
     },
     {
@@ -35762,6 +36406,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:uj.c(B)[Lme;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uj.java: Returns the original command-definition registry in its retained order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ul.a(I)V#0",
       "originalName": "param0",
       "to": "finalWeaknessSpellId",
@@ -36399,6 +37050,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:va.a(BLvh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "va.java: Reads category opcodes through zero; unrecognized opcodes consume only their opcode byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.a(BLvh;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "va.java: Reads category opcodes through zero; unrecognized opcodes consume only their opcode byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.a(BLvh;I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "va.java: Reads title, parallel ID/shortcut arrays or the root flag; zero shortcuts remain zero and other bytes use the existing character decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.a(BLvh;I)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "va.java: Reads title, parallel ID/shortcut arrays or the root flag; zero shortcuts remain zero and other bytes use the existing character decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.a(BLvh;I)V#2",
+      "originalName": "param2",
+      "to": "opcode",
+      "evidence": "va.java: Reads title, parallel ID/shortcut arrays or the root flag; zero shortcuts remain zero and other bytes use the existing character decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.g(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "va.java: ORs bit 32768 into subcategory and phrase IDs before the original bad-guard failure.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vb.<init>(Lic;Lha;Leo;Loj;Z)V#0",
       "originalName": "param0",
       "to": "controller",
@@ -36676,6 +37369,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "vh.java: Returns a new array containing payload bytes before position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.g(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads through a zero byte and decodes the preceding text; retains cursor increments on truncated input.",
       "confidence": "reviewed"
     },
     {
@@ -37120,6 +37820,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:we.a(IB)C#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "we.java: Rejects byte zero, maps extension bytes through the existing table and replaces unmapped characters with ?.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:we.a(IB)C#1",
+      "originalName": "param1",
+      "to": "encodedByte",
+      "evidence": "we.java: Rejects byte zero, maps extension bytes through the existing table and replaces unmapped characters with ?.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wg.a(IIIII)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -37338,10 +38052,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "1eddff6334bb0ab4d4fefaf911e696ff809256b4843f5ba66dc0c429945e2cbb",
+      "build-armiesofgielinor-rules.mjs": "710122a7b7ba01ae1056414fb08e85d191de5ec12ce0938e2a9385e3134281ef",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "8c21298e5659e8da6acda672826dd944a04acece56ebcbe19af82b90cc1c7a95",
+      "tests/test-armiesofgielinor-core.mjs": "cd1e5949561c44d16c358f93290d42c1afbf540169cc658e7314a6c2986f9153",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
