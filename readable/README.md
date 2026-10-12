@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 167,112 raw/named checks agree. Controlled cipher output does not constitute
+All 167,365 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -498,6 +498,25 @@ matching and malformed input. Existing trailing-comma, empty-input, quoting,
 unterminated-string and null-diagnostic behavior remains unchanged. Live console
 editing/rendering and game-mutating commands remain unverified.
 
+ConsolePanel now exposes its editor, output scroll area, history, suggestions,
+visibility animation and virtual input/completion operations. ConsoleTextNode is
+shared by wrapped output and command history. DebugConsole names its completion,
+paired-character editing, error highlighting and lexical-cache helpers. Native
+fixtures use real UI constructors and key handlers to check history/output limits,
+opening/closing geometry, Tab completion, paired insertion/deletion, signature
+suggestions, token-cache identity and syntax coloring. Hard wrapping retains the
+original dropped character, and closing retains the original overshoot.
+
+All twelve registered console command classes now have reviewed names, parameter
+roles, execution locals and helper methods. Real-registry fixtures cover coat
+formatting/partial updates, music settings, mission names, tile ownership, turn
+skipping, condition output, model ownership and both defeat overloads. The coat
+export trailing colon still causes an empty-field error on reimport after preceding
+mutations. Player IDs equal to playerCount remain accepted by defeat helpers;
+controlled fixtures check elimination masks, metric counters and all four packet
+word variants. Pixel rendering, production campaigns and multiplayer effects
+remain unverified.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -530,7 +549,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 249 reviewed classes around battlefield state, units, map
+The current pass names 263 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
