@@ -82,7 +82,15 @@ after Eastbridge. Its equipped-slot cursor, god/unit unlock gates and selected
 unit eligibility now have names and controlled fixtures. The full scripted
 sequence remains unverified.
 
-The current pass names 148 reviewed classes around battlefield state, units, map
+MeshData/ModelMeshBase and vertex/face normals now expose decoding, normal
+accumulation, skin grouping and geometry-sharing boundaries. FixedQuaternion
+names 16.16 components and normalized rotation composition. Camera projection
+and event-owned model lifetime have names and fixtures, including fallback
+model creation. The pinned forward/inverse rectangular-map offset disagreement
+is retained. These headless checks do not verify rasterized mesh rendering or
+presented FPS.
+
+The current pass names 154 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
