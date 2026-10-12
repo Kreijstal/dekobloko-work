@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 141,999 raw/named checks agree. Controlled cipher output does not constitute
+All 142,953 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -308,6 +308,25 @@ fixtures for tie order, step-cost consistency, movement-spent rejection and path
 clearing. A rectangular fixture preserves the existing mapHeight divisor used
 for terrain-effect lookup. Full preparation on rectangular maps, long paths and
 rendered path palettes remain unverified.
+
+UnitSpell now names status, equipment, accessory, flags/immobilization, area
+and terrain handlers. The guide records definition columns, immediate mutations,
+queued event types/order, missing-target differences and the mark-before-guard
+behavior. Native fixtures cover poison/refresh, special-unit rules, signed
+immobilization, deferred damage/healing and capacity changes with prior events.
+
+Terrain helpers now name normalization, crossing direction, conditional mutation
+and local effect refresh; MapTile.terrainChanged records the retained change flag.
+Full transition tables, square boundaries, crossing grids, skeleton healing/
+raising/registration, allied village upgrades and ordinary owner-removal recounts
+have native fixtures. Rectangular lookup quirks remain unchanged. Loaded spell
+definitions, casting eligibility, animated playback and complex match endings
+remain unverified.
+
+The native probe streams its complete ordered UTF-8 trace into SHA-256 and emits
+only the hash/count summary. Independent wire/pixel/component traces remain in
+the digest, and failed assertions retain their detailed values. The prior
+141,999-check trace digest was verified unchanged by this capture change.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
