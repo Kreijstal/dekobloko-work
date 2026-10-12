@@ -187,8 +187,28 @@ opacity, signed quarter-step geometry easing and drag grab coordinates.
 inherits visual selection/hold state while each component still intersects its
 own bounds with the raster clip. Pixel fixtures verify sprite-state precedence,
 inherited selection and child clipping; geometry fixtures check easing, stacking
-and dragging. All 83,473 raw/named checks agree. Text/skin pixel rendering and
+and dragging. Text/skin pixel rendering and
 complete interactive scrolling remain outside these fixtures.
+
+EditableTextField now names the buffer, caret/selection anchor, length limit,
+text/caret/highlight components, key handling and queued clipboard completion.
+Native fixtures verify printable ASCII filtering, direct text replacement,
+selection edits, numeric key navigation/modifiers, text geometry and clipboard
+request/completion/release. Bounded paste preserves the original failure when
+remaining capacity exceeds pasted text length, including deletion of the prior
+selection before failure. Pointer word-drag timing and system clipboard delivery
+remain unverified.
+
+PlatformTaskService and PlatformTask expose synchronized FIFO requests, retained
+arguments and volatile pending/success/failure status. Queue fixtures inspect
+clipboard/thread/reflection/socket/URL requests without executing network or
+system clipboard work. A real worker verifies reflection results, missing/unknown
+request failures, queue drain and shutdown. Constructor cache/property/fullscreen
+setup remains outside the fixtures. ContextActionMenu now names its 256 action
+rows, IDs, spacing, popup placement and waiting/cancellation results. Native
+fixtures check icon/text measurement, clipped row presses, capture-disabled input,
+cancel behavior, empty placeholders and capacity failure. All 96,672 raw/named
+checks agree; complete rendered interaction and action dispatch remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -222,7 +242,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 186 reviewed classes around battlefield state, units, map
+The current pass names 190 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
