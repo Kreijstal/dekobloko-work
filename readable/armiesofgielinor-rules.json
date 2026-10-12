@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 41,
+  "version": 42,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -5592,6 +5592,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gm.field_h:[[I",
+      "originalName": "field_h",
+      "to": "baseTerrainMovementCosts",
+      "evidence": "gm.java: Category-indexed terrain costs used by step-cost calculation; negative source costs become six while negative destination costs become one million.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:go.field_a:[I",
       "originalName": "field_a",
       "to": "playerIds",
@@ -9330,6 +9337,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nn.field_a:Z",
+      "originalName": "field_a",
+      "to": "controlsOtherPlayerUnit",
+      "evidence": "nn.java: Preparation separates strict occupancy costs from costs through unmoved same-player units, merges attack bits and retains selection/rendering state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nn.field_b:I",
       "originalName": "field_b",
       "to": "targetY",
@@ -9341,6 +9355,27 @@
       "originalName": "field_d",
       "to": "unitType",
       "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_e:[I",
+      "originalName": "field_e",
+      "to": "attackTargetMask",
+      "evidence": "nn.java: Preparation separates strict occupancy costs from costs through unmoved same-player units, merges attack bits and retains selection/rendering state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_f:Z",
+      "originalName": "field_f",
+      "to": "selectionActive",
+      "evidence": "nn.java: Preparation separates strict occupancy costs from costs through unmoved same-player units, merges attack bits and retains selection/rendering state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_g:Z",
+      "originalName": "field_g",
+      "to": "showMovementPath",
+      "evidence": "nn.java: Preparation separates strict occupancy costs from costs through unmoved same-player units, merges attack bits and retains selection/rendering state.",
       "confidence": "reviewed"
     },
     {
@@ -9362,6 +9397,13 @@
       "originalName": "field_j",
       "to": "targetDeltaY",
       "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_k:[I",
+      "originalName": "field_k",
+      "to": "movementCostsThroughOwnUnits",
+      "evidence": "nn.java: Preparation separates strict occupancy costs from costs through unmoved same-player units, merges attack bits and retains selection/rendering state.",
       "confidence": "reviewed"
     },
     {
@@ -9428,10 +9470,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nn.field_w:Z",
+      "originalName": "field_w",
+      "to": "otherPlayerPreview",
+      "evidence": "nn.java: Preparation separates strict occupancy costs from costs through unmoved same-player units, merges attack bits and retains selection/rendering state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nn.field_x:I",
       "originalName": "field_x",
       "to": "mapWidth",
       "evidence": "nn.java: MovementPlanner constructor, path reconstruction, action selection and serialized movement packet fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_y:I",
+      "originalName": "field_y",
+      "to": "selectionMode",
+      "evidence": "nn.java: Preparation separates strict occupancy costs from costs through unmoved same-player units, merges attack bits and retains selection/rendering state.",
       "confidence": "reviewed"
     },
     {
@@ -18857,6 +18913,503 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:nn.a(IBI)V#0",
+      "originalName": "stackIn_43_1",
+      "to": "movementAvailable",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#1",
+      "originalName": "var4",
+      "to": "targetIndex",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#10",
+      "originalName": "var10Lifetime1",
+      "to": "storedDirectionBranch",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#2",
+      "originalName": "var5",
+      "to": "pathTileIndex",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#3",
+      "originalName": "var6",
+      "to": "pathTileX",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#4",
+      "originalName": "var7",
+      "to": "pathTileY",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#5",
+      "originalName": "var8",
+      "to": "pathStepIndex",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#6",
+      "originalName": "var9",
+      "to": "predecessorDirection",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#7",
+      "originalName": "var10",
+      "to": "directionBranch",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#8",
+      "originalName": "var11",
+      "to": "obfuscationControl",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBI)V#9",
+      "originalName": "var9Lifetime1",
+      "to": "storedPredecessorDirection",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBII)I#0",
+      "originalName": "var5",
+      "to": "bestCost",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBII)I#1",
+      "originalName": "var6",
+      "to": "predecessorDirection",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IBII)I#2",
+      "originalName": "var7",
+      "to": "guardRemainder",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#0",
+      "originalName": "var9",
+      "to": "deltaX",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#1",
+      "originalName": "var10",
+      "to": "deltaY",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#10",
+      "originalName": "var6",
+      "to": "bestMovementCost",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#11",
+      "originalName": "var7",
+      "to": "selectedOriginX",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#12",
+      "originalName": "var8",
+      "to": "selectedOriginY",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#13",
+      "originalName": "var11",
+      "to": "manhattanDistance",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#14",
+      "originalName": "var12",
+      "to": "obfuscationControl",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#2",
+      "originalName": "stackIn_32_1",
+      "to": "attackAvailable",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#3",
+      "originalName": "stackIn_74_0",
+      "to": "visibilityGrid",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#4",
+      "originalName": "stackIn_74_1",
+      "to": "visibilityOriginY",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#5",
+      "originalName": "stackIn_74_2",
+      "to": "visibilityTargetX",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#6",
+      "originalName": "stackIn_74_3",
+      "to": "visibilityOriginX",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#7",
+      "originalName": "stackIn_75_4",
+      "to": "category4Visibility",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#8",
+      "originalName": "var4",
+      "to": "maximumAttackRange",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIB)V#9",
+      "originalName": "var5",
+      "to": "minimumAttackRange",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IZIB)V#0",
+      "originalName": "var5",
+      "to": "guardQuotient",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IZIB)V#1",
+      "originalName": "var6",
+      "to": "targetUnit",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IZIB)V#2",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZII)V#0",
+      "originalName": "var4",
+      "to": "tileXOrDeltaX",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZII)V#1",
+      "originalName": "var5",
+      "to": "tileYOrDeltaY",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZII)V#2",
+      "originalName": "var6",
+      "to": "scannedTile",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZII)V#3",
+      "originalName": "var6_int",
+      "to": "manhattanDistance",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZII)V#4",
+      "originalName": "var7",
+      "to": "targetTile",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZII)V#5",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZII)V#6",
+      "originalName": "var9",
+      "to": "discardedUnit",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZII)V#7",
+      "originalName": "var10",
+      "to": "scanY",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#0",
+      "originalName": "var17",
+      "to": "scanY",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#1",
+      "originalName": "var18",
+      "to": "scanX",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#13",
+      "originalName": "var7_int",
+      "to": "maximumAttackRange",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#15",
+      "originalName": "var8",
+      "to": "minimumAttackRange",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#16",
+      "originalName": "var9",
+      "to": "movementBudget",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#17",
+      "originalName": "var10",
+      "to": "minimumX",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#18",
+      "originalName": "var11",
+      "to": "maximumX",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#19",
+      "originalName": "var12",
+      "to": "minimumY",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#2",
+      "originalName": "var19",
+      "to": "costGridVariant",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#20",
+      "originalName": "var13",
+      "to": "maximumY",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#21",
+      "originalName": "var14",
+      "to": "relaxationPass",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#22",
+      "originalName": "var15",
+      "to": "greatestUpdatedCost",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#23",
+      "originalName": "var16",
+      "to": "tileIndex",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#24",
+      "originalName": "var20",
+      "to": "costGrid",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#25",
+      "originalName": "var21",
+      "to": "allowUnmovedOwnUnits",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#26",
+      "originalName": "var22",
+      "to": "candidateCost",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#27",
+      "originalName": "var23",
+      "to": "leftStepCost",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#28",
+      "originalName": "var24",
+      "to": "obfuscationControl",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#3",
+      "originalName": "stackIn_4_1",
+      "to": "otherPlayerUnit",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#30",
+      "originalName": "var26",
+      "to": "costGridAlias",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#31",
+      "originalName": "var27",
+      "to": "mutableCostGrid",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#32",
+      "originalName": "var14Lifetime1",
+      "to": "ignoreBlockingTerrain",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#33",
+      "originalName": "var15Lifetime1",
+      "to": "allowCategory4Targets",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#34",
+      "originalName": "var23Lifetime1",
+      "to": "upStepCost",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#35",
+      "originalName": "var23Lifetime2",
+      "to": "rightStepCost",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#36",
+      "originalName": "var23Lifetime3",
+      "to": "downStepCost",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#4",
+      "originalName": "stackIn_8_1",
+      "to": "previewOtherPlayer",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#5",
+      "originalName": "stackIn_32_0",
+      "to": "selectedCostGrid",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#6",
+      "originalName": "stackIn_35_0",
+      "to": "ownOccupantsAllowed",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#7",
+      "originalName": "stackIn_75_0",
+      "to": "category4Visibility",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZIILjd;II)V#8",
+      "originalName": "stackIn_78_0",
+      "to": "category4TargetsAllowed",
+      "evidence": "nn.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:np.a(BZ)I#0",
       "originalName": "var3",
       "to": "itemIndex",
@@ -19428,6 +19981,97 @@
       "originalName": "var14",
       "to": "fallbackChoices",
       "evidence": "pg.java: Reviewed lexical declaration ordinal and projection, fixed-point quaternion arithmetic, animation variants or face-normal/skin grouping data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#13",
+      "originalName": "var12",
+      "to": "unitCategory",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#14",
+      "originalName": "var13",
+      "to": "sourceTerrain",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#15",
+      "originalName": "var14",
+      "to": "destinationTerrain",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#18",
+      "originalName": "var17",
+      "to": "kind2Override",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#19",
+      "originalName": "var18",
+      "to": "costThreeOverride",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#20",
+      "originalName": "var19",
+      "to": "costOneOverride",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#21",
+      "originalName": "var20",
+      "to": "category4",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#22",
+      "originalName": "var21",
+      "to": "sourceEffects",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#23",
+      "originalName": "var22",
+      "to": "obfuscationControl",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#24",
+      "originalName": "var23",
+      "to": "destinationOccupant",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#25",
+      "originalName": "var15Lifetime1",
+      "to": "sourceCost",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#26",
+      "originalName": "var16Lifetime1",
+      "to": "destinationCost",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(I[Lne;ZIIIILjd;IZZ)I#27",
+      "originalName": "var21Lifetime1",
+      "to": "destinationEffects",
+      "evidence": "pj.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -20474,6 +21118,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ul.a(BIIZIIZZ)I#0",
+      "originalName": "var9",
+      "to": "targetFlags",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(BIIZIIZZ)I#1",
+      "originalName": "var10",
+      "to": "targetUnit",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ul.a(IIIZIIB)Z#0",
       "originalName": "var10",
       "to": "deltaY",
@@ -20513,6 +21171,69 @@
       "originalName": "var13",
       "to": "obfuscationControl",
       "evidence": "ul.java: Reviewed procedural sector/center/spawn state or local ray visibility at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IZIIIIZ[IIIZ[III)V#0",
+      "originalName": "var15_int",
+      "to": "candidateOriginY",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IZIIIIZ[IIIZ[III)V#1",
+      "originalName": "var16",
+      "to": "candidateOriginX",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IZIIIIZ[IIIZ[III)V#12",
+      "originalName": "var17",
+      "to": "originMovementCost",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IZIIIIZ[IIIZ[III)V#13",
+      "originalName": "var18",
+      "to": "originTargetBits",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IZIIIIZ[IIIZ[III)V#14",
+      "originalName": "var21",
+      "to": "manhattanDistance",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IZIIIIZ[IIIZ[III)V#15",
+      "originalName": "var22",
+      "to": "obfuscationControl",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IZIIIIZ[IIIZ[III)V#2",
+      "originalName": "var19",
+      "to": "rayDeltaY",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IZIIIIZ[IIIZ[III)V#3",
+      "originalName": "var20",
+      "to": "rayDeltaX",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.a(IZIIIIZ[IIIZ[III)V#4",
+      "originalName": "stackIn_12_0",
+      "to": "availableTargetBits",
+      "evidence": "ul.java: Reviewed cost-gradient, selected target and local mask role at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -23330,6 +24051,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(IIIILjd;Z)I",
+      "originalName": "a",
+      "to": "getMovementStepCost",
+      "evidence": "ha.java: Delegates a strict-occupancy step cost with the moving player team index; canonical guard is -16.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(IIILjd;Ljd;B)I",
       "originalName": "a",
       "to": "computeAttackPower",
@@ -23418,6 +24146,13 @@
       "originalName": "a",
       "to": "predictCombat",
       "evidence": "ha.java: Returns defender damage, attacker counter-damage and death flags (bit 1 attacker, bit 2 defender), without applying events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(Ljd;ZIZIII)I",
+      "originalName": "a",
+      "to": "getMovementStepCost",
+      "evidence": "ha.java: Delegates a step cost with optional passage through unmoved same-player occupants; noncanonical guard returns 112.",
       "confidence": "reviewed"
     },
     {
@@ -24877,6 +25612,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kf.b(II)I",
+      "originalName": "b",
+      "to": "bitwiseXor",
+      "evidence": "kf.java: Original integer XOR helper; XOR three reverses cardinal path directions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kh.a(Lkb;IIZI)V",
       "originalName": "a",
       "to": "paintWidget",
@@ -25927,10 +26669,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nn.a(IBII)I",
+      "originalName": "a",
+      "to": "choosePredecessorDirection",
+      "evidence": "nn.java: Chooses a lower-cost cardinal neighbor whose step cost matches the cost difference; strict comparisons retain left/right/up/down tie order and mapWidth Y bound.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nn.a(II)Lmn;",
       "originalName": "a",
       "to": "createActionRequest",
       "evidence": "nn.java: Copies the selected path and wraps it in a SpellCastRequest when a spell modifier is present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(IIB)V",
+      "originalName": "a",
+      "to": "selectAttackTarget",
+      "evidence": "nn.java: Requires target bit 4, chooses direct attack when bit 1 is set or searches a reachable firing position and reconstructs its path.",
       "confidence": "reviewed"
     },
     {
@@ -25952,6 +26708,20 @@
       "originalName": "a",
       "to": "writeAttackMovementPacket",
       "evidence": "nn.java: Serializes selected path and target offsets for the attacked unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(Lv;I)V",
+      "originalName": "a",
+      "to": "drawSelectedPath",
+      "evidence": "nn.java: Projects selected grid coordinates, draws path segments and switches palette beyond the movement budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(ZII)V",
+      "originalName": "a",
+      "to": "fillDirectRangeCosts",
+      "evidence": "nn.java: Marks permitted Manhattan-range tiles at cost zero, or scans the whole board for negative range; preserves terrain, occupancy and status restrictions.",
       "confidence": "reviewed"
     },
     {
@@ -26127,6 +26897,13 @@
       "originalName": "d",
       "to": "handleLegacyNameKey",
       "evidence": "oc.java: Handles one decoded key with lower-case ASCII/underscore conversion, twelve-character limit, backspace and retained cancellation/submission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.c(II)I",
+      "originalName": "c",
+      "to": "bitwiseOr",
+      "evidence": "oe.java: Original integer OR helper, including attack-mask union.",
       "confidence": "reviewed"
     },
     {
@@ -26456,6 +27233,13 @@
       "originalName": "a",
       "to": "describeEvent",
       "evidence": "oj.java: Abstract diagnostic contract propagated to event subclasses. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(I[Lne;ZIIIILjd;IZZ)I",
+      "originalName": "a",
+      "to": "computeMovementStepCost",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
       "confidence": "reviewed"
     },
     {
@@ -27023,6 +27807,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "rn.java: Original integer AND helper, including attack-mask intersection.",
       "confidence": "reviewed"
     },
     {
@@ -34530,6 +35321,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ha.a(IIIILjd;Z)I#0",
+      "originalName": "param0",
+      "to": "sourceIndex",
+      "evidence": "ha.java: Delegates a strict-occupancy step cost with the moving player team index; canonical guard is -16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIIILjd;Z)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Delegates a strict-occupancy step cost with the moving player team index; canonical guard is -16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIIILjd;Z)I#2",
+      "originalName": "param2",
+      "to": "destinationIndex",
+      "evidence": "ha.java: Delegates a strict-occupancy step cost with the moving player team index; canonical guard is -16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIIILjd;Z)I#3",
+      "originalName": "param3",
+      "to": "playerId",
+      "evidence": "ha.java: Delegates a strict-occupancy step cost with the moving player team index; canonical guard is -16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIIILjd;Z)I#4",
+      "originalName": "param4",
+      "to": "unit",
+      "evidence": "ha.java: Delegates a strict-occupancy step cost with the moving player team index; canonical guard is -16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIIILjd;Z)I#5",
+      "originalName": "param5",
+      "to": "checkOccupancy",
+      "evidence": "ha.java: Delegates a strict-occupancy step cost with the moving player team index; canonical guard is -16.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ha.a(IIILjd;Ljd;B)I#0",
       "originalName": "param0",
       "to": "attackerY",
@@ -34884,6 +35717,55 @@
       "originalName": "param6",
       "to": "attackOriginX",
       "evidence": "ha.java: Returns defender damage, attacker counter-damage and death flags (bit 1 attacker, bit 2 defender), without applying events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Ljd;ZIZIII)I#0",
+      "originalName": "param0",
+      "to": "unit",
+      "evidence": "ha.java: Delegates a step cost with optional passage through unmoved same-player occupants; noncanonical guard returns 112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Ljd;ZIZIII)I#1",
+      "originalName": "param1",
+      "to": "allowUnmovedOwnUnits",
+      "evidence": "ha.java: Delegates a step cost with optional passage through unmoved same-player occupants; noncanonical guard returns 112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Ljd;ZIZIII)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Delegates a step cost with optional passage through unmoved same-player occupants; noncanonical guard returns 112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Ljd;ZIZIII)I#3",
+      "originalName": "param3",
+      "to": "checkOccupancy",
+      "evidence": "ha.java: Delegates a step cost with optional passage through unmoved same-player occupants; noncanonical guard returns 112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Ljd;ZIZIII)I#4",
+      "originalName": "param4",
+      "to": "destinationIndex",
+      "evidence": "ha.java: Delegates a step cost with optional passage through unmoved same-player occupants; noncanonical guard returns 112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Ljd;ZIZIII)I#5",
+      "originalName": "param5",
+      "to": "sourceIndex",
+      "evidence": "ha.java: Delegates a step cost with optional passage through unmoved same-player occupants; noncanonical guard returns 112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(Ljd;ZIZIII)I#6",
+      "originalName": "param6",
+      "to": "playerId",
+      "evidence": "ha.java: Delegates a step cost with optional passage through unmoved same-player occupants; noncanonical guard returns 112.",
       "confidence": "reviewed"
     },
     {
@@ -38800,6 +39682,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kf.b(II)I#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "kf.java: Original integer XOR helper; XOR three reverses cardinal path directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kf.b(II)I#1",
+      "originalName": "param1",
+      "to": "right",
+      "evidence": "kf.java: Original integer XOR helper; XOR three reverses cardinal path directions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kh.a(Lkb;IIZI)V#0",
       "originalName": "param0",
       "to": "widget",
@@ -41978,6 +42874,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nn.a(IBII)I#0",
+      "originalName": "param0",
+      "to": "tileIndex",
+      "evidence": "nn.java: Chooses a lower-cost cardinal neighbor whose step cost matches the cost difference; strict comparisons retain left/right/up/down tie order and mapWidth Y bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IBII)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Chooses a lower-cost cardinal neighbor whose step cost matches the cost difference; strict comparisons retain left/right/up/down tie order and mapWidth Y bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IBII)I#2",
+      "originalName": "param2",
+      "to": "tileX",
+      "evidence": "nn.java: Chooses a lower-cost cardinal neighbor whose step cost matches the cost difference; strict comparisons retain left/right/up/down tie order and mapWidth Y bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IBII)I#3",
+      "originalName": "param3",
+      "to": "tileY",
+      "evidence": "nn.java: Chooses a lower-cost cardinal neighbor whose step cost matches the cost difference; strict comparisons retain left/right/up/down tie order and mapWidth Y bound.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nn.a(II)Lmn;#0",
       "originalName": "param0",
       "to": "actingPlayer",
@@ -41989,6 +42913,27 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "nn.java: Copies the selected path and wraps it in a SpellCastRequest when a spell modifier is present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IIB)V#0",
+      "originalName": "param0",
+      "to": "targetY",
+      "evidence": "nn.java: Requires target bit 4, chooses direct attack when bit 1 is set or searches a reachable firing position and reconstructs its path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IIB)V#1",
+      "originalName": "param1",
+      "to": "targetX",
+      "evidence": "nn.java: Requires target bit 4, chooses direct attack when bit 1 is set or searches a reachable firing position and reconstructs its path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Requires target bit 4, chooses direct attack when bit 1 is set or searches a reachable firing position and reconstructs its path.",
       "confidence": "reviewed"
     },
     {
@@ -42059,6 +43004,41 @@
       "originalName": "param2",
       "to": "attackedUnit",
       "evidence": "nn.java: Serializes selected path and target offsets for the attacked unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(Lv;I)V#0",
+      "originalName": "param0",
+      "to": "camera",
+      "evidence": "nn.java: Projects selected grid coordinates, draws path segments and switches palette beyond the movement budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(Lv;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Projects selected grid coordinates, draws path segments and switches palette beyond the movement budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZII)V#0",
+      "originalName": "param0",
+      "to": "allowOccupiedTiles",
+      "evidence": "nn.java: Marks permitted Manhattan-range tiles at cost zero, or scans the whole board for negative range; preserves terrain, occupancy and status restrictions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZII)V#1",
+      "originalName": "param1",
+      "to": "range",
+      "evidence": "nn.java: Marks permitted Manhattan-range tiles at cost zero, or scans the whole board for negative range; preserves terrain, occupancy and status restrictions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZII)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Marks permitted Manhattan-range tiles at cost zero, or scans the whole board for negative range; preserves terrain, occupancy and status restrictions.",
       "confidence": "reviewed"
     },
     {
@@ -42710,6 +43690,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "oc.java: Handles one decoded key with lower-case ASCII/underscore conversion, twelve-character limit, backspace and retained cancellation/submission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(II)I#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "oe.java: Original integer OR helper, including attack-mask union.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(II)I#1",
+      "originalName": "param1",
+      "to": "right",
+      "evidence": "oe.java: Original integer OR helper, including attack-mask union.",
       "confidence": "reviewed"
     },
     {
@@ -43550,6 +44544,83 @@
       "originalName": "param1",
       "to": "verbose",
       "evidence": "oj.java: Abstract diagnostic contract propagated to event subclasses. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#0",
+      "originalName": "param0",
+      "to": "mapWidth",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#1",
+      "originalName": "param1",
+      "to": "tiles",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#10",
+      "originalName": "param10",
+      "to": "obfuscationGuard",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#2",
+      "originalName": "param2",
+      "to": "checkOccupancy",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#3",
+      "originalName": "param3",
+      "to": "destinationIndex",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#4",
+      "originalName": "param4",
+      "to": "playerId",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#5",
+      "originalName": "param5",
+      "to": "mapHeight",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#6",
+      "originalName": "param6",
+      "to": "teamIndex",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#7",
+      "originalName": "param7",
+      "to": "unit",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#8",
+      "originalName": "param8",
+      "to": "sourceIndex",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(I[Lne;ZIIIILjd;IZZ)I#9",
+      "originalName": "param9",
+      "to": "allowUnmovedOwnUnits",
+      "evidence": "pj.java: Combines source/destination terrain costs, unit overrides, occupancy and hostile tile effects; preserves mapHeight divisor in effect lookup and guard-false result 20.",
       "confidence": "reviewed"
     },
     {
@@ -45363,6 +46434,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(II)I#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "rn.java: Original integer AND helper, including attack-mask intersection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(II)I#1",
+      "originalName": "param1",
+      "to": "right",
+      "evidence": "rn.java: Original integer AND helper, including attack-mask intersection.",
       "confidence": "reviewed"
     },
     {
@@ -50176,10 +51261,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "65b43e537ad1a7d48346cc75fdcffe491ee75494da2122b6f192f9472808e1ea",
+      "build-armiesofgielinor-rules.mjs": "f860b5a75a7538bef7a8daa5227b33722443a1dc793e03d729da5e36edaf9e8c",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "1492da42d31145799fea60c3f16f85bbd77d5cd9c5d993863f04f4e7e564b075",
+      "tests/test-armiesofgielinor-core.mjs": "d0a81a2bc9cd2b097f8b8cab84e9a63f305508dea366780ff02898c7ef26c1ba",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

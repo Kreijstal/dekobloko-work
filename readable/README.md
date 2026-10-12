@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 136,860 raw/named checks agree. Controlled cipher output does not constitute
+All 141,999 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -291,8 +291,23 @@ scaling, signed rejection, draw counts and invalid-bound behavior.
 LineOfSightGrid names the retained board, local mask and terrain-blocked rays.
 Empty-ground range, blocking endpoints and bypass fixtures retain the original
 inclusive coordinate-30 edge quirks. Scatter fixtures cover roll boundaries,
-preferred-neighbor bias and occupied-cell protection. Target-mask combination
-and rendered attack previews remain unverified.
+preferred-neighbor bias and occupied-cell protection. Target eligibility and mask
+merging now have native fixtures; rendered attack previews remain unverified.
+
+MovementPlanner now distinguishes attackTargetMask, selection/rendering state
+and movementCostsThroughOwnUnits. That second grid allows unmoved same-player
+occupants; same-team units with a different owner remain blocked. The guide
+explains mask bits 1/2/4, immediate versus moving origins and existing-bit
+preservation. Native fixtures cover mask footprints, category/alliance/effect
+filters, terrain/capability overrides and both movement-cost wrappers. Complete
+preparation on controlled square boards agrees with independent breadth-first
+distances, attack footprints and other-player selection state.
+
+Predecessor selection and forward path reconstruction now have names and native
+fixtures for tie order, step-cost consistency, movement-spent rejection and path
+clearing. A rectangular fixture preserves the existing mapHeight divisor used
+for terrain-effect lookup. Full preparation on rectangular maps, long paths and
+rendered path palettes remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
