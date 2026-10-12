@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 143,249 raw/named checks agree. Controlled cipher output does not constitute
+All 143,733 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -344,6 +344,20 @@ cancellation and exhausted unit cursors remain visible in the documentation.
 Original-bytecode checksum matching, loaded spell definitions, casting eligibility
 and live server compatibility remain unverified.
 
+BattleGraphicsAssets, BattlefieldTheme and PcmSample now have reviewed names.
+The basic sprite loader, five-theme catalog, resource archives, renderer bindings,
+owned sprite arrays, background/music/ambient assets and PCM payload fields have
+names. Real archive/decoder fixtures check marker/effect assets, kalphite canvas
+normalization, theme identities, switching/release and partial readiness gates.
+PCM fixtures preserve byte-array ownership, endpoints, flags and ambient choice.
+
+Shared sprite-sheet buffers and decoder/build/release methods now have names.
+Independent two-frame byte fixtures verify footer geometry, palette normalization,
+row/column layout and alpha lanes. Indexed builders retain indices/palette; the
+tested RGB-array path ignores alpha, and cleanup retains alpha scratch data.
+Production assets, JPEG decoding, sound-cache/music preparation, live audio and
+end-to-end rendering remain unverified.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -376,7 +390,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 207 reviewed classes around battlefield state, units, map
+The current pass names 210 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

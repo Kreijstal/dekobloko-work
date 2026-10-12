@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 44,
+  "version": 45,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2001,6 +2001,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:co",
+      "originalName": "co",
+      "to": "BattlefieldTheme",
+      "evidence": "co.java: Theme ID, terrain/foliage/structure sprite names and arrays, preview colours, background image, ambient samples and music assets. Unrelated static ranking/text helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cq",
       "originalName": "cq",
       "to": "CampaignMenuEntry",
@@ -2012,6 +2019,13 @@
       "originalName": "cv",
       "to": "CampaignMenu",
       "evidence": "cv.java: Campaign cards, mission-map entries, score updates, selection and quicksave dialogs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dg",
+      "originalName": "dg",
+      "to": "BattleGraphicsAssets",
+      "evidence": "dg.java: Retains the basic sprite archive, loads battle marker/effect sprites and switches shared theme sprite bindings. Unrelated static chat/menu helpers retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -2995,6 +3009,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sn",
+      "originalName": "sn",
+      "to": "PcmSample",
+      "evidence": "sn.java: Retained PCM bytes, sample rate, loop endpoints and loop-mode flag supplied by sound decoders and consumed by playback streams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sp",
       "originalName": "sp",
       "to": "DualNodeIterator",
@@ -3289,10 +3310,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ac.field_k:[Lru;",
+      "originalName": "field_k",
+      "to": "activeTerrainSprites",
+      "evidence": "ac.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ae.field_t:Lhi;",
       "originalName": "field_t",
       "to": "socket",
       "evidence": "ae.java: Socket client reads availability/bytes and queues outgoing records through this transport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ae.field_u:Lkl;",
+      "originalName": "field_u",
+      "to": "themeSpriteArchive",
+      "evidence": "ae.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
       "confidence": "reviewed"
     },
     {
@@ -3891,6 +3926,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bk.field_d:[Lru;",
+      "originalName": "field_d",
+      "to": "attackTargetSprites",
+      "evidence": "bk.java: Basic archive resource literals identify these shared battle marker/effect assets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bl.field_c:Lkl;",
       "originalName": "field_c",
       "to": "globalArchive",
@@ -4084,6 +4126,13 @@
       "originalName": "field_m",
       "to": "unitDefinitions",
       "evidence": "bw.java: Unit queries type-indexed speed/range/flag columns; class itself also owns unrelated crypto.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:c.field_e:[I",
+      "originalName": "field_e",
+      "to": "decodedSpriteHeights",
+      "evidence": "c.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
       "confidence": "reviewed"
     },
     {
@@ -4297,6 +4346,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:co.field_a:Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "terrainSpriteFile",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_b:[Lwk;",
+      "originalName": "field_b",
+      "to": "structureShadowSprites",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_c:Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "structureShadowFile",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_d:I",
+      "originalName": "field_d",
+      "to": "themeId",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_e:Ljava/lang/String;",
+      "originalName": "field_e",
+      "to": "foliageShadowFile",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_g:[Lru;",
+      "originalName": "field_g",
+      "to": "structureSprites",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_i:[I",
+      "originalName": "field_i",
+      "to": "terrainPreviewColours",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_l:Ljava/lang/String;",
+      "originalName": "field_l",
+      "to": "musicTrackName",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_m:[Lru;",
+      "originalName": "field_m",
+      "to": "foliageSprites",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_n:Lum;",
+      "originalName": "field_n",
+      "to": "musicTrack",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_o:[Ljava/lang/String;",
+      "originalName": "field_o",
+      "to": "ambientSoundNames",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_q:Ljava/lang/String;",
+      "originalName": "field_q",
+      "to": "structureSpriteFile",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_t:[Lsn;",
+      "originalName": "field_t",
+      "to": "ambientSounds",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_u:[Lwk;",
+      "originalName": "field_u",
+      "to": "foliageShadowSprites",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_v:Ljava/lang/String;",
+      "originalName": "field_v",
+      "to": "foliageSpriteFile",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_w:[Lru;",
+      "originalName": "field_w",
+      "to": "terrainSprites",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_x:Ljava/lang/String;",
+      "originalName": "field_x",
+      "to": "backgroundImageFile",
+      "evidence": "co.java: Five-theme factory resource literals and sprite/music/sound loader/renderer consumers distinguish these owned roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cq.field_A:I",
       "originalName": "field_A",
       "to": "score",
@@ -4416,6 +4584,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cq.field_z:[[B",
+      "originalName": "field_z",
+      "to": "decodedSpriteAlphas",
+      "evidence": "cq.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ct.field_o:[Lrg;",
       "originalName": "field_o",
       "to": "spellMenuById",
@@ -4486,10 +4661,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dd.field_k:Lwk;",
+      "originalName": "field_k",
+      "to": "activeTerrainSample",
+      "evidence": "dd.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dg.field_b:Ljava/lang/String;",
       "originalName": "field_b",
       "to": "decodedChatText",
       "evidence": "dg.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dg.field_d:Lkl;",
+      "originalName": "field_d",
+      "to": "basicArchive",
+      "evidence": "dg.java: Constructor retains the archive used by literal basic/cantmove/attacktargets/effect sprite lookups.",
       "confidence": "reviewed"
     },
     {
@@ -5025,6 +5214,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:es.field_d:[Lru;",
+      "originalName": "field_d",
+      "to": "boneSprites",
+      "evidence": "es.java: Basic archive resource literals identify these shared battle marker/effect assets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:eu.field_b:Lat;",
       "originalName": "field_b",
       "to": "units",
@@ -5064,6 +5260,13 @@
       "originalName": "field_B",
       "to": "value",
       "evidence": "f.java: StrongCacheEntry retains this object directly without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fd.field_m:Lkl;",
+      "originalName": "field_m",
+      "to": "themeBackgroundArchive",
+      "evidence": "fd.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
       "confidence": "reviewed"
     },
     {
@@ -5617,6 +5820,13 @@
       "originalName": "field_f",
       "to": "instructionIllustrationModes",
       "evidence": "go.java: InstructionsPanel dispatches these per-page/section/row mode values to illustration layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:go.field_g:Lwk;",
+      "originalName": "field_g",
+      "to": "playerRingSprite",
+      "evidence": "go.java: Basic archive resource literals identify these shared battle marker/effect assets.",
       "confidence": "reviewed"
     },
     {
@@ -6355,6 +6565,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hq.field_a:[Lru;",
+      "originalName": "field_a",
+      "to": "surroundTileSprites",
+      "evidence": "hq.java: Basic archive resource literals identify these shared battle marker/effect assets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hr.field_a:Lgd;",
       "originalName": "field_a",
       "to": "model",
@@ -6635,6 +6852,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ic.field_Ib:Ldg;",
+      "originalName": "field_Ib",
+      "to": "battleGraphicsAssets",
+      "evidence": "ic.java: Gameplay owns the basic sprite/theme binding loader.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ic.field_M:Lv;",
       "originalName": "field_M",
       "to": "camera",
@@ -6866,6 +7090,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:iq.field_g:[I",
+      "originalName": "field_g",
+      "to": "decodedSpriteOffsetYs",
+      "evidence": "iq.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:iq.field_h:J",
       "originalName": "field_h",
       "to": "lastPacketReadMillis",
@@ -7031,6 +7262,20 @@
       "originalName": "field_w",
       "to": "buttonMode",
       "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iw.field_n:I",
+      "originalName": "field_n",
+      "to": "decodedSpriteCount",
+      "evidence": "iw.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_e:[I",
+      "originalName": "field_e",
+      "to": "decodedSpriteOffsetXs",
+      "evidence": "j.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
       "confidence": "reviewed"
     },
     {
@@ -7972,6 +8217,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jq.field_G:[Lwk;",
+      "originalName": "field_G",
+      "to": "kalphiteSprites",
+      "evidence": "jq.java: Basic archive resource literals identify these shared battle marker/effect assets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jr.field_a:Z",
       "originalName": "field_a",
       "to": "unitChoice",
@@ -8420,6 +8672,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:l.field_b:[Lru;",
+      "originalName": "field_b",
+      "to": "activeStructureSprites",
+      "evidence": "l.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:l.field_c:Lom;",
       "originalName": "field_c",
       "to": "activeCampaignMission",
@@ -8592,6 +8851,13 @@
       "originalName": "field_s",
       "to": "destinationY",
       "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lg.field_d:I",
+      "originalName": "field_d",
+      "to": "decodedSpriteCanvasWidth",
+      "evidence": "lg.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
       "confidence": "reviewed"
     },
     {
@@ -8819,6 +9085,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mc.field_d:[Lco;",
+      "originalName": "field_d",
+      "to": "battlefieldThemes",
+      "evidence": "mc.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mc.field_e:Lha;",
       "originalName": "field_e",
       "to": "battlefield",
@@ -8900,6 +9173,13 @@
       "originalName": "field_f",
       "to": "pendingOpcode",
       "evidence": "mg.java: Negative means no opcode is pending; framing retains the opcode across partial payload reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mk.field_e:I",
+      "originalName": "field_e",
+      "to": "currentThemeId",
+      "evidence": "mk.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
       "confidence": "reviewed"
     },
     {
@@ -9257,6 +9537,13 @@
       "originalName": "field_d",
       "to": "battlefield",
       "evidence": "ne.java: MapTile tagged decoder, constructors and god metadata accessor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ne.field_e:[Z",
+      "originalName": "field_e",
+      "to": "decodedSpriteHasAlpha",
+      "evidence": "ne.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
       "confidence": "reviewed"
     },
     {
@@ -9624,6 +9911,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nr.field_c:[Lru;",
+      "originalName": "field_c",
+      "to": "activeFoliageSprites",
+      "evidence": "nr.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ns.field_A:[[[Ljava/lang/String;",
       "originalName": "field_A",
       "to": "mapNamesByThemeAndSize",
@@ -9747,6 +10041,13 @@
       "originalName": "field_Kb",
       "to": "notificationCode",
       "evidence": "of.java: Lobby packet subtypes 5/6/14–19 retain player identity/stats and invitation/request notifications; row rendering and action labels distinguish accountName from displayed name. The low packed flag purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:of.field_Mb:[Lru;",
+      "originalName": "field_Mb",
+      "to": "cannotMoveSprites",
+      "evidence": "of.java: Basic archive resource literals identify these shared battle marker/effect assets.",
       "confidence": "reviewed"
     },
     {
@@ -10062,6 +10363,13 @@
       "originalName": "field_a",
       "to": "watchedRoomId",
       "evidence": "oo.java: Watched-room request writer retains this ID, skips repeated requests and clears the prior room playerNames cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oq.field_l:[Lwk;",
+      "originalName": "field_l",
+      "to": "activeStructureShadows",
+      "evidence": "oq.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
       "confidence": "reviewed"
     },
     {
@@ -10471,6 +10779,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qm.field_K:[I",
+      "originalName": "field_K",
+      "to": "decodedSpriteWidths",
+      "evidence": "qm.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qn.field_a:I",
       "originalName": "field_a",
       "to": "clipTop",
@@ -10580,6 +10895,13 @@
       "originalName": "field_h",
       "to": "pathDirections",
       "evidence": "qv.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qv.field_j:[I",
+      "originalName": "field_j",
+      "to": "decodedSpritePalette",
+      "evidence": "qv.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
       "confidence": "reviewed"
     },
     {
@@ -11367,6 +11689,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sn.field_l:Z",
+      "originalName": "field_l",
+      "to": "loopModeFlag",
+      "evidence": "sn.java: PCM constructors retain the array/rate/endpoints/flag consumed by playback stream setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sn.field_m:I",
+      "originalName": "field_m",
+      "to": "loopStart",
+      "evidence": "sn.java: PCM constructors retain the array/rate/endpoints/flag consumed by playback stream setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sn.field_n:I",
+      "originalName": "field_n",
+      "to": "loopEnd",
+      "evidence": "sn.java: PCM constructors retain the array/rate/endpoints/flag consumed by playback stream setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sn.field_o:[B",
+      "originalName": "field_o",
+      "to": "samples",
+      "evidence": "sn.java: PCM constructors retain the array/rate/endpoints/flag consumed by playback stream setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sn.field_p:I",
+      "originalName": "field_p",
+      "to": "sampleRate",
+      "evidence": "sn.java: PCM constructors retain the array/rate/endpoints/flag consumed by playback stream setup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sp.field_a:Lms;",
       "originalName": "field_a",
       "to": "lastReturned",
@@ -11665,6 +12022,13 @@
       "originalName": "field_Z",
       "to": "activeContextMenu",
       "evidence": "tn.java: Context-menu creation publishes this target state for menu builders and polling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_eb:[Lwk;",
+      "originalName": "field_eb",
+      "to": "activeFoliageShadows",
+      "evidence": "tn.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
       "confidence": "reviewed"
     },
     {
@@ -12361,6 +12725,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vf.field_j:[Lwk;",
+      "originalName": "field_j",
+      "to": "smokeSprites",
+      "evidence": "vf.java: Basic archive resource literals identify these shared battle marker/effect assets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vg.field_p:I",
       "originalName": "field_p",
       "to": "ignoreCount",
@@ -12449,6 +12820,13 @@
       "originalName": "field_i",
       "to": "frameId",
       "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_j:[[B",
+      "originalName": "field_j",
+      "to": "decodedSpriteIndices",
+      "evidence": "vj.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
       "confidence": "reviewed"
     },
     {
@@ -12578,6 +12956,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wf.field_B:[Lwk;",
+      "originalName": "field_B",
+      "to": "boneShadowSprites",
+      "evidence": "wf.java: Basic archive resource literals identify these shared battle marker/effect assets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wg.field_f:Lms;",
       "originalName": "field_f",
       "to": "sentinel",
@@ -12631,6 +13016,13 @@
       "originalName": "field_F",
       "to": "currentRoomPlayers",
       "evidence": "wl.java: Lobby packet dispatcher, sorted insertion, room/player lookup, ownership test and notification expiry share these exact globals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wl.field_N:Lwk;",
+      "originalName": "field_N",
+      "to": "groundShadowSprite",
+      "evidence": "wl.java: Basic archive resource literals identify these shared battle marker/effect assets.",
       "confidence": "reviewed"
     },
     {
@@ -12764,6 +13156,13 @@
       "originalName": "field_f",
       "to": "x",
       "evidence": "wq.java: Hamilton-product component equations and identity scalar 65536 establish the 16.16 quaternion roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wr.field_J:I",
+      "originalName": "field_J",
+      "to": "decodedSpriteCanvasHeight",
+      "evidence": "wr.java: Shared sprite-sheet decode scratch; builders transfer indices/palette ownership where needed and the existing release helper leaves alpha data retained.",
       "confidence": "reviewed"
     },
     {
@@ -13128,6 +13527,146 @@
       "originalName": "var6Lifetime1",
       "to": "damageScore",
       "evidence": "b.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#11",
+      "originalName": "var3",
+      "to": "paletteSize",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#12",
+      "originalName": "var4",
+      "to": "offsetXIndex",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#13",
+      "originalName": "var5",
+      "to": "spriteWidth",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#14",
+      "originalName": "var6",
+      "to": "spriteHeight",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#15",
+      "originalName": "var7",
+      "to": "pixelCount",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#16",
+      "originalName": "var8",
+      "to": "indices",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#17",
+      "originalName": "var9",
+      "to": "alphas",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#18",
+      "originalName": "var10",
+      "to": "hasNonOpaqueAlpha",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#19",
+      "originalName": "var11",
+      "to": "layoutFlags",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#20",
+      "originalName": "var12",
+      "to": "pixelIndexOrX",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#21",
+      "originalName": "var13",
+      "to": "alphaOrY",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#22",
+      "originalName": "var14",
+      "to": "alphaValue",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#23",
+      "originalName": "var15",
+      "to": "obfuscationControl",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#24",
+      "originalName": "var16",
+      "to": "packet",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#25",
+      "originalName": "var17",
+      "to": "packetAlias",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#30",
+      "originalName": "var4Lifetime1",
+      "to": "offsetYIndex",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#31",
+      "originalName": "var4Lifetime2",
+      "to": "widthIndex",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#32",
+      "originalName": "var4Lifetime3",
+      "to": "heightIndex",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#33",
+      "originalName": "var4Lifetime4",
+      "to": "paletteIndex",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a([BI)V#34",
+      "originalName": "var4Lifetime5",
+      "to": "spriteIndex",
+      "evidence": "b.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -13551,6 +14090,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:co.a(ILp;)V#0",
+      "originalName": "var3_int",
+      "to": "soundIndex",
+      "evidence": "co.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(ILp;)V#1",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "co.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(ILp;)V#2",
+      "originalName": "var5",
+      "to": "discardedBytes",
+      "evidence": "co.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:cq.<init>(Lom;)V#0",
       "originalName": "var4",
       "to": "playerSlotIndex",
@@ -13968,6 +14528,48 @@
       "originalName": "var7",
       "to": "candidateCharacters",
       "evidence": "db.java: Reviewed social record, canonical-name collision lookup, ordering and command framing at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dg.a(II)V#0",
+      "originalName": "var4",
+      "to": "previousTheme",
+      "evidence": "dg.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dg.a(II)V#1",
+      "originalName": "var5",
+      "to": "nextTheme",
+      "evidence": "dg.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dg.a(II)V#2",
+      "originalName": "var3",
+      "to": "previousAlias",
+      "evidence": "dg.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dg.a(II)V#3",
+      "originalName": "var3Lifetime1",
+      "to": "nextAlias",
+      "evidence": "dg.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dg.b(I)V#0",
+      "originalName": "var2",
+      "to": "spriteIndex",
+      "evidence": "dg.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dg.b(I)V#1",
+      "originalName": "var3",
+      "to": "obfuscationControl",
+      "evidence": "dg.java: Reviewed theme selection/ownership or sprite-sheet footer/layout state at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -22728,6 +23330,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aw.a(Lco;[Lco;I)V",
+      "originalName": "a",
+      "to": "registerTheme",
+      "evidence": "aw.java: Stores the supplied theme by its own themeId into the caller array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:b.a(IIIBI)I",
       "originalName": "a",
       "to": "calculateMissionScore",
@@ -22739,6 +23348,13 @@
       "originalName": "a",
       "to": "getUnitUnlockOrdinal",
       "evidence": "b.java: Finds the unit ID within its unlock group; missing IDs retain ordinal-zero fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a([BI)V",
+      "originalName": "a",
+      "to": "decodeSpriteSheet",
+      "evidence": "b.java: Reads the footer count/canvas/offsets/dimensions, RGB palette and row/column-major indices with optional alpha into shared scratch buffers.",
       "confidence": "reviewed"
     },
     {
@@ -23309,10 +23925,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:co.a(I)V",
+      "originalName": "a",
+      "to": "releaseSprites",
+      "evidence": "co.java: Clears the five owned sprite arrays while retaining resource names, music and ambient sounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:co.a(III[B)Ljava/lang/String;",
       "originalName": "a",
       "to": "decodeSingleByteText",
       "evidence": "co.java: Decodes the single-byte alphabet and skips zero bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:co.a(ILp;)V",
+      "originalName": "a",
+      "to": "loadAmbientSounds",
+      "evidence": "co.java: Allocates one retained sample per configured name and resolves it through the supplied sound cache; null names leave existing samples unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:co.a(Lkl;ILkl;)V",
+      "originalName": "a",
+      "to": "setResourceArchives",
+      "evidence": "co.java: Publishes the background-image and sprite archives used by all theme instances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:co.a(Lp;Lkl;Lkl;ILih;)V",
+      "originalName": "a",
+      "to": "prepareMusicSamples",
+      "evidence": "co.java: Loads and retains the named music track, then asks the supplied audio engine to prepare its samples within the budget; preserves early null gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:co.b(B)V",
+      "originalName": "b",
+      "to": "loadSpriteSheets",
+      "evidence": "co.java: Loads five named basic sprite sheets unless structureShadowSprites is already nonnull; preserves the guard path that clears foliage shadows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:co.b(I)Lsn;",
+      "originalName": "b",
+      "to": "chooseAmbientSound",
+      "evidence": "co.java: Selects one retained ambient sample using the shared bounded-random helper; preserves missing/empty array failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:co.c(B)Lwk;",
+      "originalName": "c",
+      "to": "loadBackgroundImage",
+      "evidence": "co.java: Byte-guard wrapper around the named background-image reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:co.c(I)Lwk;",
+      "originalName": "c",
+      "to": "readBackgroundImage",
+      "evidence": "co.java: Fetches named image bytes and constructs an AWT-backed RGB sprite for guard 34; other guards return null.",
       "confidence": "reviewed"
     },
     {
@@ -23467,6 +24139,20 @@
       "originalName": "a",
       "to": "readTieredSignedInt",
       "evidence": "de.java: Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a(II)V",
+      "originalName": "a",
+      "to": "selectTheme",
+      "evidence": "dg.java: Skips the current theme, optionally releases the previous theme, loads the new sprite sheets and publishes shared render arrays plus terrain sprite one as RGB.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.b(I)V",
+      "originalName": "b",
+      "to": "loadBasicSprites",
+      "evidence": "dg.java: Canonical guard zero loads battle marker/effect resources from group basic and normalizes all kalphite canvases; the integer also feeds the loop start and bone-loader guard.",
       "confidence": "reviewed"
     },
     {
@@ -24219,6 +24905,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fk.a(Ljava/lang/String;BLkl;Ljava/lang/String;)[Lwk;",
+      "originalName": "a",
+      "to": "loadRgbSpritesByName",
+      "evidence": "fk.java: Resolves a group/file and materializes RGB frames through the shared sheet decoder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fk.a(Lkb;IIZI)V",
       "originalName": "a",
       "to": "paintWidget",
@@ -24531,6 +25224,13 @@
       "originalName": "a",
       "to": "isLocalAccountName",
       "evidence": "gt.java: Compares the normalized target against the retained local account-name key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gv.a(I)Lwk;",
+      "originalName": "a",
+      "to": "buildFirstDecodedRgbSprite",
+      "evidence": "gv.java: Maps frame zero through the palette and releases selected scratch references.",
       "confidence": "reviewed"
     },
     {
@@ -26529,6 +27229,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kp.a(ZILkl;I)Z",
+      "originalName": "a",
+      "to": "decodeSpriteSheetFromArchive",
+      "evidence": "kp.java: Fetches group/file bytes and decodes when available; null bytes return false.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kq.a(IIIILbv;)V",
       "originalName": "a",
       "to": "enterTaggedPayload",
@@ -26788,6 +27495,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lo.a(Ljava/lang/String;ILjava/lang/String;Lkl;)[Lru;",
+      "originalName": "a",
+      "to": "loadIndexedSpritesByName",
+      "evidence": "lo.java: Resolves a group/file and loads palette-indexed sprite frames for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lo.a(Lmo;I)V",
       "originalName": "a",
       "to": "acceptReceivedChatMessage",
@@ -26806,6 +27520,13 @@
       "originalName": "e",
       "to": "getTerrainGrid",
       "evidence": "lo.java: Returns rows of terrain type IDs from decoded tiles or encoded bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lr.a(I)[Lru;",
+      "originalName": "a",
+      "to": "buildDecodedIndexedSprites",
+      "evidence": "lr.java: Builds indexed frames retaining the shared palette and per-frame index arrays, then releases selected scratch references.",
       "confidence": "reviewed"
     },
     {
@@ -26911,6 +27632,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.g(I)[Lwk;",
+      "originalName": "g",
+      "to": "buildDecodedRgbSprites",
+      "evidence": "md.java: Maps each index through the shared palette, builds RGB frames and releases selected decode buffers; alpha lanes are not used by this path.",
       "confidence": "reviewed"
     },
     {
@@ -27261,6 +27989,13 @@
       "originalName": "a",
       "to": "openClientContextMenu",
       "evidence": "ng.java: Retains the source scroll container and constructs/selects a context-menu target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nh.a(Ljava/lang/String;Ljava/lang/String;Lkl;Z)Lwk;",
+      "originalName": "a",
+      "to": "loadRgbSpriteByName",
+      "evidence": "nh.java: Resolves a named sheet and materializes its first RGB frame.",
       "confidence": "reviewed"
     },
     {
@@ -28325,6 +29060,13 @@
       "originalName": "a",
       "to": "setBounds",
       "evidence": "kb.java: Assigns x, width, y and height in the original argument order; guard 8192 is canonical. DropdownSelector overrides this for its collapsed height. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.d(B)V",
+      "originalName": "d",
+      "to": "releaseSpriteDecodeBuffers",
+      "evidence": "rj.java: Clears widths/heights/X offsets/indices and, for guard >=96, palette/Y offsets; alpha buffers and flags remain retained.",
       "confidence": "reviewed"
     },
     {
@@ -29469,6 +30211,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ur.e(I)[Lco;",
+      "originalName": "e",
+      "to": "createThemeCatalog",
+      "evidence": "ur.java: Builds five indexed plains/desert/ice/swamp/burnt records with literal sprite/image/music/ambient names and sixteen preview colours.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ut.a(Lbv;BI)Lsc;",
       "originalName": "a",
       "to": "readTaggedMap",
@@ -30166,6 +30915,13 @@
       "originalName": "a",
       "to": "popFirst",
       "evidence": "wg.java: Guard false unlinks and returns the first secondary node; true returns null without unlinking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wk.i()V",
+      "originalName": "i",
+      "to": "normalizeCanvas",
+      "evidence": "wk.java: Expands cropped pixels into the full canvas at their retained offsets and resets offsets to zero.",
       "confidence": "reviewed"
     },
     {
@@ -31065,6 +31821,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:aw.a(Lco;[Lco;I)V#0",
+      "originalName": "param0",
+      "to": "theme",
+      "evidence": "aw.java: Stores the supplied theme by its own themeId into the caller array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:aw.a(Lco;[Lco;I)V#1",
+      "originalName": "param1",
+      "to": "themes",
+      "evidence": "aw.java: Stores the supplied theme by its own themeId into the caller array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:aw.a(Lco;[Lco;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "aw.java: Stores the supplied theme by its own themeId into the caller array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:b.a(IIIBI)I#0",
       "originalName": "param0",
       "to": "turnTarget",
@@ -31111,6 +31888,20 @@
       "originalName": "param1",
       "to": "unitType",
       "evidence": "b.java: Finds the unit ID within its unlock group; missing IDs retain ordinal-zero fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a([BI)V#0",
+      "originalName": "param0",
+      "to": "encodedSheet",
+      "evidence": "b.java: Reads the footer count/canvas/offsets/dimensions, RGB palette and row/column-major indices with optional alpha into shared scratch buffers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a([BI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "b.java: Reads the footer count/canvas/offsets/dimensions, RGB palette and row/column-major indices with optional alpha into shared scratch buffers.",
       "confidence": "reviewed"
     },
     {
@@ -32423,6 +33214,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:co.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Clears the five owned sprite arrays while retaining resource names, music and ambient sounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:co.a(III[B)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "offset",
@@ -32448,6 +33246,104 @@
       "originalName": "param3",
       "to": "bytes",
       "evidence": "co.java: Decodes the single-byte alphabet and skips zero bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(ILp;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Allocates one retained sample per configured name and resolves it through the supplied sound cache; null names leave existing samples unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(ILp;)V#1",
+      "originalName": "param1",
+      "to": "soundCache",
+      "evidence": "co.java: Allocates one retained sample per configured name and resolves it through the supplied sound cache; null names leave existing samples unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(Lkl;ILkl;)V#0",
+      "originalName": "param0",
+      "to": "backgroundArchive",
+      "evidence": "co.java: Publishes the background-image and sprite archives used by all theme instances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(Lkl;ILkl;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Publishes the background-image and sprite archives used by all theme instances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(Lkl;ILkl;)V#2",
+      "originalName": "param2",
+      "to": "spriteArchive",
+      "evidence": "co.java: Publishes the background-image and sprite archives used by all theme instances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(Lp;Lkl;Lkl;ILih;)V#0",
+      "originalName": "param0",
+      "to": "soundCache",
+      "evidence": "co.java: Loads and retains the named music track, then asks the supplied audio engine to prepare its samples within the budget; preserves early null gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(Lp;Lkl;Lkl;ILih;)V#1",
+      "originalName": "param1",
+      "to": "patchArchive",
+      "evidence": "co.java: Loads and retains the named music track, then asks the supplied audio engine to prepare its samples within the budget; preserves early null gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(Lp;Lkl;Lkl;ILih;)V#2",
+      "originalName": "param2",
+      "to": "musicArchive",
+      "evidence": "co.java: Loads and retains the named music track, then asks the supplied audio engine to prepare its samples within the budget; preserves early null gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(Lp;Lkl;Lkl;ILih;)V#3",
+      "originalName": "param3",
+      "to": "sampleBudget",
+      "evidence": "co.java: Loads and retains the named music track, then asks the supplied audio engine to prepare its samples within the budget; preserves early null gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(Lp;Lkl;Lkl;ILih;)V#4",
+      "originalName": "param4",
+      "to": "audioEngine",
+      "evidence": "co.java: Loads and retains the named music track, then asks the supplied audio engine to prepare its samples within the budget; preserves early null gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Loads five named basic sprite sheets unless structureShadowSprites is already nonnull; preserves the guard path that clears foliage shadows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.b(I)Lsn;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Selects one retained ambient sample using the shared bounded-random helper; preserves missing/empty array failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.c(B)Lwk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Byte-guard wrapper around the named background-image reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.c(I)Lwk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Fetches named image bytes and constructs an AWT-backed RGB sprite for guard 34; other guards return null.",
       "confidence": "reviewed"
     },
     {
@@ -32805,6 +33701,34 @@
       "originalName": "param5",
       "to": "tier2Bits",
       "evidence": "de.java: Two-bit selector chooses signed widths in tier order 0/1/2/3; cumulative half-range offsets preserve signs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dg.<init>(Lkl;)V#0",
+      "originalName": "param0",
+      "to": "basicArchive",
+      "evidence": "dg.java: Retains the supplied basic sprite archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dg.a(II)V#0",
+      "originalName": "param0",
+      "to": "themeId",
+      "evidence": "dg.java: Skips the current theme, optionally releases the previous theme, loads the new sprite sheets and publishes shared render arrays plus terrain sprite one as RGB.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dg.a(II)V#1",
+      "originalName": "param1",
+      "to": "minimumThemeIdToRelease",
+      "evidence": "dg.java: Skips the current theme, optionally releases the previous theme, loads the new sprite sheets and publishes shared render arrays plus terrain sprite one as RGB.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dg.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dg.java: Canonical guard zero loads battle marker/effect resources from group basic and normalizes all kalphite canvases; the integer also feeds the loop start and bone-loader guard.",
       "confidence": "reviewed"
     },
     {
@@ -34887,6 +35811,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fk.a(Ljava/lang/String;BLkl;Ljava/lang/String;)[Lwk;#0",
+      "originalName": "param0",
+      "to": "fileName",
+      "evidence": "fk.java: Resolves a group/file and materializes RGB frames through the shared sheet decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(Ljava/lang/String;BLkl;Ljava/lang/String;)[Lwk;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "fk.java: Resolves a group/file and materializes RGB frames through the shared sheet decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(Ljava/lang/String;BLkl;Ljava/lang/String;)[Lwk;#2",
+      "originalName": "param2",
+      "to": "archive",
+      "evidence": "fk.java: Resolves a group/file and materializes RGB frames through the shared sheet decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(Ljava/lang/String;BLkl;Ljava/lang/String;)[Lwk;#3",
+      "originalName": "param3",
+      "to": "groupName",
+      "evidence": "fk.java: Resolves a group/file and materializes RGB frames through the shared sheet decoder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fk.a(Lkb;IIZI)V#0",
       "originalName": "param0",
       "to": "widget",
@@ -35857,6 +36809,13 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "gt.java: Compares the normalized target against the retained local account-name key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gv.a(I)Lwk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gv.java: Maps frame zero through the palette and releases selected scratch references.",
       "confidence": "reviewed"
     },
     {
@@ -41495,6 +42454,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kp.a(ZILkl;I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kp.java: Fetches group/file bytes and decodes when available; null bytes return false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kp.a(ZILkl;I)Z#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "kp.java: Fetches group/file bytes and decodes when available; null bytes return false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kp.a(ZILkl;I)Z#2",
+      "originalName": "param2",
+      "to": "archive",
+      "evidence": "kp.java: Fetches group/file bytes and decodes when available; null bytes return false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kp.a(ZILkl;I)Z#3",
+      "originalName": "param3",
+      "to": "fileId",
+      "evidence": "kp.java: Fetches group/file bytes and decodes when available; null bytes return false.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kq.a(IIIILbv;)V#0",
       "originalName": "param0",
       "to": "headerBitPosition",
@@ -42265,6 +43252,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:lo.a(Ljava/lang/String;ILjava/lang/String;Lkl;)[Lru;#0",
+      "originalName": "param0",
+      "to": "fileName",
+      "evidence": "lo.java: Resolves a group/file and loads palette-indexed sprite frames for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(Ljava/lang/String;ILjava/lang/String;Lkl;)[Lru;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lo.java: Resolves a group/file and loads palette-indexed sprite frames for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(Ljava/lang/String;ILjava/lang/String;Lkl;)[Lru;#2",
+      "originalName": "param2",
+      "to": "groupName",
+      "evidence": "lo.java: Resolves a group/file and loads palette-indexed sprite frames for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(Ljava/lang/String;ILjava/lang/String;Lkl;)[Lru;#3",
+      "originalName": "param3",
+      "to": "archive",
+      "evidence": "lo.java: Resolves a group/file and loads palette-indexed sprite frames for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:lo.a(Lmo;I)V#0",
       "originalName": "param0",
       "to": "message",
@@ -42304,6 +43319,13 @@
       "originalName": "param0",
       "to": "keys",
       "evidence": "lr.java: Copies integer keys into a power-of-two table sized above 1.5 times the input count; does not retain the input array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lr.a(I)[Lru;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lr.java: Builds indexed frames retaining the shared palette and per-frame index arrays, then releases selected scratch references.",
       "confidence": "reviewed"
     },
     {
@@ -42633,6 +43655,13 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:md.g(I)[Lwk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "md.java: Maps each index through the shared palette, builds RGB frames and releases selected decode buffers; alpha lanes are not used by this path.",
       "confidence": "reviewed"
     },
     {
@@ -43767,6 +44796,34 @@
       "originalName": "param8",
       "to": "accountId",
       "evidence": "ng.java: Retains the source scroll container and constructs/selects a context-menu target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nh.a(Ljava/lang/String;Ljava/lang/String;Lkl;Z)Lwk;#0",
+      "originalName": "param0",
+      "to": "fileName",
+      "evidence": "nh.java: Resolves a named sheet and materializes its first RGB frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nh.a(Ljava/lang/String;Ljava/lang/String;Lkl;Z)Lwk;#1",
+      "originalName": "param1",
+      "to": "groupName",
+      "evidence": "nh.java: Resolves a named sheet and materializes its first RGB frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nh.a(Ljava/lang/String;Ljava/lang/String;Lkl;Z)Lwk;#2",
+      "originalName": "param2",
+      "to": "archive",
+      "evidence": "nh.java: Resolves a named sheet and materializes its first RGB frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nh.a(Ljava/lang/String;Ljava/lang/String;Lkl;Z)Lwk;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "nh.java: Resolves a named sheet and materializes its first RGB frame.",
       "confidence": "reviewed"
     },
     {
@@ -47095,6 +48152,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rj.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rj.java: Clears widths/heights/X offsets/indices and, for guard >=96, palette/Y offsets; alpha buffers and flags remain retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rk.a(B)Lft;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -48464,6 +49528,69 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "sm.java: Reuses a pooled candidate or constructs one, then restores its original sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sn.<init>(I[BII)V#0",
+      "originalName": "param0",
+      "to": "sampleRate",
+      "evidence": "sn.java: Retains PCM payload and endpoints without copying or validating them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sn.<init>(I[BII)V#1",
+      "originalName": "param1",
+      "to": "samples",
+      "evidence": "sn.java: Retains PCM payload and endpoints without copying or validating them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sn.<init>(I[BII)V#2",
+      "originalName": "param2",
+      "to": "loopStart",
+      "evidence": "sn.java: Retains PCM payload and endpoints without copying or validating them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sn.<init>(I[BII)V#3",
+      "originalName": "param3",
+      "to": "loopEnd",
+      "evidence": "sn.java: Retains PCM payload and endpoints without copying or validating them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sn.<init>(I[BIIZ)V#0",
+      "originalName": "param0",
+      "to": "sampleRate",
+      "evidence": "sn.java: Retains PCM payload, endpoints and loop flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sn.<init>(I[BIIZ)V#1",
+      "originalName": "param1",
+      "to": "samples",
+      "evidence": "sn.java: Retains PCM payload, endpoints and loop flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sn.<init>(I[BIIZ)V#2",
+      "originalName": "param2",
+      "to": "loopStart",
+      "evidence": "sn.java: Retains PCM payload, endpoints and loop flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sn.<init>(I[BIIZ)V#3",
+      "originalName": "param3",
+      "to": "loopEnd",
+      "evidence": "sn.java: Retains PCM payload, endpoints and loop flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sn.<init>(I[BIIZ)V#4",
+      "originalName": "param4",
+      "to": "loopModeFlag",
+      "evidence": "sn.java: Retains PCM payload, endpoints and loop flag.",
       "confidence": "reviewed"
     },
     {
@@ -50616,6 +51743,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ur.e(I)[Lco;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ur.java: Builds five indexed plains/desert/ice/swamp/burnt records with literal sprite/image/music/ambient names and sixteen preview colours.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ut.a(Lbv;BI)Lsc;#0",
       "originalName": "param0",
       "to": "packet",
@@ -52409,10 +53543,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "eb58c45e01e7267d3e2352e438e634fdae2695567e22b2ce61335d3f44f670e4",
+      "build-armiesofgielinor-rules.mjs": "e0c4e5ae23579c6ec46b133d8a43d9119c92ea497ee245dbbbc131f296d5596d",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "c2fb33418ce434a8e457ad9bf9878e986384ae9c4a543c6d5ae4af69261b8cd0",
+      "tests/test-armiesofgielinor-core.mjs": "b2453e08c60f289f61ea0d7d685e8aaa60c08cd9464c76c5bf474307bfc9f755",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
