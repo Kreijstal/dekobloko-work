@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 50,
+  "version": 51,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2736,6 +2736,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mr",
+      "originalName": "mr",
+      "to": "JavaSoundPcmPlayer",
+      "evidence": "mr.java: Java Sound format/line ownership, 24-bit accumulator clipping to signed little-endian PCM16 and device open/flush/close behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ms",
       "originalName": "ms",
       "to": "DualLinkedNode",
@@ -2984,7 +2991,7 @@
       "symbol": "C:rc",
       "originalName": "rc",
       "to": "PcmPlayer",
-      "evidence": "rc.java: Buffered PCM output and stream scheduling owner; output rate/stereo globals select sample stream factories and mixing kernels. Device/scheduler internals remain partially named.",
+      "evidence": "rc.java: Buffered PCM output owner: priority/work scheduling, 256-frame queue filling, latency adjustment, timed recovery and shared service lifecycle.",
       "confidence": "reviewed"
     },
     {
@@ -2999,6 +3006,13 @@
       "originalName": "rg",
       "to": "SpellMenuGroup",
       "evidence": "rg.java: Nested spell-menu groups with icons, labels, descriptions, parent/child indices and leaf spell-ID lists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rh",
+      "originalName": "rh",
+      "to": "PcmPlayerService",
+      "evidence": "rh.java: Runnable owning two registered players, worker running/stop flags and platform event-queue pumping; unrelated client shutdown/label fields retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -10093,6 +10107,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mr.field_A:Ljava/lang/String;",
+      "originalName": "field_A",
+      "to": "mixerNameMarker",
+      "evidence": "mr.java: Java Sound setup and write/available/flush/open consumers retain line/format/encoded output, frame capacity and the soundmax reopen workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mr.field_v:Z",
+      "originalName": "field_v",
+      "to": "reopenOnFlush",
+      "evidence": "mr.java: Java Sound setup and write/available/flush/open consumers retain line/format/encoded output, frame capacity and the soundmax reopen workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mr.field_w:I",
+      "originalName": "field_w",
+      "to": "lineCapacityFrames",
+      "evidence": "mr.java: Java Sound setup and write/available/flush/open consumers retain line/format/encoded output, frame capacity and the soundmax reopen workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mr.field_x:Ljavax/sound/sampled/AudioFormat;",
+      "originalName": "field_x",
+      "to": "format",
+      "evidence": "mr.java: Java Sound setup and write/available/flush/open consumers retain line/format/encoded output, frame capacity and the soundmax reopen workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mr.field_y:Ljavax/sound/sampled/SourceDataLine;",
+      "originalName": "field_y",
+      "to": "line",
+      "evidence": "mr.java: Java Sound setup and write/available/flush/open consumers retain line/format/encoded output, frame capacity and the soundmax reopen workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mr.field_z:[B",
+      "originalName": "field_z",
+      "to": "encodedSamples",
+      "evidence": "mr.java: Java Sound setup and write/available/flush/open consumers retain line/format/encoded output, frame capacity and the soundmax reopen workaround.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ms.field_l:Lms;",
       "originalName": "field_l",
       "to": "secondaryPrevious",
@@ -11878,6 +11934,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rc.field_a:[Lhn;",
+      "originalName": "field_a",
+      "to": "bucketHeads",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_b:J",
+      "originalName": "field_b",
+      "to": "nextCheckMillis",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_c:I",
+      "originalName": "field_c",
+      "to": "maximumDrainFrames",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rc.field_d:I",
       "originalName": "field_d",
       "to": "outputSampleRate",
@@ -11885,10 +11962,122 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rc.field_e:[Lhn;",
+      "originalName": "field_e",
+      "to": "bucketTails",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_f:I",
+      "originalName": "field_f",
+      "to": "lastQueuedFrames",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_g:J",
+      "originalName": "field_g",
+      "to": "reopenAtMillis",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_h:I",
+      "originalName": "field_h",
+      "to": "serviceThreadPriority",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_i:I",
+      "originalName": "field_i",
+      "to": "workLimit",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_j:I",
+      "originalName": "field_j",
+      "to": "previousMaximumDrainFrames",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_k:[I",
+      "originalName": "field_k",
+      "to": "samples",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_l:Lrh;",
+      "originalName": "field_l",
+      "to": "service",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_m:I",
+      "originalName": "field_m",
+      "to": "requestedLatencyFrames",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_n:I",
+      "originalName": "field_n",
+      "to": "framesUntilScheduling",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_o:I",
+      "originalName": "field_o",
+      "to": "capacityFrames",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_p:I",
+      "originalName": "field_p",
+      "to": "latencyAdjustmentFrames",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rc.field_q:Z",
       "originalName": "field_q",
       "to": "stereo",
       "evidence": "rc.java: Selects interleaved left/right mixing kernels and output buffer sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_r:Lhn;",
+      "originalName": "field_r",
+      "to": "rootStream",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_s:Z",
+      "originalName": "field_s",
+      "to": "justOpened",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_t:J",
+      "originalName": "field_t",
+      "to": "lastMixTimeMillis",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_u:Z",
+      "originalName": "field_u",
+      "to": "closed",
+      "evidence": "rc.java: Player fill/pump/create/shutdown consumers distinguish priority-bucket/work scheduling from 256-frame queue filling, latency/drain adjustment and timed device recovery.",
       "confidence": "reviewed"
     },
     {
@@ -11969,10 +12158,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rh.field_a:Z",
+      "originalName": "field_a",
+      "to": "running",
+      "evidence": "rh.java: Runnable owns two players and lifecycle flags/platform tasks; the unrelated common-client shutdown guard and localized Rating label have separate observed consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rh.field_b:Lhd;",
+      "originalName": "field_b",
+      "to": "platformTasks",
+      "evidence": "rh.java: Runnable owns two players and lifecycle flags/platform tasks; the unrelated common-client shutdown guard and localized Rating label have separate observed consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rh.field_c:Z",
+      "originalName": "field_c",
+      "to": "clientShutdownStarted",
+      "evidence": "rh.java: Runnable owns two players and lifecycle flags/platform tasks; the unrelated common-client shutdown guard and localized Rating label have separate observed consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rh.field_d:[Lrc;",
+      "originalName": "field_d",
+      "to": "players",
+      "evidence": "rh.java: Runnable owns two players and lifecycle flags/platform tasks; the unrelated common-client shutdown guard and localized Rating label have separate observed consumers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rh.field_e:I",
       "originalName": "field_e",
       "to": "decodedPrivateMessageIdHigh16",
       "evidence": "rh.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rh.field_f:Z",
+      "originalName": "field_f",
+      "to": "stopRequested",
+      "evidence": "rh.java: Runnable owns two players and lifecycle flags/platform tasks; the unrelated common-client shutdown guard and localized Rating label have separate observed consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rh.field_g:Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "ratingLabel",
+      "evidence": "rh.java: Runnable owns two players and lifecycle flags/platform tasks; the unrelated common-client shutdown guard and localized Rating label have separate observed consumers.",
       "confidence": "reviewed"
     },
     {
@@ -22497,6 +22728,153 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:mr.a()V#0",
+      "originalName": "var1",
+      "to": "lineInfo",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#0",
+      "originalName": "var4",
+      "to": "mixerIndex",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#1",
+      "originalName": "var2",
+      "to": "mixerInfos",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#10",
+      "originalName": "stackIn_17_2",
+      "to": "unusedChannelFormatAlias",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#11",
+      "originalName": "stackIn_17_5",
+      "to": "channels",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#12",
+      "originalName": "stackIn_19_1",
+      "to": "blockFrames",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#13",
+      "originalName": "stackIn_20_2",
+      "to": "bytesPerFrameShift",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#14",
+      "originalName": "var6",
+      "to": "mixerName",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#2",
+      "originalName": "var3",
+      "to": "mixerInfosAlias",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#3",
+      "originalName": "var5",
+      "to": "mixerInfo",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#4",
+      "originalName": "stackIn_16_0",
+      "to": "unusedFormatOwner",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#5",
+      "originalName": "stackIn_16_1",
+      "to": "unusedFormatReference",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#6",
+      "originalName": "stackIn_16_2",
+      "to": "unusedFormatAlias",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#7",
+      "originalName": "stackIn_16_3",
+      "to": "sampleRate",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#8",
+      "originalName": "stackIn_16_4",
+      "to": "sampleBits",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.a(Ljava/awt/Component;)V#9",
+      "originalName": "stackIn_17_1",
+      "to": "unusedChannelFormat",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.b()V#0",
+      "originalName": "var2",
+      "to": "sampleIndex",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.b()V#1",
+      "originalName": "var3",
+      "to": "accumulator",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.b()V#2",
+      "originalName": "var1",
+      "to": "sampleCount",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.b(I)V#0",
+      "originalName": "var2",
+      "to": "lineInfo",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mr.b(I)V#1",
+      "originalName": "lineUnavailableException",
+      "to": "lineFailure",
+      "evidence": "mr.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ne.a(BII)I#0",
       "originalName": "var4",
       "to": "effectFlags",
@@ -25521,10 +25899,346 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#0",
+      "originalName": "var4",
+      "to": "player",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#1",
+      "originalName": "var4_ref",
+      "to": "backendFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#10",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#2",
+      "originalName": "var5",
+      "to": "createdPlayer",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#3",
+      "originalName": "stackIn_10_0",
+      "to": "sampleBufferOwner",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#4",
+      "originalName": "stackIn_10_1",
+      "to": "blockFrames",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#5",
+      "originalName": "stackIn_11_2",
+      "to": "channels",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#6",
+      "originalName": "stackIn_21_0",
+      "to": "resultPlayer",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#8",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "creationFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#9",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:rc.a(Lhn;)V#0",
       "originalName": "var1",
       "to": "child",
       "evidence": "rc.java: Recursively traversed stream child.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhn;I)V#0",
+      "originalName": "var3",
+      "to": "bucket",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a(Lhn;I)V#1",
+      "originalName": "var4",
+      "to": "tail",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#0",
+      "originalName": "var3",
+      "to": "sampleCount",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#1",
+      "originalName": "var4",
+      "to": "scheduledWork",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#10",
+      "originalName": "var11",
+      "to": "stream",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#11",
+      "originalName": "var12",
+      "to": "sound",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#12",
+      "originalName": "var13",
+      "to": "streamCost",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#13",
+      "originalName": "var14",
+      "to": "initialStream",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#14",
+      "originalName": "var15_int",
+      "to": "parentPriority",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#15",
+      "originalName": "var15",
+      "to": "nextStream",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#16",
+      "originalName": "var6Lifetime1",
+      "to": "cleanupBucket",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#17",
+      "originalName": "var9Lifetime1",
+      "to": "cleanupIndex",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#18",
+      "originalName": "var10Lifetime1",
+      "to": "nextRemainingStream",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#19",
+      "originalName": "var14Lifetime1",
+      "to": "initialStreamAlias",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#2",
+      "originalName": "var5",
+      "to": "bucketMask",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#20",
+      "originalName": "var14Lifetime2",
+      "to": "child",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#3",
+      "originalName": "var6",
+      "to": "scanPass",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#4",
+      "originalName": "var7_int",
+      "to": "bucket",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#5",
+      "originalName": "var7",
+      "to": "remainingStream",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#6",
+      "originalName": "var8_int",
+      "to": "soundWorkThreshold",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#7",
+      "originalName": "var8",
+      "to": "headArray",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#8",
+      "originalName": "var9",
+      "to": "bucketFlags",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.a([II)V#9",
+      "originalName": "var10",
+      "to": "previousStream",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.c()V#0",
+      "originalName": "exception",
+      "to": "flushFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.c()V#1",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.c()V#2",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.d()V#0",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.d()V#1",
+      "originalName": "var1",
+      "to": "nowMillis",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.d()V#2",
+      "originalName": "var3",
+      "to": "deviceOrClockFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.d()V#3",
+      "originalName": "var3_int",
+      "to": "queuedFrames",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.d()V#4",
+      "originalName": "var4",
+      "to": "targetFrames",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.d()V#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "clockFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.d()V#6",
+      "originalName": "decompiledCaughtParameter1",
+      "to": "deviceFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.d()V#7",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.d()V#8",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.f()V#0",
+      "originalName": "var2",
+      "to": "playerIndex",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rc.f()V#1",
+      "originalName": "var1",
+      "to": "serviceEmpty",
+      "evidence": "rc.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -25651,6 +26365,90 @@
       "originalName": "var17",
       "to": "childIndex",
       "evidence": "rg.java: Reviewed lexical ordinal and radial layout, hierarchy linking, reverse item lookup or detached preview construction data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.a(I)V#0",
+      "originalName": "var1",
+      "to": "guardRemainder",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#0",
+      "originalName": "var1_int",
+      "to": "playerIndex",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#1",
+      "originalName": "var2",
+      "to": "player",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#10",
+      "originalName": "decompiledCaughtParameter1",
+      "to": "fatalFailure",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#2",
+      "originalName": "var4",
+      "to": "unusedObfuscationControl",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#3",
+      "originalName": "decompiledRegionSelector0",
+      "to": "loopExitKind",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#5",
+      "originalName": "var1",
+      "to": "reportedFailure",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#6",
+      "originalName": "var3",
+      "to": "escapingFailure",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#7",
+      "originalName": "var5",
+      "to": "eventSource",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#8",
+      "originalName": "var6",
+      "to": "reportMessage",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rh.run()V#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "workerFailure",
+      "evidence": "rh.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -30316,6 +31114,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eb.a(BI)I",
+      "originalName": "a",
+      "to": "bitCount",
+      "evidence": "eb.java: Counts set bits in the unsigned 32-bit word; canonical guard is below -70.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ec.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -33753,6 +34558,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mr.a()V",
+      "originalName": "a",
+      "to": "flushDevice",
+      "evidence": "mr.java: Flushes device state; the Java Sound workaround may close/reopen the line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mr.a(Ljava/awt/Component;)V",
+      "originalName": "a",
+      "to": "initDevice",
+      "evidence": "mr.java: Initializes device format/output bytes and driver workaround detection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mr.b()V",
+      "originalName": "b",
+      "to": "writeDevice",
+      "evidence": "mr.java: Writes one 256-frame output block; the base hook is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mr.b(I)V",
+      "originalName": "b",
+      "to": "openDevice",
+      "evidence": "mr.java: Opens the requested capacity; Java Sound failures may retry a rounded power of two.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mr.e()V",
+      "originalName": "e",
+      "to": "closeDevice",
+      "evidence": "mr.java: Closes/releases the device; the base hook is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mr.h()I",
+      "originalName": "h",
+      "to": "getQueuedFrames",
+      "evidence": "mr.java: Returns queued device frames; the base implementation returns capacityFrames.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ms.a(B)Z",
       "originalName": "a",
       "to": "isSecondaryLinked",
@@ -35174,10 +36021,122 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rc.a()V",
+      "originalName": "a",
+      "to": "flushDevice",
+      "evidence": "rc.java: Flushes device state; the Java Sound workaround may close/reopen the line.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.a(I)V",
+      "originalName": "a",
+      "to": "skipFrames",
+      "evidence": "rc.java: Reduces the scheduling countdown, clamps it to zero and skips the root stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.a(IZI)V",
+      "originalName": "a",
+      "to": "configureOutput",
+      "evidence": "rc.java: Accepts rates 8000–48000 and retains stereo mode and service thread priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.a(Lhd;Ljava/awt/Component;II)Lrc;",
+      "originalName": "a",
+      "to": "create",
+      "evidence": "rc.java: Creates the Java Sound output/player slot after configuration; backend failures return a base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rc.a(Lhn;)V",
       "originalName": "a",
       "to": "deactivateStreamTree",
       "evidence": "rc.java: Disables a stream and descendants, resets shared sound scheduling work and walks the child iterator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.a(Lhn;I)V",
+      "originalName": "a",
+      "to": "enqueueStream",
+      "evidence": "rc.java: Appends a stream to its priority bucket and retains its scheduler priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.a(Ljava/awt/Component;)V",
+      "originalName": "a",
+      "to": "initDevice",
+      "evidence": "rc.java: Initializes device format/output bytes and driver workaround detection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.a([II)V",
+      "originalName": "a",
+      "to": "fillSamples",
+      "evidence": "rc.java: Clears the output prefix, periodically selects streams under shared-sound/work thresholds, clears queue links and renders the root.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.b()V",
+      "originalName": "b",
+      "to": "writeDevice",
+      "evidence": "rc.java: Writes one 256-frame output block; the base hook is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.b(I)V",
+      "originalName": "b",
+      "to": "openDevice",
+      "evidence": "rc.java: Opens the requested capacity; Java Sound failures may retry a rounded power of two.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.b(Lhn;)V",
+      "originalName": "b",
+      "to": "setStream",
+      "evidence": "rc.java: Replaces the root stream without forcing a new scheduling period.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.c()V",
+      "originalName": "c",
+      "to": "flush",
+      "evidence": "rc.java: Marks output newly opened, flushes it and schedules a two-second reopen after failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.d()V",
+      "originalName": "d",
+      "to": "pump",
+      "evidence": "rc.java: Catches up missed stream time, reopens when due, fills in 256-frame chunks and adjusts queued latency from observed drain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.e()V",
+      "originalName": "e",
+      "to": "closeDevice",
+      "evidence": "rc.java: Closes/releases the device; the base hook is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.f()V",
+      "originalName": "f",
+      "to": "shutdown",
+      "evidence": "rc.java: Unregisters from the two-player service, requests/stops the last worker, closes output and releases samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.g()V",
+      "originalName": "g",
+      "to": "clearServiceReference",
+      "evidence": "rc.java: Clears the shared service reference without changing the service object itself.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.h()I",
+      "originalName": "h",
+      "to": "getQueuedFrames",
+      "evidence": "rc.java: Returns queued device frames; the base implementation returns capacityFrames.",
       "confidence": "reviewed"
     },
     {
@@ -35213,6 +36172,20 @@
       "originalName": "a",
       "to": "drawRadialMenu",
       "evidence": "rg.java: Draws children or leaf spells around a circle and returns the hovered selection code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
+      "originalName": "$cfr$sneakyThrow",
+      "to": "throwUnchecked",
+      "evidence": "rh.java: Rethrows the original failure after resetting the running flag, preserving identity and checked/unchecked propagation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(I)V",
+      "originalName": "a",
+      "to": "releaseLabels",
+      "evidence": "rh.java: Clears the unrelated shared Rating label and preserves the original guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -35423,6 +36396,13 @@
       "originalName": "a",
       "to": "pushRasterState",
       "evidence": "rq.java: Pops or allocates a RasterState, captures current target/dimensions/clip and appends to the active stack for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rs.a(BI)I",
+      "originalName": "a",
+      "to": "nextPowerOfTwo",
+      "evidence": "rs.java: Rounds the integer word upward through bit spreading, preserving zero/negative/overflow behavior.",
       "confidence": "reviewed"
     },
     {
@@ -42934,6 +43914,20 @@
       "originalName": "param4",
       "to": "y",
       "evidence": "ea.java: Lays out the retained tab group and shared friend/ignore controls using fixed tab height 24 and content padding 5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.a(BI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eb.java: Counts set bits in the unsigned 32-bit word; canonical guard is below -70.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.a(BI)I#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "eb.java: Counts set bits in the unsigned 32-bit word; canonical guard is below -70.",
       "confidence": "reviewed"
     },
     {
@@ -52723,6 +53717,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:mr.a(Ljava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "mr.java: Initializes device format/output bytes and driver workaround detection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mr.b(I)V#0",
+      "originalName": "param0",
+      "to": "capacityFrames",
+      "evidence": "mr.java: Opens the requested capacity; Java Sound failures may retry a rounded power of two.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ms.a(B)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -56601,10 +57609,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rc.a(I)V#0",
+      "originalName": "param0",
+      "to": "frameCount",
+      "evidence": "rc.java: Reduces the scheduling countdown, clamps it to zero and skips the root stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(IZI)V#0",
+      "originalName": "param0",
+      "to": "sampleRate",
+      "evidence": "rc.java: Accepts rates 8000–48000 and retains stereo mode and service thread priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(IZI)V#1",
+      "originalName": "param1",
+      "to": "stereoEnabled",
+      "evidence": "rc.java: Accepts rates 8000–48000 and retains stereo mode and service thread priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(IZI)V#2",
+      "originalName": "param2",
+      "to": "workerPriority",
+      "evidence": "rc.java: Accepts rates 8000–48000 and retains stereo mode and service thread priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#0",
+      "originalName": "param0",
+      "to": "platformTasks",
+      "evidence": "rc.java: Creates the Java Sound output/player slot after configuration; backend failures return a base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#1",
+      "originalName": "param1",
+      "to": "component",
+      "evidence": "rc.java: Creates the Java Sound output/player slot after configuration; backend failures return a base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#2",
+      "originalName": "param2",
+      "to": "playerIndex",
+      "evidence": "rc.java: Creates the Java Sound output/player slot after configuration; backend failures return a base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(Lhd;Ljava/awt/Component;II)Lrc;#3",
+      "originalName": "param3",
+      "to": "requestedLatencyFrames",
+      "evidence": "rc.java: Creates the Java Sound output/player slot after configuration; backend failures return a base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rc.a(Lhn;)V#0",
       "originalName": "param0",
       "to": "stream",
       "evidence": "rc.java: Disables a stream and descendants, resets shared sound scheduling work and walks the child iterator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(Lhn;I)V#0",
+      "originalName": "param0",
+      "to": "stream",
+      "evidence": "rc.java: Appends a stream to its priority bucket and retains its scheduler priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(Lhn;I)V#1",
+      "originalName": "param1",
+      "to": "priority",
+      "evidence": "rc.java: Appends a stream to its priority bucket and retains its scheduler priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a(Ljava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "rc.java: Initializes device format/output bytes and driver workaround detection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a([II)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "rc.java: Clears the output prefix, periodically selects streams under shared-sound/work thresholds, clears queue links and renders the root.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.a([II)V#1",
+      "originalName": "param1",
+      "to": "frameCount",
+      "evidence": "rc.java: Clears the output prefix, periodically selects streams under shared-sound/work thresholds, clears queue links and renders the root.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.b(I)V#0",
+      "originalName": "param0",
+      "to": "capacityFrames",
+      "evidence": "rc.java: Opens the requested capacity; Java Sound failures may retry a rounded power of two.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rc.b(Lhn;)V#0",
+      "originalName": "param0",
+      "to": "stream",
+      "evidence": "rc.java: Replaces the root stream without forcing a new scheduling period.",
       "confidence": "reviewed"
     },
     {
@@ -56780,6 +57893,20 @@
       "originalName": "param6",
       "to": "selectedChild",
       "evidence": "rg.java: Draws children or leaf spells around a circle and returns the hovered selection code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rh.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;#0",
+      "originalName": "throwable",
+      "to": "failure",
+      "evidence": "rh.java: Rethrows the original failure after resetting the running flag, preserving identity and checked/unchecked propagation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rh.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rh.java: Clears the unrelated shared Rating label and preserves the original guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -57333,6 +58460,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "rq.java: Pops or allocates a RasterState, captures current target/dimensions/clip and appends to the active stack for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rs.a(BI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rs.java: Rounds the integer word upward through bit spreading, preserving zero/negative/overflow behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rs.a(BI)I#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "rs.java: Rounds the integer word upward through bit spreading, preserving zero/negative/overflow behavior.",
       "confidence": "reviewed"
     },
     {
@@ -62622,10 +63763,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "94bcd4db77194b7d63a5daef1f733e022b76f2c20a01273a842382672ec423cb",
+      "build-armiesofgielinor-rules.mjs": "254e32fbe2c227812679b04ff33a6bfb3856f597c18e5415b1471f55884a8c05",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "1e197540313e51997de26a932b95a0719d88592c9bd6dc93cbe8c9a0c970530a",
+      "tests/test-armiesofgielinor-core.mjs": "4c7f21a5f682fef358ef4275569ea83f92824276acc2287c9a9a3b081eecb650",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

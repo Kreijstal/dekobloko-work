@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 155,582 raw/named checks agree. Controlled cipher output does not constitute
+All 155,771 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -392,9 +392,18 @@ reverse kernels have names. Native PCM fixtures check rate/cursor/gain semantics
 asymmetric pan, wrapping/ping-pong loops, ramps/fades, nested mixers, inactive
 routing, reparenting and shared scheduled-work reset. Nondivisible rendered ramps
 retain unit correction steps; skipped ramps snap to target. The sample cursor and
-shared scheduling counter remain distinct. Timed callbacks and player device/
-scheduler internals remain unverified; the pinned abstract listener constructor
-is private and throws Error. No audible playback or production session is claimed.
+shared scheduling counter remain distinct. Timed callbacks remain unverified;
+the pinned abstract listener constructor is private and throws Error. No audible playback or production session is claimed.
+
+PcmPlayer now names all scheduling/buffering/recovery state and locals. Controlled
+backend fixtures verify priority/shared-work selection, atomic work-limit overshoot,
+queue-link cleanup, 256-frame fill, capacity growth, drain adjustment and retry.
+JavaSoundPcmPlayer and PcmPlayerService name packing/device/service state and
+lifecycle paths. A proxy line checks PCM16 clipping/byte order, queued frames,
+flush/close and buffer ownership in mono/stereo; service fixtures check normal/fatal
+exit, Error identity, two-slot shutdown and sample release. Real device opening,
+capacity retry, driver workaround, logged exception reporting, thread timing and
+audible production sessions remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -428,7 +437,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 226 reviewed classes around battlefield state, units, map
+The current pass names 228 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
