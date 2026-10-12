@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 56,
+  "version": 57,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -3212,6 +3212,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:te",
+      "originalName": "te",
+      "to": "SoundPlaybackHandle",
+      "evidence": "te.java: Intrusive sound handle retaining a PCM stream, original unscaled volume and a node whose mixer/deque membership controls lifetime; unrelated shared packet/UI helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tg",
       "originalName": "tg",
       "to": "ClientContextMenu",
@@ -4276,6 +4283,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bl.field_h:Lat;",
+      "originalName": "field_h",
+      "to": "soundHandles",
+      "evidence": "bl.java: Immediate playback appends handles here; volume changes and periodic audio pumping prune handles whose lifetime node is unlinked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bm.field_D:Lrg;",
       "originalName": "field_D",
       "to": "spellMenuRoot",
@@ -4336,6 +4350,13 @@
       "originalName": "field_b",
       "to": "queuedPriority",
       "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_e:I",
+      "originalName": "field_e",
+      "to": "effectsGain",
+      "evidence": "bp.java: Effects volume controls and SoundPlaybackHandle construction apply rounded originalVolume*gain/256 scaling; default is 256.",
       "confidence": "reviewed"
     },
     {
@@ -7790,6 +7811,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ig.field_n:Luv;",
+      "originalName": "field_n",
+      "to": "effectsMixer",
+      "evidence": "ig.java: Audio initialization creates this mixer and installs it on the effects player; immediate sound playback adds raw PCM streams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ig.field_o:I",
       "originalName": "field_o",
       "to": "transformCount",
@@ -10856,6 +10884,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mt.field_e:Lrc;",
+      "originalName": "field_e",
+      "to": "effectsPlayer",
+      "evidence": "mt.java: Second PCM output slot pumps the effects mixer; shutdown stops it independently of music player availability.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mv.field_d:Ljava/lang/String;",
       "originalName": "field_d",
       "to": "localAccountName",
@@ -12648,6 +12683,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qu.field_p:I",
+      "originalName": "field_p",
+      "to": "soundHandleCleanupCountdown",
+      "evidence": "qu.java: Audio pump decrements client-tick countdown and resets it to 200 when pruning both handle lists.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qv.field_h:[I",
       "originalName": "field_h",
       "to": "pathDirections",
@@ -13810,6 +13852,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:te.field_k:Ltc;",
+      "originalName": "field_k",
+      "to": "lifetimeNode",
+      "evidence": "te.java: Constructor retains stream/lifetime node and snapshots target volume before rounded 0..256 global effects scaling; cleanup tests node link membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:te.field_n:I",
+      "originalName": "field_n",
+      "to": "musicGain",
+      "evidence": "te.java: Audio initialization and music-volume controls apply this separate shared gain to the crossfade stream; constructor defaults to 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:te.field_o:I",
+      "originalName": "field_o",
+      "to": "unscaledVolume",
+      "evidence": "te.java: Constructor retains stream/lifetime node and snapshots target volume before rounded 0..256 global effects scaling; cleanup tests node link membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:te.field_q:Laa;",
+      "originalName": "field_q",
+      "to": "stream",
+      "evidence": "te.java: Constructor retains stream/lifetime node and snapshots target volume before rounded 0..256 global effects scaling; cleanup tests node link membership.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tg.field_c:I",
       "originalName": "field_c",
       "to": "roomId",
@@ -14087,6 +14157,13 @@
       "originalName": "field_E",
       "to": "tileX",
       "evidence": "tr.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ts.field_e:Lat;",
+      "originalName": "field_e",
+      "to": "additionalSoundHandles",
+      "evidence": "ts.java: Optional second handle list visited by effects scaling and periodic pruning; the pinned corpus has only null-assignment writers.",
       "confidence": "reviewed"
     },
     {
@@ -20243,6 +20320,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:hk.k(I)V#0",
+      "originalName": "var1",
+      "to": "handle",
+      "evidence": "hk.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hk.k(I)V#1",
+      "originalName": "var2",
+      "to": "obfuscationControl",
+      "evidence": "hk.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hk.k(I)V#2",
+      "originalName": "var1Lifetime1",
+      "to": "additionalHandle",
+      "evidence": "hk.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:hm.a(Lvh;IZ)I#11",
       "originalName": "var5Lifetime1",
       "to": "legacyLevel",
@@ -24807,6 +24905,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:jv.a(Lsn;IIB)Lte;#0",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "jv.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jv.a(Lsn;IIB)Lte;#1",
+      "originalName": "stackIn_3_0",
+      "to": "handle",
+      "evidence": "jv.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jv.a(Lsn;IIB)Lte;#2",
+      "originalName": "stackIn_6_0",
+      "to": "failureForContext",
+      "evidence": "jv.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jv.a(Lsn;IIB)Lte;#3",
+      "originalName": "stackIn_6_1",
+      "to": "errorContext",
+      "evidence": "jv.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jv.a(Lsn;IIB)Lte;#4",
+      "originalName": "stackIn_7_2",
+      "to": "sampleDescription",
+      "evidence": "jv.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jv.a(Lsn;IIB)Lte;#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "jv.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jv.a(Lsn;IIB)Lte;#6",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "jv.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:k.a(Ljava/lang/CharSequence;Z)Ljava/lang/String;#10",
       "originalName": "var3",
       "to": "trimmedEnd",
@@ -26060,6 +26207,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:mh.a(IB)V#0",
+      "originalName": "var2",
+      "to": "handle",
+      "evidence": "mh.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IB)V#1",
+      "originalName": "var3",
+      "to": "obfuscationControl",
+      "evidence": "mh.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IB)V#2",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "mh.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IB)V#3",
+      "originalName": "var2_ref",
+      "to": "failure",
+      "evidence": "mh.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IB)V#4",
+      "originalName": "var2Lifetime1",
+      "to": "additionalHandle",
+      "evidence": "mh.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IB)V#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "mh.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ml.a(III)V#0",
       "originalName": "dupTemp$0",
       "to": "inactivePanel",
@@ -26351,6 +26540,69 @@
       "originalName": "var5",
       "to": "effectTeamIndex",
       "evidence": "ne.java: Reviewed lexical ordinal and combat power, range, cover, effect-mask or AI net-damage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ne.a(ILaa;)Lte;#0",
+      "originalName": "var2",
+      "to": "handle",
+      "evidence": "ne.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ne.a(ILaa;)Lte;#1",
+      "originalName": "var2_ref",
+      "to": "failure",
+      "evidence": "ne.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ne.a(ILaa;)Lte;#2",
+      "originalName": "stackIn_2_0",
+      "to": "rejectedHandle",
+      "evidence": "ne.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ne.a(ILaa;)Lte;#3",
+      "originalName": "stackIn_4_0",
+      "to": "registeredHandle",
+      "evidence": "ne.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ne.a(ILaa;)Lte;#4",
+      "originalName": "stackIn_7_0",
+      "to": "failureForContext",
+      "evidence": "ne.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ne.a(ILaa;)Lte;#5",
+      "originalName": "stackIn_7_1",
+      "to": "errorContext",
+      "evidence": "ne.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ne.a(ILaa;)Lte;#6",
+      "originalName": "stackIn_8_2",
+      "to": "streamDescription",
+      "evidence": "ne.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ne.a(ILaa;)Lte;#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ne.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ne.a(ILaa;)Lte;#8",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ne.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
       "confidence": "reviewed"
     },
     {
@@ -31212,6 +31464,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#0",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#1",
+      "originalName": "stackIn_2_0",
+      "to": "rejectedHandle",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#2",
+      "originalName": "stackIn_4_0",
+      "to": "registeredHandle",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#3",
+      "originalName": "stackIn_7_0",
+      "to": "failureForContext",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#4",
+      "originalName": "stackIn_7_1",
+      "to": "errorContext",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#5",
+      "originalName": "stackIn_8_2",
+      "to": "sampleDescription",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ub.<init>(I[Ljr;Z)V#0",
       "originalName": "var4_int",
       "to": "itemOrdinal",
@@ -31223,6 +31531,62 @@
       "originalName": "var6",
       "to": "itemOrdinal",
       "evidence": "ub.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(BLsn;)Lte;#0",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(BLsn;)Lte;#1",
+      "originalName": "stackIn_2_0",
+      "to": "rejectedHandle",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(BLsn;)Lte;#2",
+      "originalName": "stackIn_4_0",
+      "to": "registeredHandle",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(BLsn;)Lte;#3",
+      "originalName": "stackIn_7_0",
+      "to": "failureForContext",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(BLsn;)Lte;#4",
+      "originalName": "stackIn_7_1",
+      "to": "errorContext",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(BLsn;)Lte;#5",
+      "originalName": "stackIn_8_2",
+      "to": "sampleDescription",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(BLsn;)Lte;#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(BLsn;)Lte;#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ub.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
       "confidence": "reviewed"
     },
     {
@@ -34096,6 +34460,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:we.a(IILsn;)Lte;#0",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "we.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:we.a(IILsn;)Lte;#1",
+      "originalName": "stackIn_2_0",
+      "to": "rejectedHandle",
+      "evidence": "we.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:we.a(IILsn;)Lte;#2",
+      "originalName": "stackIn_4_0",
+      "to": "registeredHandle",
+      "evidence": "we.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:we.a(IILsn;)Lte;#3",
+      "originalName": "stackIn_7_0",
+      "to": "failureForContext",
+      "evidence": "we.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:we.a(IILsn;)Lte;#4",
+      "originalName": "stackIn_7_1",
+      "to": "errorContext",
+      "evidence": "we.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:we.a(IILsn;)Lte;#5",
+      "originalName": "stackIn_8_2",
+      "to": "sampleDescription",
+      "evidence": "we.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:we.a(IILsn;)Lte;#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "we.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:we.a(IILsn;)Lte;#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "we.java: Immediate PCM registration, retained original volume, linked lifetime tests, volume updates and periodic player/handle cleanup; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wg.a(Z)Lms;#0",
       "originalName": "var2",
       "to": "firstNode",
@@ -35650,6 +36070,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ca.a(Ljava/awt/Component;ILhd;ZILnm;II)V",
+      "originalName": "a",
+      "to": "initializeAudioPlayers",
+      "evidence": "ca.java: Configures rate/stereo/worker priority, creates music slot zero and effects slot one, installs mixer/crossfade roots and initializes music gain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.a(BI)Z",
       "originalName": "a",
       "to": "isItemEnabled",
@@ -36980,6 +37407,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fq.a(I)Luv;",
+      "originalName": "a",
+      "to": "getEffectsMixer",
+      "evidence": "fq.java: Returns shared effects mixer under canonical guard 18757.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fq.a(ILjava/lang/String;ZLjava/lang/String;)Ljava/lang/String;",
       "originalName": "a",
       "to": "requestRemoveIgnoredAccount",
@@ -37950,6 +38384,13 @@
       "originalName": "d",
       "to": "available",
       "evidence": "hi.java: Returns input availability, or zero when closed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.k(I)V",
+      "originalName": "k",
+      "to": "pumpAudioAndPruneSounds",
+      "evidence": "hk.java: Pumps music/effects outputs before countdown cleanup, prunes both handle lists every 200 client ticks and clears direct track identity when its reader has stopped.",
       "confidence": "reviewed"
     },
     {
@@ -39346,6 +39787,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jv.a(Lsn;IIB)Lte;",
+      "originalName": "a",
+      "to": "playSoundWithPan",
+      "evidence": "jv.java: Creates rate-100 raw playback using external pan/volume units and registers it in the effects mixer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jv.a(ZI)I",
       "originalName": "a",
       "to": "getUnitUnlockGroup",
@@ -40172,6 +40620,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mh.a(IB)V",
+      "originalName": "a",
+      "to": "setEffectsGain",
+      "evidence": "mh.java: Updates global effects gain, prunes expired handles in both lists and rescales linked streams from retained unscaled volumes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mh.a(III)I",
       "originalName": "a",
       "to": "getProfileMissionScore",
@@ -40183,6 +40638,13 @@
       "originalName": "e",
       "to": "releaseReferences",
       "evidence": "mi.java: Drops stream, patch, sample and envelope references while retaining scalar note state and links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.b(B)V",
+      "originalName": "b",
+      "to": "shutdownAudioPlayers",
+      "evidence": "mj.java: Stops each retained output when nonnull; references remain retained after shutdown.",
       "confidence": "reviewed"
     },
     {
@@ -40414,6 +40876,13 @@
       "originalName": "a",
       "to": "isAlliedToPlayer",
       "evidence": "ne.java: Delegates tile owner comparison to Battlefield.arePlayersAllied.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(ILaa;)Lte;",
+      "originalName": "a",
+      "to": "playRawSound",
+      "evidence": "ne.java: Creates/appends handle before guard checking, then adds stream to effects mixer and returns handle for canonical guard. Rejected guard leaves an unlinked tracked handle.",
       "confidence": "reviewed"
     },
     {
@@ -42615,6 +43084,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tc.c(I)Z",
+      "originalName": "c",
+      "to": "isLinked",
+      "evidence": "tc.java: Returns whether previous link is nonnull; a noncanonical guard changes key to -90 while retaining the same membership result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tc.d(I)V",
       "originalName": "d",
       "to": "unlink",
@@ -42944,10 +43420,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;",
+      "originalName": "$cfr$intArgs$a$6d836999ad61",
+      "to": "playDefaultSoundWithIntGuard",
+      "evidence": "ub.java: Preserves full JVM integer guard for the decompiler bridge while retaining the same default playback/rejection path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ub.a(BIIII)I",
       "originalName": "a",
       "to": "getChoiceAtPoint",
       "evidence": "ub.java: Returns the first hit item choiceId or -1; retains original coordinate argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.a(BLsn;)Lte;",
+      "originalName": "a",
+      "to": "playDefaultSound",
+      "evidence": "ub.java: Plays rate-100 PCM at external volume 96 only when byte guard is greater than 24.",
       "confidence": "reviewed"
     },
     {
@@ -44096,6 +44586,13 @@
       "originalName": "a",
       "to": "decodeSingleByteCharacter",
       "evidence": "we.java: Rejects byte zero, maps extension bytes through the existing table and replaces unmapped characters with ?.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(IILsn;)Lte;",
+      "originalName": "a",
+      "to": "playSoundAtVolume",
+      "evidence": "we.java: Creates rate-100 raw playback at the supplied external volume and registers it under the canonical guard 100.",
       "confidence": "reviewed"
     },
     {
@@ -47837,6 +48334,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ca.a(Ljava/awt/Component;ILhd;ZILnm;II)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "ca.java: Configures rate/stereo/worker priority, creates music slot zero and effects slot one, installs mixer/crossfade roots and initializes music gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ca.a(Ljava/awt/Component;ILhd;ZILnm;II)V#1",
+      "originalName": "param1",
+      "to": "effectsLatencyFrames",
+      "evidence": "ca.java: Configures rate/stereo/worker priority, creates music slot zero and effects slot one, installs mixer/crossfade roots and initializes music gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ca.a(Ljava/awt/Component;ILhd;ZILnm;II)V#2",
+      "originalName": "param2",
+      "to": "platformTasks",
+      "evidence": "ca.java: Configures rate/stereo/worker priority, creates music slot zero and effects slot one, installs mixer/crossfade roots and initializes music gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ca.a(Ljava/awt/Component;ILhd;ZILnm;II)V#3",
+      "originalName": "param3",
+      "to": "stereo",
+      "evidence": "ca.java: Configures rate/stereo/worker priority, creates music slot zero and effects slot one, installs mixer/crossfade roots and initializes music gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ca.a(Ljava/awt/Component;ILhd;ZILnm;II)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "ca.java: Configures rate/stereo/worker priority, creates music slot zero and effects slot one, installs mixer/crossfade roots and initializes music gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ca.a(Ljava/awt/Component;ILhd;ZILnm;II)V#5",
+      "originalName": "param5",
+      "to": "musicStream",
+      "evidence": "ca.java: Configures rate/stereo/worker priority, creates music slot zero and effects slot one, installs mixer/crossfade roots and initializes music gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ca.a(Ljava/awt/Component;ILhd;ZILnm;II)V#6",
+      "originalName": "param6",
+      "to": "musicLatencyFrames",
+      "evidence": "ca.java: Configures rate/stereo/worker priority, creates music slot zero and effects slot one, installs mixer/crossfade roots and initializes music gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ca.a(Ljava/awt/Component;ILhd;ZILnm;II)V#7",
+      "originalName": "param7",
+      "to": "sampleRate",
+      "evidence": "ca.java: Configures rate/stereo/worker priority, creates music slot zero and effects slot one, installs mixer/crossfade roots and initializes music gain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cf.<init>(Ljava/lang/String;)V#0",
       "originalName": "param0",
       "to": "name",
@@ -51197,6 +51750,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fq.a(I)Luv;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fq.java: Returns shared effects mixer under canonical guard 18757.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fq.a(ILjava/lang/String;ZLjava/lang/String;)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "packetOpcode",
@@ -53875,6 +54435,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "hi.java: Returns input availability, or zero when closed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hk.k(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hk.java: Pumps music/effects outputs before countdown cleanup, prunes both handle lists every 200 client ticks and clears direct track identity when its reader has stopped.",
       "confidence": "reviewed"
     },
     {
@@ -57399,6 +57966,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jv.a(Lsn;IIB)Lte;#0",
+      "originalName": "param0",
+      "to": "sample",
+      "evidence": "jv.java: Creates rate-100 raw playback using external pan/volume units and registers it in the effects mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jv.a(Lsn;IIB)Lte;#1",
+      "originalName": "param1",
+      "to": "pan",
+      "evidence": "jv.java: Creates rate-100 raw playback using external pan/volume units and registers it in the effects mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jv.a(Lsn;IIB)Lte;#2",
+      "originalName": "param2",
+      "to": "volume",
+      "evidence": "jv.java: Creates rate-100 raw playback using external pan/volume units and registers it in the effects mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jv.a(Lsn;IIB)Lte;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "jv.java: Creates rate-100 raw playback using external pan/volume units and registers it in the effects mixer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jv.a(ZI)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -59828,6 +60423,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:mh.a(IB)V#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "mh.java: Updates global effects gain, prunes expired handles in both lists and rescales linked streams from retained unscaled volumes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Updates global effects gain, prunes expired handles in both lists and rescales linked streams from retained unscaled volumes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mh.a(III)I#0",
       "originalName": "param0",
       "to": "campaignIndex",
@@ -59853,6 +60462,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "mi.java: Drops stream, patch, sample and envelope references while retaining scalar note state and links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mj.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mj.java: Stops each retained output when nonnull; references remain retained after shutdown.",
       "confidence": "reviewed"
     },
     {
@@ -60560,6 +61176,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ne.java: Delegates tile owner comparison to Battlefield.arePlayersAllied.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ne.a(ILaa;)Lte;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ne.java: Creates/appends handle before guard checking, then adds stream to effects mixer and returns handle for canonical guard. Rejected guard leaves an unlinked tracked handle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ne.a(ILaa;)Lte;#1",
+      "originalName": "param1",
+      "to": "stream",
+      "evidence": "ne.java: Creates/appends handle before guard checking, then adds stream to effects mixer and returns handle for canonical guard. Rejected guard leaves an unlinked tracked handle.",
       "confidence": "reviewed"
     },
     {
@@ -66772,6 +67402,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tc.c(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tc.java: Returns whether previous link is nonnull; a noncanonical guard changes key to -90 while retaining the same membership result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tc.d(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -66811,6 +67448,20 @@
       "originalName": "param4",
       "to": "originY",
       "evidence": "kh.java: Painter contract and Widget dispatch establish the widget and parent-origin offsets; rendering flag meaning remains qualified. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:te.<init>(Laa;Ltc;)V#0",
+      "originalName": "param0",
+      "to": "stream",
+      "evidence": "te.java: Captures the stream target volume before global scaling and retains an independently supplied lifetime node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:te.<init>(Laa;Ltc;)V#1",
+      "originalName": "param1",
+      "to": "lifetimeNode",
+      "evidence": "te.java: Captures the stream target volume before global scaling and retains an independently supplied lifetime node.",
       "confidence": "reviewed"
     },
     {
@@ -67696,6 +68347,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ub.java: Preserves full JVM integer guard for the decompiler bridge while retaining the same default playback/rejection path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.$cfr$intArgs$a$6d836999ad61(ILsn;)Lte;#1",
+      "originalName": "param1",
+      "to": "sample",
+      "evidence": "ub.java: Preserves full JVM integer guard for the decompiler bridge while retaining the same default playback/rejection path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ub.<init>(I[Ljr;Z)V#0",
       "originalName": "param0",
       "to": "layoutRadius",
@@ -67749,6 +68414,20 @@
       "originalName": "param4",
       "to": "originY",
       "evidence": "ub.java: Returns the first hit item choiceId or -1; retains original coordinate argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(BLsn;)Lte;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ub.java: Plays rate-100 PCM at external volume 96 only when byte guard is greater than 24.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(BLsn;)Lte;#1",
+      "originalName": "param1",
+      "to": "sample",
+      "evidence": "ub.java: Plays rate-100 PCM at external volume 96 only when byte guard is greater than 24.",
       "confidence": "reviewed"
     },
     {
@@ -70510,6 +71189,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:we.a(IILsn;)Lte;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "we.java: Creates rate-100 raw playback at the supplied external volume and registers it under the canonical guard 100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:we.a(IILsn;)Lte;#1",
+      "originalName": "param1",
+      "to": "volume",
+      "evidence": "we.java: Creates rate-100 raw playback at the supplied external volume and registers it under the canonical guard 100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:we.a(IILsn;)Lte;#2",
+      "originalName": "param2",
+      "to": "sample",
+      "evidence": "we.java: Creates rate-100 raw playback at the supplied external volume and registers it under the canonical guard 100.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wg.a(IIIII)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -70973,10 +71673,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "468f01691aa7537624ac94baace924fbda7256c784e6342c693b561ac6f8aa75",
+      "build-armiesofgielinor-rules.mjs": "9dd5e3773dbf277d296179581fae6b3d3fbb5025b3c02979881947f09af49bb2",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "f80dc5548909d9636d9db9c9e5410cc2f4f140b56bdc281a7f2846087a734a52",
+      "tests/test-armiesofgielinor-core.mjs": "dcd28e751167716525f993b28e2a3b7b168701168299cead9cb4cc7a526c804e",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
