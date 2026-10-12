@@ -64,7 +64,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 129 reviewed classes around battlefield state, units, map
+The current pass names 133 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -135,8 +135,16 @@ SectorCacheStore, BufferedFile and BoundedFile name the index/sector format and
 file I/O buffers. Real temporary-file probes cover both header widths, resizing,
 corruption rejection and worker ordering. The pinned decompiled large-ID writer
 retains a 512-byte link cutoff for 510-byte sectors; 511/512-byte writes report
-success but read as null. This is characterized, not attributed to original
-bytecode or claimed repaired by the naming pass.
+success but read as null. An audit of the fixed original gamepack confirms the
+same bytecode; its complete 542-class identity matches the export input. The
+current manifest/dictionary retain the audit hashes and instruction offsets.
+This original behavior is characterized and remains unchanged.
+
+NetworkResourceRequest, ResourceProtocolClient, SocketResourceClient and
+BufferedSocket name padded buffers, capped request lanes, response headers,
+continuation blocks and XOR decoding. Real stream fixtures test both lanes and
+compression headers without opening remote sockets. They preserve signed
+padding, unclamped progress and access to retained padded arrays.
 
 CampaignParticipant and CoatOfArms name parent/participant metadata, shared
 overrides and coat layers. ContextualRuntimeException exposes the original
@@ -261,3 +269,18 @@ history, rather than accumulating in this current README.
 Generic readability runs by default. Game naming maps and specific relocations
 remain explicit integration inputs. Browser/phone memory and presented-FPS
 acceptance remain unverified.
+
+The original cache-bytecode audit can be repeated against the verified gamepack
+without adding a binary to either repository:
+
+```sh
+node --input-type=module - /absolute/path/to/armiesofgielinor.jar <<'JS'
+import {verifyArmiesOriginalBytecode} from './readable/tests/test-armiesofgielinor-core.mjs';
+console.log(verifyArmiesOriginalBytecode(process.argv[2]));
+JS
+```
+
+This checks the gamepack and original-class hashes plus the recorded `javap`
+instructions. The gamepack URL/hash are in the single current manifest under
+`originalBytecodeEvidence`; they identify this audit input. The decompiler
+source Git commit/tar SHA-256 remain separately recorded in export provenance.

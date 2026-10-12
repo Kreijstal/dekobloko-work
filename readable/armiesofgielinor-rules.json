@@ -1,13 +1,51 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 17,
+  "version": 18,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
     "subdirectory": "games/armiesofgielinor"
   },
   "inputTreeSha256": "a335a5dc8ceefc629e9ddd18c57c3ce19734ff22b3026833869d1fd193ad0637",
+  "originalBytecodeEvidence": {
+    "cacheLargeEntryLink": {
+      "jarUrl": "https://static.alterorb.net/launcher/v3/jars/armiesofgielinor.jar",
+      "jarSha256": "97a2342b166f8d22259eda3e84cd04f30861ea8978d676164e913ccb146f1afa",
+      "originalClasses": {
+        "files": 542,
+        "sha256": "99e72a1f84cc36cdb3e78e9100d55077fe57bf4735bee923d7dcdef456b8d444"
+      },
+      "method": "bc.a(I[BZIB)Z",
+      "linkCutoff": {
+        "offset": 766,
+        "complementThreshold": -513,
+        "zeroNextSectorStore": 780
+      },
+      "largePayloadCap": {
+        "offset": 1087,
+        "maximum": 510
+      },
+      "javapDeclaration": "private final boolean a(int, byte[], boolean, int, byte);",
+      "instructionChecks": {
+        "766": "iload 4",
+        "768": "iload 9",
+        "770": "isub",
+        "771": "iconst_m1",
+        "772": "ixor",
+        "773": "sipush -513",
+        "776": "if_icmplt 782",
+        "779": "iconst_0",
+        "780": "istore 11",
+        "1087": "sipush 510",
+        "1090": "iload 12",
+        "1092": "if_icmpge 1100",
+        "1095": "sipush 510",
+        "1098": "istore 12"
+      },
+      "conclusion": "Original bytecode clears the next-sector link for remaining bytes <=512 even when large-entry sectors hold only 510 bytes."
+    }
+  },
   "renames": [
     {
       "symbol": "B:ArmiesOfGielinor.a(ZB)V#0",
@@ -1774,6 +1812,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ae",
+      "originalName": "ae",
+      "to": "SocketResourceClient",
+      "evidence": "ae.java: Socket-backed resource request sending, response headers, continuation blocks and XOR decoding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ag",
       "originalName": "ag",
       "to": "CombatEvent",
@@ -1855,6 +1900,13 @@
       "originalName": "bo",
       "to": "TutorialLayout",
       "evidence": "bo.java: Five 29-entry arrays store stage positions and spacing; accessors center coordinates on a 640 by 480 reference surface. Static helpers also decode spells.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bp",
+      "originalName": "bp",
+      "to": "ResourceProtocolClient",
+      "evidence": "bp.java: Separate queued/in-flight priority and normal request lanes with twenty-request caps.",
       "confidence": "reviewed"
     },
     {
@@ -2047,6 +2099,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hi",
+      "originalName": "hi",
+      "to": "BufferedSocket",
+      "evidence": "hi.java: Blocking input plus a bounded asynchronous output ring and deferred write errors.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hm",
       "originalName": "hm",
       "to": "PlayerProfile",
@@ -2142,6 +2201,13 @@
       "originalName": "jd",
       "to": "Unit",
       "evidence": "jd.java: Tagged fields c/o/str/max/x/y decode type, owner, strength and coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jf",
+      "originalName": "jf",
+      "to": "NetworkResourceRequest",
+      "evidence": "jf.java: Padded response buffer, received block position and resource completion/progress accessors.",
       "confidence": "reviewed"
     },
     {
@@ -2691,6 +2757,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ae.field_t:Lhi;",
+      "originalName": "field_t",
+      "to": "socket",
+      "evidence": "ae.java: Socket client reads availability/bytes and queues outgoing records through this transport.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ag.field_B:I",
       "originalName": "field_B",
       "to": "targetDeltaY",
@@ -3024,6 +3097,90 @@
       "originalName": "field_h",
       "to": "topY",
       "evidence": "bo.java: TutorialLayout stage setter, centered getters and TutorialController bounds/spacing use.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_a:Ljf;",
+      "originalName": "field_a",
+      "to": "activeResponse",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_b:Lui;",
+      "originalName": "field_b",
+      "to": "queuedPriority",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_f:Lui;",
+      "originalName": "field_f",
+      "to": "queuedNormal",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_g:Lui;",
+      "originalName": "field_g",
+      "to": "inFlightNormal",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_h:Lvh;",
+      "originalName": "field_h",
+      "to": "incomingHeader",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_i:B",
+      "originalName": "field_i",
+      "to": "xorByte",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_l:I",
+      "originalName": "field_l",
+      "to": "idleMillis",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_n:Lui;",
+      "originalName": "field_n",
+      "to": "inFlightPriority",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_o:Lvh;",
+      "originalName": "field_o",
+      "to": "outgoingRecord",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_p:I",
+      "originalName": "field_p",
+      "to": "errorCode",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_q:I",
+      "originalName": "field_q",
+      "to": "errorCount",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bp.field_r:J",
+      "originalName": "field_r",
+      "to": "lastPollMillis",
+      "evidence": "bp.java: Request creation/counting and socket client send/receive/reconnection paths. Priority and normal lanes each include queued and in-flight requests.",
       "confidence": "reviewed"
     },
     {
@@ -4294,6 +4451,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hi.field_b:I",
+      "originalName": "field_b",
+      "to": "readPosition",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_c:[B",
+      "originalName": "field_c",
+      "to": "writeBuffer",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_d:Lwo;",
+      "originalName": "field_d",
+      "to": "writerTask",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_e:Lhd;",
+      "originalName": "field_e",
+      "to": "threadLauncher",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_f:Ljava/io/InputStream;",
+      "originalName": "field_f",
+      "to": "input",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_g:I",
+      "originalName": "field_g",
+      "to": "writePosition",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_k:Z",
+      "originalName": "field_k",
+      "to": "closed",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_l:Ljava/net/Socket;",
+      "originalName": "field_l",
+      "to": "socket",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_n:Ljava/io/OutputStream;",
+      "originalName": "field_n",
+      "to": "output",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_o:Z",
+      "originalName": "field_o",
+      "to": "writeError",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_p:I",
+      "originalName": "field_p",
+      "to": "bufferCapacity",
+      "evidence": "hi.java: Socket constructors, synchronized output ring, input methods and close/writer lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hm.field_a:[I",
       "originalName": "field_a",
       "to": "spellQuantities",
@@ -4963,6 +5197,27 @@
       "originalName": "field_w",
       "to": "tileY",
       "evidence": "jd.java: Unit tagged decoder, constructor and h(byte) packing. Flag names describe bit positions; their gameplay meanings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jf.field_B:B",
+      "originalName": "field_B",
+      "to": "paddingBytes",
+      "evidence": "jf.java: Resource response assembly excludes padding from completion/progress and tracks 512-byte transport block position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jf.field_E:Lvh;",
+      "originalName": "field_E",
+      "to": "responseBuffer",
+      "evidence": "jf.java: Resource response assembly excludes padding from completion/progress and tracks 512-byte transport block position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jf.field_F:I",
+      "originalName": "field_F",
+      "to": "blockPosition",
+      "evidence": "jf.java: Resource response assembly excludes padding from completion/progress and tracks 512-byte transport block position.",
       "confidence": "reviewed"
     },
     {
@@ -7514,6 +7769,104 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ae.a(Z)Z#11",
+      "originalName": "var5",
+      "to": "availableThenResponseLength",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#12",
+      "originalName": "var6",
+      "to": "readCountThenArchiveId",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#13",
+      "originalName": "var7",
+      "to": "groupIdThenByteIndex",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#14",
+      "originalName": "var8",
+      "to": "flags",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#15",
+      "originalName": "var9",
+      "to": "compressedLength",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#16",
+      "originalName": "var10",
+      "to": "compressionType",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#17",
+      "originalName": "var11",
+      "to": "normalResponseFlag",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#18",
+      "originalName": "var12",
+      "to": "responseKey",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#20",
+      "originalName": "var14_ref",
+      "to": "matchedRequest",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#21",
+      "originalName": "var15",
+      "to": "responsePrefixLength",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#23",
+      "originalName": "var2Lifetime1",
+      "to": "normalRequest",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#4",
+      "originalName": "var2_long",
+      "to": "now",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#5",
+      "originalName": "var2",
+      "to": "priorityRequest",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.a(Z)Z#9",
+      "originalName": "var4",
+      "to": "elapsedThenHeaderLength",
+      "evidence": "ae.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:am.<init>(Lvh;I)V#0",
       "originalName": "var5",
       "to": "pathIndex",
@@ -7672,6 +8025,20 @@
       "originalName": "var3_int",
       "to": "spellId",
       "evidence": "bo.java: Reviewed lexical ordinal and packet header, coordinate, packed path or spell dispatch data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bp.a(IZIBZ)Ljf;#0",
+      "originalName": "var6",
+      "to": "requestKey",
+      "evidence": "bp.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bp.a(IZIBZ)Ljf;#1",
+      "originalName": "var8",
+      "to": "request",
+      "evidence": "bp.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
       "confidence": "reviewed"
     },
     {
@@ -10167,6 +10534,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ae.a(Ljava/lang/Object;ZI)V",
+      "originalName": "a",
+      "to": "attachTransport",
+      "evidence": "bp.java: Contract for transport replacement and queued request recovery. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(Z)Z",
+      "originalName": "a",
+      "to": "poll",
+      "evidence": "bp.java: Contract for request sends and resource response processing. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.b(B)V",
+      "originalName": "b",
+      "to": "invalidateTransport",
+      "evidence": "bp.java: Contract for transport invalidation and retry state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.c(I)V",
+      "originalName": "c",
+      "to": "close",
+      "evidence": "bp.java: Contract for closing the transport. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ag.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -10507,6 +10902,69 @@
       "originalName": "b",
       "to": "setRightX",
       "evidence": "bo.java: Adjusts the raw right coordinate so its centered getter returns screenX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.a(B)Z",
+      "originalName": "a",
+      "to": "isNormalFull",
+      "evidence": "bp.java: Returns whether the normal lane has at least twenty requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.a(I)I",
+      "originalName": "a",
+      "to": "getPriorityCount",
+      "evidence": "bp.java: Counts queued plus in-flight priority requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.a(IZIBZ)Ljf;",
+      "originalName": "a",
+      "to": "request",
+      "evidence": "bp.java: Combines archive/group IDs into the secondary key and queues a padded request in the selected lane, enforcing a cap of twenty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.a(Ljava/lang/Object;ZI)V",
+      "originalName": "a",
+      "to": "attachTransport",
+      "evidence": "bp.java: Contract for transport replacement and queued request recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.a(Z)Z",
+      "originalName": "a",
+      "to": "poll",
+      "evidence": "bp.java: Contract for request sends and resource response processing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.b(B)V",
+      "originalName": "b",
+      "to": "invalidateTransport",
+      "evidence": "bp.java: Contract for transport invalidation and retry state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.b(I)I",
+      "originalName": "b",
+      "to": "getNormalCount",
+      "evidence": "bp.java: Counts queued plus in-flight normal requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.c(I)V",
+      "originalName": "c",
+      "to": "close",
+      "evidence": "bp.java: Contract for closing the transport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.d(I)Z",
+      "originalName": "d",
+      "to": "isPriorityFull",
+      "evidence": "bp.java: Returns whether the priority lane has at least twenty requests.",
       "confidence": "reviewed"
     },
     {
@@ -11704,6 +12162,48 @@
       "originalName": "c",
       "to": "getValue",
       "evidence": "hh.java: Returns a valid byte-range value for the canonical guard, otherwise the original sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(I)I",
+      "originalName": "a",
+      "to": "readByte",
+      "evidence": "hi.java: Reads one input byte, preserving closed/guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(III[B)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "hi.java: Reads exactly the requested input slice or throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(Z)V",
+      "originalName": "a",
+      "to": "checkWriteError",
+      "evidence": "hi.java: For a true check flag, clears a deferred write-error flag and throws IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a([BBII)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "hi.java: Queues a byte slice into the output ring and starts the writer through the existing launcher if absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.c(B)V",
+      "originalName": "c",
+      "to": "close",
+      "evidence": "hi.java: Sets closed and notifies the writer, then joins the existing task thread for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.d(B)I",
+      "originalName": "d",
+      "to": "available",
+      "evidence": "hi.java: Returns input availability, or zero when closed.",
       "confidence": "reviewed"
     },
     {
@@ -13989,6 +14489,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vh.a(ZJ)V",
+      "originalName": "a",
+      "to": "writeLong40",
+      "evidence": "vh.java: Writes the low forty bits big-endian; retains guard side effects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vh.a([BIII)V",
       "originalName": "a",
       "to": "writeBytes",
@@ -14238,6 +14745,48 @@
       "originalName": "param2",
       "to": "packet",
       "evidence": "a.java: Returns null for an empty record, otherwise decodes Unit fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.a(Ljava/lang/Object;ZI)V#0",
+      "originalName": "param0",
+      "to": "transport",
+      "evidence": "bp.java: Contract for transport replacement and queued request recovery. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.a(Ljava/lang/Object;ZI)V#1",
+      "originalName": "param1",
+      "to": "sessionFlag",
+      "evidence": "bp.java: Contract for transport replacement and queued request recovery. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.a(Ljava/lang/Object;ZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Contract for transport replacement and queued request recovery. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.a(Z)Z#0",
+      "originalName": "param0",
+      "to": "checkWriteError",
+      "evidence": "bp.java: Contract for request sends and resource response processing. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Contract for transport invalidation and retry state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Contract for closing the transport. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -15267,6 +15816,111 @@
       "originalName": "param2",
       "to": "stage",
       "evidence": "bo.java: Adjusts the raw right coordinate so its centered getter returns screenX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Returns whether the normal lane has at least twenty requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Counts queued plus in-flight priority requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(IZIBZ)Ljf;#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "bp.java: Combines archive/group IDs into the secondary key and queues a padded request in the selected lane, enforcing a cap of twenty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(IZIBZ)Ljf;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Combines archive/group IDs into the secondary key and queues a padded request in the selected lane, enforcing a cap of twenty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(IZIBZ)Ljf;#2",
+      "originalName": "param2",
+      "to": "archiveId",
+      "evidence": "bp.java: Combines archive/group IDs into the secondary key and queues a padded request in the selected lane, enforcing a cap of twenty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(IZIBZ)Ljf;#3",
+      "originalName": "param3",
+      "to": "paddingBytes",
+      "evidence": "bp.java: Combines archive/group IDs into the secondary key and queues a padded request in the selected lane, enforcing a cap of twenty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(IZIBZ)Ljf;#4",
+      "originalName": "param4",
+      "to": "priority",
+      "evidence": "bp.java: Combines archive/group IDs into the secondary key and queues a padded request in the selected lane, enforcing a cap of twenty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(Ljava/lang/Object;ZI)V#0",
+      "originalName": "param0",
+      "to": "transport",
+      "evidence": "bp.java: Contract for transport replacement and queued request recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(Ljava/lang/Object;ZI)V#1",
+      "originalName": "param1",
+      "to": "sessionFlag",
+      "evidence": "bp.java: Contract for transport replacement and queued request recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(Ljava/lang/Object;ZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Contract for transport replacement and queued request recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.a(Z)Z#0",
+      "originalName": "param0",
+      "to": "checkWriteError",
+      "evidence": "bp.java: Contract for request sends and resource response processing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Contract for transport invalidation and retry state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.b(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Counts queued plus in-flight normal requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Contract for closing the transport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bp.d(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bp.java: Returns whether the priority lane has at least twenty requests.",
       "confidence": "reviewed"
     },
     {
@@ -18277,6 +18931,125 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "hh.java: Returns a valid byte-range value for the canonical guard, otherwise the original sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.<init>(Ljava/net/Socket;Lhd;)V#0",
+      "originalName": "param0",
+      "to": "socket",
+      "evidence": "hi.java: Uses the original 5000-byte default output ring.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.<init>(Ljava/net/Socket;Lhd;)V#1",
+      "originalName": "param1",
+      "to": "threadLauncher",
+      "evidence": "hi.java: Uses the original 5000-byte default output ring.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.<init>(Ljava/net/Socket;Lhd;I)V#0",
+      "originalName": "param0",
+      "to": "socket",
+      "evidence": "hi.java: Sets a 30-second read timeout, TCP_NODELAY, streams and ring capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.<init>(Ljava/net/Socket;Lhd;I)V#1",
+      "originalName": "param1",
+      "to": "threadLauncher",
+      "evidence": "hi.java: Sets a 30-second read timeout, TCP_NODELAY, streams and ring capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.<init>(Ljava/net/Socket;Lhd;I)V#2",
+      "originalName": "param2",
+      "to": "bufferCapacity",
+      "evidence": "hi.java: Sets a 30-second read timeout, TCP_NODELAY, streams and ring capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hi.java: Reads one input byte, preserving closed/guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a(III[B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hi.java: Reads exactly the requested input slice or throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a(III[B)V#1",
+      "originalName": "param1",
+      "to": "destinationOffset",
+      "evidence": "hi.java: Reads exactly the requested input slice or throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a(III[B)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "hi.java: Reads exactly the requested input slice or throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a(III[B)V#3",
+      "originalName": "param3",
+      "to": "destination",
+      "evidence": "hi.java: Reads exactly the requested input slice or throws EOFException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a(Z)V#0",
+      "originalName": "param0",
+      "to": "check",
+      "evidence": "hi.java: For a true check flag, clears a deferred write-error flag and throws IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a([BBII)V#0",
+      "originalName": "param0",
+      "to": "source",
+      "evidence": "hi.java: Queues a byte slice into the output ring and starts the writer through the existing launcher if absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a([BBII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "hi.java: Queues a byte slice into the output ring and starts the writer through the existing launcher if absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a([BBII)V#2",
+      "originalName": "param2",
+      "to": "sourceOffset",
+      "evidence": "hi.java: Queues a byte slice into the output ring and starts the writer through the existing launcher if absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.a([BBII)V#3",
+      "originalName": "param3",
+      "to": "length",
+      "evidence": "hi.java: Queues a byte slice into the output ring and starts the writer through the existing launcher if absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hi.java: Sets closed and notifies the writer, then joins the existing task thread for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hi.d(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hi.java: Returns input availability, or zero when closed.",
       "confidence": "reviewed"
     },
     {
@@ -24076,6 +24849,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vh.a(ZJ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Writes the low forty bits big-endian; retains guard side effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(ZJ)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "vh.java: Writes the low forty bits big-endian; retains guard side effects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vh.a([BIII)V#0",
       "originalName": "param0",
       "to": "source",
@@ -24672,9 +25459,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "d4fe20a41b89449fd2dcd35b98286b9c2f1b3f4ea922c8fa39db1e5ecea3c3c1",
-      "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "1a5acb66a232417e913c3e0467d5c4c0b4acb150fe9610a5bd9a637719c478f9",
+      "build-armiesofgielinor-rules.mjs": "0c23014ffae9953f5034b8a70916750448cba7bdb962e6006daed7a37b271493",
+      "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
+      "tests/test-armiesofgielinor-core.mjs": "54fabeffbe678924afd3e2f2bf5d343507f48dd950de56088769e3fa6cdbf7dc",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

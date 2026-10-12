@@ -20,7 +20,7 @@ try {
   const generated=path.join(temporary,'generated');
   const result=generateReadable({input,output:generated,rulesFile,classpath:stubs.jar});
   const mapping=JSON.parse(fs.readFileSync(path.join(generated,'mapping.json')));
-  const dictionary={...mapping,provenance:JSON.parse(fs.readFileSync(path.join(generated,'provenance.json'))),generators:rules.generators};
+  const dictionary={...mapping,provenance:JSON.parse(fs.readFileSync(path.join(generated,'provenance.json'))),generators:rules.generators,originalBytecodeEvidence:rules.originalBytecodeEvidence};
   dictionary.provenance.verification.gameplayCore=verifyArmiesCore(input,path.join(generated,'src'),mapping,stubs.jar,temporary);
   installNamedGame(funorbRepository,rules.game,generated,dictionary,buildArmiesGuide(rules,mapping),args[0]==='--check');
   console.log(JSON.stringify({...result,gameplayCore:dictionary.provenance.verification.gameplayCore,check:args[0]==='--check',publishedDirectory:'games/armiesofgielinor'}));
