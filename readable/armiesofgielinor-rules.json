@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 55,
+  "version": 56,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -3401,6 +3401,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vk",
+      "originalName": "vk",
+      "to": "ChannelGainProfile",
+      "evidence": "vk.java: Mutable sixteen-channel integer gain target array; unrelated localized strings, campaign backgrounds and UI globals retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vn",
       "originalName": "vn",
       "to": "CombatSandbox",
@@ -3454,6 +3461,13 @@
       "originalName": "wk",
       "to": "RgbSprite",
       "evidence": "wk.java: Integer pixels, clipping and SoftwareRaster blits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wn",
+      "originalName": "wn",
+      "to": "AdaptiveMidiPcmStream",
+      "evidence": "wn.java: MIDI sequencer with a separate overall gain multiplier and retained per-channel fixed-point gain ramps applied after render; unrelated account/UI helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -5004,6 +5018,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dk.field_u:Lvk;",
+      "originalName": "field_u",
+      "to": "defaultMusicProfile",
+      "evidence": "dk.java: Shared profile filled with gain 256 for every channel during client audio initialization and applied by the default music route.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dl.field_a:I",
       "originalName": "field_a",
       "to": "buttonPress",
@@ -6240,6 +6261,13 @@
       "originalName": "field_Q",
       "to": "dropdownViewport",
       "evidence": "gh.java: Dropdown construction, keyboard prefix lookup, bounds updates and open/close viewport paths establish this role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gi.field_b:I",
+      "originalName": "field_b",
+      "to": "campaignBaseChannelGain",
+      "evidence": "gi.java: Campaign view applies this gain to selected first-four channels, with a plus-twenty first-channel adjustment for campaign index two; debug volume setter mutates it.",
       "confidence": "reviewed"
     },
     {
@@ -12172,6 +12200,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qf.field_f:Lum;",
+      "originalName": "field_f",
+      "to": "interfaceMusicTrack",
+      "evidence": "qf.java: Client loads AoG_interface_guthix into this shared track and campaign menu selects it before applying its channel profile.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qg.field_A:I",
       "originalName": "field_A",
       "to": "canvasWidth",
@@ -14937,6 +14972,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vk.field_a:[I",
+      "originalName": "field_a",
+      "to": "gains",
+      "evidence": "vk.java: Profile constructor allocates sixteen zero targets; campaign menu sets selected one-based channel IDs after converting to zero-based indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vk.field_e:[Lwk;",
+      "originalName": "field_e",
+      "to": "campaignBackgrounds",
+      "evidence": "vk.java: Campaign menu loads campaign_1/2/3.jpg into these three shared slots; unrelated to gain targets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vl.field_m:[Ljava/lang/String;",
       "originalName": "field_m",
       "to": "battleHintMessages",
@@ -15098,6 +15147,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wf.field_v:I",
+      "originalName": "field_v",
+      "to": "musicProfileTransitionMillis",
+      "evidence": "wf.java: Campaign menu passes this duration to adaptive channel ramping; debug time setter mutates it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wg.field_f:Lms;",
       "originalName": "field_f",
       "to": "sentinel",
@@ -15168,6 +15224,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wn.field_S:[I",
+      "originalName": "field_S",
+      "to": "fixedChannelGains",
+      "evidence": "wn.java: Render applies overall multiplier temporarily, then advances signed per-frame 12-bit gain ramps toward a retained mutable target profile. Negative channel setter changes overall multiplier; ordinary channel setter changes fixed/base gain immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wn.field_cb:Z",
+      "originalName": "field_cb",
+      "to": "gainsSettled",
+      "evidence": "wn.java: Render applies overall multiplier temporarily, then advances signed per-frame 12-bit gain ramps toward a retained mutable target profile. Negative channel setter changes overall multiplier; ordinary channel setter changes fixed/base gain immediately.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wn.field_db:Ljava/lang/String;",
       "originalName": "field_db",
       "to": "lastQuickChatRecipientName",
@@ -15179,6 +15249,27 @@
       "originalName": "field_eb",
       "to": "tutorialMapNames",
       "evidence": "wn.java: Repository construction reads named map resources; battlefield setup chooses by theme, size, player capacity and seed or tutorial index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wn.field_fb:[I",
+      "originalName": "field_fb",
+      "to": "gainSteps",
+      "evidence": "wn.java: Render applies overall multiplier temporarily, then advances signed per-frame 12-bit gain ramps toward a retained mutable target profile. Negative channel setter changes overall multiplier; ordinary channel setter changes fixed/base gain immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wn.field_hb:Lvk;",
+      "originalName": "field_hb",
+      "to": "targetProfile",
+      "evidence": "wn.java: Render applies overall multiplier temporarily, then advances signed per-frame 12-bit gain ramps toward a retained mutable target profile. Negative channel setter changes overall multiplier; ordinary channel setter changes fixed/base gain immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wn.field_ib:I",
+      "originalName": "field_ib",
+      "to": "overallGain",
+      "evidence": "wn.java: Render applies overall multiplier temporarily, then advances signed per-frame 12-bit gain ramps toward a retained mutable target profile. Negative channel setter changes overall multiplier; ordinary channel setter changes fixed/base gain immediately.",
       "confidence": "reviewed"
     },
     {
@@ -17531,6 +17622,118 @@
       "originalName": "var13",
       "to": "participantNames",
       "evidence": "cv.java: Reviewed lexical ordinal and versioned save header, restored state, upload packet length or map-preview rendering data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#0",
+      "originalName": "stackIn_32_0",
+      "to": "baseGainToApply",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#1",
+      "originalName": "stackIn_38_0",
+      "to": "targetGains",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#10",
+      "originalName": "var7",
+      "to": "channel",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#11",
+      "originalName": "var8",
+      "to": "baseGain",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#12",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#13",
+      "originalName": "var3Lifetime1",
+      "to": "guardRemainder",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#14",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "useDefaultChannels",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#15",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#2",
+      "originalName": "stackIn_38_1",
+      "to": "targetChannel",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#3",
+      "originalName": "stackIn_39_2",
+      "to": "targetGain",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#5",
+      "originalName": "var2",
+      "to": "enabledChannelIds",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#6",
+      "originalName": "var3",
+      "to": "campaign",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#7",
+      "originalName": "var4",
+      "to": "profile",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#8",
+      "originalName": "var5",
+      "to": "channelIds",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cv.b(I)V#9",
+      "originalName": "var6",
+      "to": "enabledChannelIndex",
+      "evidence": "cv.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
       "confidence": "reviewed"
     },
     {
@@ -33977,6 +34180,230 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:wn.a(BILvk;)V#0",
+      "originalName": "var4_int",
+      "to": "durationFrames",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(BILvk;)V#1",
+      "originalName": "var5",
+      "to": "guardQuotient",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(IIB)V#0",
+      "originalName": "var5",
+      "to": "unusedTrack",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILvk;I)V#0",
+      "originalName": "var4_int",
+      "to": "channel",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILvk;I)V#1",
+      "originalName": "var5",
+      "to": "obfuscationControl",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILvk;I)V#2",
+      "originalName": "stackIn_9_0",
+      "to": "failureForContext",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILvk;I)V#3",
+      "originalName": "stackIn_9_1",
+      "to": "errorContext",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILvk;I)V#4",
+      "originalName": "stackIn_10_2",
+      "to": "profileDescription",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILvk;I)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILvk;I)V#6",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILvk;I)V#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#0",
+      "originalName": "var6",
+      "to": "channel",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#1",
+      "originalName": "stackIn_10_0",
+      "to": "increasingStep",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#10",
+      "originalName": "var7",
+      "to": "step",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#11",
+      "originalName": "var8",
+      "to": "targetGain",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#12",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#13",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#2",
+      "originalName": "stackIn_13_1",
+      "to": "belowTarget",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#3",
+      "originalName": "stackIn_25_0",
+      "to": "failureForContext",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#4",
+      "originalName": "stackIn_25_1",
+      "to": "errorContext",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#5",
+      "originalName": "stackIn_26_2",
+      "to": "outputDescription",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#7",
+      "originalName": "var4_int",
+      "to": "originalMasterVolume",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#8",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b([III)V#9",
+      "originalName": "var5",
+      "to": "allSettled",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.c(IIII)V#0",
+      "originalName": "var5",
+      "to": "currentFixedGain",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.c(IIII)V#1",
+      "originalName": "var6",
+      "to": "difference",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.c(IIII)V#2",
+      "originalName": "var7",
+      "to": "step",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.c(IIII)V#3",
+      "originalName": "var8",
+      "to": "decreasingStep",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.k(I)V#0",
+      "originalName": "var2",
+      "to": "channel",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.k(I)V#1",
+      "originalName": "var3",
+      "to": "obfuscationControl",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.k(I)V#2",
+      "originalName": "var4",
+      "to": "unusedSprites",
+      "evidence": "wn.java: Adaptive gain scaling and post-render fixed-point ramps, retained profile scheduling/reset and campaign channel selection; exact ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wp.f(B)Z#0",
       "originalName": "var2",
       "to": "allSkeletonsAvailable",
@@ -35542,6 +35969,13 @@
       "originalName": "b",
       "to": "selectMissionOrQuicksaveDialog",
       "evidence": "cv.java: Starts a selected mission directly without a save, otherwise chooses matching-save or overwrite confirmation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cv.b(I)V",
+      "originalName": "b",
+      "to": "updateMusicProfile",
+      "evidence": "cv.java: Selects interface track and builds campaign-specific channel target profile: menu channels 1/2/3/5/6/7/8 or campaign-specific subsets, retaining a plus-twenty campaign-two first-channel gain.",
       "confidence": "reviewed"
     },
     {
@@ -37446,6 +37880,13 @@
       "originalName": "a",
       "to": "configure",
       "evidence": "hh.java: Applies original range/period defaults; maximum fallback can remain below a large minimum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.a(IILum;Z)V",
+      "originalName": "a",
+      "to": "selectMusicTrackWithDefaultGain",
+      "evidence": "hh.java: Delegates track/loop/fade selection to shared crossfade stream with overall gain 256 and time scale 1000000.",
       "confidence": "reviewed"
     },
     {
@@ -40435,6 +40876,13 @@
       "originalName": "a",
       "to": "requestRemoveFriend",
       "evidence": "nw.java: Unlinks the friend and decrements each subsequent displayed row orderIndex before writing command 1 with the supplied name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(ILum;)V",
+      "originalName": "a",
+      "to": "selectMusicWithDefaultProfile",
+      "evidence": "oa.java: For a supplied track, selects looping music and applies shared default profile with a one-millisecond adaptive ramp.",
       "confidence": "reviewed"
     },
     {
@@ -43693,10 +44141,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wn.a(BILvk;)V",
+      "originalName": "a",
+      "to": "rampToProfile",
+      "evidence": "wn.java: Converts milliseconds to integer frames using current output rate and retains the supplied profile as the live target.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wn.a(IIB)V",
       "originalName": "a",
       "to": "setChannelGain",
       "evidence": "ih.java: Negative channel selects all sixteen channel gain slots. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wn.a(ILvk;I)V",
+      "originalName": "a",
+      "to": "beginProfileRamp",
+      "evidence": "wn.java: Retains profile identity and schedules all sixteen channels from current fixed-point gains.",
       "confidence": "reviewed"
     },
     {
@@ -43718,6 +44180,20 @@
       "originalName": "b",
       "to": "render",
       "evidence": "hn.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wn.c(IIII)V",
+      "originalName": "c",
+      "to": "scheduleChannelRamp",
+      "evidence": "wn.java: Marks ramps unsettled, stores target, computes signed integer step from absolute fixed-point difference plus one over duration plus one; zero quantized steps are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wn.k(I)V",
+      "originalName": "k",
+      "to": "resetChannelGains",
+      "evidence": "wn.java: Sets fixed/base channel gains to 256 without clearing pending steps, profile or settled state.",
       "confidence": "reviewed"
     },
     {
@@ -48114,6 +48590,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "cv.java: Starts a selected mission directly without a save, otherwise chooses matching-save or overwrite confirmation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cv.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cv.java: Selects interface track and builds campaign-specific channel target profile: menu channels 1/2/3/5/6/7/8 or campaign-specific subsets, retaining a plus-twenty campaign-two first-channel gain.",
       "confidence": "reviewed"
     },
     {
@@ -53203,6 +53686,34 @@
       "originalName": "param3",
       "to": "period",
       "evidence": "hh.java: Applies original range/period defaults; maximum fallback can remain below a large minimum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(IILum;Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hh.java: Delegates track/loop/fade selection to shared crossfade stream with overall gain 256 and time scale 1000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(IILum;Z)V#1",
+      "originalName": "param1",
+      "to": "fadeRate",
+      "evidence": "hh.java: Delegates track/loop/fade selection to shared crossfade stream with overall gain 256 and time scale 1000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(IILum;Z)V#2",
+      "originalName": "param2",
+      "to": "track",
+      "evidence": "hh.java: Delegates track/loop/fade selection to shared crossfade stream with overall gain 256 and time scale 1000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(IILum;Z)V#3",
+      "originalName": "param3",
+      "to": "loop",
+      "evidence": "hh.java: Delegates track/loop/fade selection to shared crossfade stream with overall gain 256 and time scale 1000000.",
       "confidence": "reviewed"
     },
     {
@@ -61393,6 +61904,20 @@
       "originalName": "param2",
       "to": "packetOpcode",
       "evidence": "nw.java: Unlinks the friend and decrements each subsequent displayed row orderIndex before writing command 1 with the supplied name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(ILum;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "oa.java: For a supplied track, selects looping music and applies shared default profile with a one-millisecond adaptive ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(ILum;)V#1",
+      "originalName": "param1",
+      "to": "track",
+      "evidence": "oa.java: For a supplied track, selects looping music and applies shared default profile with a one-millisecond adaptive ramp.",
       "confidence": "reviewed"
     },
     {
@@ -70139,6 +70664,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wn.<init>(Lih;)V#0",
+      "originalName": "param0",
+      "to": "sharedPatchOwner",
+      "evidence": "wn.java: Superclass copy shares patch cache, while adaptive gain arrays are newly allocated and initialized to gain 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(BILvk;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wn.java: Converts milliseconds to integer frames using current output rate and retains the supplied profile as the live target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(BILvk;)V#1",
+      "originalName": "param1",
+      "to": "durationMillis",
+      "evidence": "wn.java: Converts milliseconds to integer frames using current output rate and retains the supplied profile as the live target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(BILvk;)V#2",
+      "originalName": "param2",
+      "to": "profile",
+      "evidence": "wn.java: Converts milliseconds to integer frames using current output rate and retains the supplied profile as the live target.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wn.a(IIB)V#0",
       "originalName": "param0",
       "to": "gain",
@@ -70157,6 +70710,27 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "ih.java: Negative channel selects all sixteen channel gain slots. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ILvk;I)V#0",
+      "originalName": "param0",
+      "to": "durationFrames",
+      "evidence": "wn.java: Retains profile identity and schedules all sixteen channels from current fixed-point gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ILvk;I)V#1",
+      "originalName": "param1",
+      "to": "profile",
+      "evidence": "wn.java: Retains profile identity and schedules all sixteen channels from current fixed-point gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ILvk;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wn.java: Retains profile identity and schedules all sixteen channels from current fixed-point gains.",
       "confidence": "reviewed"
     },
     {
@@ -70227,6 +70801,41 @@
       "originalName": "param2",
       "to": "frameCount",
       "evidence": "hn.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.c(IIII)V#0",
+      "originalName": "param0",
+      "to": "durationFrames",
+      "evidence": "wn.java: Marks ramps unsettled, stores target, computes signed integer step from absolute fixed-point difference plus one over duration plus one; zero quantized steps are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.c(IIII)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "wn.java: Marks ramps unsettled, stores target, computes signed integer step from absolute fixed-point difference plus one over duration plus one; zero quantized steps are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.c(IIII)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wn.java: Marks ramps unsettled, stores target, computes signed integer step from absolute fixed-point difference plus one over duration plus one; zero quantized steps are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.c(IIII)V#3",
+      "originalName": "param3",
+      "to": "targetGain",
+      "evidence": "wn.java: Marks ramps unsettled, stores target, computes signed integer step from absolute fixed-point difference plus one over duration plus one; zero quantized steps are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.k(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wn.java: Sets fixed/base channel gains to 256 without clearing pending steps, profile or settled state.",
       "confidence": "reviewed"
     },
     {
@@ -70364,10 +70973,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "4c459ca3e3e1a1d80e9be5410a2256140bf80db632091a1b72ef241d1cb193f6",
+      "build-armiesofgielinor-rules.mjs": "468f01691aa7537624ac94baace924fbda7256c784e6342c693b561ac6f8aa75",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "928a39e9ddbd3c2f0b1f0414b787a5633bbc70bfe0217f1199c7c03257b07f04",
+      "tests/test-armiesofgielinor-core.mjs": "f80dc5548909d9636d9db9c9e5410cc2f4f140b56bdc281a7f2846087a734a52",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

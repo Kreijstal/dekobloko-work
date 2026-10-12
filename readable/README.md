@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 165,073 raw/named checks agree. Controlled cipher output does not constitute
+All 165,370 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -453,6 +453,17 @@ fixtures populate those branches explicitly. The combined stereo scratch-backgro
 and foreground path preserves its existing double offset conversion. Production
 songs, live devices and audible whole-game transitions remain unverified.
 
+AdaptiveMidiPcmStream and ChannelGainProfile now name overall scaling and sixteen
+channel targets, fixed gains and signed steps. Fixed vectors cover ramp endpoints,
+three sample rates, retained mutable profiles, quantized zero steps, track reset
+retaining pending ramps, and inherited skipping that leaves ramps unchanged.
+Real PCM confirms overall gain and normal master restoration; render failure
+preserves scaled-master retention. CampaignMenu.updateMusicProfile names all six
+menu/campaign channel subsets, base gain/duration globals and interface/default
+track routes. Unknown campaign index skips profile construction. These checks
+preserve source behavior; production adaptive music and audible full sessions
+remain unverified.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -485,7 +496,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 237 reviewed classes around battlefield state, units, map
+The current pass names 239 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
