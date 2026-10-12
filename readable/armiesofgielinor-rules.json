@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 53,
+  "version": 54,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2438,7 +2438,7 @@
       "symbol": "C:io",
       "originalName": "io",
       "to": "MusicPatch",
-      "evidence": "io.java: Per-key samples, encoded sample IDs, pitch/loop flags, gains, pans, exclusive groups and envelopes; packed constructor locals remain to be reviewed.",
+      "evidence": "io.java: Packed run tables, compact envelope selection, pitch delta planes and signed key curves decoded into per-key samples/IDs, pitch/loop flags, gains, pans, groups and envelopes.",
       "confidence": "reviewed"
     },
     {
@@ -22623,6 +22623,909 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:io.<init>([B)V#0",
+      "originalName": "var11_int",
+      "to": "envelopeRunByteIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#1",
+      "originalName": "incrementValue$0",
+      "to": "newEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#10",
+      "originalName": "stackIn_205_2",
+      "to": "patchDescription",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#100",
+      "originalName": "var27Lifetime8",
+      "to": "decayEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#101",
+      "originalName": "var27Lifetime9",
+      "to": "keyScalingEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#102",
+      "originalName": "var27Lifetime10",
+      "to": "vibratoRateEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#103",
+      "originalName": "var27Lifetime11",
+      "to": "vibratoDepthEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#104",
+      "originalName": "var27Lifetime12",
+      "to": "vibratoDelayEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#105",
+      "originalName": "var28Lifetime1",
+      "to": "panCurveOffset",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#106",
+      "originalName": "var29Lifetime1",
+      "to": "releaseTimeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#107",
+      "originalName": "var29Lifetime2",
+      "to": "volumeTimeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#108",
+      "originalName": "var29Lifetime3",
+      "to": "gainPrefixKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#109",
+      "originalName": "var29Lifetime4",
+      "to": "panPrefixKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#11",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#110",
+      "originalName": "var30Lifetime1",
+      "to": "adjustedPrefixPan",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#111",
+      "originalName": "var31Lifetime1",
+      "to": "nextPanCurveOffset",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#112",
+      "originalName": "var32Lifetime1",
+      "to": "panInterpolationNumerator",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#113",
+      "originalName": "var33Lifetime1",
+      "to": "unusedPanInterpolationKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#114",
+      "originalName": "var34Lifetime1",
+      "to": "interpolatedPanOffset",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#115",
+      "originalName": "var14Lifetime1",
+      "to": "allocatedEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#116",
+      "originalName": "var14Lifetime2",
+      "to": "gainCurvePointCount",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#117",
+      "originalName": "var14Lifetime3",
+      "to": "panCurvePointCount",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#118",
+      "originalName": "var16_intLifetime1",
+      "to": "releasePointCount",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#119",
+      "originalName": "var29Lifetime5",
+      "to": "releaseLevelIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#12",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#120",
+      "originalName": "var30Lifetime2",
+      "to": "gainSuffixKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#121",
+      "originalName": "var27Lifetime6Lifetime1",
+      "to": "currentGainCurveKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#122",
+      "originalName": "var27Lifetime7Lifetime1",
+      "to": "currentPanCurveKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#123",
+      "originalName": "var29Lifetime3Lifetime1",
+      "to": "gainCurveSegmentIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#124",
+      "originalName": "var29Lifetime4Lifetime1",
+      "to": "panCurveSegmentIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#125",
+      "originalName": "var30Lifetime1Lifetime1",
+      "to": "nextPanCurveKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#126",
+      "originalName": "var30Lifetime1Lifetime2",
+      "to": "panSuffixKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#127",
+      "originalName": "var31Lifetime1Lifetime1",
+      "to": "adjustedSuffixPan",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#128",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#13",
+      "originalName": "var3",
+      "to": "groupRunCount",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#14",
+      "originalName": "var4",
+      "to": "groupRuns",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#15",
+      "originalName": "var5",
+      "to": "groupRunByteIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#16",
+      "originalName": "var6",
+      "to": "panRunCount",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#17",
+      "originalName": "var7",
+      "to": "panRuns",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#18",
+      "originalName": "var8",
+      "to": "panRunByteIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#19",
+      "originalName": "var9",
+      "to": "envelopeRunCount",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#2",
+      "originalName": "dupTemp$8",
+      "to": "newEnvelope",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#20",
+      "originalName": "var10",
+      "to": "envelopeRuns",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#21",
+      "originalName": "var11",
+      "to": "envelopeMap",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#22",
+      "originalName": "var12",
+      "to": "envelopeCount",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#23",
+      "originalName": "var13_int",
+      "to": "selectedEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#24",
+      "originalName": "var13",
+      "to": "envelopeTable",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#25",
+      "originalName": "var14",
+      "to": "envelopeMapIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#26",
+      "originalName": "var15_int",
+      "to": "envelopeMapCode",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#27",
+      "originalName": "var15",
+      "to": "gainCurve",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#28",
+      "originalName": "var15_ref",
+      "to": "envelopeBeingAllocated",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#29",
+      "originalName": "var16",
+      "to": "panCurve",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#3",
+      "originalName": "incrementValue$5",
+      "to": "groupValueByteIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#30",
+      "originalName": "var16_int",
+      "to": "volumePointCount",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#31",
+      "originalName": "var17",
+      "to": "sampleRunCount",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#32",
+      "originalName": "var18",
+      "to": "sampleRuns",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#33",
+      "originalName": "var19",
+      "to": "sampleRunByteIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#34",
+      "originalName": "var20",
+      "to": "pitchLowKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#35",
+      "originalName": "var21",
+      "to": "sampleRunIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#36",
+      "originalName": "var22",
+      "to": "sampleId",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#37",
+      "originalName": "var23",
+      "to": "sampleKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#38",
+      "originalName": "var24",
+      "to": "groupKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#39",
+      "originalName": "var25",
+      "to": "selectedEnvelope",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#4",
+      "originalName": "var25_int",
+      "to": "panKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#40",
+      "originalName": "var26",
+      "to": "envelopeKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#41",
+      "originalName": "var27",
+      "to": "gainKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#42",
+      "originalName": "var28",
+      "to": "gainCurveLevel",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#43",
+      "originalName": "var29",
+      "to": "volumeLevelIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#44",
+      "originalName": "var30",
+      "to": "nextGainCurveKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#45",
+      "originalName": "var31",
+      "to": "nextGainCurveLevel",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#46",
+      "originalName": "var32",
+      "to": "gainInterpolationNumerator",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#47",
+      "originalName": "var33",
+      "to": "gainInterpolationKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#48",
+      "originalName": "var34",
+      "to": "interpolatedGainLevel",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#49",
+      "originalName": "var35",
+      "to": "adjustedPan",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#5",
+      "originalName": "incrementValue$3",
+      "to": "panValueByteIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#50",
+      "originalName": "var37",
+      "to": "panInterpolationKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#51",
+      "originalName": "var38",
+      "to": "input",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#52",
+      "originalName": "var39",
+      "to": "envelopeMapAlias",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#53",
+      "originalName": "var40",
+      "to": "envelopeAllocationAlias",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#54",
+      "originalName": "var41",
+      "to": "sampleRunsAlias",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#55",
+      "originalName": "var42",
+      "to": "groupRunsAlias",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#56",
+      "originalName": "var43",
+      "to": "panRunsAlias",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#57",
+      "originalName": "var44",
+      "to": "envelopeRunsAlias",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#58",
+      "originalName": "var45",
+      "to": "envelopeForLevels",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#59",
+      "originalName": "var46",
+      "to": "gainCurveAlias",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#6",
+      "originalName": "stackIn_39_0",
+      "to": "allocatedGainCurve",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#60",
+      "originalName": "var47",
+      "to": "panCurveAlias",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#61",
+      "originalName": "var48",
+      "to": "envelopeForReleaseTimes",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#62",
+      "originalName": "var49",
+      "to": "envelopeForVolumeTimes",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#63",
+      "originalName": "var50",
+      "to": "envelopeForKeyScaling",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#64",
+      "originalName": "var51",
+      "to": "envelopeForVibratoDepth",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#65",
+      "originalName": "var52",
+      "to": "envelopeForVibratoDelay",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#66",
+      "originalName": "var53",
+      "to": "allocatedEnvelopeMap",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#67",
+      "originalName": "var54",
+      "to": "allocatedSampleRuns",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#68",
+      "originalName": "var55",
+      "to": "allocatedGroupRuns",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#69",
+      "originalName": "var56",
+      "to": "allocatedPanRuns",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#7",
+      "originalName": "stackIn_42_0",
+      "to": "allocatedPanCurve",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#70",
+      "originalName": "var57",
+      "to": "allocatedEnvelopeRuns",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#71",
+      "originalName": "var58",
+      "to": "allocatedPanCurveAlias",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#72",
+      "originalName": "var5Lifetime1",
+      "to": "groupValueCursor",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#73",
+      "originalName": "var8Lifetime1",
+      "to": "panValueCursor",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#74",
+      "originalName": "var19Lifetime1",
+      "to": "lowPitchAccumulator",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#75",
+      "originalName": "var19Lifetime2",
+      "to": "highPitchAccumulator",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#76",
+      "originalName": "var19Lifetime3",
+      "to": "releaseTimeAccumulator",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#77",
+      "originalName": "var19Lifetime4",
+      "to": "volumeTimeAccumulator",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#78",
+      "originalName": "var19Lifetime5",
+      "to": "gainCurveKeyAccumulator",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#79",
+      "originalName": "var19Lifetime6",
+      "to": "panCurveKeyAccumulator",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#8",
+      "originalName": "stackIn_204_0",
+      "to": "failureForContext",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#80",
+      "originalName": "var20Lifetime1",
+      "to": "pitchHighKey",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#81",
+      "originalName": "var20Lifetime2",
+      "to": "sampleRunRemaining",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#82",
+      "originalName": "var20Lifetime3",
+      "to": "groupRunRemaining",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#83",
+      "originalName": "var20Lifetime4",
+      "to": "panRunRemaining",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#84",
+      "originalName": "var20Lifetime5",
+      "to": "envelopeRunRemaining",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#85",
+      "originalName": "var20Lifetime6",
+      "to": "gainRunRemaining",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#86",
+      "originalName": "var21Lifetime1",
+      "to": "groupRunIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#87",
+      "originalName": "var21Lifetime2",
+      "to": "panRunIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#88",
+      "originalName": "var21Lifetime3",
+      "to": "envelopeRunIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#89",
+      "originalName": "var21Lifetime4",
+      "to": "gainRunIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#9",
+      "originalName": "stackIn_204_1",
+      "to": "errorContext",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#90",
+      "originalName": "var23Lifetime1",
+      "to": "exclusiveGroup",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#91",
+      "originalName": "var24Lifetime1",
+      "to": "panValue",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#92",
+      "originalName": "var26Lifetime1",
+      "to": "gainValue",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#93",
+      "originalName": "var27Lifetime1",
+      "to": "envelopeLevelsIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#94",
+      "originalName": "var27Lifetime2",
+      "to": "gainCurveLevelIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#95",
+      "originalName": "var27Lifetime3",
+      "to": "panCurveLevelIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#96",
+      "originalName": "var27Lifetime4",
+      "to": "releaseTimesEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#97",
+      "originalName": "var27Lifetime5",
+      "to": "volumeTimesEnvelopeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#98",
+      "originalName": "var27Lifetime6",
+      "to": "gainCurveTimeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.<init>([B)V#99",
+      "originalName": "var27Lifetime7",
+      "to": "panCurveTimeIndex",
+      "evidence": "io.java: Packed patch decode: zero-terminated run tables, compact envelope map, two unsigned pitch-delta planes, sample/group/pan/envelope/gain runs, signed curve levels, unsigned cumulative times and floor-rounded/clamped key curves.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:io.a(I[B[ILp;)Z#0",
       "originalName": "var8",
       "to": "key",
@@ -32458,6 +33361,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#0",
+      "originalName": "var3",
+      "to": "packedPatch",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#1",
+      "originalName": "var3_ref",
+      "to": "failure",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#10",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#2",
+      "originalName": "var4",
+      "to": "packedPatchAlias",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#3",
+      "originalName": "stackIn_2_0",
+      "to": "missingPatch",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#4",
+      "originalName": "stackIn_5_0",
+      "to": "guardRejectedPatch",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#5",
+      "originalName": "stackIn_7_0",
+      "to": "decodedPatch",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#6",
+      "originalName": "stackIn_10_0",
+      "to": "failureForContext",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#7",
+      "originalName": "stackIn_10_1",
+      "to": "errorContext",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#8",
+      "originalName": "stackIn_11_2",
+      "to": "archiveDescription",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lkl;IZ)Lio;#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wl.java: Flat archive patch loading and contextual failure path; fixed local identities bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wp.f(B)Z#0",
       "originalName": "var2",
       "to": "allSkeletonsAvailable",
@@ -42115,6 +43095,13 @@
       "originalName": "i",
       "to": "normalizeCanvas",
       "evidence": "wk.java: Expands cropped pixels into the full canvas at their retained offsets and resets offsets to zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(Lkl;IZ)Lio;",
+      "originalName": "a",
+      "to": "loadMusicPatch",
+      "evidence": "wl.java: Reads the flat archive file, returns null for missing bytes or a false guard, and constructs the packed patch under the canonical true guard.",
       "confidence": "reviewed"
     },
     {
@@ -68354,6 +69341,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wl.a(Lkl;IZ)Lio;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "wl.java: Reads the flat archive file, returns null for missing bytes or a false guard, and constructs the packed patch under the canonical true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wl.a(Lkl;IZ)Lio;#1",
+      "originalName": "param1",
+      "to": "patchId",
+      "evidence": "wl.java: Reads the flat archive file, returns null for missing bytes or a false guard, and constructs the packed patch under the canonical true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wl.a(Lkl;IZ)Lio;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wl.java: Reads the flat archive file, returns null for missing bytes or a false guard, and constructs the packed patch under the canonical true guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wl.b(II)I#0",
       "originalName": "param0",
       "to": "value",
@@ -68593,10 +69601,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "9ad362b9e78a9195957d56124649f8c318d6e82e9d27026c907d85517c38b527",
+      "build-armiesofgielinor-rules.mjs": "17609dadd1bb87df233d8f3342bee72e52ea182bd308ad7e9e74c5dc1b016259",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "711fec60a9d149001f0ef75e5d61d615fc9e5977886e1ba641ebe48afc5d6745",
+      "tests/test-armiesofgielinor-core.mjs": "065f83a1d06c7fcb32a766bc72b462b250452b38f8793b02c1c67dcab05dbb32",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

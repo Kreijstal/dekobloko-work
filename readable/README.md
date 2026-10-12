@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 157,559 raw/named checks agree. Controlled cipher output does not constitute
+All 164,284 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -427,11 +427,18 @@ empty. Pending-track fields have no scheduling writer in this corpus. The track
 start option selects immediate sound stopping versus note release; both paths
 reset controllers. All-sound-off retains group references to unlinked nodes after
 clearing their sample/patch/stream ownership.
-MusicPatch names per-key metadata, preparation and sample-ID cleanup; its packed
-constructor locals remain to be reviewed. Synthetic preparation checks cover
-already-loaded samples and retained ownership. Full packed patch decoding/failure
-coverage, MIDI compliance, malformed inputs, production music and audible playback
-remain unverified.
+MusicPatch now names every packed constructor local: run tables/cursors, compact
+envelope selection, two unsigned pitch delta planes, sample/gain runs, signed
+curve levels, cumulative unsigned times and gain/pan interpolation/clamping.
+Independent column encoders check all 128 entries, sparse/empty patches, multi-byte
+IDs, repeated envelope sharing, signed gain narrowing and time bytes above 127.
+Flat archive loading, real synthesized PCM preparation, cached music namespaces,
+masked loads, budget exhaustion/retry and retained patch/usage ownership are checked.
+Nonpositive sequencer budgets are unlimited; explicit zero sample-budget arrays
+block misses. Missing files retain loading IDs/usage. Selected truncations and
+signed key-curve index failure preserve the existing behavior; trailing bytes are
+ignored. General malformed-input coverage, MIDI compliance, production patch/music
+assets and audible whole-game playback remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
