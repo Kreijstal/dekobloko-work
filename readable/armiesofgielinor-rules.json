@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 37,
+  "version": 38,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2050,6 +2050,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dq",
+      "originalName": "dq",
+      "to": "HuffmanCodec",
+      "evidence": "dq.java: Retained symbol lengths, left-aligned code words and decode trie; packs bytes MSB-first and decodes a requested output length. Unrelated static helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ec",
       "originalName": "ec",
       "to": "TeleportEvent",
@@ -2631,6 +2638,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mp",
+      "originalName": "mp",
+      "to": "SocialListPanel",
+      "evidence": "mp.java: Scrollable retained social-list content with add/remove buttons, prototype copying and shared bottom-row geometry. Unrelated static helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mq",
       "originalName": "mq",
       "to": "QuickChatMenu",
@@ -2705,6 +2719,13 @@
       "originalName": "nw",
       "to": "DamageEvent",
       "evidence": "nw.java: Diagnostic EventDamage with damage amount and poison flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oc",
+      "originalName": "oc",
+      "to": "AccountNamePrompt",
+      "evidence": "oc.java: Anchored account-name prompt with instruction/input components, mutable name buffer and waiting/cancel/submit state; modern polling and legacy key handling remain distinct.",
       "confidence": "reviewed"
     },
     {
@@ -3433,6 +3454,13 @@
       "originalName": "field_C",
       "to": "applied",
       "evidence": "as.java: Apply returns if already true, then sets true before mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:as.field_E:Lje;",
+      "originalName": "field_E",
+      "to": "quickChatMenuHost",
+      "evidence": "as.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
       "confidence": "reviewed"
     },
     {
@@ -4416,6 +4444,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dj.field_e:J",
+      "originalName": "field_e",
+      "to": "chatRecipientAccountId",
+      "evidence": "dj.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dl.field_a:I",
       "originalName": "field_a",
       "to": "buttonPress",
@@ -4682,10 +4717,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dq.field_a:[B",
+      "originalName": "field_a",
+      "to": "symbolCodeLengths",
+      "evidence": "dq.java: Constructor retains lengths and builds high-bit-aligned codes and a packed zero/one trie with complemented symbol leaves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dq.field_b:[I",
+      "originalName": "field_b",
+      "to": "decodeTrie",
+      "evidence": "dq.java: Constructor retains lengths and builds high-bit-aligned codes and a packed zero/one trie with complemented symbol leaves.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dq.field_c:I",
       "originalName": "field_c",
       "to": "packetDelayMillis",
       "evidence": "dq.java: Nonzero enables delayed delivery and contributes the base offset to a packet release timestamp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dq.field_h:[I",
+      "originalName": "field_h",
+      "to": "symbolCodes",
+      "evidence": "dq.java: Constructor retains lengths and builds high-bit-aligned codes and a packed zero/one trie with complemented symbol leaves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ds.field_c:Ldq;",
+      "originalName": "field_c",
+      "to": "chatHuffmanCodec",
+      "evidence": "ds.java: Installed codebook is shared by compressed chat text read/write helpers.",
       "confidence": "reviewed"
     },
     {
@@ -5851,6 +5914,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hf.field_c:Z",
+      "originalName": "field_c",
+      "to": "textChatActive",
+      "evidence": "hf.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hh.field_b:I",
       "originalName": "field_b",
       "to": "maximum",
@@ -6702,6 +6772,13 @@
       "originalName": "field_g",
       "to": "panelWidth",
       "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_h:Z",
+      "originalName": "field_h",
+      "to": "quickChatMenuVisible",
+      "evidence": "iu.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
       "confidence": "reviewed"
     },
     {
@@ -8420,6 +8497,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lq.field_d:Z",
+      "originalName": "field_d",
+      "to": "hasLastQuickChat",
+      "evidence": "lq.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lr.field_b:[I",
       "originalName": "field_b",
       "to": "keyIndexSlots",
@@ -8718,6 +8802,34 @@
       "originalName": "field_v",
       "to": "contextId",
       "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mp.field_Ib:Lje;",
+      "originalName": "field_Ib",
+      "to": "addButton",
+      "evidence": "mp.java: Social-list prototype construction and friend/ignore controls use retained content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mp.field_Kb:Ldn;",
+      "originalName": "field_Kb",
+      "to": "scrollContainer",
+      "evidence": "mp.java: Social-list prototype construction and friend/ignore controls use retained content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mp.field_Nb:Lje;",
+      "originalName": "field_Nb",
+      "to": "listContent",
+      "evidence": "mp.java: Social-list prototype construction and friend/ignore controls use retained content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mp.field_Rb:Lje;",
+      "originalName": "field_Rb",
+      "to": "removeButton",
+      "evidence": "mp.java: Social-list prototype construction and friend/ignore controls use retained content, scroll container and add/remove buttons.",
       "confidence": "reviewed"
     },
     {
@@ -9285,6 +9397,34 @@
       "originalName": "field_J",
       "to": "heldPointerButton",
       "evidence": "ob.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_Kb:I",
+      "originalName": "field_Kb",
+      "to": "pendingResult",
+      "evidence": "oc.java: Prompt construction and two input paths retain text, displayed components and 0/1/2 waiting/cancel/submit state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_Lb:Lje;",
+      "originalName": "field_Lb",
+      "to": "instructionsComponent",
+      "evidence": "oc.java: Prompt construction and two input paths retain text, displayed components and 0/1/2 waiting/cancel/submit state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_Mb:Lje;",
+      "originalName": "field_Mb",
+      "to": "inputComponent",
+      "evidence": "oc.java: Prompt construction and two input paths retain text, displayed components and 0/1/2 waiting/cancel/submit state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_Qb:Ljava/lang/StringBuilder;",
+      "originalName": "field_Qb",
+      "to": "nameBuffer",
+      "evidence": "oc.java: Prompt construction and two input paths retain text, displayed components and 0/1/2 waiting/cancel/submit state.",
       "confidence": "reviewed"
     },
     {
@@ -9869,6 +10009,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qd.field_G:Ljava/lang/String;",
+      "originalName": "field_G",
+      "to": "chatRecipientName",
+      "evidence": "qd.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qd.field_I:Lmq;",
+      "originalName": "field_I",
+      "to": "activeQuickChatMenu",
+      "evidence": "qd.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qd.field_K:I",
       "originalName": "field_K",
       "to": "lobbyNotificationDuration",
@@ -9915,6 +10069,13 @@
       "originalName": "field_z",
       "to": "offsetY",
       "evidence": "qg.java: RGB sprite constructors, indexed-to-RGB conversion and clipped draw methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qj.field_C:Ljava/lang/StringBuilder;",
+      "originalName": "field_C",
+      "to": "chatTextBuffer",
+      "evidence": "qj.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
       "confidence": "reviewed"
     },
     {
@@ -10471,6 +10632,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rs.field_t:I",
+      "originalName": "field_t",
+      "to": "outgoingChatChannel",
+      "evidence": "rs.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rt.field_C:I",
       "originalName": "field_C",
       "to": "destinationY",
@@ -10482,6 +10650,13 @@
       "originalName": "field_y",
       "to": "destinationX",
       "evidence": "rt.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rt.field_z:J",
+      "originalName": "field_z",
+      "to": "lastQuickChatRecipientAccountId",
+      "evidence": "rt.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
       "confidence": "reviewed"
     },
     {
@@ -11752,6 +11927,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vi.field_e:I",
+      "originalName": "field_e",
+      "to": "lastQuickChatPhraseId",
+      "evidence": "vi.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vj.field_a:I",
       "originalName": "field_a",
       "to": "pendingJoinRequestCount",
@@ -11899,6 +12081,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vt.field_l:I",
+      "originalName": "field_l",
+      "to": "lastQuickChatChannel",
+      "evidence": "vt.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vu.field_M:Lau;",
       "originalName": "field_M",
       "to": "currentRoom",
@@ -11973,6 +12162,27 @@
       "originalName": "field_F",
       "to": "currentRoomPlayers",
       "evidence": "wl.java: Lobby packet dispatcher, sorted insertion, room/player lookup, ownership test and notification expiry share these exact globals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wm.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "chatRecipientNameKey",
+      "evidence": "wm.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wn.field_db:Ljava/lang/String;",
+      "originalName": "field_db",
+      "to": "lastQuickChatRecipientName",
+      "evidence": "wn.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wn.field_jb:Lmq;",
+      "originalName": "field_jb",
+      "to": "defaultQuickChatMenu",
+      "evidence": "wn.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
       "confidence": "reviewed"
     },
     {
@@ -13541,6 +13751,286 @@
       "originalName": "var4",
       "to": "pasteFailure",
       "evidence": "dp.java: Reviewed text navigation, synchronized task enqueue or popup measurement/polling at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#0",
+      "originalName": "var5",
+      "to": "symbol",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#1",
+      "originalName": "var14",
+      "to": "copyIndex",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#10",
+      "originalName": "var6",
+      "to": "codeLength",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#11",
+      "originalName": "var7",
+      "to": "codeStep",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#12",
+      "originalName": "var8",
+      "to": "symbolCode",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#13",
+      "originalName": "var9",
+      "to": "nextCode",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#14",
+      "originalName": "var10",
+      "to": "shorterLength",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#15",
+      "originalName": "var11",
+      "to": "shorterCode",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#16",
+      "originalName": "var12",
+      "to": "shorterStep",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#17",
+      "originalName": "var13",
+      "to": "expandedTrie",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#18",
+      "originalName": "var16",
+      "to": "frontierAlias",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#19",
+      "originalName": "var17",
+      "to": "frontier",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#20",
+      "originalName": "var10Lifetime1",
+      "to": "longerLength",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#21",
+      "originalName": "var10Lifetime2",
+      "to": "trieSlot",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#22",
+      "originalName": "var11Lifetime1",
+      "to": "codeBit",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#23",
+      "originalName": "var12Lifetime1",
+      "to": "codeMask",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#6",
+      "originalName": "var2_int",
+      "to": "symbolCount",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#8",
+      "originalName": "var3",
+      "to": "codeFrontier",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.<init>([B)V#9",
+      "originalName": "var4",
+      "to": "nextTrieSlot",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(I[BI[BIB)I#11",
+      "originalName": "var8",
+      "to": "outputBitPosition",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(I[BI[BIB)I#12",
+      "originalName": "var9",
+      "to": "symbol",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(I[BI[BIB)I#13",
+      "originalName": "var10",
+      "to": "symbolCode",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(I[BI[BIB)I#14",
+      "originalName": "var11",
+      "to": "codeLength",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(I[BI[BIB)I#15",
+      "originalName": "var12",
+      "to": "outputByteIndex",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(I[BI[BIB)I#16",
+      "originalName": "var13",
+      "to": "bitShift",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(I[BI[BIB)I#17",
+      "originalName": "var14",
+      "to": "lastOutputByte",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(I[BI[BIB)I#18",
+      "originalName": "var15",
+      "to": "obfuscationControl",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(I[BI[BIB)I#9",
+      "originalName": "var7_int",
+      "to": "outputWord",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#24",
+      "originalName": "var7_int",
+      "to": "trieSlot",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#26",
+      "originalName": "var8",
+      "to": "inputIndex",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#27",
+      "originalName": "var9",
+      "to": "inputByte",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#28",
+      "originalName": "var10",
+      "to": "decodedLeaf",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#29",
+      "originalName": "var11",
+      "to": "obfuscationControl",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#30",
+      "originalName": "var10Lifetime1",
+      "to": "leafBit6",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#31",
+      "originalName": "var10Lifetime2",
+      "to": "leafBit5",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#32",
+      "originalName": "var10Lifetime3",
+      "to": "leafBit4",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#33",
+      "originalName": "var10Lifetime4",
+      "to": "leafBit3",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#34",
+      "originalName": "var10Lifetime5",
+      "to": "leafBit2",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#35",
+      "originalName": "var10Lifetime6",
+      "to": "leafBit1",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([BIZII[B)I#36",
+      "originalName": "var10Lifetime7",
+      "to": "leafBit0",
+      "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -15623,6 +16113,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:it.a(IIILjava/lang/String;ILjava/lang/String;)V#0",
+      "originalName": "var9",
+      "to": "packet",
+      "evidence": "it.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:it.a(IIILjava/lang/String;ILjava/lang/String;)V#1",
+      "originalName": "var7",
+      "to": "payloadStart",
+      "evidence": "it.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:it.a(IIILjava/lang/String;ILjava/lang/String;)V#2",
+      "originalName": "var6",
+      "to": "packetAlias",
+      "evidence": "it.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:iu.f(I)V#10",
       "originalName": "var4",
       "to": "heightToShrink",
@@ -17408,6 +17919,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:me.a(ILjava/lang/String;[IJI)Z#0",
+      "originalName": "var6",
+      "to": "responseMenu",
+      "evidence": "me.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:me.a(ILjava/lang/String;[IJI)Z#2",
+      "originalName": "var7",
+      "to": "recipientCharacters",
+      "evidence": "me.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ml.a(III)V#0",
       "originalName": "dupTemp$0",
       "to": "inactivePanel",
@@ -18511,6 +19036,27 @@
       "originalName": "var6",
       "to": "nameCharacters",
       "evidence": "se.java: Reviewed social record, canonical-name collision lookup, ordering and command framing at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sf.a(ILjava/lang/String;Lvh;)I#0",
+      "originalName": "var3_int",
+      "to": "startPosition",
+      "evidence": "sf.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sf.a(ILjava/lang/String;Lvh;)I#2",
+      "originalName": "var4",
+      "to": "encodedText",
+      "evidence": "sf.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sf.a(ILjava/lang/String;Lvh;)I#4",
+      "originalName": "var6",
+      "to": "textCharacters",
+      "evidence": "sf.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -20327,6 +20873,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:co.a(III[B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decodeSingleByteText",
+      "evidence": "co.java: Decodes the single-byte alphabet and skips zero bytes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cq.a(III)Z",
       "originalName": "a",
       "to": "containsPoint",
@@ -20845,10 +21398,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dq.a(I[BI[BIB)I",
+      "originalName": "a",
+      "to": "compress",
+      "evidence": "dq.java: Packs retained symbol codes MSB-first at a byte-aligned output offset; returns bytes written and rejects zero-length symbols.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dq.a([BIZII[B)I",
+      "originalName": "a",
+      "to": "decompress",
+      "evidence": "dq.java: Walks the trie until outputLength bytes are decoded, returning input bytes consumed; zero output length consumes nothing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ds.a(B)V",
       "originalName": "a",
       "to": "capturePointerInput",
       "evidence": "ds.java: Copies held button/position/change state, increments idle ticks and consumes pending press/change state under the handler monitor; preserves partial copies on bad-guard failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:e.a(B)V",
+      "originalName": "a",
+      "to": "closeQuickChatMenu",
+      "evidence": "e.java: Clears visible state, resets menu selection, clears text/channel when nonzero and resets the menu layout inset.",
       "confidence": "reviewed"
     },
     {
@@ -21153,6 +21727,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fg.a(ILje;[ILje;Lje;)Lmq;",
+      "originalName": "a",
+      "to": "buildQuickChatResponseMenu",
+      "evidence": "fg.java: Builds phrase previews with shortcuts starting at character 2; phrase lookup/preview exceptions return null before construction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fi.a(BZ)V",
       "originalName": "a",
       "to": "advanceAnimation",
@@ -21199,6 +21780,13 @@
       "originalName": "a",
       "to": "requestRemoveIgnoredAccount",
       "evidence": "fq.java: Validates accountName, looks up displayName and unlinks/decrements immediately before command 3; true guard leaves an incomplete frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fs.a(BLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "isActivePrivateTextRecipient",
+      "evidence": "fs.java: Requires active text chat, outgoing channel 2 and a matching normalized recipient key for canonical guards.",
       "confidence": "reviewed"
     },
     {
@@ -21381,6 +21969,13 @@
       "originalName": "n",
       "to": "ensureSelectionVisible",
       "evidence": "gh.java: Adjusts fixed-point scroll position to keep the selected option within the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(ILjava/lang/String;J)V",
+      "originalName": "a",
+      "to": "openPrivateTextChat",
+      "evidence": "gk.java: Selects channel 2, retains recipient identity/key and enables text chat.",
       "confidence": "reviewed"
     },
     {
@@ -21902,6 +22497,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hh.a(B)V",
+      "originalName": "a",
+      "to": "openDefaultQuickChatMenu",
+      "evidence": "hh.java: Installs the configured default menu through showQuickChatMenu.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hh.a(I)Z",
       "originalName": "a",
       "to": "isRisingHalf",
@@ -22361,6 +22963,13 @@
       "originalName": "a",
       "to": "writeCoatOfArms",
       "evidence": "ir.java: Writes six part/colour pairs as bytes; low-byte truncation remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:it.a(IIILjava/lang/String;ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeChatMessage",
+      "evidence": "it.java: Writes caller opcode and byte-length-framed channel, optional private recipient, then compressed text or caller-supplied sixteen-bit phrase ID.",
       "confidence": "reviewed"
     },
     {
@@ -22882,6 +23491,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jh.a(Ljava/lang/String;JIII)V",
+      "originalName": "a",
+      "to": "rememberLastQuickChat",
+      "evidence": "jh.java: Retains replay recipient/channel/phrase; canonical guard also marks history available and stores the account ID.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jh.g(I)Z",
       "originalName": "g",
       "to": "isPacketPayloadReady",
@@ -23288,6 +23904,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kp.a(II)I",
+      "originalName": "a",
+      "to": "getChatFilter",
+      "evidence": "kp.java: Reads public/room/private filter for channel IDs 0/1/2; other values return zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kp.a(Lkb;IIZI)V",
       "originalName": "a",
       "to": "paintWidget",
@@ -23365,10 +23988,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.b(I)V",
+      "originalName": "b",
+      "to": "openPublicTextChat",
+      "evidence": "la.java: Selects outgoing channel 0 and enables text chat for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ld.a(ILha;)V",
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:le.a(IBLvh;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "readCompressedChatText",
+      "evidence": "le.java: Reads unsigned-smart decoded length, clamps it to maximumLength and decodes only that many bytes; catches failures as Cabbage without rewinding consumed length.",
       "confidence": "reviewed"
     },
     {
@@ -23652,6 +24289,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:me.a(ILjava/lang/String;[IJI)Z",
+      "originalName": "a",
+      "to": "openQuickChatResponses",
+      "evidence": "me.java: Checks response eligibility, remaps channel 1 to 0, retains target state, builds response rows and installs the returned menu.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mg.a(B[B)V",
       "originalName": "a",
       "to": "setBytes",
@@ -23719,6 +24363,20 @@
       "originalName": "a",
       "to": "getFilterPriority",
       "evidence": "mo.java: Returns 2 for system/private-icon messages, 1 for self or enabled friend context, otherwise 0; false guard clears displayName.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mp.a(BIII)V",
+      "originalName": "a",
+      "to": "layoutControls",
+      "evidence": "mp.java: Splits bottom-row width with integer division, reserves the gap and lays out the scroll container above it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mp.a(IIIIIIIB)V",
+      "originalName": "a",
+      "to": "setLayout",
+      "evidence": "mp.java: Stores panel bounds, then lays out the scroll area and shared bottom button row.",
       "confidence": "reviewed"
     },
     {
@@ -24121,6 +24779,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:np.k(I)V",
+      "originalName": "k",
+      "to": "openPublicQuickChat",
+      "evidence": "np.java: Selects outgoing channel 0 and opens the default quick-chat menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nr.a(Ljava/lang/CharSequence;Z)[B",
+      "originalName": "a",
+      "to": "encodeSingleByteText",
+      "evidence": "nr.java: Encodes the supported CP1252-style alphabet, replacing unsupported UTF-16 code units and NUL with question marks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ns.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -24177,6 +24849,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oc.b(ZZ)I",
+      "originalName": "b",
+      "to": "pollInput",
+      "evidence": "oc.java: Polls queued keys when enabled, preserving modern name/bracket input, submit/cancel return values and outside-click cancellation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.d(B)Z",
+      "originalName": "d",
+      "to": "handleLegacyNameKey",
+      "evidence": "oc.java: Handles one decoded key with lower-case ASCII/underscore conversion, twelve-character limit, backspace and retained cancellation/submission.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:of.a(BLjava/lang/String;Ljava/lang/String;)V",
       "originalName": "a",
       "to": "setNames",
@@ -24202,6 +24888,13 @@
       "originalName": "k",
       "to": "isRemovedFromIndex",
       "evidence": "of.java: Checks secondary-link absence without changing primary list membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(JILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "openPrivateQuickChat",
+      "evidence": "og.java: Selects channel 2, retains recipient identity/key and opens the default quick-chat menu.",
       "confidence": "reviewed"
     },
     {
@@ -24426,6 +25119,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:po.a(III)Z",
+      "originalName": "a",
+      "to": "handleQuickChatShortcuts",
+      "evidence": "po.java: Handles response/default/replay keys 9/10/11 using target eligibility, room-setup gates and the existing repeat-message throttle.",
       "confidence": "reviewed"
     },
     {
@@ -24751,6 +25451,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rb.a(JLjava/lang/String;II[I)Z",
+      "originalName": "a",
+      "to": "canOpenQuickChatResponses",
+      "evidence": "rb.java: Requires a response-ID array; private-channel targets additionally require an online friend or current room membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.b(I)V",
+      "originalName": "b",
+      "to": "clearChatText",
+      "evidence": "rd.java: Clears the shared text buffer and returns outgoing channel to zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rf.a(II)Lar;",
       "originalName": "a",
       "to": "getPhrase",
@@ -25028,6 +25742,13 @@
       "originalName": "a",
       "to": "insertLobbyPlayerSorted",
       "evidence": "sf.java: Moves the player into the sorted primary lobby deque without replacing its secondary-key identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(ILjava/lang/String;Lvh;)I",
+      "originalName": "a",
+      "to": "writeCompressedChatText",
+      "evidence": "sf.java: Writes the single-byte text length as unsigned smart then Huffman bytes, advancing the packet cursor and returning total bytes written.",
       "confidence": "reviewed"
     },
     {
@@ -25363,7 +26084,7 @@
       "symbol": "M:tg.a(IIB)Z",
       "originalName": "a",
       "to": "dispatchChatAction",
-      "evidence": "tg.java: Dispatches chat/filter/report actions by ID; guard remainders run after handled actions.",
+      "evidence": "tg.java: Dispatches private/public text or quick-chat composition, filter changes and auto-response actions by ID; preserves post-action guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -25658,6 +26379,20 @@
       "originalName": "b",
       "to": "isSecondHalfHit",
       "evidence": "ub.java: Returns true only when the first hit ordinal is strictly greater than itemCount/2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.a(Ldq;I)V",
+      "originalName": "a",
+      "to": "setChatHuffmanCodec",
+      "evidence": "uc.java: Installs the shared chat codebook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.b(IZII)V",
+      "originalName": "b",
+      "to": "setChatFilter",
+      "evidence": "ud.java: Changes the selected public/room/private filter, marks settings changed and writes updated packed filters only when different.",
       "confidence": "reviewed"
     },
     {
@@ -26144,6 +26879,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vh.a(ZI)V",
+      "originalName": "a",
+      "to": "writeUnsignedSmart",
+      "evidence": "vh.java: Writes one byte for 0..127 or a high-bit-marked short for 128..32767; rejects values outside the range.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vh.a(ZJ)V",
       "originalName": "a",
       "to": "writeLong40",
@@ -26183,6 +26925,13 @@
       "originalName": "e",
       "to": "readUnsignedShort",
       "evidence": "vh.java: Reads two big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.e(I)I",
+      "originalName": "e",
+      "to": "readUnsignedSmart",
+      "evidence": "vh.java: Reads the one-byte or high-bit-marked two-byte unsigned smart value.",
       "confidence": "reviewed"
     },
     {
@@ -26347,6 +27096,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vs.a(ILmq;)V",
+      "originalName": "a",
+      "to": "showQuickChatMenu",
+      "evidence": "vs.java: A null menu is a no-op; otherwise replaces host children with the retained active menu and marks it visible.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vt.a(IIILbv;)I",
       "originalName": "a",
       "to": "readTwoTierUnsignedInt",
@@ -26358,6 +27114,13 @@
       "originalName": "b",
       "to": "isCurrentRoomOwner",
       "evidence": "vu.java: Compares current-room ownerAccountId with localAccountId; preserves null-room failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vu.j(I)Z",
+      "originalName": "j",
+      "to": "isChatRecipientAvailable",
+      "evidence": "vu.java: Checks online friend or current-room membership against retained recipient identity.",
       "confidence": "reviewed"
     },
     {
@@ -28678,6 +29441,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:co.a(III[B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "offset",
+      "evidence": "co.java: Decodes the single-byte alphabet and skips zero bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(III[B)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "co.java: Decodes the single-byte alphabet and skips zero bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(III[B)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Decodes the single-byte alphabet and skips zero bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(III[B)Ljava/lang/String;#3",
+      "originalName": "param3",
+      "to": "bytes",
+      "evidence": "co.java: Decodes the single-byte alphabet and skips zero bytes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cq.<init>(ILjava/lang/String;)V#0",
       "originalName": "param0",
       "to": "entryId",
@@ -29938,10 +30729,108 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dq.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "codeLengths",
+      "evidence": "dq.java: Constructs the code words and decode trie, retaining the supplied lengths array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(I[BI[BIB)I#0",
+      "originalName": "param0",
+      "to": "inputOffset",
+      "evidence": "dq.java: Packs retained symbol codes MSB-first at a byte-aligned output offset; returns bytes written and rejects zero-length symbols.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(I[BI[BIB)I#1",
+      "originalName": "param1",
+      "to": "input",
+      "evidence": "dq.java: Packs retained symbol codes MSB-first at a byte-aligned output offset; returns bytes written and rejects zero-length symbols.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(I[BI[BIB)I#2",
+      "originalName": "param2",
+      "to": "inputLength",
+      "evidence": "dq.java: Packs retained symbol codes MSB-first at a byte-aligned output offset; returns bytes written and rejects zero-length symbols.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(I[BI[BIB)I#3",
+      "originalName": "param3",
+      "to": "output",
+      "evidence": "dq.java: Packs retained symbol codes MSB-first at a byte-aligned output offset; returns bytes written and rejects zero-length symbols.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(I[BI[BIB)I#4",
+      "originalName": "param4",
+      "to": "outputOffset",
+      "evidence": "dq.java: Packs retained symbol codes MSB-first at a byte-aligned output offset; returns bytes written and rejects zero-length symbols.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(I[BI[BIB)I#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "dq.java: Packs retained symbol codes MSB-first at a byte-aligned output offset; returns bytes written and rejects zero-length symbols.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([BIZII[B)I#0",
+      "originalName": "param0",
+      "to": "input",
+      "evidence": "dq.java: Walks the trie until outputLength bytes are decoded, returning input bytes consumed; zero output length consumes nothing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([BIZII[B)I#1",
+      "originalName": "param1",
+      "to": "inputOffset",
+      "evidence": "dq.java: Walks the trie until outputLength bytes are decoded, returning input bytes consumed; zero output length consumes nothing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([BIZII[B)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "dq.java: Walks the trie until outputLength bytes are decoded, returning input bytes consumed; zero output length consumes nothing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([BIZII[B)I#3",
+      "originalName": "param3",
+      "to": "outputLength",
+      "evidence": "dq.java: Walks the trie until outputLength bytes are decoded, returning input bytes consumed; zero output length consumes nothing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([BIZII[B)I#4",
+      "originalName": "param4",
+      "to": "outputOffset",
+      "evidence": "dq.java: Walks the trie until outputLength bytes are decoded, returning input bytes consumed; zero output length consumes nothing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([BIZII[B)I#5",
+      "originalName": "param5",
+      "to": "output",
+      "evidence": "dq.java: Walks the trie until outputLength bytes are decoded, returning input bytes consumed; zero output length consumes nothing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ds.a(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ds.java: Copies held button/position/change state, increments idle ticks and consumes pending press/change state under the handler monitor; preserves partial copies on bad-guard failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "e.java: Clears visible state, resets menu selection, clears text/channel when nonzero and resets the menu layout inset.",
       "confidence": "reviewed"
     },
     {
@@ -30757,6 +31646,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fg.a(ILje;[ILje;Lje;)Lmq;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fg.java: Builds phrase previews with shortcuts starting at character 2; phrase lookup/preview exceptions return null before construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(ILje;[ILje;Lje;)Lmq;#1",
+      "originalName": "param1",
+      "to": "style",
+      "evidence": "fg.java: Builds phrase previews with shortcuts starting at character 2; phrase lookup/preview exceptions return null before construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(ILje;[ILje;Lje;)Lmq;#2",
+      "originalName": "param2",
+      "to": "responsePhraseIds",
+      "evidence": "fg.java: Builds phrase previews with shortcuts starting at character 2; phrase lookup/preview exceptions return null before construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(ILje;[ILje;Lje;)Lmq;#3",
+      "originalName": "param3",
+      "to": "textStyle",
+      "evidence": "fg.java: Builds phrase previews with shortcuts starting at character 2; phrase lookup/preview exceptions return null before construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(ILje;[ILje;Lje;)Lmq;#4",
+      "originalName": "param4",
+      "to": "itemStyle",
+      "evidence": "fg.java: Builds phrase previews with shortcuts starting at character 2; phrase lookup/preview exceptions return null before construction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fi.a(BZ)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -31006,6 +31930,20 @@
       "originalName": "param3",
       "to": "accountName",
       "evidence": "fq.java: Validates accountName, looks up displayName and unlinks/decrements immediately before command 3; true guard leaves an incomplete frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fs.a(BLjava/lang/String;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fs.java: Requires active text chat, outgoing channel 2 and a matching normalized recipient key for canonical guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fs.a(BLjava/lang/String;)Z#1",
+      "originalName": "param1",
+      "to": "recipientName",
+      "evidence": "fs.java: Requires active text chat, outgoing channel 2 and a matching normalized recipient key for canonical guards.",
       "confidence": "reviewed"
     },
     {
@@ -31552,6 +32490,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gh.java: Adjusts fixed-point scroll position to keep the selected option within the viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gk.a(ILjava/lang/String;J)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gk.java: Selects channel 2, retains recipient identity/key and enables text chat.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gk.a(ILjava/lang/String;J)V#1",
+      "originalName": "param1",
+      "to": "recipientName",
+      "evidence": "gk.java: Selects channel 2, retains recipient identity/key and enables text chat.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gk.a(ILjava/lang/String;J)V#2",
+      "originalName": "param2",
+      "to": "accountId",
+      "evidence": "gk.java: Selects channel 2, retains recipient identity/key and enables text chat.",
       "confidence": "reviewed"
     },
     {
@@ -32948,6 +33907,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hh.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hh.java: Installs the configured default menu through showQuickChatMenu.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hh.a(I)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -34334,6 +35300,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:it.a(IIILjava/lang/String;ILjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "phraseId",
+      "evidence": "it.java: Writes caller opcode and byte-length-framed channel, optional private recipient, then compressed text or caller-supplied sixteen-bit phrase ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:it.a(IIILjava/lang/String;ILjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "it.java: Writes caller opcode and byte-length-framed channel, optional private recipient, then compressed text or caller-supplied sixteen-bit phrase ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:it.a(IIILjava/lang/String;ILjava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "channelId",
+      "evidence": "it.java: Writes caller opcode and byte-length-framed channel, optional private recipient, then compressed text or caller-supplied sixteen-bit phrase ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:it.a(IIILjava/lang/String;ILjava/lang/String;)V#3",
+      "originalName": "param3",
+      "to": "recipientName",
+      "evidence": "it.java: Writes caller opcode and byte-length-framed channel, optional private recipient, then compressed text or caller-supplied sixteen-bit phrase ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:it.a(IIILjava/lang/String;ILjava/lang/String;)V#4",
+      "originalName": "param4",
+      "to": "packetOpcode",
+      "evidence": "it.java: Writes caller opcode and byte-length-framed channel, optional private recipient, then compressed text or caller-supplied sixteen-bit phrase ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:it.a(IIILjava/lang/String;ILjava/lang/String;)V#5",
+      "originalName": "param5",
+      "to": "text",
+      "evidence": "it.java: Writes caller opcode and byte-length-framed channel, optional private recipient, then compressed text or caller-supplied sixteen-bit phrase ID.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:iu.<init>(Lic;)V#0",
       "originalName": "param0",
       "to": "controller",
@@ -35535,6 +36543,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ks.java: Reports resource progress; disk implementation returns zero or 100 from pending state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jh.a(Ljava/lang/String;JIII)V#0",
+      "originalName": "param0",
+      "to": "recipientName",
+      "evidence": "jh.java: Retains replay recipient/channel/phrase; canonical guard also marks history available and stores the account ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jh.a(Ljava/lang/String;JIII)V#1",
+      "originalName": "param1",
+      "to": "accountId",
+      "evidence": "jh.java: Retains replay recipient/channel/phrase; canonical guard also marks history available and stores the account ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jh.a(Ljava/lang/String;JIII)V#2",
+      "originalName": "param2",
+      "to": "phraseId",
+      "evidence": "jh.java: Retains replay recipient/channel/phrase; canonical guard also marks history available and stores the account ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jh.a(Ljava/lang/String;JIII)V#3",
+      "originalName": "param3",
+      "to": "channelId",
+      "evidence": "jh.java: Retains replay recipient/channel/phrase; canonical guard also marks history available and stores the account ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jh.a(Ljava/lang/String;JIII)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "jh.java: Retains replay recipient/channel/phrase; canonical guard also marks history available and stores the account ID.",
       "confidence": "reviewed"
     },
     {
@@ -36777,6 +37820,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kp.a(II)I#0",
+      "originalName": "param0",
+      "to": "channelId",
+      "evidence": "kp.java: Reads public/room/private filter for channel IDs 0/1/2; other values return zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kp.a(II)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kp.java: Reads public/room/private filter for channel IDs 0/1/2; other values return zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kp.a(Lkb;IIZI)V#0",
       "originalName": "param0",
       "to": "widget",
@@ -37008,6 +38065,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:la.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "la.java: Selects outgoing channel 0 and enables text chat for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ld.<init>(II[IIIIILjd;Ljd;)V#0",
       "originalName": "param0",
       "to": "startX",
@@ -37082,6 +38146,27 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(IBLvh;)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "maximumLength",
+      "evidence": "le.java: Reads unsigned-smart decoded length, clamps it to maximumLength and decodes only that many bytes; catches failures as Cabbage without rewinding consumed length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(IBLvh;)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "le.java: Reads unsigned-smart decoded length, clamps it to maximumLength and decodes only that many bytes; catches failures as Cabbage without rewinding consumed length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(IBLvh;)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "le.java: Reads unsigned-smart decoded length, clamps it to maximumLength and decodes only that many bytes; catches failures as Cabbage without rewinding consumed length.",
       "confidence": "reviewed"
     },
     {
@@ -37925,6 +39010,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:me.a(ILjava/lang/String;[IJI)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "me.java: Checks response eligibility, remaps channel 1 to 0, retains target state, builds response rows and installs the returned menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.a(ILjava/lang/String;[IJI)Z#1",
+      "originalName": "param1",
+      "to": "recipientName",
+      "evidence": "me.java: Checks response eligibility, remaps channel 1 to 0, retains target state, builds response rows and installs the returned menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.a(ILjava/lang/String;[IJI)Z#2",
+      "originalName": "param2",
+      "to": "responsePhraseIds",
+      "evidence": "me.java: Checks response eligibility, remaps channel 1 to 0, retains target state, builds response rows and installs the returned menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.a(ILjava/lang/String;[IJI)Z#3",
+      "originalName": "param3",
+      "to": "accountId",
+      "evidence": "me.java: Checks response eligibility, remaps channel 1 to 0, retains target state, builds response rows and installs the returned menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.a(ILjava/lang/String;[IJI)Z#4",
+      "originalName": "param4",
+      "to": "channelId",
+      "evidence": "me.java: Checks response eligibility, remaps channel 1 to 0, retains target state, builds response rows and installs the returned menu.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mg.a(B[B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -38181,6 +39301,167 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "mo.java: Returns 2 for system/private-icon messages, 1 for self or enabled friend context, otherwise 0; false guard clears displayName.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLje;Lje;Lll;Lje;Ljava/lang/String;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "mp.java: Constructs content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLje;Lje;Lll;Lje;Ljava/lang/String;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "style",
+      "evidence": "mp.java: Constructs content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLje;Lje;Lll;Lje;Ljava/lang/String;Ljava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "viewportStyle",
+      "evidence": "mp.java: Constructs content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLje;Lje;Lll;Lje;Ljava/lang/String;Ljava/lang/String;)V#3",
+      "originalName": "param3",
+      "to": "scrollbarStyle",
+      "evidence": "mp.java: Constructs content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLje;Lje;Lll;Lje;Ljava/lang/String;Ljava/lang/String;)V#4",
+      "originalName": "param4",
+      "to": "buttonStyle",
+      "evidence": "mp.java: Constructs content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLje;Lje;Lll;Lje;Ljava/lang/String;Ljava/lang/String;)V#5",
+      "originalName": "param5",
+      "to": "addLabel",
+      "evidence": "mp.java: Constructs content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLje;Lje;Lll;Lje;Ljava/lang/String;Ljava/lang/String;)V#6",
+      "originalName": "param6",
+      "to": "removeLabel",
+      "evidence": "mp.java: Constructs content, scroll container and add/remove buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLmp;Ljava/lang/String;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "mp.java: Copies the social-list viewport/scrollbar/button styles from a prototype.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLmp;Ljava/lang/String;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "style",
+      "evidence": "mp.java: Copies the social-list viewport/scrollbar/button styles from a prototype.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLmp;Ljava/lang/String;Ljava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "addLabel",
+      "evidence": "mp.java: Copies the social-list viewport/scrollbar/button styles from a prototype.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.<init>(JLmp;Ljava/lang/String;Ljava/lang/String;)V#3",
+      "originalName": "param3",
+      "to": "removeLabel",
+      "evidence": "mp.java: Copies the social-list viewport/scrollbar/button styles from a prototype.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(BIII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mp.java: Splits bottom-row width with integer division, reserves the gap and lays out the scroll container above it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(BIII)V#1",
+      "originalName": "param1",
+      "to": "scrollbarWidth",
+      "evidence": "mp.java: Splits bottom-row width with integer division, reserves the gap and lays out the scroll container above it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(BIII)V#2",
+      "originalName": "param2",
+      "to": "buttonHeight",
+      "evidence": "mp.java: Splits bottom-row width with integer division, reserves the gap and lays out the scroll container above it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(BIII)V#3",
+      "originalName": "param3",
+      "to": "gap",
+      "evidence": "mp.java: Splits bottom-row width with integer division, reserves the gap and lays out the scroll container above it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIIIIIB)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "mp.java: Stores panel bounds, then lays out the scroll area and shared bottom button row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIIIIIB)V#1",
+      "originalName": "param1",
+      "to": "scrollbarWidth",
+      "evidence": "mp.java: Stores panel bounds, then lays out the scroll area and shared bottom button row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIIIIIB)V#2",
+      "originalName": "param2",
+      "to": "gap",
+      "evidence": "mp.java: Stores panel bounds, then lays out the scroll area and shared bottom button row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIIIIIB)V#3",
+      "originalName": "param3",
+      "to": "buttonHeight",
+      "evidence": "mp.java: Stores panel bounds, then lays out the scroll area and shared bottom button row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIIIIIB)V#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "mp.java: Stores panel bounds, then lays out the scroll area and shared bottom button row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIIIIIB)V#5",
+      "originalName": "param5",
+      "to": "y",
+      "evidence": "mp.java: Stores panel bounds, then lays out the scroll area and shared bottom button row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIIIIIB)V#6",
+      "originalName": "param6",
+      "to": "height",
+      "evidence": "mp.java: Stores panel bounds, then lays out the scroll area and shared bottom button row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIIIIIB)V#7",
+      "originalName": "param7",
+      "to": "obfuscationGuard",
+      "evidence": "mp.java: Stores panel bounds, then lays out the scroll area and shared bottom button row.",
       "confidence": "reviewed"
     },
     {
@@ -39311,6 +40592,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:np.k(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "np.java: Selects outgoing channel 0 and opens the default quick-chat menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nr.a(Ljava/lang/CharSequence;Z)[B#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "nr.java: Encodes the supported CP1252-style alphabet, replacing unsupported UTF-16 code units and NUL with question marks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nr.a(Ljava/lang/CharSequence;Z)[B#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nr.java: Encodes the supported CP1252-style alphabet, replacing unsupported UTF-16 code units and NUL with question marks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ns.<init>(IIIILjd;II)V#0",
       "originalName": "param0",
       "to": "attackerX",
@@ -39528,6 +40830,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oc.<init>(IIIILjava/lang/String;Lje;Lje;Lje;)V#0",
+      "originalName": "param0",
+      "to": "anchorX",
+      "evidence": "oc.java: Constructs an instruction/input prompt and fits it against raster bounds beside the anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IIIILjava/lang/String;Lje;Lje;Lje;)V#1",
+      "originalName": "param1",
+      "to": "anchorY",
+      "evidence": "oc.java: Constructs an instruction/input prompt and fits it against raster bounds beside the anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IIIILjava/lang/String;Lje;Lje;Lje;)V#2",
+      "originalName": "param2",
+      "to": "anchorWidth",
+      "evidence": "oc.java: Constructs an instruction/input prompt and fits it against raster bounds beside the anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IIIILjava/lang/String;Lje;Lje;Lje;)V#3",
+      "originalName": "param3",
+      "to": "anchorHeight",
+      "evidence": "oc.java: Constructs an instruction/input prompt and fits it against raster bounds beside the anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IIIILjava/lang/String;Lje;Lje;Lje;)V#4",
+      "originalName": "param4",
+      "to": "instructions",
+      "evidence": "oc.java: Constructs an instruction/input prompt and fits it against raster bounds beside the anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IIIILjava/lang/String;Lje;Lje;Lje;)V#5",
+      "originalName": "param5",
+      "to": "style",
+      "evidence": "oc.java: Constructs an instruction/input prompt and fits it against raster bounds beside the anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IIIILjava/lang/String;Lje;Lje;Lje;)V#6",
+      "originalName": "param6",
+      "to": "instructionsStyle",
+      "evidence": "oc.java: Constructs an instruction/input prompt and fits it against raster bounds beside the anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IIIILjava/lang/String;Lje;Lje;Lje;)V#7",
+      "originalName": "param7",
+      "to": "inputStyle",
+      "evidence": "oc.java: Constructs an instruction/input prompt and fits it against raster bounds beside the anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(ZZ)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "oc.java: Polls queued keys when enabled, preserving modern name/bracket input, submit/cancel return values and outside-click cancellation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(ZZ)I#1",
+      "originalName": "param1",
+      "to": "enableCapture",
+      "evidence": "oc.java: Polls queued keys when enabled, preserving modern name/bracket input, submit/cancel return values and outside-click cancellation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.d(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "oc.java: Handles one decoded key with lower-case ASCII/underscore conversion, twelve-character limit, backspace and retained cancellation/submission.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:of.<init>(Ljava/lang/String;Ljava/lang/String;J)V#0",
       "originalName": "param0",
       "to": "accountName",
@@ -39630,6 +41009,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "of.java: Checks secondary-link absence without changing primary list membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(JILjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "accountId",
+      "evidence": "og.java: Selects channel 2, retains recipient identity/key and opens the default quick-chat menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(JILjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "og.java: Selects channel 2, retains recipient identity/key and opens the default quick-chat menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(JILjava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "recipientName",
+      "evidence": "og.java: Selects channel 2, retains recipient identity/key and opens the default quick-chat menu.",
       "confidence": "reviewed"
     },
     {
@@ -40155,6 +41555,27 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:po.a(III)Z#0",
+      "originalName": "param0",
+      "to": "packetOpcode",
+      "evidence": "po.java: Handles response/default/replay keys 9/10/11 using target eligibility, room-setup gates and the existing repeat-message throttle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:po.a(III)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "po.java: Handles response/default/replay keys 9/10/11 using target eligibility, room-setup gates and the existing repeat-message throttle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:po.a(III)Z#2",
+      "originalName": "param2",
+      "to": "unusedParameter2",
+      "evidence": "po.java: Handles response/default/replay keys 9/10/11 using target eligibility, room-setup gates and the existing repeat-message throttle.",
       "confidence": "reviewed"
     },
     {
@@ -41093,6 +42514,48 @@
       "originalName": "param2",
       "to": "packet",
       "evidence": "rb.java: Decodes a tile record and initializes god metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(JLjava/lang/String;II[I)Z#0",
+      "originalName": "param0",
+      "to": "accountId",
+      "evidence": "rb.java: Requires a response-ID array; private-channel targets additionally require an online friend or current room membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(JLjava/lang/String;II[I)Z#1",
+      "originalName": "param1",
+      "to": "recipientName",
+      "evidence": "rb.java: Requires a response-ID array; private-channel targets additionally require an online friend or current room membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(JLjava/lang/String;II[I)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "rb.java: Requires a response-ID array; private-channel targets additionally require an online friend or current room membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(JLjava/lang/String;II[I)Z#3",
+      "originalName": "param3",
+      "to": "channelId",
+      "evidence": "rb.java: Requires a response-ID array; private-channel targets additionally require an online friend or current room membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(JLjava/lang/String;II[I)Z#4",
+      "originalName": "param4",
+      "to": "responsePhraseIds",
+      "evidence": "rb.java: Requires a response-ID array; private-channel targets additionally require an online friend or current room membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rd.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rd.java: Clears the shared text buffer and returns outgoing channel to zero.",
       "confidence": "reviewed"
     },
     {
@@ -42052,6 +43515,27 @@
       "originalName": "param1",
       "to": "player",
       "evidence": "sf.java: Moves the player into the sorted primary lobby deque without replacing its secondary-key identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sf.a(ILjava/lang/String;Lvh;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sf.java: Writes the single-byte text length as unsigned smart then Huffman bytes, advancing the packet cursor and returning total bytes written.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sf.a(ILjava/lang/String;Lvh;)I#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "sf.java: Writes the single-byte text length as unsigned smart then Huffman bytes, advancing the packet cursor and returning total bytes written.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sf.a(ILjava/lang/String;Lvh;)I#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "sf.java: Writes the single-byte text length as unsigned smart then Huffman bytes, advancing the packet cursor and returning total bytes written.",
       "confidence": "reviewed"
     },
     {
@@ -43122,21 +44606,21 @@
       "symbol": "P:tg.a(IIB)Z#0",
       "originalName": "param0",
       "to": "actionId",
-      "evidence": "tg.java: Dispatches chat/filter/report actions by ID; guard remainders run after handled actions.",
+      "evidence": "tg.java: Dispatches private/public text or quick-chat composition, filter changes and auto-response actions by ID; preserves post-action guard arithmetic.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:tg.a(IIB)Z#1",
       "originalName": "param1",
       "to": "filterContext",
-      "evidence": "tg.java: Dispatches chat/filter/report actions by ID; guard remainders run after handled actions.",
+      "evidence": "tg.java: Dispatches private/public text or quick-chat composition, filter changes and auto-response actions by ID; preserves post-action guard arithmetic.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:tg.a(IIB)Z#2",
       "originalName": "param2",
       "to": "obfuscationGuard",
-      "evidence": "tg.java: Dispatches chat/filter/report actions by ID; guard remainders run after handled actions.",
+      "evidence": "tg.java: Dispatches private/public text or quick-chat composition, filter changes and auto-response actions by ID; preserves post-action guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -43970,6 +45454,48 @@
       "originalName": "param4",
       "to": "pointerX",
       "evidence": "ub.java: Returns true only when the first hit ordinal is strictly greater than itemCount/2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uc.a(Ldq;I)V#0",
+      "originalName": "param0",
+      "to": "codec",
+      "evidence": "uc.java: Installs the shared chat codebook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uc.a(Ldq;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "uc.java: Installs the shared chat codebook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.b(IZII)V#0",
+      "originalName": "param0",
+      "to": "filterValue",
+      "evidence": "ud.java: Changes the selected public/room/private filter, marks settings changed and writes updated packed filters only when different.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.b(IZII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ud.java: Changes the selected public/room/private filter, marks settings changed and writes updated packed filters only when different.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.b(IZII)V#2",
+      "originalName": "param2",
+      "to": "channelId",
+      "evidence": "ud.java: Changes the selected public/room/private filter, marks settings changed and writes updated packed filters only when different.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.b(IZII)V#3",
+      "originalName": "param3",
+      "to": "packetOpcode",
+      "evidence": "ud.java: Changes the selected public/room/private filter, marks settings changed and writes updated packed filters only when different.",
       "confidence": "reviewed"
     },
     {
@@ -45107,6 +46633,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vh.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Writes one byte for 0..127 or a high-bit-marked short for 128..32767; rejects values outside the range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "vh.java: Writes one byte for 0..127 or a high-bit-marked short for 128..32767; rejects values outside the range.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vh.a(ZJ)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -45209,6 +46749,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "vh.java: Reads two big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.e(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads the one-byte or high-bit-marked two-byte unsigned smart value.",
       "confidence": "reviewed"
     },
     {
@@ -45548,6 +47095,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vs.a(ILmq;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vs.java: A null menu is a no-op; otherwise replaces host children with the retained active menu and marks it visible.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(ILmq;)V#1",
+      "originalName": "param1",
+      "to": "menu",
+      "evidence": "vs.java: A null menu is a no-op; otherwise replaces host children with the retained active menu and marks it visible.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vt.a(IIILbv;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -45580,6 +47141,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "vu.java: Compares current-room ownerAccountId with localAccountId; preserves null-room failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vu.j(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vu.java: Checks online friend or current-room membership against retained recipient identity.",
       "confidence": "reviewed"
     },
     {
@@ -46004,10 +47572,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "857f81f72b7293e1fc3f370bf0331021bec782577e4f1100b62cf38dc7d0aa99",
+      "build-armiesofgielinor-rules.mjs": "56c541326332a198e29bdcd6169f3edfb45b7e594c603285ff09b1ed80833e77",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "5bfb5f4ec58d7dfe5cea0f2f0f0b8941fa5b3e9afcc602849540b0494ceaf1b1",
+      "tests/test-armiesofgielinor-core.mjs": "60573a067d3d02999a8c286258b96ddd5575a54872098601b379f69502940058",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
