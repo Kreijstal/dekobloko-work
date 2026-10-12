@@ -223,9 +223,23 @@ retains secondary-key identity, and removed rows expire from primary lists.
 TabbedPanel now names retained panels, integer tab geometry and ±10000 X-based
 switching. Native index and tab fixtures preserve duplicate keys, independent
 lookup/traversal, secondary moves retaining primary links and negative padded
-widths. All 115,902 raw/named checks agree. Live server compatibility, unknown-type
+widths. Live server compatibility, unknown-type
 disconnects, a full malformed packet matrix and rendered lobby interaction remain
 unverified.
+
+ClientContextMenu and ChatMessage now expose target account/display/room/channel,
+quick-chat context, admission/social/chat dispatch and message filtering. Outgoing
+admission commands 6–11 have named writers and exact frame fixtures for caller
+opcodes, lengths, IDs, offsets, controlled cipher masks and sentinel tails.
+Watching the same room writes nothing; changing it releases the prior room's
+cached player names. ReportAbuseDialog and IconLabelControl now name rule/name/mute
+controls, waiting/cancellation and icon/label layout. Report action 17 opens this
+dialog; action 19 uses quick-chat context for auto-response. Native constructor and
+report-frame fixtures retain NUL-name partial failure and byte narrowing. The
+current generated guide contains both incoming and outgoing payload tables.
+All 116,945 raw/named checks agree. Controlled cipher output does not constitute
+an independent ISAAC proof. Live request/report delivery, complete social actions,
+decoded-chat snapshots and a full rendered report-dialog session remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -259,7 +273,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 194 reviewed classes around battlefield state, units, map
+The current pass names 198 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
