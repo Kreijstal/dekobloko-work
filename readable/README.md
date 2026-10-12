@@ -37,7 +37,7 @@ The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
 
 ## Steel Sentinels
 
-The current pass names 28 reviewed classes: world/sentinel state, gameplay,
+The current pass names 33 reviewed classes: world/sentinel state, gameplay,
 engineering, terrain, projectiles, explosions, effects, commands, articulated
 parts and the supporting packet/rendering/collection roots. One current
 `steelsentinels-rules.json` records evidence and exact input/workflow identities.
@@ -62,9 +62,14 @@ and Applet initialization; they do not establish full gameplay, projectile
 simulation or server compatibility. Three dispatcher files and large methods
 remain. Java is published only in `games/steelsentinels` in FunOrb.
 
+Archive loading now exposes `ResourceArchive`, `ArchiveProvider`,
+`CachedArchiveProvider`, `ArchiveIndex` and `IntKeyLookup`. Both game probes
+check versions 5–7, optional name/digest tables, raw/gzip containers, sparse and
+large IDs, checksum rejection and returned-file retention modes.
+
 ## Armies of Gielinor
 
-The current pass names 133 reviewed classes around battlefield state, units, map
+The current pass names 138 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -145,6 +150,13 @@ BufferedSocket name padded buffers, capped request lanes, response headers,
 continuation blocks and XOR decoding. Real stream fixtures test both lanes and
 compression headers without opening remote sockets. They preserve signed
 padding, unclamped progress and access to retained padded arrays.
+
+ResourceArchive, ArchiveProvider, CachedArchiveProvider, ArchiveIndex and
+IntKeyLookup connect those requests to named resources. The index decoder now
+names revisions, group/file IDs, sparse capacities, CRCs and optional digest/name
+tables. Both games share independent fixture logic, with separately reviewed
+declaration identities. Raw/gzip decoding and returned-file retention are probed;
+these fixtures do not establish complete cache/network loading.
 
 CampaignParticipant and CoatOfArms name parent/participant metadata, shared
 overrides and coat layers. ContextualRuntimeException exposes the original

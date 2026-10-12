@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 18,
+  "version": 19,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1896,6 +1896,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bm",
+      "originalName": "bm",
+      "to": "CachedArchiveProvider",
+      "evidence": "bm.java: Validates archive indexes and group responses from disk caches and the resource protocol client.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bo",
       "originalName": "bo",
       "to": "TutorialLayout",
@@ -2019,6 +2026,13 @@
       "originalName": "em",
       "to": "TickCounter",
       "evidence": "em.java: Instance counts calls up to a limit and resets; unrelated static methods load client assets and handle client messages.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ew",
+      "originalName": "ew",
+      "to": "ArchiveProvider",
+      "evidence": "ew.java: Abstract archive-index, encoded-group and group-progress contract.",
       "confidence": "reviewed"
     },
     {
@@ -2211,6 +2225,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jm",
+      "originalName": "jm",
+      "to": "ArchiveIndex",
+      "evidence": "jm.java: Versions 5–7 decode group/file IDs, revisions, CRCs, optional names and 64-byte digests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ka",
       "originalName": "ka",
       "to": "BitmapFont",
@@ -2236,6 +2257,13 @@
       "originalName": "kj",
       "to": "SkeletonLimitMarker",
       "evidence": "kj.java: Turn preparation creates this when at least 25 type-20 skeletons remain; player flag 8192.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kl",
+      "originalName": "kl",
+      "to": "ResourceArchive",
+      "evidence": "kl.java: Lazy archive index, packed group storage, unpacked file storage and named resource lookup.",
       "confidence": "reviewed"
     },
     {
@@ -2285,6 +2313,13 @@
       "originalName": "lo",
       "to": "MapLayout",
       "evidence": "lo.java: Map format version, dimensions, terrain decoding, saved units and tagged map items.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lr",
+      "originalName": "lr",
+      "to": "IntKeyLookup",
+      "evidence": "lr.java: Open-addressed integer key table returning original input indices, with linear probing.",
       "confidence": "reviewed"
     },
     {
@@ -3062,6 +3097,13 @@
       "originalName": "field_D",
       "to": "spellMenuRoot",
       "evidence": "bm.java: ul builds the complete spell-menu hierarchy here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bm.field_q:Ljm;",
+      "originalName": "field_q",
+      "to": "index",
+      "evidence": "bm.java: Retained validated index returned by getIndex; constructed from disk or network response bytes.",
       "confidence": "reviewed"
     },
     {
@@ -5221,6 +5263,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jm.field_a:[[I",
+      "originalName": "field_a",
+      "to": "fileIds",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_c:I",
+      "originalName": "field_c",
+      "to": "revision",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_e:[I",
+      "originalName": "field_e",
+      "to": "groupCrcs",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_f:[Llr;",
+      "originalName": "field_f",
+      "to": "fileNameLookups",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_h:[I",
+      "originalName": "field_h",
+      "to": "fileCapacities",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_i:I",
+      "originalName": "field_i",
+      "to": "groupCapacity",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_j:[[I",
+      "originalName": "field_j",
+      "to": "fileNameHashes",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_l:Llr;",
+      "originalName": "field_l",
+      "to": "groupNameLookup",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_m:[I",
+      "originalName": "field_m",
+      "to": "groupNameHashes",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_n:[B",
+      "originalName": "field_n",
+      "to": "indexDigest",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_p:[I",
+      "originalName": "field_p",
+      "to": "fileCounts",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_q:[I",
+      "originalName": "field_q",
+      "to": "groupIds",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_r:I",
+      "originalName": "field_r",
+      "to": "groupCount",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_s:I",
+      "originalName": "field_s",
+      "to": "indexCrc",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_t:[I",
+      "originalName": "field_t",
+      "to": "groupVersions",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_v:[[B",
+      "originalName": "field_v",
+      "to": "groupDigests",
+      "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kc.field_y:I",
       "originalName": "field_y",
       "to": "newTurnNumber",
@@ -5281,6 +5435,48 @@
       "originalName": "field_z",
       "to": "strength",
       "evidence": "kf.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_b:Z",
+      "originalName": "field_b",
+      "to": "discardPackedGroups",
+      "evidence": "kl.java: Archive constructor and unpack/get paths: discard packed groups after decompression; file retention modes 0 retain, 1 discard the returned file, 2 discard its group row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_c:[[Ljava/lang/Object;",
+      "originalName": "field_c",
+      "to": "unpackedFiles",
+      "evidence": "kl.java: Archive constructor and unpack/get paths: discard packed groups after decompression; file retention modes 0 retain, 1 discard the returned file, 2 discard its group row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_e:I",
+      "originalName": "field_e",
+      "to": "fileRetentionMode",
+      "evidence": "kl.java: Archive constructor and unpack/get paths: discard packed groups after decompression; file retention modes 0 retain, 1 discard the returned file, 2 discard its group row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_g:Lew;",
+      "originalName": "field_g",
+      "to": "provider",
+      "evidence": "kl.java: Archive constructor and unpack/get paths: discard packed groups after decompression; file retention modes 0 retain, 1 discard the returned file, 2 discard its group row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_h:[Ljava/lang/Object;",
+      "originalName": "field_h",
+      "to": "packedGroups",
+      "evidence": "kl.java: Archive constructor and unpack/get paths: discard packed groups after decompression; file retention modes 0 retain, 1 discard the returned file, 2 discard its group row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_j:Ljm;",
+      "originalName": "field_j",
+      "to": "index",
+      "evidence": "kl.java: Archive constructor and unpack/get paths: discard packed groups after decompression; file retention modes 0 retain, 1 discard the returned file, 2 discard its group row.",
       "confidence": "reviewed"
     },
     {
@@ -5575,6 +5771,13 @@
       "originalName": "field_t",
       "to": "formatVersion",
       "evidence": "lo.java: Layout header decoding and row-major terrain/placement readers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lr.field_b:[I",
+      "originalName": "field_b",
+      "to": "keyIndexSlots",
+      "evidence": "lr.java: Interleaved key and original-input-index slots; -1 in the index slot denotes empty, including when the key itself is -1.",
       "confidence": "reviewed"
     },
     {
@@ -9701,6 +9904,195 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:jm.a([BZ)V#16",
+      "originalName": "var4",
+      "to": "formatVersion",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#17",
+      "originalName": "var5",
+      "to": "flags",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#18",
+      "originalName": "var6",
+      "to": "hasNames",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#19",
+      "originalName": "var7",
+      "to": "hasGroupDigests",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#20",
+      "originalName": "var8",
+      "to": "cumulativeGroupId",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#21",
+      "originalName": "var9",
+      "to": "maximumGroupId",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#22",
+      "originalName": "var10",
+      "to": "groupOrdinal",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#23",
+      "originalName": "var11",
+      "to": "groupId",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#24",
+      "originalName": "var12",
+      "to": "fileCount",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#25",
+      "originalName": "var13",
+      "to": "maximumFileId",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#26",
+      "originalName": "var14",
+      "to": "fileOrdinal",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#27",
+      "originalName": "var15",
+      "to": "fileId",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#30",
+      "originalName": "var18",
+      "to": "packet",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#31",
+      "originalName": "var22",
+      "to": "groupDigest",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#32",
+      "originalName": "var8Lifetime1",
+      "to": "cumulativeFileId",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#33",
+      "originalName": "var10Lifetime1",
+      "to": "groupNameSlot",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#34",
+      "originalName": "var10Lifetime2",
+      "to": "crcGroupOrdinal",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#35",
+      "originalName": "var10Lifetime3",
+      "to": "digestGroupOrdinal",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#36",
+      "originalName": "var10Lifetime4",
+      "to": "versionGroupOrdinal",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#37",
+      "originalName": "var10Lifetime5",
+      "to": "fileGroupOrdinal",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#38",
+      "originalName": "var10Lifetime6",
+      "to": "namedGroupOrdinal",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#39",
+      "originalName": "var13Lifetime1",
+      "to": "fileNameSlot",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#40",
+      "originalName": "var14Lifetime1",
+      "to": "namedFileId",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#41",
+      "originalName": "var11Lifetime1",
+      "to": "namedGroupId",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#42",
+      "originalName": "var12Lifetime1",
+      "to": "namedFileCount",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#43",
+      "originalName": "var10Lifetime1Lifetime1",
+      "to": "groupNameOrdinal",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a([BZ)V#44",
+      "originalName": "var13Lifetime1Lifetime1",
+      "to": "namedFileOrdinal",
+      "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ld.a(ILha;)V#0",
       "originalName": "var4",
       "to": "pathIndex",
@@ -9740,6 +10132,55 @@
       "originalName": "var4",
       "to": "mission",
       "evidence": "lf.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lr.<init>([I)V#0",
+      "originalName": "var2_int",
+      "to": "capacity",
+      "evidence": "lr.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lr.<init>([I)V#1",
+      "originalName": "var3",
+      "to": "slotIndex",
+      "evidence": "lr.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lr.<init>([I)V#2",
+      "originalName": "var4",
+      "to": "bucket",
+      "evidence": "lr.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lr.<init>([I)V#8",
+      "originalName": "var3Lifetime1",
+      "to": "inputIndex",
+      "evidence": "lr.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lr.a(II)I#0",
+      "originalName": "var3",
+      "to": "bucketMask",
+      "evidence": "lr.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lr.a(II)I#1",
+      "originalName": "var4",
+      "to": "bucket",
+      "evidence": "lr.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lr.a(II)I#2",
+      "originalName": "var5",
+      "to": "inputIndex",
+      "evidence": "lr.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
       "confidence": "reviewed"
     },
     {
@@ -10835,6 +11276,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bm.a(I)Ljm;",
+      "originalName": "a",
+      "to": "getIndex",
+      "evidence": "ew.java: Returns the validated archive index when available, otherwise null. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.a(II)[B",
+      "originalName": "a",
+      "to": "getEncodedGroup",
+      "evidence": "ew.java: Returns the encoded group response when available, otherwise null. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.b(II)I",
+      "originalName": "b",
+      "to": "getGroupProgress",
+      "evidence": "ew.java: Reports the request progress for the group. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bo.a(BI)I",
       "originalName": "a",
       "to": "getRightX",
@@ -11647,6 +12109,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:el.a(Z[B)[B",
+      "originalName": "a",
+      "to": "decompressContainer",
+      "evidence": "el.java: Reads container type and lengths; type zero copies payload, type one dispatches the block decompressor, other types dispatch the stream decompressor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:em.a(Lcf;BLbv;)V",
       "originalName": "a",
       "to": "readCampaignUnitOverride",
@@ -11686,6 +12155,27 @@
       "originalName": "a",
       "to": "readNullableUnsignedByteArray",
       "evidence": "ev.java: Reads a byte count and unsigned elements, returning null for count zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ew.a(I)Ljm;",
+      "originalName": "a",
+      "to": "getIndex",
+      "evidence": "ew.java: Returns the validated archive index when available, otherwise null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ew.a(II)[B",
+      "originalName": "a",
+      "to": "getEncodedGroup",
+      "evidence": "ew.java: Returns the encoded group response when available, otherwise null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ew.b(II)I",
+      "originalName": "b",
+      "to": "getGroupProgress",
+      "evidence": "ew.java: Reports the request progress for the group.",
       "confidence": "reviewed"
     },
     {
@@ -12718,6 +13208,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jm.a([BZ)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "jm.java: Decompresses the index container; reads versions 5–7, flags, delta-coded IDs and optional name/digest tables.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jr.a(Z)I",
       "originalName": "a",
       "to": "getCampaignPacketWord2",
@@ -12764,6 +13261,83 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(B)Z",
+      "originalName": "a",
+      "to": "ensureIndex",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(BII)[B",
+      "originalName": "a",
+      "to": "getFile",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(BILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "getFileId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "getGroupId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(ZI)V",
+      "originalName": "a",
+      "to": "loadPackedGroup",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.b(IB)I",
+      "originalName": "b",
+      "to": "getGroupProgress",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.b(II)[I",
+      "originalName": "b",
+      "to": "getFileIds",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.b(III)Z",
+      "originalName": "b",
+      "to": "isValidFile",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.c(II)Z",
+      "originalName": "c",
+      "to": "isValidGroup",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.d(II)I",
+      "originalName": "d",
+      "to": "getFileCapacity",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.e(I)I",
+      "originalName": "e",
+      "to": "getGroupCapacity",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
       "confidence": "reviewed"
     },
     {
@@ -12918,6 +13492,13 @@
       "originalName": "e",
       "to": "getTerrainGrid",
       "evidence": "lo.java: Returns rows of terrain type IDs from decoded tiles or encoded bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lr.a(II)I",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "lr.java: Linear probes and returns the first matching original input index, or -1; duplicate keys preserve the first match.",
       "confidence": "reviewed"
     },
     {
@@ -14531,6 +15112,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vh.f(B)I",
+      "originalName": "f",
+      "to": "readLargeSmart",
+      "evidence": "vh.java: Reads an unsigned short when the next byte is nonnegative, otherwise an int with the high bit cleared.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vh.g(B)[B",
       "originalName": "g",
       "to": "copyWrittenBytes",
@@ -15613,6 +16201,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "bg.java: Unlinks every stored node and clears both cursors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.a(I)Ljm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ew.java: Returns the validated archive index when available, otherwise null. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.a(II)[B#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "ew.java: Returns the encoded group response when available, otherwise null. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.a(II)[B#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ew.java: Returns the encoded group response when available, otherwise null. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.b(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ew.java: Reports the request progress for the group. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.b(II)I#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "ew.java: Reports the request progress for the group. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -17541,6 +18164,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:el.a(Z[B)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "el.java: Reads container type and lengths; type zero copies payload, type one dispatches the block decompressor, other types dispatch the stream decompressor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:el.a(Z[B)[B#1",
+      "originalName": "param1",
+      "to": "encodedContainer",
+      "evidence": "el.java: Reads container type and lengths; type zero copies payload, type one dispatches the block decompressor, other types dispatch the stream decompressor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:em.<init>(I)V#0",
       "originalName": "param0",
       "to": "limit",
@@ -17622,6 +18259,41 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ev.java: Reads a byte count and unsigned elements, returning null for count zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ew.a(I)Ljm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ew.java: Returns the validated archive index when available, otherwise null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ew.a(II)[B#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "ew.java: Returns the encoded group response when available, otherwise null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ew.a(II)[B#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ew.java: Returns the encoded group response when available, otherwise null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ew.b(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ew.java: Reports the request progress for the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ew.b(II)I#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "ew.java: Reports the request progress for the group.",
       "confidence": "reviewed"
     },
     {
@@ -20236,6 +20908,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jm.<init>([BI[B)V#0",
+      "originalName": "param0",
+      "to": "encodedIndex",
+      "evidence": "jm.java: Checks the entire encoded container CRC and optional 64-byte digest before decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jm.<init>([BI[B)V#1",
+      "originalName": "param1",
+      "to": "expectedCrc",
+      "evidence": "jm.java: Checks the entire encoded container CRC and optional 64-byte digest before decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jm.<init>([BI[B)V#2",
+      "originalName": "param2",
+      "to": "expectedDigest",
+      "evidence": "jm.java: Checks the entire encoded container CRC and optional 64-byte digest before decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jm.a([BZ)V#0",
+      "originalName": "param0",
+      "to": "encodedIndex",
+      "evidence": "jm.java: Decompresses the index container; reads versions 5–7, flags, delta-coded IDs and optional name/digest tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jm.a([BZ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "jm.java: Decompresses the index container; reads versions 5–7, flags, delta-coded IDs and optional name/digest tables.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jr.a(Z)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -20338,6 +21045,188 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.<init>(Lew;ZI)V#0",
+      "originalName": "param0",
+      "to": "provider",
+      "evidence": "kl.java: Stores the provider and validates fileRetentionMode in 0..2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.<init>(Lew;ZI)V#1",
+      "originalName": "param1",
+      "to": "discardPackedGroups",
+      "evidence": "kl.java: Stores the provider and validates fileRetentionMode in 0..2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.<init>(Lew;ZI)V#2",
+      "originalName": "param2",
+      "to": "fileRetentionMode",
+      "evidence": "kl.java: Stores the provider and validates fileRetentionMode in 0..2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(BII)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(BII)[B#1",
+      "originalName": "param1",
+      "to": "fileId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(BII)[B#2",
+      "originalName": "param2",
+      "to": "groupId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(BILjava/lang/String;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(BILjava/lang/String;)I#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(BILjava/lang/String;)I#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(Ljava/lang/String;I)I#0",
+      "originalName": "param0",
+      "to": "groupName",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(Ljava/lang/String;I)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(IB)I#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(IB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(II)[I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(II)[I#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(III)Z#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(III)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(III)Z#2",
+      "originalName": "param2",
+      "to": "fileId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.c(II)Z#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.c(II)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.d(II)I#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.d(II)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.e(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kl.java: Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.",
       "confidence": "reviewed"
     },
     {
@@ -20744,6 +21633,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "lo.java: Returns rows of terrain type IDs from decoded tiles or encoded bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lr.<init>([I)V#0",
+      "originalName": "param0",
+      "to": "keys",
+      "evidence": "lr.java: Copies integer keys into a power-of-two table sized above 1.5 times the input count; does not retain the input array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lr.a(II)I#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "lr.java: Linear probes and returns the first matching original input index, or -1; duplicate keys preserve the first match.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lr.a(II)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lr.java: Linear probes and returns the first matching original input index, or -1; duplicate keys preserve the first match.",
       "confidence": "reviewed"
     },
     {
@@ -24940,6 +25850,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vh.f(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads an unsigned short when the next byte is nonnegative, otherwise an int with the high bit cleared.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vh.g(B)[B#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -25459,9 +26376,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "0c23014ffae9953f5034b8a70916750448cba7bdb962e6006daed7a37b271493",
+      "build-armiesofgielinor-rules.mjs": "d7ae7499273d99d1414b0acc96da0641173810309ec9ca8bf400d41d4c45cfce",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
-      "tests/test-armiesofgielinor-core.mjs": "54fabeffbe678924afd3e2f2bf5d343507f48dd950de56088769e3fa6cdbf7dc",
+      "tests/test-armiesofgielinor-core.mjs": "2908cc5cdfc22d151967d31493a2a795669bda20b209b3932decbd7081a25d5b",
+      "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

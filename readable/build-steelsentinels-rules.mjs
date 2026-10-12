@@ -10,6 +10,11 @@ import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} fr
 const SOURCE_COMMIT = '1655ca853d0d4027018f3efcdc37be76ab7895f4';
 // Evidence below refers to this immutable Java input, not to another game's map.
 const classes = {
+  jl:['ArchiveIndex','Versions 5–7 decode group/file IDs, revisions, CRCs, optional names and 64-byte digests.'],
+  jk:['IntKeyLookup','Open-addressed integer key table returning original input indices, with linear probing.'],
+  cm:['ResourceArchive','Lazy archive index, packed group storage, unpacked file storage and named resource lookup.'],
+  fa:['ArchiveProvider','Abstract archive-index, encoded-group and group-progress contract.'],
+  fi:['CachedArchiveProvider','Validates archive indexes and group responses from disk caches and the resource protocol client.'],
   ee:['CombatWorld','Owns terrain, sentinel/projectile/effect collections, simulation ticks and synchronization checksum.'],
   mb:['Sentinel','Player/team IDs, fixed-point position, velocity, chassis, modules, armour, charge and combat controls.'],
   nb:['GameplayController','Owns CombatWorld, player selection, trajectories, input and game rendering.'],
@@ -224,6 +229,46 @@ for(const [owner,signature,ordinal,originalName,to] of [
 ])members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName:originalName,
   evidence:'Reviewed lexical declaration ordinal and packet bit assembly, destination indexing or bounded-sample data flow.'};
 
+
+// Independent Steel identities: equivalent formats do not imply identical descriptors or guards.
+for(const [original,to,type] of [
+ ['b','groupCount','I'],['h','groupIds','[I'],['u','groupCapacity','I'],['k','revision','I'],
+ ['e','indexCrc','I'],['l','indexDigest','[B'],['v','groupNameHashes','[I'],['n','groupNameLookup','Ljk;'],
+ ['a','groupCrcs','[I'],['t','groupDigests','[[B'],['m','groupVersions','[I'],
+ ['j','fileCounts','[I'],['g','fileCapacities','[I'],['o','fileIds','[[I'],
+ ['q','fileNameHashes','[[I'],['d','fileNameLookups','[Ljk;'],
+])field('jl',original,type,to,'Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.');
+method('jl','a','([BI)V','decode','Decompresses the index container; reads versions 5–7, flags, delta-coded IDs and optional name/digest tables.',{0:'encodedIndex',1:'obfuscationGuard'});
+method('jl','<init>','([BI[B)V','<init>','Checks the entire encoded container CRC and optional 64-byte digest before decoding.',{0:'encodedIndex',1:'expectedCrc',2:'expectedDigest'});
+field('jk','c','[I','keyIndexSlots','Interleaved key and original-input-index slots; -1 in the index slot denotes empty, including when the key itself is -1.');
+method('jk','a','(IB)I','get','Linear probes and returns the first matching original input index, or -1; duplicate keys preserve the first match.',{0:'key',1:'obfuscationGuard'});
+method('jk','<init>','([I)V','<init>','Copies integer keys into a power-of-two table sized above 1.5 times the input count; does not retain the input array.',{0:'keys'});
+for(const [original,to,type] of [['o','provider','Lfa;'],['a','index','Ljl;'],['k','packedGroups','[Ljava/lang/Object;'],['i','unpackedFiles','[[Ljava/lang/Object;'],['f','discardPackedGroups','Z'],['d','fileRetentionMode','I']])field('cm',original,type,to,'Archive constructor and unpack/get paths: discard packed groups after decompression; file retention modes 0 retain, 1 discard the returned file, 2 discard its group row.');
+method('fa','b','(B)Ljl;','getIndex','Returns the validated archive index when available, otherwise null.',{0:'obfuscationGuard'});
+method('fa','a','(II)[B','getEncodedGroup','Returns the encoded group response when available, otherwise null.',{0:'groupId',1:'obfuscationGuard'});
+method('fa','a','(ZI)I','getGroupProgress','Reports the request progress for the group.',{0:'obfuscationGuard',1:'groupId'});
+field('fi','A','Ljl;','index','Retained validated index returned by getIndex; constructed from disk or network response bytes.');
+for(const [original,descriptor,to,parameters] of [
+ ['a','(Z)Z','ensureIndex',{0:'obfuscationGuard'}],
+ ['b','(IZ)Z','isValidGroup',{0:'groupId',1:'obfuscationGuard'}],
+ ['b','(III)Z','isValidFile',{0:'groupId',1:'fileId',2:'obfuscationGuard'}],
+ ['a','(Ljava/lang/String;I)I','getGroupId',{0:'groupName',1:'obfuscationGuard'}],
+ ['a','(IILjava/lang/String;)I','getFileId',{0:'groupId',1:'obfuscationGuard',2:'fileName'}],
+ ['b','(B)I','getGroupCapacity',{0:'obfuscationGuard'}],
+ ['a','(ZI)I','getFileCapacity',{0:'obfuscationGuard',1:'groupId'}],
+ ['b','(II)I','getGroupProgress',{0:'obfuscationGuard',1:'groupId'}],
+ ['a','(II)V','loadPackedGroup',{0:'obfuscationGuard',1:'groupId'}],
+ ['a','(IBI)[B','getFile',{0:'groupId',1:'obfuscationGuard',2:'fileId'}],
+])method('cm',original,descriptor,to,'Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.',parameters);
+method('cm','<init>','(Lfa;ZI)V','<init>','Stores the provider and validates fileRetentionMode in 0..2.',{0:'provider',1:'discardPackedGroups',2:'fileRetentionMode'});
+method('gi','c','(Z)I','readLargeSmart','Reads an unsigned short when the next byte is nonnegative, otherwise an int with the high bit cleared.',{0:'obfuscationGuard'});
+method('ln','a','([BB)[B','decompressContainer','Reads container type and lengths; type zero copies payload, type one dispatches the block decompressor, other types dispatch the stream decompressor.',{0:'encodedContainer',1:'obfuscationGuard'});
+for(const [owner,signature,items] of [
+ ['jl','a([BI)V',[[16,'var4','formatVersion'],[17,'var5','flags'],[18,'var6','hasNames'],[19,'var7','hasGroupDigests'],[20,'var8','cumulativeGroupId'],[21,'var9','maximumGroupId'],[22,'var10','groupOrdinal'],[23,'var11','groupId'],[24,'var12','fileCount'],[25,'var13','maximumFileId'],[26,'var14','fileOrdinal'],[27,'var15','fileId'],[29,'var17','packet'],[30,'var21','groupDigest'],[31,'var8Lifetime1','cumulativeFileId'],[32,'var10Lifetime1','groupNameSlot'],[33,'var10Lifetime2','crcGroupOrdinal'],[34,'var10Lifetime3','digestGroupOrdinal'],[35,'var10Lifetime4','versionGroupOrdinal'],[36,'var10Lifetime5','fileGroupOrdinal'],[37,'var10Lifetime6','namedGroupOrdinal'],[38,'var13Lifetime1','fileNameSlot'],[39,'var14Lifetime1','namedFileId'],[40,'var11Lifetime1','namedGroupId'],[41,'var12Lifetime1','namedFileCount'],[42,'var10Lifetime1Lifetime1','groupNameOrdinal'],[43,'var13Lifetime1Lifetime1','namedFileOrdinal']]],
+ ['jk','<init>([I)V',[[0,'var2_int','capacity'],[1,'var3','slotIndex'],[2,'var4','bucket'],[8,'var3Lifetime1','inputIndex']]],
+ ['jk','a(IB)I',[[0,'var3','bucketMask'],[1,'var4','bucket'],[3,'var6','inputIndex']]],
+])for(const [ordinal,originalName,to] of items)members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName:originalName,evidence:'Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.'};
+
 export function buildSteelRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -272,7 +317,7 @@ export function buildSteelRules(input, rows) {
 }
 
 const workflowFiles=['build-steelsentinels-rules.mjs','reproduce-steelsentinels.mjs',
-  'tests/test-steelsentinels-core.mjs','game-export.mjs','compilation-stubs.mjs'];
+  'tests/test-steelsentinels-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs'];
 export function validateSteelManifest(rules) {
   if(rules.schema!==1||rules.game!=='steelsentinels'||rules.source.commit!==SOURCE_COMMIT) throw new Error('Invalid Steel naming manifest');
   for(const [file,sha] of Object.entries(rules.readabilityWorkflow.files))
@@ -292,11 +337,13 @@ export function buildSteelGuide(rules,mapping) {
     `| ${link('hd')} | Terrain layout, ground/secondary/surface profiles and spawn positions. |`,
     `| ${link('ji')} → ${link('nk')} / ${link('qd')} | Engineering UI and sprite-backed articulated part configuration. |`,
     `| ${link('gi')} / ${link('kj')} / ${link('ie')} | Big-endian primitive/slice data, MSB-first bit fields, ciphered opcodes and deterministic seeded random generation. |`,
-    `| ${link('uh')} | Long-key intrusive buckets, collision lookup and traversal. |`, '',
+    `| ${link('uh')} | Long-key intrusive buckets, collision lookup and traversal. |`,
+    `| ${link('cm')} → ${link('fa')} / ${link('fi')} / ${link('jl')} / ${link('jk')} | Resource loading, versioned archive indexes and group/file name lookup. |`, '',
     'Start with `Sentinel.scheduleCommand`, `advanceCommandQueues`, `executeCommand`, `CombatWorld.advanceSimulation`, `Sentinel.advanceCombatState`, `configureDesign`, `hasModuleType`, `reduceArmour` and `consumeCharge`. Positions retain their fixed-point scale: ground contacts index `worldX >> 4`, and terrain heights convert to inverted world Y with `-(height << 4)`. Physics velocities are distinct from armour; the sentinel constructor starts vertical velocity at 1000.','',
     '`computeSyncChecksum` retains Java integer wrapping and the original state fields. Module aliases, noncanonical dummy-guard behaviour, negative armour and unusual charge values are preserved. `ArticulatedPart.getTotalArmour` recursively aggregates attachment contributions.','',
     '`CipherPacketBuffer.beginBitReading`, `readBits` and `endBitReading` use a separate read bit cursor: bits are consumed most-significant first, then the byte cursor rounds up. `writeCipheredOpcode`, `readCipheredOpcode` and `readCipheredBytes` add/subtract successive ISAAC words modulo 256. `IsaacRandom.nextInt` consumes each 256-word block backwards; `nextIntBounded` rejects a tail of the 32-bit population before returning a nonnegative remainder. These names expose the existing wire/random behaviour without changing it. Dummy guards remain part of the original signatures.','',
     '`NodeHashTable` uses power-of-two bucket counts and intrusive nodes. `put` moves an already linked node; it does not replace a distinct node with the same key. `get` returns the first matching node and iteration visits buckets in ascending order. The packet/random/table classes retain unrelated static UI helpers from the original class layout.','',
+    'ArchiveIndex decodes formats 5–7: versions 6/7 carry a revision, version 7 uses large-smart integers, and IDs are delta-coded. Names and 64-byte group digests are separate flag-controlled tables. Arrays are indexed by actual group/file IDs, with null fileIds rows representing contiguous IDs. IntKeyLookup linear-probes interleaved key/index slots and returns the first matching input index, including negative and duplicate keys. ResourceArchive lowercases names, exposes index availability, separates packed groups from unpacked files and retains the three existing file-retention modes. CachedArchiveProvider supplies validated indexes and encoded groups from cache/network requests. Independent fixtures cover raw and gzip containers, every version/flag combination, sparse/contiguous/large IDs, checksum and digest-length rejection, name lookup and returned-file retention. This does not establish cache/network end-to-end loading or server compatibility.','',
     'Compilation and symbol/override checks cover the complete game. The raw/named core probe independently checks module aliases/bonuses, armour and charge mutations, terrain boundaries, part aggregation, synchronization checksums, command timing, queue routing, ordering and equal-tick replacement. Packet fixtures cover every bit alignment/width, primitive byte order, slice offsets, cipher consumption across block boundaries, bounded-random rejection and hash collisions/duplicate keys. Ciphertext traces must also match the raw export; round trips alone are insufficient. It allocates controlled world/sentinel/terrain fixtures without game construction and replaces only the client branch-control flag at runtime. It does not prove whole-game playability, projectile simulation, rendering or live server compatibility. Dictionary reversal recovers every original source byte.','',
     'This is a naming pass. Three files still contain compiler dispatcher fallbacks, and large methods remain. Further work should explain weapon/projectile variants, command dispatch, physics/collision, tutorial flow and multiplayer packets.',''].join('\n');
 }
@@ -305,7 +352,7 @@ export function buildSteelManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.steelsentinels;
-    const rules={schema:1,game:'steelsentinels',version:3,
+    const rules={schema:1,game:'steelsentinels',version:4,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/steelsentinels'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

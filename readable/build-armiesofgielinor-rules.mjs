@@ -10,6 +10,11 @@ import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} fr
 const SOURCE_COMMIT = '1655ca853d0d4027018f3efcdc37be76ab7895f4';
 // Evidence below refers to this immutable Java input, not to another game's map.
 const classes = {
+  jm:['ArchiveIndex','Versions 5–7 decode group/file IDs, revisions, CRCs, optional names and 64-byte digests.'],
+  lr:['IntKeyLookup','Open-addressed integer key table returning original input indices, with linear probing.'],
+  kl:['ResourceArchive','Lazy archive index, packed group storage, unpacked file storage and named resource lookup.'],
+  ew:['ArchiveProvider','Abstract archive-index, encoded-group and group-progress contract.'],
+  bm:['CachedArchiveProvider','Validates archive indexes and group responses from disk caches and the resource protocol client.'],
   ha:['Battlefield','Owns the rectangular tile grid, unit lists, player/team state, mana and turns.'],
   jd:['Unit','Tagged fields c/o/str/max/x/y decode type, owner, strength and coordinates.'],
   ne:['MapTile','Tagged fields unit/own/type/mod decode occupant, owner, terrain and metadata.'],
@@ -1195,6 +1200,47 @@ for(const [owner,signature,items] of [
  ['ae','a(Z)Z',[[4,'var2_long','now'],[5,'var2','priorityRequest'],[9,'var4','elapsedThenHeaderLength'],[11,'var5','availableThenResponseLength'],[12,'var6','readCountThenArchiveId'],[13,'var7','groupIdThenByteIndex'],[14,'var8','flags'],[15,'var9','compressedLength'],[16,'var10','compressionType'],[17,'var11','normalResponseFlag'],[18,'var12','responseKey'],[20,'var14_ref','matchedRequest'],[21,'var15','responsePrefixLength'],[23,'var2Lifetime1','normalRequest']]],
 ])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical ordinal and resource queue keys, response header matching or block reads.');
 
+
+// Archive identities are reviewed against this game's decoder and callers.
+for(const [original,to,type] of [
+ ['r','groupCount','I'],['q','groupIds','[I'],['i','groupCapacity','I'],['c','revision','I'],
+ ['s','indexCrc','I'],['n','indexDigest','[B'],['m','groupNameHashes','[I'],['l','groupNameLookup','Llr;'],
+ ['e','groupCrcs','[I'],['v','groupDigests','[[B'],['t','groupVersions','[I'],
+ ['p','fileCounts','[I'],['h','fileCapacities','[I'],['a','fileIds','[[I'],
+ ['j','fileNameHashes','[[I'],['f','fileNameLookups','[Llr;'],
+])field('jm',original,type,to,'Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.');
+method('jm','a','([BZ)V','decode','Decompresses the index container; reads versions 5–7, flags, delta-coded IDs and optional name/digest tables.',{0:'encodedIndex',1:'obfuscationGuard'});
+constructorParameters('jm','([BI[B)V',['encodedIndex','expectedCrc','expectedDigest'],'Checks the entire encoded container CRC and optional 64-byte digest before decoding.');
+field('lr','b','[I','keyIndexSlots','Interleaved key and original-input-index slots; -1 in the index slot denotes empty, including when the key itself is -1.');
+method('lr','a','(II)I','get','Linear probes and returns the first matching original input index, or -1; duplicate keys preserve the first match.',{0:'key',1:'obfuscationGuard'});
+constructorParameters('lr','([I)V',['keys'],'Copies integer keys into a power-of-two table sized above 1.5 times the input count; does not retain the input array.');
+for(const [original,to,type] of [['g','provider','Lew;'],['j','index','Ljm;'],['h','packedGroups','[Ljava/lang/Object;'],['c','unpackedFiles','[[Ljava/lang/Object;'],['b','discardPackedGroups','Z'],['e','fileRetentionMode','I']])field('kl',original,type,to,'Archive constructor and unpack/get paths: discard packed groups after decompression; file retention modes 0 retain, 1 discard the returned file, 2 discard its group row.');
+method('ew','a','(I)Ljm;','getIndex','Returns the validated archive index when available, otherwise null.',{0:'obfuscationGuard'});
+method('ew','a','(II)[B','getEncodedGroup','Returns the encoded group response when available, otherwise null.',{0:'groupId',1:'obfuscationGuard'});
+method('ew','b','(II)I','getGroupProgress','Reports the request progress for the group.',{0:'obfuscationGuard',1:'groupId'});
+field('bm','q','Ljm;','index','Retained validated index returned by getIndex; constructed from disk or network response bytes.');
+for(const [original,descriptor,to,parameters] of [
+ ['a','(B)Z','ensureIndex',{0:'obfuscationGuard'}],
+ ['c','(II)Z','isValidGroup',{0:'groupId',1:'obfuscationGuard'}],
+ ['b','(III)Z','isValidFile',{0:'groupId',1:'obfuscationGuard',2:'fileId'}],
+ ['a','(Ljava/lang/String;I)I','getGroupId',{0:'groupName',1:'obfuscationGuard'}],
+ ['a','(BILjava/lang/String;)I','getFileId',{0:'obfuscationGuard',1:'groupId',2:'fileName'}],
+ ['e','(I)I','getGroupCapacity',{0:'obfuscationGuard'}],
+ ['d','(II)I','getFileCapacity',{0:'groupId',1:'obfuscationGuard'}],
+ ['b','(II)[I','getFileIds',{0:'obfuscationGuard',1:'groupId'}],
+ ['b','(IB)I','getGroupProgress',{0:'groupId',1:'obfuscationGuard'}],
+ ['a','(ZI)V','loadPackedGroup',{0:'obfuscationGuard',1:'groupId'}],
+ ['a','(BII)[B','getFile',{0:'obfuscationGuard',1:'fileId',2:'groupId'}],
+])method('kl',original,descriptor,to,'Reviewed archive index access, case-folded name lookup, group progress or file storage data flow.',parameters);
+constructorParameters('kl','(Lew;ZI)V',['provider','discardPackedGroups','fileRetentionMode'],'Stores the provider and validates fileRetentionMode in 0..2.');
+method('vh','f','(B)I','readLargeSmart','Reads an unsigned short when the next byte is nonnegative, otherwise an int with the high bit cleared.',{0:'obfuscationGuard'});
+method('el','a','(Z[B)[B','decompressContainer','Reads container type and lengths; type zero copies payload, type one dispatches the block decompressor, other types dispatch the stream decompressor.',{0:'obfuscationGuard',1:'encodedContainer'});
+for(const [owner,signature,items] of [
+ ['jm','a([BZ)V',[[16,'var4','formatVersion'],[17,'var5','flags'],[18,'var6','hasNames'],[19,'var7','hasGroupDigests'],[20,'var8','cumulativeGroupId'],[21,'var9','maximumGroupId'],[22,'var10','groupOrdinal'],[23,'var11','groupId'],[24,'var12','fileCount'],[25,'var13','maximumFileId'],[26,'var14','fileOrdinal'],[27,'var15','fileId'],[30,'var18','packet'],[31,'var22','groupDigest'],[32,'var8Lifetime1','cumulativeFileId'],[33,'var10Lifetime1','groupNameSlot'],[34,'var10Lifetime2','crcGroupOrdinal'],[35,'var10Lifetime3','digestGroupOrdinal'],[36,'var10Lifetime4','versionGroupOrdinal'],[37,'var10Lifetime5','fileGroupOrdinal'],[38,'var10Lifetime6','namedGroupOrdinal'],[39,'var13Lifetime1','fileNameSlot'],[40,'var14Lifetime1','namedFileId'],[41,'var11Lifetime1','namedGroupId'],[42,'var12Lifetime1','namedFileCount'],[43,'var10Lifetime1Lifetime1','groupNameOrdinal'],[44,'var13Lifetime1Lifetime1','namedFileOrdinal']]],
+ ['lr','<init>([I)V',[[0,'var2_int','capacity'],[1,'var3','slotIndex'],[2,'var4','bucket'],[8,'var3Lifetime1','inputIndex']]],
+ ['lr','a(II)I',[[0,'var3','bucketMask'],[1,'var4','bucket'],[2,'var5','inputIndex']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.');
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -1249,7 +1295,7 @@ export function buildArmiesRules(input, rows) {
 }
 
 const workflowFiles=['build-armiesofgielinor-rules.mjs','reproduce-armiesofgielinor.mjs',
-  'tests/test-armiesofgielinor-core.mjs','game-export.mjs','compilation-stubs.mjs'];
+  'tests/test-armiesofgielinor-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs'];
 export function validateArmiesManifest(rules) {
   if(rules.schema!==1||rules.game!=='armiesofgielinor'||rules.source.commit!==SOURCE_COMMIT) throw new Error('Invalid Armies naming manifest');
   for(const [file,sha] of Object.entries(rules.readabilityWorkflow.files))
@@ -1288,6 +1334,7 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('hr')} → ${link('vj')} / ${link('qb')} | Unit-model previews, animation playback and opcode-decoded frame sequences. |`,
     `| ${link('em')} / ${link('hh')} | Tick-based counters and triangular highlight pulses. |`,
     `| ${link('hm')} → ${link('cm')} / ${link('ho')} | Player inventory/rune accounting and versioned campaign results. |`,
+    `| ${link('kl')} → ${link('ew')} / ${link('bm')} / ${link('jm')} / ${link('lr')} | Resource loading, versioned archive indexes and group/file name lookup. |`,
     `| ${link('cf')} / ${link('sd')} / ${link('ln')} / ${link('fu')} | Campaign/participant metadata, loadouts, reward previews, shared unit overrides and coats of arms. |`,
     `| ${link('bp')} → ${link('ae')} / ${link('jf')} / ${link('hi')} | Resource request lanes, socket protocol, padded responses and buffered transport. |`,
     `| ${link('vo')} → ${link('nh')} / ${link('bc')} / ${link('ue')} / ${link('ei')} | Disk-cache requests, sector storage and buffered/bounded file access. |`,
@@ -1319,6 +1366,7 @@ export function buildArmiesGuide(rules,mapping) {
     'DiskCacheWorker dispatches queued writes (2) and reads (3); immediate reads (1) reuse the first queued write for the same store/key or read synchronously. Queued writes retain caller arrays, and queuedCount excludes the operation already in flight. ResourceRequest.pending is volatile; disk access rejects pending data reads and reports progress as 0/100. requestFlag deliberately remains qualified because finer priority/cache semantics are unresolved. DualLinkedNode keeps primary and secondary memberships independent, and its setter rejects key changes while secondary-linked. SectorCacheStore uses six-byte index records and 520-byte data sectors: IDs up to 65535 use an eight-byte header with 512 payload bytes, larger IDs a ten-byte header with 510 bytes. The pinned decompiled writer retains a 512-byte next-link cutoff even for large-ID sectors with 510 payload bytes: 511/512-byte writes can report success but read back as null. The original gamepack bytecode confirms the same cutoff at bc.a(I[BZIB)Z offsets 766-780 and the 510-byte cap at 1087-1098; its 542-class identity matches the pinned original classes. BufferedFile and BoundedFile retain cached/pending I/O, length tracking, guard behavior and overflow/error paths. Controlled disk probes bypass the service launcher and exercise the real worker on owned temporary files, not full game asset loading.', '',
     'NetworkResourceRequest exposes padding, response bytes and block position. ResourceProtocolClient maintains queued/in-flight priority and normal lanes capped separately at twenty; SocketResourceClient sends six-byte request records and assembles padded responses from ten-byte headers and 512-byte transport blocks. Response flag 128 selects the normal lane, while the lower seven bits select compression. A nonzero xorByte decodes received bytes. Network getBytes retains the padded array and rejects pending/incomplete data; getProgress uses signed padding and is not clamped to 100. Controlled stream fixtures bypass real sockets and the thread launcher; they do not establish live server compatibility.', '',
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
+    'ArchiveIndex decodes formats 5–7: versions 6/7 carry a revision, version 7 uses large-smart integers, and IDs are delta-coded. Names and 64-byte group digests are separate flag-controlled tables. Arrays are indexed by actual group/file IDs, with null fileIds rows representing contiguous IDs. IntKeyLookup linear-probes interleaved key/index slots and returns the first matching input index, including negative and duplicate keys. ResourceArchive lowercases names, exposes index availability, separates packed groups from unpacked files and retains the three existing file-retention modes. CachedArchiveProvider supplies validated indexes and encoded groups from cache/network requests. Independent fixtures cover raw and gzip containers, every version/flag combination, sparse/contiguous/large IDs, checksum and digest-length rejection, name lookup and returned-file retention. This does not establish cache/network end-to-end loading or server compatibility.','',
     'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, spell-menu hierarchy, setup option validation, instruction bounds and preview units, instruction table shapes/navigation, animation decoding/playback, timing pulses and model-preview setters, versioned profiles/campaign results, mission scoring, coats/participants/overrides, campaign loadouts/reward previews, menu entry/neighbor selection, button bounds, hash-table behavior, palette regions/anchors and clipped indexed rendering, versioned quicksave headers/chunks/deletion, campaign result packets/checkpoints/progress records, secondary deque membership and disk sector/worker behavior, resource queue caps/response assembly and forty-bit keys, and contextual errors, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
@@ -1326,7 +1374,7 @@ export function buildArmiesManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:18,
+    const rules={schema:1,game:'armiesofgielinor',version:19,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

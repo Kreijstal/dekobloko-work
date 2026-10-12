@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {archiveIndexProbe} from './archive-index-probe.mjs';
 import os from 'node:os';
 import path from 'node:path';
 import assert from 'node:assert/strict';
@@ -38,6 +39,16 @@ static Object get(Class<?> c,Object o,String n)throws Exception{return field(c,n
 static Object call(Class<?> c,Object o,String n,Class<?>[] p,Object...v)throws Exception{Method m=c.getDeclaredMethod(n,p);m.setAccessible(true);return m.invoke(o,v);}
 static Object make(Class<?> c,Class<?>[] p,Object...v)throws Exception{Constructor<?> k=c.getDeclaredConstructor(p);k.setAccessible(true);return k.newInstance(v);}
 static void check(String label,Object actual,Object expected){if(!Objects.equals(actual,expected))throw new AssertionError(label+": "+actual+" != "+expected);System.out.println(label+":"+actual);cases++;}
+${archiveIndexProbe({className,f,m},{
+  index:{owner:'jl',fields:{groupCount:'b',groupIds:'h',groupCapacity:'u',revision:'k',indexCrc:'e',indexDigest:'l',groupNameHashes:'v',groupNameLookup:'n',groupCrcs:'a',groupDigests:'t',groupVersions:'m',fileCounts:'j',fileCapacities:'g',fileIds:'o',fileNameHashes:'q',fileNameLookups:'d'}},
+  lookup:{owner:'jk',get:{identity:['a','(IB)I'],types:'int.class,byte.class',guard:'(byte)120'}},
+  archive:{owner:'cm',fields:{index:'a',unpackedFiles:'i'},
+    ensure:{identity:['a','(Z)Z'],types:'boolean.class',args:'true'},
+    groupId:{identity:['a','(Ljava/lang/String;I)I'],types:'String.class,int.class',guard:'100'},
+    fileId:{identity:['a','(IILjava/lang/String;)I'],types:'int.class,int.class,String.class',arguments:(group,name)=>`${group},-32759,${name}`},
+    getFile:{identity:['a','(IBI)[B'],types:'int.class,byte.class,int.class',arguments:(group,file)=>`${group},(byte)100,${file}`}},
+  provider:'fa',context:{owner:'od',cause:'l'},packet:{owner:'gi',position:'p',largeSmart:{identity:['c','(Z)I'],types:'boolean.class',guard:'true'}}
+})}
 public static void main(String[] args)throws Exception{
 Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);
 world=Class.forName("${className('ee')}");sentinel=Class.forName("${className('mb')}");terrain=Class.forName("${className('hd')}");deque=Class.forName("${className('ul')}");node=Class.forName("${className('ck')}");part=Class.forName("${className('nk')}");instruction=Class.forName("${className('qd')}");
@@ -225,6 +236,7 @@ check("hash-end/"+bucketCount,item==null,true);
 call(node,nodes[0],"${m('ck','b','(I)V')}",new Class<?>[]{int.class},4);
 check("hash-duplicate-survives/"+bucketCount,call(table,hash,"${m('uh','a','(JI)Lck;')}",new Class<?>[]{long.class,int.class},0L,122)==nodes[2],true);
 }
+verifyArchiveIndexes(packet);
 System.out.println("checks:"+cases);
 }}
 `);
