@@ -64,7 +64,7 @@ remain. Java is published only in `games/steelsentinels` in FunOrb.
 
 ## Armies of Gielinor
 
-The current pass names 115 reviewed classes around battlefield state, units, map
+The current pass names 120 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -108,6 +108,12 @@ CampaignMenu, CampaignMenuEntry and CampaignMenuButton expose campaign/mission
 selection, scored-neighbor requirements, inclusive hit bounds and score updates.
 NodeHashTable names bucket lookup, insertion, traversal and clearing; duplicate
 keys and non-power-of-two bucket counts retain their original behavior.
+
+PaletteRegionMap and RegionAnchor name palette-index regions and scan-order
+marker placement. IndexedSprite/IndexedSpriteBase and RgbSprite/RgbSpriteBase
+expose pixel arrays, palettes, canvas dimensions, offsets and clipped drawing.
+The probes preserve signed-byte lookup failures and the extracted mask
+right-column omission from the original decompiled source.
 
 CampaignParticipant and CoatOfArms name parent/participant metadata, shared
 overrides and coat layers. ContextualRuntimeException exposes the original

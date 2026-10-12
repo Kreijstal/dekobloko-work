@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 13,
+  "version": 14,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1767,6 +1767,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:a",
+      "originalName": "a",
+      "to": "RegionAnchor",
+      "evidence": "a.java: Row/column anchor node collected from marker pixels; unrelated static helpers retain their separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ag",
       "originalName": "ag",
       "to": "CombatEvent",
@@ -2313,6 +2320,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pr",
+      "originalName": "pr",
+      "to": "PaletteRegionMap",
+      "evidence": "pr.java: Maps image palette indices to regions, retains marker anchors, identifies clicked regions and renders masks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:q",
       "originalName": "q",
       "to": "TelepopEvent",
@@ -2324,6 +2338,13 @@
       "originalName": "qb",
       "to": "AnimationSequence",
       "evidence": "qb.java: Opcode-decoded packed frame IDs, durations, loop start/count and additional retained sequence data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qg",
+      "originalName": "qg",
+      "to": "RgbSpriteBase",
+      "evidence": "qg.java: RGB sprite canvas/pixel bounds and offsets inherited by RgbSprite.",
       "confidence": "reviewed"
     },
     {
@@ -2397,6 +2418,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ru",
+      "originalName": "ru",
+      "to": "IndexedSprite",
+      "evidence": "ru.java: Byte palette indices and RGB palette with conversion, hit tests and raster drawing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sc",
       "originalName": "sc",
       "to": "TaggedMapData",
@@ -2408,6 +2436,13 @@
       "originalName": "sd",
       "to": "CampaignParticipant",
       "evidence": "sd.java: Campaign participant ID/name/coat and shared unit-override array with an append count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:si",
+      "originalName": "si",
+      "to": "IndexedSpriteBase",
+      "evidence": "si.java: Abstract indexed sprite bounds and transparent/alpha draw contracts.",
       "confidence": "reviewed"
     },
     {
@@ -2576,6 +2611,20 @@
       "originalName": "field_M",
       "to": "obfuscationControl",
       "evidence": "ArmiesOfGielinor.java: Whole-corpus opaque branch-control flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:a.field_l:I",
+      "originalName": "field_l",
+      "to": "row",
+      "evidence": "a.java: Marker helper and menu use this coordinate vertically.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:a.field_p:I",
+      "originalName": "field_p",
+      "to": "column",
+      "evidence": "a.java: Region marker helper constructs new a(column,row), and the menu uses this coordinate horizontally.",
       "confidence": "reviewed"
     },
     {
@@ -5736,6 +5785,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pr.field_b:[Lat;",
+      "originalName": "field_b",
+      "to": "anchorsByRegion",
+      "evidence": "pr.java: Palette scan, anchor accumulation, region lookup, sprite extraction and selected-region drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_c:I",
+      "originalName": "field_c",
+      "to": "ignoredColour",
+      "evidence": "pr.java: Palette scan, anchor accumulation, region lookup, sprite extraction and selected-region drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_d:[I",
+      "originalName": "field_d",
+      "to": "regionByPaletteIndex",
+      "evidence": "pr.java: Palette scan, anchor accumulation, region lookup, sprite extraction and selected-region drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_e:I",
+      "originalName": "field_e",
+      "to": "regionCount",
+      "evidence": "pr.java: Palette scan, anchor accumulation, region lookup, sprite extraction and selected-region drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_h:Lru;",
+      "originalName": "field_h",
+      "to": "sourceImage",
+      "evidence": "pr.java: Palette scan, anchor accumulation, region lookup, sprite extraction and selected-region drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_j:I",
+      "originalName": "field_j",
+      "to": "anchorColour",
+      "evidence": "pr.java: Palette scan, anchor accumulation, region lookup, sprite extraction and selected-region drawing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:q.field_E:I",
       "originalName": "field_E",
       "to": "tileY",
@@ -5799,6 +5890,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qg.field_A:I",
+      "originalName": "field_A",
+      "to": "canvasWidth",
+      "evidence": "qg.java: RGB sprite constructors, indexed-to-RGB conversion and clipped draw methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_v:I",
+      "originalName": "field_v",
+      "to": "pixelHeight",
+      "evidence": "qg.java: RGB sprite constructors, indexed-to-RGB conversion and clipped draw methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_w:I",
+      "originalName": "field_w",
+      "to": "offsetX",
+      "evidence": "qg.java: RGB sprite constructors, indexed-to-RGB conversion and clipped draw methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_x:I",
+      "originalName": "field_x",
+      "to": "canvasHeight",
+      "evidence": "qg.java: RGB sprite constructors, indexed-to-RGB conversion and clipped draw methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_y:I",
+      "originalName": "field_y",
+      "to": "pixelWidth",
+      "evidence": "qg.java: RGB sprite constructors, indexed-to-RGB conversion and clipped draw methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_z:I",
+      "originalName": "field_z",
+      "to": "offsetY",
+      "evidence": "qg.java: RGB sprite constructors, indexed-to-RGB conversion and clipped draw methods.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ql.field_b:Lvb;",
       "originalName": "field_b",
       "to": "presenter",
@@ -5831,6 +5964,55 @@
       "originalName": "field_o",
       "to": "battlefield",
       "evidence": "ql.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_a:I",
+      "originalName": "field_a",
+      "to": "clipTop",
+      "evidence": "qn.java: Raster buffer installation and clipped sprite/region drawing use these exclusive clip bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_d:[I",
+      "originalName": "field_d",
+      "to": "pixels",
+      "evidence": "qn.java: Raster buffer installation and clipped sprite/region drawing use these exclusive clip bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_e:I",
+      "originalName": "field_e",
+      "to": "clipRight",
+      "evidence": "qn.java: Raster buffer installation and clipped sprite/region drawing use these exclusive clip bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_f:I",
+      "originalName": "field_f",
+      "to": "clipBottom",
+      "evidence": "qn.java: Raster buffer installation and clipped sprite/region drawing use these exclusive clip bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_g:I",
+      "originalName": "field_g",
+      "to": "height",
+      "evidence": "qn.java: Raster buffer installation and clipped sprite/region drawing use these exclusive clip bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_j:I",
+      "originalName": "field_j",
+      "to": "clipLeft",
+      "evidence": "qn.java: Raster buffer installation and clipped sprite/region drawing use these exclusive clip bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_l:I",
+      "originalName": "field_l",
+      "to": "width",
+      "evidence": "qn.java: Raster buffer installation and clipped sprite/region drawing use these exclusive clip bounds.",
       "confidence": "reviewed"
     },
     {
@@ -6219,6 +6401,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ru.field_j:[I",
+      "originalName": "field_j",
+      "to": "palette",
+      "evidence": "ru.java: RGB colours for byte indices; conversion and normal drawing mask indices to unsigned values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ru.field_k:[B",
+      "originalName": "field_k",
+      "to": "pixelIndices",
+      "evidence": "ru.java: Pixel bytes index the RGB palette; transparent drawing skips index zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sc.field_a:I",
       "originalName": "field_a",
       "to": "mapTheme",
@@ -6307,6 +6503,48 @@
       "originalName": "field_u",
       "to": "displayName",
       "evidence": "sd.java: Participant packet reader, mission participant-name lookup and shared unit-override append loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_d:I",
+      "originalName": "field_d",
+      "to": "offsetY",
+      "evidence": "si.java: Indexed sprite constructor/conversion and scaled/offset draw methods distinguish full canvas bounds from pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_e:I",
+      "originalName": "field_e",
+      "to": "pixelWidth",
+      "evidence": "si.java: Indexed sprite constructor/conversion and scaled/offset draw methods distinguish full canvas bounds from pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_f:I",
+      "originalName": "field_f",
+      "to": "canvasHeight",
+      "evidence": "si.java: Indexed sprite constructor/conversion and scaled/offset draw methods distinguish full canvas bounds from pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_g:I",
+      "originalName": "field_g",
+      "to": "canvasWidth",
+      "evidence": "si.java: Indexed sprite constructor/conversion and scaled/offset draw methods distinguish full canvas bounds from pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_h:I",
+      "originalName": "field_h",
+      "to": "pixelHeight",
+      "evidence": "si.java: Indexed sprite constructor/conversion and scaled/offset draw methods distinguish full canvas bounds from pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_i:I",
+      "originalName": "field_i",
+      "to": "offsetX",
+      "evidence": "si.java: Indexed sprite constructor/conversion and scaled/offset draw methods distinguish full canvas bounds from pixel dimensions.",
       "confidence": "reviewed"
     },
     {
@@ -6825,6 +7063,13 @@
       "originalName": "field_g",
       "to": "targetX",
       "evidence": "wa.java: UnitSpell constructor and serialization write target X before target Y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wk.field_B:[I",
+      "originalName": "field_B",
+      "to": "pixels",
+      "evidence": "wk.java: RGB sprite constructors, indexed-to-RGB conversion and clipped draw methods.",
       "confidence": "reviewed"
     },
     {
@@ -8358,6 +8603,272 @@
       "originalName": "var6",
       "to": "localGodId",
       "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#0",
+      "originalName": "var11",
+      "to": "y",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#1",
+      "originalName": "var12",
+      "to": "x",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#10",
+      "originalName": "var7",
+      "to": "clipLeft",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#11",
+      "originalName": "var8",
+      "to": "clipTop",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#12",
+      "originalName": "var9",
+      "to": "clipRight",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#13",
+      "originalName": "var10",
+      "to": "clipBottom",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#14",
+      "originalName": "var13",
+      "to": "sourceIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#15",
+      "originalName": "var14",
+      "to": "paletteIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#16",
+      "originalName": "var15",
+      "to": "regionId",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#17",
+      "originalName": "var16",
+      "to": "colour",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#18",
+      "originalName": "var17",
+      "to": "destinationIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(BI[ZILru;)V#22",
+      "originalName": "var21",
+      "to": "pixels",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IBI)I#0",
+      "originalName": "var4",
+      "to": "relativeX",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IBI)I#1",
+      "originalName": "var5",
+      "to": "relativeY",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IBI)I#2",
+      "originalName": "var6",
+      "to": "paletteIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IBI)I#3",
+      "originalName": "var7",
+      "to": "regionId",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#0",
+      "originalName": "var11_int",
+      "to": "x",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#10",
+      "originalName": "var11",
+      "to": "sprite",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#11",
+      "originalName": "var12",
+      "to": "paletteIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#12",
+      "originalName": "var13",
+      "to": "region",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#13",
+      "originalName": "var14",
+      "to": "outputPaletteIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#14",
+      "originalName": "var15",
+      "to": "outputRegion",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#16",
+      "originalName": "var17",
+      "to": "outputX",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#17",
+      "originalName": "var9Lifetime1",
+      "to": "height",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#18",
+      "originalName": "var10Lifetime1",
+      "to": "width",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#19",
+      "originalName": "var12Lifetime1",
+      "to": "outputY",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#4",
+      "originalName": "var5",
+      "to": "minimumX",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#5",
+      "originalName": "var6",
+      "to": "maximumX",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#6",
+      "originalName": "var7",
+      "to": "minimumY",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#7",
+      "originalName": "var8",
+      "to": "maximumY",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.a(IIBI)Lwk;#8",
+      "originalName": "var9",
+      "to": "y",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.c(I)V#1",
+      "originalName": "var2",
+      "to": "paletteIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.c(I)V#2",
+      "originalName": "var3",
+      "to": "anchorPaletteIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.c(I)V#4",
+      "originalName": "var5",
+      "to": "paletteEntry",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.c(I)V#5",
+      "originalName": "var6",
+      "to": "pixelPaletteIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.c(I)V#7",
+      "originalName": "var2Lifetime1",
+      "to": "ignoredPaletteIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.c(I)V#8",
+      "originalName": "var4Lifetime1",
+      "to": "lastRegionId",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pr.c(I)V#9",
+      "originalName": "var5Lifetime1",
+      "to": "pixelIndex",
+      "evidence": "pr.java: Reviewed lexical ordinal and palette indexing, marker positions, region bounds or clipped drawing data flow.",
       "confidence": "reviewed"
     },
     {
@@ -11266,6 +11777,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pr.a(BI[ZILru;)V",
+      "originalName": "a",
+      "to": "drawSelectedRegions",
+      "evidence": "pr.java: Copies source colours only for enabled region IDs, respecting the raster clip and unsigned palette indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.a(IBI)I",
+      "originalName": "a",
+      "to": "getRegionAt",
+      "evidence": "pr.java: Applies source offsets and bounds before palette lookup; preserves the original signed-byte indexing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.a(II)Lat;",
+      "originalName": "a",
+      "to": "getAnchors",
+      "evidence": "pr.java: Returns the retained anchor deque at regionId + 1; noncanonical guard returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.a(IIBI)Lwk;",
+      "originalName": "a",
+      "to": "extractRegionSprite",
+      "evidence": "pr.java: Finds the selected region bounds and creates a coloured RGB mask with padding; retains the omitted rightmost column and offset calculations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.a(IIIB)V",
+      "originalName": "a",
+      "to": "addAnchor",
+      "evidence": "pr.java: Appends a row/column marker to the list at regionId + 1; region -1 has its own list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.c(I)V",
+      "originalName": "c",
+      "to": "indexRegions",
+      "evidence": "pr.java: Initializes palette-to-region IDs and anchor lists, assigning regions by first pixel occurrence rather than connectivity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:q.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -11602,6 +12155,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ru.a()Lwk;",
+      "originalName": "a",
+      "to": "toRgbSprite",
+      "evidence": "ru.java: Expands unsigned palette indices into a new RGB pixel array, preserving canvas/pixel bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ru.a(II)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "si.java: Draw contract with transparent index zero. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ru.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "si.java: Draw contract with 0..256 alpha and transparent index zero. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ru.a(IIII)Z",
+      "originalName": "a",
+      "to": "containsOpaquePixel",
+      "evidence": "ru.java: Tests a point relative to drawn position/offset; any nonzero pixel index counts as opaque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ru.b(II)V",
+      "originalName": "b",
+      "to": "drawOpaque",
+      "evidence": "ru.java: Copies all palette colours, including index zero, with clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ru.c(IIII)V",
+      "originalName": "c",
+      "to": "drawScaled",
+      "evidence": "ru.java: Draws with fixed-point nearest-neighbor sampling and clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sa.a(Lbv;II)J",
       "originalName": "a",
       "to": "readTagCharacter",
@@ -11613,6 +12208,20 @@
       "originalName": "a",
       "to": "decodeTaggedField",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(II)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "si.java: Draw contract with transparent index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "si.java: Draw contract with 0..256 alpha and transparent index zero.",
       "confidence": "reviewed"
     },
     {
@@ -12166,6 +12775,20 @@
       "originalName": "a",
       "to": "finishEffect",
       "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "column",
+      "evidence": "a.java: Marker helper constructs the node from source column then row; menu positions use the same horizontal/vertical order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "row",
+      "evidence": "a.java: Marker helper constructs the node from source column then row; menu positions use the same horizontal/vertical order.",
       "confidence": "reviewed"
     },
     {
@@ -18770,6 +19393,160 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pr.<init>(Lru;II)V#0",
+      "originalName": "param0",
+      "to": "sourceImage",
+      "evidence": "pr.java: Stores the image and special palette colours then scans region IDs/anchor positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.<init>(Lru;II)V#1",
+      "originalName": "param1",
+      "to": "ignoredColour",
+      "evidence": "pr.java: Stores the image and special palette colours then scans region IDs/anchor positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.<init>(Lru;II)V#2",
+      "originalName": "param2",
+      "to": "anchorColour",
+      "evidence": "pr.java: Stores the image and special palette colours then scans region IDs/anchor positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(BI[ZILru;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pr.java: Copies source colours only for enabled region IDs, respecting the raster clip and unsigned palette indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(BI[ZILru;)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "pr.java: Copies source colours only for enabled region IDs, respecting the raster clip and unsigned palette indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(BI[ZILru;)V#2",
+      "originalName": "param2",
+      "to": "enabledRegions",
+      "evidence": "pr.java: Copies source colours only for enabled region IDs, respecting the raster clip and unsigned palette indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(BI[ZILru;)V#3",
+      "originalName": "param3",
+      "to": "top",
+      "evidence": "pr.java: Copies source colours only for enabled region IDs, respecting the raster clip and unsigned palette indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(BI[ZILru;)V#4",
+      "originalName": "param4",
+      "to": "colourImage",
+      "evidence": "pr.java: Copies source colours only for enabled region IDs, respecting the raster clip and unsigned palette indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IBI)I#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "pr.java: Applies source offsets and bounds before palette lookup; preserves the original signed-byte indexing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IBI)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pr.java: Applies source offsets and bounds before palette lookup; preserves the original signed-byte indexing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IBI)I#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "pr.java: Applies source offsets and bounds before palette lookup; preserves the original signed-byte indexing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(II)Lat;#0",
+      "originalName": "param0",
+      "to": "regionId",
+      "evidence": "pr.java: Returns the retained anchor deque at regionId + 1; noncanonical guard returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(II)Lat;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pr.java: Returns the retained anchor deque at regionId + 1; noncanonical guard returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IIBI)Lwk;#0",
+      "originalName": "param0",
+      "to": "regionId",
+      "evidence": "pr.java: Finds the selected region bounds and creates a coloured RGB mask with padding; retains the omitted rightmost column and offset calculations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IIBI)Lwk;#1",
+      "originalName": "param1",
+      "to": "colour",
+      "evidence": "pr.java: Finds the selected region bounds and creates a coloured RGB mask with padding; retains the omitted rightmost column and offset calculations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IIBI)Lwk;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "pr.java: Finds the selected region bounds and creates a coloured RGB mask with padding; retains the omitted rightmost column and offset calculations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IIBI)Lwk;#3",
+      "originalName": "param3",
+      "to": "padding",
+      "evidence": "pr.java: Finds the selected region bounds and creates a coloured RGB mask with padding; retains the omitted rightmost column and offset calculations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IIIB)V#0",
+      "originalName": "param0",
+      "to": "row",
+      "evidence": "pr.java: Appends a row/column marker to the list at regionId + 1; region -1 has its own list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IIIB)V#1",
+      "originalName": "param1",
+      "to": "column",
+      "evidence": "pr.java: Appends a row/column marker to the list at regionId + 1; region -1 has its own list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IIIB)V#2",
+      "originalName": "param2",
+      "to": "regionId",
+      "evidence": "pr.java: Appends a row/column marker to the list at regionId + 1; region -1 has its own list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(IIIB)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "pr.java: Appends a row/column marker to the list at regionId + 1; region -1 has its own list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pr.java: Initializes palette-to-region IDs and anchor lists, assigning regions by first pixel occurrence rather than connectivity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:q.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -19659,6 +20436,188 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ru.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "ru.java: Allocates zero-filled byte pixels and palette with zero offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "ru.java: Allocates zero-filled byte pixels and palette with zero offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "paletteSize",
+      "evidence": "ru.java: Allocates zero-filled byte pixels and palette with zero offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(IIIIII[B[I)V#0",
+      "originalName": "param0",
+      "to": "canvasWidth",
+      "evidence": "ru.java: Retains supplied palette/pixel arrays and distinct canvas/pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(IIIIII[B[I)V#1",
+      "originalName": "param1",
+      "to": "canvasHeight",
+      "evidence": "ru.java: Retains supplied palette/pixel arrays and distinct canvas/pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(IIIIII[B[I)V#2",
+      "originalName": "param2",
+      "to": "offsetX",
+      "evidence": "ru.java: Retains supplied palette/pixel arrays and distinct canvas/pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(IIIIII[B[I)V#3",
+      "originalName": "param3",
+      "to": "offsetY",
+      "evidence": "ru.java: Retains supplied palette/pixel arrays and distinct canvas/pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(IIIIII[B[I)V#4",
+      "originalName": "param4",
+      "to": "pixelWidth",
+      "evidence": "ru.java: Retains supplied palette/pixel arrays and distinct canvas/pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(IIIIII[B[I)V#5",
+      "originalName": "param5",
+      "to": "pixelHeight",
+      "evidence": "ru.java: Retains supplied palette/pixel arrays and distinct canvas/pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(IIIIII[B[I)V#6",
+      "originalName": "param6",
+      "to": "pixelIndices",
+      "evidence": "ru.java: Retains supplied palette/pixel arrays and distinct canvas/pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.<init>(IIIIII[B[I)V#7",
+      "originalName": "param7",
+      "to": "palette",
+      "evidence": "ru.java: Retains supplied palette/pixel arrays and distinct canvas/pixel dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.a(II)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "si.java: Draw contract with transparent index zero. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.a(II)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "si.java: Draw contract with transparent index zero. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.a(III)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "si.java: Draw contract with 0..256 alpha and transparent index zero. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.a(III)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "si.java: Draw contract with 0..256 alpha and transparent index zero. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.a(III)V#2",
+      "originalName": "param2",
+      "to": "alpha",
+      "evidence": "si.java: Draw contract with 0..256 alpha and transparent index zero. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.a(IIII)Z#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "ru.java: Tests a point relative to drawn position/offset; any nonzero pixel index counts as opaque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.a(IIII)Z#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "ru.java: Tests a point relative to drawn position/offset; any nonzero pixel index counts as opaque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.a(IIII)Z#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "ru.java: Tests a point relative to drawn position/offset; any nonzero pixel index counts as opaque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.a(IIII)Z#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "ru.java: Tests a point relative to drawn position/offset; any nonzero pixel index counts as opaque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.b(II)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "ru.java: Copies all palette colours, including index zero, with clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.b(II)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "ru.java: Copies all palette colours, including index zero, with clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.c(IIII)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "ru.java: Draws with fixed-point nearest-neighbor sampling and clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.c(IIII)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "ru.java: Draws with fixed-point nearest-neighbor sampling and clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.c(IIII)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "ru.java: Draws with fixed-point nearest-neighbor sampling and clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ru.c(IIII)V#3",
+      "originalName": "param3",
+      "to": "height",
+      "evidence": "ru.java: Draws with fixed-point nearest-neighbor sampling and clipping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sa.a(Lbv;II)J#0",
       "originalName": "param0",
       "to": "packet",
@@ -19705,6 +20664,41 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(II)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "si.java: Draw contract with transparent index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(II)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "si.java: Draw contract with transparent index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(III)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "si.java: Draw contract with 0..256 alpha and transparent index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(III)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "si.java: Draw contract with 0..256 alpha and transparent index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(III)V#2",
+      "originalName": "param2",
+      "to": "alpha",
+      "evidence": "si.java: Draw contract with 0..256 alpha and transparent index zero.",
       "confidence": "reviewed"
     },
     {
@@ -21169,6 +22163,69 @@
       "to": "obfuscationGuard",
       "evidence": "ik.java: ActionSpell applies and releases the prepared action; other variants preserve their original completion hooks. Resolved override parameter.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "wk.java: Allocates a zero-filled full-canvas RGB sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "wk.java: Allocates a zero-filled full-canvas RGB sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.<init>(IIIIII[I)V#0",
+      "originalName": "param0",
+      "to": "canvasWidth",
+      "evidence": "wk.java: Retains supplied RGB array with separate canvas/pixel bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.<init>(IIIIII[I)V#1",
+      "originalName": "param1",
+      "to": "canvasHeight",
+      "evidence": "wk.java: Retains supplied RGB array with separate canvas/pixel bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.<init>(IIIIII[I)V#2",
+      "originalName": "param2",
+      "to": "offsetX",
+      "evidence": "wk.java: Retains supplied RGB array with separate canvas/pixel bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.<init>(IIIIII[I)V#3",
+      "originalName": "param3",
+      "to": "offsetY",
+      "evidence": "wk.java: Retains supplied RGB array with separate canvas/pixel bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.<init>(IIIIII[I)V#4",
+      "originalName": "param4",
+      "to": "pixelWidth",
+      "evidence": "wk.java: Retains supplied RGB array with separate canvas/pixel bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.<init>(IIIIII[I)V#5",
+      "originalName": "param5",
+      "to": "pixelHeight",
+      "evidence": "wk.java: Retains supplied RGB array with separate canvas/pixel bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.<init>(IIIIII[I)V#6",
+      "originalName": "param6",
+      "to": "pixels",
+      "evidence": "wk.java: Retains supplied RGB array with separate canvas/pixel bounds.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -21186,9 +22243,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "c5c6de43de497094287b21113bee3326799d3caa92565d2902e1adf6f534956d",
+      "build-armiesofgielinor-rules.mjs": "c11370c3d9661ab98edadce01597146ce4e6ee2c8a1415c84447410a72742237",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "6e9c3587e37136fc80afdc47c56e460b854e55df464379967db8d7727045d7c2",
+      "tests/test-armiesofgielinor-core.mjs": "1620c42cd30c73ca08c8d39aa9bd5203d22c10c2a843caf4984907f615be5016",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
