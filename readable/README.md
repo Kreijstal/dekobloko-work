@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 156,267 raw/named checks agree. Controlled cipher output does not constitute
+All 157,559 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -413,7 +413,24 @@ column encoder covers all seven channel-event families and controller groups;
 reconstructed messages and bank/program note masks match event tuples. Zero
 velocity does not add a note. Archive loading and usage-table ownership are checked.
 The reader preserves tempo on reset and the existing meta running-status behavior.
-Full MIDI compliance, malformed inputs, channel synthesis and production music
+MidiPcmStream now names channel controller/program arrays, cached patches,
+key/group note indexes, timing and note pitch/gain/envelope updates.
+MusicPatchNode, MusicPatchEnvelope and MusicPatchPcmStream name note ownership,
+portamento, sustain, vibrato, sample offsets and retrigger replacement/fade tails.
+Native fixtures check all sixteen channels, RPN/NRPN behavior, real nonzero PCM,
+release/volume/decay curves, exclusive groups, portamento reuse and phase wraps.
+Render/skip timing checks preserve exact span-end event deferral, accumulated loop
+time and zero-duration loop termination. Group-zero cleanup and completed held
+note retention preserve the existing implementation. Copy construction shares
+patches but allocates independent channel/reader/note state. Pressure handlers are
+empty. Pending-track fields have no scheduling writer in this corpus. The track
+start option selects immediate sound stopping versus note release; both paths
+reset controllers. All-sound-off retains group references to unlinked nodes after
+clearing their sample/patch/stream ownership.
+MusicPatch names per-key metadata, preparation and sample-ID cleanup; its packed
+constructor locals remain to be reviewed. Synthetic preparation checks cover
+already-loaded samples and retained ownership. Full packed patch decoding/failure
+coverage, MIDI compliance, malformed inputs, production music and audible playback
 remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
@@ -448,7 +465,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 231 reviewed classes around battlefield state, units, map
+The current pass names 236 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

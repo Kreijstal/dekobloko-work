@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 52,
+  "version": 53,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2190,6 +2190,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fq",
+      "originalName": "fq",
+      "to": "MusicPatchEnvelope",
+      "evidence": "fq.java: Per-patch volume/release envelope curves, key-scaled decay/progress and vibrato rate/depth/delay; unrelated client helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ft",
       "originalName": "ft",
       "to": "IntPair",
@@ -2393,6 +2400,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ih",
+      "originalName": "ih",
+      "to": "MidiPcmStream",
+      "evidence": "ih.java: MIDI event timing, sixteen channel controller/program states, note allocation/release and patch-backed PCM sequencing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ik",
       "originalName": "ik",
       "to": "Spell",
@@ -2418,6 +2432,13 @@
       "originalName": "in",
       "to": "VorbisCodebook",
       "evidence": "in.java: Canonical Huffman code lengths/decode tree and lookup-type vector tables decoded from shared Vorbis bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:io",
+      "originalName": "io",
+      "to": "MusicPatch",
+      "evidence": "io.java: Per-key samples, encoded sample IDs, pitch/loop flags, gains, pans, exclusive groups and envelopes; packed constructor locals remain to be reviewed.",
       "confidence": "reviewed"
     },
     {
@@ -2701,6 +2722,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mi",
+      "originalName": "mi",
+      "to": "MusicPatchNode",
+      "evidence": "mi.java: Intrusive active note retaining patch/sample/envelope/stream, key/channel/group, pitch/envelope progress and retrigger phase. Unrelated static UI globals remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ml",
       "originalName": "ml",
       "to": "TabbedPanel",
@@ -2845,6 +2873,13 @@
       "originalName": "om",
       "to": "CampaignMission",
       "evidence": "om.java: Tagged campaign mission identity, metadata, player slots and lazy map loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:os",
+      "originalName": "os",
+      "to": "MusicPatchPcmStream",
+      "evidence": "os.java: Renders/skips the active note deque at per-note update boundaries and retains fading replacement streams in a mixer.",
       "confidence": "reviewed"
     },
     {
@@ -5753,6 +5788,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fq.field_b:I",
+      "originalName": "field_b",
+      "to": "vibratoRate",
+      "evidence": "fq.java: MusicPatch decode and sequencer pitch/gain/update formulas identify signed curve levels, unsigned curve times, key-dependent progress, exponential decay and delayed sinusoidal vibrato.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fq.field_c:I",
+      "originalName": "field_c",
+      "to": "releaseKeyScaling",
+      "evidence": "fq.java: MusicPatch decode and sequencer pitch/gain/update formulas identify signed curve levels, unsigned curve times, key-dependent progress, exponential decay and delayed sinusoidal vibrato.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fq.field_d:I",
+      "originalName": "field_d",
+      "to": "decayRate",
+      "evidence": "fq.java: MusicPatch decode and sequencer pitch/gain/update formulas identify signed curve levels, unsigned curve times, key-dependent progress, exponential decay and delayed sinusoidal vibrato.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fq.field_e:I",
+      "originalName": "field_e",
+      "to": "vibratoDelay",
+      "evidence": "fq.java: MusicPatch decode and sequencer pitch/gain/update formulas identify signed curve levels, unsigned curve times, key-dependent progress, exponential decay and delayed sinusoidal vibrato.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fq.field_g:[B",
+      "originalName": "field_g",
+      "to": "releaseEnvelope",
+      "evidence": "fq.java: MusicPatch decode and sequencer pitch/gain/update formulas identify signed curve levels, unsigned curve times, key-dependent progress, exponential decay and delayed sinusoidal vibrato.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fq.field_i:I",
+      "originalName": "field_i",
+      "to": "decayKeyScaling",
+      "evidence": "fq.java: MusicPatch decode and sequencer pitch/gain/update formulas identify signed curve levels, unsigned curve times, key-dependent progress, exponential decay and delayed sinusoidal vibrato.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fq.field_j:I",
+      "originalName": "field_j",
+      "to": "vibratoDepth",
+      "evidence": "fq.java: MusicPatch decode and sequencer pitch/gain/update formulas identify signed curve levels, unsigned curve times, key-dependent progress, exponential decay and delayed sinusoidal vibrato.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fq.field_l:[B",
+      "originalName": "field_l",
+      "to": "volumeEnvelope",
+      "evidence": "fq.java: MusicPatch decode and sequencer pitch/gain/update formulas identify signed curve levels, unsigned curve times, key-dependent progress, exponential decay and delayed sinusoidal vibrato.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fq.field_m:I",
+      "originalName": "field_m",
+      "to": "volumeKeyScaling",
+      "evidence": "fq.java: MusicPatch decode and sequencer pitch/gain/update formulas identify signed curve levels, unsigned curve times, key-dependent progress, exponential decay and delayed sinusoidal vibrato.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ft.field_k:I",
       "originalName": "field_k",
       "to": "first",
@@ -7678,6 +7776,223 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ih.field_A:[I",
+      "originalName": "field_A",
+      "to": "channelExpression",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_B:Lum;",
+      "originalName": "field_B",
+      "to": "pendingTrack",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_C:[I",
+      "originalName": "field_C",
+      "to": "channelRetriggerRates",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_D:[I",
+      "originalName": "field_D",
+      "to": "channelBanks",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_F:[I",
+      "originalName": "field_F",
+      "to": "channelPortamentoTime",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_I:[[Lmi;",
+      "originalName": "field_I",
+      "to": "notesByGroup",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_J:[I",
+      "originalName": "field_J",
+      "to": "channelParameterSelection",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_K:I",
+      "originalName": "field_K",
+      "to": "nextTrackIndex",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_L:I",
+      "originalName": "field_L",
+      "to": "pendingTrackTick",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_M:[[Lmi;",
+      "originalName": "field_M",
+      "to": "notesByKey",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_N:[I",
+      "originalName": "field_N",
+      "to": "channelVolume",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_O:[I",
+      "originalName": "field_O",
+      "to": "channelPrograms",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_P:[I",
+      "originalName": "field_P",
+      "to": "channelDefaultPrograms",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_Q:Los;",
+      "originalName": "field_Q",
+      "to": "patchStream",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_T:Lbg;",
+      "originalName": "field_T",
+      "to": "patches",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_U:I",
+      "originalName": "field_U",
+      "to": "timeScale",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_V:[I",
+      "originalName": "field_V",
+      "to": "channelPan",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_W:[I",
+      "originalName": "field_W",
+      "to": "channelSampleOffsets",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_Y:J",
+      "originalName": "field_Y",
+      "to": "nextEventTime",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_Z:Z",
+      "originalName": "field_Z",
+      "to": "loopTrack",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_o:[I",
+      "originalName": "field_o",
+      "to": "channelFlags",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_q:Ldw;",
+      "originalName": "field_q",
+      "to": "midiReader",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_r:[I",
+      "originalName": "field_r",
+      "to": "channelPitchBend",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_s:[I",
+      "originalName": "field_s",
+      "to": "channelRetriggerSteps",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_t:I",
+      "originalName": "field_t",
+      "to": "nextEventTick",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_u:[I",
+      "originalName": "field_u",
+      "to": "channelModulation",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_v:I",
+      "originalName": "field_v",
+      "to": "masterVolume",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_w:[I",
+      "originalName": "field_w",
+      "to": "channelGain",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_x:[I",
+      "originalName": "field_x",
+      "to": "channelPitchBendSensitivity",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_y:Z",
+      "originalName": "field_y",
+      "to": "pendingStopSounds",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_z:J",
+      "originalName": "field_z",
+      "to": "playbackTime",
+      "evidence": "ih.java: MIDI dispatch/defaults and render/skip consumers distinguish 14-bit channel controls, bank/program, RPN/NRPN selection, note indexes and tempo-scaled frame/event times; pending-track fields have no scheduling writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ii.field_b:I",
       "originalName": "field_b",
       "to": "campaignPacketWord1",
@@ -7731,6 +8046,62 @@
       "originalName": "field_f",
       "to": "entryCount",
       "evidence": "in.java: Packed codebook dimensions/entries/lengths, canonical Huffman traversal and lookup type 1/2 vector construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:io.field_k:[B",
+      "originalName": "field_k",
+      "to": "exclusiveGroups",
+      "evidence": "io.java: Packed patch decode and note-on consumers identify per-key sample/envelope/group/pan/gain arrays; the sign bit of pitch selects infinite looping. Encoded sample IDs are cleared only after successful masked sample loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:io.field_l:[B",
+      "originalName": "field_l",
+      "to": "noteGains",
+      "evidence": "io.java: Packed patch decode and note-on consumers identify per-key sample/envelope/group/pan/gain arrays; the sign bit of pitch selects infinite looping. Encoded sample IDs are cleared only after successful masked sample loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:io.field_q:[I",
+      "originalName": "field_q",
+      "to": "sampleIds",
+      "evidence": "io.java: Packed patch decode and note-on consumers identify per-key sample/envelope/group/pan/gain arrays; the sign bit of pitch selects infinite looping. Encoded sample IDs are cleared only after successful masked sample loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:io.field_r:[S",
+      "originalName": "field_r",
+      "to": "pitchAndLoopFlags",
+      "evidence": "io.java: Packed patch decode and note-on consumers identify per-key sample/envelope/group/pan/gain arrays; the sign bit of pitch selects infinite looping. Encoded sample IDs are cleared only after successful masked sample loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:io.field_s:I",
+      "originalName": "field_s",
+      "to": "globalGain",
+      "evidence": "io.java: Packed patch decode and note-on consumers identify per-key sample/envelope/group/pan/gain arrays; the sign bit of pitch selects infinite looping. Encoded sample IDs are cleared only after successful masked sample loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:io.field_v:[Lfq;",
+      "originalName": "field_v",
+      "to": "envelopes",
+      "evidence": "io.java: Packed patch decode and note-on consumers identify per-key sample/envelope/group/pan/gain arrays; the sign bit of pitch selects infinite looping. Encoded sample IDs are cleared only after successful masked sample loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:io.field_x:[B",
+      "originalName": "field_x",
+      "to": "notePans",
+      "evidence": "io.java: Packed patch decode and note-on consumers identify per-key sample/envelope/group/pan/gain arrays; the sign bit of pitch selects infinite looping. Encoded sample IDs are cleared only after successful masked sample loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:io.field_y:[Lsn;",
+      "originalName": "field_y",
+      "to": "samples",
+      "evidence": "io.java: Packed patch decode and note-on consumers identify per-key sample/envelope/group/pan/gain arrays; the sign bit of pitch selects infinite looping. Encoded sample IDs are cleared only after successful masked sample loading.",
       "confidence": "reviewed"
     },
     {
@@ -9904,6 +10275,153 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mi.field_A:I",
+      "originalName": "field_A",
+      "to": "volumeEnvelopeIndex",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_B:I",
+      "originalName": "field_B",
+      "to": "retriggerPhase",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_D:I",
+      "originalName": "field_D",
+      "to": "key",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_E:I",
+      "originalName": "field_E",
+      "to": "notePan",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_F:I",
+      "originalName": "field_F",
+      "to": "exclusiveGroup",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_H:Lio;",
+      "originalName": "field_H",
+      "to": "patch",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_I:I",
+      "originalName": "field_I",
+      "to": "ageTicks",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_J:I",
+      "originalName": "field_J",
+      "to": "portamentoPitchDelta",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_K:Laa;",
+      "originalName": "field_K",
+      "to": "stream",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_m:I",
+      "originalName": "field_m",
+      "to": "channel",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_n:I",
+      "originalName": "field_n",
+      "to": "portamentoScale",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_o:I",
+      "originalName": "field_o",
+      "to": "decayTime",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_p:I",
+      "originalName": "field_p",
+      "to": "releaseEnvelopeIndex",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_q:Lsn;",
+      "originalName": "field_q",
+      "to": "sample",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_s:I",
+      "originalName": "field_s",
+      "to": "volumeEnvelopeTime",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_t:I",
+      "originalName": "field_t",
+      "to": "basePitch",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_u:I",
+      "originalName": "field_u",
+      "to": "velocityGain",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_v:Lfq;",
+      "originalName": "field_v",
+      "to": "envelope",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_w:I",
+      "originalName": "field_w",
+      "to": "framesUntilUpdate",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_x:I",
+      "originalName": "field_x",
+      "to": "releaseTime",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_y:I",
+      "originalName": "field_y",
+      "to": "vibratoPhase",
+      "evidence": "mi.java: Note-on initializes channel/key/sample/patch and fixed-point pitch/gain; periodic note updates progress decay/volume/release/vibrato while the patch stream owns update countdown and 20-bit retrigger phase.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mk.field_e:I",
       "originalName": "field_e",
       "to": "currentThemeId",
@@ -11140,6 +11658,27 @@
       "originalName": "field_l",
       "to": "activeStructureShadows",
       "evidence": "oq.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:os.field_p:Lat;",
+      "originalName": "field_p",
+      "to": "notes",
+      "evidence": "os.java: Active note deque is traversed for render/skip; owner updates notes and the mixer retains fading old streams during release/retrigger replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:os.field_r:Lih;",
+      "originalName": "field_r",
+      "to": "sequencer",
+      "evidence": "os.java: Active note deque is traversed for render/skip; owner updates notes and the mixer retains fading old streams during release/retrigger replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:os.field_s:Luv;",
+      "originalName": "field_s",
+      "to": "fadingStreams",
+      "evidence": "os.java: Active note deque is traversed for render/skip; owner updates notes and the mixer retains fading old streams during release/retrigger replacement.",
       "confidence": "reviewed"
     },
     {
@@ -20537,6 +21076,1203 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ih.a(B)V#0",
+      "originalName": "stackIn_23_0",
+      "to": "complementPendingTick",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(B)V#1",
+      "originalName": "stackIn_23_1",
+      "to": "complementEventTick",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(B)V#2",
+      "originalName": "var2",
+      "to": "trackIndex",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(B)V#3",
+      "originalName": "var3",
+      "to": "tick",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(B)V#4",
+      "originalName": "var4",
+      "to": "eventTime",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(B)V#5",
+      "originalName": "var6",
+      "to": "message",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(B)V#6",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#0",
+      "originalName": "var3",
+      "to": "status",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#1",
+      "originalName": "var4",
+      "to": "noteOffChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#10",
+      "originalName": "var5Lifetime1",
+      "to": "noteOnKey",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#11",
+      "originalName": "var5Lifetime2",
+      "to": "polyPressureKey",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#12",
+      "originalName": "var5Lifetime3",
+      "to": "program",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#13",
+      "originalName": "var5Lifetime4",
+      "to": "controller",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#14",
+      "originalName": "var6Lifetime1",
+      "to": "noteOnVelocity",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#15",
+      "originalName": "var6Lifetime2",
+      "to": "polyPressure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#16",
+      "originalName": "var6Lifetime3",
+      "to": "controlValue",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#17",
+      "originalName": "var7Lifetime1",
+      "to": "fineSelectedParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#18",
+      "originalName": "var4Lifetime3Lifetime1",
+      "to": "pressureChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#19",
+      "originalName": "var4Lifetime3Lifetime2",
+      "to": "pitchChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#2",
+      "originalName": "var5",
+      "to": "noteOffKey",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#20",
+      "originalName": "var5Lifetime3Lifetime1",
+      "to": "pressure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#21",
+      "originalName": "var5Lifetime3Lifetime2",
+      "to": "pitchBend",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#3",
+      "originalName": "var6",
+      "to": "noteOffVelocity",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#4",
+      "originalName": "var7",
+      "to": "selectedParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#5",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#6",
+      "originalName": "var4Lifetime1",
+      "to": "noteOnChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#7",
+      "originalName": "var4Lifetime2",
+      "to": "polyPressureChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#8",
+      "originalName": "var4Lifetime3",
+      "to": "programChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BI)V#9",
+      "originalName": "var4Lifetime4",
+      "to": "controlChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#0",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#1",
+      "originalName": "var4",
+      "to": "volume",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#10",
+      "originalName": "stackIn_24_0",
+      "to": "failureForContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#11",
+      "originalName": "stackIn_24_1",
+      "to": "errorContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#12",
+      "originalName": "stackIn_25_2",
+      "to": "noteDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#13",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#14",
+      "originalName": "var5Lifetime1",
+      "to": "releaseTime",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#15",
+      "originalName": "var6Lifetime1",
+      "to": "releaseLevel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#16",
+      "originalName": "var7Lifetime1",
+      "to": "releaseStartTime",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#17",
+      "originalName": "var8Lifetime1",
+      "to": "releaseEndTime",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#18",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#2",
+      "originalName": "var5",
+      "to": "volumeTime",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#3",
+      "originalName": "var6",
+      "to": "volumeLevel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#4",
+      "originalName": "var7",
+      "to": "volumeStartTime",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#5",
+      "originalName": "var8",
+      "to": "volumeEndTime",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#6",
+      "originalName": "var9",
+      "to": "envelope",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#7",
+      "originalName": "var10",
+      "to": "envelopeAlias",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#8",
+      "originalName": "stackIn_3_0",
+      "to": "mutedVolume",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(BLmi;)I#9",
+      "originalName": "stackIn_21_0",
+      "to": "resultVolume",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(I)V#0",
+      "originalName": "var2",
+      "to": "timePerFrame",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(I)V#1",
+      "originalName": "var3",
+      "to": "endTime",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(I)V#2",
+      "originalName": "var5",
+      "to": "framesToEvent",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(I)V#3",
+      "originalName": "var6",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(I)V#4",
+      "originalName": "decompiledFrameCompleted0",
+      "to": "renderRemainder",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IB)V#0",
+      "originalName": "var4",
+      "to": "note",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IB)V#1",
+      "originalName": "var5",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IB)V#2",
+      "originalName": "var3",
+      "to": "guardQuotient",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IBI)V#0",
+      "originalName": "var4",
+      "to": "group",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IBI)V#1",
+      "originalName": "var5",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IIB)V#0",
+      "originalName": "var4",
+      "to": "channelIndex",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IIB)V#1",
+      "originalName": "var5",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IIII)V#0",
+      "originalName": "var6",
+      "to": "otherNote",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IIII)V#1",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IIII)V#2",
+      "originalName": "var8",
+      "to": "note",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#0",
+      "originalName": "stackIn_67_0",
+      "to": "failureForContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#1",
+      "originalName": "stackIn_67_1",
+      "to": "errorContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#10",
+      "originalName": "var9",
+      "to": "keyProgress",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#11",
+      "originalName": "var11",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#12",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#2",
+      "originalName": "stackIn_68_2",
+      "to": "noteDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#3",
+      "originalName": "stackIn_70_1",
+      "to": "outputContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#4",
+      "originalName": "stackIn_71_2",
+      "to": "outputDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#6",
+      "originalName": "var6_int",
+      "to": "portamentoScale",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#7",
+      "originalName": "var6",
+      "to": "failure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#8",
+      "originalName": "var7",
+      "to": "envelope",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IILmi;B[I)Z#9",
+      "originalName": "var8",
+      "to": "finished",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#0",
+      "originalName": "stackIn_12_0",
+      "to": "resultStep",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#1",
+      "originalName": "stackIn_15_0",
+      "to": "failureForContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#10",
+      "originalName": "var7",
+      "to": "vibratoWave",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#11",
+      "originalName": "var5Lifetime1",
+      "to": "step",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#12",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#2",
+      "originalName": "stackIn_15_1",
+      "to": "errorContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#3",
+      "originalName": "stackIn_16_2",
+      "to": "noteDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#5",
+      "originalName": "var3_int",
+      "to": "pitch",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#6",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#7",
+      "originalName": "var4",
+      "to": "envelope",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#8",
+      "originalName": "var5",
+      "to": "vibratoDepth",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ILmi;)I#9",
+      "originalName": "var6",
+      "to": "vibratoDelay",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#0",
+      "originalName": "stackIn_20_0",
+      "to": "resultSuccess",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#1",
+      "originalName": "stackIn_23_0",
+      "to": "failureForContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#10",
+      "originalName": "var6",
+      "to": "failure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#11",
+      "originalName": "var7",
+      "to": "sampleBudget",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#12",
+      "originalName": "var8",
+      "to": "usage",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#13",
+      "originalName": "var9",
+      "to": "patchId",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#14",
+      "originalName": "var11",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#15",
+      "originalName": "var12",
+      "to": "cachedPatch",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#16",
+      "originalName": "var13",
+      "to": "loadedPatch",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#17",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#2",
+      "originalName": "stackIn_23_1",
+      "to": "errorContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#3",
+      "originalName": "stackIn_24_2",
+      "to": "cacheDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#4",
+      "originalName": "stackIn_26_1",
+      "to": "archiveContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#5",
+      "originalName": "stackIn_27_2",
+      "to": "archiveDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#6",
+      "originalName": "stackIn_29_1",
+      "to": "trackContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#7",
+      "originalName": "stackIn_30_2",
+      "to": "trackDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Lp;Lkl;ILum;B)Z#9",
+      "originalName": "var6_int",
+      "to": "prepared",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZBZLum;)V#0",
+      "originalName": "var5_int",
+      "to": "trackCount",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZBZLum;)V#1",
+      "originalName": "var6",
+      "to": "trackIndex",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZBZLum;)V#2",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZI)V#0",
+      "originalName": "var4",
+      "to": "unusedTrack",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZLmi;I)V#0",
+      "originalName": "var4_int",
+      "to": "sampleLength",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZLmi;I)V#1",
+      "originalName": "var5",
+      "to": "position",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZLmi;I)V#2",
+      "originalName": "var6",
+      "to": "reflectedLength",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZLmi;I)V#3",
+      "originalName": "stackIn_12_0",
+      "to": "failureForContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZLmi;I)V#4",
+      "originalName": "stackIn_12_1",
+      "to": "errorContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZLmi;I)V#5",
+      "originalName": "stackIn_13_2",
+      "to": "noteDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZLmi;I)V#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZLmi;I)V#7",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZLmi;I)V#8",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZZ)V#0",
+      "originalName": "var3",
+      "to": "programChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZZ)V#1",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZZ)V#2",
+      "originalName": "var3Lifetime1",
+      "to": "unusedBankChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(ZZ)V#3",
+      "originalName": "var5",
+      "to": "bankChannel",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#0",
+      "originalName": "var3_int",
+      "to": "pan",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#1",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#2",
+      "originalName": "var4",
+      "to": "guardQuotient",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#3",
+      "originalName": "stackIn_2_0",
+      "to": "lowPan",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#4",
+      "originalName": "stackIn_4_0",
+      "to": "highPan",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#5",
+      "originalName": "stackIn_7_0",
+      "to": "failureForContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#6",
+      "originalName": "stackIn_7_1",
+      "to": "errorContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#7",
+      "originalName": "stackIn_8_2",
+      "to": "noteDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(BLmi;)I#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(II)V#0",
+      "originalName": "var3",
+      "to": "note",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(II)V#1",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#0",
+      "originalName": "stackIn_16_1",
+      "to": "looped",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#1",
+      "originalName": "var5",
+      "to": "reusedNote",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#2",
+      "originalName": "var6_int",
+      "to": "previousPitch",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#3",
+      "originalName": "var6",
+      "to": "sample",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#4",
+      "originalName": "var7",
+      "to": "newNote",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#5",
+      "originalName": "var8",
+      "to": "previousGroupNote",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#6",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#7",
+      "originalName": "var10",
+      "to": "patch",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#8",
+      "originalName": "var11",
+      "to": "patchAlias",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(IIII)V#9",
+      "originalName": "var12",
+      "to": "patchLoopAlias",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(ZI)V#0",
+      "originalName": "var3",
+      "to": "note",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(ZI)V#1",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b(ZI)V#2",
+      "originalName": "var5",
+      "to": "unusedTrack",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#0",
+      "originalName": "var4_int",
+      "to": "timePerFrame",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#1",
+      "originalName": "var5",
+      "to": "endTime",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#2",
+      "originalName": "var7",
+      "to": "framesToEvent",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#3",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#4",
+      "originalName": "stackIn_11_0",
+      "to": "failureForContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#5",
+      "originalName": "stackIn_11_1",
+      "to": "errorContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#6",
+      "originalName": "stackIn_12_2",
+      "to": "outputDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#8",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.b([III)V#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.c(BLmi;)Z#0",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.c(BLmi;)Z#1",
+      "originalName": "stackIn_14_0",
+      "to": "failureForContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.c(BLmi;)Z#2",
+      "originalName": "stackIn_14_1",
+      "to": "errorContext",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.c(BLmi;)Z#3",
+      "originalName": "stackIn_15_2",
+      "to": "noteDescription",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.c(BLmi;)Z#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.c(BLmi;)Z#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.d(II)V#0",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.e(II)V#0",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.e(II)V#1",
+      "originalName": "var3",
+      "to": "note",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.h(I)V#0",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.h(I)V#1",
+      "originalName": "var5",
+      "to": "patch",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.h(I)V#2",
+      "originalName": "var3",
+      "to": "guardRemainder",
+      "evidence": "ih.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:in.<init>()V#0",
       "originalName": "incrementValue$0",
       "to": "lengthEntryIndex",
@@ -20884,6 +22620,125 @@
       "originalName": "var9_int",
       "to": "shorterCode",
       "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#0",
+      "originalName": "var8",
+      "to": "key",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#1",
+      "originalName": "stackIn_20_0",
+      "to": "resultSuccess",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#10",
+      "originalName": "var5_int",
+      "to": "prepared",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#11",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#12",
+      "originalName": "var6",
+      "to": "previousSampleId",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#13",
+      "originalName": "var7",
+      "to": "sample",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#14",
+      "originalName": "var9",
+      "to": "sampleId",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#15",
+      "originalName": "var10",
+      "to": "obfuscationControl",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#16",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#2",
+      "originalName": "stackIn_23_0",
+      "to": "failureForContext",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#3",
+      "originalName": "stackIn_23_1",
+      "to": "errorContext",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#4",
+      "originalName": "stackIn_24_2",
+      "to": "maskDescription",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#5",
+      "originalName": "stackIn_26_1",
+      "to": "budgetContext",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#6",
+      "originalName": "stackIn_27_2",
+      "to": "budgetDescription",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#7",
+      "originalName": "stackIn_29_1",
+      "to": "cacheContext",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#8",
+      "originalName": "stackIn_30_2",
+      "to": "cacheDescription",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:io.a(I[B[ILp;)Z#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "io.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
       "confidence": "reviewed"
     },
     {
@@ -24139,6 +25994,321 @@
       "originalName": "var6",
       "to": "nameCharacters",
       "evidence": "op.java: Reviewed social record, canonical-name collision lookup, ordering and command framing at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a()Lhn;#0",
+      "originalName": "var1",
+      "to": "note",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(I)V#0",
+      "originalName": "var2",
+      "to": "remainingFrames",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(I)V#1",
+      "originalName": "var3",
+      "to": "note",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(I)V#2",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(III)I#0",
+      "originalName": "var3",
+      "to": "signCorrection",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#0",
+      "originalName": "stackIn_13_0",
+      "to": "ownerForOffset",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#1",
+      "originalName": "stackIn_14_1",
+      "to": "looped",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#10",
+      "originalName": "var8",
+      "to": "framesToWrap",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#11",
+      "originalName": "var9",
+      "to": "fadeFrames",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#12",
+      "originalName": "var10",
+      "to": "maximumFadeFrames",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#13",
+      "originalName": "var11",
+      "to": "previousStream",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#14",
+      "originalName": "var12",
+      "to": "obfuscationControl",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#15",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#2",
+      "originalName": "stackIn_25_0",
+      "to": "failureForContext",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#3",
+      "originalName": "stackIn_25_1",
+      "to": "errorContext",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#4",
+      "originalName": "stackIn_26_2",
+      "to": "outputDescription",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#5",
+      "originalName": "stackIn_28_1",
+      "to": "noteContext",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#6",
+      "originalName": "stackIn_29_2",
+      "to": "noteDescription",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#8",
+      "originalName": "var7_int",
+      "to": "phaseStep",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(II[IILmi;I)V#9",
+      "originalName": "var7",
+      "to": "failure",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#0",
+      "originalName": "stackIn_7_0",
+      "to": "ownerForOffset",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#1",
+      "originalName": "stackIn_8_1",
+      "to": "looped",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#2",
+      "originalName": "stackIn_18_0",
+      "to": "failureForContext",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#3",
+      "originalName": "stackIn_18_1",
+      "to": "errorContext",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#4",
+      "originalName": "stackIn_19_2",
+      "to": "noteDescription",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#6",
+      "originalName": "var4_int",
+      "to": "phaseStep",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#7",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#8",
+      "originalName": "var5",
+      "to": "framesToWrap",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.a(Lmi;BI)V#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b()Lhn;#0",
+      "originalName": "var1_ref",
+      "to": "note",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b()Lhn;#1",
+      "originalName": "var2",
+      "to": "obfuscationControl",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#0",
+      "originalName": "stackIn_4_0",
+      "to": "noteFinished",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#1",
+      "originalName": "stackIn_16_0",
+      "to": "failureForContext",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#10",
+      "originalName": "decompiledFrameCompleted0",
+      "to": "renderRemainder",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#11",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#2",
+      "originalName": "stackIn_16_1",
+      "to": "errorContext",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#3",
+      "originalName": "stackIn_17_2",
+      "to": "outputDescription",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#5",
+      "originalName": "var4_int",
+      "to": "currentOffset",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#6",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#7",
+      "originalName": "var5",
+      "to": "remainingFrames",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#8",
+      "originalName": "var6",
+      "to": "note",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:os.b([III)V#9",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "os.java: Sequencer/patch-stream event dispatch, frame splitting, note pitch/gain/envelope progression and retrigger replacement; exact local ordinals and spellings bind the pinned source.",
       "confidence": "reviewed"
     },
     {
@@ -34194,6 +36364,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ih.a(B)V",
+      "originalName": "a",
+      "to": "processMidiEvents",
+      "evidence": "ih.java: Processes simultaneous track events, selects the next chronological tick, loops nonzero-duration tracks or releases reader/reset notes at completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(BI)V",
+      "originalName": "a",
+      "to": "dispatchMidiMessage",
+      "evidence": "ih.java: Packed MIDI status dispatch updates channel controllers/banks/programs and routes note, pressure and reset events without altering existing mask/guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(BLmi;)I",
+      "originalName": "a",
+      "to": "noteVolume",
+      "evidence": "ih.java: Combines squared channel volume/expression, note velocity gain, master/channel gain, exponential decay and interpolated volume/release curves.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ih.a(I)V",
       "originalName": "a",
       "to": "skip",
@@ -34201,10 +36392,150 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ih.a(IB)V",
+      "originalName": "a",
+      "to": "resetRetriggerPhases",
+      "evidence": "ih.java: When retrigger flag is set, clears retrigger phase of every channel note.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(IBI)V",
+      "originalName": "a",
+      "to": "selectProgram",
+      "evidence": "ih.java: Changing the current program clears channel exclusive-group indexes, preserving existing key/note ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(IBII)V",
+      "originalName": "a",
+      "to": "polyphonicPressure",
+      "evidence": "ih.java: Canonical handler is empty: per-key pressure does not affect synthesis in the pinned client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(IIB)V",
+      "originalName": "a",
+      "to": "setChannelGain",
+      "evidence": "ih.java: Negative channel selects all sixteen channel gain slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(III)V",
+      "originalName": "a",
+      "to": "setChannelProgram",
+      "evidence": "ih.java: Public default-program setter delegates to bank/current-program updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(IIII)V",
+      "originalName": "a",
+      "to": "noteOff",
+      "evidence": "ih.java: Clears key index and begins release; under portamento the last held voice stays held until another voice or portamento disable. Velocity is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(IILmi;B[I)Z",
+      "originalName": "a",
+      "to": "updateNote",
+      "evidence": "ih.java: Periodic 100 Hz pitch/envelope/release update; finishes notes or ramps current stream gains/pan and transfers fading streams to the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(IIZ)V",
+      "originalName": "a",
+      "to": "setDefaultProgram",
+      "evidence": "ih.java: Stores reset program and bank portion, then selects current program and clears group references on a change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(ILmi;)I",
+      "originalName": "a",
+      "to": "noteStep",
+      "evidence": "ih.java: Combines key pitch, portamento, pitch bend/sensitivity and delayed vibrato, then converts sample rate to fractional playback step with a minimum of one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(IZLum;)V",
+      "originalName": "a",
+      "to": "playTrack",
+      "evidence": "ih.java: Starts track while stopping/resetting prior notes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(Lp;Lkl;ILum;B)Z",
+      "originalName": "a",
+      "to": "prepareTrackSamples",
+      "evidence": "ih.java: Loads/caches each used patch and prepares only requested note samples with a shared optional budget; usage table releases only when all preparation succeeds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(ZBZLum;)V",
+      "originalName": "a",
+      "to": "startTrack",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(ZI)V",
+      "originalName": "a",
+      "to": "stopTrack",
+      "evidence": "ih.java: Releases reader/pending track and resets controller/program state using release or immediate fade.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(ZLmi;I)V",
+      "originalName": "a",
+      "to": "applySampleOffset",
+      "evidence": "ih.java: Applies channel sample-offset fraction; looping ping-pong samples reflect past the sample end and reverse the stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(ZZ)V",
+      "originalName": "a",
+      "to": "resetState",
+      "evidence": "ih.java: Stops or releases notes, resets controls and restores channel current programs/banks from defaults.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ih.b()Lhn;",
       "originalName": "b",
       "to": "nextSubStream",
       "evidence": "ih.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.b(BLmi;)I",
+      "originalName": "b",
+      "to": "notePan",
+      "evidence": "ih.java: Combines channel pan and patch key pan about the 8192 midpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.b(II)V",
+      "originalName": "b",
+      "to": "allNotesOff",
+      "evidence": "ih.java: Releases held notes on one channel or every channel, clearing key indexes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.b(III)V",
+      "originalName": "b",
+      "to": "channelPressure",
+      "evidence": "ih.java: Canonical handler is empty: channel pressure does not affect synthesis in the pinned client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.b(IIII)V",
+      "originalName": "b",
+      "to": "noteOn",
+      "evidence": "ih.java: Reuses the newest held portamento voice or allocates a cached patch-backed stream with velocity gain, sample offset/looping and exclusive-group replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.b(ZI)V",
+      "originalName": "b",
+      "to": "releasePortamentoNotes",
+      "evidence": "ih.java: While portamento is enabled, releases held notes no longer referenced by their key.",
       "confidence": "reviewed"
     },
     {
@@ -34219,6 +36550,83 @@
       "originalName": "c",
       "to": "getSchedulingCost",
       "evidence": "ih.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.c(BLmi;)Z",
+      "originalName": "c",
+      "to": "removeFinishedNote",
+      "evidence": "ih.java: Returns false for a retained stream; a released streamless note unlinks and clears its matching positive group reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.c(II)V",
+      "originalName": "c",
+      "to": "setTimeScale",
+      "evidence": "ih.java: Sets integer time scale used with MIDI division/output sample rate to convert frames to event time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.c(III)V",
+      "originalName": "c",
+      "to": "setPitchBend",
+      "evidence": "ih.java: Stores 14-bit pitch wheel value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.d(II)V",
+      "originalName": "d",
+      "to": "resetChannelControllers",
+      "evidence": "ih.java: Restores channel controls, releases orphan portamento notes and clears retrigger phase; negative channel resets all sixteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.d(III)V",
+      "originalName": "d",
+      "to": "setRetriggerRate",
+      "evidence": "ih.java: Stores the 14-bit control and derives the exponential 20-bit phase step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.e(II)V",
+      "originalName": "e",
+      "to": "allSoundOff",
+      "evidence": "ih.java: Fades selected notes over sampleRate/100 frames, preserves unfinished tails, clears held key slots and unlinks notes; group references remain retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.f(II)V",
+      "originalName": "f",
+      "to": "setMasterVolume",
+      "evidence": "ih.java: Sets master gain under the canonical negative guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.g(I)Z",
+      "originalName": "g",
+      "to": "isPlaying",
+      "evidence": "ih.java: Returns reader readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.h(I)V",
+      "originalName": "h",
+      "to": "releasePatchSampleIds",
+      "evidence": "ih.java: Clears encoded sample ID arrays in retained patches, preserving prepared samples and cache membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.i(I)I",
+      "originalName": "i",
+      "to": "getMasterVolume",
+      "evidence": "ih.java: Returns retained master gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.j(I)V",
+      "originalName": "j",
+      "to": "stop",
+      "evidence": "ih.java: Stops MIDI and pending track and immediately fades/stops current notes.",
       "confidence": "reviewed"
     },
     {
@@ -34310,6 +36718,20 @@
       "originalName": "c",
       "to": "buildDecodeTree",
       "evidence": "in.java: Assigns canonical code words from nonzero lengths and builds a growing compact binary decode trie.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:io.a(I)V",
+      "originalName": "a",
+      "to": "releaseSampleIds",
+      "evidence": "io.java: Releases encoded loading IDs without clearing prepared samples or other patch metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:io.a(I[B[ILp;)Z",
+      "originalName": "a",
+      "to": "prepareSamples",
+      "evidence": "io.java: Loads masked encoded sample IDs through SoundCache, reusing consecutive IDs; clears only successfully prepared IDs and reports aggregate success.",
       "confidence": "reviewed"
     },
     {
@@ -35790,6 +38212,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mi.e(I)V",
+      "originalName": "e",
+      "to": "releaseReferences",
+      "evidence": "mi.java: Drops stream, patch, sample and envelope references while retaining scalar note state and links.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ml.a(III)V",
       "originalName": "a",
       "to": "layoutTabs",
@@ -36644,6 +39073,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:os.a(III)I",
+      "originalName": "a",
+      "to": "floorDivide",
+      "evidence": "os.java: Sign correction makes division floor toward negative infinity for positive divisors, including patch envelope interpolation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:os.a(II[IILmi;I)V",
+      "originalName": "a",
+      "to": "renderNote",
+      "evidence": "os.java: Splits note rendering at phase wraps, crossfades replaced streams and retains unfinished old tails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:os.a(Lmi;BI)V",
+      "originalName": "a",
+      "to": "skipNote",
+      "evidence": "os.java: Advances note/retrigger phase and replaces restarted streams without rendering; preserves loop/sample-offset behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:os.b()Lhn;",
       "originalName": "b",
       "to": "nextSubStream",
@@ -36662,6 +39112,13 @@
       "originalName": "c",
       "to": "getSchedulingCost",
       "evidence": "os.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:os.g(I)I",
+      "originalName": "g",
+      "to": "getPointerIdleTicks",
+      "evidence": "os.java: Returns shared pointer idle count.",
       "confidence": "reviewed"
     },
     {
@@ -39668,10 +42125,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wn.a(IIB)V",
+      "originalName": "a",
+      "to": "setChannelGain",
+      "evidence": "ih.java: Negative channel selects all sixteen channel gain slots. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wn.a(Ljava/lang/CharSequence;IZ)Z",
       "originalName": "a",
       "to": "hasValidAccountNameShape",
       "evidence": "wn.java: Checks raw length and canonical content, forbids trailing separators and optionally rejects consecutive separators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wn.a(ZBZLum;)V",
+      "originalName": "a",
+      "to": "startTrack",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -50266,10 +52737,479 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ih.<init>(Lih;)V#0",
+      "originalName": "param0",
+      "to": "sharedPatchOwner",
+      "evidence": "ih.java: New sequencer shares the supplied patch cache while allocating independent controller arrays, reader and note stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Processes simultaneous track events, selects the next chronological tick, loops nonzero-duration tracks or releases reader/reset notes at completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Packed MIDI status dispatch updates channel controllers/banks/programs and routes note, pressure and reset events without altering existing mask/guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(BI)V#1",
+      "originalName": "param1",
+      "to": "message",
+      "evidence": "ih.java: Packed MIDI status dispatch updates channel controllers/banks/programs and routes note, pressure and reset events without altering existing mask/guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(BLmi;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Combines squared channel volume/expression, note velocity gain, master/channel gain, exponential decay and interpolated volume/release curves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(BLmi;)I#1",
+      "originalName": "param1",
+      "to": "note",
+      "evidence": "ih.java: Combines squared channel volume/expression, note velocity gain, master/channel gain, exponential decay and interpolated volume/release curves.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ih.a(I)V#0",
       "originalName": "param0",
       "to": "frameCount",
       "evidence": "ih.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IB)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "ih.java: When retrigger flag is set, clears retrigger phase of every channel note.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: When retrigger flag is set, clears retrigger phase of every channel note.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IBI)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "ih.java: Changing the current program clears channel exclusive-group indexes, preserving existing key/note ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IBI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Changing the current program clears channel exclusive-group indexes, preserving existing key/note ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IBI)V#2",
+      "originalName": "param2",
+      "to": "program",
+      "evidence": "ih.java: Changing the current program clears channel exclusive-group indexes, preserving existing key/note ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IBII)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "ih.java: Canonical handler is empty: per-key pressure does not affect synthesis in the pinned client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IBII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Canonical handler is empty: per-key pressure does not affect synthesis in the pinned client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IBII)V#2",
+      "originalName": "param2",
+      "to": "key",
+      "evidence": "ih.java: Canonical handler is empty: per-key pressure does not affect synthesis in the pinned client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IBII)V#3",
+      "originalName": "param3",
+      "to": "pressure",
+      "evidence": "ih.java: Canonical handler is empty: per-key pressure does not affect synthesis in the pinned client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIB)V#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "ih.java: Negative channel selects all sixteen channel gain slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIB)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "ih.java: Negative channel selects all sixteen channel gain slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Negative channel selects all sixteen channel gain slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(III)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Public default-program setter delegates to bank/current-program updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(III)V#1",
+      "originalName": "param1",
+      "to": "program",
+      "evidence": "ih.java: Public default-program setter delegates to bank/current-program updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(III)V#2",
+      "originalName": "param2",
+      "to": "channel",
+      "evidence": "ih.java: Public default-program setter delegates to bank/current-program updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "velocity",
+      "evidence": "ih.java: Clears key index and begins release; under portamento the last held voice stays held until another voice or portamento disable. Velocity is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "ih.java: Clears key index and begins release; under portamento the last held voice stays held until another voice or portamento disable. Velocity is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Clears key index and begins release; under portamento the last held voice stays held until another voice or portamento disable. Velocity is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "channel",
+      "evidence": "ih.java: Clears key index and begins release; under portamento the last held voice stays held until another voice or portamento disable. Velocity is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IILmi;B[I)Z#0",
+      "originalName": "param0",
+      "to": "remainingFrames",
+      "evidence": "ih.java: Periodic 100 Hz pitch/envelope/release update; finishes notes or ramps current stream gains/pan and transfers fading streams to the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IILmi;B[I)Z#1",
+      "originalName": "param1",
+      "to": "outputOffset",
+      "evidence": "ih.java: Periodic 100 Hz pitch/envelope/release update; finishes notes or ramps current stream gains/pan and transfers fading streams to the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IILmi;B[I)Z#2",
+      "originalName": "param2",
+      "to": "note",
+      "evidence": "ih.java: Periodic 100 Hz pitch/envelope/release update; finishes notes or ramps current stream gains/pan and transfers fading streams to the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IILmi;B[I)Z#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Periodic 100 Hz pitch/envelope/release update; finishes notes or ramps current stream gains/pan and transfers fading streams to the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IILmi;B[I)Z#4",
+      "originalName": "param4",
+      "to": "output",
+      "evidence": "ih.java: Periodic 100 Hz pitch/envelope/release update; finishes notes or ramps current stream gains/pan and transfers fading streams to the mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIZ)V#0",
+      "originalName": "param0",
+      "to": "program",
+      "evidence": "ih.java: Stores reset program and bank portion, then selects current program and clears group references on a change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIZ)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "ih.java: Stores reset program and bank portion, then selects current program and clears group references on a change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIZ)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Stores reset program and bank portion, then selects current program and clears group references on a change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ILmi;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Combines key pitch, portamento, pitch bend/sensitivity and delayed vibrato, then converts sample rate to fractional playback step with a minimum of one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ILmi;)I#1",
+      "originalName": "param1",
+      "to": "note",
+      "evidence": "ih.java: Combines key pitch, portamento, pitch bend/sensitivity and delayed vibrato, then converts sample rate to fractional playback step with a minimum of one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IZLum;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Starts track while stopping/resetting prior notes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IZLum;)V#1",
+      "originalName": "param1",
+      "to": "loop",
+      "evidence": "ih.java: Starts track while stopping/resetting prior notes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IZLum;)V#2",
+      "originalName": "param2",
+      "to": "track",
+      "evidence": "ih.java: Starts track while stopping/resetting prior notes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Lp;Lkl;ILum;B)Z#0",
+      "originalName": "param0",
+      "to": "soundCache",
+      "evidence": "ih.java: Loads/caches each used patch and prepares only requested note samples with a shared optional budget; usage table releases only when all preparation succeeds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Lp;Lkl;ILum;B)Z#1",
+      "originalName": "param1",
+      "to": "patchArchive",
+      "evidence": "ih.java: Loads/caches each used patch and prepares only requested note samples with a shared optional budget; usage table releases only when all preparation succeeds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Lp;Lkl;ILum;B)Z#2",
+      "originalName": "param2",
+      "to": "budget",
+      "evidence": "ih.java: Loads/caches each used patch and prepares only requested note samples with a shared optional budget; usage table releases only when all preparation succeeds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Lp;Lkl;ILum;B)Z#3",
+      "originalName": "param3",
+      "to": "track",
+      "evidence": "ih.java: Loads/caches each used patch and prepares only requested note samples with a shared optional budget; usage table releases only when all preparation succeeds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Lp;Lkl;ILum;B)Z#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Loads/caches each used patch and prepares only requested note samples with a shared optional budget; usage table releases only when all preparation succeeds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZBZLum;)V#0",
+      "originalName": "param0",
+      "to": "loop",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZBZLum;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZBZLum;)V#2",
+      "originalName": "param2",
+      "to": "stopSounds",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZBZLum;)V#3",
+      "originalName": "param3",
+      "to": "track",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "stopSounds",
+      "evidence": "ih.java: Releases reader/pending track and resets controller/program state using release or immediate fade.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Releases reader/pending track and resets controller/program state using release or immediate fade.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZLmi;I)V#0",
+      "originalName": "param0",
+      "to": "looped",
+      "evidence": "ih.java: Applies channel sample-offset fraction; looping ping-pong samples reflect past the sample end and reverse the stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZLmi;I)V#1",
+      "originalName": "param1",
+      "to": "note",
+      "evidence": "ih.java: Applies channel sample-offset fraction; looping ping-pong samples reflect past the sample end and reverse the stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZLmi;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Applies channel sample-offset fraction; looping ping-pong samples reflect past the sample end and reverse the stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Stops or releases notes, resets controls and restores channel current programs/banks from defaults.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(ZZ)V#1",
+      "originalName": "param1",
+      "to": "stopSounds",
+      "evidence": "ih.java: Stops or releases notes, resets controls and restores channel current programs/banks from defaults.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(BLmi;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Combines channel pan and patch key pan about the 8192 midpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(BLmi;)I#1",
+      "originalName": "param1",
+      "to": "note",
+      "evidence": "ih.java: Combines channel pan and patch key pan about the 8192 midpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(II)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "ih.java: Releases held notes on one channel or every channel, clearing key indexes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Releases held notes on one channel or every channel, clearing key indexes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(III)V#0",
+      "originalName": "param0",
+      "to": "pressure",
+      "evidence": "ih.java: Canonical handler is empty: channel pressure does not affect synthesis in the pinned client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Canonical handler is empty: channel pressure does not affect synthesis in the pinned client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(III)V#2",
+      "originalName": "param2",
+      "to": "channel",
+      "evidence": "ih.java: Canonical handler is empty: channel pressure does not affect synthesis in the pinned client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(IIII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Reuses the newest held portamento voice or allocates a cached patch-backed stream with velocity gain, sample offset/looping and exclusive-group replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(IIII)V#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "ih.java: Reuses the newest held portamento voice or allocates a cached patch-backed stream with velocity gain, sample offset/looping and exclusive-group replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(IIII)V#2",
+      "originalName": "param2",
+      "to": "velocity",
+      "evidence": "ih.java: Reuses the newest held portamento voice or allocates a cached patch-backed stream with velocity gain, sample offset/looping and exclusive-group replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(IIII)V#3",
+      "originalName": "param3",
+      "to": "channel",
+      "evidence": "ih.java: Reuses the newest held portamento voice or allocates a cached patch-backed stream with velocity gain, sample offset/looping and exclusive-group replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(ZI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: While portamento is enabled, releases held notes no longer referenced by their key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(ZI)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "ih.java: While portamento is enabled, releases held notes no longer referenced by their key.",
       "confidence": "reviewed"
     },
     {
@@ -50291,6 +53231,146 @@
       "originalName": "param2",
       "to": "frameCount",
       "evidence": "ih.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.c(BLmi;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Returns false for a retained stream; a released streamless note unlinks and clears its matching positive group reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.c(BLmi;)Z#1",
+      "originalName": "param1",
+      "to": "note",
+      "evidence": "ih.java: Returns false for a retained stream; a released streamless note unlinks and clears its matching positive group reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.c(II)V#0",
+      "originalName": "param0",
+      "to": "scale",
+      "evidence": "ih.java: Sets integer time scale used with MIDI division/output sample rate to convert frames to event time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.c(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Sets integer time scale used with MIDI division/output sample rate to convert frames to event time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.c(III)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "ih.java: Stores 14-bit pitch wheel value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.c(III)V#1",
+      "originalName": "param1",
+      "to": "pitchBend",
+      "evidence": "ih.java: Stores 14-bit pitch wheel value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.c(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Stores 14-bit pitch wheel value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.d(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Restores channel controls, releases orphan portamento notes and clears retrigger phase; negative channel resets all sixteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.d(II)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "ih.java: Restores channel controls, releases orphan portamento notes and clears retrigger phase; negative channel resets all sixteen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.d(III)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Stores the 14-bit control and derives the exponential 20-bit phase step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.d(III)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "ih.java: Stores the 14-bit control and derives the exponential 20-bit phase step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.d(III)V#2",
+      "originalName": "param2",
+      "to": "rate",
+      "evidence": "ih.java: Stores the 14-bit control and derives the exponential 20-bit phase step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.e(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Fades selected notes over sampleRate/100 frames, preserves unfinished tails, clears held key slots and unlinks notes; group references remain retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.e(II)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "ih.java: Fades selected notes over sampleRate/100 frames, preserves unfinished tails, clears held key slots and unlinks notes; group references remain retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.f(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Sets master gain under the canonical negative guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.f(II)V#1",
+      "originalName": "param1",
+      "to": "volume",
+      "evidence": "ih.java: Sets master gain under the canonical negative guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.g(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Returns reader readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.h(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Clears encoded sample ID arrays in retained patches, preserving prepared samples and cache membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.i(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Returns retained master gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.j(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Stops MIDI and pending track and immediately fades/stops current notes.",
       "confidence": "reviewed"
     },
     {
@@ -50473,6 +53553,48 @@
       "originalName": "param1",
       "to": "dimensions",
       "evidence": "in.java: Finds the greatest integer whose dimensions power does not exceed entryCount; Xiph lookup1_values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:io.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "packedPatch",
+      "evidence": "io.java: Packed patch byte array provides per-key sample IDs, pitch/group/pan/gain and envelope metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:io.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "io.java: Releases encoded loading IDs without clearing prepared samples or other patch metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:io.a(I[B[ILp;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "io.java: Loads masked encoded sample IDs through SoundCache, reusing consecutive IDs; clears only successfully prepared IDs and reports aggregate success.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:io.a(I[B[ILp;)Z#1",
+      "originalName": "param1",
+      "to": "noteMask",
+      "evidence": "io.java: Loads masked encoded sample IDs through SoundCache, reusing consecutive IDs; clears only successfully prepared IDs and reports aggregate success.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:io.a(I[B[ILp;)Z#2",
+      "originalName": "param2",
+      "to": "budget",
+      "evidence": "io.java: Loads masked encoded sample IDs through SoundCache, reusing consecutive IDs; clears only successfully prepared IDs and reports aggregate success.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:io.a(I[B[ILp;)Z#3",
+      "originalName": "param3",
+      "to": "soundCache",
+      "evidence": "io.java: Loads masked encoded sample IDs through SoundCache, reusing consecutive IDs; clears only successfully prepared IDs and reports aggregate success.",
       "confidence": "reviewed"
     },
     {
@@ -54613,6 +57735,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:mi.e(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mi.java: Drops stream, patch, sample and envelope references while retaining scalar note state and links.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ml.<init>(JLje;[Ljava/lang/String;Lje;[Lje;I)V#0",
       "originalName": "param0",
       "to": "key",
@@ -57021,10 +60150,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:os.<init>(Lih;)V#0",
+      "originalName": "param0",
+      "to": "sequencer",
+      "evidence": "os.java: Retains owner and creates independent active-note deque and fading-stream mixer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:os.a(I)V#0",
       "originalName": "param0",
       "to": "frameCount",
       "evidence": "os.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(III)I#0",
+      "originalName": "param0",
+      "to": "divisor",
+      "evidence": "os.java: Sign correction makes division floor toward negative infinity for positive divisors, including patch envelope interpolation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(III)I#1",
+      "originalName": "param1",
+      "to": "dividend",
+      "evidence": "os.java: Sign correction makes division floor toward negative infinity for positive divisors, including patch envelope interpolation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(III)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "os.java: Sign correction makes division floor toward negative infinity for positive divisors, including patch envelope interpolation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(II[IILmi;I)V#0",
+      "originalName": "param0",
+      "to": "outputOffset",
+      "evidence": "os.java: Splits note rendering at phase wraps, crossfades replaced streams and retains unfinished old tails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(II[IILmi;I)V#1",
+      "originalName": "param1",
+      "to": "outputEnd",
+      "evidence": "os.java: Splits note rendering at phase wraps, crossfades replaced streams and retains unfinished old tails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(II[IILmi;I)V#2",
+      "originalName": "param2",
+      "to": "output",
+      "evidence": "os.java: Splits note rendering at phase wraps, crossfades replaced streams and retains unfinished old tails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(II[IILmi;I)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "os.java: Splits note rendering at phase wraps, crossfades replaced streams and retains unfinished old tails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(II[IILmi;I)V#4",
+      "originalName": "param4",
+      "to": "note",
+      "evidence": "os.java: Splits note rendering at phase wraps, crossfades replaced streams and retains unfinished old tails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(II[IILmi;I)V#5",
+      "originalName": "param5",
+      "to": "frameCount",
+      "evidence": "os.java: Splits note rendering at phase wraps, crossfades replaced streams and retains unfinished old tails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(Lmi;BI)V#0",
+      "originalName": "param0",
+      "to": "note",
+      "evidence": "os.java: Advances note/retrigger phase and replaces restarted streams without rendering; preserves loop/sample-offset behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(Lmi;BI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "os.java: Advances note/retrigger phase and replaces restarted streams without rendering; preserves loop/sample-offset behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.a(Lmi;BI)V#2",
+      "originalName": "param2",
+      "to": "frameCount",
+      "evidence": "os.java: Advances note/retrigger phase and replaces restarted streams without rendering; preserves loop/sample-offset behavior.",
       "confidence": "reviewed"
     },
     {
@@ -57046,6 +60266,13 @@
       "originalName": "param2",
       "to": "frameCount",
       "evidence": "os.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:os.g(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "os.java: Returns shared pointer idle count.",
       "confidence": "reviewed"
     },
     {
@@ -65141,6 +68368,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wn.a(IIB)V#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "ih.java: Negative channel selects all sixteen channel gain slots. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(IIB)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "ih.java: Negative channel selects all sixteen channel gain slots. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(IIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Negative channel selects all sixteen channel gain slots. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wn.a(Ljava/lang/CharSequence;IZ)Z#0",
       "originalName": "param0",
       "to": "name",
@@ -65159,6 +68407,34 @@
       "originalName": "param2",
       "to": "allowRepeatedSeparators",
       "evidence": "wn.java: Checks raw length and canonical content, forbids trailing separators and optionally rejects consecutive separators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ZBZLum;)V#0",
+      "originalName": "param0",
+      "to": "loop",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ZBZLum;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ZBZLum;)V#2",
+      "originalName": "param2",
+      "to": "stopSounds",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ZBZLum;)V#3",
+      "originalName": "param3",
+      "to": "track",
+      "evidence": "ih.java: Stops prior reader, resets/release-or-stops notes, parses MIDI and initializes first event/track time. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -65317,10 +68593,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "5e0e291a5681c53179b56cd32b826c646c03ce3b01306989f5568b6083e235c3",
+      "build-armiesofgielinor-rules.mjs": "9ad362b9e78a9195957d56124649f8c318d6e82e9d27026c907d85517c38b527",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "e439eec544a0b8d293e116a2c95b55d975858fb4b9e96425643f9761d2777791",
+      "tests/test-armiesofgielinor-core.mjs": "711fec60a9d149001f0ef75e5d61d615fc9e5977886e1ba641ebe48afc5d6745",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
