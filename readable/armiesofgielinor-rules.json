@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 26,
+  "version": 27,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
-    "commit": "b9cfce0e13ffae9ae44870e1d959c628663a96dc",
+    "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
     "subdirectory": "games/armiesofgielinor"
   },
-  "inputTreeSha256": "2c88a51ecea2c0b981a5b108eb38d0ea276180435a22f4cbd552997163f5a433",
+  "inputTreeSha256": "da234d1d0aacadddcf2056dd95c5f3a1032062e03f27dddb0e4f2914ca7c704c",
   "originalBytecodeEvidence": {
     "cacheLargeEntryLink": {
       "jarUrl": "https://static.alterorb.net/launcher/v3/jars/armiesofgielinor.jar",
@@ -807,13 +807,6 @@
       "symbol": "B:gd.a(ZZJII)V#0",
       "originalName": "L45",
       "to": "regionExit1",
-      "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
-      "confidence": "structural"
-    },
-    {
-      "symbol": "B:gs.a(B[I)Z#0",
-      "originalName": "stateLoop",
-      "to": "scanLoop1",
       "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
       "confidence": "structural"
     },
@@ -2666,6 +2659,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qu",
+      "originalName": "qu",
+      "to": "DelayedPacket",
+      "evidence": "qu.java: Instance retains a release timestamp, opcode and copied payload for artificial-latency delivery; unrelated static helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qv",
       "originalName": "qv",
       "to": "MovementPresentation",
@@ -2712,6 +2712,13 @@
       "originalName": "ru",
       "to": "IndexedSprite",
       "evidence": "ru.java: Byte palette indices and RGB palette with conversion, hit tests and raster drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sa",
+      "originalName": "sa",
+      "to": "ClientConnectionState",
+      "evidence": "sa.java: Identity-tag instances mark common-client connection stages; login completion selects connectedState and packet polling checks that identity. Static bit/tag helpers remain independent.",
       "confidence": "reviewed"
     },
     {
@@ -3142,6 +3149,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:am.field_z:Lhi;",
+      "originalName": "field_z",
+      "to": "sessionSocket",
+      "evidence": "am.java: Common-client login and game/lobby packet reception share this socket; resource transport uses separate clients.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:as.field_A:I",
       "originalName": "field_A",
       "to": "newOwnerPlayer",
@@ -3181,6 +3195,13 @@
       "originalName": "field_j",
       "to": "unitAnimationVariants",
       "evidence": "aw.java: Nine animation slots per unit, each containing variant IDs or negative unavailable markers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ba.field_F:I",
+      "originalName": "field_F",
+      "to": "secondPreviousOpcode",
+      "evidence": "ba.java: Second history position after packet delivery rotates the opcode history.",
       "confidence": "reviewed"
     },
     {
@@ -4017,6 +4038,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dq.field_c:I",
+      "originalName": "field_c",
+      "to": "packetDelayMillis",
+      "evidence": "dq.java: Nonzero enables delayed delivery and contributes the base offset to a packet release timestamp.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ec.field_A:I",
       "originalName": "field_A",
       "to": "sourceX",
@@ -4287,6 +4315,13 @@
       "originalName": "field_t",
       "to": "screenY",
       "evidence": "fi.java: Unit popup constructor, draw, show/hide fade and scrolling-name animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fk.field_b:I",
+      "originalName": "field_b",
+      "to": "packetPayloadLength",
+      "evidence": "fk.java: Opcode lookup yields a fixed length or -1/-2 for byte/short length prefixes; payload completion uses the decoded value.",
       "confidence": "reviewed"
     },
     {
@@ -5571,10 +5606,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:iq.field_e:Ljava/util/Random;",
+      "originalName": "field_e",
+      "to": "connectionRandom",
+      "evidence": "iq.java: Provides login seed integers and Gaussian packet-delay jitter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:iq.field_f:I",
       "originalName": "field_f",
       "to": "left",
       "evidence": "iq.java: Button constructor, 30-pixel-high drawing and centered pointer hit rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iq.field_h:J",
+      "originalName": "field_h",
+      "to": "lastPacketReadMillis",
+      "evidence": "iq.java: Successful receive updates this monotonic timestamp; TileMetadata reports elapsed inactivity.",
       "confidence": "reviewed"
     },
     {
@@ -6565,6 +6614,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kl.field_k:Lsa;",
+      "originalName": "field_k",
+      "to": "connectedState",
+      "evidence": "kl.java: Assigned after login response/user metadata are decoded, and required by the live-socket predicate and packet poller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kr.field_A:Z",
       "originalName": "field_A",
       "to": "applied",
@@ -6957,6 +7013,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:me.field_c:I",
+      "originalName": "field_c",
+      "to": "thirdPreviousOpcode",
+      "evidence": "me.java: Oldest of three prior-opcode history positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_e:Lbv;",
+      "originalName": "field_e",
+      "to": "incomingPacket",
+      "evidence": "mg.java: Opcode decoding, variable length headers and payload reception reuse this cipher packet buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_f:I",
+      "originalName": "field_f",
+      "to": "pendingOpcode",
+      "evidence": "mg.java: Negative means no opcode is pending; framing retains the opcode across partial payload reads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mn.field_k:[[Lkk;",
       "originalName": "field_k",
       "to": "unitModels",
@@ -7115,6 +7192,13 @@
       "originalName": "field_L",
       "to": "operation",
       "evidence": "nh.java: Disk request codes: 1 immediate read, 2 queued write, 3 queued read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_o:I",
+      "originalName": "field_o",
+      "to": "deliveredOpcode",
+      "evidence": "nm.java: Caller dispatches this opcode only after a complete or due delayed packet is delivered.",
       "confidence": "reviewed"
     },
     {
@@ -7486,6 +7570,13 @@
       "originalName": "field_z",
       "to": "mapTheme",
       "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ov.field_g:Lsa;",
+      "originalName": "field_g",
+      "to": "connectionState",
+      "evidence": "ov.java: Login stages update this identity tag; incoming packet polling requires connectedState.",
       "confidence": "reviewed"
     },
     {
@@ -7878,6 +7969,27 @@
       "originalName": "field_J",
       "to": "tileY",
       "evidence": "qq.java: Event constructors, position/debug labels and battlefield application/one-time guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qu.field_l:J",
+      "originalName": "field_l",
+      "to": "releaseAtMillis",
+      "evidence": "qu.java: Polling delivers only when monotonic now is strictly greater than this timestamp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qu.field_m:[B",
+      "originalName": "field_m",
+      "to": "payload",
+      "evidence": "qu.java: Constructor retains the array; enqueue copies incoming bytes, and delivery copies them into the shared buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qu.field_o:I",
+      "originalName": "field_o",
+      "to": "opcode",
+      "evidence": "qu.java: Delivered into deliveredOpcode after the queued payload is copied.",
       "confidence": "reviewed"
     },
     {
@@ -8357,6 +8469,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sh.field_a:[I",
+      "originalName": "field_a",
+      "to": "opcodePayloadLengths",
+      "evidence": "sh.java: Client initializes fixed and -1/-2 variable packet lengths here and passes the table to the poller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:si.field_d:I",
       "originalName": "field_d",
       "to": "offsetY",
@@ -8403,6 +8522,13 @@
       "originalName": "field_c",
       "to": "cycleLength",
       "evidence": "sj.java: Angular threshold constructor and downward sweep with cycle wrap; negative targets reset position and enable the mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sj.field_e:I",
+      "originalName": "field_e",
+      "to": "previousOpcode",
+      "evidence": "sj.java: Delivery shifts the previously delivered opcode into this first history position.",
       "confidence": "reviewed"
     },
     {
@@ -8557,6 +8683,13 @@
       "originalName": "field_f",
       "to": "recycledCandidates",
       "evidence": "sm.java: Strategy reset transfers previous candidates into the reuse pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_e:D",
+      "originalName": "field_e",
+      "to": "packetJitterMillis",
+      "evidence": "sp.java: Scales nextGaussian before integer truncation and the existing zero clamp; non-finite values retain Java casts.",
       "confidence": "reviewed"
     },
     {
@@ -9180,6 +9313,13 @@
       "originalName": "field_q",
       "to": "position",
       "evidence": "vh.java: Primitive reads/writes increment the byte cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_b:Lat;",
+      "originalName": "field_b",
+      "to": "delayedPackets",
+      "evidence": "vj.java: Artificial-latency polling enqueues opcode/payload records and releases the oldest due record first.",
       "confidence": "reviewed"
     },
     {
@@ -15812,6 +15952,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:es.a(II)Z",
+      "originalName": "a",
+      "to": "receivePacketBytes",
+      "evidence": "es.java: Receives only the still-needed bytes, keeps partial cursor state and resets the cursor on newly completed reads; existing cursor >= required length returns directly.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eu.a(I)V",
       "originalName": "a",
       "to": "selectNext",
@@ -16131,6 +16278,13 @@
       "originalName": "d",
       "to": "getTeamName",
       "evidence": "go.java: Returns the constructor-supplied team name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gs.a(B[I)Z",
+      "originalName": "a",
+      "to": "pollIncomingPacket",
+      "evidence": "gs.java: Checks the connection, releases an eligible delayed record or frames incoming opcodes/payloads; delayed enqueue retries until no further complete packet is ready.",
       "confidence": "reviewed"
     },
     {
@@ -17237,6 +17391,13 @@
       "originalName": "g",
       "to": "getProgress",
       "evidence": "ks.java: Reports resource progress; disk implementation returns zero or 100 from pending state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.g(I)Z",
+      "originalName": "g",
+      "to": "isPacketPayloadReady",
+      "evidence": "jh.java: Decodes -1/-2 byte/short length headers once, then requests the payload length.",
       "confidence": "reviewed"
     },
     {
@@ -19806,6 +19967,13 @@
       "originalName": "k",
       "to": "readUnsignedByte",
       "evidence": "vh.java: Reads the next byte as 0..255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.b(I)J",
+      "originalName": "b",
+      "to": "monotonicMillis",
+      "evidence": "vi.java: Returns wall-clock milliseconds plus the accumulated backward-clock adjustment, under the original synchronized guard behavior.",
       "confidence": "reviewed"
     },
     {
@@ -23169,6 +23337,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:es.a(II)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "es.java: Receives only the still-needed bytes, keeps partial cursor state and resets the cursor on newly completed reads; existing cursor >= required length returns directly.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:es.a(II)Z#1",
+      "originalName": "param1",
+      "to": "requiredLength",
+      "evidence": "es.java: Receives only the still-needed bytes, keeps partial cursor state and resets the cursor on newly completed reads; existing cursor >= required length returns directly.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:eu.<init>(Lat;)V#0",
       "originalName": "param0",
       "to": "units",
@@ -23943,6 +24125,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "go.java: Returns the constructor-supplied team name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gs.a(B[I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gs.java: Checks the connection, releases an eligible delayed record or frames incoming opcodes/payloads; delayed enqueue retries until no further complete packet is ready.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gs.a(B[I)Z#1",
+      "originalName": "param1",
+      "to": "opcodePayloadLengths",
+      "evidence": "gs.java: Checks the connection, releases an eligible delayed record or frames incoming opcodes/payloads; delayed enqueue retries until no further complete packet is ready.",
       "confidence": "reviewed"
     },
     {
@@ -26778,6 +26974,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ks.java: Reports resource progress; disk implementation returns zero or 100 from pending state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jh.g(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jh.java: Decodes -1/-2 byte/short length headers once, then requests the payload length.",
       "confidence": "reviewed"
     },
     {
@@ -30701,6 +30904,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qu.<init>(JI[B)V#0",
+      "originalName": "param0",
+      "to": "releaseAtMillis",
+      "evidence": "qu.java: Constructor retains the supplied time, opcode and byte array without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qu.<init>(JI[B)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "qu.java: Constructor retains the supplied time, opcode and byte array without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qu.<init>(JI[B)V#2",
+      "originalName": "param2",
+      "to": "payload",
+      "evidence": "qu.java: Constructor retains the supplied time, opcode and byte array without copying.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qv.<init>(Lha;Lv;Lvb;)V#0",
       "originalName": "param0",
       "to": "battlefield",
@@ -33991,6 +34215,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vi.b(I)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vi.java: Returns wall-clock milliseconds plus the accumulated backward-clock adjustment, under the original synchronized guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vj.<init>(I)V#0",
       "originalName": "param0",
       "to": "scheduledCapacity",
@@ -34557,7 +34788,7 @@
   },
   "labels": {
     "policy": "lexical-targets",
-    "expectedEdits": 985
+    "expectedEdits": 947
   },
   "publication": {
     "stubSourceTreeSha256": "6e22ce52f4c447f1593453075d7c63ed5a79a1e88a79e223e2386a58266d55f5",
@@ -34566,10 +34797,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "e3e4b2051854b11d97bfec0713b6254ead86608185598199fdd924604bbc7b7b",
+      "build-armiesofgielinor-rules.mjs": "9e0cc4061ae7b40df0603bac92b2b1cdd4d06a44e46ac4ceef3e6265ff844b79",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
-      "reconstruct-armies-methods.mjs": "104827f7d82ff6116597ad8394ef7007a5fa1068673ff870a7a5239d77e7c303",
-      "tests/test-armiesofgielinor-core.mjs": "3ab14f73e309fa2d67dc7d1429ef231c9ca430e040dff0a5723c208fc178cae1",
+      "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
+      "tests/test-armiesofgielinor-core.mjs": "61c6d3678e61eee8ca70b4ba938a21f1363240c3b681181814a1be0ae5082129",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
@@ -34612,11 +34843,11 @@
         },
         "generator": {
           "repository": "Kreijstal/java-tools",
-          "commit": "71adcd0171f6926ae054f86bf2c96d87e045faf8",
+          "commit": "ef1fb8596761b757a3ddf5288ca96dcc186a070f",
           "trackedClean": true,
           "sourceArchive": {
-            "sha256": "789cb63546e126182923ac21046e2e9ec8c64a06b38a323a898f2c705adb26e8",
-            "reproduce": "git archive --format=tar 71adcd0171f6926ae054f86bf2c96d87e045faf8 | sha256sum"
+            "sha256": "b972fd2a60c5d2ddad0f9f80b426942804db9b591789f8a70929679a7c1e58a1",
+            "reproduce": "git archive --format=tar ef1fb8596761b757a3ddf5288ca96dcc186a070f | sha256sum"
           }
         },
         "methods": [
@@ -34626,6 +34857,7 @@
             "descriptor": "(IIZ)V",
             "oldBodySha256": "c19446be507696f6c6930f72ed6e53ce0ef5e7160cd44b2233c0f44064b052ec",
             "newBodySha256": "836f6dc47a41db523d4dd8844835a554486755d4ab75efe24db976777e38424a",
+            "deterministic": true,
             "splitBlocks": 8,
             "normalFlowVerified": true
           },
@@ -34635,13 +34867,27 @@
             "descriptor": "(ZII)V",
             "oldBodySha256": "9a6cb9643bae694dcc6870173c113d142900cbff6eb42db6dce8f49995e3ee6c",
             "newBodySha256": "f818b90b93587497c514599640140e57264a5a86bf729d80592417d2313eb12c",
+            "deterministic": true,
             "splitBlocks": 26,
             "normalFlowVerified": true
+          },
+          {
+            "owner": "gs",
+            "name": "a",
+            "descriptor": "(B[I)Z",
+            "oldBodySha256": "29cb1507567cc43a491b924eeeebf3bd390fdf4d72df202ca98ce65cd4e13663",
+            "newBodySha256": "6ad438bf3835c128b235bad82185dfa5f1e73932c098374489d4d4252a347e93",
+            "deterministic": true,
+            "exceptionTableRows": 6,
+            "regions": 2,
+            "regionExitsVerified": true,
+            "regionSourceFlowVerified": true,
+            "outerRoutingVerified": true
           }
         ],
-        "sourceTreeSha256": "2c88a51ecea2c0b981a5b108eb38d0ea276180435a22f4cbd552997163f5a433",
+        "sourceTreeSha256": "da234d1d0aacadddcf2056dd95c5f3a1032062e03f27dddb0e4f2914ca7c704c",
         "verification": {
-          "checks": 58911,
+          "checks": 60889,
           "rawNamedIdentical": true,
           "independentExpectations": true,
           "headlessClientBoundary": true,
@@ -34674,10 +34920,16 @@
           "triangleClipFixtures": true,
           "flatAndUniformShadedTriangleFixtures": true,
           "modelBoundsFixtures": true,
-          "traceSha256": "23f16ae89c77139fd012a6b4be863862c097cc606d48ad603f5e6a88afd5a0b2"
+          "aiSpellCandidateFixtures": true,
+          "incomingPacketFramingFixtures": true,
+          "delayedPacketFixtures": true,
+          "packetPollingFailureFixtures": true,
+          "dropdownWidgetFixtures": true,
+          "dropdownArrowPixelFixture": true,
+          "traceSha256": "aed4049a37fa9c86bc4d14f0df129096b7930618772413d4eddc90d46f7b4459"
         }
       },
-      "sourceTreeSha256": "2c88a51ecea2c0b981a5b108eb38d0ea276180435a22f4cbd552997163f5a433"
+      "sourceTreeSha256": "da234d1d0aacadddcf2056dd95c5f3a1032062e03f27dddb0e4f2914ca7c704c"
     },
     "namingTool": {
       "schema": 1,

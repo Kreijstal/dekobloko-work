@@ -346,8 +346,69 @@ for(int row=0;row<5;row++){int x=arrowRows[row][0],width=arrowRows[row][1],offse
 check("dropdown/arrow-pixels",Arrays.toString(pixels),Arrays.toString(expected));
 }finally{for(int i=0;i<names.length;i++)set(raster,null,names[i],saved[i]);}
 }
+// The stream is an I/O boundary: real socket, ISAAC, framing and poll methods run.
+static class ReleasedPacketInput extends java.io.ByteArrayInputStream {
+int released;ReleasedPacketInput(byte[] data){super(data);}void release(int size){released=size;}
+@Override public synchronized int available(){return Math.max(0,Math.min(released,count)-pos);}
+}
+static class FixedPacketGaussian extends java.util.Random {
+final double value;int calls;FixedPacketGaussian(double value){this.value=value;}
+@Override public double nextGaussian(){calls++;return value;}
+}
+static byte[] packetWire(Class<?> packet,Class<?> cipher,int[] opcodes,int[] markers,byte[][] bodies)throws Exception{
+Object output=make(cipher,new Class<?>[]{byte[].class},(Object)new byte[512]);
+call(cipher,output,"${m('bv','a','([II)V')}",new Class<?>[]{int[].class,int.class},new int[]{13,17,19,23},-100);
+java.io.ByteArrayOutputStream wire=new java.io.ByteArrayOutputStream();
+for(int i=0;i<opcodes.length;i++){call(cipher,output,"${m('bv','h','(II)V')}",new Class<?>[]{int.class,int.class},32161,opcodes[i]);int cursor=(Integer)get(packet,output,"${f('vh','q','I')}");wire.write(((byte[])get(packet,output,"${f('vh','o','[B')}"))[cursor-1]);if(markers[i]==-2)wire.write(bodies[i].length>>>8);if(markers[i]<0)wire.write(bodies[i].length);wire.write(bodies[i]);}
+return wire.toByteArray();
+}
+static Object incomingPacket(Class<?> cipher,Class<?> storage)throws Exception{
+Object input=make(cipher,new Class<?>[]{byte[].class},(Object)new byte[512]);call(cipher,input,"${m('bv','a','([II)V')}",new Class<?>[]{int[].class,int.class},new int[]{13,17,19,23},-100);set(storage,null,"${f('mg','e','Lbv;')}",input);set(storage,null,"${f('mg','f','I')}",-1);return input;
+}
+static void verifyIncomingPackets()throws Exception{
+Class<?> packet=Class.forName("${className('vh')}"),cipher=Class.forName("${className('bv')}"),storage=Class.forName("${className('mg')}"),poller=Class.forName("${className('gs')}"),lengths=Class.forName("${className('fk')}"),connection=Class.forName("${className('ov')}"),readyState=Class.forName("${className('kl')}"),delay=Class.forName("${className('dq')}"),jitter=Class.forName("${className('sp')}"),animation=Class.forName("${className('vj')}"),activity=Class.forName("${className('iq')}"),transport=Class.forName("${className('am')}"),socket=Class.forName("${className('hi')}"),queue=Class.forName("${className('at')}"),node=Class.forName("${className('tc')}"),delayed=Class.forName("${className('qu')}"),clock=Class.forName("${className('vi')}");
+Class<?>[] owners={storage,storage,lengths,connection,delay,jitter,animation,activity,activity,transport,Class.forName("${className('nm')}"),Class.forName("${className('sj')}"),Class.forName("${className('ba')}"),Class.forName("${className('me')}")};
+String[] names={"${f('mg','e','Lbv;')}","${f('mg','f','I')}","${f('fk','b','I')}","${f('ov','g','Lsa;')}","${f('dq','c','I')}","${f('sp','e','D')}","${f('vj','b','Lat;')}","${f('iq','h','J')}","${f('iq','e','Ljava/util/Random;')}","${f('am','z','Lhi;')}","${f('nm','o','I')}","${f('sj','e','I')}","${f('ba','F','I')}","${f('me','c','I')}"};
+Object[] saved=new Object[names.length];for(int i=0;i<names.length;i++)saved[i]=get(owners[i],null,names[i]);
+try{
+set(connection,null,names[3],get(readyState,null,"${f('kl','k','Lsa;')}"));set(delay,null,names[4],0);set(jitter,null,names[5],0.0);set(animation,null,names[6],make(queue,new Class<?>[]{}));
+for(int marker:new int[]{0,-1,-2})for(int size:new int[]{0,1,3,17,257}){
+if(size==257&&marker!=-2)continue;byte[] payload=new byte[size];for(int i=0;i<size;i++)payload[i]=(byte)(i*17+3);
+int encodedLength=marker==0?size:marker;byte[] wire=packetWire(packet,cipher,new int[]{37},new int[]{encodedLength},new byte[][]{payload});
+Object input=incomingPacket(cipher,storage),streamSocket=unsafe.allocateInstance(socket);ReleasedPacketInput stream=new ReleasedPacketInput(wire);set(socket,streamSocket,"${f('hi','f','Ljava/io/InputStream;')}",stream);set(transport,null,names[9],streamSocket);set(activity,null,names[7],call(clock,null,"${m('vi','b','(I)J')}",new Class<?>[]{int.class},126));for(int i=10;i<14;i++)set(owners[i],null,names[i],i+1);
+int[] table=new int[256];table[37]=encodedLength;String label="packet-framing/"+marker+"/"+size;System.out.println(label+"/wire:"+Arrays.toString(wire));
+for(int cut=0;cut<=wire.length;cut++){stream.release(cut);boolean complete=(Boolean)call(poller,null,"${m('gs','a','(B[I)Z')}",new Class<?>[]{byte.class,int[].class},(byte)42,table);check(label+"/ready/"+cut,complete,cut==wire.length);check(label+"/opcode/"+cut,get(storage,null,names[1]),complete||cut==0?-1:37);
+if(!complete){check(label+"/history/"+cut,get(owners[10],null,names[10]),11);if(cut>0){int header=marker==-2?3:marker==-1?2:1;check(label+"/length/"+cut,get(lengths,null,names[2]),cut<header?encodedLength:size);check(label+"/cursor/"+cut,get(packet,input,"${f('vh','q','I')}"),cut<header?cut-1:cut-header);}}
+else{check(label+"/payload",Arrays.toString(Arrays.copyOf((byte[])get(packet,input,"${f('vh','o','[B')}"),size)),Arrays.toString(payload));check(label+"/cursor",get(packet,input,"${f('vh','q','I')}"),0);for(int i=10;i<14;i++)check(label+"/history/"+i,get(owners[i],null,names[i]),i==10?37:i);}}
+set(socket,streamSocket,"${f('hi','k','Z')}",true);
+}
+// Delayed delivery precedes network reads only while latency is enabled. Due
+// sentinels avoid wall-clock races, and the returned payload remains a copy.
+for(int lag:new int[]{0,100000})for(boolean due:new boolean[]{false,true}){
+Object input=incomingPacket(cipher,storage),messages=make(queue,new Class<?>[]{});set(animation,null,names[6],messages);set(delay,null,names[4],lag);set(transport,null,names[9],null);for(int i=10;i<14;i++)set(owners[i],null,names[i],i+1);
+byte[] payload={5,7,11};Object message=make(delayed,new Class<?>[]{long.class,int.class,byte[].class},due?Long.MIN_VALUE:Long.MAX_VALUE,77,payload);call(queue,messages,"${m('at','a','(BLtc;)V')}",new Class<?>[]{byte.class,node},(byte)-119,message);boolean expected=lag!=0&&due;String label="packet-delayed/"+lag+"/"+due;
+check(label+"/ready",call(poller,null,"${m('gs','a','(B[I)Z')}",new Class<?>[]{byte.class,int[].class},(byte)42,new int[256]),expected);check(label+"/linked",get(node,message,"${f('tc','j','Ltc;')}")!=null,!expected);check(label+"/opcode",get(owners[10],null,names[10]),expected?77:11);if(expected){payload[0]=99;check(label+"/copied",Arrays.toString(Arrays.copyOf((byte[])get(packet,input,"${f('vh','o','[B')}"),3)),"[5, 7, 11]");check(label+"/length",get(lengths,null,names[2]),3);}
+}
+// Queue two real framed messages in one polling call, including Gaussian
+// scaling, zero clamping and non-finite doubles. Exact timestamps are omitted
+// from traces; independent before/after bounds still check the scheduled delay.
+for(double gaussian:new double[]{0,-1,1,Double.NaN,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY}){
+Object input=incomingPacket(cipher,storage),messages=make(queue,new Class<?>[]{}),streamSocket=unsafe.allocateInstance(socket);set(animation,null,names[6],messages);set(delay,null,names[4],100000);set(jitter,null,names[5],200000.0);FixedPacketGaussian random=new FixedPacketGaussian(gaussian);set(activity,null,names[8],random);for(int i=10;i<14;i++)set(owners[i],null,names[i],i+1);
+byte[][] bodies={{1,2,3},{4,5}};byte[] wire=packetWire(packet,cipher,new int[]{37,38},new int[]{3,-1},bodies);ReleasedPacketInput stream=new ReleasedPacketInput(wire);stream.release(wire.length);set(socket,streamSocket,"${f('hi','f','Ljava/io/InputStream;')}",stream);set(transport,null,names[9],streamSocket);long before=(Long)call(clock,null,"${m('vi','b','(I)J')}",new Class<?>[]{int.class},126);set(activity,null,names[7],before);int[] table=new int[256];table[37]=3;table[38]=-1;String label="packet-queued/"+gaussian;
+check(label+"/ready",call(poller,null,"${m('gs','a','(B[I)Z')}",new Class<?>[]{byte.class,int[].class},(byte)42,table),false);long after=(Long)call(clock,null,"${m('vi','b','(I)J')}",new Class<?>[]{int.class},126);check(label+"/gaussian-calls",random.calls,2);check(label+"/count",call(queue,messages,"${m('at','b','(Z)I')}",new Class<?>[]{boolean.class},false),2);check(label+"/pending",get(storage,null,names[1]),-1);check(label+"/history",get(owners[10],null,names[10]),11);
+Object message=call(queue,messages,"${m('at','e','(B)Ltc;')}",new Class<?>[]{byte.class},(byte)127);int expectedDelay=Math.max(0,(int)(100000+gaussian*200000));for(int i=0;i<2;i++){check(label+"/opcode/"+i,get(delayed,message,"${f('qu','o','I')}"),37+i);check(label+"/payload/"+i,Arrays.toString((byte[])get(delayed,message,"${f('qu','m','[B')}")),Arrays.toString(bodies[i]));long ready=(Long)get(delayed,message,"${f('qu','l','J')}");check(label+"/delay/"+i,ready>=before+expectedDelay&&ready<=after+expectedDelay,true);message=call(queue,messages,"${m('at','a','(B)Ltc;')}",new Class<?>[]{byte.class},(byte)-60);}check(label+"/end",message==null,true);set(socket,streamSocket,"${f('hi','k','Z')}",true);
+}
+set(delay,null,names[4],0);set(jitter,null,names[5],0.0);set(transport,null,names[9],null);incomingPacket(cipher,storage);set(connection,null,names[3],unsafe.allocateInstance(Class.forName("${className('sa')}")));
+check("packet-state/not-connected",call(poller,null,"${m('gs','a','(B[I)Z')}",new Class<?>[]{byte.class,int[].class},(byte)42,null),false);set(connection,null,names[3],get(readyState,null,"${f('kl','k','Lsa;')}"));check("packet-state/guard",call(poller,null,"${m('gs','a','(B[I)Z')}",new Class<?>[]{byte.class,int[].class},(byte)41,null),false);
+// A due packet is unlinked before its null-payload failure; contextual wrapping
+// must retain the original exception and leave history unrotated.
+Object messages=make(queue,new Class<?>[]{});set(animation,null,names[6],messages);set(delay,null,names[4],1);Object malformed=make(delayed,new Class<?>[]{long.class,int.class,byte[].class},Long.MIN_VALUE,88,null);call(queue,messages,"${m('at','a','(BLtc;)V')}",new Class<?>[]{byte.class,node},(byte)-119,malformed);set(owners[10],null,names[10],11);
+try{call(poller,null,"${m('gs','a','(B[I)Z')}",new Class<?>[]{byte.class,int[].class},(byte)42,new int[256]);throw new AssertionError("Null packet accepted");}catch(InvocationTargetException failure){check("packet-failure/cause",archiveOriginalFailure(failure) instanceof NullPointerException,true);check("packet-failure/context",((String)get(Class.forName("${className('g')}"),failure.getCause(),"${f('g','g','Ljava/lang/String;')}")).contains("gs.A(42,"),true);}
+check("packet-failure/unlinked",get(node,malformed,"${f('tc','j','Ltc;')}")==null,true);check("packet-failure/history",get(owners[10],null,names[10]),11);
+}finally{for(int i=0;i<names.length;i++)set(owners[i],null,names[i],saved[i]);}
+}
 static void verifyGameplayFeedback()throws Exception{
-verifyDropdownWidgets();verifyRadialSummonMenus();verifyUnitCycler();verifySummonMenuRebuild();verifyTurnTimerDial();verifySpellConfirmationAndBattleHints();verifyEquipmentTutorialGates();
+verifyIncomingPackets();verifyDropdownWidgets();verifyRadialSummonMenus();verifyUnitCycler();verifySummonMenuRebuild();verifyTurnTimerDial();verifySpellConfirmationAndBattleHints();verifyEquipmentTutorialGates();
 }
 
 
@@ -1456,7 +1517,7 @@ System.out.println("checks:"+cases);
   assert.deepEqual(outputs[1],outputs[0],'Named gameplay core differs from pinned raw Java');
   const checks=Number(outputs[0].toString().trimEnd().split('\n').at(-1).split(':')[1]);
   assert.ok(checks>900);
-  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,animationFrameDecodingFixtures:true,animationBlendFixtures:true,modelCoordinateStorageFixtures:true,animationArchiveLoadingFixtures:true,maskedMeshTransformFixtures:true,matrixTranslationFixtures:true,animationSlotSelectionFixtures:true,animationDecoderScratchFixtures:true,triangleClipFixtures:true,flatAndUniformShadedTriangleFixtures:true,modelBoundsFixtures:true,aiSpellCandidateFixtures:true,dropdownWidgetFixtures:true,dropdownArrowPixelFixture:true,traceSha256:digest(outputs[0])};
+  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,animationFrameDecodingFixtures:true,animationBlendFixtures:true,modelCoordinateStorageFixtures:true,animationArchiveLoadingFixtures:true,maskedMeshTransformFixtures:true,matrixTranslationFixtures:true,animationSlotSelectionFixtures:true,animationDecoderScratchFixtures:true,triangleClipFixtures:true,flatAndUniformShadedTriangleFixtures:true,modelBoundsFixtures:true,aiSpellCandidateFixtures:true,incomingPacketFramingFixtures:true,delayedPacketFixtures:true,packetPollingFailureFixtures:true,dropdownWidgetFixtures:true,dropdownArrowPixelFixture:true,traceSha256:digest(outputs[0])};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-core-check-'));

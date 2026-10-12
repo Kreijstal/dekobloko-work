@@ -100,21 +100,30 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 Widget, WidgetPainter, DropdownSelector, DropdownOptionList and DropdownArrowPainter now name bounds, painter dispatch, option selection, keyboard-prefix search and dropdown expansion. Independent fixtures check base pointer bounds, first-prefix matching, option validation/selection and complete arrow pixels. The option-list override retains its different inclusive hit bounds; full interactive dropdown behavior remains unverified.
 
-The raw naming input now reconstructs Battlefield.eliminatePlayer and
-AiPlanner.considerEquippedSpell with the generic compiler’s bounded plain-CFG
-splitting and original-edge proof. The named export has one remaining dispatcher
-file, DropdownArrowPainter.java (its unrelated static packet poller). The reconstruction script changes only the two method bodies and
-compares the complete old/new corpora with native fixtures.
+The raw naming input reconstructs Battlefield.eliminatePlayer,
+AiPlanner.considerEquippedSpell and DropdownArrowPainter.pollIncomingPacket
+with the generic compiler. The first two use bounded plain-CFG splitting and
+the original-edge proof. The poller uses independently verified fragmented
+exception regions, keeping the initial opcode read outside both catches.
+The script replaces only those three bodies and compares complete old/new
+corpora with native fixtures. No statePc dispatchers remain in this export.
 
 To rebuild that raw input, replay the original gamepack through the documented
 owned pipeline at Deko commit 3ca5318cf9852723bca4ff37712194947c0ec118 and
 java-tools commit 1d183d3ba75fc0a8cd3af1544591b8c463c0e1ff. The pipeline output
 must match e85e17bfa81c859e973427b53083553b59aabbe27319c2174ef0baeb723f0886.
-Use java-tools commit 71adcd0171f6926ae054f86bf2c96d87e045faf8, then run
+Use java-tools commit ef1fb8596761b757a3ddf5288ca96dcc186a070f, then run
 `node readable/reconstruct-armies-methods.mjs VERIFIED_BYTECODE /tmp/owned/raw`.
 The output must be a new path in temporary storage. The compiler source tar
 SHA-256 and method-body identities are reported separately from the bytecode
 hash; ordinary naming reproduction remains offline against its Git source pin.
+
+Common-client packet reception now names pending/delivered opcode state,
+length-table framing, connection identity and DelayedPacket records. Native
+fixtures release encrypted frames one byte at a time, cover fixed/byte/short
+lengths, payload copying, delayed FIFO delivery, Gaussian jitter (including
+non-finite casts) and contextual failure wrapping. All 60,889 old/new checks
+agree. These controlled streams do not establish live server compatibility.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -148,7 +157,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 164 reviewed classes around battlefield state, units, map
+The current pass names 166 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -333,8 +342,8 @@ from unsigned snapshots. Participant fixtures verify names, favour levels,
 shared override growth and duplicate appends; finer byte-array/ledger semantics
 and live server compatibility remain unresolved.
 The probe bypasses battlefield construction and Applet initialization,
-so it is not a full gameplay or multiplayer-server test. One dispatcher file and large methods remain. Naming follows the pinned raw
-input’s two generically reconstructed methods.
+so it is not a full gameplay or multiplayer-server test. Large methods remain.
+Naming follows the pinned raw input’s three generically reconstructed methods.
 
 ## Deko Bloko
 
