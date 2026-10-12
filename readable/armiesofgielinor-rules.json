@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 38,
+  "version": 39,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2057,6 +2057,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ea",
+      "originalName": "ea",
+      "to": "CommunityTabGroup",
+      "evidence": "ea.java: Retained first/lobby-or-game, friends and ignore TabbedPanel wrapper and shared social-control layout; unrelated chat/login static helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ec",
       "originalName": "ec",
       "to": "TeleportEvent",
@@ -3373,6 +3380,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:am.field_D:[I",
+      "originalName": "field_D",
+      "to": "chatHistoryPriorityCounts",
+      "evidence": "am.java: History initialization/compaction uses a per-channel/per-priority quota; accepted messages with nonnull response IDs update the retained response shortcut target.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:am.field_E:I",
       "originalName": "field_E",
       "to": "targetDeltaY",
@@ -3412,6 +3426,13 @@
       "originalName": "field_z",
       "to": "sessionSocket",
       "evidence": "am.java: Common-client login and game/lobby packet reception share this socket; resource transport uses separate clients.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:an.field_F:[Lmo;",
+      "originalName": "field_F",
+      "to": "chatHistory",
+      "evidence": "an.java: History initialization/compaction uses a per-channel/per-priority quota; accepted messages with nonnull response IDs update the retained response shortcut target.",
       "confidence": "reviewed"
     },
     {
@@ -3699,6 +3720,13 @@
       "originalName": "field_j",
       "to": "unitAnimationVariants",
       "evidence": "aw.java: Nine animation slots per unit, each containing variant IDs or negative unavailable markers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aw.field_k:Ljava/lang/String;",
+      "originalName": "field_k",
+      "to": "decodedChatChannelLabel",
+      "evidence": "aw.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
       "confidence": "reviewed"
     },
     {
@@ -4437,6 +4465,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dg.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "decodedChatText",
+      "evidence": "dg.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dj.field_a:I",
       "originalName": "field_a",
       "to": "friendCount",
@@ -4749,6 +4784,13 @@
       "originalName": "field_c",
       "to": "chatHuffmanCodec",
       "evidence": "ds.java: Installed codebook is shared by compressed chat text read/write helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ea.field_a:Lml;",
+      "originalName": "field_a",
+      "to": "tabs",
+      "evidence": "ea.java: Constructor retains the first supplied panel, shared friends container and ignore panel in a TabbedPanel.",
       "confidence": "reviewed"
     },
     {
@@ -5361,6 +5403,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ge.field_h:Ljava/lang/String;",
+      "originalName": "field_h",
+      "to": "responseTargetAccountName",
+      "evidence": "ge.java: History initialization/compaction uses a per-channel/per-priority quota; accepted messages with nonnull response IDs update the retained response shortcut target.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ge.field_j:F",
       "originalName": "field_j",
       "to": "totalWeight",
@@ -5452,6 +5501,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gk.field_I:J",
+      "originalName": "field_I",
+      "to": "decodedChatAccountId",
+      "evidence": "gk.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gm.field_c:[Ljd;",
       "originalName": "field_c",
       "to": "leaders",
@@ -5477,6 +5533,13 @@
       "originalName": "field_f",
       "to": "instructionIllustrationModes",
       "evidence": "go.java: InstructionsPanel dispatches these per-page/section/row mode values to illustration layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gp.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "decodedChatAccountName",
+      "evidence": "gp.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
       "confidence": "reviewed"
     },
     {
@@ -5778,6 +5841,13 @@
       "originalName": "field_zb",
       "to": "damageTakenByPlayer",
       "evidence": "ha.java: DamageEvent accumulates damage capped at current strength+bonus; gameplay scoring/quicksave uses the local-player entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_e:I",
+      "originalName": "field_e",
+      "to": "decodedChatIconId",
+      "evidence": "hc.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
       "confidence": "reviewed"
     },
     {
@@ -6317,6 +6387,13 @@
       "originalName": "field_n",
       "to": "skeleton",
       "evidence": "ht.java: Sparse frame decoder and ModelMeshBase blending: components default to zero or 128 for scale, rotations unpack to eleven bits, preceding pivots use -1, interpolation flag bits inhibit blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hv.field_R:[I",
+      "originalName": "field_R",
+      "to": "decodedChatResponsePhraseIds",
+      "evidence": "hv.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
       "confidence": "reviewed"
     },
     {
@@ -8399,6 +8476,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lk.field_h:I",
+      "originalName": "field_h",
+      "to": "chatHistorySize",
+      "evidence": "lk.java: History initialization/compaction uses a per-channel/per-priority quota; accepted messages with nonnull response IDs update the retained response shortcut target.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ll.field_Ib:Lje;",
       "originalName": "field_Ib",
       "to": "upButton",
@@ -8529,6 +8613,13 @@
       "originalName": "field_e",
       "to": "lookupNext",
       "evidence": "m.java: Masked key lookup and sentinel bucket insertion; lookup retains the successor of the found node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ma.field_ab:J",
+      "originalName": "field_ab",
+      "to": "responseTargetAccountId",
+      "evidence": "ma.java: History initialization/compaction uses a per-channel/per-priority quota; accepted messages with nonnull response IDs update the retained response shortcut target.",
       "confidence": "reviewed"
     },
     {
@@ -8716,92 +8807,92 @@
     {
       "symbol": "F:mo.field_a:I",
       "originalName": "field_a",
-      "to": "identityWord0",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "to": "privateMessageIdHigh16",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_b:I",
       "originalName": "field_b",
       "to": "channelId",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_d:[I",
       "originalName": "field_d",
-      "to": "quickChatValues",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "to": "responsePhraseIds",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_e:I",
       "originalName": "field_e",
-      "to": "identityWord1",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "to": "privateMessageIdLow24",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_f:Z",
       "originalName": "field_f",
       "to": "systemMessage",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_h:Ljava/lang/String;",
       "originalName": "field_h",
       "to": "text",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_k:Ljava/lang/String;",
       "originalName": "field_k",
       "to": "channelLabel",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_m:Ljava/lang/String;",
       "originalName": "field_m",
       "to": "accountName",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_n:J",
       "originalName": "field_n",
       "to": "accountId",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_p:I",
       "originalName": "field_p",
       "to": "chatIconId",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_q:Ljava/lang/String;",
       "originalName": "field_q",
       "to": "displayName",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_u:Lje;",
       "originalName": "field_u",
       "to": "rowComponent",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:mo.field_v:I",
       "originalName": "field_v",
       "to": "contextId",
-      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Identity-word finer protocol meaning remains unresolved.",
+      "evidence": "mo.java: Decoded-state snapshot and system-message constructors, sender prefix rendering, duplicate identity checks, filter classification and context-menu target creation. Private message IDs are received as u16 high and u24 low words and drive prefix direction and duplicate checks.",
       "confidence": "reviewed"
     },
     {
@@ -9229,6 +9320,13 @@
       "originalName": "field_K",
       "to": "roomSetup",
       "evidence": "no.java: Lobby packet dispatcher, sorted insertion, room/player lookup, ownership test and notification expiry share these exact globals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:no.field_S:I",
+      "originalName": "field_S",
+      "to": "responseTargetChannel",
+      "evidence": "no.java: History initialization/compaction uses a per-channel/per-priority quota; accepted messages with nonnull response IDs update the retained response shortcut target.",
       "confidence": "reviewed"
     },
     {
@@ -10030,6 +10128,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qd.field_L:Ljava/lang/String;",
+      "originalName": "field_L",
+      "to": "decodedChatDisplayName",
+      "evidence": "qd.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qg.field_A:I",
       "originalName": "field_A",
       "to": "canvasWidth",
@@ -10380,6 +10485,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rh.field_e:I",
+      "originalName": "field_e",
+      "to": "decodedPrivateMessageIdHigh16",
+      "evidence": "rh.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ri.field_a:I",
       "originalName": "field_a",
       "to": "remainingCapacity",
@@ -10671,6 +10783,13 @@
       "originalName": "field_k",
       "to": "pixelIndices",
       "evidence": "ru.java: Pixel bytes index the RGB palette; transparent drawing skips index zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rv.field_b:[I",
+      "originalName": "field_b",
+      "to": "responsePhraseIds",
+      "evidence": "rv.java: History initialization/compaction uses a per-channel/per-priority quota; accepted messages with nonnull response IDs update the retained response shortcut target.",
       "confidence": "reviewed"
     },
     {
@@ -11185,6 +11304,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:th.field_c:I",
+      "originalName": "field_c",
+      "to": "decodedPrivateMessageIdLow24",
+      "evidence": "th.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tl.field_b:I",
       "originalName": "field_b",
       "to": "nextBucket",
@@ -11402,6 +11528,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:u.field_k:I",
+      "originalName": "field_k",
+      "to": "decodedChatChannel",
+      "evidence": "u.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:u.field_m:Llv;",
       "originalName": "field_m",
       "to": "condition",
@@ -11563,6 +11696,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ui.field_b:Z",
+      "originalName": "field_b",
+      "to": "decodedChatSystemMessage",
+      "evidence": "ui.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ui.field_d:Lms;",
       "originalName": "field_d",
       "to": "sentinel",
@@ -11658,6 +11798,13 @@
       "originalName": "field_z",
       "to": "pointerPressY",
       "evidence": "ur.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_eb:I",
+      "originalName": "field_eb",
+      "to": "decodedChatContextId",
+      "evidence": "ut.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
       "confidence": "reviewed"
     },
     {
@@ -11973,6 +12120,13 @@
       "originalName": "field_f",
       "to": "sequence",
       "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_g:I",
+      "originalName": "field_g",
+      "to": "chatHistoryCategoryLimit",
+      "evidence": "vj.java: History initialization/compaction uses a per-channel/per-priority quota; accepted messages with nonnull response IDs update the retained response shortcut target.",
       "confidence": "reviewed"
     },
     {
@@ -12743,6 +12897,76 @@
       "originalName": "var9",
       "to": "payloadLength",
       "evidence": "bc.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#0",
+      "originalName": "dupTemp$3",
+      "to": "existingPriority",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#1",
+      "originalName": "dupTemp$0",
+      "to": "incomingPriority",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#11",
+      "originalName": "var4",
+      "to": "messagePriority",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#12",
+      "originalName": "var5",
+      "to": "obfuscationControl",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#13",
+      "originalName": "var2_intLifetime1",
+      "to": "countIndex",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#14",
+      "originalName": "var2_intLifetime2",
+      "to": "writeIndex",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#2",
+      "originalName": "var3",
+      "to": "readIndex",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#3",
+      "originalName": "incrementValue$2",
+      "to": "destinationIndex",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#4",
+      "originalName": "fieldTemp$1",
+      "to": "appendIndex",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bc.a(ILmo;)V#9",
+      "originalName": "var2_int",
+      "to": "priorityIndex",
+      "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -14031,6 +14255,160 @@
       "originalName": "var10Lifetime7",
       "to": "leafBit0",
       "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#0",
+      "originalName": "stackIn_3_0",
+      "to": "systemMessage",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#1",
+      "originalName": "stackIn_9_0",
+      "to": "separateAccountName",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#10",
+      "originalName": "var8",
+      "to": "packet",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#11",
+      "originalName": "var9",
+      "to": "phrase",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#2",
+      "originalName": "stackIn_22_0",
+      "to": "responsePhraseIds",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#4",
+      "originalName": "var2",
+      "to": "packetAlias",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#5",
+      "originalName": "var3",
+      "to": "packedChannel",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#6",
+      "originalName": "var4",
+      "to": "hasSeparateAccountName",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#7",
+      "originalName": "var5",
+      "to": "phraseIdOrGuardRemainder",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#8",
+      "originalName": "var6",
+      "to": "phraseFailure",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#9",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#0",
+      "originalName": "stackIn_3_0",
+      "to": "systemMessage",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#1",
+      "originalName": "stackIn_9_0",
+      "to": "separateAccountName",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#10",
+      "originalName": "var8",
+      "to": "packet",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#11",
+      "originalName": "var9",
+      "to": "phrase",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#2",
+      "originalName": "stackIn_22_0",
+      "to": "responsePhraseIds",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#4",
+      "originalName": "var2",
+      "to": "packetAlias",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#5",
+      "originalName": "var3",
+      "to": "packedChannel",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#6",
+      "originalName": "var4",
+      "to": "hasSeparateAccountName",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#7",
+      "originalName": "var5",
+      "to": "phraseIdOrGuardRemainder",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#8",
+      "originalName": "var6",
+      "to": "phraseFailure",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ea.a(BZ)Lmo;#9",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
       "confidence": "reviewed"
     },
     {
@@ -17835,6 +18213,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:lo.a(Lmo;I)V#0",
+      "originalName": "var2_int",
+      "to": "historyIndex",
+      "evidence": "lo.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lo.a(Lmo;I)V#1",
+      "originalName": "var3",
+      "to": "previousMessage",
+      "evidence": "lo.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lo.a(Lmo;I)V#2",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "lo.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:lr.<init>([I)V#0",
       "originalName": "var2_int",
       "to": "capacity",
@@ -20369,6 +20768,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bc.a(ILmo;)V",
+      "originalName": "a",
+      "to": "appendChatHistory",
+      "evidence": "bc.java: Counts the incoming channel by filter priority, drops oldest over-quota entries in that category, compacts the live prefix and appends; unused array slots are not cleared.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bc.a(I[BZIB)Z",
       "originalName": "a",
       "to": "writeSectors",
@@ -21423,6 +21829,27 @@
       "originalName": "a",
       "to": "closeQuickChatMenu",
       "evidence": "e.java: Clears visible state, resets menu selection, clears text/channel when nonzero and resets the menu layout inset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;",
+      "originalName": "$cfr$intArgs$a$72f70aa7c69d",
+      "to": "decodeChatMessageWithIntGuard",
+      "evidence": "ea.java: Preserves the full JVM integer guard for the same chat decode body, avoiding premature byte narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(BZ)Lmo;",
+      "originalName": "a",
+      "to": "decodeChatMessage",
+      "evidence": "ea.java: Reads packed system/channel, icon, account ID, private ID, name flag, optional channel context and compressed text or quick-chat preview.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(IBIII)V",
+      "originalName": "a",
+      "to": "setLayout",
+      "evidence": "ea.java: Lays out the retained tab group and shared friend/ignore controls using fixed tab height 24 and content padding 5.",
       "confidence": "reviewed"
     },
     {
@@ -23988,6 +24415,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.b(BI)V",
+      "originalName": "b",
+      "to": "initializeChatHistory",
+      "evidence": "la.java: Resets size, allocates three scratch priority counts and categoryLimit*15 message slots; retains the supplied per-category limit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.b(I)V",
       "originalName": "b",
       "to": "openPublicTextChat",
@@ -24167,6 +24601,13 @@
       "originalName": "a",
       "to": "createTiles",
       "evidence": "lo.java: Decodes/binds layout tiles and saved units to the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.a(Lmo;I)V",
+      "originalName": "a",
+      "to": "acceptReceivedChatMessage",
+      "evidence": "lo.java: Drops null text and matching nonzero private IDs against prior private messages; accepted response arrays update shortcut target before history append.",
       "confidence": "reviewed"
     },
     {
@@ -25976,6 +26417,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ta.a(Ljava/lang/String;IILjava/lang/String;Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "appendSystemChatMessage",
+      "evidence": "ta.java: Constructs a system ChatMessage with zero sender/private ID state and appends directly to history.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tb.a(B)V",
       "originalName": "a",
       "to": "drawOverlayLayer",
@@ -26914,10 +27362,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vh.b(Ljava/lang/String;I)V",
+      "originalName": "b",
+      "to": "writeNullTerminatedString",
+      "evidence": "vh.java: Rejects embedded NUL before writing the client single-byte text and terminating zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vh.b(ZI)V",
       "originalName": "b",
       "to": "writeShort",
       "evidence": "vh.java: Writes two big-endian bytes when enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.d(B)I",
+      "originalName": "d",
+      "to": "readUnsignedMedium",
+      "evidence": "vh.java: Reads three big-endian bytes as an unsigned 24-bit integer.",
       "confidence": "reviewed"
     },
     {
@@ -26974,6 +27436,13 @@
       "originalName": "i",
       "to": "readInt",
       "evidence": "vh.java: Reads four big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.j(B)J",
+      "originalName": "j",
+      "to": "readLong",
+      "evidence": "vh.java: Reads eight big-endian bytes as a Java long bit pattern.",
       "confidence": "reviewed"
     },
     {
@@ -28276,6 +28745,20 @@
       "originalName": "param3",
       "to": "entryId",
       "evidence": "bc.java: Attempts sector reuse then allocation, rejecting negative or oversized lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(ILmo;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bc.java: Counts the incoming channel by filter priority, drops oldest over-quota entries in that category, compacts the live prefix and appends; unused array slots are not cleared.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(ILmo;)V#1",
+      "originalName": "param1",
+      "to": "message",
+      "evidence": "bc.java: Counts the incoming channel by filter priority, drops oldest over-quota entries in that category, compacts the live prefix and appends; unused array slots are not cleared.",
       "confidence": "reviewed"
     },
     {
@@ -30831,6 +31314,83 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "e.java: Clears visible state, resets menu selection, clears text/channel when nonzero and resets the menu layout inset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ea.java: Preserves the full JVM integer guard for the same chat decode body, avoiding premature byte narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.$cfr$intArgs$a$72f70aa7c69d(IZ)Lmo;#1",
+      "originalName": "param1",
+      "to": "quickChat",
+      "evidence": "ea.java: Preserves the full JVM integer guard for the same chat decode body, avoiding premature byte narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.<init>(Ljava/lang/String;Lje;)V#0",
+      "originalName": "param0",
+      "to": "firstTabLabel",
+      "evidence": "ea.java: Builds first/friends/ignore labels and retains the supplied and shared content panels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.<init>(Ljava/lang/String;Lje;)V#1",
+      "originalName": "param1",
+      "to": "firstPanel",
+      "evidence": "ea.java: Builds first/friends/ignore labels and retains the supplied and shared content panels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.a(BZ)Lmo;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ea.java: Reads packed system/channel, icon, account ID, private ID, name flag, optional channel context and compressed text or quick-chat preview.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.a(BZ)Lmo;#1",
+      "originalName": "param1",
+      "to": "quickChat",
+      "evidence": "ea.java: Reads packed system/channel, icon, account ID, private ID, name flag, optional channel context and compressed text or quick-chat preview.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.a(IBIII)V#0",
+      "originalName": "param0",
+      "to": "height",
+      "evidence": "ea.java: Lays out the retained tab group and shared friend/ignore controls using fixed tab height 24 and content padding 5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.a(IBIII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ea.java: Lays out the retained tab group and shared friend/ignore controls using fixed tab height 24 and content padding 5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.a(IBIII)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "ea.java: Lays out the retained tab group and shared friend/ignore controls using fixed tab height 24 and content padding 5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.a(IBIII)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ea.java: Lays out the retained tab group and shared friend/ignore controls using fixed tab height 24 and content padding 5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.a(IBIII)V#4",
+      "originalName": "param4",
+      "to": "y",
+      "evidence": "ea.java: Lays out the retained tab group and shared friend/ignore controls using fixed tab height 24 and content padding 5.",
       "confidence": "reviewed"
     },
     {
@@ -38065,6 +38625,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:la.b(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "la.java: Resets size, allocates three scratch priority counts and categoryLimit*15 message slots; retains the supplied per-category limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:la.b(BI)V#1",
+      "originalName": "param1",
+      "to": "categoryLimit",
+      "evidence": "la.java: Resets size, allocates three scratch priority counts and categoryLimit*15 message slots; retains the supplied per-category limit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:la.b(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -38622,6 +39196,20 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "lo.java: Decodes/binds layout tiles and saved units to the battlefield.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(Lmo;I)V#0",
+      "originalName": "param0",
+      "to": "message",
+      "evidence": "lo.java: Drops null text and matching nonzero private IDs against prior private messages; accepted response arrays update shortcut target before history append.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lo.a(Lmo;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lo.java: Drops null text and matching nonzero private IDs against prior private messages; accepted response arrays update shortcut target before history append.",
       "confidence": "reviewed"
     },
     {
@@ -39292,8 +39880,8 @@
     {
       "symbol": "P:mo.<init>(Z)V#0",
       "originalName": "param0",
-      "to": "retainQuickChatValues",
-      "evidence": "mo.java: Snapshots the current decoded chat globals and optionally retains the same quick-chat value array.",
+      "to": "retainResponsePhraseIds",
+      "evidence": "mo.java: Snapshots the current decoded chat globals and optionally retains the same linked response-phrase ID array.",
       "confidence": "reviewed"
     },
     {
@@ -44302,6 +44890,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ta.a(Ljava/lang/String;IILjava/lang/String;Ljava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "channelLabel",
+      "evidence": "ta.java: Constructs a system ChatMessage with zero sender/private ID state and appends directly to history.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ta.a(Ljava/lang/String;IILjava/lang/String;Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "channelId",
+      "evidence": "ta.java: Constructs a system ChatMessage with zero sender/private ID state and appends directly to history.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ta.a(Ljava/lang/String;IILjava/lang/String;Ljava/lang/String;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ta.java: Constructs a system ChatMessage with zero sender/private ID state and appends directly to history.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ta.a(Ljava/lang/String;IILjava/lang/String;Ljava/lang/String;I)V#3",
+      "originalName": "param3",
+      "to": "accountName",
+      "evidence": "ta.java: Constructs a system ChatMessage with zero sender/private ID state and appends directly to history.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ta.a(Ljava/lang/String;IILjava/lang/String;Ljava/lang/String;I)V#4",
+      "originalName": "param4",
+      "to": "text",
+      "evidence": "ta.java: Constructs a system ChatMessage with zero sender/private ID state and appends directly to history.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ta.a(Ljava/lang/String;IILjava/lang/String;Ljava/lang/String;I)V#5",
+      "originalName": "param5",
+      "to": "contextId",
+      "evidence": "ta.java: Constructs a system ChatMessage with zero sender/private ID state and appends directly to history.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tb.<init>(Lha;Lv;Lvb;)V#0",
       "originalName": "param0",
       "to": "battlefield",
@@ -46731,6 +47361,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vh.b(Ljava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "vh.java: Rejects embedded NUL before writing the client single-byte text and terminating zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.b(Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Rejects embedded NUL before writing the client single-byte text and terminating zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vh.b(ZI)V#0",
       "originalName": "param0",
       "to": "enabled",
@@ -46742,6 +47386,13 @@
       "originalName": "param1",
       "to": "value",
       "evidence": "vh.java: Writes two big-endian bytes when enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.d(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads three big-endian bytes as an unsigned 24-bit integer.",
       "confidence": "reviewed"
     },
     {
@@ -46805,6 +47456,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "vh.java: Reads four big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.j(B)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads eight big-endian bytes as a Java long bit pattern.",
       "confidence": "reviewed"
     },
     {
@@ -47572,10 +48230,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "56c541326332a198e29bdcd6169f3edfb45b7e594c603285ff09b1ed80833e77",
+      "build-armiesofgielinor-rules.mjs": "c2fec7d010e602cdc7ac4853fe6b0a25c23631fbbc68c2216af470b58372ea3c",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "60573a067d3d02999a8c286258b96ddd5575a54872098601b379f69502940058",
+      "tests/test-armiesofgielinor-core.mjs": "9ab202be4b9f7ccb3e33165453e25e2cbe1c16f90949fd5a4c1da3808b3dd7e7",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
