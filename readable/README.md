@@ -125,6 +125,18 @@ lengths, payload copying, delayed FIFO delivery, Gaussian jitter (including
 non-finite casts) and contextual failure wrapping. All 60,889 old/new checks
 agree. These controlled streams do not establish live server compatibility.
 
+CameraOverviewTarget now exposes centroid grouping, cross-shaped proximity,
+inclusive tile bounds and forty-call hold state. GameplayController names the
+overview queue, rebuild/update paths and explicit tile focus. Camera helpers
+and locals now name drag deltas, directional panning, stopping distance,
+acceleration, reversal damping, viewport grids and retained world focus.
+Native checks cover target assembly, overflow/truncation, guard side effects,
+scalar smoothing, complete motion traces and all sixteen direction combinations.
+Maximum speed one can stop before the target; the original zero-velocity return
+is preserved. The width-based world clamp and initial pre-assignment dimensions
+remain unchanged. All 63,509 raw/named checks agree; rendered camera behavior
+is outside these controlled fixtures.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -157,7 +169,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 166 reviewed classes around battlefield state, units, map
+The current pass names 167 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

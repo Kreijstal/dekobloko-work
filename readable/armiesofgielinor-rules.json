@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 27,
+  "version": 28,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2271,6 +2271,13 @@
       "originalName": "iu",
       "to": "BattleTutorial",
       "evidence": "iu.java: In-battle tutorial stages, messages, action notifications, control highlights and animated hint panel; distinct from the tutorial menu controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ja",
+      "originalName": "ja",
+      "to": "CameraOverviewTarget",
+      "evidence": "ja.java: Averaged tile-coordinate cluster consumed by GameplayController camera overviews; proximity grouping, hold-started flag and a forty-call hold counter. Unrelated static helpers retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -5424,10 +5431,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ic.field_Qb:Z",
+      "originalName": "field_Qb",
+      "to": "cameraFocusPending",
+      "evidence": "ic.java: Explicit tile focus suppresses regular input until moveTowardTile settles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ic.field_T:Ljd;",
       "originalName": "field_T",
       "to": "selectedUnit",
       "evidence": "ic.java: Input selection and movement overlay reference the selected unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_Z:I",
+      "originalName": "field_Z",
+      "to": "cameraFocusTileIndex",
+      "evidence": "ic.java: Flattened focus tile set from unit selection or explicit focusCameraOnTile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_cb:Lat;",
+      "originalName": "field_cb",
+      "to": "overviewTargets",
+      "evidence": "ic.java: Built from controlled units, flagged other-player units and portal/modifier landmarks, then visited by the camera.",
       "confidence": "reviewed"
     },
     {
@@ -5771,6 +5799,41 @@
       "originalName": "field_w",
       "to": "buttonMode",
       "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ja.field_k:Z",
+      "originalName": "field_k",
+      "to": "holdStarted",
+      "evidence": "ja.java: Constructors retain one tile sample; grouping accumulates integer sums, averages truncate, settling starts a forty-call hold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ja.field_l:I",
+      "originalName": "field_l",
+      "to": "sampleCount",
+      "evidence": "ja.java: Constructors retain one tile sample; grouping accumulates integer sums, averages truncate, settling starts a forty-call hold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ja.field_m:I",
+      "originalName": "field_m",
+      "to": "tileXSum",
+      "evidence": "ja.java: Constructors retain one tile sample; grouping accumulates integer sums, averages truncate, settling starts a forty-call hold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ja.field_n:I",
+      "originalName": "field_n",
+      "to": "holdTicks",
+      "evidence": "ja.java: Constructors retain one tile sample; grouping accumulates integer sums, averages truncate, settling starts a forty-call hold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ja.field_p:I",
+      "originalName": "field_p",
+      "to": "tileYSum",
+      "evidence": "ja.java: Constructors retain one tile sample; grouping accumulates integer sums, averages truncate, settling starts a forty-call hold.",
       "confidence": "reviewed"
     },
     {
@@ -9148,6 +9211,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:v.field_a:[I",
+      "originalName": "field_a",
+      "to": "previousPointer",
+      "evidence": "v.java: Camera drag, viewport-grid refresh, retained event/tile focus and generated overlay values; no unverified fog/weather interpretation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:v.field_b:I",
       "originalName": "field_b",
       "to": "projectionTileIndex",
@@ -9176,10 +9246,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:v.field_g:I",
+      "originalName": "field_g",
+      "to": "focusWorldX",
+      "evidence": "v.java: Camera drag, viewport-grid refresh, retained event/tile focus and generated overlay values; no unverified fog/weather interpretation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:v.field_h:[I",
       "originalName": "field_h",
       "to": "transformedPosition",
       "evidence": "v.java: Camera initialization, index-to-grid conversion, 40/20 isometric projection, viewport offset and fixed-point transformed target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_i:I",
+      "originalName": "field_i",
+      "to": "focusWorldY",
+      "evidence": "v.java: Camera drag, viewport-grid refresh, retained event/tile focus and generated overlay values; no unverified fog/weather interpretation.",
       "confidence": "reviewed"
     },
     {
@@ -9211,10 +9295,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:v.field_n:[I",
+      "originalName": "field_n",
+      "to": "viewportOriginGrid",
+      "evidence": "v.java: Camera drag, viewport-grid refresh, retained event/tile focus and generated overlay values; no unverified fog/weather interpretation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_o:[I",
+      "originalName": "field_o",
+      "to": "overlayValues",
+      "evidence": "v.java: Camera drag, viewport-grid refresh, retained event/tile focus and generated overlay values; no unverified fog/weather interpretation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:v.field_p:[I",
       "originalName": "field_p",
       "to": "currentPosition",
       "evidence": "v.java: Camera smoothing moves currentPosition toward targetPosition with the per-axis velocity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_q:Z",
+      "originalName": "field_q",
+      "to": "eventFocusActive",
+      "evidence": "v.java: Camera drag, viewport-grid refresh, retained event/tile focus and generated overlay values; no unverified fog/weather interpretation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_r:[I",
+      "originalName": "field_r",
+      "to": "viewportCenterGrid",
+      "evidence": "v.java: Camera drag, viewport-grid refresh, retained event/tile focus and generated overlay values; no unverified fog/weather interpretation.",
       "confidence": "reviewed"
     },
     {
@@ -11941,6 +12053,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ic.d(B)V#17",
+      "originalName": "var2_int",
+      "to": "directionKeysEnabled",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.d(B)V#19",
+      "originalName": "var3",
+      "to": "manualCameraMovement",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.d(B)V#20",
+      "originalName": "var4_int",
+      "to": "cameraPlayerIndex",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.d(B)V#21",
+      "originalName": "var4",
+      "to": "overviewTarget",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.d(B)V#22",
+      "originalName": "var5",
+      "to": "overviewVelocitySettled",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.d(B)V#23",
+      "originalName": "var6",
+      "to": "nearestTarget",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.d(B)V#24",
+      "originalName": "var7",
+      "to": "candidateTarget",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.d(B)V#25",
+      "originalName": "var8",
+      "to": "candidateDistance",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.d(B)V#26",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.d(B)V#27",
+      "originalName": "var5Lifetime1",
+      "to": "nearestDistance",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ic.d(Z)V#11",
       "originalName": "var3",
       "to": "turnsTaken",
@@ -12120,6 +12302,111 @@
       "originalName": "var5",
       "to": "neutralUnitType",
       "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#19",
+      "originalName": "var2",
+      "to": "controlledUnits",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#21",
+      "originalName": "var3_ref_jd",
+      "to": "controlledUnit",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#22",
+      "originalName": "var3",
+      "to": "playerIndex",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#23",
+      "originalName": "var4",
+      "to": "controlledUnitGrouped",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#24",
+      "originalName": "var4_ref_at",
+      "to": "otherPlayerUnits",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#25",
+      "originalName": "var5",
+      "to": "controlledUnitTarget",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#26",
+      "originalName": "var5_ref",
+      "to": "landmarkTile",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#27",
+      "originalName": "var5_ref2",
+      "to": "otherUnit",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#28",
+      "originalName": "var6",
+      "to": "otherUnitGrouped",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#29",
+      "originalName": "var7",
+      "to": "otherUnitTarget",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#30",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#31",
+      "originalName": "var7Lifetime1",
+      "to": "landmarkTarget",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#38",
+      "originalName": "var3Lifetime1",
+      "to": "tileX",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#39",
+      "originalName": "var4Lifetime1",
+      "to": "tileY",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.j(I)V#40",
+      "originalName": "var6Lifetime1",
+      "to": "landmarkGrouped",
+      "evidence": "ic.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
@@ -12316,6 +12603,125 @@
       "originalName": "var3",
       "to": "guardArithmetic",
       "evidence": "iu.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(IB)I#0",
+      "originalName": "var3",
+      "to": "centerX",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(IB)I#1",
+      "originalName": "var4",
+      "to": "centerY",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(IIB)Z#0",
+      "originalName": "var5",
+      "to": "guardedCenterY",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(IIB)Z#1",
+      "originalName": "var4",
+      "to": "centerX",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(IIB)Z#2",
+      "originalName": "var5Lifetime1",
+      "to": "centerY",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(ILja;)Z#0",
+      "originalName": "var3_int",
+      "to": "otherCenterX",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(ILja;)Z#2",
+      "originalName": "var4",
+      "to": "otherCenterY",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(ILja;)Z#3",
+      "originalName": "var5",
+      "to": "centerX",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(ILja;)Z#4",
+      "originalName": "var6",
+      "to": "centerY",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(ILja;)Z#5",
+      "originalName": "var7",
+      "to": "squaredDeltaX",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.a(ILja;)Z#6",
+      "originalName": "var8",
+      "to": "squaredDeltaY",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.b(ILja;)I#0",
+      "originalName": "var3_int",
+      "to": "otherCenterX",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.b(ILja;)I#2",
+      "originalName": "var4",
+      "to": "otherCenterY",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.b(ILja;)I#3",
+      "originalName": "var5",
+      "to": "centerX",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.b(ILja;)I#4",
+      "originalName": "var6",
+      "to": "centerY",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.b(ILja;)I#5",
+      "originalName": "var7",
+      "to": "deltaX",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ja.b(ILja;)I#6",
+      "originalName": "var8",
+      "to": "deltaY",
+      "evidence": "ja.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
@@ -14353,6 +14759,132 @@
       "originalName": "var6",
       "to": "dialogHeight",
       "evidence": "uf.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(BII)Z#0",
+      "originalName": "var6",
+      "to": "obfuscationControl",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(BII)Z#1",
+      "originalName": "var4",
+      "to": "remainingSpeed",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(BII)Z#2",
+      "originalName": "var5",
+      "to": "stoppingDistance",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(IIIII)I#10",
+      "originalName": "var10",
+      "to": "atSpeedLimit",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(IIIII)I#11",
+      "originalName": "var11",
+      "to": "braking",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(IIIII)I#12",
+      "originalName": "var12",
+      "to": "canAccelerate",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(IIIII)I#13",
+      "originalName": "var13",
+      "to": "belowSpeedLimit",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(IIIII)I#14",
+      "originalName": "var14",
+      "to": "obfuscationControl",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(IIIII)I#6",
+      "originalName": "var6",
+      "to": "adjustedVelocity",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(IIIII)I#7",
+      "originalName": "var7",
+      "to": "velocityDirection",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(IIIII)I#8",
+      "originalName": "var8",
+      "to": "targetDirection",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.a(IIIII)I#9",
+      "originalName": "var9",
+      "to": "reversing",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.b(BI)Z#0",
+      "originalName": "var3",
+      "to": "targetX",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.b(BI)Z#1",
+      "originalName": "var4",
+      "to": "targetY",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.b(BI)Z#2",
+      "originalName": "var5",
+      "to": "deltaX",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.b(BI)Z#3",
+      "originalName": "var6",
+      "to": "deltaY",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.b(BI)Z#4",
+      "originalName": "var7",
+      "to": "speedLimit",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:v.b(BI)Z#5",
+      "originalName": "var8",
+      "to": "acceleration",
+      "evidence": "v.java: Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
@@ -16904,6 +17436,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.c(III)V",
+      "originalName": "c",
+      "to": "focusCameraOnTile",
+      "evidence": "ic.java: Stores the flattened tile, marks pending focus and clears the two other camera-follow flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.d(B)V",
+      "originalName": "d",
+      "to": "updateCamera",
+      "evidence": "ic.java: Prioritizes explicit focus, manual input and overview targets; removes nearby overview targets and promotes the nearest remaining one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.d(Z)V",
       "originalName": "d",
       "to": "prepareMatchResults",
@@ -16922,6 +17468,13 @@
       "originalName": "g",
       "to": "notifyTutorialInteraction",
       "evidence": "ic.java: Forwards interactionKind and tileIndex to the current BattleTutorial when present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.j(I)V",
+      "originalName": "j",
+      "to": "rebuildOverviewTargets",
+      "evidence": "ic.java: Clusters controlled units, other-player movement-flag-1 units and portal/modifier-flag landmarks by centroid proximity.",
       "confidence": "reviewed"
     },
     {
@@ -17104,6 +17657,76 @@
       "originalName": "h",
       "to": "draw",
       "evidence": "iu.java: Draws the animated tutorial panel, controls and message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(B)Z",
+      "originalName": "a",
+      "to": "hasStartedHold",
+      "evidence": "ja.java: Reads the hold-started flag; guard <=123 retains the original Y-only extra sample.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(BLjd;)V",
+      "originalName": "a",
+      "to": "addUnit",
+      "evidence": "ja.java: Adds current unit coordinates only for guard <=-59.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(I)Z",
+      "originalName": "a",
+      "to": "advanceHold",
+      "evidence": "ja.java: Post-increments holdTicks and returns whether its previous value was below forty; noncanonical guard follows the original failure path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(IB)I",
+      "originalName": "a",
+      "to": "getTileIndex",
+      "evidence": "ja.java: Flattens the truncated centroid using mapWidth; noncanonical guard returns -50 after averaging.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(IIB)Z",
+      "originalName": "a",
+      "to": "containsTile",
+      "evidence": "ja.java: Checks inclusive centroid +/-2 bounds on each axis, with the original bad-guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(ILja;)Z",
+      "originalName": "a",
+      "to": "isNearTarget",
+      "evidence": "ja.java: Tests averaged-coordinate squared deltas: one below four and the other below twenty-five; Java integer overflow is retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(Ljd;I)Z",
+      "originalName": "a",
+      "to": "containsUnit",
+      "evidence": "ja.java: Checks the unit coordinates against the inclusive two-tile centroid bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.b(IIB)V",
+      "originalName": "b",
+      "to": "addTile",
+      "evidence": "ja.java: Always increments sample count and Y sum; canonical guard >85 also increments X sum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.b(ILja;)I",
+      "originalName": "b",
+      "to": "distanceSquaredTo",
+      "evidence": "ja.java: Returns squared centroid distance for guard two; retains integer wrapping and the -59 alternate return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.f(I)V",
+      "originalName": "f",
+      "to": "startHold",
+      "evidence": "ja.java: Marks the hold as started after the original guard arithmetic; repeated calls do not reset holdTicks.",
       "confidence": "reviewed"
     },
     {
@@ -19767,6 +20390,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:v.a(BI)V",
+      "originalName": "a",
+      "to": "setFocusTile",
+      "evidence": "v.java: Stores a projected tile as the retained focus point, preserving guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(BII)Z",
+      "originalName": "a",
+      "to": "shouldBrake",
+      "evidence": "v.java: Sums successively truncated seven-eighths speeds and compares the resulting stopping distance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(BLat;)V",
+      "originalName": "a",
+      "to": "followEventPresenters",
+      "evidence": "v.java: Retains the first reverse-traversed presenter with a tile, activates focus when distant and advances toward its screen-derived world position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(IBI)Z",
+      "originalName": "a",
+      "to": "moveTowardTile",
+      "evidence": "v.java: Projects a tile and reports zero velocity after advancing. Maximum speed one can stop before the target; completion does not prove arrival.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:v.a(II)V",
       "originalName": "a",
       "to": "projectTile",
@@ -19774,10 +20425,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:v.a(IIB)V",
+      "originalName": "a",
+      "to": "setWorldPosition",
+      "evidence": "v.java: Stores world coordinates, clamps them and refreshes viewport grid coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(III)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "v.java: Initializes arrays before assigning dimensions, generates overlay values and refreshes the original initial position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(IIIII)I",
+      "originalName": "a",
+      "to": "adjustAxisVelocity",
+      "evidence": "v.java: Preserves signed velocity, stopping-distance braking, reversal damping, acceleration and maximum-speed gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(IZ)V",
+      "originalName": "a",
+      "to": "snapToTile",
+      "evidence": "v.java: Decodes a tile index and snaps current/focus position to its projection; retains the original boolean guard effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(IZIZZZZZI)Z",
+      "originalName": "a",
+      "to": "handleInput",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(I[I)V",
+      "originalName": "a",
+      "to": "clampWorldPosition",
+      "evidence": "v.java: Applies the original map-width-based diamond and inset clamps, including rectangular-map behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(Z)V",
+      "originalName": "a",
+      "to": "updateViewportCenterGrid",
+      "evidence": "v.java: Projects the screen centre back to the grid and stores it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(ZZII)Z",
+      "originalName": "a",
+      "to": "dragCamera",
+      "evidence": "v.java: Records pointer coordinates; an active nonnegative drag subtracts the pointer delta from currentPosition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(ZZZZZZ)Z",
+      "originalName": "a",
+      "to": "panCamera",
+      "evidence": "v.java: Updates directional velocity using the original sixteen-unit gates; suspendInertia keeps position unchanged when no direction is requested.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:v.b(B)V",
       "originalName": "b",
       "to": "selectProjectionTile",
       "evidence": "v.java: Decodes projectionTileIndex into the current grid position; its byte guard has no extra canonical work.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.b(BI)Z",
+      "originalName": "b",
+      "to": "advanceTowardTarget",
+      "evidence": "v.java: Clamps the target, adjusts per-axis velocity, advances/clamps position and returns whether both velocities are zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.b(I)V",
+      "originalName": "b",
+      "to": "generateOverlayValues",
+      "evidence": "v.java: Stores 256 minus each unsigned generated byte; overlay drawing reads these retained values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.b(Z)V",
+      "originalName": "b",
+      "to": "snapToGrid",
+      "evidence": "v.java: Projects the current grid position, copies it into current/focus position and refreshes viewport coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.c(B)V",
+      "originalName": "c",
+      "to": "storeGridFocus",
+      "evidence": "v.java: Projects the current grid point into retained focusWorldX/Y and refreshes viewport coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -19816,10 +20558,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:v.h(I)V",
+      "originalName": "h",
+      "to": "updateViewportOriginGrid",
+      "evidence": "v.java: Projects screen origin back to the grid and stores it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:v.i(I)V",
       "originalName": "i",
       "to": "projectTargetToScreen",
       "evidence": "v.java: Adds the viewport center to targetPosition minus currentPosition; canonical current-X slot is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.j(I)V",
+      "originalName": "j",
+      "to": "refreshViewportGrid",
+      "evidence": "v.java: Refreshes both viewport grid coordinates only for guard <=-117.",
       "confidence": "reviewed"
     },
     {
@@ -25941,6 +26697,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ic.c(III)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Stores the flattened tile, marks pending focus and clears the two other camera-follow flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.c(III)V#1",
+      "originalName": "param1",
+      "to": "tileX",
+      "evidence": "ic.java: Stores the flattened tile, marks pending focus and clears the two other camera-follow flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.c(III)V#2",
+      "originalName": "param2",
+      "to": "tileY",
+      "evidence": "ic.java: Stores the flattened tile, marks pending focus and clears the two other camera-follow flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Prioritizes explicit focus, manual input and overview targets; removes nearby overview targets and promotes the nearest remaining one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ic.d(Z)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -25973,6 +26757,13 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "ic.java: Forwards interactionKind and tileIndex to the current BattleTutorial when present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.j(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Clusters controlled units, other-player movement-flag-1 units and portal/modifier-flag landmarks by centroid proximity.",
       "confidence": "reviewed"
     },
     {
@@ -26442,6 +27233,160 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "iu.java: Draws the animated tutorial panel, controls and message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "ja.java: Initializes a one-sample camera target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "tileY",
+      "evidence": "ja.java: Initializes a one-sample camera target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.<init>(Ljd;)V#0",
+      "originalName": "param0",
+      "to": "unit",
+      "evidence": "ja.java: Copies the unit tile coordinates into one sample without retaining the unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Reads the hold-started flag; guard <=123 retains the original Y-only extra sample.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(BLjd;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Adds current unit coordinates only for guard <=-59.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(BLjd;)V#1",
+      "originalName": "param1",
+      "to": "unit",
+      "evidence": "ja.java: Adds current unit coordinates only for guard <=-59.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Post-increments holdTicks and returns whether its previous value was below forty; noncanonical guard follows the original failure path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(IB)I#0",
+      "originalName": "param0",
+      "to": "mapWidth",
+      "evidence": "ja.java: Flattens the truncated centroid using mapWidth; noncanonical guard returns -50 after averaging.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(IB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Flattens the truncated centroid using mapWidth; noncanonical guard returns -50 after averaging.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(IIB)Z#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "ja.java: Checks inclusive centroid +/-2 bounds on each axis, with the original bad-guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(IIB)Z#1",
+      "originalName": "param1",
+      "to": "tileY",
+      "evidence": "ja.java: Checks inclusive centroid +/-2 bounds on each axis, with the original bad-guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(IIB)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Checks inclusive centroid +/-2 bounds on each axis, with the original bad-guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(ILja;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Tests averaged-coordinate squared deltas: one below four and the other below twenty-five; Java integer overflow is retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(ILja;)Z#1",
+      "originalName": "param1",
+      "to": "other",
+      "evidence": "ja.java: Tests averaged-coordinate squared deltas: one below four and the other below twenty-five; Java integer overflow is retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(Ljd;I)Z#0",
+      "originalName": "param0",
+      "to": "unit",
+      "evidence": "ja.java: Checks the unit coordinates against the inclusive two-tile centroid bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.a(Ljd;I)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Checks the unit coordinates against the inclusive two-tile centroid bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.b(IIB)V#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "ja.java: Always increments sample count and Y sum; canonical guard >85 also increments X sum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.b(IIB)V#1",
+      "originalName": "param1",
+      "to": "tileY",
+      "evidence": "ja.java: Always increments sample count and Y sum; canonical guard >85 also increments X sum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.b(IIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Always increments sample count and Y sum; canonical guard >85 also increments X sum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.b(ILja;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Returns squared centroid distance for guard two; retains integer wrapping and the -59 alternate return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.b(ILja;)I#1",
+      "originalName": "param1",
+      "to": "other",
+      "evidence": "ja.java: Returns squared centroid distance for guard two; retains integer wrapping and the -59 alternate return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ja.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Marks the hold as started after the original guard arithmetic; repeated calls do not reset holdTicks.",
       "confidence": "reviewed"
     },
     {
@@ -33851,6 +34796,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:v.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Stores a projected tile as the retained focus point, preserving guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(BI)V#1",
+      "originalName": "param1",
+      "to": "tileIndex",
+      "evidence": "v.java: Stores a projected tile as the retained focus point, preserving guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(BII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Sums successively truncated seven-eighths speeds and compares the resulting stopping distance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(BII)Z#1",
+      "originalName": "param1",
+      "to": "speed",
+      "evidence": "v.java: Sums successively truncated seven-eighths speeds and compares the resulting stopping distance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(BII)Z#2",
+      "originalName": "param2",
+      "to": "distance",
+      "evidence": "v.java: Sums successively truncated seven-eighths speeds and compares the resulting stopping distance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(BLat;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Retains the first reverse-traversed presenter with a tile, activates focus when distant and advances toward its screen-derived world position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(BLat;)V#1",
+      "originalName": "param1",
+      "to": "presenters",
+      "evidence": "v.java: Retains the first reverse-traversed presenter with a tile, activates focus when distant and advances toward its screen-derived world position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IBI)Z#0",
+      "originalName": "param0",
+      "to": "maximumSpeed",
+      "evidence": "v.java: Projects a tile and reports zero velocity after advancing. Maximum speed one can stop before the target; completion does not prove arrival.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IBI)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Projects a tile and reports zero velocity after advancing. Maximum speed one can stop before the target; completion does not prove arrival.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IBI)Z#2",
+      "originalName": "param2",
+      "to": "tileIndex",
+      "evidence": "v.java: Projects a tile and reports zero velocity after advancing. Maximum speed one can stop before the target; completion does not prove arrival.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:v.a(II)V#0",
       "originalName": "param0",
       "to": "gridYSlot",
@@ -33865,10 +34880,290 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:v.a(IIB)V#0",
+      "originalName": "param0",
+      "to": "worldX",
+      "evidence": "v.java: Stores world coordinates, clamps them and refreshes viewport grid coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IIB)V#1",
+      "originalName": "param1",
+      "to": "worldY",
+      "evidence": "v.java: Stores world coordinates, clamps them and refreshes viewport grid coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Stores world coordinates, clamps them and refreshes viewport grid coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(III)V#0",
+      "originalName": "param0",
+      "to": "mapHeight",
+      "evidence": "v.java: Initializes arrays before assigning dimensions, generates overlay values and refreshes the original initial position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(III)V#1",
+      "originalName": "param1",
+      "to": "mapWidth",
+      "evidence": "v.java: Initializes arrays before assigning dimensions, generates overlay values and refreshes the original initial position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Initializes arrays before assigning dimensions, generates overlay values and refreshes the original initial position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IIIII)I#0",
+      "originalName": "param0",
+      "to": "velocity",
+      "evidence": "v.java: Preserves signed velocity, stopping-distance braking, reversal damping, acceleration and maximum-speed gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IIIII)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Preserves signed velocity, stopping-distance braking, reversal damping, acceleration and maximum-speed gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IIIII)I#2",
+      "originalName": "param2",
+      "to": "distance",
+      "evidence": "v.java: Preserves signed velocity, stopping-distance braking, reversal damping, acceleration and maximum-speed gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IIIII)I#3",
+      "originalName": "param3",
+      "to": "acceleration",
+      "evidence": "v.java: Preserves signed velocity, stopping-distance braking, reversal damping, acceleration and maximum-speed gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IIIII)I#4",
+      "originalName": "param4",
+      "to": "maximumSpeed",
+      "evidence": "v.java: Preserves signed velocity, stopping-distance braking, reversal damping, acceleration and maximum-speed gates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "tileIndex",
+      "evidence": "v.java: Decodes a tile index and snaps current/focus position to its projection; retains the original boolean guard effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Decodes a tile index and snaps current/focus position to its projection; retains the original boolean guard effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZIZZZZZI)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZIZZZZZI)Z#1",
+      "originalName": "param1",
+      "to": "panDown",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZIZZZZZI)Z#2",
+      "originalName": "param2",
+      "to": "pointerY",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZIZZZZZI)Z#3",
+      "originalName": "param3",
+      "to": "panUp",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZIZZZZZI)Z#4",
+      "originalName": "param4",
+      "to": "panRight",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZIZZZZZI)Z#5",
+      "originalName": "param5",
+      "to": "panLeft",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZIZZZZZI)Z#6",
+      "originalName": "param6",
+      "to": "suspendInertia",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZIZZZZZI)Z#7",
+      "originalName": "param7",
+      "to": "dragging",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(IZIZZZZZI)Z#8",
+      "originalName": "param8",
+      "to": "pointerX",
+      "evidence": "v.java: Runs pointer drag first, otherwise directional panning, and reports requested manual movement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(I[I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Applies the original map-width-based diamond and inset clamps, including rectangular-map behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(I[I)V#1",
+      "originalName": "param1",
+      "to": "worldPosition",
+      "evidence": "v.java: Applies the original map-width-based diamond and inset clamps, including rectangular-map behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Projects the screen centre back to the grid and stores it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Records pointer coordinates; an active nonnegative drag subtracts the pointer delta from currentPosition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZII)Z#1",
+      "originalName": "param1",
+      "to": "dragging",
+      "evidence": "v.java: Records pointer coordinates; an active nonnegative drag subtracts the pointer delta from currentPosition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZII)Z#2",
+      "originalName": "param2",
+      "to": "pointerX",
+      "evidence": "v.java: Records pointer coordinates; an active nonnegative drag subtracts the pointer delta from currentPosition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZII)Z#3",
+      "originalName": "param3",
+      "to": "pointerY",
+      "evidence": "v.java: Records pointer coordinates; an active nonnegative drag subtracts the pointer delta from currentPosition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZZZZZ)Z#0",
+      "originalName": "param0",
+      "to": "enabled",
+      "evidence": "v.java: Updates directional velocity using the original sixteen-unit gates; suspendInertia keeps position unchanged when no direction is requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZZZZZ)Z#1",
+      "originalName": "param1",
+      "to": "panDown",
+      "evidence": "v.java: Updates directional velocity using the original sixteen-unit gates; suspendInertia keeps position unchanged when no direction is requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZZZZZ)Z#2",
+      "originalName": "param2",
+      "to": "suspendInertia",
+      "evidence": "v.java: Updates directional velocity using the original sixteen-unit gates; suspendInertia keeps position unchanged when no direction is requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZZZZZ)Z#3",
+      "originalName": "param3",
+      "to": "panRight",
+      "evidence": "v.java: Updates directional velocity using the original sixteen-unit gates; suspendInertia keeps position unchanged when no direction is requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZZZZZ)Z#4",
+      "originalName": "param4",
+      "to": "panLeft",
+      "evidence": "v.java: Updates directional velocity using the original sixteen-unit gates; suspendInertia keeps position unchanged when no direction is requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(ZZZZZZ)Z#5",
+      "originalName": "param5",
+      "to": "panUp",
+      "evidence": "v.java: Updates directional velocity using the original sixteen-unit gates; suspendInertia keeps position unchanged when no direction is requested.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:v.b(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "v.java: Decodes projectionTileIndex into the current grid position; its byte guard has no extra canonical work.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.b(BI)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Clamps the target, adjusts per-axis velocity, advances/clamps position and returns whether both velocities are zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.b(BI)Z#1",
+      "originalName": "param1",
+      "to": "maximumSpeed",
+      "evidence": "v.java: Clamps the target, adjusts per-axis velocity, advances/clamps position and returns whether both velocities are zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Stores 256 minus each unsigned generated byte; overlay drawing reads these retained values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.b(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Projects the current grid position, copies it into current/focus position and refreshes viewport coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Projects the current grid point into retained focusWorldX/Y and refreshes viewport coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -33907,10 +35202,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:v.h(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Projects screen origin back to the grid and stores it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:v.i(I)V#0",
       "originalName": "param0",
       "to": "currentXSlot",
       "evidence": "v.java: Adds the viewport center to targetPosition minus currentPosition; canonical current-X slot is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.j(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Refreshes both viewport grid coordinates only for guard <=-117.",
       "confidence": "reviewed"
     },
     {
@@ -34797,10 +36106,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "9e0cc4061ae7b40df0603bac92b2b1cdd4d06a44e46ac4ceef3e6265ff844b79",
+      "build-armiesofgielinor-rules.mjs": "b1d458eb42df9f5a4ac1c5f2d6135e84ec91b9b71e7820dba4251839adec67c0",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "61c6d3678e61eee8ca70b4ba938a21f1363240c3b681181814a1be0ae5082129",
+      "tests/test-armiesofgielinor-core.mjs": "1e558e485df58c667746ed6fcf42f556c51896d50736d79e078d372604bd4b7c",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
