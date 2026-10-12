@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 11,
+  "version": 12,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -1942,6 +1942,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fu",
+      "originalName": "fu",
+      "to": "CampaignRewardPreview",
+      "evidence": "fu.java: Displays the first unlocked unit, a spell or a mana bonus using the existing reward precedence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:g",
       "originalName": "g",
       "to": "ContextualRuntimeException",
@@ -2915,6 +2922,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cf.field_o:Ljava/lang/String;",
+      "originalName": "field_o",
+      "to": "description",
+      "evidence": "cf.java: Campaign menu copies this header string into the same detail text field used for mission descriptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_p:[I",
+      "originalName": "field_p",
+      "to": "initialUnitTypes",
+      "evidence": "cf.java: Campaign loadout converts these unit IDs into initial category/ordinal unlock masks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cf.field_q:[Lsd;",
       "originalName": "field_q",
       "to": "participants",
@@ -3419,6 +3440,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fu.field_c:Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "title",
+      "evidence": "fu.java: Reward constructor populates sprite, display name and explanatory text for the selected reward.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fu.field_h:Lwk;",
+      "originalName": "field_h",
+      "to": "icon",
+      "evidence": "fu.java: Reward constructor populates sprite, display name and explanatory text for the selected reward.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fu.field_i:Ljava/lang/String;",
+      "originalName": "field_i",
+      "to": "description",
+      "evidence": "fu.java: Reward constructor populates sprite, display name and explanatory text for the selected reward.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:g.field_b:Ljava/lang/Throwable;",
       "originalName": "field_b",
       "to": "originalCause",
@@ -3605,6 +3647,13 @@
       "originalName": "field_Z",
       "to": "snapshotBuffer",
       "evidence": "ha.java: appendSnapshotChunk initializes this from a two-byte total length and advances its append cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_bb:F",
+      "originalName": "field_bb",
+      "to": "campaignManaMultiplier",
+      "evidence": "ha.java: Campaign loadout installs the accumulated multiplier; Battlefield scales incoming mana changes by it.",
       "confidence": "reviewed"
     },
     {
@@ -5206,8 +5255,8 @@
     {
       "symbol": "F:om.field_D:[I",
       "originalName": "field_D",
-      "to": "rewardIds",
-      "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "to": "rewardUnitTypes",
+      "evidence": "om.java: Tagged rwd; campaign loadout converts IDs to unit unlock bits and reward previews use unit display names/icons.",
       "confidence": "reviewed"
     },
     {
@@ -5232,6 +5281,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:om.field_H:Lkl;",
+      "originalName": "field_H",
+      "to": "mapArchive",
+      "evidence": "om.java: Mission map loading retrieves map resources from this archive, installed by readCampaignMission.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:om.field_J:Ljava/lang/String;",
       "originalName": "field_J",
       "to": "name",
@@ -5243,6 +5299,13 @@
       "originalName": "field_k",
       "to": "flags",
       "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_l:I",
+      "originalName": "field_l",
+      "to": "rewardSpellId",
+      "evidence": "om.java: Tagged tr; completed-mission loadout reads spellDefinitions and reward preview uses its spell icon/name.",
       "confidence": "reviewed"
     },
     {
@@ -5278,6 +5341,13 @@
       "originalName": "field_t",
       "to": "mapResourceId",
       "evidence": "om.java: Campaign mission tagged keys id/flg/name/dsc/pos/mpsz/mpt/song/gt/gd/df/mid/ngb/ptc/rwd/team and lazy loading. Finer numeric encodings remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_u:I",
+      "originalName": "field_u",
+      "to": "manaBonusPercent",
+      "evidence": "om.java: Tagged mbr; completed missions add this value divided by 100 to the battlefield multiplier.",
       "confidence": "reviewed"
     },
     {
@@ -5932,10 +6002,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sd.field_n:[I",
+      "originalName": "field_n",
+      "to": "equippedSpellIds",
+      "evidence": "sd.java: Campaign setup copies this array into the per-player spell loadouts passed to Battlefield.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sd.field_o:I",
       "originalName": "field_o",
       "to": "overrideCount",
       "evidence": "sd.java: Participant packet reader, mission participant-name lookup and shared unit-override append loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_p:[I",
+      "originalName": "field_p",
+      "to": "availableUnitTypes",
+      "evidence": "sd.java: Campaign setup converts each ID to a unit unlock mask; mission preview also lists their unit categories.",
       "confidence": "reviewed"
     },
     {
@@ -6475,6 +6559,13 @@
       "originalName": "field_g",
       "to": "targetX",
       "evidence": "wa.java: UnitSpell constructor and serialization write target X before target Y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wp.field_H:[[I",
+      "originalName": "field_H",
+      "to": "unitUnlockGroups",
+      "evidence": "wp.java: Unit group/ordinal lookup scans these rows before setting the corresponding unlock bit.",
       "confidence": "reviewed"
     },
     {
@@ -7458,6 +7549,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ic.a(Lom;B[I[I)F#11",
+      "originalName": "var5_float",
+      "to": "manaMultiplier",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#13",
+      "originalName": "var6",
+      "to": "insertedSpellCount",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#14",
+      "originalName": "var7_int",
+      "to": "maskIndex",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#15",
+      "originalName": "var7",
+      "to": "initialUnits",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#16",
+      "originalName": "var7_array",
+      "to": "campaignMissions",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#17",
+      "originalName": "var8",
+      "to": "initialUnitIndex",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#18",
+      "originalName": "var9_int",
+      "to": "initialUnitType",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#19",
+      "originalName": "var9",
+      "to": "completedMission",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#20",
+      "originalName": "var10",
+      "to": "initialUnlockGroup",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#21",
+      "originalName": "var10_ref_int__",
+      "to": "rewardUnits",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#22",
+      "originalName": "var11",
+      "to": "initialUnlockOrdinal",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#23",
+      "originalName": "var12",
+      "to": "rewardUnitType",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#24",
+      "originalName": "var13",
+      "to": "rewardUnlockGroup",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#25",
+      "originalName": "var14",
+      "to": "rewardUnlockOrdinal",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#27",
+      "originalName": "var8Lifetime1",
+      "to": "missionIndex",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#28",
+      "originalName": "var10Lifetime1",
+      "to": "rewardSpell",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#29",
+      "originalName": "var11Lifetime1",
+      "to": "rewardUnitIndex",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#30",
+      "originalName": "var12Lifetime1",
+      "to": "equippedSpell",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(Lom;B[I[I)F#31",
+      "originalName": "var11Lifetime1Lifetime1",
+      "to": "spellSlot",
+      "evidence": "ic.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ld.a(ILha;)V#0",
       "originalName": "var4",
       "to": "pathIndex",
@@ -7493,6 +7717,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:lf.a(Lcf;Lbv;Lkl;B)Lom;#0",
+      "originalName": "var4",
+      "to": "mission",
+      "evidence": "lf.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ne.a(BII)I#0",
       "originalName": "var4",
       "to": "effectFlags",
@@ -7504,6 +7735,111 @@
       "originalName": "var5",
       "to": "effectTeamIndex",
       "evidence": "ne.java: Reviewed lexical ordinal and combat power, range, cover, effect-mask or AI net-damage data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#10",
+      "originalName": "var7",
+      "to": "localPlayerName",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#11",
+      "originalName": "var8",
+      "to": "description",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#12",
+      "originalName": "var9",
+      "to": "initialUnitTypes",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#13",
+      "originalName": "var10",
+      "to": "campaign",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#14",
+      "originalName": "var11",
+      "to": "participantCount",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#15",
+      "originalName": "var12",
+      "to": "participantIndexThenOverrideCount",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#16",
+      "originalName": "var13",
+      "to": "overrideIndexThenMissionCount",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#18",
+      "originalName": "var14",
+      "to": "participantThenMissionIndex",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#23",
+      "originalName": "var19",
+      "to": "decodedParticipant",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#24",
+      "originalName": "var20",
+      "to": "participants",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#25",
+      "originalName": "var21",
+      "to": "participant",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#26",
+      "originalName": "var22",
+      "to": "decodedMission",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#7",
+      "originalName": "var4",
+      "to": "packet",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#8",
+      "originalName": "var5",
+      "to": "campaignName",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nu.a(ILkl;I)Lcf;#9",
+      "originalName": "var6",
+      "to": "localGodId",
+      "evidence": "nu.java: Reviewed lexical ordinal and campaign archive/loadout data flow; reused counters retain both roles.",
       "confidence": "reviewed"
     },
     {
@@ -7878,6 +8214,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ar.a(III)Lom;",
+      "originalName": "a",
+      "to": "getCampaignMission",
+      "evidence": "ar.java: Returns null for a missing campaign or mission outside the supplied lower bound and mission array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:as.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -7938,6 +8281,13 @@
       "originalName": "a",
       "to": "calculateMissionScore",
       "evidence": "b.java: Normalizes turns and damage against their mission targets with separate bonus curves and score limits; zero targets return 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(ZI)I",
+      "originalName": "a",
+      "to": "getUnitUnlockOrdinal",
+      "evidence": "b.java: Finds the unit ID within its unlock group; missing IDs retain ordinal-zero fallback.",
       "confidence": "reviewed"
     },
     {
@@ -9208,6 +9558,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.a(Lom;B[I[I)F",
+      "originalName": "a",
+      "to": "buildCampaignLoadout",
+      "evidence": "ic.java: Clears/rebuilds unit masks from initial units and scored missions, merges rewarded spells and returns the cumulative mana multiplier.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ig.a(Ljava/lang/Throwable;Ljava/lang/String;)Lg;",
       "originalName": "a",
       "to": "addExceptionContext",
@@ -9254,6 +9611,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:im.a(Lom;I)I",
+      "originalName": "a",
+      "to": "getProfileMissionScore",
+      "evidence": "im.java: Delegates using the mission parent campaign index and mission ID.",
       "confidence": "reviewed"
     },
     {
@@ -9537,6 +9901,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jv.a(ZI)I",
+      "originalName": "a",
+      "to": "getUnitUnlockGroup",
+      "evidence": "jv.java: Finds the unit ID in unitUnlockGroups; missing IDs retain the original group-zero fallback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -9625,6 +9996,13 @@
       "originalName": "a",
       "to": "setAnimationState",
       "evidence": "lf.java: Assigns the animation state while preserving the guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(Lcf;Lbv;Lkl;B)Lom;",
+      "originalName": "a",
+      "to": "readCampaignMission",
+      "evidence": "lf.java: Decodes a tagged mission then assigns its parent campaign and map archive.",
       "confidence": "reviewed"
     },
     {
@@ -9765,6 +10143,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(III)I",
+      "originalName": "a",
+      "to": "getProfileMissionScore",
+      "evidence": "mh.java: Returns zero without a profile/progress object; otherwise queries stored campaign progress.",
       "confidence": "reviewed"
     },
     {
@@ -10027,6 +10412,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nu.a(ILkl;I)Lcf;",
+      "originalName": "a",
+      "to": "loadCampaign",
+      "evidence": "nu.java: Reads missions archive header, participant IDs, shared overrides and tagged missions, registering the campaign cache.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nw.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -10094,6 +10486,13 @@
       "originalName": "e",
       "to": "getParticipantNames",
       "evidence": "om.java: Uses the campaign local-player name or the referenced participant display name for each slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.g(I)Lfu;",
+      "originalName": "g",
+      "to": "createRewardPreview",
+      "evidence": "om.java: Builds the existing preview from unit rewards, spell reward and mana bonus.",
       "confidence": "reviewed"
     },
     {
@@ -11490,6 +11889,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ar.a(III)Lom;#0",
+      "originalName": "param0",
+      "to": "campaignIndex",
+      "evidence": "ar.java: Returns null for a missing campaign or mission outside the supplied lower bound and mission array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ar.a(III)Lom;#1",
+      "originalName": "param1",
+      "to": "missionIndex",
+      "evidence": "ar.java: Returns null for a missing campaign or mission outside the supplied lower bound and mission array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ar.a(III)Lom;#2",
+      "originalName": "param2",
+      "to": "minimumMissionIndex",
+      "evidence": "ar.java: Returns null for a missing campaign or mission outside the supplied lower bound and mission array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:as.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -11620,6 +12040,20 @@
       "originalName": "param4",
       "to": "turnsTaken",
       "evidence": "b.java: Normalizes turns and damage against their mission targets with separate bonus curves and score limits; zero targets return 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a(ZI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "b.java: Finds the unit ID within its unlock group; missing IDs retain ordinal-zero fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a(ZI)I#1",
+      "originalName": "param1",
+      "to": "unitType",
+      "evidence": "b.java: Finds the unit ID within its unlock group; missing IDs retain ordinal-zero fallback.",
       "confidence": "reviewed"
     },
     {
@@ -13303,6 +13737,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fu.<init>([III)V#0",
+      "originalName": "param0",
+      "to": "rewardUnitTypes",
+      "evidence": "fu.java: Chooses the first unit reward before spell reward before a positive mana bonus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fu.<init>([III)V#1",
+      "originalName": "param1",
+      "to": "rewardSpellId",
+      "evidence": "fu.java: Chooses the first unit reward before spell reward before a positive mana bonus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fu.<init>([III)V#2",
+      "originalName": "param2",
+      "to": "manaBonusPercent",
+      "evidence": "fu.java: Chooses the first unit reward before spell reward before a positive mana bonus.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:g.<init>(Ljava/lang/Throwable;Ljava/lang/String;)V#0",
       "originalName": "param0",
       "to": "originalCause",
@@ -14871,6 +15326,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ic.a(Lom;B[I[I)F#0",
+      "originalName": "param0",
+      "to": "mission",
+      "evidence": "ic.java: Clears/rebuilds unit masks from initial units and scored missions, merges rewarded spells and returns the cumulative mana multiplier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(Lom;B[I[I)F#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Clears/rebuilds unit masks from initial units and scored missions, merges rewarded spells and returns the cumulative mana multiplier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(Lom;B[I[I)F#2",
+      "originalName": "param2",
+      "to": "equippedSpellIds",
+      "evidence": "ic.java: Clears/rebuilds unit masks from initial units and scored missions, merges rewarded spells and returns the cumulative mana multiplier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(Lom;B[I[I)F#3",
+      "originalName": "param3",
+      "to": "unitUnlockMasks",
+      "evidence": "ic.java: Clears/rebuilds unit masks from initial units and scored missions, merges rewarded spells and returns the cumulative mana multiplier.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ig.a(Ljava/lang/Throwable;Ljava/lang/String;)Lg;#0",
       "originalName": "param0",
       "to": "cause",
@@ -15001,6 +15484,20 @@
       "originalName": "param1",
       "to": "battlefield",
       "evidence": "bd.java: Queues gameplay events; turn-condition marker implementations preserve their canonical no-op behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:im.a(Lom;I)I#0",
+      "originalName": "param0",
+      "to": "mission",
+      "evidence": "im.java: Delegates using the mission parent campaign index and mission ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:im.a(Lom;I)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "im.java: Delegates using the mission parent campaign index and mission ID.",
       "confidence": "reviewed"
     },
     {
@@ -15606,6 +16103,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jv.a(ZI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jv.java: Finds the unit ID in unitUnlockGroups; missing IDs retain the original group-zero fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jv.a(ZI)I#1",
+      "originalName": "param1",
+      "to": "unitType",
+      "evidence": "jv.java: Finds the unit ID in unitUnlockGroups; missing IDs retain the original group-zero fallback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kc.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -15911,6 +16422,34 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "lf.java: Assigns the animation state while preserving the guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lf.a(Lcf;Lbv;Lkl;B)Lom;#0",
+      "originalName": "param0",
+      "to": "campaign",
+      "evidence": "lf.java: Decodes a tagged mission then assigns its parent campaign and map archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lf.a(Lcf;Lbv;Lkl;B)Lom;#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "lf.java: Decodes a tagged mission then assigns its parent campaign and map archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lf.a(Lcf;Lbv;Lkl;B)Lom;#2",
+      "originalName": "param2",
+      "to": "archive",
+      "evidence": "lf.java: Decodes a tagged mission then assigns its parent campaign and map archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lf.a(Lcf;Lbv;Lkl;B)Lom;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "lf.java: Decodes a tagged mission then assigns its parent campaign and map archive.",
       "confidence": "reviewed"
     },
     {
@@ -16275,6 +16814,27 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(III)I#0",
+      "originalName": "param0",
+      "to": "campaignIndex",
+      "evidence": "mh.java: Returns zero without a profile/progress object; otherwise queries stored campaign progress.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(III)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Returns zero without a profile/progress object; otherwise queries stored campaign progress.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(III)I#2",
+      "originalName": "param2",
+      "to": "missionIndex",
+      "evidence": "mh.java: Returns zero without a profile/progress object; otherwise queries stored campaign progress.",
       "confidence": "reviewed"
     },
     {
@@ -16838,6 +17398,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nu.a(ILkl;I)Lcf;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nu.java: Reads missions archive header, participant IDs, shared overrides and tagged missions, registering the campaign cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nu.a(ILkl;I)Lcf;#1",
+      "originalName": "param1",
+      "to": "archive",
+      "evidence": "nu.java: Reads missions archive header, participant IDs, shared overrides and tagged missions, registering the campaign cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nu.a(ILkl;I)Lcf;#2",
+      "originalName": "param2",
+      "to": "campaignIndex",
+      "evidence": "nu.java: Reads missions archive header, participant IDs, shared overrides and tagged missions, registering the campaign cache.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nw.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -16954,6 +17535,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "om.java: Uses the campaign local-player name or the referenced participant display name for each slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.g(I)Lfu;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Builds the existing preview from unit rewards, spell reward and mana bonus.",
       "confidence": "reviewed"
     },
     {
@@ -19590,9 +20178,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "f26fc4f2240fb229689ad313800780fe8ac86c617d8792aed24115e4bbf82f51",
+      "build-armiesofgielinor-rules.mjs": "f3128b2b108473d60ead577033964e3c56af3744c3e0f13ada47b43bdfbca016",
       "reproduce-armiesofgielinor.mjs": "4a22e3fe05d58c1f850e887a47c646e710cf388066d0766fdcdb0eab20a3144d",
-      "tests/test-armiesofgielinor-core.mjs": "72db3f1726cf11b00757bb65a718e05179779c9ddaee4cf7389787000e8515f2",
+      "tests/test-armiesofgielinor-core.mjs": "f8d0eff5b681c132cd632a10a1ad04e12c5584ea7487e367b90266e837bd87a8",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
