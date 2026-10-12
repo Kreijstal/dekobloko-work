@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 20,
+  "version": 21,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
@@ -2036,6 +2036,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eo",
+      "originalName": "eo",
+      "to": "BattleUnitRenderer",
+      "evidence": "eo.java: Camera visibility, retained UnitModelPreview objects and per-unit model animation/projection updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:eu",
+      "originalName": "eu",
+      "to": "UnitCycler",
+      "evidence": "eu.java: Wraps forward/reverse selection through the player unit deque, refreshing after the selected node is unlinked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ew",
       "originalName": "ew",
       "to": "ArchiveProvider",
@@ -2075,6 +2089,13 @@
       "originalName": "ga",
       "to": "IsaacRandom",
       "evidence": "ga.java: 256-word ISAAC state, golden-ratio seed mixing and opcode cipher output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gb",
+      "originalName": "gb",
+      "to": "EquipmentBattleTutorial",
+      "evidence": "gb.java: BattleTutorial subclass whose specialist-equipment lesson texts follow Eastbridge; tracks the current equipped slot and eligibility gates.",
       "confidence": "reviewed"
     },
     {
@@ -2204,6 +2225,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:iu",
+      "originalName": "iu",
+      "to": "BattleTutorial",
+      "evidence": "iu.java: In-battle tutorial stages, messages, action notifications, control highlights and animated hint panel; distinct from the tutorial menu controller.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jb",
       "originalName": "jb",
       "to": "AiActionCandidate",
@@ -2236,6 +2264,13 @@
       "originalName": "jm",
       "to": "ArchiveIndex",
       "evidence": "jm.java: Versions 5–7 decode group/file IDs, revisions, CRCs, optional names and 64-byte digests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jr",
+      "originalName": "jr",
+      "to": "RadialSummonItem",
+      "evidence": "jr.java: Unit/god choice identity, icon group, radial offsets and circular hit radius.",
       "confidence": "reviewed"
     },
     {
@@ -2596,6 +2631,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sj",
+      "originalName": "sj",
+      "to": "TurnTimerDial",
+      "evidence": "sj.java: Angular pixel thresholds and a wrapping sweep driven by remaining turn ticks, rendered beside the tick/50 countdown.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sk",
       "originalName": "sk",
       "to": "CombatPresentation",
@@ -2687,10 +2729,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ub",
+      "originalName": "ub",
+      "to": "RadialSummonMenu",
+      "evidence": "ub.java: Places god-tab or unit-choice items around a portal; resolves pointer hits and draws summon availability.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ue",
       "originalName": "ue",
       "to": "BufferedFile",
       "evidence": "ue.java: Buffered seek/read/write with logical/physical lengths, cached reads and pending writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uf",
+      "originalName": "uf",
+      "to": "SpellConfirmationDialog",
+      "evidence": "uf.java: Retains spell ID, target tile, selection mode and confirmation prompt; caller resumes the spell cast when confirmed.",
       "confidence": "reviewed"
     },
     {
@@ -3321,6 +3377,13 @@
       "originalName": "field_a",
       "to": "campaigns",
       "evidence": "cd.java: Campaign loader registers definitions here; br lookup retrieves them by index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_O:[I",
+      "originalName": "field_O",
+      "to": "turnDurationTicks",
+      "evidence": "ce.java: Seven turn-duration choices {12000,9000,7500,6000,4500,3000,1500}; gameplay displays remaining ticks divided by fifty.",
       "confidence": "reviewed"
     },
     {
@@ -3996,6 +4059,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:eo.field_b:Lv;",
+      "originalName": "field_b",
+      "to": "camera",
+      "evidence": "eo.java: Projects each tile before unit visibility/model refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eu.field_b:Lat;",
+      "originalName": "field_b",
+      "to": "units",
+      "evidence": "eu.java: Tracks a selected unit node and independent deque iterator; refreshes selection after unlink, with wrapping traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eu.field_c:Ltc;",
+      "originalName": "field_c",
+      "to": "selectedNode",
+      "evidence": "eu.java: Tracks a selected unit node and independent deque iterator; refreshes selection after unlink, with wrapping traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eu.field_f:Lbb;",
+      "originalName": "field_f",
+      "to": "iterator",
+      "evidence": "eu.java: Tracks a selected unit node and independent deque iterator; refreshes selection after unlink, with wrapping traversal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fi.field_k:I",
       "originalName": "field_k",
       "to": "screenX",
@@ -4150,6 +4241,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gb.field_C:I",
+      "originalName": "field_C",
+      "to": "equipmentSlot",
+      "evidence": "gb.java: Indexes battlefield.equippedSpellIds[0] during the five-slot equipment lesson; starts at -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ge.field_j:F",
       "originalName": "field_j",
       "to": "totalWeight",
@@ -4196,6 +4294,13 @@
       "originalName": "field_f",
       "to": "instructionIllustrationModes",
       "evidence": "go.java: InstructionsPanel dispatches these per-page/section/row mode values to illustration layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_B:[[I",
+      "originalName": "field_B",
+      "to": "equippedSpellIds",
+      "evidence": "ha.java: Five equipment/spell IDs per player, assigned during match setup and read by the equipment tutorial slot cursor.",
       "confidence": "reviewed"
     },
     {
@@ -4283,6 +4388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ha.field_a:[[I",
+      "originalName": "field_a",
+      "to": "godUnitUnlockMasks",
+      "evidence": "ha.java: Per-player masks indexed by unit unlock group minus one; equipment tutorial unit availability also checks god favour.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ha.field_bb:F",
       "originalName": "field_bb",
       "to": "campaignManaMultiplier",
@@ -4343,6 +4455,13 @@
       "originalName": "field_hb",
       "to": "mapTheme",
       "evidence": "ha.java: Battlefield constructor, rectangular tile indexing and seed/player/mana/turn diagnostic dump.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ha.field_ib:I",
+      "originalName": "field_ib",
+      "to": "turnDurationOption",
+      "evidence": "ha.java: Indexes ce.turnDurationTicks in gameplay construction and each turn-timer reset.",
       "confidence": "reviewed"
     },
     {
@@ -4773,10 +4892,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ic.field_N:Leu;",
+      "originalName": "field_N",
+      "to": "unitCycler",
+      "evidence": "ic.java: Gameplay construction, god/unit menu rebuilding, own-player selection cycling, timer decrement/tick-divided countdown, tutorial notifications and confirmed spell resumption.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ic.field_T:Ljd;",
       "originalName": "field_T",
       "to": "selectedUnit",
       "evidence": "ic.java: Input selection and movement overlay reference the selected unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_gb:Leo;",
+      "originalName": "field_gb",
+      "to": "unitRenderer",
+      "evidence": "ic.java: Gameplay refreshes models through this camera-backed renderer.",
       "confidence": "reviewed"
     },
     {
@@ -4787,6 +4920,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ic.field_k:Lub;",
+      "originalName": "field_k",
+      "to": "godMenu",
+      "evidence": "ic.java: Gameplay construction, god/unit menu rebuilding, own-player selection cycling, timer decrement/tick-divided countdown, tutorial notifications and confirmed spell resumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_p:I",
+      "originalName": "field_p",
+      "to": "remainingTurnTicks",
+      "evidence": "ic.java: Gameplay construction, god/unit menu rebuilding, own-player selection cycling, timer decrement/tick-divided countdown, tutorial notifications and confirmed spell resumption.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ic.field_pc:Lat;",
       "originalName": "field_pc",
       "to": "eventPresenters",
@@ -4794,10 +4941,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ic.field_q:I",
+      "originalName": "field_q",
+      "to": "controlledPlayerId",
+      "evidence": "ic.java: Gameplay construction, god/unit menu rebuilding, own-player selection cycling, timer decrement/tick-divided countdown, tutorial notifications and confirmed spell resumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_s:Liu;",
+      "originalName": "field_s",
+      "to": "battleTutorial",
+      "evidence": "ic.java: Gameplay construction, god/unit menu rebuilding, own-player selection cycling, timer decrement/tick-divided countdown, tutorial notifications and confirmed spell resumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_ub:Luf;",
+      "originalName": "field_ub",
+      "to": "spellConfirmation",
+      "evidence": "ic.java: Gameplay construction, god/unit menu rebuilding, own-player selection cycling, timer decrement/tick-divided countdown, tutorial notifications and confirmed spell resumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_v:Lsj;",
+      "originalName": "field_v",
+      "to": "turnTimerDial",
+      "evidence": "ic.java: Gameplay construction, god/unit menu rebuilding, own-player selection cycling, timer decrement/tick-divided countdown, tutorial notifications and confirmed spell resumption.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ic.field_vb:Lnn;",
       "originalName": "field_vb",
       "to": "movementPlanner",
       "evidence": "ic.java: GameplayController movement overlay and path planning calls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_w:[Lub;",
+      "originalName": "field_w",
+      "to": "unitMenus",
+      "evidence": "ic.java: Gameplay construction, god/unit menu rebuilding, own-player selection cycling, timer decrement/tick-divided countdown, tutorial notifications and confirmed spell resumption.",
       "confidence": "reviewed"
     },
     {
@@ -4924,6 +5106,90 @@
       "originalName": "field_n",
       "to": "maximumY",
       "evidence": "ir.java: Influence-map constructor and bounded row/column cost propagation loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_a:I",
+      "originalName": "field_a",
+      "to": "expandedPanelHeight",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_c:Z",
+      "originalName": "field_c",
+      "to": "expanded",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_e:Ljava/lang/String;",
+      "originalName": "field_e",
+      "to": "message",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_f:I",
+      "originalName": "field_f",
+      "to": "targetPanelWidth",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_g:I",
+      "originalName": "field_g",
+      "to": "panelWidth",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_j:I",
+      "originalName": "field_j",
+      "to": "panelHeight",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_k:I",
+      "originalName": "field_k",
+      "to": "stage",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_m:I",
+      "originalName": "field_m",
+      "to": "autoAdvanceFrames",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_p:I",
+      "originalName": "field_p",
+      "to": "messageId",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_q:Lic;",
+      "originalName": "field_q",
+      "to": "controller",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_v:Z",
+      "originalName": "field_v",
+      "to": "enemyWaveSpawned",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:iu.field_w:I",
+      "originalName": "field_w",
+      "to": "buttonMode",
+      "evidence": "iu.java: Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.",
       "confidence": "reviewed"
     },
     {
@@ -5116,6 +5382,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jd.field_U:Z",
+      "originalName": "field_U",
+      "to": "modelVisible",
+      "evidence": "jd.java: BattleUnitRenderer stores its camera-bound visibility test before model refresh.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jd.field_V:I",
       "originalName": "field_V",
       "to": "movementFlags",
@@ -5263,6 +5536,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jd.field_x:Lhr;",
+      "originalName": "field_x",
+      "to": "modelPreview",
+      "evidence": "jd.java: BattleUnitRenderer creates and retains the current model preview for the unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_z:I",
+      "originalName": "field_z",
+      "to": "modelAnimationIndex",
+      "evidence": "jd.java: Passed to UnitModelPreview.selectAnimation; the renderer normalizes sentinel -1 to zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jf.field_B:B",
       "originalName": "field_B",
       "to": "paddingBytes",
@@ -5393,6 +5680,48 @@
       "originalName": "field_v",
       "to": "groupDigests",
       "evidence": "jm.java: Index constructor checksum/digest validation, versioned decode and ResourceArchive group/file access. Sparse arrays are indexed by actual IDs; null fileIds rows encode contiguous IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jr.field_a:Z",
+      "originalName": "field_a",
+      "to": "unitChoice",
+      "evidence": "jr.java: Item constructor, strict circular pointer hit test and unit/god drawing. choiceId is a unit type for unit choices and a tab choice for god choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jr.field_b:I",
+      "originalName": "field_b",
+      "to": "offsetX",
+      "evidence": "jr.java: Item constructor, strict circular pointer hit test and unit/god drawing. choiceId is a unit type for unit choices and a tab choice for god choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jr.field_c:I",
+      "originalName": "field_c",
+      "to": "godGroupId",
+      "evidence": "jr.java: Item constructor, strict circular pointer hit test and unit/god drawing. choiceId is a unit type for unit choices and a tab choice for god choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jr.field_d:I",
+      "originalName": "field_d",
+      "to": "hitRadius",
+      "evidence": "jr.java: Item constructor, strict circular pointer hit test and unit/god drawing. choiceId is a unit type for unit choices and a tab choice for god choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jr.field_g:I",
+      "originalName": "field_g",
+      "to": "offsetY",
+      "evidence": "jr.java: Item constructor, strict circular pointer hit test and unit/god drawing. choiceId is a unit type for unit choices and a tab choice for god choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jr.field_i:I",
+      "originalName": "field_i",
+      "to": "choiceId",
+      "evidence": "jr.java: Item constructor, strict circular pointer hit test and unit/god drawing. choiceId is a unit type for unit choices and a tab choice for god choices.",
       "confidence": "reviewed"
     },
     {
@@ -6831,6 +7160,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:r.field_E:[Ljava/lang/String;",
+      "originalName": "field_E",
+      "to": "equipmentTutorialMessages",
+      "evidence": "r.java: Specialist-equipment lesson text beginning after Eastbridge, read by EquipmentBattleTutorial.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ra.field_g:Lmn;",
       "originalName": "field_g",
       "to": "request",
@@ -7272,6 +7608,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sj.field_c:I",
+      "originalName": "field_c",
+      "to": "cycleLength",
+      "evidence": "sj.java: Angular threshold constructor and downward sweep with cycle wrap; negative targets reset position and enable the mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sj.field_f:[I",
+      "originalName": "field_f",
+      "to": "pixelThresholds",
+      "evidence": "sj.java: Angular threshold constructor and downward sweep with cycle wrap; negative targets reset position and enable the mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sj.field_h:I",
+      "originalName": "field_h",
+      "to": "sweepPosition",
+      "evidence": "sj.java: Angular threshold constructor and downward sweep with cycle wrap; negative targets reset position and enable the mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sj.field_i:Z",
+      "originalName": "field_i",
+      "to": "useSweepMask",
+      "evidence": "sj.java: Angular threshold constructor and downward sweep with cycle wrap; negative targets reset position and enable the mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sk.field_B:Lv;",
       "originalName": "field_B",
       "to": "camera",
@@ -7559,6 +7923,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ub.field_b:[Ljr;",
+      "originalName": "field_b",
+      "to": "items",
+      "evidence": "ub.java: Constructor retains items and places them around the radius; hit scans and choice lookup traverse itemCount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ub.field_c:I",
+      "originalName": "field_c",
+      "to": "itemCount",
+      "evidence": "ub.java: Constructor retains items and places them around the radius; hit scans and choice lookup traverse itemCount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ub.field_f:I",
+      "originalName": "field_f",
+      "to": "layoutRadius",
+      "evidence": "ub.java: Constructor retains items and places them around the radius; hit scans and choice lookup traverse itemCount.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uc.field_d:[[I",
       "originalName": "field_d",
       "to": "spellDefinitions",
@@ -7640,6 +8025,41 @@
       "originalName": "field_n",
       "to": "physicalLength",
       "evidence": "ue.java: Buffered I/O constructor, seek, read refills, write flushes and overlapping-buffer updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_b:I",
+      "originalName": "field_b",
+      "to": "tileX",
+      "evidence": "uf.java: Dialog constructor and GameplayController confirm branch resume the same spell cast with confirmation accepted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_c:I",
+      "originalName": "field_c",
+      "to": "tileY",
+      "evidence": "uf.java: Dialog constructor and GameplayController confirm branch resume the same spell cast with confirmation accepted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_d:I",
+      "originalName": "field_d",
+      "to": "selectionMode",
+      "evidence": "uf.java: Dialog constructor and GameplayController confirm branch resume the same spell cast with confirmation accepted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_h:Ljava/lang/String;",
+      "originalName": "field_h",
+      "to": "prompt",
+      "evidence": "uf.java: Dialog constructor and GameplayController confirm branch resume the same spell cast with confirmation accepted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_k:I",
+      "originalName": "field_k",
+      "to": "spellId",
+      "evidence": "uf.java: Dialog constructor and GameplayController confirm branch resume the same spell cast with confirmation accepted.",
       "confidence": "reviewed"
     },
     {
@@ -7797,6 +8217,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vb.field_u:Leo;",
+      "originalName": "field_u",
+      "to": "unitRenderer",
+      "evidence": "vb.java: Both EventPresenter constructors retain the renderer supplied by gameplay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vb.field_v:I",
       "originalName": "field_v",
       "to": "screenY",
@@ -7899,6 +8326,13 @@
       "originalName": "field_m",
       "to": "frameIndex",
       "evidence": "vj.java: Sequence selection, per-call frame countdown and delayed sequence-ring consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vl.field_m:[Ljava/lang/String;",
+      "originalName": "field_m",
+      "to": "battleHintMessages",
+      "evidence": "vl.java: BattleTutorial stage 34 selects the constructor-supplied message ID; message 95 is chosen by an existing tutorial control helper.",
       "confidence": "reviewed"
     },
     {
@@ -8896,6 +9330,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:eo.a(BI)Z#0",
+      "originalName": "var3",
+      "to": "screenX",
+      "evidence": "eo.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eo.a(BI)Z#1",
+      "originalName": "var4",
+      "to": "screenY",
+      "evidence": "eo.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eo.a(BI)Z#3",
+      "originalName": "var5",
+      "to": "surfaceWidth",
+      "evidence": "eo.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eo.a(BI)Z#4",
+      "originalName": "var6",
+      "to": "surfaceHeight",
+      "evidence": "eo.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eo.a(IBI[Lne;)V#0",
+      "originalName": "var7",
+      "to": "tileIndex",
+      "evidence": "eo.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eo.a(IBI[Lne;)V#1",
+      "originalName": "var5_int",
+      "to": "tileCount",
+      "evidence": "eo.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eo.a(IBI[Lne;)V#3",
+      "originalName": "var6",
+      "to": "unit",
+      "evidence": "eo.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ha.a(BLvh;)V#1",
       "originalName": "var3_int",
       "to": "stepsRemaining",
@@ -9617,6 +10100,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ic.a(IIIIZI)V#1",
+      "originalName": "var7",
+      "to": "validationMessage",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(IIIIZI)V#3",
+      "originalName": "var8",
+      "to": "spell",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(IIIIZI)V#5",
+      "originalName": "var7Lifetime1",
+      "to": "confirmationPrompt",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ic.a(Lom;B[I[I)F#11",
       "originalName": "var5_float",
       "to": "manaMultiplier",
@@ -9855,6 +10359,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ic.f(Z)V#10",
+      "originalName": "var6",
+      "to": "godUnitType",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#12",
+      "originalName": "var3Lifetime1",
+      "to": "godUnitItems",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#15",
+      "originalName": "var2_intLifetime1",
+      "to": "godUnitCount",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#16",
+      "originalName": "var5Lifetime1",
+      "to": "godUnitOrdinal",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#17",
+      "originalName": "var4Lifetime1",
+      "to": "chosenGodOrdinal",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#3",
+      "originalName": "var2",
+      "to": "godItems",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#4",
+      "originalName": "var2_int",
+      "to": "neutralItemCount",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#6",
+      "originalName": "var3_int",
+      "to": "godOrdinal",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#7",
+      "originalName": "var3",
+      "to": "neutralItems",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#8",
+      "originalName": "var4",
+      "to": "neutralUnitOrdinal",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.f(Z)V#9",
+      "originalName": "var5",
+      "to": "neutralUnitType",
+      "evidence": "ic.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ic.j(Z)V#1",
       "originalName": "var2_int",
       "to": "damageTaken",
@@ -9936,6 +10517,48 @@
       "originalName": "var9",
       "to": "turnCheckpoint",
       "evidence": "ic.java: Reviewed lexical ordinal and campaign metrics, score submission, checkpoint deltas or shared-word mutation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iu.f(I)V#10",
+      "originalName": "var4",
+      "to": "heightToShrink",
+      "evidence": "iu.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iu.f(I)V#11",
+      "originalName": "var4Lifetime1",
+      "to": "heightToGrow",
+      "evidence": "iu.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iu.f(I)V#12",
+      "originalName": "var4Lifetime2",
+      "to": "widthToShrink",
+      "evidence": "iu.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iu.f(I)V#13",
+      "originalName": "var4Lifetime3",
+      "to": "widthToGrow",
+      "evidence": "iu.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iu.f(I)V#8",
+      "originalName": "var2",
+      "to": "targetHeight",
+      "evidence": "iu.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iu.f(I)V#9",
+      "originalName": "var3",
+      "to": "guardArithmetic",
+      "evidence": "iu.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
       "confidence": "reviewed"
     },
     {
@@ -10125,6 +10748,27 @@
       "originalName": "var13Lifetime1Lifetime1",
       "to": "namedFileOrdinal",
       "evidence": "jm.java: Reviewed lexical declaration ordinal and index delta decoding, table allocation, name/digest slots or open-address probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jr.b(IIIII)Z#0",
+      "originalName": "var7",
+      "to": "deltaY",
+      "evidence": "jr.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jr.b(IIIII)Z#1",
+      "originalName": "var6",
+      "to": "deltaX",
+      "evidence": "jr.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jr.b(IIIII)Z#2",
+      "originalName": "var7Lifetime1",
+      "to": "deltaYCanonical",
+      "evidence": "jr.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
       "confidence": "reviewed"
     },
     {
@@ -11276,6 +11920,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:sj.<init>(I)V#0",
+      "originalName": "var4",
+      "to": "pixelIndex",
+      "evidence": "sj.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.<init>(I)V#1",
+      "originalName": "var2",
+      "to": "minimumThreshold",
+      "evidence": "sj.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.<init>(I)V#2",
+      "originalName": "var3",
+      "to": "maximumThreshold",
+      "evidence": "sj.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.<init>(I)V#3",
+      "originalName": "var5",
+      "to": "pixelXFromCenter",
+      "evidence": "sj.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.<init>(I)V#4",
+      "originalName": "var6",
+      "to": "pixelYFromCenter",
+      "evidence": "sj.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.<init>(I)V#5",
+      "originalName": "var7",
+      "to": "threshold",
+      "evidence": "sj.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(ZIB)V#0",
+      "originalName": "var5",
+      "to": "distanceToTarget",
+      "evidence": "sj.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(ZIB)V#1",
+      "originalName": "var6",
+      "to": "maximumStep",
+      "evidence": "sj.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(ZIB)V#2",
+      "originalName": "var4",
+      "to": "guardArithmetic",
+      "evidence": "sj.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:sl.<init>(Lvh;IZ)V#0",
       "originalName": "var5",
       "to": "playerIndex",
@@ -11329,6 +12036,48 @@
       "originalName": "var4",
       "to": "entry",
       "evidence": "tt.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.<init>(I[Ljr;Z)V#0",
+      "originalName": "var4_int",
+      "to": "itemOrdinal",
+      "evidence": "ub.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(BIIII)I#0",
+      "originalName": "var6",
+      "to": "itemOrdinal",
+      "evidence": "ub.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ub.a(II)Ljr;#0",
+      "originalName": "var3",
+      "to": "itemOrdinal",
+      "evidence": "ub.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.a(IBI)I#0",
+      "originalName": "var4",
+      "to": "surfaceWidth",
+      "evidence": "uf.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.a(IBI)I#1",
+      "originalName": "var5",
+      "to": "surfaceHeight",
+      "evidence": "uf.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.a(IBI)I#2",
+      "originalName": "var6",
+      "to": "dialogHeight",
+      "evidence": "uf.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
       "confidence": "reviewed"
     },
     {
@@ -12340,6 +13089,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:de.a(BILha;III)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getSpellCastError",
+      "evidence": "de.java: Checks acting turn, cost/favour, target bounds and spell-specific restrictions; null permits the cast.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:de.a(ILbv;IIII)I",
       "originalName": "a",
       "to": "readTieredSignedInt",
@@ -12690,6 +13446,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.a(BI)Z",
+      "originalName": "a",
+      "to": "isTileVisible",
+      "evidence": "eo.java: Projects the tile and permits screen bounds x in [-180,width], y in [-10,height].",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.a(IBI[Lne;)V",
+      "originalName": "a",
+      "to": "refreshUnitModels",
+      "evidence": "eo.java: Traverses the rectangular tile array and refreshes eligible occupants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.a(IILjd;)V",
+      "originalName": "a",
+      "to": "refreshUnitModel",
+      "evidence": "eo.java: Updates visibility, releases offscreen models when eligible, otherwise advances the retained model.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eu.a(I)V",
+      "originalName": "a",
+      "to": "selectNext",
+      "evidence": "eu.java: Advances from the selected node and wraps to first; refreshes an invalid selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eu.a(ILjd;)V",
+      "originalName": "a",
+      "to": "selectUnit",
+      "evidence": "eu.java: Stores the supplied Unit for canonical guards at most -90; does not validate deque membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eu.b(B)I",
+      "originalName": "b",
+      "to": "getUnitCount",
+      "evidence": "eu.java: Reports the current deque size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eu.b(I)V",
+      "originalName": "b",
+      "to": "selectPrevious",
+      "evidence": "eu.java: Moves backwards from the selected node and wraps to last.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eu.c(B)Z",
+      "originalName": "c",
+      "to": "isSelectionUnlinked",
+      "evidence": "eu.java: Clears a null/unlinked selection; tests the next link rather than deque membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eu.c(I)V",
+      "originalName": "c",
+      "to": "refreshIteratorIfNeeded",
+      "evidence": "eu.java: Recreates the iterator when the selected node is absent or unlinked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eu.d(B)Ltc;",
+      "originalName": "d",
+      "to": "getSelectedNode",
+      "evidence": "eu.java: Returns the retained node without implicitly validating its links.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ev.a(Lvh;B)[I",
       "originalName": "a",
       "to": "readNullableUnsignedByteArray",
@@ -12736,6 +13562,48 @@
       "originalName": "a",
       "to": "configureTutorialStage",
       "evidence": "gb.java: Registers stage item IDs and sets its bounds/spacing; MoveEvent static initialization configures all tutorial stage presets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.b(IB)Z",
+      "originalName": "b",
+      "to": "isUnitLocked",
+      "evidence": "gb.java: Tests player-zero favour and the unit bit in its god unlock group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.b(III)V",
+      "originalName": "b",
+      "to": "handleInteraction",
+      "evidence": "iu.java: Dispatches tutorial interaction kinds; kind five is reclassified by the tile terrain before stage handling. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.c(II)Z",
+      "originalName": "c",
+      "to": "isGodLocked",
+      "evidence": "gb.java: Tests whether player-zero favour for the god is exactly zero; negative favour retains its nonzero behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.e(II)V",
+      "originalName": "e",
+      "to": "setEquipmentStage",
+      "evidence": "gb.java: Stores the equipment lesson stage, clears highlights and selects its prompt/slot state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.h(I)V",
+      "originalName": "h",
+      "to": "updateLesson",
+      "evidence": "gb.java: Uses the current stage, equipped slot and spell definition to update lesson controls and hints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.j(I)Z",
+      "originalName": "j",
+      "to": "isSelectedUnitEligible",
+      "evidence": "gb.java: For equipped spell IDs 34/35/109 accepts an unspent player-zero unit; ID 36 accepts an unspent nonzero-owner unit. Other IDs reject.",
       "confidence": "reviewed"
     },
     {
@@ -13355,6 +14223,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.a(IIIIZI)V",
+      "originalName": "a",
+      "to": "requestSpellCast",
+      "evidence": "ic.java: Validates the spell and shows an optional confirmation prompt before preparing movement or queuing the cast.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.a(Lom;B[I[I)F",
       "originalName": "a",
       "to": "buildCampaignLoadout",
@@ -13369,6 +14244,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.f(Z)V",
+      "originalName": "f",
+      "to": "rebuildSummonMenus",
+      "evidence": "ic.java: Builds the god tabs and neutral/per-god unit menus from chosen gods, unlock masks and campaign state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.g(III)V",
+      "originalName": "g",
+      "to": "notifyTutorialInteraction",
+      "evidence": "ic.java: Forwards interactionKind and tileIndex to the current BattleTutorial when present.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.j(Z)V",
       "originalName": "j",
       "to": "trackCampaignMetrics",
@@ -13380,6 +14269,13 @@
       "originalName": "s",
       "to": "saveCampaignQuicksave",
       "evidence": "ic.java: Uploads the current campaign/mission with damage/loss state and shows the existing feedback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.t(B)V",
+      "originalName": "t",
+      "to": "startEquipmentTutorial",
+      "evidence": "ic.java: Resets planners, creates EquipmentBattleTutorial and installs the existing two-player tutorial setup.",
       "confidence": "reviewed"
     },
     {
@@ -13464,6 +14360,76 @@
       "originalName": "a",
       "to": "writeCoatOfArms",
       "evidence": "ir.java: Writes six part/colour pairs as bytes; low-byte truncation remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.a(IB)I",
+      "originalName": "a",
+      "to": "classifyTerrainInteraction",
+      "evidence": "iu.java: Maps terrain 7/8/9 to interaction kinds 6/7/8, and all other terrain to kind 9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.a(Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "setMessage",
+      "evidence": "iu.java: Stores text and recalculates expanded panel height/target width; stage 34 keeps the original 100-pixel collapsed width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.a(Z)V",
+      "originalName": "a",
+      "to": "activateButton",
+      "evidence": "iu.java: Dispatches the current button mode; mode one toggles expansion, mode five moves to stage 33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.b(II)V",
+      "originalName": "b",
+      "to": "setStage",
+      "evidence": "iu.java: Stores the stage, clears control highlights, selects the hint/button mode and invokes the existing stage-specific effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.b(III)V",
+      "originalName": "b",
+      "to": "handleInteraction",
+      "evidence": "iu.java: Dispatches tutorial interaction kinds; kind five is reclassified by the tile terrain before stage handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.c(B)Z",
+      "originalName": "c",
+      "to": "isEnemyWaveDefeated",
+      "evidence": "iu.java: Tests that player-one units are empty and the designated tutorial portal belongs to player zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.c(I)V",
+      "originalName": "c",
+      "to": "spawnEnemyWave",
+      "evidence": "iu.java: Changes tile (9,12) terrain and queues three fixed tutorial summons, then records wave-spawned state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.d(B)V",
+      "originalName": "d",
+      "to": "clearControlHighlights",
+      "evidence": "iu.java: Clears the four GameplayController flags used by tutorial control highlights.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.f(I)V",
+      "originalName": "f",
+      "to": "advancePanelAnimation",
+      "evidence": "iu.java: Moves panel height/width by at most five per call and advances a delayed tutorial action when its frame counter reaches zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iu.h(B)V",
+      "originalName": "h",
+      "to": "draw",
+      "evidence": "iu.java: Draws the animated tutorial panel, controls and message.",
       "confidence": "reviewed"
     },
     {
@@ -13754,6 +14720,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jr.a(IIZI)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "jr.java: Draws the god or unit choice, with availability and pointer highlight.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jr.a(Z)I",
       "originalName": "a",
       "to": "getCampaignPacketWord2",
@@ -13761,10 +14734,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jr.b(IIIII)Z",
+      "originalName": "b",
+      "to": "containsPoint",
+      "evidence": "jr.java: Uses squared Java-int distance strictly less than radius squared, preserving boundary exclusion and integer wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jv.a(ZI)I",
       "originalName": "a",
       "to": "getUnitUnlockGroup",
       "evidence": "jv.java: Finds the unit ID in unitUnlockGroups; missing IDs retain the original group-zero fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Ljava/lang/String;II)I",
+      "originalName": "a",
+      "to": "getParagraphHeight",
+      "evidence": "ka.java: Wraps text to the supplied width and returns ascent plus line increments plus descent; lineHeight zero uses the font default.",
       "confidence": "reviewed"
     },
     {
@@ -14003,6 +14990,13 @@
       "originalName": "a",
       "to": "enterTaggedPayload",
       "evidence": "kq.java: If payload exceeds length-header width, temporarily rotates its leading bits over the header and seeks to payload start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.a(IIILha;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getSpellConfirmationPrompt",
+      "evidence": "kq.java: Returns a warning when a targeted spell can overwrite equipment/status; null means no prompt.",
       "confidence": "reviewed"
     },
     {
@@ -15217,10 +16211,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(IIB)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "sj.java: Draws the base timer sprite or selects base/alternate pixels using angular thresholds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sj.a(IIBIIIIIILbv;)I",
       "originalName": "a",
       "to": "readTieredSignedBits",
       "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(ZIB)V",
+      "originalName": "a",
+      "to": "advanceSweep",
+      "evidence": "sj.java: Moves down toward the target by at most twice the nominal tick rate, wrapping once; resets on a negative target.",
       "confidence": "reviewed"
     },
     {
@@ -15455,6 +16463,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tp.b(I)I",
+      "originalName": "b",
+      "to": "getNominalTickRate",
+      "evidence": "tp.java: Returns 1000000000 divided by the configured nanoseconds per game tick; this is not presented rendering FPS.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tr.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -15525,6 +16540,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ub.a(BIIII)I",
+      "originalName": "a",
+      "to": "getChoiceAtPoint",
+      "evidence": "ub.java: Returns the first hit item choiceId or -1; retains original coordinate argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.a(II)Ljr;",
+      "originalName": "a",
+      "to": "getItemByChoiceId",
+      "evidence": "ub.java: Returns the first matching choice ID; duplicates remain distinct entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.a(II[III)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "ub.java: Checks mana and favour against unit definitions; neutral/god tabs use their favour value before item drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.b(BIIII)Z",
+      "originalName": "b",
+      "to": "isSecondHalfHit",
+      "evidence": "ub.java: Returns true only when the first hit ordinal is strictly greater than itemCount/2.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ue.a(IIB[B)V",
       "originalName": "a",
       "to": "write",
@@ -15578,6 +16621,20 @@
       "originalName": "e",
       "to": "refillReadBuffer",
       "evidence": "ue.java: Refills cached reads from the current logical position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.a(IBI)I",
+      "originalName": "a",
+      "to": "getActionAtPointer",
+      "evidence": "uf.java: Inclusive left/right button rectangles return the supplied confirmation/cancellation action IDs, or -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.b(I)V",
+      "originalName": "b",
+      "to": "draw",
+      "evidence": "uf.java: Draws the dimmed background, prompt and two confirmation buttons.",
       "confidence": "reviewed"
     },
     {
@@ -18052,6 +19109,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:de.a(BILha;III)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "de.java: Checks acting turn, cost/favour, target bounds and spell-specific restrictions; null permits the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(BILha;III)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "tileY",
+      "evidence": "de.java: Checks acting turn, cost/favour, target bounds and spell-specific restrictions; null permits the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(BILha;III)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "battlefield",
+      "evidence": "de.java: Checks acting turn, cost/favour, target bounds and spell-specific restrictions; null permits the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(BILha;III)Ljava/lang/String;#3",
+      "originalName": "param3",
+      "to": "tileX",
+      "evidence": "de.java: Checks acting turn, cost/favour, target bounds and spell-specific restrictions; null permits the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(BILha;III)Ljava/lang/String;#4",
+      "originalName": "param4",
+      "to": "spellId",
+      "evidence": "de.java: Checks acting turn, cost/favour, target bounds and spell-specific restrictions; null permits the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.a(BILha;III)Ljava/lang/String;#5",
+      "originalName": "param5",
+      "to": "actingPlayer",
+      "evidence": "de.java: Checks acting turn, cost/favour, target bounds and spell-specific restrictions; null permits the cast.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:de.a(ILbv;IIII)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -18941,6 +20040,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:eo.<init>(Lv;)V#0",
+      "originalName": "param0",
+      "to": "camera",
+      "evidence": "eo.java: Retains the supplied camera and constructs the existing projection helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(BI)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eo.java: Projects the tile and permits screen bounds x in [-180,width], y in [-10,height].",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(BI)Z#1",
+      "originalName": "param1",
+      "to": "tileIndex",
+      "evidence": "eo.java: Projects the tile and permits screen bounds x in [-180,width], y in [-10,height].",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(IBI[Lne;)V#0",
+      "originalName": "param0",
+      "to": "mapWidth",
+      "evidence": "eo.java: Traverses the rectangular tile array and refreshes eligible occupants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(IBI[Lne;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "eo.java: Traverses the rectangular tile array and refreshes eligible occupants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(IBI[Lne;)V#2",
+      "originalName": "param2",
+      "to": "mapHeight",
+      "evidence": "eo.java: Traverses the rectangular tile array and refreshes eligible occupants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(IBI[Lne;)V#3",
+      "originalName": "param3",
+      "to": "tiles",
+      "evidence": "eo.java: Traverses the rectangular tile array and refreshes eligible occupants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(IILjd;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eo.java: Updates visibility, releases offscreen models when eligible, otherwise advances the retained model.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(IILjd;)V#1",
+      "originalName": "param1",
+      "to": "tileIndex",
+      "evidence": "eo.java: Updates visibility, releases offscreen models when eligible, otherwise advances the retained model.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(IILjd;)V#2",
+      "originalName": "param2",
+      "to": "unit",
+      "evidence": "eo.java: Updates visibility, releases offscreen models when eligible, otherwise advances the retained model.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.<init>(Lat;)V#0",
+      "originalName": "param0",
+      "to": "units",
+      "evidence": "eu.java: Retains the supplied unit deque and creates an independent iterator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eu.java: Advances from the selected node and wraps to first; refreshes an invalid selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.a(ILjd;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eu.java: Stores the supplied Unit for canonical guards at most -90; does not validate deque membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.a(ILjd;)V#1",
+      "originalName": "param1",
+      "to": "unit",
+      "evidence": "eu.java: Stores the supplied Unit for canonical guards at most -90; does not validate deque membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.b(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eu.java: Reports the current deque size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eu.java: Moves backwards from the selected node and wraps to last.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.c(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eu.java: Clears a null/unlinked selection; tests the next link rather than deque membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eu.java: Recreates the iterator when the selected node is absent or unlinked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.d(B)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eu.java: Returns the retained node without implicitly validating its links.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ev.a(Lvh;B)[I#0",
       "originalName": "param0",
       "to": "packet",
@@ -19067,6 +20299,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gb.<init>(Lic;)V#0",
+      "originalName": "param0",
+      "to": "controller",
+      "evidence": "gb.java: Initializes the full equipment tutorial, fixed tutorial units and captured structures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:gb.a(IIIIII[II)V#0",
       "originalName": "param0",
       "to": "itemSpacing",
@@ -19120,6 +20359,83 @@
       "originalName": "param7",
       "to": "obfuscationGuard",
       "evidence": "gb.java: Registers stage item IDs and sets its bounds/spacing; MoveEvent static initialization configures all tutorial stage presets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.b(IB)Z#0",
+      "originalName": "param0",
+      "to": "unitType",
+      "evidence": "gb.java: Tests player-zero favour and the unit bit in its god unlock group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.b(IB)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "gb.java: Tests player-zero favour and the unit bit in its god unlock group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.b(III)V#0",
+      "originalName": "param0",
+      "to": "tileIndex",
+      "evidence": "iu.java: Dispatches tutorial interaction kinds; kind five is reclassified by the tile terrain before stage handling. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.b(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Dispatches tutorial interaction kinds; kind five is reclassified by the tile terrain before stage handling. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.b(III)V#2",
+      "originalName": "param2",
+      "to": "interactionKind",
+      "evidence": "iu.java: Dispatches tutorial interaction kinds; kind five is reclassified by the tile terrain before stage handling. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.c(II)Z#0",
+      "originalName": "param0",
+      "to": "godId",
+      "evidence": "gb.java: Tests whether player-zero favour for the god is exactly zero; negative favour retains its nonzero behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.c(II)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "gb.java: Tests whether player-zero favour for the god is exactly zero; negative favour retains its nonzero behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.e(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gb.java: Stores the equipment lesson stage, clears highlights and selects its prompt/slot state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.e(II)V#1",
+      "originalName": "param1",
+      "to": "stage",
+      "evidence": "gb.java: Stores the equipment lesson stage, clears highlights and selects its prompt/slot state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.h(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gb.java: Uses the current stage, equipped slot and spell definition to update lesson controls and hints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.j(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gb.java: For equipped spell IDs 34/35/109 accepts an unspent player-zero unit; ID 36 accepts an unspent nonzero-owner unit. Other IDs reject.",
       "confidence": "reviewed"
     },
     {
@@ -20747,6 +22063,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ic.a(IIIIZI)V#0",
+      "originalName": "param0",
+      "to": "selectionMode",
+      "evidence": "ic.java: Validates the spell and shows an optional confirmation prompt before preparing movement or queuing the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(IIIIZI)V#1",
+      "originalName": "param1",
+      "to": "tileY",
+      "evidence": "ic.java: Validates the spell and shows an optional confirmation prompt before preparing movement or queuing the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(IIIIZI)V#2",
+      "originalName": "param2",
+      "to": "spellId",
+      "evidence": "ic.java: Validates the spell and shows an optional confirmation prompt before preparing movement or queuing the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(IIIIZI)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Validates the spell and shows an optional confirmation prompt before preparing movement or queuing the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(IIIIZI)V#4",
+      "originalName": "param4",
+      "to": "confirmed",
+      "evidence": "ic.java: Validates the spell and shows an optional confirmation prompt before preparing movement or queuing the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(IIIIZI)V#5",
+      "originalName": "param5",
+      "to": "tileX",
+      "evidence": "ic.java: Validates the spell and shows an optional confirmation prompt before preparing movement or queuing the cast.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ic.a(Lom;B[I[I)F#0",
       "originalName": "param0",
       "to": "mission",
@@ -20782,6 +22140,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ic.f(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Builds the god tabs and neutral/per-god unit menus from chosen gods, unlock masks and campaign state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.g(III)V#0",
+      "originalName": "param0",
+      "to": "interactionKind",
+      "evidence": "ic.java: Forwards interactionKind and tileIndex to the current BattleTutorial when present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.g(III)V#1",
+      "originalName": "param1",
+      "to": "tileIndex",
+      "evidence": "ic.java: Forwards interactionKind and tileIndex to the current BattleTutorial when present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.g(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Forwards interactionKind and tileIndex to the current BattleTutorial when present.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ic.j(Z)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -20793,6 +22179,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ic.java: Uploads the current campaign/mission with damage/loss state and shows the existing feedback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.t(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Resets planners, creates EquipmentBattleTutorial and installs the existing two-player tutorial setup.",
       "confidence": "reviewed"
     },
     {
@@ -21080,6 +22473,132 @@
       "originalName": "param3",
       "to": "colourIndices",
       "evidence": "ir.java: Writes six part/colour pairs as bytes; low-byte truncation remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.<init>(Lic;)V#0",
+      "originalName": "param0",
+      "to": "controller",
+      "evidence": "iu.java: Creates the full battle tutorial and modifies the designated portal/team structure state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.<init>(Lic;I)V#0",
+      "originalName": "param0",
+      "to": "controller",
+      "evidence": "iu.java: Creates a stage-34 battle hint indexed by messageId.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.<init>(Lic;I)V#1",
+      "originalName": "param1",
+      "to": "messageId",
+      "evidence": "iu.java: Creates a stage-34 battle hint indexed by messageId.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.a(IB)I#0",
+      "originalName": "param0",
+      "to": "tileIndex",
+      "evidence": "iu.java: Maps terrain 7/8/9 to interaction kinds 6/7/8, and all other terrain to kind 9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.a(IB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Maps terrain 7/8/9 to interaction kinds 6/7/8, and all other terrain to kind 9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.a(Ljava/lang/String;B)V#0",
+      "originalName": "param0",
+      "to": "message",
+      "evidence": "iu.java: Stores text and recalculates expanded panel height/target width; stage 34 keeps the original 100-pixel collapsed width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.a(Ljava/lang/String;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Stores text and recalculates expanded panel height/target width; stage 34 keeps the original 100-pixel collapsed width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Dispatches the current button mode; mode one toggles expansion, mode five moves to stage 33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.b(II)V#0",
+      "originalName": "param0",
+      "to": "stage",
+      "evidence": "iu.java: Stores the stage, clears control highlights, selects the hint/button mode and invokes the existing stage-specific effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.b(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Stores the stage, clears control highlights, selects the hint/button mode and invokes the existing stage-specific effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.b(III)V#0",
+      "originalName": "param0",
+      "to": "tileIndex",
+      "evidence": "iu.java: Dispatches tutorial interaction kinds; kind five is reclassified by the tile terrain before stage handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.b(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Dispatches tutorial interaction kinds; kind five is reclassified by the tile terrain before stage handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.b(III)V#2",
+      "originalName": "param2",
+      "to": "interactionKind",
+      "evidence": "iu.java: Dispatches tutorial interaction kinds; kind five is reclassified by the tile terrain before stage handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.c(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Tests that player-one units are empty and the designated tutorial portal belongs to player zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.c(I)V#0",
+      "originalName": "param0",
+      "to": "secondUnitBonus",
+      "evidence": "iu.java: Changes tile (9,12) terrain and queues three fixed tutorial summons, then records wave-spawned state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Clears the four GameplayController flags used by tutorial control highlights.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Moves panel height/width by at most five per call and advances a delayed tutorial action when its frame counter reaches zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iu.h(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iu.java: Draws the animated tutorial panel, controls and message.",
       "confidence": "reviewed"
     },
     {
@@ -21636,10 +23155,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jr.<init>(ZIII)V#0",
+      "originalName": "param0",
+      "to": "unitChoice",
+      "evidence": "jr.java: Captures the choice kind, god/neutral icon group, choice ID and radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.<init>(ZIII)V#1",
+      "originalName": "param1",
+      "to": "godGroupId",
+      "evidence": "jr.java: Captures the choice kind, god/neutral icon group, choice ID and radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.<init>(ZIII)V#2",
+      "originalName": "param2",
+      "to": "choiceId",
+      "evidence": "jr.java: Captures the choice kind, god/neutral icon group, choice ID and radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.<init>(ZIII)V#3",
+      "originalName": "param3",
+      "to": "hitRadius",
+      "evidence": "jr.java: Captures the choice kind, god/neutral icon group, choice ID and radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.a(IIZI)V#0",
+      "originalName": "param0",
+      "to": "availability",
+      "evidence": "jr.java: Draws the god or unit choice, with availability and pointer highlight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.a(IIZI)V#1",
+      "originalName": "param1",
+      "to": "originY",
+      "evidence": "jr.java: Draws the god or unit choice, with availability and pointer highlight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.a(IIZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "jr.java: Draws the god or unit choice, with availability and pointer highlight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.a(IIZI)V#3",
+      "originalName": "param3",
+      "to": "originX",
+      "evidence": "jr.java: Draws the god or unit choice, with availability and pointer highlight.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jr.a(Z)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "jr.java: Returns the corresponding shared state word for the canonical guard, preserving original noncanonical behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.b(IIIII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jr.java: Uses squared Java-int distance strictly less than radius squared, preserving boundary exclusion and integer wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.b(IIIII)Z#1",
+      "originalName": "param1",
+      "to": "pointerX",
+      "evidence": "jr.java: Uses squared Java-int distance strictly less than radius squared, preserving boundary exclusion and integer wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.b(IIIII)Z#2",
+      "originalName": "param2",
+      "to": "originY",
+      "evidence": "jr.java: Uses squared Java-int distance strictly less than radius squared, preserving boundary exclusion and integer wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.b(IIIII)Z#3",
+      "originalName": "param3",
+      "to": "originX",
+      "evidence": "jr.java: Uses squared Java-int distance strictly less than radius squared, preserving boundary exclusion and integer wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jr.b(IIIII)Z#4",
+      "originalName": "param4",
+      "to": "pointerY",
+      "evidence": "jr.java: Uses squared Java-int distance strictly less than radius squared, preserving boundary exclusion and integer wrapping.",
       "confidence": "reviewed"
     },
     {
@@ -21654,6 +23264,27 @@
       "originalName": "param1",
       "to": "unitType",
       "evidence": "jv.java: Finds the unit ID in unitUnlockGroups; missing IDs retain the original group-zero fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;II)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Wraps text to the supplied width and returns ascent plus line increments plus descent; lineHeight zero uses the font default.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;II)I#1",
+      "originalName": "param1",
+      "to": "width",
+      "evidence": "ka.java: Wraps text to the supplied width and returns ascent plus line increments plus descent; lineHeight zero uses the font default.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;II)I#2",
+      "originalName": "param2",
+      "to": "lineHeight",
+      "evidence": "ka.java: Wraps text to the supplied width and returns ascent plus line increments plus descent; lineHeight zero uses the font default.",
       "confidence": "reviewed"
     },
     {
@@ -22228,6 +23859,41 @@
       "originalName": "param4",
       "to": "packet",
       "evidence": "kq.java: If payload exceeds length-header width, temporarily rotates its leading bits over the header and seeks to payload start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(IIILha;I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "tileY",
+      "evidence": "kq.java: Returns a warning when a targeted spell can overwrite equipment/status; null means no prompt.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(IIILha;I)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kq.java: Returns a warning when a targeted spell can overwrite equipment/status; null means no prompt.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(IIILha;I)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "spellId",
+      "evidence": "kq.java: Returns a warning when a targeted spell can overwrite equipment/status; null means no prompt.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(IIILha;I)Ljava/lang/String;#3",
+      "originalName": "param3",
+      "to": "battlefield",
+      "evidence": "kq.java: Returns a warning when a targeted spell can overwrite equipment/status; null means no prompt.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(IIILha;I)Ljava/lang/String;#4",
+      "originalName": "param4",
+      "to": "tileX",
+      "evidence": "kq.java: Returns a warning when a targeted spell can overwrite equipment/status; null means no prompt.",
       "confidence": "reviewed"
     },
     {
@@ -25381,6 +27047,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sj.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "cycleLength",
+      "evidence": "sj.java: Builds one angular threshold per timer sprite pixel using the shared width/height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIB)V#0",
+      "originalName": "param0",
+      "to": "screenY",
+      "evidence": "sj.java: Draws the base timer sprite or selects base/alternate pixels using angular thresholds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIB)V#1",
+      "originalName": "param1",
+      "to": "screenX",
+      "evidence": "sj.java: Draws the base timer sprite or selects base/alternate pixels using angular thresholds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(IIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sj.java: Draws the base timer sprite or selects base/alternate pixels using angular thresholds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sj.a(IIBIIIIIILbv;)I#0",
       "originalName": "param0",
       "to": "unusedTier3HalfRange",
@@ -25448,6 +27142,27 @@
       "originalName": "param9",
       "to": "packet",
       "evidence": "sj.java: Two-bit mode selects signed width plus cumulative half-range offset. The int-guard overload is the existing decompiler bridge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(ZIB)V#0",
+      "originalName": "param0",
+      "to": "useMaskAfterWrap",
+      "evidence": "sj.java: Moves down toward the target by at most twice the nominal tick rate, wrapping once; resets on a negative target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(ZIB)V#1",
+      "originalName": "param1",
+      "to": "targetPosition",
+      "evidence": "sj.java: Moves down toward the target by at most twice the nominal tick rate, wrapping once; resets on a negative target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(ZIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sj.java: Moves down toward the target by at most twice the nominal tick rate, wrapping once; resets on a negative target.",
       "confidence": "reviewed"
     },
     {
@@ -26067,6 +27782,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tp.b(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tp.java: Returns 1000000000 divided by the configured nanoseconds per game tick; this is not presented rendering FPS.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tr.a(BZ)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -26242,6 +27964,146 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ub.<init>(I[Ljr;Z)V#0",
+      "originalName": "param0",
+      "to": "layoutRadius",
+      "evidence": "ub.java: Retains the supplied array and assigns integer-truncated sine/cosine offsets; clockwise chooses the horizontal sign.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.<init>(I[Ljr;Z)V#1",
+      "originalName": "param1",
+      "to": "items",
+      "evidence": "ub.java: Retains the supplied array and assigns integer-truncated sine/cosine offsets; clockwise chooses the horizontal sign.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.<init>(I[Ljr;Z)V#2",
+      "originalName": "param2",
+      "to": "clockwise",
+      "evidence": "ub.java: Retains the supplied array and assigns integer-truncated sine/cosine offsets; clockwise chooses the horizontal sign.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(BIIII)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ub.java: Returns the first hit item choiceId or -1; retains original coordinate argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(BIIII)I#1",
+      "originalName": "param1",
+      "to": "pointerY",
+      "evidence": "ub.java: Returns the first hit item choiceId or -1; retains original coordinate argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(BIIII)I#2",
+      "originalName": "param2",
+      "to": "originX",
+      "evidence": "ub.java: Returns the first hit item choiceId or -1; retains original coordinate argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(BIIII)I#3",
+      "originalName": "param3",
+      "to": "pointerX",
+      "evidence": "ub.java: Returns the first hit item choiceId or -1; retains original coordinate argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(BIIII)I#4",
+      "originalName": "param4",
+      "to": "originY",
+      "evidence": "ub.java: Returns the first hit item choiceId or -1; retains original coordinate argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(II)Ljr;#0",
+      "originalName": "param0",
+      "to": "choiceId",
+      "evidence": "ub.java: Returns the first matching choice ID; duplicates remain distinct entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(II)Ljr;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ub.java: Returns the first matching choice ID; duplicates remain distinct entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(II[III)V#0",
+      "originalName": "param0",
+      "to": "mana",
+      "evidence": "ub.java: Checks mana and favour against unit definitions; neutral/god tabs use their favour value before item drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(II[III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ub.java: Checks mana and favour against unit definitions; neutral/god tabs use their favour value before item drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(II[III)V#2",
+      "originalName": "param2",
+      "to": "godFavourLevels",
+      "evidence": "ub.java: Checks mana and favour against unit definitions; neutral/god tabs use their favour value before item drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(II[III)V#3",
+      "originalName": "param3",
+      "to": "originX",
+      "evidence": "ub.java: Checks mana and favour against unit definitions; neutral/god tabs use their favour value before item drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.a(II[III)V#4",
+      "originalName": "param4",
+      "to": "originY",
+      "evidence": "ub.java: Checks mana and favour against unit definitions; neutral/god tabs use their favour value before item drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.b(BIIII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ub.java: Returns true only when the first hit ordinal is strictly greater than itemCount/2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.b(BIIII)Z#1",
+      "originalName": "param1",
+      "to": "pointerY",
+      "evidence": "ub.java: Returns true only when the first hit ordinal is strictly greater than itemCount/2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.b(BIIII)Z#2",
+      "originalName": "param2",
+      "to": "originY",
+      "evidence": "ub.java: Returns true only when the first hit ordinal is strictly greater than itemCount/2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.b(BIIII)Z#3",
+      "originalName": "param3",
+      "to": "originX",
+      "evidence": "ub.java: Returns true only when the first hit ordinal is strictly greater than itemCount/2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ub.b(BIIII)Z#4",
+      "originalName": "param4",
+      "to": "pointerX",
+      "evidence": "ub.java: Returns true only when the first hit ordinal is strictly greater than itemCount/2.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ue.<init>(Lei;II)V#0",
       "originalName": "param0",
       "to": "file",
@@ -26372,6 +28234,76 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ue.java: Refills cached reads from the current logical position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.<init>(IIIILjava/lang/String;Lic;)V#0",
+      "originalName": "param0",
+      "to": "selectionMode",
+      "evidence": "uf.java: Stores spell target/selection and message; controller argument is not retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.<init>(IIIILjava/lang/String;Lic;)V#1",
+      "originalName": "param1",
+      "to": "spellId",
+      "evidence": "uf.java: Stores spell target/selection and message; controller argument is not retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.<init>(IIIILjava/lang/String;Lic;)V#2",
+      "originalName": "param2",
+      "to": "tileX",
+      "evidence": "uf.java: Stores spell target/selection and message; controller argument is not retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.<init>(IIIILjava/lang/String;Lic;)V#3",
+      "originalName": "param3",
+      "to": "tileY",
+      "evidence": "uf.java: Stores spell target/selection and message; controller argument is not retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.<init>(IIIILjava/lang/String;Lic;)V#4",
+      "originalName": "param4",
+      "to": "prompt",
+      "evidence": "uf.java: Stores spell target/selection and message; controller argument is not retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.<init>(IIIILjava/lang/String;Lic;)V#5",
+      "originalName": "param5",
+      "to": "unusedController",
+      "evidence": "uf.java: Stores spell target/selection and message; controller argument is not retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.a(IBI)I#0",
+      "originalName": "param0",
+      "to": "cancelAction",
+      "evidence": "uf.java: Inclusive left/right button rectangles return the supplied confirmation/cancellation action IDs, or -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.a(IBI)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "uf.java: Inclusive left/right button rectangles return the supplied confirmation/cancellation action IDs, or -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.a(IBI)I#2",
+      "originalName": "param2",
+      "to": "confirmAction",
+      "evidence": "uf.java: Inclusive left/right button rectangles return the supplied confirmation/cancellation action IDs, or -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uf.java: Draws the dimmed background, prompt and two confirmation buttons.",
       "confidence": "reviewed"
     },
     {
@@ -26622,7 +28554,7 @@
     {
       "symbol": "P:vb.<init>(Lic;Lha;Leo;Loj;Z)V#2",
       "originalName": "param2",
-      "to": "effectSprites",
+      "to": "unitRenderer",
       "evidence": "vb.java: EventPresenter constructor bindings; blocking mode preserves its original flag.",
       "confidence": "reviewed"
     },
@@ -27391,9 +29323,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "6ba30abc4e82bf0e61d2360cdbdc22ff0ad44d0456af5c155b1f9948c64f892a",
+      "build-armiesofgielinor-rules.mjs": "293c6daace126b5c6544a948fcd3c56901515a71a21df71a18eff5be1076d5a0",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
-      "tests/test-armiesofgielinor-core.mjs": "7f57538110766c26f61d2112644e26d8f94e0cf48a3e2f23a961196383102cf7",
+      "tests/test-armiesofgielinor-core.mjs": "7ccd62f4ddcab8f48bd3ed7aa3e74077118f533ddb27193e3ef2383d750644a8",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

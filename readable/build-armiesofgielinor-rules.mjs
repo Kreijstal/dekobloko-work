@@ -10,6 +10,14 @@ import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} fr
 const SOURCE_COMMIT = '1655ca853d0d4027018f3efcdc37be76ab7895f4';
 // Evidence below refers to this immutable Java input, not to another game's map.
 const classes = {
+  ub:['RadialSummonMenu','Places god-tab or unit-choice items around a portal; resolves pointer hits and draws summon availability.'],
+  jr:['RadialSummonItem','Unit/god choice identity, icon group, radial offsets and circular hit radius.'],
+  eu:['UnitCycler','Wraps forward/reverse selection through the player unit deque, refreshing after the selected node is unlinked.'],
+  sj:['TurnTimerDial','Angular pixel thresholds and a wrapping sweep driven by remaining turn ticks, rendered beside the tick/50 countdown.'],
+  iu:['BattleTutorial','In-battle tutorial stages, messages, action notifications, control highlights and animated hint panel; distinct from the tutorial menu controller.'],
+  gb:['EquipmentBattleTutorial','BattleTutorial subclass whose specialist-equipment lesson texts follow Eastbridge; tracks the current equipped slot and eligibility gates.'],
+  uf:['SpellConfirmationDialog','Retains spell ID, target tile, selection mode and confirmation prompt; caller resumes the spell cast when confirmed.'],
+  eo:['BattleUnitRenderer','Camera visibility, retained UnitModelPreview objects and per-unit model animation/projection updates.'],
   mg:['ByteStorage','Abstract set/get byte contract for the retained direct-buffer implementation; unrelated static helpers retain separate purposes.'],
   cj:['DirectByteStorage','Stores a copied payload in a direct ByteBuffer; reads return a fresh full-capacity byte array.'],
   jm:['ArchiveIndex','Versions 5–7 decode group/file IDs, revisions, CRCs, optional names and 64-byte digests.'],
@@ -454,7 +462,7 @@ method('sm','a','(B)Ljb;','selectCandidate','Selection contract implemented by m
 method('sm','a','(ILjb;)V','submitCandidate','Submits a candidate using the concrete selection policy.',{0:'obfuscationGuard',1:'candidate'});
 method('sm','b','(B)V','reset','Transfers candidates to the reuse pool and resets strategy state.',{0:'obfuscationGuard'});
 method('sm','b','(I)Ljb;','acquireCandidate','Reuses a pooled candidate or constructs one, then restores its original sentinels.',{0:'obfuscationGuard'});
-constructorParameters('vb','(Lic;Lha;Leo;Loj;Z)V',['controller','battlefield','effectSprites','event','blocking'],'EventPresenter constructor bindings; blocking mode preserves its original flag.');
+constructorParameters('vb','(Lic;Lha;Leo;Loj;Z)V',['controller','battlefield','unitRenderer','event','blocking'],'EventPresenter constructor bindings; blocking mode preserves its original flag.');
 for(const owner of ['sk','qv','tb','ql'])constructorParameters(owner,'(Lha;Lv;Lvb;)V',['battlefield','camera','presenter'],'All presentation constructors bind battlefield, camera and presenter.');
 constructorParameters('cl','(Lej;Ljd;)V',['planner','unit'],'AI unit planner constructor links the unit to its planner.');
 constructorParameters('ir','([Lne;II)V',['tiles','mapWidth','mapHeight'],'Influence-map constructor stores rectangular geometry and allocates packed costs.');
@@ -1281,6 +1289,97 @@ for(const [owner,signature,items] of [
  ['cj','a(I)[B',[[0,'var3','result'],[1,'var2','resultAlias']]],
 ])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical declaration ordinal and archive name resolution, chunk sizing/copying, XTEA round arithmetic, progress or byte storage data flow. Reused size/offset roles retain qualified names.');
 
+
+// Gameplay selection and feedback, reviewed through GameplayController callers.
+for(const [original,to,type] of [['k','godMenu','Lub;'],['w','unitMenus','[Lub;'],['N','unitCycler','Leu;'],['v','turnTimerDial','Lsj;'],['s','battleTutorial','Liu;'],['ub','spellConfirmation','Luf;'],['p','remainingTurnTicks','I'],['q','controlledPlayerId','I']])field('ic',original,type,to,'Gameplay construction, god/unit menu rebuilding, own-player selection cycling, timer decrement/tick-divided countdown, tutorial notifications and confirmed spell resumption.');
+field('ha','ib','I','turnDurationOption','Indexes ce.turnDurationTicks in gameplay construction and each turn-timer reset.');
+field('ce','O','[I','turnDurationTicks','Seven turn-duration choices {12000,9000,7500,6000,4500,3000,1500}; gameplay displays remaining ticks divided by fifty.');
+for(const [original,to,type] of [['c','itemCount','I'],['b','items','[Ljr;'],['f','layoutRadius','I']])field('ub',original,type,to,'Constructor retains items and places them around the radius; hit scans and choice lookup traverse itemCount.');
+for(const [original,to,type] of [['b','offsetX','I'],['g','offsetY','I'],['a','unitChoice','Z'],['c','godGroupId','I'],['i','choiceId','I'],['d','hitRadius','I']])field('jr',original,type,to,'Item constructor, strict circular pointer hit test and unit/god drawing. choiceId is a unit type for unit choices and a tab choice for god choices.');
+constructorParameters('jr','(ZIII)V',['unitChoice','godGroupId','choiceId','hitRadius'],'Captures the choice kind, god/neutral icon group, choice ID and radius.');
+constructorParameters('ub','(I[Ljr;Z)V',['layoutRadius','items','clockwise'],'Retains the supplied array and assigns integer-truncated sine/cosine offsets; clockwise chooses the horizontal sign.');
+method('jr','b','(IIIII)Z','containsPoint','Uses squared Java-int distance strictly less than radius squared, preserving boundary exclusion and integer wrapping.',{0:'obfuscationGuard',1:'pointerX',2:'originY',3:'originX',4:'pointerY'});
+method('jr','a','(IIZI)V','draw','Draws the god or unit choice, with availability and pointer highlight.',{0:'availability',1:'originY',2:'obfuscationGuard',3:'originX'});
+method('ub','a','(BIIII)I','getChoiceAtPoint','Returns the first hit item choiceId or -1; retains original coordinate argument order.',{0:'obfuscationGuard',1:'pointerY',2:'originX',3:'pointerX',4:'originY'});
+method('ub','b','(BIIII)Z','isSecondHalfHit','Returns true only when the first hit ordinal is strictly greater than itemCount/2.',{0:'obfuscationGuard',1:'pointerY',2:'originY',3:'originX',4:'pointerX'});
+method('ub','a','(II)Ljr;','getItemByChoiceId','Returns the first matching choice ID; duplicates remain distinct entries.',{0:'choiceId',1:'obfuscationGuard'});
+method('ub','a','(II[III)V','draw','Checks mana and favour against unit definitions; neutral/god tabs use their favour value before item drawing.',{0:'mana',1:'obfuscationGuard',2:'godFavourLevels',3:'originX',4:'originY'});
+method('ic','f','(Z)V','rebuildSummonMenus','Builds the god tabs and neutral/per-god unit menus from chosen gods, unlock masks and campaign state.',{0:'obfuscationGuard'});
+for(const [original,to,type] of [['c','selectedNode','Ltc;'],['b','units','Lat;'],['f','iterator','Lbb;']])field('eu',original,type,to,'Tracks a selected unit node and independent deque iterator; refreshes selection after unlink, with wrapping traversal.');
+constructorParameters('eu','(Lat;)V',['units'],'Retains the supplied unit deque and creates an independent iterator.');
+method('eu','d','(B)Ltc;','getSelectedNode','Returns the retained node without implicitly validating its links.',{0:'obfuscationGuard'});
+method('eu','c','(B)Z','isSelectionUnlinked','Clears a null/unlinked selection; tests the next link rather than deque membership.',{0:'obfuscationGuard'});
+method('eu','a','(ILjd;)V','selectUnit','Stores the supplied Unit for canonical guards at most -90; does not validate deque membership.',{0:'obfuscationGuard',1:'unit'});
+method('eu','a','(I)V','selectNext','Advances from the selected node and wraps to first; refreshes an invalid selection.',{0:'obfuscationGuard'});
+method('eu','b','(I)V','selectPrevious','Moves backwards from the selected node and wraps to last.',{0:'obfuscationGuard'});
+method('eu','b','(B)I','getUnitCount','Reports the current deque size.',{0:'obfuscationGuard'});
+method('eu','c','(I)V','refreshIteratorIfNeeded','Recreates the iterator when the selected node is absent or unlinked.',{0:'obfuscationGuard'});
+for(const [original,to,type] of [['c','cycleLength','I'],['f','pixelThresholds','[I'],['h','sweepPosition','I'],['i','useSweepMask','Z']])field('sj',original,type,to,'Angular threshold constructor and downward sweep with cycle wrap; negative targets reset position and enable the mask.');
+constructorParameters('sj','(I)V',['cycleLength'],'Builds one angular threshold per timer sprite pixel using the shared width/height.');
+method('sj','a','(ZIB)V','advanceSweep','Moves down toward the target by at most twice the nominal tick rate, wrapping once; resets on a negative target.',{0:'useMaskAfterWrap',1:'targetPosition',2:'obfuscationGuard'});
+method('sj','a','(IIB)V','draw','Draws the base timer sprite or selects base/alternate pixels using angular thresholds.',{0:'screenY',1:'screenX',2:'obfuscationGuard'});
+method('tp','b','(I)I','getNominalTickRate','Returns 1000000000 divided by the configured nanoseconds per game tick; this is not presented rendering FPS.',{0:'obfuscationGuard'});
+for(const [original,to,type] of [['q','controller','Lic;'],['k','stage','I'],['p','messageId','I'],['e','message','Ljava/lang/String;'],['w','buttonMode','I'],['c','expanded','Z'],['a','expandedPanelHeight','I'],['j','panelHeight','I'],['f','targetPanelWidth','I'],['g','panelWidth','I'],['m','autoAdvanceFrames','I'],['v','enemyWaveSpawned','Z']])field('iu',original,type,to,'Tutorial constructors, stage/message selection, button handling, summon-wave completion test and five-pixel panel interpolation. Message ID indexes vl.battleHintMessages at stage 34.');
+field('vl','m','[Ljava/lang/String;','battleHintMessages','BattleTutorial stage 34 selects the constructor-supplied message ID; message 95 is chosen by an existing tutorial control helper.');
+method('iu','a','(Ljava/lang/String;B)V','setMessage','Stores text and recalculates expanded panel height/target width; stage 34 keeps the original 100-pixel collapsed width.',{0:'message',1:'obfuscationGuard'});
+method('iu','f','(I)V','advancePanelAnimation','Moves panel height/width by at most five per call and advances a delayed tutorial action when its frame counter reaches zero.',{0:'obfuscationGuard'});
+method('iu','b','(III)V','handleInteraction','Dispatches tutorial interaction kinds; kind five is reclassified by the tile terrain before stage handling.',{0:'tileIndex',1:'obfuscationGuard',2:'interactionKind'});
+method('iu','b','(II)V','setStage','Stores the stage, clears control highlights, selects the hint/button mode and invokes the existing stage-specific effects.',{0:'stage',1:'obfuscationGuard'});
+method('iu','h','(B)V','draw','Draws the animated tutorial panel, controls and message.',{0:'obfuscationGuard'});
+method('iu','a','(Z)V','activateButton','Dispatches the current button mode; mode one toggles expansion, mode five moves to stage 33.',{0:'obfuscationGuard'});
+method('iu','d','(B)V','clearControlHighlights','Clears the four GameplayController flags used by tutorial control highlights.',{0:'obfuscationGuard'});
+method('iu','c','(B)Z','isEnemyWaveDefeated','Tests that player-one units are empty and the designated tutorial portal belongs to player zero.',{0:'obfuscationGuard'});
+method('iu','a','(IB)I','classifyTerrainInteraction','Maps terrain 7/8/9 to interaction kinds 6/7/8, and all other terrain to kind 9.',{0:'tileIndex',1:'obfuscationGuard'});
+method('iu','c','(I)V','spawnEnemyWave','Changes tile (9,12) terrain and queues three fixed tutorial summons, then records wave-spawned state.',{0:'secondUnitBonus'});
+constructorParameters('iu','(Lic;I)V',['controller','messageId'],'Creates a stage-34 battle hint indexed by messageId.');
+constructorParameters('iu','(Lic;)V',['controller'],'Creates the full battle tutorial and modifies the designated portal/team structure state.');
+method('ic','g','(III)V','notifyTutorialInteraction','Forwards interactionKind and tileIndex to the current BattleTutorial when present.',{0:'interactionKind',1:'tileIndex',2:'obfuscationGuard'});
+for(const [original,to,type] of [['d','selectionMode','I'],['k','spellId','I'],['b','tileX','I'],['c','tileY','I'],['h','prompt','Ljava/lang/String;']])field('uf',original,type,to,'Dialog constructor and GameplayController confirm branch resume the same spell cast with confirmation accepted.');
+constructorParameters('uf','(IIIILjava/lang/String;Lic;)V',['selectionMode','spellId','tileX','tileY','prompt','unusedController'],'Stores spell target/selection and message; controller argument is not retained.');
+method('uf','a','(IBI)I','getActionAtPointer','Inclusive left/right button rectangles return the supplied confirmation/cancellation action IDs, or -1.',{0:'cancelAction',1:'obfuscationGuard',2:'confirmAction'});
+method('uf','b','(I)V','draw','Draws the dimmed background, prompt and two confirmation buttons.',{0:'obfuscationGuard'});
+method('ic','a','(IIIIZI)V','requestSpellCast','Validates the spell and shows an optional confirmation prompt before preparing movement or queuing the cast.',{0:'selectionMode',1:'tileY',2:'spellId',3:'obfuscationGuard',4:'confirmed',5:'tileX'});
+method('de','a','(BILha;III)Ljava/lang/String;','getSpellCastError','Checks acting turn, cost/favour, target bounds and spell-specific restrictions; null permits the cast.',{0:'obfuscationGuard',1:'tileY',2:'battlefield',3:'tileX',4:'spellId',5:'actingPlayer'});
+method('kq','a','(IIILha;I)Ljava/lang/String;','getSpellConfirmationPrompt','Returns a warning when a targeted spell can overwrite equipment/status; null means no prompt.',{0:'tileY',1:'obfuscationGuard',2:'spellId',3:'battlefield',4:'tileX'});
+method('ka','a','(Ljava/lang/String;II)I','getParagraphHeight','Wraps text to the supplied width and returns ascent plus line increments plus descent; lineHeight zero uses the font default.',{0:'text',1:'width',2:'lineHeight'});
+field('eo','b','Lv;','camera','Projects each tile before unit visibility/model refresh.');
+field('ic','gb','Leo;','unitRenderer','Gameplay refreshes models through this camera-backed renderer.');
+field('vb','u','Leo;','unitRenderer','Both EventPresenter constructors retain the renderer supplied by gameplay.');
+field('jd','x','Lhr;','modelPreview','BattleUnitRenderer creates and retains the current model preview for the unit.');
+field('jd','U','Z','modelVisible','BattleUnitRenderer stores its camera-bound visibility test before model refresh.');
+field('jd','z','I','modelAnimationIndex','Passed to UnitModelPreview.selectAnimation; the renderer normalizes sentinel -1 to zero.');
+constructorParameters('eo','(Lv;)V',['camera'],'Retains the supplied camera and constructs the existing projection helper.');
+method('eo','a','(BI)Z','isTileVisible','Projects the tile and permits screen bounds x in [-180,width], y in [-10,height].',{0:'obfuscationGuard',1:'tileIndex'});
+method('eo','a','(IBI[Lne;)V','refreshUnitModels','Traverses the rectangular tile array and refreshes eligible occupants.',{0:'mapWidth',1:'obfuscationGuard',2:'mapHeight',3:'tiles'});
+method('eo','a','(IILjd;)V','refreshUnitModel','Updates visibility, releases offscreen models when eligible, otherwise advances the retained model.',{0:'obfuscationGuard',1:'tileIndex',2:'unit'});
+for(const [owner,signature,items] of [
+ ['ub','<init>(I[Ljr;Z)V',[[0,'var4_int','itemOrdinal']]],
+ ['ub','a(BIIII)I',[[0,'var6','itemOrdinal']]],
+ ['ub','a(II)Ljr;',[[0,'var3','itemOrdinal']]],
+ ['jr','b(IIIII)Z',[[0,'var7','deltaY'],[1,'var6','deltaX'],[2,'var7Lifetime1','deltaYCanonical']]],
+ ['sj','<init>(I)V',[[0,'var4','pixelIndex'],[1,'var2','minimumThreshold'],[2,'var3','maximumThreshold'],[3,'var5','pixelXFromCenter'],[4,'var6','pixelYFromCenter'],[5,'var7','threshold']]],
+ ['sj','a(ZIB)V',[[0,'var5','distanceToTarget'],[1,'var6','maximumStep'],[2,'var4','guardArithmetic']]],
+ ['iu','f(I)V',[[8,'var2','targetHeight'],[9,'var3','guardArithmetic'],[10,'var4','heightToShrink'],[11,'var4Lifetime1','heightToGrow'],[12,'var4Lifetime2','widthToShrink'],[13,'var4Lifetime3','widthToGrow']]],
+ ['uf','a(IBI)I',[[0,'var4','surfaceWidth'],[1,'var5','surfaceHeight'],[2,'var6','dialogHeight']]],
+ ['ic','f(Z)V',[[3,'var2','godItems'],[4,'var2_int','neutralItemCount'],[6,'var3_int','godOrdinal'],[7,'var3','neutralItems'],[8,'var4','neutralUnitOrdinal'],[9,'var5','neutralUnitType'],[10,'var6','godUnitType'],[12,'var3Lifetime1','godUnitItems'],[15,'var2_intLifetime1','godUnitCount'],[16,'var5Lifetime1','godUnitOrdinal'],[17,'var4Lifetime1','chosenGodOrdinal']]],
+ ['ic','a(IIIIZI)V',[[1,'var7','validationMessage'],[3,'var8','spell'],[5,'var7Lifetime1','confirmationPrompt']]],
+ ['eo','a(BI)Z',[[0,'var3','screenX'],[1,'var4','screenY'],[3,'var5','surfaceWidth'],[4,'var6','surfaceHeight']]],
+ ['eo','a(IBI[Lne;)V',[[0,'var7','tileIndex'],[1,'var5_int','tileCount'],[3,'var6','unit']]],
+])for(const [ordinal,originalName,to] of items)local(owner,signature,ordinal,originalName,to,'Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.');
+
+
+field('gb','C','I','equipmentSlot','Indexes battlefield.equippedSpellIds[0] during the five-slot equipment lesson; starts at -1.');
+field('r','E','[Ljava/lang/String;','equipmentTutorialMessages','Specialist-equipment lesson text beginning after Eastbridge, read by EquipmentBattleTutorial.');
+field('ha','B','[[I','equippedSpellIds','Five equipment/spell IDs per player, assigned during match setup and read by the equipment tutorial slot cursor.');
+field('ha','a','[[I','godUnitUnlockMasks','Per-player masks indexed by unit unlock group minus one; equipment tutorial unit availability also checks god favour.');
+constructorParameters('gb','(Lic;)V',['controller'],'Initializes the full equipment tutorial, fixed tutorial units and captured structures.');
+method('gb','c','(II)Z','isGodLocked','Tests whether player-zero favour for the god is exactly zero; negative favour retains its nonzero behavior.',{0:'godId',1:'obfuscationGuard'});
+method('gb','b','(IB)Z','isUnitLocked','Tests player-zero favour and the unit bit in its god unlock group.',{0:'unitType',1:'obfuscationGuard'});
+method('gb','j','(I)Z','isSelectedUnitEligible','For equipped spell IDs 34/35/109 accepts an unspent player-zero unit; ID 36 accepts an unspent nonzero-owner unit. Other IDs reject.',{0:'obfuscationGuard'});
+method('gb','e','(II)V','setEquipmentStage','Stores the equipment lesson stage, clears highlights and selects its prompt/slot state.',{0:'obfuscationGuard',1:'stage'});
+method('gb','h','(I)V','updateLesson','Uses the current stage, equipped slot and spell definition to update lesson controls and hints.',{0:'obfuscationGuard'});
+method('ic','t','(B)V','startEquipmentTutorial','Resets planners, creates EquipmentBattleTutorial and installs the existing two-player tutorial setup.',{0:'obfuscationGuard'});
+
 export function buildArmiesRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -1373,6 +1472,8 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('rg')} / ${link('dm')} / ${link('rk')} | Nested spell-menu choices, match setup options and instruction-page layout/illustrations. |`,
     `| ${link('hr')} → ${link('vj')} / ${link('qb')} | Unit-model previews, animation playback and opcode-decoded frame sequences. |`,
     `| ${link('em')} / ${link('hh')} | Tick-based counters and triangular highlight pulses. |`,
+    `| ${link('ub')} / ${link('jr')} / ${link('eu')} | Portal summon choices, circular hit tests, campaign unlock filtering and unit-selection cycling. |`,
+    `| ${link('sj')} / ${link('uf')} / ${link('iu')} / ${link('gb')} / ${link('eo')} | Turn timer, spell confirmation, battle/equipment tutorial hints and visible unit-model refresh. |`,
     `| ${link('hm')} → ${link('cm')} / ${link('ho')} | Player inventory/rune accounting and versioned campaign results. |`,
     `| ${link('kl')} → ${link('ew')} / ${link('bm')} / ${link('jm')} / ${link('lr')} | Resource loading, versioned archive indexes and group/file name lookup. |`,
     `| ${link('mg')} / ${link('cj')} | Retained direct-buffer storage, byte-array copying and archive payload lifetime. |`,
@@ -1409,6 +1510,9 @@ export function buildArmiesGuide(rules,mapping) {
     'The naming pass changes identifiers and lexical labels, not control flow. Three files still retain compiler dispatcher fallbacks, and large methods remain. More semantic work is needed in combat, spells, AI, tutorial stages and multiplayer packet handling.','',
     'ArchiveIndex decodes formats 5–7: versions 6/7 carry a revision, version 7 uses large-smart integers, and IDs are delta-coded. Names and 64-byte group digests are separate flag-controlled tables. Arrays are indexed by actual group/file IDs, with null fileIds rows representing contiguous IDs. IntKeyLookup linear-probes interleaved key/index slots and returns the first matching input index, including negative and duplicate keys. ResourceArchive lowercases names, exposes index availability, separates packed groups from unpacked files and retains the three existing file-retention modes. CachedArchiveProvider supplies validated indexes and encoded groups from cache/network requests. Independent fixtures cover raw and gzip containers, every version/flag combination, sparse/contiguous/large IDs, checksum and digest-length rejection, name lookup and returned-file retention. This does not establish cache/network end-to-end loading or server compatibility.','',
     'Follow ResourceArchive.getFileWithKeys and unpackGroup: encrypted groups are copied before 32-round XTEA decryption beginning at container offset five. Decompression precedes chunk-table sizing and copying; signed table differences can make later file chunks smaller than earlier ones. Modes zero/one split every file, while mode two extracts only requestedFileId. storeBytes retains or copies arrays through 136 bytes and copies larger payloads to DirectByteStorage; getStoredBytes returns fresh arrays from direct storage. Mode one clears a single-file row after reading; mode two retains the pinned decoder’s null result for an empty file in a multi-file group. Availability methods can report packed bytes without unpacking. Flat access uses archive/file capacities and rejects ambiguous layouts. Independent ciphertext, range/tail, multi-chunk, sparse-ID, reload, copy-boundary and named/flat lookup probes use a controlled ArchiveProvider subclass, while exercising the real archive/index/storage implementation. They do not establish complete cache/network loading or server compatibility.','',
+    'RadialSummonMenu and RadialSummonItem expose portal god tabs and summon choices. Menus retain their item arrays and assign integer-truncated circular offsets; pointer tests exclude the circle boundary and retain Java-int wrapping. Duplicate choice IDs return the first item. GameplayController.rebuildSummonMenus filters campaign neutral units and per-god unlock masks, retaining the type-4 to type-74 King Black Dragon substitution before the dragon has been summoned. UnitCycler wraps in both directions and refreshes after unlink; its accessor retains an unlinked selection until traversal validates it, and selectUnit does not enforce deque membership.','',
+    'TurnTimerDial displays remainingTurnTicks with a nominal fifty-tick countdown. Its angular sweep moves downward, wraps once and switches its mask on the existing conditions. The nominal tick-rate helper uses the configured tick interval; these probes do not measure presented rendering frames. SpellConfirmationDialog retains selection mode, spell ID and target coordinates. Its inclusive confirm/cancel rectangles remain separated by a central gap. BattleTutorial is the in-battle stage/message/hint controller, distinct from TutorialController. Message hints use stage 34, expansion animates in five-pixel steps, terrain interactions retain their kind mapping, and enemy-wave completion requires both an empty player-one deque and the tutorial portal owned by player zero. BattleUnitRenderer names camera culling and retained model refresh; this pass does not test rasterized unit rendering or a complete tutorial walkthrough.','',
+    'EquipmentBattleTutorial follows the Eastbridge battle with specialist-equipment lessons and tracks one of the five equippedSpellIds slots. Its availability gates use player-zero god favour and godUnitUnlockMasks; zero favour locks a choice, while the existing code treats negative favour as nonzero. Selected-unit eligibility retains the spell-specific owner and movement-spent rules for IDs 34/35/36/109. Independent fixtures cover these gates with controlled tables and units; they bypass the tutorial constructor and do not prove its complete scripted sequence.','',
     'The exporter compiles both complete corpora and verifies bindings/overrides. A headless raw-versus-named probe checks rectangular map lookup, team membership, unit flags/damage, equipment/ranges, combat payloads, spell serialization, tile metadata, AI candidate selection/recycling, packed move request decoding, prepared action event payloads, combat/cover calculations, team tile effects, summoning permissions, popup animation, match conditions/masks/rankings, structure income, bit/compact codecs, tagged fields/maps, all five event dispatcher categories and unknown categories, concatenated events, stored-unit records, snapshot chunks, spell factories, tutorial layout/selection, spell-menu hierarchy, setup option validation, instruction bounds and preview units, instruction table shapes/navigation, animation decoding/playback, timing pulses and model-preview setters, versioned profiles/campaign results, mission scoring, coats/participants/overrides, campaign loadouts/reward previews, menu entry/neighbor selection, button bounds, hash-table behavior, palette regions/anchors and clipped indexed rendering, versioned quicksave headers/chunks/deletion, campaign result packets/checkpoints/progress records, secondary deque membership and disk sector/worker behavior, resource queue caps/response assembly and forty-bit keys, and contextual errors, legacy/version-0/version-1/version-2 map terrain headers and event presentation acknowledgement against independent expectations. It bypasses battlefield construction and the Applet graph; it does not establish whole-game playability, AI quality or server compatibility. Exact dictionary reversal recovers every original source byte.',''].join('\n');
 }
 export function buildArmiesManifest() {
@@ -1416,7 +1520,7 @@ export function buildArmiesManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:20,
+    const rules={schema:1,game:'armiesofgielinor',version:21,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

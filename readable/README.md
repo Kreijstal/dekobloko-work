@@ -69,7 +69,20 @@ large IDs, checksum rejection and returned-file retention modes.
 
 ## Armies of Gielinor
 
-The current pass names 140 reviewed classes around battlefield state, units, map
+Gameplay feedback now names portal summon menus/items, unit cycling, the turn
+timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
+model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
+substitution, strict circular hits and duplicate IDs, forward/reverse selection
+and unlink recovery, timer wrap, inclusive confirmation buttons and five-pixel
+hint animation. They use real menu/font/timing methods with controlled state;
+they do not establish rendered gameplay or a full tutorial walkthrough.
+
+EquipmentBattleTutorial separately identifies specialist-equipment lessons
+after Eastbridge. Its equipped-slot cursor, god/unit unlock gates and selected
+unit eligibility now have names and controlled fixtures. The full scripted
+sequence remains unverified.
+
+The current pass names 148 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
