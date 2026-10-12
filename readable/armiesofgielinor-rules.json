@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 24,
+  "version": 25,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
-    "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
+    "commit": "b9cfce0e13ffae9ae44870e1d959c628663a96dc",
     "subdirectory": "games/armiesofgielinor"
   },
-  "inputTreeSha256": "a335a5dc8ceefc629e9ddd18c57c3ce19734ff22b3026833869d1fd193ad0637",
+  "inputTreeSha256": "2c88a51ecea2c0b981a5b108eb38d0ea276180435a22f4cbd552997163f5a433",
   "originalBytecodeEvidence": {
     "cacheLargeEntryLink": {
       "jarUrl": "https://static.alterorb.net/launcher/v3/jars/armiesofgielinor.jar",
@@ -441,8 +441,36 @@
     },
     {
       "symbol": "B:ej.a(ZII)V#0",
-      "originalName": "stateLoop",
-      "to": "scanLoop1",
+      "originalName": "L1",
+      "to": "regionExit1",
+      "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
+      "confidence": "structural"
+    },
+    {
+      "symbol": "B:ej.a(ZII)V#1",
+      "originalName": "L2",
+      "to": "regionExit2",
+      "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
+      "confidence": "structural"
+    },
+    {
+      "symbol": "B:ej.a(ZII)V#2",
+      "originalName": "L3",
+      "to": "regionExit3",
+      "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
+      "confidence": "structural"
+    },
+    {
+      "symbol": "B:ej.a(ZII)V#3",
+      "originalName": "L4",
+      "to": "regionExit4",
+      "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
+      "confidence": "structural"
+    },
+    {
+      "symbol": "B:ej.a(ZII)V#4",
+      "originalName": "L5",
+      "to": "regionExit5",
       "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
       "confidence": "structural"
     },
@@ -911,13 +939,6 @@
     {
       "symbol": "B:ha.a(ZZI)Lat;#0",
       "originalName": "L3",
-      "to": "scanLoop1",
-      "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
-      "confidence": "structural"
-    },
-    {
-      "symbol": "B:ha.b(IIZ)V#0",
-      "originalName": "stateLoop",
       "to": "scanLoop1",
       "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
       "confidence": "structural"
@@ -11003,30 +11024,30 @@
       "confidence": "reviewed"
     },
     {
-      "symbol": "L:ha.b(IIZ)V#17",
-      "originalName": "var4",
-      "to": "orderIndex",
-      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
-      "confidence": "reviewed"
-    },
-    {
-      "symbol": "L:ha.b(IIZ)V#23",
+      "symbol": "L:ha.b(IIZ)V#13",
       "originalName": "var10",
       "to": "receivingPlayers",
       "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
       "confidence": "reviewed"
     },
     {
-      "symbol": "L:ha.b(IIZ)V#24",
+      "symbol": "L:ha.b(IIZ)V#14",
       "originalName": "var11",
       "to": "unitToRemove",
       "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
       "confidence": "reviewed"
     },
     {
-      "symbol": "L:ha.b(IIZ)V#25",
+      "symbol": "L:ha.b(IIZ)V#15",
       "originalName": "var12",
       "to": "campaignUnit",
+      "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ha.b(IIZ)V#7",
+      "originalName": "var4",
+      "to": "orderIndex",
       "evidence": "ha.java: Reviewed lexical ordinal and condition, survivor, elimination-order or leader-registration data flow.",
       "confidence": "reviewed"
     },
@@ -15525,6 +15546,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.a(ZII)V",
+      "originalName": "a",
+      "to": "considerEquippedSpell",
+      "evidence": "ej.java: Checks an equipped slot, resets its strategy, scans radius-bounded square windows and submits every nonzero total; a selected candidate becomes a UnitSpell request.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.b(Ljd;B)Lcl;",
       "originalName": "b",
       "to": "registerUnitPlanner",
@@ -16102,7 +16130,7 @@
       "symbol": "M:ha.b(IIZ)V",
       "originalName": "b",
       "to": "eliminatePlayer",
-      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
+      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using reconstructed control flow.",
       "confidence": "reviewed"
     },
     {
@@ -18693,6 +18721,13 @@
       "originalName": "a",
       "to": "submitMoveCandidate",
       "evidence": "sm.java: Acquires and submits a scored movement destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(IIIFBI)V",
+      "originalName": "a",
+      "to": "submitSpellCandidate",
+      "evidence": "sm.java: Stores destination, score and acting player in a reused candidate. The equipped-slot argument is unused by this method.",
       "confidence": "reviewed"
     },
     {
@@ -22469,6 +22504,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ej.a(ZII)V#0",
+      "originalName": "param0",
+      "to": "skipEvaluation",
+      "evidence": "ej.java: Checks an equipped slot, resets its strategy, scans radius-bounded square windows and submits every nonzero total; a selected candidate becomes a UnitSpell request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(ZII)V#1",
+      "originalName": "param1",
+      "to": "equippedSlot",
+      "evidence": "ej.java: Checks an equipped slot, resets its strategy, scans radius-bounded square windows and submits every nonzero total; a selected candidate becomes a UnitSpell request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.a(ZII)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ej.java: Checks an equipped slot, resets its strategy, scans radius-bounded square windows and submits every nonzero total; a selected candidate becomes a UnitSpell request.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ej.b(Ljd;B)Lcl;#0",
       "originalName": "param0",
       "to": "unit",
@@ -24026,21 +24082,21 @@
       "symbol": "P:ha.b(IIZ)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
+      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using reconstructed control flow.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ha.b(IIZ)V#1",
       "originalName": "param1",
       "to": "playerId",
-      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
+      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using reconstructed control flow.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ha.b(IIZ)V#2",
       "originalName": "param2",
       "to": "removeUnits",
-      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using the existing dispatcher.",
+      "evidence": "ha.java: Marks the player, records elimination order and removes/transfers owned resources using reconstructed control flow.",
       "confidence": "reviewed"
     },
     {
@@ -30792,6 +30848,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sm.a(IIIFBI)V#0",
+      "originalName": "param0",
+      "to": "unusedEquippedSlot",
+      "evidence": "sm.java: Stores destination, score and acting player in a reused candidate. The equipped-slot argument is unused by this method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIFBI)V#1",
+      "originalName": "param1",
+      "to": "destinationX",
+      "evidence": "sm.java: Stores destination, score and acting player in a reused candidate. The equipped-slot argument is unused by this method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIFBI)V#2",
+      "originalName": "param2",
+      "to": "destinationY",
+      "evidence": "sm.java: Stores destination, score and acting player in a reused candidate. The equipped-slot argument is unused by this method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIFBI)V#3",
+      "originalName": "param3",
+      "to": "score",
+      "evidence": "sm.java: Stores destination, score and acting player in a reused candidate. The equipped-slot argument is unused by this method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIFBI)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "sm.java: Stores destination, score and acting player in a reused candidate. The equipped-slot argument is unused by this method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(IIIFBI)V#5",
+      "originalName": "param5",
+      "to": "actingPlayer",
+      "evidence": "sm.java: Stores destination, score and acting player in a reused candidate. The equipped-slot argument is unused by this method.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sm.a(IIIIFI)V#0",
       "originalName": "param0",
       "to": "destinationY",
@@ -33010,7 +33108,7 @@
   },
   "labels": {
     "policy": "lexical-targets",
-    "expectedEdits": 1074
+    "expectedEdits": 985
   },
   "publication": {
     "stubSourceTreeSha256": "6e22ce52f4c447f1593453075d7c63ed5a79a1e88a79e223e2386a58266d55f5",
@@ -33019,9 +33117,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "765fe7bafc905eb075cbbc6c7f7cb7a6e201aa40eaa6ffe4a91c2544096a570b",
+      "build-armiesofgielinor-rules.mjs": "22460e69eb3830138d91007da8215456fe52f07918e500d01a6672771e845ad7",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
-      "tests/test-armiesofgielinor-core.mjs": "dcb4e2ec556ac744552673044c92d28cf243a64aa2c21b687bbb920b9973ffea",
+      "reconstruct-armies-methods.mjs": "104827f7d82ff6116597ad8394ef7007a5fa1068673ff870a7a5239d77e7c303",
+      "tests/test-armiesofgielinor-core.mjs": "b0069136c40337fbbbd91b9571ecf8d069588050bea95a6fc643868d2fd079bd",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
@@ -33029,26 +33128,107 @@
   },
   "generators": {
     "javaTools": {
-      "repository": "Kreijstal/java-tools",
-      "commit": "92e6a69ec0692bf9e6b1f63a30406bfc5455e86c",
-      "trackedClean": true,
-      "sourceArchive": {
-        "sha256": "f268ab42f8acb99fe87c86e38819a820ce801510a2a388972021d2d046522775",
-        "reproduce": "git archive --format=tar 92e6a69ec0692bf9e6b1f63a30406bfc5455e86c | sha256sum",
-        "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
+      "base": {
+        "repository": "Kreijstal/java-tools",
+        "commit": "92e6a69ec0692bf9e6b1f63a30406bfc5455e86c",
+        "trackedClean": true,
+        "sourceArchive": {
+          "sha256": "f268ab42f8acb99fe87c86e38819a820ce801510a2a388972021d2d046522775",
+          "reproduce": "git archive --format=tar 92e6a69ec0692bf9e6b1f63a30406bfc5455e86c | sha256sum",
+          "format": "Git-generated tar archive of all tracked decompiler repository files; excludes build caches and dependencies"
+        },
+        "sourceTreeSha256": "a335a5dc8ceefc629e9ddd18c57c3ce19734ff22b3026833869d1fd193ad0637",
+        "correctedFailures": {
+          "pipeline": 0,
+          "cli": 1,
+          "verify": 0,
+          "javac": 1
+        },
+        "runner": {
+          "repository": "Kreijstal/dekobloko-work",
+          "commit": "c1ee9703d1fe3c1e6d1c8f2503496ff59f72de7d",
+          "sourceSha256": "6f2fefbeb420abd0c0c80a286b676b55130acd3e8f83383085aaf50f83fd3880"
+        }
       },
-      "sourceTreeSha256": "a335a5dc8ceefc629e9ddd18c57c3ce19734ff22b3026833869d1fd193ad0637",
-      "correctedFailures": {
-        "pipeline": 0,
-        "cli": 1,
-        "verify": 0,
-        "javac": 1
+      "methodReconstruction": {
+        "baseSource": {
+          "repository": "Kreijstal/funorb-decompiled",
+          "commit": "1655ca853d0d4027018f3efcdc37be76ab7895f4",
+          "subdirectory": "games/armiesofgielinor"
+        },
+        "baseSourceTreeSha256": "a335a5dc8ceefc629e9ddd18c57c3ce19734ff22b3026833869d1fd193ad0637",
+        "bytecode": {
+          "files": 542,
+          "sha256": "e85e17bfa81c859e973427b53083553b59aabbe27319c2174ef0baeb723f0886"
+        },
+        "generator": {
+          "repository": "Kreijstal/java-tools",
+          "commit": "71adcd0171f6926ae054f86bf2c96d87e045faf8",
+          "trackedClean": true,
+          "sourceArchive": {
+            "sha256": "789cb63546e126182923ac21046e2e9ec8c64a06b38a323a898f2c705adb26e8",
+            "reproduce": "git archive --format=tar 71adcd0171f6926ae054f86bf2c96d87e045faf8 | sha256sum"
+          }
+        },
+        "methods": [
+          {
+            "owner": "ha",
+            "name": "b",
+            "descriptor": "(IIZ)V",
+            "oldBodySha256": "c19446be507696f6c6930f72ed6e53ce0ef5e7160cd44b2233c0f44064b052ec",
+            "newBodySha256": "836f6dc47a41db523d4dd8844835a554486755d4ab75efe24db976777e38424a",
+            "splitBlocks": 8,
+            "normalFlowVerified": true
+          },
+          {
+            "owner": "ej",
+            "name": "a",
+            "descriptor": "(ZII)V",
+            "oldBodySha256": "9a6cb9643bae694dcc6870173c113d142900cbff6eb42db6dce8f49995e3ee6c",
+            "newBodySha256": "f818b90b93587497c514599640140e57264a5a86bf729d80592417d2313eb12c",
+            "splitBlocks": 26,
+            "normalFlowVerified": true
+          }
+        ],
+        "sourceTreeSha256": "2c88a51ecea2c0b981a5b108eb38d0ea276180435a22f4cbd552997163f5a433",
+        "verification": {
+          "checks": 58911,
+          "rawNamedIdentical": true,
+          "independentExpectations": true,
+          "headlessClientBoundary": true,
+          "clientAppletSubtypePreserved": true,
+          "battlefieldConstructorBypassed": true,
+          "archiveProviderFixture": true,
+          "xteaIndependentEncoder": true,
+          "archiveChunkExtraction": true,
+          "directByteStorageThreshold": 136,
+          "summonMenuFixtures": true,
+          "unitCycleFixtures": true,
+          "turnTimerFixtures": true,
+          "spellConfirmationFixtures": true,
+          "battleHintFixtures": true,
+          "equipmentTutorialGates": true,
+          "meshPreprocessingFixtures": true,
+          "meshSharingFixtures": true,
+          "quaternionFixtures": true,
+          "battleProjectionFixtures": true,
+          "modelLifetimeFixtures": true,
+          "unitAnimationSelectionFixtures": true,
+          "animationFrameDecodingFixtures": true,
+          "animationBlendFixtures": true,
+          "modelCoordinateStorageFixtures": true,
+          "animationArchiveLoadingFixtures": true,
+          "maskedMeshTransformFixtures": true,
+          "matrixTranslationFixtures": true,
+          "animationSlotSelectionFixtures": true,
+          "animationDecoderScratchFixtures": true,
+          "triangleClipFixtures": true,
+          "flatAndUniformShadedTriangleFixtures": true,
+          "modelBoundsFixtures": true,
+          "traceSha256": "23f16ae89c77139fd012a6b4be863862c097cc606d48ad603f5e6a88afd5a0b2"
+        }
       },
-      "runner": {
-        "repository": "Kreijstal/dekobloko-work",
-        "commit": "c1ee9703d1fe3c1e6d1c8f2503496ff59f72de7d",
-        "sourceSha256": "6f2fefbeb420abd0c0c80a286b676b55130acd3e8f83383085aaf50f83fd3880"
-      }
+      "sourceTreeSha256": "2c88a51ecea2c0b981a5b108eb38d0ea276180435a22f4cbd552997163f5a433"
     },
     "namingTool": {
       "schema": 1,

@@ -76,6 +76,22 @@ The tracking/turning phase and rendered effects remain unverified.
 
 ## Armies of Gielinor
 
+The raw naming input now reconstructs Battlefield.eliminatePlayer and
+AiPlanner.considerEquippedSpell with the generic compiler’s bounded plain-CFG
+splitting and original-edge proof. The named export has one remaining dispatcher
+file, gs.java. The reconstruction script changes only the two method bodies and
+compares the complete old/new corpora with native fixtures.
+
+To rebuild that raw input, replay the original gamepack through the documented
+owned pipeline at Deko commit 3ca5318cf9852723bca4ff37712194947c0ec118 and
+java-tools commit 1d183d3ba75fc0a8cd3af1544591b8c463c0e1ff. The pipeline output
+must match e85e17bfa81c859e973427b53083553b59aabbe27319c2174ef0baeb723f0886.
+Use java-tools commit 71adcd0171f6926ae054f86bf2c96d87e045faf8, then run
+`node readable/reconstruct-armies-methods.mjs VERIFIED_BYTECODE /tmp/owned/raw`.
+The output must be a new path in temporary storage. The compiler source tar
+SHA-256 and method-body identities are reported separately from the bytecode
+hash; ordinary naming reproduction remains offline against its Git source pin.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -135,7 +151,7 @@ leaders completing an escort can win. Turn preparation, pending-event
 application, player elimination, survivor masks, elimination order, rankings
 and structure income have reviewed methods and state. CampaignMission and
 MapLayout name tagged metadata and map decoding; finer numerical settings
-remain unresolved. The elimination dispatcher is retained with clearer
+remain unresolved. Elimination now uses reconstructed control flow with the same reviewed
 parameters and local names.
 PlayerProfile names versioned spell quantities/equipped IDs, unit-unlock masks
 and rune accounting formulas. CampaignProgress/CampaignResult expose three
@@ -293,8 +309,8 @@ from unsigned snapshots. Participant fixtures verify names, favour levels,
 shared override growth and duplicate appends; finer byte-array/ledger semantics
 and live server compatibility remain unresolved.
 The probe bypasses battlefield construction and Applet initialization,
-so it is not a full gameplay or multiplayer-server test. Three dispatcher files
-and large methods remain; this is a semantic naming pass, not control-flow recovery.
+so it is not a full gameplay or multiplayer-server test. One dispatcher file and large methods remain. Naming follows the pinned raw
+input’s two generically reconstructed methods.
 
 ## Deko Bloko
 
@@ -343,3 +359,7 @@ This checks the gamepack and original-class hashes plus the recorded `javap`
 instructions. The gamepack URL/hash are in the single current manifest under
 `originalBytecodeEvidence`; they identify this audit input. The decompiler
 source Git commit/tar SHA-256 remain separately recorded in export provenance.
+
+AI equipped-spell fixtures independently check damage scoring and candidate
+window ordering with a recording strategy. They cover slots, guards, skip gates,
+friendly/enemy signs and nonzero totals; selection and live casts remain unverified.

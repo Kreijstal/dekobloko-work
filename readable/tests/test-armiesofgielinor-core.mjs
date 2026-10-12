@@ -620,7 +620,40 @@ call(mesh,value,"${m('gd','d','()V')}",new Class<?>[]{});check("mesh-bounds/radi
 call(mesh,value,"${m('gd','b','(III)V')}",new Class<?>[]{int.class,int.class,int.class},128,128,128);check("mesh-bounds/scale-invalidates/"+fixture,get(mesh,value,"${f('gd','k','Z')}"),false);
 }
 }
-static void verifyBattleModelData()throws Exception{verifyFixedQuaternions();verifyMeshPreprocessing();verifyUnitAnimationSelection();verifyBattleProjectionAndModelLifetime();verifyModelCreationFallback();verifyAnimationFrames();verifyAnimationLoading();verifyMeshTransforms();verifyAnimationDecoderScratch();verifyTriangleClip();verifyAnimationSlotSelection();verifyTrianglePixels();verifyModelBounds();}
+static class SpellCandidateSpy extends ${className('sm')} {
+int resets,selections;final ArrayList<String> submitted=new ArrayList<>();
+SpellCandidateSpy(){super(null);}
+void ${m('sm','b','(B)V')}(byte guard){resets++;submitted.clear();}
+void ${m('sm','a','(ILjb;)V')}(int guard,${className('jb')} candidate){submitted.add(candidate.${f('jb','s','I')}+","+candidate.${f('jb','q','I')}+":"+candidate.${f('jb','t','F')}+":"+candidate.${f('jb','m','I')});}
+${className('jb')} ${m('sm','a','(B)Ljb;')}(byte guard){selections++;return null;}
+}
+static void verifyAiSpellCandidates()throws Exception{
+Class<?> planner=Class.forName("${className('ej')}"),definitions=Class.forName("${className('uc')}");Object saved=get(definitions,null,"${f('uc','d','[[I')}");
+try{int[][] spells=new int[60][8];set(definitions,null,"${f('uc','d','[[I')}",spells);
+for(int[] size:new int[][]{{5,4},{3,3},{1,1}})for(int radius=0;radius<=2;radius++)for(int damage:new int[]{-2,0,3,30})for(int spell=47;spell<=53;spell++){
+int width=size[0],height=size[1];Object battlefield=unsafe.allocateInstance(board),ai=unsafe.allocateInstance(planner),tiles=Array.newInstance(tile,width*height);int[] owners=new int[width*height],strengths=new int[width*height];Arrays.fill(owners,-1);
+for(int index=0;index<width*height;index++){Object cell=unsafe.allocateInstance(tile);Array.set(tiles,index,cell);if(index%4!=0){Object occupant=unsafe.allocateInstance(unit);owners[index]=index%3;strengths[index]=1+index*3%11;set(unit,occupant,"${f('jd','O','I')}",owners[index]);set(unit,occupant,"${f('jd','Y','I')}",strengths[index]);set(tile,cell,"${f('ne','c','Ljd;')}",occupant);}}
+set(board,battlefield,"${f('ha','v','I')}",width);set(board,battlefield,"${f('ha','db','I')}",height);set(board,battlefield,"${f('ha','Eb','[Lne;')}",tiles);set(board,battlefield,"${f('ha','B','[[I')}",new int[][]{{spell}});
+set(planner,ai,"${f('ej','D','Lha;')}",battlefield);set(planner,ai,"${f('ej','z','I')}",0);SpellCandidateSpy spy=new SpellCandidateSpy();set(planner,ai,"${f('ej','F','Lsm;')}",spy);spells[spell][6]=damage;spells[spell][7]=radius;
+String label="ai-spell/"+width+"/"+height+"/"+radius+"/"+damage+"/"+spell;
+ArrayList<String> expected=new ArrayList<>();for(int centerY=radius;centerY<height-radius;centerY++)for(int centerX=radius;centerX<width-radius;centerX++){
+float sum=0;for(int y=centerY-radius;y<=centerY+radius;y++)for(int x=centerX-radius;x<=centerX+radius;x++){int index=y*width+x;if(owners[index]>=0){int amount=Math.min(damage,strengths[index]);sum+=owners[index]==0?-amount:amount;}}
+if(sum!=0)expected.add(centerX+","+centerY+":"+sum+":0");}
+call(planner,ai,"${m('ej','a','(ZII)V')}",new Class<?>[]{boolean.class,int.class,int.class},false,0,23);
+check(label+"/candidates",spy.submitted.toString(),expected.toString());check(label+"/reset",spy.resets,1);check(label+"/selection",spy.selections,1);check(label+"/no-action",get(board,battlefield,"${f('ha','J','Z')}"),false);
+spy.resets=0;spy.selections=0;call(planner,ai,"${m('ej','a','(ZII)V')}",new Class<?>[]{boolean.class,int.class,int.class},true,0,23);
+check(label+"/skip-reset",spy.resets,1);check(label+"/skip-selection",spy.selections,0);check(label+"/skip-candidates",spy.submitted.isEmpty(),true);
+for(int[] outside:new int[][]{{-1,0},{0,-1},{width,0},{0,height}})check(label+"/outside/"+outside[0]+"/"+outside[1],call(planner,ai,"${m('ej','a','(IIIB)F')}",new Class<?>[]{int.class,int.class,int.class,byte.class},outside[0],spell,outside[1],(byte)-90),-Float.MAX_VALUE);
+}
+Object ai=unsafe.allocateInstance(planner),battlefield=unsafe.allocateInstance(board);SpellCandidateSpy spy=new SpellCandidateSpy();set(planner,ai,"${f('ej','F','Lsm;')}",spy);
+call(planner,ai,"${m('ej','a','(ZII)V')}",new Class<?>[]{boolean.class,int.class,int.class},false,0,23);check("ai-spell/no-board",spy.resets,0);
+set(planner,ai,"${f('ej','D','Lha;')}",battlefield);set(planner,ai,"${f('ej','z','I')}",0);set(board,battlefield,"${f('ha','B','[[I')}",new int[][]{null});
+call(planner,ai,"${m('ej','a','(ZII)V')}",new Class<?>[]{boolean.class,int.class,int.class},false,0,23);check("ai-spell/no-equipped-row",spy.resets,0);
+set(board,battlefield,"${f('ha','B','[[I')}",new int[][]{{-1}});call(planner,ai,"${m('ej','a','(ZII)V')}",new Class<?>[]{boolean.class,int.class,int.class},false,0,23);check("ai-spell/empty-slot",spy.resets,0);
+call(planner,ai,"${m('ej','a','(ZII)V')}",new Class<?>[]{boolean.class,int.class,int.class},false,999,22);check("ai-spell/guard-before-slot-read",spy.resets,0);
+}finally{set(definitions,null,"${f('uc','d','[[I')}",saved);}
+}
+static void verifyBattleModelData()throws Exception{verifyFixedQuaternions();verifyMeshPreprocessing();verifyUnitAnimationSelection();verifyBattleProjectionAndModelLifetime();verifyModelCreationFallback();verifyAnimationFrames();verifyAnimationLoading();verifyMeshTransforms();verifyAnimationDecoderScratch();verifyTriangleClip();verifyAnimationSlotSelection();verifyTrianglePixels();verifyModelBounds();verifyAiSpellCandidates();}
 
 public static void main(String[] args)throws Exception{
 Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);
@@ -1387,7 +1420,7 @@ System.out.println("checks:"+cases);
   assert.deepEqual(outputs[1],outputs[0],'Named gameplay core differs from pinned raw Java');
   const checks=Number(outputs[0].toString().trimEnd().split('\n').at(-1).split(':')[1]);
   assert.ok(checks>900);
-  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,animationFrameDecodingFixtures:true,animationBlendFixtures:true,modelCoordinateStorageFixtures:true,animationArchiveLoadingFixtures:true,maskedMeshTransformFixtures:true,matrixTranslationFixtures:true,animationSlotSelectionFixtures:true,animationDecoderScratchFixtures:true,triangleClipFixtures:true,flatAndUniformShadedTriangleFixtures:true,modelBoundsFixtures:true,traceSha256:digest(outputs[0])};
+  return {checks,rawNamedIdentical:true,independentExpectations:true,headlessClientBoundary:true,clientAppletSubtypePreserved:true,battlefieldConstructorBypassed:true,archiveProviderFixture:true,xteaIndependentEncoder:true,archiveChunkExtraction:true,directByteStorageThreshold:136,summonMenuFixtures:true,unitCycleFixtures:true,turnTimerFixtures:true,spellConfirmationFixtures:true,battleHintFixtures:true,equipmentTutorialGates:true,meshPreprocessingFixtures:true,meshSharingFixtures:true,quaternionFixtures:true,battleProjectionFixtures:true,modelLifetimeFixtures:true,unitAnimationSelectionFixtures:true,animationFrameDecodingFixtures:true,animationBlendFixtures:true,modelCoordinateStorageFixtures:true,animationArchiveLoadingFixtures:true,maskedMeshTransformFixtures:true,matrixTranslationFixtures:true,animationSlotSelectionFixtures:true,animationDecoderScratchFixtures:true,triangleClipFixtures:true,flatAndUniformShadedTriangleFixtures:true,modelBoundsFixtures:true,aiSpellCandidateFixtures:true,traceSha256:digest(outputs[0])};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'armies-core-check-'));
