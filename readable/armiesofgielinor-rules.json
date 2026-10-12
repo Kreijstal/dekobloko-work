@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 51,
+  "version": 52,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2085,6 +2085,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dw",
+      "originalName": "dw",
+      "to": "MidiFileReader",
+      "evidence": "dw.java: Track offsets/cursors, cumulative ticks, running status and tempo-adjusted event time from MIDI bytes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ea",
       "originalName": "ea",
       "to": "CommunityTabGroup",
@@ -3261,6 +3268,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:um",
+      "originalName": "um",
+      "to": "MusicTrack",
+      "evidence": "um.java: Decodes packed archive music into MIDI bytes and builds retained per-patch note-usage masks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:un",
       "originalName": "un",
       "to": "VorbisFloor",
@@ -3321,6 +3335,13 @@
       "originalName": "vb",
       "to": "EventPresenter",
       "evidence": "vb.java: Selects a presentation from event kind, advances it, acknowledges completion and guards against stalled presentations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vc",
+      "originalName": "vc",
+      "to": "MusicPatchUsage",
+      "evidence": "vc.java: Intrusive per-patch note mask retained by MusicTrack; unrelated UI/archive globals retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -5232,6 +5253,69 @@
       "originalName": "field_c",
       "to": "chatHuffmanCodec",
       "evidence": "ds.java: Installed codebook is shared by compressed chat text read/write helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dw.field_a:[I",
+      "originalName": "field_a",
+      "to": "trackStarts",
+      "evidence": "dw.java: Track/header/status/tempo parsing identifies byte cursors, cumulative ticks and tempo-continuous tick time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dw.field_b:Lvh;",
+      "originalName": "field_b",
+      "to": "buffer",
+      "evidence": "dw.java: Track/header/status/tempo parsing identifies byte cursors, cumulative ticks and tempo-continuous tick time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dw.field_c:I",
+      "originalName": "field_c",
+      "to": "division",
+      "evidence": "dw.java: Track/header/status/tempo parsing identifies byte cursors, cumulative ticks and tempo-continuous tick time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dw.field_d:[I",
+      "originalName": "field_d",
+      "to": "trackPositions",
+      "evidence": "dw.java: Track/header/status/tempo parsing identifies byte cursors, cumulative ticks and tempo-continuous tick time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dw.field_e:I",
+      "originalName": "field_e",
+      "to": "tempoMicrosPerQuarter",
+      "evidence": "dw.java: Track/header/status/tempo parsing identifies byte cursors, cumulative ticks and tempo-continuous tick time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dw.field_f:[B",
+      "originalName": "field_f",
+      "to": "messageDataBytes",
+      "evidence": "dw.java: Track/header/status/tempo parsing identifies byte cursors, cumulative ticks and tempo-continuous tick time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dw.field_g:J",
+      "originalName": "field_g",
+      "to": "timeOffset",
+      "evidence": "dw.java: Track/header/status/tempo parsing identifies byte cursors, cumulative ticks and tempo-continuous tick time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dw.field_h:[I",
+      "originalName": "field_h",
+      "to": "runningStatuses",
+      "evidence": "dw.java: Track/header/status/tempo parsing identifies byte cursors, cumulative ticks and tempo-continuous tick time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dw.field_i:[I",
+      "originalName": "field_i",
+      "to": "trackTicks",
+      "evidence": "dw.java: Track/header/status/tempo parsing identifies byte cursors, cumulative ticks and tempo-continuous tick time.",
       "confidence": "reviewed"
     },
     {
@@ -13551,6 +13635,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:um.field_k:[B",
+      "originalName": "field_k",
+      "to": "midiBytes",
+      "evidence": "um.java: Packed constructor emits MThd/MTrk MIDI bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:um.field_l:Lbg;",
+      "originalName": "field_l",
+      "to": "patchUsage",
+      "evidence": "um.java: Lazily retained per-patch 128-note masks keyed by bank/program identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:un.field_a:[[I",
       "originalName": "field_a",
       "to": "classSubbooks",
@@ -14003,6 +14101,34 @@
       "originalName": "field_z",
       "to": "fullCombatScene",
       "evidence": "vb.java: EventPresenter constructors, dispatch, render delegates and completion/1000-frame timeout path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vc.field_k:[Lwk;",
+      "originalName": "field_k",
+      "to": "manaStarSprites",
+      "evidence": "vc.java: Client startup loads the manastars sheet, consumed by mana-particle instances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vc.field_l:Lje;",
+      "originalName": "field_l",
+      "to": "gameOptionsGrid",
+      "evidence": "vc.java: Lobby options construction adds option labels/controls under this retained grid; layout uses gameOptionCount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vc.field_m:Lkl;",
+      "originalName": "field_m",
+      "to": "backgroundArchive",
+      "evidence": "vc.java: Archive slot 21 supplies campaign/menu JPEGs and theme background resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vc.field_n:[B",
+      "originalName": "field_n",
+      "to": "notes",
+      "evidence": "vc.java: Per-patch note indices marked one during usage scanning.",
       "confidence": "reviewed"
     },
     {
@@ -17496,6 +17622,181 @@
       "originalName": "var10Lifetime7",
       "to": "leafBit0",
       "evidence": "dq.java: Reviewed Huffman construction/packing/trie traversal, compressed text or retained chat target at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a(II)I#0",
+      "originalName": "var5",
+      "to": "newTempo",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a(II)I#1",
+      "originalName": "var6",
+      "to": "tick",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a(II)I#2",
+      "originalName": "var3",
+      "to": "metaType",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a(II)I#3",
+      "originalName": "var4",
+      "to": "payloadLength",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a(II)I#4",
+      "originalName": "var3Lifetime1",
+      "to": "dataBytes",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a(II)I#5",
+      "originalName": "var4Lifetime1",
+      "to": "message",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a(J)V#0",
+      "originalName": "var4",
+      "to": "trackIndex",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a(J)V#1",
+      "originalName": "var3",
+      "to": "trackCount",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a([B)V#0",
+      "originalName": "var4",
+      "to": "chunkType",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a([B)V#1",
+      "originalName": "var5",
+      "to": "chunkLength",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a([B)V#2",
+      "originalName": "var3Lifetime1",
+      "to": "initialTrackIndex",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a([B)V#3",
+      "originalName": "var2",
+      "to": "trackCount",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a([B)V#4",
+      "originalName": "var3",
+      "to": "trackIndex",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.a([B)V#5",
+      "originalName": "var6",
+      "to": "cursorIndex",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.b()Z#0",
+      "originalName": "var2",
+      "to": "trackIndex",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.b()Z#1",
+      "originalName": "var1",
+      "to": "trackCount",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.c(I)I#0",
+      "originalName": "var2",
+      "to": "message",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.e()I#0",
+      "originalName": "var4",
+      "to": "trackIndex",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.e()I#1",
+      "originalName": "var1",
+      "to": "trackCount",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.e()I#2",
+      "originalName": "var2",
+      "to": "selectedTrack",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.e()I#3",
+      "originalName": "var3",
+      "to": "minimumTick",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.e(I)I#0",
+      "originalName": "var2",
+      "to": "status",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.e(I)I#1",
+      "originalName": "var3",
+      "to": "payloadLength",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.e(I)I#2",
+      "originalName": "var4",
+      "to": "escapedStatus",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dw.f(I)V#0",
+      "originalName": "var2",
+      "to": "delta",
+      "evidence": "dw.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -27327,6 +27628,902 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:um.<init>(Lvh;)V#0",
+      "originalName": "incrementValue$0",
+      "to": "opcodeIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#1",
+      "originalName": "incrementValue$25",
+      "to": "tempoIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#10",
+      "originalName": "incrementValue$4",
+      "to": "channelPressureIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#100",
+      "originalName": "var15Lifetime2",
+      "to": "controllerNumberCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#101",
+      "originalName": "var28Lifetime1",
+      "to": "writtenController",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#102",
+      "originalName": "var29Lifetime1",
+      "to": "opcodeCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#11",
+      "originalName": "incrementValue$1",
+      "to": "programAndBankIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#12",
+      "originalName": "incrementValue$2",
+      "to": "noteIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#13",
+      "originalName": "incrementValue$3",
+      "to": "polyPressureIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#14",
+      "originalName": "incrementValue$7",
+      "to": "controllerNumberIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#15",
+      "originalName": "incrementValue$19",
+      "to": "modulationMsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#16",
+      "originalName": "incrementValue$18",
+      "to": "modulationLsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#17",
+      "originalName": "incrementValue$17",
+      "to": "volumeMsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#18",
+      "originalName": "incrementValue$16",
+      "to": "volumeLsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#19",
+      "originalName": "incrementValue$15",
+      "to": "panMsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#2",
+      "originalName": "incrementValue$26",
+      "to": "tempoIndex2",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#20",
+      "originalName": "incrementValue$14",
+      "to": "panLsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#21",
+      "originalName": "incrementValue$13",
+      "to": "nrpnMsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#22",
+      "originalName": "incrementValue$12",
+      "to": "nrpnLsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#23",
+      "originalName": "incrementValue$11",
+      "to": "rpnMsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#24",
+      "originalName": "incrementValue$10",
+      "to": "rpnLsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#25",
+      "originalName": "incrementValue$8",
+      "to": "otherControlIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#26",
+      "originalName": "incrementValue$9",
+      "to": "specialControlIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#27",
+      "originalName": "incrementValue$20",
+      "to": "programAndBankIndex2",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#28",
+      "originalName": "stackIn_84_0",
+      "to": "headerOutput",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#29",
+      "originalName": "stackIn_84_1",
+      "to": "shortWriteGuard",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#3",
+      "originalName": "incrementValue$27",
+      "to": "tempoIndex3",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#30",
+      "originalName": "stackIn_85_2",
+      "to": "midiFormat",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#31",
+      "originalName": "stackIn_91_0",
+      "to": "statusNeeded",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#32",
+      "originalName": "var2",
+      "to": "trackCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#33",
+      "originalName": "var3",
+      "to": "division",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#34",
+      "originalName": "var4",
+      "to": "midiLength",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#35",
+      "originalName": "var5",
+      "to": "tempoCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#36",
+      "originalName": "var6",
+      "to": "controlCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#37",
+      "originalName": "var7",
+      "to": "noteOnCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#38",
+      "originalName": "var8",
+      "to": "noteOffCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#39",
+      "originalName": "var9",
+      "to": "pitchBendCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#4",
+      "originalName": "incrementValue$23",
+      "to": "noteIndex2",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#40",
+      "originalName": "var10",
+      "to": "channelPressureCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#41",
+      "originalName": "var11",
+      "to": "polyPressureCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#42",
+      "originalName": "var12",
+      "to": "programAndBankCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#43",
+      "originalName": "var13",
+      "to": "scanTrackIndex",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#44",
+      "originalName": "var14",
+      "to": "previousOpcode",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#45",
+      "originalName": "var15",
+      "to": "packedOpcode",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#46",
+      "originalName": "var16",
+      "to": "modulationMsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#47",
+      "originalName": "var17",
+      "to": "modulationLsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#48",
+      "originalName": "var18",
+      "to": "volumeMsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#49",
+      "originalName": "var19",
+      "to": "volumeLsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#5",
+      "originalName": "incrementValue$24",
+      "to": "noteOnVelocityIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#50",
+      "originalName": "var20",
+      "to": "panMsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#51",
+      "originalName": "var21",
+      "to": "panLsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#52",
+      "originalName": "var22",
+      "to": "nrpnMsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#53",
+      "originalName": "var23",
+      "to": "nrpnLsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#54",
+      "originalName": "var24",
+      "to": "rpnMsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#55",
+      "originalName": "var25",
+      "to": "rpnLsbCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#56",
+      "originalName": "var26",
+      "to": "specialControlCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#57",
+      "originalName": "var27",
+      "to": "otherControlCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#58",
+      "originalName": "var28",
+      "to": "controller",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#59",
+      "originalName": "var29",
+      "to": "controlScanIndex",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#6",
+      "originalName": "incrementValue$21",
+      "to": "noteIndex3",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#60",
+      "originalName": "var30",
+      "to": "specialControlCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#61",
+      "originalName": "var31",
+      "to": "polyPressureCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#62",
+      "originalName": "var32",
+      "to": "channelPressureCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#63",
+      "originalName": "var33",
+      "to": "pitchMsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#64",
+      "originalName": "var34",
+      "to": "modulationMsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#65",
+      "originalName": "var35",
+      "to": "volumeMsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#66",
+      "originalName": "var36",
+      "to": "panMsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#67",
+      "originalName": "var37",
+      "to": "noteCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#68",
+      "originalName": "var38",
+      "to": "noteOnVelocityCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#69",
+      "originalName": "var39",
+      "to": "otherControlCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#7",
+      "originalName": "incrementValue$22",
+      "to": "noteOffVelocityIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#70",
+      "originalName": "var40",
+      "to": "noteOffVelocityCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#71",
+      "originalName": "var41",
+      "to": "modulationLsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#72",
+      "originalName": "var42",
+      "to": "volumeLsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#73",
+      "originalName": "var43",
+      "to": "panLsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#74",
+      "originalName": "var44",
+      "to": "programAndBankCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#75",
+      "originalName": "var45",
+      "to": "pitchLsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#76",
+      "originalName": "var46",
+      "to": "nrpnMsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#77",
+      "originalName": "var47",
+      "to": "nrpnLsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#78",
+      "originalName": "var48",
+      "to": "rpnMsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#79",
+      "originalName": "var49",
+      "to": "rpnLsbCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#8",
+      "originalName": "incrementValue$5",
+      "to": "pitchLsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#80",
+      "originalName": "var50",
+      "to": "tempoCursor",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#81",
+      "originalName": "var51",
+      "to": "midiOutput",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#82",
+      "originalName": "var52",
+      "to": "channel",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#83",
+      "originalName": "var53",
+      "to": "note",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#84",
+      "originalName": "var54",
+      "to": "noteOnVelocity",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#85",
+      "originalName": "var55",
+      "to": "noteOffVelocity",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#86",
+      "originalName": "var56",
+      "to": "pitchBend",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#87",
+      "originalName": "var57",
+      "to": "channelPressure",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#88",
+      "originalName": "var58",
+      "to": "polyPressure",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#89",
+      "originalName": "var60",
+      "to": "writeTrackIndex",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#9",
+      "originalName": "incrementValue$6",
+      "to": "pitchMsbIndex1",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#90",
+      "originalName": "var61",
+      "to": "trackDataStart",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#91",
+      "originalName": "var62",
+      "to": "previousWrittenOpcode",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#92",
+      "originalName": "var63",
+      "to": "delta",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#93",
+      "originalName": "var64",
+      "to": "writeOpcode",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#94",
+      "originalName": "var65",
+      "to": "emitStatus",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#95",
+      "originalName": "var66",
+      "to": "controlDeltaOrValue",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#96",
+      "originalName": "var70",
+      "to": "controllerValues",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#97",
+      "originalName": "var13Lifetime1",
+      "to": "deltaStart",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#98",
+      "originalName": "var14Lifetime1",
+      "to": "eventCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.<init>(Lvh;)V#99",
+      "originalName": "var15Lifetime1",
+      "to": "deltaScanIndex",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(Lkl;Ljava/lang/String;Ljava/lang/String;)Lum;#0",
+      "originalName": "var3",
+      "to": "packedBytes",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#0",
+      "originalName": "var1",
+      "to": "channelBanks",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#1",
+      "originalName": "var2",
+      "to": "channelPatches",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#10",
+      "originalName": "var12",
+      "to": "controlValue",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#11",
+      "originalName": "var13",
+      "to": "patchId",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#12",
+      "originalName": "var14",
+      "to": "usage",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#13",
+      "originalName": "var15",
+      "to": "channelPatchesAlias",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#14",
+      "originalName": "var17",
+      "to": "channelBanksAlias",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#15",
+      "originalName": "var18",
+      "to": "patchBuffer",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#16",
+      "originalName": "var20",
+      "to": "bankBuffer",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#17",
+      "originalName": "var22",
+      "to": "percussionBanks",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#18",
+      "originalName": "var6Lifetime1",
+      "to": "selectedTrack",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#19",
+      "originalName": "var10Lifetime1",
+      "to": "programChannel",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#2",
+      "originalName": "var4",
+      "to": "reader",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#20",
+      "originalName": "var10Lifetime2",
+      "to": "noteChannel",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#21",
+      "originalName": "var11Lifetime1",
+      "to": "program",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#22",
+      "originalName": "var11Lifetime2",
+      "to": "note",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#23",
+      "originalName": "var12Lifetime1",
+      "to": "velocity",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#3",
+      "originalName": "var5",
+      "to": "trackCount",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#4",
+      "originalName": "var6",
+      "to": "trackIndex",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#5",
+      "originalName": "var7",
+      "to": "tick",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#6",
+      "originalName": "var8",
+      "to": "message",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#7",
+      "originalName": "var9",
+      "to": "statusType",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#8",
+      "originalName": "var10",
+      "to": "controlChannel",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.b()V#9",
+      "originalName": "var11",
+      "to": "controller",
+      "evidence": "um.java: MIDI header/status/tempo and packed opcode/value-column data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:un.<init>()V#0",
       "originalName": "dupTemp$1",
       "to": "subclassBits",
@@ -28402,6 +29599,48 @@
       "originalName": "var8",
       "to": "leftWord",
       "evidence": "vh.java: Reviewed lexical declaration ordinal and archive name resolution, chunk sizing/copying, XTEA round arithmetic, progress or byte storage data flow. Reused size/offset roles retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vh.h(I)I#0",
+      "originalName": "fieldTemp$1",
+      "to": "continuationByteIndex",
+      "evidence": "vh.java: MSB-first continuation-byte input, accumulated word and original guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vh.h(I)I#1",
+      "originalName": "var2",
+      "to": "nextByte",
+      "evidence": "vh.java: MSB-first continuation-byte input, accumulated word and original guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vh.h(I)I#2",
+      "originalName": "var3",
+      "to": "guardRemainder",
+      "evidence": "vh.java: MSB-first continuation-byte input, accumulated word and original guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vh.h(I)I#3",
+      "originalName": "var4",
+      "to": "value",
+      "evidence": "vh.java: MSB-first continuation-byte input, accumulated word and original guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vh.h(I)I#4",
+      "originalName": "var5",
+      "to": "unusedObfuscationControl",
+      "evidence": "vh.java: MSB-first continuation-byte input, accumulated word and original guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vh.h(I)I#5",
+      "originalName": "fieldTemp$0",
+      "to": "firstByteIndex",
+      "evidence": "vh.java: MSB-first continuation-byte input, accumulated word and original guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -31083,6 +32322,118 @@
       "originalName": "a",
       "to": "capturePointerInput",
       "evidence": "ds.java: Copies held button/position/change state, increments idle ticks and consumes pending press/change state under the handler monitor; preserves partial copies on bad-guard failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.a()V",
+      "originalName": "a",
+      "to": "markTrackDone",
+      "evidence": "dw.java: Sets the shared cursor to -1 for callers to save into a completed track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.a(I)V",
+      "originalName": "a",
+      "to": "saveTrackPosition",
+      "evidence": "dw.java: Saves the shared buffer cursor into a track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.a(II)I",
+      "originalName": "a",
+      "to": "decodeMessagePayload",
+      "evidence": "dw.java: Packs status/data or returns end=1, tempo=2, other-meta=3; tempo changes preserve tick-time continuity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.a(J)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "dw.java: Resets ticks/status/cursors and changes time offset; current tempo is retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.a([B)V",
+      "originalName": "a",
+      "to": "parse",
+      "evidence": "dw.java: Reads count/division at header offset ten and scans MTrk chunks, preserving skipped chunks and unchecked input failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.b()Z",
+      "originalName": "b",
+      "to": "isDone",
+      "evidence": "dw.java: Returns whether all saved track cursors are negative.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.b(I)J",
+      "originalName": "b",
+      "to": "tickTime",
+      "evidence": "dw.java: Returns tempo-scaled tick time plus continuity offset; division is consumed by the sequencer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.c()V",
+      "originalName": "c",
+      "to": "releaseMessageTable",
+      "evidence": "dw.java: Releases shared status-byte lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.c(I)I",
+      "originalName": "c",
+      "to": "readMessage",
+      "evidence": "dw.java: Wraps running-status/system/meta decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.d()I",
+      "originalName": "d",
+      "to": "trackCount",
+      "evidence": "dw.java: Returns the retained track count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.d(I)V",
+      "originalName": "d",
+      "to": "seekTrack",
+      "evidence": "dw.java: Restores a saved track cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.e()I",
+      "originalName": "e",
+      "to": "nextTrack",
+      "evidence": "dw.java: Selects the least-tick active track, preserving first-index ties and the Integer.MAX_VALUE edge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.e(I)I",
+      "originalName": "e",
+      "to": "readNextMessage",
+      "evidence": "dw.java: Reads running status and SysEx/escaped-system events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.f()V",
+      "originalName": "f",
+      "to": "release",
+      "evidence": "dw.java: Releases bytes/track arrays, retaining timing scalars.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.f(I)V",
+      "originalName": "f",
+      "to": "readDelta",
+      "evidence": "dw.java: Adds a variable-length delta to cumulative track ticks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.g()Z",
+      "originalName": "g",
+      "to": "isReady",
+      "evidence": "dw.java: Tests whether MIDI bytes remain retained.",
       "confidence": "reviewed"
     },
     {
@@ -37351,6 +38702,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:um.a()V",
+      "originalName": "a",
+      "to": "releasePatchUsage",
+      "evidence": "um.java: Releases usage without changing MIDI bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(Lkl;Ljava/lang/String;Ljava/lang/String;)Lum;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "um.java: Loads named packed bytes and decodes them, or returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.b()V",
+      "originalName": "b",
+      "to": "buildPatchUsage",
+      "evidence": "um.java: Applies channel bank/program selection and marks positive-velocity note-ons; percussion channel nine starts at patch 128.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:un.a()V",
       "originalName": "a",
       "to": "releaseScratch",
@@ -37799,6 +39171,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vc.a(I)V",
+      "originalName": "a",
+      "to": "releaseUiReferences",
+      "evidence": "vc.java: Clears the unrelated shared sprite/archive/options references, preserving its one-step guard recursion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vh.a(B)B",
       "originalName": "a",
       "to": "readByte",
@@ -37890,10 +39269,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vh.c(II)V",
+      "originalName": "c",
+      "to": "writeVarInt",
+      "evidence": "vh.java: Writes MIDI-style continuation groups for canonical guard -49.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vh.d(B)I",
       "originalName": "d",
       "to": "readUnsignedMedium",
       "evidence": "vh.java: Reads three big-endian bytes as an unsigned 24-bit integer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.d(II)V",
+      "originalName": "d",
+      "to": "writeIntLengthPrefix",
+      "evidence": "vh.java: Backfills four-byte payload length for canonical byte offset -1.",
       "confidence": "reviewed"
     },
     {
@@ -37943,6 +39336,13 @@
       "originalName": "h",
       "to": "readNullCircumfixedString",
       "evidence": "vh.java: Requires a leading zero and reads through the terminating zero; preserves its original text decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.h(I)I",
+      "originalName": "h",
+      "to": "readVarInt",
+      "evidence": "vh.java: Reads MSB-first 7-bit continuation groups with original wrap/guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -43830,6 +45230,83 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ds.java: Copies held button/position/change state, increments idle ticks and consumes pending press/change state under the handler monitor; preserves partial copies on bad-guard failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "midiBytes",
+      "evidence": "dw.java: Retains and parses supplied MIDI bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.a(I)V#0",
+      "originalName": "param0",
+      "to": "trackIndex",
+      "evidence": "dw.java: Saves the shared buffer cursor into a track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.a(II)I#0",
+      "originalName": "param0",
+      "to": "trackIndex",
+      "evidence": "dw.java: Packs status/data or returns end=1, tempo=2, other-meta=3; tempo changes preserve tick-time continuity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.a(II)I#1",
+      "originalName": "param1",
+      "to": "status",
+      "evidence": "dw.java: Packs status/data or returns end=1, tempo=2, other-meta=3; tempo changes preserve tick-time continuity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.a(J)V#0",
+      "originalName": "param0",
+      "to": "timeOffset",
+      "evidence": "dw.java: Resets ticks/status/cursors and changes time offset; current tempo is retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.a([B)V#0",
+      "originalName": "param0",
+      "to": "midiBytes",
+      "evidence": "dw.java: Reads count/division at header offset ten and scans MTrk chunks, preserving skipped chunks and unchecked input failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.b(I)J#0",
+      "originalName": "param0",
+      "to": "tick",
+      "evidence": "dw.java: Returns tempo-scaled tick time plus continuity offset; division is consumed by the sequencer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.c(I)I#0",
+      "originalName": "param0",
+      "to": "trackIndex",
+      "evidence": "dw.java: Wraps running-status/system/meta decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.d(I)V#0",
+      "originalName": "param0",
+      "to": "trackIndex",
+      "evidence": "dw.java: Restores a saved track cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.e(I)I#0",
+      "originalName": "param0",
+      "to": "trackIndex",
+      "evidence": "dw.java: Reads running status and SysEx/escaped-system events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dw.f(I)V#0",
+      "originalName": "param0",
+      "to": "trackIndex",
+      "evidence": "dw.java: Adds a variable-length delta to cumulative track ticks.",
       "confidence": "reviewed"
     },
     {
@@ -61529,6 +63006,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:um.<init>(Lvh;)V#0",
+      "originalName": "param0",
+      "to": "packedInput",
+      "evidence": "um.java: Decodes packed opcode/delta/control/value columns.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:um.a(Lkl;Ljava/lang/String;Ljava/lang/String;)Lum;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "um.java: Loads named packed bytes and decodes them, or returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:um.a(Lkl;Ljava/lang/String;Ljava/lang/String;)Lum;#1",
+      "originalName": "param1",
+      "to": "groupName",
+      "evidence": "um.java: Loads named packed bytes and decodes them, or returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:um.a(Lkl;Ljava/lang/String;Ljava/lang/String;)Lum;#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "um.java: Loads named packed bytes and decodes them, or returns null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:un.a(II)V#0",
       "originalName": "param0",
       "to": "firstIndex",
@@ -62502,6 +64007,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vc.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "notes",
+      "evidence": "vc.java: Retains a note mask without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vc.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vc.java: Clears the unrelated shared sprite/archive/options references, preserving its one-step guard recursion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vh.a(B)B#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -62712,10 +64231,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vh.c(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Writes MIDI-style continuation groups for canonical guard -49.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.c(II)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "vh.java: Writes MIDI-style continuation groups for canonical guard -49.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vh.d(B)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "vh.java: Reads three big-endian bytes as an unsigned 24-bit integer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.d(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Backfills four-byte payload length for canonical byte offset -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.d(II)V#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "vh.java: Backfills four-byte payload length for canonical byte offset -1.",
       "confidence": "reviewed"
     },
     {
@@ -62772,6 +64319,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "vh.java: Requires a leading zero and reads through the terminating zero; preserves its original text decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.h(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vh.java: Reads MSB-first 7-bit continuation groups with original wrap/guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -63763,10 +65317,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "254e32fbe2c227812679b04ff33a6bfb3856f597c18e5415b1471f55884a8c05",
+      "build-armiesofgielinor-rules.mjs": "5e0e291a5681c53179b56cd32b826c646c03ce3b01306989f5568b6083e235c3",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "4c7f21a5f682fef358ef4275569ea83f92824276acc2287c9a9a3b081eecb650",
+      "tests/test-armiesofgielinor-core.mjs": "e439eec544a0b8d293e116a2c95b55d975858fb4b9e96425643f9761d2777791",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
