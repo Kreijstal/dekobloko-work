@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 54,
+  "version": 55,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2820,6 +2820,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nm",
+      "originalName": "nm",
+      "to": "MusicCrossfadeStream",
+      "evidence": "nm.java: Two retained background sequencers/tracks, fixed-point per-block crossfade and one-shot return; optional foreground blend has no configuration writers in this corpus. Unrelated shared client helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nn",
       "originalName": "nn",
       "to": "MovementPlanner",
@@ -3846,6 +3853,13 @@
       "originalName": "field_e",
       "to": "traversalCursor",
       "evidence": "at.java: Deque traversal methods update this cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:au.field_Kb:Lih;",
+      "originalName": "field_Kb",
+      "to": "directMusicSequencer",
+      "evidence": "au.java: Optional direct music route used by the shared track setter, distinct from the two crossfade sequencers.",
       "confidence": "reviewed"
     },
     {
@@ -9715,6 +9729,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:l.field_a:Lrc;",
+      "originalName": "field_a",
+      "to": "musicPlayer",
+      "evidence": "l.java: Audio setup installs music stream; direct music changes synchronize on and flush this shared player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:l.field_b:[Lru;",
       "originalName": "field_b",
       "to": "activeStructureSprites",
@@ -9960,6 +9981,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lk.field_e:Lnm;",
+      "originalName": "field_e",
+      "to": "musicCrossfadeStream",
+      "evidence": "lk.java: Audio setup installs this stream in the shared music player; track selection and master gain callers consume it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lk.field_f:Z",
       "originalName": "field_f",
       "to": "pointerChangedSnapshot",
@@ -10083,6 +10111,13 @@
       "originalName": "field_t",
       "to": "formatVersion",
       "evidence": "lo.java: Layout header decoding and row-major terrain/placement readers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lo.field_u:Lum;",
+      "originalName": "field_u",
+      "to": "currentDirectMusicTrack",
+      "evidence": "lo.java: Direct music route checks track object identity before stopping/flushing/restarting its sequencer.",
       "confidence": "reviewed"
     },
     {
@@ -10933,10 +10968,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nm.field_A:Lum;",
+      "originalName": "field_A",
+      "to": "secondTrack",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_B:Z",
+      "originalName": "field_B",
+      "to": "keepMutedTracks",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_C:I",
+      "originalName": "field_C",
+      "to": "fadeStep",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_D:Lih;",
+      "originalName": "field_D",
+      "to": "secondSequencer",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_E:[I",
+      "originalName": "field_E",
+      "to": "secondSamples",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_F:Z",
+      "originalName": "field_F",
+      "to": "returnAfterTrack",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_G:I",
+      "originalName": "field_G",
+      "to": "fadePosition",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nm.field_o:I",
       "originalName": "field_o",
       "to": "deliveredOpcode",
       "evidence": "nm.java: Caller dispatches this opcode only after a complete or due delayed packet is delivered.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_p:Lum;",
+      "originalName": "field_p",
+      "to": "firstTrack",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_q:Lum;",
+      "originalName": "field_q",
+      "to": "foregroundTrack",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_r:Lih;",
+      "originalName": "field_r",
+      "to": "foregroundSequencer",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_t:[I",
+      "originalName": "field_t",
+      "to": "firstSamples",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_v:I",
+      "originalName": "field_v",
+      "to": "foregroundBlend",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_w:Lih;",
+      "originalName": "field_w",
+      "to": "firstSequencer",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_x:I",
+      "originalName": "field_x",
+      "to": "masterGain",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_y:Lih;",
+      "originalName": "field_y",
+      "to": "selectedSequencer",
+      "evidence": "nm.java: Track selection and render/skip distinguish two background slots, 0..1048576 crossfade position/signed per-frame step, block gain, retained scratch arrays and one-shot return. Foreground/keep-muted fields have no configuration writer in the pinned corpus.",
       "confidence": "reviewed"
     },
     {
@@ -16810,6 +16950,69 @@
       "originalName": "var2_int",
       "to": "priorityIndex",
       "evidence": "bc.java: Reviewed private-ID duplicate scan and per-channel/filter-priority history compaction at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(IILum;IZ)V#0",
+      "originalName": "stackIn_3_0",
+      "to": "crossfadeStream",
+      "evidence": "bk.java: Shared music route delegates gain, one-shot/loop selection and fade rate under canonical guard 20607.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(IILum;IZ)V#1",
+      "originalName": "stackIn_3_1",
+      "to": "gainToApply",
+      "evidence": "bk.java: Shared music route delegates gain, one-shot/loop selection and fade rate under canonical guard 20607.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(IILum;IZ)V#2",
+      "originalName": "stackIn_4_2",
+      "to": "returnAfterTrack",
+      "evidence": "bk.java: Shared music route delegates gain, one-shot/loop selection and fade rate under canonical guard 20607.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(IILum;IZ)V#3",
+      "originalName": "stackIn_11_0",
+      "to": "failureForContext",
+      "evidence": "bk.java: Shared music route delegates gain, one-shot/loop selection and fade rate under canonical guard 20607.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(IILum;IZ)V#4",
+      "originalName": "stackIn_11_1",
+      "to": "errorContext",
+      "evidence": "bk.java: Shared music route delegates gain, one-shot/loop selection and fade rate under canonical guard 20607.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(IILum;IZ)V#5",
+      "originalName": "stackIn_12_2",
+      "to": "trackDescription",
+      "evidence": "bk.java: Shared music route delegates gain, one-shot/loop selection and fade rate under canonical guard 20607.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(IILum;IZ)V#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "bk.java: Shared music route delegates gain, one-shot/loop selection and fade rate under canonical guard 20607.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(IILum;IZ)V#7",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "bk.java: Shared music route delegates gain, one-shot/loop selection and fade rate under canonical guard 20607.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(IILum;IZ)V#8",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "bk.java: Shared music route delegates gain, one-shot/loop selection and fade rate under canonical guard 20607.",
       "confidence": "reviewed"
     },
     {
@@ -25948,6 +26151,342 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:nm.a(I)V#0",
+      "originalName": "var3",
+      "to": "obfuscationControl",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(ILih;Lih;)V#0",
+      "originalName": "var5",
+      "to": "unusedSequencer",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#0",
+      "originalName": "stackIn_19_1",
+      "to": "returnMode",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#1",
+      "originalName": "stackIn_33_0",
+      "to": "chooseFirstSlot",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#10",
+      "originalName": "stackIn_59_2",
+      "to": "trackDescription",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#11",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#12",
+      "originalName": "var7_int",
+      "to": "replaceFirstSlot",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#13",
+      "originalName": "var7",
+      "to": "failure",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#14",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#15",
+      "originalName": "var9",
+      "to": "unusedSequencer",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#16",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#2",
+      "originalName": "stackIn_43_0",
+      "to": "secondToStart",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#3",
+      "originalName": "stackIn_43_1",
+      "to": "secondStartGuard",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#4",
+      "originalName": "stackIn_44_2",
+      "to": "secondLoop",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#5",
+      "originalName": "stackIn_52_0",
+      "to": "firstToStart",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#6",
+      "originalName": "stackIn_52_1",
+      "to": "firstStartGuard",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#7",
+      "originalName": "stackIn_53_2",
+      "to": "firstLoop",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#8",
+      "originalName": "stackIn_58_0",
+      "to": "failureForContext",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(IZLum;III)V#9",
+      "originalName": "stackIn_58_1",
+      "to": "errorContext",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(Lum;ZIB)V#0",
+      "originalName": "var4",
+      "to": "playerLock",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(Lum;ZIB)V#1",
+      "originalName": "stackIn_20_0",
+      "to": "failureForContext",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(Lum;ZIB)V#2",
+      "originalName": "stackIn_20_1",
+      "to": "errorContext",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(Lum;ZIB)V#3",
+      "originalName": "stackIn_21_2",
+      "to": "trackDescription",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(Lum;ZIB)V#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(Lum;ZIB)V#5",
+      "originalName": "var4_ref",
+      "to": "failure",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.a(Lum;ZIB)V#6",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b(II)V#0",
+      "originalName": "var3",
+      "to": "guardRemainder",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#0",
+      "originalName": "localTemp$0",
+      "to": "doubledBackgroundOffset",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#1",
+      "originalName": "localTemp$1",
+      "to": "doubledForegroundOffset",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#10",
+      "originalName": "var4_int",
+      "to": "firstGain",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#11",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#12",
+      "originalName": "var5",
+      "to": "secondGain",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#13",
+      "originalName": "var6",
+      "to": "sampleCount",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#14",
+      "originalName": "var7",
+      "to": "backgroundOffset",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#15",
+      "originalName": "var8",
+      "to": "sampleIndex",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#16",
+      "originalName": "var9",
+      "to": "backgroundGain",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#17",
+      "originalName": "var11",
+      "to": "obfuscationControl",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#18",
+      "originalName": "var7Lifetime1",
+      "to": "foregroundOffset",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#19",
+      "originalName": "var8Lifetime1",
+      "to": "foregroundGain",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#2",
+      "originalName": "var10",
+      "to": "foregroundSampleIndex",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#20",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#3",
+      "originalName": "stackIn_32_0",
+      "to": "sampleCountForMix",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#4",
+      "originalName": "stackIn_48_0",
+      "to": "backgroundOutputOffset",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#5",
+      "originalName": "stackIn_62_0",
+      "to": "foregroundOutputOffset",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#6",
+      "originalName": "stackIn_68_0",
+      "to": "failureForContext",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#7",
+      "originalName": "stackIn_68_1",
+      "to": "errorContext",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#8",
+      "originalName": "stackIn_69_2",
+      "to": "outputDescription",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nm.b([III)V#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "nm.java: Two-slot crossfade selection, frame routing, scratch/sample offsets, fixed-point mix weights and direct player lifecycle; fixed ordinal/original names bind the pinned source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:nn.a(BLha;)V#0",
       "originalName": "var2_int",
       "to": "tileIndex",
@@ -34418,6 +34957,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bk.a(IILum;IZ)V",
+      "originalName": "a",
+      "to": "selectMusicTrack",
+      "evidence": "bk.java: Delegates to shared crossfade stream with one-shot equal to not-loop and fixed default time scale 1000000.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bl.a(B)V",
       "originalName": "a",
       "to": "processLobbyUpdate",
@@ -39605,10 +40151,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nm.a(ILih;II)V",
+      "originalName": "a",
+      "to": "configureSelectedSequencer",
+      "evidence": "nm.java: Publishes selected sequencer and applies channel gain (negative channel means all) and MIDI frame time scale.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nm.a(ILih;Lih;)V",
+      "originalName": "a",
+      "to": "initializeSequencers",
+      "evidence": "nm.java: Retains both slots, selects first and sets fixed-point position to the first-slot endpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nm.a(IZLum;III)V",
+      "originalName": "a",
+      "to": "selectTrack",
+      "evidence": "nm.java: Reuses a retained track or replaces the empty/quieter slot, configures gain/time scale and signed fade direction; one-shot selection returns after completion and replacement preserves existing direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nm.a(Lum;ZIB)V",
+      "originalName": "a",
+      "to": "setMusicTrack",
+      "evidence": "nm.java: Routes to the global crossfade bus and optional direct player, updates all-channel gain, and stops/flushes/restarts the direct player only when track identity changes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nm.b()Lhn;",
       "originalName": "b",
       "to": "nextSubStream",
       "evidence": "nm.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nm.b(II)V",
+      "originalName": "b",
+      "to": "setMasterGain",
+      "evidence": "nm.java: Stores the mix gain under canonical guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -46175,6 +46756,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "bg.java: Unlinks every stored node and clears both cursors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(IILum;IZ)V#0",
+      "originalName": "param0",
+      "to": "channelGain",
+      "evidence": "bk.java: Delegates to shared crossfade stream with one-shot equal to not-loop and fixed default time scale 1000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(IILum;IZ)V#1",
+      "originalName": "param1",
+      "to": "fadeRate",
+      "evidence": "bk.java: Delegates to shared crossfade stream with one-shot equal to not-loop and fixed default time scale 1000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(IILum;IZ)V#2",
+      "originalName": "param2",
+      "to": "track",
+      "evidence": "bk.java: Delegates to shared crossfade stream with one-shot equal to not-loop and fixed default time scale 1000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(IILum;IZ)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "bk.java: Delegates to shared crossfade stream with one-shot equal to not-loop and fixed default time scale 1000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(IILum;IZ)V#4",
+      "originalName": "param4",
+      "to": "loop",
+      "evidence": "bk.java: Delegates to shared crossfade stream with one-shot equal to not-loop and fixed default time scale 1000000.",
       "confidence": "reviewed"
     },
     {
@@ -59849,10 +60465,157 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nm.<init>(Lih;Lih;)V#0",
+      "originalName": "param0",
+      "to": "firstSequencer",
+      "evidence": "nm.java: Retains two supplied sequencers, selects first and initializes maximum first-slot fade position, master gain 256 and foreground blend zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.<init>(Lih;Lih;)V#1",
+      "originalName": "param1",
+      "to": "secondSequencer",
+      "evidence": "nm.java: Retains two supplied sequencers, selects first and initializes maximum first-slot fade position, master gain 256 and foreground blend zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nm.a(I)V#0",
       "originalName": "param0",
       "to": "frameCount",
       "evidence": "nm.java: Stream graph override contract: child traversal, scheduling cost/priority, frame rendering and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(ILih;II)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "nm.java: Publishes selected sequencer and applies channel gain (negative channel means all) and MIDI frame time scale.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(ILih;II)V#1",
+      "originalName": "param1",
+      "to": "sequencer",
+      "evidence": "nm.java: Publishes selected sequencer and applies channel gain (negative channel means all) and MIDI frame time scale.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(ILih;II)V#2",
+      "originalName": "param2",
+      "to": "timeScale",
+      "evidence": "nm.java: Publishes selected sequencer and applies channel gain (negative channel means all) and MIDI frame time scale.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(ILih;II)V#3",
+      "originalName": "param3",
+      "to": "channelGain",
+      "evidence": "nm.java: Publishes selected sequencer and applies channel gain (negative channel means all) and MIDI frame time scale.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(ILih;Lih;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nm.java: Retains both slots, selects first and sets fixed-point position to the first-slot endpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(ILih;Lih;)V#1",
+      "originalName": "param1",
+      "to": "firstSequencer",
+      "evidence": "nm.java: Retains both slots, selects first and sets fixed-point position to the first-slot endpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(ILih;Lih;)V#2",
+      "originalName": "param2",
+      "to": "secondSequencer",
+      "evidence": "nm.java: Retains both slots, selects first and sets fixed-point position to the first-slot endpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(IZLum;III)V#0",
+      "originalName": "param0",
+      "to": "channelGain",
+      "evidence": "nm.java: Reuses a retained track or replaces the empty/quieter slot, configures gain/time scale and signed fade direction; one-shot selection returns after completion and replacement preserves existing direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(IZLum;III)V#1",
+      "originalName": "param1",
+      "to": "returnAfterCompletion",
+      "evidence": "nm.java: Reuses a retained track or replaces the empty/quieter slot, configures gain/time scale and signed fade direction; one-shot selection returns after completion and replacement preserves existing direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(IZLum;III)V#2",
+      "originalName": "param2",
+      "to": "track",
+      "evidence": "nm.java: Reuses a retained track or replaces the empty/quieter slot, configures gain/time scale and signed fade direction; one-shot selection returns after completion and replacement preserves existing direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(IZLum;III)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "nm.java: Reuses a retained track or replaces the empty/quieter slot, configures gain/time scale and signed fade direction; one-shot selection returns after completion and replacement preserves existing direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(IZLum;III)V#4",
+      "originalName": "param4",
+      "to": "fadeRate",
+      "evidence": "nm.java: Reuses a retained track or replaces the empty/quieter slot, configures gain/time scale and signed fade direction; one-shot selection returns after completion and replacement preserves existing direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(IZLum;III)V#5",
+      "originalName": "param5",
+      "to": "timeScale",
+      "evidence": "nm.java: Reuses a retained track or replaces the empty/quieter slot, configures gain/time scale and signed fade direction; one-shot selection returns after completion and replacement preserves existing direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(Lum;ZIB)V#0",
+      "originalName": "param0",
+      "to": "track",
+      "evidence": "nm.java: Routes to the global crossfade bus and optional direct player, updates all-channel gain, and stops/flushes/restarts the direct player only when track identity changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(Lum;ZIB)V#1",
+      "originalName": "param1",
+      "to": "loop",
+      "evidence": "nm.java: Routes to the global crossfade bus and optional direct player, updates all-channel gain, and stops/flushes/restarts the direct player only when track identity changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(Lum;ZIB)V#2",
+      "originalName": "param2",
+      "to": "channelGain",
+      "evidence": "nm.java: Routes to the global crossfade bus and optional direct player, updates all-channel gain, and stops/flushes/restarts the direct player only when track identity changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.a(Lum;ZIB)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "nm.java: Routes to the global crossfade bus and optional direct player, updates all-channel gain, and stops/flushes/restarts the direct player only when track identity changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.b(II)V#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "nm.java: Stores the mix gain under canonical guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nm.b(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nm.java: Stores the mix gain under canonical guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -69601,10 +70364,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "17609dadd1bb87df233d8f3342bee72e52ea182bd308ad7e9e74c5dc1b016259",
+      "build-armiesofgielinor-rules.mjs": "4c459ca3e3e1a1d80e9be5410a2256140bf80db632091a1b72ef241d1cb193f6",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "065f83a1d06c7fcb32a766bc72b462b250452b38f8793b02c1c67dcab05dbb32",
+      "tests/test-armiesofgielinor-core.mjs": "928a39e9ddbd3c2f0b1f0414b787a5633bbc70bfe0217f1199c7c03257b07f04",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

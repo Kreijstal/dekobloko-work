@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 164,284 raw/named checks agree. Controlled cipher output does not constitute
+All 165,073 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -440,6 +440,19 @@ signed key-curve index failure preserve the existing behavior; trailing bytes ar
 ignored. General malformed-input coverage, MIDI compliance, production patch/music
 assets and audible whole-game playback remain unverified.
 
+MusicCrossfadeStream now names its two background slots, track selection,
+fixed-point fade, scratch arrays and one-shot return, plus the shared crossfade
+and direct music-player routes. Controlled signed PCM vectors check mono/stereo
+mixing, gains/positions, scratch reuse/growth, muted skipping and fade endpoints.
+Gain is chosen at block start; endpoint cleanup runs before current-block mixing.
+One-shot completion is checked before rendering but after skipping. Track identity
+reuse preserves reader playback time/loop state. Direct routing updates gain even
+for the same track, and stops/flushes/restarts on a track change.
+Foreground and keep-muted settings have no writers in the pinned source; reflective
+fixtures populate those branches explicitly. The combined stereo scratch-background
+and foreground path preserves its existing double offset conversion. Production
+songs, live devices and audible whole-game transitions remain unverified.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -472,7 +485,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 236 reviewed classes around battlefield state, units, map
+The current pass names 237 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
