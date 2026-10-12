@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 28,
+  "version": 29,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2610,6 +2610,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pq",
+      "originalName": "pq",
+      "to": "PointerInputHandler",
+      "evidence": "pq.java: Synchronized AWT mouse callbacks maintain live pointer/button state; focus loss clears the held button and popup triggers are consumed. Unrelated static helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pr",
       "originalName": "pr",
       "to": "PaletteRegionMap",
@@ -2775,6 +2782,13 @@
       "originalName": "sm",
       "to": "AiPlanningStrategy",
       "evidence": "sm.java: Candidate queue/pool with interchangeable action selection strategies.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sp",
+      "originalName": "sp",
+      "to": "DualNodeIterator",
+      "evidence": "sp.java: Iterator over IterableDualNodeDeque secondary links, with its own cursor and last-returned removal state; preserves the original nonstandard exhaustion behavior.",
       "confidence": "reviewed"
     },
     {
@@ -2957,6 +2971,13 @@
       "originalName": "wa",
       "to": "UnitSpell",
       "evidence": "wa.java: Stores target tile coordinates and dispatches spell-table effects on the target unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wg",
+      "originalName": "wg",
+      "to": "IterableDualNodeDeque",
+      "evidence": "wg.java: Sentinel deque over independent secondary links, exposing an Iterator with node removal. Unrelated static input/name helpers retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -3195,6 +3216,13 @@
       "originalName": "field_e",
       "to": "traversalCursor",
       "evidence": "at.java: Deque traversal methods update this cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:av.field_a:I",
+      "originalName": "field_a",
+      "to": "pointerIdleTicks",
+      "evidence": "av.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
       "confidence": "reviewed"
     },
     {
@@ -4122,6 +4150,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ei.field_d:I",
+      "originalName": "field_d",
+      "to": "lastPointerPressY",
+      "evidence": "ei.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ei.field_f:J",
       "originalName": "field_f",
       "to": "maximumLength",
@@ -4245,6 +4280,13 @@
       "originalName": "field_b",
       "to": "camera",
       "evidence": "eo.java: Projects each tile before unit visibility/model refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_l:I",
+      "originalName": "field_l",
+      "to": "pointerButtonMask",
+      "evidence": "eq.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
       "confidence": "reviewed"
     },
     {
@@ -5788,6 +5830,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:iu.field_t:I",
+      "originalName": "field_t",
+      "to": "pointerPressX",
+      "evidence": "iu.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:iu.field_v:Z",
       "originalName": "field_v",
       "to": "enemyWaveSpawned",
@@ -6278,6 +6327,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jm.field_k:I",
+      "originalName": "field_k",
+      "to": "pressedPointerButton",
+      "evidence": "jm.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jm.field_l:Llr;",
       "originalName": "field_l",
       "to": "groupNameLookup",
@@ -6670,6 +6726,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kl.field_i:I",
+      "originalName": "field_i",
+      "to": "livePointerY",
+      "evidence": "kl.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kl.field_j:Ljm;",
       "originalName": "field_j",
       "to": "index",
@@ -6681,6 +6744,13 @@
       "originalName": "field_k",
       "to": "connectedState",
       "evidence": "kl.java: Assigned after login response/user metadata are decoded, and required by the live-socket predicate and packet poller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ko.field_b:I",
+      "originalName": "field_b",
+      "to": "pointerY",
+      "evidence": "ko.java: The synchronized input snapshot copies the current mouse Y coordinate here; common-client UI hit helpers consume it.",
       "confidence": "reviewed"
     },
     {
@@ -6758,6 +6828,13 @@
       "originalName": "field_z",
       "to": "requestFlag",
       "evidence": "ks.java: Retained queue-write argument; immediate disk reads set true unless they reuse a queued write. Finer flag semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ku.field_I:Z",
+      "originalName": "field_I",
+      "to": "pointerChanged",
+      "evidence": "ku.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
       "confidence": "reviewed"
     },
     {
@@ -6922,10 +6999,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lf.field_q:Lpq;",
+      "originalName": "field_q",
+      "to": "pointerInputHandler",
+      "evidence": "lf.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lf.field_s:I",
       "originalName": "field_s",
       "to": "destinationY",
       "evidence": "lf.java: BattleCharacter constructor and idle/arrival tests. Model variants may differ from the logical unit type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_f:Z",
+      "originalName": "field_f",
+      "to": "pointerChangedSnapshot",
+      "evidence": "lk.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
       "confidence": "reviewed"
     },
     {
@@ -7125,6 +7216,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mq.field_Xb:I",
+      "originalName": "field_Xb",
+      "to": "lastPointerPressX",
+      "evidence": "mq.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ms.field_l:Lms;",
       "originalName": "field_l",
       "to": "secondaryPrevious",
@@ -7227,6 +7325,13 @@
       "originalName": "field_n",
       "to": "metadata",
       "evidence": "ne.java: MapTile tagged decoder, constructors and god metadata accessor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nh.field_B:I",
+      "originalName": "field_B",
+      "to": "livePointerX",
+      "evidence": "nh.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
       "confidence": "reviewed"
     },
     {
@@ -7451,6 +7556,13 @@
       "originalName": "field_D",
       "to": "damageAmount",
       "evidence": "nw.java: EventDamage amount diagnostic and Unit.applyStrengthDamage argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_J:I",
+      "originalName": "field_J",
+      "to": "heldPointerButton",
+      "evidence": "ob.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
       "confidence": "reviewed"
     },
     {
@@ -8406,6 +8518,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ro.field_ub:I",
+      "originalName": "field_ub",
+      "to": "pointerButton",
+      "evidence": "ro.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rt.field_C:I",
       "originalName": "field_C",
       "to": "destinationY",
@@ -8742,6 +8861,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sm.field_d:I",
+      "originalName": "field_d",
+      "to": "pointerX",
+      "evidence": "sm.java: The synchronized input snapshot copies the current mouse X coordinate here; common-client UI hit helpers consume it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sm.field_f:Lat;",
       "originalName": "field_f",
       "to": "recycledCandidates",
@@ -8749,10 +8875,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sp.field_a:Lms;",
+      "originalName": "field_a",
+      "to": "lastReturned",
+      "evidence": "sp.java: next stores the returned node here; remove unlinks it once and clears this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_c:Lwg;",
+      "originalName": "field_c",
+      "to": "deque",
+      "evidence": "sp.java: Iterator retains the owning iterable deque and compares against its sentinel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sp.field_e:D",
       "originalName": "field_e",
       "to": "packetJitterMillis",
       "evidence": "sp.java: Scales nextGaussian before integer truncation and the existing zero clamp; non-finite values retain Java casts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_f:Lms;",
+      "originalName": "field_f",
+      "to": "cursor",
+      "evidence": "sp.java: Independent iterator cursor follows secondaryNext; first exhaustion changes it to null.",
       "confidence": "reviewed"
     },
     {
@@ -8795,6 +8942,13 @@
       "originalName": "field_f",
       "to": "presenter",
       "evidence": "tb.java: Presentation constructor bindings and frame/drawing/completion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_g:I",
+      "originalName": "field_g",
+      "to": "livePointerButtonMask",
+      "evidence": "tb.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
       "confidence": "reviewed"
     },
     {
@@ -8928,6 +9082,13 @@
       "originalName": "field_w",
       "to": "selectionMode",
       "evidence": "to.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tr.field_A:I",
+      "originalName": "field_A",
+      "to": "pointerPressButton",
+      "evidence": "tr.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
       "confidence": "reviewed"
     },
     {
@@ -9208,6 +9369,13 @@
       "originalName": "field_y",
       "to": "unit",
       "evidence": "ur.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ur.field_z:I",
+      "originalName": "field_z",
+      "to": "pointerPressY",
+      "evidence": "ur.java: AWT PointerInputHandler writes live state; capturePointerInput snapshots it under the same handler monitor. Held/pressed button codes are 0 none, 1 non-right and 2 right, separate from the three-bit button mask.",
       "confidence": "reviewed"
     },
     {
@@ -9575,6 +9743,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wg.field_f:Lms;",
+      "originalName": "field_f",
+      "to": "sentinel",
+      "evidence": "wg.java: Constructor self-links the independent secondary chain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wi.field_b:I",
       "originalName": "field_b",
       "to": "z",
@@ -9796,6 +9971,118 @@
       "originalName": "var4Lifetime1",
       "to": "packedTargetDelta",
       "evidence": "am.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.a(I)Ltc;#0",
+      "originalName": "var2",
+      "to": "guardedFirstNode",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.a(I)Ltc;#1",
+      "originalName": "var2Lifetime1",
+      "to": "firstNode",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.a(Ltc;Lat;I)V#0",
+      "originalName": "var4",
+      "to": "oldTail",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.a(Ltc;Lat;I)V#2",
+      "originalName": "var5",
+      "to": "guardRemainder",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.b(B)Ltc;#0",
+      "originalName": "var2",
+      "to": "previousNode",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.b(B)Ltc;#1",
+      "originalName": "var3",
+      "to": "guardRemainder",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.b(I)V#0",
+      "originalName": "var2",
+      "to": "firstNode",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.b(I)V#1",
+      "originalName": "var3",
+      "to": "obfuscationControl",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.b(I)V#2",
+      "originalName": "var4",
+      "to": "nullNode",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.b(Z)I#0",
+      "originalName": "var2",
+      "to": "count",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.b(Z)I#1",
+      "originalName": "var3",
+      "to": "node",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.b(Z)I#2",
+      "originalName": "var3Lifetime1",
+      "to": "guardedNode",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.b(Z)I#3",
+      "originalName": "var2Lifetime1",
+      "to": "guardedCount",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.c(B)Ltc;#0",
+      "originalName": "var2",
+      "to": "lastNode",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.d(B)Ltc;#0",
+      "originalName": "var2",
+      "to": "guardedLastNode",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:at.d(B)Ltc;#1",
+      "originalName": "var2Lifetime1",
+      "to": "lastNode",
+      "evidence": "at.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
@@ -14692,6 +14979,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:sp.next()Ljava/lang/Object;#0",
+      "originalName": "var1",
+      "to": "nextNode",
+      "evidence": "sp.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:tt.a(BI)Z#1",
       "originalName": "var3",
       "to": "iterator",
@@ -15084,6 +15378,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:wg.a(Z)Lms;#0",
+      "originalName": "var2",
+      "to": "firstNode",
+      "evidence": "wg.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wp.f(B)Z#0",
       "originalName": "var2",
       "to": "allSkeletonsAvailable",
@@ -15406,10 +15707,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:at.a(I)Ltc;",
+      "originalName": "a",
+      "to": "popFirst",
+      "evidence": "at.java: Unlinks the first primary node or returns null for an empty deque; retains the integer guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:at.a(ILtc;)V",
       "originalName": "a",
       "to": "addFirst",
       "evidence": "at.java: Links the node immediately after the deque sentinel; combat uses guard 750.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.a(Ltc;Lat;I)V",
+      "originalName": "a",
+      "to": "moveSuffixTo",
+      "evidence": "at.java: Splices firstNode through the source tail onto destination; keeps earlier source nodes and does not validate node ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.a(Z)Z",
+      "originalName": "a",
+      "to": "isEmpty",
+      "evidence": "at.java: Tests the sentinel next link; true also clears the owned traversal cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.a(ZLat;)V",
+      "originalName": "a",
+      "to": "moveAllTo",
+      "evidence": "at.java: Appends the complete primary chain to destination without copying nodes or resetting cursors; false subsequently follows the original clear/failure path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.a(ZLtc;)Ltc;",
+      "originalName": "a",
+      "to": "startForwardAt",
+      "evidence": "at.java: Returns the supplied node or the first node when null, and caches its successor without checking ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.b(B)Ltc;",
+      "originalName": "b",
+      "to": "previous",
+      "evidence": "at.java: Returns the cached reverse cursor and advances it; exhaustion returns null once and retains guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.b(I)V",
+      "originalName": "b",
+      "to": "clear",
+      "evidence": "at.java: Unlinks every primary node and clears the owned cursor before the original bad-guard null insertion failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.b(Z)I",
+      "originalName": "b",
+      "to": "size",
+      "evidence": "at.java: Counts primary nodes for guard false; true detaches the first nonempty node and fails in unlink guard arithmetic, preserving stale node links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.c(B)Ltc;",
+      "originalName": "c",
+      "to": "popLast",
+      "evidence": "at.java: Unlinks the last primary node; guard >-120 also executes the existing empty query.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.d(B)Ltc;",
+      "originalName": "d",
+      "to": "last",
+      "evidence": "at.java: Returns the last primary node and primes reverse traversal; retains byte guard side effects.",
       "confidence": "reviewed"
     },
     {
@@ -15452,6 +15823,20 @@
       "originalName": "a",
       "to": "last",
       "evidence": "bb.java: Starts independent reverse traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(Ltc;Z)Ltc;",
+      "originalName": "a",
+      "to": "startForwardAt",
+      "evidence": "bb.java: For guard true, returns the supplied node or deque head and caches its next link; false leaves the cursor unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(ZLtc;)Ltc;",
+      "originalName": "a",
+      "to": "startReverseAt",
+      "evidence": "bb.java: For guard false, returns the supplied node or deque tail and caches its previous link; true leaves the cursor unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -16285,6 +16670,13 @@
       "originalName": "j",
       "to": "resetOptions",
       "evidence": "dm.java: Resets selection, two-player count, size, computers, preview and option 33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ds.a(B)V",
+      "originalName": "a",
+      "to": "capturePointerInput",
+      "evidence": "ds.java: Copies held button/position/change state, increments idle ticks and consumes pending press/change state under the handler monitor; preserves partial copies on bad-guard failure.",
       "confidence": "reviewed"
     },
     {
@@ -20887,6 +21279,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wg.a(IIIII)Z",
+      "originalName": "a",
+      "to": "isPointerInBounds",
+      "evidence": "wg.java: Tests pointerX and pointerY against inclusive minimum/maximum bounds without normalizing reversed ranges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wg.a(ILms;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "wg.java: Unlinks previous secondary membership and appends this same node before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wg.a(Z)Lms;",
+      "originalName": "a",
+      "to": "popFirst",
+      "evidence": "wg.java: Guard false unlinks and returns the first secondary node; true returns null without unlinking.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wp.f(B)Z",
       "originalName": "f",
       "to": "ensureFramesAvailable",
@@ -21489,6 +21902,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:at.a(I)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Unlinks the first primary node or returns null for an empty deque; retains the integer guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:at.a(ILtc;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -21500,6 +21920,97 @@
       "originalName": "param1",
       "to": "node",
       "evidence": "at.java: Links the node immediately after the deque sentinel; combat uses guard 750.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(Ltc;Lat;I)V#0",
+      "originalName": "param0",
+      "to": "firstNode",
+      "evidence": "at.java: Splices firstNode through the source tail onto destination; keeps earlier source nodes and does not validate node ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(Ltc;Lat;I)V#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "at.java: Splices firstNode through the source tail onto destination; keeps earlier source nodes and does not validate node ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(Ltc;Lat;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Splices firstNode through the source tail onto destination; keeps earlier source nodes and does not validate node ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Tests the sentinel next link; true also clears the owned traversal cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(ZLat;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Appends the complete primary chain to destination without copying nodes or resetting cursors; false subsequently follows the original clear/failure path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(ZLat;)V#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "at.java: Appends the complete primary chain to destination without copying nodes or resetting cursors; false subsequently follows the original clear/failure path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(ZLtc;)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Returns the supplied node or the first node when null, and caches its successor without checking ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.a(ZLtc;)Ltc;#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "at.java: Returns the supplied node or the first node when null, and caches its successor without checking ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.b(B)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Returns the cached reverse cursor and advances it; exhaustion returns null once and retains guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Unlinks every primary node and clears the owned cursor before the original bad-guard null insertion failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.b(Z)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Counts primary nodes for guard false; true detaches the first nonempty node and fails in unlink guard arithmetic, preserving stale node links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.c(B)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Unlinks the last primary node; guard >-120 also executes the existing empty query.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:at.d(B)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "at.java: Returns the last primary node and primes reverse traversal; retains byte guard side effects.",
       "confidence": "reviewed"
     },
     {
@@ -21598,6 +22109,34 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "bb.java: Starts independent reverse traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bb.a(Ltc;Z)Ltc;#0",
+      "originalName": "param0",
+      "to": "node",
+      "evidence": "bb.java: For guard true, returns the supplied node or deque head and caches its next link; false leaves the cursor unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bb.a(Ltc;Z)Ltc;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "bb.java: For guard true, returns the supplied node or deque head and caches its next link; false leaves the cursor unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bb.a(ZLtc;)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bb.java: For guard false, returns the supplied node or deque tail and caches its previous link; true leaves the cursor unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bb.a(ZLtc;)Ltc;#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "bb.java: For guard false, returns the supplied node or deque tail and caches its previous link; true leaves the cursor unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -23467,6 +24006,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "dm.java: Resets selection, two-player count, size, computers, preview and option 33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ds.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ds.java: Copies held button/position/change state, increments idle ticks and consumes pending press/change state under the handler monitor; preserves partial copies on bad-guard failure.",
       "confidence": "reviewed"
     },
     {
@@ -31394,6 +31940,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pq.focusGained(Ljava/awt/event/FocusEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pq.java: Standard AWT callback retains its external method name and receives this event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.focusLost(Ljava/awt/event/FocusEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pq.java: Standard AWT callback retains its external method name and receives this event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.mouseClicked(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pq.java: Standard AWT callback retains its external method name and receives this event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.mouseDragged(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pq.java: Standard AWT callback retains its external method name and receives this event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.mouseEntered(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pq.java: Standard AWT callback retains its external method name and receives this event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.mouseExited(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pq.java: Standard AWT callback retains its external method name and receives this event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.mouseMoved(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pq.java: Standard AWT callback retains its external method name and receives this event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.mousePressed(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pq.java: Standard AWT callback retains its external method name and receives this event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.mouseReleased(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "pq.java: Standard AWT callback retains its external method name and receives this event.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pr.<init>(Lru;II)V#0",
       "originalName": "param0",
       "to": "sourceImage",
@@ -33484,6 +34093,13 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "so.java: Uses the existing fixed-point square-root table and scale shifts; zero returns zero and negative input fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sp.<init>(Lwg;)V#0",
+      "originalName": "param0",
+      "to": "deque",
+      "evidence": "sp.java: Retains the deque and starts at its first secondary node.",
       "confidence": "reviewed"
     },
     {
@@ -35944,6 +36560,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wg.a(IIIII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wg.java: Tests pointerX and pointerY against inclusive minimum/maximum bounds without normalizing reversed ranges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wg.a(IIIII)Z#1",
+      "originalName": "param1",
+      "to": "minimumX",
+      "evidence": "wg.java: Tests pointerX and pointerY against inclusive minimum/maximum bounds without normalizing reversed ranges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wg.a(IIIII)Z#2",
+      "originalName": "param2",
+      "to": "maximumX",
+      "evidence": "wg.java: Tests pointerX and pointerY against inclusive minimum/maximum bounds without normalizing reversed ranges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wg.a(IIIII)Z#3",
+      "originalName": "param3",
+      "to": "minimumY",
+      "evidence": "wg.java: Tests pointerX and pointerY against inclusive minimum/maximum bounds without normalizing reversed ranges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wg.a(IIIII)Z#4",
+      "originalName": "param4",
+      "to": "maximumY",
+      "evidence": "wg.java: Tests pointerX and pointerY against inclusive minimum/maximum bounds without normalizing reversed ranges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wg.a(ILms;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wg.java: Unlinks previous secondary membership and appends this same node before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wg.a(ILms;)V#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "wg.java: Unlinks previous secondary membership and appends this same node before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wg.a(Z)Lms;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wg.java: Guard false unlinks and returns the first secondary node; true returns null without unlinking.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wk.<init>(II)V#0",
       "originalName": "param0",
       "to": "width",
@@ -36106,10 +36778,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "b1d458eb42df9f5a4ac1c5f2d6135e84ec91b9b71e7820dba4251839adec67c0",
+      "build-armiesofgielinor-rules.mjs": "4c30cf1fc8a206e4fdfb0a5370dbe7c76e5f455802b7e697404b26122fdb9c1b",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "1e558e485df58c667746ed6fcf42f556c51896d50736d79e078d372604bd4b7c",
+      "tests/test-armiesofgielinor-core.mjs": "42ff8a8ed8d8c1e1f6ea4257c563d413e6e654def52cb031c5ebd5fba7534453",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

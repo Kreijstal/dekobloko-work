@@ -134,8 +134,20 @@ Native checks cover target assembly, overflow/truncation, guard side effects,
 scalar smoothing, complete motion traces and all sixteen direction combinations.
 Maximum speed one can stop before the target; the original zero-velocity return
 is preserved. The width-based world clamp and initial pre-assignment dimensions
-remain unchanged. All 63,509 raw/named checks agree; rendered camera behavior
+remain unchanged. Raw/named camera traces agree; rendered camera behavior
 is outside these controlled fixtures.
+
+Primary/secondary intrusive collections now name pop/clear/count operations,
+reverse traversal, explicit starts and identity-preserving chain transfers.
+IterableDualNodeDeque and DualNodeIterator expose secondary-link iteration;
+removing a secondary node preserves its primary membership. Bounded independent
+list models check moves/order/links. Guard failures retain partial mutations,
+and the iterator retains its nonstandard null-then-failure exhaustion behavior.
+PointerInputHandler names live AWT mouse state and ds.capturePointerInput names
+the synchronized gameplay snapshot. Real headless MouseEvents check button
+encoding, press consumption, focus loss, popup handling, bounds and guard
+failures. All 66,440 raw/named checks agree. Browser delivery and rendered
+interaction remain outside these fixtures.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -169,7 +181,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 167 reviewed classes around battlefield state, units, map
+The current pass names 170 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
