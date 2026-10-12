@@ -121,6 +121,13 @@ explicit upload/delete/restore methods now have reviewed names. Codec probes
 cover eager/chunked reads, version boundaries, length rejection, guard behavior
 and deletion opcodes in isolated buffers; they do not prove full restoration.
 
+Campaign completion names active mission/menu state, candidate-score submission,
+turn reporting and XOR metric checkpoints. Probes check all eight packet-word
+mutation variants, score gates, stored metrics versus candidate scores, deletion
+after rejected scores, progress-record bytes and decreasing-counter rejection.
+The four shared campaignPacketWord values identify wire positions; their server
+validation purpose remains unresolved.
+
 CampaignParticipant and CoatOfArms name parent/participant metadata, shared
 overrides and coat layers. ContextualRuntimeException exposes the original
 throwable stored separately from the standard Java cause chain.
