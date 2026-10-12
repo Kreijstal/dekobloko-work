@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 151,840 raw/named checks agree. Controlled cipher output does not constitute
+All 155,084 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -374,8 +374,16 @@ state, packet windows and all method entry points. Independent encoded fixtures
 check aligned/unaligned bit reads, packed floats, Huffman lengths/tree growth,
 lookup vectors and ownership, residue placement/passes and submap selection.
 The [Xiph specification](https://xiph.org/vorbis/doc/Vorbis_I_spec.html) corroborates
-these fixture expectations. Full floor/transform mathematics, standards compliance,
-production music and live playback remain unverified.
+these fixture expectations. VorbisFloor now names all fields/methods and point
+reconstruction locals; VorbisSample names the remaining setup, loader, transform,
+window and overlap locals. Native fixtures verify predictor activation, floor
+interpolation/sorting/gains and actual 64/128-sample impulse packets against direct
+cosine/window mathematics, including transitions, silence and exact selected PCM.
+A three-packet budget retry retains and transfers output correctly; real archive
+loading and cache completion run. Shared setup release preserves its initialized
+flag, which is documented and unchanged. Production music, arbitrary spectra,
+channel coupling, exhaustive floors, audible playback and full standards compliance
+remain unverified.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -409,7 +417,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 219 reviewed classes around battlefield state, units, map
+The current pass names 220 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
