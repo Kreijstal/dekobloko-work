@@ -146,8 +146,17 @@ and the iterator retains its nonstandard null-then-failure exhaustion behavior.
 PointerInputHandler names live AWT mouse state and ds.capturePointerInput names
 the synchronized gameplay snapshot. Real headless MouseEvents check button
 encoding, press consumption, focus loss, popup handling, bounds and guard
-failures. All 66,440 raw/named checks agree. Browser delivery and rendered
+failures. Raw/named input and collection traces agree. Browser delivery and rendered
 interaction remain outside these fixtures.
+
+WeightedLruCache, CacheEntry and StrongCacheEntry now expose retained values,
+weights, remaining capacity, key replacement and LRU eviction. IterableNodeHashTable
+and NodeHashIterator name masked buckets, duplicate-key lookup and removable
+iteration. Independent bounded cache models verify value identity, order,
+entry counts and capacity refunds. Controlled reference-backed entries exercise
+promotion and clearing; this does not establish a particular GC reference type.
+Zero/negative weights, guard reservation failures and bucket-growth overshoot
+remain unchanged. All 68,018 raw/named checks agree.
 
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
@@ -181,7 +190,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 170 reviewed classes around battlefield state, units, map
+The current pass names 175 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

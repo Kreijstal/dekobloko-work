@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 29,
+  "version": 30,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2071,6 +2071,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:f",
+      "originalName": "f",
+      "to": "StrongCacheEntry",
+      "evidence": "f.java: CacheEntry retaining its value directly as an Object and reporting no reference-backed representation. Unrelated static fields retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fi",
       "originalName": "fi",
       "to": "UnitInfoPopup",
@@ -2463,6 +2470,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:m",
+      "originalName": "m",
+      "to": "IterableNodeHashTable",
+      "evidence": "m.java: Masked-key sentinel buckets accepting intrusive primary nodes and duplicate keys, with independent Iterator traversal. Unrelated static fields retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mb",
       "originalName": "mb",
       "to": "SummonEvent",
@@ -2701,6 +2715,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ri",
+      "originalName": "ri",
+      "to": "WeightedLruCache",
+      "evidence": "ri.java: Weight-budgeted cache combining primary hash membership with secondary least-recently-used order; clears empty references and promotes reference-backed entries to strong entries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rk",
       "originalName": "rk",
       "to": "InstructionsPanel",
@@ -2827,6 +2848,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tl",
+      "originalName": "tl",
+      "to": "NodeHashIterator",
+      "evidence": "tl.java: Bucket-order Iterator over IterableNodeHashTable with its own cursor, bucket index and removable last-returned node; unrelated static rendering/archive helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tm",
       "originalName": "tm",
       "to": "TriangleRasterizer",
@@ -2908,6 +2936,13 @@
       "originalName": "up",
       "to": "PortalLossCondition",
       "evidence": "up.java: Own Defeat: Total Portal Loss diagnostic; requires no usable portal and no possible capturing unit. Static fields also contain tutorial text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uq",
+      "originalName": "uq",
+      "to": "CacheEntry",
+      "evidence": "uq.java: Abstract retained-value/reference-kind contract with an entry weight and independent hash/LRU links. Unrelated static protocol/coat helpers retain separate purposes.",
       "confidence": "reviewed"
     },
     {
@@ -4308,6 +4343,13 @@
       "originalName": "field_f",
       "to": "iterator",
       "evidence": "eu.java: Tracks a selected unit node and independent deque iterator; refreshes selection after unlink, with wrapping traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:f.field_B:Ljava/lang/Object;",
+      "originalName": "field_B",
+      "to": "value",
+      "evidence": "f.java: StrongCacheEntry retains this object directly without copying.",
       "confidence": "reviewed"
     },
     {
@@ -7076,6 +7118,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:m.field_c:[Ltc;",
+      "originalName": "field_c",
+      "to": "buckets",
+      "evidence": "m.java: Masked key lookup and sentinel bucket insertion; lookup retains the successor of the found node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:m.field_d:I",
+      "originalName": "field_d",
+      "to": "bucketCount",
+      "evidence": "m.java: Masked key lookup and sentinel bucket insertion; lookup retains the successor of the found node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:m.field_e:Ltc;",
+      "originalName": "field_e",
+      "to": "lookupNext",
+      "evidence": "m.java: Masked key lookup and sentinel bucket insertion; lookup retains the successor of the found node.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mb.field_A:I",
       "originalName": "field_A",
       "to": "unitType",
@@ -8301,10 +8364,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ri.field_a:I",
+      "originalName": "field_a",
+      "to": "remainingCapacity",
+      "evidence": "ri.java: Constructor capacity, insertion reservation/refunds, primary key lookup and secondary least-recently-used ordering.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ri.field_c:[I",
       "originalName": "field_c",
       "to": "terrainDamageTakenPercent",
       "evidence": "ri.java: Combat damage scales by this terrain-indexed percentage; gameplay renders its complement as cover.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ri.field_e:Lwg;",
+      "originalName": "field_e",
+      "to": "lruEntries",
+      "evidence": "ri.java: Constructor capacity, insertion reservation/refunds, primary key lookup and secondary least-recently-used ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ri.field_f:I",
+      "originalName": "field_f",
+      "to": "capacity",
+      "evidence": "ri.java: Constructor capacity, insertion reservation/refunds, primary key lookup and secondary least-recently-used ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ri.field_g:Lm;",
+      "originalName": "field_g",
+      "to": "entries",
+      "evidence": "ri.java: Constructor capacity, insertion reservation/refunds, primary key lookup and secondary least-recently-used ordering.",
       "confidence": "reviewed"
     },
     {
@@ -8994,6 +9085,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tl.field_b:I",
+      "originalName": "field_b",
+      "to": "nextBucket",
+      "evidence": "tl.java: Iterator reset, bucket scanning, hasNext cursor advancement and removable last-returned primary node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tl.field_c:Ltc;",
+      "originalName": "field_c",
+      "to": "lastReturned",
+      "evidence": "tl.java: Iterator reset, bucket scanning, hasNext cursor advancement and removable last-returned primary node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tl.field_d:Ltc;",
+      "originalName": "field_d",
+      "to": "cursor",
+      "evidence": "tl.java: Iterator reset, bucket scanning, hasNext cursor advancement and removable last-returned primary node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tl.field_g:Lm;",
+      "originalName": "field_g",
+      "to": "table",
+      "evidence": "tl.java: Iterator reset, bucket scanning, hasNext cursor advancement and removable last-returned primary node.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tm.field_a:Z",
       "originalName": "field_a",
       "to": "clipHorizontalSpans",
@@ -9341,6 +9460,13 @@
       "originalName": "field_g",
       "to": "instructionRowHeadings",
       "evidence": "up.java: InstructionsPanel indexes page/section/row heading strings, including null placeholders.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uq.field_z:I",
+      "originalName": "field_z",
+      "to": "weight",
+      "evidence": "uq.java: CacheEntry constructor stores the supplied weight; cache removal refunds it.",
       "confidence": "reviewed"
     },
     {
@@ -14153,6 +14279,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:m.a(IJ)Ltc;#0",
+      "originalName": "var4",
+      "to": "bucket",
+      "evidence": "m.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:m.a(IJ)Ltc;#1",
+      "originalName": "var5",
+      "to": "match",
+      "evidence": "m.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:m.a(IJ)Ltc;#2",
+      "originalName": "var6",
+      "to": "obfuscationControl",
+      "evidence": "m.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:m.a(IJ)Ltc;#3",
+      "originalName": "var4Lifetime1",
+      "to": "guardedBucket",
+      "evidence": "m.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:m.a(IJ)Ltc;#4",
+      "originalName": "var5Lifetime1",
+      "to": "guardedMatch",
+      "evidence": "m.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ne.a(BII)I#0",
       "originalName": "var4",
       "to": "effectFlags",
@@ -14762,6 +14923,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ri.a(JB)Ljava/lang/Object;#0",
+      "originalName": "var6",
+      "to": "promotedEntry",
+      "evidence": "ri.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a(JB)Ljava/lang/Object;#1",
+      "originalName": "var7",
+      "to": "entry",
+      "evidence": "ri.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a(JB)Ljava/lang/Object;#2",
+      "originalName": "var6Lifetime1",
+      "to": "guardedPromotedEntry",
+      "evidence": "ri.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a(JB)Ljava/lang/Object;#3",
+      "originalName": "var5",
+      "to": "value",
+      "evidence": "ri.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a(Ljava/lang/Object;BIJ)V#0",
+      "originalName": "var9",
+      "to": "evictedEntry",
+      "evidence": "ri.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a(Ljava/lang/Object;BIJ)V#1",
+      "originalName": "var7",
+      "to": "newEntry",
+      "evidence": "ri.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a(Ljava/lang/Object;BIJ)V#2",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "ri.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a(Ljava/lang/Object;BIJ)V#3",
+      "originalName": "var6_int",
+      "to": "guardRemainder",
+      "evidence": "ri.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:rk.b(IIII)Ljd;#0",
       "originalName": "var5",
       "to": "tileX",
@@ -14983,6 +15200,48 @@
       "originalName": "var1",
       "to": "nextNode",
       "evidence": "sp.java: Reviewed primary/secondary link traversal, suffix splicing, count and removal data flow at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tl.hasNext()Z#0",
+      "originalName": "fieldTemp$0",
+      "to": "bucketIndex",
+      "evidence": "tl.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tl.hasNext()Z#1",
+      "originalName": "var2",
+      "to": "obfuscationControl",
+      "evidence": "tl.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tl.next()Ljava/lang/Object;#0",
+      "originalName": "fieldTemp$0",
+      "to": "bucketIndex",
+      "evidence": "tl.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tl.next()Ljava/lang/Object;#1",
+      "originalName": "var2",
+      "to": "obfuscationControl",
+      "evidence": "tl.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tl.next()Ljava/lang/Object;#2",
+      "originalName": "var3",
+      "to": "firstInBucket",
+      "evidence": "tl.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tl.next()Ljava/lang/Object;#3",
+      "originalName": "var4",
+      "to": "nextNode",
+      "evidence": "tl.java: Reviewed cache promotion/eviction and independent hash-bucket traversal at this exact local declaration.",
       "confidence": "reviewed"
     },
     {
@@ -16957,6 +17216,20 @@
       "originalName": "b",
       "to": "getGroupProgress",
       "evidence": "ew.java: Reports the request progress for the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:f.a(Z)Z",
+      "originalName": "a",
+      "to": "isReferenceBacked",
+      "evidence": "f.java: True selects replacement by a strong entry on cache hit; the exported StrongCacheEntry implementation always returns false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:f.b(Z)Ljava/lang/Object;",
+      "originalName": "b",
+      "to": "getValue",
+      "evidence": "f.java: Returns the retained value for the canonical false guard; StrongCacheEntry returns null for true.",
       "confidence": "reviewed"
     },
     {
@@ -19011,6 +19284,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:m.a(IJ)Ltc;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "m.java: Returns the first key match in its masked bucket and stores the following lookup node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.a(Ltc;ZJ)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "m.java: Moves the same node into the masked primary bucket and sets its key; duplicate keys retain insertion order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mb.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -19942,6 +20229,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ri.a(JB)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "ri.java: Refreshes LRU order and clears secondaryKey; empty values remove/refund the entry and reference-backed values become strong entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ri.a(JI)V",
+      "originalName": "a",
+      "to": "remove",
+      "evidence": "ri.java: Removes/refunds the first matching key only when guard <=-64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ri.a(Ljava/lang/Object;BIJ)V",
+      "originalName": "a",
+      "to": "putWeighted",
+      "evidence": "ri.java: Replaces the key, reserves weight, evicts oldest entries until the budget fits and installs a strong entry; zero/negative weights and partial guard failures remain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ri.a(Ljava/lang/Object;IJ)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "ri.java: Inserts a weight-one entry; noncanonical guard also refreshes key 64 if present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ri.a(Luq;I)V",
+      "originalName": "a",
+      "to": "removeEntry",
+      "evidence": "ri.java: Unlinks both memberships and refunds the supplied entry weight without checking cache ownership.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rj.a(IIIII)V",
       "originalName": "a",
       "to": "setBounds",
@@ -20439,6 +20761,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tl.c(B)V",
+      "originalName": "c",
+      "to": "reset",
+      "evidence": "tl.java: Clears removal state and starts at bucket-zero first node with nextBucket one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tm.a()V",
       "originalName": "a",
       "to": "useRasterClip",
@@ -20758,6 +21087,20 @@
       "originalName": "a",
       "to": "readSignedCoatOfArms",
       "evidence": "uq.java: Reads six signed part/colour bytes for campaign participants; distinct from the unsigned snapshot reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uq.a(Z)Z",
+      "originalName": "a",
+      "to": "isReferenceBacked",
+      "evidence": "uq.java: True selects replacement by a strong entry on cache hit; the exported StrongCacheEntry implementation always returns false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uq.b(Z)Ljava/lang/Object;",
+      "originalName": "b",
+      "to": "getValue",
+      "evidence": "uq.java: Returns the retained value for the canonical false guard; StrongCacheEntry returns null for true.",
       "confidence": "reviewed"
     },
     {
@@ -24762,6 +25105,34 @@
       "originalName": "param1",
       "to": "groupId",
       "evidence": "ew.java: Reports the request progress for the group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:f.<init>(Ljava/lang/Object;I)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "f.java: Retains the value directly and passes weight to CacheEntry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:f.<init>(Ljava/lang/Object;I)V#1",
+      "originalName": "param1",
+      "to": "weight",
+      "evidence": "f.java: Retains the value directly and passes weight to CacheEntry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:f.a(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "f.java: True selects replacement by a strong entry on cache hit; the exported StrongCacheEntry implementation always returns false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:f.b(Z)Ljava/lang/Object;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "f.java: Returns the retained value for the canonical false guard; StrongCacheEntry returns null for true.",
       "confidence": "reviewed"
     },
     {
@@ -30281,6 +30652,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:m.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "bucketCount",
+      "evidence": "m.java: Allocates self-linked sentinel buckets without validating positive or power-of-two counts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:m.a(IJ)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "m.java: Returns the first key match in its masked bucket and stores the following lookup node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:m.a(IJ)Ltc;#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "m.java: Returns the first key match in its masked bucket and stores the following lookup node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:m.a(Ltc;ZJ)V#0",
+      "originalName": "param0",
+      "to": "node",
+      "evidence": "m.java: Moves the same node into the masked primary bucket and sets its key; duplicate keys retain insertion order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:m.a(Ltc;ZJ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "m.java: Moves the same node into the masked primary bucket and sets its key; duplicate keys retain insertion order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:m.a(Ltc;ZJ)V#2",
+      "originalName": "param2",
+      "to": "key",
+      "evidence": "m.java: Moves the same node into the masked primary bucket and sets its key; duplicate keys retain insertion order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mb.<init>(IIIII)V#0",
       "originalName": "param0",
       "to": "unitType",
@@ -32815,6 +33228,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ri.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "capacity",
+      "evidence": "ri.java: Uses the same value for capacity and maximum bucket sizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "capacity",
+      "evidence": "ri.java: Doubles bucket count while twice the count is below capacity and the current count is below the supplied growth threshold; the final count can exceed that threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "bucketGrowthLimit",
+      "evidence": "ri.java: Doubles bucket count while twice the count is below capacity and the current count is below the supplied growth threshold; the final count can exceed that threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(JB)Ljava/lang/Object;#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "ri.java: Refreshes LRU order and clears secondaryKey; empty values remove/refund the entry and reference-backed values become strong entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(JB)Ljava/lang/Object;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ri.java: Refreshes LRU order and clears secondaryKey; empty values remove/refund the entry and reference-backed values become strong entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(JI)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "ri.java: Removes/refunds the first matching key only when guard <=-64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(JI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ri.java: Removes/refunds the first matching key only when guard <=-64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(Ljava/lang/Object;BIJ)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "ri.java: Replaces the key, reserves weight, evicts oldest entries until the budget fits and installs a strong entry; zero/negative weights and partial guard failures remain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(Ljava/lang/Object;BIJ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ri.java: Replaces the key, reserves weight, evicts oldest entries until the budget fits and installs a strong entry; zero/negative weights and partial guard failures remain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(Ljava/lang/Object;BIJ)V#2",
+      "originalName": "param2",
+      "to": "weight",
+      "evidence": "ri.java: Replaces the key, reserves weight, evicts oldest entries until the budget fits and installs a strong entry; zero/negative weights and partial guard failures remain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(Ljava/lang/Object;BIJ)V#3",
+      "originalName": "param3",
+      "to": "key",
+      "evidence": "ri.java: Replaces the key, reserves weight, evicts oldest entries until the budget fits and installs a strong entry; zero/negative weights and partial guard failures remain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(Ljava/lang/Object;IJ)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "ri.java: Inserts a weight-one entry; noncanonical guard also refreshes key 64 if present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(Ljava/lang/Object;IJ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ri.java: Inserts a weight-one entry; noncanonical guard also refreshes key 64 if present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(Ljava/lang/Object;IJ)V#2",
+      "originalName": "param2",
+      "to": "key",
+      "evidence": "ri.java: Inserts a weight-one entry; noncanonical guard also refreshes key 64 if present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(Luq;I)V#0",
+      "originalName": "param0",
+      "to": "entry",
+      "evidence": "ri.java: Unlinks both memberships and refunds the supplied entry weight without checking cache ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a(Luq;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ri.java: Unlinks both memberships and refunds the supplied entry weight without checking cache ownership.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rj.a(IIIII)V#0",
       "originalName": "param0",
       "to": "x",
@@ -34404,6 +34929,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tl.<init>(Lm;)V#0",
+      "originalName": "param0",
+      "to": "table",
+      "evidence": "tl.java: Retains the table and initializes traversal from bucket zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tl.java: Clears removal state and starts at bucket-zero first node with nextBucket one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tm.a(IIII)V#0",
       "originalName": "param0",
       "to": "left",
@@ -35293,6 +35832,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:uq.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "weight",
+      "evidence": "uq.java: Stores the entry weight with inherited primary/secondary links.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:uq.a(Lvh;Z)Lln;#0",
       "originalName": "param0",
       "to": "packet",
@@ -35304,6 +35850,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "uq.java: Reads six signed part/colour bytes for campaign participants; distinct from the unsigned snapshot reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uq.a(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uq.java: True selects replacement by a strong entry on cache hit; the exported StrongCacheEntry implementation always returns false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uq.b(Z)Ljava/lang/Object;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uq.java: Returns the retained value for the canonical false guard; StrongCacheEntry returns null for true.",
       "confidence": "reviewed"
     },
     {
@@ -36778,10 +37338,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "4c30cf1fc8a206e4fdfb0a5370dbe7c76e5f455802b7e697404b26122fdb9c1b",
+      "build-armiesofgielinor-rules.mjs": "1eddff6334bb0ab4d4fefaf911e696ff809256b4843f5ba66dc0c429945e2cbb",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "42ff8a8ed8d8c1e1f6ea4257c563d413e6e654def52cb031c5ebd5fba7534453",
+      "tests/test-armiesofgielinor-core.mjs": "8c21298e5659e8da6acda672826dd944a04acece56ebcbe19af82b90cc1c7a95",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
