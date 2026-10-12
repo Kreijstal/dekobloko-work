@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 47,
+  "version": 48,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2092,6 +2092,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eh",
+      "originalName": "eh",
+      "to": "VorbisMapping",
+      "evidence": "eh.java: Retained submap count, selected submap and floor/residue indices for the client single-channel decode path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ei",
       "originalName": "ei",
       "to": "BoundedFile",
@@ -2376,6 +2383,13 @@
       "originalName": "im",
       "to": "ClientUiNode",
       "evidence": "im.java: Empty instance root for linked client UI components; unrelated static helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:in",
+      "originalName": "in",
+      "to": "VorbisCodebook",
+      "evidence": "in.java: Canonical Huffman code lengths/decode tree and lookup-type vector tables decoded from shared Vorbis bits.",
       "confidence": "reviewed"
     },
     {
@@ -3279,6 +3293,13 @@
       "originalName": "vp",
       "to": "ManaEvent",
       "evidence": "vp.java: EventMana diagnostic and capped player/team mana changes in apply.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:w",
+      "originalName": "w",
+      "to": "VorbisResidue",
+      "evidence": "w.java: Partition classification and eight-pass vector accumulation; type zero uses strided placement and nonzero types use sequential placement.",
       "confidence": "reviewed"
     },
     {
@@ -5106,6 +5127,34 @@
       "originalName": "field_z",
       "to": "sphinxX",
       "evidence": "ee.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eh.field_a:[I",
+      "originalName": "field_a",
+      "to": "residueIds",
+      "evidence": "eh.java: Mapping header and packet decode select one floor and the residue attached to each retained submap; coupling payload is only skipped by this implementation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eh.field_b:I",
+      "originalName": "field_b",
+      "to": "submapCount",
+      "evidence": "eh.java: Mapping header and packet decode select one floor and the residue attached to each retained submap; coupling payload is only skipped by this implementation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eh.field_c:[I",
+      "originalName": "field_c",
+      "to": "floorIds",
+      "evidence": "eh.java: Mapping header and packet decode select one floor and the residue attached to each retained submap; coupling payload is only skipped by this implementation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eh.field_d:I",
+      "originalName": "field_d",
+      "to": "selectedSubmap",
+      "evidence": "eh.java: Mapping header and packet decode select one floor and the residue attached to each retained submap; coupling payload is only skipped by this implementation.",
       "confidence": "reviewed"
     },
     {
@@ -7353,6 +7402,48 @@
       "originalName": "field_c",
       "to": "spellId",
       "evidence": "ik.java: Every concrete spell indexes spellDefinitions with this ID and writes it as a big-endian short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_a:[[F",
+      "originalName": "field_a",
+      "to": "vectors",
+      "evidence": "in.java: Packed codebook dimensions/entries/lengths, canonical Huffman traversal and lookup type 1/2 vector construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_b:I",
+      "originalName": "field_b",
+      "to": "dimensions",
+      "evidence": "in.java: Packed codebook dimensions/entries/lengths, canonical Huffman traversal and lookup type 1/2 vector construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_c:[I",
+      "originalName": "field_c",
+      "to": "codeLengths",
+      "evidence": "in.java: Packed codebook dimensions/entries/lengths, canonical Huffman traversal and lookup type 1/2 vector construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_d:[I",
+      "originalName": "field_d",
+      "to": "decodeTree",
+      "evidence": "in.java: Packed codebook dimensions/entries/lengths, canonical Huffman traversal and lookup type 1/2 vector construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_e:[I",
+      "originalName": "field_e",
+      "to": "multiplicands",
+      "evidence": "in.java: Packed codebook dimensions/entries/lengths, canonical Huffman traversal and lookup type 1/2 vector construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_f:I",
+      "originalName": "field_f",
+      "to": "entryCount",
+      "evidence": "in.java: Packed codebook dimensions/entries/lengths, canonical Huffman traversal and lookup type 1/2 vector construction.",
       "confidence": "reviewed"
     },
     {
@@ -11248,10 +11339,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qs.field_A:[F",
+      "originalName": "field_A",
+      "to": "transformScratch",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qs.field_B:I",
       "originalName": "field_B",
       "to": "previousBlockSize",
       "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_C:[I",
+      "originalName": "field_C",
+      "to": "largeBitReverse",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
       "confidence": "reviewed"
     },
     {
@@ -11262,10 +11367,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qs.field_E:I",
+      "originalName": "field_E",
+      "to": "byteIndex",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qs.field_F:I",
       "originalName": "field_F",
       "to": "sampleCount",
       "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_G:[B",
+      "originalName": "field_G",
+      "to": "bitData",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_H:[F",
+      "originalName": "field_H",
+      "to": "smallTrigB",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_I:Z",
+      "originalName": "field_I",
+      "to": "previousBlockSilent",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_J:[F",
+      "originalName": "field_J",
+      "to": "smallTrigA",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_K:[I",
+      "originalName": "field_K",
+      "to": "smallBitReverse",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
       "confidence": "reviewed"
     },
     {
@@ -11276,10 +11423,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qs.field_M:[Lin;",
+      "originalName": "field_M",
+      "to": "codebooks",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_N:I",
+      "originalName": "field_N",
+      "to": "largeBlockSize",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qs.field_O:[F",
       "originalName": "field_O",
       "to": "previousBlock",
       "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_Q:I",
+      "originalName": "field_Q",
+      "to": "previousRightWindowSize",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_R:[F",
+      "originalName": "field_R",
+      "to": "largeTrigA",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
       "confidence": "reviewed"
     },
     {
@@ -11290,10 +11465,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qs.field_k:[F",
+      "originalName": "field_k",
+      "to": "smallTrigC",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_l:I",
+      "originalName": "field_l",
+      "to": "bitIndex",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qs.field_m:I",
       "originalName": "field_m",
       "to": "sampleRate",
       "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_n:[Z",
+      "originalName": "field_n",
+      "to": "modeUsesLargeBlock",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_o:[F",
+      "originalName": "field_o",
+      "to": "largeTrigB",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_p:[Lw;",
+      "originalName": "field_p",
+      "to": "residues",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
       "confidence": "reviewed"
     },
     {
@@ -11304,6 +11514,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qs.field_r:Z",
+      "originalName": "field_r",
+      "to": "setupInitialized",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qs.field_s:[[B",
       "originalName": "field_s",
       "to": "packets",
@@ -11311,10 +11528,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qs.field_t:[I",
+      "originalName": "field_t",
+      "to": "modeMappingIds",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_u:[Lun;",
+      "originalName": "field_u",
+      "to": "floors",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_v:[Leh;",
+      "originalName": "field_v",
+      "to": "mappings",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qs.field_w:[B",
       "originalName": "field_w",
       "to": "decodedSamples",
       "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_x:I",
+      "originalName": "field_x",
+      "to": "smallBlockSize",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_y:[F",
+      "originalName": "field_y",
+      "to": "largeTrigC",
+      "evidence": "qs.java: Setup creates codebooks/floors/residues/mappings, transform tables and shared bit cursor; packet overlap retains previous right-window extent and silence state.",
       "confidence": "reviewed"
     },
     {
@@ -13415,6 +13667,55 @@
       "originalName": "field_M",
       "to": "currentRoom",
       "evidence": "vu.java: Lobby packet dispatcher, sorted insertion, room/player lookup, ownership test and notification expiry share these exact globals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_a:I",
+      "originalName": "field_a",
+      "to": "classbookId",
+      "evidence": "w.java: Residue header and classification/cascade consumers select partition bounds, eight-pass codebooks and strided or sequential placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_b:I",
+      "originalName": "field_b",
+      "to": "begin",
+      "evidence": "w.java: Residue header and classification/cascade consumers select partition bounds, eight-pass codebooks and strided or sequential placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_c:I",
+      "originalName": "field_c",
+      "to": "residueType",
+      "evidence": "w.java: Residue header and classification/cascade consumers select partition bounds, eight-pass codebooks and strided or sequential placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_d:I",
+      "originalName": "field_d",
+      "to": "end",
+      "evidence": "w.java: Residue header and classification/cascade consumers select partition bounds, eight-pass codebooks and strided or sequential placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_e:[I",
+      "originalName": "field_e",
+      "to": "cascadeBooks",
+      "evidence": "w.java: Residue header and classification/cascade consumers select partition bounds, eight-pass codebooks and strided or sequential placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_f:I",
+      "originalName": "field_f",
+      "to": "classificationCount",
+      "evidence": "w.java: Residue header and classification/cascade consumers select partition bounds, eight-pass codebooks and strided or sequential placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_g:I",
+      "originalName": "field_g",
+      "to": "partitionSize",
+      "evidence": "w.java: Residue header and classification/cascade consumers select partition bounds, eight-pass codebooks and strided or sequential placement.",
       "confidence": "reviewed"
     },
     {
@@ -15809,6 +16110,13 @@
       "originalName": "var7",
       "to": "obfuscationControl",
       "evidence": "ea.java: Reviewed incoming chat payload, scratch snapshot and response-phrase selection in both guard-width entry points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.<init>()V#0",
+      "originalName": "var1",
+      "to": "submapIndex",
+      "evidence": "eh.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -18385,6 +18693,356 @@
       "originalName": "var3",
       "to": "failure",
       "evidence": "ig.java: Reviewed lexical identity and frame decoding/loading, slot interpolation, pivot/group traversal, trigonometric rotation or matrix data flow. Phase-shared values retain qualified names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#0",
+      "originalName": "incrementValue$0",
+      "to": "lengthEntryIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#1",
+      "originalName": "stackIn_3_0",
+      "to": "orderedFlag",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#10",
+      "originalName": "var5",
+      "to": "runEntryIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#11",
+      "originalName": "var6",
+      "to": "sequenceP",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#12",
+      "originalName": "var7",
+      "to": "lookupCount",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#13",
+      "originalName": "var8",
+      "to": "multiplicandIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#14",
+      "originalName": "var9",
+      "to": "lastValue",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#15",
+      "originalName": "var10",
+      "to": "lookupCursorOrDivisor",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#16",
+      "originalName": "var11",
+      "to": "dimensionIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#17",
+      "originalName": "var12",
+      "to": "lookup2Value",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#18",
+      "originalName": "var12_int",
+      "to": "lookup1Index",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#19",
+      "originalName": "var13",
+      "to": "lookup1Value",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#2",
+      "originalName": "stackIn_13_0",
+      "to": "sparseFlag",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#20",
+      "originalName": "var14",
+      "to": "sparseEntryIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#21",
+      "originalName": "var2Lifetime1",
+      "to": "lookupType",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#22",
+      "originalName": "var5Lifetime1",
+      "to": "valueBits",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#23",
+      "originalName": "var8Lifetime1",
+      "to": "vectorEntryIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#3",
+      "originalName": "stackIn_25_0",
+      "to": "sequenceFlag",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#4",
+      "originalName": "var1",
+      "to": "ordered",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#5",
+      "originalName": "var2",
+      "to": "lengthCursorOrSparseFlag",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#6",
+      "originalName": "var3_int",
+      "to": "currentCodeLength",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#7",
+      "originalName": "var3",
+      "to": "minimumValue",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#8",
+      "originalName": "var4_int",
+      "to": "lengthRunCount",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.<init>()V#9",
+      "originalName": "var4",
+      "to": "deltaValue",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.a(II)I#0",
+      "originalName": "var2",
+      "to": "valueCount",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.b()I#0",
+      "originalName": "var1",
+      "to": "treeNode",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#0",
+      "originalName": "var2_ref_int__",
+      "to": "nextCodesAlias",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#1",
+      "originalName": "var2",
+      "to": "nextTreeNode",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#10",
+      "originalName": "var10",
+      "to": "shorterBit",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#11",
+      "originalName": "var11",
+      "to": "copyIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#12",
+      "originalName": "var12",
+      "to": "codeTableAlias",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#13",
+      "originalName": "var14",
+      "to": "nextCodes",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#14",
+      "originalName": "var17",
+      "to": "codeWords",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#15",
+      "originalName": "var3Lifetime1",
+      "to": "treeEntryIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#16",
+      "originalName": "var4Lifetime1",
+      "to": "treeCodeLength",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#17",
+      "originalName": "var5Lifetime1",
+      "to": "treeCodeWord",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#18",
+      "originalName": "var6Lifetime1",
+      "to": "treeNode",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#19",
+      "originalName": "var7Lifetime1",
+      "to": "codeBitIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#2",
+      "originalName": "var3",
+      "to": "entryIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#20",
+      "originalName": "var8Lifetime1",
+      "to": "treeBitMask",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#21",
+      "originalName": "var10Lifetime1",
+      "to": "initialCopyIndex",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#22",
+      "originalName": "var8Lifetime2",
+      "to": "longerLength",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#23",
+      "originalName": "var9_intLifetime1",
+      "to": "longerCode",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#3",
+      "originalName": "var4",
+      "to": "codeLength",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#4",
+      "originalName": "var5",
+      "to": "codeBit",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#5",
+      "originalName": "var6",
+      "to": "codeWord",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#6",
+      "originalName": "var7",
+      "to": "nextCodeWord",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#7",
+      "originalName": "var8",
+      "to": "shorterLength",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#8",
+      "originalName": "var9",
+      "to": "grownTree",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:in.c()V#9",
+      "originalName": "var9_int",
+      "to": "shorterCode",
+      "evidence": "in.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -22238,6 +22896,230 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:qs.a()I#0",
+      "originalName": "var0",
+      "to": "bit",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a(I)I#0",
+      "originalName": "var4",
+      "to": "byteMask",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a(I)I#1",
+      "originalName": "var3",
+      "to": "availableBits",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a(I)I#2",
+      "originalName": "var1",
+      "to": "value",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a(I)I#3",
+      "originalName": "var2",
+      "to": "valueShift",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a(I)I#4",
+      "originalName": "var3Lifetime1",
+      "to": "remainingMask",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a([I)Lsn;#0",
+      "originalName": "var5",
+      "to": "sampleIndex",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a([I)Lsn;#1",
+      "originalName": "incrementValue$0",
+      "to": "writeIndex",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a([I)Lsn;#2",
+      "originalName": "var3",
+      "to": "outputPosition",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a([I)Lsn;#3",
+      "originalName": "var4",
+      "to": "outputCount",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a([I)Lsn;#4",
+      "originalName": "var6",
+      "to": "unsignedSample",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a([I)Lsn;#5",
+      "originalName": "var7",
+      "to": "packetSamples",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.a([I)Lsn;#6",
+      "originalName": "var12",
+      "to": "samples",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.e(I)F#0",
+      "originalName": "var1",
+      "to": "mantissa",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.e(I)F#1",
+      "originalName": "var2",
+      "to": "signBit",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.e(I)F#2",
+      "originalName": "var3",
+      "to": "exponent",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#10",
+      "originalName": "var2",
+      "to": "modeId",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#11",
+      "originalName": "var3",
+      "to": "usesLargeBlock",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#12",
+      "originalName": "var4",
+      "to": "blockSize",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#13",
+      "originalName": "var5",
+      "to": "previousUsesLargeBlock",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#14",
+      "originalName": "var6",
+      "to": "nextUsesLargeBlock",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#15",
+      "originalName": "var7",
+      "to": "halfBlockSize",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#16",
+      "originalName": "var8",
+      "to": "leftWindowStart",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#17",
+      "originalName": "var9",
+      "to": "leftWindowEnd",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#18",
+      "originalName": "var10",
+      "to": "leftWindowSize",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#19",
+      "originalName": "var11",
+      "to": "rightWindowStart",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#20",
+      "originalName": "var12",
+      "to": "rightWindowEnd",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#21",
+      "originalName": "var13",
+      "to": "rightWindowSize",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#22",
+      "originalName": "var14",
+      "to": "mapping",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#23",
+      "originalName": "var15",
+      "to": "silent",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#24",
+      "originalName": "var16",
+      "to": "selectedSubmap",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qs.f(I)[F#61",
+      "originalName": "var42",
+      "to": "residue",
+      "evidence": "qs.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ra.a(IILom;ZII)V#10",
       "originalName": "var8",
       "to": "mutationSelector",
@@ -23635,6 +24517,216 @@
       "originalName": "var7",
       "to": "request",
       "evidence": "vo.java: Reviewed lexical ordinal and disk dispatch, queued-write reuse or cache-sector validation data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.<init>()V#0",
+      "originalName": "var3",
+      "to": "highCascadeBits",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.<init>()V#1",
+      "originalName": "var4",
+      "to": "lowCascadeBits",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.<init>()V#2",
+      "originalName": "var5",
+      "to": "hasHighCascade",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.<init>()V#3",
+      "originalName": "var2",
+      "to": "classificationIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.<init>()V#4",
+      "originalName": "var2Lifetime1",
+      "to": "initialCascadeIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.<init>()V#5",
+      "originalName": "var1",
+      "to": "cascades",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.<init>()V#6",
+      "originalName": "var6",
+      "to": "cascadeIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#0",
+      "originalName": "var8",
+      "to": "pass",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#1",
+      "originalName": "var17",
+      "to": "sequentialDimensionIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#10",
+      "originalName": "var11",
+      "to": "classDimensionIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#11",
+      "originalName": "var12",
+      "to": "bookId",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#12",
+      "originalName": "var13",
+      "to": "partitionOffset",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#13",
+      "originalName": "var14",
+      "to": "book",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#14",
+      "originalName": "var15",
+      "to": "strideOrWriteIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#15",
+      "originalName": "var19",
+      "to": "classificationAlias",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#16",
+      "originalName": "var22",
+      "to": "classificationBuffer",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#17",
+      "originalName": "var27",
+      "to": "stridedVector",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#18",
+      "originalName": "var28",
+      "to": "sequentialVector",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#19",
+      "originalName": "var4Lifetime1",
+      "to": "classbookDimensions",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#2",
+      "originalName": "var16",
+      "to": "strideIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#20",
+      "originalName": "var10Lifetime1",
+      "to": "classGroupIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#21",
+      "originalName": "var11Lifetime1",
+      "to": "classification",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#22",
+      "originalName": "var22Lifetime1",
+      "to": "classificationGroup",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#3",
+      "originalName": "var18",
+      "to": "stridedDimensionIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#4",
+      "originalName": "var4",
+      "to": "clearIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#5",
+      "originalName": "var5",
+      "to": "residueLength",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#6",
+      "originalName": "var6",
+      "to": "partitionCount",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#7",
+      "originalName": "var7",
+      "to": "classifications",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#8",
+      "originalName": "var9",
+      "to": "partitionIndex",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:w.a([FIZ)V#9",
+      "originalName": "var10",
+      "to": "classWord",
+      "evidence": "w.java: Exact bit/header/Huffman/vector/partition/window consumer data flow in this declaration; shared aliases and decompiler lifetimes remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -27474,6 +28566,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:in.a()[F",
+      "originalName": "a",
+      "to": "decodeVector",
+      "evidence": "in.java: Returns the retained vector row for the decoded scalar entry without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:in.a(II)I",
+      "originalName": "a",
+      "to": "lookupValueCount",
+      "evidence": "in.java: Finds the greatest integer whose dimensions power does not exceed entryCount; Xiph lookup1_values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:in.b()I",
+      "originalName": "b",
+      "to": "decodeScalar",
+      "evidence": "in.java: Traverses the retained Huffman trie using shared least-significant-bit-first packet input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:in.c()V",
+      "originalName": "c",
+      "to": "buildDecodeTree",
+      "evidence": "in.java: Assigns canonical code words from nonzero lengths and builds a growing compact binary decode trie.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:iq.a(B)Z",
       "originalName": "a",
       "to": "containsPointer",
@@ -30204,6 +31324,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qs.a()I",
+      "originalName": "a",
+      "to": "readBit",
+      "evidence": "qs.java: Reads one bit LSB-first and advances the shared byte/bit cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qs.a(I)I",
+      "originalName": "a",
+      "to": "readBits",
+      "evidence": "qs.java: Reads an LSB-first field across byte boundaries, including zero-bit fields; bounds errors remain unchecked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qs.a(Lkl;)Z",
+      "originalName": "a",
+      "to": "ensureSetup",
+      "evidence": "qs.java: Loads archive group/file zero once and retains shared setup; missing bytes return false.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qs.a(Lkl;II)Lqs;",
       "originalName": "a",
       "to": "load",
@@ -30218,6 +31359,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qs.a([B)V",
+      "originalName": "a",
+      "to": "decodeSetup",
+      "evidence": "qs.java: Builds small/large transform tables, codebooks, floors, residues, mappings and mode arrays from shared bit input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qs.a([BI)V",
+      "originalName": "a",
+      "to": "setBitStream",
+      "evidence": "qs.java: Retains the supplied byte array and byte offset and resets the shared bit index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qs.a([I)Lsn;",
       "originalName": "a",
       "to": "decodeToPcm",
@@ -30225,10 +31380,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qs.b()V",
+      "originalName": "b",
+      "to": "releaseSetup",
+      "evidence": "qs.java: Releases shared byte/table/transform references without resetting setupInitialized or scalar cursor/block fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qs.b([B)V",
       "originalName": "b",
       "to": "decodePacketContainer",
       "evidence": "qs.java: Reads rate/count/loop header and 255-continued packet lengths; negative loop end is complemented and sets the loop flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qs.c()Lsn;",
+      "originalName": "c",
+      "to": "decodeAllToPcm",
+      "evidence": "qs.java: Unbudgeted packet conversion starts fresh decode state, clips to signed PCM and releases the previous block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qs.e(I)F",
+      "originalName": "e",
+      "to": "unpackFloat",
+      "evidence": "qs.java: Unpacks the Vorbis 21-bit mantissa, sign and biased power-of-two exponent, independently of IEEE float bit layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qs.f(I)[F",
+      "originalName": "f",
+      "to": "decodePacket",
+      "evidence": "qs.java: Resolves mode/window/floor/residue, runs the inverse transform and window, then overlap-adds the retained previous block.",
       "confidence": "reviewed"
     },
     {
@@ -32154,6 +33337,13 @@
       "originalName": "j",
       "to": "isChatRecipientAvailable",
       "evidence": "vu.java: Checks online friend or current-room membership against retained recipient identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a([FIZ)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "w.java: Clears the requested output prefix even when skipping; otherwise decodes classifications and accumulates codebook vectors across eight passes.",
       "confidence": "reviewed"
     },
     {
@@ -41173,6 +42363,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:in.a(II)I#0",
+      "originalName": "param0",
+      "to": "entryCount",
+      "evidence": "in.java: Finds the greatest integer whose dimensions power does not exceed entryCount; Xiph lookup1_values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:in.a(II)I#1",
+      "originalName": "param1",
+      "to": "dimensions",
+      "evidence": "in.java: Finds the greatest integer whose dimensions power does not exceed entryCount; Xiph lookup1_values.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:iq.<init>(Ljava/lang/String;III)V#0",
       "originalName": "param0",
       "to": "label",
@@ -49258,6 +50462,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qs.a(I)I#0",
+      "originalName": "param0",
+      "to": "bitCount",
+      "evidence": "qs.java: Reads an LSB-first field across byte boundaries, including zero-bit fields; bounds errors remain unchecked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a(Lkl;)Z#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "qs.java: Loads archive group/file zero once and retains shared setup; missing bytes return false.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qs.a(Lkl;II)Lqs;#0",
       "originalName": "param0",
       "to": "archive",
@@ -49300,6 +50518,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qs.a([B)V#0",
+      "originalName": "param0",
+      "to": "encodedSetup",
+      "evidence": "qs.java: Builds small/large transform tables, codebooks, floors, residues, mappings and mode arrays from shared bit input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a([BI)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "qs.java: Retains the supplied byte array and byte offset and resets the shared bit index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a([BI)V#1",
+      "originalName": "param1",
+      "to": "byteOffset",
+      "evidence": "qs.java: Retains the supplied byte array and byte offset and resets the shared bit index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qs.a([I)Lsn;#0",
       "originalName": "param0",
       "to": "sampleBudget",
@@ -49311,6 +50550,20 @@
       "originalName": "param0",
       "to": "encodedSample",
       "evidence": "qs.java: Reads rate/count/loop header and 255-continued packet lengths; negative loop end is complemented and sets the loop flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.e(I)F#0",
+      "originalName": "param0",
+      "to": "packedValue",
+      "evidence": "qs.java: Unpacks the Vorbis 21-bit mantissa, sign and biased power-of-two exponent, independently of IEEE float bit layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.f(I)[F#0",
+      "originalName": "param0",
+      "to": "packetIndex",
+      "evidence": "qs.java: Resolves mode/window/floor/residue, runs the inverse transform and window, then overlap-adds the retained previous block.",
       "confidence": "reviewed"
     },
     {
@@ -54809,6 +56062,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:w.a([FIZ)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "w.java: Clears the requested output prefix even when skipping; otherwise decodes classifications and accumulates codebook vectors across eight passes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:w.a([FIZ)V#1",
+      "originalName": "param1",
+      "to": "sampleCount",
+      "evidence": "w.java: Clears the requested output prefix even when skipping; otherwise decodes classifications and accumulates codebook vectors across eight passes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:w.a([FIZ)V#2",
+      "originalName": "param2",
+      "to": "skipDecoding",
+      "evidence": "w.java: Clears the requested output prefix even when skipping; otherwise decodes classifications and accumulates codebook vectors across eight passes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wa.<init>(III)V#0",
       "originalName": "param0",
       "to": "spellId",
@@ -55363,10 +56637,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "e6cb5c6a0d19f7c85ea1bed961c0833695a9e087b94177b7469d7850f5ecdabe",
+      "build-armiesofgielinor-rules.mjs": "2b4ea2562e97c9f0c7bb365d82c720c9ea2db0ea741cbd0b627229f24b2665c5",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "4da2dc7411fdabe5d6289051e6e818fe04318275cfe7555d705de43d4ad71a7c",
+      "tests/test-armiesofgielinor-core.mjs": "732d57e574d8ddadfd004edd5fe7eeea87534f2e2d4636b0ae100204a9a7ea98",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
