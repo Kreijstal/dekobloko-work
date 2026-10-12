@@ -69,7 +69,7 @@ large IDs, checksum rejection and returned-file retention modes.
 
 ## Armies of Gielinor
 
-The current pass names 138 reviewed classes around battlefield state, units, map
+The current pass names 140 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
@@ -157,6 +157,14 @@ names revisions, group/file IDs, sparse capacities, CRCs and optional digest/nam
 tables. Both games share independent fixture logic, with separately reviewed
 declaration identities. Raw/gzip decoding and returned-file retention are probed;
 these fixtures do not establish complete cache/network loading.
+
+Armies also names archive group unpacking, keyed file access, availability,
+progress and named/flat access. Independent XTEA ciphertext/range fixtures and
+multi-file chunk fixtures cover sparse IDs, raw/gzip containers and all retention
+modes, including provider reloads. ByteStorage/DirectByteStorage expose the
+136-byte array/direct-buffer threshold and copying behavior. A controlled
+ArchiveProvider subclass supplies bytes; the archive and storage code is real.
+The pinned mode-two empty-file null result remains unchanged.
 
 CampaignParticipant and CoatOfArms name parent/participant metadata, shared
 overrides and coat layers. ContextualRuntimeException exposes the original
