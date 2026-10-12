@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 45,
+  "version": 46,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2785,6 +2785,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:p",
+      "originalName": "p",
+      "to": "SoundCache",
+      "evidence": "p.java: Retains effect/music archives, decoded PCM samples and unfinished music samples; unrelated static client/text helpers retain separate purposes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pa",
       "originalName": "pa",
       "to": "EventPresentation",
@@ -2883,6 +2890,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qs",
+      "originalName": "qs",
+      "to": "VorbisSample",
+      "evidence": "qs.java: Archive music packet container with shared transform/codebook setup and resumable budgeted PCM decoding; full codec math remains only partially named.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qu",
       "originalName": "qu",
       "to": "DelayedPacket",
@@ -2936,6 +2950,13 @@
       "originalName": "rl",
       "to": "KingBlackDragonEvent",
       "evidence": "rl.java: Diagnostic EventKBD with player and King Black Dragon summon state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rm",
+      "originalName": "rm",
+      "to": "SynthesizedSoundEffect",
+      "evidence": "rm.java: Decodes ten optional synthesis voices, mixes clipped signed PCM at 22050 Hz and retains millisecond loop endpoints.",
       "confidence": "reviewed"
     },
     {
@@ -10415,6 +10436,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:p.field_e:Lbg;",
+      "originalName": "field_e",
+      "to": "unfinishedMusicSamples",
+      "evidence": "p.java: Constructor archive assignments and cache lookup/insert/unlink paths separate decoded PCM from resumable music samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:p.field_g:Lkl;",
+      "originalName": "field_g",
+      "to": "soundEffectArchive",
+      "evidence": "p.java: Constructor archive assignments and cache lookup/insert/unlink paths separate decoded PCM from resumable music samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:p.field_h:Lkl;",
+      "originalName": "field_h",
+      "to": "musicSampleArchive",
+      "evidence": "p.java: Constructor archive assignments and cache lookup/insert/unlink paths separate decoded PCM from resumable music samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:p.field_j:Lbg;",
+      "originalName": "field_j",
+      "to": "pcmSamples",
+      "evidence": "p.java: Constructor archive assignments and cache lookup/insert/unlink paths separate decoded PCM from resumable music samples.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pe.field_A:I",
       "originalName": "field_A",
       "to": "originY",
@@ -10870,6 +10919,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qs.field_B:I",
+      "originalName": "field_B",
+      "to": "previousBlockSize",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_D:I",
+      "originalName": "field_D",
+      "to": "loopStart",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_F:I",
+      "originalName": "field_F",
+      "to": "sampleCount",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_L:I",
+      "originalName": "field_L",
+      "to": "decodedSampleCount",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_O:[F",
+      "originalName": "field_O",
+      "to": "previousBlock",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_S:I",
+      "originalName": "field_S",
+      "to": "loopEnd",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_m:I",
+      "originalName": "field_m",
+      "to": "sampleRate",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_q:I",
+      "originalName": "field_q",
+      "to": "nextPacketIndex",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_s:[[B",
+      "originalName": "field_s",
+      "to": "packets",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_w:[B",
+      "originalName": "field_w",
+      "to": "decodedSamples",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qs.field_z:Z",
+      "originalName": "field_z",
+      "to": "loopModeFlag",
+      "evidence": "qs.java: Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qu.field_l:J",
       "originalName": "field_l",
       "to": "releaseAtMillis",
@@ -11294,6 +11420,27 @@
       "originalName": "field_B",
       "to": "playerId",
       "evidence": "rl.java: KingBlackDragonEvent constructor, own diagnostic and application identify the summoning player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rm.field_a:[Lhu;",
+      "originalName": "field_a",
+      "to": "voices",
+      "evidence": "rm.java: Ten optional decoded voices are mixed, and millisecond endpoints are scaled to 22050-Hz PCM positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rm.field_b:I",
+      "originalName": "field_b",
+      "to": "loopEndMilliseconds",
+      "evidence": "rm.java: Ten optional decoded voices are mixed, and millisecond endpoints are scaled to 22050-Hz PCM positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rm.field_c:I",
+      "originalName": "field_c",
+      "to": "loopStartMilliseconds",
+      "evidence": "rm.java: Ten optional decoded voices are mixed, and millisecond endpoints are scaled to 22050-Hz PCM positions.",
       "confidence": "reviewed"
     },
     {
@@ -20705,6 +20852,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:p.a(I[III)Lsn;#0",
+      "originalName": "var5_int",
+      "to": "mixedResourceId",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.a(I[III)Lsn;#15",
+      "originalName": "var8Lifetime1",
+      "to": "sampleToCache",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.a(I[III)Lsn;#2",
+      "originalName": "var6",
+      "to": "cacheKey",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.a(I[III)Lsn;#3",
+      "originalName": "var8",
+      "to": "cachedSample",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.a(I[III)Lsn;#4",
+      "originalName": "var9",
+      "to": "soundEffect",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.a(I[III)Lsn;#5",
+      "originalName": "var10",
+      "to": "decodedSample",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.b(I[III)Lsn;#11",
+      "originalName": "var6",
+      "to": "cacheKey",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.b(I[III)Lsn;#12",
+      "originalName": "var8",
+      "to": "cachedSample",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.b(I[III)Lsn;#13",
+      "originalName": "var9",
+      "to": "musicSample",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.b(I[III)Lsn;#14",
+      "originalName": "var8Lifetime1",
+      "to": "decodedSample",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:p.b(I[III)Lsn;#9",
+      "originalName": "var5_int",
+      "to": "mixedResourceId",
+      "evidence": "p.java: Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:pf.a(I[BZ)Ljava/lang/Object;#0",
       "originalName": "var3",
       "to": "directStorage",
@@ -21493,6 +21717,104 @@
       "originalName": "var11",
       "to": "sectionTitles",
       "evidence": "rk.java: Reviewed lexical ordinal and pulse interpolation, sequence record shape or instruction-section table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.<init>(Lvh;)V#0",
+      "originalName": "var2",
+      "to": "voiceIndex",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.<init>(Lvh;)V#1",
+      "originalName": "var3",
+      "to": "voiceMarker",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#0",
+      "originalName": "var4",
+      "to": "voiceIndex",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#1",
+      "originalName": "var8",
+      "to": "sampleIndex",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#2",
+      "originalName": "var1",
+      "to": "durationMilliseconds",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#3",
+      "originalName": "var2",
+      "to": "durationVoiceIndex",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#4",
+      "originalName": "var3",
+      "to": "samples",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#5",
+      "originalName": "var5",
+      "to": "voiceSampleCount",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#6",
+      "originalName": "var6",
+      "to": "voiceSampleOffset",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#7",
+      "originalName": "var9",
+      "to": "mixedSample",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#8",
+      "originalName": "var13",
+      "to": "voiceSamples",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a()[B#9",
+      "originalName": "var2Lifetime1",
+      "to": "sampleCount",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(Lkl;II)Lrm;#0",
+      "originalName": "var3",
+      "to": "encodedEffect",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.b()Lsn;#0",
+      "originalName": "var1",
+      "to": "samples",
+      "evidence": "rm.java: Effect decode/synthesis loop and PCM conversion data flow.",
       "confidence": "reviewed"
     },
     {
@@ -28510,6 +28832,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:p.a(BLjava/lang/String;Ljava/lang/String;)Lsn;",
+      "originalName": "a",
+      "to": "getMusicSampleByName",
+      "evidence": "p.java: Unbudgeted named music wrapper; guard >= -125 first invokes the original null-Applet helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(I[III)Lsn;",
+      "originalName": "a",
+      "to": "loadSoundEffect",
+      "evidence": "p.java: Returns cached PCM before the budget gate, decodes an effect on a miss and subtracts its byte length; canonical guard is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(Ljava/lang/String;BLjava/lang/String;)Lsn;",
+      "originalName": "a",
+      "to": "getSoundEffectByName",
+      "evidence": "p.java: Unbudgeted named effect wrapper; only guard -97 loads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(Ljava/lang/String;Ljava/lang/String;I[I)Lsn;",
+      "originalName": "a",
+      "to": "loadSoundEffectByName",
+      "evidence": "p.java: Resolves effect group/file names before loading; canonical guard zero also supplies the lower group-ID bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(Z[II)Lsn;",
+      "originalName": "a",
+      "to": "loadSoundEffectById",
+      "evidence": "p.java: Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a([IBLjava/lang/String;Ljava/lang/String;)Lsn;",
+      "originalName": "a",
+      "to": "loadMusicSampleByName",
+      "evidence": "p.java: Resolves music group/file names and delegates to the budgeted loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a([III)Lsn;",
+      "originalName": "a",
+      "to": "loadMusicSampleById",
+      "evidence": "p.java: Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.b(I[III)Lsn;",
+      "originalName": "b",
+      "to": "loadMusicSample",
+      "evidence": "p.java: Uses a distinct 2^32-XOR key namespace, retains unfinished decoding and unlinks it before installing completed PCM; canonical guard -648691772.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pa.a(B)V",
       "originalName": "a",
       "to": "drawOverlayLayer",
@@ -28874,6 +29252,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qs.a(Lkl;II)Lqs;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "qs.java: Ensures shared setup and archive sample availability before constructing the packet container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qs.a(Lkl;Ljava/lang/String;Ljava/lang/String;)Lqs;",
+      "originalName": "a",
+      "to": "loadByName",
+      "evidence": "qs.java: Named archive wrapper around setup and packet-container decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qs.a([I)Lsn;",
+      "originalName": "a",
+      "to": "decodeToPcm",
+      "evidence": "qs.java: Checks budget before each packet, retains partial decoding on exhaustion and releases output/previous-block references on completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qs.b([B)V",
+      "originalName": "b",
+      "to": "decodePacketContainer",
+      "evidence": "qs.java: Reads rate/count/loop header and 255-continued packet lengths; negative loop end is complemented and sets the loop flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qv.a(B)V",
       "originalName": "a",
       "to": "drawOverlayLayer",
@@ -29186,6 +29592,27 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rm.a()[B",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "rm.java: Allocates through the latest voice end, mixes signed samples with clipping and returns an empty array for zero duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rm.a(Lkl;II)Lrm;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "rm.java: Returns null for absent archive bytes, otherwise decodes an effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rm.b()Lsn;",
+      "originalName": "b",
+      "to": "toPcmSample",
+      "evidence": "rm.java: Synthesizes signed PCM and scales loop endpoints from milliseconds at 22050 Hz.",
       "confidence": "reviewed"
     },
     {
@@ -46353,6 +46780,216 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:p.<init>(Lkl;Lkl;)V#0",
+      "originalName": "param0",
+      "to": "soundEffectArchive",
+      "evidence": "p.java: Retains the two archives and creates separate 256-bucket caches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.<init>(Lkl;Lkl;)V#1",
+      "originalName": "param1",
+      "to": "musicSampleArchive",
+      "evidence": "p.java: Retains the two archives and creates separate 256-bucket caches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(BLjava/lang/String;Ljava/lang/String;)Lsn;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "p.java: Unbudgeted named music wrapper; guard >= -125 first invokes the original null-Applet helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(BLjava/lang/String;Ljava/lang/String;)Lsn;#1",
+      "originalName": "param1",
+      "to": "groupName",
+      "evidence": "p.java: Unbudgeted named music wrapper; guard >= -125 first invokes the original null-Applet helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(BLjava/lang/String;Ljava/lang/String;)Lsn;#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "p.java: Unbudgeted named music wrapper; guard >= -125 first invokes the original null-Applet helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(I[III)Lsn;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "p.java: Returns cached PCM before the budget gate, decodes an effect on a miss and subtracts its byte length; canonical guard is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(I[III)Lsn;#1",
+      "originalName": "param1",
+      "to": "sampleBudget",
+      "evidence": "p.java: Returns cached PCM before the budget gate, decodes an effect on a miss and subtracts its byte length; canonical guard is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(I[III)Lsn;#2",
+      "originalName": "param2",
+      "to": "fileId",
+      "evidence": "p.java: Returns cached PCM before the budget gate, decodes an effect on a miss and subtracts its byte length; canonical guard is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(I[III)Lsn;#3",
+      "originalName": "param3",
+      "to": "groupId",
+      "evidence": "p.java: Returns cached PCM before the budget gate, decodes an effect on a miss and subtracts its byte length; canonical guard is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Ljava/lang/String;BLjava/lang/String;)Lsn;#0",
+      "originalName": "param0",
+      "to": "fileName",
+      "evidence": "p.java: Unbudgeted named effect wrapper; only guard -97 loads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Ljava/lang/String;BLjava/lang/String;)Lsn;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "p.java: Unbudgeted named effect wrapper; only guard -97 loads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Ljava/lang/String;BLjava/lang/String;)Lsn;#2",
+      "originalName": "param2",
+      "to": "groupName",
+      "evidence": "p.java: Unbudgeted named effect wrapper; only guard -97 loads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Ljava/lang/String;Ljava/lang/String;I[I)Lsn;#0",
+      "originalName": "param0",
+      "to": "fileName",
+      "evidence": "p.java: Resolves effect group/file names before loading; canonical guard zero also supplies the lower group-ID bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Ljava/lang/String;Ljava/lang/String;I[I)Lsn;#1",
+      "originalName": "param1",
+      "to": "groupName",
+      "evidence": "p.java: Resolves effect group/file names before loading; canonical guard zero also supplies the lower group-ID bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Ljava/lang/String;Ljava/lang/String;I[I)Lsn;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "p.java: Resolves effect group/file names before loading; canonical guard zero also supplies the lower group-ID bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Ljava/lang/String;Ljava/lang/String;I[I)Lsn;#3",
+      "originalName": "param3",
+      "to": "sampleBudget",
+      "evidence": "p.java: Resolves effect group/file names before loading; canonical guard zero also supplies the lower group-ID bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Z[II)Lsn;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "p.java: Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Z[II)Lsn;#1",
+      "originalName": "param1",
+      "to": "sampleBudget",
+      "evidence": "p.java: Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Z[II)Lsn;#2",
+      "originalName": "param2",
+      "to": "sampleId",
+      "evidence": "p.java: Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a([IBLjava/lang/String;Ljava/lang/String;)Lsn;#0",
+      "originalName": "param0",
+      "to": "sampleBudget",
+      "evidence": "p.java: Resolves music group/file names and delegates to the budgeted loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a([IBLjava/lang/String;Ljava/lang/String;)Lsn;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "p.java: Resolves music group/file names and delegates to the budgeted loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a([IBLjava/lang/String;Ljava/lang/String;)Lsn;#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "p.java: Resolves music group/file names and delegates to the budgeted loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a([IBLjava/lang/String;Ljava/lang/String;)Lsn;#3",
+      "originalName": "param3",
+      "to": "groupName",
+      "evidence": "p.java: Resolves music group/file names and delegates to the budgeted loader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a([III)Lsn;#0",
+      "originalName": "param0",
+      "to": "sampleBudget",
+      "evidence": "p.java: Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a([III)Lsn;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "p.java: Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a([III)Lsn;#2",
+      "originalName": "param2",
+      "to": "sampleId",
+      "evidence": "p.java: Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.b(I[III)Lsn;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "p.java: Uses a distinct 2^32-XOR key namespace, retains unfinished decoding and unlinks it before installing completed PCM; canonical guard -648691772.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.b(I[III)Lsn;#1",
+      "originalName": "param1",
+      "to": "sampleBudget",
+      "evidence": "p.java: Uses a distinct 2^32-XOR key namespace, retains unfinished decoding and unlinks it before installing completed PCM; canonical guard -648691772.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.b(I[III)Lsn;#2",
+      "originalName": "param2",
+      "to": "groupId",
+      "evidence": "p.java: Uses a distinct 2^32-XOR key namespace, retains unfinished decoding and unlinks it before installing completed PCM; canonical guard -648691772.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.b(I[III)Lsn;#3",
+      "originalName": "param3",
+      "to": "fileId",
+      "evidence": "p.java: Uses a distinct 2^32-XOR key namespace, retains unfinished decoding and unlinks it before installing completed PCM; canonical guard -648691772.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pa.a(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -47522,6 +48159,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qs.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "encodedSample",
+      "evidence": "qs.java: Decodes archive packet/header data; negative packet count throws IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a(Lkl;II)Lqs;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "qs.java: Ensures shared setup and archive sample availability before constructing the packet container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a(Lkl;II)Lqs;#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "qs.java: Ensures shared setup and archive sample availability before constructing the packet container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a(Lkl;II)Lqs;#2",
+      "originalName": "param2",
+      "to": "fileId",
+      "evidence": "qs.java: Ensures shared setup and archive sample availability before constructing the packet container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a(Lkl;Ljava/lang/String;Ljava/lang/String;)Lqs;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "qs.java: Named archive wrapper around setup and packet-container decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a(Lkl;Ljava/lang/String;Ljava/lang/String;)Lqs;#1",
+      "originalName": "param1",
+      "to": "groupName",
+      "evidence": "qs.java: Named archive wrapper around setup and packet-container decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a(Lkl;Ljava/lang/String;Ljava/lang/String;)Lqs;#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "qs.java: Named archive wrapper around setup and packet-container decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.a([I)Lsn;#0",
+      "originalName": "param0",
+      "to": "sampleBudget",
+      "evidence": "qs.java: Checks budget before each packet, retains partial decoding on exhaustion and releases output/previous-block references on completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qs.b([B)V#0",
+      "originalName": "param0",
+      "to": "encodedSample",
+      "evidence": "qs.java: Reads rate/count/loop header and 255-continued packet lengths; negative loop end is complemented and sets the loop flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qu.<init>(JI[B)V#0",
       "originalName": "param0",
       "to": "releaseAtMillis",
@@ -48492,6 +49192,34 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rm.<init>(Lvh;)V#0",
+      "originalName": "param0",
+      "to": "buffer",
+      "evidence": "rm.java: Reads ten presence markers/voice definitions followed by two unsigned millisecond endpoints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rm.a(Lkl;II)Lrm;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "rm.java: Returns null for absent archive bytes, otherwise decodes an effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rm.a(Lkl;II)Lrm;#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "rm.java: Returns null for absent archive bytes, otherwise decodes an effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rm.a(Lkl;II)Lrm;#2",
+      "originalName": "param2",
+      "to": "fileId",
+      "evidence": "rm.java: Returns null for absent archive bytes, otherwise decodes an effect.",
       "confidence": "reviewed"
     },
     {
@@ -53543,10 +54271,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "e0c4e5ae23579c6ec46b133d8a43d9119c92ea497ee245dbbbc131f296d5596d",
+      "build-armiesofgielinor-rules.mjs": "0889af5d3eb95905fa21be3291526b169f02ce4c010e4906b112758d55af03c1",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "b2453e08c60f289f61ea0d7d685e8aaa60c08cd9464c76c5bf474307bfc9f755",
+      "tests/test-armiesofgielinor-core.mjs": "62145950bae3d5bd1b0045fad872ae9963c3d8fdb23b97246334cd4c52986952",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

@@ -10,6 +10,9 @@ import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} fr
 const SOURCE_COMMIT = 'f9a6dd401349b0d2b3a426a62d2ee09c32514c63';
 // Evidence below refers to this immutable Java input, not to another game's map.
 const classes = {
+  p:['SoundCache','Retains effect/music archives, decoded PCM samples and unfinished music samples; unrelated static client/text helpers retain separate purposes.'],
+  rm:['SynthesizedSoundEffect','Decodes ten optional synthesis voices, mixes clipped signed PCM at 22050 Hz and retains millisecond loop endpoints.'],
+  qs:['VorbisSample','Archive music packet container with shared transform/codebook setup and resumable budgeted PCM decoding; full codec math remains only partially named.'],
   dg:['BattleGraphicsAssets','Retains the basic sprite archive, loads battle marker/effect sprites and switches shared theme sprite bindings. Unrelated static chat/menu helpers retain separate purposes.'],
   co:['BattlefieldTheme','Theme ID, terrain/foliage/structure sprite names and arrays, preview colours, background image, ambient samples and music assets. Unrelated static ranking/text helpers retain separate purposes.'],
   sn:['PcmSample','Retained PCM bytes, sample rate, loop endpoints and loop-mode flag supplied by sound decoders and consumed by playback streams.'],
@@ -2083,6 +2086,37 @@ for(const [owner,original,type,to] of [['of','Mb','[Lru;','cannotMoveSprites'],[
 for(const [original,type,to] of [['o','[B','samples'],['p','I','sampleRate'],['m','I','loopStart'],['n','I','loopEnd'],['l','Z','loopModeFlag']])field('sn',original,type,to,'PCM constructors retain the array/rate/endpoints/flag consumed by playback stream setup.');
 constructorParameters('sn','(I[BII)V',['sampleRate','samples','loopStart','loopEnd'],'Retains PCM payload and endpoints without copying or validating them.');
 constructorParameters('sn','(I[BIIZ)V',['sampleRate','samples','loopStart','loopEnd','loopModeFlag'],'Retains PCM payload, endpoints and loop flag.');
+// Audio ownership and budget paths; canonical guards preserve the original cache keys.
+for(const [original,type,to] of [['g','Lkl;','soundEffectArchive'],['h','Lkl;','musicSampleArchive'],['e','Lbg;','unfinishedMusicSamples'],['j','Lbg;','pcmSamples']])field('p',original,type,to,'Constructor archive assignments and cache lookup/insert/unlink paths separate decoded PCM from resumable music samples.');
+constructorParameters('p','(Lkl;Lkl;)V',['soundEffectArchive','musicSampleArchive'],'Retains the two archives and creates separate 256-bucket caches.');
+method('p','a','(I[III)Lsn;','loadSoundEffect','Returns cached PCM before the budget gate, decodes an effect on a miss and subtracts its byte length; canonical guard is zero.',{0:'obfuscationGuard',1:'sampleBudget',2:'fileId',3:'groupId'});
+method('p','b','(I[III)Lsn;','loadMusicSample','Uses a distinct 2^32-XOR key namespace, retains unfinished decoding and unlinks it before installing completed PCM; canonical guard -648691772.',{0:'obfuscationGuard',1:'sampleBudget',2:'groupId',3:'fileId'});
+method('p','a','(Ljava/lang/String;Ljava/lang/String;I[I)Lsn;','loadSoundEffectByName','Resolves effect group/file names before loading; canonical guard zero also supplies the lower group-ID bound.',{0:'fileName',1:'groupName',2:'obfuscationGuard',3:'sampleBudget'});
+method('p','a','([IBLjava/lang/String;Ljava/lang/String;)Lsn;','loadMusicSampleByName','Resolves music group/file names and delegates to the budgeted loader.',{0:'sampleBudget',1:'obfuscationGuard',2:'fileName',3:'groupName'});
+method('p','a','(Z[II)Lsn;','loadSoundEffectById','Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.',{0:'obfuscationGuard',1:'sampleBudget',2:'sampleId'});
+method('p','a','([III)Lsn;','loadMusicSampleById','Treats ID as a file in a single-group archive or as a group with one file; ambiguous layouts throw.',{0:'sampleBudget',1:'obfuscationGuard',2:'sampleId'});
+method('p','a','(Ljava/lang/String;BLjava/lang/String;)Lsn;','getSoundEffectByName','Unbudgeted named effect wrapper; only guard -97 loads.',{0:'fileName',1:'obfuscationGuard',2:'groupName'});
+method('p','a','(BLjava/lang/String;Ljava/lang/String;)Lsn;','getMusicSampleByName','Unbudgeted named music wrapper; guard >= -125 first invokes the original null-Applet helper.',{0:'obfuscationGuard',1:'groupName',2:'fileName'});
+for(const [signature,entries] of [
+ ['a(I[III)Lsn;',[[0,'var5_int','mixedResourceId'],[2,'var6','cacheKey'],[3,'var8','cachedSample'],[4,'var9','soundEffect'],[5,'var10','decodedSample'],[15,'var8Lifetime1','sampleToCache']]],
+ ['b(I[III)Lsn;',[[9,'var5_int','mixedResourceId'],[11,'var6','cacheKey'],[12,'var8','cachedSample'],[13,'var9','musicSample'],[14,'var8Lifetime1','decodedSample']]]
+])for(const [ordinal,original,to] of entries)local('p',signature,ordinal,original,to,'Cache key calculation and PCM/unfinished-sample ownership in the corresponding loader.');
+for(const [original,type,to] of [['a','[Lhu;','voices'],['c','I','loopStartMilliseconds'],['b','I','loopEndMilliseconds']])field('rm',original,type,to,'Ten optional decoded voices are mixed, and millisecond endpoints are scaled to 22050-Hz PCM positions.');
+constructorParameters('rm','(Lvh;)V',['buffer'],'Reads ten presence markers/voice definitions followed by two unsigned millisecond endpoints.');
+method('rm','a','(Lkl;II)Lrm;','load','Returns null for absent archive bytes, otherwise decodes an effect.',{0:'archive',1:'groupId',2:'fileId'});
+method('rm','a','()[B','synthesize','Allocates through the latest voice end, mixes signed samples with clipping and returns an empty array for zero duration.');
+method('rm','b','()Lsn;','toPcmSample','Synthesizes signed PCM and scales loop endpoints from milliseconds at 22050 Hz.');
+for(const [signature,entries] of [
+ ['<init>(Lvh;)V',[[0,'var2','voiceIndex'],[1,'var3','voiceMarker']]],
+ ['a()[B',[[0,'var4','voiceIndex'],[1,'var8','sampleIndex'],[2,'var1','durationMilliseconds'],[3,'var2','durationVoiceIndex'],[4,'var3','samples'],[5,'var5','voiceSampleCount'],[6,'var6','voiceSampleOffset'],[7,'var9','mixedSample'],[8,'var13','voiceSamples'],[9,'var2Lifetime1','sampleCount']]],
+ ['a(Lkl;II)Lrm;',[[0,'var3','encodedEffect']]],['b()Lsn;',[[0,'var1','samples']]]
+])for(const [ordinal,original,to] of entries)local('rm',signature,ordinal,original,to,'Effect decode/synthesis loop and PCM conversion data flow.');
+for(const [original,type,to] of [['m','I','sampleRate'],['F','I','sampleCount'],['D','I','loopStart'],['S','I','loopEnd'],['z','Z','loopModeFlag'],['s','[[B','packets'],['w','[B','decodedSamples'],['L','I','decodedSampleCount'],['q','I','nextPacketIndex'],['O','[F','previousBlock'],['B','I','previousBlockSize']])field('qs',original,type,to,'Packet header, resumable decode cursor/output and previous transform block used by the PCM conversion path.');
+constructorParameters('qs','([B)V',['encodedSample'],'Decodes archive packet/header data; negative packet count throws IOException.');
+method('qs','a','([I)Lsn;','decodeToPcm','Checks budget before each packet, retains partial decoding on exhaustion and releases output/previous-block references on completion.',{0:'sampleBudget'});
+method('qs','b','([B)V','decodePacketContainer','Reads rate/count/loop header and 255-continued packet lengths; negative loop end is complemented and sets the loop flag.',{0:'encodedSample'});
+method('qs','a','(Lkl;II)Lqs;','load','Ensures shared setup and archive sample availability before constructing the packet container.',{0:'archive',1:'groupId',2:'fileId'});
+method('qs','a','(Lkl;Ljava/lang/String;Ljava/lang/String;)Lqs;','loadByName','Named archive wrapper around setup and packet-container decoding.',{0:'archive',1:'groupName',2:'fileName'});
 method('b','a','([BI)V','decodeSpriteSheet','Reads the footer count/canvas/offsets/dimensions, RGB palette and row/column-major indices with optional alpha into shared scratch buffers.',{0:'encodedSheet',1:'obfuscationGuard'});
 method('kp','a','(ZILkl;I)Z','decodeSpriteSheetFromArchive','Fetches group/file bytes and decodes when available; null bytes return false.',{0:'obfuscationGuard',1:'groupId',2:'archive',3:'fileId'});
 method('lo','a','(Ljava/lang/String;ILjava/lang/String;Lkl;)[Lru;','loadIndexedSpritesByName','Resolves a group/file and loads palette-indexed sprite frames for the canonical guard.',{0:'fileName',1:'obfuscationGuard',2:'groupName',3:'archive'});
@@ -2363,6 +2397,7 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('mp')} / ${link('oc')} | Scrollable social-list buttons and anchored account-name entry prompt. |`,
     `| ${link('ea')} | First/lobby-or-game, friends and ignore tabs; static incoming-chat decode entry points. |`,
     `| ${link('dq')} | Huffman symbol lengths/code words, compressed chat text and bounded decode traversal. |`,
+    `| ${link('p')} / ${link('rm')} / ${link('qs')} | PCM caches, synthesized effects, music packet headers and resumable decode ownership. |`,
     `| ${link('dg')} / ${link('co')} / ${link('sn')} | Basic battle sprite loading, theme-owned graphics/audio resources and retained PCM samples. |`,
     `| ${link('ou')} | Free/member map archives, theme/size candidate lists, player-capacity selection and tutorial fallback. |`,
     `| ${link('ul')} / ${link('nn')} | Local terrain-blocked visibility and procedural center/sector map generation. |`,
@@ -2537,6 +2572,7 @@ export function buildArmiesGuide(rules,mapping) {
     'BattlefieldTheme owns the terrain/foliage/structure sprite arrays and filenames, shadow arrays, sixteen terrainPreviewColours, background image name, ambient sample names/objects and retained music track. createThemeCatalog now names the five indexed plains/desert/ice/swamp/burnt records; native fixtures verify their IDs, resource/music names and array shapes. setResourceArchives publishes the shared sprite/background archives. selectTheme returns when already selected, conditionally releases the previous theme, loads the next one and publishes active render arrays plus terrain sprite index one converted to RGB.', '',
     'loadSpriteSheets uses structureShadowSprites alone as its readiness gate: a partially cleared theme with retained structure shadows does not reload other arrays. releaseSprites clears five sprite arrays but preserves filenames, ambient samples and music. Native identity/reload/switch fixtures preserve those rules and the guard path that clears foliage shadows after loading them. Background JPEG decoding, actual sound-cache resolution, music-sample preparation and end-to-end theme rendering remain unverified.', '',
     'PcmSample retains the supplied sample bytes, rate, loop endpoints and loopModeFlag without copying or validating the endpoints. Constructor and ambient-selection fixtures use real sample objects, controlled unsigned random words, null/empty ambient-name cases and sprite release retaining audio samples. Empty sample selection preserves the bounded-random IllegalArgumentException. Live audio playback and loop-mode interpretation remain unverified.', '',
+    'SoundCache separates effect/music archives, shared decoded PCM and unfinished VorbisSample objects. Cache hits precede budget checks; effect misses subtract decoded byte length, while music packet decoding may retain partial output. Completion unlinks the unfinished object and moves its output bytes into cached PcmSample without copying. Fixed key vectors preserve signed extension and the music XOR namespace. SynthesizedSoundEffect names its ten voices, clipped mixing and millisecond loop endpoints. Controlled fixtures cover empty effects, zero-packet headers, exhausted budgets, named lookup, malformed packet counts and injected completed decoder ownership; full synthesis/Vorbis packet math, positive-length budget overshoot and live playback remain unverified.', '',
     'decodeSpriteSheet reads a trailing frame count, canvas size, four per-frame geometry arrays and a palette, then decodes row- or column-major index bytes and optional alpha lanes. Palette entry zero remains transparent; other encoded black entries become colour one. Independent two-frame byte fixtures cover all four layout/alpha flag combinations, opaque/nonopaque alpha, dimensions, offsets and row-major reconstruction. Indexed builders retain the decoded palette and index arrays. The tested RGB-array builder uses palette colours while ignoring decoded alpha lanes.', '',
     'releaseSpriteDecodeBuffers clears index/width/height/X-offset references, and for its normal guard also palette/Y-offset references. Decoded alpha arrays and has-alpha flags remain retained, as do scalar count/canvas values. Native fixtures verify transferred indexed ownership, RGB values and the precise retained/released buffers. These names describe the pinned implementation; this pass does not change its alpha or memory behavior.', '',
     'RasterState captures the same pixel array, dimensions and clip edges without copying. pushRasterState reuses the last pooled record or allocates one, then appends it to rasterStateStack. popRasterState restores the most recent target and clip, clears that record pixels reference and returns it to rasterStatePool. Nested native fixtures verify LIFO restoration, distinct records, pixel-reference release, reuse of the most recently pooled record and empty-stack failure without changing the current target. setTarget resets the full clip; setClip retains the original asymmetric clamping. Full rendered frames and raster caches remain unverified.', '',
@@ -2561,7 +2597,7 @@ export function buildArmiesManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:45,
+    const rules={schema:1,game:'armiesofgielinor',version:46,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
