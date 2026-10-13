@@ -107,6 +107,9 @@ MusicVoiceMixer and MidiSynthesizer expose scene audio lookup, event parsing,
 instrument usage and per-channel/voice state. ByteArrayNode names shared byte storage.
 SoundEffect, SoundTone, SoundEnvelope and AudioFilter expose synthesized effects,
 oscillators, timed curves and filter coefficients, including their working variables.
+VorbisSample, VorbisCodebook, VorbisFloor1, VorbisResidue and VorbisMapping expose
+compressed music packets, entropy/vector decoding, spectral reconstruction,
+transform windows, overlap and incremental PCM/cache ownership.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -750,8 +753,8 @@ sample caches. Name/id lookups retain the original archive-layout rules and samp
 budget behavior. Controlled cache fixtures verify source-key separation, signed
 32-bit key extension, high16-bit group/file IDs, cache hits before budget checks,
 unchanged budget on cache hits and missing-entry blocking at nonpositive budgets.
-Actual synthesized/compressed decoding, incomplete-sample retention and archive
-retrieval remain unverified.
+Real effect/music assets and their archive retrieval remain unverified; synthetic
+decoding and cache ownership checks are described below.
 
 MidiFileReader exposes track start/current positions, ticks, running status,
 division, tempo and compensation offset. Synthetic MIDI fixtures check two-track
@@ -800,8 +803,34 @@ double-precision calculations with a two-unit Q16 tolerance. Controlled decoded
 archive files exercise effect loading, PCM-cache insertion/reuse, successful
 budget debit (including overshoot), absent-file behavior and scratch release.
 Real game assets, modulation envelopes during synthesis, the filtered-tone output
-path, malformed/oversized inputs, compressed music samples and audible playback
+path, malformed/oversized inputs, real compressed music assets and audible playback
 remain unverified.
+
+The compressed decoder uses the codebooks, floor1, residues and mapping structures
+from the [Vorbis I specification](https://xiph.org/vorbis/doc/Vorbis_I_spec.html)
+inside an archive-specific rate/count/loop/packet container. Names distinguish
+shared little-endian bit state, short/long transform tables, setup definitions,
+previous-block overlap and retained incremental output. The floor/codebook/residue
+working variables and packet window/overlap variables are reviewed; inner inverse
+transform butterfly temporaries remain opaque. This identifies the algorithm and
+its supported source paths, rather than asserting complete Vorbis/Ogg conformance.
+
+Native fixtures check arbitrary bit widths through32 across byte boundaries,
+packed floats against `Math.scalb`, ordered/unordered/sparse canonical codebooks,
+type1/type2 vector lookup with sequence accumulation, scalar/vector storage,
+mono mapping and residue layout/skip behavior. Floor fixtures check neighbors,
+integer interpolation, coded point recovery, sorted curve application and clipping.
+A synthetic nonzero setup and short/long packet sequence compare the fast inverse
+transform with a direct cosine sum and explicit transition windows/overlap, using
+`1e-4 * max(1, abs(expected))` tolerance. Silent transitions are checked separately.
+Signed8 output, declared-length truncation, complemented loop-end flags,
+255-byte continued packet lengths and budget suspension/resumption are checked.
+Controlled decoded archive files verify pending compressed-sample retention,
+PCM insertion/reuse and unlink/output/overlap cleanup. Scratch release preserves
+the original `setupReady` flag; names do not repair that lifecycle behavior.
+Real game music, setup retrieval/reinitialization, other floor/residue combinations,
+malformed inputs, channel coupling, Ogg transport and audible playback remain
+unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

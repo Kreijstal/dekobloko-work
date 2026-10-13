@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 28,
+  "version": 29,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -304,6 +304,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bk",
+      "originalName": "bk",
+      "to": "VorbisSample",
+      "evidence": "bk.java: Archive-specific packet container and shared mono Vorbis setup, inverse transform/overlap, budgeted signed8 PCM conversion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bl",
       "originalName": "bl",
       "to": "AchievementsScreen",
@@ -336,6 +343,13 @@
       "originalName": "ci",
       "to": "SpaceBackground",
       "evidence": "ci.java: Space asset group, black fallback, layered background, character and lever sprites. Unrelated static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cj",
+      "originalName": "cj",
+      "to": "VorbisResidue",
+      "evidence": "cj.java: Residue setup and eight-pass codebook reconstruction with strided type0 or sequential nonzero-type vector placement.",
       "confidence": "reviewed"
     },
     {
@@ -458,6 +472,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fg",
+      "originalName": "fg",
+      "to": "VorbisFloor1",
+      "evidence": "fg.java: Type1 spectral floor setup, coded point recovery, sorting and inverse-decibel curve application.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fi",
       "originalName": "fi",
       "to": "ArcticBackground",
@@ -469,6 +490,13 @@
       "originalName": "fk",
       "to": "HuffmanCodec",
       "evidence": "fk.java: Symbol-order prefix-code construction, left-aligned codewords, MSB-first byte compression and decode trie. Unrelated static helpers retain their roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fn",
+      "originalName": "fn",
+      "to": "VorbisMapping",
+      "evidence": "fn.java: Mono mapping setup with submap count/mux and per-submap floor/residue references; unrelated time/coupling bits are consumed.",
       "confidence": "reviewed"
     },
     {
@@ -1179,6 +1207,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:te",
+      "originalName": "te",
+      "to": "VorbisCodebook",
+      "evidence": "te.java: Canonical Huffman decoding and optional type1/type2 vector lookup tables decoded from shared little-endian bits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tg",
       "originalName": "tg",
       "to": "PlatformServices",
@@ -1795,6 +1830,244 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bk.field_A:[I",
+      "originalName": "field_A",
+      "to": "modeMappings",
+      "evidence": "bk.java: Per-mode mapping reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_B:I",
+      "originalName": "field_B",
+      "to": "shortBlockSize",
+      "evidence": "bk.java: One shifted by first setup4-bit exponent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_C:I",
+      "originalName": "field_C",
+      "to": "previousRightWindowCount",
+      "evidence": "bk.java: Previous right window endpoint minus half block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_E:[F",
+      "originalName": "field_E",
+      "to": "shortTrigC",
+      "evidence": "bk.java: Short-block final butterfly cosine/negative-sine table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_F:I",
+      "originalName": "field_F",
+      "to": "bytePosition",
+      "evidence": "bk.java: Shared byte cursor for little-endian bit reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_G:I",
+      "originalName": "field_G",
+      "to": "loopStart",
+      "evidence": "bk.java: Container loop start in sample units.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_H:I",
+      "originalName": "field_H",
+      "to": "longBlockSize",
+      "evidence": "bk.java: One shifted by second setup4-bit exponent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_I:[B",
+      "originalName": "field_I",
+      "to": "bitData",
+      "evidence": "bk.java: Shared caller-owned bit source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_J:I",
+      "originalName": "field_J",
+      "to": "loopEnd",
+      "evidence": "bk.java: Container loop end; complemented negative word also sets ping-pong.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_K:[F",
+      "originalName": "field_K",
+      "to": "longTrigA",
+      "evidence": "bk.java: Long-block cosine/negative-sine transform table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_L:[F",
+      "originalName": "field_L",
+      "to": "longTrigC",
+      "evidence": "bk.java: Long-block final butterfly cosine/negative-sine table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_M:[Lte;",
+      "originalName": "field_M",
+      "to": "codebooks",
+      "evidence": "bk.java: Shared setup codebooks used by floors/residues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_N:Z",
+      "originalName": "field_N",
+      "to": "previousSilent",
+      "evidence": "bk.java: Previous floor-absent block contributes no overlap tail.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_O:I",
+      "originalName": "field_O",
+      "to": "outputPosition",
+      "evidence": "bk.java: Incremental written PCM bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_P:[Lfg;",
+      "originalName": "field_P",
+      "to": "floors",
+      "evidence": "bk.java: Shared type1 floor instances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_Q:I",
+      "originalName": "field_Q",
+      "to": "nextPacket",
+      "evidence": "bk.java: Next packet index, preserved across suspended budgeted decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_i:[F",
+      "originalName": "field_i",
+      "to": "longTrigB",
+      "evidence": "bk.java: Long-block cosine/sine half-angle transform table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_j:I",
+      "originalName": "field_j",
+      "to": "sampleRate",
+      "evidence": "bk.java: Container PCM sample rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_k:[F",
+      "originalName": "field_k",
+      "to": "shortTrigB",
+      "evidence": "bk.java: Short-block cosine/sine half-angle transform table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_l:[[B",
+      "originalName": "field_l",
+      "to": "packets",
+      "evidence": "bk.java: Container packet payloads with255-byte continuation lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_m:[B",
+      "originalName": "field_m",
+      "to": "outputSamples",
+      "evidence": "bk.java: Incremental PCM output retained while budget suspended, released on completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_n:[F",
+      "originalName": "field_n",
+      "to": "shortTrigA",
+      "evidence": "bk.java: Short-block cosine/negative-sine transform table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_o:I",
+      "originalName": "field_o",
+      "to": "sampleCount",
+      "evidence": "bk.java: Container declared output byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_p:Z",
+      "originalName": "field_p",
+      "to": "setupReady",
+      "evidence": "bk.java: Set after shared setup decode; scratch release does not clear this flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_q:Z",
+      "originalName": "field_q",
+      "to": "pingPong",
+      "evidence": "bk.java: Negative encoded loop-end flag retained in PCM sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_r:[I",
+      "originalName": "field_r",
+      "to": "shortBitReverse",
+      "evidence": "bk.java: Short-block bit-reversal permutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_s:I",
+      "originalName": "field_s",
+      "to": "previousBlockSize",
+      "evidence": "bk.java: Previous decoded block size; zero suppresses first overlap output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_t:[F",
+      "originalName": "field_t",
+      "to": "blockScratch",
+      "evidence": "bk.java: Shared inverse-transform block swapped with sample previous block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_u:[Lcj;",
+      "originalName": "field_u",
+      "to": "residues",
+      "evidence": "bk.java: Shared residue instances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_v:I",
+      "originalName": "field_v",
+      "to": "bitOffset",
+      "evidence": "bk.java: Shared bit position within current byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_w:[Z",
+      "originalName": "field_w",
+      "to": "longBlockModes",
+      "evidence": "bk.java: Per-mode block-size selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_x:[I",
+      "originalName": "field_x",
+      "to": "longBitReverse",
+      "evidence": "bk.java: Long-block bit-reversal permutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_y:[F",
+      "originalName": "field_y",
+      "to": "previousBlock",
+      "evidence": "bk.java: Retained inverse-transform block for next overlap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_z:[Lfn;",
+      "originalName": "field_z",
+      "to": "mappings",
+      "evidence": "bk.java: Shared mono mappings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bn.field_s:I",
       "originalName": "field_s",
       "to": "height256",
@@ -1911,6 +2184,55 @@
       "originalName": "field_g",
       "to": "incomingPacketLengths",
       "evidence": "ch.java: Opcode-indexed sizes, -1 byte prefix and -2 short prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cj.field_a:I",
+      "originalName": "field_a",
+      "to": "end",
+      "evidence": "cj.java: End frequency-bin offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cj.field_b:I",
+      "originalName": "field_b",
+      "to": "partitionSize",
+      "evidence": "cj.java: Encoded24-bit value plus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cj.field_c:I",
+      "originalName": "field_c",
+      "to": "classbook",
+      "evidence": "cj.java: Codebook assigning classifications per phrase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cj.field_d:I",
+      "originalName": "field_d",
+      "to": "classificationCount",
+      "evidence": "cj.java: Encoded6-bit value plus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cj.field_e:I",
+      "originalName": "field_e",
+      "to": "begin",
+      "evidence": "cj.java: First frequency-bin offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cj.field_f:I",
+      "originalName": "field_f",
+      "to": "type",
+      "evidence": "cj.java: Type0 selects strided vector layout; other values use sequential placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cj.field_g:[I",
+      "originalName": "field_g",
+      "to": "cascadeBooks",
+      "evidence": "cj.java: Classification-by-eight-pass book references, negative when absent.",
       "confidence": "reviewed"
     },
     {
@@ -2509,6 +2831,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fg.field_a:[I",
+      "originalName": "field_a",
+      "to": "classDimensions",
+      "evidence": "fg.java: Point count per class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_b:[[I",
+      "originalName": "field_b",
+      "to": "subclassBooks",
+      "evidence": "fg.java: Per-class subclass book references; negative means no codebook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_c:[I",
+      "originalName": "field_c",
+      "to": "yScratch",
+      "evidence": "fg.java: Shared coded/recovered point ordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_d:[I",
+      "originalName": "field_d",
+      "to": "classMasterbooks",
+      "evidence": "fg.java: Class selector codebook when subclass bits nonzero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_e:[I",
+      "originalName": "field_e",
+      "to": "xList",
+      "evidence": "fg.java: Initial0/range endpoint plus encoded partition point positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_f:[I",
+      "originalName": "field_f",
+      "to": "xScratch",
+      "evidence": "fg.java: Shared decoded/sorted point positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_g:[Z",
+      "originalName": "field_g",
+      "to": "stepFlags",
+      "evidence": "fg.java: Shared point participation flags sorted with point data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_h:[I",
+      "originalName": "field_h",
+      "to": "classSubclassBits",
+      "evidence": "fg.java: Subclass selector bit width per class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_i:[I",
+      "originalName": "field_i",
+      "to": "partitionClasses",
+      "evidence": "fg.java: Class reference per floor partition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_j:[F",
+      "originalName": "field_j",
+      "to": "inverseDbTable",
+      "evidence": "fg.java: 256-entry inverse-decibel scaling table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_k:I",
+      "originalName": "field_k",
+      "to": "multiplier",
+      "evidence": "fg.java: One through four, scales floor ordinates before inverse-decibel lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_l:[I",
+      "originalName": "field_l",
+      "to": "rangeTable",
+      "evidence": "fg.java: Floor ordinate ranges256/128/86/64 selected by multiplier.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fj.field_Sb:[I",
       "originalName": "field_Sb",
       "to": "ninjaBackgroundColors",
@@ -2541,6 +2947,34 @@
       "originalName": "field_d",
       "to": "keyEventFrameEnd",
       "evidence": "fm.java: Frozen event end for current frame, advanced to producer position on snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fn.field_a:[I",
+      "originalName": "field_a",
+      "to": "submapResidues",
+      "evidence": "fn.java: Per-submap residue index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fn.field_b:I",
+      "originalName": "field_b",
+      "to": "submapCount",
+      "evidence": "fn.java: One or read4 bits plus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fn.field_c:I",
+      "originalName": "field_c",
+      "to": "mux",
+      "evidence": "fn.java: Selected mono submap when more than one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fn.field_d:[I",
+      "originalName": "field_d",
+      "to": "submapFloors",
+      "evidence": "fn.java: Per-submap floor index.",
       "confidence": "reviewed"
     },
     {
@@ -7024,6 +7458,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:te.field_a:[[F",
+      "originalName": "field_a",
+      "to": "vectors",
+      "evidence": "te.java: Precomputed per-entry lookup vectors returned without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:te.field_b:I",
+      "originalName": "field_b",
+      "to": "dimensions",
+      "evidence": "te.java: Values per decoded vector and classification phrase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:te.field_c:I",
+      "originalName": "field_c",
+      "to": "entryCount",
+      "evidence": "te.java: Codebook entry count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:te.field_d:[I",
+      "originalName": "field_d",
+      "to": "codewordLengths",
+      "evidence": "te.java: Per-entry code lengths; zero denotes absent sparse entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:te.field_e:[I",
+      "originalName": "field_e",
+      "to": "multiplicands",
+      "evidence": "te.java: Unsigned lookup integers used to build vector values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:te.field_f:[I",
+      "originalName": "field_f",
+      "to": "decodeTree",
+      "evidence": "te.java: Compact binary tree; negative leaves complement entry index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tf.field_a:[I",
       "originalName": "field_a",
       "to": "javaKeyCodeMap",
@@ -8319,6 +8795,853 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:bk.a(I)[F#1",
+      "originalName": "stackIn_3_0",
+      "to": "selectedBlockSize",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#10",
+      "originalName": "var2",
+      "to": "mode",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#105",
+      "originalName": "var19Lifetime1Lifetime1",
+      "to": "currentHeadSample",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#109",
+      "originalName": "var18_intLifetime1",
+      "to": "quarterBlock",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#11",
+      "originalName": "var3",
+      "to": "longBlock",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#110",
+      "originalName": "var18_intLifetime2",
+      "to": "overlapLength",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#12",
+      "originalName": "var4",
+      "to": "blockSize",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#13",
+      "originalName": "var5",
+      "to": "previousLong",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#14",
+      "originalName": "var6",
+      "to": "nextLong",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#15",
+      "originalName": "var7",
+      "to": "windowHalf",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#16",
+      "originalName": "var8",
+      "to": "leftWindowStart",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#17",
+      "originalName": "var9",
+      "to": "leftWindowEnd",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#18",
+      "originalName": "var10",
+      "to": "leftWindowLength",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#19",
+      "originalName": "var11",
+      "to": "rightWindowStart",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#2",
+      "originalName": "stackIn_7_0",
+      "to": "previousLongFlag",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#20",
+      "originalName": "var12",
+      "to": "rightWindowEnd",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#21",
+      "originalName": "var13",
+      "to": "rightWindowLength",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#22",
+      "originalName": "var14",
+      "to": "mapping",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#23",
+      "originalName": "var15",
+      "to": "silent",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#24",
+      "originalName": "var16",
+      "to": "selectedSubmap",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#25",
+      "originalName": "var17_int",
+      "to": "selectedFloor",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#26",
+      "originalName": "var17",
+      "to": "overlapResult",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#27",
+      "originalName": "var18_int",
+      "to": "appliedFloor",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#28",
+      "originalName": "var18",
+      "to": "swappedBlock",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#29",
+      "originalName": "var19",
+      "to": "eighthBlock",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#3",
+      "originalName": "stackIn_10_0",
+      "to": "nextLongFlag",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#30",
+      "originalName": "var20_ref_float__",
+      "to": "transformBlock",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#31",
+      "originalName": "var20",
+      "to": "previousTailIndex",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#32",
+      "originalName": "var21_int",
+      "to": "prescaleIndex",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#33",
+      "originalName": "var21",
+      "to": "trigA",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#34",
+      "originalName": "var22",
+      "to": "trigB",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#35",
+      "originalName": "var23",
+      "to": "trigC",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#36",
+      "originalName": "var24",
+      "to": "bitReverse",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#37",
+      "originalName": "var25",
+      "to": "blockBits",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#4",
+      "originalName": "stackIn_22_0",
+      "to": "absentFloorFlag",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#5",
+      "originalName": "stackIn_40_0",
+      "to": "selectedTrigA",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#59",
+      "originalName": "var40",
+      "to": "overlapSamples",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#6",
+      "originalName": "stackIn_43_0",
+      "to": "selectedTrigB",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#60",
+      "originalName": "var41",
+      "to": "mirrorIndex",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#61",
+      "originalName": "var42",
+      "to": "residue",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#62",
+      "originalName": "var44",
+      "to": "bitReverseStorage",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#63",
+      "originalName": "var45",
+      "to": "transformAlias",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#64",
+      "originalName": "var46",
+      "to": "overlapAlias",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#65",
+      "originalName": "var48",
+      "to": "bitReverseAlias",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#66",
+      "originalName": "var49",
+      "to": "transformStorage",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#67",
+      "originalName": "var50",
+      "to": "overlapStorage",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#68",
+      "originalName": "var52",
+      "to": "residueTarget",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#69",
+      "originalName": "var16Lifetime1",
+      "to": "skipResidue",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#7",
+      "originalName": "stackIn_46_0",
+      "to": "selectedTrigC",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#70",
+      "originalName": "var17_intLifetime1",
+      "to": "submapIndex",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#71",
+      "originalName": "var17_intLifetime2",
+      "to": "appliedSubmap",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#73",
+      "originalName": "var19Lifetime1",
+      "to": "previousTailSample",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#74",
+      "originalName": "var20Lifetime1",
+      "to": "currentOverlapIndex",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#75",
+      "originalName": "var21_intLifetime1",
+      "to": "unusedMirrorIndex",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#8",
+      "originalName": "stackIn_49_0",
+      "to": "selectedBitReverse",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#87",
+      "originalName": "var26Lifetime10",
+      "to": "leftWindowSample",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#88",
+      "originalName": "var26Lifetime11",
+      "to": "rightWindowSample",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#9",
+      "originalName": "stackIn_113_1",
+      "to": "completedSilentFlag",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#92",
+      "originalName": "var27Lifetime3",
+      "to": "leftWindowSine",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(I)[F#93",
+      "originalName": "var27Lifetime4",
+      "to": "rightWindowSine",
+      "evidence": "bk.java: Reviewed packet mode/window, transform-table, residue or overlap use in pinned decoder; mathematical butterfly temporaries remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a(Lmf;)Z#0",
+      "originalName": "var1",
+      "to": "setupData",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([B)V#0",
+      "originalName": "var4",
+      "to": "packetIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([B)V#1",
+      "originalName": "var5",
+      "to": "packetLength",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([B)V#2",
+      "originalName": "var6_int",
+      "to": "lengthChunk",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([B)V#3",
+      "originalName": "var6",
+      "to": "packetData",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([B)V#4",
+      "originalName": "var2",
+      "to": "packet",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([B)V#5",
+      "originalName": "var3",
+      "to": "packetCount",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([I)Loe;#0",
+      "originalName": "var5",
+      "to": "sampleIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([I)Loe;#1",
+      "originalName": "incrementValue$0",
+      "to": "writeIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([I)Loe;#2",
+      "originalName": "var3",
+      "to": "position",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([I)Loe;#3",
+      "originalName": "var4",
+      "to": "availableSamples",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([I)Loe;#4",
+      "originalName": "var6",
+      "to": "unsignedSample",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([I)Loe;#5",
+      "originalName": "var7",
+      "to": "overlapSamples",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.a([I)Loe;#6",
+      "originalName": "var12",
+      "to": "completedOutput",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b()I#0",
+      "originalName": "var0",
+      "to": "bit",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#0",
+      "originalName": "var7_int",
+      "to": "trigAIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#1",
+      "originalName": "var8_int",
+      "to": "trigBIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#10",
+      "originalName": "var2",
+      "to": "blockSize",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#11",
+      "originalName": "var3",
+      "to": "halfBlock",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#12",
+      "originalName": "var4",
+      "to": "quarterBlock",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#13",
+      "originalName": "var5",
+      "to": "eighthBlock",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#14",
+      "originalName": "var6_ref_float__",
+      "to": "trigA",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#15",
+      "originalName": "var7",
+      "to": "trigB",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#16",
+      "originalName": "var8",
+      "to": "trigC",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#17",
+      "originalName": "var9",
+      "to": "bitReverse",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#18",
+      "originalName": "var10",
+      "to": "permutationBits",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#19",
+      "originalName": "var1Lifetime1",
+      "to": "codebookCount",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#2",
+      "originalName": "var9_int",
+      "to": "trigCIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#20",
+      "originalName": "var2Lifetime1",
+      "to": "codebookIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#21",
+      "originalName": "var2Lifetime2",
+      "to": "timeCount",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#22",
+      "originalName": "var2Lifetime3",
+      "to": "floorCount",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#23",
+      "originalName": "var3Lifetime1",
+      "to": "timeIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#24",
+      "originalName": "var3Lifetime2",
+      "to": "floorIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#25",
+      "originalName": "var3Lifetime3",
+      "to": "residueCount",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#26",
+      "originalName": "var4Lifetime1",
+      "to": "residueIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#27",
+      "originalName": "var4Lifetime2",
+      "to": "mappingCount",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#28",
+      "originalName": "var5Lifetime1",
+      "to": "mappingIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#29",
+      "originalName": "var5Lifetime2",
+      "to": "modeCount",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#3",
+      "originalName": "var11",
+      "to": "permutationIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#4",
+      "originalName": "var6",
+      "to": "modeIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#5",
+      "originalName": "stackIn_5_0",
+      "to": "selectedBlockSize",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#6",
+      "originalName": "stackIn_41_0",
+      "to": "modeFlagTarget",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#7",
+      "originalName": "stackIn_41_1",
+      "to": "modeFlagIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#8",
+      "originalName": "stackIn_42_2",
+      "to": "longBlockFlag",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.b([B)V#9",
+      "originalName": "var1",
+      "to": "blockKind",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c()Loe;#0",
+      "originalName": "var3",
+      "to": "packetIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c()Loe;#1",
+      "originalName": "var6",
+      "to": "sampleIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c()Loe;#2",
+      "originalName": "incrementValue$0",
+      "to": "writeIndex",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c()Loe;#3",
+      "originalName": "var1",
+      "to": "samples",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c()Loe;#4",
+      "originalName": "var2",
+      "to": "position",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c()Loe;#5",
+      "originalName": "var4",
+      "to": "overlapSamples",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c()Loe;#6",
+      "originalName": "var5",
+      "to": "availableSamples",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c()Loe;#7",
+      "originalName": "var7",
+      "to": "unsignedSample",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c(I)I#0",
+      "originalName": "var4",
+      "to": "mask",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c(I)I#1",
+      "originalName": "var3",
+      "to": "availableBits",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c(I)I#2",
+      "originalName": "var1",
+      "to": "value",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c(I)I#3",
+      "originalName": "var2",
+      "to": "outputShift",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.c(I)I#4",
+      "originalName": "var3Lifetime1",
+      "to": "tailMask",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.d(I)F#0",
+      "originalName": "var1",
+      "to": "mantissa",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.d(I)F#1",
+      "originalName": "var2",
+      "to": "sign",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bk.d(I)F#2",
+      "originalName": "var3",
+      "to": "exponent",
+      "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:cg.a(IJ)I#0",
       "originalName": "var4",
       "to": "cycles",
@@ -8365,6 +9688,216 @@
       "originalName": "var6",
       "to": "sumNanos",
       "evidence": "cg.java: Reviewed sample-ring and elapsed-delta declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.<init>()V#0",
+      "originalName": "var3",
+      "to": "highCascade",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.<init>()V#1",
+      "originalName": "var4",
+      "to": "lowCascade",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.<init>()V#2",
+      "originalName": "var5",
+      "to": "hasHighCascade",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.<init>()V#3",
+      "originalName": "var2",
+      "to": "classification",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.<init>()V#4",
+      "originalName": "var2Lifetime1",
+      "to": "unusedBookIndex",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.<init>()V#5",
+      "originalName": "var1",
+      "to": "cascades",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.<init>()V#6",
+      "originalName": "var6",
+      "to": "bookIndex",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#0",
+      "originalName": "var8",
+      "to": "pass",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#1",
+      "originalName": "var17",
+      "to": "sequentialDimension",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#10",
+      "originalName": "var11",
+      "to": "phraseDimension",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#11",
+      "originalName": "var12",
+      "to": "bookIndex",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#12",
+      "originalName": "var13",
+      "to": "partitionOffset",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#13",
+      "originalName": "var14",
+      "to": "book",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#14",
+      "originalName": "var15",
+      "to": "offsetOrStride",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#15",
+      "originalName": "var19",
+      "to": "classificationAlias",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#16",
+      "originalName": "var22",
+      "to": "classificationStorage",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#17",
+      "originalName": "var27",
+      "to": "stridedValues",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#18",
+      "originalName": "var28",
+      "to": "sequentialValues",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#19",
+      "originalName": "var4Lifetime1",
+      "to": "phraseDimensions",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#2",
+      "originalName": "var16",
+      "to": "stridedVector",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#20",
+      "originalName": "var10Lifetime1",
+      "to": "phraseIndex",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#21",
+      "originalName": "var11Lifetime1",
+      "to": "classification",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#22",
+      "originalName": "var22Lifetime1",
+      "to": "phraseClasses",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#3",
+      "originalName": "var18",
+      "to": "stridedDimension",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#4",
+      "originalName": "var4",
+      "to": "clearSample",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#5",
+      "originalName": "var5",
+      "to": "range",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#6",
+      "originalName": "var6",
+      "to": "partitionCount",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#7",
+      "originalName": "var7",
+      "to": "classifications",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#8",
+      "originalName": "var9",
+      "to": "partition",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cj.a([FIZ)V#9",
+      "originalName": "var10",
+      "to": "classword",
+      "evidence": "cj.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
       "confidence": "reviewed"
     },
     {
@@ -8928,6 +10461,671 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:fg.<init>()V#0",
+      "originalName": "dupTemp$1",
+      "to": "subclassBitsRead",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#1",
+      "originalName": "var8",
+      "to": "classPoint",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#10",
+      "originalName": "var7",
+      "to": "subclass",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#11",
+      "originalName": "var9",
+      "to": "subclassBookStorage",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#12",
+      "originalName": "var10",
+      "to": "subclassBookArray",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#13",
+      "originalName": "var4Lifetime1",
+      "to": "decodedClass",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#14",
+      "originalName": "var4Lifetime2",
+      "to": "rangeBits",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#15",
+      "originalName": "var6Lifetime1",
+      "to": "pointPartition",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#16",
+      "originalName": "var7Lifetime1",
+      "to": "pointClass",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#17",
+      "originalName": "var5Lifetime1",
+      "to": "subclassBitsOrCount",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#18",
+      "originalName": "var5Lifetime2",
+      "to": "pointCount",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#19",
+      "originalName": "var5Lifetime3",
+      "to": "nextPoint",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#2",
+      "originalName": "incrementValue$0",
+      "to": "pointIndex",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#3",
+      "originalName": "var1",
+      "to": "floorType",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#4",
+      "originalName": "var2",
+      "to": "partitionCount",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#5",
+      "originalName": "var3",
+      "to": "classCount",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#6",
+      "originalName": "var4",
+      "to": "partition",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#7",
+      "originalName": "var5",
+      "to": "classIndex",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#8",
+      "originalName": "var6",
+      "to": "countPartition",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.<init>()V#9",
+      "originalName": "var6_ref_int__",
+      "to": "subclassBookAlias",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(II)V#0",
+      "originalName": "var7",
+      "to": "candidate",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(II)V#1",
+      "originalName": "var3",
+      "to": "pivotIndex",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(II)V#2",
+      "originalName": "var4",
+      "to": "pivotX",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(II)V#3",
+      "originalName": "var5",
+      "to": "pivotY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(II)V#4",
+      "originalName": "var6",
+      "to": "pivotActive",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(II)V#5",
+      "originalName": "var8",
+      "to": "candidateX",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIIII)I#0",
+      "originalName": "var6",
+      "to": "deltaY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIIII)I#1",
+      "originalName": "var7",
+      "to": "deltaX",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIIII)I#2",
+      "originalName": "var8",
+      "to": "magnitudeY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIIII)I#3",
+      "originalName": "var9",
+      "to": "scaledDistance",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIIII)I#4",
+      "originalName": "var10",
+      "to": "offsetY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIII[FI)V#0",
+      "originalName": "var14",
+      "to": "sample",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIII[FI)V#1",
+      "originalName": "var7",
+      "to": "deltaY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIII[FI)V#2",
+      "originalName": "var8",
+      "to": "deltaX",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIII[FI)V#3",
+      "originalName": "var9",
+      "to": "remainder",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIII[FI)V#4",
+      "originalName": "var10",
+      "to": "baseStep",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIII[FI)V#5",
+      "originalName": "var11",
+      "to": "y",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIII[FI)V#6",
+      "originalName": "var12",
+      "to": "error",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a(IIII[FI)V#7",
+      "originalName": "var13",
+      "to": "extraStep",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#0",
+      "originalName": "stackIn_5_0",
+      "to": "minimumRoom",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#1",
+      "originalName": "stackIn_9_0",
+      "to": "expandedYTarget",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#10",
+      "originalName": "var6",
+      "to": "point",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#11",
+      "originalName": "var7",
+      "to": "low",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#12",
+      "originalName": "var8_int",
+      "to": "high",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#13",
+      "originalName": "var8",
+      "to": "tailGain",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#14",
+      "originalName": "var9",
+      "to": "predictedY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#15",
+      "originalName": "var10",
+      "to": "codedY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#16",
+      "originalName": "var11",
+      "to": "highRoom",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#17",
+      "originalName": "var12",
+      "to": "lowRoom",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#18",
+      "originalName": "var13",
+      "to": "room",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#19",
+      "originalName": "var14",
+      "to": "neighborFlags",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#2",
+      "originalName": "stackIn_9_1",
+      "to": "expandedPoint",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#20",
+      "originalName": "var15",
+      "to": "lowFlagIndex",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#21",
+      "originalName": "var16",
+      "to": "renderPointIndex",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#22",
+      "originalName": "var6Lifetime1",
+      "to": "lastX",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#23",
+      "originalName": "var7Lifetime1",
+      "to": "lastY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#24",
+      "originalName": "var8_intLifetime1",
+      "to": "unusedRenderPoint",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#25",
+      "originalName": "var9Lifetime1",
+      "to": "nextX",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#26",
+      "originalName": "var9Lifetime2",
+      "to": "tailSample",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#27",
+      "originalName": "var10Lifetime1",
+      "to": "nextY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#3",
+      "originalName": "stackIn_10_2",
+      "to": "expandedY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#4",
+      "originalName": "stackIn_14_0",
+      "to": "deltaYTarget",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#5",
+      "originalName": "stackIn_14_1",
+      "to": "deltaPoint",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#6",
+      "originalName": "stackIn_15_2",
+      "to": "deltaY",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#7",
+      "originalName": "var3",
+      "to": "pointCount",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#8",
+      "originalName": "var4",
+      "to": "range",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([FI)V#9",
+      "originalName": "var5",
+      "to": "endpointFlags",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([II)I#0",
+      "originalName": "var5",
+      "to": "candidate",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([II)I#1",
+      "originalName": "var2",
+      "to": "position",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([II)I#2",
+      "originalName": "var3",
+      "to": "neighbor",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([II)I#3",
+      "originalName": "var4",
+      "to": "upperBound",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.a([II)I#4",
+      "originalName": "var6",
+      "to": "candidatePosition",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#0",
+      "originalName": "var6",
+      "to": "partition",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#1",
+      "originalName": "var12",
+      "to": "classPoint",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#10",
+      "originalName": "var4",
+      "to": "rangeBits",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#11",
+      "originalName": "var5",
+      "to": "nextPoint",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#12",
+      "originalName": "var7",
+      "to": "classIndex",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#13",
+      "originalName": "var8",
+      "to": "classDimensions",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#14",
+      "originalName": "var9",
+      "to": "subclassBits",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#15",
+      "originalName": "var10",
+      "to": "subclassMask",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#16",
+      "originalName": "var11",
+      "to": "classword",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#17",
+      "originalName": "var13",
+      "to": "bookIndex",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#2",
+      "originalName": "incrementValue$0",
+      "to": "pointIndex",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#3",
+      "originalName": "stackIn_3_0",
+      "to": "presentFlag",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#4",
+      "originalName": "stackIn_13_0",
+      "to": "ordinateTarget",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#5",
+      "originalName": "stackIn_13_1",
+      "to": "ordinateIndex",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#6",
+      "originalName": "stackIn_14_2",
+      "to": "ordinate",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#7",
+      "originalName": "var1",
+      "to": "present",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#8",
+      "originalName": "var2",
+      "to": "pointCount",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b()Z#9",
+      "originalName": "var3",
+      "to": "range",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b([II)I#0",
+      "originalName": "var5",
+      "to": "candidate",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b([II)I#1",
+      "originalName": "var2",
+      "to": "position",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b([II)I#2",
+      "originalName": "var3",
+      "to": "neighbor",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b([II)I#3",
+      "originalName": "var4",
+      "to": "lowerBound",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fg.b([II)I#4",
+      "originalName": "var6",
+      "to": "candidatePosition",
+      "evidence": "fg.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:fk.<init>([B)V#0",
       "originalName": "var5",
       "to": "symbol",
@@ -9135,6 +11333,13 @@
       "originalName": "var11",
       "to": "clientBranchFlag",
       "evidence": "fk.java: Reviewed unrolled bit decoder declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fn.<init>()V#0",
+      "originalName": "var1",
+      "to": "submapIndex",
+      "evidence": "fn.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
       "confidence": "reviewed"
     },
     {
@@ -11343,6 +13548,356 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:te.<init>()V#0",
+      "originalName": "incrementValue$0",
+      "to": "orderedEntry",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#1",
+      "originalName": "stackIn_3_0",
+      "to": "orderedFlag",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#10",
+      "originalName": "var5",
+      "to": "runEntry",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#11",
+      "originalName": "var6",
+      "to": "sequence",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#12",
+      "originalName": "var7",
+      "to": "lookupValueCount",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#13",
+      "originalName": "var8",
+      "to": "multiplicandIndex",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#14",
+      "originalName": "var9",
+      "to": "lastValue",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#15",
+      "originalName": "var10",
+      "to": "lookupIndexOrDivisor",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#16",
+      "originalName": "var11",
+      "to": "dimensionIndex",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#17",
+      "originalName": "var12",
+      "to": "linearValue",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#18",
+      "originalName": "var12_int",
+      "to": "permutedIndex",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#19",
+      "originalName": "var13",
+      "to": "permutedValue",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#2",
+      "originalName": "stackIn_13_0",
+      "to": "sparseFlag",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#20",
+      "originalName": "var14",
+      "to": "unorderedEntry",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#21",
+      "originalName": "var2Lifetime1",
+      "to": "lookupType",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#22",
+      "originalName": "var5Lifetime1",
+      "to": "valueBits",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#23",
+      "originalName": "var8Lifetime1",
+      "to": "vectorEntry",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#3",
+      "originalName": "stackIn_25_0",
+      "to": "sequenceFlag",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#4",
+      "originalName": "var1",
+      "to": "ordered",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#5",
+      "originalName": "var2",
+      "to": "entryOrSparse",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#6",
+      "originalName": "var3_int",
+      "to": "codeLengthOrUnusedIndex",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#7",
+      "originalName": "var3",
+      "to": "minimumValue",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#8",
+      "originalName": "var4_int",
+      "to": "runCount",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.<init>()V#9",
+      "originalName": "var4",
+      "to": "deltaValue",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.a()I#0",
+      "originalName": "var1",
+      "to": "treeNode",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.a(II)I#0",
+      "originalName": "var2",
+      "to": "values",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#0",
+      "originalName": "var2_ref_int__",
+      "to": "lengthPrefixes",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#1",
+      "originalName": "var2",
+      "to": "nextTreeNode",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#10",
+      "originalName": "var10",
+      "to": "shorterBit",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#11",
+      "originalName": "var11",
+      "to": "copyIndex",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#12",
+      "originalName": "var12",
+      "to": "prefixAlias",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#13",
+      "originalName": "var14",
+      "to": "prefixByLength",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#14",
+      "originalName": "var17",
+      "to": "codewords",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#15",
+      "originalName": "var3Lifetime1",
+      "to": "treeEntry",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#16",
+      "originalName": "var4Lifetime1",
+      "to": "treeCodeLength",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#17",
+      "originalName": "var5Lifetime1",
+      "to": "treeCodeword",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#18",
+      "originalName": "var6Lifetime1",
+      "to": "treeNode",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#19",
+      "originalName": "var7Lifetime1",
+      "to": "codeDepth",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#2",
+      "originalName": "var3",
+      "to": "entryIndex",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#20",
+      "originalName": "var8Lifetime1",
+      "to": "treeBit",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#21",
+      "originalName": "var10Lifetime1",
+      "to": "unusedCopyIndex",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#22",
+      "originalName": "var8Lifetime2",
+      "to": "longerLength",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#23",
+      "originalName": "var9_intLifetime1",
+      "to": "longerPrefix",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#3",
+      "originalName": "var4",
+      "to": "length",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#4",
+      "originalName": "var5",
+      "to": "codeBit",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#5",
+      "originalName": "var6",
+      "to": "codeword",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#6",
+      "originalName": "var7",
+      "to": "nextPrefix",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#7",
+      "originalName": "var8",
+      "to": "shorterLength",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#8",
+      "originalName": "var9",
+      "to": "grownTree",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:te.c()V#9",
+      "originalName": "var9_int",
+      "to": "shorterPrefix",
+      "evidence": "te.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:tj.a(Lqd;)V#0",
       "originalName": "var1",
       "to": "child",
@@ -12148,6 +14703,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bk.a()V",
+      "originalName": "a",
+      "to": "releaseScratch",
+      "evidence": "bk.java: Clears shared bit input/setup tables/transform arrays; setupReady remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a(I)[F",
+      "originalName": "a",
+      "to": "decodePacket",
+      "evidence": "bk.java: Decodes floor/residue, inverse transform, transition windows and previous/current overlap; first packet returns no samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a(Lmf;)Z",
+      "originalName": "a",
+      "to": "ensureSetup",
+      "evidence": "bk.java: Loads archive group0/file0 once and decodes shared setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a(Lmf;II)Lbk;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "bk.java: Ensures shared setup, requests sample if unavailable, otherwise decodes container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a(Lmf;Ljava/lang/String;Ljava/lang/String;)Lbk;",
+      "originalName": "a",
+      "to": "loadByName",
+      "evidence": "bk.java: Ensures shared setup then resolves named sample container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a([B)V",
+      "originalName": "a",
+      "to": "decodeContainer",
+      "evidence": "bk.java: Decodes rate/count/loop words and continued-length packet array; negative packet count throws IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a([BI)V",
+      "originalName": "a",
+      "to": "setBitInput",
+      "evidence": "bk.java: Shares caller bytes and resets bit offset at supplied byte position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a([I)Loe;",
+      "originalName": "a",
+      "to": "toPcmSoundBudgeted",
+      "evidence": "bk.java: Preserves packet/output/overlap state when budget depleted; debits emitted bytes and clears owned output/previous block on completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.b()I",
+      "originalName": "b",
+      "to": "readBit",
+      "evidence": "bk.java: Returns next least-significant bit and advances shared cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.b([B)V",
+      "originalName": "b",
+      "to": "decodeSetup",
+      "evidence": "bk.java: Decodes mono block exponents, trigonometric tables, codebooks, floor/residue/mapping definitions and modes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.c()Loe;",
+      "originalName": "c",
+      "to": "toPcmSound",
+      "evidence": "bk.java: Restarts packet decoding without budget and returns declared-length signed8 output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.c(I)I",
+      "originalName": "c",
+      "to": "readBits",
+      "evidence": "bk.java: Packs successive least-significant bits into requested-width integer; zero width consumes nothing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.d(I)F",
+      "originalName": "d",
+      "to": "unpackFloat",
+      "evidence": "bk.java: Vorbis21-bit signed mantissa and10-bit exponent biased by788.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bl.a(IB)Z",
       "originalName": "a",
       "to": "isAchievementExcluded",
@@ -12278,6 +14924,13 @@
       "originalName": "b",
       "to": "hasSprites",
       "evidence": "ki.java: Checks theme-required asset references; canonical guard below -91. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cj.a([FIZ)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "cj.java: Clears requested prefix even when skipped; otherwise eight-pass classification and vector reconstruction.",
       "confidence": "reviewed"
     },
     {
@@ -12747,6 +15400,62 @@
       "originalName": "a",
       "to": "pushSpriteRaster",
       "evidence": "fc.java: Pushes prior target then binds supplied RGB sprite canvas; guard at most -46.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a()V",
+      "originalName": "a",
+      "to": "releaseScratch",
+      "evidence": "fg.java: Clears shared range/inverse-decibel/point/flag arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(II)V",
+      "originalName": "a",
+      "to": "sortPoints",
+      "evidence": "fg.java: Quicksorts shared point coordinates and ordinates/participation flags together.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(IIIII)I",
+      "originalName": "a",
+      "to": "renderPoint",
+      "evidence": "fg.java: Integer line interpolation at supplied x, truncating absolute slope magnitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a(IIII[FI)V",
+      "originalName": "a",
+      "to": "renderLine",
+      "evidence": "fg.java: Multiplies spectrum by inverse-decibel integer line, excluding endpoint and clipping at sample count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a([FI)V",
+      "originalName": "a",
+      "to": "apply",
+      "evidence": "fg.java: Recovers coded floor ordinates, sorts participating points and scales spectrum by rendered curve.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.a([II)I",
+      "originalName": "a",
+      "to": "highNeighbor",
+      "evidence": "fg.java: Index of nearest greater position among earlier floor points, or -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.b()Z",
+      "originalName": "b",
+      "to": "decode",
+      "evidence": "fg.java: Returns false for absent floor; otherwise fills shared point/ordinate scratch from coded packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.b([II)I",
+      "originalName": "b",
+      "to": "lowNeighbor",
+      "evidence": "fg.java: Index of nearest lower position among earlier floor points, or -1.",
       "confidence": "reviewed"
     },
     {
@@ -16775,6 +19484,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:te.a()I",
+      "originalName": "a",
+      "to": "decodeScalar",
+      "evidence": "te.java: Traverses shared input bits to complemented codebook entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.a(II)I",
+      "originalName": "a",
+      "to": "lookup1Values",
+      "evidence": "te.java: Greatest integer whose dimensions-th power does not exceed entry count, using original integer-power helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.b()[F",
+      "originalName": "b",
+      "to": "decodeVector",
+      "evidence": "te.java: Returns shared vector for decoded scalar entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.c()V",
+      "originalName": "c",
+      "to": "buildDecodeTree",
+      "evidence": "te.java: Builds canonical codewords then compact binary decision tree.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tg.a(BLjava/net/URL;)Lql;",
       "originalName": "a",
       "to": "openUrl",
@@ -19232,6 +21969,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bk.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "bk.java: Decodes archive sample container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(I)[F#0",
+      "originalName": "param0",
+      "to": "packetIndex",
+      "evidence": "bk.java: Decodes floor/residue, inverse transform, transition windows and previous/current overlap; first packet returns no samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(Lmf;)Z#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "bk.java: Loads archive group0/file0 once and decodes shared setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(Lmf;II)Lbk;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "bk.java: Ensures shared setup, requests sample if unavailable, otherwise decodes container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(Lmf;II)Lbk;#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "bk.java: Ensures shared setup, requests sample if unavailable, otherwise decodes container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(Lmf;II)Lbk;#2",
+      "originalName": "param2",
+      "to": "fileId",
+      "evidence": "bk.java: Ensures shared setup, requests sample if unavailable, otherwise decodes container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(Lmf;Ljava/lang/String;Ljava/lang/String;)Lbk;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "bk.java: Ensures shared setup then resolves named sample container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(Lmf;Ljava/lang/String;Ljava/lang/String;)Lbk;#1",
+      "originalName": "param1",
+      "to": "groupName",
+      "evidence": "bk.java: Ensures shared setup then resolves named sample container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a(Lmf;Ljava/lang/String;Ljava/lang/String;)Lbk;#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "bk.java: Ensures shared setup then resolves named sample container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a([B)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "bk.java: Decodes rate/count/loop words and continued-length packet array; negative packet count throws IOException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a([BI)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "bk.java: Shares caller bytes and resets bit offset at supplied byte position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a([BI)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "bk.java: Shares caller bytes and resets bit offset at supplied byte position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.a([I)Loe;#0",
+      "originalName": "param0",
+      "to": "budget",
+      "evidence": "bk.java: Preserves packet/output/overlap state when budget depleted; debits emitted bytes and clears owned output/previous block on completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.b([B)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "bk.java: Decodes mono block exponents, trigonometric tables, codebooks, floor/residue/mapping definitions and modes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.c(I)I#0",
+      "originalName": "param0",
+      "to": "count",
+      "evidence": "bk.java: Packs successive least-significant bits into requested-width integer; zero width consumes nothing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bk.d(I)F#0",
+      "originalName": "param0",
+      "to": "packed",
+      "evidence": "bk.java: Vorbis21-bit signed mantissa and10-bit exponent biased by788.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bl.a(IB)Z#0",
       "originalName": "param0",
       "to": "achievementId",
@@ -19628,6 +22477,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ki.java: Checks theme-required asset references; canonical guard below -91. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cj.a([FIZ)V#0",
+      "originalName": "param0",
+      "to": "spectrum",
+      "evidence": "cj.java: Clears requested prefix even when skipped; otherwise eight-pass classification and vector reconstruction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cj.a([FIZ)V#1",
+      "originalName": "param1",
+      "to": "sampleCount",
+      "evidence": "cj.java: Clears requested prefix even when skipped; otherwise eight-pass classification and vector reconstruction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cj.a([FIZ)V#2",
+      "originalName": "param2",
+      "to": "skip",
+      "evidence": "cj.java: Clears requested prefix even when skipped; otherwise eight-pass classification and vector reconstruction.",
       "confidence": "reviewed"
     },
     {
@@ -21224,6 +24094,139 @@
       "originalName": "param1",
       "to": "sprite",
       "evidence": "fc.java: Pushes prior target then binds supplied RGB sprite canvas; guard at most -46.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(II)V#0",
+      "originalName": "param0",
+      "to": "first",
+      "evidence": "fg.java: Quicksorts shared point coordinates and ordinates/participation flags together.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(II)V#1",
+      "originalName": "param1",
+      "to": "last",
+      "evidence": "fg.java: Quicksorts shared point coordinates and ordinates/participation flags together.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIIII)I#0",
+      "originalName": "param0",
+      "to": "x0",
+      "evidence": "fg.java: Integer line interpolation at supplied x, truncating absolute slope magnitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIIII)I#1",
+      "originalName": "param1",
+      "to": "y0",
+      "evidence": "fg.java: Integer line interpolation at supplied x, truncating absolute slope magnitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIIII)I#2",
+      "originalName": "param2",
+      "to": "x1",
+      "evidence": "fg.java: Integer line interpolation at supplied x, truncating absolute slope magnitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIIII)I#3",
+      "originalName": "param3",
+      "to": "y1",
+      "evidence": "fg.java: Integer line interpolation at supplied x, truncating absolute slope magnitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIIII)I#4",
+      "originalName": "param4",
+      "to": "x",
+      "evidence": "fg.java: Integer line interpolation at supplied x, truncating absolute slope magnitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIII[FI)V#0",
+      "originalName": "param0",
+      "to": "x0",
+      "evidence": "fg.java: Multiplies spectrum by inverse-decibel integer line, excluding endpoint and clipping at sample count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIII[FI)V#1",
+      "originalName": "param1",
+      "to": "y0",
+      "evidence": "fg.java: Multiplies spectrum by inverse-decibel integer line, excluding endpoint and clipping at sample count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIII[FI)V#2",
+      "originalName": "param2",
+      "to": "x1",
+      "evidence": "fg.java: Multiplies spectrum by inverse-decibel integer line, excluding endpoint and clipping at sample count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIII[FI)V#3",
+      "originalName": "param3",
+      "to": "y1",
+      "evidence": "fg.java: Multiplies spectrum by inverse-decibel integer line, excluding endpoint and clipping at sample count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIII[FI)V#4",
+      "originalName": "param4",
+      "to": "spectrum",
+      "evidence": "fg.java: Multiplies spectrum by inverse-decibel integer line, excluding endpoint and clipping at sample count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a(IIII[FI)V#5",
+      "originalName": "param5",
+      "to": "sampleCount",
+      "evidence": "fg.java: Multiplies spectrum by inverse-decibel integer line, excluding endpoint and clipping at sample count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a([FI)V#0",
+      "originalName": "param0",
+      "to": "spectrum",
+      "evidence": "fg.java: Recovers coded floor ordinates, sorts participating points and scales spectrum by rendered curve.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a([FI)V#1",
+      "originalName": "param1",
+      "to": "sampleCount",
+      "evidence": "fg.java: Recovers coded floor ordinates, sorts participating points and scales spectrum by rendered curve.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a([II)I#0",
+      "originalName": "param0",
+      "to": "positions",
+      "evidence": "fg.java: Index of nearest greater position among earlier floor points, or -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.a([II)I#1",
+      "originalName": "param1",
+      "to": "point",
+      "evidence": "fg.java: Index of nearest greater position among earlier floor points, or -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.b([II)I#0",
+      "originalName": "param0",
+      "to": "positions",
+      "evidence": "fg.java: Index of nearest lower position among earlier floor points, or -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fg.b([II)I#1",
+      "originalName": "param1",
+      "to": "point",
+      "evidence": "fg.java: Index of nearest lower position among earlier floor points, or -1.",
       "confidence": "reviewed"
     },
     {
@@ -31223,6 +34226,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:te.a(II)I#0",
+      "originalName": "param0",
+      "to": "entries",
+      "evidence": "te.java: Greatest integer whose dimensions-th power does not exceed entry count, using original integer-power helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:te.a(II)I#1",
+      "originalName": "param1",
+      "to": "dimensions",
+      "evidence": "te.java: Greatest integer whose dimensions-th power does not exceed entry count, using original integer-power helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tg.a(BLjava/net/URL;)Lql;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -33863,9 +36880,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "b440135e70f2aef101ed190a8dab6c501db372c9b98a28c3c5bc92c59fa0762a",
+      "build-brickabrac-rules.mjs": "24485c0188c63be2e47c699df208c7d82cbc99d52aa3edddb402b91ac9a334ed",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "e924c6b75a9a3aa02baf1c45c044c6a7cdf8a4f0f3d9f06cc42a26a36415aecc",
+      "tests/test-brickabrac-core.mjs": "ae006020f2c80892cef710ff7dbf89ca11669fcb910413b896bed85d3a17d0fb",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
