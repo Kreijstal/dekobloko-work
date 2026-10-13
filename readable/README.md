@@ -93,6 +93,9 @@ changing primary node ownership.
 PowerUpWarning and BubbleDistortion expose imminent-effect icons and seeded bubble
 animation. PlayerBoard now names brick installation, snapshot decoding, checksum,
 serve reset and warning updates; MultiplayerMatch names its main advanceBoard path.
+PlayerInputBatch exposes five-mask network input records; GameplayScreen now names
+their packet/control handlers and advanceMatch consumption path. BallPulseEffect
+exposes the transient pulse generated from activated charged balls.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -640,6 +643,39 @@ queued/active/falling collection replacement, optional accounting reset and
 explicit/random launch angles. Active simulation states0/2, collisions across full
 matches, extended/nonempty board snapshots, whole-board checksum equivalence,
 server behavior and rendered gameplay remain unverified.
+
+PlayerInputBatch retains five 3-bit control masks, a 16-bit position word and an
+optional checksum. Its cursor increments before access, and isConsumed tests
+exact equality rather than greater-or-equal; a repeated exhausted read increments
+the cursor and throws. Packet fixtures independently pack 15 bits, verify both
+checksum variants, receiver counters and board selection, and encode outgoing
+opcodes68/69 with an independent ISAAC model. The outgoing checksum is compared
+with the existing board checksum method XOR an independently predicted random
+word; this verifies framing and random consumption, not whole-board checksum
+semantics. Controlled remote consumption checks every mask, tick, batch boundary,
+position-word installation and unlinking. Nonempty backlogs up to25 consume one tick,
+26..50 consume three, and above50 consume backlog-minus25; fixtures exercise
+these boundaries across multiple queued batches. Position corrections add five
+received ticks without adding buffered input.
+
+The earlier constructor name paletteVariant is corrected to controlSet: it only
+selects a held-key mapping. Native constructors verify both mapping rows.
+Control mapping names the left/right/action key codes and bits1/2/4. Exhaustive
+three-key combinations verify primary mappings and secondary mappings enabled
+for single-player or networked matches. Other packet fixtures cover signed24-bit
+result words and separate exclusion masks, optional result code, signed/partial
+result order and its sticky nonnegative flag, and scheduled power-up type/tick.
+Controller fields name local board/mask, viewed board, sequential snapshot count,
+snapshot readiness, networked mode and result suppression. Result-word meanings
+and negative local-player sentinels remain qualified. Checksum mismatch recovery,
+invalid players, active physics, real packet transport and server equivalence
+remain unverified.
+
+BallPulseEffect retains fixed8 position and age, uses an age-dependent size curve,
+and expires at40 ticks. Native fixtures check constructor state, size/age and
+match-owned removal independently of board simulation state. Rendering names
+identify the existing exponential pulse drawing; rendered pixels remain
+unverified. These changes rename code and preserve its original control flow.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
