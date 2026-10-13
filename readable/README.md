@@ -69,6 +69,10 @@ restoration, cached render targets and diagnostic exception context.
 ResourceArchive, ArchiveSource, ArchiveIndex and IntKeyIndex expose resource
 lookup, sparse index metadata and integer name-hash probing. ByteStorage,
 DirectByteStorage and GzipInflater expose retained payloads and gzip decoding.
+CachedArchiveSource, ResourceRequest, CacheIoRequest and ArchiveNetworkRequest
+expose cached/remote validation and request lifecycle. ArchiveFetchClient,
+ArchiveNetworkClient and BufferedSocket expose resource transport; CacheIoWorker,
+SecondaryNodeQueue and FileCacheStore expose queued cache operations and sectors.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -406,6 +410,37 @@ retrieval, all cache-policy/discard combinations, raw/gzip input, byte ownership
 duplicate/colliding keys and sprite loading through ResourceArchive. Live
 network/disk providers, XTEA archive retrieval, bzip decoding, index digest
 authentication, malformed recovery and full image-backed menus remain unverified.
+
+CachedArchiveSource checks group CRCs, optional digests and cached revision
+trailers. Bad foreground cache data marks the group invalid and requests a
+priority network retry; bad network data also reports an integrity failure.
+Valid remote data receives the expected revision trailer. Pending background
+requests are replaced when foreground retrieval requests the same group.
+Completed priority requests are marked on one cleanup pass and unlinked on the
+next. Cache/background scan state and qualified numeric request modes remain
+visible; no transport or lifecycle behavior is changed.
+
+ArchiveFetchClient caps each priority/background queue family at20 pending plus
+active requests. Its network client sends six-byte requests with archive/group
+keys, assembles ten-byte response headers and512-byte blocks, and optionally
+XOR-decodes response bytes. Reserved trailer bytes are excluded from completion
+and progress. BufferedSocket retains the original asynchronous output ring and
+100-byte buffer margin. SecondaryNodeQueue provides independent FIFO ownership.
+CacheIoWorker retains operation codes1 immediate read,2 write and3 queued read.
+An immediate read returns the first matching queued write by store/ID and shares
+its bytes; it does not choose the newest write or copy data. Shutdown signals
+and joins the worker without draining queued operations.
+
+Native fixtures inject requests into the real provider to check CRC/revision
+rejection, retries, trailer replacement, cache state, ownership release, pending
+background promotion and two-pass cleanup. They check secondary FIFO transfer,
+queue limits/counts, result readiness/progress and queued-write forwarding.
+In-memory stream fixtures run the real network client across raw/gzip response
+blocks, fragmented headers/payloads, continuation boundaries and XOR decoding;
+they capture request bytes in the output ring. Socket construction, writer
+scheduling, disk-sector I/O and worker execution are bypassed. Live networking,
+reconnect/control packets, transport timeout/failure handling, digest
+authentication and complete startup remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

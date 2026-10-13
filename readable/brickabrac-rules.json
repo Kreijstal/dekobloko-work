@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 16,
+  "version": 17,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -220,6 +220,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:a",
+      "originalName": "a",
+      "to": "ArchiveNetworkClient",
+      "evidence": "a.java: ArchiveFetchClient sends request/control packets, assembles512-byte response blocks and reconnects pending requests. Unrelated static helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ab",
       "originalName": "ab",
       "to": "MatchCompleteScreen",
@@ -301,6 +308,13 @@
       "originalName": "cl",
       "to": "BrickMotionPath",
       "evidence": "cl.java: Deque of timed waypoints with serialized count and total cyclic duration; moving bricks attach and interpolate along it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:da",
+      "originalName": "da",
+      "to": "ArchiveNetworkRequest",
+      "evidence": "da.java: Resource request with incoming packet, reserved trailer bytes and512-byte network block position.",
       "confidence": "reviewed"
     },
     {
@@ -416,6 +430,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hb",
+      "originalName": "hb",
+      "to": "ResourceRequest",
+      "evidence": "hb.java: Dual-linked asynchronous resource request with pending, priority and cleanup-mark state, data and progress contracts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hp",
       "originalName": "hp",
       "to": "IntHistoryBuffer",
@@ -434,6 +455,13 @@
       "originalName": "i",
       "to": "AchievementIcon",
       "evidence": "i.java: Pooled intrusive achievement icon with screen owner, animated horizontal offset, hover/selection input and earned/placeholder thumbnail cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ih",
+      "originalName": "ih",
+      "to": "ArchiveFetchClient",
+      "evidence": "ih.java: Abstract archive transport boundary with separate pending/active priority/background queues and20-request limits.",
       "confidence": "reviewed"
     },
     {
@@ -469,6 +497,27 @@
       "originalName": "jp",
       "to": "RgbSprite",
       "evidence": "jp.java: Integer RGB sprite with zero-color transparency, cropped geometry, draw/copy and pixel transforms.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jq",
+      "originalName": "jq",
+      "to": "CachedArchiveSource",
+      "evidence": "jq.java: ArchiveSource coordinating cached/remote index and group requests, CRC/digest/revision checks, retries, background scans and completed-request cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kg",
+      "originalName": "kg",
+      "to": "CacheIoWorker",
+      "evidence": "kg.java: Runnable cache I/O queue supporting immediate reads from queued writes, asynchronous reads/writes and worker shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kj",
+      "originalName": "kj",
+      "to": "CacheIoRequest",
+      "evidence": "kj.java: Resource request retaining cache store, operation code and byte payload for immediate/queued reads and writes.",
       "confidence": "reviewed"
     },
     {
@@ -546,6 +595,13 @@
       "originalName": "lm",
       "to": "IntKeyIndex",
       "evidence": "lm.java: Immutable open-addressed integer keys mapping to first original array index, including duplicate keys.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lq",
+      "originalName": "lq",
+      "to": "SecondaryNodeQueue",
+      "evidence": "lq.java: Intrusive secondary-link FIFO queue with shared forward traversal and size, independent of primary node ownership.",
       "confidence": "reviewed"
     },
     {
@@ -815,6 +871,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ve",
+      "originalName": "ve",
+      "to": "FileCacheStore",
+      "evidence": "ve.java: Six-byte index records point to520-byte data sectors; short/large IDs use8/10-byte headers and512/510-byte payloads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vi",
       "originalName": "vi",
       "to": "MovingBody",
@@ -871,6 +934,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wh",
+      "originalName": "wh",
+      "to": "BufferedSocket",
+      "evidence": "wh.java: Socket input plus asynchronous circular-buffer output; tracks pending writer task, closure and deferred write failures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wk",
       "originalName": "wk",
       "to": "LevelMetadata",
@@ -882,6 +952,13 @@
       "originalName": "wq",
       "to": "PacketBuffer",
       "evidence": "wq.java: Cursor over caller-supplied or pooled bytes with big-endian primitives, compact integers, strings, checksums and block operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:a.field_q:Lwh;",
+      "originalName": "field_q",
+      "to": "transport",
+      "evidence": "a.java: Underlying archive byte-stream transport.",
       "confidence": "reviewed"
     },
     {
@@ -1172,10 +1249,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:da.field_D:Lwq;",
+      "originalName": "field_D",
+      "to": "packet",
+      "evidence": "da.java: Incoming container bytes and received length.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:da.field_E:[Ljp;",
       "originalName": "field_E",
       "to": "packSelectorIcons",
       "evidence": "da.java: Pack-indexed icons rendered/hit-tested by highscore selector.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:da.field_F:B",
+      "originalName": "field_F",
+      "to": "trailerBytes",
+      "evidence": "da.java: Reserved suffix excluded from completion/progress denominator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:da.field_K:I",
+      "originalName": "field_K",
+      "to": "blockPosition",
+      "evidence": "da.java: Position within512-byte transport block, including header/marker.",
       "confidence": "reviewed"
     },
     {
@@ -1529,6 +1627,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fq.field_a:Ljava/util/zip/CRC32;",
+      "originalName": "field_a",
+      "to": "archiveCrc",
+      "evidence": "fq.java: Shared CRC checker for cache/remote archive payloads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fr.field_M:Lvl;",
       "originalName": "field_M",
       "to": "rasterSnapshotPool",
@@ -1596,6 +1701,27 @@
       "originalName": "field_a",
       "to": "pointerIdleTicks",
       "evidence": "gr.java: Mouse events reset to0; input snapshot increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hb.field_B:Z",
+      "originalName": "field_B",
+      "to": "priority",
+      "evidence": "hb.java: Foreground/priority request flag; background results removed when complete.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hb.field_u:Z",
+      "originalName": "field_u",
+      "to": "pending",
+      "evidence": "hb.java: Volatile pending flag, false after completion or I/O failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hb.field_v:Z",
+      "originalName": "field_v",
+      "to": "cleanupMarked",
+      "evidence": "hb.java: First cleanup pass marks completed request; second unlinks priority request.",
       "confidence": "reviewed"
     },
     {
@@ -1722,6 +1848,90 @@
       "originalName": "field_x",
       "to": "transitionKeepMask",
       "evidence": "i.java: AND mask clearing this icon transition bit when offset is already zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_a:Llq;",
+      "originalName": "field_a",
+      "to": "pendingBackground",
+      "evidence": "ih.java: Background requests waiting to be sent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_b:I",
+      "originalName": "field_b",
+      "to": "idleMillis",
+      "evidence": "ih.java: Accumulated elapsed time without received bytes, timeout above30000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_c:Llq;",
+      "originalName": "field_c",
+      "to": "activeBackground",
+      "evidence": "ih.java: Sent background requests awaiting data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_e:Lda;",
+      "originalName": "field_e",
+      "to": "currentResponse",
+      "evidence": "ih.java: Network response currently assembled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_f:I",
+      "originalName": "field_f",
+      "to": "lastError",
+      "evidence": "ih.java: -1 integrity failure,-2 transport failure; cleared on verified network payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_g:Llq;",
+      "originalName": "field_g",
+      "to": "pendingPriority",
+      "evidence": "ih.java: Priority requests waiting to be sent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_h:B",
+      "originalName": "field_h",
+      "to": "xorKey",
+      "evidence": "ih.java: Response XOR byte chosen after integrity failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_i:I",
+      "originalName": "field_i",
+      "to": "failureCount",
+      "evidence": "ih.java: Transport/integrity failure count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_l:Lwq;",
+      "originalName": "field_l",
+      "to": "responseHeader",
+      "evidence": "ih.java: Ten-byte incoming response header/marker buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_m:Lwq;",
+      "originalName": "field_m",
+      "to": "controlPacket",
+      "evidence": "ih.java: Six-byte outgoing request/control packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_n:Llq;",
+      "originalName": "field_n",
+      "to": "activePriority",
+      "evidence": "ih.java: Sent priority requests awaiting data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ih.field_o:J",
+      "originalName": "field_o",
+      "to": "lastPollMillis",
+      "evidence": "ih.java: Previous transport poll time.",
       "confidence": "reviewed"
     },
     {
@@ -1984,6 +2194,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jq.field_A:I",
+      "originalName": "field_A",
+      "to": "expectedIndexCrc",
+      "evidence": "jq.java: Expected encoded index CRC.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_B:Lve;",
+      "originalName": "field_B",
+      "to": "groupCache",
+      "evidence": "jq.java: Local packed-group cache, optional.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_e:[B",
+      "originalName": "field_e",
+      "to": "cacheGroupStates",
+      "evidence": "jq.java: 0 unchecked,1 valid,-1 invalid cached group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_f:Z",
+      "originalName": "field_f",
+      "to": "prefetchingGroups",
+      "evidence": "jq.java: Background network scan active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_g:Lve;",
+      "originalName": "field_g",
+      "to": "indexCache",
+      "evidence": "jq.java: Optional local index cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_h:I",
+      "originalName": "field_h",
+      "to": "archiveId",
+      "evidence": "jq.java: Remote archive ID and local index record ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_i:[B",
+      "originalName": "field_i",
+      "to": "expectedIndexDigest",
+      "evidence": "jq.java: Expected optional64-byte index digest.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_j:Lih;",
+      "originalName": "field_j",
+      "to": "fetchClient",
+      "evidence": "jq.java: Remote archive fetch queues/transport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_k:Z",
+      "originalName": "field_k",
+      "to": "checkingCache",
+      "evidence": "jq.java: Background cache-validation scan active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_l:Lsi;",
+      "originalName": "field_l",
+      "to": "requests",
+      "evidence": "jq.java: Primary-linked group request hash table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_m:I",
+      "originalName": "field_m",
+      "to": "scanGroupId",
+      "evidence": "jq.java: Next background cache-validation/prefetch group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_o:I",
+      "originalName": "field_o",
+      "to": "expectedIndexRevision",
+      "evidence": "jq.java: Revision required for cached index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_q:J",
+      "originalName": "field_q",
+      "to": "nextCleanupMillis",
+      "evidence": "jq.java: Next completed-request cleanup time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_s:Lhb;",
+      "originalName": "field_s",
+      "to": "indexRequest",
+      "evidence": "jq.java: Current cache/network index request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_u:Lkg;",
+      "originalName": "field_u",
+      "to": "cacheIo",
+      "evidence": "jq.java: Cache I/O scheduler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_v:Lko;",
+      "originalName": "field_v",
+      "to": "index",
+      "evidence": "jq.java: Installed validated index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_w:Z",
+      "originalName": "field_w",
+      "to": "cleanupEnabled",
+      "evidence": "jq.java: Enables periodic two-pass completed-request cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_x:Lvl;",
+      "originalName": "field_x",
+      "to": "queuedGroups",
+      "evidence": "jq.java: Queued group IDs processed by maintenance helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jq.field_z:Lvl;",
+      "originalName": "field_z",
+      "to": "pendingScanGroups",
+      "evidence": "jq.java: Unresolved groups retained during background scans.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kb.field_Pb:I",
       "originalName": "field_Pb",
       "to": "liveHeldButton",
@@ -1998,6 +2341,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kg.field_c:I",
+      "originalName": "field_c",
+      "to": "queuedCount",
+      "evidence": "kg.java: Queued operations excluding currently executing request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kg.field_f:Llq;",
+      "originalName": "field_f",
+      "to": "queue",
+      "evidence": "kg.java: Synchronized FIFO cache requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kg.field_g:Ljava/lang/Thread;",
+      "originalName": "field_g",
+      "to": "thread",
+      "evidence": "kg.java: Worker thread joined by shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kg.field_j:Z",
+      "originalName": "field_j",
+      "to": "shutdownRequested",
+      "evidence": "kg.java: Worker loop termination flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ki.field_d:I",
       "originalName": "field_d",
       "to": "masterSoundGain",
@@ -2009,6 +2380,27 @@
       "originalName": "field_e",
       "to": "pressedButton",
       "evidence": "ki.java: Frame snapshot of pressed-button latch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kj.field_E:[B",
+      "originalName": "field_E",
+      "to": "data",
+      "evidence": "kj.java: Read/write payload, may be null after missing/failed read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kj.field_F:I",
+      "originalName": "field_F",
+      "to": "operation",
+      "evidence": "kj.java: 1 immediate read,2 queued write,3 queued read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kj.field_G:Lve;",
+      "originalName": "field_G",
+      "to": "store",
+      "evidence": "kj.java: Target local cache store.",
       "confidence": "reviewed"
     },
     {
@@ -2464,6 +2856,20 @@
       "originalName": "field_rb",
       "to": "currentScreen",
       "evidence": "lp.java: Screen currently handling applet draw/update/key callbacks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lq.field_f:Ltk;",
+      "originalName": "field_f",
+      "to": "cursor",
+      "evidence": "lq.java: Shared forward traversal cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lq.field_g:Ltk;",
+      "originalName": "field_g",
+      "to": "sentinel",
+      "evidence": "lq.java: Circular secondary-link sentinel.",
       "confidence": "reviewed"
     },
     {
@@ -3650,6 +4056,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ve.field_a:Ljg;",
+      "originalName": "field_a",
+      "to": "indexFile",
+      "evidence": "ve.java: Six-byte length/first-sector index records.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ve.field_b:I",
+      "originalName": "field_b",
+      "to": "maxEntryBytes",
+      "evidence": "ve.java: Maximum accepted entry length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ve.field_c:I",
+      "originalName": "field_c",
+      "to": "storeId",
+      "evidence": "ve.java: Store ID stored in each sector header.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ve.field_d:Ljg;",
+      "originalName": "field_d",
+      "to": "dataFile",
+      "evidence": "ve.java: Shared sector data file and synchronization lock.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vi.field_i:I",
       "originalName": "field_i",
       "to": "typeId",
@@ -3843,6 +4277,83 @@
       "originalName": "field_e",
       "to": "focusLossPending",
       "evidence": "wg.java: Latched volatile focus-loss flag set by focusLost; focusGained leaves it unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_a:I",
+      "originalName": "field_a",
+      "to": "bufferCapacity",
+      "evidence": "wh.java: Ring size, public constructor uses5000 and write guard leaves100 bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_b:I",
+      "originalName": "field_b",
+      "to": "writePosition",
+      "evidence": "wh.java: Outgoing ring write cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_c:[B",
+      "originalName": "field_c",
+      "to": "outputBuffer",
+      "evidence": "wh.java: Outgoing byte ring, released by writer on closure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_d:Ljava/net/Socket;",
+      "originalName": "field_d",
+      "to": "socket",
+      "evidence": "wh.java: Underlying TCP socket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_e:Ljava/io/InputStream;",
+      "originalName": "field_e",
+      "to": "input",
+      "evidence": "wh.java: Socket input stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_f:Ltg;",
+      "originalName": "field_f",
+      "to": "taskScheduler",
+      "evidence": "wh.java: Starts asynchronous writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_g:Z",
+      "originalName": "field_g",
+      "to": "writeFailed",
+      "evidence": "wh.java: Deferred output failure consumed by write/check helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_i:Lql;",
+      "originalName": "field_i",
+      "to": "writerTask",
+      "evidence": "wh.java: Writer scheduling result joined by close.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_j:I",
+      "originalName": "field_j",
+      "to": "readPosition",
+      "evidence": "wh.java: Outgoing ring consumption cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_k:Z",
+      "originalName": "field_k",
+      "to": "closed",
+      "evidence": "wh.java: Close requested; input helpers return empty/no-op afterward.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wh.field_l:Ljava/io/OutputStream;",
+      "originalName": "field_l",
+      "to": "output",
+      "evidence": "wh.java: Socket output stream.",
       "confidence": "reviewed"
     },
     {
@@ -4329,6 +4840,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ih.a(IIBIZ)Lda;#2",
+      "originalName": "var6",
+      "to": "requestKey",
+      "evidence": "ih.java: Archive ID shifted32 plus group ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(IIBIZ)Lda;#3",
+      "originalName": "var8",
+      "to": "request",
+      "evidence": "ih.java: New request queued by priority.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:j.a(III)I#0",
       "originalName": "var4",
       "to": "historyIndex",
@@ -4354,6 +4879,132 @@
       "originalName": "var1_ref",
       "to": "keyboardMonitor",
       "evidence": "jl.java: Global keyboard listener used while reading frozen-frame event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#11",
+      "originalName": "var12",
+      "to": "existingRequest",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#12",
+      "originalName": "var13",
+      "to": "dataAlias",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#13",
+      "originalName": "var18",
+      "to": "payload",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#14",
+      "originalName": "var27",
+      "to": "actualCacheDigest",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#15",
+      "originalName": "var28",
+      "to": "expectedCacheDigest",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#16",
+      "originalName": "var29",
+      "to": "expectedNetworkDigest",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#17",
+      "originalName": "var30",
+      "to": "actualNetworkDigest",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#2",
+      "originalName": "var4",
+      "to": "request",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#3",
+      "originalName": "var5",
+      "to": "data",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#4",
+      "originalName": "var6_int",
+      "to": "actualCrc",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#7",
+      "originalName": "var7",
+      "to": "cachedRevision",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#8",
+      "originalName": "var9",
+      "to": "digestIndex",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.a(IIB)Lhb;#9",
+      "originalName": "var10",
+      "to": "clientBranchFlag",
+      "evidence": "jq.java: Reviewed cache/network request validation declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.b(B)Lko;#1",
+      "originalName": "var2",
+      "to": "indexBytes",
+      "evidence": "jq.java: Reviewed index request installation declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.b(B)Lko;#3",
+      "originalName": "var4",
+      "to": "clientBranchFlag",
+      "evidence": "jq.java: Reviewed index request installation declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.b(B)Lko;#4",
+      "originalName": "var5",
+      "to": "indexBytesAlias",
+      "evidence": "jq.java: Reviewed index request installation declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.b(B)Lko;#5",
+      "originalName": "var6",
+      "to": "payloadAlias",
+      "evidence": "jq.java: Reviewed index request installation declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jq.b(B)Lko;#6",
+      "originalName": "var7",
+      "to": "payload",
+      "evidence": "jq.java: Reviewed index request installation declaration.",
       "confidence": "reviewed"
     },
     {
@@ -5085,6 +5736,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:a.a(B)V",
+      "originalName": "a",
+      "to": "reportIntegrityFailure",
+      "evidence": "ih.java: Closes/reset transport, increments failures, lastError -1 and randomizes XOR byte; guard8. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(Ljava/lang/Object;ZI)V",
+      "originalName": "a",
+      "to": "attachTransport",
+      "evidence": "ih.java: Replaces transport, sends connection controls and requeues active requests. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.b(B)V",
+      "originalName": "b",
+      "to": "closeTransport",
+      "evidence": "ih.java: Closes underlying transport; guard30. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.b(I)Z",
+      "originalName": "b",
+      "to": "pollTransport",
+      "evidence": "ih.java: Sends queued requests and assembles incoming responses, handles timeout/I/O failure. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ab.a(IIC)V",
       "originalName": "a",
       "to": "handleNavigationKey",
@@ -5467,6 +6146,20 @@
       "originalName": "a",
       "to": "loadRgbSpritesByName",
       "evidence": "cr.java: Resolves group/file names then loads RGB/ARGB array; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.c(B)[B",
+      "originalName": "c",
+      "to": "getData",
+      "evidence": "hb.java: Rejects pending requests; network subtype additionally requires received container excluding reserved trailer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.f(I)I",
+      "originalName": "f",
+      "to": "getProgress",
+      "evidence": "hb.java: Cache request0/100; network received bytes divided by length excluding trailer; guard -21546. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5925,6 +6618,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hb.c(B)[B",
+      "originalName": "c",
+      "to": "getData",
+      "evidence": "hb.java: Rejects pending requests; network subtype additionally requires received container excluding reserved trailer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.f(I)I",
+      "originalName": "f",
+      "to": "getProgress",
+      "evidence": "hb.java: Cache request0/100; network received bytes divided by length excluding trailer; guard -21546.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hj.a(I[BBILjava/lang/CharSequence;I)I",
       "originalName": "a",
       "to": "encodeCp1252",
@@ -6069,6 +6776,69 @@
       "originalName": "d",
       "to": "nextSubStream",
       "evidence": "qd.java: Returns next child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(B)V",
+      "originalName": "a",
+      "to": "reportIntegrityFailure",
+      "evidence": "ih.java: Closes/reset transport, increments failures, lastError -1 and randomizes XOR byte; guard8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(I)Z",
+      "originalName": "a",
+      "to": "isPriorityQueueFull",
+      "evidence": "ih.java: Pending plus active priority count at least20; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(IIBIZ)Lda;",
+      "originalName": "a",
+      "to": "request",
+      "evidence": "ih.java: Enqueues fresh request with archive/group40-bit key and reserved trailer, priority/background limit20; guard -952050528.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(Ljava/lang/Object;ZI)V",
+      "originalName": "a",
+      "to": "attachTransport",
+      "evidence": "ih.java: Replaces transport, sends connection controls and requeues active requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.b(B)V",
+      "originalName": "b",
+      "to": "closeTransport",
+      "evidence": "ih.java: Closes underlying transport; guard30.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.b(I)Z",
+      "originalName": "b",
+      "to": "pollTransport",
+      "evidence": "ih.java: Sends queued requests and assembles incoming responses, handles timeout/I/O failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.c(B)I",
+      "originalName": "c",
+      "to": "getBackgroundCount",
+      "evidence": "ih.java: Pending plus active background count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.d(B)Z",
+      "originalName": "d",
+      "to": "isBackgroundQueueFull",
+      "evidence": "ih.java: Pending plus active background count at least20; guard101.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.e(B)I",
+      "originalName": "e",
+      "to": "getPriorityCount",
+      "evidence": "ih.java: Pending plus active priority count; guard below -33.",
       "confidence": "reviewed"
     },
     {
@@ -6268,6 +7038,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jq.a(IIB)Lhb;",
+      "originalName": "a",
+      "to": "pollGroupRequest",
+      "evidence": "jq.java: Mode0 foreground,1 cached verification,2 background fetch; validates completed payload and schedules retry; guard below -104.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jq.b(B)Lko;",
       "originalName": "b",
       "to": "getIndex",
@@ -6275,10 +7052,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jq.b(I)V",
+      "originalName": "b",
+      "to": "processQueuedGroups",
+      "evidence": "jq.java: Validates/fetches queued IDs and removes valid cached groups; guard20312.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jq.c(I)V",
+      "originalName": "c",
+      "to": "maintainGroups",
+      "evidence": "jq.java: Advances background scans and periodic marked-request cleanup; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jq.f(I)V",
+      "originalName": "f",
+      "to": "startPrefetch",
+      "evidence": "jq.java: Enables background fetch scan only when group cache exists; guard -10476.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ke.a(Z[B)[B",
       "originalName": "a",
       "to": "copyBytes",
       "evidence": "ke.java: Fresh array copy; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(B)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "kg.java: Signals queue and joins thread; guard at least38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(ILve;B)Lkj;",
+      "originalName": "a",
+      "to": "readAsync",
+      "evidence": "kg.java: Enqueues operation3 background read; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(IZ[BLve;)Lkj;",
+      "originalName": "a",
+      "to": "writeAsync",
+      "evidence": "kg.java: Enqueues operation2 with caller payload/priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(Lkj;I)V",
+      "originalName": "a",
+      "to": "enqueue",
+      "evidence": "kg.java: Adds secondary FIFO request under queue lock, increments count and notifies; guard -3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a(Lve;II)Lkj;",
+      "originalName": "a",
+      "to": "readImmediate",
+      "evidence": "kg.java: Returns first matching pending write bytes without disk I/O; otherwise reads synchronously as priority request.",
       "confidence": "reviewed"
     },
     {
@@ -6293,6 +7126,20 @@
       "originalName": "a",
       "to": "addBoardBorders",
       "evidence": "kj.java: Adds type1/flag1 bricks across the top and two sides for supplied column count; rows -1..30; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.c(B)[B",
+      "originalName": "c",
+      "to": "getData",
+      "evidence": "hb.java: Rejects pending requests; network subtype additionally requires received container excluding reserved trailer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.f(I)I",
+      "originalName": "f",
+      "to": "getProgress",
+      "evidence": "hb.java: Cache request0/100; network received bytes divided by length excluding trailer; guard -21546. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7003,10 +7850,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lq.a(I)Ltk;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "lq.java: Unlinks first secondary node or returns null; guard25609.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lq.a(IIILmf;)Ltp;",
       "originalName": "a",
       "to": "loadIndexedSprite",
       "evidence": "lq.java: Decodes archive file and constructs first indexed sprite; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lq.a(Ltk;Z)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "lq.java: Transfers secondary ownership and inserts at tail; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lq.a(Z)Ltk;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "lq.java: Starts shared forward traversal; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lq.c(I)I",
+      "originalName": "c",
+      "to": "size",
+      "evidence": "lq.java: Counts secondary nodes; guard -25906.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lq.e(I)Ltk;",
+      "originalName": "e",
+      "to": "next",
+      "evidence": "lq.java: Continues shared traversal; guard -8394.",
       "confidence": "reviewed"
     },
     {
@@ -8382,6 +9264,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ve.a(B[BII)Z",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "ve.java: Writes requested prefix, tries sector-chain reuse then fresh allocation; guard at most -116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.a(II)[B",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "ve.java: Checks index/sector headers and returns bytes, or null on invalid/missing/I/O failure; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.a([BIZZI)Z",
+      "originalName": "a",
+      "to": "writeSectors",
+      "evidence": "ve.java: Writes six-byte index and chained520-byte sectors; can reuse existing chain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vi.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -8652,6 +9555,48 @@
       "originalName": "a",
       "to": "registerMenuScreen",
       "evidence": "wg.java: Installs menu by screenId if within registry bounds; guard at most -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.a(B)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "wh.java: Signals closure and joins successfully scheduled writer; guard at least110.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.a(I[BII)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "wh.java: Reads exact range or throws EOF; guard25826.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.a([BZII)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "wh.java: Copies range into ring, schedules writer and notifies; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.c(I)V",
+      "originalName": "c",
+      "to": "checkWriteError",
+      "evidence": "wh.java: Consumes deferred write failure; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.d(I)I",
+      "originalName": "d",
+      "to": "available",
+      "evidence": "wh.java: Available stream bytes or0 after close; guard10434.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.e(I)I",
+      "originalName": "e",
+      "to": "readByte",
+      "evidence": "wh.java: Single stream byte or0 after close; guard0.",
       "confidence": "reviewed"
     },
     {
@@ -8960,6 +9905,48 @@
       "originalName": "m",
       "to": "readNullableCp1252String",
       "evidence": "wq.java: Leading zero means null; otherwise reads terminated string; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Closes/reset transport, increments failures, lastError -1 and randomizes XOR byte; guard8. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(Ljava/lang/Object;ZI)V#0",
+      "originalName": "param0",
+      "to": "transport",
+      "evidence": "ih.java: Replaces transport, sends connection controls and requeues active requests. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(Ljava/lang/Object;ZI)V#1",
+      "originalName": "param1",
+      "to": "connectionMode",
+      "evidence": "ih.java: Replaces transport, sends connection controls and requeues active requests. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(Ljava/lang/Object;ZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Replaces transport, sends connection controls and requeues active requests. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Closes underlying transport; guard30. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Sends queued requests and assembles incoming responses, handles timeout/I/O failure. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -10115,6 +11102,20 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "cr.java: Resolves group/file names then loads RGB/ARGB array; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:da.c(B)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hb.java: Rejects pending requests; network subtype additionally requires received container excluding reserved trailer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:da.f(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hb.java: Cache request0/100; network received bytes divided by length excluding trailer; guard -21546. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -11539,6 +12540,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hb.c(B)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hb.java: Rejects pending requests; network subtype additionally requires received container excluding reserved trailer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hb.f(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hb.java: Cache request0/100; network received bytes divided by length excluding trailer; guard -21546.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hj.a(I[BBILjava/lang/CharSequence;I)I#0",
       "originalName": "param0",
       "to": "endIndex",
@@ -11858,6 +12873,111 @@
       "originalName": "param2",
       "to": "frames",
       "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Closes/reset transport, increments failures, lastError -1 and randomizes XOR byte; guard8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Pending plus active priority count at least20; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIBIZ)Lda;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Enqueues fresh request with archive/group40-bit key and reserved trailer, priority/background limit20; guard -952050528.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIBIZ)Lda;#1",
+      "originalName": "param1",
+      "to": "archiveId",
+      "evidence": "ih.java: Enqueues fresh request with archive/group40-bit key and reserved trailer, priority/background limit20; guard -952050528.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIBIZ)Lda;#2",
+      "originalName": "param2",
+      "to": "trailerBytes",
+      "evidence": "ih.java: Enqueues fresh request with archive/group40-bit key and reserved trailer, priority/background limit20; guard -952050528.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIBIZ)Lda;#3",
+      "originalName": "param3",
+      "to": "groupId",
+      "evidence": "ih.java: Enqueues fresh request with archive/group40-bit key and reserved trailer, priority/background limit20; guard -952050528.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(IIBIZ)Lda;#4",
+      "originalName": "param4",
+      "to": "priority",
+      "evidence": "ih.java: Enqueues fresh request with archive/group40-bit key and reserved trailer, priority/background limit20; guard -952050528.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Ljava/lang/Object;ZI)V#0",
+      "originalName": "param0",
+      "to": "transport",
+      "evidence": "ih.java: Replaces transport, sends connection controls and requeues active requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Ljava/lang/Object;ZI)V#1",
+      "originalName": "param1",
+      "to": "connectionMode",
+      "evidence": "ih.java: Replaces transport, sends connection controls and requeues active requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Ljava/lang/Object;ZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Replaces transport, sends connection controls and requeues active requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Closes underlying transport; guard30.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Sends queued requests and assembles incoming responses, handles timeout/I/O failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.c(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Pending plus active background count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.d(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Pending plus active background count at least20; guard101.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.e(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Pending plus active priority count; guard below -33.",
       "confidence": "reviewed"
     },
     {
@@ -12274,6 +13394,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jq.<init>(ILve;Lve;Lih;Lkg;I[BIZ)V#0",
+      "originalName": "param0",
+      "to": "archiveId",
+      "evidence": "jq.java: Retains identity, caches, transport, scheduler, expected index identities and cleanup option; optional immediate index-cache read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.<init>(ILve;Lve;Lih;Lkg;I[BIZ)V#1",
+      "originalName": "param1",
+      "to": "groupCache",
+      "evidence": "jq.java: Retains identity, caches, transport, scheduler, expected index identities and cleanup option; optional immediate index-cache read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.<init>(ILve;Lve;Lih;Lkg;I[BIZ)V#2",
+      "originalName": "param2",
+      "to": "indexCache",
+      "evidence": "jq.java: Retains identity, caches, transport, scheduler, expected index identities and cleanup option; optional immediate index-cache read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.<init>(ILve;Lve;Lih;Lkg;I[BIZ)V#3",
+      "originalName": "param3",
+      "to": "fetchClient",
+      "evidence": "jq.java: Retains identity, caches, transport, scheduler, expected index identities and cleanup option; optional immediate index-cache read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.<init>(ILve;Lve;Lih;Lkg;I[BIZ)V#4",
+      "originalName": "param4",
+      "to": "cacheIo",
+      "evidence": "jq.java: Retains identity, caches, transport, scheduler, expected index identities and cleanup option; optional immediate index-cache read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.<init>(ILve;Lve;Lih;Lkg;I[BIZ)V#5",
+      "originalName": "param5",
+      "to": "expectedIndexCrc",
+      "evidence": "jq.java: Retains identity, caches, transport, scheduler, expected index identities and cleanup option; optional immediate index-cache read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.<init>(ILve;Lve;Lih;Lkg;I[BIZ)V#6",
+      "originalName": "param6",
+      "to": "expectedIndexDigest",
+      "evidence": "jq.java: Retains identity, caches, transport, scheduler, expected index identities and cleanup option; optional immediate index-cache read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.<init>(ILve;Lve;Lih;Lkg;I[BIZ)V#7",
+      "originalName": "param7",
+      "to": "expectedIndexRevision",
+      "evidence": "jq.java: Retains identity, caches, transport, scheduler, expected index identities and cleanup option; optional immediate index-cache read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.<init>(ILve;Lve;Lih;Lkg;I[BIZ)V#8",
+      "originalName": "param8",
+      "to": "cleanupEnabled",
+      "evidence": "jq.java: Retains identity, caches, transport, scheduler, expected index identities and cleanup option; optional immediate index-cache read.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jq.a(BI)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -12302,10 +13485,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jq.a(IIB)Lhb;#0",
+      "originalName": "param0",
+      "to": "requestMode",
+      "evidence": "jq.java: Mode0 foreground,1 cached verification,2 background fetch; validates completed payload and schedules retry; guard below -104.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.a(IIB)Lhb;#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "jq.java: Mode0 foreground,1 cached verification,2 background fetch; validates completed payload and schedules retry; guard below -104.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.a(IIB)Lhb;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "jq.java: Mode0 foreground,1 cached verification,2 background fetch; validates completed payload and schedules retry; guard below -104.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jq.b(B)Lko;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "bc.java: Metadata or null until available. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jq.java: Validates/fetches queued IDs and removes valid cached groups; guard20312.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jq.java: Advances background scans and periodic marked-request cleanup; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jq.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jq.java: Enables background fetch scan only when group cache exists; guard -10476.",
       "confidence": "reviewed"
     },
     {
@@ -12320,6 +13545,97 @@
       "originalName": "param1",
       "to": "data",
       "evidence": "ke.java: Fresh array copy; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kg.java: Signals queue and joins thread; guard at least38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(ILve;B)Lkj;#0",
+      "originalName": "param0",
+      "to": "entryId",
+      "evidence": "kg.java: Enqueues operation3 background read; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(ILve;B)Lkj;#1",
+      "originalName": "param1",
+      "to": "store",
+      "evidence": "kg.java: Enqueues operation3 background read; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(ILve;B)Lkj;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "kg.java: Enqueues operation3 background read; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(IZ[BLve;)Lkj;#0",
+      "originalName": "param0",
+      "to": "entryId",
+      "evidence": "kg.java: Enqueues operation2 with caller payload/priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(IZ[BLve;)Lkj;#1",
+      "originalName": "param1",
+      "to": "priority",
+      "evidence": "kg.java: Enqueues operation2 with caller payload/priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(IZ[BLve;)Lkj;#2",
+      "originalName": "param2",
+      "to": "data",
+      "evidence": "kg.java: Enqueues operation2 with caller payload/priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(IZ[BLve;)Lkj;#3",
+      "originalName": "param3",
+      "to": "store",
+      "evidence": "kg.java: Enqueues operation2 with caller payload/priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(Lkj;I)V#0",
+      "originalName": "param0",
+      "to": "request",
+      "evidence": "kg.java: Adds secondary FIFO request under queue lock, increments count and notifies; guard -3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(Lkj;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kg.java: Adds secondary FIFO request under queue lock, increments count and notifies; guard -3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(Lve;II)Lkj;#0",
+      "originalName": "param0",
+      "to": "store",
+      "evidence": "kg.java: Returns first matching pending write bytes without disk I/O; otherwise reads synchronously as priority request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(Lve;II)Lkj;#1",
+      "originalName": "param1",
+      "to": "entryId",
+      "evidence": "kg.java: Returns first matching pending write bytes without disk I/O; otherwise reads synchronously as priority request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kg.a(Lve;II)Lkj;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "kg.java: Returns first matching pending write bytes without disk I/O; otherwise reads synchronously as priority request.",
       "confidence": "reviewed"
     },
     {
@@ -12355,6 +13671,20 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "kj.java: Adds type1/flag1 bricks across the top and two sides for supplied column count; rows -1..30; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.c(B)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hb.java: Rejects pending requests; network subtype additionally requires received container excluding reserved trailer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.f(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hb.java: Cache request0/100; network received bytes divided by length excluding trailer; guard -21546. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -13975,6 +15305,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:lq.a(I)Ltk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lq.java: Unlinks first secondary node or returns null; guard25609.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:lq.a(IIILmf;)Ltp;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -14000,6 +15337,41 @@
       "originalName": "param3",
       "to": "archive",
       "evidence": "lq.java: Decodes archive file and constructs first indexed sprite; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lq.a(Ltk;Z)V#0",
+      "originalName": "param0",
+      "to": "node",
+      "evidence": "lq.java: Transfers secondary ownership and inserts at tail; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lq.a(Ltk;Z)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lq.java: Transfers secondary ownership and inserts at tail; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lq.a(Z)Ltk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lq.java: Starts shared forward traversal; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lq.c(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lq.java: Counts secondary nodes; guard -25906.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lq.e(I)Ltk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lq.java: Continues shared traversal; guard -8394.",
       "confidence": "reviewed"
     },
     {
@@ -17328,6 +18700,111 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ve.<init>(ILjg;Ljg;I)V#0",
+      "originalName": "param0",
+      "to": "storeId",
+      "evidence": "ve.java: Retains store ID, sector/index files and length limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.<init>(ILjg;Ljg;I)V#1",
+      "originalName": "param1",
+      "to": "dataFile",
+      "evidence": "ve.java: Retains store ID, sector/index files and length limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.<init>(ILjg;Ljg;I)V#2",
+      "originalName": "param2",
+      "to": "indexFile",
+      "evidence": "ve.java: Retains store ID, sector/index files and length limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.<init>(ILjg;Ljg;I)V#3",
+      "originalName": "param3",
+      "to": "maxEntryBytes",
+      "evidence": "ve.java: Retains store ID, sector/index files and length limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a(B[BII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ve.java: Writes requested prefix, tries sector-chain reuse then fresh allocation; guard at most -116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a(B[BII)Z#1",
+      "originalName": "param1",
+      "to": "data",
+      "evidence": "ve.java: Writes requested prefix, tries sector-chain reuse then fresh allocation; guard at most -116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a(B[BII)Z#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "ve.java: Writes requested prefix, tries sector-chain reuse then fresh allocation; guard at most -116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a(B[BII)Z#3",
+      "originalName": "param3",
+      "to": "entryId",
+      "evidence": "ve.java: Writes requested prefix, tries sector-chain reuse then fresh allocation; guard at most -116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a(II)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ve.java: Checks index/sector headers and returns bytes, or null on invalid/missing/I/O failure; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a(II)[B#1",
+      "originalName": "param1",
+      "to": "entryId",
+      "evidence": "ve.java: Checks index/sector headers and returns bytes, or null on invalid/missing/I/O failure; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a([BIZZI)Z#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "ve.java: Writes six-byte index and chained520-byte sectors; can reuse existing chain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a([BIZZI)Z#1",
+      "originalName": "param1",
+      "to": "entryId",
+      "evidence": "ve.java: Writes six-byte index and chained520-byte sectors; can reuse existing chain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a([BIZZI)Z#2",
+      "originalName": "param2",
+      "to": "reuseSectors",
+      "evidence": "ve.java: Writes six-byte index and chained520-byte sectors; can reuse existing chain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a([BIZZI)Z#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ve.java: Writes six-byte index and chained520-byte sectors; can reuse existing chain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ve.a([BIZZI)Z#4",
+      "originalName": "param4",
+      "to": "length",
+      "evidence": "ve.java: Writes six-byte index and chained520-byte sectors; can reuse existing chain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vi.<init>(IIIII)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -17902,6 +19379,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wh.<init>(Ljava/net/Socket;Ltg;)V#0",
+      "originalName": "param0",
+      "to": "socket",
+      "evidence": "wh.java: Uses5000-byte output ring, socket timeout30000 and TCP no-delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.<init>(Ljava/net/Socket;Ltg;)V#1",
+      "originalName": "param1",
+      "to": "taskScheduler",
+      "evidence": "wh.java: Uses5000-byte output ring, socket timeout30000 and TCP no-delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.<init>(Ljava/net/Socket;Ltg;I)V#0",
+      "originalName": "param0",
+      "to": "socket",
+      "evidence": "wh.java: Private explicit-capacity constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.<init>(Ljava/net/Socket;Ltg;I)V#1",
+      "originalName": "param1",
+      "to": "taskScheduler",
+      "evidence": "wh.java: Private explicit-capacity constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.<init>(Ljava/net/Socket;Ltg;I)V#2",
+      "originalName": "param2",
+      "to": "bufferCapacity",
+      "evidence": "wh.java: Private explicit-capacity constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wh.java: Signals closure and joins successfully scheduled writer; guard at least110.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.a(I[BII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wh.java: Reads exact range or throws EOF; guard25826.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.a(I[BII)V#1",
+      "originalName": "param1",
+      "to": "data",
+      "evidence": "wh.java: Reads exact range or throws EOF; guard25826.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.a(I[BII)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "wh.java: Reads exact range or throws EOF; guard25826.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.a(I[BII)V#3",
+      "originalName": "param3",
+      "to": "offset",
+      "evidence": "wh.java: Reads exact range or throws EOF; guard25826.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.a([BZII)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "wh.java: Copies range into ring, schedules writer and notifies; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.a([BZII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wh.java: Copies range into ring, schedules writer and notifies; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.a([BZII)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "wh.java: Copies range into ring, schedules writer and notifies; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.a([BZII)V#3",
+      "originalName": "param3",
+      "to": "offset",
+      "evidence": "wh.java: Copies range into ring, schedules writer and notifies; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wh.java: Consumes deferred write failure; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.d(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wh.java: Available stream bytes or0 after close; guard10434.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wh.e(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wh.java: Single stream byte or0 after close; guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wk.a(ILwq;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -18463,9 +20059,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "7dacbf752e4e17e57501021748d1460e8c7fc11c6b526a53837873120807369e",
+      "build-brickabrac-rules.mjs": "ff21602a3b8c8948f58fa9c678acfb87f3589ddd2bba9f4a5ec36b641d498617",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "bdc3f4432ec18a5b9ce7a60c11b3ea93959378512b8a2a8026b2464e6dcc8dae",
+      "tests/test-brickabrac-core.mjs": "f91d6128f611c2ea3e043a6fbabaf7d9a3b46ae8bd1facde9cae6d769434d0fd",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
