@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 26,
+  "version": 27,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -542,10 +542,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hr",
+      "originalName": "hr",
+      "to": "MidiFileReader",
+      "evidence": "hr.java: Track positions/ticks/running status, packed channel messages, meta/sysex handling and tempo-scaled time conversion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:i",
       "originalName": "i",
       "to": "AchievementIcon",
       "evidence": "i.java: Pooled intrusive achievement icon with screen owner, animated horizontal offset, hover/selection input and earned/placeholder thumbnail cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ie",
+      "originalName": "ie",
+      "to": "MidiSynthesizer",
+      "evidence": "ie.java: AudioStream owns MIDI reader, patch cache,16-channel controller/program state, active voices and synthesis scheduling. Unrelated static helpers retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -619,6 +633,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jm",
+      "originalName": "jm",
+      "to": "MusicEnvelope",
+      "evidence": "jm.java: Volume/release curve bytes, vibrato and decay parameters shared by patch notes. Unrelated static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jn",
       "originalName": "jn",
       "to": "PixelBlockEffect",
@@ -644,6 +665,13 @@
       "originalName": "jq",
       "to": "CachedArchiveSource",
       "evidence": "jq.java: ArchiveSource coordinating cached/remote index and group requests, CRC/digest/revision checks, retries, background scans and completed-request cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ka",
+      "originalName": "ka",
+      "to": "MusicVoice",
+      "evidence": "ka.java: Intrusive channel/note voice retaining patch/envelope/sample/PCM stream, gain/pitch/pan, update timing and release state. Unrelated static helpers retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -770,6 +798,13 @@
       "originalName": "lj",
       "to": "PowerUpWarning",
       "evidence": "lj.java: Intrusive power-up type and age record selected from imminent scheduled effects and rendered as an animated warning icon. Unrelated static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lk",
+      "originalName": "lk",
+      "to": "MusicVoiceMixer",
+      "evidence": "lk.java: AudioStream mixes queued music voices and detached fading streams under synthesizer update scheduling. Unrelated static helpers retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -983,6 +1018,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pq",
+      "originalName": "pq",
+      "to": "MusicPatch",
+      "evidence": "pq.java: Per-note PCM samples, encoded references, pitch/loop words, volume/pan/group arrays and music-envelope associations. Unrelated static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:q",
       "originalName": "q",
       "to": "MenuButton",
@@ -1078,6 +1120,13 @@
       "originalName": "sa",
       "to": "InteractiveGameClient",
       "evidence": "sa.java: Updates client/network/input state and dispatches game render, update, key and packet callbacks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:se",
+      "originalName": "se",
+      "to": "ByteArrayNode",
+      "evidence": "se.java: Intrusive caller-owned byte array; music-track usage stores one128-note mask per instrument key. Unrelated static helpers retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -1207,6 +1256,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vm",
+      "originalName": "vm",
+      "to": "MusicTrack",
+      "evidence": "vm.java: Packed track decoding to MIDI bytes and per-instrument128-note usage masks, retained for music patch preparation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vn",
       "originalName": "vn",
       "to": "Ball",
@@ -1267,6 +1323,13 @@
       "originalName": "wk",
       "to": "LevelMetadata",
       "evidence": "wk.java: Decoded level ID, resource index, localized number label, title and qualified numeric attributes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wp",
+      "originalName": "wp",
+      "to": "SoundCache",
+      "evidence": "wp.java: Two archive-backed PCM sources, decoded sound cache and pending compressed-sample cache; numeric/name lookup with optional sample budget. Unrelated static helpers retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -2754,6 +2817,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hr.field_a:J",
+      "originalName": "field_a",
+      "to": "timeOffset",
+      "evidence": "hr.java: Tempo-change compensation in scaled time units.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_b:Lwq;",
+      "originalName": "field_b",
+      "to": "packet",
+      "evidence": "hr.java: Shared byte cursor seeking among track positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_c:I",
+      "originalName": "field_c",
+      "to": "tempo",
+      "evidence": "hr.java: Defaults500000 and updates on meta0x51; time values remain scaled by tick division.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_d:I",
+      "originalName": "field_d",
+      "to": "division",
+      "evidence": "hr.java: Unsigned header division.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_e:[B",
+      "originalName": "field_e",
+      "to": "messageDataLengths",
+      "evidence": "hr.java: Status128..255 byte counts for packed message decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_f:[I",
+      "originalName": "field_f",
+      "to": "trackTicks",
+      "evidence": "hr.java: Accumulated variable-length deltas per track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_g:[I",
+      "originalName": "field_g",
+      "to": "trackPositions",
+      "evidence": "hr.java: Saved next byte offsets; negative means ended.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_h:[I",
+      "originalName": "field_h",
+      "to": "trackStarts",
+      "evidence": "hr.java: Positions after each MTrk header.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_i:[I",
+      "originalName": "field_i",
+      "to": "runningStatus",
+      "evidence": "hr.java: Per-track last explicit event status.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:i.field_i:I",
       "originalName": "field_i",
       "to": "x",
@@ -2821,6 +2947,160 @@
       "originalName": "field_x",
       "to": "transitionKeepMask",
       "evidence": "i.java: AND mask clearing this icon transition bit when offset is already zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_A:[[Lka;",
+      "originalName": "field_A",
+      "to": "voicesByNote",
+      "evidence": "ie.java: 16x128 held-note lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_C:Llk;",
+      "originalName": "field_C",
+      "to": "voiceMixer",
+      "evidence": "ie.java: Child mixing voices and fading streams.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_D:[I",
+      "originalName": "field_D",
+      "to": "channelPortamentoTime",
+      "evidence": "ie.java: Controller5/37 state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_E:I",
+      "originalName": "field_E",
+      "to": "masterGain",
+      "evidence": "ie.java: Master gain starting256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_G:[I",
+      "originalName": "field_G",
+      "to": "channelPitchBendRange",
+      "evidence": "ie.java: Data-entry state for selected RPN0; default256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_J:[I",
+      "originalName": "field_J",
+      "to": "channelProgram",
+      "evidence": "ie.java: Active bank/program identifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_K:Lhr;",
+      "originalName": "field_K",
+      "to": "midiReader",
+      "evidence": "ie.java: Track event reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_P:[I",
+      "originalName": "field_P",
+      "to": "channelParameter",
+      "evidence": "ie.java: RPN/NRPN selector state, default32767.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_Q:[I",
+      "originalName": "field_Q",
+      "to": "channelExpression",
+      "evidence": "ie.java: Controller11/43 state, default16383.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_R:[I",
+      "originalName": "field_R",
+      "to": "initialPrograms",
+      "evidence": "ie.java: Program defaults restored by reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_S:[I",
+      "originalName": "field_S",
+      "to": "channelGain",
+      "evidence": "ie.java: Independent per-channel gain starting256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_V:[I",
+      "originalName": "field_V",
+      "to": "channelPitchBend",
+      "evidence": "ie.java: Pitch-wheel state, default8192.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_W:[I",
+      "originalName": "field_W",
+      "to": "channelPan",
+      "evidence": "ie.java: Controller10/42 state, default8192.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_m:[I",
+      "originalName": "field_m",
+      "to": "channelModulation",
+      "evidence": "ie.java: Controller1/33 state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_n:[I",
+      "originalName": "field_n",
+      "to": "channelFlags",
+      "evidence": "ie.java: Sustain/portamento/retrigger bits1/2/4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_p:[I",
+      "originalName": "field_p",
+      "to": "channelBank",
+      "evidence": "ie.java: Controller0/32 state and program base.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_r:[[Lka;",
+      "originalName": "field_r",
+      "to": "voicesByGroup",
+      "evidence": "ie.java: 16x128 exclusive-group lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_s:[I",
+      "originalName": "field_s",
+      "to": "channelVolume",
+      "evidence": "ie.java: Controller7/39 state, default12800.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_t:I",
+      "originalName": "field_t",
+      "to": "tempoScale",
+      "evidence": "ie.java: Scheduling scale starting1000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_w:Lsi;",
+      "originalName": "field_w",
+      "to": "patches",
+      "evidence": "ie.java: Loaded music patches keyed by instrument/program.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_y:[I",
+      "originalName": "field_y",
+      "to": "channelSampleOffset",
+      "evidence": "ie.java: Controller16/48 playback offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_z:[I",
+      "originalName": "field_z",
+      "to": "channelRetriggerValue",
+      "evidence": "ie.java: Controller17/49 value used for retrigger frequency.",
       "confidence": "reviewed"
     },
     {
@@ -3517,6 +3797,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jm.field_a:I",
+      "originalName": "field_a",
+      "to": "vibratoDepth",
+      "evidence": "jm.java: Base vibrato pitch amplitude.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_c:[B",
+      "originalName": "field_c",
+      "to": "releaseEnvelope",
+      "evidence": "jm.java: Alternating time/value curve used after release.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_d:I",
+      "originalName": "field_d",
+      "to": "vibratoRate",
+      "evidence": "jm.java: Phase step applied by voice updates and vibrato eligibility.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_e:I",
+      "originalName": "field_e",
+      "to": "vibratoDelay",
+      "evidence": "jm.java: Doubled age threshold for depth ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_g:[B",
+      "originalName": "field_g",
+      "to": "volumeEnvelope",
+      "evidence": "jm.java: Alternating time/value curve used by voice gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jm.field_j:I",
+      "originalName": "field_j",
+      "to": "decayRate",
+      "evidence": "jm.java: Exponential gain decay coefficient.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jo.field_i:Ljava/awt/image/ColorModel;",
       "originalName": "field_i",
       "to": "colorModel",
@@ -3675,6 +3997,146 @@
       "originalName": "field_h",
       "to": "outgoingPackets",
       "evidence": "k.java: Current output/cipher packet buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_A:I",
+      "originalName": "field_A",
+      "to": "volumeEnvelopeIndex",
+      "evidence": "ka.java: Current volume-curve segment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_B:I",
+      "originalName": "field_B",
+      "to": "note",
+      "evidence": "ka.java: Current note key and notes-by-channel index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_D:I",
+      "originalName": "field_D",
+      "to": "releaseEnvelopeIndex",
+      "evidence": "ka.java: Current release-curve segment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_F:Loe;",
+      "originalName": "field_F",
+      "to": "sample",
+      "evidence": "ka.java: Retained PCM sample.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_G:Ljm;",
+      "originalName": "field_G",
+      "to": "envelope",
+      "evidence": "ka.java: Retained shared envelope.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_i:I",
+      "originalName": "field_i",
+      "to": "vibratoPhase",
+      "evidence": "ka.java: Phase accumulated for sine modulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_k:Lpq;",
+      "originalName": "field_k",
+      "to": "patch",
+      "evidence": "ka.java: Retained music patch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_m:I",
+      "originalName": "field_m",
+      "to": "velocityGain",
+      "evidence": "ka.java: Velocity-squared note/patch gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_o:I",
+      "originalName": "field_o",
+      "to": "portamentoScale",
+      "evidence": "ka.java: Interpolation weight starting4096.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_p:I",
+      "originalName": "field_p",
+      "to": "basePitch256",
+      "evidence": "ka.java: Note-minus-patch pitch in256 units per semitone.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_q:I",
+      "originalName": "field_q",
+      "to": "exclusiveGroup",
+      "evidence": "ka.java: Per-note exclusive voice group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_r:I",
+      "originalName": "field_r",
+      "to": "portamentoDelta",
+      "evidence": "ka.java: Pitch interpolation offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_s:I",
+      "originalName": "field_s",
+      "to": "volumeEnvelopeProgress",
+      "evidence": "ka.java: Volume-curve time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_t:I",
+      "originalName": "field_t",
+      "to": "notePan",
+      "evidence": "ka.java: Unsigned per-note pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_u:I",
+      "originalName": "field_u",
+      "to": "channel",
+      "evidence": "ka.java: MIDI channel index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_v:I",
+      "originalName": "field_v",
+      "to": "ageTicks",
+      "evidence": "ka.java: Voice-update count used for vibrato delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_w:I",
+      "originalName": "field_w",
+      "to": "decayProgress",
+      "evidence": "ka.java: Progress used by exponential decay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_x:I",
+      "originalName": "field_x",
+      "to": "releaseProgress",
+      "evidence": "ka.java: Negative while held; release starts at0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_y:Lkl;",
+      "originalName": "field_y",
+      "to": "pcmStream",
+      "evidence": "ka.java: Live playback stream or null after resource release.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_z:I",
+      "originalName": "field_z",
+      "to": "updateFrames",
+      "evidence": "ka.java: PCM frames until next voice update.",
       "confidence": "reviewed"
     },
     {
@@ -4224,6 +4686,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:l.field_m:Lwp;",
+      "originalName": "field_m",
+      "to": "soundCache",
+      "evidence": "l.java: Shared cache used by scene effects and music patch preparation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:l.field_n:Lnm;",
       "originalName": "field_n",
       "to": "sourceNode",
@@ -4385,6 +4854,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lk.field_m:Lra;",
+      "originalName": "field_m",
+      "to": "fadingStreams",
+      "evidence": "lk.java: Detached streams finishing their fade.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_r:Lie;",
+      "originalName": "field_r",
+      "to": "synthesizer",
+      "evidence": "lk.java: Owner controlling voice lifetime and updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_v:Lvl;",
+      "originalName": "field_v",
+      "to": "voices",
+      "evidence": "lk.java: Intrusive active/held/releasing voices.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lm.field_e:[Ljp;",
       "originalName": "field_e",
       "to": "chocCentreSprites",
@@ -4431,6 +4921,13 @@
       "originalName": "field_g",
       "to": "sentinel",
       "evidence": "lq.java: Circular secondary-link sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:m.field_f:Lie;",
+      "originalName": "field_f",
+      "to": "musicSynthesizer",
+      "evidence": "m.java: Shared synthesizer used by scenes.",
       "confidence": "reviewed"
     },
     {
@@ -5414,10 +5911,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pq.field_i:[B",
+      "originalName": "field_i",
+      "to": "exclusiveGroups",
+      "evidence": "pq.java: Voice group selection; negative disables exclusive grouping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pq.field_j:[S",
+      "originalName": "field_j",
+      "to": "pitchOffsets",
+      "evidence": "pq.java: Per-note pitch word; negative sign selects looping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pq.field_k:I",
       "originalName": "field_k",
       "to": "pointerX",
       "evidence": "pq.java: Frame snapshot of eo live pointer x from AWT getX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pq.field_l:[Ljm;",
+      "originalName": "field_l",
+      "to": "envelopes",
+      "evidence": "pq.java: Per-note shared envelope parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pq.field_p:[B",
+      "originalName": "field_p",
+      "to": "volume",
+      "evidence": "pq.java: Per-note volume factor multiplied with velocity squared.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pq.field_r:[B",
+      "originalName": "field_r",
+      "to": "pan",
+      "evidence": "pq.java: Per-note unsigned pan parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pq.field_s:[I",
+      "originalName": "field_s",
+      "to": "sampleCodes",
+      "evidence": "pq.java: Encoded source/reference words cleared after successful sample retrieval.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pq.field_t:[Loe;",
+      "originalName": "field_t",
+      "to": "samples",
+      "evidence": "pq.java: Per-note decoded PCM sounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pq.field_u:I",
+      "originalName": "field_u",
+      "to": "gain",
+      "evidence": "pq.java: Patch gain multiplier.",
       "confidence": "reviewed"
     },
     {
@@ -5992,6 +6545,13 @@
       "originalName": "field_d",
       "to": "arcticNearSprite",
       "evidence": "fi.java: Literal sprite resource arctic/arctic_near assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:se.field_i:[B",
+      "originalName": "field_i",
+      "to": "bytes",
+      "evidence": "se.java: Constructor retains caller byte array.",
       "confidence": "reviewed"
     },
     {
@@ -6786,6 +7346,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vm.field_i:Lsi;",
+      "originalName": "field_i",
+      "to": "instrumentUsage",
+      "evidence": "vm.java: Instrument key to128-byte used-note mask; built lazily and explicitly released.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vm.field_j:[B",
+      "originalName": "field_j",
+      "to": "midiBytes",
+      "evidence": "vm.java: Decoded MIDI data used by reader and synthesizer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vn.field_B:I",
       "originalName": "field_B",
       "to": "destroyedBrickStreak",
@@ -7063,6 +7637,34 @@
       "originalName": "field_b",
       "to": "desertNearSprite",
       "evidence": "gi.java: Literal sprite resource desert/desert_near assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wp.field_a:Lsi;",
+      "originalName": "field_a",
+      "to": "pendingMusicSamples",
+      "evidence": "wp.java: Compressed samples retained until PCM conversion succeeds, then unlinked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wp.field_e:Lsi;",
+      "originalName": "field_e",
+      "to": "decodedSounds",
+      "evidence": "wp.java: PCM cache shared by both sources using separate key domains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wp.field_g:Lmf;",
+      "originalName": "field_g",
+      "to": "musicSampleArchive",
+      "evidence": "wp.java: Second archive decoded through compressed sample provider.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wp.field_j:Lmf;",
+      "originalName": "field_j",
+      "to": "soundEffectArchive",
+      "evidence": "wp.java: First archive decoded through synthesized sound effects.",
       "confidence": "reviewed"
     },
     {
@@ -11483,6 +12085,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hr.a()I",
+      "originalName": "a",
+      "to": "nextTrack",
+      "evidence": "hr.java: Earliest active tick, with first-index tie break.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(I)V",
+      "originalName": "a",
+      "to": "seekTrack",
+      "evidence": "hr.java: Seeks shared cursor to saved track offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(II)I",
+      "originalName": "a",
+      "to": "readMessageBody",
+      "evidence": "hr.java: Reads message bytes or meta markers1=end,2=tempo,3=other.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(J)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "hr.java: Resets running status/ticks and reads first deltas at supplied time origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a([B)V",
+      "originalName": "a",
+      "to": "parse",
+      "evidence": "hr.java: Reads track count/division and locates MTrk chunks; initial tempo500000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.b()V",
+      "originalName": "b",
+      "to": "markTrackEnded",
+      "evidence": "hr.java: Sets cursor -1 before saving ended track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.b(I)V",
+      "originalName": "b",
+      "to": "saveTrackPosition",
+      "evidence": "hr.java: Stores shared cursor offset for track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.b(J)I",
+      "originalName": "b",
+      "to": "timeToTick",
+      "evidence": "hr.java: Rounded positive-time conversion using current tempo/time offset; units remain scaled by division.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.c()Z",
+      "originalName": "c",
+      "to": "hasData",
+      "evidence": "hr.java: Checks retained MIDI bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.c(I)J",
+      "originalName": "c",
+      "to": "getTickTime",
+      "evidence": "hr.java: Tempo-scaled tick time with compensation offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.d()V",
+      "originalName": "d",
+      "to": "clear",
+      "evidence": "hr.java: Releases byte storage and track arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.d(I)I",
+      "originalName": "d",
+      "to": "readMessageInternal",
+      "evidence": "hr.java: Handles running status and sysex escape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.e()I",
+      "originalName": "e",
+      "to": "getTrackCount",
+      "evidence": "hr.java: Returns saved track count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.e(I)I",
+      "originalName": "e",
+      "to": "readMessage",
+      "evidence": "hr.java: Reads packed channel event or meta/sysex marker.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.f()Z",
+      "originalName": "f",
+      "to": "isDone",
+      "evidence": "hr.java: All track positions negative.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.f(I)V",
+      "originalName": "f",
+      "to": "readTrackDelta",
+      "evidence": "hr.java: Adds variable-length delta to track ticks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:i.a(B)V",
       "originalName": "a",
       "to": "draw",
@@ -11539,6 +12253,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ie.a(BI)V",
+      "originalName": "a",
+      "to": "allSoundOff",
+      "evidence": "ie.java: Fades/unlinks channel or all voices; guard -86.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ie.a(I)V",
       "originalName": "a",
       "to": "skip",
@@ -11546,10 +12267,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ie.a(IIII)V",
+      "originalName": "a",
+      "to": "noteOff",
+      "evidence": "ie.java: Clears held note and starts release according to portamento state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(ILvm;ILmf;Lwp;)Z",
+      "originalName": "a",
+      "to": "prepareTrack",
+      "evidence": "ie.java: Builds usage map, retrieves patches/samples under budget and drops usage on successful preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(IZ)V",
+      "originalName": "a",
+      "to": "setMasterGain",
+      "evidence": "ie.java: Assigns master gain unless guard true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(IZII)V",
+      "originalName": "a",
+      "to": "noteOn",
+      "evidence": "ie.java: Stops existing note, optionally reuses portamento voice, then creates patch/sample-backed voice; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(Lka;I)Z",
+      "originalName": "a",
+      "to": "discardInactiveVoice",
+      "evidence": "ie.java: Handles null stream and released voice ownership cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(Lvm;IZ)V",
+      "originalName": "a",
+      "to": "playTrack",
+      "evidence": "ie.java: Loads MIDI track with restart/loop controls; canonical guard126.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ie.b()I",
       "originalName": "b",
       "to": "getSchedulingCost",
       "evidence": "qd.java: Contribution to player scheduling budget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.b(II)V",
+      "originalName": "b",
+      "to": "setTempoScale",
+      "evidence": "ie.java: Assigns scheduling scale; guard -606970073.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.b(IZ)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "ie.java: Stops/releases voices, restores controllers and initial programs; true immediate-stop flag, guard -38.",
       "confidence": "reviewed"
     },
     {
@@ -11564,6 +12341,41 @@
       "originalName": "d",
       "to": "nextSubStream",
       "evidence": "qd.java: Returns next child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.d(I)Z",
+      "originalName": "d",
+      "to": "hasMidiData",
+      "evidence": "ie.java: Checks reader data; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.d(II)V",
+      "originalName": "d",
+      "to": "allNotesOff",
+      "evidence": "ie.java: Clears held-note mappings and starts release for channel or all; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.e(II)V",
+      "originalName": "e",
+      "to": "handleMidiMessage",
+      "evidence": "ie.java: Dispatches packed MIDI event using pinned noncanonical constants; shifted-away bits are retained in source; guard at most -119.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.e(III)V",
+      "originalName": "e",
+      "to": "setChannelGain",
+      "evidence": "ie.java: Assigns one channel or all for negative channel; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.f(II)V",
+      "originalName": "f",
+      "to": "resetControllers",
+      "evidence": "ie.java: Restores controller defaults for channel or all when negative; guard -100.",
       "confidence": "reviewed"
     },
     {
@@ -12159,6 +12971,13 @@
       "originalName": "f",
       "to": "startPrefetch",
       "evidence": "jq.java: Enables background fetch scan only when group cache exists; guard -10476.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(I)V",
+      "originalName": "a",
+      "to": "releaseResources",
+      "evidence": "ka.java: Clears stream, PCM, patch and envelope references; guard at most -39.",
       "confidence": "reviewed"
     },
     {
@@ -13961,6 +14780,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pq.a([BBLwp;[I)Z",
+      "originalName": "a",
+      "to": "loadSamples",
+      "evidence": "pq.java: Loads referenced used-note samples from cache, retaining failed codes and clearing successful codes; guard below -48.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:q.a(BZ)V",
       "originalName": "a",
       "to": "draw",
@@ -15424,6 +16250,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vm.a()V",
+      "originalName": "a",
+      "to": "releaseInstrumentUsage",
+      "evidence": "vm.java: Drops lazily built instrument-note map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vm.a(Lmf;Ljava/lang/String;Ljava/lang/String;)Lvm;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "vm.java: Returns null if packed bytes unavailable, else decodes MusicTrack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vm.b()V",
+      "originalName": "b",
+      "to": "buildInstrumentUsage",
+      "evidence": "vm.java: Scans MIDI bank/program/note events into128-note masks; velocity-zero notes are ignored; channel9 starts at instrument128.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vn.a(BI)V",
       "originalName": "a",
       "to": "extendPenetration",
@@ -15697,10 +16544,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wp.a(BLjava/lang/String;Ljava/lang/String;)Loe;",
+      "originalName": "a",
+      "to": "getMusicSampleByName",
+      "evidence": "wp.java: Compressed sample name convenience overload with no budget; guard28.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a(III[I)Loe;",
+      "originalName": "a",
+      "to": "getSoundEffect",
+      "evidence": "wp.java: Checks decoded cache before budget, decodes effect and debits PCM length; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a(II[II)Loe;",
+      "originalName": "a",
+      "to": "getMusicSample",
+      "evidence": "wp.java: Checks PCM cache before budget, retains incomplete compressed sample, then transfers to decoded cache; guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wp.a(ILoe;)V",
       "originalName": "a",
       "to": "playUiSound",
       "evidence": "wp.java: Guard8 delegates PCM sound playback construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a(I[II)Loe;",
+      "originalName": "a",
+      "to": "getMusicSampleById",
+      "evidence": "wp.java: Uses single-group or single-file layout; unsupported layout throws.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a(Ljava/lang/String;BLjava/lang/String;[I)Loe;",
+      "originalName": "a",
+      "to": "getMusicSampleByName",
+      "evidence": "wp.java: Resolves compressed-sample group/file and delegates retrieval; guard below -45.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a(Ljava/lang/String;Ljava/lang/String;B)Loe;",
+      "originalName": "a",
+      "to": "getSoundEffectByName",
+      "evidence": "wp.java: Effect-name convenience overload with no budget; guard at least107.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a([III)Loe;",
+      "originalName": "a",
+      "to": "getSoundEffectById",
+      "evidence": "wp.java: Uses single-group or single-file layout; unsupported layout behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a([ILjava/lang/String;ILjava/lang/String;)Loe;",
+      "originalName": "a",
+      "to": "getSoundEffectByName",
+      "evidence": "wp.java: Resolves archive group/file and delegates numeric cache retrieval; guard2.",
       "confidence": "reviewed"
     },
     {
@@ -20191,6 +21094,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hr.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "hr.java: Creates packet and parses MIDI bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(I)V#0",
+      "originalName": "param0",
+      "to": "track",
+      "evidence": "hr.java: Seeks shared cursor to saved track offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(II)I#0",
+      "originalName": "param0",
+      "to": "track",
+      "evidence": "hr.java: Reads message bytes or meta markers1=end,2=tempo,3=other.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(II)I#1",
+      "originalName": "param1",
+      "to": "status",
+      "evidence": "hr.java: Reads message bytes or meta markers1=end,2=tempo,3=other.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a(J)V#0",
+      "originalName": "param0",
+      "to": "time",
+      "evidence": "hr.java: Resets running status/ticks and reads first deltas at supplied time origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.a([B)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "hr.java: Reads track count/division and locates MTrk chunks; initial tempo500000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.b(I)V#0",
+      "originalName": "param0",
+      "to": "track",
+      "evidence": "hr.java: Stores shared cursor offset for track.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.b(J)I#0",
+      "originalName": "param0",
+      "to": "time",
+      "evidence": "hr.java: Rounded positive-time conversion using current tempo/time offset; units remain scaled by division.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.c(I)J#0",
+      "originalName": "param0",
+      "to": "tick",
+      "evidence": "hr.java: Tempo-scaled tick time with compensation offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.d(I)I#0",
+      "originalName": "param0",
+      "to": "track",
+      "evidence": "hr.java: Handles running status and sysex escape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.e(I)I#0",
+      "originalName": "param0",
+      "to": "track",
+      "evidence": "hr.java: Reads packed channel event or meta/sysex marker.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hr.f(I)V#0",
+      "originalName": "param0",
+      "to": "track",
+      "evidence": "hr.java: Adds variable-length delta to track ticks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:i.a(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -20268,10 +21255,192 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ie.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Fades/unlinks channel or all voices; guard -86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(BI)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "ie.java: Fades/unlinks channel or all voices; guard -86.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ie.a(I)V#0",
       "originalName": "param0",
       "to": "frames",
       "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Clears held note and starts release according to portamento state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "note",
+      "evidence": "ie.java: Clears held note and starts release according to portamento state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "channel",
+      "evidence": "ie.java: Clears held note and starts release according to portamento state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "velocity",
+      "evidence": "ie.java: Clears held note and starts release according to portamento state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(ILvm;ILmf;Lwp;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Builds usage map, retrieves patches/samples under budget and drops usage on successful preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(ILvm;ILmf;Lwp;)Z#1",
+      "originalName": "param1",
+      "to": "track",
+      "evidence": "ie.java: Builds usage map, retrieves patches/samples under budget and drops usage on successful preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(ILvm;ILmf;Lwp;)Z#2",
+      "originalName": "param2",
+      "to": "sampleBudget",
+      "evidence": "ie.java: Builds usage map, retrieves patches/samples under budget and drops usage on successful preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(ILvm;ILmf;Lwp;)Z#3",
+      "originalName": "param3",
+      "to": "patchArchive",
+      "evidence": "ie.java: Builds usage map, retrieves patches/samples under budget and drops usage on successful preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(ILvm;ILmf;Lwp;)Z#4",
+      "originalName": "param4",
+      "to": "soundCache",
+      "evidence": "ie.java: Builds usage map, retrieves patches/samples under budget and drops usage on successful preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "ie.java: Assigns master gain unless guard true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Assigns master gain unless guard true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IZII)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "ie.java: Stops existing note, optionally reuses portamento voice, then creates patch/sample-backed voice; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IZII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Stops existing note, optionally reuses portamento voice, then creates patch/sample-backed voice; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IZII)V#2",
+      "originalName": "param2",
+      "to": "note",
+      "evidence": "ie.java: Stops existing note, optionally reuses portamento voice, then creates patch/sample-backed voice; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(IZII)V#3",
+      "originalName": "param3",
+      "to": "velocity",
+      "evidence": "ie.java: Stops existing note, optionally reuses portamento voice, then creates patch/sample-backed voice; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(Lka;I)Z#0",
+      "originalName": "param0",
+      "to": "voice",
+      "evidence": "ie.java: Handles null stream and released voice ownership cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(Lka;I)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Handles null stream and released voice ownership cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(Lvm;IZ)V#0",
+      "originalName": "param0",
+      "to": "track",
+      "evidence": "ie.java: Loads MIDI track with restart/loop controls; canonical guard126.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(Lvm;IZ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Loads MIDI track with restart/loop controls; canonical guard126.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.a(Lvm;IZ)V#2",
+      "originalName": "param2",
+      "to": "loop",
+      "evidence": "ie.java: Loads MIDI track with restart/loop controls; canonical guard126.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.b(II)V#0",
+      "originalName": "param0",
+      "to": "scale",
+      "evidence": "ie.java: Assigns scheduling scale; guard -606970073.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.b(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Assigns scheduling scale; guard -606970073.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.b(IZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Stops/releases voices, restores controllers and initial programs; true immediate-stop flag, guard -38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.b(IZ)V#1",
+      "originalName": "param1",
+      "to": "stopImmediately",
+      "evidence": "ie.java: Stops/releases voices, restores controllers and initial programs; true immediate-stop flag, guard -38.",
       "confidence": "reviewed"
     },
     {
@@ -20293,6 +21462,76 @@
       "originalName": "param2",
       "to": "frames",
       "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.d(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Checks reader data; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.d(II)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "ie.java: Clears held-note mappings and starts release for channel or all; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.d(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Clears held-note mappings and starts release for channel or all; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.e(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Dispatches packed MIDI event using pinned noncanonical constants; shifted-away bits are retained in source; guard at most -119.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.e(II)V#1",
+      "originalName": "param1",
+      "to": "message",
+      "evidence": "ie.java: Dispatches packed MIDI event using pinned noncanonical constants; shifted-away bits are retained in source; guard at most -119.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.e(III)V#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "ie.java: Assigns one channel or all for negative channel; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.e(III)V#1",
+      "originalName": "param1",
+      "to": "channel",
+      "evidence": "ie.java: Assigns one channel or all for negative channel; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.e(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Assigns one channel or all for negative channel; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.f(II)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "ie.java: Restores controller defaults for channel or all when negative; guard -100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.f(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Restores controller defaults for channel or all when negative; guard -100.",
       "confidence": "reviewed"
     },
     {
@@ -21784,6 +23023,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "jq.java: Enables background fetch scan only when group cache exists; guard -10476.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ka.java: Clears stream, PCM, patch and envelope references; guard at most -39.",
       "confidence": "reviewed"
     },
     {
@@ -24024,6 +25270,13 @@
       "originalName": "param1",
       "to": "unusedFlag",
       "evidence": "lj.java: Retains type and zero age; boolean is unused in fixed source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lk.<init>(Lie;)V#0",
+      "originalName": "param0",
+      "to": "synthesizer",
+      "evidence": "lk.java: Creates active voice deque and fading stream mixer.",
       "confidence": "reviewed"
     },
     {
@@ -26442,6 +27695,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pq.a([BBLwp;[I)Z#0",
+      "originalName": "param0",
+      "to": "usedNotes",
+      "evidence": "pq.java: Loads referenced used-note samples from cache, retaining failed codes and clearing successful codes; guard below -48.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.a([BBLwp;[I)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pq.java: Loads referenced used-note samples from cache, retaining failed codes and clearing successful codes; guard below -48.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.a([BBLwp;[I)Z#2",
+      "originalName": "param2",
+      "to": "soundCache",
+      "evidence": "pq.java: Loads referenced used-note samples from cache, retaining failed codes and clearing successful codes; guard below -48.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pq.a([BBLwp;[I)Z#3",
+      "originalName": "param3",
+      "to": "budget",
+      "evidence": "pq.java: Loads referenced used-note samples from cache, retaining failed codes and clearing successful codes; guard below -48.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:q.<init>(ILkm;)V#0",
       "originalName": "param0",
       "to": "actionId",
@@ -28234,6 +29515,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:se.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "bytes",
+      "evidence": "se.java: Retains supplied byte array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sg.e(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -29949,6 +31237,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vm.<init>(Lwq;)V#0",
+      "originalName": "param0",
+      "to": "packedTrack",
+      "evidence": "vm.java: Decodes original packed track representation into MIDI bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vm.a(Lmf;Ljava/lang/String;Ljava/lang/String;)Lvm;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "vm.java: Returns null if packed bytes unavailable, else decodes MusicTrack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vm.a(Lmf;Ljava/lang/String;Ljava/lang/String;)Lvm;#1",
+      "originalName": "param1",
+      "to": "fileName",
+      "evidence": "vm.java: Returns null if packed bytes unavailable, else decodes MusicTrack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vm.a(Lmf;Ljava/lang/String;Ljava/lang/String;)Lvm;#2",
+      "originalName": "param2",
+      "to": "groupName",
+      "evidence": "vm.java: Returns null if packed bytes unavailable, else decodes MusicTrack.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vn.<init>(II)V#0",
       "originalName": "param0",
       "to": "launchAngle",
@@ -30530,6 +31846,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wp.<init>(Lmf;Lmf;)V#0",
+      "originalName": "param0",
+      "to": "soundEffectArchive",
+      "evidence": "wp.java: Retains source archives and allocates two256-bucket caches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.<init>(Lmf;Lmf;)V#1",
+      "originalName": "param1",
+      "to": "musicSampleArchive",
+      "evidence": "wp.java: Retains source archives and allocates two256-bucket caches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(BLjava/lang/String;Ljava/lang/String;)Loe;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Compressed sample name convenience overload with no budget; guard28.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(BLjava/lang/String;Ljava/lang/String;)Loe;#1",
+      "originalName": "param1",
+      "to": "fileName",
+      "evidence": "wp.java: Compressed sample name convenience overload with no budget; guard28.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(BLjava/lang/String;Ljava/lang/String;)Loe;#2",
+      "originalName": "param2",
+      "to": "groupName",
+      "evidence": "wp.java: Compressed sample name convenience overload with no budget; guard28.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(III[I)Loe;#0",
+      "originalName": "param0",
+      "to": "fileId",
+      "evidence": "wp.java: Checks decoded cache before budget, decodes effect and debits PCM length; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(III[I)Loe;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Checks decoded cache before budget, decodes effect and debits PCM length; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(III[I)Loe;#2",
+      "originalName": "param2",
+      "to": "groupId",
+      "evidence": "wp.java: Checks decoded cache before budget, decodes effect and debits PCM length; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(III[I)Loe;#3",
+      "originalName": "param3",
+      "to": "budget",
+      "evidence": "wp.java: Checks decoded cache before budget, decodes effect and debits PCM length; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(II[II)Loe;#0",
+      "originalName": "param0",
+      "to": "fileId",
+      "evidence": "wp.java: Checks PCM cache before budget, retains incomplete compressed sample, then transfers to decoded cache; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(II[II)Loe;#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "wp.java: Checks PCM cache before budget, retains incomplete compressed sample, then transfers to decoded cache; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(II[II)Loe;#2",
+      "originalName": "param2",
+      "to": "budget",
+      "evidence": "wp.java: Checks PCM cache before budget, retains incomplete compressed sample, then transfers to decoded cache; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(II[II)Loe;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Checks PCM cache before budget, retains incomplete compressed sample, then transfers to decoded cache; guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wp.a(ILoe;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -30541,6 +31948,125 @@
       "originalName": "param1",
       "to": "sound",
       "evidence": "wp.java: Guard8 delegates PCM sound playback construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(I[II)Loe;#0",
+      "originalName": "param0",
+      "to": "id",
+      "evidence": "wp.java: Uses single-group or single-file layout; unsupported layout throws.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(I[II)Loe;#1",
+      "originalName": "param1",
+      "to": "budget",
+      "evidence": "wp.java: Uses single-group or single-file layout; unsupported layout throws.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(I[II)Loe;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Uses single-group or single-file layout; unsupported layout throws.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(Ljava/lang/String;BLjava/lang/String;[I)Loe;#0",
+      "originalName": "param0",
+      "to": "groupName",
+      "evidence": "wp.java: Resolves compressed-sample group/file and delegates retrieval; guard below -45.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(Ljava/lang/String;BLjava/lang/String;[I)Loe;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Resolves compressed-sample group/file and delegates retrieval; guard below -45.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(Ljava/lang/String;BLjava/lang/String;[I)Loe;#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "wp.java: Resolves compressed-sample group/file and delegates retrieval; guard below -45.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(Ljava/lang/String;BLjava/lang/String;[I)Loe;#3",
+      "originalName": "param3",
+      "to": "budget",
+      "evidence": "wp.java: Resolves compressed-sample group/file and delegates retrieval; guard below -45.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(Ljava/lang/String;Ljava/lang/String;B)Loe;#0",
+      "originalName": "param0",
+      "to": "fileName",
+      "evidence": "wp.java: Effect-name convenience overload with no budget; guard at least107.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(Ljava/lang/String;Ljava/lang/String;B)Loe;#1",
+      "originalName": "param1",
+      "to": "groupName",
+      "evidence": "wp.java: Effect-name convenience overload with no budget; guard at least107.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(Ljava/lang/String;Ljava/lang/String;B)Loe;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Effect-name convenience overload with no budget; guard at least107.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a([III)Loe;#0",
+      "originalName": "param0",
+      "to": "budget",
+      "evidence": "wp.java: Uses single-group or single-file layout; unsupported layout behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a([III)Loe;#1",
+      "originalName": "param1",
+      "to": "id",
+      "evidence": "wp.java: Uses single-group or single-file layout; unsupported layout behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a([III)Loe;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Uses single-group or single-file layout; unsupported layout behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a([ILjava/lang/String;ILjava/lang/String;)Loe;#0",
+      "originalName": "param0",
+      "to": "budget",
+      "evidence": "wp.java: Resolves archive group/file and delegates numeric cache retrieval; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a([ILjava/lang/String;ILjava/lang/String;)Loe;#1",
+      "originalName": "param1",
+      "to": "fileName",
+      "evidence": "wp.java: Resolves archive group/file and delegates numeric cache retrieval; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a([ILjava/lang/String;ILjava/lang/String;)Loe;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Resolves archive group/file and delegates numeric cache retrieval; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a([ILjava/lang/String;ILjava/lang/String;)Loe;#3",
+      "originalName": "param3",
+      "to": "groupName",
+      "evidence": "wp.java: Resolves archive group/file and delegates numeric cache retrieval; guard2.",
       "confidence": "reviewed"
     },
     {
@@ -31070,9 +32596,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "2df82dde0f97780a5101b9d5083dc4d587e1959194e9c0fb972b2a33ce44dc6a",
+      "build-brickabrac-rules.mjs": "49bd811183465b14899afd9ff7c4a2dc63c91209018cdf85d106e1400f4c6aa1",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "92270620e02332ec0fece5441909b6cff4fd5cf2c479c7497dd2474cb0978724",
+      "tests/test-brickabrac-core.mjs": "8021209a4ae25c422b09a17d9d4ce0934861dcb1c933d0c547d0ffd7f8baceed",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

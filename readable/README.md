@@ -102,6 +102,9 @@ constructor parameters now distinguish seeds, character order and level sequence
 BackgroundScene, BackgroundRegistry and twelve concrete themes expose scene
 selection, asset readiness, drawing and music/sound-effect preparation. Sprite
 field names derive from literal resource assignments in these reviewed themes.
+SoundCache, MusicTrack, MidiFileReader, MusicPatch/MusicEnvelope, MusicVoice,
+MusicVoiceMixer and MidiSynthesizer expose scene audio lookup, event parsing,
+instrument usage and per-channel/voice state. ByteArrayNode names shared byte storage.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -739,6 +742,41 @@ Theme sprite field aliases derive deterministically from literal resource files
 and resolved field declarations; ambiguous ownership/type/collisions fail the build.
 Real sprite decoding/loading, cached scene drawing, sound/music preparation and
 playback, desktop/browser/phone presentation and FPS remain unverified.
+
+SoundCache names effect/music source archives, decoded PCM and pending compressed
+sample caches. Name/id lookups retain the original archive-layout rules and sample
+budget behavior. Controlled cache fixtures verify source-key separation, signed
+32-bit key extension, high16-bit group/file IDs, cache hits before budget checks,
+unchanged budget on cache hits and missing-entry blocking at nonpositive budgets.
+Actual synthesized/compressed decoding, incomplete-sample retention and archive
+retrieval remain unverified.
+
+MidiFileReader exposes track start/current positions, ticks, running status,
+division, tempo and compensation offset. Synthetic MIDI fixtures check two-track
+ordering/ties, program/bank/note messages, running status, variable-length deltas,
+tempo/meta events, sysex skips/escaped messages, completion, reset and storage
+release. Time conversion retains the source's tempo-scaled units rather than
+claiming direct seconds. MusicTrack names decoded bytes and its lazy instrument
+usage table; fixtures check bank/program selection, percussion-channel initial
+instrument128, velocity-zero suppression, per-instrument128-note masks, reuse,
+release and rebuild. ByteArrayNode preserves caller-array ownership. Packed music
+track decoding, malformed MIDI/SMPTE input and original-JAR equivalence remain
+unverified.
+
+MusicPatch and MusicEnvelope name per-note sample/reference, pitch/loop, gain/pan,
+exclusive-group and curve/vibrato data. MusicVoice retains channel/note, patch,
+sample, envelope, PCM stream, pitch/pan/gain, update timing and release state.
+MusicVoiceMixer names active voices and detached fades. MidiSynthesizer names its
+reader, patches, note/group maps and16-channel controller/program state. Native
+fixtures check controller defaults, master/channel gain, scheduling scale, empty
+additive fill, controlled patch-backed note creation, note release and all-sound-off
+ownership/resource cleanup. Packed controller tests cover bank/modulation/portamento/
+volume/pan/expression/sample-offset/retrigger pairs, pedal flags, parameter selection
+and pitch bend across all16 channels. The unusual mask constants have low bits
+that vanish during shifts; these fixtures confirm expected MIDI byte extraction
+in the tested ranges, without claiming complete standards compliance. Actual patch
+decoding/preparation, envelopes over sustained playback, looping track scheduling,
+devices and audible game music remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
