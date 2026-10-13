@@ -85,6 +85,11 @@ traversal. SoftwareFramebuffer/BufferedImageFramebuffer/ProducerFramebuffer expo
 shared pixels and both AWT image backends.
 IntArrayRequest exposes queued integer data and saved-progress polling; the
 earlier pollRequiredFonts name was corrected to pollSavedProgress.
+LevelResultSubmission exposes queued pack/level results and their acknowledgments.
+TableRowSubmission, TableDataRequest and TableNameEntry expose submitted values,
+request deduplication, response dictionaries and three stored row partitions.
+SecondaryHashTable exposes duplicate-key lookup and independent traversal without
+changing primary node ownership.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -570,6 +575,36 @@ flags and released request arrays. They retain two unusual pinned-source
 behaviors: the response shift expression accumulates bytes instead of normal
 32-bit words, and progress polling resets both counts after combining metadata.
 These observations do not establish original-JAR or server semantics.
+
+LevelResultSubmission retains a pack ID, zero-based signed-smart level index and
+four qualified result words. GameplayScreen captures those words between two
+counter adjustments and queues the record; submission moves it to the pending
+acknowledgment deque. Native fixtures check the counter capture, unlocked level
+count, suppression flag, all signed-smart width boundaries and independent
+DataOutputStream/CRC32 packet bytes. Acknowledgments match both pack and level,
+unlink only the matching record and preserve other pending records. Counter and
+result-word names remain qualified rather than assigning unproven score meanings.
+
+TableRowSubmission retains caller values and allocates a wrapping 16-bit request
+ID. Independent wire fixtures cover empty/nonempty values, signed result words,
+table/companion words and CRC32; responses set a 64-bit row ID and unlink by
+request ID. TableDataRequest deduplicates pending queries by table ID, retaining
+the original dimensions. Controlled responses fill the first rows, current-player
+rows and first row per distinct dictionary name. Fixtures include repeated names,
+optional secondary labels, zero-dictionary completion, row/value lookup and
+table/name/value mismatches. Parser row counters and flattened value offsets have
+reviewed names. Secondary labels are parsed into temporary arrays but not retained
+in the request. Oversized responses, zero-width row lookup, missing-request
+disconnects, live server behavior and original-JAR equivalence remain unverified.
+
+SecondaryHashTable uses a node's secondary links independently of its primary
+deque links. It transfers ownership, preserves duplicate insertion order, keeps
+lookup and traversal cursors separate and uses bit-mask indexing even for a
+non-power-of-two bucket count. Deterministic randomized fixtures compare lookup,
+traversal and cross-table transfers with independent list models, including
+collisions, missing/negative keys and repeated lookup exhaustion. Interleaved
+traversal preserves duplicate lookup. The insertion guard must exceed 38; invalid
+guards and mutation during active traversal are not covered.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 21,
+  "version": 22,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -374,6 +374,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eg",
+      "originalName": "eg",
+      "to": "TableDataRequest",
+      "evidence": "eg.java: Pending table ID, column count and per-partition row limit; response stores three name/ID/value partitions and readiness.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:el",
       "originalName": "el",
       "to": "AudioData",
@@ -710,6 +717,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mk",
+      "originalName": "mk",
+      "to": "SecondaryHashTable",
+      "evidence": "mk.java: Intrusive secondary-link hash table with duplicate-key search, independent table traversal and ownership transfer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mn",
       "originalName": "mn",
       "to": "SpriteGeometry",
@@ -843,6 +857,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pk",
+      "originalName": "pk",
+      "to": "TableNameEntry",
+      "evidence": "pk.java: Response name dictionary record with optional secondary label and partition-selection mark.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pn",
+      "originalName": "pn",
+      "to": "LevelResultSubmission",
+      "evidence": "pn.java: Queued per-pack/zero-based-level result with four qualified result words; encoded as common type1 submission with CRC32 and acknowledged by pack/level.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:q",
       "originalName": "q",
       "to": "MenuButton",
@@ -931,6 +959,13 @@
       "originalName": "si",
       "to": "IntrusiveHashTable",
       "evidence": "si.java: Sentinel buckets keyed by long values, intrusive insertion/lookup and shared bucket traversal cursor. Static input/asset helpers retain their separate roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sp",
+      "originalName": "sp",
+      "to": "TableRowSubmission",
+      "evidence": "sp.java: Queued table-row values with16-bit request sequence, table/qualified words and returned64-bit row ID.",
       "confidence": "reviewed"
     },
     {
@@ -1809,6 +1844,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:eg.field_i:[[Ljava/lang/String;",
+      "originalName": "field_i",
+      "to": "names",
+      "evidence": "eg.java: Three response partitions of names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eg.field_l:I",
+      "originalName": "field_l",
+      "to": "tableId",
+      "evidence": "eg.java: 16-bit request ID/table identifier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eg.field_n:[[I",
+      "originalName": "field_n",
+      "to": "values",
+      "evidence": "eg.java: Flattened row-major integer columns for three partitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eg.field_o:Z",
+      "originalName": "field_o",
+      "to": "complete",
+      "evidence": "eg.java: Set true after response, before request unlinks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eg.field_p:I",
+      "originalName": "field_p",
+      "to": "columnCount",
+      "evidence": "eg.java: Per-row integer value count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eg.field_q:I",
+      "originalName": "field_q",
+      "to": "rowLimit",
+      "evidence": "eg.java: Allocated row limit per partition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eg.field_r:[[J",
+      "originalName": "field_r",
+      "to": "rowIds",
+      "evidence": "eg.java: Three response partitions of64-bit row IDs.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ej.field_J:D",
       "originalName": "field_J",
       "to": "packetDelayJitter",
@@ -1855,6 +1939,13 @@
       "originalName": "field_g",
       "to": "livePointerY",
       "evidence": "ep.java: Written by mouse move/drag/enter callbacks; exit writes -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ep.field_i:I",
+      "originalName": "field_i",
+      "to": "resultCounterTwo",
+      "evidence": "ep.java: Qualified running counter incremented around level-result capture.",
       "confidence": "reviewed"
     },
     {
@@ -1981,6 +2072,13 @@
       "originalName": "field_y",
       "to": "progressRequests",
       "evidence": "fp.java: Two per-pack saved-progress requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fp.field_z:I",
+      "originalName": "field_z",
+      "to": "resultCounterOne",
+      "evidence": "fp.java: Qualified running counter decremented around level-result capture.",
       "confidence": "reviewed"
     },
     {
@@ -3237,6 +3335,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kq.field_j:Lvl;",
+      "originalName": "field_j",
+      "to": "queuedLevelResults",
+      "evidence": "kq.java: Unsent results consumed by game-layer updates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kq.field_p:I",
       "originalName": "field_p",
       "to": "value",
@@ -3517,6 +3622,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mk.field_d:Ltk;",
+      "originalName": "field_d",
+      "to": "lookupCursor",
+      "evidence": "mk.java: Next duplicate-search node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mk.field_e:[Ltk;",
+      "originalName": "field_e",
+      "to": "buckets",
+      "evidence": "mk.java: Circular secondary-link sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mk.field_f:Ltk;",
+      "originalName": "field_f",
+      "to": "traversalCursor",
+      "evidence": "mk.java: Next secondary traversal node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mk.field_g:J",
+      "originalName": "field_g",
+      "to": "lookupKey",
+      "evidence": "mk.java: Key retained for next matching lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mk.field_h:I",
+      "originalName": "field_h",
+      "to": "traversalBucket",
+      "evidence": "mk.java: Next table traversal bucket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mk.field_k:I",
+      "originalName": "field_k",
+      "to": "bucketCount",
+      "evidence": "mk.java: Constructor bucket count; indexing preserves bit-mask behavior for non-powers-of-two.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mn.field_C:I",
       "originalName": "field_C",
       "to": "height",
@@ -3556,6 +3703,13 @@
       "originalName": "field_z",
       "to": "canvasHeight",
       "evidence": "mn.java: Original untrimmed canvas height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nb.field_b:[Lpk;",
+      "originalName": "field_b",
+      "to": "tableNameScratch",
+      "evidence": "nb.java: Shared response dictionary, entry0 supplies current display name.",
       "confidence": "reviewed"
     },
     {
@@ -4056,6 +4210,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pk.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "secondaryLabel",
+      "evidence": "pk.java: Optional response label with unknown broader semantics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pk.field_c:Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "name",
+      "evidence": "pk.java: Primary response name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pk.field_d:Z",
+      "originalName": "field_d",
+      "to": "partitionSeen",
+      "evidence": "pk.java: Dictionary entry already selected for third partition.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pl.field_b:[I",
       "originalName": "field_b",
       "to": "pendingAchievementMask",
@@ -4067,6 +4242,48 @@
       "originalName": "field_d",
       "to": "keyChangeWriteIndex",
       "evidence": "pl.java: Ring write index, or -1 after overflow/focus loss to request held-state reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pn.field_k:I",
+      "originalName": "field_k",
+      "to": "resultWordFour",
+      "evidence": "pn.java: Fourth qualified32-bit word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pn.field_l:I",
+      "originalName": "field_l",
+      "to": "resultWordThree",
+      "evidence": "pn.java: Third qualified32-bit word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pn.field_n:I",
+      "originalName": "field_n",
+      "to": "levelIndex",
+      "evidence": "pn.java: Zero-based result level, encoded signed-smart.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pn.field_p:I",
+      "originalName": "field_p",
+      "to": "packId",
+      "evidence": "pn.java: Pack identity, sent as byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pn.field_r:I",
+      "originalName": "field_r",
+      "to": "resultWordTwo",
+      "evidence": "pn.java: Second qualified32-bit word after level/pack offset addition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pn.field_t:I",
+      "originalName": "field_t",
+      "to": "resultWordOne",
+      "evidence": "pn.java: First qualified32-bit word, copied from result counter before final adjustment.",
       "confidence": "reviewed"
     },
     {
@@ -4154,6 +4371,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qa.field_t:Lvl;",
+      "originalName": "field_t",
+      "to": "pendingLevelResults",
+      "evidence": "qa.java: Submitted results retained until common acknowledgment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qa.field_x:Lgk;",
       "originalName": "field_x",
       "to": "mouseWheelSource",
@@ -4179,6 +4403,13 @@
       "originalName": "field_m",
       "to": "eventCode",
       "evidence": "qc.java: Numeric gameplay audio event code read by the audio event consumer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qc.field_n:Lvl;",
+      "originalName": "field_n",
+      "to": "pendingTableRequests",
+      "evidence": "qc.java: Table requests deduplicated by ID while pending.",
       "confidence": "reviewed"
     },
     {
@@ -4214,6 +4445,13 @@
       "originalName": "field_l",
       "to": "schedulerNext",
       "evidence": "qd.java: Next stream in player scheduling tier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qf.field_Cb:I",
+      "originalName": "field_Cb",
+      "to": "tableSubmissionSequence",
+      "evidence": "qf.java: Sequence incremented by row-submission constructor.",
       "confidence": "reviewed"
     },
     {
@@ -4588,6 +4826,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sp.field_i:[I",
+      "originalName": "field_i",
+      "to": "values",
+      "evidence": "sp.java: Caller value array retained and serialized as length plus32-bit entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_j:I",
+      "originalName": "field_j",
+      "to": "resultWordFour",
+      "evidence": "sp.java: Fourth qualified32-bit result word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_k:I",
+      "originalName": "field_k",
+      "to": "resultWordOne",
+      "evidence": "sp.java: First qualified32-bit result word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_m:I",
+      "originalName": "field_m",
+      "to": "requestId",
+      "evidence": "sp.java: Incrementing sequence masked65535.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_n:I",
+      "originalName": "field_n",
+      "to": "resultWordTwo",
+      "evidence": "sp.java: Second qualified32-bit result word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_o:I",
+      "originalName": "field_o",
+      "to": "tableId",
+      "evidence": "sp.java: Table identifier sent as unsigned-short and used for matching response rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_p:J",
+      "originalName": "field_p",
+      "to": "rowId",
+      "evidence": "sp.java: 64-bit server result ID,0 until response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_q:I",
+      "originalName": "field_q",
+      "to": "tableWord",
+      "evidence": "sp.java: Qualified16-bit companion word; gameplay initializes complement of table ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_r:I",
+      "originalName": "field_r",
+      "to": "resultWordThree",
+      "evidence": "sp.java: Third qualified32-bit result word.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ta.field_e:[Loe;",
       "originalName": "field_e",
       "to": "uiSounds",
@@ -4767,6 +5068,13 @@
       "originalName": "field_b",
       "to": "decodedSpriteHasAlpha",
       "evidence": "tm.java: True if an explicit alpha plane contains any byte other than255; retained after cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_f:Lvl;",
+      "originalName": "field_f",
+      "to": "pendingTableSubmissions",
+      "evidence": "tm.java: Pending row submissions acknowledged by16-bit request ID.",
       "confidence": "reviewed"
     },
     {
@@ -5575,6 +5883,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:cp.b(IIIII)Leg;#0",
+      "originalName": "var6",
+      "to": "clientBranchFlag",
+      "evidence": "cp.java: Reviewed pending table request construction/deduplication declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cp.b(IIIII)Leg;#1",
+      "originalName": "var5",
+      "to": "request",
+      "evidence": "cp.java: Reviewed pending table request construction/deduplication declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cp.b(IIIII)Leg;#2",
+      "originalName": "var7",
+      "to": "created",
+      "evidence": "cp.java: Reviewed pending table request construction/deduplication declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#0",
       "originalName": "var11",
       "to": "brickIndex",
@@ -5768,6 +6097,244 @@
       "originalName": "var4Lifetime5",
       "to": "spriteIndex",
       "evidence": "eh.java: Current sprite while decoding pixel planes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#0",
+      "originalName": "var8_int",
+      "to": "dictionaryIndex",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#10",
+      "originalName": "var2",
+      "to": "responseType",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#11",
+      "originalName": "var3",
+      "to": "tableId",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#12",
+      "originalName": "var4",
+      "to": "acknowledgedRowId",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#13",
+      "originalName": "var4_ref_eg",
+      "to": "tableRequest",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#14",
+      "originalName": "var5",
+      "to": "dictionarySize",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#15",
+      "originalName": "var6",
+      "to": "rowSubmission",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#16",
+      "originalName": "var6_int",
+      "to": "rowLimit",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#17",
+      "originalName": "var7",
+      "to": "columnCount",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#18",
+      "originalName": "var8",
+      "to": "names",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#19",
+      "originalName": "var9",
+      "to": "secondaryLabels",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#20",
+      "originalName": "var10",
+      "to": "rowIds",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#21",
+      "originalName": "var11",
+      "to": "values",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#22",
+      "originalName": "var12",
+      "to": "firstPartitionRows",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#23",
+      "originalName": "var13",
+      "to": "playerPartitionRows",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#24",
+      "originalName": "var14",
+      "to": "distinctNameRows",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#25",
+      "originalName": "var15",
+      "to": "firstPartitionValueOffset",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#26",
+      "originalName": "var16",
+      "to": "playerPartitionValueOffset",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#27",
+      "originalName": "var17",
+      "to": "distinctNameValueOffset",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#28",
+      "originalName": "var18",
+      "to": "entryCount",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#29",
+      "originalName": "var20",
+      "to": "nameIndex",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#30",
+      "originalName": "var21",
+      "to": "name",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#31",
+      "originalName": "var22",
+      "to": "rowId",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#32",
+      "originalName": "var24",
+      "to": "valuesStart",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#33",
+      "originalName": "var25",
+      "to": "columnIndex",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#34",
+      "originalName": "var26",
+      "to": "clientBranchFlag",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#35",
+      "originalName": "var27",
+      "to": "packet",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#36",
+      "originalName": "var3Lifetime1",
+      "to": "submissionRequestId",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#37",
+      "originalName": "var25Lifetime1",
+      "to": "playerColumnIndex",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#38",
+      "originalName": "var25Lifetime2",
+      "to": "distinctNameColumnIndex",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#4",
+      "originalName": "var19",
+      "to": "entryIndex",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#5",
+      "originalName": "incrementValue$3",
+      "to": "firstPartitionValueIndex",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#6",
+      "originalName": "incrementValue$4",
+      "to": "playerPartitionValueIndex",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:f.a(B)V#7",
+      "originalName": "incrementValue$5",
+      "to": "distinctNameValueIndex",
+      "evidence": "f.java: Reviewed table dictionary/partition response declaration.",
       "confidence": "reviewed"
     },
     {
@@ -6338,6 +6905,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:jm.a(B)V#4",
+      "originalName": "var3",
+      "to": "requestId",
+      "evidence": "jm.java: Type0 byte selector or type1 pack ID from response header.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a(B)V#7",
+      "originalName": "var5",
+      "to": "levelResult",
+      "evidence": "jm.java: Pending per-pack level result matched by acknowledgment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:jm.a(Ljava/awt/Component;III)Lnb;#0",
       "originalName": "var4",
       "to": "implementationClass",
@@ -6807,6 +7388,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:kp.a(IBLpn;)V#0",
+      "originalName": "var6",
+      "to": "packet",
+      "evidence": "kp.java: Outgoing opcode/cipher packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kp.a(IBLpn;)V#1",
+      "originalName": "var5",
+      "to": "payloadStart",
+      "evidence": "kp.java: CRC and length origin after reserved size byte.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:le.a(Ljava/awt/Component;IZI)V#0",
       "originalName": "var5",
       "to": "dataBuffer",
@@ -7042,6 +7637,34 @@
       "originalName": "var14_intLifetime1",
       "to": "requestedWriteOffset",
       "evidence": "mf.java: Reviewed packed-group decode/chunk-splitting declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mk.a(JI)Ltk;#0",
+      "originalName": "var4",
+      "to": "bucket",
+      "evidence": "mk.java: Reviewed duplicate-key search declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mk.a(JI)Ltk;#1",
+      "originalName": "var5",
+      "to": "match",
+      "evidence": "mk.java: Reviewed duplicate-key search declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mk.a(JI)Ltk;#2",
+      "originalName": "var6",
+      "to": "clientBranchFlag",
+      "evidence": "mk.java: Reviewed duplicate-key search declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mk.a(JLtk;I)V#0",
+      "originalName": "var5",
+      "to": "bucket",
+      "evidence": "mk.java: Masked destination secondary bucket.",
       "confidence": "reviewed"
     },
     {
@@ -7962,6 +8585,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bd.a(IBLsp;)V",
+      "originalName": "a",
+      "to": "submitTableRow",
+      "evidence": "bd.java: Appends row submission then sends; guard25.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bd.a(Ljava/lang/String;Ljava/lang/String;Lmf;B)[Ljp;",
       "originalName": "a",
       "to": "loadRgbSpritesByName",
@@ -8120,6 +8750,13 @@
       "originalName": "a",
       "to": "acquireAchievementIcon",
       "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cp.b(IIIII)Leg;",
+      "originalName": "b",
+      "to": "requestTableData",
+      "evidence": "cp.java: Deduplicates pending by table ID, stores dimensions and sends query; guard -2.",
       "confidence": "reviewed"
     },
     {
@@ -8452,6 +9089,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:f.a(B)V",
+      "originalName": "a",
+      "to": "handleTableResponse",
+      "evidence": "f.java: Type0 populates three table partitions; type1 acknowledges row ID by sequence; guard7.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fa.a(IBII)Lpe;",
       "originalName": "a",
       "to": "requestIntArray",
@@ -8543,6 +9187,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:g.a(Lpn;IB)V",
+      "originalName": "a",
+      "to": "submitLevelResult",
+      "evidence": "g.java: Appends result to pending acknowledgment FIFO then sends; guard -116.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.a(ILjava/awt/Component;)V",
       "originalName": "a",
       "to": "detachKeyboardInput",
@@ -8596,6 +9247,13 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(Leg;Lsp;II)I",
+      "originalName": "a",
+      "to": "findTableRow",
+      "evidence": "gj.java: Matches table ID, returned row ID, current-player name and all row values in selected partition.",
       "confidence": "reviewed"
     },
     {
@@ -9271,6 +9929,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ke.a(ILsp;I)V",
+      "originalName": "a",
+      "to": "sendTableRow",
+      "evidence": "ke.java: Ciphered opcode, length, type1, sequence/table words, four result words, values and CRC32; guard14989.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ke.a(Z)V",
       "originalName": "a",
       "to": "stopClientServices",
@@ -9807,6 +10472,13 @@
       "originalName": "a",
       "to": "decodeIndex",
       "evidence": "ko.java: Version5/6/7 parser with name/digest flags and delta IDs; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kp.a(IBLpn;)V",
+      "originalName": "a",
+      "to": "sendLevelResult",
+      "evidence": "kp.java: Ciphered opcode, length byte, type1, pack byte, signed-smart level, four words, CRC32; guard -99.",
       "confidence": "reviewed"
     },
     {
@@ -10461,6 +11133,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mk.a(B)Ltk;",
+      "originalName": "a",
+      "to": "nextMatch",
+      "evidence": "mk.java: Continues duplicate lookup; canonical guard below -26 avoids exhausted arithmetic division by0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a(JI)Ltk;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "mk.java: Starts duplicate-key lookup; canonical bucket adjustment -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a(JLtk;I)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "mk.java: Transfers secondary ownership, appends in masked bucket and retains key; guard above 38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a(Z)Ltk;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "mk.java: Continues secondary-link traversal; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.b(B)Ltk;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "mk.java: Starts independent table traversal; guard above57.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mq.a(BLmf;Lwq;IIII)Lnc;",
       "originalName": "a",
       "to": "loadLevelPack",
@@ -11046,6 +11753,13 @@
       "originalName": "a",
       "to": "recordAchievement",
       "evidence": "qj.java: Already earned returns true without mutation; new award sets earned bit, supplied pending bit and queues ID, returning false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a(Lnc;IBI)V",
+      "originalName": "a",
+      "to": "queueLevelResult",
+      "evidence": "qj.java: Captures counters in result record between adjustments, queues and advances unlocked level count unless source suppression flag set; guard at most -87.",
       "confidence": "reviewed"
     },
     {
@@ -11872,6 +12586,13 @@
       "originalName": "a",
       "to": "isBitClear",
       "evidence": "uo.java: Tests absent bit in32-bit word array; arithmetic guard47.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uo.a(Leg;IB)V",
+      "originalName": "a",
+      "to": "sendTableRequest",
+      "evidence": "uo.java: Ciphered opcode, length5, type0, table ushort, row-limit byte and columns byte; guard68.",
       "confidence": "reviewed"
     },
     {
@@ -13324,6 +14045,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bd.a(IBLsp;)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "bd.java: Appends row submission then sends; guard25.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bd.a(IBLsp;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Appends row submission then sends; guard25.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bd.a(IBLsp;)V#2",
+      "originalName": "param2",
+      "to": "submission",
+      "evidence": "bd.java: Appends row submission then sends; guard25.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bd.a(Ljava/lang/String;Ljava/lang/String;Lmf;B)[Ljp;#0",
       "originalName": "param0",
       "to": "groupName",
@@ -13944,6 +14686,41 @@
       "originalName": "param8",
       "to": "transitionBit",
       "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.b(IIIII)Leg;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cp.java: Deduplicates pending by table ID, stores dimensions and sends query; guard -2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.b(IIIII)Leg;#1",
+      "originalName": "param1",
+      "to": "tableId",
+      "evidence": "cp.java: Deduplicates pending by table ID, stores dimensions and sends query; guard -2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.b(IIIII)Leg;#2",
+      "originalName": "param2",
+      "to": "columnCount",
+      "evidence": "cp.java: Deduplicates pending by table ID, stores dimensions and sends query; guard -2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.b(IIIII)Leg;#3",
+      "originalName": "param3",
+      "to": "rowLimit",
+      "evidence": "cp.java: Deduplicates pending by table ID, stores dimensions and sends query; guard -2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.b(IIIII)Leg;#4",
+      "originalName": "param4",
+      "to": "opcode",
+      "evidence": "cp.java: Deduplicates pending by table ID, stores dimensions and sends query; guard -2.",
       "confidence": "reviewed"
     },
     {
@@ -15011,6 +15788,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:f.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "f.java: Type0 populates three table partitions; type1 acknowledges row ID by sequence; guard7.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fa.a(IBII)Lpe;#0",
       "originalName": "param0",
       "to": "valueCount",
@@ -15319,6 +16103,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:g.a(Lpn;IB)V#0",
+      "originalName": "param0",
+      "to": "result",
+      "evidence": "g.java: Appends result to pending acknowledgment FIFO then sends; guard -116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:g.a(Lpn;IB)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "g.java: Appends result to pending acknowledgment FIFO then sends; guard -116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:g.a(Lpn;IB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "g.java: Appends result to pending acknowledgment FIFO then sends; guard -116.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ge.<init>(III)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -15491,6 +16296,34 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gj.a(Leg;Lsp;II)I#0",
+      "originalName": "param0",
+      "to": "table",
+      "evidence": "gj.java: Matches table ID, returned row ID, current-player name and all row values in selected partition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gj.a(Leg;Lsp;II)I#1",
+      "originalName": "param1",
+      "to": "submission",
+      "evidence": "gj.java: Matches table ID, returned row ID, current-player name and all row values in selected partition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gj.a(Leg;Lsp;II)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "gj.java: Matches table ID, returned row ID, current-player name and all row values in selected partition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gj.a(Leg;Lsp;II)I#3",
+      "originalName": "param3",
+      "to": "partition",
+      "evidence": "gj.java: Matches table ID, returned row ID, current-player name and all row values in selected partition.",
       "confidence": "reviewed"
     },
     {
@@ -16922,6 +17755,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ke.a(ILsp;I)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "ke.java: Ciphered opcode, length, type1, sequence/table words, four result words, values and CRC32; guard14989.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.a(ILsp;I)V#1",
+      "originalName": "param1",
+      "to": "submission",
+      "evidence": "ke.java: Ciphered opcode, length, type1, sequence/table words, four result words, values and CRC32; guard14989.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.a(ILsp;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Ciphered opcode, length, type1, sequence/table words, four result words, values and CRC32; guard14989.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ke.a(Z)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -17857,6 +18711,27 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ko.java: Version5/6/7 parser with name/digest flags and delta IDs; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kp.a(IBLpn;)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "kp.java: Ciphered opcode, length byte, type1, pack byte, signed-smart level, four words, CRC32; guard -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kp.a(IBLpn;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kp.java: Ciphered opcode, length byte, type1, pack byte, signed-smart level, four words, CRC32; guard -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kp.a(IBLpn;)V#2",
+      "originalName": "param2",
+      "to": "result",
+      "evidence": "kp.java: Ciphered opcode, length byte, type1, pack byte, signed-smart level, four words, CRC32; guard -99.",
       "confidence": "reviewed"
     },
     {
@@ -19680,6 +20555,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:mk.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "bucketCount",
+      "evidence": "mk.java: Allocates circular secondary sentinels without normalizing bucket count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mk.a(B)Ltk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mk.java: Continues duplicate lookup; canonical guard below -26 avoids exhausted arithmetic division by0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mk.a(JI)Ltk;#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "mk.java: Starts duplicate-key lookup; canonical bucket adjustment -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mk.a(JI)Ltk;#1",
+      "originalName": "param1",
+      "to": "bucketAdjustment",
+      "evidence": "mk.java: Starts duplicate-key lookup; canonical bucket adjustment -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mk.a(JLtk;I)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "mk.java: Transfers secondary ownership, appends in masked bucket and retains key; guard above 38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mk.a(JLtk;I)V#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "mk.java: Transfers secondary ownership, appends in masked bucket and retains key; guard above 38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mk.a(JLtk;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "mk.java: Transfers secondary ownership, appends in masked bucket and retains key; guard above 38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mk.a(Z)Ltk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mk.java: Continues secondary-link traversal; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mk.b(B)Ltk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mk.java: Starts independent table traversal; guard above57.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mq.a(BLmf;Lwq;IIII)Lnc;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -20912,6 +21850,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pn.<init>(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "packId",
+      "evidence": "pn.java: Retains pack, level and four qualified result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pn.<init>(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "levelIndex",
+      "evidence": "pn.java: Retains pack, level and four qualified result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pn.<init>(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "resultWordOne",
+      "evidence": "pn.java: Retains pack, level and four qualified result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pn.<init>(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "resultWordTwo",
+      "evidence": "pn.java: Retains pack, level and four qualified result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pn.<init>(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "resultWordThree",
+      "evidence": "pn.java: Retains pack, level and four qualified result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pn.<init>(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "resultWordFour",
+      "evidence": "pn.java: Retains pack, level and four qualified result words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:q.<init>(ILkm;)V#0",
       "originalName": "param0",
       "to": "actionId",
@@ -21266,6 +22246,34 @@
       "originalName": "param1",
       "to": "pendingBit",
       "evidence": "qj.java: Already earned returns true without mutation; new award sets earned bit, supplied pending bit and queues ID, returning false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(Lnc;IBI)V#0",
+      "originalName": "param0",
+      "to": "pack",
+      "evidence": "qj.java: Captures counters in result record between adjustments, queues and advances unlocked level count unless source suppression flag set; guard at most -87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(Lnc;IBI)V#1",
+      "originalName": "param1",
+      "to": "resultIncrement",
+      "evidence": "qj.java: Captures counters in result record between adjustments, queues and advances unlocked level count unless source suppression flag set; guard at most -87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(Lnc;IBI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "qj.java: Captures counters in result record between adjustments, queues and advances unlocked level count unless source suppression flag set; guard at most -87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(Lnc;IBI)V#3",
+      "originalName": "param3",
+      "to": "levelNumber",
+      "evidence": "qj.java: Captures counters in result record between adjustments, queues and advances unlocked level count unless source suppression flag set; guard at most -87.",
       "confidence": "reviewed"
     },
     {
@@ -22043,6 +23051,55 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "sk.java: Exit old menu, commit pending screen, reset tick and process deferred resets; guard at most -112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sp.<init>(IIIIII[I)V#0",
+      "originalName": "param0",
+      "to": "tableId",
+      "evidence": "sp.java: Retains table/qualified words/caller values and allocates wrapping16-bit sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sp.<init>(IIIIII[I)V#1",
+      "originalName": "param1",
+      "to": "tableWord",
+      "evidence": "sp.java: Retains table/qualified words/caller values and allocates wrapping16-bit sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sp.<init>(IIIIII[I)V#2",
+      "originalName": "param2",
+      "to": "resultWordOne",
+      "evidence": "sp.java: Retains table/qualified words/caller values and allocates wrapping16-bit sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sp.<init>(IIIIII[I)V#3",
+      "originalName": "param3",
+      "to": "resultWordTwo",
+      "evidence": "sp.java: Retains table/qualified words/caller values and allocates wrapping16-bit sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sp.<init>(IIIIII[I)V#4",
+      "originalName": "param4",
+      "to": "resultWordThree",
+      "evidence": "sp.java: Retains table/qualified words/caller values and allocates wrapping16-bit sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sp.<init>(IIIIII[I)V#5",
+      "originalName": "param5",
+      "to": "resultWordFour",
+      "evidence": "sp.java: Retains table/qualified words/caller values and allocates wrapping16-bit sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sp.<init>(IIIIII[I)V#6",
+      "originalName": "param6",
+      "to": "values",
+      "evidence": "sp.java: Retains table/qualified words/caller values and allocates wrapping16-bit sequence.",
       "confidence": "reviewed"
     },
     {
@@ -22918,6 +23975,27 @@
       "originalName": "param2",
       "to": "words",
       "evidence": "uo.java: Tests absent bit in32-bit word array; arithmetic guard47.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uo.a(Leg;IB)V#0",
+      "originalName": "param0",
+      "to": "request",
+      "evidence": "uo.java: Ciphered opcode, length5, type0, table ushort, row-limit byte and columns byte; guard68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uo.a(Leg;IB)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "uo.java: Ciphered opcode, length5, type0, table ushort, row-limit byte and columns byte; guard68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uo.a(Leg;IB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "uo.java: Ciphered opcode, length5, type0, table ushort, row-limit byte and columns byte; guard68.",
       "confidence": "reviewed"
     },
     {
@@ -24399,9 +25477,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "b9d1d8b0602755adfa6e48b073cf69732b9d32fb8ecabe08e2ca9474a46dbaa7",
+      "build-brickabrac-rules.mjs": "a2fc149150a83b1e2bf0c088360d42ffa7b2c31f07eb191ebc03589252b831c8",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "d221895589890b313c917919698e42a335045518269412a45a130c44cf25db08",
+      "tests/test-brickabrac-core.mjs": "cac262992fec04b15650fb363f762a19e7abaca9e1c87c1eee3fe3569b1dae4d",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
