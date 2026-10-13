@@ -126,6 +126,8 @@ ReportAbuseDialog, TabbedPane and QuickChatMenu expose report controls, tab pane
 and hierarchical shortcut menus.
 QuickChatPhraseDefinition, QuickChatPhraseRegistry and QuickChatParameterType expose
 phrase metadata, archive lookup and command-word counts.
+ContextActionController and ChatMessage expose menu routing, received message state,
+formatting and retained-history relationships.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -1032,6 +1034,26 @@ selection, optional filter packet ordering, remembered repeat state and menu/cha
 cleanup. No traffic is sent. Live receiving/server interoperability, arbitrary
 Huffman tables in this dispatch path, cache eviction and actual phrase assets remain
 unverified; the shared Huffman codec has separate fixtures described above.
+
+ContextActionController names the selected anchor, target identity/names, game/chat
+context, menu builders and four dispatch groups. Fixtures check constructor/caption
+storage, self-report suppression, message-filter action lists, pending results and
+pointer-driven filter dispatch through the real menu. Game invitations, friend/ignore
+mutations, report-dialog dispatch and localized resource loading remain unverified;
+action IDs stay numeric where their full server behavior has not been reviewed.
+
+ChatMessage names received and local records, display/underlying names, badge,
+context, text, suggestions and the sixteen/twenty-four-bit duplicate-key words.
+Synthetic receiving fixtures check channels0..4, system/badge flags, alternate names,
+context IDs/labels, compressed text versus phrase previews, self-name suggestion
+suppression and exact cursor consumption. Name fixtures preserve separator trimming,
+source-length checks, accent folding and the unusual sharp-s-to-b mapping. Controlled
+prefix/color fixtures check badges, private direction, channel labels and local/other
+colors. History fixtures verify chronological retention by channel/category, duplicate
+suppression and null-text rejection. At zero limit, old messages of the incoming
+channel are removed but the new message is still appended. Friend-category lookup,
+malformed receiving, arbitrary packet flags, live dispatch/receiving and rendered
+message text remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

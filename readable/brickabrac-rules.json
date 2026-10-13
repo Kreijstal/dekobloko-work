@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 39,
+  "version": 40,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -549,6 +549,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gb",
+      "originalName": "gb",
+      "to": "ChatMessage",
+      "evidence": "gb.java: Sender/display names, channel/context/text, optional linked phrases, system flag and40-bit duplicate key split into16/24-bit words; static name canonicalization remains separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ge",
       "originalName": "ge",
       "to": "PowerUp",
@@ -1015,6 +1022,13 @@
       "originalName": "nm",
       "to": "IntrusiveNode",
       "evidence": "nm.java: Previous/next links, collection key and unlink contract.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nn",
+      "originalName": "nn",
+      "to": "ContextActionController",
+      "evidence": "nn.java: Component/target/game/chat context, menu builders and routing for game/social/filter/report actions. Large static resource loading remains a separate role.",
       "confidence": "reviewed"
     },
     {
@@ -1935,6 +1949,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:an.field_k:J",
+      "originalName": "field_k",
+      "to": "receivedChatSenderId",
+      "evidence": "an.java: Chat reader scratch sender identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ao.field_i:[Ljava/lang/Object;",
       "originalName": "field_i",
       "to": "entries",
@@ -2299,6 +2320,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bm.field_d:Lnn;",
+      "originalName": "field_d",
+      "to": "contextActions",
+      "evidence": "bm.java: Active controller constructed by context initialization helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bn.field_s:I",
       "originalName": "field_s",
       "to": "height256",
@@ -2436,6 +2464,13 @@
       "originalName": "field_I",
       "to": "viewFacePointThreeY",
       "evidence": "cc.java: Transformed third auxiliary point Y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_b:Lbr;",
+      "originalName": "field_b",
+      "to": "contextMenuStyle",
+      "evidence": "ce.java: Template cloned by each context controller constructor.",
       "confidence": "reviewed"
     },
     {
@@ -2922,6 +2957,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dp.field_t:Ljava/lang/String;",
+      "originalName": "field_t",
+      "to": "receivedChatDisplayName",
+      "evidence": "dp.java: Chat reader scratch display name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dr.field_a:I",
       "originalName": "field_a",
       "to": "loopEndMillis",
@@ -3059,6 +3101,13 @@
       "originalName": "field_r",
       "to": "rowIds",
       "evidence": "eg.java: Three response partitions of64-bit row IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eh.field_k:I",
+      "originalName": "field_k",
+      "to": "chatHistoryCategoryLimit",
+      "evidence": "eh.java: Per-channel retention bound for each of three categories.",
       "confidence": "reviewed"
     },
     {
@@ -3762,10 +3811,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gb.field_a:I",
+      "originalName": "field_a",
+      "to": "badgeId",
+      "evidence": "gb.java: Received byte; prefix formatter maps1/2 to image0/1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_b:Lmh;",
+      "originalName": "field_b",
+      "to": "component",
+      "evidence": "gb.java: Message UI component used as context anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_c:I",
+      "originalName": "field_c",
+      "to": "channel",
+      "evidence": "gb.java: Low7 bits of received header or constructor value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_d:I",
+      "originalName": "field_d",
+      "to": "messageKeyLow24",
+      "evidence": "gb.java: Unsigned24 second word of channel2 duplicate key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_e:Z",
+      "originalName": "field_e",
+      "to": "systemMessage",
+      "evidence": "gb.java: High-bit header flag or local system constructor; suppresses sender/action formatting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_f:I",
+      "originalName": "field_f",
+      "to": "messageKeyHigh16",
+      "evidence": "gb.java: Unsigned16 first word of channel2 duplicate key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_g:[I",
+      "originalName": "field_g",
+      "to": "suggestedPhraseIds",
+      "evidence": "gb.java: Optional linked phrase array retained from received Quick Chat definition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_h:I",
+      "originalName": "field_h",
+      "to": "receivedChatKeyHigh16",
+      "evidence": "gb.java: Chat reader scratch duplicate-key word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_j:Ljava/lang/String;",
+      "originalName": "field_j",
+      "to": "text",
+      "evidence": "gb.java: Compressed text or Quick Chat ellipsis preview.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_k:J",
+      "originalName": "field_k",
+      "to": "senderId",
+      "evidence": "gb.java: Received sender long; zero for locally constructed system messages.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_m:Ljava/lang/String;",
+      "originalName": "field_m",
+      "to": "senderName",
+      "evidence": "gb.java: Underlying sender name, optionally distinct from display name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gb.field_n:I",
       "originalName": "field_n",
       "to": "backgroundVariant",
       "evidence": "gb.java: Random0/1 variant selected by background factory.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_o:I",
+      "originalName": "field_o",
+      "to": "contextId",
+      "evidence": "gb.java: Unsigned16 context identifier for channels1/4, used as game ID for1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_p:Ljava/lang/String;",
+      "originalName": "field_p",
+      "to": "contextLabel",
+      "evidence": "gb.java: Additional channel1/4 label, also used by channel3 formatter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gb.field_q:Ljava/lang/String;",
+      "originalName": "field_q",
+      "to": "senderDisplayName",
+      "evidence": "gb.java: Displayed name decorated with badge by prefix formatter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gd.field_d:Ljava/lang/String;",
+      "originalName": "field_d",
+      "to": "receivedChatText",
+      "evidence": "gd.java: Chat reader scratch decoded text/preview.",
       "confidence": "reviewed"
     },
     {
@@ -3801,6 +3955,13 @@
       "originalName": "field_t",
       "to": "decodedSpriteHeights",
       "evidence": "gg.java: Per-sprite cropped heights.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gj.field_a:I",
+      "originalName": "field_a",
+      "to": "receivedChatChannel",
+      "evidence": "gj.java: Chat reader scratch channel.",
       "confidence": "reviewed"
     },
     {
@@ -4553,6 +4714,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:il.field_B:[I",
+      "originalName": "field_B",
+      "to": "chatHistoryCategoryCounts",
+      "evidence": "il.java: Three-category scratch counts while appending.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:il.field_C:I",
       "originalName": "field_C",
       "to": "animationPhase",
@@ -5099,10 +5267,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ji.field_f:Z",
+      "originalName": "field_f",
+      "to": "receivedChatSystem",
+      "evidence": "ji.java: Chat reader scratch high-bit flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jk.field_r:[I",
       "originalName": "field_r",
       "to": "viewFacePointOneZ",
       "evidence": "jk.java: Transformed first auxiliary point Z.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jk.field_s:[Lgb;",
+      "originalName": "field_s",
+      "to": "chatHistory",
+      "evidence": "jk.java: Shared retained message array.",
       "confidence": "reviewed"
     },
     {
@@ -5341,6 +5523,13 @@
       "originalName": "field_D",
       "to": "releaseEnvelopeIndex",
       "evidence": "ka.java: Current release-curve segment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_E:I",
+      "originalName": "field_E",
+      "to": "receivedChatContextId",
+      "evidence": "ka.java: Chat reader scratch context ID.",
       "confidence": "reviewed"
     },
     {
@@ -6912,6 +7101,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mm.field_Sb:I",
+      "originalName": "field_Sb",
+      "to": "chatHistorySize",
+      "evidence": "mm.java: Used prefix of shared message array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mm.field_Ub:Lfj;",
       "originalName": "field_Ub",
       "to": "scrollbar",
@@ -7066,6 +7262,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nd.field_g:Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "receivedChatSenderName",
+      "evidence": "nd.java: Chat reader scratch underlying name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nf.field_P:I",
       "originalName": "field_P",
       "to": "selectedAchievementId",
@@ -7098,6 +7301,13 @@
       "originalName": "field_b",
       "to": "quickChatChannel",
       "evidence": "ng.java: Channel retained for current Quick Chat interaction; numeric values preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nh.field_b:I",
+      "originalName": "field_b",
+      "to": "receivedChatBadge",
+      "evidence": "nh.java: Chat reader scratch badge byte.",
       "confidence": "reviewed"
     },
     {
@@ -7171,6 +7381,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nn.field_a:I",
+      "originalName": "field_a",
+      "to": "chatChannel",
+      "evidence": "nn.java: Channel passed to filter and Quick Chat actions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_b:I",
+      "originalName": "field_b",
+      "to": "gameId",
+      "evidence": "nn.java: Game identity passed to join/watch/invite helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_c:[I",
+      "originalName": "field_c",
+      "to": "suggestedPhraseIds",
+      "evidence": "nn.java: Caller array forwarded to recipient Quick Chat menu.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nn.field_d:Lbr;",
       "originalName": "field_d",
       "to": "contextMenu",
@@ -7178,10 +7409,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nn.field_e:Ljava/lang/String;",
+      "originalName": "field_e",
+      "to": "targetName",
+      "evidence": "nn.java: Underlying name passed to social/chat/report helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nn.field_h:[I",
       "originalName": "field_h",
       "to": "worldDirectionZ",
       "evidence": "nn.java: Object pose transforms direction Z without translation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_i:J",
+      "originalName": "field_i",
+      "to": "targetId",
+      "evidence": "nn.java: Player identity passed to social/game/report action helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_j:Lmh;",
+      "originalName": "field_j",
+      "to": "anchorComponent",
+      "evidence": "nn.java: Selected component and popup/report anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nn.field_k:Ljava/lang/String;",
+      "originalName": "field_k",
+      "to": "targetDisplayName",
+      "evidence": "nn.java: Preferred menu caption, falling back to targetName.",
       "confidence": "reviewed"
     },
     {
@@ -8795,6 +9054,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rn.field_m:[I",
+      "originalName": "field_m",
+      "to": "receivedChatSuggestions",
+      "evidence": "rn.java: Chat reader scratch linked phrase array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ro.field_x:[I",
       "originalName": "field_x",
       "to": "jungleBackgroundColors",
@@ -8918,6 +9184,13 @@
       "originalName": "field_J",
       "to": "constructionCentreSprites",
       "evidence": "sn.java: Literal sprite resource construct/construction_centre assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sl.field_y:Ljava/lang/String;",
+      "originalName": "field_y",
+      "to": "receivedChatContextLabel",
+      "evidence": "sl.java: Chat reader scratch context label.",
       "confidence": "reviewed"
     },
     {
@@ -9968,6 +10241,13 @@
       "originalName": "field_G",
       "to": "viewFacePointTwoZ",
       "evidence": "vq.java: Transformed second auxiliary point Z.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vq.field_H:I",
+      "originalName": "field_H",
+      "to": "receivedChatKeyLow24",
+      "evidence": "vq.java: Chat reader scratch duplicate-key word.",
       "confidence": "reviewed"
     },
     {
@@ -15025,6 +15305,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#0",
+      "originalName": "var6",
+      "to": "characterIndex",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#1",
+      "originalName": "discarded$0",
+      "to": "ignoredCharacterAppend",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#10",
+      "originalName": "var2_int",
+      "to": "startIndex",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#12",
+      "originalName": "var3",
+      "to": "endIndex",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#13",
+      "originalName": "var4",
+      "to": "trimmedLength",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#14",
+      "originalName": "var5",
+      "to": "normalized",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#15",
+      "originalName": "var7",
+      "to": "character",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#16",
+      "originalName": "var8",
+      "to": "foldedCharacter",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#17",
+      "originalName": "var9",
+      "to": "unusedGameFlag",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#2",
+      "originalName": "stackIn_3_0",
+      "to": "nullNameResult",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#3",
+      "originalName": "stackIn_16_0",
+      "to": "invalidLengthResult",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#4",
+      "originalName": "stackIn_29_0",
+      "to": "emptyResult",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#5",
+      "originalName": "stackIn_31_0",
+      "to": "result",
+      "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:gp.a(Z)Ltk;#0",
       "originalName": "var2",
       "to": "node",
@@ -18011,6 +18382,153 @@
       "originalName": "var4",
       "to": "delayMillis",
       "evidence": "nl.java: Reviewed incoming packet frame/delay declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BII)Z#0",
+      "originalName": "discarded$1",
+      "to": "ignoredGuardResult",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BII)Z#1",
+      "originalName": "var4",
+      "to": "unusedError",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(BII)Z#2",
+      "originalName": "var4_ref",
+      "to": "errorMessage",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIIIZ)Z#0",
+      "originalName": "discarded$4",
+      "to": "ignoredGameResult",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIIIZ)Z#1",
+      "originalName": "discarded$5",
+      "to": "ignoredSocialResult",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIIIZ)Z#2",
+      "originalName": "discarded$6",
+      "to": "ignoredChatResult",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIIIZ)Z#3",
+      "originalName": "discarded$7",
+      "to": "ignoredReportResult",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IIIIZ)Z#4",
+      "originalName": "var6_int",
+      "to": "actionId",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IZI)Z#2",
+      "originalName": "var5",
+      "to": "unusedGameFlag",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(IZI)Z#3",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "remainingActionBranch",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZZ)V#1",
+      "originalName": "var3",
+      "to": "gamePlayer",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZZ)V#3",
+      "originalName": "var4",
+      "to": "invitedPlayer",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZZ)V#4",
+      "originalName": "var5",
+      "to": "caption",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a(ZZ)V#5",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a([IBI)V#4",
+      "originalName": "var4",
+      "to": "caption",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a([IBI)V#6",
+      "originalName": "var5",
+      "to": "friend",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.a([IBI)V#7",
+      "originalName": "var6",
+      "to": "ignoredPlayer",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.b(BII)Z#2",
+      "originalName": "var5",
+      "to": "unusedGameFlag",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.c(I)Ljava/lang/String;#0",
+      "originalName": "var2",
+      "to": "caption",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.c(I)Ljava/lang/String;#2",
+      "originalName": "stackIn_2_0",
+      "to": "invalidGuardResult",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nn.c(I)Ljava/lang/String;#3",
+      "originalName": "stackIn_7_0",
+      "to": "result",
+      "evidence": "nn.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
       "confidence": "reviewed"
     },
     {
@@ -21066,6 +21584,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ah.a(IC)C",
+      "originalName": "a",
+      "to": "foldPlayerNameCharacter",
+      "evidence": "ah.java: Maps separators to underscore, listed accents to ASCII, sharp-s to b, preserves bracket/hash and lowercases other chars; guard207.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ah.a(IIC)V",
       "originalName": "a",
       "to": "handleNavigationKey",
@@ -22389,6 +22914,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "normalizePlayerName",
+      "evidence": "gb.java: Trims four separators, checks trimmed source length1..12, removes unsupported characters, folds accepted accents and separators; guard at least46.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.a(Z)I",
+      "originalName": "a",
+      "to": "getRetentionCategory",
+      "evidence": "gb.java: 2 for system/private-badge,1 for local sender or logged-in friend, otherwise0; true guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.a(ILjava/awt/Component;)V",
       "originalName": "a",
       "to": "detachKeyboardInput",
@@ -23159,6 +23698,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ik.a(ILgb;)I",
+      "originalName": "a",
+      "to": "getChatMessageColor",
+      "evidence": "ik.java: Selects configured local/other/system/channel colors; guard -31126.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:il.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -23674,6 +24220,13 @@
       "originalName": "a",
       "to": "pulseSize",
       "evidence": "kc.java: Age*(100-age)/20-5; original guard arithmetic retained, canonical116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.a(BZ)Lgb;",
+      "originalName": "a",
+      "to": "readChatMessage",
+      "evidence": "kc.java: Reads channel/system/badge/sender, optional40-bit key, display/underlying names, context, compressed text or phrase preview/suggestions; guard67.",
       "confidence": "reviewed"
     },
     {
@@ -24321,6 +24874,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kq.a(Lgb;B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatChatPrefix",
+      "evidence": "kq.java: Formats badge, channel and sender prefix; private direction depends on duplicate-key presence; guard -71.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(IIII)V",
       "originalName": "a",
       "to": "drawBubbleDistortion",
@@ -24640,6 +25200,13 @@
       "originalName": "a",
       "to": "clearFaceDepthBuckets",
       "evidence": "lj.java: Clears shared bucket counts in groups of eight from supplied starting offset; non-multiple capacities retain original behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(Lgb;I)V",
+      "originalName": "a",
+      "to": "acceptChatMessage",
+      "evidence": "lj.java: Rejects null text or duplicate key, updates suggested-reply context and appends history; canonical guard50.",
       "confidence": "reviewed"
     },
     {
@@ -25231,6 +25798,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:n.a(ILgb;)V",
+      "originalName": "a",
+      "to": "appendChatHistory",
+      "evidence": "n.java: Counts categories for incoming channel, evicts oldest over-limit entries in that channel/category then appends; canonical start index0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.a(B)V",
       "originalName": "a",
       "to": "bindRaster",
@@ -25326,6 +25900,97 @@
       "originalName": "b",
       "to": "isLinked",
       "evidence": "nm.java: Checks previous link; canonical guard zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(B)V",
+      "originalName": "a",
+      "to": "addReportAction",
+      "evidence": "nn.java: Adds action17 for named target other than local identity; guard at most -66.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(BII)Z",
+      "originalName": "a",
+      "to": "dispatchSocialAction",
+      "evidence": "nn.java: Routes add/remove friend/ignore actions4..7 and reports helper errors; guard -67.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(BZ)V",
+      "originalName": "a",
+      "to": "drawContextMenu",
+      "evidence": "nn.java: Draws menu with optional text suffix; canonical guard -36.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(III)Z",
+      "originalName": "a",
+      "to": "dispatchReportAction",
+      "evidence": "nn.java: Action17 constructs report dialog anchored to component; guard at least121.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(IIIIZ)Z",
+      "originalName": "a",
+      "to": "pollAndDispatchAction",
+      "evidence": "nn.java: Pending result returns false; otherwise invokes all four action groups and returns true, including dismissal; results ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(IZI)Z",
+      "originalName": "a",
+      "to": "dispatchChatAction",
+      "evidence": "nn.java: Handles private/Quick Chat actions8/18/19, filter actions11/12/13 and helpers14/20; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(Lgb;I)V",
+      "originalName": "a",
+      "to": "addMessageFilterActions",
+      "evidence": "nn.java: No actions for system messages; sets channel and adds friends-only/hide actions12/13; guard below -70.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(Z)V",
+      "originalName": "a",
+      "to": "addGameActions",
+      "evidence": "nn.java: Adds numeric game actions based on current entry flags; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(ZZ)V",
+      "originalName": "a",
+      "to": "addPlayerGameActions",
+      "evidence": "nn.java: Builds numeric player invitation/kick/game actions from player and current game state; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a([IBI)V",
+      "originalName": "a",
+      "to": "addSocialActions",
+      "evidence": "nn.java: Builds friends/ignore/private/Quick Chat actions from login/name/list state; IDs retained; guard at most -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.b(BII)Z",
+      "originalName": "b",
+      "to": "dispatchGameAction",
+      "evidence": "nn.java: Routes numeric game actions0/1/2/3/10/15/16 to target/player/game helpers; guard97.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.b(I)Z",
+      "originalName": "b",
+      "to": "handleContextCancelKey",
+      "evidence": "nn.java: Delegates current key to active menu, returns false if absent; guard2099.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.c(I)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "getTargetCaption",
+      "evidence": "nn.java: Display name if nonnull, otherwise underlying name; guard -12688.",
       "confidence": "reviewed"
     },
     {
@@ -27835,6 +28500,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wp.a(BILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "appendSystemChatMessage",
+      "evidence": "wp.java: Builds local system record then appends history; guard92.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wp.a(BLjava/lang/String;Ljava/lang/String;)Loe;",
       "originalName": "a",
       "to": "getMusicSampleByName",
@@ -28658,6 +29330,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "af.java: Clears both active/departing icon queues; guard at most -42.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ah.a(IC)C#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ah.java: Maps separators to underscore, listed accents to ASCII, sharp-s to b, preserves bracket/hash and lowercases other chars; guard207.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ah.a(IC)C#1",
+      "originalName": "param1",
+      "to": "character",
+      "evidence": "ah.java: Maps separators to underscore, listed accents to ASCII, sharp-s to b, preserves bracket/hash and lowercases other chars; guard207.",
       "confidence": "reviewed"
     },
     {
@@ -32910,6 +33596,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gb.<init>(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "channel",
+      "evidence": "gb.java: Local system message with zero sender/key/badge, no suggestions, supplied channel/context/text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.<init>(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "senderName",
+      "evidence": "gb.java: Local system message with zero sender/key/badge, no suggestions, supplied channel/context/text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.<init>(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "contextId",
+      "evidence": "gb.java: Local system message with zero sender/key/badge, no suggestions, supplied channel/context/text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.<init>(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V#3",
+      "originalName": "param3",
+      "to": "contextLabel",
+      "evidence": "gb.java: Local system message with zero sender/key/badge, no suggestions, supplied channel/context/text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.<init>(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V#4",
+      "originalName": "param4",
+      "to": "text",
+      "evidence": "gb.java: Local system message with zero sender/key/badge, no suggestions, supplied channel/context/text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.<init>(Z)V#0",
+      "originalName": "param0",
+      "to": "includeSuggestedPhrases",
+      "evidence": "gb.java: Snapshots chat-reader scratch fields, optionally retaining linked phrase array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "name",
+      "evidence": "gb.java: Trims four separators, checks trimmed source length1..12, removes unsupported characters, folds accepted accents and separators; guard at least46.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "gb.java: Trims four separators, checks trimmed source length1..12, removes unsupported characters, folds accepted accents and separators; guard at least46.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gb.a(Z)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gb.java: 2 for system/private-badge,1 for local sender or logged-in friend, otherwise0; true guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ge.<init>(III)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -34688,6 +35437,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ik.a(ILgb;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: Selects configured local/other/system/channel colors; guard -31126.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ik.a(ILgb;)I#1",
+      "originalName": "param1",
+      "to": "message",
+      "evidence": "ik.java: Selects configured local/other/system/channel colors; guard -31126.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:il.<init>(IIIIII)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -36179,6 +36942,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kc.a(BZ)Lgb;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kc.java: Reads channel/system/badge/sender, optional40-bit key, display/underlying names, context, compressed text or phrase preview/suggestions; guard67.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kc.a(BZ)Lgb;#1",
+      "originalName": "param1",
+      "to": "quickChat",
+      "evidence": "kc.java: Reads channel/system/badge/sender, optional40-bit key, display/underlying names, context, compressed text or phrase preview/suggestions; guard67.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kc.a(IIIZ)V#0",
       "originalName": "param0",
       "to": "scaleDivisor",
@@ -37495,6 +38272,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kq.a(Lgb;B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "message",
+      "evidence": "kq.java: Formats badge, channel and sender prefix; private direction depends on duplicate-key presence; guard -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(Lgb;B)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kq.java: Formats badge, channel and sender prefix; private direction depends on duplicate-key presence; guard -71.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:l.<init>(Lkl;Lnm;)V#0",
       "originalName": "param0",
       "to": "stream",
@@ -38493,6 +39284,20 @@
       "originalName": "param0",
       "to": "offset",
       "evidence": "lj.java: Clears shared bucket counts in groups of eight from supplied starting offset; non-multiple capacities retain original behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.a(Lgb;I)V#0",
+      "originalName": "param0",
+      "to": "message",
+      "evidence": "lj.java: Rejects null text or duplicate key, updates suggested-reply context and appends history; canonical guard50.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.a(Lgb;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lj.java: Rejects null text or duplicate key, updates suggested-reply context and appends history; canonical guard50.",
       "confidence": "reviewed"
     },
     {
@@ -40267,6 +41072,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:n.a(ILgb;)V#0",
+      "originalName": "param0",
+      "to": "firstOutputIndex",
+      "evidence": "n.java: Counts categories for incoming channel, evicts oldest over-limit entries in that channel/category then appends; canonical start index0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:n.a(ILgb;)V#1",
+      "originalName": "param1",
+      "to": "message",
+      "evidence": "n.java: Counts categories for incoming channel, evicts oldest over-limit entries in that channel/category then appends; canonical start index0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nb.a(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -40621,6 +41440,265 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "nm.java: Checks previous link; canonical guard zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.<init>(Lmh;JLjava/lang/String;Ljava/lang/String;II[I)V#0",
+      "originalName": "param0",
+      "to": "anchorComponent",
+      "evidence": "nn.java: Clones context menu style, stores caller context and selects anchor component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.<init>(Lmh;JLjava/lang/String;Ljava/lang/String;II[I)V#1",
+      "originalName": "param1",
+      "to": "targetId",
+      "evidence": "nn.java: Clones context menu style, stores caller context and selects anchor component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.<init>(Lmh;JLjava/lang/String;Ljava/lang/String;II[I)V#2",
+      "originalName": "param2",
+      "to": "targetName",
+      "evidence": "nn.java: Clones context menu style, stores caller context and selects anchor component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.<init>(Lmh;JLjava/lang/String;Ljava/lang/String;II[I)V#3",
+      "originalName": "param3",
+      "to": "targetDisplayName",
+      "evidence": "nn.java: Clones context menu style, stores caller context and selects anchor component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.<init>(Lmh;JLjava/lang/String;Ljava/lang/String;II[I)V#4",
+      "originalName": "param4",
+      "to": "gameId",
+      "evidence": "nn.java: Clones context menu style, stores caller context and selects anchor component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.<init>(Lmh;JLjava/lang/String;Ljava/lang/String;II[I)V#5",
+      "originalName": "param5",
+      "to": "chatChannel",
+      "evidence": "nn.java: Clones context menu style, stores caller context and selects anchor component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.<init>(Lmh;JLjava/lang/String;Ljava/lang/String;II[I)V#6",
+      "originalName": "param6",
+      "to": "suggestedPhraseIds",
+      "evidence": "nn.java: Clones context menu style, stores caller context and selects anchor component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Adds action17 for named target other than local identity; guard at most -66.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(BII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Routes add/remove friend/ignore actions4..7 and reports helper errors; guard -67.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(BII)Z#1",
+      "originalName": "param1",
+      "to": "actionId",
+      "evidence": "nn.java: Routes add/remove friend/ignore actions4..7 and reports helper errors; guard -67.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(BII)Z#2",
+      "originalName": "param2",
+      "to": "opcode",
+      "evidence": "nn.java: Routes add/remove friend/ignore actions4..7 and reports helper errors; guard -67.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(BZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Draws menu with optional text suffix; canonical guard -36.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(BZ)V#1",
+      "originalName": "param1",
+      "to": "showTextSuffix",
+      "evidence": "nn.java: Draws menu with optional text suffix; canonical guard -36.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(III)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Action17 constructs report dialog anchored to component; guard at least121.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(III)Z#1",
+      "originalName": "param1",
+      "to": "actionId",
+      "evidence": "nn.java: Action17 constructs report dialog anchored to component; guard at least121.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(III)Z#2",
+      "originalName": "param2",
+      "to": "unusedReportOption",
+      "evidence": "nn.java: Action17 constructs report dialog anchored to component; guard at least121.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IIIIZ)Z#0",
+      "originalName": "param0",
+      "to": "pendingResult",
+      "evidence": "nn.java: Pending result returns false; otherwise invokes all four action groups and returns true, including dismissal; results ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IIIIZ)Z#1",
+      "originalName": "param1",
+      "to": "socialAndFilterOpcode",
+      "evidence": "nn.java: Pending result returns false; otherwise invokes all four action groups and returns true, including dismissal; results ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IIIIZ)Z#2",
+      "originalName": "param2",
+      "to": "unusedReportOption",
+      "evidence": "nn.java: Pending result returns false; otherwise invokes all four action groups and returns true, including dismissal; results ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IIIIZ)Z#3",
+      "originalName": "param3",
+      "to": "gameOpcode",
+      "evidence": "nn.java: Pending result returns false; otherwise invokes all four action groups and returns true, including dismissal; results ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IIIIZ)Z#4",
+      "originalName": "param4",
+      "to": "inputEnabled",
+      "evidence": "nn.java: Pending result returns false; otherwise invokes all four action groups and returns true, including dismissal; results ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IZI)Z#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "nn.java: Handles private/Quick Chat actions8/18/19, filter actions11/12/13 and helpers14/20; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IZI)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Handles private/Quick Chat actions8/18/19, filter actions11/12/13 and helpers14/20; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(IZI)Z#2",
+      "originalName": "param2",
+      "to": "actionId",
+      "evidence": "nn.java: Handles private/Quick Chat actions8/18/19, filter actions11/12/13 and helpers14/20; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(Lgb;I)V#0",
+      "originalName": "param0",
+      "to": "message",
+      "evidence": "nn.java: No actions for system messages; sets channel and adds friends-only/hide actions12/13; guard below -70.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(Lgb;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: No actions for system messages; sets channel and adds friends-only/hide actions12/13; guard below -70.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Adds numeric game actions based on current entry flags; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Builds numeric player invitation/kick/game actions from player and current game state; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a(ZZ)V#1",
+      "originalName": "param1",
+      "to": "allowAdditionalActions",
+      "evidence": "nn.java: Builds numeric player invitation/kick/game actions from player and current game state; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a([IBI)V#0",
+      "originalName": "param0",
+      "to": "suggestedPhraseIds",
+      "evidence": "nn.java: Builds friends/ignore/private/Quick Chat actions from login/name/list state; IDs retained; guard at most -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a([IBI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Builds friends/ignore/private/Quick Chat actions from login/name/list state; IDs retained; guard at most -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.a([IBI)V#2",
+      "originalName": "param2",
+      "to": "channel",
+      "evidence": "nn.java: Builds friends/ignore/private/Quick Chat actions from login/name/list state; IDs retained; guard at most -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.b(BII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Routes numeric game actions0/1/2/3/10/15/16 to target/player/game helpers; guard97.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.b(BII)Z#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "nn.java: Routes numeric game actions0/1/2/3/10/15/16 to target/player/game helpers; guard97.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.b(BII)Z#2",
+      "originalName": "param2",
+      "to": "actionId",
+      "evidence": "nn.java: Routes numeric game actions0/1/2/3/10/15/16 to target/player/game helpers; guard97.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Delegates current key to active menu, returns false if absent; guard2099.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nn.c(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nn.java: Display name if nonnull, otherwise underlying name; guard -12688.",
       "confidence": "reviewed"
     },
     {
@@ -47316,6 +48394,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wp.a(BILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Builds local system record then appends history; guard92.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(BILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "contextId",
+      "evidence": "wp.java: Builds local system record then appends history; guard92.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(BILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V#2",
+      "originalName": "param2",
+      "to": "contextLabel",
+      "evidence": "wp.java: Builds local system record then appends history; guard92.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(BILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V#3",
+      "originalName": "param3",
+      "to": "text",
+      "evidence": "wp.java: Builds local system record then appends history; guard92.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(BILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V#4",
+      "originalName": "param4",
+      "to": "senderName",
+      "evidence": "wp.java: Builds local system record then appends history; guard92.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(BILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V#5",
+      "originalName": "param5",
+      "to": "channel",
+      "evidence": "wp.java: Builds local system record then appends history; guard92.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wp.a(BLjava/lang/String;Ljava/lang/String;)Loe;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -48052,9 +49172,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "6c3dd4c8cd3ab60bc669418d35f1cf4727c1f453d82cb093b6336ee16e974a1e",
+      "build-brickabrac-rules.mjs": "e6b8082bb0d7eda4f66ccacea5c1be38674a575ff982092acfb438804102209c",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "63ac089664178a8d24b397789ee28c3962b9b4e062404092fe22d6e48c432960",
+      "tests/test-brickabrac-core.mjs": "20cbf93b53e315610586cf8765e0afdedf8b3a9d7cdf69bf05d56b23f6ffb818",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
