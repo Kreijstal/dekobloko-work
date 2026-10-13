@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 167,365 raw/named checks agree. Controlled cipher output does not constitute
+All 349,858 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -517,6 +517,23 @@ controlled fixtures check elimination masks, metric counters and all four packet
 word variants. Pixel rendering, production campaigns and multiplayer effects
 remain unverified.
 
+BitmapFont now names all owned metric/style fields and measurement, wrapping,
+markup, alignment, paragraph and ellipsis operations. BinaryBitmapFont,
+AntialiasedBitmapFont and PalettedBitmapFont name all software glyph kernels,
+parameters and locals. Compact/extended metric fixtures cover unsigned advances,
+signed contour deltas and every kerning pair. Native layout fixtures check entity
+handling, wrap storage/limits, style restoration, alignment, fractional justification,
+inline images and decorations. Independent pixel arithmetic checks rectangular
+clipping, glyph/shadow modes and alpha for all three renderers, plus scanline masks.
+
+Existing edge behavior remains: wrapped euro entities can fail in the kerning path,
+ellipsis drops an extra character, small ellipsis widths fail, and short paragraph
+boxes disable automatic width wrapping. Coverage conversion mutates caller arrays
+and can fail partway on signed palette indices. Paletted alpha blending has different
+rounding/sign extension from binary and coverage blending. Binary explicit-alpha
+drawing ignores optional scanline masks. Production font loading, locale-specific
+case conversion, concurrent drawing and complete UI frame rendering remain unverified.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -549,7 +566,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 263 reviewed classes around battlefield state, units, map
+The current pass names 266 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,

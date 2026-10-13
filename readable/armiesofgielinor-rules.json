@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 60,
+  "version": 61,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2057,6 +2057,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:d",
+      "originalName": "d",
+      "to": "PalettedBitmapFont",
+      "evidence": "d.java: Retains glyph indices and four palette slots, initially only slot zero populated; normal glyph color selects a palette slot, while shadows use a flat color.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dg",
       "originalName": "dg",
       "to": "BattleGraphicsAssets",
@@ -2883,6 +2890,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nc",
+      "originalName": "nc",
+      "to": "AntialiasedBitmapFont",
+      "evidence": "nc.java: Converts a retained glyph index corpus and supplied palette into coverage bytes in place, then draws coverage-weighted glyph pixels or binary shadows.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nd",
       "originalName": "nd",
       "to": "ConsoleValue",
@@ -3419,6 +3433,13 @@
       "originalName": "tt",
       "to": "MatchConditionRegistry",
       "evidence": "tt.java: Per-player condition deques, any-victory/any-defeat checks and selective portal-loss removal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tu",
+      "originalName": "tu",
+      "to": "BinaryBitmapFont",
+      "evidence": "tu.java: Font glyph renderer treating every nonzero glyph-mask byte as opaque; opaque drawing supports optional scanline masks, alpha drawing uses rectangular clipping only.",
       "confidence": "reviewed"
     },
     {
@@ -5211,6 +5232,20 @@
       "originalName": "field_u",
       "to": "hoveredEntry",
       "evidence": "cv.java: Campaign-menu state dispatch, cache lookup, selected entry handling and region-map rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:d.field_J:[[B",
+      "originalName": "field_J",
+      "to": "glyphIndices",
+      "evidence": "d.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:d.field_N:[[I",
+      "originalName": "field_N",
+      "to": "palettes",
+      "evidence": "d.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
       "confidence": "reviewed"
     },
     {
@@ -9967,6 +10002,181 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ka.field_A:[I",
+      "originalName": "field_A",
+      "to": "glyphHeights",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_B:I",
+      "originalName": "field_B",
+      "to": "underlineColour",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_C:[I",
+      "originalName": "field_C",
+      "to": "inlineSpriteBaselines",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_D:I",
+      "originalName": "field_D",
+      "to": "textColour",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_E:[Lsi;",
+      "originalName": "field_E",
+      "to": "inlineSprites",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_F:[I",
+      "originalName": "field_F",
+      "to": "advances",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_G:I",
+      "originalName": "field_G",
+      "to": "defaultShadowColour",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_H:I",
+      "originalName": "field_H",
+      "to": "maxAscent",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_I:I",
+      "originalName": "field_I",
+      "to": "justificationStep",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_K:[B",
+      "originalName": "field_K",
+      "to": "kerning",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_L:I",
+      "originalName": "field_L",
+      "to": "maxDescent",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_M:[I",
+      "originalName": "field_M",
+      "to": "glyphWidths",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_O:I",
+      "originalName": "field_O",
+      "to": "justificationRemainder",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_P:I",
+      "originalName": "field_P",
+      "to": "defaultTextColour",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_Q:[I",
+      "originalName": "field_Q",
+      "to": "glyphOffsetXs",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_R:[I",
+      "originalName": "field_R",
+      "to": "glyphOffsetYs",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_S:I",
+      "originalName": "field_S",
+      "to": "shadowColour",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_T:I",
+      "originalName": "field_T",
+      "to": "textAlpha",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_U:Ljava/lang/StringBuilder;",
+      "originalName": "field_U",
+      "to": "wrapBuffer",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_u:I",
+      "originalName": "field_u",
+      "to": "strikethroughColour",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_v:I",
+      "originalName": "field_v",
+      "to": "baselineHeight",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_w:[Ljava/lang/String;",
+      "originalName": "field_w",
+      "to": "lineScratch",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_x:I",
+      "originalName": "field_x",
+      "to": "defaultTextAlpha",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_y:I",
+      "originalName": "field_y",
+      "to": "xHeight",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_z:I",
+      "originalName": "field_z",
+      "to": "capitalHeight",
+      "evidence": "ka.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kb.field_B:I",
       "originalName": "field_B",
       "to": "x",
@@ -11371,6 +11581,13 @@
       "originalName": "field_d",
       "to": "localAccountName",
       "evidence": "mv.java: Social update, lookup, addition/removal and reset data flow; state 0 is unavailable, 1 is loading/nonmodifiable, and 2 enables friend/ignore changes. Location labels are interned and compared by reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nc.field_J:[[B",
+      "originalName": "field_J",
+      "to": "glyphCoverage",
+      "evidence": "nc.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
       "confidence": "reviewed"
     },
     {
@@ -12893,6 +13110,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qn.field_c:[I",
+      "originalName": "field_c",
+      "to": "scanlineMaskWidths",
+      "evidence": "qn.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qn.field_d:[I",
       "originalName": "field_d",
       "to": "pixels",
@@ -12925,6 +13149,13 @@
       "originalName": "field_j",
       "to": "clipLeft",
       "evidence": "qn.java: Raster buffer installation and clipped sprite/region drawing use these exclusive clip bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_k:[I",
+      "originalName": "field_k",
+      "to": "scanlineMaskStarts",
+      "evidence": "qn.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
       "confidence": "reviewed"
     },
     {
@@ -14766,6 +14997,13 @@
       "originalName": "field_b",
       "to": "conditionsByPlayer",
       "evidence": "tt.java: Registry constructor creates one deque per player; all checks and removal use this array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tu.field_J:[[B",
+      "originalName": "field_J",
+      "to": "glyphMasks",
+      "evidence": "tu.java: Pinned font construction, metric/layout state, markup changes and pixel kernels establish this role; shared style state remains shared across fonts.",
       "confidence": "reviewed"
     },
     {
@@ -18924,6 +19162,293 @@
       "originalName": "var6",
       "to": "left",
       "evidence": "cv.java: Reviewed lexical ordinal and campaign entry construction, neighbor scoring or layout data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIIZ)V#0",
+      "originalName": "var9",
+      "to": "destinationIndex",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIIZ)V#1",
+      "originalName": "var10",
+      "to": "destinationRowSkip",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIIZ)V#2",
+      "originalName": "var11",
+      "to": "sourceRowSkip",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIIZ)V#3",
+      "originalName": "var12",
+      "to": "sourceIndex",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIIZ)V#4",
+      "originalName": "var13",
+      "to": "clippedTop",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIIZ)V#5",
+      "originalName": "var13Lifetime1",
+      "to": "clippedLeft",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIIZ)V#6",
+      "originalName": "var13Lifetime2",
+      "to": "clippedRight",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIZ)V#0",
+      "originalName": "var8",
+      "to": "destinationIndex",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIZ)V#1",
+      "originalName": "var9",
+      "to": "destinationRowSkip",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIZ)V#2",
+      "originalName": "var10",
+      "to": "sourceRowSkip",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIZ)V#3",
+      "originalName": "var11",
+      "to": "sourceIndex",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIZ)V#4",
+      "originalName": "var12",
+      "to": "clippedTop",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIZ)V#5",
+      "originalName": "var12Lifetime1",
+      "to": "clippedLeft",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(IIIIIIZ)V#6",
+      "originalName": "var12Lifetime2",
+      "to": "clippedRight",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#0",
+      "originalName": "var11",
+      "to": "row",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#1",
+      "originalName": "incrementValue$3",
+      "to": "sourceOffsetFirst",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#10",
+      "originalName": "incrementValue$12",
+      "to": "sourceOffsetFourth",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#11",
+      "originalName": "dupTemp$13",
+      "to": "indexFourth",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#12",
+      "originalName": "incrementValue$14",
+      "to": "destinationOffsetFourth",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#13",
+      "originalName": "incrementValue$0",
+      "to": "sourceOffsetRemainder",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#14",
+      "originalName": "dupTemp$1",
+      "to": "indexRemainder",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#15",
+      "originalName": "incrementValue$2",
+      "to": "destinationOffsetRemainder",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#16",
+      "originalName": "var10",
+      "to": "negativeBlockCount",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#17",
+      "originalName": "var12",
+      "to": "block",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#18",
+      "originalName": "var12Lifetime1",
+      "to": "remainderPixel",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#2",
+      "originalName": "dupTemp$4",
+      "to": "indexFirst",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#3",
+      "originalName": "incrementValue$5",
+      "to": "destinationOffsetFirst",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#4",
+      "originalName": "incrementValue$6",
+      "to": "sourceOffsetSecond",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#5",
+      "originalName": "dupTemp$7",
+      "to": "indexSecond",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#6",
+      "originalName": "incrementValue$8",
+      "to": "destinationOffsetSecond",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#7",
+      "originalName": "incrementValue$9",
+      "to": "sourceOffsetThird",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#8",
+      "originalName": "dupTemp$10",
+      "to": "indexThird",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIII)V#9",
+      "originalName": "incrementValue$11",
+      "to": "destinationOffsetThird",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIIII)V#0",
+      "originalName": "var12",
+      "to": "row",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIIII)V#1",
+      "originalName": "var13",
+      "to": "column",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIIII)V#2",
+      "originalName": "incrementValue$16",
+      "to": "sourceOffset",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIIII)V#3",
+      "originalName": "dupTemp$17",
+      "to": "index",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIIII)V#4",
+      "originalName": "incrementValue$18",
+      "to": "destinationOffset",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIIII)V#5",
+      "originalName": "var11",
+      "to": "inverseAlpha",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIIII)V#6",
+      "originalName": "var14",
+      "to": "background",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:d.a(I[I[B[IIIIIIII)V#7",
+      "originalName": "var15",
+      "to": "foreground",
+      "evidence": "d.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
       "confidence": "reviewed"
     },
     {
@@ -28482,6 +29007,1007 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ka.<init>([B[I[I[I[I)V#0",
+      "originalName": "var8",
+      "to": "glyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.<init>([B[I[I[I[I)V#1",
+      "originalName": "var6",
+      "to": "minimumInkY",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.<init>([B[I[I[I[I)V#2",
+      "originalName": "var7",
+      "to": "maximumInkEndY",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#0",
+      "originalName": "var6",
+      "to": "characterIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#1",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtImageFailure",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#10",
+      "originalName": "var10",
+      "to": "indexText",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#11",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "measureCharacter",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#12",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#2",
+      "originalName": "var2",
+      "to": "tagStart",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#3",
+      "originalName": "var3",
+      "to": "previousGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#4",
+      "originalName": "var4",
+      "to": "width",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#5",
+      "originalName": "var5",
+      "to": "textLength",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#6",
+      "originalName": "var7",
+      "to": "character",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#7",
+      "originalName": "var8",
+      "to": "tag",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#8",
+      "originalName": "var9_int",
+      "to": "spriteIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;)I#9",
+      "originalName": "var9",
+      "to": "imageFailure",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;I)I#0",
+      "originalName": "var5",
+      "to": "lineIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;I)I#1",
+      "originalName": "var3",
+      "to": "lineCount",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;I)I#2",
+      "originalName": "var4",
+      "to": "maximumLineWidth",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;I)I#3",
+      "originalName": "var6",
+      "to": "lineWidth",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;II)I#0",
+      "originalName": "var4",
+      "to": "lineCount",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;II)I#1",
+      "originalName": "var5",
+      "to": "additionalLineHeight",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;IIIIIIIIII)I#0",
+      "originalName": "var12",
+      "to": "maximumWidths",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;IIIIIIIIII)I#1",
+      "originalName": "var13",
+      "to": "lineCount",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;IIIIIIIIII)I#2",
+      "originalName": "var14",
+      "to": "baselineY",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;IIIIIIIIII)I#3",
+      "originalName": "var15",
+      "to": "verticalGap",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;IIIIIIIIII)I#4",
+      "originalName": "var15Lifetime1",
+      "to": "lineIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#0",
+      "originalName": "var13",
+      "to": "characterIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#1",
+      "originalName": "discarded$0",
+      "to": "openingAppendResult",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#10",
+      "originalName": "var5",
+      "to": "lineStart",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#11",
+      "originalName": "var6",
+      "to": "breakPosition",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#12",
+      "originalName": "var7",
+      "to": "widthAtBreak",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#13",
+      "originalName": "var8",
+      "to": "breakCharacterCount",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#14",
+      "originalName": "var9",
+      "to": "tagStart",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#15",
+      "originalName": "var10",
+      "to": "previousGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#16",
+      "originalName": "var11",
+      "to": "lineCount",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#17",
+      "originalName": "var12",
+      "to": "textLength",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#18",
+      "originalName": "var14",
+      "to": "character",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#19",
+      "originalName": "var15",
+      "to": "tag",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#2",
+      "originalName": "discarded$1",
+      "to": "tagAppendResult",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#20",
+      "originalName": "var16_int",
+      "to": "spriteIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#21",
+      "originalName": "var16",
+      "to": "imageFailure",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#22",
+      "originalName": "var17",
+      "to": "unusedMarker",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#23",
+      "originalName": "var18",
+      "to": "indexText",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#24",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#3",
+      "originalName": "discarded$2",
+      "to": "closingAppendResult",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#4",
+      "originalName": "discarded$3",
+      "to": "characterAppendResult",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#5",
+      "originalName": "stackIn_69_0",
+      "to": "widthForLimit",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#6",
+      "originalName": "stackIn_69_1",
+      "to": "widthsForLimit",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#7",
+      "originalName": "stackIn_70_2",
+      "to": "widthLimitIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtImageFailure",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#9",
+      "originalName": "var4",
+      "to": "lineWidth",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Lka;Ljava/lang/String;I)Ljava/lang/String;#0",
+      "originalName": "var6",
+      "to": "characterIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Lka;Ljava/lang/String;I)Ljava/lang/String;#1",
+      "originalName": "var3",
+      "to": "ellipsisWidth",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Lka;Ljava/lang/String;I)Ljava/lang/String;#2",
+      "originalName": "var4",
+      "to": "availableWidth",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Lka;Ljava/lang/String;I)Ljava/lang/String;#3",
+      "originalName": "var5",
+      "to": "prefixWidth",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a(Lka;Ljava/lang/String;I)Ljava/lang/String;#4",
+      "originalName": "var7",
+      "to": "characterWidth",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#0",
+      "originalName": "var3_int",
+      "to": "advanceGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#1",
+      "originalName": "incrementValue$6",
+      "to": "advanceOffset",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#10",
+      "originalName": "var2",
+      "to": "cursor",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#11",
+      "originalName": "var3",
+      "to": "profileLengths",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#12",
+      "originalName": "var4",
+      "to": "profileOffsets",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#13",
+      "originalName": "var5_int",
+      "to": "lengthGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#14",
+      "originalName": "var5",
+      "to": "leftProfilesAlias",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#15",
+      "originalName": "var6",
+      "to": "rightProfilesAlias",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#16",
+      "originalName": "var7",
+      "to": "leftValue",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#17",
+      "originalName": "var8",
+      "to": "leftRow",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#18",
+      "originalName": "var10",
+      "to": "profileLengthsAlias",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#19",
+      "originalName": "var11",
+      "to": "leftProfilesSecondAlias",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#2",
+      "originalName": "incrementValue$5",
+      "to": "lengthOffset",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#20",
+      "originalName": "var12",
+      "to": "rightProfilesSecondAlias",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#21",
+      "originalName": "var13",
+      "to": "profileOffsetsAlias",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#22",
+      "originalName": "var14",
+      "to": "profileLengthsSource",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#23",
+      "originalName": "var15",
+      "to": "leftProfiles",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#24",
+      "originalName": "var16",
+      "to": "rightProfiles",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#25",
+      "originalName": "var17",
+      "to": "profileOffsetsSource",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#26",
+      "originalName": "var5_intLifetime1",
+      "to": "offsetGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#27",
+      "originalName": "var8Lifetime1",
+      "to": "rightValue",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#28",
+      "originalName": "var8Lifetime2",
+      "to": "nextGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#29",
+      "originalName": "var7Lifetime1",
+      "to": "rightGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#3",
+      "originalName": "incrementValue$4",
+      "to": "profileOffsetIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#30",
+      "originalName": "var7Lifetime2",
+      "to": "previousGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#4",
+      "originalName": "var6_int",
+      "to": "leftGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#5",
+      "originalName": "array$2",
+      "to": "leftProfile",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#6",
+      "originalName": "incrementValue$3",
+      "to": "leftDeltaOffset",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#7",
+      "originalName": "array$0",
+      "to": "rightProfile",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#8",
+      "originalName": "var9",
+      "to": "rightRow",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([B)V#9",
+      "originalName": "incrementValue$1",
+      "to": "rightDeltaOffset",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#0",
+      "originalName": "var18",
+      "to": "profileY",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#1",
+      "originalName": "incrementValue$6",
+      "to": "previousRow",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#10",
+      "originalName": "var14",
+      "to": "previousRightProfile",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#11",
+      "originalName": "var15",
+      "to": "nextLeftProfile",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#12",
+      "originalName": "var16",
+      "to": "previousProfileIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#13",
+      "originalName": "var17",
+      "to": "nextProfileIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#14",
+      "originalName": "var19",
+      "to": "profileSpacing",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#2",
+      "originalName": "incrementValue$7",
+      "to": "nextRow",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#3",
+      "originalName": "var7",
+      "to": "previousStart",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#4",
+      "originalName": "var8",
+      "to": "previousEnd",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#5",
+      "originalName": "var9",
+      "to": "nextStart",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#6",
+      "originalName": "var10",
+      "to": "nextEnd",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#7",
+      "originalName": "var11",
+      "to": "overlapStart",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#8",
+      "originalName": "var12",
+      "to": "overlapEnd",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.a([[B[[B[I[I[III)I#9",
+      "originalName": "var13",
+      "to": "minimumSpacing",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;)V#0",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtTagFailure",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;)V#1",
+      "originalName": "var2",
+      "to": "tagFailure",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;)V#2",
+      "originalName": "var3",
+      "to": "colourText",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;)V#3",
+      "originalName": "var4",
+      "to": "alphaText",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;)V#4",
+      "originalName": "var5",
+      "to": "strikethroughText",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;)V#5",
+      "originalName": "var6",
+      "to": "underlineText",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;)V#6",
+      "originalName": "var7",
+      "to": "shadowText",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;)V#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;I)V#0",
+      "originalName": "var6",
+      "to": "characterIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;I)V#1",
+      "originalName": "var3",
+      "to": "spaceCount",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;I)V#2",
+      "originalName": "var4",
+      "to": "inTag",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;I)V#3",
+      "originalName": "var5",
+      "to": "textLength",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;I)V#4",
+      "originalName": "var7",
+      "to": "character",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#0",
+      "originalName": "var7",
+      "to": "characterIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#1",
+      "originalName": "stackIn_27_0",
+      "to": "spriteBaseline",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#10",
+      "originalName": "var10_ref_Exception",
+      "to": "imageFailure",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#11",
+      "originalName": "var11_ref_si",
+      "to": "sprite",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#12",
+      "originalName": "var11",
+      "to": "glyphLeft",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#13",
+      "originalName": "var12",
+      "to": "imageBaseline",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#14",
+      "originalName": "var13",
+      "to": "indexText",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#15",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "drawCharacter",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#16",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#2",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtImageFailure",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#3",
+      "originalName": "var4",
+      "to": "tagStart",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#4",
+      "originalName": "var5",
+      "to": "previousGlyph",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#5",
+      "originalName": "var6",
+      "to": "textLength",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#6",
+      "originalName": "var8",
+      "to": "character",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#7",
+      "originalName": "var9_ref_String",
+      "to": "tag",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#8",
+      "originalName": "var9",
+      "to": "glyphWidth",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.b(Ljava/lang/String;II)V#9",
+      "originalName": "var10",
+      "to": "glyphHeightOrSpriteIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#0",
+      "originalName": "var3_int",
+      "to": "countIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#1",
+      "originalName": "discarded$0",
+      "to": "characterAppendResult",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#2",
+      "originalName": "discarded$1",
+      "to": "greaterAppendResult",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#3",
+      "originalName": "discarded$2",
+      "to": "lessAppendResult",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#4",
+      "originalName": "var1",
+      "to": "textLength",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#5",
+      "originalName": "var2",
+      "to": "extraCapacity",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#6",
+      "originalName": "var4",
+      "to": "character",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#7",
+      "originalName": "var3",
+      "to": "escaped",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#8",
+      "originalName": "var5",
+      "to": "escapeCharacter",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ka.c(Ljava/lang/String;)Ljava/lang/String;#9",
+      "originalName": "var4Lifetime1",
+      "to": "escapeIndex",
+      "evidence": "ka.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:kj.a(B)Ljava/lang/String;#0",
       "originalName": "var1",
       "to": "query",
@@ -30292,6 +31818,258 @@
       "originalName": "stackIn_24_1",
       "to": "errorContextWithCommands",
       "evidence": "na.java: Pinned console lexical/parser/evaluator control flow identifies this local; fixed original spelling prevents silent ordinal drift.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIIZ)V#0",
+      "originalName": "var9",
+      "to": "destinationIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIIZ)V#1",
+      "originalName": "var10",
+      "to": "destinationRowSkip",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIIZ)V#2",
+      "originalName": "var11",
+      "to": "sourceRowSkip",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIIZ)V#3",
+      "originalName": "var12",
+      "to": "sourceIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIIZ)V#4",
+      "originalName": "var13",
+      "to": "clippedTop",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIIZ)V#5",
+      "originalName": "var13Lifetime1",
+      "to": "clippedLeft",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIIZ)V#6",
+      "originalName": "var13Lifetime2",
+      "to": "clippedRight",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIZ)V#0",
+      "originalName": "var8",
+      "to": "destinationIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIZ)V#1",
+      "originalName": "var9",
+      "to": "destinationRowSkip",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIZ)V#2",
+      "originalName": "var10",
+      "to": "sourceRowSkip",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIZ)V#3",
+      "originalName": "var11",
+      "to": "sourceIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIZ)V#4",
+      "originalName": "var12",
+      "to": "clippedTop",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIZ)V#5",
+      "originalName": "var12Lifetime1",
+      "to": "clippedLeft",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a(IIIIIIZ)V#6",
+      "originalName": "var12Lifetime2",
+      "to": "clippedRight",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIII)V#0",
+      "originalName": "var9",
+      "to": "row",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIII)V#1",
+      "originalName": "var10",
+      "to": "column",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIII)V#2",
+      "originalName": "incrementValue$11",
+      "to": "coverageIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIII)V#3",
+      "originalName": "incrementValue$12",
+      "to": "pixelIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIII)V#4",
+      "originalName": "var11",
+      "to": "coverage",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIII)V#5",
+      "originalName": "var12",
+      "to": "foreground",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIII)V#6",
+      "originalName": "var13",
+      "to": "background",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIIII)V#0",
+      "originalName": "var10",
+      "to": "row",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIIII)V#1",
+      "originalName": "var11",
+      "to": "column",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIIII)V#2",
+      "originalName": "incrementValue$11",
+      "to": "coverageIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIIII)V#3",
+      "originalName": "incrementValue$12",
+      "to": "pixelIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIIII)V#4",
+      "originalName": "var12",
+      "to": "coverage",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIIII)V#5",
+      "originalName": "var13",
+      "to": "foreground",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[BIIIIIIII)V#6",
+      "originalName": "var14",
+      "to": "background",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[[B)[[B#0",
+      "originalName": "var2_int",
+      "to": "paletteIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[[B)[[B#1",
+      "originalName": "var5",
+      "to": "pixelIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[[B)[[B#2",
+      "originalName": "var2",
+      "to": "glyphs",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[[B)[[B#3",
+      "originalName": "var3",
+      "to": "colour",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[[B)[[B#4",
+      "originalName": "var4_int",
+      "to": "weightedRedBlue",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[[B)[[B#5",
+      "originalName": "var4",
+      "to": "glyph",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[[B)[[B#6",
+      "originalName": "var6",
+      "to": "signedIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nc.a([I[[B)[[B#7",
+      "originalName": "var3Lifetime1",
+      "to": "glyphIndex",
+      "evidence": "nc.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
       "confidence": "reviewed"
     },
     {
@@ -35874,6 +37652,237 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:tu.a(IIIIIIIZ)V#0",
+      "originalName": "var13",
+      "to": "clippedTop",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIIZ)V#1",
+      "originalName": "var9",
+      "to": "destinationIndex",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIIZ)V#2",
+      "originalName": "var10",
+      "to": "destinationRowSkip",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIIZ)V#3",
+      "originalName": "var11",
+      "to": "sourceRowSkip",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIIZ)V#4",
+      "originalName": "var12",
+      "to": "sourceIndex",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIIZ)V#5",
+      "originalName": "var13Lifetime1",
+      "to": "clippedLeft",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIIZ)V#6",
+      "originalName": "var13Lifetime2",
+      "to": "clippedRight",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIZ)V#0",
+      "originalName": "var8",
+      "to": "destinationIndex",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIZ)V#1",
+      "originalName": "var9",
+      "to": "destinationRowSkip",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIZ)V#2",
+      "originalName": "var10",
+      "to": "sourceRowSkip",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIZ)V#3",
+      "originalName": "var11",
+      "to": "sourceIndex",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIZ)V#4",
+      "originalName": "var12",
+      "to": "clippedTop",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIZ)V#5",
+      "originalName": "var12Lifetime1",
+      "to": "clippedLeft",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a(IIIIIIZ)V#6",
+      "originalName": "var12Lifetime2",
+      "to": "clippedRight",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIII)V#0",
+      "originalName": "var10",
+      "to": "row",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIII)V#1",
+      "originalName": "var9",
+      "to": "negativeBlockCount",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIII)V#2",
+      "originalName": "var11",
+      "to": "block",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIII)V#3",
+      "originalName": "var11Lifetime1",
+      "to": "remainderPixel",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIII)V#0",
+      "originalName": "var10",
+      "to": "row",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIII)V#1",
+      "originalName": "var11",
+      "to": "column",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIII)V#2",
+      "originalName": "incrementValue$12",
+      "to": "pixelIndex",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIII)V#3",
+      "originalName": "var12",
+      "to": "background",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#0",
+      "originalName": "var15",
+      "to": "maskRow",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#1",
+      "originalName": "var20",
+      "to": "column",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#10",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "rowIntersectsMask",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#2",
+      "originalName": "incrementValue$1",
+      "to": "pixelIndex",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#3",
+      "originalName": "var13",
+      "to": "relativeLeft",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#4",
+      "originalName": "var14",
+      "to": "relativeTop",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#5",
+      "originalName": "var16",
+      "to": "maskStart",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#6",
+      "originalName": "var17",
+      "to": "maskWidth",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#7",
+      "originalName": "var18",
+      "to": "remainingWidth",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#8",
+      "originalName": "var19",
+      "to": "clippedToMask",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tu.a([I[BIIIIIIIII[I[I)V#9",
+      "originalName": "var19Lifetime1",
+      "to": "rightSkip",
+      "evidence": "tu.java: Pinned font measurement/layout/metric decode or software glyph kernel local, bound to fixed ordinal and original spelling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:u.a(I)V#0",
       "originalName": "fieldTemp$1",
       "to": "newIgnoreOrder",
@@ -41369,6 +43378,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:d.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphWithAlpha",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.a(I[I[B[IIIIIII)V",
+      "originalName": "a",
+      "to": "blitPalettedGlyph",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.a(I[I[B[IIIIIIII)V",
+      "originalName": "a",
+      "to": "blitPalettedGlyphWithAlpha",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:da.a(I)V",
       "originalName": "a",
       "to": "readLocalAccountName",
@@ -45044,10 +47081,185 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ka.a(C)I",
+      "originalName": "a",
+      "to": "characterWidth",
+      "evidence": "ka.java: Maps one character to its CP1252 byte and returns its advance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(III)V",
+      "originalName": "a",
+      "to": "resetStyle",
+      "evidence": "ka.java: Resets shared formatting/justification and retained defaults, with explicit alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphWithAlpha",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "textWidth",
+      "evidence": "ka.java: Measures CP1252 advances, entity substitutions, inline sprites and signed kerning; formatting tags have zero advance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "getWrappedWidth",
+      "evidence": "ka.java: Measures maximum width of lines wrapped into the shared hundred-line scratch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ka.a(Ljava/lang/String;II)I",
       "originalName": "a",
       "to": "getParagraphHeight",
       "evidence": "ka.java: Wraps text to the supplied width and returns ascent plus line increments plus descent; lineHeight zero uses the font default.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Ljava/lang/String;IIII)V",
+      "originalName": "a",
+      "to": "drawRightAligned",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Ljava/lang/String;IIIII)V",
+      "originalName": "a",
+      "to": "drawCenteredWithAlpha",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Ljava/lang/String;IIIIIIIII)I",
+      "originalName": "a",
+      "to": "drawParagraph",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Ljava/lang/String;IIIIIIIIII)I",
+      "originalName": "a",
+      "to": "drawParagraph",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "wrapLines",
+      "evidence": "ka.java: Writes normalized markup lines into caller storage, breaking on spaces/hyphens or br; overlong words remain unbroken.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(Lka;Ljava/lang/String;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "truncateWithEllipsis",
+      "evidence": "ka.java: Retains original off-by-one truncation and too-small-width failure; character scan ignores markup/kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a([B)V",
+      "originalName": "a",
+      "to": "decodeMetrics",
+      "evidence": "ka.java: Decodes the 257-byte compact format or three unsigned tables plus two signed-delta contour planes and pair kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a([Lsi;[I)V",
+      "originalName": "a",
+      "to": "setInlineSprites",
+      "evidence": "ka.java: Retains sprite/baseline arrays and rejects nonmatching baseline count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a([[B[[B[I[I[III)I",
+      "originalName": "a",
+      "to": "calculatePairKerning",
+      "evidence": "ka.java: Returns negative minimum overlapping right/left profile sum, bounded by both advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.b(II)V",
+      "originalName": "b",
+      "to": "resetStyle",
+      "evidence": "ka.java: Resets shared formatting, justification and defaults to supplied colors with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.b(Ljava/lang/String;)V",
+      "originalName": "b",
+      "to": "applyStyleTag",
+      "evidence": "ka.java: Changes shared colors/alpha/decorations, restores defaults on closing tags and br; malformed values are ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.b(Ljava/lang/String;I)V",
+      "originalName": "b",
+      "to": "prepareJustification",
+      "evidence": "ka.java: Distributes additional width over literal spaces outside markup with 8-bit fractional accumulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.b(Ljava/lang/String;II)V",
+      "originalName": "b",
+      "to": "drawStyledText",
+      "evidence": "ka.java: Draws glyphs, shadows, decorations and inline sprites using current shared style and justification.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.b(Ljava/lang/String;IIII)V",
+      "originalName": "b",
+      "to": "drawText",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.b(Ljava/lang/String;IIIII)V",
+      "originalName": "b",
+      "to": "drawTextWithAlpha",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.c(Ljava/lang/String;)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "escapeMarkup",
+      "evidence": "ka.java: Escapes less/greater-than characters as font markup entities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.c(Ljava/lang/String;I)I",
+      "originalName": "c",
+      "to": "getLineCount",
+      "evidence": "ka.java: Returns wrapped line count in the shared line scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.c(Ljava/lang/String;IIII)V",
+      "originalName": "c",
+      "to": "drawCentered",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.c(Ljava/lang/String;IIIII)V",
+      "originalName": "c",
+      "to": "drawRightAlignedWithAlpha",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
       "confidence": "reviewed"
     },
     {
@@ -46119,6 +48331,41 @@
       "originalName": "a",
       "to": "invokeConsoleCommand",
       "evidence": "na.java: Invokes first registry match or creates undefined-method diagnostic; object-tag null diagnostic construction retains NullPointerException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphWithAlpha",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a([I[BIIIIIII)V",
+      "originalName": "a",
+      "to": "blitCoverageGlyph",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a([I[BIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitCoverageGlyphWithAlpha",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a([I[[B)[[B",
+      "originalName": "a",
+      "to": "convertGlyphCoverage",
+      "evidence": "nc.java: Mutates palette to weighted brightness then replaces nonzero glyph indices with coverage; signed source indices at 128+ retain array failure.",
       "confidence": "reviewed"
     },
     {
@@ -48800,6 +51047,41 @@
       "originalName": "b",
       "to": "removePlayerPortalLossConditions",
       "evidence": "tt.java: Removes only PortalLossCondition entries for one player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tu.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphWithAlpha",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tu.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tu.a([I[BIIIIIII)V",
+      "originalName": "a",
+      "to": "blitBinaryGlyph",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tu.a([I[BIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitBinaryGlyphWithAlpha",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tu.a([I[BIIIIIIIII[I[I)V",
+      "originalName": "a",
+      "to": "blitMaskedGlyph",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
       "confidence": "reviewed"
     },
     {
@@ -54757,6 +57039,307 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "cv.java: Opens a selected campaign card or prepares its quicksave campaign view.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.<init>([B[I[I[I[I[I[[B)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "d.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.<init>([B[I[I[I[I[I[[B)V#1",
+      "originalName": "param1",
+      "to": "glyphOffsetXs",
+      "evidence": "d.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.<init>([B[I[I[I[I[I[[B)V#2",
+      "originalName": "param2",
+      "to": "glyphOffsetYs",
+      "evidence": "d.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.<init>([B[I[I[I[I[I[[B)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "d.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.<init>([B[I[I[I[I[I[[B)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "d.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.<init>([B[I[I[I[I[I[[B)V#5",
+      "originalName": "param5",
+      "to": "palette",
+      "evidence": "d.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.<init>([B[I[I[I[I[I[[B)V#6",
+      "originalName": "param6",
+      "to": "glyphIndices",
+      "evidence": "d.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyph",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadow",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyph",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#0",
+      "originalName": "param0",
+      "to": "paletteIndex",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#2",
+      "originalName": "param2",
+      "to": "source",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#3",
+      "originalName": "param3",
+      "to": "palette",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#4",
+      "originalName": "param4",
+      "to": "sourceIndex",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#5",
+      "originalName": "param5",
+      "to": "destinationIndex",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#6",
+      "originalName": "param6",
+      "to": "width",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#7",
+      "originalName": "param7",
+      "to": "height",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#8",
+      "originalName": "param8",
+      "to": "destinationRowSkip",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIII)V#9",
+      "originalName": "param9",
+      "to": "sourceRowSkip",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "paletteIndex",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#10",
+      "originalName": "param10",
+      "to": "alpha",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "source",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "palette",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "sourceIndex",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "destinationIndex",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "width",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "height",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#8",
+      "originalName": "param8",
+      "to": "destinationRowSkip",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:d.a(I[I[B[IIIIIIII)V#9",
+      "originalName": "param9",
+      "to": "sourceRowSkip",
+      "evidence": "d.java: Treats index zero as transparent and positive/negative nonzero bytes as unsigned palette indices; alpha uses weighted-sum channel rounding.",
       "confidence": "reviewed"
     },
     {
@@ -64364,6 +66947,195 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ka.<init>([B[I[I[I[I)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "ka.java: Retains all geometry arrays and decodes compact advances/baseline or extended profiles/kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.<init>([B[I[I[I[I)V#1",
+      "originalName": "param1",
+      "to": "glyphOffsetXs",
+      "evidence": "ka.java: Retains all geometry arrays and decodes compact advances/baseline or extended profiles/kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.<init>([B[I[I[I[I)V#2",
+      "originalName": "param2",
+      "to": "glyphOffsetYs",
+      "evidence": "ka.java: Retains all geometry arrays and decodes compact advances/baseline or extended profiles/kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.<init>([B[I[I[I[I)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "ka.java: Retains all geometry arrays and decodes compact advances/baseline or extended profiles/kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.<init>([B[I[I[I[I)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "ka.java: Retains all geometry arrays and decodes compact advances/baseline or extended profiles/kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(C)I#0",
+      "originalName": "param0",
+      "to": "character",
+      "evidence": "ka.java: Maps one character to its CP1252 byte and returns its advance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(III)V#0",
+      "originalName": "param0",
+      "to": "colour",
+      "evidence": "ka.java: Resets shared formatting/justification and retained defaults, with explicit alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(III)V#1",
+      "originalName": "param1",
+      "to": "shadow",
+      "evidence": "ka.java: Resets shared formatting/justification and retained defaults, with explicit alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(III)V#2",
+      "originalName": "param2",
+      "to": "alpha",
+      "evidence": "ka.java: Resets shared formatting/justification and retained defaults, with explicit alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyph",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadow",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyph",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Measures CP1252 advances, entity substitutions, inline sprites and signed kerning; formatting tags have zero advance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;I)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Measures maximum width of lines wrapped into the shared hundred-line scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;I)I#1",
+      "originalName": "param1",
+      "to": "maximumWidth",
+      "evidence": "ka.java: Measures maximum width of lines wrapped into the shared hundred-line scratch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ka.a(Ljava/lang/String;II)I#0",
       "originalName": "param0",
       "to": "text",
@@ -64382,6 +67154,573 @@
       "originalName": "param2",
       "to": "lineHeight",
       "evidence": "ka.java: Wraps text to the supplied width and returns ascent plus line increments plus descent; lineHeight zero uses the font default.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "colour",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIII)V#3",
+      "originalName": "param3",
+      "to": "colour",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIII)V#5",
+      "originalName": "param5",
+      "to": "alpha",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#7",
+      "originalName": "param7",
+      "to": "horizontalAlignment",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#8",
+      "originalName": "param8",
+      "to": "verticalAlignment",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIII)I#9",
+      "originalName": "param9",
+      "to": "lineHeight",
+      "evidence": "ka.java: Delegates paragraph drawing with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#10",
+      "originalName": "param10",
+      "to": "lineHeight",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#7",
+      "originalName": "param7",
+      "to": "alpha",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#8",
+      "originalName": "param8",
+      "to": "horizontalAlignment",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;IIIIIIIIII)I#9",
+      "originalName": "param9",
+      "to": "verticalAlignment",
+      "evidence": "ka.java: Wraps and draws with horizontal/vertical alignment and explicit alpha/line advance; short boxes disable automatic width wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Writes normalized markup lines into caller storage, breaking on spaces/hyphens or br; overlong words remain unbroken.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#1",
+      "originalName": "param1",
+      "to": "maximumWidths",
+      "evidence": "ka.java: Writes normalized markup lines into caller storage, breaking on spaces/hyphens or br; overlong words remain unbroken.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Ljava/lang/String;[I[Ljava/lang/String;)I#2",
+      "originalName": "param2",
+      "to": "lines",
+      "evidence": "ka.java: Writes normalized markup lines into caller storage, breaking on spaces/hyphens or br; overlong words remain unbroken.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Lka;Ljava/lang/String;I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "font",
+      "evidence": "ka.java: Retains original off-by-one truncation and too-small-width failure; character scan ignores markup/kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Lka;Ljava/lang/String;I)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "ka.java: Retains original off-by-one truncation and too-small-width failure; character scan ignores markup/kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a(Lka;Ljava/lang/String;I)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "maximumWidth",
+      "evidence": "ka.java: Retains original off-by-one truncation and too-small-width failure; character scan ignores markup/kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([B)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "ka.java: Decodes the 257-byte compact format or three unsigned tables plus two signed-delta contour planes and pair kerning.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([Lsi;[I)V#0",
+      "originalName": "param0",
+      "to": "sprites",
+      "evidence": "ka.java: Retains sprite/baseline arrays and rejects nonmatching baseline count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([Lsi;[I)V#1",
+      "originalName": "param1",
+      "to": "baselines",
+      "evidence": "ka.java: Retains sprite/baseline arrays and rejects nonmatching baseline count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([[B[[B[I[I[III)I#0",
+      "originalName": "param0",
+      "to": "leftProfiles",
+      "evidence": "ka.java: Returns negative minimum overlapping right/left profile sum, bounded by both advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([[B[[B[I[I[III)I#1",
+      "originalName": "param1",
+      "to": "rightProfiles",
+      "evidence": "ka.java: Returns negative minimum overlapping right/left profile sum, bounded by both advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([[B[[B[I[I[III)I#2",
+      "originalName": "param2",
+      "to": "profileOffsets",
+      "evidence": "ka.java: Returns negative minimum overlapping right/left profile sum, bounded by both advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([[B[[B[I[I[III)I#3",
+      "originalName": "param3",
+      "to": "advances",
+      "evidence": "ka.java: Returns negative minimum overlapping right/left profile sum, bounded by both advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([[B[[B[I[I[III)I#4",
+      "originalName": "param4",
+      "to": "profileLengths",
+      "evidence": "ka.java: Returns negative minimum overlapping right/left profile sum, bounded by both advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([[B[[B[I[I[III)I#5",
+      "originalName": "param5",
+      "to": "previousGlyph",
+      "evidence": "ka.java: Returns negative minimum overlapping right/left profile sum, bounded by both advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.a([[B[[B[I[I[III)I#6",
+      "originalName": "param6",
+      "to": "nextGlyph",
+      "evidence": "ka.java: Returns negative minimum overlapping right/left profile sum, bounded by both advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(II)V#0",
+      "originalName": "param0",
+      "to": "colour",
+      "evidence": "ka.java: Resets shared formatting, justification and defaults to supplied colors with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(II)V#1",
+      "originalName": "param1",
+      "to": "shadow",
+      "evidence": "ka.java: Resets shared formatting, justification and defaults to supplied colors with alpha 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "tag",
+      "evidence": "ka.java: Changes shared colors/alpha/decorations, restores defaults on closing tags and br; malformed values are ignored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Distributes additional width over literal spaces outside markup with 8-bit fractional accumulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "targetWidth",
+      "evidence": "ka.java: Distributes additional width over literal spaces outside markup with 8-bit fractional accumulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;II)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Draws glyphs, shadows, decorations and inline sprites using current shared style and justification.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;II)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Draws glyphs, shadows, decorations and inline sprites using current shared style and justification.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;II)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "ka.java: Draws glyphs, shadows, decorations and inline sprites using current shared style and justification.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "colour",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIIII)V#3",
+      "originalName": "param3",
+      "to": "colour",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.b(Ljava/lang/String;IIIII)V#5",
+      "originalName": "param5",
+      "to": "alpha",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Escapes less/greater-than characters as font markup entities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;I)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Returns wrapped line count in the shared line scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;I)I#1",
+      "originalName": "param1",
+      "to": "maximumWidth",
+      "evidence": "ka.java: Returns wrapped line count in the shared line scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "colour",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIIII)V#3",
+      "originalName": "param3",
+      "to": "colour",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ka.c(Ljava/lang/String;IIIII)V#5",
+      "originalName": "param5",
+      "to": "alpha",
+      "evidence": "ka.java: Resets shared style and draws with the requested alignment; null text returns before reset.",
       "confidence": "reviewed"
     },
     {
@@ -67567,6 +70906,307 @@
       "originalName": "param3",
       "to": "commandName",
       "evidence": "na.java: Invokes first registry match or creates undefined-method diagnostic; object-tag null diagnostic construction retains NullPointerException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>([B[I[I[I[I[I[[B)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "nc.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>([B[I[I[I[I[I[[B)V#1",
+      "originalName": "param1",
+      "to": "glyphOffsetXs",
+      "evidence": "nc.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>([B[I[I[I[I[I[[B)V#2",
+      "originalName": "param2",
+      "to": "glyphOffsetYs",
+      "evidence": "nc.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>([B[I[I[I[I[I[[B)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "nc.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>([B[I[I[I[I[I[[B)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "nc.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>([B[I[I[I[I[I[[B)V#5",
+      "originalName": "param5",
+      "to": "palette",
+      "evidence": "nc.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>([B[I[I[I[I[I[[B)V#6",
+      "originalName": "param6",
+      "to": "glyphIndices",
+      "evidence": "nc.java: Paletted font retains arrays; antialiased font mutates palette/glyph arrays in place during coverage conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyph",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadow",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyph",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "destination",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "source",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "colour",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "sourceIndex",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "destinationIndex",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "width",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "height",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "destinationRowSkip",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIII)V#8",
+      "originalName": "param8",
+      "to": "sourceRowSkip",
+      "evidence": "nc.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "destination",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "source",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "colour",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "sourceIndex",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "destinationIndex",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "width",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "height",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "destinationRowSkip",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#8",
+      "originalName": "param8",
+      "to": "sourceRowSkip",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[BIIIIIIII)V#9",
+      "originalName": "param9",
+      "to": "alpha",
+      "evidence": "nc.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[[B)[[B#0",
+      "originalName": "param0",
+      "to": "palette",
+      "evidence": "nc.java: Mutates palette to weighted brightness then replaces nonzero glyph indices with coverage; signed source indices at 128+ retain array failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a([I[[B)[[B#1",
+      "originalName": "param1",
+      "to": "glyphIndices",
+      "evidence": "nc.java: Mutates palette to weighted brightness then replaces nonzero glyph indices with coverage; signed source indices at 128+ retain array failure.",
       "confidence": "reviewed"
     },
     {
@@ -75186,6 +78826,377 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tu.<init>([B[I[I[I[I[[B)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "tu.java: Retains supplied nonzero/zero glyph masks without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.<init>([B[I[I[I[I[[B)V#1",
+      "originalName": "param1",
+      "to": "glyphOffsetXs",
+      "evidence": "tu.java: Retains supplied nonzero/zero glyph masks without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.<init>([B[I[I[I[I[[B)V#2",
+      "originalName": "param2",
+      "to": "glyphOffsetYs",
+      "evidence": "tu.java: Retains supplied nonzero/zero glyph masks without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.<init>([B[I[I[I[I[[B)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "tu.java: Retains supplied nonzero/zero glyph masks without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.<init>([B[I[I[I[I[[B)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "tu.java: Retains supplied nonzero/zero glyph masks without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.<init>([B[I[I[I[I[[B)V#5",
+      "originalName": "param5",
+      "to": "glyphMasks",
+      "evidence": "tu.java: Retains supplied nonzero/zero glyph masks without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyph",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadow",
+      "evidence": "ka.java: Virtual explicit-alpha glyph drawing, preserving renderer-specific palette/coverage behavior. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyph",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "colour",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "ka.java: Virtual opaque glyph drawing; shadow flag selects binary shadow behavior for paletted/coverage fonts. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "destination",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "source",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "colour",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "sourceIndex",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "destinationIndex",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "width",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "height",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "destinationRowSkip",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIII)V#8",
+      "originalName": "param8",
+      "to": "sourceRowSkip",
+      "evidence": "tu.java: Writes clipped glyph rows; binary nonzero bytes paint flat pixels, coverage bytes blend using coverage/256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "destination",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "source",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "colour",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "sourceIndex",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "destinationIndex",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "width",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "height",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "destinationRowSkip",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#8",
+      "originalName": "param8",
+      "to": "sourceRowSkip",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIII)V#9",
+      "originalName": "param9",
+      "to": "alpha",
+      "evidence": "tu.java: Blends clipped glyph rows with explicit alpha; coverage renderer multiplies glyph coverage by alpha first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#0",
+      "originalName": "param0",
+      "to": "unusedDestination",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#1",
+      "originalName": "param1",
+      "to": "source",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#10",
+      "originalName": "param10",
+      "to": "sourceRowSkip",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#11",
+      "originalName": "param11",
+      "to": "maskStarts",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#12",
+      "originalName": "param12",
+      "to": "maskWidths",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#2",
+      "originalName": "param2",
+      "to": "left",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#3",
+      "originalName": "param3",
+      "to": "top",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#6",
+      "originalName": "param6",
+      "to": "colour",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#7",
+      "originalName": "param7",
+      "to": "sourceIndex",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#8",
+      "originalName": "param8",
+      "to": "destinationIndex",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tu.a([I[BIIIIIIIII[I[I)V#9",
+      "originalName": "param9",
+      "to": "destinationRowSkip",
+      "evidence": "tu.java: Intersects clipped glyph rows with clip-relative spans; writes the global raster rather than the unused destination parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:u.<init>(Llv;)V#0",
       "originalName": "param0",
       "to": "condition",
@@ -78652,10 +82663,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "5ce8d0ff768b3304f8c5f3378075552759902859a3a1c38c2fca00a560972e36",
+      "build-armiesofgielinor-rules.mjs": "1ee2b52c332d3942eb4eab12ca4215145dbb98f287326e85d33e6849c065fc35",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "e4b61a915e113083803004e3bd7561532877355325751be0d69419f1464f897a",
+      "tests/test-armiesofgielinor-core.mjs": "10a9b4e9236d8debefd92d4de5bc66d4817b4b44fea49b586a7e5cfd0e028ace",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
