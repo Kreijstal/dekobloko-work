@@ -901,9 +901,30 @@ Full material/color interpretation remains unverified.
 The named logo loader reads `logo.fo3d`, scales vertices by six, saves bounding
 midpoints and centers each mesh. A controlled decoded archive file exercises name
 lookup, the complete loader/record/mesh path and independent expected centered
-coordinates/bounds. Real logo assets, matrix/projection/lighting/face sorting,
+coordinates/bounds. Real logo assets, lighting,
 triangle rasterization, presented loading animation, malformed buffers and
 unsupported count ranges remain unverified.
+
+The named transform/project routine exposes camera/object poses, Q14 intermediate
+composition, perspective centers/scale, a depth50 visibility threshold and optional
+view-coordinate/direction buffers. Pose construction and cosine now have semantic
+names. Auxiliary per-face points are named by ordinal and axis; their full downstream
+interpretation remains unassigned. Some local slots serve different roles across
+projection/direction phases and retain explicit qualified names. No lifetime split
+or arithmetic/control-flow rewrite is introduced.
+
+Native fixtures independently compose twelve-int poses with wrapped32-bit dot
+products, then check identity/rotated/fractional/large-coefficient cases, camera
+translation, projection shifts, depths49/50/51, signed perspective division, clipped
+screen-coordinate retention and optional view buffers. Auxiliary-point X/Y preserve
+the source's unscaled linear term plus already-scaled translation. Direction vectors
+use object pose only and respect scratch capacity. Cosine fixtures cover all8192
+angles and pitch/yaw pose fixtures check wrapped angles and Q16 products.
+Face sorting names winding checks, clipped-depth rejection, reverse depth buckets,
+16-slot spill, accepted IDs/counts and group prefix offsets. Fixtures cover both
+winding orders, culling on/off, clipping, empty lists and16/17/32-face bucket limits.
+Lighting, actual triangle pixels, noncanonical branches and complete loading/menu
+presentation remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
