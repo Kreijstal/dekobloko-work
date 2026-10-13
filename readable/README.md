@@ -118,6 +118,8 @@ groups. MeshAttributeRecord names the compact record's retained base RGB. MeshRa
 names clip-relative viewport, row offsets and lookup tables.
 UiComponent names shared component geometry, style templates, child ownership,
 animated bounds, clipped input and sprite/text state.
+VerticalScrollbar, ScrollPane and ScrollPaneWithFooter expose composite scrolling
+and footer layouts. AlignedIconLabel and StateIconLabel expose their child roles.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -960,6 +962,17 @@ animation, scroll clamping, overlapping-child claims, captured dragging and spri
 selection/alignment pixels. Private unresolved state remains opaque. Text/frame
 rendering, oversized drag edge cases, live input and complete menu behavior remain
 unverified.
+
+Composite UI fixtures check scrollbar buttons, track, thumb sizing and rounded
+coordinate conversion across empty/short/long content and odd/short track heights.
+They verify immediate presses, initial20-tick/subsequent3-tick repeats, page-pointer
+boundaries, cloned style ownership, pane line/page/wheel/drag routing and child-layout
+decisions. The two short-content clamp orders are preserved: minimum-first can yield
+a negative scroll range; maximum-first floors at zero. Footer geometry retains its
+scrollbar-width gaps. Icon/label fixtures cover optional children, intrinsic width,
+combined alignment, constrained label widths, selected sprites and independent clones.
+Real lobby assets, live interaction, text pixels and full screen integration remain
+unverified. Unrelated static helpers in these classes retain their separate roles.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
