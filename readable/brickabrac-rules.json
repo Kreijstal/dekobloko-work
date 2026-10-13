@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 12,
+  "version": 13,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -318,6 +318,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:el",
+      "originalName": "el",
+      "to": "AudioData",
+      "evidence": "el.java: Intrusive audio data base with player scheduling usage counter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fb",
       "originalName": "fb",
       "to": "ArgbSprite",
@@ -416,6 +423,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kl",
+      "originalName": "kl",
+      "to": "PcmStream",
+      "evidence": "kl.java: Fixed8 sample cursor/rate, loop boundaries/count, gain/pan ramps and mono/stereo PCM mixing kernels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:km",
       "originalName": "km",
       "to": "MenuScreen",
@@ -427,6 +441,13 @@
       "originalName": "kq",
       "to": "IntNode",
       "evidence": "kq.java: Intrusive integer holder used for board level state and UI selections; default and value constructors retain its numeric value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:l",
+      "originalName": "l",
+      "to": "SoundPlayback",
+      "evidence": "l.java: Queued stream/source association retains base gain and applies current master sound gain.",
       "confidence": "reviewed"
     },
     {
@@ -528,6 +549,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oe",
+      "originalName": "oe",
+      "to": "PcmSound",
+      "evidence": "oe.java: Signed byte sample data with sample rate, loop start/end and ping-pong loop mode.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:of",
       "originalName": "of",
       "to": "BlankScreen",
@@ -591,6 +619,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qd",
+      "originalName": "qd",
+      "to": "AudioStream",
+      "evidence": "qd.java: Intrusive audio stream contract for fill/skip, child traversal, priority and scheduling contribution; disabled processing advances without mixing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qj",
       "originalName": "qj",
       "to": "GameplayScreen",
@@ -602,6 +637,13 @@
       "originalName": "qk",
       "to": "MouseWheelInput",
       "evidence": "qk.java: AWT wheel listener accumulates signed rotations, consumes events and clears the accumulator when polled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ra",
+      "originalName": "ra",
+      "to": "AudioMixer",
+      "evidence": "ra.java: Mixes child streams, skips them and maintains sample-counted listener queue.",
       "confidence": "reviewed"
     },
     {
@@ -623,6 +665,13 @@
       "originalName": "si",
       "to": "IntrusiveHashTable",
       "evidence": "si.java: Sentinel buckets keyed by long values, intrusive insertion/lookup and shared bucket traversal cursor. Static input/asset helpers retain their separate roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tj",
+      "originalName": "tj",
+      "to": "PcmPlayer",
+      "evidence": "tj.java: PCM device boundary with output buffer, root stream, scheduling queues and shared sample-rate/stereo configuration.",
       "confidence": "reviewed"
     },
     {
@@ -700,6 +749,13 @@
       "originalName": "vq",
       "to": "LevelCompleteScreen",
       "evidence": "vq.java: ID18 single-player completion overlay offers continue/level-select/end-game; called when board state is8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wf",
+      "originalName": "wf",
+      "to": "AudioMixerListener",
+      "evidence": "wf.java: Intrusive sample-counted mixer callback and cleanup contract; original private throwing constructor is retained.",
       "confidence": "reviewed"
     },
     {
@@ -1001,6 +1057,13 @@
       "originalName": "field_cb",
       "to": "keyChangeReadIndex",
       "evidence": "ek.java: Read position for held-key change ring.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:el.field_i:I",
+      "originalName": "field_i",
+      "to": "schedulerUsage",
+      "evidence": "el.java: Shared data usage count reset recursively before stream scheduling, incremented by processed stream cost.",
       "confidence": "reviewed"
     },
     {
@@ -1452,6 +1515,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ki.field_d:I",
+      "originalName": "field_d",
+      "to": "masterSoundGain",
+      "evidence": "ki.java: Master multiplier applied to playback base gain with integer rounding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ki.field_e:I",
       "originalName": "field_e",
       "to": "pressedButton",
@@ -1463,6 +1533,111 @@
       "originalName": "field_g",
       "to": "bitMasks",
       "evidence": "kk.java: Low-bit masks indexed by bit count, including a full32-bit mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_A:I",
+      "originalName": "field_A",
+      "to": "currentGain",
+      "evidence": "kl.java: Current mono gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_m:I",
+      "originalName": "field_m",
+      "to": "loopStart",
+      "evidence": "kl.java: Retained source loop start sample index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_n:I",
+      "originalName": "field_n",
+      "to": "pan",
+      "evidence": "kl.java: Pan input, normally0..16384; negative yields phase-inverted right channel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_o:I",
+      "originalName": "field_o",
+      "to": "rightGain",
+      "evidence": "kl.java: Current right-channel gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_p:I",
+      "originalName": "field_p",
+      "to": "step256",
+      "evidence": "kl.java: Signed fixed8 cursor increment per output frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_q:I",
+      "originalName": "field_q",
+      "to": "leftGain",
+      "evidence": "kl.java: Current left-channel gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_r:I",
+      "originalName": "field_r",
+      "to": "position256",
+      "evidence": "kl.java: Fixed8 sample cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_s:I",
+      "originalName": "field_s",
+      "to": "loopCount",
+      "evidence": "kl.java: Remaining wraps/reflections; negative means indefinite looping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_t:Z",
+      "originalName": "field_t",
+      "to": "pingPong",
+      "evidence": "kl.java: Retained source loop reflection mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_u:I",
+      "originalName": "field_u",
+      "to": "gainStep",
+      "evidence": "kl.java: Per-frame mono gain ramp step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_v:I",
+      "originalName": "field_v",
+      "to": "leftGainStep",
+      "evidence": "kl.java: Per-frame left gain ramp step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_w:I",
+      "originalName": "field_w",
+      "to": "targetGain",
+      "evidence": "kl.java: Target internal gain; Integer.MIN_VALUE denotes fade-out removal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_x:I",
+      "originalName": "field_x",
+      "to": "rampRemaining",
+      "evidence": "kl.java: Frames remaining in gain/pan ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_y:I",
+      "originalName": "field_y",
+      "to": "loopEnd",
+      "evidence": "kl.java: Retained source loop end sample index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_z:I",
+      "originalName": "field_z",
+      "to": "rightGainStep",
+      "evidence": "kl.java: Per-frame right gain ramp step.",
       "confidence": "reviewed"
     },
     {
@@ -1529,10 +1704,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:l.field_i:I",
+      "originalName": "field_i",
+      "to": "baseGain",
+      "evidence": "l.java: Stream gain retained before applying master gain scaling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:l.field_j:Lkl;",
+      "originalName": "field_j",
+      "to": "stream",
+      "evidence": "l.java: Retained PCM stream queued for playback bookkeeping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:l.field_l:I",
       "originalName": "field_l",
       "to": "livePressX",
       "evidence": "l.java: AWT mousePressed x retained until next press.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:l.field_n:Lnm;",
+      "originalName": "field_n",
+      "to": "sourceNode",
+      "evidence": "l.java: Associated intrusive source node; UI playback uses stream itself.",
       "confidence": "reviewed"
     },
     {
@@ -1872,10 +2068,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ob.field_J:Lra;",
+      "originalName": "field_J",
+      "to": "soundMixer",
+      "evidence": "ob.java: Mixer receiving UI/sound PCM streams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:od.field_a:Ljava/awt/Component;",
       "originalName": "field_a",
       "to": "delegate",
       "evidence": "od.java: Component receiving forwarded paint/update calls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_j:Z",
+      "originalName": "field_j",
+      "to": "pingPong",
+      "evidence": "oe.java: Reflects playback direction at loop boundaries instead of wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_k:I",
+      "originalName": "field_k",
+      "to": "loopEnd",
+      "evidence": "oe.java: Sample index shifted8 bits for loop boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_l:I",
+      "originalName": "field_l",
+      "to": "sampleRate",
+      "evidence": "oe.java: Rate used by relative-speed factory against player output rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_m:[B",
+      "originalName": "field_m",
+      "to": "samples",
+      "evidence": "oe.java: Caller-owned signed PCM sample bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_n:I",
+      "originalName": "field_n",
+      "to": "loopStart",
+      "evidence": "oe.java: Sample index shifted8 bits for loop boundary.",
       "confidence": "reviewed"
     },
     {
@@ -2159,6 +2397,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qd.field_i:I",
+      "originalName": "field_i",
+      "to": "schedulerPriority",
+      "evidence": "qd.java: Priority retained when enqueued into player scheduling tier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qd.field_j:Z",
+      "originalName": "field_j",
+      "to": "enabled",
+      "evidence": "qd.java: Process fills when enabled, otherwise skips while preserving time progression.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qd.field_k:Lel;",
+      "originalName": "field_k",
+      "to": "data",
+      "evidence": "qd.java: Associated audio data and scheduling usage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qd.field_l:Lqd;",
+      "originalName": "field_l",
+      "to": "schedulerNext",
+      "evidence": "qd.java: Next stream in player scheduling tier.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qj.field_w:Lak;",
       "originalName": "field_w",
       "to": "match",
@@ -2191,6 +2457,34 @@
       "originalName": "field_O",
       "to": "pressY",
       "evidence": "qo.java: Frame snapshot of livePressY.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ra.field_m:Lvl;",
+      "originalName": "field_m",
+      "to": "listeners",
+      "evidence": "ra.java: Sorted sample-counted listener queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ra.field_n:I",
+      "originalName": "field_n",
+      "to": "nextListenerSample",
+      "evidence": "ra.java: Next listener sample boundary, or -1 when none.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ra.field_o:Lvl;",
+      "originalName": "field_o",
+      "to": "streams",
+      "evidence": "ra.java: Intrusive child audio streams.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ra.field_p:I",
+      "originalName": "field_p",
+      "to": "processedSamples",
+      "evidence": "ra.java: Samples accumulated since listener countdown normalization.",
       "confidence": "reviewed"
     },
     {
@@ -2306,6 +2600,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ta.field_e:[Loe;",
+      "originalName": "field_e",
+      "to": "uiSounds",
+      "evidence": "ta.java: PCM sound array indexed by menu selection and slider feedback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tb.field_fb:I",
       "originalName": "field_fb",
       "to": "pressX",
@@ -2317,6 +2618,48 @@
       "originalName": "field_a",
       "to": "javaKeyCodeMap",
       "evidence": "tf.java: Java key-code translation table; bit7 suppresses press events and is stripped for releases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_e:Lqd;",
+      "originalName": "field_e",
+      "to": "rootStream",
+      "evidence": "tj.java: Top-level stream filled by player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_g:Z",
+      "originalName": "field_g",
+      "to": "stereo",
+      "evidence": "tj.java: Selects interleaved stereo versus mono kernels and output buffer size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_n:[I",
+      "originalName": "field_n",
+      "to": "samples",
+      "evidence": "tj.java: Player output mixing buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_p:[Lqd;",
+      "originalName": "field_p",
+      "to": "priorityHeads",
+      "evidence": "tj.java: Eight scheduling-tier head pointers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_q:I",
+      "originalName": "field_q",
+      "to": "sampleRate",
+      "evidence": "tj.java: Shared output sample rate used by stream rate conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_u:[Lqd;",
+      "originalName": "field_u",
+      "to": "priorityTails",
+      "evidence": "tj.java: Eight scheduling-tier tail pointers.",
       "confidence": "reviewed"
     },
     {
@@ -2737,6 +3080,20 @@
       "originalName": "field_t",
       "to": "remainingTicks",
       "evidence": "vp.java: Eligible splash countdown starts at250; input/timeout returns to screen0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wd.field_v:Lvl;",
+      "originalName": "field_v",
+      "to": "soundPlaybacks",
+      "evidence": "wd.java: Sound playback association queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wf.field_i:I",
+      "originalName": "field_i",
+      "to": "remainingSamples",
+      "evidence": "wf.java: Listener countdown reduced when mixer sample counts are normalized.",
       "confidence": "reviewed"
     },
     {
@@ -3283,6 +3640,27 @@
       "originalName": "var6",
       "to": "value",
       "evidence": "pi.java: Accumulated MSB-first input bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ra.c(I)V#0",
+      "originalName": "var2",
+      "to": "stream",
+      "evidence": "ra.java: Current child stream to skip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ra.c([III)V#0",
+      "originalName": "var4",
+      "to": "stream",
+      "evidence": "ra.java: Current child stream processed into output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Lqd;)V#0",
+      "originalName": "var1",
+      "to": "child",
+      "evidence": "tj.java: Current child stream during recursive scheduling reset.",
       "confidence": "reviewed"
     },
     {
@@ -4084,6 +4462,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ie.a()Lqd;",
+      "originalName": "a",
+      "to": "firstSubStream",
+      "evidence": "qd.java: Returns first child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.b()I",
+      "originalName": "b",
+      "to": "getSchedulingCost",
+      "evidence": "qd.java: Contribution to player scheduling budget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.b([III)V",
+      "originalName": "b",
+      "to": "fill",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.d()Lqd;",
+      "originalName": "d",
+      "to": "nextSubStream",
+      "evidence": "qd.java: Returns next child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:il.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -4270,6 +4683,216 @@
       "originalName": "a",
       "to": "setMessageText",
       "evidence": "kk.java: Installs message text for screen11; true guard preserves unrelated static field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a()Lqd;",
+      "originalName": "a",
+      "to": "firstSubStream",
+      "evidence": "qd.java: Returns first child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(II)V",
+      "originalName": "a",
+      "to": "rampGain",
+      "evidence": "kl.java: Delegates requested frames/gain using retained pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(III)V",
+      "originalName": "a",
+      "to": "rampGainAndPan",
+      "evidence": "kl.java: Computes bounded per-channel integer ramp; zero frames sets immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Loe;II)Lkl;",
+      "originalName": "a",
+      "to": "createWithVolume",
+      "evidence": "kl.java: Rejects null/empty sample data and uses explicit step with volume shifted6 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Loe;III)Lkl;",
+      "originalName": "a",
+      "to": "createWithGain",
+      "evidence": "kl.java: Rejects null/empty sample data and uses explicit step/internal gain/pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.b()I",
+      "originalName": "b",
+      "to": "getSchedulingCost",
+      "evidence": "qd.java: Contribution to player scheduling budget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.b(II)I",
+      "originalName": "b",
+      "to": "calculateLeftGain",
+      "evidence": "kl.java: Equal-power left gain; negative pan returns supplied gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.b(Loe;II)Lkl;",
+      "originalName": "b",
+      "to": "createAtRate",
+      "evidence": "kl.java: Rejects null/empty sample data and converts relative speed percent using source/output rates; volume shifted6 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.b(Z)V",
+      "originalName": "b",
+      "to": "setReverse",
+      "evidence": "kl.java: Sets sign of absolute step from supplied direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.b([III)V",
+      "originalName": "b",
+      "to": "fill",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.c()I",
+      "originalName": "c",
+      "to": "getPriority",
+      "evidence": "qd.java: Default255, overridden by PCM gain/position-dependent priority. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.c(I)V",
+      "originalName": "c",
+      "to": "setSpeed",
+      "evidence": "kl.java: Uses current direction when supplied magnitude is nonnegative; original unvalidated argument behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.c(II)V",
+      "originalName": "c",
+      "to": "setGainAndPan",
+      "evidence": "kl.java: Sets internal gain/pan, cancels ramp and recalculates channel gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.d()Lqd;",
+      "originalName": "d",
+      "to": "nextSubStream",
+      "evidence": "qd.java: Returns next child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.d(I)V",
+      "originalName": "d",
+      "to": "setVolume",
+      "evidence": "kl.java: Sets volume shifted6 bits immediately, retaining pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.d(II)I",
+      "originalName": "d",
+      "to": "calculateRightGain",
+      "evidence": "kl.java: Equal-power right gain; negative pan returns negated supplied gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.e()I",
+      "originalName": "e",
+      "to": "getSpeed",
+      "evidence": "kl.java: Absolute signed step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.e(I)V",
+      "originalName": "e",
+      "to": "setGain",
+      "evidence": "kl.java: Sets internal gain immediately, retaining normalized pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.f()I",
+      "originalName": "f",
+      "to": "getPan",
+      "evidence": "kl.java: Reports retained pan or -1 for any negative input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.f(I)V",
+      "originalName": "f",
+      "to": "setLoopCount",
+      "evidence": "kl.java: Retains loop count; negative indicates indefinite looping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.g()I",
+      "originalName": "g",
+      "to": "getGain",
+      "evidence": "kl.java: Target internal gain, with fade-out sentinel reported as0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.g(I)V",
+      "originalName": "g",
+      "to": "fadeOut",
+      "evidence": "kl.java: Ramps gain to zero/removal or unlinks immediately for zero frames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.h()I",
+      "originalName": "h",
+      "to": "getVolume",
+      "evidence": "kl.java: Target gain rounded by32 then shifted6, with fade sentinel reported as0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.h(I)V",
+      "originalName": "h",
+      "to": "setPosition",
+      "evidence": "kl.java: Clamps fixed8 cursor to -1..sample length shifted8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.i()V",
+      "originalName": "i",
+      "to": "cancelRamp",
+      "evidence": "kl.java: Cancels ramp and clears fade sentinel before recalculating gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.j()Z",
+      "originalName": "j",
+      "to": "finishRamp",
+      "evidence": "kl.java: Converges residual per-channel gain differences, unlinking completed fade-outs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.k()Z",
+      "originalName": "k",
+      "to": "isRamping",
+      "evidence": "kl.java: Tests nonzero ramp frames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.l()Z",
+      "originalName": "l",
+      "to": "isOutOfRange",
+      "evidence": "kl.java: Tests cursor before0 or at/after sample end.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.m()V",
+      "originalName": "m",
+      "to": "recalculateGains",
+      "evidence": "kl.java: Sets current mono gain and square-root panned channel gains.",
       "confidence": "reviewed"
     },
     {
@@ -4690,6 +5313,41 @@
       "originalName": "g",
       "to": "drawMenuFrame",
       "evidence": "lh.java: Frames bounds between first/last menu buttons with15-pixel margin; guard above34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a()Lqd;",
+      "originalName": "a",
+      "to": "firstSubStream",
+      "evidence": "qd.java: Returns first child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.b()I",
+      "originalName": "b",
+      "to": "getSchedulingCost",
+      "evidence": "qd.java: Contribution to player scheduling budget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.b([III)V",
+      "originalName": "b",
+      "to": "fill",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.d()Lqd;",
+      "originalName": "d",
+      "to": "nextSubStream",
+      "evidence": "qd.java: Returns next child stream for player traversal. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5120,6 +5778,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qd.a()Lqd;",
+      "originalName": "a",
+      "to": "firstSubStream",
+      "evidence": "qd.java: Returns first child stream for player traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "qd.java: Advances requested frames without emitting samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a([III)V",
+      "originalName": "a",
+      "to": "process",
+      "evidence": "qd.java: Dispatches fill or skip from enabled flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.b()I",
+      "originalName": "b",
+      "to": "getSchedulingCost",
+      "evidence": "qd.java: Contribution to player scheduling budget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.b([III)V",
+      "originalName": "b",
+      "to": "fill",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.c()I",
+      "originalName": "c",
+      "to": "getPriority",
+      "evidence": "qd.java: Default255, overridden by PCM gain/position-dependent priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.d()Lqd;",
+      "originalName": "d",
+      "to": "nextSubStream",
+      "evidence": "qd.java: Returns next child stream for player traversal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -5166,6 +5873,90 @@
       "originalName": "b",
       "to": "pollRotation",
       "evidence": "gk.java: Returns accumulated signed rotation and clears it; guard500. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a()Lqd;",
+      "originalName": "a",
+      "to": "firstSubStream",
+      "evidence": "qd.java: Returns first child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(Lnm;Lwf;)V",
+      "originalName": "a",
+      "to": "scheduleListener",
+      "evidence": "ra.java: Inserts listener before next larger countdown and updates next boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(Lqd;)V",
+      "originalName": "a",
+      "to": "removeStream",
+      "evidence": "ra.java: Unlinks supplied child stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(Lwf;)V",
+      "originalName": "a",
+      "to": "removeListener",
+      "evidence": "ra.java: Unlinks/cleans listener and updates next boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.b()I",
+      "originalName": "b",
+      "to": "getSchedulingCost",
+      "evidence": "qd.java: Contribution to player scheduling budget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.b(Lqd;)V",
+      "originalName": "b",
+      "to": "addStream",
+      "evidence": "ra.java: Adds/moves stream to child deque front.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.b([III)V",
+      "originalName": "b",
+      "to": "fill",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.c(I)V",
+      "originalName": "c",
+      "to": "skipStreams",
+      "evidence": "ra.java: Advances every child stream directly.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.c([III)V",
+      "originalName": "c",
+      "to": "processStreams",
+      "evidence": "ra.java: Calls enabled-aware process on every child stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.d()Lqd;",
+      "originalName": "d",
+      "to": "nextSubStream",
+      "evidence": "qd.java: Returns next child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.e()V",
+      "originalName": "e",
+      "to": "normalizeListenerTimes",
+      "evidence": "ra.java: Subtracts accumulated sample count from listener countdowns and resets accumulator.",
       "confidence": "reviewed"
     },
     {
@@ -5358,10 +6149,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sk.a(BLkl;)Ll;",
+      "originalName": "a",
+      "to": "queueSoundPlayback",
+      "evidence": "sk.java: Creates association, queues it and adds stream to sound mixer; canonical guard117.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:td.a([Lvl;[BLkq;Lvl;Lga;I)I",
       "originalName": "a",
       "to": "decodeLevelBytes",
       "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(Lqd;)V",
+      "originalName": "a",
+      "to": "resetSchedulingTree",
+      "evidence": "tj.java: Disables stream and clears associated data usage recursively across children.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(Lqd;I)V",
+      "originalName": "a",
+      "to": "enqueueStream",
+      "evidence": "tj.java: Adds stream at scheduling tier priority shifted5, retaining priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.b(Lqd;)V",
+      "originalName": "b",
+      "to": "setRootStream",
+      "evidence": "tj.java: Sets top-level audio stream.",
       "confidence": "reviewed"
     },
     {
@@ -5390,6 +6209,41 @@
       "originalName": "e",
       "to": "getSecondaryKey",
       "evidence": "tk.java: Returns retained secondary key; guard -19451.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.a()Lqd;",
+      "originalName": "a",
+      "to": "firstSubStream",
+      "evidence": "qd.java: Returns first child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.b()I",
+      "originalName": "b",
+      "to": "getSchedulingCost",
+      "evidence": "qd.java: Contribution to player scheduling budget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.b([III)V",
+      "originalName": "b",
+      "to": "fill",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.d()Lqd;",
+      "originalName": "d",
+      "to": "nextSubStream",
+      "evidence": "qd.java: Returns next child stream for player traversal. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5771,6 +6625,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vp.a(ILoe;)Ll;",
+      "originalName": "a",
+      "to": "playSound",
+      "evidence": "vp.java: Builds rate100/volume96 stream and installs playback association; guard at least75.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vp.a(ZZI)V",
       "originalName": "a",
       "to": "advanceScreen",
@@ -5806,6 +6667,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wf.a()V",
+      "originalName": "a",
+      "to": "onRemoved",
+      "evidence": "wf.java: Cleanup hook invoked after mixer listener unlink.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(Lra;)I",
+      "originalName": "a",
+      "to": "onBoundary",
+      "evidence": "wf.java: Returns next countdown or negative to remove listener.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wg.a(ILkm;)V",
       "originalName": "a",
       "to": "registerMenuScreen",
@@ -5824,6 +6699,13 @@
       "originalName": "b",
       "to": "snapshotKeyboardInput",
       "evidence": "wn.java: Under keyboard listener monitor updates held flags, resets all112 flags after overflow/focus loss, drops unread prior-frame events and freezes new frame end; guard -97.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a(ILoe;)V",
+      "originalName": "a",
+      "to": "playUiSound",
+      "evidence": "wp.java: Guard8 delegates PCM sound playback construction.",
       "confidence": "reviewed"
     },
     {
@@ -7864,6 +8746,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ie.a(I)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.b([III)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.b([III)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.b([III)V#2",
+      "originalName": "param2",
+      "to": "frames",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:il.a(ILjava/lang/StringBuilder;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -8263,6 +9173,279 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kl.<init>(Loe;II)V#0",
+      "originalName": "param0",
+      "to": "sound",
+      "evidence": "kl.java: Retains PCM data, signed step, internal gain and centered pan8192.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.<init>(Loe;II)V#1",
+      "originalName": "param1",
+      "to": "step256",
+      "evidence": "kl.java: Retains PCM data, signed step, internal gain and centered pan8192.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.<init>(Loe;II)V#2",
+      "originalName": "param2",
+      "to": "gain",
+      "evidence": "kl.java: Retains PCM data, signed step, internal gain and centered pan8192.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.<init>(Loe;III)V#0",
+      "originalName": "param0",
+      "to": "sound",
+      "evidence": "kl.java: Retains PCM data, signed step, internal gain and explicit pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.<init>(Loe;III)V#1",
+      "originalName": "param1",
+      "to": "step256",
+      "evidence": "kl.java: Retains PCM data, signed step, internal gain and explicit pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.<init>(Loe;III)V#2",
+      "originalName": "param2",
+      "to": "gain",
+      "evidence": "kl.java: Retains PCM data, signed step, internal gain and explicit pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.<init>(Loe;III)V#3",
+      "originalName": "param3",
+      "to": "pan",
+      "evidence": "kl.java: Retains PCM data, signed step, internal gain and explicit pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(I)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(II)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "kl.java: Delegates requested frames/gain using retained pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(II)V#1",
+      "originalName": "param1",
+      "to": "gain",
+      "evidence": "kl.java: Delegates requested frames/gain using retained pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(III)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "kl.java: Computes bounded per-channel integer ramp; zero frames sets immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(III)V#1",
+      "originalName": "param1",
+      "to": "gain",
+      "evidence": "kl.java: Computes bounded per-channel integer ramp; zero frames sets immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(III)V#2",
+      "originalName": "param2",
+      "to": "pan",
+      "evidence": "kl.java: Computes bounded per-channel integer ramp; zero frames sets immediately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(Loe;II)Lkl;#0",
+      "originalName": "param0",
+      "to": "sound",
+      "evidence": "kl.java: Rejects null/empty sample data and uses explicit step with volume shifted6 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(Loe;II)Lkl;#1",
+      "originalName": "param1",
+      "to": "step256",
+      "evidence": "kl.java: Rejects null/empty sample data and uses explicit step with volume shifted6 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(Loe;II)Lkl;#2",
+      "originalName": "param2",
+      "to": "volume",
+      "evidence": "kl.java: Rejects null/empty sample data and uses explicit step with volume shifted6 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(Loe;III)Lkl;#0",
+      "originalName": "param0",
+      "to": "sound",
+      "evidence": "kl.java: Rejects null/empty sample data and uses explicit step/internal gain/pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(Loe;III)Lkl;#1",
+      "originalName": "param1",
+      "to": "step256",
+      "evidence": "kl.java: Rejects null/empty sample data and uses explicit step/internal gain/pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(Loe;III)Lkl;#2",
+      "originalName": "param2",
+      "to": "gain",
+      "evidence": "kl.java: Rejects null/empty sample data and uses explicit step/internal gain/pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.a(Loe;III)Lkl;#3",
+      "originalName": "param3",
+      "to": "pan",
+      "evidence": "kl.java: Rejects null/empty sample data and uses explicit step/internal gain/pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(II)I#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "kl.java: Equal-power left gain; negative pan returns supplied gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(II)I#1",
+      "originalName": "param1",
+      "to": "pan",
+      "evidence": "kl.java: Equal-power left gain; negative pan returns supplied gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(Loe;II)Lkl;#0",
+      "originalName": "param0",
+      "to": "sound",
+      "evidence": "kl.java: Rejects null/empty sample data and converts relative speed percent using source/output rates; volume shifted6 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(Loe;II)Lkl;#1",
+      "originalName": "param1",
+      "to": "speedPercent",
+      "evidence": "kl.java: Rejects null/empty sample data and converts relative speed percent using source/output rates; volume shifted6 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(Loe;II)Lkl;#2",
+      "originalName": "param2",
+      "to": "volume",
+      "evidence": "kl.java: Rejects null/empty sample data and converts relative speed percent using source/output rates; volume shifted6 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b(Z)V#0",
+      "originalName": "param0",
+      "to": "reverse",
+      "evidence": "kl.java: Sets sign of absolute step from supplied direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b([III)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b([III)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.b([III)V#2",
+      "originalName": "param2",
+      "to": "frames",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.c(I)V#0",
+      "originalName": "param0",
+      "to": "magnitude",
+      "evidence": "kl.java: Uses current direction when supplied magnitude is nonnegative; original unvalidated argument behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.c(II)V#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "kl.java: Sets internal gain/pan, cancels ramp and recalculates channel gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.c(II)V#1",
+      "originalName": "param1",
+      "to": "pan",
+      "evidence": "kl.java: Sets internal gain/pan, cancels ramp and recalculates channel gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.d(I)V#0",
+      "originalName": "param0",
+      "to": "volume",
+      "evidence": "kl.java: Sets volume shifted6 bits immediately, retaining pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.d(II)I#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "kl.java: Equal-power right gain; negative pan returns negated supplied gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.d(II)I#1",
+      "originalName": "param1",
+      "to": "pan",
+      "evidence": "kl.java: Equal-power right gain; negative pan returns negated supplied gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.e(I)V#0",
+      "originalName": "param0",
+      "to": "gain",
+      "evidence": "kl.java: Sets internal gain immediately, retaining normalized pan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.f(I)V#0",
+      "originalName": "param0",
+      "to": "loopCount",
+      "evidence": "kl.java: Retains loop count; negative indicates indefinite looping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.g(I)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "kl.java: Ramps gain to zero/removal or unlinks immediately for zero frames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kl.h(I)V#0",
+      "originalName": "param0",
+      "to": "position256",
+      "evidence": "kl.java: Clamps fixed8 cursor to -1..sample length shifted8.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:km.<init>(IIIII[I)V#0",
       "originalName": "param0",
       "to": "screenId",
@@ -8575,6 +9758,20 @@
       "originalName": "param0",
       "to": "value",
       "evidence": "kq.java: Retains integer node value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:l.<init>(Lkl;Lnm;)V#0",
+      "originalName": "param0",
+      "to": "stream",
+      "evidence": "l.java: Retains stream/source and base gain, then applies rounded master scaling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:l.<init>(Lkl;Lnm;)V#1",
+      "originalName": "param1",
+      "to": "sourceNode",
+      "evidence": "l.java: Retains stream/source and base gain, then applies rounded master scaling.",
       "confidence": "reviewed"
     },
     {
@@ -9439,6 +10636,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:lk.a(I)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lk.b([III)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lk.b([III)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lk.b([III)V#2",
+      "originalName": "param2",
+      "to": "frames",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:md.a(BI)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -9842,6 +11067,69 @@
       "originalName": "param0",
       "to": "graphics",
       "evidence": "od.java: AWT graphics forwarded to delegate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>(I[BII)V#0",
+      "originalName": "param0",
+      "to": "sampleRate",
+      "evidence": "oe.java: Retains caller sample array, rate and loop indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>(I[BII)V#1",
+      "originalName": "param1",
+      "to": "samples",
+      "evidence": "oe.java: Retains caller sample array, rate and loop indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>(I[BII)V#2",
+      "originalName": "param2",
+      "to": "loopStart",
+      "evidence": "oe.java: Retains caller sample array, rate and loop indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>(I[BII)V#3",
+      "originalName": "param3",
+      "to": "loopEnd",
+      "evidence": "oe.java: Retains caller sample array, rate and loop indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>(I[BIIZ)V#0",
+      "originalName": "param0",
+      "to": "sampleRate",
+      "evidence": "oe.java: Retains caller sample array, rate, loop indices and reflection flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>(I[BIIZ)V#1",
+      "originalName": "param1",
+      "to": "samples",
+      "evidence": "oe.java: Retains caller sample array, rate, loop indices and reflection flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>(I[BIIZ)V#2",
+      "originalName": "param2",
+      "to": "loopStart",
+      "evidence": "oe.java: Retains caller sample array, rate, loop indices and reflection flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>(I[BIIZ)V#3",
+      "originalName": "param3",
+      "to": "loopEnd",
+      "evidence": "oe.java: Retains caller sample array, rate, loop indices and reflection flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>(I[BIIZ)V#4",
+      "originalName": "param4",
+      "to": "pingPong",
+      "evidence": "oe.java: Retains caller sample array, rate, loop indices and reflection flag.",
       "confidence": "reviewed"
     },
     {
@@ -10643,6 +11931,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qd.a(I)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "qd.java: Advances requested frames without emitting samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.a([III)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "qd.java: Dispatches fill or skip from enabled flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.a([III)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "qd.java: Dispatches fill or skip from enabled flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.a([III)V#2",
+      "originalName": "param2",
+      "to": "frames",
+      "evidence": "qd.java: Dispatches fill or skip from enabled flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.b([III)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.b([III)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.b([III)V#2",
+      "originalName": "param2",
+      "to": "frames",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qj.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
@@ -10745,6 +12082,97 @@
       "originalName": "param0",
       "to": "event",
       "evidence": "qk.java: AWT wheel event whose signed rotation is accumulated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(I)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(Lnm;Lwf;)V#0",
+      "originalName": "param0",
+      "to": "startNode",
+      "evidence": "ra.java: Inserts listener before next larger countdown and updates next boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(Lnm;Lwf;)V#1",
+      "originalName": "param1",
+      "to": "listener",
+      "evidence": "ra.java: Inserts listener before next larger countdown and updates next boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(Lqd;)V#0",
+      "originalName": "param0",
+      "to": "stream",
+      "evidence": "ra.java: Unlinks supplied child stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(Lwf;)V#0",
+      "originalName": "param0",
+      "to": "listener",
+      "evidence": "ra.java: Unlinks/cleans listener and updates next boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.b(Lqd;)V#0",
+      "originalName": "param0",
+      "to": "stream",
+      "evidence": "ra.java: Adds/moves stream to child deque front.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.b([III)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.b([III)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.b([III)V#2",
+      "originalName": "param2",
+      "to": "frames",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.c(I)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "ra.java: Advances every child stream directly.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.c([III)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "ra.java: Calls enabled-aware process on every child stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.c([III)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "ra.java: Calls enabled-aware process on every child stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.c([III)V#2",
+      "originalName": "param2",
+      "to": "frames",
+      "evidence": "ra.java: Calls enabled-aware process on every child stream.",
       "confidence": "reviewed"
     },
     {
@@ -11077,6 +12505,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sk.a(BLkl;)Ll;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sk.java: Creates association, queues it and adds stream to sound mixer; canonical guard117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a(BLkl;)Ll;#1",
+      "originalName": "param1",
+      "to": "stream",
+      "evidence": "sk.java: Creates association, queues it and adds stream to sound mixer; canonical guard117.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:td.a([Lvl;[BLkq;Lvl;Lga;I)I#0",
       "originalName": "param0",
       "to": "brickGroups",
@@ -11119,6 +12561,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tj.a(Lqd;)V#0",
+      "originalName": "param0",
+      "to": "stream",
+      "evidence": "tj.java: Disables stream and clears associated data usage recursively across children.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(Lqd;I)V#0",
+      "originalName": "param0",
+      "to": "stream",
+      "evidence": "tj.java: Adds stream at scheduling tier priority shifted5, retaining priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(Lqd;I)V#1",
+      "originalName": "param1",
+      "to": "priority",
+      "evidence": "tj.java: Adds stream at scheduling tier priority shifted5, retaining priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.b(Lqd;)V#0",
+      "originalName": "param0",
+      "to": "stream",
+      "evidence": "tj.java: Sets top-level audio stream.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tk.a(JI)V#0",
       "originalName": "param0",
       "to": "key",
@@ -11151,6 +12621,34 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "tk.java: Returns retained secondary key; guard -19451.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(I)V#0",
+      "originalName": "param0",
+      "to": "frames",
+      "evidence": "qd.java: Advances requested frames without emitting samples. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.b([III)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.b([III)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.b([III)V#2",
+      "originalName": "param2",
+      "to": "frames",
+      "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -12050,6 +13548,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vp.a(ILoe;)Ll;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vp.java: Builds rate100/volume96 stream and installs playback association; guard at least75.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a(ILoe;)Ll;#1",
+      "originalName": "param1",
+      "to": "sound",
+      "evidence": "vp.java: Builds rate100/volume96 stream and installs playback association; guard at least75.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vp.a(ZZI)V#0",
       "originalName": "param0",
       "to": "updateFlag",
@@ -12099,6 +13611,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wf.a(Lra;)I#0",
+      "originalName": "param0",
+      "to": "mixer",
+      "evidence": "wf.java: Returns next countdown or negative to remove listener.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wg.a(ILkm;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -12131,6 +13650,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "wn.java: Under keyboard listener monitor updates held flags, resets all112 flags after overflow/focus loss, drops unread prior-frame events and freezes new frame end; guard -97.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(ILoe;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wp.java: Guard8 delegates PCM sound playback construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wp.a(ILoe;)V#1",
+      "originalName": "param1",
+      "to": "sound",
+      "evidence": "wp.java: Guard8 delegates PCM sound playback construction.",
       "confidence": "reviewed"
     },
     {
@@ -12660,9 +14193,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "f8338345c65aba86e594cb9117e2d8966ffb1c47c44d2a756bf2c46abd33e76f",
+      "build-brickabrac-rules.mjs": "6f60457f5944e20c6ef56fd89b0e53751d058521ec08f3c42a0771e9c569de9e",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "c534b66d50dcf3842cdf396e5164c42df3a892730aa91b432cd5d61487c28ef8",
+      "tests/test-brickabrac-core.mjs": "8e66d61f357dc0a9051f941a44f7bf789d67377d77f9648a130be83ab8b9dbd9",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

@@ -59,6 +59,9 @@ menus, highscores, rankings, instructions, achievement browsers, save prompts,
 messages, options, pack selection and level/match completion/exit presentations.
 AchievementIcon, TooltipSprite and IntrusiveHashTable expose pooled icon state,
 main-menu tooltip rendering and intrusive keyed storage.
+AudioData, PcmSound, AudioStream, AudioMixer, AudioMixerListener, PcmStream,
+SoundPlayback and PcmPlayer expose sample storage, stream processing, scheduling
+and the device boundary.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -301,6 +304,30 @@ collisions, duplicate keys, ownership transfer and traversal. Click fixtures use
 a one-sample silent sound and a real in-memory mixer without playback. Thumbnail
 regeneration, selection/hover halos, tooltip text drawing, simultaneous page
 animations and audio playback remain unverified.
+
+PCM sounds retain caller-owned signed-byte samples, sample rate, loop indices and
+ping-pong mode. AudioStream separates fill, skip, enabled-aware process, child
+traversal, scheduling cost and priority. PcmStream names its fixed8 cursor/step,
+loop count/bounds, gain/pan targets, current channel gains and ramp state. Its
+factories distinguish explicit step/gain, volume scaling and relative-rate
+conversion. Integer.MIN_VALUE remains the fade-out sentinel reported as zero
+gain; negative pan retains phase-inverted right-channel behavior.
+
+AudioMixer names child streams, listener queue and sample-counted scheduling.
+PcmPlayer owns the output buffer/root stream and priority-tier queues; recursive
+scheduling reset disables streams and clears shared data usage. SoundPlayback
+retains stream/source/base gain and applies rounded master-gain scaling. Unrelated
+static globals stay in their original owners. The listener's original private
+throwing constructor remains unchanged.
+
+Native fixtures use synthetic child streams and real PCM streams in memory.
+They cover enabled processing, mixer summation/removal/traversal/reset, null/empty
+samples, rate conversion, cursor bounds, mono/stereo aligned forward/reverse
+output, equal-power/negative panning, half-sample forward interpolation, finite
+and indefinite wrapping/ping-pong loops, skip progression, gain ramp/fade removal,
+volume/speed setters and playback gain associations. Listener callbacks, device
+I/O, MIDI synthesis, reverse interpolation, ramped output kernels and real audio
+playback remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
