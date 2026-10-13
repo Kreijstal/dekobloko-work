@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 24,
+  "version": 25,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -269,6 +269,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:al",
+      "originalName": "al",
+      "to": "AchievementMaskRequest",
+      "evidence": "al.java: Intrusive pending request for eight achievement-mask words with completion flag; common type0/type2 responses. Unrelated static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ao",
       "originalName": "ao",
       "to": "ObjectHistoryBuffer",
@@ -364,6 +371,13 @@
       "originalName": "dq",
       "to": "LevelDecoder",
       "evidence": "dq.java: Versioned level parser for brick groups, paths, flags and state; also contains an unrelated packet transform helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:e",
+      "originalName": "e",
+      "to": "AchievementSubmission",
+      "evidence": "e.java: Queued achievement ID, qualified submission byte and four result words; common type1 CRC32 packet and FIFO acknowledgment. Unrelated static helpers retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -1424,10 +1438,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:al.field_i:Z",
+      "originalName": "field_i",
+      "to": "complete",
+      "evidence": "al.java: Marked true before request unlinks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:al.field_j:Lwb;",
       "originalName": "field_j",
       "to": "uiLifecycle",
       "evidence": "al.java: Registered game UI lifecycle callbacks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:al.field_k:[I",
+      "originalName": "field_k",
+      "to": "achievementMask",
+      "evidence": "al.java: Eight returned mask words; type2 supplies a new zeroed array.",
       "confidence": "reviewed"
     },
     {
@@ -1879,6 +1907,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:e.field_i:I",
+      "originalName": "field_i",
+      "to": "submissionByte",
+      "evidence": "e.java: Second qualified byte; some gameplay paths require complement of achievement ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:e.field_k:I",
+      "originalName": "field_k",
+      "to": "resultWordOne",
+      "evidence": "e.java: First qualified32-bit result word, copied from running counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:e.field_m:I",
+      "originalName": "field_m",
+      "to": "resultWordThree",
+      "evidence": "e.java: Third qualified32-bit result word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:e.field_n:I",
+      "originalName": "field_n",
+      "to": "resultWordTwo",
+      "evidence": "e.java: Second qualified32-bit result word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:e.field_o:I",
+      "originalName": "field_o",
+      "to": "achievementId",
+      "evidence": "e.java: First submitted byte, also passed to gameplay achievement recording.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:e.field_p:I",
+      "originalName": "field_p",
+      "to": "resultWordFour",
+      "evidence": "e.java: Fourth qualified32-bit result word.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ee.field_t:I",
       "originalName": "field_t",
       "to": "durationTicks",
@@ -1939,6 +2009,13 @@
       "originalName": "field_r",
       "to": "rowIds",
       "evidence": "eg.java: Three response partitions of64-bit row IDs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_F:Lvl;",
+      "originalName": "field_F",
+      "to": "pendingAchievementMaskRequests",
+      "evidence": "ej.java: FIFO mask requests completed by type0/type2 responses.",
       "confidence": "reviewed"
     },
     {
@@ -2604,6 +2681,13 @@
       "originalName": "field_F",
       "to": "simulationTick",
       "evidence": "j.java: Player board constructor, queued attack scheduling, brick/ball/paddle geometry and scoring paths; board offset participates in scrolling/progress state; finer meaning remains qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_H:I",
+      "originalName": "field_H",
+      "to": "characterIndex",
+      "evidence": "j.java: Selects character-head sprite during board-name drawing; supplied by shuffled character order.",
       "confidence": "reviewed"
     },
     {
@@ -3832,6 +3916,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lp.field_wb:Lvl;",
+      "originalName": "field_wb",
+      "to": "queuedAchievementSubmissions",
+      "evidence": "lp.java: Unsent award records drained by client update when session permits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lq.field_f:Ltk;",
       "originalName": "field_f",
       "to": "cursor",
@@ -4014,6 +4105,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:na.field_Q:Lvl;",
+      "originalName": "field_Q",
+      "to": "pendingAchievementSubmissions",
+      "evidence": "na.java: Submitted records retained until FIFO type1 acknowledgment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nb.field_b:[Lpk;",
       "originalName": "field_b",
       "to": "tableNameScratch",
@@ -4193,6 +4291,13 @@
       "originalName": "field_s",
       "to": "sprite",
       "evidence": "nq.java: Retained image drawn and hit-tested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:o.field_d:I",
+      "originalName": "field_d",
+      "to": "enabledFeatureMask",
+      "evidence": "o.java: Feature bits tested by card/helper; bit0 controls inclusion of final character in available order.",
       "confidence": "reviewed"
     },
     {
@@ -4931,6 +5036,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qj.field_t:I",
+      "originalName": "field_t",
+      "to": "progressBaseLevel",
+      "evidence": "qj.java: Level baseline used for score/progress offsets and packed start/end range; initialized by level selection and adjusted by keyboard branches.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qj.field_w:Lak;",
       "originalName": "field_w",
       "to": "match",
@@ -5313,6 +5425,13 @@
       "originalName": "field_b",
       "to": "cacheSectorScratch",
       "evidence": "tf.java: Shared520-byte sector/index scratch under data-file lock.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tf.field_g:[Ljp;",
+      "originalName": "field_g",
+      "to": "trackHeads",
+      "evidence": "tf.java: Loaded track_heads sprites; length bounds shuffled character IDs.",
       "confidence": "reviewed"
     },
     {
@@ -5705,6 +5824,13 @@
       "originalName": "field_i",
       "to": "x256",
       "evidence": "ul.java: Popup constructor, match lifetime update and cn drawing: integer score text, fixed8 coordinates and opacity remainingTicks/50.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_k:[Ljp;",
+      "originalName": "field_k",
+      "to": "characterHeads",
+      "evidence": "ul.java: Loaded character_heads sprites, indexed by board characterIndex.",
       "confidence": "reviewed"
     },
     {
@@ -6153,6 +6279,76 @@
       "originalName": "var6",
       "to": "clientBranchFlag",
       "evidence": "BrickABrac.java: Reviewed game-layer transition and notification rendering declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#25",
+      "originalName": "var8",
+      "to": "matchRandom",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#26",
+      "originalName": "var9",
+      "to": "seedWords",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#27",
+      "originalName": "var11",
+      "to": "repeatMode",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#28",
+      "originalName": "var12",
+      "to": "configuration",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#29",
+      "originalName": "var13",
+      "to": "backgroundSelector",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#30",
+      "originalName": "var15",
+      "to": "localPlayerMask",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#41",
+      "originalName": "var30",
+      "to": "playerNames",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#47",
+      "originalName": "var39",
+      "to": "randomSeeds",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#52",
+      "originalName": "var50",
+      "to": "characterOrder",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(Lpi;BI)Z#56",
+      "originalName": "var6Lifetime1",
+      "to": "localPlayerId",
+      "evidence": "BrickABrac.java: Reviewed match-start-specific local lifetime; other opcode branches retain their identities.",
       "confidence": "reviewed"
     },
     {
@@ -7224,6 +7420,34 @@
       "originalName": "var2Lifetime1",
       "to": "offsetStep",
       "evidence": "i.java: Signed quarter displacement rounded away from zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:id.a(Lfo;Z)[I#0",
+      "originalName": "var4",
+      "to": "index",
+      "evidence": "id.java: Reviewed available-character order declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:id.a(Lfo;Z)[I#1",
+      "originalName": "var2_int",
+      "to": "characterCount",
+      "evidence": "id.java: Reviewed available-character order declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:id.a(Lfo;Z)[I#3",
+      "originalName": "var3",
+      "to": "order",
+      "evidence": "id.java: Reviewed available-character order declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:id.a(Lfo;Z)[I#4",
+      "originalName": "var5",
+      "to": "clientBranchFlag",
+      "evidence": "id.java: Reviewed available-character order declaration.",
       "confidence": "reviewed"
     },
     {
@@ -8515,6 +8739,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:qi.a(I)V#0",
+      "originalName": "var7",
+      "to": "wordIndex",
+      "evidence": "qi.java: Reviewed common achievement-response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qi.a(I)V#11",
+      "originalName": "var12",
+      "to": "submission",
+      "evidence": "qi.java: Reviewed common achievement-response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qi.a(I)V#12",
+      "originalName": "var13",
+      "to": "maskRequest",
+      "evidence": "qi.java: Reviewed common achievement-response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qi.a(I)V#13",
+      "originalName": "var14",
+      "to": "packet",
+      "evidence": "qi.java: Reviewed common achievement-response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qi.a(I)V#14",
+      "originalName": "var15",
+      "to": "emptyMaskRequest",
+      "evidence": "qi.java: Reviewed common achievement-response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qi.a(I)V#3",
+      "originalName": "var2",
+      "to": "responseType",
+      "evidence": "qi.java: Reviewed common achievement-response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qi.a(I)V#4",
+      "originalName": "var3",
+      "to": "achievementMask",
+      "evidence": "qi.java: Reviewed common achievement-response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qi.a(I)V#7",
+      "originalName": "var6",
+      "to": "wordCount",
+      "evidence": "qi.java: Reviewed common achievement-response declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qi.a(I)V#8",
+      "originalName": "var8",
+      "to": "clientBranchFlag",
+      "evidence": "qi.java: Reviewed common achievement-response declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:qj.a(BLpi;Z)V#0",
       "originalName": "var6_int",
       "to": "maskIndex",
@@ -8659,6 +8946,20 @@
       "originalName": "var1",
       "to": "child",
       "evidence": "tj.java: Current child stream during recursive scheduling reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ud.a(ILe;B)V#0",
+      "originalName": "var6",
+      "to": "packet",
+      "evidence": "ud.java: Outgoing achievement envelope.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ud.a(ILe;B)V#1",
+      "originalName": "var4",
+      "to": "payloadStart",
+      "evidence": "ud.java: CRC/length origin after reserved byte.",
       "confidence": "reviewed"
     },
     {
@@ -9579,6 +9880,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:df.a(Le;II)V",
+      "originalName": "a",
+      "to": "submitAchievement",
+      "evidence": "df.java: Moves record to pending FIFO then sends; guard -161.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dh.a(C)I",
       "originalName": "a",
       "to": "getAdvance",
@@ -10209,6 +10517,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:id.a(Lfo;Z)[I",
+      "originalName": "a",
+      "to": "createCharacterOrder",
+      "evidence": "id.java: Builds sequential character IDs, excludes final ID without feature0 and shuffles using supplied generator; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ie.a()Lqd;",
       "originalName": "a",
       "to": "firstSubStream",
@@ -10815,6 +11130,13 @@
       "originalName": "a",
       "to": "copyBytes",
       "evidence": "ke.java: Fresh array copy; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.a([IBLfo;)V",
+      "originalName": "a",
+      "to": "shuffleFivePasses",
+      "evidence": "ke.java: Delegates five random-index-swap passes to shuffleValues; guard39.",
       "confidence": "reviewed"
     },
     {
@@ -11504,6 +11826,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lc.a(II)Z",
+      "originalName": "a",
+      "to": "hasFeatureBit",
+      "evidence": "lc.java: Feature -1 always true; others test enabledFeatureMask using Java masked shift; guard below -26.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lc.b(B)V",
       "originalName": "b",
       "to": "updateFocus",
@@ -11739,6 +12068,13 @@
       "originalName": "e",
       "to": "next",
       "evidence": "lq.java: Continues shared traversal; guard -8394.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.b(BI)V",
+      "originalName": "b",
+      "to": "sendAchievementMaskRequest",
+      "evidence": "ma.java: Ciphered opcode, length1 and type2 request; guard at most -49.",
       "confidence": "reviewed"
     },
     {
@@ -12036,6 +12372,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mq.a(BI)Lal;",
+      "originalName": "a",
+      "to": "requestAchievementMask",
+      "evidence": "mq.java: Appends new incomplete request then sends; guard above37 avoids recursive fallback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mq.a(BLmf;Lwq;IIII)Lnc;",
       "originalName": "a",
       "to": "loadLevelPack",
@@ -12124,6 +12467,13 @@
       "originalName": "a",
       "to": "draw",
       "evidence": "nq.java: Always draws sprite; guard2 additionally draws tooltip when hovered.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nq.a(II)V",
+      "originalName": "a",
+      "to": "resendPendingAchievements",
+      "evidence": "nq.java: Resends every pending submission, then one mask query per pending mask request, retaining FIFO ownership; guard13330.",
       "confidence": "reviewed"
     },
     {
@@ -12624,6 +12974,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qi.a(I)V",
+      "originalName": "a",
+      "to": "handleAchievementResponse",
+      "evidence": "qi.java: Type0 reads mask words and completes first mask request; type1 unlinks first submission; type2 completes first request with zero mask; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a(BII)V",
+      "originalName": "a",
+      "to": "queueOffsetAchievement",
+      "evidence": "qj.java: Captures words after level-base subtraction from wordOne for ID7 or wordTwo otherwise, then reverses subtraction; guard above17.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.a(BIZ)V",
       "originalName": "a",
       "to": "sendInputBatch",
@@ -12663,6 +13027,13 @@
       "originalName": "a",
       "to": "recordAchievement",
       "evidence": "qj.java: Already earned returns true without mutation; new award sets earned bit, supplied pending bit and queues ID, returning false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a(III)V",
+      "originalName": "a",
+      "to": "queueScoreAchievement",
+      "evidence": "qj.java: Records award then captures counter words between score/base and level adjustments; guard67.",
       "confidence": "reviewed"
     },
     {
@@ -12708,6 +13079,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qj.a(ZII)V",
+      "originalName": "a",
+      "to": "queueProgressAchievement",
+      "evidence": "qj.java: Records award, optionally marks snapshots ready and captures score/base/level-adjusted words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.a(ZZI)V",
       "originalName": "a",
       "to": "advanceScreen",
@@ -12719,6 +13097,13 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.b(III)V",
+      "originalName": "b",
+      "to": "queueMappedBitAchievement",
+      "evidence": "qj.java: Checks complement byte and mapped bit, toggles qualified bit word and captures adjusted companion word; guard above81.",
       "confidence": "reviewed"
     },
     {
@@ -13359,6 +13744,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ud.a(ILe;B)V",
+      "originalName": "a",
+      "to": "sendAchievementSubmission",
+      "evidence": "ud.java: Ciphered opcode, length byte, type1, achievement/submission bytes, four words and CRC32; guard119 or80.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ud.a(IZB)Z",
       "originalName": "a",
       "to": "handleMenuAction",
@@ -13755,6 +14147,13 @@
       "originalName": "c",
       "to": "adjustSpeed",
       "evidence": "vn.java: Rescales velocity using approximate fixed8 square root; speeds below supplied threshold reset to512 and speeds above3840 cap there.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.d(I)[I",
+      "originalName": "d",
+      "to": "createAchievementMask",
+      "evidence": "vn.java: Allocates new zeroed eight-word mask; guard8 avoids recursive invalid branch.",
       "confidence": "reviewed"
     },
     {
@@ -14857,6 +15256,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ak.<init>([Ljava/lang/String;ILoi;[I[I)V#0",
+      "originalName": "param0",
+      "to": "playerNames",
+      "evidence": "ak.java: Retains names/sequence, constructs seeded boards, assigns per-board character IDs and local control-set indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.<init>([Ljava/lang/String;ILoi;[I[I)V#1",
+      "originalName": "param1",
+      "to": "localPlayerMask",
+      "evidence": "ak.java: Retains names/sequence, constructs seeded boards, assigns per-board character IDs and local control-set indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.<init>([Ljava/lang/String;ILoi;[I[I)V#2",
+      "originalName": "param2",
+      "to": "configuration",
+      "evidence": "ak.java: Retains names/sequence, constructs seeded boards, assigns per-board character IDs and local control-set indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.<init>([Ljava/lang/String;ILoi;[I[I)V#3",
+      "originalName": "param3",
+      "to": "randomSeeds",
+      "evidence": "ak.java: Retains names/sequence, constructs seeded boards, assigns per-board character IDs and local control-set indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.<init>([Ljava/lang/String;ILoi;[I[I)V#4",
+      "originalName": "param4",
+      "to": "characterOrder",
+      "evidence": "ak.java: Retains names/sequence, constructs seeded boards, assigns per-board character IDs and local control-set indices.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ak.a(B)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -15858,6 +16292,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:df.a(Le;II)V#0",
+      "originalName": "param0",
+      "to": "submission",
+      "evidence": "df.java: Moves record to pending FIFO then sends; guard -161.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(Le;II)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "df.java: Moves record to pending FIFO then sends; guard -161.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(Le;II)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "df.java: Moves record to pending FIFO then sends; guard -161.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dh.<init>([B[I[I[I[I)V#0",
       "originalName": "param0",
       "to": "metrics",
@@ -16597,6 +17052,48 @@
       "originalName": "param5",
       "to": "unusedContext",
       "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.<init>(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "e.java: Retains achievement ID, qualified submission byte and four result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.<init>(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "submissionByte",
+      "evidence": "e.java: Retains achievement ID, qualified submission byte and four result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.<init>(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "resultWordOne",
+      "evidence": "e.java: Retains achievement ID, qualified submission byte and four result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.<init>(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "resultWordTwo",
+      "evidence": "e.java: Retains achievement ID, qualified submission byte and four result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.<init>(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "resultWordThree",
+      "evidence": "e.java: Retains achievement ID, qualified submission byte and four result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.<init>(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "resultWordFour",
+      "evidence": "e.java: Retains achievement ID, qualified submission byte and four result words.",
       "confidence": "reviewed"
     },
     {
@@ -17727,6 +18224,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:id.a(Lfo;Z)[I#0",
+      "originalName": "param0",
+      "to": "random",
+      "evidence": "id.java: Builds sequential character IDs, excludes final ID without feature0 and shuffles using supplied generator; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:id.a(Lfo;Z)[I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "id.java: Builds sequential character IDs, excludes final ID without feature0 and shuffles using supplied generator; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ie.a(I)V#0",
       "originalName": "param0",
       "to": "frames",
@@ -18121,7 +18632,7 @@
     {
       "symbol": "P:j.<init>(IIIII)V#4",
       "originalName": "param4",
-      "to": "initialState",
+      "to": "characterIndex",
       "evidence": "j.java: Constructs board geometry, paddle, deterministic random state and effect collections.",
       "confidence": "reviewed"
     },
@@ -19075,6 +19586,27 @@
       "originalName": "param1",
       "to": "data",
       "evidence": "ke.java: Fresh array copy; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.a([IBLfo;)V#0",
+      "originalName": "param0",
+      "to": "values",
+      "evidence": "ke.java: Delegates five random-index-swap passes to shuffleValues; guard39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.a([IBLfo;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Delegates five random-index-swap passes to shuffleValues; guard39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.a([IBLfo;)V#2",
+      "originalName": "param2",
+      "to": "random",
+      "evidence": "ke.java: Delegates five random-index-swap passes to shuffleValues; guard39.",
       "confidence": "reviewed"
     },
     {
@@ -20611,6 +21143,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:lc.a(II)Z#0",
+      "originalName": "param0",
+      "to": "featureId",
+      "evidence": "lc.java: Feature -1 always true; others test enabledFeatureMask using Java masked shift; guard below -26.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lc.a(II)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lc.java: Feature -1 always true; others test enabledFeatureMask using Java masked shift; guard below -26.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:lc.b(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -21133,6 +21679,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "lq.java: Continues shared traversal; guard -8394.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ma.b(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ma.java: Ciphered opcode, length1 and type2 request; guard at most -49.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ma.b(BI)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "ma.java: Ciphered opcode, length1 and type2 request; guard at most -49.",
       "confidence": "reviewed"
     },
     {
@@ -21934,6 +22494,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:mq.a(BI)Lal;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mq.java: Appends new incomplete request then sends; guard above37 avoids recursive fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mq.a(BI)Lal;#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "mq.java: Appends new incomplete request then sends; guard above37 avoids recursive fallback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mq.a(BLmf;Lwq;IIII)Lnc;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -22239,6 +22813,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "nq.java: Always draws sprite; guard2 additionally draws tooltip when hovered.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.a(II)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "nq.java: Resends every pending submission, then one mask query per pending mask request, retaining FIFO ownership; guard13330.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.a(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nq.java: Resends every pending submission, then one mask query per pending mask request, retaining FIFO ownership; guard13330.",
       "confidence": "reviewed"
     },
     {
@@ -23544,6 +24132,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qi.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qi.java: Type0 reads mask words and completes first mask request; type1 unlinks first submission; type2 completes first request with zero mask; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#0",
+      "originalName": "param0",
+      "to": "networkedMatch",
+      "evidence": "qj.java: Reviewed constructor field/board ownership; second boolean purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#2",
+      "originalName": "param2",
+      "to": "playerNames",
+      "evidence": "qj.java: Reviewed constructor field/board ownership; second boolean purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#3",
+      "originalName": "param3",
+      "to": "localPlayerId",
+      "evidence": "qj.java: Reviewed constructor field/board ownership; second boolean purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#4",
+      "originalName": "param4",
+      "to": "localPlayerMask",
+      "evidence": "qj.java: Reviewed constructor field/board ownership; second boolean purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#5",
+      "originalName": "param5",
+      "to": "configuration",
+      "evidence": "qj.java: Reviewed constructor field/board ownership; second boolean purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#6",
+      "originalName": "param6",
+      "to": "randomSeeds",
+      "evidence": "qj.java: Reviewed constructor field/board ownership; second boolean purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#7",
+      "originalName": "param7",
+      "to": "characterOrder",
+      "evidence": "qj.java: Reviewed constructor field/board ownership; second boolean purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>([Ljava/lang/String;IILoi;[I[I)V#0",
+      "originalName": "param0",
+      "to": "playerNames",
+      "evidence": "qj.java: Delegates to offline gameplay construction with supplied seeded boards and character order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>([Ljava/lang/String;IILoi;[I[I)V#1",
+      "originalName": "param1",
+      "to": "localPlayerId",
+      "evidence": "qj.java: Delegates to offline gameplay construction with supplied seeded boards and character order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>([Ljava/lang/String;IILoi;[I[I)V#2",
+      "originalName": "param2",
+      "to": "localPlayerMask",
+      "evidence": "qj.java: Delegates to offline gameplay construction with supplied seeded boards and character order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>([Ljava/lang/String;IILoi;[I[I)V#3",
+      "originalName": "param3",
+      "to": "configuration",
+      "evidence": "qj.java: Delegates to offline gameplay construction with supplied seeded boards and character order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>([Ljava/lang/String;IILoi;[I[I)V#4",
+      "originalName": "param4",
+      "to": "randomSeeds",
+      "evidence": "qj.java: Delegates to offline gameplay construction with supplied seeded boards and character order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.<init>([Ljava/lang/String;IILoi;[I[I)V#5",
+      "originalName": "param5",
+      "to": "characterOrder",
+      "evidence": "qj.java: Delegates to offline gameplay construction with supplied seeded boards and character order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(BII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qj.java: Captures words after level-base subtraction from wordOne for ID7 or wordTwo otherwise, then reverses subtraction; guard above17.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(BII)V#1",
+      "originalName": "param1",
+      "to": "achievementId",
+      "evidence": "qj.java: Captures words after level-base subtraction from wordOne for ID7 or wordTwo otherwise, then reverses subtraction; guard above17.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(BII)V#2",
+      "originalName": "param2",
+      "to": "submissionByte",
+      "evidence": "qj.java: Captures words after level-base subtraction from wordOne for ID7 or wordTwo otherwise, then reverses subtraction; guard above17.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qj.a(BIZ)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -23646,6 +24353,27 @@
       "originalName": "param1",
       "to": "pendingBit",
       "evidence": "qj.java: Already earned returns true without mutation; new award sets earned bit, supplied pending bit and queues ID, returning false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(III)V#0",
+      "originalName": "param0",
+      "to": "submissionByte",
+      "evidence": "qj.java: Records award then captures counter words between score/base and level adjustments; guard67.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "qj.java: Records award then captures counter words between score/base and level adjustments; guard67.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(III)V#2",
+      "originalName": "param2",
+      "to": "achievementId",
+      "evidence": "qj.java: Records award then captures counter words between score/base and level adjustments; guard67.",
       "confidence": "reviewed"
     },
     {
@@ -23761,6 +24489,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qj.a(ZII)V#0",
+      "originalName": "param0",
+      "to": "markSnapshotsReady",
+      "evidence": "qj.java: Records award, optionally marks snapshots ready and captures score/base/level-adjusted words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(ZII)V#1",
+      "originalName": "param1",
+      "to": "submissionByte",
+      "evidence": "qj.java: Records award, optionally marks snapshots ready and captures score/base/level-adjusted words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(ZII)V#2",
+      "originalName": "param2",
+      "to": "achievementId",
+      "evidence": "qj.java: Records award, optionally marks snapshots ready and captures score/base/level-adjusted words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qj.a(ZZI)V#0",
       "originalName": "param0",
       "to": "updateFlag",
@@ -23786,6 +24535,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.b(III)V#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "qj.java: Checks complement byte and mapped bit, toggles qualified bit word and captures adjusted companion word; guard above81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.b(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "qj.java: Checks complement byte and mapped bit, toggles qualified bit word and captures adjusted companion word; guard above81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.b(III)V#2",
+      "originalName": "param2",
+      "to": "submissionByte",
+      "evidence": "qj.java: Checks complement byte and mapped bit, toggles qualified bit word and captures adjusted companion word; guard above81.",
       "confidence": "reviewed"
     },
     {
@@ -25098,6 +25868,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ud.a(ILe;B)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "ud.java: Ciphered opcode, length byte, type1, achievement/submission bytes, four words and CRC32; guard119 or80.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.a(ILe;B)V#1",
+      "originalName": "param1",
+      "to": "submission",
+      "evidence": "ud.java: Ciphered opcode, length byte, type1, achievement/submission bytes, four words and CRC32; guard119 or80.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.a(ILe;B)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ud.java: Ciphered opcode, length byte, type1, achievement/submission bytes, four words and CRC32; guard119 or80.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ud.a(IZB)Z#0",
       "originalName": "param0",
       "to": "buttonIndex",
@@ -26043,6 +26834,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vn.d(I)[I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vn.java: Allocates new zeroed eight-word mask; guard8 avoids recursive invalid branch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vo.<init>(IIII)V#0",
       "originalName": "param0",
       "to": "centerX256",
@@ -26975,9 +27773,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "b14cacb00ffa84616c74bfd8062ba69883554d771f0c4f961f40d0d862e766fa",
+      "build-brickabrac-rules.mjs": "9fd9441d3bfd947149c83da358752f82d6be6a75697fa605fd84764cecf04e2e",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "066c56ac4ddb215f0393acafd595322131a64adccae5c895482eaaae9f8d3397",
+      "tests/test-brickabrac-core.mjs": "b787030e800588e2e88ab2a09bf1db5eb6211ff7d3c362779ebaee5aeea748c7",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

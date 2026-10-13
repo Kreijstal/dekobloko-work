@@ -96,6 +96,9 @@ serve reset and warning updates; MultiplayerMatch names its main advanceBoard pa
 PlayerInputBatch exposes five-mask network input records; GameplayScreen now names
 their packet/control handlers and advanceMatch consumption path. BallPulseEffect
 exposes the transient pulse generated from activated charged balls.
+AchievementSubmission and AchievementMaskRequest expose result envelopes, mask
+queries, FIFO acknowledgments and reconnect resends. Match-start locals and
+constructor parameters now distinguish seeds, character order and level sequence.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -676,6 +679,38 @@ and expires at40 ticks. Native fixtures check constructor state, size/age and
 match-owned removal independently of board simulation state. Rendering names
 identify the existing exponential pulse drawing; rendered pixels remain
 unverified. These changes rename code and preserve its original control flow.
+
+AchievementSubmission stores achievement ID, a qualified companion byte and four
+result words. Independent CRC32/ISAAC fixtures check submission frames; pending
+submissions are acknowledged in FIFO order. AchievementMaskRequest starts without
+values; type0 responses allocate eight words and fill the supplied prefix, while
+type2 completes with a zeroed mask. Fixtures cover word counts0/1/4/8, signed
+values, ownership release and preservation of later pending requests. Reconnect
+resend fixtures retain ownership and verify submission-before-mask-query order.
+Some award paths validate that the companion byte complements the ID; the broader
+server meaning of the result words remains qualified.
+
+Gameplay award helpers now name score, progress, mapped-bit and offset capture.
+Fixtures check the words captured between counter adjustments, final counter
+values, duplicate suppression, result-submission suppression and optional snapshot
+readiness. Suppressed submissions still mark earned/pending bits and queue the
+notification in the pinned source. The helpers retain the original counter mixing;
+their behavior does not establish authenticated server acceptance. Oversized masks,
+missing-request disconnects, invalid companion-byte handling and live persistence
+remain unverified.
+
+The earlier PlayerBoard constructor parameter initialState is corrected to
+characterIndex: the field indexes loaded character_heads sprites. Match startup
+uses a shuffled character order based on track_heads count, omitting the final ID
+unless feature bit0 is enabled. Native fixtures compare the five-pass shuffle and
+subsequent random position with an independent ISAAC model. Feature lookup retains
+the always-true -1 sentinel and Java's masked shifts. Real MultiplayerMatch
+constructors for1/2/5 players check character assignment, individual seeds, board
+width/offset, paddle height and local control mappings. Match-start packet locals
+now identify player names, local player/mask, random seeds, repeat mode, sequence,
+background selector and character order. Full startup packet execution still
+requires asset/audio/UI setup and remains unverified; character rendering and
+original-JAR equivalence are not established by these checks.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
