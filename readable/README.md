@@ -111,6 +111,8 @@ VorbisSample, VorbisCodebook, VorbisFloor1, VorbisResidue and VorbisMapping expo
 compressed music packets, entropy/vector decoding, spectral reconstruction,
 transform windows, overlap and incremental PCM/cache ownership.
 ArrayOperations names shared byte/int/object copies and integer range clearing.
+MusicCrossfadeStream names two MIDI track slots, an overlay, fade progress and
+temporary PCM buffers; its original private throwing constructor is retained.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -186,7 +188,7 @@ Board `nextRandomInt`/`nextRandomBoundedInt` wrappers expose `randomCallCount`.
 It counts wrapper requests, including an invalid bounded request, rather than
 each generator word consumed by rejection sampling. `GameplayAudioEvent` names
 its numeric code and optional detail, with constructor checks for all observed
-codes0..14. Its consumer now names effect selection and music-tempo inputs;
+codes0..14. Its consumer names one-shot effect selection and activity-loop volume inputs;
 actual playback and complete match-event emission remain unverified.
 
 Level sequences retain a caller-owned index order and a cycle period. Negative
@@ -854,6 +856,27 @@ copies are checked against `System.arraycopy` for distinct arrays, self copies,
 both overlap directions and unrolled/tail lengths. Range clearing is checked
 against `Arrays.fill`. Malformed ranges, type mismatch and untested guard paths
 remain unverified.
+
+MusicCrossfadeStream exposes two complementary track weights, signed Q20 fade
+progress and an overlay applied after base mixing. Controlled real synthesizers
+with constant PCM streams verify mono/stereo arithmetic, buffer reuse/allocation,
+muted fill delegation to skip, selected-track end reversal, endpoint cleanup,
+retained track references and existing-track gain/tempo updates. Child traversal
+returns null and scheduling cost is2. The private constructor still throws Error;
+fixtures allocate the stream with Unsafe and explicitly install its dependencies,
+so ordinary construction/initialization and live crossfade playback are unverified.
+The original stereo path can double an already converted output offset again
+before overlay mixing; offset-one fixtures preserve this behavior. Overlay
+scaling also applies master gain to existing output, as written in the source.
+
+Gameplay event4 controls activity-loop volume, rather than MIDI tempo. Earlier
+parameter/class evidence is corrected; primary/alternate loop fields name the two
+uiSounds2 streams installed by GameplayScreen. Native fixtures verify event count,
+bounded up/down movement, master scaling, selected-loop isolation and retained
+event-queue ownership. One-shot delegation helpers now have explicit volume names.
+Real sound assets, event0/1/2/3 variant selection, complete one-shot routing,
+new-track preparation/loop/return branches, simultaneous fill/skip and audible
+whole-game playback remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

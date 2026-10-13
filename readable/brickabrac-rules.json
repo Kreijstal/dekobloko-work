@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 30,
+  "version": 31,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -1098,7 +1098,7 @@
       "symbol": "C:qc",
       "originalName": "qc",
       "to": "GameplayAudioEvent",
-      "evidence": "qc.java: Intrusive numeric audio event with optional detail ID; match queues events and bm selects sound effects/music tempo changes.",
+      "evidence": "qc.java: Intrusive numeric audio event with optional detail ID; match queues events and bm selects sound effects/activity-loop volume changes.",
       "confidence": "reviewed"
     },
     {
@@ -1246,6 +1246,13 @@
       "originalName": "tl",
       "to": "ByteStorage",
       "evidence": "tl.java: Abstract archive byte-array storage/retrieval contract.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tn",
+      "originalName": "tn",
+      "to": "MusicCrossfadeStream",
+      "evidence": "tn.java: Three-synthesizer audio stream with two crossfaded track slots and an overlay. Original private throwing constructor and unrelated static helpers/data are retained.",
       "confidence": "reviewed"
     },
     {
@@ -2331,6 +2338,13 @@
       "originalName": "field_c",
       "to": "chocolateCharacterSprite",
       "evidence": "oo.java: Literal sprite resource chocolate/chocolate_character assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dc.field_e:Ltn;",
+      "originalName": "field_e",
+      "to": "musicCrossfadeStream",
+      "evidence": "dc.java: Optional crossfade stream receiving master music gain changes.",
       "confidence": "reviewed"
     },
     {
@@ -5505,6 +5519,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:me.field_d:Lkl;",
+      "originalName": "field_d",
+      "to": "alternateActivityLoop",
+      "evidence": "me.java: Gameplay creates second uiSounds2 loop and adjusts volume from alternate event queue.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mf.field_b:Z",
       "originalName": "field_b",
       "to": "discardPackedGroups",
@@ -7700,6 +7721,111 @@
       "originalName": "field_f",
       "to": "pendingTableSubmissions",
       "evidence": "tm.java: Pending row submissions acknowledged by16-bit request ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_D:Lie;",
+      "originalName": "field_D",
+      "to": "primarySynthesizer",
+      "evidence": "tn.java: Primary crossfade synthesizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_E:Z",
+      "originalName": "field_E",
+      "to": "retainFadedTrack",
+      "evidence": "tn.java: Retains faded-out track reference instead of resetting its synthesizer at endpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_G:[I",
+      "originalName": "field_G",
+      "to": "secondaryScratch",
+      "evidence": "tn.java: Temporary secondary output allocated with primary scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_o:Lvm;",
+      "originalName": "field_o",
+      "to": "secondaryTrack",
+      "evidence": "tn.java: Track associated with secondary crossfade slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_p:I",
+      "originalName": "field_p",
+      "to": "masterGain",
+      "evidence": "tn.java: Output multiplier; nonpositive fill delegates to skip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_q:[I",
+      "originalName": "field_q",
+      "to": "primaryScratch",
+      "evidence": "tn.java: Shared temporary output, reused for overlay after base mix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_r:Lvm;",
+      "originalName": "field_r",
+      "to": "primaryTrack",
+      "evidence": "tn.java: Track associated with primary crossfade slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_s:I",
+      "originalName": "field_s",
+      "to": "primaryMixQ20",
+      "evidence": "tn.java: Primary-slot weight0..1048576; shifted12 before gain multiplication; also serves as fade progress.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_t:Lvm;",
+      "originalName": "field_t",
+      "to": "overlayTrack",
+      "evidence": "tn.java: Optional overlay track enabling third synthesizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_u:I",
+      "originalName": "field_u",
+      "to": "overlayMix256",
+      "evidence": "tn.java: Overlay mix parameter;256 suppresses base track mixing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_v:Z",
+      "originalName": "field_v",
+      "to": "returnWhenTrackEnds",
+      "evidence": "tn.java: Reverses fade after selected synthesizer loses MIDI data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_x:Lie;",
+      "originalName": "field_x",
+      "to": "secondarySynthesizer",
+      "evidence": "tn.java: Secondary crossfade synthesizer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_y:I",
+      "originalName": "field_y",
+      "to": "fadeStep",
+      "evidence": "tn.java: Signed progress increment per frame; positive selects primary, negative selects secondary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_z:Lie;",
+      "originalName": "field_z",
+      "to": "overlaySynthesizer",
+      "evidence": "tn.java: Third synthesizer for overlay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:to.field_k:Lkl;",
+      "originalName": "field_k",
+      "to": "primaryActivityLoop",
+      "evidence": "to.java: Gameplay creates uiSounds2 loop and adjusts volume from first event queue.",
       "confidence": "reviewed"
     },
     {
@@ -10087,6 +10213,139 @@
       "originalName": "var3",
       "to": "exponent",
       "evidence": "bk.java: Reviewed declaration and uses in pinned Vorbis decoder; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#0",
+      "originalName": "stackIn_74_0",
+      "to": "alternateLoopFlag",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#1",
+      "originalName": "stackIn_78_0",
+      "to": "selectedLoop",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#10",
+      "originalName": "var7_ref",
+      "to": "sound",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#11",
+      "originalName": "var7",
+      "to": "targetVolume",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#12",
+      "originalName": "var8_ref_oe__",
+      "to": "sceneSounds",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#13",
+      "originalName": "var8",
+      "to": "currentVolume",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#14",
+      "originalName": "var9",
+      "to": "maximumVolumeStep",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#15",
+      "originalName": "var10",
+      "to": "gameFlag",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#16",
+      "originalName": "decompiledNaturalLoopExit0",
+      "to": "eventsExhausted",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#17",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "unusedRemainder",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#18",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#2",
+      "originalName": "stackIn_89_0",
+      "to": "failureContext",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#3",
+      "originalName": "stackIn_89_1",
+      "to": "contextBuilder",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#4",
+      "originalName": "stackIn_90_2",
+      "to": "eventsSummary",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#6",
+      "originalName": "var5_int",
+      "to": "activityEvents",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#7",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#8",
+      "originalName": "var6",
+      "to": "event",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bm.a(IIZILvl;)V#9",
+      "originalName": "var6_ref",
+      "to": "activityLoop",
+      "evidence": "bm.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
       "confidence": "reviewed"
     },
     {
@@ -14465,6 +14724,293 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:tn.a(I)V#0",
+      "originalName": "var3",
+      "to": "unusedGameFlag",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#0",
+      "originalName": "stackIn_20_1",
+      "to": "returnMode",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#1",
+      "originalName": "stackIn_33_0",
+      "to": "selectedPrimaryFlag",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#10",
+      "originalName": "stackIn_58_0",
+      "to": "failureContext",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#11",
+      "originalName": "stackIn_58_1",
+      "to": "contextBuilder",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#12",
+      "originalName": "stackIn_59_2",
+      "to": "trackSummary",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#13",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#14",
+      "originalName": "var7_int",
+      "to": "selectPrimary",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#15",
+      "originalName": "var7",
+      "to": "failure",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#16",
+      "originalName": "var8",
+      "to": "unusedGameFlag",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#17",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#2",
+      "originalName": "stackIn_42_0",
+      "to": "secondaryTarget",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#3",
+      "originalName": "stackIn_42_1",
+      "to": "secondaryInput",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#4",
+      "originalName": "stackIn_42_2",
+      "to": "secondaryGuard",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#5",
+      "originalName": "stackIn_43_3",
+      "to": "secondaryLoop",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#6",
+      "originalName": "stackIn_52_0",
+      "to": "primaryTarget",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#7",
+      "originalName": "stackIn_52_1",
+      "to": "primaryInput",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#8",
+      "originalName": "stackIn_52_2",
+      "to": "primaryGuard",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZIBILvm;)V#9",
+      "originalName": "stackIn_53_3",
+      "to": "primaryLoop",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.a(IZLie;I)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#0",
+      "originalName": "localTemp$0",
+      "to": "baseStereoOffset",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#1",
+      "originalName": "localTemp$1",
+      "to": "overlayStereoOffset",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#10",
+      "originalName": "var4_int",
+      "to": "primaryGain",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#11",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#12",
+      "originalName": "var5",
+      "to": "secondaryGain",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#13",
+      "originalName": "var6",
+      "to": "sampleCount",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#14",
+      "originalName": "var7",
+      "to": "baseOffset",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#15",
+      "originalName": "var8",
+      "to": "baseSample",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#16",
+      "originalName": "var9",
+      "to": "backgroundGain",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#17",
+      "originalName": "var11",
+      "to": "unusedGameFlag",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#18",
+      "originalName": "var7Lifetime1",
+      "to": "overlayOffset",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#19",
+      "originalName": "var8Lifetime1",
+      "to": "overlayGain",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#2",
+      "originalName": "var10",
+      "to": "overlaySample",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#20",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#3",
+      "originalName": "stackIn_33_0",
+      "to": "sampleCountValue",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#4",
+      "originalName": "stackIn_49_0",
+      "to": "baseOffsetValue",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#5",
+      "originalName": "stackIn_63_0",
+      "to": "overlayOffsetValue",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#6",
+      "originalName": "stackIn_69_0",
+      "to": "failureContext",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#7",
+      "originalName": "stackIn_69_1",
+      "to": "contextBuilder",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#8",
+      "originalName": "stackIn_70_2",
+      "to": "outputSummary",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tn.b([III)V#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "tn.java: Reviewed audio event routing, crossfade/overlay mixing, track selection or original diagnostic path; arithmetic and ownership are preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ud.a(ILe;B)V#0",
       "originalName": "var6",
       "to": "packet",
@@ -15371,7 +15917,7 @@
       "symbol": "M:bm.a(IIZILvl;)V",
       "originalName": "a",
       "to": "playGameplayAudioEvents",
-      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "evidence": "bm.java: Reads queued audio codes, queues one-shot effects and adjusts selected PCM loop volume from event4 count with bounded steps; guard -30791.",
       "confidence": "reviewed"
     },
     {
@@ -16320,6 +16866,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hm.a(ILoe;I)Ll;",
+      "originalName": "a",
+      "to": "playSoundAtVolume",
+      "evidence": "hm.java: Creates rate100 PCM stream at supplied volume and queues playback; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ho.a()V",
       "originalName": "a",
       "to": "releaseScratch",
@@ -16698,6 +17251,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ie.f(I)V",
+      "originalName": "f",
+      "to": "stopTrack",
+      "evidence": "ie.java: Stops and resets MIDI playback using true immediate-stop path; canonical guard -24774 preserves controller arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ie.f(II)V",
       "originalName": "f",
       "to": "resetControllers",
@@ -16926,6 +17486,13 @@
       "originalName": "a",
       "to": "addScore",
       "evidence": "j.java: Updates score and accounting, optionally resets a state word, and appends a popup at supplied fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(Loe;II)V",
+      "originalName": "a",
+      "to": "playGameplaySound",
+      "evidence": "j.java: Delegates one-shot effect playback at supplied volume; canonical guard at most -29.",
       "confidence": "reviewed"
     },
     {
@@ -20240,6 +20807,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tn.a(IZIBILvm;)V",
+      "originalName": "a",
+      "to": "selectTrack",
+      "evidence": "tn.java: Chooses/updates primary or secondary track, fade direction, end-return mode and synthesizer parameters; canonical guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.a(IZLie;I)V",
+      "originalName": "a",
+      "to": "configureSynthesizer",
+      "evidence": "tn.java: Sets all-channel gain and tempo scale; optional flag clears retained-fade mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.a(ZI)V",
+      "originalName": "a",
+      "to": "setMasterGain",
+      "evidence": "tn.java: Assigns output gain; false guard also queries scheduling cost.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tn.b()I",
       "originalName": "b",
       "to": "getSchedulingCost",
@@ -22714,35 +23302,35 @@
       "symbol": "P:bm.a(IIZILvl;)V#0",
       "originalName": "param0",
       "to": "volume",
-      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "evidence": "bm.java: Reads queued audio codes, queues one-shot effects and adjusts selected PCM loop volume from event4 count with bounded steps; guard -30791.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:bm.a(IIZILvl;)V#1",
       "originalName": "param1",
-      "to": "tempoScale256",
-      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "to": "activityVolumePerEvent",
+      "evidence": "bm.java: Reads queued audio codes, queues one-shot effects and adjusts selected PCM loop volume from event4 count with bounded steps; guard -30791.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:bm.a(IIZILvl;)V#2",
       "originalName": "param2",
-      "to": "alternateMusicTrack",
-      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "to": "alternateActivityLoop",
+      "evidence": "bm.java: Reads queued audio codes, queues one-shot effects and adjusts selected PCM loop volume from event4 count with bounded steps; guard -30791.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:bm.a(IIZILvl;)V#3",
       "originalName": "param3",
       "to": "obfuscationGuard",
-      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "evidence": "bm.java: Reads queued audio codes, queues one-shot effects and adjusts selected PCM loop volume from event4 count with bounded steps; guard -30791.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:bm.a(IIZILvl;)V#4",
       "originalName": "param4",
       "to": "events",
-      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "evidence": "bm.java: Reads queued audio codes, queues one-shot effects and adjusts selected PCM loop volume from event4 count with bounded steps; guard -30791.",
       "confidence": "reviewed"
     },
     {
@@ -25777,6 +26365,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hm.a(ILoe;I)Ll;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hm.java: Creates rate100 PCM stream at supplied volume and queues playback; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(ILoe;I)Ll;#1",
+      "originalName": "param1",
+      "to": "sound",
+      "evidence": "hm.java: Creates rate100 PCM stream at supplied volume and queues playback; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(ILoe;I)Ll;#2",
+      "originalName": "param2",
+      "to": "volume",
+      "evidence": "hm.java: Creates rate100 PCM stream at supplied volume and queues playback; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ho.a(F)F#0",
       "originalName": "param0",
       "to": "octaveOffset",
@@ -26369,6 +26978,13 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "ie.java: Assigns one channel or all for negative channel; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ie.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ie.java: Stops and resets MIDI playback using true immediate-stop path; canonical guard -24774 preserves controller arrays.",
       "confidence": "reviewed"
     },
     {
@@ -26992,6 +27608,27 @@
       "originalName": "param3",
       "to": "y256",
       "evidence": "j.java: Updates score and accounting, optionally resets a state word, and appends a popup at supplied fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(Loe;II)V#0",
+      "originalName": "param0",
+      "to": "sound",
+      "evidence": "j.java: Delegates one-shot effect playback at supplied volume; canonical guard at most -29.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(Loe;II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Delegates one-shot effect playback at supplied volume; canonical guard at most -29.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(Loe;II)V#2",
+      "originalName": "param2",
+      "to": "volume",
+      "evidence": "j.java: Delegates one-shot effect playback at supplied volume; canonical guard at most -29.",
       "confidence": "reviewed"
     },
     {
@@ -35248,6 +35885,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tn.a(IZIBILvm;)V#0",
+      "originalName": "param0",
+      "to": "channelGain",
+      "evidence": "tn.java: Chooses/updates primary or secondary track, fade direction, end-return mode and synthesizer parameters; canonical guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(IZIBILvm;)V#1",
+      "originalName": "param1",
+      "to": "returnWhenTrackEnds",
+      "evidence": "tn.java: Chooses/updates primary or secondary track, fade direction, end-return mode and synthesizer parameters; canonical guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(IZIBILvm;)V#2",
+      "originalName": "param2",
+      "to": "fadeStep",
+      "evidence": "tn.java: Chooses/updates primary or secondary track, fade direction, end-return mode and synthesizer parameters; canonical guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(IZIBILvm;)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "tn.java: Chooses/updates primary or secondary track, fade direction, end-return mode and synthesizer parameters; canonical guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(IZIBILvm;)V#4",
+      "originalName": "param4",
+      "to": "tempoScale",
+      "evidence": "tn.java: Chooses/updates primary or secondary track, fade direction, end-return mode and synthesizer parameters; canonical guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(IZIBILvm;)V#5",
+      "originalName": "param5",
+      "to": "track",
+      "evidence": "tn.java: Chooses/updates primary or secondary track, fade direction, end-return mode and synthesizer parameters; canonical guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(IZLie;I)V#0",
+      "originalName": "param0",
+      "to": "channelGain",
+      "evidence": "tn.java: Sets all-channel gain and tempo scale; optional flag clears retained-fade mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(IZLie;I)V#1",
+      "originalName": "param1",
+      "to": "clearRetainedFade",
+      "evidence": "tn.java: Sets all-channel gain and tempo scale; optional flag clears retained-fade mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(IZLie;I)V#2",
+      "originalName": "param2",
+      "to": "synthesizer",
+      "evidence": "tn.java: Sets all-channel gain and tempo scale; optional flag clears retained-fade mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(IZLie;I)V#3",
+      "originalName": "param3",
+      "to": "tempoScale",
+      "evidence": "tn.java: Sets all-channel gain and tempo scale; optional flag clears retained-fade mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tn.java: Assigns output gain; false guard also queries scheduling cost.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "gain",
+      "evidence": "tn.java: Assigns output gain; false guard also queries scheduling cost.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tn.b([III)V#0",
       "originalName": "param0",
       "to": "output",
@@ -37671,9 +38392,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "f1cb050a094190b10f56fe5a1237b8a8a383235aa7bb296fbf1653de7cfc5876",
+      "build-brickabrac-rules.mjs": "6f754083aad41d3bfac7c094974ede374fe87bf464d24d606e9cb450bff037f8",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "2f7a1d736ca8a6c6ae0e128e76178c225640b970cf81c5079d662ff773f37c3a",
+      "tests/test-brickabrac-core.mjs": "67e9ddb6e06233f38e79039ea959467eab34698b229a15bfa1cfa50832b1fda2",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
