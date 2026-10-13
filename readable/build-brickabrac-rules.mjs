@@ -29,11 +29,52 @@ const classes={
  wq:['PacketBuffer','Cursor over caller-supplied or pooled bytes with big-endian primitives, compact integers, strings, checksums and block operations.'],
  pi:['BitPacketBuffer','Packet buffer with MSB-first bit input/output and seeded cipher arithmetic for opcodes and byte slices.'],
  mj:['LegacyUtf8Decoder','Length-delimited legacy UTF-8 decoder; zero bytes and four-byte sequences become replacement characters.'],
+ fo:['IsaacGenerator','ISAAC state, block mixing, reverse-order result consumption and rejection-based bounded sampling; used by board randomness and opcode cipher.'],
+ qc:['GameplayAudioEvent','Intrusive numeric audio event with optional detail ID; match queues events and bm selects sound effects/music tempo changes.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
 function local(owner,signature,ordinal,expectedOriginalName,to,evidence){members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName,evidence};}
+for(const [original,type,to,evidence] of [
+ ['m','I','accumulator','ISAAC accumulator updated by alternating shifts and half-block memory offsets.'],
+ ['l','I','lastResult','ISAAC previous result, initially augmented by incremented block counter.'],
+ ['e','I','blockCounter','Incremented at the start of each generated block.'],
+ ['d','[I','memory','256-word ISAAC state memory.'],
+ ['k','[I','results','256-word output block, seeded before initialization and consumed in reverse index order.'],
+ ['j','I','remaining','Count of unread output words; nextInt returns results[--remaining].'],
+])field('fo',original,type,to,evidence);
+method('fo','<init>','([I)V','<init>','Copies seed into a zero-padded256-word result array, performs two initialization passes and produces the first block.',['seed']);
+method('fo','a','(B)V','generateBlock','Produces256 ISAAC words with wrapping32-bit arithmetic; guard below -64.',['obfuscationGuard']);
+method('fo','a','(Z)V','initialize','Four initial eight-word mixes and two state-filling passes, then first output block; true guard.',['obfuscationGuard']);
+method('fo','b','(I)I','nextInt','Consumes output block in reverse order and refills when empty; guard at least88.',['obfuscationGuard']);
+method('fo','a','(II)I','nextBoundedInt','Rejects nonpositive bounds, rejects the incomplete high range and returns nonnegative signed floor modulus; guard -37880252.',['obfuscationGuard','bound']);
+field('j','W','I','randomCallCount','Board random wrappers increment once per call, including an invalid bounded request; internal rejection retries do not increment this counter.');
+method('j','e','(I)I','nextRandomInt','Increments randomCallCount and consumes next seeded random word; original arithmetic guard retained.',['obfuscationGuard']);
+method('j','a','(IB)I','nextRandomBoundedInt','Increments randomCallCount before delegating bounded sampling; guard62.',['bound','obfuscationGuard']);
+method('er','a','(III)I','nonnegativeRemainder','Returns signed floor modulus for positive divisor using original sign adjustment; canonical guard -1560508993.',['obfuscationGuard','divisor','value']);
+method('vi','a','(I[IILfo;)V','shuffleValues','Runs requested passes of random-index swaps over the array using seeded bounded sampling; original arithmetic guard retained.',['obfuscationGuard','values','passes','random']);
+field('qc','m','I','eventCode','Numeric gameplay audio event code read by the audio event consumer.');
+field('qc','j','I','detailId','Optional event detail; power-up pickup event3 uses its type to choose a sound effect.');
+method('qc','<init>','(I)V','<init>','Creates audio event with default detail -1.',['eventCode']);
+method('qc','<init>','(II)V','<init>','Retains event code and detail without interpreting their encodings.',['eventCode','detailId']);
+method('bm','a','(IIZILvl;)V','playGameplayAudioEvents','Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.',['volume','tempoScale256','alternateMusicTrack','obfuscationGuard','events']);
+for(const [owner,signature,ordinal,original,to,evidence] of [
+ ['fo','<init>([I)V',0,'var2_int','seedIndex','Index copied from caller seed into result block.'],
+ ['fo','a(B)V',0,'fieldTemp$0','nextBlockCounter','Incremented block counter added to lastResult.'],
+ ['fo','a(B)V',1,'var2','wordIndex','Current state/output index in generated block.'],
+ ['fo','a(B)V',2,'dupTemp$1','newMemoryWord','Wrapping sum installed in state memory.'],
+ ['fo','a(B)V',3,'dupTemp$2','newResult','Result installed in both lastResult and output block.'],
+ ['fo','a(B)V',4,'var3','oldMemoryWord','Prior state value used for both indirect lookups and result addition.'],
+ ['fo','a(B)V',5,'var4','memoryWord','New state value used for second indirect lookup.'],
+ ['fo','b(I)I',0,'fieldTemp$0','resultIndex','Decremented output count used to select result word.'],
+ ['fo','a(II)I',0,'var4','sample','Drawn signed word considered by rejection sampling.'],
+ ['fo','a(II)I',1,'var3','maximumAccepted','Highest signed sample that excludes incomplete modulus range.'],
+ ['fo','a(Z)V',0,'var2','scrambleRound','Four rounds of initial state mixing.'],
+ ['fo','a(Z)V',10,'var2Lifetime1','seedBlockOffset','Eight-word block offset in first state-filling pass.'],
+ ['fo','a(Z)V',11,'var2Lifetime2','memoryBlockOffset','Eight-word block offset in second state-filling pass.'],
+ ...[['var3',4,'mixA'],['var4',6,'mixB'],['var5',2,'mixC'],['var6',7,'mixD'],['var7',8,'mixE'],['var8',9,'mixF'],['var9',3,'mixG'],['var10',5,'mixH']].map(([original,ordinal,to])=>['fo','a(Z)V',ordinal,original,to,'ISAAC initialization eight-word mixing lane.']),
+])local(owner,signature,ordinal,original,to,evidence);
 for(const [name,to] of [['j','x256'],['m','y256'],['k','velocityX256'],['o','velocityY256'],['i','typeId'],['l','stateWord']])field('vi',name,'I',to,'Common body constructor, packed snapshot decoder and checksum; coordinates and brick dimensions use256 units per pixel; state word meaning remains unresolved.');
 field('bn','u','I','width256','Rectangle constructor width; bricks use8704 and paddles22528.');field('bn','s','I','height256','Rectangle constructor height; bricks use4096 and paddles3840.');field('no','u','I','radius256','Circle constructor radius; ball constructors use1536.');
 for(const [name,type,to] of [['l','[Lj;','playerBoards'],['k','I','playerCount'],['f','[Ljava/lang/String;','playerNames'],['b','Loi;','configuration'],['i','I','playerMaskOne'],['g','I','playerMaskTwo'],['a','I','playerMaskThree']])field('ak',name,type,to,'Match constructor and board iteration; player masks retain separate numbered identities rather than guessing elimination/disconnect encodings.');
@@ -322,12 +363,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('hp')} / ${link('ao')} | Absolute indices, circular retention and future/erased history boundaries. |`,
 `| ${link('ge')} / ${link('ul')} | Falling/scheduled power-ups and score-popup lifetime. |`,
 `| ${link('cl')} / ${link('ee')} | Cyclic waypoint order, destination duration and integer position/velocity interpolation. |`,
-`| ${link('wq')} / ${link('pi')} / ${link('mj')} | Big-endian bytes, compact integers, strings, bit streams, cipher arithmetic and body snapshots. |`, '',
-'Focused raw/named probes check body checksums/overlaps, paddle sizes, player masks, deque ownership, histories, popup expiry, scheduled power-up routing, ball effects, waypoint motion, selected brick contacts, packet primitives/strings/bits, CRC and block operations, and body/paddle/ball/brick/path snapshot decoding. Opcode fixtures check cipher arithmetic against a separate instance of the existing generator; the generator itself is not independently verified. The client branch flag is supplied by a headless Applet-compatible shim; board/match construction is bypassed. Contact fixtures supply scratch coordinates and cover two brick types. Full board snapshots, swept collision detection, gameplay, score accounting, live multiplayer and browser/phone behavior remain unverified.','',
+`| ${link('wq')} / ${link('pi')} / ${link('mj')} | Big-endian bytes, compact integers, strings, bit streams, cipher arithmetic and body snapshots. |`,
+`| ${link('fo')} / ${link('qc')} | Deterministic board/cipher random state and queued gameplay audio codes/details. |`, '',
+'Focused raw/named probes check body geometry, paddle sizes, player masks, deque ownership, histories, power-ups, waypoint motion, selected contacts, packet operations and body/path snapshots. ISAAC fixtures use an independent unsigned-word model anchored to [Bob Jenkins’s published vectors](https://burtleburtle.net/bob/rand/randvect.txt), then compare seeded words/state, refill/counter boundaries, bounded rejection, shuffling, board random-call accounting and opcode bytes. Audio fixtures check event construction; playback remains unverified. The client flag uses a headless Applet-compatible shim and board/match construction is bypassed. Full board snapshots, swept collision detection, gameplay, score accounting, live multiplayer and browser/phone behavior remain unverified.','',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:4,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:5,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

@@ -43,7 +43,8 @@ The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
 The semantic passes name GameScreen/GameplayScreen, MultiplayerMatch,
 PlayerBoard, moving/circular/rectangular bodies, Ball/Brick/Paddle and intrusive
 nodes/deques, plus IntHistoryBuffer/ObjectHistoryBuffer, PowerUp, ScorePopup,
-BrickMotionPath, MotionWaypoint, PacketBuffer, BitPacketBuffer and LegacyUtf8Decoder.
+BrickMotionPath, MotionWaypoint, PacketBuffer, BitPacketBuffer, LegacyUtf8Decoder,
+IsaacGenerator and GameplayAudioEvent.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -98,9 +99,29 @@ flag combination, ball/paddle extension fields, conditional brick transition
 and motion state, and decoded waypoint order/duration totals. These are synthetic
 raw/named source checks, not live transport or original-gamepack equivalence.
 Ciphered opcode/slice fixtures cross generator refill boundaries and check
-byte arithmetic/order against a separate instance of the existing generator.
-An independent generator proof, packed base38 names, invalid/truncated packet
-handling, full board snapshots and rendered board drawing remain unverified.
+byte arithmetic/order against an independent generator model.
+Packed base38 names, invalid/truncated packet handling, full board snapshots
+and rendered board drawing remain unverified.
+
+`IsaacGenerator` names its256-word memory/results, accumulator, last result,
+block counter, unread count, initialization lanes, block generation and bounded
+sampling. The native harness uses a separate unsigned-word array model of
+[Bob Jenkins's public-domain ISAAC definition](https://burtleburtle.net/bob/c/rand.c),
+anchored to sixteen values from the start/end of block2 in his
+[published vector file](https://burtleburtle.net/bob/rand/randvect.txt).
+Those vectors are printed in ascending result order; this game consumes each
+block in reverse order. The fixtures compare1025 words and internal state for
+five seeds, including empty/full-length seeds and seed-copy isolation, then
+exercise counter wraparound, rejection retries, invalid bounds, signed floor
+modulus and random-index swap passes. They verify deterministic behavior, not
+security properties or original-bytecode equivalence.
+
+Board `nextRandomInt`/`nextRandomBoundedInt` wrappers expose `randomCallCount`.
+It counts wrapper requests, including an invalid bounded request, rather than
+each generator word consumed by rejection sampling. `GameplayAudioEvent` names
+its numeric code and optional detail, with constructor checks for all observed
+codes0..14. Its consumer now names effect selection and music-tempo inputs;
+actual playback and complete match-event emission remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

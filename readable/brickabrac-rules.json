@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 4,
+  "version": 5,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -255,6 +255,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fo",
+      "originalName": "fo",
+      "to": "IsaacGenerator",
+      "evidence": "fo.java: ISAAC state, block mixing, reverse-order result consumption and rejection-based bounded sampling; used by board randomness and opcode cipher.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ge",
       "originalName": "ge",
       "to": "PowerUp",
@@ -315,6 +322,13 @@
       "originalName": "pi",
       "to": "BitPacketBuffer",
       "evidence": "pi.java: Packet buffer with MSB-first bit input/output and seeded cipher arithmetic for opcodes and byte slices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qc",
+      "originalName": "qc",
+      "to": "GameplayAudioEvent",
+      "evidence": "qc.java: Intrusive numeric audio event with optional detail ID; match queues events and bm selects sound effects/music tempo changes.",
       "confidence": "reviewed"
     },
     {
@@ -486,6 +500,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fo.field_d:[I",
+      "originalName": "field_d",
+      "to": "memory",
+      "evidence": "fo.java: 256-word ISAAC state memory.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fo.field_e:I",
+      "originalName": "field_e",
+      "to": "blockCounter",
+      "evidence": "fo.java: Incremented at the start of each generated block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fo.field_j:I",
+      "originalName": "field_j",
+      "to": "remaining",
+      "evidence": "fo.java: Count of unread output words; nextInt returns results[--remaining].",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fo.field_k:[I",
+      "originalName": "field_k",
+      "to": "results",
+      "evidence": "fo.java: 256-word output block, seeded before initialization and consumed in reverse index order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fo.field_l:I",
+      "originalName": "field_l",
+      "to": "lastResult",
+      "evidence": "fo.java: ISAAC previous result, initially augmented by incremented block counter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fo.field_m:I",
+      "originalName": "field_m",
+      "to": "accumulator",
+      "evidence": "fo.java: ISAAC accumulator updated by alternating shifts and half-block memory offsets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ge.field_y:I",
       "originalName": "field_y",
       "to": "activationTick",
@@ -532,6 +588,13 @@
       "originalName": "field_O",
       "to": "portalBricks",
       "evidence": "j.java: Board initialization populates this array only with type28 portal bricks, assigns portalIndex, and uses it to choose a different teleport destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_W:I",
+      "originalName": "field_W",
+      "to": "randomCallCount",
+      "evidence": "j.java: Board random wrappers increment once per call, including an invalid bounded request; internal rejection retries do not increment this counter.",
       "confidence": "reviewed"
     },
     {
@@ -749,6 +812,20 @@
       "originalName": "field_v",
       "to": "opcodeCipher",
       "evidence": "pi.java: Seeded generator whose next integer is added to written opcodes and subtracted from received bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qc.field_j:I",
+      "originalName": "field_j",
+      "to": "detailId",
+      "evidence": "qc.java: Optional event detail; power-up pickup event3 uses its type to choose a sound effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qc.field_m:I",
+      "originalName": "field_m",
+      "to": "eventCode",
+      "evidence": "qc.java: Numeric gameplay audio event code read by the audio event consumer.",
       "confidence": "reviewed"
     },
     {
@@ -987,6 +1064,153 @@
       "originalName": "fieldTemp$0",
       "to": "nextIndex",
       "evidence": "ao.java: New absolute index used for the modulo storage slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.<init>([I)V#0",
+      "originalName": "var2_int",
+      "to": "seedIndex",
+      "evidence": "fo.java: Index copied from caller seed into result block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(B)V#0",
+      "originalName": "fieldTemp$0",
+      "to": "nextBlockCounter",
+      "evidence": "fo.java: Incremented block counter added to lastResult.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(B)V#1",
+      "originalName": "var2",
+      "to": "wordIndex",
+      "evidence": "fo.java: Current state/output index in generated block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(B)V#2",
+      "originalName": "dupTemp$1",
+      "to": "newMemoryWord",
+      "evidence": "fo.java: Wrapping sum installed in state memory.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(B)V#3",
+      "originalName": "dupTemp$2",
+      "to": "newResult",
+      "evidence": "fo.java: Result installed in both lastResult and output block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(B)V#4",
+      "originalName": "var3",
+      "to": "oldMemoryWord",
+      "evidence": "fo.java: Prior state value used for both indirect lookups and result addition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(B)V#5",
+      "originalName": "var4",
+      "to": "memoryWord",
+      "evidence": "fo.java: New state value used for second indirect lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(II)I#0",
+      "originalName": "var4",
+      "to": "sample",
+      "evidence": "fo.java: Drawn signed word considered by rejection sampling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(II)I#1",
+      "originalName": "var3",
+      "to": "maximumAccepted",
+      "evidence": "fo.java: Highest signed sample that excludes incomplete modulus range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#0",
+      "originalName": "var2",
+      "to": "scrambleRound",
+      "evidence": "fo.java: Four rounds of initial state mixing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#10",
+      "originalName": "var2Lifetime1",
+      "to": "seedBlockOffset",
+      "evidence": "fo.java: Eight-word block offset in first state-filling pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#11",
+      "originalName": "var2Lifetime2",
+      "to": "memoryBlockOffset",
+      "evidence": "fo.java: Eight-word block offset in second state-filling pass.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#2",
+      "originalName": "var5",
+      "to": "mixC",
+      "evidence": "fo.java: ISAAC initialization eight-word mixing lane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#3",
+      "originalName": "var9",
+      "to": "mixG",
+      "evidence": "fo.java: ISAAC initialization eight-word mixing lane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#4",
+      "originalName": "var3",
+      "to": "mixA",
+      "evidence": "fo.java: ISAAC initialization eight-word mixing lane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#5",
+      "originalName": "var10",
+      "to": "mixH",
+      "evidence": "fo.java: ISAAC initialization eight-word mixing lane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#6",
+      "originalName": "var4",
+      "to": "mixB",
+      "evidence": "fo.java: ISAAC initialization eight-word mixing lane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#7",
+      "originalName": "var6",
+      "to": "mixD",
+      "evidence": "fo.java: ISAAC initialization eight-word mixing lane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#8",
+      "originalName": "var7",
+      "to": "mixE",
+      "evidence": "fo.java: ISAAC initialization eight-word mixing lane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.a(Z)V#9",
+      "originalName": "var8",
+      "to": "mixF",
+      "evidence": "fo.java: ISAAC initialization eight-word mixing lane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fo.b(I)I#0",
+      "originalName": "fieldTemp$0",
+      "to": "resultIndex",
+      "evidence": "fo.java: Decremented output count used to select result word.",
       "confidence": "reviewed"
     },
     {
@@ -1242,6 +1466,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bm.a(IIZILvl;)V",
+      "originalName": "a",
+      "to": "playGameplayAudioEvents",
+      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bn.a(BLj;Lno;)V",
       "originalName": "a",
       "to": "onCircleContact",
@@ -1323,6 +1554,41 @@
       "originalName": "a",
       "to": "readBodySnapshot",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.a(III)I",
+      "originalName": "a",
+      "to": "nonnegativeRemainder",
+      "evidence": "er.java: Returns signed floor modulus for positive divisor using original sign adjustment; canonical guard -1560508993.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fo.a(B)V",
+      "originalName": "a",
+      "to": "generateBlock",
+      "evidence": "fo.java: Produces256 ISAAC words with wrapping32-bit arithmetic; guard below -64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fo.a(II)I",
+      "originalName": "a",
+      "to": "nextBoundedInt",
+      "evidence": "fo.java: Rejects nonpositive bounds, rejects the incomplete high range and returns nonnegative signed floor modulus; guard -37880252.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fo.a(Z)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "fo.java: Four initial eight-word mixes and two state-filling passes, then first output block; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fo.b(I)I",
+      "originalName": "b",
+      "to": "nextInt",
+      "evidence": "fo.java: Consumes output block in reverse order and refills when empty; guard at least88.",
       "confidence": "reviewed"
     },
     {
@@ -1417,6 +1683,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.a(IB)I",
+      "originalName": "a",
+      "to": "nextRandomBoundedInt",
+      "evidence": "j.java: Increments randomCallCount before delegating bounded sampling; guard62.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.a(III)I",
       "originalName": "a",
       "to": "ticksUntilPendingPowerUp",
@@ -1428,6 +1701,13 @@
       "originalName": "a",
       "to": "addScore",
       "evidence": "j.java: Updates score and accounting, optionally resets a state word, and appends a popup at supplied fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.e(I)I",
+      "originalName": "e",
+      "to": "nextRandomInt",
+      "evidence": "j.java: Increments randomCallCount and consumes next seeded random word; original arithmetic guard retained.",
       "confidence": "reviewed"
     },
     {
@@ -1799,6 +2079,13 @@
       "originalName": "a",
       "to": "readBodySnapshot",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(I[IILfo;)V",
+      "originalName": "a",
+      "to": "shuffleValues",
+      "evidence": "vi.java: Runs requested passes of random-index swaps over the array using seeded bounded sampling; original arithmetic guard retained.",
       "confidence": "reviewed"
     },
     {
@@ -2446,6 +2733,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bm.a(IIZILvl;)V#0",
+      "originalName": "param0",
+      "to": "volume",
+      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.a(IIZILvl;)V#1",
+      "originalName": "param1",
+      "to": "tempoScale256",
+      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.a(IIZILvl;)V#2",
+      "originalName": "param2",
+      "to": "alternateMusicTrack",
+      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.a(IIZILvl;)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.a(IIZILvl;)V#4",
+      "originalName": "param4",
+      "to": "events",
+      "evidence": "bm.java: Reads queued audio codes, selects effects and adjusts music tempo; event4 contributes tempo changes; guard -30791.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bn.<init>(IIIIIII)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -2723,6 +3045,69 @@
       "originalName": "param1",
       "to": "packet",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:er.a(III)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "er.java: Returns signed floor modulus for positive divisor using original sign adjustment; canonical guard -1560508993.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:er.a(III)I#1",
+      "originalName": "param1",
+      "to": "divisor",
+      "evidence": "er.java: Returns signed floor modulus for positive divisor using original sign adjustment; canonical guard -1560508993.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:er.a(III)I#2",
+      "originalName": "param2",
+      "to": "value",
+      "evidence": "er.java: Returns signed floor modulus for positive divisor using original sign adjustment; canonical guard -1560508993.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fo.<init>([I)V#0",
+      "originalName": "param0",
+      "to": "seed",
+      "evidence": "fo.java: Copies seed into a zero-padded256-word result array, performs two initialization passes and produces the first block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fo.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fo.java: Produces256 ISAAC words with wrapping32-bit arithmetic; guard below -64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fo.a(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fo.java: Rejects nonpositive bounds, rejects the incomplete high range and returns nonnegative signed floor modulus; guard -37880252.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fo.a(II)I#1",
+      "originalName": "param1",
+      "to": "bound",
+      "evidence": "fo.java: Rejects nonpositive bounds, rejects the incomplete high range and returns nonnegative signed floor modulus; guard -37880252.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fo.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fo.java: Four initial eight-word mixes and two state-filling passes, then first output block; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fo.b(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fo.java: Consumes output block in reverse order and refills when empty; guard at least88.",
       "confidence": "reviewed"
     },
     {
@@ -3027,6 +3412,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:j.a(IB)I#0",
+      "originalName": "param0",
+      "to": "bound",
+      "evidence": "j.java: Increments randomCallCount before delegating bounded sampling; guard62.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(IB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Increments randomCallCount before delegating bounded sampling; guard62.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:j.a(III)I#0",
       "originalName": "param0",
       "to": "typeId",
@@ -3073,6 +3472,13 @@
       "originalName": "param3",
       "to": "y256",
       "evidence": "j.java: Updates score and accounting, optionally resets a state word, and appends a popup at supplied fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.e(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Increments randomCallCount and consumes next seeded random word; original arithmetic guard retained.",
       "confidence": "reviewed"
     },
     {
@@ -3769,6 +4175,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qc.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "eventCode",
+      "evidence": "qc.java: Creates audio event with default detail -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qc.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "eventCode",
+      "evidence": "qc.java: Retains event code and detail without interpreting their encodings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qc.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "detailId",
+      "evidence": "qc.java: Retains event code and detail without interpreting their encodings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qj.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
@@ -3990,6 +4417,34 @@
       "originalName": "param1",
       "to": "packet",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vi.a(I[IILfo;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vi.java: Runs requested passes of random-index swaps over the array using seeded bounded sampling; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vi.a(I[IILfo;)V#1",
+      "originalName": "param1",
+      "to": "values",
+      "evidence": "vi.java: Runs requested passes of random-index swaps over the array using seeded bounded sampling; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vi.a(I[IILfo;)V#2",
+      "originalName": "param2",
+      "to": "passes",
+      "evidence": "vi.java: Runs requested passes of random-index swaps over the array using seeded bounded sampling; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vi.a(I[IILfo;)V#3",
+      "originalName": "param3",
+      "to": "random",
+      "evidence": "vi.java: Runs requested passes of random-index swaps over the array using seeded bounded sampling; original arithmetic guard retained.",
       "confidence": "reviewed"
     },
     {
@@ -4953,9 +5408,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "f91fffbbfe62db209f1f9d23f3b8714ec5cc7f3a3621fc50785008d642ac45db",
+      "build-brickabrac-rules.mjs": "76b3b9113c1452cb5952e3483b099097517b30fbcdb650eb10bd0181783c001d",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "b47acead522935047cbce371dfbd6a7ca680bd5d1bfac21f147bb2d652c4fdb7",
+      "tests/test-brickabrac-core.mjs": "6b551bcf7b3309c8857f457fbadd4b817d10399b49b60a24dfeaa5a6d04cfe14",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
