@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 19,
+  "version": 20,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -231,6 +231,13 @@
       "originalName": "ab",
       "to": "MatchCompleteScreen",
       "evidence": "ab.java: ID20 completed multiplayer match menu with main-menu/rematch actions and full-height result anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ad",
+      "originalName": "ad",
+      "to": "CappedUrlRequest",
+      "evidence": "ad.java: Asynchronous URL input with fixed-capacity packet storage and JAGGRAB443 fallback; exact-capacity input is treated as overflow.",
       "confidence": "reviewed"
     },
     {
@@ -483,6 +490,13 @@
       "originalName": "ii",
       "to": "RasterSnapshot",
       "evidence": "ii.java: Pooled intrusive raster state retaining pixel array, dimensions and clip rectangle for nested target restoration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ij",
+      "originalName": "ij",
+      "to": "GameUiController",
+      "evidence": "ij.java: Concrete UI asset/bootstrap/readiness lifecycle, layout initialization and game-screen factory.",
       "confidence": "reviewed"
     },
     {
@@ -773,6 +787,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pg",
+      "originalName": "pg",
+      "to": "DelayedPacket",
+      "evidence": "pg.java: Intrusive delivery deadline, decoded opcode and retained packet payload for artificial network delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pi",
       "originalName": "pi",
       "to": "BitPacketBuffer",
@@ -997,6 +1018,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wb",
+      "originalName": "wb",
+      "to": "GameUiLifecycle",
+      "evidence": "wb.java: UI asset preparation, staged bootstrap/readiness polling and UI initialization callbacks used by the interactive client.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wf",
       "originalName": "wf",
       "to": "AudioMixerListener",
@@ -1043,6 +1071,62 @@
       "originalName": "field_a",
       "to": "achievementIconPool",
       "evidence": "aa.java: Recycled achievement icons reused by factory in FIFO order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ad.field_a:Ljava/net/URL;",
+      "originalName": "field_a",
+      "to": "url",
+      "evidence": "ad.java: Requested URL and fallback file path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ad.field_c:I",
+      "originalName": "field_c",
+      "to": "phase",
+      "evidence": "ad.java: 0 URL,1 JAGGRAB fallback,2 failure,3 EOF success.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ad.field_d:Lql;",
+      "originalName": "field_d",
+      "to": "urlTask",
+      "evidence": "ad.java: Pending/opened URL stream task.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ad.field_f:Lwq;",
+      "originalName": "field_f",
+      "to": "packet",
+      "evidence": "ad.java: Fixed-capacity bytes and used-byte cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ad.field_g:Ltg;",
+      "originalName": "field_g",
+      "to": "services",
+      "evidence": "ad.java: Platform URL/socket/thread task provider.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ad.field_h:Lql;",
+      "originalName": "field_h",
+      "to": "readTask",
+      "evidence": "ad.java: Asynchronous stream reader task.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ad.field_i:Lql;",
+      "originalName": "field_i",
+      "to": "socketTask",
+      "evidence": "ad.java: Pending/opened JAGGRAB socket task.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ad.field_k:Ljava/io/DataInputStream;",
+      "originalName": "field_k",
+      "to": "input",
+      "evidence": "ad.java: Opened response input.",
       "confidence": "reviewed"
     },
     {
@@ -1221,6 +1305,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:al.field_j:Lwb;",
+      "originalName": "field_j",
+      "to": "uiLifecycle",
+      "evidence": "al.java: Registered game UI lifecycle callbacks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:al.field_m:Lvl;",
+      "originalName": "field_m",
+      "to": "delayedPackets",
+      "evidence": "al.java: Artificial-delay packet FIFO.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ao.field_i:[Ljava/lang/Object;",
       "originalName": "field_i",
       "to": "entries",
@@ -1239,6 +1337,13 @@
       "originalName": "field_n",
       "to": "latestIndex",
       "evidence": "ao.java: Starts at -1; append advances the absolute index before storing modulo capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:be.field_c:I",
+      "originalName": "field_c",
+      "to": "uiBootstrapStage",
+      "evidence": "be.java: UI asset bootstrap stage advanced by controller.",
       "confidence": "reviewed"
     },
     {
@@ -1351,6 +1456,13 @@
       "originalName": "field_r",
       "to": "elapsedNanos",
       "evidence": "cg.java: Accumulated sampled elapsed time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ch.field_g:[I",
+      "originalName": "field_g",
+      "to": "incomingPacketLengths",
+      "evidence": "ch.java: Opcode-indexed sizes, -1 byte prefix and -2 short prefix.",
       "confidence": "reviewed"
     },
     {
@@ -1655,6 +1767,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ej.field_J:D",
+      "originalName": "field_J",
+      "to": "packetDelayJitter",
+      "evidence": "ej.java: Gaussian delay deviation; negative resulting delay clamps0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ek.field_cb:I",
       "originalName": "field_cb",
       "to": "keyChangeReadIndex",
@@ -1694,6 +1813,13 @@
       "originalName": "field_g",
       "to": "livePointerY",
       "evidence": "ep.java: Written by mouse move/drag/enter callbacks; exit writes -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_g:Lwh;",
+      "originalName": "field_g",
+      "to": "gameTransport",
+      "evidence": "eq.java: Game-session byte stream, distinct from archive transport.",
       "confidence": "reviewed"
     },
     {
@@ -1799,6 +1925,13 @@
       "originalName": "field_M",
       "to": "rasterSnapshotPool",
       "evidence": "fr.java: Restored snapshots reused from deque tail, with pixels released.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_j:I",
+      "originalName": "field_j",
+      "to": "incomingPacketLength",
+      "evidence": "ga.java: Payload byte count or pending -1/-2 length prefix.",
       "confidence": "reviewed"
     },
     {
@@ -2460,10 +2593,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ji.field_e:Ljava/util/Random;",
+      "originalName": "field_e",
+      "to": "packetDelayRandom",
+      "evidence": "ji.java: Random generator used only for artificial delay jitter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jl.field_c:J",
       "originalName": "field_c",
       "to": "lastWallMillis",
       "evidence": "jl.java: Previous raw wall-clock value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jl.field_e:Lpi;",
+      "originalName": "field_e",
+      "to": "incomingPackets",
+      "evidence": "jl.java: Current input/cipher packet buffer.",
       "confidence": "reviewed"
     },
     {
@@ -2604,6 +2751,13 @@
       "originalName": "field_z",
       "to": "pendingScanGroups",
       "evidence": "jq.java: Unresolved groups retained during background scans.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:k.field_h:Lpi;",
+      "originalName": "field_h",
+      "to": "outgoingPackets",
+      "evidence": "k.java: Current output/cipher packet buffer.",
       "confidence": "reviewed"
     },
     {
@@ -3223,6 +3377,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mh.field_gb:I",
+      "originalName": "field_gb",
+      "to": "previousPacketOpcode",
+      "evidence": "mh.java: Previous delivered opcode.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mi.field_c:I",
       "originalName": "field_c",
       "to": "livePressedButton",
@@ -3426,6 +3587,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ob.field_I:I",
+      "originalName": "field_I",
+      "to": "pendingPacketOpcode",
+      "evidence": "ob.java: Partially received opcode, -1 before next header.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ob.field_J:Lra;",
       "originalName": "field_J",
       "to": "soundMixer",
@@ -3500,6 +3668,13 @@
       "originalName": "field_f",
       "to": "order",
       "evidence": "oi.java: Caller-owned level index order; sequence uses levelIndex modulo period.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_t:J",
+      "originalName": "field_t",
+      "to": "lastGameReadMillis",
+      "evidence": "oj.java: Last successful game transport byte read, used for timeout.",
       "confidence": "reviewed"
     },
     {
@@ -3657,10 +3832,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pg.field_j:J",
+      "originalName": "field_j",
+      "to": "deliverAfterMillis",
+      "evidence": "pg.java: Strict delivery threshold: current time must be greater.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pg.field_k:[Lkm;",
       "originalName": "field_k",
       "to": "menuScreens",
       "evidence": "pg.java: Screen-ID-indexed registry initialized with22 slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pg.field_l:[B",
+      "originalName": "field_l",
+      "to": "data",
+      "evidence": "pg.java: Retained payload array, constructor shares caller array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pg.field_r:I",
+      "originalName": "field_r",
+      "to": "opcode",
+      "evidence": "pg.java: Decoded packet opcode.",
       "confidence": "reviewed"
     },
     {
@@ -3703,6 +3899,13 @@
       "originalName": "field_a",
       "to": "pointerY",
       "evidence": "po.java: Frame snapshot of ep live pointer y from AWT getY.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:po.field_e:Lad;",
+      "originalName": "field_e",
+      "to": "countryListRequest",
+      "evidence": "po.java: Temporary countrylist.ws request.",
       "confidence": "reviewed"
     },
     {
@@ -3839,6 +4042,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qg.field_A:I",
+      "originalName": "field_A",
+      "to": "clientStage",
+      "evidence": "qg.java: Shared initialization/UI connection stage, progressing through10/11/20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_B:I",
+      "originalName": "field_B",
+      "to": "serverNumber",
+      "evidence": "qg.java: Optional servernum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_C:I",
+      "originalName": "field_C",
+      "to": "affiliateId",
+      "evidence": "qg.java: Optional affid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_o:I",
+      "originalName": "field_o",
+      "to": "gameCrc",
+      "evidence": "qg.java: Parsed gamecrc applet parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_p:I",
+      "originalName": "field_p",
+      "to": "gamePortTwo",
+      "evidence": "qg.java: Parsed gameport2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_q:Z",
+      "originalName": "field_q",
+      "to": "memberAccount",
+      "evidence": "qg.java: Member parameter equals yes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_s:Z",
+      "originalName": "field_s",
+      "to": "jagexHost",
+      "evidence": "qg.java: True for jagex.com host or subdomain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_u:I",
+      "originalName": "field_u",
+      "to": "languageId",
+      "evidence": "qg.java: Parsed lang, values at least5 become0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_v:I",
+      "originalName": "field_v",
+      "to": "gamePortOne",
+      "evidence": "qg.java: Parsed gameport1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_w:J",
+      "originalName": "field_w",
+      "to": "instanceId",
+      "evidence": "qg.java: Parsed instanceid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_x:Ljava/lang/String;",
+      "originalName": "field_x",
+      "to": "host",
+      "evidence": "qg.java: Code-base host, not game name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qg.field_y:Z",
+      "originalName": "field_y",
+      "to": "reconnectRequested",
+      "evidence": "qg.java: Forces connection-time check failure then clears.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qj.field_w:Lak;",
       "originalName": "field_w",
       "to": "match",
@@ -3927,6 +4214,13 @@
       "originalName": "field_c",
       "to": "decodedSpritePalette",
       "evidence": "qp.java: Shared RGB palette; entries beyond0 whose encoded color is0 become1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:r.field_z:I",
+      "originalName": "field_z",
+      "to": "thirdPreviousPacketOpcode",
+      "evidence": "r.java: Third prior delivered opcode.",
       "confidence": "reviewed"
     },
     {
@@ -4046,6 +4340,13 @@
       "originalName": "field_v",
       "to": "tooltipSprites",
       "evidence": "rp.java: Main-menu sprite/tooltip nodes iterated for update/drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_a:I",
+      "originalName": "field_a",
+      "to": "currentPacketOpcode",
+      "evidence": "si.java: Most recently delivered opcode.",
       "confidence": "reviewed"
     },
     {
@@ -4382,6 +4683,20 @@
       "originalName": "field_z",
       "to": "previewPaths",
       "evidence": "ud.java: Decoded preview motion paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ue.field_d:I",
+      "originalName": "field_d",
+      "to": "packetDelayMillis",
+      "evidence": "ue.java: Artificial incoming packet delay;0 immediate delivery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_d:[Z",
+      "originalName": "field_d",
+      "to": "enabledCommonPackets",
+      "evidence": "uf.java: Enabled common opcode dispatch flags.",
       "confidence": "reviewed"
     },
     {
@@ -4749,6 +5064,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:we.field_a:I",
+      "originalName": "field_a",
+      "to": "secondPreviousPacketOpcode",
+      "evidence": "we.java: Second prior delivered opcode.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wf.field_i:I",
       "originalName": "field_i",
       "to": "remainingSamples",
@@ -4949,6 +5271,20 @@
       "originalName": "var5",
       "to": "clientBranchFlag",
       "evidence": "BrickABrac.java: Original generated branch flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ad.run()V#0",
+      "originalName": "var1_int",
+      "to": "bytesRead",
+      "evidence": "ad.java: Stream read count until EOF/capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ad.run()V#4",
+      "originalName": "var4",
+      "to": "clientBranchFlag",
+      "evidence": "ad.java: Original generated branch flag.",
       "confidence": "reviewed"
     },
     {
@@ -6275,6 +6611,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:nl.a([IB)Z#0",
+      "originalName": "var5_int",
+      "to": "queuedByteIndex",
+      "evidence": "nl.java: Reviewed incoming packet frame/delay declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#1",
+      "originalName": "var6",
+      "to": "receivedByteIndex",
+      "evidence": "nl.java: Reviewed incoming packet frame/delay declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#10",
+      "originalName": "var5",
+      "to": "delayedPacket",
+      "evidence": "nl.java: Reviewed incoming packet frame/delay declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#11",
+      "originalName": "var7",
+      "to": "clientBranchFlag",
+      "evidence": "nl.java: Reviewed incoming packet frame/delay declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#6",
+      "originalName": "var2_long",
+      "to": "nowMillis",
+      "evidence": "nl.java: Reviewed incoming packet frame/delay declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#8",
+      "originalName": "var4_ref_pg",
+      "to": "queuedPacket",
+      "evidence": "nl.java: Reviewed incoming packet frame/delay declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#9",
+      "originalName": "var4",
+      "to": "delayMillis",
+      "evidence": "nl.java: Reviewed incoming packet frame/delay declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:on.a(BZ)V#0",
       "originalName": "var6",
       "to": "sourceWaypoint",
@@ -6415,6 +6800,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:qg.a(ILjava/lang/String;III)V#10",
+      "originalName": "var9",
+      "to": "affiliateParameter",
+      "evidence": "qg.java: Reviewed applet parameter parse declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qg.a(ILjava/lang/String;III)V#5",
+      "originalName": "var6",
+      "to": "hostLowercase",
+      "evidence": "qg.java: Reviewed applet parameter parse declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qg.a(ILjava/lang/String;III)V#8",
+      "originalName": "var7",
+      "to": "serverParameter",
+      "evidence": "qg.java: Reviewed applet parameter parse declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qg.a(ILjava/lang/String;III)V#9",
+      "originalName": "var8",
+      "to": "languageParameter",
+      "evidence": "qg.java: Reviewed applet parameter parse declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ra.c(I)V#0",
       "originalName": "var2",
       "to": "stream",
@@ -6517,6 +6930,13 @@
       "originalName": "fieldTemp$0",
       "to": "nextRemainingTicks",
       "evidence": "ul.java: Decremented lifetime used to test whether the popup is still alive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vd.a(II)Z#0",
+      "originalName": "var2_int",
+      "to": "availableBytes",
+      "evidence": "vd.java: Available transport bytes capped by requested remainder.",
       "confidence": "reviewed"
     },
     {
@@ -6846,6 +7266,20 @@
       "originalName": "f",
       "to": "getResultBottom",
       "evidence": "ld.java: Subclass supplies result presentation bottom; guard -6. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.a(B)Lwq;",
+      "originalName": "a",
+      "to": "getResult",
+      "evidence": "ad.java: Returns packet only in success phase3; guard at least95.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.a(I)Z",
+      "originalName": "a",
+      "to": "poll",
+      "evidence": "ad.java: Polls URL/socket/read tasks, reports terminal phase2/3; guard1.",
       "confidence": "reviewed"
     },
     {
@@ -7987,6 +8421,55 @@
       "originalName": "a",
       "to": "capture",
       "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.a(B)Z",
+      "originalName": "a",
+      "to": "pollUiBootstrap",
+      "evidence": "wb.java: Stages loading/parsing UI assets, returns terminal readiness. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.a(I)Z",
+      "originalName": "a",
+      "to": "pollUiReady",
+      "evidence": "wb.java: Polls three required data/font readiness flags; guard23570. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.a(IB)Lgf;",
+      "originalName": "a",
+      "to": "getScreen",
+      "evidence": "ij.java: Resolves registered game screen factory; guard -128.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.a(Z)V",
+      "originalName": "a",
+      "to": "initializeUi",
+      "evidence": "wb.java: Builds UI layout and registers screens; false guard. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.b(B)Z",
+      "originalName": "b",
+      "to": "pollRequiredFonts",
+      "evidence": "ij.java: Polls two required font resources and updates glyph count maxima; guard127.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.b(Z)V",
+      "originalName": "b",
+      "to": "prepareUiAssets",
+      "evidence": "wb.java: Requests UI archives and creates resource-loading queue. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.d(Z)Z",
+      "originalName": "d",
+      "to": "pollRequiredData",
+      "evidence": "ij.java: Polls required tabular data and sets missing/default flags; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -9446,6 +9929,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nl.a([IB)Z",
+      "originalName": "a",
+      "to": "readNextGamePacket",
+      "evidence": "nl.java: Decodes opcode, resolves body length, receives full payload, tracks history or delays FIFO delivery; guard64.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nm.b(B)V",
       "originalName": "b",
       "to": "unlink",
@@ -9866,6 +10356,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qg.a(B)V",
+      "originalName": "a",
+      "to": "handleBrowserPayload",
+      "evidence": "qg.java: Reads flags plus ciphered body, converts bytes to text and invokes browser handler; guard120.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a(ILjava/lang/String;III)V",
+      "originalName": "a",
+      "to": "loadAppletParameters",
+      "evidence": "qg.java: Checks host then parses connection parameters and initializes shell.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a(IZ)V",
+      "originalName": "a",
+      "to": "configureCommonPackets",
+      "evidence": "qg.java: Sets selected flag and standard common opcodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a(Ljava/lang/String;II)V",
+      "originalName": "a",
+      "to": "initializeApplet",
+      "evidence": "qg.java: 640x480 applet initialization; guard1686.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.b(B)V",
+      "originalName": "b",
+      "to": "enablePacketFour",
+      "evidence": "qg.java: Enables common opcode4; guard -67.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.b(ZI)V",
+      "originalName": "b",
+      "to": "updateConnection",
+      "evidence": "qg.java: Snapshots input and polls game/archive connection, timeout and UI state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.c(B)V",
+      "originalName": "c",
+      "to": "enablePacketsElevenToThirteen",
+      "evidence": "qg.java: Enables common opcodes11,12,13; guard -19.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.e(Z)V",
+      "originalName": "e",
+      "to": "enablePacketFive",
+      "evidence": "qg.java: Sets common opcode5 enabled state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.h(Z)V",
+      "originalName": "h",
+      "to": "dispatchCommonPacket",
+      "evidence": "qg.java: Dispatches enabled common opcodes below64; unexpected opcode logs/disconnects; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.i(I)V",
+      "originalName": "i",
+      "to": "enableCommonPacket",
+      "evidence": "qg.java: Enables opcode flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.j(I)V",
+      "originalName": "j",
+      "to": "enablePacketSix",
+      "evidence": "qg.java: Enables common opcode6; guard above28.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.l(I)V",
+      "originalName": "l",
+      "to": "enablePacketOne",
+      "evidence": "qg.java: Enables common opcode1; guard12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.m(I)V",
+      "originalName": "m",
+      "to": "initializePacketLengths",
+      "evidence": "qg.java: Installs common fixed/variable incoming packet sizes; guard above116.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -10202,6 +10783,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sa.a(ILwb;)V",
+      "originalName": "a",
+      "to": "registerUiLifecycle",
+      "evidence": "sa.java: Registers callbacks and enables standard common packet groups; guard3160.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sa.a(Lpi;BI)Z",
       "originalName": "a",
       "to": "handleGamePacket",
@@ -10227,6 +10815,13 @@
       "originalName": "g",
       "to": "renderClient",
       "evidence": "ke.java: Client frame callback; shell normally passes102. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.j(Z)V",
+      "originalName": "j",
+      "to": "dispatchIncomingPackets",
+      "evidence": "sa.java: Reads complete packets and tries game dispatch before common dispatch.",
       "confidence": "reviewed"
     },
     {
@@ -10311,6 +10906,13 @@
       "originalName": "a",
       "to": "decodeLevelBytes",
       "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(BLjava/net/URL;)Lql;",
+      "originalName": "a",
+      "to": "openUrl",
+      "evidence": "tg.java: Enqueues operation4 DataInputStream URL read.",
       "confidence": "reviewed"
     },
     {
@@ -10657,6 +11259,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:um.b(B)Z",
+      "originalName": "b",
+      "to": "ensureGamePacketBody",
+      "evidence": "um.java: Resolves byte/short variable length prefixes and accumulates requested body; guard at most -40.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uo.a(BLmf;Ljava/lang/String;Ljava/lang/String;)Ltp;",
       "originalName": "a",
       "to": "loadIndexedSpriteByName",
@@ -10696,6 +11305,13 @@
       "originalName": "a",
       "to": "updateGameLayer",
       "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(II)Z",
+      "originalName": "a",
+      "to": "ensureGamePacketBytes",
+      "evidence": "vd.java: Accumulates available bytes until count, preserving partial cursor; reports timeout/EOF via disconnect; guard20.",
       "confidence": "reviewed"
     },
     {
@@ -10969,6 +11585,34 @@
       "originalName": "c",
       "to": "navigateBack",
       "evidence": "km.java: Requests parent screen transition; guard -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a(B)Z",
+      "originalName": "a",
+      "to": "pollUiBootstrap",
+      "evidence": "wb.java: Stages loading/parsing UI assets, returns terminal readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a(I)Z",
+      "originalName": "a",
+      "to": "pollUiReady",
+      "evidence": "wb.java: Polls three required data/font readiness flags; guard23570.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a(Z)V",
+      "originalName": "a",
+      "to": "initializeUi",
+      "evidence": "wb.java: Builds UI layout and registers screens; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.b(Z)V",
+      "originalName": "b",
+      "to": "prepareUiAssets",
+      "evidence": "wb.java: Requests UI archives and creates resource-loading queue.",
       "confidence": "reviewed"
     },
     {
@@ -11501,6 +12145,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ld.java: Subclass supplies result presentation bottom; guard -6. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ad.<init>(Ltg;Ljava/net/URL;I)V#0",
+      "originalName": "param0",
+      "to": "services",
+      "evidence": "ad.java: Retains services/URL and allocates fixed-capacity response packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ad.<init>(Ltg;Ljava/net/URL;I)V#1",
+      "originalName": "param1",
+      "to": "url",
+      "evidence": "ad.java: Retains services/URL and allocates fixed-capacity response packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ad.<init>(Ltg;Ljava/net/URL;I)V#2",
+      "originalName": "param2",
+      "to": "capacity",
+      "evidence": "ad.java: Retains services/URL and allocates fixed-capacity response packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ad.a(B)Lwq;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ad.java: Returns packet only in success phase3; guard at least95.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ad.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ad.java: Polls URL/socket/read tasks, reports terminal phase2/3; guard1.",
       "confidence": "reviewed"
     },
     {
@@ -14658,6 +15337,62 @@
       "originalName": "param7",
       "to": "clipBottom",
       "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ij.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wb.java: Stages loading/parsing UI assets, returns terminal readiness. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ij.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wb.java: Polls three required data/font readiness flags; guard23570. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ij.a(IB)Lgf;#0",
+      "originalName": "param0",
+      "to": "screenId",
+      "evidence": "ij.java: Resolves registered game screen factory; guard -128.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ij.a(IB)Lgf;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ij.java: Resolves registered game screen factory; guard -128.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ij.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wb.java: Builds UI layout and registers screens; false guard. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ij.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ij.java: Polls two required font resources and updates glyph count maxima; guard127.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ij.b(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wb.java: Requests UI archives and creates resource-loading queue. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ij.d(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ij.java: Polls required tabular data and sets missing/default flags; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -18077,6 +18812,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nl.a([IB)Z#0",
+      "originalName": "param0",
+      "to": "packetLengths",
+      "evidence": "nl.java: Decodes opcode, resolves body length, receives full payload, tracks history or delays FIFO delivery; guard64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nl.a([IB)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nl.java: Decodes opcode, resolves body length, receives full payload, tracks history or delays FIFO delivery; guard64.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nm.b(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -18868,6 +19617,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pg.<init>(JI[B)V#0",
+      "originalName": "param0",
+      "to": "deliverAfterMillis",
+      "evidence": "pg.java: Retains delivery threshold, opcode and caller payload reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pg.<init>(JI[B)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "pg.java: Retains delivery threshold, opcode and caller payload reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pg.<init>(JI[B)V#2",
+      "originalName": "param2",
+      "to": "data",
+      "evidence": "pg.java: Retains delivery threshold, opcode and caller payload reference.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pi.<init>(I)V#0",
       "originalName": "param0",
       "to": "capacity",
@@ -19257,6 +20027,153 @@
       "originalName": "param2",
       "to": "frames",
       "evidence": "qd.java: Mixes requested frames into caller output buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: Reads flags plus ciphered body, converts bytes to text and invokes browser handler; guard120.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(ILjava/lang/String;III)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: Checks host then parses connection parameters and initializes shell.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(ILjava/lang/String;III)V#1",
+      "originalName": "param1",
+      "to": "gameName",
+      "evidence": "qg.java: Checks host then parses connection parameters and initializes shell.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(ILjava/lang/String;III)V#2",
+      "originalName": "param2",
+      "to": "gameVersion",
+      "evidence": "qg.java: Checks host then parses connection parameters and initializes shell.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(ILjava/lang/String;III)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "qg.java: Checks host then parses connection parameters and initializes shell.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(ILjava/lang/String;III)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "qg.java: Checks host then parses connection parameters and initializes shell.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "qg.java: Sets selected flag and standard common opcodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "enabled",
+      "evidence": "qg.java: Sets selected flag and standard common opcodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(Ljava/lang/String;II)V#0",
+      "originalName": "param0",
+      "to": "gameName",
+      "evidence": "qg.java: 640x480 applet initialization; guard1686.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(Ljava/lang/String;II)V#1",
+      "originalName": "param1",
+      "to": "gameVersion",
+      "evidence": "qg.java: 640x480 applet initialization; guard1686.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(Ljava/lang/String;II)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: 640x480 applet initialization; guard1686.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: Enables common opcode4; guard -67.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.b(ZI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: Snapshots input and polls game/archive connection, timeout and UI state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.b(ZI)V#1",
+      "originalName": "param1",
+      "to": "guardCode",
+      "evidence": "qg.java: Snapshots input and polls game/archive connection, timeout and UI state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: Enables common opcodes11,12,13; guard -19.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.e(Z)V#0",
+      "originalName": "param0",
+      "to": "enabled",
+      "evidence": "qg.java: Sets common opcode5 enabled state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.h(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: Dispatches enabled common opcodes below64; unexpected opcode logs/disconnects; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.i(I)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "qg.java: Enables opcode flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.j(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: Enables common opcode6; guard above28.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.l(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: Enables common opcode1; guard12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.m(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qg.java: Installs common fixed/variable incoming packet sizes; guard above116.",
       "confidence": "reviewed"
     },
     {
@@ -19855,6 +20772,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sa.a(ILwb;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Registers callbacks and enables standard common packet groups; guard3160.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(ILwb;)V#1",
+      "originalName": "param1",
+      "to": "lifecycle",
+      "evidence": "sa.java: Registers callbacks and enables standard common packet groups; guard3160.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sa.a(Lpi;BI)Z#0",
       "originalName": "param0",
       "to": "packet",
@@ -19901,6 +20832,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ke.java: Client frame callback; shell normally passes102. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.j(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Reads complete packets and tries game dispatch before common dispatch.",
       "confidence": "reviewed"
     },
     {
@@ -20076,6 +21014,20 @@
       "originalName": "param5",
       "to": "obfuscationGuard",
       "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(BLjava/net/URL;)Lql;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tg.java: Enqueues operation4 DataInputStream URL read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(BLjava/net/URL;)Lql;#1",
+      "originalName": "param1",
+      "to": "url",
+      "evidence": "tg.java: Enqueues operation4 DataInputStream URL read.",
       "confidence": "reviewed"
     },
     {
@@ -20842,6 +21794,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:um.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "um.java: Resolves byte/short variable length prefixes and accumulates requested body; guard at most -40.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:uo.a(BLmf;Ljava/lang/String;Ljava/lang/String;)Ltp;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -20951,6 +21910,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vd.a(II)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vd.java: Accumulates available bytes until count, preserving partial cursor; reports timeout/EOF via disconnect; guard20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vd.a(II)Z#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "vd.java: Accumulates available bytes until count, preserving partial cursor; reports timeout/EOF via disconnect; guard20.",
       "confidence": "reviewed"
     },
     {
@@ -21609,6 +22582,34 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "km.java: Requests parent screen transition; guard -1. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wb.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wb.java: Stages loading/parsing UI assets, returns terminal readiness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wb.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wb.java: Polls three required data/font readiness flags; guard23570.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wb.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wb.java: Builds UI layout and registers screens; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wb.b(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wb.java: Requests UI archives and creates resource-loading queue.",
       "confidence": "reviewed"
     },
     {
@@ -22327,9 +23328,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "960c1ac30f76fb825f0aafa5a6cf8ead286436da76472ec64c0bd24f61da13ac",
+      "build-brickabrac-rules.mjs": "cceee4d3a1b05caaf8e15d9d33aa5fd216ce9ae24cbe1f50fa57826ad1b1cfe3",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "07fa2834c29269e631f7afc41b5481bccb48446543ac89cb3c7fe894d3c1cb73",
+      "tests/test-brickabrac-core.mjs": "f9db8c5a10856f965400d9b9451c7a411cb98c369b39b19ce6b332ac734ac0f7",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

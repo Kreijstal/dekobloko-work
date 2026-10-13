@@ -78,6 +78,8 @@ limits, cache coherence, task records and the execution service.
 AppletGameShell, GameConnectionShell and InteractiveGameClient expose the client
 loop and game callbacks. GameClock/NanoGameClock, MonotonicTime and PixelBlockEffect
 expose cadence, backward wall-clock compensation and screen pixelation.
+DelayedPacket, CappedUrlRequest and GameUiLifecycle/GameUiController expose
+artificial packet delay, bounded URL input and the UI bootstrap contract.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -501,6 +503,33 @@ wall rollback, tick/render ring wrap, focus and independent pixel-block output.
 Client Applet construction/bootstrap, active gameplay, sound devices and desktop
 presentation remain bypassed; presented FPS, complete gameplay, startup and phone
 compatibility remain unverified.
+
+GameConnectionShell now names code-base host, two game ports, optional server
+number, game CRC/instance, membership, language/affiliate and connection/UI stage.
+The host field is derived from getCodeBase, not the game name. Its common packet
+size table and enabled flags retain qualified opcode numbers where intent is
+unknown; no server meaning is inferred from a number alone.
+
+Incoming game framing retains a partially received ciphered opcode and -1/-2
+byte/short length prefix until the whole payload arrives. Completed reads reset
+the input cursor and rotate four delivered-opcode history slots. Artificial
+latency copies packets into an intrusive FIFO and delivers only when current
+time is strictly greater than the stored deadline. Native fixtures use the
+independently verified ISAAC model to encode fixed/variable frames, feed1/2/7/all
+bytes, and check frame boundaries, partial reads, payloads, history and resets.
+Delayed fixtures check copy ownership, future suppression, due delivery and
+unlink. They do not establish live connection/disconnect or server behavior.
+
+CappedUrlRequest reads into a fixed-capacity PacketBuffer, tries URL input then
+JAGGRAB on port443, and publishes phase2 failure or3 EOF success. Input exactly
+at capacity is treated as overflow and advances the fallback/failure phase.
+Native injected-stream/task fixtures check below/exact/above capacity, used
+result bytes, input closure/release and terminal failure without network access.
+GameUiLifecycle/GameUiController name asset preparation, staged bootstrap,
+required readiness and UI initialization. Common size/enable tables and terminal
+bootstrap readiness are checked. Applet parameter initialization, delay jitter,
+URL/task execution, JAGGRAB exchange, active UI loading and complete client/server
+interoperability remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
