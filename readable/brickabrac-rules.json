@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 22,
+  "version": 23,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -514,6 +514,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:il",
+      "originalName": "il",
+      "to": "BubbleDistortion",
+      "evidence": "il.java: Circular bubble effect with upward motion/wrap, growth/oscillation/fade phases, raster distortion amount and timed ownership release. Unrelated static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:im",
       "originalName": "im",
       "to": "GzipInflater",
@@ -672,6 +679,13 @@
       "originalName": "lh",
       "to": "FramedMenuScreen",
       "evidence": "lh.java: Menu base draws a frame around first/last button bounds; unrelated static helpers retain their roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lj",
+      "originalName": "lj",
+      "to": "PowerUpWarning",
+      "evidence": "lj.java: Intrusive power-up type and age record selected from imminent scheduled effects and rendered as an animated warning icon. Unrelated static helpers retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -2481,10 +2495,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:il.field_C:I",
+      "originalName": "field_C",
+      "to": "animationPhase",
+      "evidence": "il.java: Growth0, oscillation1 and fade2; canonical update transitions at ages32 and532.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:il.field_E:I",
+      "originalName": "field_E",
+      "to": "oscillationOffset",
+      "evidence": "il.java: Initial8192-angle phase input to sine helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:il.field_v:I",
+      "originalName": "field_v",
+      "to": "distortionAmount",
+      "evidence": "il.java: Growth adds500 per tick; oscillation supplies a signed raster-distortion scale; fade decreases it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:il.field_w:I",
+      "originalName": "field_w",
+      "to": "oscillationStep",
+      "evidence": "il.java: Angle increment per age tick; board regeneration selects300..399.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:il.field_x:I",
+      "originalName": "field_x",
+      "to": "fadeStep",
+      "evidence": "il.java: Captured as distortionAmount/32 at oscillation-to-fade transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:il.field_y:I",
+      "originalName": "field_y",
+      "to": "oscillationAmplitude",
+      "evidence": "il.java: Amplitude multiplying Q16 sine; board regeneration selects8000..8999.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:im.field_b:Ljava/util/zip/Inflater;",
       "originalName": "field_b",
       "to": "inflater",
       "evidence": "im.java: Reusable nowrap inflater reset after decode/failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_C:Lvl;",
+      "originalName": "field_C",
+      "to": "bubbles",
+      "evidence": "j.java: BubbleDistortion nodes advanced/rendered by match/board paths and recreated from retained effect age/seed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_D:Llj;",
+      "originalName": "field_D",
+      "to": "pendingWarning",
+      "evidence": "j.java: Next warning record promoted when displayed warning is absent or reaches100 ticks.",
       "confidence": "reviewed"
     },
     {
@@ -2502,10 +2572,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_L:I",
+      "originalName": "field_L",
+      "to": "countedBricks",
+      "evidence": "j.java: Installed brick count excludes types1,25,28 and type0 pending2; match removes counted hits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_O:[Lon;",
       "originalName": "field_O",
       "to": "portalBricks",
       "evidence": "j.java: Board initialization populates this array only with type28 portal bricks, assigns portalIndex, and uses it to choose a different teleport destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_P:I",
+      "originalName": "field_P",
+      "to": "stateTicks",
+      "evidence": "j.java: Lifecycle transition counter reset on entry and incremented in match update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_R:I",
+      "originalName": "field_R",
+      "to": "bubbleSeed",
+      "evidence": "j.java: Independent ISAAC seed retained for reconstructing the64 bubbles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_S:I",
+      "originalName": "field_S",
+      "to": "flaggedBrickTypeMask",
+      "evidence": "j.java: OR of type bits for eligible installed bricks with flag2.",
       "confidence": "reviewed"
     },
     {
@@ -2530,10 +2628,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_Z:I",
+      "originalName": "field_Z",
+      "to": "boardState",
+      "evidence": "j.java: Numerically encoded board lifecycle; transitions are kept without inventing all state meanings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_ab:Lkq;",
       "originalName": "field_ab",
       "to": "levelState",
       "evidence": "j.java: Retained integer node decoded from version4+ level header; earlier versions reset its value to0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_fb:Ljava/lang/String;",
+      "originalName": "field_fb",
+      "to": "displayedMessage",
+      "evidence": "j.java: Retained displayed board message with messageTicks.",
       "confidence": "reviewed"
     },
     {
@@ -2544,10 +2656,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_i:I",
+      "originalName": "field_i",
+      "to": "messageTicks",
+      "evidence": "j.java: Displayed message lifetime, decremented before pending message promotion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_k:I",
+      "originalName": "field_k",
+      "to": "bubbleTick",
+      "evidence": "j.java: Effect age used for deterministic regeneration and advanced by match updates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_kb:Lao;",
       "originalName": "field_kb",
       "to": "powerUpHistory",
       "evidence": "j.java: Match routing appends scheduled copies; pending consumption reads absolute indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_lb:Ljava/lang/String;",
+      "originalName": "field_lb",
+      "to": "pendingMessage",
+      "evidence": "j.java: Next board message promoted by match update.",
       "confidence": "reviewed"
     },
     {
@@ -2586,6 +2719,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_rb:I",
+      "originalName": "field_rb",
+      "to": "lives",
+      "evidence": "j.java: Board checksum diagnostics explicitly identify Lives; life power-up increments it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_s:Lfo;",
       "originalName": "field_s",
       "to": "seededRandom",
@@ -2611,6 +2751,13 @@
       "originalName": "field_v",
       "to": "motionPaths",
       "evidence": "j.java: Decoded motion-path collection used when attaching paths to board bricks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_w:Llj;",
+      "originalName": "field_w",
+      "to": "displayedWarning",
+      "evidence": "j.java: Active warning record aged and rendered independently of pending record.",
       "confidence": "reviewed"
     },
     {
@@ -3500,6 +3647,20 @@
       "originalName": "field_j",
       "to": "mouseInput",
       "evidence": "lj.java: Global listener used as snapshot monitor; callbacks are inactive while null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lj.field_m:I",
+      "originalName": "field_m",
+      "to": "ageTicks",
+      "evidence": "lj.java: Starts at zero; board ages pending/displayed warning records and renderer derives position/size/opacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lj.field_o:I",
+      "originalName": "field_o",
+      "to": "typeId",
+      "evidence": "lj.java: Selects the warning sprite by power-up type; construction and imminent-effect selection agree.",
       "confidence": "reviewed"
     },
     {
@@ -5330,6 +5491,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:um.field_j:[I",
+      "originalName": "field_j",
+      "to": "quarterSineQ16",
+      "evidence": "um.java: Explicit quarter-wave sine values used by wrapped8192-angle helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:v.field_d:Ljava/lang/String;",
       "originalName": "field_d",
       "to": "context",
@@ -5817,6 +5985,104 @@
       "originalName": "var8",
       "to": "powerUp",
       "evidence": "ak.java: Current pickup from the source attack deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#42",
+      "originalName": "var6",
+      "to": "scorePopup",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#43",
+      "originalName": "var7",
+      "to": "paddle",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#45",
+      "originalName": "var8_ref_vl__",
+      "to": "decodedGroups",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#49",
+      "originalName": "var9_ref2",
+      "to": "bubble",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#55",
+      "originalName": "var10_ref_ge",
+      "to": "fallingPowerUp",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#56",
+      "originalName": "var10_ref_vn",
+      "to": "redirectedBall",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#60",
+      "originalName": "var11_ref_ee",
+      "to": "waypoint",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#63",
+      "originalName": "var12_ref_on",
+      "to": "movingBrick",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#64",
+      "originalName": "var13",
+      "to": "contactBall",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#65",
+      "originalName": "var14",
+      "to": "contactBrick",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#68",
+      "originalName": "var17",
+      "to": "clientBranchFlag",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#69",
+      "originalName": "var18",
+      "to": "decodedPaths",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#81",
+      "originalName": "var10_ref_vnLifetime1",
+      "to": "collidingBall",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(Lj;Lvl;Lvl;I)V#82",
+      "originalName": "var10_ref_vnLifetime2",
+      "to": "queuedBall",
+      "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
       "confidence": "reviewed"
     },
     {
@@ -6748,6 +7014,132 @@
       "originalName": "var5",
       "to": "powerUp",
       "evidence": "j.java: Pending effect examined for type and activation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#0",
+      "originalName": "var5",
+      "to": "column",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#1",
+      "originalName": "var6",
+      "to": "row",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#10",
+      "originalName": "var11",
+      "to": "bubble",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#11",
+      "originalName": "var13",
+      "to": "clientBranchFlag",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#2",
+      "originalName": "var12",
+      "to": "elapsedTick",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#3",
+      "originalName": "var2",
+      "to": "random",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#4",
+      "originalName": "var3",
+      "to": "cellWidth",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#5",
+      "originalName": "var4",
+      "to": "cellHeight",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#6",
+      "originalName": "var7",
+      "to": "x256",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#7",
+      "originalName": "var8",
+      "to": "y256",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#8",
+      "originalName": "var9",
+      "to": "velocityY256",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.f(I)V#9",
+      "originalName": "var10",
+      "to": "radius256",
+      "evidence": "j.java: Reviewed deterministic bubble reconstruction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.g(I)Llj;#0",
+      "originalName": "var2",
+      "to": "typeThreeDelay",
+      "evidence": "j.java: Reviewed imminent power-up warning selection declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.g(I)Llj;#1",
+      "originalName": "var3",
+      "to": "typeFifteenDelay",
+      "evidence": "j.java: Reviewed imminent power-up warning selection declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.g(I)Llj;#2",
+      "originalName": "var4",
+      "to": "hasExpiringBallPhase",
+      "evidence": "j.java: Reviewed imminent power-up warning selection declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.g(I)Llj;#3",
+      "originalName": "var5",
+      "to": "queuedBall",
+      "evidence": "j.java: Reviewed imminent power-up warning selection declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.g(I)Llj;#4",
+      "originalName": "var6",
+      "to": "clientBranchFlag",
+      "evidence": "j.java: Reviewed imminent power-up warning selection declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.g(I)Llj;#5",
+      "originalName": "var5Lifetime1",
+      "to": "activeBall",
+      "evidence": "j.java: Reviewed imminent power-up warning selection declaration.",
       "confidence": "reviewed"
     },
     {
@@ -8536,6 +8928,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.a(Lj;Lvl;Lvl;I)V",
+      "originalName": "a",
+      "to": "advanceBoard",
+      "evidence": "ak.java: Advances board messages, effects, lifecycle, paddle/balls/bricks and output queues; guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ak.c(I)I",
       "originalName": "c",
       "to": "getStateSevenPlayerMask",
@@ -9614,10 +10013,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:il.a(Lnm;ILnm;)V",
+      "originalName": "a",
+      "to": "insertNodeBefore",
+      "evidence": "il.java: Moves primary node before supplied node; used by mixer listener ordering; guard113.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.d(I)V",
+      "originalName": "d",
+      "to": "advance",
+      "evidence": "il.java: Advances motion/wrap and growth/oscillation/fade; unlinks at age564; guard -2081170685.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:im.a([BILwq;)V",
       "originalName": "a",
       "to": "inflateGzip",
       "evidence": "im.java: Checks magic and inflates/reset; does not verify trailer or complete output; guard -20555.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(BZI)V",
+      "originalName": "a",
+      "to": "resetServe",
+      "evidence": "j.java: Resets paddle size, queued/active balls and falling effects; optional accounting reset and explicit launch angle; guard85.",
       "confidence": "reviewed"
     },
     {
@@ -9635,6 +10055,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.a(IZ)V",
+      "originalName": "a",
+      "to": "resetServeWithRandomAngle",
+      "evidence": "j.java: Consumes one bounded board random sample, then resets serve; guard26496.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.a(IZII)V",
       "originalName": "a",
       "to": "addScore",
@@ -9642,10 +10069,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.a(Lvl;I[Lvl;)V",
+      "originalName": "a",
+      "to": "installLevelBricks",
+      "evidence": "j.java: Installs caller collections, attaches paths, counts eligible bricks/flagged types and indexes portals; guard9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(ZLjava/lang/StringBuilder;)I",
+      "originalName": "a",
+      "to": "computeBoardChecksum",
+      "evidence": "j.java: Original board checksum over scalars, body collections, bubbles and optional diagnostics; canonical true avoids unrelated state mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(ZLwq;I)V",
+      "originalName": "a",
+      "to": "readBoardSnapshot",
+      "evidence": "j.java: Restores lifecycle, tick/history, score/lives, random position, brick/path/body collections, paddle and deterministic bubbles; true skips final extension.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.c(I)V",
+      "originalName": "c",
+      "to": "advancePowerUpWarnings",
+      "evidence": "j.java: Ages displayed/pending records, promotes displayed at100 and chooses pending when empty; guard -101.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.e(I)I",
       "originalName": "e",
       "to": "nextRandomInt",
       "evidence": "j.java: Increments randomCallCount and consumes next seeded random word; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.f(I)V",
+      "originalName": "f",
+      "to": "recreateBubbles",
+      "evidence": "j.java: Appends8x8 seeded bubbles and advances each to retained bubbleTick0..564; caller clears collection when replacing; guard1000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.g(I)Llj;",
+      "originalName": "g",
+      "to": "selectPowerUpWarning",
+      "evidence": "j.java: Imminent25-tick effects prioritized3,9,15,6,16,7,11,8,13; type3/15 also inspect existing timers; guard below -81.",
       "confidence": "reviewed"
     },
     {
@@ -9716,6 +10185,13 @@
       "originalName": "a",
       "to": "seek",
       "evidence": "jg.java: Sets logical position, rejects positions below supplied minimum0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(ILj;Llj;III)V",
+      "originalName": "a",
+      "to": "drawPowerUpWarning",
+      "evidence": "jg.java: Warning icon type, age-based vertical movement, scale and opacity around board center.",
       "confidence": "reviewed"
     },
     {
@@ -10479,6 +10955,13 @@
       "originalName": "a",
       "to": "sendLevelResult",
       "evidence": "kp.java: Ciphered opcode, length byte, type1, pack byte, signed-smart level, four words, CRC32; guard -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IIII)V",
+      "originalName": "a",
+      "to": "drawBubbleDistortion",
+      "evidence": "la.java: Raster distortion within circular boundary; positions/radius use16 units per pixel.",
       "confidence": "reviewed"
     },
     {
@@ -12089,6 +12572,13 @@
       "originalName": "a",
       "to": "handleGameKey",
       "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(II)I",
+      "originalName": "a",
+      "to": "sine8192",
+      "evidence": "sa.java: Masks angle8191 and reflects signed quarter-wave Q16 table; guard -4097.",
       "confidence": "reviewed"
     },
     {
@@ -13951,6 +14441,34 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "ak.java: Copies queued effects with board tick offsets; routes either to selected board or other unmasked players according to effect flag and player count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.a(Lj;Lvl;Lvl;I)V#0",
+      "originalName": "param0",
+      "to": "board",
+      "evidence": "ak.java: Advances board messages, effects, lifecycle, paddle/balls/bricks and output queues; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.a(Lj;Lvl;Lvl;I)V#1",
+      "originalName": "param1",
+      "to": "audioEvents",
+      "evidence": "ak.java: Advances board messages, effects, lifecycle, paddle/balls/bricks and output queues; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.a(Lj;Lvl;Lvl;I)V#2",
+      "originalName": "param2",
+      "to": "collectedPowerUps",
+      "evidence": "ak.java: Advances board messages, effects, lifecycle, paddle/balls/bricks and output queues; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.a(Lj;Lvl;Lvl;I)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ak.java: Advances board messages, effects, lifecycle, paddle/balls/bricks and output queues; guard0.",
       "confidence": "reviewed"
     },
     {
@@ -16985,6 +17503,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:il.<init>(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "x256",
+      "evidence": "il.java: Retains circular body geometry; effect phase/amount default zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.<init>(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "y256",
+      "evidence": "il.java: Retains circular body geometry; effect phase/amount default zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.<init>(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "velocityX256",
+      "evidence": "il.java: Retains circular body geometry; effect phase/amount default zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.<init>(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "velocityY256",
+      "evidence": "il.java: Retains circular body geometry; effect phase/amount default zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.<init>(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "radius256",
+      "evidence": "il.java: Retains circular body geometry; effect phase/amount default zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.<init>(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "typeId",
+      "evidence": "il.java: Retains circular body geometry; effect phase/amount default zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:il.a(ILjava/lang/StringBuilder;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -17010,6 +17570,34 @@
       "originalName": "param1",
       "to": "packet",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.a(Lnm;ILnm;)V#0",
+      "originalName": "param0",
+      "to": "node",
+      "evidence": "il.java: Moves primary node before supplied node; used by mixer listener ordering; guard113.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.a(Lnm;ILnm;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "il.java: Moves primary node before supplied node; used by mixer listener ordering; guard113.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.a(Lnm;ILnm;)V#2",
+      "originalName": "param2",
+      "to": "before",
+      "evidence": "il.java: Moves primary node before supplied node; used by mixer listener ordering; guard113.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:il.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "il.java: Advances motion/wrap and growth/oscillation/fade; unlinks at age564; guard -2081170685.",
       "confidence": "reviewed"
     },
     {
@@ -17069,6 +17657,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:j.a(BZI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Resets paddle size, queued/active balls and falling effects; optional accounting reset and explicit launch angle; guard85.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(BZI)V#1",
+      "originalName": "param1",
+      "to": "resetAccounting",
+      "evidence": "j.java: Resets paddle size, queued/active balls and falling effects; optional accounting reset and explicit launch angle; guard85.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(BZI)V#2",
+      "originalName": "param2",
+      "to": "launchAngle",
+      "evidence": "j.java: Resets paddle size, queued/active balls and falling effects; optional accounting reset and explicit launch angle; guard85.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:j.a(IB)I#0",
       "originalName": "param0",
       "to": "bound",
@@ -17104,6 +17713,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:j.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Consumes one bounded board random sample, then resets serve; guard26496.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "resetAccounting",
+      "evidence": "j.java: Consumes one bounded board random sample, then resets serve; guard26496.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:j.a(IZII)V#0",
       "originalName": "param0",
       "to": "points",
@@ -17132,10 +17755,87 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:j.a(Lvl;I[Lvl;)V#0",
+      "originalName": "param0",
+      "to": "paths",
+      "evidence": "j.java: Installs caller collections, attaches paths, counts eligible bricks/flagged types and indexes portals; guard9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(Lvl;I[Lvl;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Installs caller collections, attaches paths, counts eligible bricks/flagged types and indexes portals; guard9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(Lvl;I[Lvl;)V#2",
+      "originalName": "param2",
+      "to": "groups",
+      "evidence": "j.java: Installs caller collections, attaches paths, counts eligible bricks/flagged types and indexes portals; guard9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ZLjava/lang/StringBuilder;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Original board checksum over scalars, body collections, bubbles and optional diagnostics; canonical true avoids unrelated state mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ZLjava/lang/StringBuilder;)I#1",
+      "originalName": "param1",
+      "to": "diagnostics",
+      "evidence": "j.java: Original board checksum over scalars, body collections, bubbles and optional diagnostics; canonical true avoids unrelated state mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ZLwq;I)V#0",
+      "originalName": "param0",
+      "to": "skipExtension",
+      "evidence": "j.java: Restores lifecycle, tick/history, score/lives, random position, brick/path/body collections, paddle and deterministic bubbles; true skips final extension.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ZLwq;I)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "j.java: Restores lifecycle, tick/history, score/lives, random position, brick/path/body collections, paddle and deterministic bubbles; true skips final extension.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ZLwq;I)V#2",
+      "originalName": "param2",
+      "to": "boardMode",
+      "evidence": "j.java: Restores lifecycle, tick/history, score/lives, random position, brick/path/body collections, paddle and deterministic bubbles; true skips final extension.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Ages displayed/pending records, promotes displayed at100 and chooses pending when empty; guard -101.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:j.e(I)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "j.java: Increments randomCallCount and consumes next seeded random word; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Appends8x8 seeded bubbles and advances each to retained bubbleTick0..564; caller clears collection when replacing; guard1000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.g(I)Llj;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Imminent25-tick effects prioritized3,9,15,6,16,7,11,8,13; type3/15 also inspect existing timers; guard below -81.",
       "confidence": "reviewed"
     },
     {
@@ -17290,6 +17990,48 @@
       "originalName": "param1",
       "to": "position",
       "evidence": "jg.java: Sets logical position, rejects positions below supplied minimum0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(ILj;Llj;III)V#0",
+      "originalName": "param0",
+      "to": "destinationX",
+      "evidence": "jg.java: Warning icon type, age-based vertical movement, scale and opacity around board center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(ILj;Llj;III)V#1",
+      "originalName": "param1",
+      "to": "board",
+      "evidence": "jg.java: Warning icon type, age-based vertical movement, scale and opacity around board center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(ILj;Llj;III)V#2",
+      "originalName": "param2",
+      "to": "warning",
+      "evidence": "jg.java: Warning icon type, age-based vertical movement, scale and opacity around board center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(ILj;Llj;III)V#3",
+      "originalName": "param3",
+      "to": "scaleDivisor",
+      "evidence": "jg.java: Warning icon type, age-based vertical movement, scale and opacity around board center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(ILj;Llj;III)V#4",
+      "originalName": "param4",
+      "to": "entryTicks",
+      "evidence": "jg.java: Warning icon type, age-based vertical movement, scale and opacity around board center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(ILj;Llj;III)V#5",
+      "originalName": "param5",
+      "to": "destinationY",
+      "evidence": "jg.java: Warning icon type, age-based vertical movement, scale and opacity around board center.",
       "confidence": "reviewed"
     },
     {
@@ -18756,6 +19498,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:la.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "centerX16",
+      "evidence": "la.java: Raster distortion within circular boundary; positions/radius use16 units per pixel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:la.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "centerY16",
+      "evidence": "la.java: Raster distortion within circular boundary; positions/radius use16 units per pixel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:la.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "radius16",
+      "evidence": "la.java: Raster distortion within circular boundary; positions/radius use16 units per pixel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:la.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "distortionAmount",
+      "evidence": "la.java: Raster distortion within circular boundary; positions/radius use16 units per pixel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:lb.a(III)V#0",
       "originalName": "param0",
       "to": "x",
@@ -19670,6 +20440,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "lh.java: Frames bounds between first/last menu buttons with15-pixel margin; guard above34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "typeId",
+      "evidence": "lj.java: Delegates to warning construction; age starts zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.<init>(IZ)V#0",
+      "originalName": "param0",
+      "to": "typeId",
+      "evidence": "lj.java: Retains type and zero age; boolean is unused in fixed source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.<init>(IZ)V#1",
+      "originalName": "param1",
+      "to": "unusedFlag",
+      "evidence": "lj.java: Retains type and zero age; boolean is unused in fixed source.",
       "confidence": "reviewed"
     },
     {
@@ -22851,6 +23642,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sa.a(II)I#0",
+      "originalName": "param0",
+      "to": "angle",
+      "evidence": "sa.java: Masks angle8191 and reflects signed quarter-wave Q16 table; guard -4097.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(II)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Masks angle8191 and reflects signed quarter-wave Q16 table; guard -4097.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sa.a(ILwb;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -25477,9 +26282,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "a2fc149150a83b1e2bf0c088360d42ffa7b2c31f07eb191ebc03589252b831c8",
+      "build-brickabrac-rules.mjs": "06a128246c5a8843a0f562df8071e8b40ce3fa72141302b430bc840cd387977b",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "cac262992fec04b15650fb363f762a19e7abaca9e1c87c1eee3fe3569b1dae4d",
+      "tests/test-brickabrac-core.mjs": "5f5e62b9f8ffa2620ec000258a535b0a236854913b0d2afe05e3f6106defc0b1",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

@@ -90,6 +90,9 @@ TableRowSubmission, TableDataRequest and TableNameEntry expose submitted values,
 request deduplication, response dictionaries and three stored row partitions.
 SecondaryHashTable exposes duplicate-key lookup and independent traversal without
 changing primary node ownership.
+PowerUpWarning and BubbleDistortion expose imminent-effect icons and seeded bubble
+animation. PlayerBoard now names brick installation, snapshot decoding, checksum,
+serve reset and warning updates; MultiplayerMatch names its main advanceBoard path.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -605,6 +608,38 @@ traversal and cross-table transfers with independent list models, including
 collisions, missing/negative keys and repeated lookup exhaustion. Interleaved
 traversal preserves duplicate lookup. The insertion guard must exceed 38; invalid
 guards and mutation during active traversal are not covered.
+
+PowerUpWarning records type and age. Selection checks effects due within 25 ticks
+in the observed priority order 3,9,15,6,16,7,11,8,13; types3/15 additionally inspect
+paddle or ball timers. Fixtures cover priority independent of history insertion
+order, lookahead boundaries, queued-ball phase, the unused constructor boolean,
+and pending/displayed warning aging and promotion at 100 ticks. Rendering names
+expose the icon's age-based movement, scale and opacity; actual warning pixels
+remain unverified.
+
+BubbleDistortion moves upward with a 504-pixel wrap distance. It grows through
+age32, oscillates through age532, then fades and unlinks when updating age564.
+Fields name phase, distortion amount, fade step, oscillation offset/step/amplitude.
+The wrapped8192-angle Q16 sine helper matches an independent mathematical model
+for every angle. Fixtures check 566 updates, phase boundaries, wrapping, link
+release and body checksum. Board reconstruction uses an independent ISAAC model
+to verify all 64 bubbles at ages0,33,533,564 and rejected ages. Standalone bubble
+snapshot decoding preserves the existing distortion amount and fade step because
+those fields are absent from its wire format; the board reconstructs bubbles from
+seed/age instead. Raster distortion output and original-JAR equivalence are not
+established by these fixtures.
+
+Board lifecycle names expose numeric state/ticks, lives, counted bricks, flagged
+brick types and pending/displayed messages. Controlled advanceBoard fixtures check
+states1/3/4/5, single/multiplayer timing, audio event13, terminal transitions and
+message promotion. Brick installation retains caller collections, excludes the
+observed non-counted types and indexes all portal bricks. A controlled snapshot
+checks the common header, empty body collections, paddle, history index, restored
+random consumption and skipped extension. Serve-reset fixtures check paddle size,
+queued/active/falling collection replacement, optional accounting reset and
+explicit/random launch angles. Active simulation states0/2, collisions across full
+matches, extended/nonempty board snapshots, whole-board checksum equivalence,
+server behavior and rendered gameplay remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
