@@ -124,6 +124,8 @@ NameEntryPopup, ContextMenu and QuickChatHelpDialog expose popup input, action r
 and the literal shortcut-help layout.
 ReportAbuseDialog, TabbedPane and QuickChatMenu expose report controls, tab panels
 and hierarchical shortcut menus.
+QuickChatPhraseDefinition, QuickChatPhraseRegistry and QuickChatParameterType expose
+phrase metadata, archive lookup and command-word counts.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -1008,8 +1010,28 @@ QuickChatMenu names shortcut rows, caller arrays, submenu ownership, measured bo
 expansion countdown and message/filter opcode arguments. Fixtures check caller label
 mutation, array retention, all thirteen expansion positions, nonzero press detection
 versus button1 activation, branch opening/toggling, Backspace reset, unlinking and
-combined chain width. Leaf message/help side effects, arbitrary nested trees, resource
-initialization, real UI text pixels and live chat/moderation services remain unverified.
+combined chain width. Help-leaf side effects, arbitrary nested trees, resource initialization, real UI
+text pixels and live chat/moderation services remain unverified; controlled message
+leaf dispatch and phrase lookup are checked below.
+
+QuickChatPhraseDefinition, QuickChatPhraseRegistry and QuickChatParameterType
+name tagged text fragments, linked IDs, command metadata and the two group1 archives.
+Fixtures check fourteen known command types, unknown-command defaults, exact tag
+consumption, empty/consecutive/trailing fragments, ellipsis previews, extended-link
+marking and lookup/cache behavior through synthetic archive containers. Missing or
+unavailable definitions are cached as empty objects, including after data becomes
+available. Unknown tags consume no payload; dynamic parameter substitution and
+malformed/future formats remain unverified.
+
+Chat wire fixtures independently verify opcode ciphering, byte lengths, channel2
+recipient text, truncated sixteen-bit message words, compressed CP1252 text and
+smart lengths at128 bytes using an eight-bit Huffman table. Filter fixtures check
+all0..2 states, unchanged-state suppression, packed filter bytes and changed flags.
+Controlled leaf dispatch checks channels0..2, the channel0 game-context filter
+selection, optional filter packet ordering, remembered repeat state and menu/channel
+cleanup. No traffic is sent. Live receiving/server interoperability, arbitrary
+Huffman tables in this dispatch path, cache eviction and actual phrase assets remain
+unverified; the shared Huffman codec has separate fixtures described above.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
