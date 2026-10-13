@@ -114,7 +114,8 @@ ArrayOperations names shared byte/int/object copies and integer range clearing.
 MusicCrossfadeStream names two MIDI track slots, an overlay, fade progress and
 temporary PCM buffers; its original private throwing constructor is retained.
 Mesh3D names logo vertex/triangle data, cached bounds, direction vectors and face
-groups. MeshAttributeRecord names the compact record's retained24-bit word.
+groups. MeshAttributeRecord names the compact record's retained base RGB. MeshRasterState
+names clip-relative viewport, row offsets and lookup tables.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -896,12 +897,12 @@ indices, direction/channel data, zero-group disabling and signed byte group-coun
 overflow. Other optional channel meanings remain unassigned. MeshAttributeRecord
 retains only the third24-bit field; tests check new records, zero-width and later
 backreferences, shared identity, ignored payload lengths and unsupported versions.
-Full material/color interpretation remains unverified.
+Base RGB usage is checked by the shader fixtures below; the other material fields remain unassigned.
 
 The named logo loader reads `logo.fo3d`, scales vertices by six, saves bounding
 midpoints and centers each mesh. A controlled decoded archive file exercises name
 lookup, the complete loader/record/mesh path and independent expected centered
-coordinates/bounds. Real logo assets, lighting,
+coordinates/bounds. Real logo assets,
 triangle rasterization, presented loading animation, malformed buffers and
 unsupported count ranges remain unverified.
 
@@ -923,8 +924,28 @@ angles and pitch/yaw pose fixtures check wrapped angles and Q16 products.
 Face sorting names winding checks, clipped-depth rejection, reverse depth buckets,
 16-slot spill, accepted IDs/counts and group prefix offsets. Fixtures cover both
 winding orders, culling on/off, clipping, empty lists and16/17/32-face bucket limits.
-Lighting, actual triangle pixels, noncanonical branches and complete loading/menu
-presentation remain unverified.
+Additional lighting/raster cases, noncanonical branches and complete loading/menu
+presentation remain unverified; controlled pixel fixtures are described below.
+
+MeshRasterState names viewport dimensions, clip-relative row offsets, projection
+centers and legacy reciprocal/sine/cosine tables. The mesh lighting initializer
+synchronizes raster clipping, selects projection shift11 and builds the power15
+highlight table. Shader names expose per-corner direction/material indices,
+absolute diffuse/highlight dot products, RGB channel scaling, bucket compaction,
+group-range ordering and flat versus interpolated triangle dispatch. The retained
+record word is now `baseRgb`, based on this confirmed consumer.
+
+Native pixel fixtures verify half-source/half-destination spans, flat-top triangle
+coverage in all six vertex orders, nonzero clip origins and horizontal/vertical
+clipping. They preserve the source's rightmost-column exclusion and negative-top
+flat-edge anchor: when top Y is clipped to zero, horizontal edges retain their
+original starting values. An exact-step RGB gradient is checked in all vertex
+orders. Shader fixtures independently calculate bounded diffuse/highlight/channel
+values and expected pixels for uniform-normal flat and distinct-index interpolated
+paths, fallback/record colors and signed normals; group-offset consumption is checked.
+Fractional/general RGB gradients, varying-normal shading, other triangle shapes,
+invalid direction/material indices, real assets, original-JAR pixel equivalence,
+complete logo frames and presented animation remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

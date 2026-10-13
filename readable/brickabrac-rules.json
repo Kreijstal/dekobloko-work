@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 33,
+  "version": 34,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -896,6 +896,13 @@
       "originalName": "mf",
       "to": "ResourceArchive",
       "evidence": "mf.java: Synchronized indexed resources, packed-group loading, XTEA decryption, chunk splitting and three decoded-file cache policies.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mg",
+      "originalName": "mg",
+      "to": "MeshRasterState",
+      "evidence": "mg.java: Shared clip-relative mesh viewport, row offsets, projection center, reciprocal and trigonometric tables.",
       "confidence": "reviewed"
     },
     {
@@ -2364,8 +2371,8 @@
     {
       "symbol": "F:dc.field_a:I",
       "originalName": "field_a",
-      "to": "encodedWord24",
-      "evidence": "dc.java: Third24-bit word retained in a newly decoded logo mesh attribute record; full material interpretation remains unverified.",
+      "to": "baseRgb",
+      "evidence": "dc.java: Third24-bit record word used by the mesh shader as packed RGB; other material fields remain discarded/unassigned.",
       "confidence": "reviewed"
     },
     {
@@ -3216,6 +3223,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fr.field_L:[S",
+      "originalName": "field_L",
+      "to": "faceMaterialIds",
+      "evidence": "fr.java: Per-face optional record index; -1 or absent/out-of-range high ID uses default RGB. Other negative IDs retain original behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fr.field_M:Lvl;",
       "originalName": "field_M",
       "to": "rasterSnapshotPool",
@@ -3293,6 +3307,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fr.field_h:[S",
+      "originalName": "field_h",
+      "to": "faceDirectionB",
+      "evidence": "fr.java: Direction index for second triangle corner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fr.field_i:[I",
       "originalName": "field_i",
       "to": "facePointThreeZ",
@@ -3342,10 +3363,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fr.field_t:[S",
+      "originalName": "field_t",
+      "to": "faceDirectionC",
+      "evidence": "fr.java: Direction index for third triangle corner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fr.field_u:[I",
       "originalName": "field_u",
       "to": "facePointTwoZ",
       "evidence": "fr.java: Second per-face auxiliary point Z.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_v:[S",
+      "originalName": "field_v",
+      "to": "faceDirectionA",
+      "evidence": "fr.java: Direction index for first triangle corner.",
       "confidence": "reviewed"
     },
     {
@@ -5918,10 +5953,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mg.field_b:I",
+      "originalName": "field_b",
+      "to": "viewportHeight",
+      "evidence": "mg.java: Current raster clip height used by triangle Y clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_c:[I",
+      "originalName": "field_c",
+      "to": "cosine2048Q16",
+      "evidence": "mg.java: Legacy0.0030679615-radian-step cosine table truncated to Q16.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mg.field_d:I",
       "originalName": "field_d",
       "to": "projectionCenterX",
       "evidence": "mg.java: X origin added after perspective division.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_e:I",
+      "originalName": "field_e",
+      "to": "viewportWidth",
+      "evidence": "mg.java: Current raster clip width used by triangle X clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_f:[I",
+      "originalName": "field_f",
+      "to": "sine2048Q16",
+      "evidence": "mg.java: Legacy0.0030679615-radian-step sine table truncated to Q16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_g:[I",
+      "originalName": "field_g",
+      "to": "rowOffsets",
+      "evidence": "mg.java: Absolute target row starts for clip-relative triangle coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_h:[I",
+      "originalName": "field_h",
+      "to": "reciprocalQ16",
+      "evidence": "mg.java: 65536 divided by indices1..2047; zero entry remains0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_i:[I",
+      "originalName": "field_i",
+      "to": "reciprocalQ15",
+      "evidence": "mg.java: 32768 divided by indices1..511; zero entry remains0.",
       "confidence": "reviewed"
     },
     {
@@ -8508,6 +8592,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:um.field_o:[Ldc;",
+      "originalName": "field_o",
+      "to": "meshAttributeRecords",
+      "evidence": "um.java: Shared logo record table; renderer consumes retained word as base RGB.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:um.field_u:[I",
       "originalName": "field_u",
       "to": "underwaterBackgroundColors",
@@ -8519,6 +8610,13 @@
       "originalName": "field_A",
       "to": "jungleCentreSprites",
       "evidence": "ip.java: Literal sprite resource jungle/jungle_centre assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_a:[I",
+      "originalName": "field_a",
+      "to": "meshHighlightTable",
+      "evidence": "v.java: Lookup used for absolute highlight-direction dot product; initialization raises normalized value to power15.",
       "confidence": "reviewed"
     },
     {
@@ -13954,6 +14052,167 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:k.a(III[IIIIII)V#0",
+      "originalName": "stackIn_94_0",
+      "to": "failureContext",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#1",
+      "originalName": "stackIn_94_1",
+      "to": "contextBuilder",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#10",
+      "originalName": "var14",
+      "to": "totalHeight",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#11",
+      "originalName": "var15",
+      "to": "upperHeight",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#12",
+      "originalName": "var16",
+      "to": "swappedSlope",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#13",
+      "originalName": "var17",
+      "to": "upperLeftX",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#14",
+      "originalName": "var18",
+      "to": "upperSpanLength",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#15",
+      "originalName": "var19",
+      "to": "unusedGameFlag",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#16",
+      "originalName": "var15Lifetime1",
+      "to": "lowerRowOffset",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#17",
+      "originalName": "var16Lifetime1",
+      "to": "lowerLeftX",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#18",
+      "originalName": "var17Lifetime1",
+      "to": "lowerSpanLength",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#19",
+      "originalName": "var16Lifetime2",
+      "to": "upperRowOffset",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#2",
+      "originalName": "stackIn_95_2",
+      "to": "targetSummary",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#20",
+      "originalName": "var16Lifetime3",
+      "to": "lowerHeight",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#21",
+      "originalName": "var17Lifetime2",
+      "to": "bottomXQ16",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#22",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#3",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#4",
+      "originalName": "var9_int",
+      "to": "leftXQ16",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#5",
+      "originalName": "var9",
+      "to": "failure",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#6",
+      "originalName": "var10",
+      "to": "rightXQ16",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#7",
+      "originalName": "var11",
+      "to": "leftStepQ16",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#8",
+      "originalName": "var12",
+      "to": "rightStepQ16",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:k.a(III[IIIIII)V#9",
+      "originalName": "var13",
+      "to": "shortEdgeOnRight",
+      "evidence": "k.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ka.a([II[IZZLfr;Z)V#0",
       "originalName": "stackIn_65_0",
       "to": "branchOrCullValue",
@@ -14336,6 +14595,20 @@
       "originalName": "var6",
       "to": "insets",
       "evidence": "ke.java: Reviewed render recording and canvas placement declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ki.a(IIIIIIII)V#0",
+      "originalName": "var9",
+      "to": "unusedGameFlag",
+      "evidence": "ki.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ki.a(IIIIIIII)V#1",
+      "originalName": "var8",
+      "to": "guardQuotient",
+      "evidence": "ki.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
       "confidence": "reviewed"
     },
     {
@@ -14805,6 +15078,412 @@
       "originalName": "var5",
       "to": "bucket",
       "evidence": "mk.java: Masked destination secondary bucket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#0",
+      "originalName": "stackIn_17_0",
+      "to": "diffuseResponse",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#1",
+      "originalName": "stackIn_19_0",
+      "to": "highlightTable",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#10",
+      "originalName": "stackIn_54_1",
+      "to": "contextBuilder",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#11",
+      "originalName": "stackIn_55_2",
+      "to": "meshSummary",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#12",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#13",
+      "originalName": "var8",
+      "to": "diffuseAlias",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#14",
+      "originalName": "var8_ref",
+      "to": "failure",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#15",
+      "originalName": "var13",
+      "to": "direction",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#16",
+      "originalName": "var14",
+      "to": "diffuseDot",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#17",
+      "originalName": "var15",
+      "to": "highlightDot",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#18",
+      "originalName": "var16",
+      "to": "vertexB",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#19",
+      "originalName": "var17",
+      "to": "vertexC",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#2",
+      "originalName": "stackIn_20_1",
+      "to": "absoluteHighlightDot",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#20",
+      "originalName": "var18",
+      "to": "directionA",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#21",
+      "originalName": "var19",
+      "to": "directionB",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#22",
+      "originalName": "var20",
+      "to": "directionC",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#23",
+      "originalName": "var21",
+      "to": "material",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#24",
+      "originalName": "var22",
+      "to": "xA",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#25",
+      "originalName": "var23",
+      "to": "yA",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#26",
+      "originalName": "var24",
+      "to": "xB",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#27",
+      "originalName": "var25",
+      "to": "yB",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#28",
+      "originalName": "var26",
+      "to": "xC",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#29",
+      "originalName": "var27",
+      "to": "yC",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#3",
+      "originalName": "stackIn_26_0",
+      "to": "directionAValue",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#30",
+      "originalName": "var28",
+      "to": "gainA",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#31",
+      "originalName": "var29",
+      "to": "highlightAOrGainB",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#32",
+      "originalName": "var30",
+      "to": "baseRgbOrGainC",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#33",
+      "originalName": "var31",
+      "to": "redBlueOrHighlightA",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#34",
+      "originalName": "var32",
+      "to": "greenOrHighlightB",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#35",
+      "originalName": "var33",
+      "to": "flatRgbOrHighlightC",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#36",
+      "originalName": "var34",
+      "to": "baseRgb",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#37",
+      "originalName": "var35",
+      "to": "baseRedBlue",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#38",
+      "originalName": "var36",
+      "to": "baseGreen",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#39",
+      "originalName": "var37",
+      "to": "rgbA",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#4",
+      "originalName": "stackIn_29_0",
+      "to": "directionBValue",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#40",
+      "originalName": "var38",
+      "to": "rgbB",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#41",
+      "originalName": "var39",
+      "to": "rgbC",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#42",
+      "originalName": "var40",
+      "to": "unusedGameFlag",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#43",
+      "originalName": "var41",
+      "to": "diffuseStorage",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#44",
+      "originalName": "var44",
+      "to": "meshAlias",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#45",
+      "originalName": "var49",
+      "to": "diffuseValues",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#46",
+      "originalName": "var54",
+      "to": "diffuseGains",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#47",
+      "originalName": "var60",
+      "to": "faceGroups",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#48",
+      "originalName": "var61",
+      "to": "directionZ",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#49",
+      "originalName": "var62",
+      "to": "directionY",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#5",
+      "originalName": "stackIn_32_0",
+      "to": "directionCValue",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#50",
+      "originalName": "var63",
+      "to": "directionX",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#51",
+      "originalName": "var64",
+      "to": "highlights",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#52",
+      "originalName": "var13Lifetime1",
+      "to": "sortedFace",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#53",
+      "originalName": "var14Lifetime1",
+      "to": "face",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#54",
+      "originalName": "var15Lifetime1",
+      "to": "vertexA",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#55",
+      "originalName": "var14Lifetime2",
+      "to": "diffuseGain",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#56",
+      "originalName": "var15Lifetime2",
+      "to": "highlight",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#57",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#6",
+      "originalName": "stackIn_39_0",
+      "to": "materialValue",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#7",
+      "originalName": "stackIn_45_0",
+      "to": "interpolatedBaseRgb",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#8",
+      "originalName": "stackIn_49_0",
+      "to": "flatBaseRgb",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mp.a(IIIILfr;BII)V#9",
+      "originalName": "stackIn_54_0",
+      "to": "failureContext",
+      "evidence": "mp.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
       "confidence": "reviewed"
     },
     {
@@ -16880,6 +17559,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:wc.a([IIIII)V#0",
+      "originalName": "var5",
+      "to": "targetAlias",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#1",
+      "originalName": "var5_ref",
+      "to": "failure",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#10",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#2",
+      "originalName": "var6",
+      "to": "pixelIndex",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#3",
+      "originalName": "var7",
+      "to": "sourceHalfRgb",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#4",
+      "originalName": "var8",
+      "to": "unusedGameFlag",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#5",
+      "originalName": "var9",
+      "to": "targetStorage",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#6",
+      "originalName": "stackIn_8_0",
+      "to": "failureContext",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#7",
+      "originalName": "stackIn_8_1",
+      "to": "contextBuilder",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#8",
+      "originalName": "stackIn_9_2",
+      "to": "targetSummary",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wc.a([IIIII)V#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wc.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wn.b(B)V#0",
       "originalName": "var2",
       "to": "keyIndex",
@@ -17017,6 +17773,13 @@
       "originalName": "b",
       "to": "pollTransport",
       "evidence": "ih.java: Sends queued requests and assembles incoming responses, handles timeout/I/O failure. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.f(B)V",
+      "originalName": "f",
+      "to": "compactFaceBuckets",
+      "evidence": "a.java: Moves depth bucket IDs to contiguous prefix in ascending bucket order; canonical guard94.",
       "confidence": "reviewed"
     },
     {
@@ -18455,6 +19218,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:h.a(IIB[B[I)V",
+      "originalName": "a",
+      "to": "orderFacesByGroup",
+      "evidence": "h.java: Compacts bucketed IDs into group prefix ranges and advances supplied offsets; canonical guard114.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hb.c(B)[B",
       "originalName": "c",
       "to": "getData",
@@ -19512,6 +20282,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:k.a(III[IIIIII)V",
+      "originalName": "a",
+      "to": "rasterFlatMeshTriangle",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ka.a(I)V",
       "originalName": "a",
       "to": "releaseResources",
@@ -19719,6 +20496,13 @@
       "originalName": "a",
       "to": "drawSplitBackground",
       "evidence": "ki.java: Draws306-by480 half-width background at supplied origin with fixed16 scroll/color index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawFlatMeshTriangle",
+      "evidence": "ki.java: Orders vertices by Y then invokes flat half-intensity triangle scan conversion; guard116.",
       "confidence": "reviewed"
     },
     {
@@ -20828,6 +21612,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mg.a()V",
+      "originalName": "a",
+      "to": "updateProjectionCenter",
+      "evidence": "mg.java: Sets mesh screen origin to integer viewport midpoints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(IIII)V",
+      "originalName": "a",
+      "to": "setViewport",
+      "evidence": "mg.java: Sets clip-relative dimensions and target row offsets, expanding row cache if necessary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.b()V",
+      "originalName": "b",
+      "to": "releaseTables",
+      "evidence": "mg.java: Clears row, reciprocal and sine/cosine arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.c()V",
+      "originalName": "c",
+      "to": "syncRasterClip",
+      "evidence": "mg.java: Reads raster clipping bounds into mesh viewport and row cache.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mj.a(BII[B)Ljava/lang/String;",
       "originalName": "a",
       "to": "decode",
@@ -20874,6 +21686,13 @@
       "originalName": "b",
       "to": "first",
       "evidence": "mk.java: Starts independent table traversal; guard above57.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mp.a(IIIILfr;BII)V",
+      "originalName": "a",
+      "to": "shadeAndDrawMesh",
+      "evidence": "mp.java: Compacts/groups accepted faces, evaluates diffuse/highlight direction response and draws flat or interpolated half-intensity RGB triangles; canonical guard -105.",
       "confidence": "reviewed"
     },
     {
@@ -22060,6 +22879,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rp.a(BIIIIIII[II)V",
+      "originalName": "a",
+      "to": "blendInterpolatedHalfRgbSpan",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rp.a(II)I",
       "originalName": "a",
       "to": "getButtonRight",
@@ -22564,6 +23390,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tq.a(IIIIIIIIIBIIIIII)V",
+      "originalName": "a",
+      "to": "drawInterpolatedMeshTriangle",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uc.a(ILjava/lang/String;B)[Ljava/lang/String;",
       "originalName": "a",
       "to": "createSoundEffectNames",
@@ -22750,6 +23583,13 @@
       "originalName": "b",
       "to": "layoutButtons",
       "evidence": "km.java: Sets each rectangle through virtual left/right/top/height getters; true guard. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(I)V",
+      "originalName": "a",
+      "to": "initializeMeshLighting",
+      "evidence": "ul.java: Synchronizes raster clip, sets projectionShift11 and builds260-entry power15 highlight table; guard100 avoids division trap.",
       "confidence": "reviewed"
     },
     {
@@ -23177,6 +24017,13 @@
       "originalName": "b",
       "to": "prepareUiAssets",
       "evidence": "wb.java: Requests UI archives and creates resource-loading queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.a([IIIII)V",
+      "originalName": "a",
+      "to": "blendHalfRgbSpan",
+      "evidence": "wc.java: Adds supplied half RGB to half destination channels for supplied span length; canonical guard -1 preserves static data.",
       "confidence": "reviewed"
     },
     {
@@ -23751,6 +24598,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ih.java: Sends queued requests and assembles incoming responses, handles timeout/I/O failure. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.f(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "a.java: Moves depth bucket IDs to contiguous prefix in ascending bucket order; canonical guard94.",
       "confidence": "reviewed"
     },
     {
@@ -28031,6 +28885,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:h.a(IIB[B[I)V#0",
+      "originalName": "param0",
+      "to": "bucketCountScratch",
+      "evidence": "h.java: Compacts bucketed IDs into group prefix ranges and advances supplied offsets; canonical guard114.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:h.a(IIB[B[I)V#1",
+      "originalName": "param1",
+      "to": "faceIdScratch",
+      "evidence": "h.java: Compacts bucketed IDs into group prefix ranges and advances supplied offsets; canonical guard114.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:h.a(IIB[B[I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "h.java: Compacts bucketed IDs into group prefix ranges and advances supplied offsets; canonical guard114.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:h.a(IIB[B[I)V#3",
+      "originalName": "param3",
+      "to": "faceGroups",
+      "evidence": "h.java: Compacts bucketed IDs into group prefix ranges and advances supplied offsets; canonical guard114.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:h.a(IIB[B[I)V#4",
+      "originalName": "param4",
+      "to": "groupOffsets",
+      "evidence": "h.java: Compacts bucketed IDs into group prefix ranges and advances supplied offsets; canonical guard114.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hb.c(B)[B#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -30390,6 +31279,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:k.a(III[IIIIII)V#0",
+      "originalName": "param0",
+      "to": "xMiddle",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:k.a(III[IIIIII)V#1",
+      "originalName": "param1",
+      "to": "xBottom",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:k.a(III[IIIIII)V#2",
+      "originalName": "param2",
+      "to": "yTop",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:k.a(III[IIIIII)V#3",
+      "originalName": "param3",
+      "to": "target",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:k.a(III[IIIIII)V#4",
+      "originalName": "param4",
+      "to": "yBottom",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:k.a(III[IIIIII)V#5",
+      "originalName": "param5",
+      "to": "yMiddle",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:k.a(III[IIIIII)V#6",
+      "originalName": "param6",
+      "to": "halfRgb",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:k.a(III[IIIIII)V#7",
+      "originalName": "param7",
+      "to": "xTop",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:k.a(III[IIIIII)V#8",
+      "originalName": "param8",
+      "to": "obfuscationGuard",
+      "evidence": "k.java: Scan converts Y-ordered triangle with Q16 edge slopes, clip-relative row cache and half-intensity spans. Right clipping retains original last-column exclusion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ka.a(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -30891,6 +31843,62 @@
       "originalName": "param4",
       "to": "scroll16",
       "evidence": "ki.java: Draws306-by480 half-width background at supplied origin with fixed16 scroll/color index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ki.a(IIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "halfRgb",
+      "evidence": "ki.java: Orders vertices by Y then invokes flat half-intensity triangle scan conversion; guard116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ki.a(IIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "yA",
+      "evidence": "ki.java: Orders vertices by Y then invokes flat half-intensity triangle scan conversion; guard116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ki.a(IIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "xC",
+      "evidence": "ki.java: Orders vertices by Y then invokes flat half-intensity triangle scan conversion; guard116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ki.a(IIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "xA",
+      "evidence": "ki.java: Orders vertices by Y then invokes flat half-intensity triangle scan conversion; guard116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ki.a(IIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "yB",
+      "evidence": "ki.java: Orders vertices by Y then invokes flat half-intensity triangle scan conversion; guard116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ki.a(IIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "yC",
+      "evidence": "ki.java: Orders vertices by Y then invokes flat half-intensity triangle scan conversion; guard116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ki.a(IIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "xB",
+      "evidence": "ki.java: Orders vertices by Y then invokes flat half-intensity triangle scan conversion; guard116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ki.a(IIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "obfuscationGuard",
+      "evidence": "ki.java: Orders vertices by Y then invokes flat half-intensity triangle scan conversion; guard116.",
       "confidence": "reviewed"
     },
     {
@@ -33561,6 +34569,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:mg.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "mg.java: Sets clip-relative dimensions and target row offsets, expanding row cache if necessary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mg.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "mg.java: Sets clip-relative dimensions and target row offsets, expanding row cache if necessary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mg.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "mg.java: Sets clip-relative dimensions and target row offsets, expanding row cache if necessary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mg.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "bottom",
+      "evidence": "mg.java: Sets clip-relative dimensions and target row offsets, expanding row cache if necessary.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mj.a(BII[B)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -33656,6 +34692,62 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "mk.java: Starts independent table traversal; guard above57.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIILfr;BII)V#0",
+      "originalName": "param0",
+      "to": "highlightZ",
+      "evidence": "mp.java: Compacts/groups accepted faces, evaluates diffuse/highlight direction response and draws flat or interpolated half-intensity RGB triangles; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIILfr;BII)V#1",
+      "originalName": "param1",
+      "to": "diffuseX",
+      "evidence": "mp.java: Compacts/groups accepted faces, evaluates diffuse/highlight direction response and draws flat or interpolated half-intensity RGB triangles; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIILfr;BII)V#2",
+      "originalName": "param2",
+      "to": "highlightX",
+      "evidence": "mp.java: Compacts/groups accepted faces, evaluates diffuse/highlight direction response and draws flat or interpolated half-intensity RGB triangles; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIILfr;BII)V#3",
+      "originalName": "param3",
+      "to": "diffuseZ",
+      "evidence": "mp.java: Compacts/groups accepted faces, evaluates diffuse/highlight direction response and draws flat or interpolated half-intensity RGB triangles; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIILfr;BII)V#4",
+      "originalName": "param4",
+      "to": "mesh",
+      "evidence": "mp.java: Compacts/groups accepted faces, evaluates diffuse/highlight direction response and draws flat or interpolated half-intensity RGB triangles; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIILfr;BII)V#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "mp.java: Compacts/groups accepted faces, evaluates diffuse/highlight direction response and draws flat or interpolated half-intensity RGB triangles; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIILfr;BII)V#6",
+      "originalName": "param6",
+      "to": "highlightY",
+      "evidence": "mp.java: Compacts/groups accepted faces, evaluates diffuse/highlight direction response and draws flat or interpolated half-intensity RGB triangles; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.a(IIIILfr;BII)V#7",
+      "originalName": "param7",
+      "to": "diffuseY",
+      "evidence": "mp.java: Compacts/groups accepted faces, evaluates diffuse/highlight direction response and draws flat or interpolated half-intensity RGB triangles; canonical guard -105.",
       "confidence": "reviewed"
     },
     {
@@ -36830,6 +37922,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rp.a(BIIIIIII[II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(BIIIIIII[II)V#1",
+      "originalName": "param1",
+      "to": "blueQ16",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(BIIIIIII[II)V#2",
+      "originalName": "param2",
+      "to": "blueStepQ16",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(BIIIIIII[II)V#3",
+      "originalName": "param3",
+      "to": "redStepQ16",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(BIIIIIII[II)V#4",
+      "originalName": "param4",
+      "to": "greenStepQ16",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(BIIIIIII[II)V#5",
+      "originalName": "param5",
+      "to": "offset",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(BIIIIIII[II)V#6",
+      "originalName": "param6",
+      "to": "length",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(BIIIIIII[II)V#7",
+      "originalName": "param7",
+      "to": "redQ16",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(BIIIIIII[II)V#8",
+      "originalName": "param8",
+      "to": "target",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(BIIIIIII[II)V#9",
+      "originalName": "param9",
+      "to": "greenQ16",
+      "evidence": "rp.java: Advances Q16 RGB components and blends half source/destination per pixel using pinned masks; guard above115 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rp.a(II)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -38111,6 +39273,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#0",
+      "originalName": "param0",
+      "to": "blueC",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#1",
+      "originalName": "param1",
+      "to": "greenA",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#10",
+      "originalName": "param10",
+      "to": "blueB",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#11",
+      "originalName": "param11",
+      "to": "xA",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#12",
+      "originalName": "param12",
+      "to": "blueA",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#13",
+      "originalName": "param13",
+      "to": "redC",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#14",
+      "originalName": "param14",
+      "to": "yB",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#15",
+      "originalName": "param15",
+      "to": "redA",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#2",
+      "originalName": "param2",
+      "to": "xC",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#3",
+      "originalName": "param3",
+      "to": "greenB",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#4",
+      "originalName": "param4",
+      "to": "xB",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#5",
+      "originalName": "param5",
+      "to": "redB",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#6",
+      "originalName": "param6",
+      "to": "yC",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#7",
+      "originalName": "param7",
+      "to": "greenC",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#8",
+      "originalName": "param8",
+      "to": "yA",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIIIIIIIIBIIIIII)V#9",
+      "originalName": "param9",
+      "to": "obfuscationGuard",
+      "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:uc.a(ILjava/lang/String;B)[Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "count",
@@ -38570,6 +39844,13 @@
       "originalName": "param2",
       "to": "y256",
       "evidence": "ul.java: Formats score text and starts fifty-tick lifetime at supplied coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ul.java: Synchronizes raster clip, sets projectionShift11 and builds260-entry power15 highlight table; guard100 avoids division trap.",
       "confidence": "reviewed"
     },
     {
@@ -39473,6 +40754,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "wb.java: Requests UI archives and creates resource-loading queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wc.a([IIIII)V#0",
+      "originalName": "param0",
+      "to": "target",
+      "evidence": "wc.java: Adds supplied half RGB to half destination channels for supplied span length; canonical guard -1 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wc.a([IIIII)V#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "wc.java: Adds supplied half RGB to half destination channels for supplied span length; canonical guard -1 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wc.a([IIIII)V#2",
+      "originalName": "param2",
+      "to": "halfRgb",
+      "evidence": "wc.java: Adds supplied half RGB to half destination channels for supplied span length; canonical guard -1 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wc.a([IIIII)V#3",
+      "originalName": "param3",
+      "to": "offset",
+      "evidence": "wc.java: Adds supplied half RGB to half destination channels for supplied span length; canonical guard -1 preserves static data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wc.a([IIIII)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "wc.java: Adds supplied half RGB to half destination channels for supplied span length; canonical guard -1 preserves static data.",
       "confidence": "reviewed"
     },
     {
@@ -40401,9 +41717,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "c8fba591afb7a7fb39de912c2f4070e58a78587af425a05e836828125a935f78",
+      "build-brickabrac-rules.mjs": "645d6867984a97bbd2435cd53b968daa2c8eb8fc43eeb26fb0e80760dce09062",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "0329c962572635da42a3770aeb73bc8debe4efbc1c509066e5e1517a113fbabf",
+      "tests/test-brickabrac-core.mjs": "d8d2e9e9813d52b467a31e3c23714daa3271dc7574a9c0cbb91cbef8b9878090",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
