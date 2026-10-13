@@ -45,7 +45,8 @@ PlayerBoard, moving/circular/rectangular bodies, Ball/Brick/Paddle and intrusive
 nodes/deques, plus IntHistoryBuffer/ObjectHistoryBuffer, PowerUp, ScorePopup,
 BrickMotionPath, MotionWaypoint, PacketBuffer, BitPacketBuffer, LegacyUtf8Decoder,
 IsaacGenerator, GameplayAudioEvent, LevelSequence, LevelPack, LevelMetadata,
-IntNode, LevelDecoder and LevelPackLoader.
+IntNode, LevelDecoder, LevelPackLoader, Rasterizer2D, SpriteGeometry,
+RgbSprite, ArgbSprite and DualLinkNode.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -151,6 +152,25 @@ nonnegative-ID additions, copy only the outer payload array, and retain the
 original metadata array. Native probes check direct metadata/sequence operations
 and empty archive loading; nonempty archive retrieval, full board initialization
 and rendered level selection remain unverified.
+
+Rendering names expose the shared row-major pixel target, dimensions and clip
+bounds, clipped fills/lines/outline routines, RGB effects and sprite geometry.
+Sprite canvas dimensions remain separate from cropped dimensions/offsets.
+Native pixel models check solid fills, rectangle/line alpha, darkening,
+weighted grayscale, clip intersection/save/restore/reset and clearing only the
+active target dimensions. Rectangle alpha truncates source and destination
+products separately; line alpha combines them before truncation. Invalid
+inverted clips retain the original bounds rather than being normalized.
+
+RGB `drawAt` copies zero pixels, while `drawTransparent` skips them. ARGB draw
+overrides use per-pixel alpha with denominator256, preserving the original
+rounding even at alpha255. Fixtures compare complete clipped targets, crop
+placement, independent copies/mirrors, quarter-turn geometry and offsets,
+nonzero-pixel hit testing, zero-word replacement and sprite raster binding.
+`DualLinkNode` exposes secondary links/key and verifies that unlinking either
+chain leaves the other chain intact; secondary-linked keys cannot be changed.
+Gradient/arbitrary-line rendering, transparent-border trimming, encoded image
+loading, scaling/tint modes and complete browser presentation remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

@@ -37,11 +37,67 @@ const classes={
  kq:['IntNode','Intrusive integer holder used for board level state and UI selections; default and value constructors retain its numeric value.'],
  dq:['LevelDecoder','Versioned level parser for brick groups, paths, flags and state; also contains an unrelated packet transform helper.'],
  mq:['LevelPackLoader','Loads indexed level metadata and raw payloads from an archive; other static helpers retain their existing roles.'],
+ lb:['Rasterizer2D','Shared RGB pixel target, dimensions, clipping rectangle and integer drawing/effect routines.'],
+ mn:['SpriteGeometry','Common cropped sprite dimensions, original canvas size and offsets; other static helpers retain their roles.'],
+ jp:['RgbSprite','Integer RGB sprite with zero-color transparency, cropped geometry, draw/copy and pixel transforms.'],
+ fb:['ArgbSprite','RGB sprite subtype whose draw overrides blend per-pixel8-bit alpha with integer rounding.'],
+ tk:['DualLinkNode','Intrusive node with an independent secondary link pair/key used by sprite/cache ownership.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
 function local(owner,signature,ordinal,expectedOriginalName,to,evidence){members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName,evidence};}
+for(const [original,type,to,evidence] of [
+ ['l','[I','pixels','Bound row-major destination pixel array.'],['c','I','width','Target row stride and full width.'],['d','I','height','Target full height.'],
+ ['i','I','clipLeft','Inclusive horizontal clip origin.'],['b','I','clipTop','Inclusive vertical clip origin.'],['f','I','clipRight','Exclusive horizontal clip end.'],['j','I','clipBottom','Exclusive vertical clip end.'],
+])field('lb',original,type,to,evidence);
+for(const [original,to,evidence] of [
+ ['D','width','Cropped pixel row width.'],['C','height','Cropped pixel height.'],['x','canvasWidth','Original untrimmed canvas width.'],['z','canvasHeight','Original untrimmed canvas height.'],['E','offsetX','Horizontal crop offset within original canvas.'],['F','offsetY','Vertical crop offset within original canvas.'],
+])field('mn',original,'I',to,evidence);
+field('jp','G','[I','pixels','Row-major sprite pixels; constructor retains supplied array.');
+field('tk','n','Ltk;','secondaryPrevious','Previous link independent of inherited primary links.');field('tk','s','Ltk;','secondaryNext','Next link independent of inherited primary links.');field('tk','j','J','secondaryKey','Separate retained key guarded against updates while secondary-linked.');
+method('tk','d','(I)V','unlinkSecondary','Patches secondary neighbors and clears both own links; guard3.',['obfuscationGuard']);
+method('tk','c','(I)Z','isSecondaryLinked','Tests secondaryPrevious; guard2.',['obfuscationGuard']);
+method('tk','e','(I)J','getSecondaryKey','Returns retained secondary key; guard -19451.',['obfuscationGuard']);
+method('tk','a','(JI)V','setSecondaryKey','Rejects assignment while secondary-linked; guard below -62 preserves static state.',['key','obfuscationGuard']);
+for(const [original,descriptor,to,params,evidence] of [
+ ['a','([III)V','bind',['targetPixels','targetWidth','targetHeight'],'Retains target array and dimensions then resets clip to target bounds.'],
+ ['a','()V','resetClip',[],'Resets clipping to full target bounds and clears clip-dependent mask arrays.'],
+ ['e','(IIII)V','setClip',['left','top','right','bottom'],'Sets clip after original one-sided target-bound clamps; does not normalize inverted/outside bounds.'],
+ ['d','(IIII)V','intersectClip',['left','top','right','bottom'],'Intersects existing clip by independently tightening its four bounds.'],
+ ['a','([I)V','saveClip',['destination'],'Copies clipLeft/Top/Right/Bottom into first four array entries.'],
+ ['b','([I)V','restoreClip',['saved'],'Restores four saved clip bounds without clamping.'],
+ ['d','()V','clear',[],'Zeroes width*height pixels regardless of current clip; leaves any extra backing tail intact.'],
+ ['a','(III)V','setPixel',['x','y','color'],'Writes one clipped RGB pixel.'],
+ ['c','(IIII)V','drawHorizontalLine',['x','y','length','color'],'Writes horizontal clipped run.'],
+ ['g','(IIII)V','drawVerticalLine',['x','y','length','color'],'Writes vertical clipped run.'],
+ ['g','(IIIII)V','fillRectangle',['x','y','rectangleWidth','rectangleHeight','color'],'Fills clipped rectangle with RGB color.'],
+ ['d','(IIIIII)V','fillRectangleAlpha',['x','y','rectangleWidth','rectangleHeight','color','alpha256'],'Blends clipped rectangle; source/destination channels are truncated separately before addition.'],
+ ['b','(IIII)V','darkenRectangle',['x','y','rectangleWidth','rectangleHeight'],'Halves RGB channels using per-channel low-bit masking.'],
+ ['a','(IIII)V','grayscaleRectangle',['x','y','rectangleWidth','rectangleHeight'],'Applies original weighted integer grayscale formula over clipped rectangle.'],
+ ['e','(IIIII)V','drawRectangle',['x','y','rectangleWidth','rectangleHeight','color'],'Draws top/bottom and side runs using original overlap behavior.'],
+ ['a','(IIIIII)V','drawRectangleAlpha',['x','y','rectangleWidth','rectangleHeight','color','alpha256'],'Draws alpha outline with corner pixels handled by horizontal runs.'],
+ ['b','(IIIII)V','drawHorizontalLineAlpha',['x','y','length','color','alpha256'],'Blends horizontal run with combined channel products before truncation.'],
+ ['f','(IIIII)V','drawVerticalLineAlpha',['x','y','length','color','alpha256'],'Blends vertical run with combined channel products before truncation.'],
+ ['g','(IIIIII)V','fillVerticalGradient',['x','y','rectangleWidth','rectangleHeight','topColor','bottomColor'],'Interpolates16.16 vertical position then8-bit color weights; clipping preserves gradient origin.'],
+ ['d','(IIIII)V','drawLine',['x1','y1','x2','y2','color'],'Draws inclusive endpoints with original fixed16 interpolation and horizontal/vertical special cases.'],
+ ['c','()V','clearStaticReferences',[],'Clears target and auxiliary array references; dimensions/clip remain unchanged.'],
+])method('lb',original,descriptor,to,evidence,params);
+for(const [owner,desc,params,evidence] of [
+ ['jp','(II)V',['width','height'],'Allocates uncropped zero-filled RGB pixels.'],['fb','(II)V',['width','height'],'Allocates uncropped zero-filled ARGB pixels through base constructor.'],
+ ['jp','(IIIIII[I)V',['canvasWidth','canvasHeight','offsetX','offsetY','width','height','pixels'],'Retains cropped geometry and caller pixel array.'],['fb','(IIIIII[I)V',['canvasWidth','canvasHeight','offsetX','offsetY','width','height','pixels'],'Retains cropped geometry and caller ARGB array through base constructor.'],
+])method(owner,'<init>',desc,'<init>',evidence,params);
+method('jp','d','(IIII)Z','containsPixel','Tests point relative to canvas origin and crop offset; nonzero pixel word means contained.',['originX','originY','pointX','pointY']);
+method('jp','c','(II)V','drawTransparent','RGB implementation skips zero pixels; ARGB override blends by per-pixel alpha.',['x','y']);
+method('jp','d','(II)V','drawAt','RGB implementation copies all pixels, including zero; ARGB override retains its own alpha blending.',['x','y']);
+method('jp','a','()V','flipHorizontal','Reverses each pixel row and reflects crop offset within original canvas.',[]);
+method('jp','c','()Ljp;','copyFlippedHorizontal','Returns independent horizontally mirrored pixels and reflected offset.',[]);
+method('jp','e','()Ljp;','copy','Returns independent pixel array retaining cropped geometry.',[]);
+method('jp','f','()V','rotateClockwise','Rotates pixels90 degrees clockwise and swaps/refines canvas, dimensions and crop offsets.',[]);
+method('jp','b','()V','rotateCounterclockwise','Rotates pixels90 degrees counterclockwise and swaps/refines canvas, dimensions and crop offsets.',[]);
+method('jp','g','()V','bindRasterTarget','Binds sprite pixel array and cropped dimensions as global raster target.',[]);
+method('jp','h','()V','replaceZeroWithOne','Replaces exact zero pixel words with1; preserves other pixel words.',[]);
+method('jp','d','()V','trimTransparentBorders','Scans nonzero-pixel bounds and updates crop dimensions/offsets; original empty-sprite behavior retained.',[]);
 for(const [original,type,to,evidence] of [
  ['b','Lnc;','pack','Retained level pack whose payload/metadata arrays are selected by sequence order.'],
  ['f','[I','order','Caller-owned level index order; sequence uses levelIndex modulo period.'],
@@ -428,13 +484,16 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('wq')} / ${link('pi')} / ${link('mj')} | Big-endian bytes, compact integers, strings, bit streams, cipher arithmetic and body snapshots. |`,
 `| ${link('fo')} / ${link('qc')} | Deterministic board/cipher random state and queued gameplay audio codes/details. |`,
 `| ${link('oi')} → ${link('nc')} / ${link('wk')} / ${link('mq')} | Level order, pack payloads, metadata and archive loading. |`,
-`| ${link('dq')} / ${link('kq')} | Level versions0–5, brick groups, paths and retained integer state. |`, '',
+`| ${link('dq')} / ${link('kq')} | Level versions0–5, brick groups, paths and retained integer state. |`,
+`| ${link('lb')} / ${link('mn')} / ${link('jp')} / ${link('fb')} | Pixel targets, clipping, cropped RGB/ARGB sprites and transforms. |`,
+`| ${link('tk')} | Secondary cache links/key independent of primary intrusive ownership. |`, '',
 'Focused raw/named probes check body geometry, paddle sizes, player masks, deque ownership, histories, power-ups, waypoint motion, selected contacts, packet operations and body/path snapshots. ISAAC fixtures use an independent unsigned-word model anchored to [Bob Jenkins’s published vectors](https://burtleburtle.net/bob/rand/randvect.txt), then compare seeded words/state, refill/counter boundaries, bounded rejection, shuffling, board random-call accounting and opcode bytes. Audio fixtures check event construction; playback remains unverified. The client flag uses a headless Applet-compatible shim and board/match construction is bypassed. Full board snapshots, swept collision detection, gameplay, score accounting, live multiplayer and browser/phone behavior remain unverified.','',
 'Level fixtures check sequence order/repeats and caller-owned arrays, metadata labels/fields, payload-only pack appends, empty pack loading, all versions0–5, legacy regrouping, generated borders, path counts, wrapper delegation and early rejection. They retain negative-version default bricks and unchanged metadata after payload append. Metadata attribute byte/word and pack completion word remain qualified. Nonempty archive retrieval, full board initialization and rendered level selection remain unverified.','',
+'Pixel fixtures check clipped solid/alpha fills and lines, darkening/grayscale, clip save/restore/reset, clear bounds, RGB copy/zero transparency and ARGB per-pixel rounding. Sprite fixtures check crop placement, copies, mirrors, quarter-turns, hit testing and raster binding. Secondary-link fixtures keep primary ownership intact. Gradients, arbitrary lines, transparent-border trimming, image decoding and full browser presentation remain unverified.','',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:6,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:7,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

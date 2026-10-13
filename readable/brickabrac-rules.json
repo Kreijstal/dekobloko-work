@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 6,
+  "version": 7,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -262,6 +262,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fb",
+      "originalName": "fb",
+      "to": "ArgbSprite",
+      "evidence": "fb.java: RGB sprite subtype whose draw overrides blend per-pixel8-bit alpha with integer rounding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fo",
       "originalName": "fo",
       "to": "IsaacGenerator",
@@ -297,6 +304,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jp",
+      "originalName": "jp",
+      "to": "RgbSprite",
+      "evidence": "jp.java: Integer RGB sprite with zero-color transparency, cropped geometry, draw/copy and pixel transforms.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kq",
       "originalName": "kq",
       "to": "IntNode",
@@ -304,10 +318,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:lb",
+      "originalName": "lb",
+      "to": "Rasterizer2D",
+      "evidence": "lb.java: Shared RGB pixel target, dimensions, clipping rectangle and integer drawing/effect routines.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mj",
       "originalName": "mj",
       "to": "LegacyUtf8Decoder",
       "evidence": "mj.java: Length-delimited legacy UTF-8 decoder; zero bytes and four-byte sequences become replacement characters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mn",
+      "originalName": "mn",
+      "to": "SpriteGeometry",
+      "evidence": "mn.java: Common cropped sprite dimensions, original canvas size and offsets; other static helpers retain their roles.",
       "confidence": "reviewed"
     },
     {
@@ -371,6 +399,13 @@
       "originalName": "qj",
       "to": "GameplayScreen",
       "evidence": "qj.java: Coordinates multiplayer match, selected board, game input, updates and rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tk",
+      "originalName": "tk",
+      "to": "DualLinkNode",
+      "evidence": "tk.java: Intrusive node with an independent secondary link pair/key used by sprite/cache ownership.",
       "confidence": "reviewed"
     },
     {
@@ -745,6 +780,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jp.field_G:[I",
+      "originalName": "field_G",
+      "to": "pixels",
+      "evidence": "jp.java: Row-major sprite pixels; constructor retains supplied array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kk.field_g:[I",
       "originalName": "field_g",
       "to": "bitMasks",
@@ -756,6 +798,97 @@
       "originalName": "field_p",
       "to": "value",
       "evidence": "kq.java: Integer retained by value constructor; shared between level state and UI node uses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lb.field_b:I",
+      "originalName": "field_b",
+      "to": "clipTop",
+      "evidence": "lb.java: Inclusive vertical clip origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lb.field_c:I",
+      "originalName": "field_c",
+      "to": "width",
+      "evidence": "lb.java: Target row stride and full width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lb.field_d:I",
+      "originalName": "field_d",
+      "to": "height",
+      "evidence": "lb.java: Target full height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lb.field_f:I",
+      "originalName": "field_f",
+      "to": "clipRight",
+      "evidence": "lb.java: Exclusive horizontal clip end.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lb.field_i:I",
+      "originalName": "field_i",
+      "to": "clipLeft",
+      "evidence": "lb.java: Inclusive horizontal clip origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lb.field_j:I",
+      "originalName": "field_j",
+      "to": "clipBottom",
+      "evidence": "lb.java: Exclusive vertical clip end.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lb.field_l:[I",
+      "originalName": "field_l",
+      "to": "pixels",
+      "evidence": "lb.java: Bound row-major destination pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_C:I",
+      "originalName": "field_C",
+      "to": "height",
+      "evidence": "mn.java: Cropped pixel height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_D:I",
+      "originalName": "field_D",
+      "to": "width",
+      "evidence": "mn.java: Cropped pixel row width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_E:I",
+      "originalName": "field_E",
+      "to": "offsetX",
+      "evidence": "mn.java: Horizontal crop offset within original canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_F:I",
+      "originalName": "field_F",
+      "to": "offsetY",
+      "evidence": "mn.java: Vertical crop offset within original canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_x:I",
+      "originalName": "field_x",
+      "to": "canvasWidth",
+      "evidence": "mn.java: Original untrimmed canvas width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_z:I",
+      "originalName": "field_z",
+      "to": "canvasHeight",
+      "evidence": "mn.java: Original untrimmed canvas height.",
       "confidence": "reviewed"
     },
     {
@@ -966,6 +1099,27 @@
       "originalName": "field_w",
       "to": "match",
       "evidence": "qj.java: Gameplay controller owns this player-board match.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tk.field_j:J",
+      "originalName": "field_j",
+      "to": "secondaryKey",
+      "evidence": "tk.java: Separate retained key guarded against updates while secondary-linked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tk.field_n:Ltk;",
+      "originalName": "field_n",
+      "to": "secondaryPrevious",
+      "evidence": "tk.java: Previous link independent of inherited primary links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tk.field_s:Ltk;",
+      "originalName": "field_s",
+      "to": "secondaryNext",
+      "evidence": "tk.java: Next link independent of inherited primary links.",
       "confidence": "reviewed"
     },
     {
@@ -1837,6 +1991,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fb.c(II)V",
+      "originalName": "c",
+      "to": "drawTransparent",
+      "evidence": "jp.java: RGB implementation skips zero pixels; ARGB override blends by per-pixel alpha. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.d(II)V",
+      "originalName": "d",
+      "to": "drawAt",
+      "evidence": "jp.java: RGB implementation copies all pixels, including zero; ARGB override retains its own alpha blending. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fo.a(B)V",
       "originalName": "a",
       "to": "generateBlock",
@@ -1984,6 +2152,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jp.a()V",
+      "originalName": "a",
+      "to": "flipHorizontal",
+      "evidence": "jp.java: Reverses each pixel row and reflects crop offset within original canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.b()V",
+      "originalName": "b",
+      "to": "rotateCounterclockwise",
+      "evidence": "jp.java: Rotates pixels90 degrees counterclockwise and swaps/refines canvas, dimensions and crop offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.c()Ljp;",
+      "originalName": "c",
+      "to": "copyFlippedHorizontal",
+      "evidence": "jp.java: Returns independent horizontally mirrored pixels and reflected offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.c(II)V",
+      "originalName": "c",
+      "to": "drawTransparent",
+      "evidence": "jp.java: RGB implementation skips zero pixels; ARGB override blends by per-pixel alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.d()V",
+      "originalName": "d",
+      "to": "trimTransparentBorders",
+      "evidence": "jp.java: Scans nonzero-pixel bounds and updates crop dimensions/offsets; original empty-sprite behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.d(II)V",
+      "originalName": "d",
+      "to": "drawAt",
+      "evidence": "jp.java: RGB implementation copies all pixels, including zero; ARGB override retains its own alpha blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.d(IIII)Z",
+      "originalName": "d",
+      "to": "containsPixel",
+      "evidence": "jp.java: Tests point relative to canvas origin and crop offset; nonzero pixel word means contained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.e()Ljp;",
+      "originalName": "e",
+      "to": "copy",
+      "evidence": "jp.java: Returns independent pixel array retaining cropped geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.f()V",
+      "originalName": "f",
+      "to": "rotateClockwise",
+      "evidence": "jp.java: Rotates pixels90 degrees clockwise and swaps/refines canvas, dimensions and crop offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.g()V",
+      "originalName": "g",
+      "to": "bindRasterTarget",
+      "evidence": "jp.java: Binds sprite pixel array and cropped dimensions as global raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.h()V",
+      "originalName": "h",
+      "to": "replaceZeroWithOne",
+      "evidence": "jp.java: Replaces exact zero pixel words with1; preserves other pixel words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kj.a(II)I",
       "originalName": "a",
       "to": "approximateSqrt256",
@@ -2023,6 +2268,153 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.a()V",
+      "originalName": "a",
+      "to": "resetClip",
+      "evidence": "lb.java: Resets clipping to full target bounds and clears clip-dependent mask arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.a(III)V",
+      "originalName": "a",
+      "to": "setPixel",
+      "evidence": "lb.java: Writes one clipped RGB pixel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.a(IIII)V",
+      "originalName": "a",
+      "to": "grayscaleRectangle",
+      "evidence": "lb.java: Applies original weighted integer grayscale formula over clipped rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.a(IIIIII)V",
+      "originalName": "a",
+      "to": "drawRectangleAlpha",
+      "evidence": "lb.java: Draws alpha outline with corner pixels handled by horizontal runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.a([I)V",
+      "originalName": "a",
+      "to": "saveClip",
+      "evidence": "lb.java: Copies clipLeft/Top/Right/Bottom into first four array entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.a([III)V",
+      "originalName": "a",
+      "to": "bind",
+      "evidence": "lb.java: Retains target array and dimensions then resets clip to target bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.b(IIII)V",
+      "originalName": "b",
+      "to": "darkenRectangle",
+      "evidence": "lb.java: Halves RGB channels using per-channel low-bit masking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.b(IIIII)V",
+      "originalName": "b",
+      "to": "drawHorizontalLineAlpha",
+      "evidence": "lb.java: Blends horizontal run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.b([I)V",
+      "originalName": "b",
+      "to": "restoreClip",
+      "evidence": "lb.java: Restores four saved clip bounds without clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.c()V",
+      "originalName": "c",
+      "to": "clearStaticReferences",
+      "evidence": "lb.java: Clears target and auxiliary array references; dimensions/clip remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.c(IIII)V",
+      "originalName": "c",
+      "to": "drawHorizontalLine",
+      "evidence": "lb.java: Writes horizontal clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.d()V",
+      "originalName": "d",
+      "to": "clear",
+      "evidence": "lb.java: Zeroes width*height pixels regardless of current clip; leaves any extra backing tail intact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.d(IIII)V",
+      "originalName": "d",
+      "to": "intersectClip",
+      "evidence": "lb.java: Intersects existing clip by independently tightening its four bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.d(IIIII)V",
+      "originalName": "d",
+      "to": "drawLine",
+      "evidence": "lb.java: Draws inclusive endpoints with original fixed16 interpolation and horizontal/vertical special cases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.d(IIIIII)V",
+      "originalName": "d",
+      "to": "fillRectangleAlpha",
+      "evidence": "lb.java: Blends clipped rectangle; source/destination channels are truncated separately before addition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.e(IIII)V",
+      "originalName": "e",
+      "to": "setClip",
+      "evidence": "lb.java: Sets clip after original one-sided target-bound clamps; does not normalize inverted/outside bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.e(IIIII)V",
+      "originalName": "e",
+      "to": "drawRectangle",
+      "evidence": "lb.java: Draws top/bottom and side runs using original overlap behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.f(IIIII)V",
+      "originalName": "f",
+      "to": "drawVerticalLineAlpha",
+      "evidence": "lb.java: Blends vertical run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.g(IIII)V",
+      "originalName": "g",
+      "to": "drawVerticalLine",
+      "evidence": "lb.java: Writes vertical clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.g(IIIII)V",
+      "originalName": "g",
+      "to": "fillRectangle",
+      "evidence": "lb.java: Fills clipped rectangle with RGB color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.g(IIIIII)V",
+      "originalName": "g",
+      "to": "fillVerticalGradient",
+      "evidence": "lb.java: Interpolates16.16 vertical position then8-bit color weights; clipping preserves gradient origin.",
       "confidence": "reviewed"
     },
     {
@@ -2373,6 +2765,34 @@
       "originalName": "a",
       "to": "decodeLevelBytes",
       "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.a(JI)V",
+      "originalName": "a",
+      "to": "setSecondaryKey",
+      "evidence": "tk.java: Rejects assignment while secondary-linked; guard below -62 preserves static state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.c(I)Z",
+      "originalName": "c",
+      "to": "isSecondaryLinked",
+      "evidence": "tk.java: Tests secondaryPrevious; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.d(I)V",
+      "originalName": "d",
+      "to": "unlinkSecondary",
+      "evidence": "tk.java: Patches secondary neighbors and clears both own links; guard3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.e(I)J",
+      "originalName": "e",
+      "to": "getSecondaryKey",
+      "evidence": "tk.java: Returns retained secondary key; guard -19451.",
       "confidence": "reviewed"
     },
     {
@@ -3475,6 +3895,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fb.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "fb.java: Allocates uncropped zero-filled ARGB pixels through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "fb.java: Allocates uncropped zero-filled ARGB pixels through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.<init>(IIIIII[I)V#0",
+      "originalName": "param0",
+      "to": "canvasWidth",
+      "evidence": "fb.java: Retains cropped geometry and caller ARGB array through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.<init>(IIIIII[I)V#1",
+      "originalName": "param1",
+      "to": "canvasHeight",
+      "evidence": "fb.java: Retains cropped geometry and caller ARGB array through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.<init>(IIIIII[I)V#2",
+      "originalName": "param2",
+      "to": "offsetX",
+      "evidence": "fb.java: Retains cropped geometry and caller ARGB array through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.<init>(IIIIII[I)V#3",
+      "originalName": "param3",
+      "to": "offsetY",
+      "evidence": "fb.java: Retains cropped geometry and caller ARGB array through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.<init>(IIIIII[I)V#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "fb.java: Retains cropped geometry and caller ARGB array through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.<init>(IIIIII[I)V#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "fb.java: Retains cropped geometry and caller ARGB array through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.<init>(IIIIII[I)V#6",
+      "originalName": "param6",
+      "to": "pixels",
+      "evidence": "fb.java: Retains cropped geometry and caller ARGB array through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.c(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "jp.java: RGB implementation skips zero pixels; ARGB override blends by per-pixel alpha. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.c(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "jp.java: RGB implementation skips zero pixels; ARGB override blends by per-pixel alpha. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.d(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "jp.java: RGB implementation copies all pixels, including zero; ARGB override retains its own alpha blending. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.d(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "jp.java: RGB implementation copies all pixels, including zero; ARGB override retains its own alpha blending. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fo.<init>([I)V#0",
       "originalName": "param0",
       "to": "seed",
@@ -3888,6 +4399,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jp.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "jp.java: Allocates uncropped zero-filled RGB pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "jp.java: Allocates uncropped zero-filled RGB pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.<init>(IIIIII[I)V#0",
+      "originalName": "param0",
+      "to": "canvasWidth",
+      "evidence": "jp.java: Retains cropped geometry and caller pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.<init>(IIIIII[I)V#1",
+      "originalName": "param1",
+      "to": "canvasHeight",
+      "evidence": "jp.java: Retains cropped geometry and caller pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.<init>(IIIIII[I)V#2",
+      "originalName": "param2",
+      "to": "offsetX",
+      "evidence": "jp.java: Retains cropped geometry and caller pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.<init>(IIIIII[I)V#3",
+      "originalName": "param3",
+      "to": "offsetY",
+      "evidence": "jp.java: Retains cropped geometry and caller pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.<init>(IIIIII[I)V#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "jp.java: Retains cropped geometry and caller pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.<init>(IIIIII[I)V#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "jp.java: Retains cropped geometry and caller pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.<init>(IIIIII[I)V#6",
+      "originalName": "param6",
+      "to": "pixels",
+      "evidence": "jp.java: Retains cropped geometry and caller pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.c(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "jp.java: RGB implementation skips zero pixels; ARGB override blends by per-pixel alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.c(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "jp.java: RGB implementation skips zero pixels; ARGB override blends by per-pixel alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.d(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "jp.java: RGB implementation copies all pixels, including zero; ARGB override retains its own alpha blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.d(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "jp.java: RGB implementation copies all pixels, including zero; ARGB override retains its own alpha blending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.d(IIII)Z#0",
+      "originalName": "param0",
+      "to": "originX",
+      "evidence": "jp.java: Tests point relative to canvas origin and crop offset; nonzero pixel word means contained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.d(IIII)Z#1",
+      "originalName": "param1",
+      "to": "originY",
+      "evidence": "jp.java: Tests point relative to canvas origin and crop offset; nonzero pixel word means contained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.d(IIII)Z#2",
+      "originalName": "param2",
+      "to": "pointX",
+      "evidence": "jp.java: Tests point relative to canvas origin and crop offset; nonzero pixel word means contained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.d(IIII)Z#3",
+      "originalName": "param3",
+      "to": "pointY",
+      "evidence": "jp.java: Tests point relative to canvas origin and crop offset; nonzero pixel word means contained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kj.a(II)I#0",
       "originalName": "param0",
       "to": "value",
@@ -3997,6 +4627,531 @@
       "originalName": "param0",
       "to": "value",
       "evidence": "kq.java: Retains integer node value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(III)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Writes one clipped RGB pixel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(III)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Writes one clipped RGB pixel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(III)V#2",
+      "originalName": "param2",
+      "to": "color",
+      "evidence": "lb.java: Writes one clipped RGB pixel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Applies original weighted integer grayscale formula over clipped rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Applies original weighted integer grayscale formula over clipped rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "rectangleWidth",
+      "evidence": "lb.java: Applies original weighted integer grayscale formula over clipped rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "rectangleHeight",
+      "evidence": "lb.java: Applies original weighted integer grayscale formula over clipped rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Draws alpha outline with corner pixels handled by horizontal runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Draws alpha outline with corner pixels handled by horizontal runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "rectangleWidth",
+      "evidence": "lb.java: Draws alpha outline with corner pixels handled by horizontal runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "rectangleHeight",
+      "evidence": "lb.java: Draws alpha outline with corner pixels handled by horizontal runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "color",
+      "evidence": "lb.java: Draws alpha outline with corner pixels handled by horizontal runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "alpha256",
+      "evidence": "lb.java: Draws alpha outline with corner pixels handled by horizontal runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a([I)V#0",
+      "originalName": "param0",
+      "to": "destination",
+      "evidence": "lb.java: Copies clipLeft/Top/Right/Bottom into first four array entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a([III)V#0",
+      "originalName": "param0",
+      "to": "targetPixels",
+      "evidence": "lb.java: Retains target array and dimensions then resets clip to target bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a([III)V#1",
+      "originalName": "param1",
+      "to": "targetWidth",
+      "evidence": "lb.java: Retains target array and dimensions then resets clip to target bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.a([III)V#2",
+      "originalName": "param2",
+      "to": "targetHeight",
+      "evidence": "lb.java: Retains target array and dimensions then resets clip to target bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b(IIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Halves RGB channels using per-channel low-bit masking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b(IIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Halves RGB channels using per-channel low-bit masking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b(IIII)V#2",
+      "originalName": "param2",
+      "to": "rectangleWidth",
+      "evidence": "lb.java: Halves RGB channels using per-channel low-bit masking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b(IIII)V#3",
+      "originalName": "param3",
+      "to": "rectangleHeight",
+      "evidence": "lb.java: Halves RGB channels using per-channel low-bit masking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b(IIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Blends horizontal run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b(IIIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Blends horizontal run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b(IIIII)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "lb.java: Blends horizontal run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b(IIIII)V#3",
+      "originalName": "param3",
+      "to": "color",
+      "evidence": "lb.java: Blends horizontal run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b(IIIII)V#4",
+      "originalName": "param4",
+      "to": "alpha256",
+      "evidence": "lb.java: Blends horizontal run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.b([I)V#0",
+      "originalName": "param0",
+      "to": "saved",
+      "evidence": "lb.java: Restores four saved clip bounds without clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.c(IIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Writes horizontal clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.c(IIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Writes horizontal clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.c(IIII)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "lb.java: Writes horizontal clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.c(IIII)V#3",
+      "originalName": "param3",
+      "to": "color",
+      "evidence": "lb.java: Writes horizontal clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIII)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "lb.java: Intersects existing clip by independently tightening its four bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIII)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "lb.java: Intersects existing clip by independently tightening its four bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIII)V#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "lb.java: Intersects existing clip by independently tightening its four bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIII)V#3",
+      "originalName": "param3",
+      "to": "bottom",
+      "evidence": "lb.java: Intersects existing clip by independently tightening its four bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIII)V#0",
+      "originalName": "param0",
+      "to": "x1",
+      "evidence": "lb.java: Draws inclusive endpoints with original fixed16 interpolation and horizontal/vertical special cases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIII)V#1",
+      "originalName": "param1",
+      "to": "y1",
+      "evidence": "lb.java: Draws inclusive endpoints with original fixed16 interpolation and horizontal/vertical special cases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIII)V#2",
+      "originalName": "param2",
+      "to": "x2",
+      "evidence": "lb.java: Draws inclusive endpoints with original fixed16 interpolation and horizontal/vertical special cases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIII)V#3",
+      "originalName": "param3",
+      "to": "y2",
+      "evidence": "lb.java: Draws inclusive endpoints with original fixed16 interpolation and horizontal/vertical special cases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIII)V#4",
+      "originalName": "param4",
+      "to": "color",
+      "evidence": "lb.java: Draws inclusive endpoints with original fixed16 interpolation and horizontal/vertical special cases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Blends clipped rectangle; source/destination channels are truncated separately before addition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Blends clipped rectangle; source/destination channels are truncated separately before addition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "rectangleWidth",
+      "evidence": "lb.java: Blends clipped rectangle; source/destination channels are truncated separately before addition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "rectangleHeight",
+      "evidence": "lb.java: Blends clipped rectangle; source/destination channels are truncated separately before addition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "color",
+      "evidence": "lb.java: Blends clipped rectangle; source/destination channels are truncated separately before addition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.d(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "alpha256",
+      "evidence": "lb.java: Blends clipped rectangle; source/destination channels are truncated separately before addition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.e(IIII)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "lb.java: Sets clip after original one-sided target-bound clamps; does not normalize inverted/outside bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.e(IIII)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "lb.java: Sets clip after original one-sided target-bound clamps; does not normalize inverted/outside bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.e(IIII)V#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "lb.java: Sets clip after original one-sided target-bound clamps; does not normalize inverted/outside bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.e(IIII)V#3",
+      "originalName": "param3",
+      "to": "bottom",
+      "evidence": "lb.java: Sets clip after original one-sided target-bound clamps; does not normalize inverted/outside bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.e(IIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Draws top/bottom and side runs using original overlap behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.e(IIIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Draws top/bottom and side runs using original overlap behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.e(IIIII)V#2",
+      "originalName": "param2",
+      "to": "rectangleWidth",
+      "evidence": "lb.java: Draws top/bottom and side runs using original overlap behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.e(IIIII)V#3",
+      "originalName": "param3",
+      "to": "rectangleHeight",
+      "evidence": "lb.java: Draws top/bottom and side runs using original overlap behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.e(IIIII)V#4",
+      "originalName": "param4",
+      "to": "color",
+      "evidence": "lb.java: Draws top/bottom and side runs using original overlap behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.f(IIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Blends vertical run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.f(IIIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Blends vertical run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.f(IIIII)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "lb.java: Blends vertical run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.f(IIIII)V#3",
+      "originalName": "param3",
+      "to": "color",
+      "evidence": "lb.java: Blends vertical run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.f(IIIII)V#4",
+      "originalName": "param4",
+      "to": "alpha256",
+      "evidence": "lb.java: Blends vertical run with combined channel products before truncation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Writes vertical clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Writes vertical clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIII)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "lb.java: Writes vertical clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIII)V#3",
+      "originalName": "param3",
+      "to": "color",
+      "evidence": "lb.java: Writes vertical clipped run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Fills clipped rectangle with RGB color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Fills clipped rectangle with RGB color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIII)V#2",
+      "originalName": "param2",
+      "to": "rectangleWidth",
+      "evidence": "lb.java: Fills clipped rectangle with RGB color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIII)V#3",
+      "originalName": "param3",
+      "to": "rectangleHeight",
+      "evidence": "lb.java: Fills clipped rectangle with RGB color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIII)V#4",
+      "originalName": "param4",
+      "to": "color",
+      "evidence": "lb.java: Fills clipped rectangle with RGB color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lb.java: Interpolates16.16 vertical position then8-bit color weights; clipping preserves gradient origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "lb.java: Interpolates16.16 vertical position then8-bit color weights; clipping preserves gradient origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "rectangleWidth",
+      "evidence": "lb.java: Interpolates16.16 vertical position then8-bit color weights; clipping preserves gradient origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "rectangleHeight",
+      "evidence": "lb.java: Interpolates16.16 vertical position then8-bit color weights; clipping preserves gradient origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "topColor",
+      "evidence": "lb.java: Interpolates16.16 vertical position then8-bit color weights; clipping preserves gradient origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lb.g(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "bottomColor",
+      "evidence": "lb.java: Interpolates16.16 vertical position then8-bit color weights; clipping preserves gradient origin.",
       "confidence": "reviewed"
     },
     {
@@ -4970,6 +6125,41 @@
       "originalName": "param5",
       "to": "obfuscationGuard",
       "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(JI)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "tk.java: Rejects assignment while secondary-linked; guard below -62 preserves static state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(JI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "tk.java: Rejects assignment while secondary-linked; guard below -62 preserves static state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.c(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tk.java: Tests secondaryPrevious; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tk.java: Patches secondary neighbors and clears both own links; guard3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.e(I)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tk.java: Returns retained secondary key; guard -19451.",
       "confidence": "reviewed"
     },
     {
@@ -6122,9 +7312,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "f41b8e348377013782caa62c68e74410e316cb73bcfe16fe7e291caceaac0af1",
+      "build-brickabrac-rules.mjs": "e9d7cb47d0b34797492b21122da472b63969e6bd91e5f200252381e7c1fa0e61",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "cdbf2175586e085f40ad19dbff296f6baea686cb805e8ead1f8fec0eb614e872",
+      "tests/test-brickabrac-core.mjs": "c0f5daade93a712ab71a81716754e9eef2d5f67300dd8a54d68f04082b85ea6c",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
