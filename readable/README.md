@@ -98,6 +98,17 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+TileableNoiseGenerator/OctaveNoiseMap now name seeded shuffle/frequency tables,
+repeat counts, fixed12 fade/gradients, octave callbacks and byte map output.
+Independent LCG/fixed-point fixtures check six seeds, varied dimensions/repeats,
+zero through eight octaves, persistence and normalization. Legacy duplicated
+zero/permutation slot256 and byte endpoint wraparound are preserved. Fresh
+maps retain the new output while old caller buffers stay unchanged. Indexed
+sprite palette sharing keeps pixel ownership explicit. Separate room-option
+control methods/data are named from source; live room/filter/packet behavior,
+high-octave overflow, malformed dimensions and full overview integration remain
+unverified.
+
 GradientUiRenderer now names shared gradient frames/text, masks, sprite
 multiplication, colour operations, circles/particle rings and fractional carries.
 Independent math checks distinguish combined colour blending from separately
@@ -400,7 +411,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 520,723 raw/named checks agree. Controlled cipher output does not constitute
+All 526,396 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 

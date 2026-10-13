@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 77,
+  "version": 78,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2082,6 +2082,13 @@
       "originalName": "cm",
       "to": "CampaignProgress",
       "evidence": "cm.java: Three campaign result tables with 64 mission slots, versioned decoding, result updates and score aggregation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cn",
+      "originalName": "cn",
+      "to": "OctaveNoiseMap",
+      "evidence": "cn.java: Accumulates weighted noise octaves, clamps signed sum to plus/minus4096, optionally shifts output and writes narrowing bytes into a fresh retained map buffer.",
       "confidence": "reviewed"
     },
     {
@@ -4241,6 +4248,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vf",
+      "originalName": "vf",
+      "to": "TileableNoiseGenerator",
+      "evidence": "vf.java: Seeded diagonal-gradient noise grid with repeat counts, fixed12 fade/interpolation, octave callback contract and short frequency/permutation tables; unrelated room-option/sprite/context helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vh",
       "originalName": "vh",
       "to": "PacketBuffer",
@@ -5904,6 +5918,41 @@
       "originalName": "field_d",
       "to": "resultsByCampaign",
       "evidence": "cm.java: Three lazily allocated 64-slot result arrays indexed by campaign and mission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cn.field_m:I",
+      "originalName": "field_m",
+      "to": "outputIndex",
+      "evidence": "cn.java: Owned fixed12 weighted sum/amplitudes, normalization flag, retained output bytes and write cursor; amplitude values narrow through short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cn.field_n:Z",
+      "originalName": "field_n",
+      "to": "normalizedOutput",
+      "evidence": "cn.java: Owned fixed12 weighted sum/amplitudes, normalization flag, retained output bytes and write cursor; amplitude values narrow through short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cn.field_p:I",
+      "originalName": "field_p",
+      "to": "noiseSum",
+      "evidence": "cn.java: Owned fixed12 weighted sum/amplitudes, normalization flag, retained output bytes and write cursor; amplitude values narrow through short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cn.field_t:[B",
+      "originalName": "field_t",
+      "to": "output",
+      "evidence": "cn.java: Owned fixed12 weighted sum/amplitudes, normalization flag, retained output bytes and write cursor; amplitude values narrow through short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cn.field_u:[I",
+      "originalName": "field_u",
+      "to": "octaveAmplitudes",
+      "evidence": "cn.java: Owned fixed12 weighted sum/amplitudes, normalization flag, retained output bytes and write cursor; amplitude values narrow through short.",
       "confidence": "reviewed"
     },
     {
@@ -13915,6 +13964,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mw.field_F:[I",
+      "originalName": "field_F",
+      "to": "noiseFade12",
+      "evidence": "mw.java: 4096-entry fixed12 quintic fade table used by tiled noise interpolation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:na.field_L:Lfw;",
       "originalName": "field_L",
       "to": "cancelButton",
@@ -19921,10 +19977,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vf.field_a:I",
+      "originalName": "field_a",
+      "to": "repeatX",
+      "evidence": "vf.java: Owned noise repeat counts, seed, octave powers narrowed to short and512-entry seeded shuffle table; initialization retains duplicated zero and does not mirror index zero into slot256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vf.field_b:I",
+      "originalName": "field_b",
+      "to": "octaveCount",
+      "evidence": "vf.java: Owned noise repeat counts, seed, octave powers narrowed to short and512-entry seeded shuffle table; initialization retains duplicated zero and does not mirror index zero into slot256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vf.field_d:I",
+      "originalName": "field_d",
+      "to": "repeatY",
+      "evidence": "vf.java: Owned noise repeat counts, seed, octave powers narrowed to short and512-entry seeded shuffle table; initialization retains duplicated zero and does not mirror index zero into slot256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vf.field_g:[S",
+      "originalName": "field_g",
+      "to": "octaveFrequencies",
+      "evidence": "vf.java: Owned noise repeat counts, seed, octave powers narrowed to short and512-entry seeded shuffle table; initialization retains duplicated zero and does not mirror index zero into slot256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vf.field_i:I",
+      "originalName": "field_i",
+      "to": "seed",
+      "evidence": "vf.java: Owned noise repeat counts, seed, octave powers narrowed to short and512-entry seeded shuffle table; initialization retains duplicated zero and does not mirror index zero into slot256.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vf.field_j:[Lwk;",
       "originalName": "field_j",
       "to": "smokeSprites",
       "evidence": "vf.java: Basic archive resource literals identify these shared battle marker/effect assets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vf.field_k:[S",
+      "originalName": "field_k",
+      "to": "permutation",
+      "evidence": "vf.java: Owned noise repeat counts, seed, octave powers narrowed to short and512-entry seeded shuffle table; initialization retains duplicated zero and does not mirror index zero into slot256.",
       "confidence": "reviewed"
     },
     {
@@ -23936,6 +24034,34 @@
       "originalName": "var9",
       "to": "legacyDamage",
       "evidence": "cm.java: Reviewed lexical ordinal and versioned profile/result packet or mission-score normalization data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cn.<init>(IIIIIFZ)V#0",
+      "originalName": "var8",
+      "to": "octave",
+      "evidence": "cn.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cn.a(B)V#0",
+      "originalName": "fieldTemp$0",
+      "to": "lowClampWriteIndex",
+      "evidence": "cn.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cn.a(B)V#1",
+      "originalName": "fieldTemp$1",
+      "to": "highClampWriteIndex",
+      "evidence": "cn.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cn.a(B)V#2",
+      "originalName": "fieldTemp$2",
+      "to": "unclampedWriteIndex",
+      "evidence": "cn.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
       "confidence": "reviewed"
     },
     {
@@ -57714,6 +57840,594 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:vf.a(IZILau;)V#2",
+      "originalName": "var24",
+      "to": "restrictedOptionIndex",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#55",
+      "originalName": "var4_int",
+      "to": "controlsEditable",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#57",
+      "originalName": "var5",
+      "to": "roomOptionsChanged",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#58",
+      "originalName": "var6",
+      "to": "choiceState",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#59",
+      "originalName": "var7",
+      "to": "optionIndex",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#60",
+      "originalName": "var8_int",
+      "to": "capacityMaskByteIndex",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#61",
+      "originalName": "var8",
+      "to": "extraFilterTooltip",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#62",
+      "originalName": "var8_array",
+      "to": "optionChoices",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#63",
+      "originalName": "var9",
+      "to": "choiceValue",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#64",
+      "originalName": "var10",
+      "to": "membersRequired",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#65",
+      "originalName": "var11",
+      "to": "thresholdTwoFailed",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#66",
+      "originalName": "var12",
+      "to": "thresholdOneFailed",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#67",
+      "originalName": "var13",
+      "to": "filterChoiceBlocked",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#68",
+      "originalName": "var14",
+      "to": "featureRequirementFailed",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#69",
+      "originalName": "var15",
+      "to": "featureRequirementValue",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#70",
+      "originalName": "var16",
+      "to": "thresholdOne",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#71",
+      "originalName": "var17",
+      "to": "optionButton",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#73",
+      "originalName": "var18_ref",
+      "to": "choiceDescription",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#74",
+      "originalName": "var19",
+      "to": "choiceHint",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#75",
+      "originalName": "var20",
+      "to": "tooltip",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#76",
+      "originalName": "var21",
+      "to": "restrictionMessage",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#77",
+      "originalName": "var22",
+      "to": "restrictionMessageReference",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#79",
+      "originalName": "var23",
+      "to": "multipleRestrictionNames",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#81",
+      "originalName": "var25_ref",
+      "to": "restrictionName",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#82",
+      "originalName": "var26",
+      "to": "obfuscationControl",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#83",
+      "originalName": "var27",
+      "to": "filterBitIndex",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#84",
+      "originalName": "var28",
+      "to": "spectatorChoiceButton",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#85",
+      "originalName": "var29",
+      "to": "extraFilterButton",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#86",
+      "originalName": "var30",
+      "to": "groupChoices",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#87",
+      "originalName": "var31",
+      "to": "featureMessage",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#88",
+      "originalName": "var32",
+      "to": "formattedRestrictionMessage",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#90",
+      "originalName": "var25_refLifetime1",
+      "to": "taggedRestrictionName",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#92",
+      "originalName": "var6Lifetime1",
+      "to": "spectatorChoice",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#93",
+      "originalName": "var6Lifetime2",
+      "to": "extraFilterChoice",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#94",
+      "originalName": "var6Lifetime3",
+      "to": "optionFilterBitOffset",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#95",
+      "originalName": "var8_intLifetime1",
+      "to": "capacityChoiceLocked",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#96",
+      "originalName": "var16Lifetime1",
+      "to": "choiceBlocked",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#97",
+      "originalName": "var18Lifetime1",
+      "to": "filterBitStart",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a(IZILau;)V#98",
+      "originalName": "var16Lifetime2",
+      "to": "thresholdTwo",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a([IILru;)Lru;#0",
+      "originalName": "var3",
+      "to": "sharedSprite",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.a([IILru;)Lru;#2",
+      "originalName": "stackIn_3_0",
+      "to": "returnedSprite",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.b(I)V#0",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.b(I)V#1",
+      "originalName": "var2",
+      "to": "octave",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.b(I)V#2",
+      "originalName": "var3",
+      "to": "guardQuotient",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#0",
+      "originalName": "var23",
+      "to": "row",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#1",
+      "originalName": "var22",
+      "to": "column",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#10",
+      "originalName": "var11",
+      "to": "latticeY1",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#11",
+      "originalName": "var12",
+      "to": "fadeX12",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#12",
+      "originalName": "var13",
+      "to": "fadeY12",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#13",
+      "originalName": "var14",
+      "to": "nextOffsetX12",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#14",
+      "originalName": "var15",
+      "to": "nextOffsetY12",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#15",
+      "originalName": "var16",
+      "to": "permutationY0",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#16",
+      "originalName": "var17",
+      "to": "permutationY1",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#17",
+      "originalName": "var18",
+      "to": "topLeftGradient",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#18",
+      "originalName": "var19",
+      "to": "topRightGradient",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#19",
+      "originalName": "var20",
+      "to": "topInterpolation",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#2",
+      "originalName": "var24",
+      "to": "octave",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#20",
+      "originalName": "var21",
+      "to": "bottomInterpolation",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#21",
+      "originalName": "var25",
+      "to": "normalizedXCoordinates",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#22",
+      "originalName": "var26",
+      "to": "normalizedYCoordinates",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#23",
+      "originalName": "var27",
+      "to": "xCoordinateIndex",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#24",
+      "originalName": "var28",
+      "to": "obfuscationControl",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#25",
+      "originalName": "var29",
+      "to": "xCoordinatesReference",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#26",
+      "originalName": "var30",
+      "to": "yCoordinatesReference",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#27",
+      "originalName": "var31",
+      "to": "xCoordinates12",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#28",
+      "originalName": "var32",
+      "to": "yCoordinates12",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#29",
+      "originalName": "var27Lifetime1",
+      "to": "yCoordinateIndex",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#3",
+      "originalName": "var4",
+      "to": "sampleX12",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#30",
+      "originalName": "var27Lifetime2",
+      "to": "frequency12",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#31",
+      "originalName": "var18Lifetime1",
+      "to": "bottomLeftGradient",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#32",
+      "originalName": "var19Lifetime1",
+      "to": "bottomRightGradient",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#4",
+      "originalName": "var5",
+      "to": "sampleY12",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#5",
+      "originalName": "var6",
+      "to": "periodX",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#6",
+      "originalName": "var7",
+      "to": "periodY",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#7",
+      "originalName": "var8",
+      "to": "latticeX0",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#8",
+      "originalName": "var9",
+      "to": "latticeX1",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.c(III)V#9",
+      "originalName": "var10",
+      "to": "latticeY0",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.d(I)V#0",
+      "originalName": "var2",
+      "to": "random",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.d(I)V#1",
+      "originalName": "var3",
+      "to": "initialIndex",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.d(I)V#2",
+      "originalName": "var4",
+      "to": "remaining",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.d(I)V#3",
+      "originalName": "var5",
+      "to": "selected",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.d(I)V#4",
+      "originalName": "var6",
+      "to": "selectedValue",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.d(I)V#5",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vf.d(I)V#6",
+      "originalName": "var3Lifetime1",
+      "to": "shuffleIndex",
+      "evidence": "vf.java: Reviewed noise sampling/shuffle/output or separate room-option control data role; threshold roles stay numbered rather than guessing rating/experience effects; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:vh.a(B[I)V#10",
       "originalName": "var7",
       "to": "sum",
@@ -61491,6 +62205,34 @@
       "originalName": "a",
       "to": "getCampaignScore",
       "evidence": "cm.java: Sums mission scores using the cached campaign definition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(B)V",
+      "originalName": "a",
+      "to": "emitPixel",
+      "evidence": "cn.java: Clamps sum to plus/minus4096, optionally shifts by2048 after halving, writes narrowing byte and resets sum for guard below -101.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(I)V",
+      "originalName": "a",
+      "to": "beginMap",
+      "evidence": "cn.java: Resets map accumulation/output cursor before generating samples; canonical guard -30420.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(IBI)[B",
+      "originalName": "a",
+      "to": "generateMap",
+      "evidence": "cn.java: Allocates fresh width*height bytes, returns null for guard below80 while retaining buffer, otherwise generates row-major map and returns owned output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.b(III)V",
+      "originalName": "b",
+      "to": "accumulateOctave",
+      "evidence": "cn.java: Adds signed fixed12 amplitude times sample; canonical guard19699 preserves amplitude array.",
       "confidence": "reviewed"
     },
     {
@@ -67402,6 +68144,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ki.a(II)I",
+      "originalName": "a",
+      "to": "quinticNoiseFade12",
+      "evidence": "ki.java: Fixed12 form of6t^5-15t^4+10t^3 with staged truncation; canonical guard below -26.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kj.a(B)Ljava/lang/String;",
       "originalName": "a",
       "to": "printCurrentCoat",
@@ -68337,6 +69086,13 @@
       "originalName": "a",
       "to": "getValidationSource",
       "evidence": "eg.java: Exposes attached source on text/date widgets. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(IIII)I",
+      "originalName": "a",
+      "to": "diagonalNoiseGradient12",
+      "evidence": "ma.java: Hash bits zero/one choose signs of x/y displacements; higher hash bits ignored; guard3.",
       "confidence": "reviewed"
     },
     {
@@ -74633,6 +75389,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vf.a(B)V",
+      "originalName": "a",
+      "to": "emitPixel",
+      "evidence": "vf.java: Clamps sum to plus/minus4096, optionally shifts by2048 after halving, writes narrowing byte and resets sum for guard below -101.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.a(I)V",
+      "originalName": "a",
+      "to": "beginMap",
+      "evidence": "vf.java: Resets map accumulation/output cursor before generating samples; canonical guard -30420.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.a(III)I",
+      "originalName": "a",
+      "to": "hitTestPairedSprites",
+      "evidence": "vf.java: Returns0/1 for the two shared sprite rectangles using half-open bounds; missing sprite or no hit returns -1; wrong guard returns -123.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.a(IZILau;)V",
+      "originalName": "a",
+      "to": "updateRoomOptionControls",
+      "evidence": "vf.java: Updates room/filter option choices, highlights, input gates, restriction tooltips and filter bits; changed normal room settings send options request; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.a([IILru;)Lru;",
+      "originalName": "a",
+      "to": "shareSpriteWithPalette",
+      "evidence": "vf.java: Creates a new indexed sprite header retaining supplied palette and source pixel-index array, copying scalar canvas/crop geometry; guard -13546.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.b(I)V",
+      "originalName": "b",
+      "to": "buildOctaveFrequencies",
+      "evidence": "vf.java: Powers of two through Math.pow then int/short narrowing; canonical guard -125.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.b(III)V",
+      "originalName": "b",
+      "to": "accumulateOctave",
+      "evidence": "vf.java: Adds signed fixed12 amplitude times sample; canonical guard19699 preserves amplitude array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.c(III)V",
+      "originalName": "c",
+      "to": "generateSamples",
+      "evidence": "vf.java: Row-major grid with fixed12 normalized coordinates, repeated octave lattices, diagonal gradients and fade interpolation; invokes begin/accumulate/emit callbacks; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.d(I)V",
+      "originalName": "d",
+      "to": "buildPermutation",
+      "evidence": "vf.java: Initializes positions0..254 then swaps remaining255 down to1 using legacy bounded RNG; duplicates zero and retains slot256 default zero; guard -256.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vg.a(I)Z",
       "originalName": "a",
       "to": "hasQuickChatOverlay",
@@ -80804,6 +81623,111 @@
       "originalName": "param1",
       "to": "campaignIndex",
       "evidence": "cm.java: Sums mission scores using the cached campaign definition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.<init>(IIIIIFZ)V#0",
+      "originalName": "param0",
+      "to": "seed",
+      "evidence": "cn.java: Retains normalized mode and builds octave amplitudes from4096*persistence^octave with int/short narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.<init>(IIIIIFZ)V#1",
+      "originalName": "param1",
+      "to": "octaveCount",
+      "evidence": "cn.java: Retains normalized mode and builds octave amplitudes from4096*persistence^octave with int/short narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.<init>(IIIIIFZ)V#2",
+      "originalName": "param2",
+      "to": "repeatX",
+      "evidence": "cn.java: Retains normalized mode and builds octave amplitudes from4096*persistence^octave with int/short narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.<init>(IIIIIFZ)V#3",
+      "originalName": "param3",
+      "to": "repeatY",
+      "evidence": "cn.java: Retains normalized mode and builds octave amplitudes from4096*persistence^octave with int/short narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.<init>(IIIIIFZ)V#4",
+      "originalName": "param4",
+      "to": "unusedArgument",
+      "evidence": "cn.java: Retains normalized mode and builds octave amplitudes from4096*persistence^octave with int/short narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.<init>(IIIIIFZ)V#5",
+      "originalName": "param5",
+      "to": "persistence",
+      "evidence": "cn.java: Retains normalized mode and builds octave amplitudes from4096*persistence^octave with int/short narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.<init>(IIIIIFZ)V#6",
+      "originalName": "param6",
+      "to": "normalizedOutput",
+      "evidence": "cn.java: Retains normalized mode and builds octave amplitudes from4096*persistence^octave with int/short narrowing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cn.java: Clamps sum to plus/minus4096, optionally shifts by2048 after halving, writes narrowing byte and resets sum for guard below -101.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cn.java: Resets map accumulation/output cursor before generating samples; canonical guard -30420.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IBI)[B#0",
+      "originalName": "param0",
+      "to": "height",
+      "evidence": "cn.java: Allocates fresh width*height bytes, returns null for guard below80 while retaining buffer, otherwise generates row-major map and returns owned output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IBI)[B#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "cn.java: Allocates fresh width*height bytes, returns null for guard below80 while retaining buffer, otherwise generates row-major map and returns owned output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IBI)[B#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "cn.java: Allocates fresh width*height bytes, returns null for guard below80 while retaining buffer, otherwise generates row-major map and returns owned output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.b(III)V#0",
+      "originalName": "param0",
+      "to": "octave",
+      "evidence": "cn.java: Adds signed fixed12 amplitude times sample; canonical guard19699 preserves amplitude array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.b(III)V#1",
+      "originalName": "param1",
+      "to": "sample12",
+      "evidence": "cn.java: Adds signed fixed12 amplitude times sample; canonical guard19699 preserves amplitude array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.b(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "cn.java: Adds signed fixed12 amplitude times sample; canonical guard19699 preserves amplitude array.",
       "confidence": "reviewed"
     },
     {
@@ -97880,6 +98804,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ki.a(II)I#0",
+      "originalName": "param0",
+      "to": "fraction12",
+      "evidence": "ki.java: Fixed12 form of6t^5-15t^4+10t^3 with staged truncation; canonical guard below -26.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ki.a(II)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ki.java: Fixed12 form of6t^5-15t^4+10t^3 with staged truncation; canonical guard below -26.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kj.<init>(II)V#0",
       "originalName": "param0",
       "to": "actingPlayer",
@@ -100817,6 +101755,34 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "eg.java: Exposes attached source on text/date widgets. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ma.a(IIII)I#0",
+      "originalName": "param0",
+      "to": "offsetX12",
+      "evidence": "ma.java: Hash bits zero/one choose signs of x/y displacements; higher hash bits ignored; guard3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ma.a(IIII)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ma.java: Hash bits zero/one choose signs of x/y displacements; higher hash bits ignored; guard3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ma.a(IIII)I#2",
+      "originalName": "param2",
+      "to": "hash",
+      "evidence": "ma.java: Hash bits zero/one choose signs of x/y displacements; higher hash bits ignored; guard3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ma.a(IIII)I#3",
+      "originalName": "param3",
+      "to": "offsetY12",
+      "evidence": "ma.java: Hash bits zero/one choose signs of x/y displacements; higher hash bits ignored; guard3.",
       "confidence": "reviewed"
     },
     {
@@ -119335,6 +120301,181 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vf.<init>(IIIII)V#0",
+      "originalName": "param0",
+      "to": "seed",
+      "evidence": "vf.java: Retains seed/octave/repeat configuration, builds signed-short frequency powers and seeded shuffle; final argument unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.<init>(IIIII)V#1",
+      "originalName": "param1",
+      "to": "octaveCount",
+      "evidence": "vf.java: Retains seed/octave/repeat configuration, builds signed-short frequency powers and seeded shuffle; final argument unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.<init>(IIIII)V#2",
+      "originalName": "param2",
+      "to": "repeatX",
+      "evidence": "vf.java: Retains seed/octave/repeat configuration, builds signed-short frequency powers and seeded shuffle; final argument unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.<init>(IIIII)V#3",
+      "originalName": "param3",
+      "to": "repeatY",
+      "evidence": "vf.java: Retains seed/octave/repeat configuration, builds signed-short frequency powers and seeded shuffle; final argument unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.<init>(IIIII)V#4",
+      "originalName": "param4",
+      "to": "unusedArgument",
+      "evidence": "vf.java: Retains seed/octave/repeat configuration, builds signed-short frequency powers and seeded shuffle; final argument unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vf.java: Clamps sum to plus/minus4096, optionally shifts by2048 after halving, writes narrowing byte and resets sum for guard below -101.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vf.java: Resets map accumulation/output cursor before generating samples; canonical guard -30420.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a(III)I#0",
+      "originalName": "param0",
+      "to": "pointerX",
+      "evidence": "vf.java: Returns0/1 for the two shared sprite rectangles using half-open bounds; missing sprite or no hit returns -1; wrong guard returns -123.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a(III)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "vf.java: Returns0/1 for the two shared sprite rectangles using half-open bounds; missing sprite or no hit returns -1; wrong guard returns -123.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a(III)I#2",
+      "originalName": "param2",
+      "to": "pointerY",
+      "evidence": "vf.java: Returns0/1 for the two shared sprite rectangles using half-open bounds; missing sprite or no hit returns -1; wrong guard returns -123.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a(IZILau;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vf.java: Updates room/filter option choices, highlights, input gates, restriction tooltips and filter bits; changed normal room settings send options request; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a(IZILau;)V#1",
+      "originalName": "param1",
+      "to": "filterMode",
+      "evidence": "vf.java: Updates room/filter option choices, highlights, input gates, restriction tooltips and filter bits; changed normal room settings send options request; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a(IZILau;)V#2",
+      "originalName": "param2",
+      "to": "optionsPacketOpcode",
+      "evidence": "vf.java: Updates room/filter option choices, highlights, input gates, restriction tooltips and filter bits; changed normal room settings send options request; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a(IZILau;)V#3",
+      "originalName": "param3",
+      "to": "room",
+      "evidence": "vf.java: Updates room/filter option choices, highlights, input gates, restriction tooltips and filter bits; changed normal room settings send options request; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a([IILru;)Lru;#0",
+      "originalName": "param0",
+      "to": "palette",
+      "evidence": "vf.java: Creates a new indexed sprite header retaining supplied palette and source pixel-index array, copying scalar canvas/crop geometry; guard -13546.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a([IILru;)Lru;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "vf.java: Creates a new indexed sprite header retaining supplied palette and source pixel-index array, copying scalar canvas/crop geometry; guard -13546.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.a([IILru;)Lru;#2",
+      "originalName": "param2",
+      "to": "source",
+      "evidence": "vf.java: Creates a new indexed sprite header retaining supplied palette and source pixel-index array, copying scalar canvas/crop geometry; guard -13546.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vf.java: Powers of two through Math.pow then int/short narrowing; canonical guard -125.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.b(III)V#0",
+      "originalName": "param0",
+      "to": "octave",
+      "evidence": "vf.java: Adds signed fixed12 amplitude times sample; canonical guard19699 preserves amplitude array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.b(III)V#1",
+      "originalName": "param1",
+      "to": "sample12",
+      "evidence": "vf.java: Adds signed fixed12 amplitude times sample; canonical guard19699 preserves amplitude array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.b(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "vf.java: Adds signed fixed12 amplitude times sample; canonical guard19699 preserves amplitude array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.c(III)V#0",
+      "originalName": "param0",
+      "to": "height",
+      "evidence": "vf.java: Row-major grid with fixed12 normalized coordinates, repeated octave lattices, diagonal gradients and fade interpolation; invokes begin/accumulate/emit callbacks; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.c(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "vf.java: Row-major grid with fixed12 normalized coordinates, repeated octave lattices, diagonal gradients and fade interpolation; invokes begin/accumulate/emit callbacks; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.c(III)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "vf.java: Row-major grid with fixed12 normalized coordinates, repeated octave lattices, diagonal gradients and fade interpolation; invokes begin/accumulate/emit callbacks; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vf.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vf.java: Initializes positions0..254 then swaps remaining255 down to1 using legacy bounded RNG; duplicates zero and retains slot256 default zero; guard -256.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vg.a(I)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -122241,10 +123382,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "b713b983d9c4ff974636c5adfcb0d9bdcc285c879afdcc2dc8c61bb027f68ee4",
+      "build-armiesofgielinor-rules.mjs": "488b33a4352e60ea5d293b29863f92c1b69e3b034bf0137a1328a8fa265d239d",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "6ecac7b0a5ae754af3455374f759cc904fac393dc07abb57b853c603b14638de",
+      "tests/test-armiesofgielinor-core.mjs": "c7a1f509866e9d6cadc75e4da7225d62b8e44da40bfb9ac164439ee3c5e2685b",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
