@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 3,
+  "version": 4,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -283,6 +283,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mj",
+      "originalName": "mj",
+      "to": "LegacyUtf8Decoder",
+      "evidence": "mj.java: Length-delimited legacy UTF-8 decoder; zero bytes and four-byte sequences become replacement characters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nm",
       "originalName": "nm",
       "to": "IntrusiveNode",
@@ -301,6 +308,13 @@
       "originalName": "on",
       "to": "Brick",
       "evidence": "on.java: Fixed34-by16-pixel rectangle with brick type, hit/animation state, power-up flags and ball contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pi",
+      "originalName": "pi",
+      "to": "BitPacketBuffer",
+      "evidence": "pi.java: Packet buffer with MSB-first bit input/output and seeded cipher arithmetic for opcodes and byte slices.",
       "confidence": "reviewed"
     },
     {
@@ -343,6 +357,20 @@
       "originalName": "vo",
       "to": "Paddle",
       "evidence": "vo.java: Rectangle-backed paddle with retained center/board span/control mode and grow/shrink/reset stages.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wq",
+      "originalName": "wq",
+      "to": "PacketBuffer",
+      "evidence": "wq.java: Cursor over caller-supplied or pooled bytes with big-endian primitives, compact integers, strings, checksums and block operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ai.field_r:[C",
+      "originalName": "field_r",
+      "to": "cp1252Extensions",
+      "evidence": "ai.java: Byte128..159 character mapping; unmapped entries decode as question marks.",
       "confidence": "reviewed"
     },
     {
@@ -598,6 +626,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kk.field_g:[I",
+      "originalName": "field_g",
+      "to": "bitMasks",
+      "evidence": "kk.java: Low-bit masks indexed by bit count, including a full32-bit mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nm.field_b:Lnm;",
       "originalName": "field_b",
       "to": "previous",
@@ -693,6 +728,27 @@
       "originalName": "field_v",
       "to": "sourceWaypointIndex",
       "evidence": "on.java: Current source waypoint; advancing wraps this index modulo waypoint count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_n:I",
+      "originalName": "field_n",
+      "to": "writeBitsRemaining",
+      "evidence": "pi.java: Unused low-order bit count in current output byte; writing starts with8 and finishing accounts for a partial byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_p:I",
+      "originalName": "field_p",
+      "to": "bitPosition",
+      "evidence": "pi.java: Read cursor in bits; entering bit mode multiplies byte position by8 and finishing rounds up to a byte boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_v:Lfo;",
+      "originalName": "field_v",
+      "to": "opcodeCipher",
+      "evidence": "pi.java: Seeded generator whose next integer is added to written opcodes and subtracted from received bytes.",
       "confidence": "reviewed"
     },
     {
@@ -885,6 +941,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wq.field_k:[B",
+      "originalName": "field_k",
+      "to": "data",
+      "evidence": "wq.java: Backing byte array; array constructor retains caller reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wq.field_l:I",
+      "originalName": "field_l",
+      "to": "position",
+      "evidence": "wq.java: Read/write byte cursor; each primitive advances it by its encoded length.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ak.a(BI)V#0",
       "originalName": "var3",
       "to": "board",
@@ -1011,10 +1081,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:pi.c(IB)I#0",
+      "originalName": "incrementValue$0",
+      "to": "previousByteIndex",
+      "evidence": "pi.java: Byte index captured before advancing across a boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pi.c(IB)I#3",
+      "originalName": "var3",
+      "to": "byteIndex",
+      "evidence": "pi.java: Current input byte from absolute bitPosition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pi.c(IB)I#4",
+      "originalName": "var5",
+      "to": "availableBits",
+      "evidence": "pi.java: Unconsumed bits in current input byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pi.c(IB)I#5",
+      "originalName": "var6",
+      "to": "value",
+      "evidence": "pi.java: Accumulated MSB-first input bits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ul.b(Z)Z#0",
       "originalName": "fieldTemp$0",
       "to": "nextRemainingTicks",
       "evidence": "ul.java: Decremented lifetime used to test whether the popup is still alive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.a(ILwq;)V#4",
+      "originalName": "var3_int",
+      "to": "header",
+      "evidence": "vi.java: Packed coordinate mode, optional velocity/state/type flags and high coordinate bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.a(ILwq;)V#8",
+      "originalName": "var6",
+      "to": "gridColumn",
+      "evidence": "vi.java: Low five bits of second grid-coordinate byte.",
       "confidence": "reviewed"
     },
     {
@@ -1029,6 +1141,34 @@
       "originalName": "var4",
       "to": "targetSpeed",
       "evidence": "vn.java: Requested speed after floor reset and upper cap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[BII)V#0",
+      "originalName": "var5_int",
+      "to": "destinationIndex",
+      "evidence": "wq.java: Destination slice index used while reading bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a([BIII)V#0",
+      "originalName": "var5_int",
+      "to": "sourceIndex",
+      "evidence": "wq.java: Source slice index used while writing bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.c(B)I#1",
+      "originalName": "var2",
+      "to": "currentByte",
+      "evidence": "wq.java: Current signed encoded byte; negative indicates continuation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.c(B)I#3",
+      "originalName": "var4",
+      "to": "value",
+      "evidence": "wq.java: Accumulated seven-bit groups.",
       "confidence": "reviewed"
     },
     {
@@ -1165,6 +1305,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:df.a(II[BI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decodeCp1252",
+      "evidence": "df.java: Decodes byte slice, skips zero bytes and uses extension mapping with question-mark fallback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ee.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -1225,6 +1372,13 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a(I[BBILjava/lang/CharSequence;I)I",
+      "originalName": "a",
+      "to": "encodeCp1252",
+      "evidence": "hj.java: Encodes character slice to byte array, replacing unsupported characters with question marks; returns bytes written; guard86.",
       "confidence": "reviewed"
     },
     {
@@ -1337,6 +1491,20 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.a(BII[B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "mj.java: Decodes legacy UTF-8 byte slice, replacing zero/invalid sequences and every four-byte code point; guard below -89.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "mj.java: Clears owned static references; original arithmetic guard retained.",
       "confidence": "reviewed"
     },
     {
@@ -1463,6 +1631,90 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(BIIILak;I)V",
+      "originalName": "a",
+      "to": "drawBoard",
+      "evidence": "pi.java: Draws selected board, brick groups, ball trails, paddle, power-ups, score popups and match-state overlays at supplied scale/offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(III)V",
+      "originalName": "a",
+      "to": "writeBits",
+      "evidence": "pi.java: Appends masked MSB-first bits across byte boundaries, clearing each new output byte; guard -17566.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(ZII[B)V",
+      "originalName": "a",
+      "to": "readCipheredBytes",
+      "evidence": "pi.java: Subtracts consecutive cipher values while filling a destination slice; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a([II)V",
+      "originalName": "a",
+      "to": "initializeOpcodeCipher",
+      "evidence": "pi.java: Creates seeded generator for opcode arithmetic; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.c(IB)I",
+      "originalName": "c",
+      "to": "readBits",
+      "evidence": "pi.java: Reads MSB-first bits across byte boundaries; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.d(Z)I",
+      "originalName": "d",
+      "to": "readCipheredOpcode",
+      "evidence": "pi.java: Subtracts next cipher integer and returns low byte; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.e(II)V",
+      "originalName": "e",
+      "to": "writeCipheredOpcode",
+      "evidence": "pi.java: Adds next cipher integer and writes low byte; guard -13413.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.f(B)V",
+      "originalName": "f",
+      "to": "finishBitRead",
+      "evidence": "pi.java: Rounds consumed bits up to byte position; guard at least69.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.n(I)V",
+      "originalName": "n",
+      "to": "beginBitRead",
+      "evidence": "pi.java: Sets bitPosition from byte position; guard at most -74.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.o(I)V",
+      "originalName": "o",
+      "to": "clearStaticReferences",
+      "evidence": "pi.java: Clears owned static asset/message references; guard60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.p(I)V",
+      "originalName": "p",
+      "to": "beginBitWrite",
+      "evidence": "pi.java: Clears current output byte and initializes8 available bits; guard at least51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.q(I)V",
+      "originalName": "q",
+      "to": "finishBitWrite",
+      "evidence": "pi.java: Accounts for a partial final output byte; original arithmetic guard retained.",
       "confidence": "reviewed"
     },
     {
@@ -1757,6 +2009,293 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "readLegacyUtf8String",
+      "evidence": "wq.java: Requires zero prefix, reads varint length, bounds-checks payload and invokes legacy decoder; guard24.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(BI)V",
+      "originalName": "a",
+      "to": "writeMedium",
+      "evidence": "wq.java: Writes low24 bits big-endian; guard47.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(BJ)V",
+      "originalName": "a",
+      "to": "writeLong56",
+      "evidence": "wq.java: Writes low56 bits big-endian; guard -109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(I)I",
+      "originalName": "a",
+      "to": "readShort",
+      "evidence": "wq.java: Reads big-endian signed16-bit value; guard above125.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(IB)V",
+      "originalName": "a",
+      "to": "writeInt",
+      "evidence": "wq.java: Writes32 bits big-endian; guard -79.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(II)V",
+      "originalName": "a",
+      "to": "writeByte",
+      "evidence": "wq.java: Writes low8 bits; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(IJ)V",
+      "originalName": "a",
+      "to": "writeLong",
+      "evidence": "wq.java: Writes64 bits big-endian; guard -23054.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writePrefixedCp1252String",
+      "evidence": "wq.java: Rejects embedded zero and surrounds encoded text with zero bytes; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(I[BII)V",
+      "originalName": "a",
+      "to": "readBytes",
+      "evidence": "wq.java: Copies backing bytes into destination slice; guard above109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(I[I)V",
+      "originalName": "a",
+      "to": "encryptBlocks",
+      "evidence": "wq.java: Encrypts complete eight-byte blocks from offset0 using32 rounds of two-word keyed mixing; cursor ends at complete-block boundary; guard18146.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(JB)V",
+      "originalName": "a",
+      "to": "writeLong40",
+      "evidence": "wq.java: Writes low40 bits big-endian; guard -32.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "writeCp1252String",
+      "evidence": "wq.java: Rejects embedded zero, encodes bytes and appends zero terminator; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",
+      "originalName": "a",
+      "to": "applyRsa",
+      "evidence": "wq.java: Treats written bytes as signed BigInteger, applies modPow and replaces with unsigned-short length plus result bytes; guard19775.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(ZLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeBase38Name",
+      "evidence": "wq.java: Encodes at most20 characters in two56-bit base38 words; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a([BIII)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "wq.java: Copies source slice into backing bytes; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a([IIIB)V",
+      "originalName": "a",
+      "to": "decryptBlocks",
+      "evidence": "wq.java: Decrypts complete eight-byte blocks in range and restores prior cursor; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.b(BI)V",
+      "originalName": "b",
+      "to": "writeShort",
+      "evidence": "wq.java: Writes low16 bits big-endian; guard at least106.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.b(IB)V",
+      "originalName": "b",
+      "to": "writeSignedSmart",
+      "evidence": "wq.java: Writes compact signed range -16384..16383; guard at least110 rejects unsupported values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.b(II)V",
+      "originalName": "b",
+      "to": "writeUnsignedSmart",
+      "evidence": "wq.java: Writes unsigned compact range0..32767 using one or two bytes; canonical guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.b(Z)B",
+      "originalName": "b",
+      "to": "readByte",
+      "evidence": "wq.java: Reads signed byte; true guard retains static state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.c(B)I",
+      "originalName": "c",
+      "to": "readVarInt",
+      "evidence": "wq.java: Reads most-significant seven-bit groups first with continuation bits; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.c(BI)V",
+      "originalName": "c",
+      "to": "backfillIntLength",
+      "evidence": "wq.java: Stores four-byte payload length before payload start; guard at most -26.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.c(I)I",
+      "originalName": "c",
+      "to": "readSignedSmart",
+      "evidence": "wq.java: Reads one-byte value minus64 or two-byte value minus49152; guard -1342.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.c(II)V",
+      "originalName": "c",
+      "to": "backfillShortLength",
+      "evidence": "wq.java: Stores two-byte payload length before payload start; guard255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.c(Z)I",
+      "originalName": "c",
+      "to": "readLargeSmart",
+      "evidence": "wq.java: Reads unsigned short or high-bit-marked int with its high bit removed; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.d(B)Z",
+      "originalName": "d",
+      "to": "verifyCrc32",
+      "evidence": "wq.java: Checks trailing CRC against bytes from0 through position-4; cursor returns to original position; guard -27.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.d(BI)V",
+      "originalName": "d",
+      "to": "backfillByteLength",
+      "evidence": "wq.java: Stores payload length one byte before payload start without moving cursor; guard at least112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.d(I)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "readCp1252String",
+      "evidence": "wq.java: Scans through zero terminator; canonical adjustment -1 excludes it from decoded length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.d(II)I",
+      "originalName": "d",
+      "to": "appendCrc32",
+      "evidence": "wq.java: Computes CRC over startOffset..position and appends its32 bits; guard3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.e(B)I",
+      "originalName": "e",
+      "to": "readUnsignedMedium",
+      "evidence": "wq.java: Reads unsigned24-bit value; guard -34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.e(BI)V",
+      "originalName": "e",
+      "to": "writeVarInt",
+      "evidence": "wq.java: Writes most-significant seven-bit groups with continuation bits; guard at most -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.e(I)I",
+      "originalName": "e",
+      "to": "readInt",
+      "evidence": "wq.java: Reads big-endian signed32-bit value; guard255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.f(BI)V",
+      "originalName": "f",
+      "to": "padToPosition",
+      "evidence": "wq.java: Appends zero bytes until absolute cursor reaches endPosition; guard -74.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.f(I)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "readPrefixedCp1252String",
+      "evidence": "wq.java: Requires leading zero then reads terminated string; guard255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.g(I)J",
+      "originalName": "g",
+      "to": "readLong",
+      "evidence": "wq.java: Reads two unsigned32-bit halves and combines into64 bits; guard -32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.h(I)V",
+      "originalName": "h",
+      "to": "clearStaticStrings",
+      "evidence": "wq.java: Clears string references; canonical guard0 preserves static integer state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.i(I)I",
+      "originalName": "i",
+      "to": "readUnsignedShort",
+      "evidence": "wq.java: Reads big-endian unsigned16-bit value; guard65280.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.j(I)I",
+      "originalName": "j",
+      "to": "readMedium",
+      "evidence": "wq.java: Reads signed24-bit value; guard48.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.k(I)I",
+      "originalName": "k",
+      "to": "readUnsignedSmart",
+      "evidence": "wq.java: Reads one-byte0..127 or two-byte value minus32768; guard -32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.l(I)I",
+      "originalName": "l",
+      "to": "readUnsignedByte",
+      "evidence": "wq.java: Reads unsigned byte; guard255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.m(I)Ljava/lang/String;",
+      "originalName": "m",
+      "to": "readNullableCp1252String",
+      "evidence": "wq.java: Leading zero means null; otherwise reads terminated string; guard0.",
       "confidence": "reviewed"
     },
     {
@@ -2096,6 +2635,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:df.a(II[BI)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "df.java: Decodes byte slice, skips zero bytes and uses extension mapping with question-mark fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(II[BI)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "df.java: Decodes byte slice, skips zero bytes and uses extension mapping with question-mark fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(II[BI)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "data",
+      "evidence": "df.java: Decodes byte slice, skips zero bytes and uses extension mapping with question-mark fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(II[BI)Ljava/lang/String;#3",
+      "originalName": "param3",
+      "to": "offset",
+      "evidence": "df.java: Decodes byte slice, skips zero bytes and uses extension mapping with question-mark fallback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ee.<init>(IIIII)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -2310,6 +2877,48 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hj.a(I[BBILjava/lang/CharSequence;I)I#0",
+      "originalName": "param0",
+      "to": "endIndex",
+      "evidence": "hj.java: Encodes character slice to byte array, replacing unsupported characters with question marks; returns bytes written; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hj.a(I[BBILjava/lang/CharSequence;I)I#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "hj.java: Encodes character slice to byte array, replacing unsupported characters with question marks; returns bytes written; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hj.a(I[BBILjava/lang/CharSequence;I)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "hj.java: Encodes character slice to byte array, replacing unsupported characters with question marks; returns bytes written; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hj.a(I[BBILjava/lang/CharSequence;I)I#3",
+      "originalName": "param3",
+      "to": "destinationOffset",
+      "evidence": "hj.java: Encodes character slice to byte array, replacing unsupported characters with question marks; returns bytes written; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hj.a(I[BBILjava/lang/CharSequence;I)I#4",
+      "originalName": "param4",
+      "to": "text",
+      "evidence": "hj.java: Encodes character slice to byte array, replacing unsupported characters with question marks; returns bytes written; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hj.a(I[BBILjava/lang/CharSequence;I)I#5",
+      "originalName": "param5",
+      "to": "startIndex",
+      "evidence": "hj.java: Encodes character slice to byte array, replacing unsupported characters with question marks; returns bytes written; guard86.",
       "confidence": "reviewed"
     },
     {
@@ -2590,6 +3199,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mj.a(BII[B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mj.java: Decodes legacy UTF-8 byte slice, replacing zero/invalid sequences and every four-byte code point; guard below -89.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mj.a(BII[B)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "mj.java: Decodes legacy UTF-8 byte slice, replacing zero/invalid sequences and every four-byte code point; guard below -89.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mj.a(BII[B)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "offset",
+      "evidence": "mj.java: Decodes legacy UTF-8 byte slice, replacing zero/invalid sequences and every four-byte code point; guard below -89.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mj.a(BII[B)Ljava/lang/String;#3",
+      "originalName": "param3",
+      "to": "data",
+      "evidence": "mj.java: Decodes legacy UTF-8 byte slice, replacing zero/invalid sequences and every four-byte code point; guard below -89.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mj.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mj.java: Clears owned static references; original arithmetic guard retained.",
       "confidence": "reviewed"
     },
     {
@@ -2933,6 +3577,195 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "capacity",
+      "evidence": "pi.java: Uses PacketBuffer pooled allocation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "pi.java: Wraps caller bytes through PacketBuffer constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(BIIILak;I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Draws selected board, brick groups, ball trails, paddle, power-ups, score popups and match-state overlays at supplied scale/offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(BIIILak;I)V#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "pi.java: Draws selected board, brick groups, ball trails, paddle, power-ups, score popups and match-state overlays at supplied scale/offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(BIIILak;I)V#2",
+      "originalName": "param2",
+      "to": "scaleDivisor",
+      "evidence": "pi.java: Draws selected board, brick groups, ball trails, paddle, power-ups, score popups and match-state overlays at supplied scale/offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(BIIILak;I)V#3",
+      "originalName": "param3",
+      "to": "destinationY",
+      "evidence": "pi.java: Draws selected board, brick groups, ball trails, paddle, power-ups, score popups and match-state overlays at supplied scale/offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(BIIILak;I)V#4",
+      "originalName": "param4",
+      "to": "match",
+      "evidence": "pi.java: Draws selected board, brick groups, ball trails, paddle, power-ups, score popups and match-state overlays at supplied scale/offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(BIIILak;I)V#5",
+      "originalName": "param5",
+      "to": "destinationX",
+      "evidence": "pi.java: Draws selected board, brick groups, ball trails, paddle, power-ups, score popups and match-state overlays at supplied scale/offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(III)V#0",
+      "originalName": "param0",
+      "to": "bitCount",
+      "evidence": "pi.java: Appends masked MSB-first bits across byte boundaries, clearing each new output byte; guard -17566.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Appends masked MSB-first bits across byte boundaries, clearing each new output byte; guard -17566.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(III)V#2",
+      "originalName": "param2",
+      "to": "value",
+      "evidence": "pi.java: Appends masked MSB-first bits across byte boundaries, clearing each new output byte; guard -17566.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(ZII[B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Subtracts consecutive cipher values while filling a destination slice; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(ZII[B)V#1",
+      "originalName": "param1",
+      "to": "destinationOffset",
+      "evidence": "pi.java: Subtracts consecutive cipher values while filling a destination slice; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(ZII[B)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "pi.java: Subtracts consecutive cipher values while filling a destination slice; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(ZII[B)V#3",
+      "originalName": "param3",
+      "to": "destination",
+      "evidence": "pi.java: Subtracts consecutive cipher values while filling a destination slice; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a([II)V#0",
+      "originalName": "param0",
+      "to": "seed",
+      "evidence": "pi.java: Creates seeded generator for opcode arithmetic; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a([II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Creates seeded generator for opcode arithmetic; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.c(IB)I#0",
+      "originalName": "param0",
+      "to": "bitCount",
+      "evidence": "pi.java: Reads MSB-first bits across byte boundaries; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.c(IB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Reads MSB-first bits across byte boundaries; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.d(Z)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Subtracts next cipher integer and returns low byte; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.e(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Adds next cipher integer and writes low byte; guard -13413.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.e(II)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "pi.java: Adds next cipher integer and writes low byte; guard -13413.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.f(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Rounds consumed bits up to byte position; guard at least69.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.n(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Sets bitPosition from byte position; guard at most -74.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.o(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Clears owned static asset/message references; guard60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.p(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Clears current output byte and initializes8 available bits; guard at least51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.q(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pi.java: Accounts for a partial final output byte; original arithmetic guard retained.",
       "confidence": "reviewed"
     },
     {
@@ -3592,6 +4425,517 @@
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "capacity",
+      "evidence": "wq.java: Starts cursor at0 using the existing pooled byte-array allocator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "wq.java: Starts cursor at0 and retains the supplied byte array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Requires zero prefix, reads varint length, bounds-checks payload and invokes legacy decoder; guard24.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes low24 bits big-endian; guard47.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(BI)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "wq.java: Writes low24 bits big-endian; guard47.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(BJ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes low56 bits big-endian; guard -109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(BJ)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "wq.java: Writes low56 bits big-endian; guard -109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads big-endian signed16-bit value; guard above125.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(IB)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "wq.java: Writes32 bits big-endian; guard -79.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(IB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes32 bits big-endian; guard -79.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes low8 bits; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(II)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "wq.java: Writes low8 bits; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(IJ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes64 bits big-endian; guard -23054.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(IJ)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "wq.java: Writes64 bits big-endian; guard -23054.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(ILjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Rejects embedded zero and surrounds encoded text with zero bytes; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(ILjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "wq.java: Rejects embedded zero and surrounds encoded text with zero bytes; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(I[BII)V#0",
+      "originalName": "param0",
+      "to": "destinationOffset",
+      "evidence": "wq.java: Copies backing bytes into destination slice; guard above109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(I[BII)V#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "wq.java: Copies backing bytes into destination slice; guard above109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(I[BII)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Copies backing bytes into destination slice; guard above109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(I[BII)V#3",
+      "originalName": "param3",
+      "to": "length",
+      "evidence": "wq.java: Copies backing bytes into destination slice; guard above109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(I[I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Encrypts complete eight-byte blocks from offset0 using32 rounds of two-word keyed mixing; cursor ends at complete-block boundary; guard18146.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(I[I)V#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "wq.java: Encrypts complete eight-byte blocks from offset0 using32 rounds of two-word keyed mixing; cursor ends at complete-block boundary; guard18146.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(JB)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "wq.java: Writes low40 bits big-endian; guard -32.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(JB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes low40 bits big-endian; guard -32.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(Ljava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "wq.java: Rejects embedded zero, encodes bytes and appends zero terminator; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Rejects embedded zero, encodes bytes and appends zero terminator; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V#0",
+      "originalName": "param0",
+      "to": "exponent",
+      "evidence": "wq.java: Treats written bytes as signed BigInteger, applies modPow and replaces with unsigned-short length plus result bytes; guard19775.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V#1",
+      "originalName": "param1",
+      "to": "modulus",
+      "evidence": "wq.java: Treats written bytes as signed BigInteger, applies modPow and replaces with unsigned-short length plus result bytes; guard19775.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Treats written bytes as signed BigInteger, applies modPow and replaces with unsigned-short length plus result bytes; guard19775.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(ZLjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Encodes at most20 characters in two56-bit base38 words; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a(ZLjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "name",
+      "evidence": "wq.java: Encodes at most20 characters in two56-bit base38 words; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a([BIII)V#0",
+      "originalName": "param0",
+      "to": "source",
+      "evidence": "wq.java: Copies source slice into backing bytes; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a([BIII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Copies source slice into backing bytes; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a([BIII)V#2",
+      "originalName": "param2",
+      "to": "sourceOffset",
+      "evidence": "wq.java: Copies source slice into backing bytes; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a([BIII)V#3",
+      "originalName": "param3",
+      "to": "length",
+      "evidence": "wq.java: Copies source slice into backing bytes; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a([IIIB)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "wq.java: Decrypts complete eight-byte blocks in range and restores prior cursor; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a([IIIB)V#1",
+      "originalName": "param1",
+      "to": "startOffset",
+      "evidence": "wq.java: Decrypts complete eight-byte blocks in range and restores prior cursor; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a([IIIB)V#2",
+      "originalName": "param2",
+      "to": "endOffset",
+      "evidence": "wq.java: Decrypts complete eight-byte blocks in range and restores prior cursor; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.a([IIIB)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Decrypts complete eight-byte blocks in range and restores prior cursor; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.b(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes low16 bits big-endian; guard at least106.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.b(BI)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "wq.java: Writes low16 bits big-endian; guard at least106.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.b(IB)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "wq.java: Writes compact signed range -16384..16383; guard at least110 rejects unsupported values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.b(IB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes compact signed range -16384..16383; guard at least110 rejects unsupported values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.b(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes unsigned compact range0..32767 using one or two bytes; canonical guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.b(II)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "wq.java: Writes unsigned compact range0..32767 using one or two bytes; canonical guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.b(Z)B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads signed byte; true guard retains static state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.c(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads most-significant seven-bit groups first with continuation bits; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.c(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Stores four-byte payload length before payload start; guard at most -26.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.c(BI)V#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "wq.java: Stores four-byte payload length before payload start; guard at most -26.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.c(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads one-byte value minus64 or two-byte value minus49152; guard -1342.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.c(II)V#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "wq.java: Stores two-byte payload length before payload start; guard255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.c(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Stores two-byte payload length before payload start; guard255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.c(Z)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads unsigned short or high-bit-marked int with its high bit removed; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.d(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Checks trailing CRC against bytes from0 through position-4; cursor returns to original position; guard -27.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.d(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Stores payload length one byte before payload start without moving cursor; guard at least112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.d(BI)V#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "wq.java: Stores payload length one byte before payload start without moving cursor; guard at least112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.d(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "terminatorAdjustment",
+      "evidence": "wq.java: Scans through zero terminator; canonical adjustment -1 excludes it from decoded length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.d(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Computes CRC over startOffset..position and appends its32 bits; guard3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.d(II)I#1",
+      "originalName": "param1",
+      "to": "startOffset",
+      "evidence": "wq.java: Computes CRC over startOffset..position and appends its32 bits; guard3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.e(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads unsigned24-bit value; guard -34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.e(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Writes most-significant seven-bit groups with continuation bits; guard at most -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.e(BI)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "wq.java: Writes most-significant seven-bit groups with continuation bits; guard at most -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.e(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads big-endian signed32-bit value; guard255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.f(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Appends zero bytes until absolute cursor reaches endPosition; guard -74.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.f(BI)V#1",
+      "originalName": "param1",
+      "to": "endPosition",
+      "evidence": "wq.java: Appends zero bytes until absolute cursor reaches endPosition; guard -74.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.f(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Requires leading zero then reads terminated string; guard255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.g(I)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads two unsigned32-bit halves and combines into64 bits; guard -32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.h(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Clears string references; canonical guard0 preserves static integer state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.i(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads big-endian unsigned16-bit value; guard65280.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.j(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads signed24-bit value; guard48.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.k(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads one-byte0..127 or two-byte value minus32768; guard -32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.l(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Reads unsigned byte; guard255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wq.m(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wq.java: Leading zero means null; otherwise reads terminated string; guard0.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -3609,9 +4953,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "760af57df2127d2b37ad80d6c1ccf222697dbf7607eea5a78481fb926a4e488a",
+      "build-brickabrac-rules.mjs": "f91fffbbfe62db209f1f9d23f3b8714ec5cc7f3a3621fc50785008d642ac45db",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "e507efd6bac00cc5c01557c10de2a01c57522dc1d18fbc8f9be70dfa18cfeff6",
+      "tests/test-brickabrac-core.mjs": "b47acead522935047cbce371dfbd6a7ca680bd5d1bfac21f147bb2d652c4fdb7",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

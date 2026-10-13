@@ -43,7 +43,7 @@ The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
 The semantic passes name GameScreen/GameplayScreen, MultiplayerMatch,
 PlayerBoard, moving/circular/rectangular bodies, Ball/Brick/Paddle and intrusive
 nodes/deques, plus IntHistoryBuffer/ObjectHistoryBuffer, PowerUp, ScorePopup,
-BrickMotionPath and MotionWaypoint.
+BrickMotionPath, MotionWaypoint, PacketBuffer, BitPacketBuffer and LegacyUtf8Decoder.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -79,6 +79,28 @@ Contact fixtures cover normal and always-reflecting bricks, all four face codes,
 both direction signs, and timer combinations. They supply collision-scratch
 coordinates and omit the randomized every-fourth-bounce perturbation; they do
 not establish swept collision detection, every brick type or whole gameplay.
+
+Packet operations now identify backing bytes/cursors, big-endian widths,
+signed/unsigned compact integers, varints, slices, padding, length backfills,
+CP1252 strings, legacy UTF-8, CRC, block transforms and modular exponentiation.
+Bit read/write modes expose MSB-first input, remaining output bits and byte
+alignment. The board drawing entry point is named and its scale/player/offset
+arguments are explicit. Primitive fixtures compare encoded bytes and cursor
+movement with independent expectations; bit fixtures cover all alignments and
+widths0..32. String fixtures preserve unsupported CP1252 substitution and the
+legacy decoder's zero/four-byte replacement behavior. CRC checks include
+tampering. Block fixtures compare ciphertext against a separate round model,
+check partial tails/ranges and cursor restoration; RSA fixtures preserve signed
+BigInteger input and the unsigned-short output length.
+
+Snapshot fixtures cover general/packed-grid coordinates, every optional-field
+flag combination, ball/paddle extension fields, conditional brick transition
+and motion state, and decoded waypoint order/duration totals. These are synthetic
+raw/named source checks, not live transport or original-gamepack equivalence.
+Ciphered opcode/slice fixtures cross generator refill boundaries and check
+byte arithmetic/order against a separate instance of the existing generator.
+An independent generator proof, packed base38 names, invalid/truncated packet
+handling, full board snapshots and rendered board drawing remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

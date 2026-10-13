@@ -26,6 +26,9 @@ const classes={
  ul:['ScorePopup','Intrusive score text with fixed8 position and a fifty-tick rising/fading lifetime.'],
  cl:['BrickMotionPath','Deque of timed waypoints with serialized count and total cyclic duration; moving bricks attach and interpolate along it.'],
  ee:['MotionWaypoint','Moving-body position with destination segment duration, used by cyclic brick paths.'],
+ wq:['PacketBuffer','Cursor over caller-supplied or pooled bytes with big-endian primitives, compact integers, strings, checksums and block operations.'],
+ pi:['BitPacketBuffer','Packet buffer with MSB-first bit input/output and seeded cipher arithmetic for opcodes and byte slices.'],
+ mj:['LegacyUtf8Decoder','Length-delimited legacy UTF-8 decoder; zero bytes and four-byte sequences become replacement characters.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -106,6 +109,92 @@ for(const [owner,signature,ordinal,original,to,evidence] of [
  ['hp','a(II)V',0,'fieldTemp$0','nextIndex','New absolute index used for the modulo storage slot.'],
  ['ao','a(Ljava/lang/Object;B)V',0,'fieldTemp$0','nextIndex','New absolute index used for the modulo storage slot.'],
  ['ul','b(Z)Z',0,'fieldTemp$0','nextRemainingTicks','Decremented lifetime used to test whether the popup is still alive.'],
+])local(owner,signature,ordinal,original,to,evidence);
+field('wq','l','I','position','Read/write byte cursor; each primitive advances it by its encoded length.');
+field('wq','k','[B','data','Backing byte array; array constructor retains caller reference.');
+field('pi','p','I','bitPosition','Read cursor in bits; entering bit mode multiplies byte position by8 and finishing rounds up to a byte boundary.');
+field('pi','n','I','writeBitsRemaining','Unused low-order bit count in current output byte; writing starts with8 and finishing accounts for a partial byte.');
+field('pi','v','Lfo;','opcodeCipher','Seeded generator whose next integer is added to written opcodes and subtracted from received bytes.');
+field('kk','g','[I','bitMasks','Low-bit masks indexed by bit count, including a full32-bit mask.');
+field('ai','r','[C','cp1252Extensions','Byte128..159 character mapping; unmapped entries decode as question marks.');
+for(const [owner,desc,params,evidence] of [
+ ['wq','([B)V',['data'],'Starts cursor at0 and retains the supplied byte array.'],
+ ['wq','(I)V',['capacity'],'Starts cursor at0 using the existing pooled byte-array allocator.'],
+ ['pi','([B)V',['data'],'Wraps caller bytes through PacketBuffer constructor.'],
+ ['pi','(I)V',['capacity'],'Uses PacketBuffer pooled allocation.'],
+])method(owner,'<init>',desc,'<init>',evidence,params);
+for(const [original,descriptor,to,params,evidence] of [
+ ['l','(I)I','readUnsignedByte',['obfuscationGuard'],'Reads unsigned byte; guard255.'],
+ ['b','(Z)B','readByte',['obfuscationGuard'],'Reads signed byte; true guard retains static state.'],
+ ['i','(I)I','readUnsignedShort',['obfuscationGuard'],'Reads big-endian unsigned16-bit value; guard65280.'],
+ ['a','(I)I','readShort',['obfuscationGuard'],'Reads big-endian signed16-bit value; guard above125.'],
+ ['e','(B)I','readUnsignedMedium',['obfuscationGuard'],'Reads unsigned24-bit value; guard -34.'],
+ ['j','(I)I','readMedium',['obfuscationGuard'],'Reads signed24-bit value; guard48.'],
+ ['e','(I)I','readInt',['obfuscationGuard'],'Reads big-endian signed32-bit value; guard255.'],
+ ['g','(I)J','readLong',['obfuscationGuard'],'Reads two unsigned32-bit halves and combines into64 bits; guard -32768.'],
+ ['a','(II)V','writeByte',['obfuscationGuard','value'],'Writes low8 bits; original arithmetic guard retained.'],
+ ['b','(BI)V','writeShort',['obfuscationGuard','value'],'Writes low16 bits big-endian; guard at least106.'],
+ ['a','(BI)V','writeMedium',['obfuscationGuard','value'],'Writes low24 bits big-endian; guard47.'],
+ ['a','(IB)V','writeInt',['value','obfuscationGuard'],'Writes32 bits big-endian; guard -79.'],
+ ['a','(IJ)V','writeLong',['obfuscationGuard','value'],'Writes64 bits big-endian; guard -23054.'],
+ ['a','(JB)V','writeLong40',['value','obfuscationGuard'],'Writes low40 bits big-endian; guard -32.'],
+ ['a','(BJ)V','writeLong56',['obfuscationGuard','value'],'Writes low56 bits big-endian; guard -109.'],
+ ['k','(I)I','readUnsignedSmart',['obfuscationGuard'],'Reads one-byte0..127 or two-byte value minus32768; guard -32768.'],
+ ['c','(I)I','readSignedSmart',['obfuscationGuard'],'Reads one-byte value minus64 or two-byte value minus49152; guard -1342.'],
+ ['c','(Z)I','readLargeSmart',['obfuscationGuard'],'Reads unsigned short or high-bit-marked int with its high bit removed; false guard.'],
+ ['b','(II)V','writeUnsignedSmart',['obfuscationGuard','value'],'Writes unsigned compact range0..32767 using one or two bytes; canonical guard -1.'],
+ ['b','(IB)V','writeSignedSmart',['value','obfuscationGuard'],'Writes compact signed range -16384..16383; guard at least110 rejects unsupported values.'],
+ ['c','(B)I','readVarInt',['obfuscationGuard'],'Reads most-significant seven-bit groups first with continuation bits; original arithmetic guard retained.'],
+ ['e','(BI)V','writeVarInt',['obfuscationGuard','value'],'Writes most-significant seven-bit groups with continuation bits; guard at most -53.'],
+ ['a','([BIII)V','writeBytes',['source','obfuscationGuard','sourceOffset','length'],'Copies source slice into backing bytes; guard -1.'],
+ ['a','(I[BII)V','readBytes',['destinationOffset','destination','obfuscationGuard','length'],'Copies backing bytes into destination slice; guard above109.'],
+ ['f','(BI)V','padToPosition',['obfuscationGuard','endPosition'],'Appends zero bytes until absolute cursor reaches endPosition; guard -74.'],
+ ['d','(BI)V','backfillByteLength',['obfuscationGuard','length'],'Stores payload length one byte before payload start without moving cursor; guard at least112.'],
+ ['c','(II)V','backfillShortLength',['length','obfuscationGuard'],'Stores two-byte payload length before payload start; guard255.'],
+ ['c','(BI)V','backfillIntLength',['obfuscationGuard','length'],'Stores four-byte payload length before payload start; guard at most -26.'],
+ ['d','(I)Ljava/lang/String;','readCp1252String',['terminatorAdjustment'],'Scans through zero terminator; canonical adjustment -1 excludes it from decoded length.'],
+ ['m','(I)Ljava/lang/String;','readNullableCp1252String',['obfuscationGuard'],'Leading zero means null; otherwise reads terminated string; guard0.'],
+ ['f','(I)Ljava/lang/String;','readPrefixedCp1252String',['obfuscationGuard'],'Requires leading zero then reads terminated string; guard255.'],
+ ['a','(Ljava/lang/String;I)V','writeCp1252String',['text','obfuscationGuard'],'Rejects embedded zero, encodes bytes and appends zero terminator; guard -1.'],
+ ['a','(ILjava/lang/String;)V','writePrefixedCp1252String',['obfuscationGuard','text'],'Rejects embedded zero and surrounds encoded text with zero bytes; guard0.'],
+ ['a','(B)Ljava/lang/String;','readLegacyUtf8String',['obfuscationGuard'],'Requires zero prefix, reads varint length, bounds-checks payload and invokes legacy decoder; guard24.'],
+ ['a','(ZLjava/lang/String;)V','writeBase38Name',['obfuscationGuard','name'],'Encodes at most20 characters in two56-bit base38 words; false guard.'],
+ ['d','(II)I','appendCrc32',['obfuscationGuard','startOffset'],'Computes CRC over startOffset..position and appends its32 bits; guard3.'],
+ ['d','(B)Z','verifyCrc32',['obfuscationGuard'],'Checks trailing CRC against bytes from0 through position-4; cursor returns to original position; guard -27.'],
+ ['a','(I[I)V','encryptBlocks',['obfuscationGuard','key'],'Encrypts complete eight-byte blocks from offset0 using32 rounds of two-word keyed mixing; cursor ends at complete-block boundary; guard18146.'],
+ ['a','([IIIB)V','decryptBlocks',['key','startOffset','endOffset','obfuscationGuard'],'Decrypts complete eight-byte blocks in range and restores prior cursor; original arithmetic guard retained.'],
+ ['a','(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V','applyRsa',['exponent','modulus','obfuscationGuard'],'Treats written bytes as signed BigInteger, applies modPow and replaces with unsigned-short length plus result bytes; guard19775.'],
+])method('wq',original,descriptor,to,evidence,params);
+for(const [original,descriptor,to,params,evidence] of [
+ ['n','(I)V','beginBitRead',['obfuscationGuard'],'Sets bitPosition from byte position; guard at most -74.'],
+ ['f','(B)V','finishBitRead',['obfuscationGuard'],'Rounds consumed bits up to byte position; guard at least69.'],
+ ['c','(IB)I','readBits',['bitCount','obfuscationGuard'],'Reads MSB-first bits across byte boundaries; original arithmetic guard retained.'],
+ ['p','(I)V','beginBitWrite',['obfuscationGuard'],'Clears current output byte and initializes8 available bits; guard at least51.'],
+ ['a','(III)V','writeBits',['bitCount','obfuscationGuard','value'],'Appends masked MSB-first bits across byte boundaries, clearing each new output byte; guard -17566.'],
+ ['q','(I)V','finishBitWrite',['obfuscationGuard'],'Accounts for a partial final output byte; original arithmetic guard retained.'],
+ ['a','([II)V','initializeOpcodeCipher',['seed','obfuscationGuard'],'Creates seeded generator for opcode arithmetic; original arithmetic guard retained.'],
+ ['e','(II)V','writeCipheredOpcode',['obfuscationGuard','opcode'],'Adds next cipher integer and writes low byte; guard -13413.'],
+ ['d','(Z)I','readCipheredOpcode',['obfuscationGuard'],'Subtracts next cipher integer and returns low byte; true guard.'],
+ ['a','(ZII[B)V','readCipheredBytes',['obfuscationGuard','destinationOffset','length','destination'],'Subtracts consecutive cipher values while filling a destination slice; false guard.'],
+])method('pi',original,descriptor,to,evidence,params);
+method('mj','a','(BII[B)Ljava/lang/String;','decode','Decodes legacy UTF-8 byte slice, replacing zero/invalid sequences and every four-byte code point; guard below -89.',['obfuscationGuard','length','offset','data']);
+method('df','a','(II[BI)Ljava/lang/String;','decodeCp1252','Decodes byte slice, skips zero bytes and uses extension mapping with question-mark fallback.',['length','obfuscationGuard','data','offset']);
+method('hj','a','(I[BBILjava/lang/CharSequence;I)I','encodeCp1252','Encodes character slice to byte array, replacing unsupported characters with question marks; returns bytes written; guard86.',['endIndex','destination','obfuscationGuard','destinationOffset','text','startIndex']);
+method('wq','h','(I)V','clearStaticStrings','Clears string references; canonical guard0 preserves static integer state.',['obfuscationGuard']);
+method('pi','o','(I)V','clearStaticReferences','Clears owned static asset/message references; guard60.',['obfuscationGuard']);
+method('mj','b','(B)V','clearStaticReferences','Clears owned static references; original arithmetic guard retained.',['obfuscationGuard']);
+method('pi','a','(BIIILak;I)V','drawBoard','Draws selected board, brick groups, ball trails, paddle, power-ups, score popups and match-state overlays at supplied scale/offsets.',['obfuscationGuard','playerId','scaleDivisor','destinationY','match','destinationX']);
+for(const [owner,signature,ordinal,original,to,evidence] of [
+ ['vi','a(ILwq;)V',4,'var3_int','header','Packed coordinate mode, optional velocity/state/type flags and high coordinate bits.'],
+ ['vi','a(ILwq;)V',8,'var6','gridColumn','Low five bits of second grid-coordinate byte.'],
+ ['wq','c(B)I',1,'var2','currentByte','Current signed encoded byte; negative indicates continuation.'],
+ ['wq','c(B)I',3,'var4','value','Accumulated seven-bit groups.'],
+ ['wq','a([BIII)V',0,'var5_int','sourceIndex','Source slice index used while writing bytes.'],
+ ['wq','a(I[BII)V',0,'var5_int','destinationIndex','Destination slice index used while reading bytes.'],
+ ['pi','c(IB)I',0,'incrementValue$0','previousByteIndex','Byte index captured before advancing across a boundary.'],
+ ['pi','c(IB)I',3,'var3','byteIndex','Current input byte from absolute bitPosition.'],
+ ['pi','c(IB)I',4,'var5','availableBits','Unconsumed bits in current input byte.'],
+ ['pi','c(IB)I',5,'var6','value','Accumulated MSB-first input bits.'],
 ])local(owner,signature,ordinal,original,to,evidence);
 for(const [original,to,evidence] of [
  ['v','penetrationTicks','Timed power-up counter: suppresses ordinary brick reflection while contacts can still change brick type; phase counter is cleared when this counter is extended.'],
@@ -232,12 +321,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
 `| ${link('hp')} / ${link('ao')} | Absolute indices, circular retention and future/erased history boundaries. |`,
 `| ${link('ge')} / ${link('ul')} | Falling/scheduled power-ups and score-popup lifetime. |`,
-`| ${link('cl')} / ${link('ee')} | Cyclic waypoint order, destination duration and integer position/velocity interpolation. |`, '',
-'Focused raw/named probes check body checksums/overlaps, paddle sizes, player masks, deque ownership, histories, popup expiry, scheduled power-up routing, timed ball effects, speed rescaling, ball placement, waypoint interpolation/wraparound and selected brick contacts. The client branch flag is supplied by a headless Applet-compatible shim; player-board/match construction is bypassed for controlled fixtures. Contact fixtures supply collision-scratch coordinates and cover two brick types; they do not validate the swept collision solver, full gameplay, score accounting, snapshots, live multiplayer or browser/phone behavior.','',
+`| ${link('cl')} / ${link('ee')} | Cyclic waypoint order, destination duration and integer position/velocity interpolation. |`,
+`| ${link('wq')} / ${link('pi')} / ${link('mj')} | Big-endian bytes, compact integers, strings, bit streams, cipher arithmetic and body snapshots. |`, '',
+'Focused raw/named probes check body checksums/overlaps, paddle sizes, player masks, deque ownership, histories, popup expiry, scheduled power-up routing, ball effects, waypoint motion, selected brick contacts, packet primitives/strings/bits, CRC and block operations, and body/paddle/ball/brick/path snapshot decoding. Opcode fixtures check cipher arithmetic against a separate instance of the existing generator; the generator itself is not independently verified. The client branch flag is supplied by a headless Applet-compatible shim; board/match construction is bypassed. Contact fixtures supply scratch coordinates and cover two brick types. Full board snapshots, swept collision detection, gameplay, score accounting, live multiplayer and browser/phone behavior remain unverified.','',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:3,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:4,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
