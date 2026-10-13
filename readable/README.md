@@ -49,6 +49,8 @@ IntNode, LevelDecoder, LevelPackLoader, Rasterizer2D, SpriteGeometry,
 RgbSprite, ArgbSprite, DualLinkNode, MenuScreen, MenuButton, MenuSelection,
 GameCanvas, BlankScreen, MembershipBenefitsScreen, LevelSelectScreen,
 MainMenuScreen and TimedSplashScreen.
+LevelList, MouseInput, MouseWheelSource and MouseWheelInput expose level-number
+scrolling and the AWT pointer/wheel input boundary.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -193,6 +195,31 @@ Canvas callbacks preserve a latched focus-loss flag; focus gain does not clear i
 Full registered-menu construction, vertical/pointer gestures, menu action
 dispatch, transition installation, membership asset loading and rendered menus
 remain unverified.
+
+LevelList names its viewport, owner/button index, level pack, row height/gap,
+spacing, label baseline, content height, scroll offset/limit/step and selected
+level. Its first/last selection, delta scrolling, direct offset setter,
+keyboard navigation and pointer update are named. The original center calculation
+divides by row height while other row calculations use row spacing. Delta
+scrolling clamps only when requested; the direct setter remains unchecked.
+Pointer selection retains `levelCount` as an upper sentinel, and selecting the
+first item of an empty pack retains index0. Those edge behaviors are preserved.
+
+The input map distinguishes live mouse state from the synchronized frame
+snapshot: pointer and press coordinates, held/pressed buttons, change latch and
+idle ticks. Wheel source attachment/detachment and polling expose signed rotation
+accumulation, event consumption and poll reset. Numeric button/key codes remain
+explicit. Its reflective factory is also exercised, including the renamed owned
+class-name literal. Preview loading and path attachment expose the decoded motion-path
+index and fixed8 preview bounds; flag-bit0 bricks are excluded from those bounds.
+
+Native fixtures use the real list constructor with controlled font metrics and
+exercise selection/scrolling across empty and populated packs. They invoke real
+AWT mouse/wheel callbacks and inspect successive input snapshots. Preview fixtures
+bypass screen construction, then call real decoding/path attachment and check
+empty bounds, excluded/generated borders, fixed/moving brick bounds, zero preview
+velocity and repeated clearing. They do not verify font rendering, OS event
+dispatch, complete menu construction or rendered level previews.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

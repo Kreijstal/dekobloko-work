@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 8,
+  "version": 9,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -255,6 +255,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dm",
+      "originalName": "dm",
+      "to": "MouseInput",
+      "evidence": "dm.java: AWT mouse/motion/focus callbacks retain live coordinates, held button and press/event latches for a synchronized frame snapshot.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dq",
       "originalName": "dq",
       "to": "LevelDecoder",
@@ -294,6 +301,13 @@
       "originalName": "gf",
       "to": "GameScreen",
       "evidence": "gf.java: Abstract screen identity, render/update and key-input contract.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gk",
+      "originalName": "gk",
+      "to": "MouseWheelSource",
+      "evidence": "gk.java: Abstract component attachment/detachment and accumulated wheel polling contract.",
       "confidence": "reviewed"
     },
     {
@@ -430,6 +444,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qk",
+      "originalName": "qk",
+      "to": "MouseWheelInput",
+      "evidence": "qk.java: AWT wheel listener accumulates signed rotations, consumes events and clears the accumulator when polled.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:re",
       "originalName": "re",
       "to": "MenuSelection",
@@ -455,6 +476,13 @@
       "originalName": "ud",
       "to": "LevelSelectScreen",
       "evidence": "ud.java: Screen IDs13/15 retain selected pack/list, decoded preview brick groups, paths and integer state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uj",
+      "originalName": "uj",
+      "to": "LevelList",
+      "evidence": "uj.java: Scrollable level-number control with viewport button, keyboard/pointer selection and retained scroll position. Unrelated static encoding helpers keep their existing names.",
       "confidence": "reviewed"
     },
     {
@@ -619,6 +647,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cb.field_q:I",
+      "originalName": "field_q",
+      "to": "heldButton",
+      "evidence": "cb.java: Frame snapshot of live held-button code.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cl.field_p:Lvl;",
       "originalName": "field_p",
       "to": "waypoints",
@@ -658,6 +693,20 @@
       "originalName": "field_t",
       "to": "durationTicks",
       "evidence": "ee.java: Destination segment duration in ticks; interpolation divides displacement by this value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eo.field_i:I",
+      "originalName": "field_i",
+      "to": "livePointerX",
+      "evidence": "eo.java: Written by mouse move/drag/enter callbacks; exit writes -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ep.field_g:I",
+      "originalName": "field_g",
+      "to": "livePointerY",
+      "evidence": "ep.java: Written by mouse move/drag/enter callbacks; exit writes -1.",
       "confidence": "reviewed"
     },
     {
@@ -714,6 +763,13 @@
       "originalName": "field_a",
       "to": "screenId",
       "evidence": "gf.java: Constructor identity used by registration, current-screen comparison and transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_a:I",
+      "originalName": "field_a",
+      "to": "pointerIdleTicks",
+      "evidence": "gr.java: Mouse events reset to0; input snapshot increments.",
       "confidence": "reviewed"
     },
     {
@@ -864,6 +920,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_v:Lvl;",
+      "originalName": "field_v",
+      "to": "motionPaths",
+      "evidence": "j.java: Decoded motion-path collection used when attaching paths to board bricks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_yb:Lvo;",
       "originalName": "field_yb",
       "to": "paddle",
@@ -882,6 +945,27 @@
       "originalName": "field_G",
       "to": "pixels",
       "evidence": "jp.java: Row-major sprite pixels; constructor retains supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kb.field_Pb:I",
+      "originalName": "field_Pb",
+      "to": "liveHeldButton",
+      "evidence": "kb.java: Mouse press sets1/2, release or focus loss sets0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kb.field_Xb:Z",
+      "originalName": "field_Xb",
+      "to": "pointerChanged",
+      "evidence": "kb.java: Frame snapshot of pointer-change latch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ki.field_e:I",
+      "originalName": "field_e",
+      "to": "pressedButton",
+      "evidence": "ki.java: Frame snapshot of pressed-button latch.",
       "confidence": "reviewed"
     },
     {
@@ -934,10 +1018,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kn.field_C:Z",
+      "originalName": "field_C",
+      "to": "livePointerChanged",
+      "evidence": "kn.java: Mouse callbacks latch pointer/button event; snapshot copies and clears it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kq.field_p:I",
       "originalName": "field_p",
       "to": "value",
       "evidence": "kq.java: Integer retained by value constructor; shared between level state and UI node uses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:l.field_l:I",
+      "originalName": "field_l",
+      "to": "livePressX",
+      "evidence": "l.java: AWT mousePressed x retained until next press.",
       "confidence": "reviewed"
     },
     {
@@ -990,10 +1088,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lj.field_j:Ldm;",
+      "originalName": "field_j",
+      "to": "mouseInput",
+      "evidence": "lj.java: Global listener used as snapshot monitor; callbacks are inactive while null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lp.field_rb:Lgf;",
       "originalName": "field_rb",
       "to": "currentScreen",
       "evidence": "lp.java: Screen currently handling applet draw/update/key callbacks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_c:I",
+      "originalName": "field_c",
+      "to": "livePressedButton",
+      "evidence": "mi.java: Press latch set1/2 and cleared by frame snapshot.",
       "confidence": "reviewed"
     },
     {
@@ -1172,6 +1284,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:on.field_M:I",
+      "originalName": "field_M",
+      "to": "motionPathIndex",
+      "evidence": "on.java: Decoded byte and constructor state used as path array index only when flags bit2 is set; also participates in synchronization checksum.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:on.field_N:I",
       "originalName": "field_N",
       "to": "flags",
@@ -1235,6 +1354,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:po.field_a:I",
+      "originalName": "field_a",
+      "to": "pointerY",
+      "evidence": "po.java: Frame snapshot of ep live pointer y from AWT getY.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pq.field_k:I",
+      "originalName": "field_k",
+      "to": "pointerX",
+      "evidence": "pq.java: Frame snapshot of eo live pointer x from AWT getX.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:q.field_a:I",
       "originalName": "field_a",
       "to": "y",
@@ -1291,6 +1424,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qa.field_x:Lgk;",
+      "originalName": "field_x",
+      "to": "mouseWheelSource",
+      "evidence": "qa.java: Optional wheel source polled during applet updates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qc.field_j:I",
       "originalName": "field_j",
       "to": "detailId",
@@ -1305,10 +1445,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qc.field_o:I",
+      "originalName": "field_o",
+      "to": "mouseWheelDelta",
+      "evidence": "qc.java: Accumulated signed wheel rotation returned by source poll for current frame.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qj.field_w:Lak;",
       "originalName": "field_w",
       "to": "match",
       "evidence": "qj.java: Gameplay controller owns this player-board match.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qk.field_e:I",
+      "originalName": "field_e",
+      "to": "pendingRotation",
+      "evidence": "qk.java: Accumulated wheel rotations; poll returns and clears it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qo.field_O:I",
+      "originalName": "field_O",
+      "to": "pressY",
+      "evidence": "qo.java: Frame snapshot of livePressY.",
       "confidence": "reviewed"
     },
     {
@@ -1361,6 +1522,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tb.field_fb:I",
+      "originalName": "field_fb",
+      "to": "pressX",
+      "evidence": "tb.java: Frame snapshot of livePressX.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tk.field_j:J",
       "originalName": "field_j",
       "to": "secondaryKey",
@@ -1389,6 +1557,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ud.field_B:I",
+      "originalName": "field_B",
+      "to": "previewBottom256",
+      "evidence": "ud.java: Maximum eligible preview brick y+height in fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ud.field_C:Ljava/lang/String;",
+      "originalName": "field_C",
+      "to": "emptySelectionText",
+      "evidence": "ud.java: Lowercased prompt drawn when no valid level is selected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ud.field_D:I",
+      "originalName": "field_D",
+      "to": "previewRight256",
+      "evidence": "ud.java: Maximum eligible preview brick x+width in fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ud.field_F:[Lvl;",
       "originalName": "field_F",
       "to": "previewBrickGroups",
@@ -1396,10 +1585,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ud.field_G:I",
+      "originalName": "field_G",
+      "to": "maxNumberLabelWidth",
+      "evidence": "ud.java: Maximum rendered level number label width used by button geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ud.field_H:I",
+      "originalName": "field_H",
+      "to": "previewLevelIndex",
+      "evidence": "ud.java: Level index whose preview is cached; -1 invalidates preview.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ud.field_I:I",
+      "originalName": "field_I",
+      "to": "previewTop256",
+      "evidence": "ud.java: Minimum eligible preview brick y in fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ud.field_r:Lkq;",
       "originalName": "field_r",
       "to": "previewState",
       "evidence": "ud.java: Decoded preview integer state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ud.field_u:I",
+      "originalName": "field_u",
+      "to": "previewLeft256",
+      "evidence": "ud.java: Minimum eligible preview brick x in fixed8 coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -1414,6 +1631,118 @@
       "originalName": "field_z",
       "to": "previewPaths",
       "evidence": "ud.java: Decoded preview motion paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_a:I",
+      "originalName": "field_a",
+      "to": "buttonIndex",
+      "evidence": "uj.java: Owner selection index that activates this control.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_b:I",
+      "originalName": "field_b",
+      "to": "lastPointerX",
+      "evidence": "uj.java: Pointer x saved at selection/update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_c:I",
+      "originalName": "field_c",
+      "to": "rowGap",
+      "evidence": "uj.java: Supplied inter-row pixel gap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_d:Z",
+      "originalName": "field_d",
+      "to": "keyboardSelection",
+      "evidence": "uj.java: Preserves keyboard-selected level while pointer is unchanged and wheel delta is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_f:I",
+      "originalName": "field_f",
+      "to": "rowHeight",
+      "evidence": "uj.java: Constructor row height; used separately from rowSpacing by keyboard center calculation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_g:I",
+      "originalName": "field_g",
+      "to": "scrollOffset",
+      "evidence": "uj.java: Retained pixel scroll offset; delta scrolling clamps, direct setter does not.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_h:I",
+      "originalName": "field_h",
+      "to": "scrollStep",
+      "evidence": "uj.java: Three halves of rowHeight; used by wheel and arrow actions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_i:I",
+      "originalName": "field_i",
+      "to": "rowSpacing",
+      "evidence": "uj.java: Row height plus supplied row gap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_j:I",
+      "originalName": "field_j",
+      "to": "labelBaselineOffset",
+      "evidence": "uj.java: Font-dependent row label baseline offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_k:I",
+      "originalName": "field_k",
+      "to": "maxScrollOffset",
+      "evidence": "uj.java: Nonnegative contentHeight minus viewport height plus5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_l:Lnc;",
+      "originalName": "field_l",
+      "to": "pack",
+      "evidence": "uj.java: Level count and number-label metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_m:Lkm;",
+      "originalName": "field_m",
+      "to": "owner",
+      "evidence": "uj.java: Menu screen whose selected button determines whether this control is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_n:I",
+      "originalName": "field_n",
+      "to": "lastPointerY",
+      "evidence": "uj.java: Pointer y saved at selection/update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_p:Lq;",
+      "originalName": "field_p",
+      "to": "viewport",
+      "evidence": "uj.java: Menu button supplying clipping and pointer geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_q:I",
+      "originalName": "field_q",
+      "to": "selectedLevelIndex",
+      "evidence": "uj.java: Selected level or -1; pointer clamp intentionally accepts levelCount as an upper sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_r:I",
+      "originalName": "field_r",
+      "to": "contentHeight",
+      "evidence": "uj.java: rowGap plus levelCount times rowSpacing.",
       "confidence": "reviewed"
     },
     {
@@ -1442,6 +1771,13 @@
       "originalName": "field_q",
       "to": "remainingTicks",
       "evidence": "ul.java: Popup constructor, match lifetime update and cn drawing: integer score text, fixed8 coordinates and opacity remainingTicks/50.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:va.field_e:I",
+      "originalName": "field_e",
+      "to": "livePressY",
+      "evidence": "va.java: AWT mousePressed y retained until next press.",
       "confidence": "reviewed"
     },
     {
@@ -2061,6 +2397,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ud.c(II)V#0",
+      "originalName": "var3",
+      "to": "clearGroupIndex",
+      "evidence": "ud.java: Index while resetting preview brick group collections.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ud.c(II)V#1",
+      "originalName": "var4",
+      "to": "previewBrick",
+      "evidence": "ud.java: Current brick inspected for preview bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ud.c(II)V#2",
+      "originalName": "var5",
+      "to": "clientBranchFlag",
+      "evidence": "ud.java: Original client branch flag retained by generated code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ud.c(II)V#3",
+      "originalName": "var3Lifetime1",
+      "to": "boundsGroupIndex",
+      "evidence": "ud.java: Index while collecting eligible preview brick bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(III)Z#0",
+      "originalName": "var4",
+      "to": "centerLevelIndex",
+      "evidence": "uj.java: Original center calculation uses rowHeight division and rowSpacing in viewport quotient.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.c(B)V#0",
+      "originalName": "var3",
+      "to": "rowBaselineY",
+      "evidence": "uj.java: Visible row baseline in viewport coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.c(B)V#1",
+      "originalName": "var2",
+      "to": "levelIndex",
+      "evidence": "uj.java: First visible row index, advanced for each rendered label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.c(B)V#2",
+      "originalName": "var4",
+      "to": "labelStyle",
+      "evidence": "uj.java: Numeric style selected by unlocked and selected level predicates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.c(B)V#3",
+      "originalName": "var5",
+      "to": "clientBranchFlag",
+      "evidence": "uj.java: Original client branch flag retained by generated code.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ul.b(Z)Z#0",
       "originalName": "fieldTemp$0",
       "to": "nextRemainingTicks",
@@ -2355,6 +2754,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cg.a([Lvl;BLvl;Z)V",
+      "originalName": "a",
+      "to": "attachBrickMotionPaths",
+      "evidence": "cg.java: Indexes decoded paths in deque order and attaches selected path to bricks with flags bit2, with caller-supplied velocity mode; guard35.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cl.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -2390,6 +2796,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:df.a(IBI)I",
+      "originalName": "a",
+      "to": "divideFloorPositive",
+      "evidence": "df.java: Original signed rounding formula produces floor division for a positive divisor; guard15.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:df.a(II[BI)Ljava/lang/String;",
       "originalName": "a",
       "to": "decodeCp1252",
@@ -2401,6 +2814,13 @@
       "originalName": "a",
       "to": "decodeLevel",
       "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(I)Lgk;",
+      "originalName": "a",
+      "to": "createMouseWheelSource",
+      "evidence": "ea.java: Reflectively creates owned wheel implementation and returns null if creation fails; canonical guard60.",
       "confidence": "reviewed"
     },
     {
@@ -2513,6 +2933,27 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "gk.java: Adds wheel listener for guard above37.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "gk.java: Removes wheel listener from component; canonical guard -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.b(I)I",
+      "originalName": "b",
+      "to": "pollRotation",
+      "evidence": "gk.java: Returns accumulated signed rotation and clears it; guard500.",
       "confidence": "reviewed"
     },
     {
@@ -3538,6 +3979,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qk.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "gk.java: Adds wheel listener for guard above37. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "gk.java: Removes wheel listener from component; canonical guard -117. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.b(I)I",
+      "originalName": "b",
+      "to": "pollRotation",
+      "evidence": "gk.java: Returns accumulated signed rotation and clears it; guard500. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:re.a(B)Z",
       "originalName": "a",
       "to": "isActivated",
@@ -3685,6 +4147,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sg.e(I)V",
+      "originalName": "e",
+      "to": "snapshotMouseInput",
+      "evidence": "sg.java: Under mouse-input monitor copies coordinates/buttons/latch, clears pending press/change and increments idle ticks; guard70.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:td.a([Lvl;[BLkq;Lvl;Lga;I)I",
       "originalName": "a",
       "to": "decodeLevelBytes",
@@ -3783,10 +4252,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ud.c(II)V",
+      "originalName": "c",
+      "to": "loadPreview",
+      "evidence": "ud.java: Clears/decodes preview brick/path collections and computes bounds, excluding bricks whose flags bit0 is set; guard -6845.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ud.d(I)V",
       "originalName": "d",
       "to": "refreshMenu",
       "evidence": "km.java: Refresh hook overridden by screens that rebuild their menu data; guard at most -60. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(B)V",
+      "originalName": "a",
+      "to": "selectFirst",
+      "evidence": "uj.java: Selects index0, resets scroll, enters keyboard selection and captures pointer coordinates; guard -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(III)Z",
+      "originalName": "a",
+      "to": "handleNavigationKey",
+      "evidence": "uj.java: Keys98/99 decrement/increment and scroll using rowHeight for center division; invalid selection becomes -1 and returns true. Character is retained but unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(IZ)V",
+      "originalName": "a",
+      "to": "scrollBy",
+      "evidence": "uj.java: Adds signed pixels, clamping to zero/maxScrollOffset only when clamp is true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.b(B)V",
+      "originalName": "b",
+      "to": "selectLast",
+      "evidence": "uj.java: Selects levelCount-1, scrolls to maximum and captures pointer coordinates; guard below -39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.b(I)V",
+      "originalName": "b",
+      "to": "setScrollOffset",
+      "evidence": "uj.java: Assigns pixel scroll offset without clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.b(Z)V",
+      "originalName": "b",
+      "to": "updatePointerSelection",
+      "evidence": "uj.java: Applies wheel scrolling and pointer selection while owner button is selected; inactive control clears selection/history. True guard drops viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.c(B)V",
+      "originalName": "c",
+      "to": "draw",
+      "evidence": "uj.java: Clips to viewport, chooses row colors from selected/unlocked indices and renders visible level number labels; guard28.",
       "confidence": "reviewed"
     },
     {
@@ -4959,6 +5484,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cg.a([Lvl;BLvl;Z)V#0",
+      "originalName": "param0",
+      "to": "brickGroups",
+      "evidence": "cg.java: Indexes decoded paths in deque order and attaches selected path to bricks with flags bit2, with caller-supplied velocity mode; guard35.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cg.a([Lvl;BLvl;Z)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "cg.java: Indexes decoded paths in deque order and attaches selected path to bricks with flags bit2, with caller-supplied velocity mode; guard35.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cg.a([Lvl;BLvl;Z)V#2",
+      "originalName": "param2",
+      "to": "motionPaths",
+      "evidence": "cg.java: Indexes decoded paths in deque order and attaches selected path to bricks with flags bit2, with caller-supplied velocity mode; guard35.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cg.a([Lvl;BLvl;Z)V#3",
+      "originalName": "param3",
+      "to": "includeVelocity",
+      "evidence": "cg.java: Indexes decoded paths in deque order and attaches selected path to bricks with flags bit2, with caller-supplied velocity mode; guard35.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cl.a(ILjava/lang/StringBuilder;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -5043,6 +5596,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:df.a(IBI)I#0",
+      "originalName": "param0",
+      "to": "divisor",
+      "evidence": "df.java: Original signed rounding formula produces floor division for a positive divisor; guard15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IBI)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "df.java: Original signed rounding formula produces floor division for a positive divisor; guard15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IBI)I#2",
+      "originalName": "param2",
+      "to": "dividend",
+      "evidence": "df.java: Original signed rounding formula produces floor division for a positive divisor; guard15.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:df.a(II[BI)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "length",
@@ -5110,6 +5684,13 @@
       "originalName": "param5",
       "to": "unusedContext",
       "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ea.a(I)Lgk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ea.java: Reflectively creates owned wheel implementation and returns null if creation fails; canonical guard60.",
       "confidence": "reviewed"
     },
     {
@@ -5488,6 +6069,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gk.a(BLjava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gk.java: Adds wheel listener for guard above37.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gk.a(BLjava/awt/Component;)V#1",
+      "originalName": "param1",
+      "to": "component",
+      "evidence": "gk.java: Adds wheel listener for guard above37.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gk.a(Ljava/awt/Component;I)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "gk.java: Removes wheel listener from component; canonical guard -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gk.a(Ljava/awt/Component;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "gk.java: Removes wheel listener from component; canonical guard -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gk.b(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gk.java: Returns accumulated signed rotation and clears it; guard500.",
       "confidence": "reviewed"
     },
     {
@@ -8130,6 +8746,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qk.a(BLjava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gk.java: Adds wheel listener for guard above37. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qk.a(BLjava/awt/Component;)V#1",
+      "originalName": "param1",
+      "to": "component",
+      "evidence": "gk.java: Adds wheel listener for guard above37. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qk.a(Ljava/awt/Component;I)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "gk.java: Removes wheel listener from component; canonical guard -117. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qk.a(Ljava/awt/Component;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "gk.java: Removes wheel listener from component; canonical guard -117. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qk.b(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gk.java: Returns accumulated signed rotation and clears it; guard500. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:re.<init>(I)V#0",
       "originalName": "param0",
       "to": "itemCount",
@@ -8389,6 +9040,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sg.e(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sg.java: Under mouse-input monitor copies coordinates/buttons/latch, clears pending press/change and increments idle ticks; guard70.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:td.a([Lvl;[BLkq;Lvl;Lga;I)I#0",
       "originalName": "param0",
       "to": "brickGroups",
@@ -8641,10 +9299,136 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ud.c(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ud.java: Clears/decodes preview brick/path collections and computes bounds, excluding bricks whose flags bit0 is set; guard -6845.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.c(II)V#1",
+      "originalName": "param1",
+      "to": "levelIndex",
+      "evidence": "ud.java: Clears/decodes preview brick/path collections and computes bounds, excluding bricks whose flags bit0 is set; guard -6845.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ud.d(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "km.java: Refresh hook overridden by screens that rebuild their menu data; guard at most -60. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.<init>(IIILkm;Lq;Lnc;)V#0",
+      "originalName": "param0",
+      "to": "rowHeight",
+      "evidence": "uj.java: Retains geometry/owner/pack and computes font baseline, content/max scroll and scroll step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.<init>(IIILkm;Lq;Lnc;)V#1",
+      "originalName": "param1",
+      "to": "rowGap",
+      "evidence": "uj.java: Retains geometry/owner/pack and computes font baseline, content/max scroll and scroll step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.<init>(IIILkm;Lq;Lnc;)V#2",
+      "originalName": "param2",
+      "to": "buttonIndex",
+      "evidence": "uj.java: Retains geometry/owner/pack and computes font baseline, content/max scroll and scroll step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.<init>(IIILkm;Lq;Lnc;)V#3",
+      "originalName": "param3",
+      "to": "owner",
+      "evidence": "uj.java: Retains geometry/owner/pack and computes font baseline, content/max scroll and scroll step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.<init>(IIILkm;Lq;Lnc;)V#4",
+      "originalName": "param4",
+      "to": "viewport",
+      "evidence": "uj.java: Retains geometry/owner/pack and computes font baseline, content/max scroll and scroll step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.<init>(IIILkm;Lq;Lnc;)V#5",
+      "originalName": "param5",
+      "to": "pack",
+      "evidence": "uj.java: Retains geometry/owner/pack and computes font baseline, content/max scroll and scroll step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uj.java: Selects index0, resets scroll, enters keyboard selection and captures pointer coordinates; guard -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(III)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uj.java: Keys98/99 decrement/increment and scroll using rowHeight for center division; invalid selection becomes -1 and returns true. Character is retained but unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(III)Z#1",
+      "originalName": "param1",
+      "to": "keyCode",
+      "evidence": "uj.java: Keys98/99 decrement/increment and scroll using rowHeight for center division; invalid selection becomes -1 and returns true. Character is retained but unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(III)Z#2",
+      "originalName": "param2",
+      "to": "characterCode",
+      "evidence": "uj.java: Keys98/99 decrement/increment and scroll using rowHeight for center division; invalid selection becomes -1 and returns true. Character is retained but unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "deltaPixels",
+      "evidence": "uj.java: Adds signed pixels, clamping to zero/maxScrollOffset only when clamp is true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "clamp",
+      "evidence": "uj.java: Adds signed pixels, clamping to zero/maxScrollOffset only when clamp is true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uj.java: Selects levelCount-1, scrolls to maximum and captures pointer coordinates; guard below -39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.b(I)V#0",
+      "originalName": "param0",
+      "to": "offsetPixels",
+      "evidence": "uj.java: Assigns pixel scroll offset without clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.b(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uj.java: Applies wheel scrolling and pointer selection while owner button is selected; inactive control clears selection/history. True guard drops viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uj.java: Clips to viewport, chooses row colors from selected/unlocked indices and renders visible level number labels; guard28.",
       "confidence": "reviewed"
     },
     {
@@ -9805,7 +10589,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 0
+    "expectedEdits": 1
   },
   "labels": {
     "policy": "lexical-targets",
@@ -9818,9 +10602,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "b3052e794ad87c9829883693562ceaaec294de91fe147821b8a8497bc09df0d6",
+      "build-brickabrac-rules.mjs": "db858781364a16f3d3ef71ace90d5862af6bce2649f8dcc5ea280e9e0cf600f0",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "7c304cf679fe6ce141850bdf66532e0889fdfc8f1fbe0c8e0939435c9b18f8b4",
+      "tests/test-brickabrac-core.mjs": "4abf6a036ab93ee16cb354da698da65292d17d6904b5b14431c6c590b4a88a6f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
