@@ -98,6 +98,17 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+DisplaySettingsDialog now names Classic/resizable/fullscreen options, display
+mode filtering/deduplication, session/heap gates, focus, selection and Apply/Back.
+DisplayModeOptionPainter names active/focus icons; blank-caption pixels verify
+all states. FullscreenConfirmationDialog names Accept/Cancel and the rounded
+monotonic countdown; FullscreenMembershipDialog/FullscreenStatusDialog name
+related notices. Controlled display tasks exercise real constructors, supported
+and unsupported mode lists, gating, keyboard traversal, selection/highlights,
+countdown bounds and timeout/missing-fullscreen/focus-loss closure. Apply and
+Members actions, caption pixels, live pointer refresh and real operating-system
+fullscreen transitions remain unverified.
+
 UnitModelViewer/UnitAnimationPreview now name model and animation dropdowns,
 selection/fallback, frame advancement/restart, yaw/tilt, projection center and
 hidden state. SpriteFramedLabel names font/frame/text bounds and colours.
@@ -378,7 +389,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 454,294 raw/named checks agree. Controlled cipher output does not constitute
+All 454,378 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 

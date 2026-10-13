@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 75,
+  "version": 76,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2106,6 +2106,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cs",
+      "originalName": "cs",
+      "to": "FullscreenConfirmationDialog",
+      "evidence": "cs.java: Accept/cancel fullscreen confirmation with monotonic start time, displayed countdown, timeout and missing/focus-lost fullscreen notices.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ct",
       "originalName": "ct",
       "to": "TextHotspotRegion",
@@ -3576,6 +3583,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ps",
+      "originalName": "ps",
+      "to": "DisplayModeOptionPainter",
+      "evidence": "ps.java: Display mode tile painter retaining four indexed icons selected by active/focus bits, border and font caption; unrelated archive/quick-chat/viewport helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pt",
       "originalName": "pt",
       "to": "ContentTransitionDialog",
@@ -4017,6 +4031,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tn",
+      "originalName": "tn",
+      "to": "FullscreenMembershipDialog",
+      "evidence": "tn.java: Fullscreen membership notice with Members action for guest sessions and a Close button; unrelated graphics/tagged-value helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:to",
       "originalName": "to",
       "to": "SpellCastRequest",
@@ -4077,6 +4098,13 @@
       "originalName": "ub",
       "to": "RadialSummonMenu",
       "evidence": "ub.java: Places god-tab or unit-choice items around a portal; resolves pointer hits and draws summon availability.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ud",
+      "originalName": "ud",
+      "to": "FullscreenStatusDialog",
+      "evidence": "ud.java: Single-close-button fullscreen unsupported, timeout and unavailable/focus-loss notices selected by identity tokens; unrelated chat-filter helper remains separate.",
       "confidence": "reviewed"
     },
     {
@@ -4161,6 +4189,13 @@
       "originalName": "ur",
       "to": "TeleportAction",
       "evidence": "ur.java: Queues TeleportEvent with live unit source position, signed target deltas and destination-placement mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ut",
+      "originalName": "ut",
+      "to": "DisplaySettingsDialog",
+      "evidence": "ut.java: Classic/resizable/fullscreen mode controls, filtered/deduplicated display modes, selection/apply state, focus routing and membership/support notices; unrelated terrain/tagged-map helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -5291,6 +5326,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bl.field_b:Z",
+      "originalName": "field_b",
+      "to": "guestSession",
+      "evidence": "bl.java: Common shell sets false on successful account connection and true on guest-play action; campaign/membership actions branch on this flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bl.field_c:Lkl;",
       "originalName": "field_c",
       "to": "globalArchive",
@@ -6149,6 +6191,34 @@
       "originalName": "field_db",
       "to": "freezeNormalAnimation",
       "evidence": "cr.java: Percent/error update sets fraction, text and colour/animation mode; freeze affects only subsequent normal-mode animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cs.field_Z:Lfw;",
+      "originalName": "field_Z",
+      "to": "acceptButton",
+      "evidence": "cs.java: Owned confirmation buttons/countdown and monotonic opening time; countdown computes (10999-elapsedMillis)/1000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cs.field_ab:Lkb;",
+      "originalName": "field_ab",
+      "to": "countdownLabel",
+      "evidence": "cs.java: Owned confirmation buttons/countdown and monotonic opening time; countdown computes (10999-elapsedMillis)/1000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cs.field_fb:J",
+      "originalName": "field_fb",
+      "to": "startedAtMillis",
+      "evidence": "cs.java: Owned confirmation buttons/countdown and monotonic opening time; countdown computes (10999-elapsedMillis)/1000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cs.field_gb:Lfw;",
+      "originalName": "field_gb",
+      "to": "cancelButton",
+      "evidence": "cs.java: Owned confirmation buttons/countdown and monotonic opening time; countdown computes (10999-elapsedMillis)/1000.",
       "confidence": "reviewed"
     },
     {
@@ -15938,6 +16008,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ps.field_B:[Lru;",
+      "originalName": "field_B",
+      "to": "stateIcons",
+      "evidence": "ps.java: Four retained indexed sprites indexed by active bit0 and focused bit1; renderFlag false forces state zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ps.field_y:Lpf;",
       "originalName": "field_y",
       "to": "usernameLoginMethod",
@@ -18619,10 +18696,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tn.field_bb:Lfw;",
+      "originalName": "field_bb",
+      "to": "closeButton",
+      "evidence": "tn.java: Membership notice Close button.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tn.field_eb:[Lwk;",
       "originalName": "field_eb",
       "to": "activeFoliageShadows",
       "evidence": "tn.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tn.field_fb:Lfw;",
+      "originalName": "field_fb",
+      "to": "membersButton",
+      "evidence": "tn.java: Members-labelled button only created in guest session; action leaves guest session through ed helper and closes notice.",
       "confidence": "reviewed"
     },
     {
@@ -18840,6 +18931,13 @@
       "originalName": "field_d",
       "to": "spellDefinitions",
       "evidence": "uc.java: AI and gameplay inspect chant type, cost and effect columns; class has other mixed helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ud.field_bb:Lfw;",
+      "originalName": "field_bb",
+      "to": "closeButton",
+      "evidence": "ud.java: Shared single Close button for identity-selected fullscreen status messages.",
       "confidence": "reviewed"
     },
     {
@@ -19298,10 +19396,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ut.field_X:Lfw;",
+      "originalName": "field_X",
+      "to": "backButton",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_Y:Lfw;",
+      "originalName": "field_Y",
+      "to": "selectedModeButton",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_Z:Lfw;",
+      "originalName": "field_Z",
+      "to": "resizableModeButton",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_ab:Lfw;",
+      "originalName": "field_ab",
+      "to": "applyButton",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_bb:Lfw;",
+      "originalName": "field_bb",
+      "to": "fullscreenModeButton",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_db:[Lls;",
+      "originalName": "field_db",
+      "to": "displayModes",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ut.field_eb:I",
       "originalName": "field_eb",
       "to": "decodedChatContextId",
       "evidence": "ut.java: Chat decoder reads shared scratch state before ChatMessage snapshots it; private IDs are u16/u24 and channel 1/4 carries context and label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_gb:Lob;",
+      "originalName": "field_gb",
+      "to": "modeGrid",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_hb:Z",
+      "originalName": "field_hb",
+      "to": "nonGuestAtOpen",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_jb:Z",
+      "originalName": "field_jb",
+      "to": "hasFullscreenModes",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_kb:[Lfw;",
+      "originalName": "field_kb",
+      "to": "modeButtons",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_lb:Lgh;",
+      "originalName": "field_lb",
+      "to": "displayModeDropdown",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_mb:Lfw;",
+      "originalName": "field_mb",
+      "to": "classicModeButton",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ut.field_nb:Z",
+      "originalName": "field_nb",
+      "to": "dropdownWasExpanded",
+      "evidence": "ut.java: Owned display option controls, display enumeration results, selection/focus state and original session/expansion snapshots.",
       "confidence": "reviewed"
     },
     {
@@ -23796,6 +23985,20 @@
       "originalName": "stackIn_13_1",
       "to": "errorMode",
       "evidence": "cr.java: Reviewed account readiness, suggestion routing, stripe/mask geometry, progress mode or message/action layout; original ordinal and spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cs.a(IIILkb;)V#4",
+      "originalName": "var5_long",
+      "to": "elapsedMillis",
+      "evidence": "cs.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cs.a(IIILkb;)V#6",
+      "originalName": "var7",
+      "to": "remainingSeconds",
+      "evidence": "cs.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
       "confidence": "reviewed"
     },
     {
@@ -48754,6 +48957,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ps.a(Lkb;IIZI)V#0",
+      "originalName": "stackIn_8_0",
+      "to": "activeStateFlag",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#1",
+      "originalName": "stackIn_14_0",
+      "to": "focusStateFlag",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#10",
+      "originalName": "var8",
+      "to": "iconState",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#11",
+      "originalName": "var9",
+      "to": "captionColour",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#12",
+      "originalName": "var10",
+      "to": "icon",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#13",
+      "originalName": "var11",
+      "to": "iconX",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#14",
+      "originalName": "var12",
+      "to": "iconY",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#15",
+      "originalName": "var13",
+      "to": "captionCenterX",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#2",
+      "originalName": "stackIn_19_0",
+      "to": "captionColourValue",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#7",
+      "originalName": "var6_int",
+      "to": "activeState",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ps.a(Lkb;IIZI)V#9",
+      "originalName": "var7",
+      "to": "focusedState",
+      "evidence": "ps.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:qa.a(I[Lnd;)Lnd;#0",
       "originalName": "var3",
       "to": "failure",
@@ -55502,6 +55782,300 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ut.<init>(Lgk;)V#0",
+      "originalName": "incrementValue$0",
+      "to": "retainedModeSlot",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#1",
+      "originalName": "var7_int",
+      "to": "modeLabelIndex",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#10",
+      "originalName": "stackIn_51_3",
+      "to": "modeGridX",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#13",
+      "originalName": "stackIn_52_4",
+      "to": "modeGridY",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#14",
+      "originalName": "stackIn_57_1",
+      "to": "modeButtonCount",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#15",
+      "originalName": "stackIn_74_0",
+      "to": "restrictionMessageValue",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#2",
+      "originalName": "stackIn_31_1",
+      "to": "fullscreenModesAvailable",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#20",
+      "originalName": "var2_int",
+      "to": "modeCounter",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#22",
+      "originalName": "var3",
+      "to": "duplicateModeIndex",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#23",
+      "originalName": "var3_ref_ls__",
+      "to": "unfilteredModes",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#24",
+      "originalName": "var4",
+      "to": "retainedModeIndex",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#25",
+      "originalName": "var5",
+      "to": "sourceModeIndex",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#26",
+      "originalName": "var5_ref_String__",
+      "to": "modeLabels",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#27",
+      "originalName": "var6_int",
+      "to": "selectedModeIndex",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#28",
+      "originalName": "var6",
+      "to": "restrictionMessage",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#29",
+      "originalName": "var6_ref",
+      "to": "currentMode",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#3",
+      "originalName": "stackIn_34_0",
+      "to": "resizeAvailableFlag",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#30",
+      "originalName": "var7",
+      "to": "restrictionLabel",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#31",
+      "originalName": "var8",
+      "to": "mode",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#32",
+      "originalName": "var10",
+      "to": "restrictionText",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#38",
+      "originalName": "var3Lifetime1",
+      "to": "gridColumns",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#39",
+      "originalName": "var4Lifetime1",
+      "to": "resizeHeapBlocked",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#4",
+      "originalName": "stackIn_37_1",
+      "to": "nonGuestSnapshot",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#40",
+      "originalName": "var5Lifetime1",
+      "to": "actionCenterX",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#41",
+      "originalName": "var2_intLifetime1",
+      "to": "resizeAvailable",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#42",
+      "originalName": "var3Lifetime2",
+      "to": "modeCountIndex",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#43",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "useRaisedModeGrid",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#5",
+      "originalName": "stackIn_40_0",
+      "to": "modeColumnCount",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.<init>(Lgk;)V#6",
+      "originalName": "stackIn_48_0",
+      "to": "resizeHeapBlockedFlag",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.a(Lfw;B)V#0",
+      "originalName": "var3",
+      "to": "currentMode",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.a(Lfw;B)V#1",
+      "originalName": "var4",
+      "to": "selectedModeIndex",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.a(Lfw;B)V#2",
+      "originalName": "var5",
+      "to": "selectedMode",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.a(Lfw;B)V#3",
+      "originalName": "var6",
+      "to": "unusedGuardWidget",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.a(Lfw;B)V#4",
+      "originalName": "stackIn_4_0",
+      "to": "applyControl",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.a(Lfw;B)V#5",
+      "originalName": "stackIn_5_1",
+      "to": "modeChanged",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.q(I)V#0",
+      "originalName": "var3",
+      "to": "optionIndex",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.q(I)V#1",
+      "originalName": "var4",
+      "to": "option",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.q(I)V#2",
+      "originalName": "var5",
+      "to": "obfuscationControl",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.q(I)V#3",
+      "originalName": "var6",
+      "to": "modeOptions",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.q(I)V#4",
+      "originalName": "var2",
+      "to": "optionsReference",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.r(I)V#0",
+      "originalName": "var2",
+      "to": "selectedModeIndex",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ut.r(I)V#1",
+      "originalName": "var3",
+      "to": "obfuscationControl",
+      "evidence": "ut.java: Reviewed display construction/filtering, mode selection, countdown or icon geometry role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:uv.a(I)V#0",
       "originalName": "var2",
       "to": "framesToListener",
@@ -59709,10 +60283,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cs.a(Ljava/lang/String;ILqo;)Lfw;",
+      "originalName": "a",
+      "to": "createConfirmationButton",
+      "evidence": "cs.java: Appends sprite button, grows dialog height by38 and refreshes layout; guard arithmetic retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cs.a(Lkb;ICI)Z",
       "originalName": "a",
       "to": "handleKey",
       "evidence": "kb.java: Virtual key handling shared by widgets, activation and text editing. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cs.n(I)V",
+      "originalName": "n",
+      "to": "closeConfirmation",
+      "evidence": "cs.java: Clears open state; canonical guard10 preserves unrelated static model array.",
       "confidence": "reviewed"
     },
     {
@@ -68109,6 +68697,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nw.g(I)Z",
+      "originalName": "g",
+      "to": "isGuestSession",
+      "evidence": "nw.java: Returns the common guest-session flag; guard above73 avoids unrelated static cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:o.a(ZZLkb;)V",
       "originalName": "a",
       "to": "hoverChanged",
@@ -71294,10 +71889,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tn.a(Lqo;ZLjava/lang/String;)Lfw;",
+      "originalName": "a",
+      "to": "createNoticeButton",
+      "evidence": "tn.java: Appends sprite button, grows height by38 and refreshes layout; canonical true guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tn.a(ZILbv;)J",
       "originalName": "a",
       "to": "readTaggedInteger",
       "evidence": "tn.java: Uses the standard signed 4/14/20/30-bit tiers; encoded-length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.o(I)V",
+      "originalName": "o",
+      "to": "closeMembershipNotice",
+      "evidence": "tn.java: Clears open state for guard1.",
       "confidence": "reviewed"
     },
     {
@@ -71553,10 +72162,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ud.a(Ljava/lang/String;Lqo;I)Lfw;",
+      "originalName": "a",
+      "to": "createCloseButton",
+      "evidence": "ud.java: Appends sprite Close button and increases height; original guard arithmetic retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ud.b(IZII)V",
       "originalName": "b",
       "to": "setChatFilter",
       "evidence": "ud.java: Changes the selected public/room/private filter, marks settings changed and writes updated packed filters only when different.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.i(B)V",
+      "originalName": "i",
+      "to": "closeStatusNotice",
+      "evidence": "ud.java: Clears open state for canonical guard60.",
       "confidence": "reviewed"
     },
     {
@@ -71938,6 +72561,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ut.a(BLjava/lang/String;Lqo;)Lfw;",
+      "originalName": "a",
+      "to": "createActionButton",
+      "evidence": "ut.java: Sprite button placed near dialog bottom and appended to dialog children; guard38.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ut.a(IIIILfw;)V",
       "originalName": "a",
       "to": "widgetActivated",
@@ -71959,10 +72589,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ut.a(Lfw;B)V",
+      "originalName": "a",
+      "to": "selectMode",
+      "evidence": "ut.java: Focuses chosen control, enables Apply when different from current mode or fullscreen size differs, refreshes active highlights; guard34.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ut.a(Lkb;ICI)Z",
       "originalName": "a",
       "to": "handleKey",
       "evidence": "kb.java: Virtual key handling shared by widgets, activation and text editing. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ut.a(Lqo;Ljava/lang/String;[Lru;Z)Lfw;",
+      "originalName": "a",
+      "to": "createModeButton",
+      "evidence": "ut.java: Creates indexed-icon tile control, adds next grid cell and refreshes layout; false guard preserves unrelated archive scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ut.n(I)V",
+      "originalName": "n",
+      "to": "closeSettings",
+      "evidence": "ut.java: Clears open state; guard at least79 preserves fullscreen control.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ut.o(I)Lfw;",
+      "originalName": "o",
+      "to": "currentModeButton",
+      "evidence": "ut.java: Fullscreen presence takes priority, then enabled resizing with a resizable control, otherwise Classic; only guard -1 returns a button.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ut.q(I)V",
+      "originalName": "q",
+      "to": "refreshModeHighlights",
+      "evidence": "ut.java: Marks exactly selected mode button active; guard below -36 preserves expansion snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ut.r(I)V",
+      "originalName": "r",
+      "to": "applySelectedMode",
+      "evidence": "ut.java: Exits fullscreen before Classic/resizable helpers, or installs chosen dimensions and enters fullscreen then shows confirmation; canonical guard -1.",
       "confidence": "reviewed"
     },
     {
@@ -78742,6 +79414,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cs.<init>(Lgk;)V#0",
+      "originalName": "param0",
+      "to": "host",
+      "evidence": "cs.java: Creates monotonic-timed fullscreen accept/cancel confirmation and countdown label.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cs.a(IIIILfw;)V#0",
       "originalName": "param0",
       "to": "pointerX",
@@ -78805,6 +79484,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cs.a(Ljava/lang/String;ILqo;)Lfw;#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "cs.java: Appends sprite button, grows dialog height by38 and refreshes layout; guard arithmetic retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cs.a(Ljava/lang/String;ILqo;)Lfw;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "cs.java: Appends sprite button, grows dialog height by38 and refreshes layout; guard arithmetic retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cs.a(Ljava/lang/String;ILqo;)Lfw;#2",
+      "originalName": "param2",
+      "to": "listener",
+      "evidence": "cs.java: Appends sprite button, grows dialog height by38 and refreshes layout; guard arithmetic retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cs.a(Lkb;ICI)Z#0",
       "originalName": "param0",
       "to": "rootWidget",
@@ -78830,6 +79530,13 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "kb.java: Virtual key handling shared by widgets, activation and text editing. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cs.n(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cs.java: Clears open state; canonical guard10 preserves unrelated static model array.",
       "confidence": "reviewed"
     },
     {
@@ -102892,6 +103599,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nw.g(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nw.java: Returns the common guest-session flag; guard above73 avoids unrelated static cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:o.a(ZZLkb;)V#0",
       "originalName": "param0",
       "to": "hovered",
@@ -106032,6 +106746,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "pr.java: Initializes palette-to-region IDs and anchor lists, assigning regions by first pixel occurrence rather than connectivity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ps.<init>([Lru;)V#0",
+      "originalName": "param0",
+      "to": "stateIcons",
+      "evidence": "ps.java: Retains active/focus icon array and default client bitmap font.",
       "confidence": "reviewed"
     },
     {
@@ -112146,6 +112867,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tn.<init>(Lgk;)V#0",
+      "originalName": "param0",
+      "to": "host",
+      "evidence": "tn.java: Creates membership message, optional guest-session Members action and Close control.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tn.a(IIIILfw;)V#0",
       "originalName": "param0",
       "to": "pointerX",
@@ -112209,6 +112937,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tn.a(Lqo;ZLjava/lang/String;)Lfw;#0",
+      "originalName": "param0",
+      "to": "listener",
+      "evidence": "tn.java: Appends sprite button, grows height by38 and refreshes layout; canonical true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(Lqo;ZLjava/lang/String;)Lfw;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "tn.java: Appends sprite button, grows height by38 and refreshes layout; canonical true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(Lqo;ZLjava/lang/String;)Lfw;#2",
+      "originalName": "param2",
+      "to": "text",
+      "evidence": "tn.java: Appends sprite button, grows height by38 and refreshes layout; canonical true guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tn.a(ZILbv;)J#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -112227,6 +112976,13 @@
       "originalName": "param2",
       "to": "packet",
       "evidence": "tn.java: Uses the standard signed 4/14/20/30-bit tiers; encoded-length argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.o(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tn.java: Clears open state for guard1.",
       "confidence": "reviewed"
     },
     {
@@ -113161,6 +113917,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ud.<init>(Lgk;Ljl;)V#0",
+      "originalName": "param0",
+      "to": "host",
+      "evidence": "ud.java: Chooses unsupported, timeout or unavailable/focus-loss message by identity and adds a Close button.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.<init>(Lgk;Ljl;)V#1",
+      "originalName": "param1",
+      "to": "statusToken",
+      "evidence": "ud.java: Chooses unsupported, timeout or unavailable/focus-loss message by identity and adds a Close button.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ud.a(IIIILfw;)V#0",
       "originalName": "param0",
       "to": "pointerX",
@@ -113196,6 +113966,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ud.a(Ljava/lang/String;Lqo;I)Lfw;#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "ud.java: Appends sprite Close button and increases height; original guard arithmetic retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.a(Ljava/lang/String;Lqo;I)Lfw;#1",
+      "originalName": "param1",
+      "to": "listener",
+      "evidence": "ud.java: Appends sprite Close button and increases height; original guard arithmetic retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.a(Ljava/lang/String;Lqo;I)Lfw;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ud.java: Appends sprite Close button and increases height; original guard arithmetic retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ud.b(IZII)V#0",
       "originalName": "param0",
       "to": "filterValue",
@@ -113221,6 +114012,13 @@
       "originalName": "param3",
       "to": "packetOpcode",
       "evidence": "ud.java: Changes the selected public/room/private filter, marks settings changed and writes updated packed filters only when different.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ud.i(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ud.java: Clears open state for canonical guard60.",
       "confidence": "reviewed"
     },
     {
@@ -114302,6 +115100,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ut.<init>(Lgk;)V#0",
+      "originalName": "param0",
+      "to": "host",
+      "evidence": "ut.java: Creates display modes/options, account/heap gates, apply/back controls and current-mode highlight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(BLjava/lang/String;Lqo;)Lfw;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ut.java: Sprite button placed near dialog bottom and appended to dialog children; guard38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(BLjava/lang/String;Lqo;)Lfw;#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "ut.java: Sprite button placed near dialog bottom and appended to dialog children; guard38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(BLjava/lang/String;Lqo;)Lfw;#2",
+      "originalName": "param2",
+      "to": "listener",
+      "evidence": "ut.java: Sprite button placed near dialog bottom and appended to dialog children; guard38.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ut.a(IIIILfw;)V#0",
       "originalName": "param0",
       "to": "pointerX",
@@ -114386,6 +115212,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ut.a(Lfw;B)V#0",
+      "originalName": "param0",
+      "to": "modeButton",
+      "evidence": "ut.java: Focuses chosen control, enables Apply when different from current mode or fullscreen size differs, refreshes active highlights; guard34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(Lfw;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ut.java: Focuses chosen control, enables Apply when different from current mode or fullscreen size differs, refreshes active highlights; guard34.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ut.a(Lkb;ICI)Z#0",
       "originalName": "param0",
       "to": "rootWidget",
@@ -114411,6 +115251,62 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "kb.java: Virtual key handling shared by widgets, activation and text editing. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(Lqo;Ljava/lang/String;[Lru;Z)Lfw;#0",
+      "originalName": "param0",
+      "to": "listener",
+      "evidence": "ut.java: Creates indexed-icon tile control, adds next grid cell and refreshes layout; false guard preserves unrelated archive scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(Lqo;Ljava/lang/String;[Lru;Z)Lfw;#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "ut.java: Creates indexed-icon tile control, adds next grid cell and refreshes layout; false guard preserves unrelated archive scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(Lqo;Ljava/lang/String;[Lru;Z)Lfw;#2",
+      "originalName": "param2",
+      "to": "stateIcons",
+      "evidence": "ut.java: Creates indexed-icon tile control, adds next grid cell and refreshes layout; false guard preserves unrelated archive scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.a(Lqo;Ljava/lang/String;[Lru;Z)Lfw;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ut.java: Creates indexed-icon tile control, adds next grid cell and refreshes layout; false guard preserves unrelated archive scratch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.n(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ut.java: Clears open state; guard at least79 preserves fullscreen control.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.o(I)Lfw;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ut.java: Fullscreen presence takes priority, then enabled resizing with a resizable control, otherwise Classic; only guard -1 returns a button.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.q(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ut.java: Marks exactly selected mode button active; guard below -36 preserves expansion snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ut.r(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ut.java: Exits fullscreen before Classic/resizable helpers, or installs chosen dimensions and enters fullscreen then shows confirmation; canonical guard -1.",
       "confidence": "reviewed"
     },
     {
@@ -117985,10 +118881,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "f7377437013cc7d14377c5e4a6642f0837249b322205aceca71362eb181a5bfa",
+      "build-armiesofgielinor-rules.mjs": "3b94ac6dad922ae10a958dfb78735b34e236ff9b2ce48df49d96c80b79ae8db8",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "99fdb6d2dfb253864c698675aa6188f2c68c0d165502b9591f71c479b054e51e",
+      "tests/test-armiesofgielinor-core.mjs": "b81f0e563f8213e839af2a2654053d678c019596c582091cc98797420b76a046",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
