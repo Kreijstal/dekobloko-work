@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 68,
+  "version": 69,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2295,6 +2295,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ev",
+      "originalName": "ev",
+      "to": "RasterViewportResizeHandler",
+      "evidence": "ev.java: Canonical resize callback recreates shared raster viewport; unrelated packet/fixed-point helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ew",
       "originalName": "ew",
       "to": "ArchiveProvider",
@@ -2722,6 +2729,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:iv",
+      "originalName": "iv",
+      "to": "GameAppletShell",
+      "evidence": "iv.java: Applet/Runnable lifecycle, focus/window callbacks, loader delegation, canvas recreation and client initialize/tick/render/shutdown hooks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ja",
       "originalName": "ja",
       "to": "CameraOverviewTarget",
@@ -2946,6 +2960,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:le",
+      "originalName": "le",
+      "to": "GameCanvas",
+      "evidence": "le.java: AWT canvas retaining a target component and forwarding paint/update with the original Graphics identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lf",
       "originalName": "lf",
       "to": "BattleCharacter",
@@ -2992,6 +3013,13 @@
       "originalName": "lr",
       "to": "IntKeyLookup",
       "evidence": "lr.java: Open-addressed integer key table returning original input indices, with linear probing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lt",
+      "originalName": "lt",
+      "to": "BattleViewportResizeHandler",
+      "evidence": "lt.java: Extends raster viewport resizing and additionally refreshes the retained battle viewport grid; unrelated display-name helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -3345,6 +3373,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ok",
+      "originalName": "ok",
+      "to": "ViewportResizeListener",
+      "evidence": "ok.java: Height/guard/width callback contract used by viewport management.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ol",
       "originalName": "ol",
       "to": "MaskedTextEntryPainter",
@@ -3489,6 +3524,13 @@
       "originalName": "qb",
       "to": "AnimationSequence",
       "evidence": "qb.java: Opcode-decoded packed frame IDs, durations, loop start/count and additional retained sequence data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qc",
+      "originalName": "qc",
+      "to": "GameClock",
+      "evidence": "qc.java: Abstract delay, tick-count advancement and reset contract with sleep-before-advance wrapper.",
       "confidence": "reviewed"
     },
     {
@@ -3958,6 +4000,13 @@
       "originalName": "uj",
       "to": "AccountNameAvailabilityValidator",
       "evidence": "uj.java: Account-name syntax plus cached asynchronous acceptance result, with explicit invalidation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uk",
+      "originalName": "uk",
+      "to": "NanoGameClock",
+      "evidence": "uk.java: Nanosecond elapsed sampling, accumulated time, next tick deadline and bounded ten-tick catch-up; normal sample count remains one.",
       "confidence": "reviewed"
     },
     {
@@ -5445,6 +5494,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ce.field_N:I",
+      "originalName": "field_N",
+      "to": "canvasWidth",
+      "evidence": "ce.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ce.field_O:[I",
       "originalName": "field_O",
       "to": "turnDurationTicks",
@@ -6205,6 +6261,13 @@
       "originalName": "field_k",
       "to": "itemCount",
       "evidence": "dl.java: Constructor, keyboard navigation, pointer update and explicit selection restore track these state roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dm.field_D:I",
+      "originalName": "field_D",
+      "to": "canvasHeight",
+      "evidence": "dm.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
       "confidence": "reviewed"
     },
     {
@@ -9526,6 +9589,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ih.field_ab:I",
+      "originalName": "field_ab",
+      "to": "renderTimestampIndex",
+      "evidence": "ih.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ih.field_o:[I",
       "originalName": "field_o",
       "to": "channelFlags",
@@ -9946,6 +10016,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:iv.field_i:Z",
+      "originalName": "field_i",
+      "to": "errorReported",
+      "evidence": "iv.java: Report-once error path sets this before browser notification/navigation and stdout reporting.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:iw.field_n:I",
       "originalName": "field_n",
       "to": "decodedSpriteCount",
@@ -10048,6 +10125,13 @@
       "originalName": "field_t",
       "to": "score",
       "evidence": "jb.java: Candidate reset and execution: destination path/target deltas for movement; summoning mode passes player and unit type to SummonRequest.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_u:[J",
+      "originalName": "field_u",
+      "to": "renderTimestampsMillis",
+      "evidence": "jb.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
       "confidence": "reviewed"
     },
     {
@@ -11269,6 +11353,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kb.field_A:I",
+      "originalName": "field_A",
+      "to": "ticksThisFrame",
+      "evidence": "kb.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kb.field_B:I",
       "originalName": "field_B",
       "to": "x",
@@ -11752,6 +11843,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:la.field_g:Ljava/applet/Applet;",
+      "originalName": "field_g",
+      "to": "loaderApplet",
+      "evidence": "la.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lc.field_a:[[I",
       "originalName": "field_a",
       "to": "coefficients",
@@ -11889,6 +11987,13 @@
       "originalName": "field_z",
       "to": "defenderSnapshot",
       "evidence": "ld.java: Reviewed request/action constructor bindings and validation/event queue data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:le.field_a:Ljava/awt/Component;",
+      "originalName": "field_a",
+      "to": "target",
+      "evidence": "le.java: Constructor retains exact component; paint/update forward original Graphics to it.",
       "confidence": "reviewed"
     },
     {
@@ -12239,6 +12344,13 @@
       "originalName": "field_d",
       "to": "hasLastQuickChat",
       "evidence": "lq.java: Private/public composer selection, quick-chat response/root menu installation, typed/phrase serialization and replay of the last quick-chat message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lr.field_a:Liv;",
+      "originalName": "field_a",
+      "to": "activeGameShell",
+      "evidence": "lr.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
       "confidence": "reviewed"
     },
     {
@@ -12652,6 +12764,13 @@
       "originalName": "field_p",
       "to": "actingPlayer",
       "evidence": "mn.java: Request constructors set the player used in ownership/summoning checks and illegal-move diagnostics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mn.field_s:J",
+      "originalName": "field_s",
+      "to": "shutdownDeadlineMillis",
+      "evidence": "mn.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
       "confidence": "reviewed"
     },
     {
@@ -13663,6 +13782,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ns.field_P:J",
+      "originalName": "field_P",
+      "to": "lastCanvasRebuildMillis",
+      "evidence": "ns.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ns.field_Q:I",
       "originalName": "field_Q",
       "to": "defenderAnimationCount",
@@ -14167,6 +14293,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ol.field_z:Z",
+      "originalName": "field_z",
+      "to": "redrawRequested",
+      "evidence": "ol.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:om.field_B:[I",
       "originalName": "field_B",
       "to": "participantIds",
@@ -14265,6 +14398,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:om.field_r:[J",
+      "originalName": "field_r",
+      "to": "tickTimestampsMillis",
+      "evidence": "om.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:om.field_t:I",
       "originalName": "field_t",
       "to": "mapResourceId",
@@ -14332,6 +14472,13 @@
       "originalName": "field_l",
       "to": "activeStructureShadows",
       "evidence": "oq.java: Theme selection publishes these shared archive/catalog/render bindings; activeTerrainSample converts terrain sprite index one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:os.field_o:I",
+      "originalName": "field_o",
+      "to": "tickTimestampIndex",
+      "evidence": "os.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
       "confidence": "reviewed"
     },
     {
@@ -14479,6 +14626,13 @@
       "originalName": "field_d",
       "to": "playerProfile",
       "evidence": "pg.java: Login/profile updates install this object; spell and unit purchase menus query it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ph.field_f:Z",
+      "originalName": "field_f",
+      "to": "tickFocusSnapshot",
+      "evidence": "ph.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
       "confidence": "reviewed"
     },
     {
@@ -14780,6 +14934,13 @@
       "originalName": "field_g",
       "to": "lobbyRoomOrder",
       "evidence": "qc.java: Lobby packet dispatcher, sorted insertion, room/player lookup, ownership test and notification expiry share these exact globals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qc.field_h:Lqc;",
+      "originalName": "field_h",
+      "to": "gameClock",
+      "evidence": "qc.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
       "confidence": "reviewed"
     },
     {
@@ -15543,6 +15704,13 @@
       "originalName": "field_d",
       "to": "keyEventFrameEndIndex",
       "evidence": "rd.java: AWT listener writes held-state press/complemented release events and polled key/character tuples into distinct 128-entry rings; frame snapshot drains state, publishes poll end and resets held keys after focus/overflow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rd.field_i:J",
+      "originalName": "field_i",
+      "to": "tickDurationNanos",
+      "evidence": "rd.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
       "confidence": "reviewed"
     },
     {
@@ -17044,6 +17212,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tq.field_a:Z",
+      "originalName": "field_a",
+      "to": "canvasRebuildRequested",
+      "evidence": "tq.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tq.field_b:I",
       "originalName": "field_b",
       "to": "gameOptionCount",
@@ -17310,6 +17485,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uh.field_d:I",
+      "originalName": "field_d",
+      "to": "canvasRefreshCounter",
+      "evidence": "uh.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ui.field_b:Z",
       "originalName": "field_b",
       "to": "decodedChatSystemMessage",
@@ -17349,6 +17531,48 @@
       "originalName": "field_m",
       "to": "checkedName",
       "evidence": "uj.java: Cached result name, cleared by invalidateNameCheck.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_m:I",
+      "originalName": "field_m",
+      "to": "sampleCount",
+      "evidence": "uk.java: Sampler accepts deltas strictly within plus/minus five seconds and averages retained entries; tick scheduling catches up at most ten ticks. Constructor sampleCount is one and normal sampling does not increase it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_o:I",
+      "originalName": "field_o",
+      "to": "sampleIndex",
+      "evidence": "uk.java: Sampler accepts deltas strictly within plus/minus five seconds and averages retained entries; tick scheduling catches up at most ten ticks. Constructor sampleCount is one and normal sampling does not increase it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_p:[J",
+      "originalName": "field_p",
+      "to": "sampleDeltasNanos",
+      "evidence": "uk.java: Sampler accepts deltas strictly within plus/minus five seconds and averages retained entries; tick scheduling catches up at most ten ticks. Constructor sampleCount is one and normal sampling does not increase it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_r:J",
+      "originalName": "field_r",
+      "to": "accumulatedNanos",
+      "evidence": "uk.java: Sampler accepts deltas strictly within plus/minus five seconds and averages retained entries; tick scheduling catches up at most ten ticks. Constructor sampleCount is one and normal sampling does not increase it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_t:J",
+      "originalName": "field_t",
+      "to": "lastSampleNanos",
+      "evidence": "uk.java: Sampler accepts deltas strictly within plus/minus five seconds and averages retained entries; tick scheduling catches up at most ten ticks. Constructor sampleCount is one and normal sampling does not increase it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_u:J",
+      "originalName": "field_u",
+      "to": "nextTickNanos",
+      "evidence": "uk.java: Sampler accepts deltas strictly within plus/minus five seconds and averages retained entries; tick scheduling catches up at most ten ticks. Constructor sampleCount is one and normal sampling does not increase it.",
       "confidence": "reviewed"
     },
     {
@@ -18371,6 +18595,13 @@
       "originalName": "field_g",
       "to": "contributions",
       "evidence": "wi.java: Smooth-face normal accumulation adds the normalized vector and increments contributions once for every referenced vertex occurrence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wj.field_l:Z",
+      "originalName": "field_l",
+      "to": "canvasFocused",
+      "evidence": "wj.java: GameAppletShell lifecycle/main-loop reads and writes distinguish active ownership, focus snapshot, redraw/rebuild requests, stop deadline and 32-slot tick/render timestamp rings.",
       "confidence": "reviewed"
     },
     {
@@ -24818,6 +25049,34 @@
       "originalName": "decompiledCaughtParameter0",
       "to": "caughtParameter",
       "evidence": "es.java: Pinned console lexical/parser/evaluator control flow identifies this local; fixed original spelling prevents silent ordinal drift.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ev.b(III)I#0",
+      "originalName": "var3",
+      "to": "rightInteger",
+      "evidence": "ev.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ev.b(III)I#1",
+      "originalName": "var4",
+      "to": "rightFraction",
+      "evidence": "ev.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ev.b(III)I#2",
+      "originalName": "var5",
+      "to": "leftInteger",
+      "evidence": "ev.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ev.b(III)I#3",
+      "originalName": "var6",
+      "to": "leftFraction",
+      "evidence": "ev.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
       "confidence": "reviewed"
     },
     {
@@ -33312,6 +33571,153 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:iv.b(I)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.b(I)V#1",
+      "originalName": "var2_long",
+      "to": "nowMillis",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.b(I)V#2",
+      "originalName": "var4",
+      "to": "previousTimestamp",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.b(I)V#3",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.b(I)V#4",
+      "originalName": "var6",
+      "to": "focusMonitor",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.b(I)V#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.c(I)V#0",
+      "originalName": "fieldTemp$1",
+      "to": "previousRefreshCounter",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.c(I)V#1",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.c(I)V#2",
+      "originalName": "var2_long",
+      "to": "nowMillis",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.c(I)V#3",
+      "originalName": "var4",
+      "to": "previousTimestamp",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.c(I)V#4",
+      "originalName": "var6_int",
+      "to": "elapsedMillis",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.c(I)V#5",
+      "originalName": "var6",
+      "to": "frameInsets",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.c(I)V#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.c(I)V#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.paint(Ljava/awt/Graphics;)V#0",
+      "originalName": "var2",
+      "to": "clipBounds",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.paint(Ljava/awt/Graphics;)V#1",
+      "originalName": "stackIn_25_0",
+      "to": "failureForContext",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.paint(Ljava/awt/Graphics;)V#2",
+      "originalName": "stackIn_25_1",
+      "to": "errorContext",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.paint(Ljava/awt/Graphics;)V#3",
+      "originalName": "stackIn_26_2",
+      "to": "graphicsDescription",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.paint(Ljava/awt/Graphics;)V#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.paint(Ljava/awt/Graphics;)V#5",
+      "originalName": "var2_ref",
+      "to": "failure",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:iv.paint(Ljava/awt/Graphics;)V#6",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "iv.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ja.a(IB)I#0",
       "originalName": "var3",
       "to": "centerX",
@@ -36718,6 +37124,27 @@
       "originalName": "var7",
       "to": "pathBuffer",
       "evidence": "ld.java: Reviewed lexical ordinal and request decoding, queue payload or AI coordinate data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:le.<init>(Ljava/awt/Component;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "le.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:le.paint(Ljava/awt/Graphics;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "le.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:le.update(Ljava/awt/Graphics;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "le.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
       "confidence": "reviewed"
     },
     {
@@ -42699,6 +43126,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:qc.a(IJ)I#0",
+      "originalName": "var4",
+      "to": "delayMillis",
+      "evidence": "qc.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:qp.a(I[Lnd;)Lnd;#0",
       "originalName": "var3",
       "to": "failure",
@@ -46801,6 +47235,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:uk.a(JI)I#0",
+      "originalName": "var4",
+      "to": "tickCount",
+      "evidence": "uk.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uk.a(JI)I#1",
+      "originalName": "var5",
+      "to": "obfuscationControl",
+      "evidence": "uk.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uk.c(I)J#0",
+      "originalName": "var8",
+      "to": "sampleOffset",
+      "evidence": "uk.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uk.c(I)J#1",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "uk.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uk.c(I)J#2",
+      "originalName": "var2",
+      "to": "nowNanos",
+      "evidence": "uk.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uk.c(I)J#3",
+      "originalName": "var4",
+      "to": "elapsedNanos",
+      "evidence": "uk.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uk.c(I)J#4",
+      "originalName": "var6",
+      "to": "sampleSumNanos",
+      "evidence": "uk.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ul.a(BIIZIIZZ)I#0",
       "originalName": "var9",
       "to": "targetFlags",
@@ -50616,6 +51099,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ArmiesOfGielinor.a(B)V",
+      "originalName": "a",
+      "to": "tickClient",
+      "evidence": "iv.java: Client tick hook invoked after timestamp ring and synchronized focus snapshot. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ArmiesOfGielinor.a(I)V",
+      "originalName": "a",
+      "to": "renderClient",
+      "evidence": "iv.java: Client render hook invoked after timestamp/FPS and periodic canvas-refresh bookkeeping. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ArmiesOfGielinor.a(Z)V",
+      "originalName": "a",
+      "to": "initializeClient",
+      "evidence": "iv.java: Main-loop hook called after canvas/back-buffer setup and before clock creation. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ArmiesOfGielinor.b(B)V",
+      "originalName": "b",
+      "to": "shutdownClient",
+      "evidence": "iv.java: First cleanup hook during guarded one-shot shell shutdown. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ArmiesOfGielinor.d(B)V",
+      "originalName": "d",
+      "to": "finishShutdown",
+      "evidence": "iv.java: Final cleanup hook after listener/canvas/platform-task shutdown. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:a.a(IILbv;)Ljd;",
       "originalName": "a",
       "to": "readTaggedUnit",
@@ -53570,10 +54088,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ev.a(III)V",
+      "originalName": "a",
+      "to": "viewportResized",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ev.a(Lvh;B)[I",
       "originalName": "a",
       "to": "readNullableUnsignedByteArray",
       "evidence": "ev.java: Reads a byte count and unsigned elements, returning null for count zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ev.b(III)I",
+      "originalName": "b",
+      "to": "multiplyFixed16",
+      "evidence": "ev.java: Signed 16.16 multiply using split integer/fraction terms; signed low-word multiplication retains its overflow subtraction quirk.",
       "confidence": "reviewed"
     },
     {
@@ -56258,6 +56790,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:iv.a(B)V",
+      "originalName": "a",
+      "to": "tickClient",
+      "evidence": "iv.java: Client tick hook invoked after timestamp ring and synchronized focus snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.a(I)V",
+      "originalName": "a",
+      "to": "renderClient",
+      "evidence": "iv.java: Client render hook invoked after timestamp/FPS and periodic canvas-refresh bookkeeping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.a(IILjava/lang/String;IIII)V",
+      "originalName": "a",
+      "to": "startAppletShell",
+      "evidence": "iv.java: Stores dimensions/revision and starts platform worker with cache settings unless an active shell already exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.a(Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "reportGameError",
+      "evidence": "iv.java: Reports only first error, attempts browser logout callback and error-page navigation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.a(Z)V",
+      "originalName": "a",
+      "to": "initializeClient",
+      "evidence": "iv.java: Main-loop hook called after canvas/back-buffer setup and before clock creation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.a(ZI)V",
+      "originalName": "a",
+      "to": "shutdownShell",
+      "evidence": "iv.java: Synchronized one-shot shutdown, loader/client cleanup, canvas removal and platform-task close; standalone exit remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.b(B)V",
+      "originalName": "b",
+      "to": "shutdownClient",
+      "evidence": "iv.java: First cleanup hook during guarded one-shot shell shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.b(I)V",
+      "originalName": "b",
+      "to": "runClientTick",
+      "evidence": "iv.java: Records current tick timestamp, wraps ring index, snapshots canvas focus under monitor and calls client tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.c(B)V",
+      "originalName": "c",
+      "to": "recreateCanvas",
+      "evidence": "iv.java: Removes old canvas, selects fullscreen/frame/loader/shell container, creates forwarding canvas and resets focus/redraw/rebuild state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.c(I)V",
+      "originalName": "c",
+      "to": "runRenderFrame",
+      "evidence": "iv.java: Records timestamp, computes smoothed reported FPS from 32-slot ring, periodically reapplies canvas geometry and invokes render hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.d(B)V",
+      "originalName": "d",
+      "to": "finishShutdown",
+      "evidence": "iv.java: Final cleanup hook after listener/canvas/platform-task shutdown.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ja.a(B)Z",
       "originalName": "a",
       "to": "hasStartedHold",
@@ -58162,6 +58771,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lt.a(III)V",
+      "originalName": "a",
+      "to": "viewportResized",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lt.a(IJ)Ljava/lang/String;",
       "originalName": "a",
       "to": "decodeBase37DisplayName",
@@ -59856,6 +60472,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ok.a(III)V",
+      "originalName": "a",
+      "to": "viewportResized",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ol.d(ILkb;)Ljava/lang/String;",
       "originalName": "d",
       "to": "getDisplayText",
@@ -60612,6 +61235,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qc.a(I)V",
+      "originalName": "a",
+      "to": "resetClock",
+      "evidence": "qc.java: Clock reset contract; NanoGameClock retains guard value as lastSampleNanos.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qc.a(IJ)I",
+      "originalName": "a",
+      "to": "waitAndAdvance",
+      "evidence": "qc.java: Canonical guard samples delay, sleeps only if positive and advances tick schedule with zero guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qc.a(JI)I",
+      "originalName": "a",
+      "to": "advanceTicks",
+      "evidence": "qc.java: Returns scheduled/catch-up tick count for supplied nanosecond interval.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qc.b(B)J",
+      "originalName": "b",
+      "to": "getDelayMillis",
+      "evidence": "qc.java: Updates clock sampling and returns integer milliseconds until next tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qd.a(IIBLhv;)V",
       "originalName": "a",
       "to": "hotspotActivated",
@@ -60966,6 +61617,13 @@
       "originalName": "a",
       "to": "getPayloadSize",
       "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(III)V",
+      "originalName": "a",
+      "to": "resizeRasterViewport",
+      "evidence": "ra.java: Stores width/height, drops raster target, creates/rebinds backing surface and updates dependent layouts.",
       "confidence": "reviewed"
     },
     {
@@ -62817,6 +63475,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uk.a(I)V",
+      "originalName": "a",
+      "to": "resetClock",
+      "evidence": "qc.java: Clock reset contract; NanoGameClock retains guard value as lastSampleNanos. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.a(JI)I",
+      "originalName": "a",
+      "to": "advanceTicks",
+      "evidence": "qc.java: Returns scheduled/catch-up tick count for supplied nanosecond interval. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.b(B)J",
+      "originalName": "b",
+      "to": "getDelayMillis",
+      "evidence": "qc.java: Updates clock sampling and returns integer milliseconds until next tick. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.c(I)J",
+      "originalName": "c",
+      "to": "sampleElapsedNanos",
+      "evidence": "uk.java: Stores current nanoTime, accepts only strict five-second deltas, advances ten-slot index and averages sampleCount entries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ul.a(B)V",
       "originalName": "a",
       "to": "resetVisibility",
@@ -63797,6 +64483,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wa.a(ILok;)V",
+      "originalName": "a",
+      "to": "installViewportResizeListener",
+      "evidence": "wa.java: Creates viewport manager retaining supplied resize callback and installs it through shared helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wa.a(ILvh;)V",
       "originalName": "a",
       "to": "writePayload",
@@ -63899,6 +64592,13 @@
       "originalName": "b",
       "to": "layoutChild",
       "evidence": "nl.java: Default refreshes child bounds; drag wrapper fits child to own dimensions and records return position. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.c(Z)Lqc;",
+      "originalName": "c",
+      "to": "createGameClock",
+      "evidence": "wc.java: Factory returns a new NanoGameClock without app-specific runtime flags.",
       "confidence": "reviewed"
     },
     {
@@ -64165,6 +64865,41 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "dr.java: Virtual registered command execution with canonical guard -24872. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ArmiesOfGielinor.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Client tick hook invoked after timestamp ring and synchronized focus snapshot. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ArmiesOfGielinor.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Client render hook invoked after timestamp/FPS and periodic canvas-refresh bookkeeping. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ArmiesOfGielinor.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Main-loop hook called after canvas/back-buffer setup and before clock creation. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ArmiesOfGielinor.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: First cleanup hook during guarded one-shot shell shutdown. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ArmiesOfGielinor.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Final cleanup hook after listener/canvas/platform-task shutdown. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -72890,6 +73625,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ev.a(III)V#0",
+      "originalName": "param0",
+      "to": "height",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ev.a(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ev.a(III)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ev.a(Lvh;B)[I#0",
       "originalName": "param0",
       "to": "packet",
@@ -72901,6 +73657,27 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ev.java: Reads a byte count and unsigned elements, returning null for count zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ev.b(III)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ev.java: Signed 16.16 multiply using split integer/fraction terms; signed low-word multiplication retains its overflow subtraction quirk.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ev.b(III)I#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "ev.java: Signed 16.16 multiply using split integer/fraction terms; signed low-word multiplication retains its overflow subtraction quirk.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ev.b(III)I#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "ev.java: Signed 16.16 multiply using split integer/fraction terms; signed low-word multiplication retains its overflow subtraction quirk.",
       "confidence": "reviewed"
     },
     {
@@ -80359,6 +81136,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:iv.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Client tick hook invoked after timestamp ring and synchronized focus snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Client render hook invoked after timestamp/FPS and periodic canvas-refresh bookkeeping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(IILjava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "iv.java: Stores dimensions/revision and starts platform worker with cache settings unless an active shell already exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(IILjava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "requestedCacheStoreId",
+      "evidence": "iv.java: Stores dimensions/revision and starts platform worker with cache settings unless an active shell already exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(IILjava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "requestedCacheName",
+      "evidence": "iv.java: Stores dimensions/revision and starts platform worker with cache settings unless an active shell already exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(IILjava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Stores dimensions/revision and starts platform worker with cache settings unless an active shell already exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(IILjava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "revision",
+      "evidence": "iv.java: Stores dimensions/revision and starts platform worker with cache settings unless an active shell already exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(IILjava/lang/String;IIII)V#5",
+      "originalName": "param5",
+      "to": "cacheIndexCount",
+      "evidence": "iv.java: Stores dimensions/revision and starts platform worker with cache settings unless an active shell already exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(IILjava/lang/String;IIII)V#6",
+      "originalName": "param6",
+      "to": "height",
+      "evidence": "iv.java: Stores dimensions/revision and starts platform worker with cache settings unless an active shell already exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(Ljava/lang/String;B)V#0",
+      "originalName": "param0",
+      "to": "errorCode",
+      "evidence": "iv.java: Reports only first error, attempts browser logout callback and error-page navigation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(Ljava/lang/String;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Reports only first error, attempts browser logout callback and error-page navigation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Main-loop hook called after canvas/back-buffer setup and before clock creation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "clean",
+      "evidence": "iv.java: Synchronized one-shot shutdown, loader/client cleanup, canvas removal and platform-task close; standalone exit remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Synchronized one-shot shutdown, loader/client cleanup, canvas removal and platform-task close; standalone exit remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: First cleanup hook during guarded one-shot shell shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Records current tick timestamp, wraps ring index, snapshots canvas focus under monitor and calls client tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Removes old canvas, selects fullscreen/frame/loader/shell container, creates forwarding canvas and resets focus/redraw/rebuild state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Records timestamp, computes smoothed reported FPS from 32-slot ring, periodically reapplies canvas geometry and invokes render hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:iv.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "iv.java: Final cleanup hook after listener/canvas/platform-task shutdown.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ja.<init>(II)V#0",
       "originalName": "param0",
       "to": "tileX",
@@ -85077,6 +85987,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:le.<init>(Ljava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "target",
+      "evidence": "le.java: Forwarding canvas retains target without substituting Graphics objects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:le.a(IBLvh;)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "maximumLength",
@@ -86229,6 +87146,27 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "lr.java: Linear probes and returns the first matching original input index, or -1; duplicate keys preserve the first match.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lt.a(III)V#0",
+      "originalName": "param0",
+      "to": "height",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lt.a(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lt.a(III)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation. Resolved override parameter. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -91510,6 +92448,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ok.a(III)V#0",
+      "originalName": "param0",
+      "to": "height",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ok.a(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ok.a(III)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "ok.java: Callback argument order is height, guard, width; base delegates width first to raster recreation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ol.<init>(I)V#0",
       "originalName": "param0",
       "to": "textColour",
@@ -93834,6 +94793,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qc.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qc.java: Clock reset contract; NanoGameClock retains guard value as lastSampleNanos.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qc.a(IJ)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qc.java: Canonical guard samples delay, sleeps only if positive and advances tick schedule with zero guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qc.a(IJ)I#1",
+      "originalName": "param1",
+      "to": "tickDurationNanos",
+      "evidence": "qc.java: Canonical guard samples delay, sleeps only if positive and advances tick schedule with zero guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qc.a(JI)I#0",
+      "originalName": "param0",
+      "to": "tickDurationNanos",
+      "evidence": "qc.java: Returns scheduled/catch-up tick count for supplied nanosecond interval.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qc.a(JI)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "qc.java: Returns scheduled/catch-up tick count for supplied nanosecond interval.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qc.b(B)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qc.java: Updates clock sampling and returns integer milliseconds until next tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qd.<init>(Loe;)V#0",
       "originalName": "param0",
       "to": "dialog",
@@ -94811,6 +95812,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ik.java: Unit spells serialize four bytes; global/action spells serialize two. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(III)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "ra.java: Stores width/height, drops raster target, creates/rebinds backing surface and updates dependent layouts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ra.java: Stores width/height, drops raster target, creates/rebinds backing surface and updates dependent layouts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(III)V#2",
+      "originalName": "param2",
+      "to": "height",
+      "evidence": "ra.java: Stores width/height, drops raster target, creates/rebinds backing surface and updates dependent layouts.",
       "confidence": "reviewed"
     },
     {
@@ -100442,6 +101464,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:uk.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qc.java: Clock reset contract; NanoGameClock retains guard value as lastSampleNanos. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uk.a(JI)I#0",
+      "originalName": "param0",
+      "to": "tickDurationNanos",
+      "evidence": "qc.java: Returns scheduled/catch-up tick count for supplied nanosecond interval. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uk.a(JI)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "qc.java: Returns scheduled/catch-up tick count for supplied nanosecond interval. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uk.b(B)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qc.java: Updates clock sampling and returns integer milliseconds until next tick. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uk.c(I)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uk.java: Stores current nanoTime, accepts only strict five-second deltas, advances ten-slot index and averages sampleCount entries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ul.<init>(Lha;[Lne;II)V#0",
       "originalName": "param0",
       "to": "battlefield",
@@ -102878,6 +103935,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wa.a(ILok;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wa.java: Creates viewport manager retaining supplied resize callback and installs it through shared helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(ILok;)V#1",
+      "originalName": "param1",
+      "to": "listener",
+      "evidence": "wa.java: Creates viewport manager retaining supplied resize callback and installs it through shared helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wa.a(ILvh;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -103239,6 +104310,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "nl.java: Default refreshes child bounds; drag wrapper fits child to own dimensions and records return position. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wc.c(Z)Lqc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wc.java: Factory returns a new NanoGameClock without app-specific runtime flags.",
       "confidence": "reviewed"
     },
     {
@@ -104111,10 +105189,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "463e6f7d168f8a8f8b931545a86cd3ce8011d3289b56e40c7eafcf2a9db1dc7a",
+      "build-armiesofgielinor-rules.mjs": "4bfca5c8eee7e5624600f898fbd788773c9c514f5c81283bc1de3b8babf20c11",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "c9e238871d78998e0f167a2852f6d5b3789b00259dfb96c10c59b0e6b620b414",
+      "tests/test-armiesofgielinor-core.mjs": "344c3014d0191a363a5afb58a4dbb961f85c0b8a762ed55f932583512d23d06b",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"

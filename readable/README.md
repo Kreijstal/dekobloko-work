@@ -98,6 +98,19 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+GameAppletShell now names the client lifecycle hooks, separate tick/render
+bookkeeping, canvas focus, redraw/rebuild flags, loader delegation and shutdown
+deadline. GameCanvas names its retained paint/update target. GameClock and
+NanoGameClock expose delay sampling, tick scheduling, reset and bounded catch-up.
+ViewportResizeListener and its raster/battle handlers clarify callback ordering.
+Native fixtures cover deadline arithmetic, accepted/rejected samples, the
+retained one-sample behavior, focus and lifecycle gates, repaint clipping,
+timestamp index wrap, loader getters and exact canvas forwarding/failure identity.
+The split signed fixed-point multiply retains its low-word overflow quirk.
+Full applet startup/shutdown, actual resize, positive sleeping, exact timing
+boundaries and reported/presented FPS remain unverified. The generated guide
+records these limits and preserved behavior.
+
 LoginForm now names login/retry modes, account/password fields and the
 submit, navigation and registration controls. GuestPlayConfirmationForm names
 the account-benefit confirmation controls; LoginMethod names exact browser-cookie
@@ -301,7 +314,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 382,527 raw/named checks agree. Controlled cipher output does not constitute
+All 384,039 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -668,7 +681,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 340 reviewed classes around battlefield state, units, map
+The current pass names 347 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
