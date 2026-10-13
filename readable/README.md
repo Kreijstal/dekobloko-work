@@ -98,6 +98,17 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+Bzip2Decoder/Bzip2State name archive bit decoding, selectors/Huffman tables,
+move-to-front, inverse-BWT and pending output runs. Python 3 bz2 fixtures check
+level-one input with the BZh1 header stripped, multiple blocks, offsets, bounded
+output and retained references after failure. The compressed-length parameter
+is unused; checksum/randomized-block and malformed-format support remain
+unverified. WhirlpoolHasher names hash/block/round state, 256-bit length and
+padding. OpenSSL with its legacy provider independently checks byte-aligned
+boundary vectors, chunked updates, reset reuse and digest offsets. Reset is not
+secure erasure; arbitrary bit alignment and full archive integration remain
+unverified. These focused probes require Python 3 and OpenSSL Whirlpool support.
+
 SpriteDropdownMenu/SpriteDropdownControl/SpriteScrollBar now name popup and
 control bounds, option selection, hover/input state, clipped layout, axis ranges
 and repeating arrows; SpriteControlNode names the empty intrusive ancestry.
@@ -357,7 +368,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 453,409 raw/named checks agree. Controlled cipher output does not constitute
+All 454,177 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 73,
+  "version": 74,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2015,6 +2015,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bw",
+      "originalName": "bw",
+      "to": "WhirlpoolHasher",
+      "evidence": "bw.java: 512-bit Whirlpool digest engine with 256-bit input length, 64-byte block, ten-round key/cipher workspaces and digest padding; unrelated unit/UI globals remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ca",
       "originalName": "ca",
       "to": "TileMetadata",
@@ -3282,6 +3289,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nk",
+      "originalName": "nk",
+      "to": "Bzip2State",
+      "evidence": "nk.java: Retained BZIP2 input/output cursors, bit buffer, in-use/selector/Huffman/MTF tables and inverse-BWT/run state; unrelated static terrain/text helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nl",
       "originalName": "nl",
       "to": "SingleChildWidgetContainer",
@@ -3475,6 +3489,13 @@
       "originalName": "pa",
       "to": "EventPresentation",
       "evidence": "pa.java: Shared initialization, frame advancement, drawing and completion contract for four event presentations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pb",
+      "originalName": "pb",
+      "to": "Bzip2Decoder",
+      "evidence": "pb.java: Shared synchronized legacy headerless BZIP2 archive decoder with 100k block workspace, Huffman/MTF/inverse-BWT and output run expansion; checksums and randomized blocks are not validated.",
       "confidence": "reviewed"
     },
     {
@@ -5477,6 +5498,69 @@
       "originalName": "field_z",
       "to": "opcodeCipher",
       "evidence": "bv.java: ISAAC output adds/subtracts from byte opcodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bw.field_a:[J",
+      "originalName": "field_a",
+      "to": "blockWords",
+      "evidence": "bw.java: Owned Whirlpool state: eight 64-bit words, 64-byte input block and 32-byte big-endian bit length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bw.field_b:[B",
+      "originalName": "field_b",
+      "to": "bitLength",
+      "evidence": "bw.java: Owned Whirlpool state: eight 64-bit words, 64-byte input block and 32-byte big-endian bit length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bw.field_c:I",
+      "originalName": "field_c",
+      "to": "bufferedBits",
+      "evidence": "bw.java: Owned Whirlpool state: eight 64-bit words, 64-byte input block and 32-byte big-endian bit length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bw.field_d:I",
+      "originalName": "field_d",
+      "to": "bufferPosition",
+      "evidence": "bw.java: Owned Whirlpool state: eight 64-bit words, 64-byte input block and 32-byte big-endian bit length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bw.field_e:[J",
+      "originalName": "field_e",
+      "to": "roundTemporary",
+      "evidence": "bw.java: Owned Whirlpool state: eight 64-bit words, 64-byte input block and 32-byte big-endian bit length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bw.field_i:[B",
+      "originalName": "field_i",
+      "to": "inputBlock",
+      "evidence": "bw.java: Owned Whirlpool state: eight 64-bit words, 64-byte input block and 32-byte big-endian bit length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bw.field_j:[J",
+      "originalName": "field_j",
+      "to": "roundKey",
+      "evidence": "bw.java: Owned Whirlpool state: eight 64-bit words, 64-byte input block and 32-byte big-endian bit length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bw.field_k:[J",
+      "originalName": "field_k",
+      "to": "cipherState",
+      "evidence": "bw.java: Owned Whirlpool state: eight 64-bit words, 64-byte input block and 32-byte big-endian bit length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bw.field_l:[J",
+      "originalName": "field_l",
+      "to": "hashState",
+      "evidence": "bw.java: Owned Whirlpool state: eight 64-bit words, 64-byte input block and 32-byte big-endian bit length.",
       "confidence": "reviewed"
     },
     {
@@ -7689,6 +7773,13 @@
       "originalName": "field_I",
       "to": "enabled",
       "evidence": "fw.java: Pinned interactive widget/editor/hotspot constructors and input/rendering callbacks establish this role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fw.field_J:[I",
+      "originalName": "field_J",
+      "to": "bzip2TraversalTable",
+      "evidence": "fw.java: Shared 100k inverse-BWT table: low byte stores decoded symbol, higher bits store traversal link.",
       "confidence": "reviewed"
     },
     {
@@ -13915,6 +14006,230 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nk.field_B:[I",
+      "originalName": "field_B",
+      "to": "cumulativeFrequencies",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_E:I",
+      "originalName": "field_E",
+      "to": "currentByte",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_F:I",
+      "originalName": "field_F",
+      "to": "totalOutputBytes",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_H:[[I",
+      "originalName": "field_H",
+      "to": "huffmanLimits",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_I:I",
+      "originalName": "field_I",
+      "to": "totalInputBytes",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_J:I",
+      "originalName": "field_J",
+      "to": "bitsAvailable",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_K:B",
+      "originalName": "field_K",
+      "to": "pendingRunByte",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_L:I",
+      "originalName": "field_L",
+      "to": "outputRemaining",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_a:I",
+      "originalName": "field_a",
+      "to": "blockUsed",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_b:I",
+      "originalName": "field_b",
+      "to": "bitBuffer",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_c:[[B",
+      "originalName": "field_c",
+      "to": "codeLengths",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_d:[B",
+      "originalName": "field_d",
+      "to": "selectors",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_e:[B",
+      "originalName": "field_e",
+      "to": "input",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_f:I",
+      "originalName": "field_f",
+      "to": "originalPointer",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_g:I",
+      "originalName": "field_g",
+      "to": "blockSize100k",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_h:[I",
+      "originalName": "field_h",
+      "to": "mtfBases",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_i:I",
+      "originalName": "field_i",
+      "to": "outputIndex",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_j:I",
+      "originalName": "field_j",
+      "to": "traversalIndex",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_k:[[I",
+      "originalName": "field_k",
+      "to": "huffmanPermutation",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_l:[Z",
+      "originalName": "field_l",
+      "to": "inUseGroups",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_n:[B",
+      "originalName": "field_n",
+      "to": "sequenceToByte",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_o:[B",
+      "originalName": "field_o",
+      "to": "mtfSymbols",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_p:[Z",
+      "originalName": "field_p",
+      "to": "inUse",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_q:I",
+      "originalName": "field_q",
+      "to": "inputIndex",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_r:[[I",
+      "originalName": "field_r",
+      "to": "huffmanBase",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_s:[B",
+      "originalName": "field_s",
+      "to": "selectorMtf",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_u:[I",
+      "originalName": "field_u",
+      "to": "byteFrequencies",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_v:[B",
+      "originalName": "field_v",
+      "to": "output",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_w:I",
+      "originalName": "field_w",
+      "to": "pendingRunLength",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_x:I",
+      "originalName": "field_x",
+      "to": "inUseCount",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_y:[I",
+      "originalName": "field_y",
+      "to": "minimumCodeLengths",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_z:I",
+      "originalName": "field_z",
+      "to": "blockLength",
+      "evidence": "nk.java: Owned legacy BZIP2 decoding workspace and cursors; table arguments show H is limit and r is base, not their reversed positions in the field declarations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nl.field_E:Lkb;",
       "originalName": "field_E",
       "to": "child",
@@ -15186,6 +15501,13 @@
       "originalName": "field_j",
       "to": "pcmSamples",
       "evidence": "p.java: Constructor archive assignments and cache lookup/insert/unlink paths separate decoded PCM from resumable music samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pb.field_a:Lnk;",
+      "originalName": "field_a",
+      "to": "sharedState",
+      "evidence": "pb.java: Synchronized decoder state; successful calls release input/output references, exceptions retain them, explicit release nulls the shared state.",
       "confidence": "reviewed"
     },
     {
@@ -17048,6 +17370,20 @@
       "originalName": "field_c",
       "to": "quickChatArrow",
       "evidence": "s.java: Quick-chat menu constructors use its canvas width and attach it to submenu/custom-message rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sa.field_g:[[J",
+      "originalName": "field_g",
+      "to": "whirlpoolRoundTables",
+      "evidence": "sa.java: Eight rotated 256-entry Whirlpool substitution/mixing lookup tables generated from the S-box and GF(256) arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sa.field_h:[J",
+      "originalName": "field_h",
+      "to": "whirlpoolRoundConstants",
+      "evidence": "sa.java: Eleven-element array with zero sentinel followed by ten Whirlpool round constants assembled from table bytes.",
       "confidence": "reviewed"
     },
     {
@@ -22382,6 +22718,251 @@
       "originalName": "var8",
       "to": "request",
       "evidence": "bp.java: Reviewed lexical ordinal and resource queue keys, response header matching or block reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a(BJ[B)V#10",
+      "originalName": "var11",
+      "to": "lengthByteIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a(BJ[B)V#11",
+      "originalName": "var12",
+      "to": "lengthCarry",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a(BJ[B)V#12",
+      "originalName": "var13",
+      "to": "obfuscationControl",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a(BJ[B)V#13",
+      "originalName": "var8Lifetime1",
+      "to": "tailByte",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a(BJ[B)V#4",
+      "originalName": "var5_int",
+      "to": "inputIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a(BJ[B)V#6",
+      "originalName": "var6",
+      "to": "sourceBitGap",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a(BJ[B)V#7",
+      "originalName": "var7",
+      "to": "bufferBitOffset",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a(BJ[B)V#8",
+      "originalName": "var8",
+      "to": "alignedByte",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a(BJ[B)V#9",
+      "originalName": "var9",
+      "to": "remainingLengthBits",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a([BIZ)V#0",
+      "originalName": "fieldTemp$0",
+      "to": "overflowPaddingIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a([BIZ)V#1",
+      "originalName": "fieldTemp$1",
+      "to": "lengthPaddingIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a([BIZ)V#10",
+      "originalName": "var8",
+      "to": "obfuscationControl",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a([BIZ)V#6",
+      "originalName": "var4_int",
+      "to": "hashWordIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a([BIZ)V#8",
+      "originalName": "var5",
+      "to": "digestByteIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.a([BIZ)V#9",
+      "originalName": "var6",
+      "to": "hashWord",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.b(I)V#0",
+      "originalName": "var2",
+      "to": "lengthByteIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.b(I)V#1",
+      "originalName": "var3",
+      "to": "obfuscationControl",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.b(I)V#2",
+      "originalName": "var2Lifetime1",
+      "to": "hashWordIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#0",
+      "originalName": "dupTemp$0",
+      "to": "hashWord",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#1",
+      "originalName": "arrayValue$1",
+      "to": "blockWord",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#10",
+      "originalName": "var2Lifetime3",
+      "to": "feedForwardIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#11",
+      "originalName": "var3Lifetime1",
+      "to": "keyTransformIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#12",
+      "originalName": "var4Lifetime1",
+      "to": "unusedCipherTableStart",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#13",
+      "originalName": "var5Lifetime1",
+      "to": "cipherByteShift",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#14",
+      "originalName": "var3Lifetime1Lifetime1",
+      "to": "keyCopyIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#15",
+      "originalName": "var3Lifetime1Lifetime2",
+      "to": "cipherTransformIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#16",
+      "originalName": "var3Lifetime1Lifetime3",
+      "to": "cipherCopyIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#2",
+      "originalName": "var2",
+      "to": "blockWordIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#3",
+      "originalName": "var3",
+      "to": "inputByteIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#4",
+      "originalName": "var4",
+      "to": "keyTableIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#5",
+      "originalName": "var5",
+      "to": "keyByteShift",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#6",
+      "originalName": "var6",
+      "to": "obfuscationControl",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#7",
+      "originalName": "var7",
+      "to": "cipherTableIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#8",
+      "originalName": "var2Lifetime1",
+      "to": "initialStateIndex",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:bw.c(I)V#9",
+      "originalName": "var2Lifetime2",
+      "to": "round",
+      "evidence": "bw.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
       "confidence": "reviewed"
     },
     {
@@ -46486,6 +47067,503 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:pb.a(ILnk;)I#0",
+      "originalName": "var2",
+      "to": "value",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([BI[BII)I#0",
+      "originalName": "stackIn_2_0",
+      "to": "writtenBytes",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([BI[BII)I#2",
+      "originalName": "var5",
+      "to": "stateMonitor",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#0",
+      "originalName": "var9",
+      "to": "symbolIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#1",
+      "originalName": "dupTemp$0",
+      "to": "lengthCountIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#10",
+      "originalName": "var8Lifetime6",
+      "to": "baseCodeLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#2",
+      "originalName": "var7",
+      "to": "permutationIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#3",
+      "originalName": "var8",
+      "to": "codeLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#4",
+      "originalName": "var10",
+      "to": "canonicalCode",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#5",
+      "originalName": "var8Lifetime1",
+      "to": "baseClearIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#6",
+      "originalName": "var8Lifetime2",
+      "to": "lengthSymbolIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#7",
+      "originalName": "var8Lifetime3",
+      "to": "cumulativeLengthIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#8",
+      "originalName": "var8Lifetime4",
+      "to": "limitClearIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.a([I[I[I[BIII)V#9",
+      "originalName": "var8Lifetime5",
+      "to": "limitCodeLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#0",
+      "originalName": "dupTemp$1",
+      "to": "cumulativePosition",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#1",
+      "originalName": "dupTemp$0",
+      "to": "frequencyByte",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#10",
+      "originalName": "var9",
+      "to": "selectorCount",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#11",
+      "originalName": "var10",
+      "to": "endOfBlockSymbol",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#12",
+      "originalName": "var11",
+      "to": "selectorIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#13",
+      "originalName": "var12",
+      "to": "selectorSymbolsRemaining",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#14",
+      "originalName": "var13",
+      "to": "decodedSymbol",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#15",
+      "originalName": "var14",
+      "to": "blockLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#16",
+      "originalName": "var15",
+      "to": "runLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#17",
+      "originalName": "var16",
+      "to": "runWeight",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#18",
+      "originalName": "var17",
+      "to": "currentCodeLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#19",
+      "originalName": "var18",
+      "to": "decodeLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#2",
+      "originalName": "var1",
+      "to": "decodedByteOrBit",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#20",
+      "originalName": "var19",
+      "to": "decodeBits",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#21",
+      "originalName": "var20",
+      "to": "nextDecodeBit",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#22",
+      "originalName": "var21",
+      "to": "selectedGroup",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#23",
+      "originalName": "var22",
+      "to": "selectedMinimumLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#24",
+      "originalName": "var23",
+      "to": "selectedLimits",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#25",
+      "originalName": "var24",
+      "to": "selectedBase",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#26",
+      "originalName": "var25",
+      "to": "selectedPermutation",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#27",
+      "originalName": "var26",
+      "to": "continueBlocks",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#28",
+      "originalName": "var27_ref_byte__",
+      "to": "selectorMtfList",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#29",
+      "originalName": "var27",
+      "to": "mtfBlockIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#3",
+      "originalName": "var2",
+      "to": "minimumLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#30",
+      "originalName": "var28",
+      "to": "mtfByteOrSlot",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#31",
+      "originalName": "var29",
+      "to": "mtfIndexOrPosition",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#32",
+      "originalName": "var30",
+      "to": "mtfBaseOrPosition",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#33",
+      "originalName": "var31",
+      "to": "mtfBlock",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#34",
+      "originalName": "var32",
+      "to": "mtfSlot",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#35",
+      "originalName": "var33",
+      "to": "mtfRank",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#36",
+      "originalName": "var34",
+      "to": "shiftPosition",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#37",
+      "originalName": "var35",
+      "to": "mtfPosition",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#38",
+      "originalName": "var36",
+      "to": "selectorListReference",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#39",
+      "originalName": "var37",
+      "to": "selectorList",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#4",
+      "originalName": "var3",
+      "to": "maximumLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#5",
+      "originalName": "var4",
+      "to": "symbolOrSelectorIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#6",
+      "originalName": "var5",
+      "to": "groupBitOrUnaryCount",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#7",
+      "originalName": "var6",
+      "to": "huffmanGroupIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#8",
+      "originalName": "var7",
+      "to": "alphabetSize",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.b(Lnk;)V#9",
+      "originalName": "var8",
+      "to": "huffmanGroupCount",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.d(Lnk;)V#0",
+      "originalName": "var1",
+      "to": "byteValue",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#0",
+      "originalName": "var1",
+      "to": "nextByte",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#1",
+      "originalName": "var2",
+      "to": "pendingRunByte",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#10",
+      "originalName": "var11",
+      "to": "initialOutputRemaining",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#11",
+      "originalName": "var12",
+      "to": "blockEnd",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#12",
+      "originalName": "var13",
+      "to": "previousTotalOutput",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#13",
+      "originalName": "var14",
+      "to": "tableReference",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#14",
+      "originalName": "var15",
+      "to": "sharedTable",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#15",
+      "originalName": "var15Lifetime1",
+      "to": "activeTable",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#2",
+      "originalName": "var3",
+      "to": "pendingRunLength",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#3",
+      "originalName": "var4",
+      "to": "blockUsed",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#4",
+      "originalName": "var5",
+      "to": "currentByte",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#5",
+      "originalName": "var6",
+      "to": "traversalTable",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#6",
+      "originalName": "var7",
+      "to": "traversalIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#7",
+      "originalName": "var8",
+      "to": "output",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#8",
+      "originalName": "var9",
+      "to": "outputIndex",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pb.e(Lnk;)V#9",
+      "originalName": "var10",
+      "to": "outputRemaining",
+      "evidence": "pb.java: Reviewed BZIP2/Whirlpool algorithm loop, table, bit, traversal, run or digest role; original spelling and declaration ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:pf.<init>(Ljava/lang/String;)V#0",
       "originalName": "runtimeException",
       "to": "failure",
@@ -57336,10 +58414,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bw.a(BJ[B)V",
+      "originalName": "a",
+      "to": "updateBits",
+      "evidence": "bw.java: Adds bit count to 256-bit length and packs source bits into 512-bit compression blocks; canonical guard is nonpositive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bw.a(IIB)V",
       "originalName": "a",
       "to": "writeWatchedRoomRequest",
       "evidence": "bw.java: Changes watchedRoomId, clears the prior indexed room playerNames and writes command 11 only when the target differs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bw.a([BIZ)V",
+      "originalName": "a",
+      "to": "finishDigest",
+      "evidence": "bw.java: Pads with one bit and 256-bit length, compresses final block(s), writes 64 digest bytes at supplied offset without resetting; canonical guard true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bw.b(I)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "bw.java: Clears length/hash/cursors and first block byte; retains other block/workspace contents; canonical guard 200.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bw.c(I)V",
+      "originalName": "c",
+      "to": "compressBlock",
+      "evidence": "bw.java: Loads big-endian words, applies ten table-driven key/cipher rounds and Miyaguchi-Preneel feed-forward; canonical guard -11.",
       "confidence": "reviewed"
     },
     {
@@ -66527,6 +67633,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pb.a()V",
+      "originalName": "a",
+      "to": "releaseSharedState",
+      "evidence": "pb.java: Clears shared state; no automatic recreation exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.a(ILnk;)I",
+      "originalName": "a",
+      "to": "readBits",
+      "evidence": "pb.java: Refills MSB-first input bit buffer, advances byte counter/cursor and consumes requested bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.a(Lnk;)B",
+      "originalName": "a",
+      "to": "readBit",
+      "evidence": "pb.java: Reads one bit through the shared bit reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.a([BI[BII)I",
+      "originalName": "a",
+      "to": "decompress",
+      "evidence": "pb.java: Writes from output offset zero, input starts at supplied offset; compressed-length argument is unused; returns number of bytes written.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.a([I[I[I[BIII)V",
+      "originalName": "a",
+      "to": "buildHuffmanTables",
+      "evidence": "pb.java: Canonical code permutation, cumulative length counts and decode limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.b(Lnk;)V",
+      "originalName": "b",
+      "to": "decodeBlocks",
+      "evidence": "pb.java: 100k blocks: stripped-header framing, selectors/Huffman/MTF, RUNA/RUNB, inverse BWT and output-run emission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.c(Lnk;)B",
+      "originalName": "c",
+      "to": "readByte",
+      "evidence": "pb.java: Reads eight bits through the shared bit reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.d(Lnk;)V",
+      "originalName": "d",
+      "to": "buildSymbolMap",
+      "evidence": "pb.java: Compacts the in-use byte alphabet in increasing byte order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.e(Lnk;)V",
+      "originalName": "e",
+      "to": "emitBlock",
+      "evidence": "pb.java: Traverses inverse-BWT links, expands repeated bytes and preserves pending run/cursors when output quota is exhausted.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pd.a(Ljava/lang/String;I)Z",
       "originalName": "a",
       "to": "hasInvalidPasswordLength",
@@ -75396,6 +76565,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bw.a(BJ[B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bw.java: Adds bit count to 256-bit length and packs source bits into 512-bit compression blocks; canonical guard is nonpositive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bw.a(BJ[B)V#1",
+      "originalName": "param1",
+      "to": "bitCount",
+      "evidence": "bw.java: Adds bit count to 256-bit length and packs source bits into 512-bit compression blocks; canonical guard is nonpositive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bw.a(BJ[B)V#2",
+      "originalName": "param2",
+      "to": "input",
+      "evidence": "bw.java: Adds bit count to 256-bit length and packs source bits into 512-bit compression blocks; canonical guard is nonpositive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bw.a(IIB)V#0",
       "originalName": "param0",
       "to": "packetOpcode",
@@ -75414,6 +76604,41 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "bw.java: Changes watchedRoomId, clears the prior indexed room playerNames and writes command 11 only when the target differs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bw.a([BIZ)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "bw.java: Pads with one bit and 256-bit length, compresses final block(s), writes 64 digest bytes at supplied offset without resetting; canonical guard true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bw.a([BIZ)V#1",
+      "originalName": "param1",
+      "to": "outputOffset",
+      "evidence": "bw.java: Pads with one bit and 256-bit length, compresses final block(s), writes 64 digest bytes at supplied offset without resetting; canonical guard true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bw.a([BIZ)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "bw.java: Pads with one bit and 256-bit length, compresses final block(s), writes 64 digest bytes at supplied offset without resetting; canonical guard true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bw.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bw.java: Clears length/hash/cursors and first block byte; retains other block/workspace contents; canonical guard 200.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bw.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bw.java: Loads big-endian words, applies ten table-driven key/cipher rounds and Miyaguchi-Preneel feed-forward; canonical guard -11.",
       "confidence": "reviewed"
     },
     {
@@ -101842,6 +103067,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pb.a(ILnk;)I#0",
+      "originalName": "param0",
+      "to": "bitCount",
+      "evidence": "pb.java: Refills MSB-first input bit buffer, advances byte counter/cursor and consumes requested bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a(ILnk;)I#1",
+      "originalName": "param1",
+      "to": "state",
+      "evidence": "pb.java: Refills MSB-first input bit buffer, advances byte counter/cursor and consumes requested bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a(Lnk;)B#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "pb.java: Reads one bit through the shared bit reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([BI[BII)I#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "pb.java: Writes from output offset zero, input starts at supplied offset; compressed-length argument is unused; returns number of bytes written.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([BI[BII)I#1",
+      "originalName": "param1",
+      "to": "outputQuota",
+      "evidence": "pb.java: Writes from output offset zero, input starts at supplied offset; compressed-length argument is unused; returns number of bytes written.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([BI[BII)I#2",
+      "originalName": "param2",
+      "to": "input",
+      "evidence": "pb.java: Writes from output offset zero, input starts at supplied offset; compressed-length argument is unused; returns number of bytes written.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([BI[BII)I#3",
+      "originalName": "param3",
+      "to": "unusedCompressedLength",
+      "evidence": "pb.java: Writes from output offset zero, input starts at supplied offset; compressed-length argument is unused; returns number of bytes written.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([BI[BII)I#4",
+      "originalName": "param4",
+      "to": "inputOffset",
+      "evidence": "pb.java: Writes from output offset zero, input starts at supplied offset; compressed-length argument is unused; returns number of bytes written.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([I[I[I[BIII)V#0",
+      "originalName": "param0",
+      "to": "limits",
+      "evidence": "pb.java: Canonical code permutation, cumulative length counts and decode limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([I[I[I[BIII)V#1",
+      "originalName": "param1",
+      "to": "base",
+      "evidence": "pb.java: Canonical code permutation, cumulative length counts and decode limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([I[I[I[BIII)V#2",
+      "originalName": "param2",
+      "to": "permutation",
+      "evidence": "pb.java: Canonical code permutation, cumulative length counts and decode limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([I[I[I[BIII)V#3",
+      "originalName": "param3",
+      "to": "lengths",
+      "evidence": "pb.java: Canonical code permutation, cumulative length counts and decode limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([I[I[I[BIII)V#4",
+      "originalName": "param4",
+      "to": "minimumLength",
+      "evidence": "pb.java: Canonical code permutation, cumulative length counts and decode limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([I[I[I[BIII)V#5",
+      "originalName": "param5",
+      "to": "maximumLength",
+      "evidence": "pb.java: Canonical code permutation, cumulative length counts and decode limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a([I[I[I[BIII)V#6",
+      "originalName": "param6",
+      "to": "alphabetSize",
+      "evidence": "pb.java: Canonical code permutation, cumulative length counts and decode limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.b(Lnk;)V#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "pb.java: 100k blocks: stripped-header framing, selectors/Huffman/MTF, RUNA/RUNB, inverse BWT and output-run emission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.c(Lnk;)B#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "pb.java: Reads eight bits through the shared bit reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.d(Lnk;)V#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "pb.java: Compacts the in-use byte alphabet in increasing byte order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.e(Lnk;)V#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "pb.java: Traverses inverse-BWT links, expands repeated bytes and preserves pending run/cursors when output quota is exhausted.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pd.a(Ljava/lang/String;I)Z#0",
       "originalName": "param0",
       "to": "password",
@@ -114842,10 +116200,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "8fbdc976d48e91e356469336afe58f9e55fede6dd65714b7eb9165d8f73c9279",
+      "build-armiesofgielinor-rules.mjs": "15f0fc669d5f9363f2586f08b59c01859a931e1de094b1bd2c58d5c7aa0f256a",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "307e2c33f50a72f73a0187f9781735d676899d37308318259479900c97c031c6",
+      "tests/test-armiesofgielinor-core.mjs": "78e9a80801dbe4037ca7824dbda3fd53b5693b82544155f5d3ed0fe4e18412a1",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
