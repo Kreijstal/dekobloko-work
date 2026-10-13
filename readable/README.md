@@ -98,6 +98,21 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+ModalDialogHost/ModalDialog now identify stack ownership, top-dialog opacity,
+deferred active-child refresh and pruning. ResizableModalDialog and
+ContentTransitionDialog name centered size easing, completion callbacks,
+content alpha and replacement stages. GridWidgetContainer names cumulative
+weights, row-major ownership, grow/shrink/alignment bits, insets and focus
+strides. LabeledWidgetContainer and DropTargetWidgetContainer identify label
+geometry, tooltip hover forwarding and drop callback precedence/lifetime.
+Independent fixtures cover all 256 grid flag bytes, all dialog alpha steps,
+real composite pixels, content transition ticks, font glyph coordinates and
+callback failures. Pinned quirks remain: stale input after snap pruning,
+nonzero-origin fading coordinates, zero-duration content resize stalls and
+replacement loss when finishing an active resize. The generated guide records
+these behaviors; original-JAR equivalence and a full rendered dialog session
+remain unverified.
+
 Widget containers now name single-child, sparse-array and deque ownership,
 focus traversal, translated pointer routing, render-layer reduction and layout
 refresh. Clipped/alpha/drag wrappers identify viewport bounds, opacity, press
@@ -248,7 +263,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 369,155 raw/named checks agree. Controlled cipher output does not constitute
+All 377,277 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -615,7 +630,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 293 reviewed classes around battlefield state, units, map
+The current pass names 302 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
