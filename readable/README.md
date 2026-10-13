@@ -73,6 +73,8 @@ CachedArchiveSource, ResourceRequest, CacheIoRequest and ArchiveNetworkRequest
 expose cached/remote validation and request lifecycle. ArchiveFetchClient,
 ArchiveNetworkClient and BufferedSocket expose resource transport; CacheIoWorker,
 SecondaryNodeQueue and FileCacheStore expose queued cache operations and sectors.
+BoundedFile/BufferedFile and PlatformServices/PlatformTask expose local file
+limits, cache coherence, task records and the execution service.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -408,7 +410,7 @@ Native synthetic fixtures exercise version5/6/7 metadata, sparse/large IDs,
 name/digest flags, bad CRC rejection, progress/unavailable data, two-chunk group
 retrieval, all cache-policy/discard combinations, raw/gzip input, byte ownership,
 duplicate/colliding keys and sprite loading through ResourceArchive. Live
-network/disk providers, XTEA archive retrieval, bzip decoding, index digest
+network providers, XTEA archive retrieval, bzip decoding, index digest
 authentication, malformed recovery and full image-backed menus remain unverified.
 
 CachedArchiveSource checks group CRCs, optional digests and cached revision
@@ -437,10 +439,39 @@ background promotion and two-pass cleanup. They check secondary FIFO transfer,
 queue limits/counts, result readiness/progress and queued-write forwarding.
 In-memory stream fixtures run the real network client across raw/gzip response
 blocks, fragmented headers/payloads, continuation boundaries and XOR decoding;
-they capture request bytes in the output ring. Socket construction, writer
-scheduling, disk-sector I/O and worker execution are bypassed. Live networking,
-reconnect/control packets, transport timeout/failure handling, digest
+they capture request bytes in the output ring. Those stream/scheduling fixtures
+bypass socket construction, writer scheduling, disk-sector I/O and worker
+execution; the file/worker fixtures below cover controlled local I/O. Live
+networking, reconnect/control packets, transport timeout/failure handling, digest
 authentication and complete startup remain unverified.
+
+BoundedFile wraps RandomAccessFile, tracks its position and applies a byte limit.
+An overflowing write stores a marker beyond that limit and throws EOF; reopening
+an oversized path removes the prior file. BufferedFile tracks logical versus
+physical lengths and positions, overlays pending writes on reads, refreshes
+read-cache overlaps on direct/flush writes and fills sparse gaps with zeros.
+Native randomized fixtures compare reads and persisted bytes to an independent
+byte-array model across zero/small/larger buffers and flush/seek/EOF boundaries.
+All fixture files live inside the exporter's temporary directory.
+
+An independent RandomAccessFile reader checks six-byte cache index records,
+520-byte sector headers/payloads, short/large IDs, growth/shrink, reopen and
+corrupted entry/chunk/store/next-sector/length/truncated data rejection. The
+pinned source preserves a large-ID boundary defect: when the final remaining
+chunk is511 or512 bytes, it terminates the chain after510 bytes and subsequent
+read returns null. An empty write to a fresh, unallocated cache returns success
+but reads null. Tests record these behaviors without correcting the source;
+original-JAR equivalence remains unverified.
+
+PlatformTask stores operation/arguments/payload, result and volatile status0
+pending,1 success,2 failure. PlatformServices runs the FIFO dispatcher, starts
+daemon threads, resolves reflection tasks and owns other platform operations.
+Native fixtures bypass its environment/cache-opening constructor, then exercise
+the real dispatcher, success/failure tasks and real CacheIoWorker construction.
+The worker writes/reads temporary cache entries, returns null for missing data,
+exposes persisted sectors and stops and joins on shutdown. Real sockets, desktop and
+native operations, deferred I/O failures, crash/interruption recovery and full
+startup remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

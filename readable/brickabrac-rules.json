@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 17,
+  "version": 18,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -493,6 +493,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jg",
+      "originalName": "jg",
+      "to": "BufferedFile",
+      "evidence": "jg.java: Logical/physical file lengths and positions with overlapping read/write caches, flush, sparse-gap reads and exact-length input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jp",
       "originalName": "jp",
       "to": "RgbSprite",
@@ -780,6 +787,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ql",
+      "originalName": "ql",
+      "to": "PlatformTask",
+      "evidence": "ql.java: Linked task record with operation, two integer arguments, payload, volatile result and pending/success/failure status0/1/2.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ra",
       "originalName": "ra",
       "to": "AudioMixer",
@@ -794,6 +808,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rn",
+      "originalName": "rn",
+      "to": "BoundedFile",
+      "evidence": "rn.java: RandomAccessFile wrapper with tracked position and length limit; overflow writes a marker beyond the limit and oversized files are deleted on reopen.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rp",
       "originalName": "rp",
       "to": "MainMenuScreen",
@@ -805,6 +826,13 @@
       "originalName": "si",
       "to": "IntrusiveHashTable",
       "evidence": "si.java: Sentinel buckets keyed by long values, intrusive insertion/lookup and shared bucket traversal cursor. Static input/asset helpers retain their separate roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tg",
+      "originalName": "tg",
+      "to": "PlatformServices",
+      "evidence": "tg.java: Queued platform tasks for daemon threads, sockets, URLs, reflection and desktop/native operations; also owns cache files and environment metadata.",
       "confidence": "reviewed"
     },
     {
@@ -2180,6 +2208,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jg.field_b:I",
+      "originalName": "field_b",
+      "to": "writeBufferLength",
+      "evidence": "jg.java: Valid pending byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_e:[B",
+      "originalName": "field_e",
+      "to": "writeBuffer",
+      "evidence": "jg.java: Pending buffered bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_f:I",
+      "originalName": "field_f",
+      "to": "readBufferLength",
+      "evidence": "jg.java: Valid read cache byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_g:[B",
+      "originalName": "field_g",
+      "to": "readBuffer",
+      "evidence": "jg.java: Read cache bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_h:J",
+      "originalName": "field_h",
+      "to": "physicalLength",
+      "evidence": "jg.java: Largest known physically written length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_i:J",
+      "originalName": "field_i",
+      "to": "readBufferStart",
+      "evidence": "jg.java: Read cache offset, -1 initially.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_j:J",
+      "originalName": "field_j",
+      "to": "filePosition",
+      "evidence": "jg.java: Known underlying position, -1 after I/O failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_l:J",
+      "originalName": "field_l",
+      "to": "position",
+      "evidence": "jg.java: Logical read/write position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_m:J",
+      "originalName": "field_m",
+      "to": "length",
+      "evidence": "jg.java: Logical length including buffered writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_n:Lrn;",
+      "originalName": "field_n",
+      "to": "file",
+      "evidence": "jg.java: Bounded underlying file.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_o:J",
+      "originalName": "field_o",
+      "to": "writeBufferStart",
+      "evidence": "jg.java: Pending write offset, -1 when empty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jh.field_b:[I",
       "originalName": "field_b",
       "to": "decodedSpriteWidths",
@@ -3538,6 +3643,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ql.field_a:Lql;",
+      "originalName": "field_a",
+      "to": "next",
+      "evidence": "ql.java: Queued task successor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_b:Ljava/lang/Object;",
+      "originalName": "field_b",
+      "to": "payload",
+      "evidence": "ql.java: Task-specific object argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_c:I",
+      "originalName": "field_c",
+      "to": "argumentTwo",
+      "evidence": "ql.java: Second task-specific integer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_d:I",
+      "originalName": "field_d",
+      "to": "operation",
+      "evidence": "ql.java: Task dispatch code;2 starts thread,8/9 look up method/field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_e:Ljava/lang/Object;",
+      "originalName": "field_e",
+      "to": "result",
+      "evidence": "ql.java: Volatile result published before status1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_f:I",
+      "originalName": "field_f",
+      "to": "status",
+      "evidence": "ql.java: Volatile0 pending,1 success,2 caught failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_g:I",
+      "originalName": "field_g",
+      "to": "argumentOne",
+      "evidence": "ql.java: Task-specific integer, including thread priority/socket port.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qn.field_p:Ljava/lang/String;",
       "originalName": "field_p",
       "to": "messageText",
@@ -3650,6 +3804,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rn.field_f:Ljava/io/RandomAccessFile;",
+      "originalName": "field_f",
+      "to": "file",
+      "evidence": "rn.java: Underlying handle, nulled on close.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rn.field_j:J",
+      "originalName": "field_j",
+      "to": "position",
+      "evidence": "rn.java: Tracked underlying read/write/seek position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rn.field_k:J",
+      "originalName": "field_k",
+      "to": "maxLength",
+      "evidence": "rn.java: -1 constructor limit becomes Long.MAX_VALUE; writes beyond limit create overflow marker.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rp.field_v:Lvl;",
       "originalName": "field_v",
       "to": "tooltipSprites",
@@ -3724,6 +3899,97 @@
       "originalName": "field_a",
       "to": "javaKeyCodeMap",
       "evidence": "tf.java: Java key-code translation table; bit7 suppresses press events and is stripped for releases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tf.field_b:[B",
+      "originalName": "field_b",
+      "to": "cacheSectorScratch",
+      "evidence": "tf.java: Shared520-byte sector/index scratch under data-file lock.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "osNameLowercase",
+      "evidence": "tg.java: Lowercase OS name used by platform helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_d:Lql;",
+      "originalName": "field_d",
+      "to": "taskTail",
+      "evidence": "tg.java: FIFO last pending task.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_e:Ljava/lang/String;",
+      "originalName": "field_e",
+      "to": "userDirectory",
+      "evidence": "tg.java: User home with trailing slash, ~/ fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_g:Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "javaVendor",
+      "evidence": "tg.java: Java vendor property, Unknown fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_h:Ljava/lang/String;",
+      "originalName": "field_h",
+      "to": "osName",
+      "evidence": "tg.java: OS name property, Unknown fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_i:Z",
+      "originalName": "field_i",
+      "to": "privilegedMode",
+      "evidence": "tg.java: Constructor option gates platform operations and bootstrap reflection restrictions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_j:Ljava/lang/Thread;",
+      "originalName": "field_j",
+      "to": "thread",
+      "evidence": "tg.java: Platform task consumer joined on shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_l:Z",
+      "originalName": "field_l",
+      "to": "shutdownRequested",
+      "evidence": "tg.java: Consumer exits instead of draining queued tasks when true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_o:Ljava/lang/String;",
+      "originalName": "field_o",
+      "to": "javaVersion",
+      "evidence": "tg.java: Java version property,1.1 initial fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_p:Ljava/awt/EventQueue;",
+      "originalName": "field_p",
+      "to": "eventQueue",
+      "evidence": "tg.java: AWT system event queue, optionally available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_r:Z",
+      "originalName": "field_r",
+      "to": "microsoftJvm",
+      "evidence": "tg.java: Detected Microsoft JVM/native service branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_v:Lql;",
+      "originalName": "field_v",
+      "to": "taskHead",
+      "evidence": "tg.java: FIFO first pending task.",
       "confidence": "reviewed"
     },
     {
@@ -4875,6 +5141,146 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:jg.a(III[B)V#10",
+      "originalName": "var9_int",
+      "to": "cachedReadCount",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#11",
+      "originalName": "var9",
+      "to": "overlapStart",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#12",
+      "originalName": "var11",
+      "to": "overlapEnd",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#13",
+      "originalName": "var13",
+      "to": "overlapLength",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#14",
+      "originalName": "var14",
+      "to": "clientBranchFlag",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#16",
+      "originalName": "var9_intLifetime1",
+      "to": "directReadCount",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#17",
+      "originalName": "var9_intLifetime2",
+      "to": "gapEndOffset",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#18",
+      "originalName": "var9_intLifetime1Lifetime1",
+      "to": "refillReadCount",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#5",
+      "originalName": "var5_long",
+      "to": "readStart",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#8",
+      "originalName": "var7",
+      "to": "targetStart",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a(III[B)V#9",
+      "originalName": "var8",
+      "to": "requestedLength",
+      "evidence": "jg.java: Reviewed exact-read cache overlay and sparse-gap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a([BIII)V#10",
+      "originalName": "var10",
+      "to": "clientBranchFlag",
+      "evidence": "jg.java: Reviewed buffered/direct-write cache overlap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a([BIII)V#4",
+      "originalName": "var5_int",
+      "to": "bufferedCount",
+      "evidence": "jg.java: Reviewed buffered/direct-write cache overlap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a([BIII)V#5",
+      "originalName": "var5_long",
+      "to": "overlapStart",
+      "evidence": "jg.java: Reviewed buffered/direct-write cache overlap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a([BIII)V#8",
+      "originalName": "var7",
+      "to": "overlapEnd",
+      "evidence": "jg.java: Reviewed buffered/direct-write cache overlap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.a([BIII)V#9",
+      "originalName": "var9",
+      "to": "overlapLength",
+      "evidence": "jg.java: Reviewed buffered/direct-write cache overlap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.c(I)V#0",
+      "originalName": "var2",
+      "to": "overlapStart",
+      "evidence": "jg.java: Reviewed flush read-cache overlap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.c(I)V#1",
+      "originalName": "var4",
+      "to": "overlapEnd",
+      "evidence": "jg.java: Reviewed flush read-cache overlap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.c(I)V#2",
+      "originalName": "var6",
+      "to": "overlapLength",
+      "evidence": "jg.java: Reviewed flush read-cache overlap declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jg.c(I)V#3",
+      "originalName": "var7",
+      "to": "clientBranchFlag",
+      "evidence": "jg.java: Reviewed flush read-cache overlap declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:jl.a(B)Z#1",
       "originalName": "var1_ref",
       "to": "keyboardMonitor",
@@ -5649,6 +6055,160 @@
       "originalName": "fieldTemp$0",
       "to": "nextRemainingTicks",
       "evidence": "ul.java: Decremented lifetime used to test whether the popup is still alive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#0",
+      "originalName": "var16",
+      "to": "sectorByteIndex",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#10",
+      "originalName": "var9",
+      "to": "payloadLength",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#11",
+      "originalName": "var10",
+      "to": "headerEntryId",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#12",
+      "originalName": "var11",
+      "to": "headerChunkIndex",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#13",
+      "originalName": "var12",
+      "to": "nextSector",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#14",
+      "originalName": "var13",
+      "to": "headerStoreId",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#15",
+      "originalName": "var14",
+      "to": "headerSize",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#16",
+      "originalName": "var15",
+      "to": "sectorDataEnd",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#18",
+      "originalName": "var18",
+      "to": "clientBranchFlag",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#4",
+      "originalName": "var4_int",
+      "to": "entryLength",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#6",
+      "originalName": "var5",
+      "to": "sector",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#7",
+      "originalName": "var6",
+      "to": "data",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#8",
+      "originalName": "var7",
+      "to": "bytesRead",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a(II)[B#9",
+      "originalName": "var8",
+      "to": "chunkIndex",
+      "evidence": "ve.java: Reviewed cache-sector input declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a([BIZZI)Z#10",
+      "originalName": "var8",
+      "to": "bytesWritten",
+      "evidence": "ve.java: Reviewed sector-chain write declaration and data flow, including reused entry/length local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a([BIZZI)Z#11",
+      "originalName": "var9",
+      "to": "chunkIndex",
+      "evidence": "ve.java: Reviewed sector-chain write declaration and data flow, including reused entry/length local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a([BIZZI)Z#12",
+      "originalName": "var10",
+      "to": "nextSector",
+      "evidence": "ve.java: Reviewed sector-chain write declaration and data flow, including reused entry/length local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a([BIZZI)Z#13",
+      "originalName": "var11",
+      "to": "headerEntryOrPayloadLength",
+      "evidence": "ve.java: Reviewed sector-chain write declaration and data flow, including reused entry/length local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a([BIZZI)Z#14",
+      "originalName": "var12",
+      "to": "headerChunkIndex",
+      "evidence": "ve.java: Reviewed sector-chain write declaration and data flow, including reused entry/length local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a([BIZZI)Z#15",
+      "originalName": "var13",
+      "to": "headerStoreId",
+      "evidence": "ve.java: Reviewed sector-chain write declaration and data flow, including reused entry/length local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a([BIZZI)Z#17",
+      "originalName": "var16",
+      "to": "clientBranchFlag",
+      "evidence": "ve.java: Reviewed sector-chain write declaration and data flow, including reused entry/length local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ve.a([BIZZI)Z#8",
+      "originalName": "var7_int",
+      "to": "sector",
+      "evidence": "ve.java: Reviewed sector-chain write declaration and data flow, including reused entry/length local.",
       "confidence": "reviewed"
     },
     {
@@ -6937,6 +7497,62 @@
       "originalName": "d",
       "to": "pushRaster",
       "evidence": "jf.java: Reuses or allocates snapshot and captures current target/dimensions/clip; guard -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(B)J",
+      "originalName": "a",
+      "to": "length",
+      "evidence": "jg.java: Logical length including pending writes; guard above20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(III[B)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "jg.java: Exact-length read with read-cache reuse, write-cache overlays and sparse zeros; guard above116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(IJ)V",
+      "originalName": "a",
+      "to": "seek",
+      "evidence": "jg.java: Sets logical position, rejects positions below supplied minimum0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(Z)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "jg.java: Flushes and closes file; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a([BB)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "jg.java: Reads entire target; guard -29.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a([BIII)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "jg.java: Updates logical length, buffers/flushes or writes directly and refreshes overlapping read cache; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.b(I)V",
+      "originalName": "b",
+      "to": "refillReadBuffer",
+      "evidence": "jg.java: Seeks/reads underlying file into cache; guard200000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.c(I)V",
+      "originalName": "c",
+      "to": "flush",
+      "evidence": "jg.java: Writes pending bytes and refreshes read-cache overlap; guard -1.",
       "confidence": "reviewed"
     },
     {
@@ -8830,6 +9446,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rn.a(IB[BI)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "rn.java: Writes range or overflow marker/EOF; position update guard at most -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(IJ)V",
+      "originalName": "a",
+      "to": "seek",
+      "evidence": "rn.java: Seeks underlying handle and tracks position; guard at most -10 avoids unrelated static mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(I[BIB)I",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "rn.java: Reads range, returns count/EOF and advances tracked position; guard at least102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.c(I)V",
+      "originalName": "c",
+      "to": "close",
+      "evidence": "rn.java: Closes/nulls handle; guard81 has valid arithmetic sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.d(I)J",
+      "originalName": "d",
+      "to": "length",
+      "evidence": "rn.java: Underlying actual file length.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rp.a(II)I",
       "originalName": "a",
       "to": "getButtonRight",
@@ -8939,6 +9590,41 @@
       "originalName": "a",
       "to": "decodeLevelBytes",
       "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(ILjava/lang/Class;Ljava/lang/String;)Lql;",
+      "originalName": "a",
+      "to": "lookupField",
+      "evidence": "tg.java: Enqueues operation9 declared-field lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(ILjava/lang/Class;[Ljava/lang/Class;Ljava/lang/String;)Lql;",
+      "originalName": "a",
+      "to": "lookupMethod",
+      "evidence": "tg.java: Enqueues operation8 declared-method lookup; guard23311.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(ILjava/lang/Runnable;B)Lql;",
+      "originalName": "a",
+      "to": "startThread",
+      "evidence": "tg.java: Enqueues operation2: daemon thread started then priority assigned; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(Z)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "tg.java: Signals stop, joins consumer and closes retained cache files; true argument required to stop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(ZILjava/lang/Object;II)Lql;",
+      "originalName": "a",
+      "to": "enqueue",
+      "evidence": "tg.java: Enqueues FIFO task and notifies consumer; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -13265,6 +13951,139 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "jf.java: Reuses or allocates snapshot and captures current target/dimensions/clip; guard -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.<init>(Lrn;II)V#0",
+      "originalName": "param0",
+      "to": "file",
+      "evidence": "jg.java: Retains underlying file and allocates read/write buffers, tracks initial lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.<init>(Lrn;II)V#1",
+      "originalName": "param1",
+      "to": "readBufferSize",
+      "evidence": "jg.java: Retains underlying file and allocates read/write buffers, tracks initial lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.<init>(Lrn;II)V#2",
+      "originalName": "param2",
+      "to": "writeBufferSize",
+      "evidence": "jg.java: Retains underlying file and allocates read/write buffers, tracks initial lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(B)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jg.java: Logical length including pending writes; guard above20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(III[B)V#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "jg.java: Exact-length read with read-cache reuse, write-cache overlays and sparse zeros; guard above116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(III[B)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "jg.java: Exact-length read with read-cache reuse, write-cache overlays and sparse zeros; guard above116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(III[B)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "jg.java: Exact-length read with read-cache reuse, write-cache overlays and sparse zeros; guard above116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(III[B)V#3",
+      "originalName": "param3",
+      "to": "data",
+      "evidence": "jg.java: Exact-length read with read-cache reuse, write-cache overlays and sparse zeros; guard above116.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(IJ)V#0",
+      "originalName": "param0",
+      "to": "minimumPosition",
+      "evidence": "jg.java: Sets logical position, rejects positions below supplied minimum0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(IJ)V#1",
+      "originalName": "param1",
+      "to": "position",
+      "evidence": "jg.java: Sets logical position, rejects positions below supplied minimum0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jg.java: Flushes and closes file; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a([BB)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "jg.java: Reads entire target; guard -29.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a([BB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "jg.java: Reads entire target; guard -29.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a([BIII)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "jg.java: Updates logical length, buffers/flushes or writes directly and refreshes overlapping read cache; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a([BIII)V#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "jg.java: Updates logical length, buffers/flushes or writes directly and refreshes overlapping read cache; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a([BIII)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "jg.java: Updates logical length, buffers/flushes or writes directly and refreshes overlapping read cache; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.a([BIII)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "jg.java: Updates logical length, buffers/flushes or writes directly and refreshes overlapping read cache; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jg.java: Seeks/reads underlying file into cache; guard200000000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jg.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jg.java: Writes pending bytes and refreshes read-cache overlap; guard -1.",
       "confidence": "reviewed"
     },
     {
@@ -17741,10 +18560,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rn.<init>(Ljava/io/File;Ljava/lang/String;J)V#0",
+      "originalName": "param0",
+      "to": "path",
+      "evidence": "rn.java: Opens file, removes oversized prior file, normalizes -1 limit and seeks0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.<init>(Ljava/io/File;Ljava/lang/String;J)V#1",
+      "originalName": "param1",
+      "to": "mode",
+      "evidence": "rn.java: Opens file, removes oversized prior file, normalizes -1 limit and seeks0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.<init>(Ljava/io/File;Ljava/lang/String;J)V#2",
+      "originalName": "param2",
+      "to": "maxLength",
+      "evidence": "rn.java: Opens file, removes oversized prior file, normalizes -1 limit and seeks0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rn.a(I)V#0",
       "originalName": "param0",
       "to": "keyCodeFor57",
       "evidence": "rn.java: Applies original punctuation mapping overrides, including supplied key code mapping to57; normal argument59.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(IB[BI)V#0",
+      "originalName": "param0",
+      "to": "offset",
+      "evidence": "rn.java: Writes range or overflow marker/EOF; position update guard at most -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(IB[BI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "rn.java: Writes range or overflow marker/EOF; position update guard at most -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(IB[BI)V#2",
+      "originalName": "param2",
+      "to": "data",
+      "evidence": "rn.java: Writes range or overflow marker/EOF; position update guard at most -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(IB[BI)V#3",
+      "originalName": "param3",
+      "to": "length",
+      "evidence": "rn.java: Writes range or overflow marker/EOF; position update guard at most -99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(IJ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rn.java: Seeks underlying handle and tracks position; guard at most -10 avoids unrelated static mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(IJ)V#1",
+      "originalName": "param1",
+      "to": "position",
+      "evidence": "rn.java: Seeks underlying handle and tracks position; guard at most -10 avoids unrelated static mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(I[BIB)I#0",
+      "originalName": "param0",
+      "to": "offset",
+      "evidence": "rn.java: Reads range, returns count/EOF and advances tracked position; guard at least102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(I[BIB)I#1",
+      "originalName": "param1",
+      "to": "data",
+      "evidence": "rn.java: Reads range, returns count/EOF and advances tracked position; guard at least102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(I[BIB)I#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "rn.java: Reads range, returns count/EOF and advances tracked position; guard at least102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(I[BIB)I#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "rn.java: Reads range, returns count/EOF and advances tracked position; guard at least102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rn.java: Closes/nulls handle; guard81 has valid arithmetic sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.d(I)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rn.java: Underlying actual file length.",
       "confidence": "reviewed"
     },
     {
@@ -17983,6 +18907,118 @@
       "originalName": "param5",
       "to": "obfuscationGuard",
       "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Class;Ljava/lang/String;)Lql;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tg.java: Enqueues operation9 declared-field lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Class;Ljava/lang/String;)Lql;#1",
+      "originalName": "param1",
+      "to": "owner",
+      "evidence": "tg.java: Enqueues operation9 declared-field lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Class;Ljava/lang/String;)Lql;#2",
+      "originalName": "param2",
+      "to": "name",
+      "evidence": "tg.java: Enqueues operation9 declared-field lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Class;[Ljava/lang/Class;Ljava/lang/String;)Lql;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tg.java: Enqueues operation8 declared-method lookup; guard23311.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Class;[Ljava/lang/Class;Ljava/lang/String;)Lql;#1",
+      "originalName": "param1",
+      "to": "owner",
+      "evidence": "tg.java: Enqueues operation8 declared-method lookup; guard23311.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Class;[Ljava/lang/Class;Ljava/lang/String;)Lql;#2",
+      "originalName": "param2",
+      "to": "parameterTypes",
+      "evidence": "tg.java: Enqueues operation8 declared-method lookup; guard23311.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Class;[Ljava/lang/Class;Ljava/lang/String;)Lql;#3",
+      "originalName": "param3",
+      "to": "name",
+      "evidence": "tg.java: Enqueues operation8 declared-method lookup; guard23311.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Runnable;B)Lql;#0",
+      "originalName": "param0",
+      "to": "priority",
+      "evidence": "tg.java: Enqueues operation2: daemon thread started then priority assigned; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Runnable;B)Lql;#1",
+      "originalName": "param1",
+      "to": "runnable",
+      "evidence": "tg.java: Enqueues operation2: daemon thread started then priority assigned; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ILjava/lang/Runnable;B)Lql;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "tg.java: Enqueues operation2: daemon thread started then priority assigned; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(Z)V#0",
+      "originalName": "param0",
+      "to": "shutdownRequested",
+      "evidence": "tg.java: Signals stop, joins consumer and closes retained cache files; true argument required to stop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ZILjava/lang/Object;II)Lql;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tg.java: Enqueues FIFO task and notifies consumer; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ZILjava/lang/Object;II)Lql;#1",
+      "originalName": "param1",
+      "to": "argumentTwo",
+      "evidence": "tg.java: Enqueues FIFO task and notifies consumer; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ZILjava/lang/Object;II)Lql;#2",
+      "originalName": "param2",
+      "to": "payload",
+      "evidence": "tg.java: Enqueues FIFO task and notifies consumer; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ZILjava/lang/Object;II)Lql;#3",
+      "originalName": "param3",
+      "to": "operation",
+      "evidence": "tg.java: Enqueues FIFO task and notifies consumer; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tg.a(ZILjava/lang/Object;II)Lql;#4",
+      "originalName": "param4",
+      "to": "argumentOne",
+      "evidence": "tg.java: Enqueues FIFO task and notifies consumer; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -20059,9 +21095,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "ff21602a3b8c8948f58fa9c678acfb87f3589ddd2bba9f4a5ec36b641d498617",
+      "build-brickabrac-rules.mjs": "0c8acbd4c7a0fe61378109edbd6964fa2aeeaee320fec053a29748c9f7349067",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "f91d6128f611c2ea3e043a6fbabaf7d9a3b46ae8bd1facde9cae6d769434d0fd",
+      "tests/test-brickabrac-core.mjs": "a414a4b51cb16d4b0ff7f86177b15a9f79ea641fdb3b0b7d2dc48b12e928167a",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
