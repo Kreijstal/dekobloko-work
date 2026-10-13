@@ -98,6 +98,16 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+SpriteDropdownMenu/SpriteDropdownControl/SpriteScrollBar now name popup and
+control bounds, option selection, hover/input state, clipped layout, axis ranges
+and repeating arrows; SpriteControlNode names the empty intrusive ancestry.
+Native fixtures construct fonts/sprites and check size, inclusive row/control
+hits, open-select-close, reset/retention and scrollbar repeat/clamp behavior.
+Clip-edge fallback sizes, overlapping row boundaries and negative offset clamps
+are preserved. Copy/quarter-turn helpers expose independent pixel ownership and
+crop geometry. Full frame/text/scrollbar pixels, malformed assets/options and
+live menu integration remain unverified.
+
 NetworkGameShell now names applet/server configuration, packet acceptance and
 payload-length setup, shared routing, staged assets and account UI actions.
 BoundedUrlRequest names URL-stream/raw-socket fallback, worker state, retained
@@ -347,7 +357,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 453,051 raw/named checks agree. Controlled cipher output does not constitute
+All 453,409 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -714,7 +724,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 354 reviewed classes around battlefield state, units, map
+The current pass names 358 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
