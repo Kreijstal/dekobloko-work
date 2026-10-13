@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 349,858 raw/named checks agree. Controlled cipher output does not constitute
+All 356,300 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -534,6 +534,25 @@ rounding/sign extension from binary and coverage blending. Binary explicit-alpha
 drawing ignores optional scanline masks. Production font loading, locale-specific
 case conversion, concurrent drawing and complete UI frame rendering remain unverified.
 
+TextLayout, BitmapTextLayout and TextLineLayout now name line bounds, caret X
+positions, midpoint hit tests, source-index mapping and cached layout inputs.
+TextWidgetPainter and BitmapTextWidgetPainter name font/style/padding, widget
+text/layout/content offsets, dimensions, pointer lookup, caret and selection
+operations. Native fixtures inspect geometry/cache identities, all alignment
+combinations, markup positions, style copying, translated pointer indices and
+recorded glyph positions. Caret/selection fixtures use actual raster primitives
+and compare every destination pixel, including clip restoration.
+
+Pinned source quirks remain: single-line caches omit coordinates, null text can
+leave an identical retry without lines, centered layout omits cachedText updates,
+and distributed geometry mutates its cache key while using the original row step.
+Wrapped geometry differs from rendered alignment and omits removed break spaces.
+Failed layout can commit keys before lines exist; failed drawing retains a pushed
+clip. Second-line selection uses its bottom directly as rectangle height. These
+are source/fixture observations, not proof about the original gamepack. Full
+editable-widget input, clickable links and production widget rendering remain
+unverified.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -566,7 +585,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 266 reviewed classes around battlefield state, units, map
+The current pass names 271 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
