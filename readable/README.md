@@ -75,6 +75,9 @@ ArchiveNetworkClient and BufferedSocket expose resource transport; CacheIoWorker
 SecondaryNodeQueue and FileCacheStore expose queued cache operations and sectors.
 BoundedFile/BufferedFile and PlatformServices/PlatformTask expose local file
 limits, cache coherence, task records and the execution service.
+AppletGameShell, GameConnectionShell and InteractiveGameClient expose the client
+loop and game callbacks. GameClock/NanoGameClock, MonotonicTime and PixelBlockEffect
+expose cadence, backward wall-clock compensation and screen pixelation.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -472,6 +475,32 @@ The worker writes/reads temporary cache entries, returns null for missing data,
 exposes persisted sectors and stops and joins on shutdown. Real sockets, desktop and
 native operations, deferred I/O failures, crash/interruption recovery and full
 startup remain unverified.
+
+The applet shell runs the clock's due simulation ticks before one render call,
+records separate32-slot tick/render histories and snapshots focus at tick start.
+Its computed render rate is a callback-rate estimate, not presented FPS.
+NanoGameClock advances at least one tick, caps catch-up at10 and aligns a late
+deadline after exhausting that cap. It filters deltas outside +/-5 seconds;
+although the ring has10 slots, the pinned source's sample count remains1.
+MonotonicTime adds compensation when the wall clock moves backward.
+
+Brick's game layer draws the outgoing screen for transition ticks0..15 and the
+incoming screen for16..31, pixelating each with increasing/decreasing blocks.
+At update32 it commits the pending screen, resets transition timing and restores
+input. Screen key callbacks take character, guard, keyCode; earlier naming had
+the two integers reversed. The corrected names match client guard106 and menu
+Escape13. The underlying calling convention and behavior are preserved.
+
+Native probes now load the actual BrickABrac class instead of the former client
+flag shim. Removing the shim preserved the prior182017-check trace. Controlled
+screens exercise the real render/update/key controller through every transition
+step, commit, input gating/restoration and inactive incoming/outgoing gameplay
+routes. The inactive gameplay objects lack a match, so incorrect background
+update routing would fail. Separate probes check clock arithmetic/sample state,
+wall rollback, tick/render ring wrap, focus and independent pixel-block output.
+Client Applet construction/bootstrap, active gameplay, sound devices and desktop
+presentation remain bypassed; presented FPS, complete gameplay, startup and phone
+compatibility remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 18,
+  "version": 19,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -304,6 +304,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cg",
+      "originalName": "cg",
+      "to": "NanoGameClock",
+      "evidence": "cg.java: Nanosecond cadence, delta sampling and bounded ten-cycle catch-up. Unrelated static helpers keep separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cl",
       "originalName": "cl",
       "to": "BrickMotionPath",
@@ -329,6 +336,13 @@
       "originalName": "dh",
       "to": "TextFont",
       "evidence": "dh.java: Glyph advances/offsets/dimensions, baseline metrics, optional kerning and inline sprites, rich-text measurement/wrapping and text drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dj",
+      "originalName": "dj",
+      "to": "GameClock",
+      "evidence": "dj.java: Reset, sleep-delay and cycle-advance contract for the main client loop.",
       "confidence": "reviewed"
     },
     {
@@ -500,6 +514,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jn",
+      "originalName": "jn",
+      "to": "PixelBlockEffect",
+      "evidence": "jn.java: Whole-raster sampled block fill, optional tint weight and right/bottom alignment; used by32-tick screen transitions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jp",
       "originalName": "jp",
       "to": "RgbSprite",
@@ -511,6 +532,13 @@
       "originalName": "jq",
       "to": "CachedArchiveSource",
       "evidence": "jq.java: ArchiveSource coordinating cached/remote index and group requests, CRC/digest/revision checks, retries, background scans and completed-request cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ke",
+      "originalName": "ke",
+      "to": "AppletGameShell",
+      "evidence": "ke.java: Applet/AWT lifecycle, canvas management and clock-driven loop separating simulation ticks from render frames.",
       "confidence": "reviewed"
     },
     {
@@ -773,6 +801,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qg",
+      "originalName": "qg",
+      "to": "GameConnectionShell",
+      "evidence": "qg.java: Shared client connection/login configuration, state polling and packet handling beneath game callbacks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qj",
       "originalName": "qj",
       "to": "GameplayScreen",
@@ -822,6 +857,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sa",
+      "originalName": "sa",
+      "to": "InteractiveGameClient",
+      "evidence": "sa.java: Updates client/network/input state and dispatches game render, update, key and packet callbacks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:si",
       "originalName": "si",
       "to": "IntrusiveHashTable",
@@ -868,6 +910,13 @@
       "originalName": "ud",
       "to": "LevelSelectScreen",
       "evidence": "ud.java: Screen IDs13/15 retain selected pack/list, decoded preview brick groups, paths and integer state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ue",
+      "originalName": "ue",
+      "to": "MonotonicTime",
+      "evidence": "ue.java: Synchronized wall-time helper compensating backward clock jumps; unrelated static/global data retain their roles.",
       "confidence": "reviewed"
     },
     {
@@ -1235,6 +1284,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:c.field_a:I",
+      "originalName": "field_a",
+      "to": "cyclesDue",
+      "evidence": "c.java: Clock catch-up tick count before one render.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cb.field_q:I",
       "originalName": "field_q",
       "to": "heldButton",
@@ -1242,10 +1298,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cc.field_G:Z",
+      "originalName": "field_G",
+      "to": "discardGameplayOnTransition",
+      "evidence": "cc.java: Transition commit clears gameplay screen when requested.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cf.field_d:I",
       "originalName": "field_d",
       "to": "decodedCanvasWidth",
       "evidence": "cf.java: Shared canvas width read from metadata footer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cg.field_j:I",
+      "originalName": "field_j",
+      "to": "sampleCount",
+      "evidence": "cg.java: Number of samples averaged; source constructor1 and update only while below1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cg.field_k:J",
+      "originalName": "field_k",
+      "to": "lastSampleNanos",
+      "evidence": "cg.java: Last raw nanotime, reset0; advanced by sleep correction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cg.field_m:J",
+      "originalName": "field_m",
+      "to": "nextTickNanos",
+      "evidence": "cg.java: Next simulation tick deadline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cg.field_n:[J",
+      "originalName": "field_n",
+      "to": "samples",
+      "evidence": "cg.java: Ten-slot elapsed delta history.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cg.field_o:I",
+      "originalName": "field_o",
+      "to": "sampleCursor",
+      "evidence": "cg.java: Next ten-slot delta sample index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cg.field_r:J",
+      "originalName": "field_r",
+      "to": "elapsedNanos",
+      "evidence": "cg.java: Accumulated sampled elapsed time.",
       "confidence": "reviewed"
     },
     {
@@ -1274,6 +1379,20 @@
       "originalName": "field_a",
       "to": "decodedSpriteIndices",
       "evidence": "cn.java: Per-sprite row-major indices reconstructed from row/column-major input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cq.field_t:I",
+      "originalName": "field_t",
+      "to": "tickTimeCursor",
+      "evidence": "cq.java: Next recent tick slot, masked31.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:d.field_H:I",
+      "originalName": "field_H",
+      "to": "recentRenderRate",
+      "evidence": "d.java: Rate estimate from32 render intervals; not presented FPS.",
       "confidence": "reviewed"
     },
     {
@@ -1323,6 +1442,20 @@
       "originalName": "field_u",
       "to": "archive",
       "evidence": "de.java: Retained archive used to load membership screenshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:de.field_w:I",
+      "originalName": "field_w",
+      "to": "renderTimeCursor",
+      "evidence": "de.java: Next recent render slot, masked31.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:de.field_x:I",
+      "originalName": "field_x",
+      "to": "clientTick",
+      "evidence": "de.java: Incremented by each game-layer update; UI uses it for animation/input timing.",
       "confidence": "reviewed"
     },
     {
@@ -1697,6 +1830,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gk.field_a:I",
+      "originalName": "field_a",
+      "to": "resizeFrameCounter",
+      "evidence": "gk.java: Render-frame counter triggering periodic canvas refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gn.field_C:J",
+      "originalName": "field_C",
+      "to": "wallRollbackMillis",
+      "evidence": "gn.java: Cumulative compensation for backward wall-time jumps.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gn.field_D:[Ljava/lang/String;",
       "originalName": "field_D",
       "to": "savePrompts",
@@ -1757,6 +1904,13 @@
       "originalName": "field_w",
       "to": "keyEventWriteIndex",
       "evidence": "hb.java: Event-ring producer position; full events are dropped without changing it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hb.field_x:J",
+      "originalName": "field_x",
+      "to": "tickDurationNanos",
+      "evidence": "hb.java: Main cycle duration initialized20000000ns.",
       "confidence": "reviewed"
     },
     {
@@ -1876,6 +2030,13 @@
       "originalName": "field_x",
       "to": "transitionKeepMask",
       "evidence": "i.java: AND mask clearing this icon transition bit when offset is already zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ig.field_M:[J",
+      "originalName": "field_M",
+      "to": "renderTimes",
+      "evidence": "ig.java: 32-slot recent render wall times.",
       "confidence": "reviewed"
     },
     {
@@ -2257,6 +2418,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jg.field_k:J",
+      "originalName": "field_k",
+      "to": "shutdownDeadlineMillis",
+      "evidence": "jg.java: 0 running, stop schedules future termination, destroy immediate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jg.field_l:J",
       "originalName": "field_l",
       "to": "position",
@@ -2289,6 +2457,13 @@
       "originalName": "field_b",
       "to": "decodedSpriteWidths",
       "evidence": "jh.java: Per-sprite cropped index row widths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jl.field_c:J",
+      "originalName": "field_c",
+      "to": "lastWallMillis",
+      "evidence": "jl.java: Previous raw wall-clock value.",
       "confidence": "reviewed"
     },
     {
@@ -2471,6 +2646,13 @@
       "originalName": "field_j",
       "to": "shutdownRequested",
       "evidence": "kg.java: Worker loop termination flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kh.field_a:I",
+      "originalName": "field_a",
+      "to": "screenTransitionTick",
+      "evidence": "kh.java: 32-update pixelation transition position, reset on request/commit.",
       "confidence": "reviewed"
     },
     {
@@ -3181,6 +3363,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:no.field_r:Z",
+      "originalName": "field_r",
+      "to": "liveFocus",
+      "evidence": "no.java: AWT focus callbacks update live state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:no.field_u:I",
       "originalName": "field_u",
       "to": "radius256",
@@ -3311,6 +3500,13 @@
       "originalName": "field_f",
       "to": "order",
       "evidence": "oi.java: Caller-owned level index order; sequence uses levelIndex modulo period.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ok.field_c:I",
+      "originalName": "field_c",
+      "to": "achievementNotificationTick",
+      "evidence": "ok.java: Notification animation/update counter, removes at335 and plays sound at50.",
       "confidence": "reviewed"
     },
     {
@@ -3573,10 +3769,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qa.field_r:Z",
+      "originalName": "field_r",
+      "to": "frameFocus",
+      "evidence": "qa.java: Focus state copied under shell lock at tick start.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qa.field_x:Lgk;",
       "originalName": "field_x",
       "to": "mouseWheelSource",
       "evidence": "qa.java: Optional wheel source polled during applet updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qc.field_i:Z",
+      "originalName": "field_i",
+      "to": "redrawRequested",
+      "evidence": "qc.java: Focus/paint/resize request a redraw.",
       "confidence": "reviewed"
     },
     {
@@ -3748,6 +3958,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:re.field_b:Ldj;",
+      "originalName": "field_b",
+      "to": "gameClock",
+      "evidence": "re.java: Main loop clock factory result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:re.field_c:I",
       "originalName": "field_c",
       "to": "activationCode",
@@ -3878,6 +4095,13 @@
       "originalName": "field_m",
       "to": "keyEventReadIndex",
       "evidence": "si.java: Consumer position; frame snapshot skips remaining previous-frame events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sm.field_c:[J",
+      "originalName": "field_c",
+      "to": "tickTimes",
+      "evidence": "sm.java: 32-slot recent tick wall times.",
       "confidence": "reviewed"
     },
     {
@@ -4679,6 +4903,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:BrickABrac.a(I)V#0",
+      "originalName": "var2",
+      "to": "transitionActive",
+      "evidence": "BrickABrac.java: Reviewed game-layer transition and notification rendering declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(I)V#1",
+      "originalName": "var3",
+      "to": "notification",
+      "evidence": "BrickABrac.java: Reviewed game-layer transition and notification rendering declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(I)V#2",
+      "originalName": "var4",
+      "to": "notificationY",
+      "evidence": "BrickABrac.java: Reviewed game-layer transition and notification rendering declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(I)V#3",
+      "originalName": "var5",
+      "to": "notificationTick",
+      "evidence": "BrickABrac.java: Reviewed game-layer transition and notification rendering declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(I)V#4",
+      "originalName": "var6",
+      "to": "clientBranchFlag",
+      "evidence": "BrickABrac.java: Reviewed game-layer transition and notification rendering declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(ZB)V#5",
+      "originalName": "var3",
+      "to": "transitionActive",
+      "evidence": "BrickABrac.java: Pending-screen transition route.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:BrickABrac.a(ZB)V#7",
+      "originalName": "var5",
+      "to": "clientBranchFlag",
+      "evidence": "BrickABrac.java: Original generated branch flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ae.next()Ljava/lang/Object;#0",
       "originalName": "var1",
       "to": "node",
@@ -4725,6 +4998,55 @@
       "originalName": "fieldTemp$0",
       "to": "nextIndex",
       "evidence": "ao.java: New absolute index used for the modulo storage slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cg.a(IJ)I#0",
+      "originalName": "var4",
+      "to": "cycles",
+      "evidence": "cg.java: Reviewed bounded cycle-advance declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cg.a(IJ)I#1",
+      "originalName": "var5",
+      "to": "clientBranchFlag",
+      "evidence": "cg.java: Reviewed bounded cycle-advance declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cg.e(B)J#0",
+      "originalName": "var8",
+      "to": "sampleIndex",
+      "evidence": "cg.java: Reviewed sample-ring and elapsed-delta declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cg.e(B)J#1",
+      "originalName": "var9",
+      "to": "clientBranchFlag",
+      "evidence": "cg.java: Reviewed sample-ring and elapsed-delta declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cg.e(B)J#2",
+      "originalName": "var2",
+      "to": "nowNanos",
+      "evidence": "cg.java: Reviewed sample-ring and elapsed-delta declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cg.e(B)J#3",
+      "originalName": "var4",
+      "to": "deltaNanos",
+      "evidence": "cg.java: Reviewed sample-ring and elapsed-delta declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cg.e(B)J#4",
+      "originalName": "var6",
+      "to": "sumNanos",
+      "evidence": "cg.java: Reviewed sample-ring and elapsed-delta declaration.",
       "confidence": "reviewed"
     },
     {
@@ -5288,6 +5610,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:jn.a(IIIZZ)V#0",
+      "originalName": "var11",
+      "to": "sampleY",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#1",
+      "originalName": "var12",
+      "to": "sampleX",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#10",
+      "originalName": "var10",
+      "to": "sampleRowSkip",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#11",
+      "originalName": "var13",
+      "to": "blockColor",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#12",
+      "originalName": "var14",
+      "to": "sourceRedBlue",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#15",
+      "originalName": "var17",
+      "to": "outputPixelIndex",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#16",
+      "originalName": "var18",
+      "to": "outputRowSkip",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#5",
+      "originalName": "var5",
+      "to": "tintRedBlue",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#6",
+      "originalName": "var6",
+      "to": "startX",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#7",
+      "originalName": "var7",
+      "to": "startY",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#8",
+      "originalName": "var8",
+      "to": "reverseBlockOffset",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jn.a(IIIZZ)V#9",
+      "originalName": "var9",
+      "to": "samplePixelIndex",
+      "evidence": "jn.java: Reviewed pixel-block sampling/fill declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:jq.a(IIB)Lhb;#11",
       "originalName": "var12",
       "to": "existingRequest",
@@ -5411,6 +5817,55 @@
       "originalName": "var7",
       "to": "payload",
       "evidence": "jq.java: Reviewed index request installation declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ke.c(I)V#1",
+      "originalName": "var2_long",
+      "to": "nowMillis",
+      "evidence": "ke.java: Reviewed tick recording/focus snapshot declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ke.c(I)V#2",
+      "originalName": "var4",
+      "to": "previousTickMillis",
+      "evidence": "ke.java: Reviewed tick recording/focus snapshot declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ke.c(I)V#4",
+      "originalName": "var6",
+      "to": "focusLock",
+      "evidence": "ke.java: Reviewed tick recording/focus snapshot declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ke.h(I)V#2",
+      "originalName": "var2_long",
+      "to": "nowMillis",
+      "evidence": "ke.java: Reviewed render recording and canvas placement declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ke.h(I)V#3",
+      "originalName": "var4",
+      "to": "previousRenderMillis",
+      "evidence": "ke.java: Reviewed render recording and canvas placement declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ke.h(I)V#4",
+      "originalName": "var6_int",
+      "to": "renderSpanMillis",
+      "evidence": "ke.java: Reviewed render recording and canvas placement declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ke.h(I)V#5",
+      "originalName": "var6",
+      "to": "insets",
+      "evidence": "ke.java: Reviewed render recording and canvas placement declaration.",
       "confidence": "reviewed"
     },
     {
@@ -6016,6 +6471,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ue.a(Z)J#0",
+      "originalName": "var1",
+      "to": "wallMillis",
+      "evidence": "ue.java: Raw currentTimeMillis before rollback compensation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:uj.a(III)Z#0",
       "originalName": "var4",
       "to": "centerLevelIndex",
@@ -6296,6 +6758,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:BrickABrac.a(I)V",
+      "originalName": "a",
+      "to": "renderGameLayer",
+      "evidence": "sa.java: Game render callback; Brick draws current/pending screen and achievement notification; guard16769381. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:BrickABrac.a(ICI)Z",
+      "originalName": "a",
+      "to": "handleGameKey",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:BrickABrac.a(Lpi;BI)Z",
+      "originalName": "a",
+      "to": "handleGamePacket",
+      "evidence": "sa.java: Game-specific decoded opcode dispatch. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:BrickABrac.a(Z)V",
+      "originalName": "a",
+      "to": "stopClientServices",
+      "evidence": "ke.java: Stops client/game services during shutdown; false guard. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:BrickABrac.a(ZB)V",
+      "originalName": "a",
+      "to": "updateGameLayer",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:BrickABrac.b(Z)V",
+      "originalName": "b",
+      "to": "initializeClient",
+      "evidence": "ke.java: Initializes game/client after canvas creation; false guard. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:BrickABrac.d(Z)V",
+      "originalName": "d",
+      "to": "clearClientResources",
+      "evidence": "ke.java: Final resource cleanup callback; true guard. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:a.a(B)V",
       "originalName": "a",
       "to": "reportIntegrityFailure",
@@ -6569,6 +7080,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bc.a(IJ)V",
+      "originalName": "a",
+      "to": "sleepOnce",
+      "evidence": "bc.java: Thread.sleep ignoring interruption; guard -29869.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bc.b(B)Lko;",
       "originalName": "b",
       "to": "getIndex",
@@ -6674,10 +7192,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cg.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "dj.java: Resets cadence sample anchor and aligns elapsed time with deadline. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.a(IJ)I",
+      "originalName": "a",
+      "to": "advanceCycles",
+      "evidence": "dj.java: Advances deadline at least once, caps catch-up10, and aligns if still late; guard15. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cg.a([Lvl;BLvl;Z)V",
       "originalName": "a",
       "to": "attachBrickMotionPaths",
       "evidence": "cg.java: Indexes decoded paths in deque order and attaches selected path to bricks with flags bit2, with caller-supplied velocity mode; guard35.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.d(B)J",
+      "originalName": "d",
+      "to": "getSleepMillis",
+      "evidence": "dj.java: Accumulates sampled elapsed time and returns positive deadline difference in milliseconds. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.e(B)J",
+      "originalName": "e",
+      "to": "sampleDelta",
+      "evidence": "cg.java: Stores nanotime deltas strictly within +/-5 seconds and averages retained sample count; guard -64.",
       "confidence": "reviewed"
     },
     {
@@ -6726,7 +7272,7 @@
       "symbol": "M:de.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override family.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6919,6 +7465,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dj.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "dj.java: Resets cadence sample anchor and aligns elapsed time with deadline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(IJ)I",
+      "originalName": "a",
+      "to": "advanceCycles",
+      "evidence": "dj.java: Advances deadline at least once, caps catch-up10, and aligns if still late; guard15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(JB)I",
+      "originalName": "a",
+      "to": "waitAndAdvance",
+      "evidence": "dj.java: Obtains delay, sleeps if positive, then advances with guard15; byte -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.d(B)J",
+      "originalName": "d",
+      "to": "getSleepMillis",
+      "evidence": "dj.java: Accumulates sampled elapsed time and returns positive deadline difference in milliseconds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.a(ILmf;II)Ljp;",
       "originalName": "a",
       "to": "loadRgbSprite",
@@ -7101,10 +7675,17 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gf.a(B)Z",
+      "originalName": "a",
+      "to": "supportsTransition",
+      "evidence": "gf.java: Base returns true, used to choose32-update transition route; guard -51.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gf.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
-      "evidence": "gf.java: Screen key event callback returning whether consumed.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106.",
       "confidence": "reviewed"
     },
     {
@@ -7458,6 +8039,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ja.a(B)Ldj;",
+      "originalName": "a",
+      "to": "createGameClock",
+      "evidence": "ja.java: Creates NanoGameClock; guard at least105.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jf.a(B)V",
       "originalName": "a",
       "to": "selectFirst",
@@ -7560,6 +8148,13 @@
       "originalName": "a",
       "to": "pollKeyEvent",
       "evidence": "jl.java: Under keyboard listener monitor reads code/character up to frozen frame end; guard5 advances read index, other guards leave it unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.a(IIIZZ)V",
+      "originalName": "a",
+      "to": "pixelate",
+      "evidence": "jn.java: Samples one pixel per block, blends source/tint separately with denominator256, fills whole raster without clipping.",
       "confidence": "reviewed"
     },
     {
@@ -7689,10 +8284,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ke.a(Z)V",
+      "originalName": "a",
+      "to": "stopClientServices",
+      "evidence": "ke.java: Stops client/game services during shutdown; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.a(ZI)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "ke.java: Signals lifecycle stop, removes canvas, stops services/platform and clears resources.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ke.a(Z[B)[B",
       "originalName": "a",
       "to": "copyBytes",
       "evidence": "ke.java: Fresh array copy; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.b(Z)V",
+      "originalName": "b",
+      "to": "initializeClient",
+      "evidence": "ke.java: Initializes game/client after canvas creation; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.c(I)V",
+      "originalName": "c",
+      "to": "runClientTick",
+      "evidence": "ke.java: Records tick time, snapshots focus and calls updateClient; guard26573.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.d(Z)V",
+      "originalName": "d",
+      "to": "clearClientResources",
+      "evidence": "ke.java: Final resource cleanup callback; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.f(I)V",
+      "originalName": "f",
+      "to": "updateClient",
+      "evidence": "ke.java: Main client tick callback; shell passes -107.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.g(I)V",
+      "originalName": "g",
+      "to": "renderClient",
+      "evidence": "ke.java: Client frame callback; shell normally passes102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.h(I)V",
+      "originalName": "h",
+      "to": "runRenderFrame",
+      "evidence": "ke.java: Records render time/rate, periodically refreshes canvas and calls renderClient; guard0.",
       "confidence": "reviewed"
     },
     {
@@ -8000,7 +8651,7 @@
       "symbol": "M:km.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override family. Resolved override family.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8840,7 +9491,7 @@
       "symbol": "M:of.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override family.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9218,7 +9869,7 @@
       "symbol": "M:qj.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override family.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9537,6 +10188,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sa.a(I)V",
+      "originalName": "a",
+      "to": "renderGameLayer",
+      "evidence": "sa.java: Game render callback; Brick draws current/pending screen and achievement notification; guard16769381.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(ICI)Z",
+      "originalName": "a",
+      "to": "handleGameKey",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(Lpi;BI)Z",
+      "originalName": "a",
+      "to": "handleGamePacket",
+      "evidence": "sa.java: Game-specific decoded opcode dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(ZB)V",
+      "originalName": "a",
+      "to": "updateGameLayer",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.f(I)V",
+      "originalName": "f",
+      "to": "updateClient",
+      "evidence": "ke.java: Main client tick callback; shell passes -107. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.g(I)V",
+      "originalName": "g",
+      "to": "renderClient",
+      "evidence": "ke.java: Client frame callback; shell normally passes102. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(I)V",
+      "originalName": "a",
+      "to": "renderGameLayer",
+      "evidence": "sa.java: Game render callback; Brick draws current/pending screen and achievement notification; guard16769381. Resolved override family. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(ICI)Z",
+      "originalName": "a",
+      "to": "handleGameKey",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override family. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(ZB)V",
+      "originalName": "a",
+      "to": "updateGameLayer",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override family. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sc.b(I)V",
       "originalName": "b",
       "to": "popRaster",
@@ -9583,6 +10297,13 @@
       "originalName": "a",
       "to": "queueSoundPlayback",
       "evidence": "sk.java: Creates association, queues it and adds stream to sound mixer; canonical guard117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.i(B)V",
+      "originalName": "i",
+      "to": "finishScreenTransition",
+      "evidence": "sk.java: Exit old menu, commit pending screen, reset tick and process deferred resets; guard at most -112.",
       "confidence": "reviewed"
     },
     {
@@ -9764,7 +10485,7 @@
       "symbol": "M:ud.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override family.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9842,6 +10563,13 @@
       "originalName": "d",
       "to": "refreshMenu",
       "evidence": "km.java: Refresh hook overridden by screens that rebuild their menu data; guard at most -60. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(Z)J",
+      "originalName": "a",
+      "to": "nowMillis",
+      "evidence": "ue.java: Compensated nondecreasing wall time; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -9947,6 +10675,27 @@
       "originalName": "a",
       "to": "buildRgbSprites",
       "evidence": "v.java: Expands decoded data to RGB or ARGB according to explicit nonopaque alpha and clears six scratch arrays; guard -835.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.a(I)V",
+      "originalName": "a",
+      "to": "renderGameLayer",
+      "evidence": "sa.java: Game render callback; Brick draws current/pending screen and achievement notification; guard16769381. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.a(ICI)Z",
+      "originalName": "a",
+      "to": "handleGameKey",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.a(ZB)V",
+      "originalName": "a",
+      "to": "updateGameLayer",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10177,7 +10926,7 @@
       "symbol": "M:vp.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override family.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10283,6 +11032,13 @@
       "originalName": "e",
       "to": "readByte",
       "evidence": "wh.java: Single stream byte or0 after close; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wj.a(IJ)V",
+      "originalName": "a",
+      "to": "sleepMillis",
+      "evidence": "wj.java: Positive multiples of10 split into n-1 plus1; interruptions swallowed; guard at most -123.",
       "confidence": "reviewed"
     },
     {
@@ -10591,6 +11347,90 @@
       "originalName": "m",
       "to": "readNullableCp1252String",
       "evidence": "wq.java: Leading zero means null; otherwise reads terminated string; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game render callback; Brick draws current/pending screen and achievement notification; guard16769381. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(ICI)Z#0",
+      "originalName": "param0",
+      "to": "keyCode",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(ICI)Z#1",
+      "originalName": "param1",
+      "to": "character",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(ICI)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(Lpi;BI)Z#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "sa.java: Game-specific decoded opcode dispatch. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(Lpi;BI)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game-specific decoded opcode dispatch. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(Lpi;BI)Z#2",
+      "originalName": "param2",
+      "to": "opcode",
+      "evidence": "sa.java: Game-specific decoded opcode dispatch. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Stops client/game services during shutdown; false guard. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(ZB)V#0",
+      "originalName": "param0",
+      "to": "inputEnabled",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.a(ZB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.b(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Initializes game/client after canvas creation; false guard. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:BrickABrac.d(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Final resource cleanup callback; true guard. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -11189,6 +12029,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bc.a(IJ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bc.java: Thread.sleep ignoring interruption; guard -29869.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bc.a(IJ)V#1",
+      "originalName": "param1",
+      "to": "millis",
+      "evidence": "bc.java: Thread.sleep ignoring interruption; guard -29869.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bc.b(B)Lko;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -11644,6 +12498,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cg.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dj.java: Resets cadence sample anchor and aligns elapsed time with deadline. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cg.a(IJ)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dj.java: Advances deadline at least once, caps catch-up10, and aligns if still late; guard15. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cg.a(IJ)I#1",
+      "originalName": "param1",
+      "to": "tickDurationNanos",
+      "evidence": "dj.java: Advances deadline at least once, caps catch-up10, and aligns if still late; guard15. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cg.a([Lvl;BLvl;Z)V#0",
       "originalName": "param0",
       "to": "brickGroups",
@@ -11669,6 +12544,20 @@
       "originalName": "param3",
       "to": "includeVelocity",
       "evidence": "cg.java: Indexes decoded paths in deque order and attaches selected path to bricks with flags bit2, with caller-supplied velocity mode; guard35.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cg.d(B)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dj.java: Accumulates sampled elapsed time and returns positive deadline difference in milliseconds. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cg.e(B)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cg.java: Stores nanotime deltas strictly within +/-5 seconds and averages retained sample count; guard -64.",
       "confidence": "reviewed"
     },
     {
@@ -11815,21 +12704,21 @@
       "symbol": "P:de.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:de.a(CII)Z#1",
       "originalName": "param1",
-      "to": "keyCode",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "obfuscationGuard",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:de.a(CII)Z#2",
       "originalName": "param2",
-      "to": "obfuscationGuard",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "keyCode",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -12477,6 +13366,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dj.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dj.java: Resets cadence sample anchor and aligns elapsed time with deadline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.a(IJ)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dj.java: Advances deadline at least once, caps catch-up10, and aligns if still late; guard15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.a(IJ)I#1",
+      "originalName": "param1",
+      "to": "tickDurationNanos",
+      "evidence": "dj.java: Advances deadline at least once, caps catch-up10, and aligns if still late; guard15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.a(JB)I#0",
+      "originalName": "param0",
+      "to": "tickDurationNanos",
+      "evidence": "dj.java: Obtains delay, sleeps if positive, then advances with guard15; byte -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.a(JB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "dj.java: Obtains delay, sleeps if positive, then advances with guard15; byte -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.d(B)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dj.java: Accumulates sampled elapsed time and returns positive deadline difference in milliseconds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dk.a(ILmf;II)Ljp;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -13093,24 +14024,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gf.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gf.java: Base returns true, used to choose32-update transition route; guard -51.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:gf.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
-      "evidence": "gf.java: Screen key event callback returning whether consumed.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:gf.a(CII)Z#1",
       "originalName": "param1",
-      "to": "keyCode",
-      "evidence": "gf.java: Screen key event callback returning whether consumed.",
+      "to": "obfuscationGuard",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:gf.a(CII)Z#2",
       "originalName": "param2",
-      "to": "obfuscationGuard",
-      "evidence": "gf.java: Screen key event callback returning whether consumed.",
+      "to": "keyCode",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106.",
       "confidence": "reviewed"
     },
     {
@@ -13877,6 +14815,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ja.a(B)Ldj;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ja.java: Creates NanoGameClock; guard at least105.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jf.<init>(Lah;II)V#0",
       "originalName": "param0",
       "to": "owner",
@@ -14091,6 +15036,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "jl.java: Under keyboard listener monitor reads code/character up to frozen frame end; guard5 advances read index, other guards leave it unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jn.a(IIIZZ)V#0",
+      "originalName": "param0",
+      "to": "blockSize",
+      "evidence": "jn.java: Samples one pixel per block, blends source/tint separately with denominator256, fills whole raster without clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jn.a(IIIZZ)V#1",
+      "originalName": "param1",
+      "to": "sourceWeight",
+      "evidence": "jn.java: Samples one pixel per block, blends source/tint separately with denominator256, fills whole raster without clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jn.a(IIIZZ)V#2",
+      "originalName": "param2",
+      "to": "tint",
+      "evidence": "jn.java: Samples one pixel per block, blends source/tint separately with denominator256, fills whole raster without clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jn.a(IIIZZ)V#3",
+      "originalName": "param3",
+      "to": "alignRight",
+      "evidence": "jn.java: Samples one pixel per block, blends source/tint separately with denominator256, fills whole raster without clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jn.a(IIIZZ)V#4",
+      "originalName": "param4",
+      "to": "alignBottom",
+      "evidence": "jn.java: Samples one pixel per block, blends source/tint separately with denominator256, fills whole raster without clipping.",
       "confidence": "reviewed"
     },
     {
@@ -14353,6 +15333,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ke.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Stops client/game services during shutdown; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "clean",
+      "evidence": "ke.java: Signals lifecycle stop, removes canvas, stops services/platform and clears resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Signals lifecycle stop, removes canvas, stops services/platform and clears resources.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ke.a(Z[B)[B#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -14364,6 +15365,48 @@
       "originalName": "param1",
       "to": "data",
       "evidence": "ke.java: Fresh array copy; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.b(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Initializes game/client after canvas creation; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Records tick time, snapshots focus and calls updateClient; guard26573.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.d(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Final resource cleanup callback; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Main client tick callback; shell passes -107.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.g(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Client frame callback; shell normally passes102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ke.h(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Records render time/rate, periodically refreshes canvas and calls renderClient; guard0.",
       "confidence": "reviewed"
     },
     {
@@ -14881,21 +15924,21 @@
       "symbol": "P:km.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter. Resolved override parameter.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:km.a(CII)Z#1",
       "originalName": "param1",
-      "to": "keyCode",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter. Resolved override parameter.",
+      "to": "obfuscationGuard",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:km.a(CII)Z#2",
       "originalName": "param2",
-      "to": "obfuscationGuard",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter. Resolved override parameter.",
+      "to": "keyCode",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -17247,21 +18290,21 @@
       "symbol": "P:of.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:of.a(CII)Z#1",
       "originalName": "param1",
-      "to": "keyCode",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "obfuscationGuard",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:of.a(CII)Z#2",
       "originalName": "param2",
-      "to": "obfuscationGuard",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "keyCode",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -18220,21 +19263,21 @@
       "symbol": "P:qj.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:qj.a(CII)Z#1",
       "originalName": "param1",
-      "to": "keyCode",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "obfuscationGuard",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:qj.a(CII)Z#2",
       "originalName": "param2",
-      "to": "obfuscationGuard",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "keyCode",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -18784,6 +19827,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sa.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game render callback; Brick draws current/pending screen and achievement notification; guard16769381.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(ICI)Z#0",
+      "originalName": "param0",
+      "to": "keyCode",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(ICI)Z#1",
+      "originalName": "param1",
+      "to": "character",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(ICI)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(Lpi;BI)Z#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "sa.java: Game-specific decoded opcode dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(Lpi;BI)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game-specific decoded opcode dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(Lpi;BI)Z#2",
+      "originalName": "param2",
+      "to": "opcode",
+      "evidence": "sa.java: Game-specific decoded opcode dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(ZB)V#0",
+      "originalName": "param0",
+      "to": "inputEnabled",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(ZB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Main client tick callback; shell passes -107. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.g(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ke.java: Client frame callback; shell normally passes102. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sb.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game render callback; Brick draws current/pending screen and achievement notification; guard16769381. Resolved override parameter. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sb.a(ICI)Z#0",
+      "originalName": "param0",
+      "to": "keyCode",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override parameter. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sb.a(ICI)Z#1",
+      "originalName": "param1",
+      "to": "character",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override parameter. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sb.a(ICI)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override parameter. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sb.a(ZB)V#0",
+      "originalName": "param0",
+      "to": "inputEnabled",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override parameter. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sb.a(ZB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override parameter. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sc.b(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -18865,6 +20027,13 @@
       "originalName": "param1",
       "to": "stream",
       "evidence": "sk.java: Creates association, queues it and adds stream to sound mixer; canonical guard117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.i(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sk.java: Exit old menu, commit pending screen, reset tick and process deferred resets; guard at most -112.",
       "confidence": "reviewed"
     },
     {
@@ -19312,21 +20481,21 @@
       "symbol": "P:ud.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ud.a(CII)Z#1",
       "originalName": "param1",
-      "to": "keyCode",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "obfuscationGuard",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:ud.a(CII)Z#2",
       "originalName": "param2",
-      "to": "obfuscationGuard",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "keyCode",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -19474,6 +20643,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "km.java: Refresh hook overridden by screens that rebuild their menu data; guard at most -60. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ue.a(Z)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ue.java: Compensated nondecreasing wall time; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -19733,6 +20909,48 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "v.java: Expands decoded data to RGB or ARGB according to explicit nonopaque alpha and clears six scratch arrays; guard -835.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vc.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game render callback; Brick draws current/pending screen and achievement notification; guard16769381. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vc.a(ICI)Z#0",
+      "originalName": "param0",
+      "to": "keyCode",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vc.a(ICI)Z#1",
+      "originalName": "param1",
+      "to": "character",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vc.a(ICI)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game key callback; Brick suppresses keys while pending transition. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vc.a(ZB)V#0",
+      "originalName": "param0",
+      "to": "inputEnabled",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vc.a(ZB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "sa.java: Game update callback; Brick gates screen input during transition and commits at32 updates. Resolved override parameter. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -20313,21 +21531,21 @@
       "symbol": "P:vp.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:vp.a(CII)Z#1",
       "originalName": "param1",
-      "to": "keyCode",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "obfuscationGuard",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:vp.a(CII)Z#2",
       "originalName": "param2",
-      "to": "obfuscationGuard",
-      "evidence": "gf.java: Screen key event callback returning whether consumed. Resolved override parameter.",
+      "to": "keyCode",
+      "evidence": "gf.java: Screen key callback: original order character/guard/key code, including menu Escape13 and client guard106. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -20531,6 +21749,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "wh.java: Single stream byte or0 after close; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wj.a(IJ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wj.java: Positive multiples of10 split into n-1 plus1; interruptions swallowed; guard at most -123.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wj.a(IJ)V#1",
+      "originalName": "param1",
+      "to": "millis",
+      "evidence": "wj.java: Positive multiples of10 split into n-1 plus1; interruptions swallowed; guard at most -123.",
       "confidence": "reviewed"
     },
     {
@@ -21095,9 +22327,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "0c8acbd4c7a0fe61378109edbd6964fa2aeeaee320fec053a29748c9f7349067",
+      "build-brickabrac-rules.mjs": "960c1ac30f76fb825f0aafa5a6cf8ead286436da76472ec64c0bd24f61da13ac",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "a414a4b51cb16d4b0ff7f86177b15a9f79ea641fdb3b0b7d2dc48b12e928167a",
+      "tests/test-brickabrac-core.mjs": "07fa2834c29269e631f7afc41b5481bccb48446543ac89cb3c7fe894d3c1cb73",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
