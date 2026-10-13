@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 34,
+  "version": 35,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -903,6 +903,13 @@
       "originalName": "mg",
       "to": "MeshRasterState",
       "evidence": "mg.java: Shared clip-relative mesh viewport, row offsets, projection center, reciprocal and trigonometric tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mh",
+      "originalName": "mh",
+      "to": "UiComponent",
+      "evidence": "mh.java: Intrusive shared UI tree component with style-template construction, animated bounds, clipped interaction, sprites/text and child layout. Unrelated static client globals/helpers retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -6009,10 +6016,388 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mh.field_Ab:[Ljp;",
+      "originalName": "field_Ab",
+      "to": "disabledFrameSprites",
+      "evidence": "mh.java: Disabled frame sprite array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_C:I",
+      "originalName": "field_C",
+      "to": "remainingHeight",
+      "evidence": "mh.java: Signed pending height change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Cb:Ljava/lang/String;",
+      "originalName": "field_Cb",
+      "to": "textSuffix",
+      "evidence": "mh.java: Appended when suffix rendering flag enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_D:[Ljp;",
+      "originalName": "field_D",
+      "to": "capturedFrameSprites",
+      "evidence": "mh.java: Captured-button frame sprite array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Db:I",
+      "originalName": "field_Db",
+      "to": "remainingY",
+      "evidence": "mh.java: Signed vertical displacement consumed in rounded quarter steps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_E:I",
+      "originalName": "field_E",
+      "to": "capturedOffsetY",
+      "evidence": "mh.java: Optional captured-button Y offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Eb:I",
+      "originalName": "field_Eb",
+      "to": "screenX",
+      "evidence": "mh.java: Parent screen origin plus localX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Fb:I",
+      "originalName": "field_Fb",
+      "to": "capturedTextColor",
+      "evidence": "mh.java: Optional captured-button text color, sentinel -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_G:Z",
+      "originalName": "field_G",
+      "to": "hovered",
+      "evidence": "mh.java: Pointer lies in clipped bounds and no later child/sibling has claimed hover.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Gb:[Ljp;",
+      "originalName": "field_Gb",
+      "to": "activeFrameSprites",
+      "evidence": "mh.java: Active frame sprite array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Hb:Ljp;",
+      "originalName": "field_Hb",
+      "to": "disabledSprite",
+      "evidence": "mh.java: Disabled content sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_I:I",
+      "originalName": "field_I",
+      "to": "disabledTextColor",
+      "evidence": "mh.java: Optional disabled text color, sentinel -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Ib:I",
+      "originalName": "field_Ib",
+      "to": "width",
+      "evidence": "mh.java: Current component width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_J:I",
+      "originalName": "field_J",
+      "to": "remainingX",
+      "evidence": "mh.java: Signed horizontal displacement consumed in rounded quarter steps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Jb:[Ljp;",
+      "originalName": "field_Jb",
+      "to": "frameSprites",
+      "evidence": "mh.java: Normal frame sprite array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_K:Ljp;",
+      "originalName": "field_K",
+      "to": "selectedSprite",
+      "evidence": "mh.java: Selected content sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Kb:Z",
+      "originalName": "field_Kb",
+      "to": "inheritVisualState",
+      "evidence": "mh.java: When true renderer retains incoming selected/active/captured state instead of replacing with local state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_L:I",
+      "originalName": "field_L",
+      "to": "pressedButton",
+      "evidence": "mh.java: Current press latch within clipped bounds, reset when no accepted press.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Lb:Z",
+      "originalName": "field_Lb",
+      "to": "useParentFrameBounds",
+      "evidence": "mh.java: Frame painter uses parent bounds rather than own bounds when true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_M:I",
+      "originalName": "field_M",
+      "to": "activeOffsetY",
+      "evidence": "mh.java: Optional active Y offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Mb:Ljava/lang/String;",
+      "originalName": "field_Mb",
+      "to": "text",
+      "evidence": "mh.java: Primary displayed text, optional constructor override.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_N:I",
+      "originalName": "field_N",
+      "to": "selectedOffsetY",
+      "evidence": "mh.java: Optional selected Y offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Nb:Z",
+      "originalName": "field_Nb",
+      "to": "selected",
+      "evidence": "mh.java: Own selected visual-state flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_O:Ldh;",
+      "originalName": "field_O",
+      "to": "font",
+      "evidence": "mh.java: Font used for text measurement/drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Ob:I",
+      "originalName": "field_Ob",
+      "to": "capturedButton",
+      "evidence": "mh.java: Button latched from press until cleared/released.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_P:I",
+      "originalName": "field_P",
+      "to": "localX",
+      "evidence": "mh.java: Local horizontal coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Q:I",
+      "originalName": "field_Q",
+      "to": "verticalAlignment",
+      "evidence": "mh.java: Sprite/text vertical placement;0 top,1 center,2 bottom.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_R:I",
+      "originalName": "field_R",
+      "to": "lineSpacing",
+      "evidence": "mh.java: Passed to wrapped font drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_S:I",
+      "originalName": "field_S",
+      "to": "horizontalAlignment",
+      "evidence": "mh.java: Sprite/text horizontal placement;0 left,1 center,2 right, other text values pass to wrapping renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_T:Ljp;",
+      "originalName": "field_T",
+      "to": "activeSprite",
+      "evidence": "mh.java: Active-inside content sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_U:I",
+      "originalName": "field_U",
+      "to": "pressLocalX",
+      "evidence": "mh.java: Press X relative to screen origin, reused for dragging.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_V:I",
+      "originalName": "field_V",
+      "to": "textInset",
+      "evidence": "mh.java: Horizontal text inset applied twice to available width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_W:I",
+      "originalName": "field_W",
+      "to": "spriteAlpha256",
+      "evidence": "mh.java: Sprite alpha threshold/parameter, default256; not copied by style-template routine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_X:I",
+      "originalName": "field_X",
+      "to": "textColor",
+      "evidence": "mh.java: Normal text RGB, copied only when nonzero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_Y:I",
+      "originalName": "field_Y",
+      "to": "activeTextColor",
+      "evidence": "mh.java: Optional active-inside text color, sentinel -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_bb:Lvl;",
+      "originalName": "field_bb",
+      "to": "children",
+      "evidence": "mh.java: Primary intrusive child list; adding an existing child transfers its primary ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_cb:I",
+      "originalName": "field_cb",
+      "to": "height",
+      "evidence": "mh.java: Current component height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_db:I",
+      "originalName": "field_db",
+      "to": "screenY",
+      "evidence": "mh.java: Parent screen origin plus localY.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_eb:Z",
+      "originalName": "field_eb",
+      "to": "enabled",
+      "evidence": "mh.java: Propagates input enablement and selects disabled visuals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mh.field_gb:I",
       "originalName": "field_gb",
       "to": "previousPacketOpcode",
       "evidence": "mh.java: Previous delivered opcode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_hb:I",
+      "originalName": "field_hb",
+      "to": "contentOffsetY",
+      "evidence": "mh.java: Base sprite/text Y offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_jb:I",
+      "originalName": "field_jb",
+      "to": "textAlpha256",
+      "evidence": "mh.java: Font alpha parameter, default256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_kb:Z",
+      "originalName": "field_kb",
+      "to": "activeInside",
+      "evidence": "mh.java: Hovered and captured button equals current held button, including the zero/zero hover case, with enabled input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_nb:Z",
+      "originalName": "field_nb",
+      "to": "draggable",
+      "evidence": "mh.java: Captured pointer movement updates local coordinates with parent bounds clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_pb:[Ljp;",
+      "originalName": "field_pb",
+      "to": "selectedFrameSprites",
+      "evidence": "mh.java: Selected frame sprite array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_qb:I",
+      "originalName": "field_qb",
+      "to": "contentOffsetX",
+      "evidence": "mh.java: Base sprite/text X offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_rb:I",
+      "originalName": "field_rb",
+      "to": "selectedOffsetX",
+      "evidence": "mh.java: Optional selected X offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_sb:I",
+      "originalName": "field_sb",
+      "to": "activeOffsetX",
+      "evidence": "mh.java: Optional active X offset; Integer.MIN_VALUE sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_tb:Ljp;",
+      "originalName": "field_tb",
+      "to": "capturedSprite",
+      "evidence": "mh.java: Captured-button content sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_ub:I",
+      "originalName": "field_ub",
+      "to": "capturedOffsetX",
+      "evidence": "mh.java: Optional captured-button X offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_vb:I",
+      "originalName": "field_vb",
+      "to": "selectedTextColor",
+      "evidence": "mh.java: Optional selected text color, sentinel -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_wb:Ljp;",
+      "originalName": "field_wb",
+      "to": "sprite",
+      "evidence": "mh.java: Normal content sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_xb:I",
+      "originalName": "field_xb",
+      "to": "remainingWidth",
+      "evidence": "mh.java: Signed pending width change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_yb:I",
+      "originalName": "field_yb",
+      "to": "pressLocalY",
+      "evidence": "mh.java: Press Y relative to screen origin, reused for dragging.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mh.field_zb:I",
+      "originalName": "field_zb",
+      "to": "localY",
+      "evidence": "mh.java: Local vertical coordinate.",
       "confidence": "reviewed"
     },
     {
@@ -7077,6 +7462,13 @@
       "originalName": "field_t",
       "to": "pendingLevelResults",
       "evidence": "qa.java: Submitted results retained until common acknowledgment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qa.field_u:Z",
+      "originalName": "field_u",
+      "to": "uiHoverClaimed",
+      "evidence": "qa.java: Shared UI traversal flag suppresses earlier sibling hover; initialized from root input-enabled state.",
       "confidence": "reviewed"
     },
     {
@@ -8946,6 +9338,13 @@
       "originalName": "field_k",
       "to": "waveform",
       "evidence": "wa.java: Waveform selector consumed by tone oscillator/modulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wc.field_d:Z",
+      "originalName": "field_d",
+      "to": "uiPressClaimed",
+      "evidence": "wc.java: Shared UI traversal flag suppresses earlier sibling presses; initialized from root input-enabled state.",
       "confidence": "reviewed"
     },
     {
@@ -15050,6 +15449,307 @@
       "originalName": "var14_intLifetime1",
       "to": "requestedWriteOffset",
       "evidence": "mf.java: Reviewed packed-group decode/chunk-splitting declaration and data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(II)I#0",
+      "originalName": "var4",
+      "to": "child",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(II)I#1",
+      "originalName": "var5",
+      "to": "childRight",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(II)I#2",
+      "originalName": "var4_int",
+      "to": "textWidth",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(II)I#3",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(II)I#4",
+      "originalName": "var3",
+      "to": "width",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(II)I#5",
+      "originalName": "var4_intLifetime1",
+      "to": "spriteWidth",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#0",
+      "originalName": "stackIn_31_1",
+      "to": "hoverResult",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#1",
+      "originalName": "stackIn_39_1",
+      "to": "activeResult",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#10",
+      "originalName": "var15",
+      "to": "unusedStyle",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#11",
+      "originalName": "var7Lifetime1",
+      "to": "yStep",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#12",
+      "originalName": "var7Lifetime2",
+      "to": "widthStep",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#13",
+      "originalName": "var7Lifetime3",
+      "to": "heightStep",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#2",
+      "originalName": "var7",
+      "to": "xStep",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#3",
+      "originalName": "var8",
+      "to": "savedClipLeft",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#4",
+      "originalName": "var9",
+      "to": "savedClipTop",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#5",
+      "originalName": "var10",
+      "to": "savedClipRight",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#6",
+      "originalName": "var11",
+      "to": "savedClipBottom",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#7",
+      "originalName": "var12",
+      "to": "claimedPress",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#8",
+      "originalName": "var13",
+      "to": "child",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIIIZ)V#9",
+      "originalName": "var14",
+      "to": "unusedGameFlag",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIZ)V#0",
+      "originalName": "var10_ref_mh",
+      "to": "child",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIZ)V#1",
+      "originalName": "var9",
+      "to": "nextChildY",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIZ)V#2",
+      "originalName": "var11",
+      "to": "unusedGameFlag",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIZ)V#3",
+      "originalName": "var5",
+      "to": "currentScroll",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIZ)V#4",
+      "originalName": "var6",
+      "to": "targetScroll",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIZ)V#5",
+      "originalName": "var7",
+      "to": "currentHeight",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIZ)V#6",
+      "originalName": "var8",
+      "to": "targetHeight",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIZ)V#7",
+      "originalName": "var9Lifetime1",
+      "to": "maximumTargetScroll",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(IIIZ)V#8",
+      "originalName": "var10",
+      "to": "maximumCurrentScroll",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;I)V#0",
+      "originalName": "stackIn_8_0",
+      "to": "failureContext",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;I)V#1",
+      "originalName": "stackIn_8_1",
+      "to": "contextBuilder",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;I)V#2",
+      "originalName": "stackIn_9_2",
+      "to": "childSummary",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;I)V#3",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;I)V#4",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;I)V#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;ILmh;I)V#0",
+      "originalName": "stackIn_8_0",
+      "to": "failureContext",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;ILmh;I)V#1",
+      "originalName": "stackIn_8_1",
+      "to": "contextBuilder",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;ILmh;I)V#2",
+      "originalName": "stackIn_9_2",
+      "to": "previousSummary",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;ILmh;I)V#3",
+      "originalName": "stackIn_11_1",
+      "to": "targetContext",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;ILmh;I)V#4",
+      "originalName": "stackIn_12_2",
+      "to": "targetSummary",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;ILmh;I)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;ILmh;I)V#6",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:mh.a(Lmh;ILmh;I)V#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "mh.java: Reviewed UI geometry animation, content measurement, child layout/ownership or diagnostic path; original declaration ordinal/spelling checked.",
       "confidence": "reviewed"
     },
     {
@@ -21637,6 +22337,90 @@
       "originalName": "c",
       "to": "syncRasterClip",
       "evidence": "mg.java: Reads raster clipping bounds into mesh viewport and row cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(BLmh;)V",
+      "originalName": "a",
+      "to": "copyStyle",
+      "evidence": "mh.java: Copies selected nondefault/sentinel style fields by reference/value; geometry/children and spriteAlpha256 are not copied; guard at most -65.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(II)I",
+      "originalName": "a",
+      "to": "measureContentWidth",
+      "evidence": "mh.java: Max of supplied minimum, wrapped text, sprite canvas width and child localX+width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(IIIIB)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "mh.java: Sets immediate geometry and clears pending position/size changes; canonical guard64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(IIIIIZ)V",
+      "originalName": "a",
+      "to": "updateTree",
+      "evidence": "mh.java: Advances signed rounded-quarter geometry, derives screen bounds, clips input, visits children in reverse order, restores clip and applies drag clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(IIIZ)V",
+      "originalName": "a",
+      "to": "layoutVerticalContent",
+      "evidence": "mh.java: Optionally lays out child target positions with gaps, computes target height and clamps current/target vertical scroll to viewport; canonical guard Integer.MIN_VALUE.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(Lmh;I)V",
+      "originalName": "a",
+      "to": "addChild",
+      "evidence": "mh.java: Lazily allocates primary child deque and appends/transfers child; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(Lmh;ILmh;I)V",
+      "originalName": "a",
+      "to": "placeBelow",
+      "evidence": "mh.java: Places target after previous component height plus gap and inherits previous pending Y/height delta; null previous resets Y; guard17290.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(ZI)V",
+      "originalName": "a",
+      "to": "updateRoot",
+      "evidence": "mh.java: Initializes shared hover/press claims, then updates tree relative to full raster; canonical guard -15211.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(ZIIIZZZIZIZ)V",
+      "originalName": "a",
+      "to": "drawTree",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.a(ZZ)V",
+      "originalName": "a",
+      "to": "drawRoot",
+      "evidence": "mh.java: Draws tree over full raster bounds; delegates selected/active/enable/capture flags to private renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.c(Z)V",
+      "originalName": "c",
+      "to": "markDescendantsToInheritVisualState",
+      "evidence": "mh.java: Recursively marks descendants; true guard preserves current line spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.g(I)I",
+      "originalName": "g",
+      "to": "getContentWidth",
+      "evidence": "mh.java: Measures with unlimited wrapping and zero minimum; guard at least59 preserves selected-offset state.",
       "confidence": "reviewed"
     },
     {
@@ -34597,6 +35381,384 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:mh.<init>(JLmh;)V#0",
+      "originalName": "param0",
+      "to": "id",
+      "evidence": "mh.java: Zero geometry, style template copied by sentinel rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;)V#1",
+      "originalName": "param1",
+      "to": "styleTemplate",
+      "evidence": "mh.java: Zero geometry, style template copied by sentinel rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;IIIILjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "id",
+      "evidence": "mh.java: Stores identity/geometry, copies style template, then applies nonnull text override; template is not a parent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;IIIILjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "styleTemplate",
+      "evidence": "mh.java: Stores identity/geometry, copies style template, then applies nonnull text override; template is not a parent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;IIIILjava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "mh.java: Stores identity/geometry, copies style template, then applies nonnull text override; template is not a parent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;IIIILjava/lang/String;)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "mh.java: Stores identity/geometry, copies style template, then applies nonnull text override; template is not a parent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;IIIILjava/lang/String;)V#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "mh.java: Stores identity/geometry, copies style template, then applies nonnull text override; template is not a parent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;IIIILjava/lang/String;)V#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "mh.java: Stores identity/geometry, copies style template, then applies nonnull text override; template is not a parent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;IIIILjava/lang/String;)V#6",
+      "originalName": "param6",
+      "to": "text",
+      "evidence": "mh.java: Stores identity/geometry, copies style template, then applies nonnull text override; template is not a parent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "id",
+      "evidence": "mh.java: Zero geometry/style-template construction with optional text override.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "styleTemplate",
+      "evidence": "mh.java: Zero geometry/style-template construction with optional text override.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.<init>(JLmh;Ljava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "text",
+      "evidence": "mh.java: Zero geometry/style-template construction with optional text override.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(BLmh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Copies selected nondefault/sentinel style fields by reference/value; geometry/children and spriteAlpha256 are not copied; guard at most -65.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(BLmh;)V#1",
+      "originalName": "param1",
+      "to": "styleTemplate",
+      "evidence": "mh.java: Copies selected nondefault/sentinel style fields by reference/value; geometry/children and spriteAlpha256 are not copied; guard at most -65.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(II)I#0",
+      "originalName": "param0",
+      "to": "wrapWidth",
+      "evidence": "mh.java: Max of supplied minimum, wrapped text, sprite canvas width and child localX+width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(II)I#1",
+      "originalName": "param1",
+      "to": "minimum",
+      "evidence": "mh.java: Max of supplied minimum, wrapped text, sprite canvas width and child localX+width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIB)V#0",
+      "originalName": "param0",
+      "to": "height",
+      "evidence": "mh.java: Sets immediate geometry and clears pending position/size changes; canonical guard64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIB)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "mh.java: Sets immediate geometry and clears pending position/size changes; canonical guard64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIB)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "mh.java: Sets immediate geometry and clears pending position/size changes; canonical guard64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIB)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "mh.java: Sets immediate geometry and clears pending position/size changes; canonical guard64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIB)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Sets immediate geometry and clears pending position/size changes; canonical guard64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "parentWidth",
+      "evidence": "mh.java: Advances signed rounded-quarter geometry, derives screen bounds, clips input, visits children in reverse order, restores clip and applies drag clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Advances signed rounded-quarter geometry, derives screen bounds, clips input, visits children in reverse order, restores clip and applies drag clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "parentX",
+      "evidence": "mh.java: Advances signed rounded-quarter geometry, derives screen bounds, clips input, visits children in reverse order, restores clip and applies drag clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "parentHeight",
+      "evidence": "mh.java: Advances signed rounded-quarter geometry, derives screen bounds, clips input, visits children in reverse order, restores clip and applies drag clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "parentY",
+      "evidence": "mh.java: Advances signed rounded-quarter geometry, derives screen bounds, clips input, visits children in reverse order, restores clip and applies drag clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "inputEnabled",
+      "evidence": "mh.java: Advances signed rounded-quarter geometry, derives screen bounds, clips input, visits children in reverse order, restores clip and applies drag clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIZ)V#0",
+      "originalName": "param0",
+      "to": "viewportHeight",
+      "evidence": "mh.java: Optionally lays out child target positions with gaps, computes target height and clamps current/target vertical scroll to viewport; canonical guard Integer.MIN_VALUE.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIZ)V#1",
+      "originalName": "param1",
+      "to": "gap",
+      "evidence": "mh.java: Optionally lays out child target positions with gaps, computes target height and clamps current/target vertical scroll to viewport; canonical guard Integer.MIN_VALUE.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIZ)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Optionally lays out child target positions with gaps, computes target height and clamps current/target vertical scroll to viewport; canonical guard Integer.MIN_VALUE.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(IIIZ)V#3",
+      "originalName": "param3",
+      "to": "keepChildLayout",
+      "evidence": "mh.java: Optionally lays out child target positions with gaps, computes target height and clamps current/target vertical scroll to viewport; canonical guard Integer.MIN_VALUE.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(Lmh;I)V#0",
+      "originalName": "param0",
+      "to": "child",
+      "evidence": "mh.java: Lazily allocates primary child deque and appends/transfers child; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(Lmh;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Lazily allocates primary child deque and appends/transfers child; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(Lmh;ILmh;I)V#0",
+      "originalName": "param0",
+      "to": "previous",
+      "evidence": "mh.java: Places target after previous component height plus gap and inherits previous pending Y/height delta; null previous resets Y; guard17290.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(Lmh;ILmh;I)V#1",
+      "originalName": "param1",
+      "to": "gap",
+      "evidence": "mh.java: Places target after previous component height plus gap and inherits previous pending Y/height delta; null previous resets Y; guard17290.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(Lmh;ILmh;I)V#2",
+      "originalName": "param2",
+      "to": "target",
+      "evidence": "mh.java: Places target after previous component height plus gap and inherits previous pending Y/height delta; null previous resets Y; guard17290.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(Lmh;ILmh;I)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Places target after previous component height plus gap and inherits previous pending Y/height delta; null previous resets Y; guard17290.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "inputEnabled",
+      "evidence": "mh.java: Initializes shared hover/press claims, then updates tree relative to full raster; canonical guard -15211.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Initializes shared hover/press claims, then updates tree relative to full raster; canonical guard -15211.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#0",
+      "originalName": "param0",
+      "to": "selected",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#1",
+      "originalName": "param1",
+      "to": "parentY",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#10",
+      "originalName": "param10",
+      "to": "unusedChildFlag",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#3",
+      "originalName": "param3",
+      "to": "parentWidth",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#4",
+      "originalName": "param4",
+      "to": "active",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#5",
+      "originalName": "param5",
+      "to": "enabled",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#6",
+      "originalName": "param6",
+      "to": "captured",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#7",
+      "originalName": "param7",
+      "to": "parentHeight",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#8",
+      "originalName": "param8",
+      "to": "showTextSuffix",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZIIIZZZIZIZ)V#9",
+      "originalName": "param9",
+      "to": "parentX",
+      "evidence": "mh.java: Draws clipped frame/content/text using local or inherited visual flags and traverses children forward; final boolean is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZZ)V#0",
+      "originalName": "param0",
+      "to": "enabled",
+      "evidence": "mh.java: Draws tree over full raster bounds; delegates selected/active/enable/capture flags to private renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.a(ZZ)V#1",
+      "originalName": "param1",
+      "to": "showTextSuffix",
+      "evidence": "mh.java: Draws tree over full raster bounds; delegates selected/active/enable/capture flags to private renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.c(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Recursively marks descendants; true guard preserves current line spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mh.g(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mh.java: Measures with unlimited wrapping and zero minimum; guard at least59 preserves selected-offset state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mj.a(BII[B)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -41717,9 +42879,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "645d6867984a97bbd2435cd53b968daa2c8eb8fc43eeb26fb0e80760dce09062",
+      "build-brickabrac-rules.mjs": "d4e695504ea8fa521555c28c03dac1b73153d957e3c82723a7ad9f504c1f368b",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "d8d2e9e9813d52b467a31e3c23714daa3271dc7574a9c0cbb91cbef8b9878090",
+      "tests/test-brickabrac-core.mjs": "1ac41ccc63b6c8a3cf6365e9edf8b178ee63c215f02351fd0ff4466fcd75cb3d",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

@@ -116,6 +116,8 @@ temporary PCM buffers; its original private throwing constructor is retained.
 Mesh3D names logo vertex/triangle data, cached bounds, direction vectors and face
 groups. MeshAttributeRecord names the compact record's retained base RGB. MeshRasterState
 names clip-relative viewport, row offsets and lookup tables.
+UiComponent names shared component geometry, style templates, child ownership,
+animated bounds, clipped input and sprite/text state.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -946,6 +948,18 @@ paths, fallback/record colors and signed normals; group-offset consumption is ch
 Fractional/general RGB gradients, varying-normal shading, other triangle shapes,
 invalid direction/material indices, real assets, original-JAR pixel equivalence,
 complete logo frames and presented animation remain unverified.
+
+UiComponent construction copies style rather than attaching a parent. Its child
+deque transfers ownership, updates children in reverse order for input claims,
+and draws them in forward order. Pending geometry advances by rounded-away-from-zero
+quarter steps. Layout names distinguish current and target scroll/height; dragging
+retains the captured button and clamps coordinates to parent bounds. `activeInside`
+also includes enabled hover with no held button. Native fixtures check construction,
+style-copy exclusions, child transfer, width measurement, descendant state, placement,
+animation, scroll clamping, overlapping-child claims, captured dragging and sprite
+selection/alignment pixels. Private unresolved state remains opaque. Text/frame
+rendering, oversized drag edge cases, live input and complete menu behavior remain
+unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
