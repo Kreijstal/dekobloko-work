@@ -113,6 +113,8 @@ transform windows, overlap and incremental PCM/cache ownership.
 ArrayOperations names shared byte/int/object copies and integer range clearing.
 MusicCrossfadeStream names two MIDI track slots, an overlay, fade progress and
 temporary PCM buffers; its original private throwing constructor is retained.
+Mesh3D names logo vertex/triangle data, cached bounds, direction vectors and face
+groups. MeshAttributeRecord names the compact record's retained24-bit word.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -877,6 +879,31 @@ event-queue ownership. One-shot delegation helpers now have explicit volume name
 Real sound assets, event0/1/2/3 variant selection, complete one-shot routing,
 new-track preparation/loop/return branches, simultaneous fill/skip and audible
 whole-game playback remain unverified.
+
+Mesh3D names signed16 coordinate/count storage, triangle indices, extrema/cache
+state, un-translated direction vectors and face grouping. Translation can start at
+a supplied vertex; scaling preserves32-bit multiply overflow, truncating division
+and short casts. Native fixtures check empty/signed-extreme geometry, suffix-only
+translation, overflow/scaling, bound invalidation/recomputation and disabled guards.
+The original noncanonical bounds guard sets validity before returning; fixtures
+preserve the resulting stale-cache behavior and recovery through a transform.
+
+Packed short/byte array helpers expose MSB-first counts, small value-width fields,
+signed bases and unsigned deltas, with null-for-empty and same-length reuse. Native
+fixtures check widths, signed wrap, constant fills, replacement/reuse and exact bit
+consumption. Synthetic mesh packets cover all optional-section combinations,
+indices, direction/channel data, zero-group disabling and signed byte group-count
+overflow. Other optional channel meanings remain unassigned. MeshAttributeRecord
+retains only the third24-bit field; tests check new records, zero-width and later
+backreferences, shared identity, ignored payload lengths and unsupported versions.
+Full material/color interpretation remains unverified.
+
+The named logo loader reads `logo.fo3d`, scales vertices by six, saves bounding
+midpoints and centers each mesh. A controlled decoded archive file exercises name
+lookup, the complete loader/record/mesh path and independent expected centered
+coordinates/bounds. Real logo assets, matrix/projection/lighting/face sorting,
+triangle rasterization, presented loading animation, malformed buffers and
+unsupported count ranges remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

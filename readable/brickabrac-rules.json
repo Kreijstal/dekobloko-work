@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 31,
+  "version": 32,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -367,6 +367,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dc",
+      "originalName": "dc",
+      "to": "MeshAttributeRecord",
+      "evidence": "dc.java: Compact logo mesh record retains the third encoded24-bit word; other encoded fields are discarded and prior records can be referenced. Unrelated static UI/music fields and helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:de",
       "originalName": "de",
       "to": "MembershipBenefitsScreen",
@@ -511,6 +518,13 @@
       "originalName": "fp",
       "to": "OptionsScreen",
       "evidence": "fp.java: ID14 draws framed sound/music/toggle/fullscreen controls with parent-screen return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fr",
+      "originalName": "fr",
+      "to": "Mesh3D",
+      "evidence": "fr.java: Signed16 vertex coordinates, triangle indices, cached bounds and optional packed channels; logo.fo3d loader constructs meshes. Unrelated static UI/audio data and helpers retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -2327,6 +2341,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dc.field_a:I",
+      "originalName": "field_a",
+      "to": "encodedWord24",
+      "evidence": "dc.java: Third24-bit word retained in a newly decoded logo mesh attribute record; full material interpretation remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dc.field_b:I",
       "originalName": "field_b",
       "to": "currentKeyCode",
@@ -3069,10 +3090,157 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fr.field_A:B",
+      "originalName": "field_A",
+      "to": "faceGroupCount",
+      "evidence": "fr.java: Maximum unsigned group plus one cast to byte; signed overflow and zero-only disabling preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_B:[S",
+      "originalName": "field_B",
+      "to": "vertexX",
+      "evidence": "fr.java: First coordinate feeds X transform and cached X bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_C:S",
+      "originalName": "field_C",
+      "to": "faceCount",
+      "evidence": "fr.java: Signed16 count used by triangle/render loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_G:[S",
+      "originalName": "field_G",
+      "to": "faceVertexA",
+      "evidence": "fr.java: First triangle vertex index used by face sorting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_H:[S",
+      "originalName": "field_H",
+      "to": "directionY",
+      "evidence": "fr.java: Second component of optional un-translated direction vectors.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fr.field_M:Lvl;",
       "originalName": "field_M",
       "to": "rasterSnapshotPool",
       "evidence": "fr.java: Restored snapshots reused from deque tail, with pixels released.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_N:I",
+      "originalName": "field_N",
+      "to": "maxX",
+      "evidence": "fr.java: Maximum first coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_P:[S",
+      "originalName": "field_P",
+      "to": "vertexZ",
+      "evidence": "fr.java: Third coordinate feeds Z transform and cached Z bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_Q:[S",
+      "originalName": "field_Q",
+      "to": "vertexY",
+      "evidence": "fr.java: Second coordinate feeds Y transform and cached Y bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_a:[S",
+      "originalName": "field_a",
+      "to": "directionZ",
+      "evidence": "fr.java: Third component of optional un-translated direction vectors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_b:[S",
+      "originalName": "field_b",
+      "to": "faceVertexB",
+      "evidence": "fr.java: Second triangle vertex index used by face sorting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_c:[S",
+      "originalName": "field_c",
+      "to": "faceVertexC",
+      "evidence": "fr.java: Third triangle vertex index used by face sorting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_d:I",
+      "originalName": "field_d",
+      "to": "maxY",
+      "evidence": "fr.java: Maximum second coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_f:I",
+      "originalName": "field_f",
+      "to": "minX",
+      "evidence": "fr.java: Minimum first coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_n:[S",
+      "originalName": "field_n",
+      "to": "directionX",
+      "evidence": "fr.java: First component of optional un-translated direction vectors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_o:S",
+      "originalName": "field_o",
+      "to": "directionCount",
+      "evidence": "fr.java: Count of direction vectors transformed without translation by mesh transform helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_p:[B",
+      "originalName": "field_p",
+      "to": "faceGroups",
+      "evidence": "fr.java: Unsigned group IDs scanned at decode; all-zero groups are discarded.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_q:I",
+      "originalName": "field_q",
+      "to": "minZ",
+      "evidence": "fr.java: Minimum third coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_r:Z",
+      "originalName": "field_r",
+      "to": "boundsValid",
+      "evidence": "fr.java: Set before canonical bounds computation; transforms invalidate. Noncanonical ensure guard can leave stale valid state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_w:S",
+      "originalName": "field_w",
+      "to": "vertexCount",
+      "evidence": "fr.java: Signed16 count used by coordinate transforms/bounds loops.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_x:I",
+      "originalName": "field_x",
+      "to": "maxZ",
+      "evidence": "fr.java: Maximum third coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fr.field_y:I",
+      "originalName": "field_y",
+      "to": "minY",
+      "evidence": "fr.java: Minimum second coordinate.",
       "confidence": "reviewed"
     },
     {
@@ -3115,6 +3283,13 @@
       "originalName": "field_a",
       "to": "screenId",
       "evidence": "gf.java: Constructor identity used by registration, current-screen comparison and transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_i:[Lfr;",
+      "originalName": "field_i",
+      "to": "logoMeshes",
+      "evidence": "gg.java: Meshes decoded from logo.fo3d, scaled by six and centered about bounding midpoints.",
       "confidence": "reviewed"
     },
     {
@@ -7245,6 +7420,13 @@
       "originalName": "field_f",
       "to": "farmMidSprite",
       "evidence": "qb.java: Literal sprite resource farm/farm_mid assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rn.field_e:[[I",
+      "originalName": "field_e",
+      "to": "logoOriginalCenters",
+      "evidence": "rn.java: Per-mesh scaled bounding midpoint retained before centering.",
       "confidence": "reviewed"
     },
     {
@@ -12204,10 +12386,213 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:fr.a(IIII)V#0",
+      "originalName": "var5",
+      "to": "vertex",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.a(IIII)V#1",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.a(IIIII)V#0",
+      "originalName": "var6",
+      "to": "vertex",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.a(IIIII)V#1",
+      "originalName": "var7",
+      "to": "unusedGameFlag",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#0",
+      "originalName": "var8",
+      "to": "vertex",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#1",
+      "originalName": "var2",
+      "to": "minimumX",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#10",
+      "originalName": "var12",
+      "to": "unusedGameFlag",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#2",
+      "originalName": "var3",
+      "to": "minimumY",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#3",
+      "originalName": "var4",
+      "to": "minimumZ",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#4",
+      "originalName": "var5",
+      "to": "maximumX",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#5",
+      "originalName": "var6",
+      "to": "maximumY",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#6",
+      "originalName": "var7",
+      "to": "maximumZ",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#7",
+      "originalName": "var9",
+      "to": "x",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#8",
+      "originalName": "var10",
+      "to": "y",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fr.c(I)V#9",
+      "originalName": "var11",
+      "to": "z",
+      "evidence": "fr.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:gp.a(Z)Ltk;#0",
       "originalName": "var2",
       "to": "node",
       "evidence": "gp.java: First secondary node, or sentinel while empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#0",
+      "originalName": "var7",
+      "to": "face",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#1",
+      "originalName": "stackIn_26_0",
+      "to": "result",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#10",
+      "originalName": "var5",
+      "to": "mesh",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#11",
+      "originalName": "var6",
+      "to": "maximumGroup",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#12",
+      "originalName": "var8",
+      "to": "unusedGameFlag",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#13",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#2",
+      "originalName": "stackIn_29_0",
+      "to": "failureContext",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#3",
+      "originalName": "stackIn_29_1",
+      "to": "contextBuilder",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#4",
+      "originalName": "stackIn_30_2",
+      "to": "packetSummary",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#6",
+      "originalName": "var2_int",
+      "to": "version",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#7",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#8",
+      "originalName": "var3",
+      "to": "hasDirections",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hc.a(ILpi;)Lfr;#9",
+      "originalName": "var4",
+      "to": "hasExtraChannels",
+      "evidence": "hc.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
       "confidence": "reviewed"
     },
     {
@@ -14360,6 +14745,216 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ri.a([BILpi;I)[B#0",
+      "originalName": "var4_int",
+      "to": "count",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#1",
+      "originalName": "var5",
+      "to": "valueBits",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#10",
+      "originalName": "stackIn_25_1",
+      "to": "packetContext",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#11",
+      "originalName": "stackIn_26_2",
+      "to": "packetSummary",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#12",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#13",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#14",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#2",
+      "originalName": "var6",
+      "to": "base",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#3",
+      "originalName": "var7",
+      "to": "element",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#4",
+      "originalName": "var8",
+      "to": "unusedGameFlag",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#5",
+      "originalName": "stackIn_3_0",
+      "to": "invalidGuardResult",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#6",
+      "originalName": "stackIn_19_0",
+      "to": "result",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#7",
+      "originalName": "stackIn_22_0",
+      "to": "failureContext",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#8",
+      "originalName": "stackIn_22_1",
+      "to": "contextBuilder",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ri.a([BILpi;I)[B#9",
+      "originalName": "stackIn_23_2",
+      "to": "reuseSummary",
+      "evidence": "ri.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#0",
+      "originalName": "var5",
+      "to": "recordIndex",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#1",
+      "originalName": "var2_int",
+      "to": "version",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#10",
+      "originalName": "stackIn_16_0",
+      "to": "failureContext",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#11",
+      "originalName": "stackIn_16_1",
+      "to": "contextBuilder",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#12",
+      "originalName": "stackIn_17_2",
+      "to": "packetSummary",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#13",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#14",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#2",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#3",
+      "originalName": "var3",
+      "to": "count",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#4",
+      "originalName": "var4",
+      "to": "records",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#5",
+      "originalName": "var6_int",
+      "to": "referenceIndex",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#6",
+      "originalName": "var6",
+      "to": "record",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#7",
+      "originalName": "var7",
+      "to": "unusedGameFlag",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#8",
+      "originalName": "stackIn_3_0",
+      "to": "unsupportedResult",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rk.a(Lpi;I)[Ldc;#9",
+      "originalName": "stackIn_13_0",
+      "to": "result",
+      "evidence": "rk.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:sc.b(I)V#0",
       "originalName": "var1",
       "to": "snapshot",
@@ -15057,6 +15652,118 @@
       "originalName": "var1",
       "to": "wallMillis",
       "evidence": "ue.java: Raw currentTimeMillis before rollback compensation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#0",
+      "originalName": "var4_int",
+      "to": "count",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#1",
+      "originalName": "var5",
+      "to": "valueBits",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#10",
+      "originalName": "stackIn_23_2",
+      "to": "reuseSummary",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#11",
+      "originalName": "stackIn_25_1",
+      "to": "packetContext",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#12",
+      "originalName": "stackIn_26_2",
+      "to": "packetSummary",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#13",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#14",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#15",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#2",
+      "originalName": "var6",
+      "to": "base",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#3",
+      "originalName": "var7",
+      "to": "element",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#4",
+      "originalName": "var8",
+      "to": "unusedGameFlag",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#5",
+      "originalName": "stackIn_3_0",
+      "to": "invalidGuardResult",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#6",
+      "originalName": "stackIn_6_0",
+      "to": "emptyResult",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#7",
+      "originalName": "stackIn_19_0",
+      "to": "result",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#8",
+      "originalName": "stackIn_22_0",
+      "to": "failureContext",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uj.a(B[SLpi;I)[S#9",
+      "originalName": "stackIn_22_1",
+      "to": "contextBuilder",
+      "evidence": "uj.java: Reviewed geometry transformation, extrema, packed-array decoder or diagnostic uses in pinned source; original ordinal/spelling checked.",
       "confidence": "reviewed"
     },
     {
@@ -15914,6 +16621,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bm.a(BLmf;)V",
+      "originalName": "a",
+      "to": "loadLogoMeshes",
+      "evidence": "bm.java: Reads logo.fo3d mesh count/attribute records and meshes, scales each by six, stores bound midpoint and translates to centered coordinates; canonical guard -70.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bm.a(IIZILvl;)V",
       "originalName": "a",
       "to": "playGameplayAudioEvents",
@@ -16446,6 +17160,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.a(ZLpi;)Z",
+      "originalName": "a",
+      "to": "readPacketFlag",
+      "evidence": "eo.java: Reads one MSB-first bit; false guard avoids unrelated cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.a([IIB)Z",
       "originalName": "a",
       "to": "isBitSet",
@@ -16656,6 +17377,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fr.a(IIII)V",
+      "originalName": "a",
+      "to": "translateVerticesFrom",
+      "evidence": "fr.java: Adds coordinate offsets from supplied first vertex through signed vertexCount, casts to short and invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fr.a(IIIII)V",
+      "originalName": "a",
+      "to": "scaleVertices",
+      "evidence": "fr.java: Multiplies signed vertex coordinates in32-bit arithmetic, divides and casts to short; guard above124 enables, then invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fr.b(I)V",
+      "originalName": "b",
+      "to": "invalidateBounds",
+      "evidence": "fr.java: Clears boundsValid; canonical guard below -84 avoids recursive invalid guard path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fr.c(I)V",
+      "originalName": "c",
+      "to": "ensureBounds",
+      "evidence": "fr.java: Computes/caches extrema for signed vertexCount; guard23 required, empty geometry retains short-range sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:g.a(Lpn;IB)V",
       "originalName": "a",
       "to": "submitLevelResult",
@@ -16828,6 +17577,13 @@
       "originalName": "f",
       "to": "getProgress",
       "evidence": "hb.java: Cache request0/100; network received bytes divided by length excluding trailer; guard -21546.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(ILpi;)Lfr;",
+      "originalName": "a",
+      "to": "decodeMesh",
+      "evidence": "hc.java: Version0 MSB-first mesh decoder with packed coordinate/index/optional channels and byte group metadata. Third coordinate array uses supplied length-bit width.",
       "confidence": "reviewed"
     },
     {
@@ -20331,10 +21087,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ri.a([BILpi;I)[B",
+      "originalName": "a",
+      "to": "readPackedByteArray",
+      "evidence": "ri.java: Reads count,3-bit value width,signed8 base and unsigned deltas; zero count returns null; equal-length storage reused; guard20.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rj.a(Lfk;Z)V",
       "originalName": "a",
       "to": "installTextHuffman",
       "evidence": "rj.java: Installs shared text codec; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(Lpi;I)[Ldc;",
+      "originalName": "a",
+      "to": "decodeMeshAttributeRecords",
+      "evidence": "rk.java: Version0 count12 record table with new-record flags or previous-record references; retains only third24-bit word; other version returns null.",
       "confidence": "reviewed"
     },
     {
@@ -20993,6 +21763,13 @@
       "originalName": "a",
       "to": "selectFirst",
       "evidence": "uj.java: Selects index0, resets scroll, enters keyboard selection and captures pointer coordinates; guard -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(B[SLpi;I)[S",
+      "originalName": "a",
+      "to": "readPackedShortArray",
+      "evidence": "uj.java: Reads count,4-bit value width,signed16 base and unsigned deltas; zero count returns null; equal-length storage reused; guard below -53.",
       "confidence": "reviewed"
     },
     {
@@ -23299,6 +24076,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bm.a(BLmf;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bm.java: Reads logo.fo3d mesh count/attribute records and meshes, scales each by six, stores bound midpoint and translates to centered coordinates; canonical guard -70.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bm.a(BLmf;)V#1",
+      "originalName": "param1",
+      "to": "archive",
+      "evidence": "bm.java: Reads logo.fo3d mesh count/attribute records and meshes, scales each by six, stores bound midpoint and translates to centered coordinates; canonical guard -70.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bm.a(IIZILvl;)V#0",
       "originalName": "param0",
       "to": "volume",
@@ -25084,6 +25875,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:eo.a(ZLpi;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eo.java: Reads one MSB-first bit; false guard avoids unrelated cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eo.a(ZLpi;)Z#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "eo.java: Reads one MSB-first bit; false guard avoids unrelated cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:eo.a([IIB)Z#0",
       "originalName": "param0",
       "to": "words",
@@ -25721,6 +26526,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fr.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "deltaZ",
+      "evidence": "fr.java: Adds coordinate offsets from supplied first vertex through signed vertexCount, casts to short and invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "firstVertex",
+      "evidence": "fr.java: Adds coordinate offsets from supplied first vertex through signed vertexCount, casts to short and invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "deltaX",
+      "evidence": "fr.java: Adds coordinate offsets from supplied first vertex through signed vertexCount, casts to short and invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "deltaY",
+      "evidence": "fr.java: Adds coordinate offsets from supplied first vertex through signed vertexCount, casts to short and invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.a(IIIII)V#0",
+      "originalName": "param0",
+      "to": "scaleX",
+      "evidence": "fr.java: Multiplies signed vertex coordinates in32-bit arithmetic, divides and casts to short; guard above124 enables, then invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.a(IIIII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "fr.java: Multiplies signed vertex coordinates in32-bit arithmetic, divides and casts to short; guard above124 enables, then invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.a(IIIII)V#2",
+      "originalName": "param2",
+      "to": "divisor",
+      "evidence": "fr.java: Multiplies signed vertex coordinates in32-bit arithmetic, divides and casts to short; guard above124 enables, then invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.a(IIIII)V#3",
+      "originalName": "param3",
+      "to": "scaleZ",
+      "evidence": "fr.java: Multiplies signed vertex coordinates in32-bit arithmetic, divides and casts to short; guard above124 enables, then invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.a(IIIII)V#4",
+      "originalName": "param4",
+      "to": "scaleY",
+      "evidence": "fr.java: Multiplies signed vertex coordinates in32-bit arithmetic, divides and casts to short; guard above124 enables, then invalidates bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fr.java: Clears boundsValid; canonical guard below -84 avoids recursive invalid guard path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fr.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fr.java: Computes/caches extrema for signed vertexCount; guard23 required, empty geometry retains short-range sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:g.a(Lpn;IB)V#0",
       "originalName": "param0",
       "to": "result",
@@ -26180,6 +27062,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "hb.java: Cache request0/100; network received bytes divided by length excluding trailer; guard -21546.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(ILpi;)Lfr;#0",
+      "originalName": "param0",
+      "to": "zArrayLengthBits",
+      "evidence": "hc.java: Version0 MSB-first mesh decoder with packed coordinate/index/optional channels and byte group metadata. Third coordinate array uses supplied length-bit width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(ILpi;)Lfr;#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "hc.java: Version0 MSB-first mesh decoder with packed coordinate/index/optional channels and byte group metadata. Third coordinate array uses supplied length-bit width.",
       "confidence": "reviewed"
     },
     {
@@ -34723,6 +35619,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ri.a([BILpi;I)[B#0",
+      "originalName": "param0",
+      "to": "reuse",
+      "evidence": "ri.java: Reads count,3-bit value width,signed8 base and unsigned deltas; zero count returns null; equal-length storage reused; guard20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a([BILpi;I)[B#1",
+      "originalName": "param1",
+      "to": "lengthBits",
+      "evidence": "ri.java: Reads count,3-bit value width,signed8 base and unsigned deltas; zero count returns null; equal-length storage reused; guard20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a([BILpi;I)[B#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "ri.java: Reads count,3-bit value width,signed8 base and unsigned deltas; zero count returns null; equal-length storage reused; guard20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ri.a([BILpi;I)[B#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ri.java: Reads count,3-bit value width,signed8 base and unsigned deltas; zero count returns null; equal-length storage reused; guard20.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rj.a(Lfk;Z)V#0",
       "originalName": "param0",
       "to": "codec",
@@ -34734,6 +35658,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "rj.java: Installs shared text codec; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Lpi;I)[Ldc;#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "rk.java: Version0 count12 record table with new-record flags or previous-record references; retains only third24-bit word; other version returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(Lpi;I)[Ldc;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "rk.java: Version0 count12 record table with new-record flags or previous-record references; retains only third24-bit word; other version returns null.",
       "confidence": "reviewed"
     },
     {
@@ -36428,6 +37366,34 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "uj.java: Selects index0, resets scroll, enters keyboard selection and captures pointer coordinates; guard -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(B[SLpi;I)[S#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uj.java: Reads count,4-bit value width,signed16 base and unsigned deltas; zero count returns null; equal-length storage reused; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(B[SLpi;I)[S#1",
+      "originalName": "param1",
+      "to": "reuse",
+      "evidence": "uj.java: Reads count,4-bit value width,signed16 base and unsigned deltas; zero count returns null; equal-length storage reused; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(B[SLpi;I)[S#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "uj.java: Reads count,4-bit value width,signed16 base and unsigned deltas; zero count returns null; equal-length storage reused; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uj.a(B[SLpi;I)[S#3",
+      "originalName": "param3",
+      "to": "lengthBits",
+      "evidence": "uj.java: Reads count,4-bit value width,signed16 base and unsigned deltas; zero count returns null; equal-length storage reused; guard below -53.",
       "confidence": "reviewed"
     },
     {
@@ -38392,9 +39358,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "6f754083aad41d3bfac7c094974ede374fe87bf464d24d606e9cb450bff037f8",
+      "build-brickabrac-rules.mjs": "6359b3d7cfb751cf794a88b25ebcf14954b42520466a0691ec4835c35d8fdddc",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "67e9ddb6e06233f38e79039ea959467eab34698b229a15bfa1cfa50832b1fda2",
+      "tests/test-brickabrac-core.mjs": "37407a9aa940a1c987f4da216bcbdbb3206cff1072db049a49ceb9a6dde9fc14",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
