@@ -120,6 +120,8 @@ UiComponent names shared component geometry, style templates, child ownership,
 animated bounds, clipped input and sprite/text state.
 VerticalScrollbar, ScrollPane and ScrollPaneWithFooter expose composite scrolling
 and footer layouts. AlignedIconLabel and StateIconLabel expose their child roles.
+NameEntryPopup, ContextMenu and QuickChatHelpDialog expose popup input, action rows
+and the literal shortcut-help layout.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -973,6 +975,21 @@ scrollbar-width gaps. Icon/label fixtures cover optional children, intrinsic wid
 combined alignment, constrained label widths, selected sprites and independent clones.
 Real lobby assets, live interaction, text pixels and full screen integration remain
 unverified. Unrelated static helpers in these classes retain their separate roles.
+
+NameEntryPopup distinguishes normalized current-key editing from queued configured
+characters and bracket syntax. Normalized editing lowercases letters, converts spaces
+to underscores and enforces the twelve-character bound. Queued closing brackets can
+bypass that bound; early submission leaves the display child unchanged and returns
+status without storing it. Character fixtures cover all UTF-16 code units against
+controlled extension/syntax tables; input fixtures check leading separators, empty
+and full buffers, backspace, cancel, submit, disabled input and outside presses.
+ContextMenu names action IDs, hover frames, row metrics, fallback rows and anchoring.
+Fixtures check icon/text rows, row selection, cancellation, independent clones and
+placement including oversized/negative positions. QuickChatHelpDialog names its
+close control and shortcut rows; fixtures check geometry and close/outside presses
+with either value of its unused input flag. Its unused centered-Y calculation is
+preserved: the constructor leaves local Y at100. Live focus/dispatch, actual lobby
+assets, rendered text and complete network actions remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
