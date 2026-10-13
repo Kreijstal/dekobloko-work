@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 1,
+  "version": 2,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -227,6 +227,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ao",
+      "originalName": "ao",
+      "to": "ObjectHistoryBuffer",
+      "evidence": "ao.java: Fixed-capacity indexed object history; scheduled power-ups and board snapshots retain absolute sequence indices.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bn",
       "originalName": "bn",
       "to": "RectangleBody",
@@ -234,10 +241,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ge",
+      "originalName": "ge",
+      "to": "PowerUp",
+      "evidence": "ge.java: Falling circle dropped by a brick, caught by a paddle and routed locally or to opponents; queued copies retain their activation tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gf",
       "originalName": "gf",
       "to": "GameScreen",
       "evidence": "gf.java: Abstract screen identity, render/update and key-input contract.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hp",
+      "originalName": "hp",
+      "to": "IntHistoryBuffer",
+      "evidence": "hp.java: Fixed-capacity indexed integer history; ball ticks append center coordinates, and reads reject future/erased entries.",
       "confidence": "reviewed"
     },
     {
@@ -276,6 +297,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ul",
+      "originalName": "ul",
+      "to": "ScorePopup",
+      "evidence": "ul.java: Intrusive score text with fixed8 position and a fifty-tick rising/fading lifetime.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vi",
       "originalName": "vi",
       "to": "MovingBody",
@@ -293,7 +321,7 @@
       "symbol": "C:vn",
       "originalName": "vn",
       "to": "Ball",
-      "evidence": "vn.java: Radius-six circular body with velocities, angle-based launch and hit-history caches.",
+      "evidence": "vn.java: Radius-six circular body with velocities, angle-based launch and center-coordinate histories.",
       "confidence": "reviewed"
     },
     {
@@ -353,6 +381,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ao.field_i:[Ljava/lang/Object;",
+      "originalName": "field_i",
+      "to": "entries",
+      "evidence": "ao.java: Circular storage; retained objects/integers are returned at absolute index modulo capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ao.field_m:I",
+      "originalName": "field_m",
+      "to": "capacity",
+      "evidence": "ao.java: Constructor allocates this many entries; indexing wraps modulo capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ao.field_n:I",
+      "originalName": "field_n",
+      "to": "latestIndex",
+      "evidence": "ao.java: Starts at -1; append advances the absolute index before storing modulo capacity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bn.field_s:I",
       "originalName": "field_s",
       "to": "height256",
@@ -364,6 +413,34 @@
       "originalName": "field_u",
       "to": "width256",
       "evidence": "bn.java: Rectangle constructor width; bricks use8704 and paddles22528.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ge.field_y:I",
+      "originalName": "field_y",
+      "to": "activationTick",
+      "evidence": "ge.java: Scheduled copy constructor uses tickOffset+recipient.simulationTick; match applies only at or after this tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hp.field_j:I",
+      "originalName": "field_j",
+      "to": "latestIndex",
+      "evidence": "hp.java: Starts at -1; append advances the absolute index before storing modulo capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hp.field_n:I",
+      "originalName": "field_n",
+      "to": "capacity",
+      "evidence": "hp.java: Constructor allocates this many entries; indexing wraps modulo capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hp.field_o:[I",
+      "originalName": "field_o",
+      "to": "entries",
+      "evidence": "hp.java: Circular storage; retained objects/integers are returned at absolute index modulo capacity.",
       "confidence": "reviewed"
     },
     {
@@ -388,6 +465,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_X:I",
+      "originalName": "field_X",
+      "to": "nextPowerUpIndex",
+      "evidence": "j.java: First unapplied history index; advanced only after a due power-up is applied.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_Y:Lao;",
+      "originalName": "field_Y",
+      "to": "snapshotHistory",
+      "evidence": "j.java: Snapshot loading restores the latest index to simulationTick/5-1; finer snapshot storage remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_gb:Lvl;",
+      "originalName": "field_gb",
+      "to": "activeBalls",
+      "evidence": "j.java: Board diagnostics name this collection Balls in play; match advances these bodies.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_kb:Lao;",
+      "originalName": "field_kb",
+      "to": "powerUpHistory",
+      "evidence": "j.java: Match routing appends scheduled copies; pending consumption reads absolute indices.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_mb:I",
       "originalName": "field_mb",
       "to": "boardWidth",
@@ -395,10 +500,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_nb:Lvl;",
+      "originalName": "field_nb",
+      "to": "scorePopups",
+      "evidence": "j.java: addScore appends score text; match tick advances its rising/fading lifetime.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_ob:I",
       "originalName": "field_ob",
       "to": "score",
       "evidence": "j.java: Player board constructor, queued attack scheduling, brick/ball/paddle geometry and scoring paths; board offset participates in scrolling/progress state; finer meaning remains qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_pb:Lvl;",
+      "originalName": "field_pb",
+      "to": "fallingPowerUps",
+      "evidence": "j.java: Brick contact adds falling power-ups; match advances them and handles paddle pickup.",
       "confidence": "reviewed"
     },
     {
@@ -465,6 +584,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ul.field_i:I",
+      "originalName": "field_i",
+      "to": "x256",
+      "evidence": "ul.java: Popup constructor, match lifetime update and cn drawing: integer score text, fixed8 coordinates and opacity remainingTicks/50.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_n:I",
+      "originalName": "field_n",
+      "to": "y256",
+      "evidence": "ul.java: Popup constructor, match lifetime update and cn drawing: integer score text, fixed8 coordinates and opacity remainingTicks/50.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_o:Ljava/lang/String;",
+      "originalName": "field_o",
+      "to": "text",
+      "evidence": "ul.java: Popup constructor, match lifetime update and cn drawing: integer score text, fixed8 coordinates and opacity remainingTicks/50.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ul.field_q:I",
+      "originalName": "field_q",
+      "to": "remainingTicks",
+      "evidence": "ul.java: Popup constructor, match lifetime update and cn drawing: integer score text, fixed8 coordinates and opacity remainingTicks/50.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vi.field_i:I",
       "originalName": "field_i",
       "to": "typeId",
@@ -521,6 +668,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vn.field_E:Lhp;",
+      "originalName": "field_E",
+      "to": "centerXHistory256",
+      "evidence": "vn.java: Match tick appends x256+radius256 to this history; reset paths set its latest index to -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vn.field_y:Lhp;",
+      "originalName": "field_y",
+      "to": "centerYHistory256",
+      "evidence": "vn.java: Match tick appends y256+radius256 to this history; reset paths set its latest index to -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vo.field_B:I",
       "originalName": "field_B",
       "to": "controlMode",
@@ -546,6 +707,69 @@
       "originalName": "field_y",
       "to": "boardSpan256",
       "evidence": "vo.java: Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments; control mode retains its numeric encoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(BI)V#0",
+      "originalName": "var3",
+      "to": "board",
+      "evidence": "ak.java: Selected board whose scheduled history is being consumed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(BI)V#1",
+      "originalName": "var4",
+      "to": "powerUp",
+      "evidence": "ak.java: Current pending power-up; its activation tick gates application.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(IILvl;B)V#0",
+      "originalName": "var6",
+      "to": "recipientIndex",
+      "evidence": "ak.java: Opponent routing iterates this board index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.a(IILvl;B)V#9",
+      "originalName": "var8",
+      "to": "powerUp",
+      "evidence": "ak.java: Current pickup from the source attack deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ao.a(Ljava/lang/Object;B)V#0",
+      "originalName": "fieldTemp$0",
+      "to": "nextIndex",
+      "evidence": "ao.java: New absolute index used for the modulo storage slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hp.a(II)V#0",
+      "originalName": "fieldTemp$0",
+      "to": "nextIndex",
+      "evidence": "hp.java: New absolute index used for the modulo storage slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(III)I#0",
+      "originalName": "var4",
+      "to": "historyIndex",
+      "evidence": "j.java: Scans absolute pending history indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(III)I#1",
+      "originalName": "var5",
+      "to": "powerUp",
+      "evidence": "j.java: Pending effect examined for type and activation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ul.b(Z)Z#0",
+      "originalName": "fieldTemp$0",
+      "to": "nextRemainingTicks",
+      "evidence": "ul.java: Decremented lifetime used to test whether the popup is still alive.",
       "confidence": "reviewed"
     },
     {
@@ -584,6 +808,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.a(BI)V",
+      "originalName": "a",
+      "to": "applyPendingPowerUps",
+      "evidence": "ak.java: Consumes the due prefix in history order; stops at the first future entry even if a later entry is due; guard at least81.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ak.a(IILvl;B)V",
       "originalName": "a",
       "to": "distributeQueuedAttacks",
@@ -595,6 +826,20 @@
       "originalName": "c",
       "to": "getStateSevenPlayerMask",
       "evidence": "ak.java: Selects board state Z seven excluding maskThree; canonical guard -17566.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ao.a(II)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "ao.java: Rejects future and overwritten indices; canonical guard67 preserves the arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ao.a(Ljava/lang/Object;B)V",
+      "originalName": "a",
+      "to": "append",
+      "evidence": "ao.java: Advances latestIndex and stores the same object reference; canonical guard -39.",
       "confidence": "reviewed"
     },
     {
@@ -682,6 +927,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ge.a(Lj;B)V",
+      "originalName": "a",
+      "to": "applyToBoard",
+      "evidence": "ge.java: Applies original type-specific paddle, ball and board mutations; board state3 suppresses all effects; guard99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.b(Z)Z",
+      "originalName": "b",
+      "to": "isSelfTargeted",
+      "evidence": "ge.java: Reads the type flag used to route pickups to selected board instead of unmasked opponents; canonical false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gf.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -703,6 +962,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hp.a(II)V",
+      "originalName": "a",
+      "to": "append",
+      "evidence": "hp.java: Advances latestIndex and stores value modulo capacity; canonical guard -7255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hp.b(II)I",
+      "originalName": "b",
+      "to": "get",
+      "evidence": "hp.java: Rejects future indices and indices below latestIndex-capacity+retentionAdjustment; canonical adjustment1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hq.b(B)V",
       "originalName": "b",
       "to": "drawScreen",
@@ -721,6 +994,20 @@
       "originalName": "a",
       "to": "readBodySnapshot",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(III)I",
+      "originalName": "a",
+      "to": "ticksUntilPendingPowerUp",
+      "evidence": "j.java: Scans pending entries until the lookahead limit for the requested type; returns relative delay or -1; guard above8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(IZII)V",
+      "originalName": "a",
+      "to": "addScore",
+      "evidence": "j.java: Updates score and accounting, optionally resets a state word, and appends a popup at supplied fixed8 coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -924,6 +1211,13 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.b(Z)Z",
+      "originalName": "b",
+      "to": "advance",
+      "evidence": "ul.java: Moves upward one pixel and decrements remaining ticks; false guard returns whether remainingTicks is nonzero.",
       "confidence": "reviewed"
     },
     {
@@ -1165,6 +1459,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ak.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ak.java: Consumes the due prefix in history order; stops at the first future entry even if a later entry is due; guard at least81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.a(BI)V#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ak.java: Consumes the due prefix in history order; stops at the first future entry even if a later entry is due; guard at least81.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ak.a(IILvl;B)V#0",
       "originalName": "param0",
       "to": "playerId",
@@ -1197,6 +1505,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ak.java: Selects board state Z seven excluding maskThree; canonical guard -17566.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ao.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "capacity",
+      "evidence": "ao.java: Creates empty indexed history with caller-supplied capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ao.a(II)Ljava/lang/Object;#0",
+      "originalName": "param0",
+      "to": "index",
+      "evidence": "ao.java: Rejects future and overwritten indices; canonical guard67 preserves the arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ao.a(II)Ljava/lang/Object;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ao.java: Rejects future and overwritten indices; canonical guard67 preserves the arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ao.a(Ljava/lang/Object;B)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "ao.java: Advances latestIndex and stores the same object reference; canonical guard -39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ao.a(Ljava/lang/Object;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ao.java: Advances latestIndex and stores the same object reference; canonical guard -39.",
       "confidence": "reviewed"
     },
     {
@@ -1403,6 +1746,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ge.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "x256",
+      "evidence": "ge.java: Creates a falling radius-eight power-up with downward velocity1024.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "y256",
+      "evidence": "ge.java: Creates a falling radius-eight power-up with downward velocity1024.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "typeId",
+      "evidence": "ge.java: Creates a falling radius-eight power-up with downward velocity1024.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.<init>(IIII)V#0",
+      "originalName": "param0",
+      "to": "x256",
+      "evidence": "ge.java: Creates a falling body and retains its activation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.<init>(IIII)V#1",
+      "originalName": "param1",
+      "to": "y256",
+      "evidence": "ge.java: Creates a falling body and retains its activation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.<init>(IIII)V#2",
+      "originalName": "param2",
+      "to": "typeId",
+      "evidence": "ge.java: Creates a falling body and retains its activation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.<init>(IIII)V#3",
+      "originalName": "param3",
+      "to": "activationTick",
+      "evidence": "ge.java: Creates a falling body and retains its activation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.<init>(Lge;I)V#0",
+      "originalName": "param0",
+      "to": "source",
+      "evidence": "ge.java: Copies source position/type, resets body velocity/state and assigns a recipient activation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.<init>(Lge;I)V#1",
+      "originalName": "param1",
+      "to": "activationTick",
+      "evidence": "ge.java: Copies source position/type, resets body velocity/state and assigns a recipient activation tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ge.a(ILjava/lang/StringBuilder;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -1414,6 +1820,27 @@
       "originalName": "param1",
       "to": "diagnostics",
       "evidence": "no.java: Preserves original wrapping integer checksum and optional diagnostic text; canonical guard above79. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.a(Lj;B)V#0",
+      "originalName": "param0",
+      "to": "board",
+      "evidence": "ge.java: Applies original type-specific paddle, ball and board mutations; board state3 suppresses all effects; guard99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.a(Lj;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ge.java: Applies original type-specific paddle, ball and board mutations; board state3 suppresses all effects; guard99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.b(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ge.java: Reads the type flag used to route pickups to selected board instead of unmasked opponents; canonical false guard.",
       "confidence": "reviewed"
     },
     {
@@ -1463,6 +1890,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hp.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "capacity",
+      "evidence": "hp.java: Creates empty indexed history with caller-supplied capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hp.a(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hp.java: Advances latestIndex and stores value modulo capacity; canonical guard -7255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hp.a(II)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "hp.java: Advances latestIndex and stores value modulo capacity; canonical guard -7255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hp.b(II)I#0",
+      "originalName": "param0",
+      "to": "index",
+      "evidence": "hp.java: Rejects future indices and indices below latestIndex-capacity+retentionAdjustment; canonical adjustment1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hp.b(II)I#1",
+      "originalName": "param1",
+      "to": "retentionAdjustment",
+      "evidence": "hp.java: Rejects future indices and indices below latestIndex-capacity+retentionAdjustment; canonical adjustment1.",
       "confidence": "reviewed"
     },
     {
@@ -1533,6 +1995,55 @@
       "originalName": "param4",
       "to": "initialState",
       "evidence": "j.java: Constructs board geometry, paddle, deterministic random state and effect collections.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(III)I#0",
+      "originalName": "param0",
+      "to": "typeId",
+      "evidence": "j.java: Scans pending entries until the lookahead limit for the requested type; returns relative delay or -1; guard above8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(III)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Scans pending entries until the lookahead limit for the requested type; returns relative delay or -1; guard above8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(III)I#2",
+      "originalName": "param2",
+      "to": "lookaheadTicks",
+      "evidence": "j.java: Scans pending entries until the lookahead limit for the requested type; returns relative delay or -1; guard above8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(IZII)V#0",
+      "originalName": "param0",
+      "to": "points",
+      "evidence": "j.java: Updates score and accounting, optionally resets a state word, and appends a popup at supplied fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(IZII)V#1",
+      "originalName": "param1",
+      "to": "resetStateWord",
+      "evidence": "j.java: Updates score and accounting, optionally resets a state word, and appends a popup at supplied fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(IZII)V#2",
+      "originalName": "param2",
+      "to": "x256",
+      "evidence": "j.java: Updates score and accounting, optionally resets a state word, and appends a popup at supplied fixed8 coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(IZII)V#3",
+      "originalName": "param3",
+      "to": "y256",
+      "evidence": "j.java: Updates score and accounting, optionally resets a state word, and appends a popup at supplied fixed8 coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -2033,6 +2544,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ul.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "points",
+      "evidence": "ul.java: Formats score text and starts fifty-tick lifetime at supplied coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "x256",
+      "evidence": "ul.java: Formats score text and starts fifty-tick lifetime at supplied coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "y256",
+      "evidence": "ul.java: Formats score text and starts fifty-tick lifetime at supplied coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ul.b(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ul.java: Moves upward one pixel and decrements remaining ticks; false guard returns whether remainingTicks is nonzero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vi.<init>(IIIII)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -2190,28 +2729,28 @@
       "symbol": "P:vn.<init>(IIII)V#0",
       "originalName": "param0",
       "to": "x256",
-      "evidence": "vn.java: Constructs radius-six ball and hit caches.",
+      "evidence": "vn.java: Constructs radius-six ball and center-coordinate histories.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:vn.<init>(IIII)V#1",
       "originalName": "param1",
       "to": "y256",
-      "evidence": "vn.java: Constructs radius-six ball and hit caches.",
+      "evidence": "vn.java: Constructs radius-six ball and center-coordinate histories.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:vn.<init>(IIII)V#2",
       "originalName": "param2",
       "to": "velocityX256",
-      "evidence": "vn.java: Constructs radius-six ball and hit caches.",
+      "evidence": "vn.java: Constructs radius-six ball and center-coordinate histories.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:vn.<init>(IIII)V#3",
       "originalName": "param3",
       "to": "velocityY256",
-      "evidence": "vn.java: Constructs radius-six ball and hit caches.",
+      "evidence": "vn.java: Constructs radius-six ball and center-coordinate histories.",
       "confidence": "reviewed"
     },
     {
@@ -2412,9 +2951,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "a0afeffb2598768aeb073fe9debb79ff57bd16e00ceb7fc21d7033a22e9b1808",
+      "build-brickabrac-rules.mjs": "ef63e2c3155da5c2e5773238b7b529e3693c8dd400a364f3e70c2df9b1b6f3f1",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "fbf27aceff754146a3f24e18f516b3c78b16e65deccee13065889589d764c60d",
+      "tests/test-brickabrac-core.mjs": "3647b2d4bc1ffa92570c5d49397166ae34e94a7a1af6d8b26c9e1a018c68e187",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

@@ -40,14 +40,25 @@ The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
 
 ## Brick-a-brac
 
-The initial semantic pass names GameScreen/GameplayScreen, MultiplayerMatch,
+The semantic passes name GameScreen/GameplayScreen, MultiplayerMatch,
 PlayerBoard, moving/circular/rectangular bodies, Ball/Brick/Paddle and intrusive
-nodes/deques. Player masks and body state words remain numbered or qualified
+nodes/deques, plus IntHistoryBuffer/ObjectHistoryBuffer, PowerUp and ScorePopup.
+Ball history fields identify recorded center coordinates. Board collections
+distinguish active/queued balls, falling power-ups, score popups, scheduled
+power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
 where their game/server meanings are unknown. Native probes check checksums,
 constructor storage, circle-overlap boundaries, paddle size stages, player-state
-mask getters and deque transfer/order; both complete 420-file corpora compile
-and declaration/reference/override checks pass. Full gameplay, swept collision
-response, snapshot transport and live multiplayer remain unverified.
+mask getters, deque transfer/order, history wraparound/future/erased boundaries,
+object reference retention, score text/lifetime, and power-up copy/routing.
+Routing fixtures cover one, two and five players, selected-board versus opponent
+effects and all three exclusion masks. Pending effects consume only the due
+prefix, stop at an earlier future entry, apply at the exact tick, and suppress
+mutations in board state3 while still advancing the consumed index. Native
+fixtures check selected effects and lookahead boundaries; the integer history
+retention adjustment retains its observed behavior rather than being renamed
+as an unused guard. Both complete 420-file corpora compile and
+declaration/reference/override checks pass. Full gameplay, swept collision
+response, score accounting, snapshot transport and live multiplayer remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
