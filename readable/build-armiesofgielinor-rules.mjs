@@ -10,6 +10,28 @@ import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} fr
 const SOURCE_COMMIT = 'f9a6dd401349b0d2b3a426a62d2ee09c32514c63';
 // Evidence below refers to this immutable Java input, not to another game's map.
 const classes = {
+  n:['ValidationSource','Validation contract: change notification, empty-input query, current state and diagnostic message.'],
+  eg:['ValidationProvider','Widget contract exposing its attached validation source.'],
+  gu:['ValidationState','Identity token for empty/waiting/checking/valid/invalid validation states; unrelated console/packet helpers remain separate.'],
+  rb:['DebouncedValidator','Validation base retaining last change time and delaying state/message evaluation by 350 milliseconds.'],
+  mk:['TextFieldValidator','Debounced validator retaining an editable field and delegating text-specific state/message evaluation.'],
+  ma:['ValidatedTextWidget','Editable text widget exposing a validation source, notifying it after text changes and retaining local pointer X for tooltip anchoring.'],
+  pk:['ValidationStatusWidget','Hotspot text displaying validation diagnostics or fallback text with waiting/checking spinner and valid/invalid icons.'],
+  di:['MatchingTextValidator','Compares text with another field and requires its validation source, when present, to be valid.'],
+  kt:['EmailConfirmationValidator','Matching email confirmation plus cached asynchronous email acceptance result.'],
+  vl:['EmailValidator','Email syntax validator delegating local-part/domain checks to shared helpers.'],
+  ib:['PasswordValidator','Password checks against name similarity and email components, with specific diagnostic selection.'],
+  jh:['AgeValidator','Numeric age validator accepting values from one through 130.'],
+  uj:['AccountNameAvailabilityValidator','Account-name syntax plus cached asynchronous acceptance result, with explicit invalidation.'],
+  en:['DateInputWidget','Abstract day/month/year widget exposing an attached date validator and empty-input query.'],
+  no:['NumericDateInputWidget','Three editable numeric date fields, optional month-first order, integer parsing, captions and layout.'],
+  sb:['DateOfBirthValidator','Debounced date validator requiring a real date, year at least 1890 and at most current year minus three.'],
+  rp:['DropdownSelectionListener','Dropdown selection-change callback used to invalidate date validation.'],
+  lu:['TextEntryWidgetPainter','Bitmap text painter with entry-field background and fixed padding/alignment.'],
+  ol:['MaskedTextEntryPainter','Entry painter displaying one asterisk per UTF-16 text unit; unrelated shared globals remain separate.'],
+  vu:['ToggleWidget','Interactive widget toggling active state before inherited activation notification and selecting the theme toggle painter.'],
+  fo:['EmailCheckResult','Retains checked email, completion and acceptance booleans; unrelated numbered-text substitution helper remains separate.'],
+  wd:['AccountNameCheckResult','Retained name acceptance/error result consumed by validators; unrelated friend/render helpers and unresolved result fields remain separate.'],
   gk:['ModalDialogHost','Owns front-inserted open/closing dialogs, active-child routing, per-dialog fade advancement and viewport recentering; unrelated chat/client globals remain separate.'],
   wl:['ModalDialog','Deque-backed dialog with owning host, open flag, top-dialog opacity target, asymmetric fade and background hook.'],
   sf:['ResizableModalDialog','Dialog frame with centered quadratic size interpolation and resize-completion hook.'],
@@ -334,6 +356,110 @@ function constructorParameters(owner,descriptor,names,evidence) {
 function local(owner,signature,ordinal,originalName,to,evidence) {
   members[`L:${owner}.${signature}#${ordinal}`]={to,evidence,expectedOriginalName:originalName};
 }
+field('rb','a','J','lastChangeMillis','Change notification captures monotonic time; state and diagnostic wait until timestamp plus 350 ms.');
+field('mk','g','Lfn;','input','Retained editable field supplies text to concrete validation and null/empty checks.');
+field('ma','bb','Ln;','validationSource','Exposed through ValidationProvider and notified after inherited text-change callback.');
+field('ma','W','I','pointerLocalX','Pointer update computes pointerX minus widget X and parent origin; tooltip anchor adds remaining width.');
+for(const [original,type,to] of [['Z','Ln;','validationSource'],['Y','Lwk;','spinnerSprite'],['U','I','spinnerTick'],['L','Ljava/lang/String;','fallbackText']])field('pk',original,type,to,'Status drawing reads source state/message, updates text/hotspots and selects cached spinner or static status icon.');
+field('di','k','Lfn;','primaryInput','Matching text and primary validation gate use the retained comparison field.');
+field('kt','q','Ldi;','matchingValidator','Constructed against confirmation and primary email fields before polling email-check result.');
+field('kt','k','Ljava/lang/String;','checkedEmail','Updated only after a completed result; equal input reuses acceptance flag.');
+field('kt','j','Z','accepted','Cached completed email result controls valid/invalid state.');
+field('ib','l','Lfn;','accountNameInput','Lowercased name is checked for password similarity and diagnostic choice.');
+field('ib','k','Lfn;','emailInput','Rejects passwords containing either nonempty email local-part or domain, case-insensitively.');
+field('uj','m','Ljava/lang/String;','checkedName','Cached result name, cleared by invalidateNameCheck.');
+field('uj','k','Z','accepted','Cached name acceptance; error results are not installed into this cache.');
+field('en','H','Lsb;','validator','Attaching validator retains both directions; provider returns it.');
+field('sb','j','Len;','input','Date validator reads day, zero-based month, year and empty state from retained date widget.');
+for(const [original,type,to] of [['L','Lfn;','dayInput'],['Q','Lfn;','monthInput'],['O','Lfn;','yearInput'],['R','Z','monthFirst']])field('no',original,type,to,'Date parser reads day/month-minus-one/year; flag changes child order and horizontal positions.');
+for(const [owner,original,to] of [['lq','c','validationEmpty'],['ad','K','validationWaiting'],['so','e','validationChecking'],['rn','e','validationInvalid'],['oo','g','validationValid']])field(owner,original,'Lgu;',to,'Shared identity used by debounced/concrete validators, status text/icons and account-form enable gates.');
+field('fo','d','Ljava/lang/String;','email','Email cache getter compares requested text with retained checked address.');
+field('fo','b','Z','complete','Incomplete results defer validation; cache may replace a completed result for a different address.');
+field('fo','c','Z','accepted','Completed email result controls valid/invalid status.');
+field('wd','a','Z','accepted','Name result acceptance controls validator state after syntax checks.');
+field('wd','i','Ljava/lang/String;','errorText','Non-null error prevents result caching by account-name validator.');
+field('se','g','Lfo;','emailCheckResult','Shared retained email check result used by confirmation polling.');
+field('vl','k','Lwd;','accountNameCheckResult','Name-check poll returns completed result then clears it when queueing a new check.');
+field('jh','j','Ljava/lang/String;','requestedAccountName','Name-check poll compares completed response with requested name or stores new request text.');
+field('mh','b','Lwm;','accountNameCheckState','Shared name-check state: pending suppresses polls, complete supplies a matching result and advances to consumed state.');
+field('du','d','Lwm;','nameCheckPending','Name poll returns null while this request state is retained.');
+field('lm','d','Lwm;','nameCheckComplete','Name poll returns matching completed result only from this state.');
+field('nb','i','Lwm;','nameCheckResultConsumed','Installed after a matching result is returned to its validator.');
+field('gt','h','Ljava/lang/String;','validationPendingText','Status widget displays this text for waiting/checking instead of querying a diagnostic.');
+field('db','a','[Lwk;','validationStatusIcons','Status widget uses spinner slot zero, valid slot one and invalid slot two.');
+field('eb','b','I','minimumPasswordLength','Password length predicate uses this inclusive minimum, initially five.');
+field('db','g','I','maximumPasswordLength','Password length predicate uses this inclusive maximum, initially twenty.');
+method('n','a','(I)V','validationChanged','Captures last change time for delayed validation.',{0:'obfuscationGuard'});
+method('n','b','(I)Z','isInputEmpty','Null/empty text or missing date component bypasses validation with empty state.',{0:'obfuscationGuard'});
+method('n','a','(Z)Lgu;','getValidationState','Returns empty, waiting or evaluated state, with canonical false guard.',{0:'obfuscationGuard'});
+method('n','a','(B)Ljava/lang/String;','getValidationMessage','Returns null while empty/waiting, otherwise evaluated diagnostic.',{0:'obfuscationGuard'});
+method('eg','a','(I)Ln;','getValidationSource','Exposes attached source on text/date widgets.',{0:'obfuscationGuard'});
+method('rb','c','(I)Lgu;','evaluateState','Delayed state-evaluation hook implemented by text and date validators.',{0:'obfuscationGuard'});
+method('rb','b','(B)Ljava/lang/String;','evaluateMessage','Delayed diagnostic-evaluation hook.',{0:'obfuscationGuard'});
+method('mk','a','(ILjava/lang/String;)Lgu;','validateText','Concrete text-to-state validation, independent of debounce/empty bypass.',{0:'obfuscationGuard',1:'text'});
+method('mk','a','(BLjava/lang/String;)Ljava/lang/String;','describeText','Concrete text diagnostic, independent of debounce/empty bypass.',{0:'obfuscationGuard',1:'text'});
+method('ma','a','(BLn;)V','setValidationSource','Stores source without changing listeners or triggering evaluation.',{0:'obfuscationGuard',1:'source'});
+method('en','a','(BLsb;)V','setDateValidator','Stores validator and assigns its back-reference; numeric subclass installs it as listener on all fields.',{0:'obfuscationGuard',1:'validator'});
+method('en','a','(B)I','getYear','Returns parsed year or -1 for invalid integer text.',{0:'obfuscationGuard'});
+method('en','l','(I)I','getDay','Returns parsed day or -1.',{0:'obfuscationGuard'});
+method('en','m','(I)I','getMonthIndex','Returns entered month minus one, or -1 on parsing failure.',{0:'obfuscationGuard'});
+method('en','k','(I)Z','isDateEmpty','True if any date component is null or empty.',{0:'obfuscationGuard'});
+method('rp','a','(ILgh;)V','selectionChanged','Date validator receives dropdown selection change and resets debounce.',{0:'obfuscationGuard',1:'selector'});
+method('uj','g','(I)V','invalidateNameCheck','Canonical guard clears cached name while retaining previous acceptance flag.',{0:'obfuscationGuard'});
+method('ib','a','(Ljava/lang/String;I)Z','containsEmailComponent','Lowercases email/password and checks local-part or domain using last at-sign.',{0:'password',1:'obfuscationGuard'});
+method('qd','a','(Ljava/lang/String;Ljava/lang/String;Z)Z','isPasswordAllowedForName','Rejects non-alphanumeric/all-identical/invalid-length passwords and name containment variants, without checking email components.',{0:'password',1:'name',2:'obfuscationGuard'});
+method('pd','a','(Ljava/lang/String;I)Z','hasInvalidPasswordLength','True for null or length outside retained inclusive limits.',{0:'password',1:'obfuscationGuard'});
+method('ab','a','(Ljava/lang/String;I)Z','containsNonAlphanumeric','Checks ASCII letters/digits from supplied index through end.',{0:'text',1:'startIndex'});
+method('ph','a','(Ljava/lang/String;B)Z','isAllSameCharacter','Compares every character with first; empty text retains charAt failure.',{0:'text',1:'obfuscationGuard'});
+method('rb','a','(Ljava/lang/String;Ljava/lang/String;I)Z','passwordContainsNameVariant','Checks name and shared character-substitution variant as password substrings.',{0:'name',1:'password',2:'obfuscationGuard'});
+method('e','a','(ILjava/lang/String;Ljava/lang/String;)Z','nameContainsPasswordVariant','Removes name underscores, then checks password and its character-substitution variant inside the name.',{0:'obfuscationGuard',1:'name',2:'password'});
+method('ha','a','(Ljava/lang/String;BLjava/lang/String;)Z','passwordContainsCompactNameVariant','Removes name underscores, then checks that compact name and its variant inside password.',{0:'password',1:'obfuscationGuard',2:'name'});
+method('fo','a','(I)Z','isAccepted','Returns retained acceptance flag.',{0:'obfuscationGuard'});
+method('fo','a','(B)Z','isComplete','Returns retained completion flag.',{0:'obfuscationGuard'});
+method('fo','b','(Z)Ljava/lang/String;','getEmail','Returns retained email address.',{0:'obfuscationGuard'});
+method('fo','a','(ZZ)V','setResult','Stores acceptance then completion flags.',{0:'accepted',1:'complete'});
+method('dh','a','(Ljava/lang/String;B)Lfo;','getEmailCheckResult','Replaces completed shared result only for different email; pending result remains shared even for another requested address.',{0:'email',1:'obfuscationGuard'});
+method('ji','a','(ILjava/lang/String;)Lwd;','pollAccountNameCheck','Returns matching completed response and advances shared state; otherwise queues request or returns null while pending.',{0:'obfuscationGuard',1:'name'});
+method('dt','a','(IIII)Z','isValidDate','Checks zero-based month range and one-based day against month length.',{0:'year',1:'obfuscationGuard',2:'monthIndex',3:'day'});
+method('bn','a','(BII)I','getDaysInMonth','February uses shared leap-year predicate; other months use retained month-length array.',{0:'obfuscationGuard',1:'monthIndex',2:'year'});
+method('no','a','(CZI)Ljava/lang/String;','repeatCharacter','Builds a string of count copies of supplied UTF-16 character; masked painter uses asterisk.',{0:'character',1:'obfuscationGuard',2:'count'});
+constructorParameters('ma','(Ljava/lang/String;Lqo;I)V',{0:'text',1:'listener',2:'maximumLength'},'Forwards editable text constructor without attaching source.');
+constructorParameters('mk','(Lfn;)V',{0:'input'},'Retains input without installing listener.');
+for(const owner of ['vl','jh','uj'])constructorParameters(owner,'(Lfn;)V',{0:'input'},'Retains field through TextFieldValidator; name validator initializes empty result cache.');
+for(const owner of ['di','kt'])constructorParameters(owner,'(Lfn;Lfn;)V',{0:'input',1:'primaryInput'},'Retains confirmation and primary field; email confirmation constructs matching validator.');
+constructorParameters('ib','(Lfn;Lfn;Lfn;)V',{0:'input',1:'accountNameInput',2:'emailInput'},'Retains password field and context used for similarity/component checks.');
+constructorParameters('pk','(Ln;Ljava/lang/String;IIII)V',{0:'validationSource',1:'fallbackText',2:'x',3:'y',4:'width',5:'height'},'Uses shared wrapped diagnostic painter, retains source/fallback and explicit bounds.');
+constructorParameters('en','(IIIILkh;)V',{0:'x',1:'y',2:'width',3:'height',4:'painter'},'Passes date-widget bounds to deque container.');
+constructorParameters('no','(Lkh;ZIIII)V',{0:'painter',1:'monthFirst',2:'x',3:'y',4:'width',5:'height'},'Constructs numeric fields then lays them out.');
+constructorParameters('no','(Lkh;Z)V',{0:'painter',1:'monthFirst'},'Creates day/month length-two fields and year length-four field, retaining painter/order.');
+for(const owner of ['lu','ol']){constructorParameters(owner,'(I)V',{0:'textColour'},'Uses shared font.');constructorParameters(owner,'(Lka;I)V',{0:'font',1:'textColour'},'Entry padding left/right/top/bottom 4/2/2/2, left horizontal and centered vertical alignment.');}
+constructorParameters('vu','(Ljava/lang/String;Lqo;Z)V',{0:'text',1:'listener',2:'active'},'Initializes active state and uses theme toggle painter.');
+constructorParameters('vu','(Ljava/lang/String;Lqo;)V',{0:'text',1:'listener'},'Uses theme toggle painter.');
+constructorParameters('vu','(Ljava/lang/String;Lkh;Lqo;)V',{0:'text',1:'initialPainter',2:'listener'},'Initial painter is replaced by theme toggle painter.');
+constructorParameters('fo','(Ljava/lang/String;)V',{0:'email'},'Retains address with acceptance/completion false.');
+constructorParameters('wd','(Z)V',{0:'accepted'},'Stores name acceptance result; other fields retain defaults.');
+for(const [owner,signature,names] of [
+ ['mk','c(I)Lgu;',[[0,'var2','guardQuotient']]],
+ ['ma','a(IIILkb;)V',[[0,'runtimeException','failure']]],
+ ['pk','a(IIBI)V',[[0,'var5','displayText'],[1,'var6','state'],[2,'var13','obfuscationControl'],[3,'var8','textPainter'],[4,'var9','iconX'],[5,'var10','iconCenterY'],[6,'var11','waitingSpriteWidth'],[7,'var12','waitingSpriteHeight'],[8,'var14','checkingSpriteAlias'],[9,'var15','validIcon'],[10,'var16','invalidIcon'],[11,'var17','checkingIcon'],[12,'var18','waitingIcon'],[13,'var11Lifetime1','checkingSpriteWidth'],[14,'var12Lifetime1','checkingSpriteHeight'],[15,'var6Lifetime1','iconState']]],
+ ['uj','a(ILjava/lang/String;)Lgu;',[[0,'var3','result'],[1,'var3_ref','failure'],[2,'var4','candidateName'],[3,'stackIn_2_0','invalidSyntaxState'],[4,'stackIn_10_0','checkingState'],[5,'stackIn_15_0','cachedResultState'],[6,'stackIn_18_0','failureForContext'],[7,'stackIn_18_1','errorContext'],[8,'stackIn_19_2','textDescription'],[9,'decompiledCaughtException','caughtFailure'],[10,'decompiledCaughtParameter0','caughtParameter']]],
+ ['uj','a(BLjava/lang/String;)Ljava/lang/String;',[[0,'var3','syntaxMessage'],[1,'var3_ref','failure'],[2,'var4','result'],[3,'var5','candidateName'],[4,'stackIn_2_0','syntaxDiagnostic'],[5,'stackIn_13_0','rejectedDiagnostic'],[6,'stackIn_17_0','acceptedDiagnostic']]],
+ ['kt','a(ILjava/lang/String;)Lgu;',[[0,'var3','result'],[1,'var3_ref','failure'],[2,'stackIn_2_0','mismatchState'],[3,'stackIn_7_0','checkingState'],[4,'stackIn_14_0','cachedResultState']]],
+ ['ib','a(ILjava/lang/String;)Lgu;',[[0,'var3','lowerName'],[1,'var3_ref','failure'],[2,'var4','lowerPassword'],[3,'stackIn_3_0','emptyInvalidState'],[4,'stackIn_8_0','nameInvalidState'],[5,'stackIn_12_0','emailInvalidState']]],
+ ['ib','a(BLjava/lang/String;)Ljava/lang/String;',[[0,'var3','failure'],[1,'var4','lowerPassword'],[2,'var5','passwordAlias'],[3,'var6','lowerName'],[4,'stackIn_4_0','emptyDiagnostic'],[5,'stackIn_7_0','lengthDiagnostic'],[6,'stackIn_11_0','characterDiagnostic'],[7,'stackIn_15_0','repeatedCharacterDiagnostic'],[8,'stackIn_19_0','emailDiagnostic'],[9,'stackIn_22_0','validNoNameDiagnostic'],[10,'stackIn_25_0','nameContainedDiagnostic'],[11,'stackIn_29_0','passwordContainedDiagnostic'],[12,'stackIn_32_0','compactNameDiagnostic'],[13,'stackIn_34_0','validDiagnostic']]],
+ ['ib','a(Ljava/lang/String;I)Z',[[0,'var3','lowerEmail'],[1,'var3_ref','failure'],[2,'var4','lowerPassword'],[3,'var5','guardQuotient'],[4,'var6','atIndex'],[5,'var7','localPart'],[6,'var8','domain']]],
+ ['sb','c(I)Lgu;',[[0,'var2_int','day'],[1,'var2','parseFailure'],[2,'var3','monthIndex'],[3,'var4','year'],[4,'var5','currentYear'],[5,'var6','guardRemainder'],[6,'stackIn_2_0','tooOldState'],[7,'stackIn_5_0','tooRecentState'],[8,'stackIn_8_0','invalidCalendarState']]],
+ ['sb','b(B)Ljava/lang/String;',[[0,'var2_int','day'],[1,'var2','parseFailure'],[2,'var3','monthIndex'],[3,'var4','year'],[4,'var5','currentYear'],[5,'stackIn_6_0','yearRangeDiagnostic'],[6,'stackIn_9_0','validDiagnostic']]],
+ ['vl','a(ILjava/lang/String;)Lgu;',[[0,'var3_int','syntaxValid'],[1,'var3','failure'],[2,'stackIn_5_0','syntaxResult'],[3,'stackIn_7_0','invalidState'],[4,'stackIn_9_0','validState']]],
+ ['jh','a(ILjava/lang/String;)Lgu;',[[0,'var3_int','age'],[1,'var3','failure'],[2,'var4','syntaxText'],[3,'var5','numericText'],[4,'stackIn_5_0','invalidSyntaxState'],[5,'stackIn_10_0','invalidRangeState']]],
+ ['dh','a(Ljava/lang/String;B)Lfo;',[[0,'var2','failure'],[1,'stackIn_6_0','sharedResult']]],
+ ['ji','a(ILjava/lang/String;)Lwd;',[[0,'var2','failure'],[1,'stackIn_4_0','pendingResult'],[2,'stackIn_9_0','queuedResult'],[3,'stackIn_11_0','completedResult']]],
+ ['no','l(I)I',[[0,'stackIn_2_0','day'],[1,'decompiledCaughtException','caughtFailure'],[2,'var2','guardRemainder'],[3,'var3','parseFailure'],[4,'decompiledCaughtParameter0','caughtParameter']]],
+ ['no','m(I)I',[[0,'var2','parseFailure'],[1,'stackIn_3_0','monthIndex'],[2,'decompiledCaughtException','caughtFailure'],[3,'decompiledCaughtParameter0','caughtParameter']]],
+ ['no','a(B)I',[[0,'var2','parseFailure'],[1,'stackIn_3_0','year'],[2,'decompiledCaughtException','caughtFailure'],[3,'decompiledCaughtParameter0','caughtParameter']]],
+ ['no','a(IIIII)V',[[0,'var6','fieldsX']]],
+ ['no','a(CZI)Ljava/lang/String;',[[0,'var4','characterIndex'],[1,'var5','obfuscationControl'],[2,'var6','characters'],[3,'var3','characterArrayAlias']]],
+])for(const [ordinal,originalName,to] of names)local(owner,signature,ordinal,originalName,to,'Reviewed validation state/message selection, cache result, date parsing, icon geometry or repeated-character construction; original ordinal/spelling pinned.');
 field('gk','M','Lat;','dialogs','Owns front-inserted dialogs; first open dialog controls target opacity and active child. Closed dialogs remain until fade/snap pruning.');
 field('te','l','I','dialogViewportWidth','Defaults to 640; MeshObject and CampaignMission viewport setters store width; ModalDialog/host use it to center and size dialogs.');
 field('ij','x','I','dialogViewportHeight','Defaults to 480; MeshObject and CampaignMission viewport setters store height; ModalDialog/host use it to center and size dialogs.');
@@ -3619,6 +3745,10 @@ export function buildArmiesGuide(rules,mapping) {
     `This gameplay naming pass reviews ${Object.keys(classes).length} class identities across all ${mapping.files.length} compiled classes. Other class/member names remain unresolved. Unresolved packed flags use bit-position names without guessing gameplay effects. Renamed identifiers have no opaque suffixes; the dictionary records their original identities.`, '',
     'Widget, WidgetPainter, DropdownSelector, DropdownOptionList and DropdownArrowPainter expose the shared UI bounds and dropdown flow. Controlled fixtures check half-open base hit bounds, case-insensitive first-prefix matching, option validation/selection and the arrow painter’s pixels. The option-list hit override retains its different inclusive edges; complete interactive menu behavior remains unverified.','',
     '| Start here | Follow |','| --- | --- |',
+    `| ${link('n')} / ${link('rb')} / ${link('mk')} / ${link('ma')} / ${link('pk')} | Validation contract, debounce, editable-field source and diagnostic/status icons. |`,
+    `| ${link('di')} / ${link('vl')} / ${link('kt')} / ${link('ib')} / ${link('jh')} / ${link('uj')} | Matching, email, password, age and account-name checks. |`,
+    `| ${link('fo')} / ${link('wd')} / ${link('en')} / ${link('no')} / ${link('sb')} | Controlled remote results and parsed/validated date input. |`,
+    `| ${link('lu')} / ${link('ol')} / ${link('vu')} | Entry-field painting, UTF-16 asterisk masking and activation-time toggles. |`,
     `| ${link('gk')} / ${link('wl')} / ${link('sf')} / ${link('pt')} / ${link('lw')} | Dialog stack, top-dialog fade, centered size easing and content replacement stages. |`,
     `| ${link('ob')} / ${link('ta')} | Weighted grid cells, grow/shrink/alignment flags, focus strides and labels beside content. |`,
     `| ${link('ku')} / ${link('ch')} | Drop-target bounds, callback precedence and shared drag capture lifetime. |`,
@@ -3841,6 +3971,10 @@ export function buildArmiesGuide(rules,mapping) {
     'MusicCrossfadeStream names both background slots/tracks, selected sequencer, master gain, fixed-point fade position/step, scratch arrays and one-shot return. selectTrack reuses a matching track without restarting its reader, replaces the empty or quieter slot for a new track, and preserves direction while replacing an existing one-shot. configureSelectedSequencer applies all-channel gain and MIDI time scale. The shared musicCrossfadeStream, musicPlayer, directMusicSequencer and currentDirectMusicTrack fields now distinguish the global routes; setMusicTrack updates direct gain even when track identity is unchanged, but stops/flushes/restarts only on a change.', '',
     'AdaptiveMidiPcmStream names overallGain, fixedChannelGains, gainSteps, targetProfile and gainsSettled; ChannelGainProfile owns sixteen initially zero targets. The negative-channel setter changes only the overall multiplier, whereas a channel-specific setter updates base/fixed gain without clearing pending steps. Render temporarily multiplies the original master volume, runs the base sequencer, advances channel ramps after the block and restores master volume on normal return. Inherited final skip advances MIDI/PCM but leaves ramps unchanged. Profile identity is retained and mutable target changes are observed live.', '',
     'SoundPlaybackHandle names stream, lifetimeNode and unscaledVolume. Immediate playRawSound creates and appends a handle before adding raw playback to effectsMixer. Volume/default/pan wrappers identify external factory units, including the full-width integer guard bridge. Constructor and setEffectsGain use rounded unscaledVolume*effectsGain/256; volume changes also prune handles whose lifetime node has unlinked. primary soundHandles and optional additionalSoundHandles are distinct from the music player/crossfade route. The optional second list has only null-assignment writers in the pinned source.', '',
+    "ValidationSource, ValidationProvider and ValidationState expose the source/provider contract and identity states validationEmpty, validationWaiting, validationChecking, validationValid and validationInvalid. DebouncedValidator records monotonic change time and delays state/messages for 350 milliseconds; TextFieldValidator bypasses null/empty field text before evaluating concrete checks. ValidatedTextWidget reports the inherited text-change callback before notifying its attached source and retains pointerLocalX for tooltip anchoring. Native fixtures steer change time to settled or far-future values, verify empty/waiting bypass and callback ordering; the exact clock boundary and operating-system input remain unverified.", '',
+    "MatchingTextValidator requires primary validation, when present, to be valid before comparing text. EmailValidator checks local-part/domain syntax, EmailConfirmationValidator combines matching and a shared EmailCheckResult, and AccountNameAvailabilityValidator caches a completed accepted/rejected AccountNameCheckResult only when errorText is null. Pending email results remain shared even for another requested address; completed results are replaced for a different address. Name polls consume a matching completed response, otherwise queue a new request or return null while pending. Invalidation clears checkedName while retaining the previous accepted flag. Controlled pending/completed/error fixtures check these state/cache transitions without contacting servers; they do not prove wire compatibility or live registration.", '',
+    "PasswordValidator names the retained account-name/email context and its local checks. The shared client policy uses inclusive lengths five through twenty, ASCII letters/digits, a rejection of all-identical characters, and name/password containment using shared character substitutions and underscore removal. The validator also checks email local-part/domain substrings after lowercasing. These are preserved client rules, not a new policy. AgeValidator accepts numeric values one through 130. Native fixtures cover range, syntax, name/compact-name and email-component failures. DateInputWidget, NumericDateInputWidget and DateOfBirthValidator name day, zero-based month, year, month-first layout, listeners and the 1890/current-year-minus-three year gate. Independent Gregorian expectations cover historical leap dates/month/day ranges; real numeric fields test parsing and layout in both orders.", '',
+    "ValidationStatusWidget queries state twice per draw, chooses diagnostic/fallback text or validationPendingText, and uses validationStatusIcons spinner/valid/invalid slots. Fixtures check text selection, diagnostic polling, real valid/invalid pixels, temporary spinner storage/reuse and raster restoration; spinner rotation pixels and production assets remain unverified. TextEntryWidgetPainter adds the entry background with fixed padding; MaskedTextEntryPainter substitutes one asterisk per UTF-16 unit, including surrogate pairs. ToggleWidget selects the theme toggle painter and flips active before inherited activation/callback, including direct non-primary activation. Native fixtures verify masking and callback order; a complete rendered account workflow remains unverified. Unrelated static helpers and unresolved result fields retain separate purposes.", '',
     "ModalDialogHost owns front-inserted dialogs and draws them back to front. showDialog marks a dialog open and requests focus; advanceDialogs updates the active input child and prunes closed dialogs only after they become hidden. snapAndPruneDialogs preserves the source behavior of leaving that input child stale until the next advance. ModalDialog targets alpha 256 only when open and topmost, uses ceiling delta/8 to fade in and floor delta/16 to fade out, and otherwise retains lower open dialogs. Full-opacity drawing skips higher layers, while partial opacity composites through a shared sprite. Independent pixels preserve the source dependence of fading child coordinates on nonzero parent origins; production frame artwork remains unverified.", '',
     "ResizableModalDialog interpolates centered dimensions with tick*(2*duration-tick)/duration^2 and calls resizeCompleted at the endpoint. An immediate resize changes dimensions without that callback. ContentTransitionDialog names pendingContent, contentWrapper, transitionStage, ticks and durations; stages fade content out, resize, install the replacement and fade it in. A new resize advances in the same tick as fade-out completion. Controlled fixtures preserve two pinned quirks: zero-duration content resize remains in its resize stage until explicitly finished, and finishing during an active resize can clear the replacement through a second completion callback. These observations concern the pinned Java input and are not original-JAR equivalence or live dialog compatibility proofs.", '',
     "GridWidgetContainer retains supplied weight arrays and converts them to cumulative ends in place. Children and flags use row-major slots; column changes preserve each common row prefix and row changes preserve the common flat prefix, without resetting the insertion cursor. Cell bits 1/2 grow width/height, 4/8 shrink width/height, horizontal alignment 16/32 centers/right-aligns, and vertical alignment 64/128 centers/bottom-aligns. Insets are subtracted after alignment, so child dimensions may become negative. Arrow keys use unit horizontal strides and column-count vertical strides without wrapping. Fixtures cover all 256 flag bytes, weighted geometry, signed center rounding, reshaping ownership and focus strides. LabeledWidgetContainer names label side/width/padding/font/colour, wrapped height and child geometry; actual font glyph coordinates and normal tooltip hover restoration are checked. A failed tooltip leaves the temporary child hover in place, as in the pinned source.", '',
@@ -3906,7 +4040,7 @@ export function buildArmiesManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:65,
+    const rules={schema:1,game:'armiesofgielinor',version:66,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
