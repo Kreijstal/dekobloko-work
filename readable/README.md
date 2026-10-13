@@ -110,6 +110,7 @@ oscillators, timed curves and filter coefficients, including their working varia
 VorbisSample, VorbisCodebook, VorbisFloor1, VorbisResidue and VorbisMapping expose
 compressed music packets, entropy/vector decoding, spectral reconstruction,
 transform windows, overlap and incremental PCM/cache ownership.
+ArrayOperations names shared byte/int/object copies and integer range clearing.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -811,8 +812,10 @@ from the [Vorbis I specification](https://xiph.org/vorbis/doc/Vorbis_I_spec.html
 inside an archive-specific rate/count/loop/packet container. Names distinguish
 shared little-endian bit state, short/long transform tables, setup definitions,
 previous-block overlap and retained incremental output. The floor/codebook/residue
-working variables and packet window/overlap variables are reviewed; inner inverse
-transform butterfly temporaries remain opaque. This identifies the algorithm and
+working variables and packet window/overlap variables are reviewed. Inverse
+transform locals now distinguish pre-rotation, half-block merge, butterfly stages,
+bit reversal, scattering, final rotations and symmetry copies. Archive factory
+locals name their retained sample, source bytes and exception paths. This identifies the algorithm and
 its supported source paths, rather than asserting complete Vorbis/Ogg conformance.
 
 Native fixtures check arbitrary bit widths through32 across byte boundaries,
@@ -831,6 +834,26 @@ the original `setupReady` flag; names do not repair that lifecycle behavior.
 Real game music, setup retrieval/reinitialization, other floor/residue combinations,
 malformed inputs, channel coupling, Ogg transport and audible playback remain
 unverified.
+
+Expanded inverse-transform fixtures encode impulse, alternating-sign and seeded
+ternary spectra through a three-entry codebook. They compare every sample against
+a direct cosine sum, including samples outside transition windows, across five
+short/long exponent pairs covering64 through1024-sample blocks and all four long
+window configurations. The same `1e-4 * max(1, abs(expected))` tolerance applies.
+The earlier `blockBits` name on the pre-rotation loop counter is corrected to
+`preRotateIndex`; the separate stage-count value now owns `blockBits`. A shared
+`halfBlock` local also serves as the silent-block clear cursor; renaming preserves
+this lifetime overlap.
+
+The transform's unsigned bit length, low-bit reversal and integer-power helpers
+have semantic method/parameter/local names. Native fixtures compare bit operations
+with Java's integer helpers and wrapped powers with `BigInteger`, including zero,
+negative bases and overflow. Original nonpositive exponent and tested sentinel
+guard returns are retained. ArrayOperations names all four routines; valid-range
+copies are checked against `System.arraycopy` for distinct arrays, self copies,
+both overlap directions and unrolled/tail lengths. Range clearing is checked
+against `Arrays.fill`. Malformed ranges, type mismatch and untested guard paths
+remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
