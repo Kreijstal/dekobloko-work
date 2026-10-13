@@ -66,6 +66,9 @@ IndexedSpriteGeometry/IndexedSprite and TextFont/PaletteFont/AlphaFont expose
 palette image geometry, glyph data, font metrics and text layout/rendering.
 RasterSnapshot, RasterCacheSurface and ClientException expose nested raster
 restoration, cached render targets and diagnostic exception context.
+ResourceArchive, ArchiveSource, ArchiveIndex and IntKeyIndex expose resource
+lookup, sparse index metadata and integer name-hash probing. ByteStorage,
+DirectByteStorage and GzipInflater expose retained payloads and gzip decoding.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -381,6 +384,28 @@ and indexed output, palette correction, retained/shared arrays, cleanup and
 single-RGB alpha omission. Exception fixtures check stored cause/context and
 wrapper reuse. Real archive retrieval, malformed asset recovery, thumbnail
 regeneration and complete image-backed menus remain unverified.
+
+ResourceArchive installs version5/6/7 metadata lazily, requests packed groups,
+optionally decrypts a copy from byte5 and splits interleaved chunks into sparse
+file slots. Decoded-file policy0 retains files,1 evicts the requested file and2
+extracts only that file and drops its group cache after retrieval. Packed-group
+discard is independent. Capacity validation accepts sparse holes; no semantic
+correction is made. Names are lowercased before signed CP1252 rolling hashes.
+IntKeyIndex preserves the first original index for duplicate keys.
+
+Byte storage above136 bytes always copies to a direct buffer and materializes
+fresh arrays. Smaller payloads retain or copy arrays according to the request.
+Archive type0 copies uncompressed bytes, type1 invokes bzip and every other
+nonzero type uses the shared gzip inflater. Encoded/decoded size limits retain
+0 as unlimited. Gzip assumes a fixed10-byte header and8-byte trailer; trailer
+checksums and complete output are not verified by the original implementation.
+
+Native synthetic fixtures exercise version5/6/7 metadata, sparse/large IDs,
+name/digest flags, bad CRC rejection, progress/unavailable data, two-chunk group
+retrieval, all cache-policy/discard combinations, raw/gzip input, byte ownership,
+duplicate/colliding keys and sprite loading through ResourceArchive. Live
+network/disk providers, XTEA archive retrieval, bzip decoding, index digest
+authentication, malformed recovery and full image-backed menus remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
