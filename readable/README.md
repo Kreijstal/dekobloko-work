@@ -51,6 +51,9 @@ GameCanvas, BlankScreen, MembershipBenefitsScreen, LevelSelectScreen,
 MainMenuScreen and TimedSplashScreen.
 LevelList, MouseInput, MouseWheelSource and MouseWheelInput expose level-number
 scrolling and the AWT pointer/wheel input boundary.
+KeyboardInput exposes key translation, held-state changes and frame-bounded
+key/character events. DelegatingCanvas forwards AWT rendering to its component;
+DualLinkDeque/DualLinkIterator expose independent secondary-link ownership.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -188,11 +191,13 @@ Native fixtures construct a base-menu subclass and check geometry, half-open
 button bounds, first-hit lookup for overlapping rows, pressed reset, exclusive
 markers, null action arrays, valid/out-of-range screen registration and the
 blank/benefits/splash constructor IDs. Selection fixtures preserve pointer versus
-fallback initialization, direct updates only when no input is held, horizontal
-key98/99 wraparound, numeric key/press/activation predicates and polling resets.
-Numeric key codes stay explicit without assuming browser key encodings.
+fallback initialization, direct updates only when no input is held, vertical
+key98/99 and horizontal key96/97 wraparound/fallback, arrow/Home/End and activation
+predicates, and polling resets. The original AWT translation table confirms these
+axes; the earlier horizontal/vertical method labels were reversed and are corrected.
+Numeric key codes remain explicit and do not assume browser key encodings.
 Canvas callbacks preserve a latched focus-loss flag; focus gain does not clear it.
-Full registered-menu construction, vertical/pointer gestures, menu action
+Full registered-menu construction, pointer gestures, menu action
 dispatch, transition installation, membership asset loading and rendered menus
 remain unverified.
 
@@ -220,6 +225,26 @@ bypass screen construction, then call real decoding/path attachment and check
 empty bounds, excluded/generated borders, fixed/moving brick bounds, zero preview
 velocity and repeated clearing. They do not verify font rendering, OS event
 dispatch, complete menu construction or rendered level previews.
+
+Keyboard input distinguishes two128-entry rings. Held-state changes encode a
+press as a nonnegative code and a release as its bitwise complement; overflow or
+focus loss invalidates the writer until the next snapshot clears all112 held
+flags. Key/character events have capacity127, dropping new events when full.
+Snapshots discard unread previous-frame events and freeze the current frame end;
+callbacks arriving after that cutoff become visible at the next snapshot.
+Java key-map bit7 suppresses presses but is removed from release codes.
+
+Native fixtures anchor arrow/Home/End/enter/space/backspace/letter/numpad translations,
+check callback consumption and listener attachment/detachment/disable, and cover
+held flags, random event sequences, both rings' boundaries, focus loss and frame
+cutoffs. Character filtering is compared with Java's Windows-1252 encoder for
+every UTF-16 code unit, with zero explicitly excluded. Canvas fixtures verify the
+same Graphics object reaches paint/update. Secondary-deque fixtures check order,
+ownership transfer and iterator removal while preserving the primary chain.
+The iterator's original exhaustion behavior is retained: one exhausted next
+returns null, hasNext then returns true, and another next throws NullPointerException.
+These probes invoke callbacks directly; OS dispatch and complete keyboard-driven
+gameplay remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

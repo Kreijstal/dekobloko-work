@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 9,
+  "version": 10,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -220,6 +220,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:ae",
+      "originalName": "ae",
+      "to": "DualLinkIterator",
+      "evidence": "ae.java: Secondary-link deque iterator with current/next node and remove-after-next state; preserves the original nonstandard exhaustion behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ak",
       "originalName": "ak",
       "to": "MultiplayerMatch",
@@ -311,6 +318,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gp",
+      "originalName": "gp",
+      "to": "DualLinkDeque",
+      "evidence": "gp.java: Sentinel deque using secondary links, with tail insertion, first removal and iterator. Static keyboard/global helpers remain separate from instance ownership.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hp",
       "originalName": "hp",
       "to": "IntHistoryBuffer",
@@ -395,6 +409,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:od",
+      "originalName": "od",
+      "to": "DelegatingCanvas",
+      "evidence": "od.java: AWT canvas forwards paint/update to a retained component; unrelated static helpers retain their existing roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:of",
       "originalName": "of",
       "to": "BlankScreen",
@@ -413,6 +434,13 @@
       "originalName": "on",
       "to": "Brick",
       "evidence": "on.java: Fixed34-by16-pixel rectangle with brick type, hit/animation state, power-up flags and ball contact effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:op",
+      "originalName": "op",
+      "to": "KeyboardInput",
+      "evidence": "op.java: AWT key/focus listener maps Java key codes and writes separate held-key changes and key/character event rings. Unrelated static helpers retain their existing names.",
       "confidence": "reviewed"
     },
     {
@@ -549,6 +577,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ae.field_a:Lgp;",
+      "originalName": "field_a",
+      "to": "owner",
+      "evidence": "ae.java: Deque retaining iterator sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ae.field_e:Ltk;",
+      "originalName": "field_e",
+      "to": "nextNode",
+      "evidence": "ae.java: Next secondary node; becomes null after an exhausted next call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ae.field_h:Ltk;",
+      "originalName": "field_h",
+      "to": "lastReturned",
+      "evidence": "ae.java: Node eligible for iterator removal; cleared after remove or exhausted next.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ag.field_D:[Ljava/lang/String;",
       "originalName": "field_D",
       "to": "buttonLabels",
@@ -675,6 +724,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dc.field_b:I",
+      "originalName": "field_b",
+      "to": "currentKeyCode",
+      "evidence": "dc.java: Code copied from current polled event; consumers may also replace it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:de.field_r:[Ltp;",
       "originalName": "field_r",
       "to": "screenshots",
@@ -696,6 +752,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ef.field_d:[I",
+      "originalName": "field_d",
+      "to": "keyEventCodes",
+      "evidence": "ef.java: 128-entry event ring, mapped code for presses and -1 for typed characters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ek.field_cb:I",
+      "originalName": "field_cb",
+      "to": "keyChangeReadIndex",
+      "evidence": "ek.java: Read position for held-key change ring.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:eo.field_i:I",
       "originalName": "field_i",
       "to": "livePointerX",
@@ -707,6 +777,13 @@
       "originalName": "field_g",
       "to": "livePointerY",
       "evidence": "ep.java: Written by mouse move/drag/enter callbacks; exit writes -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fm.field_d:I",
+      "originalName": "field_d",
+      "to": "keyEventFrameEnd",
+      "evidence": "fm.java: Frozen event end for current frame, advanced to producer position on snapshot.",
       "confidence": "reviewed"
     },
     {
@@ -752,6 +829,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ge.field_w:I",
+      "originalName": "field_w",
+      "to": "keyboardIdleTicks",
+      "evidence": "ge.java: Press/release callbacks reset to0; each keyboard frame snapshot increments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ge.field_y:I",
       "originalName": "field_y",
       "to": "activationTick",
@@ -766,10 +850,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:go.field_b:C",
+      "originalName": "field_b",
+      "to": "currentKeyCharacter",
+      "evidence": "go.java: Character copied from current polled event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gp.field_a:Ltk;",
+      "originalName": "field_a",
+      "to": "sentinel",
+      "evidence": "gp.java: Circular secondary-link ownership sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gp.field_c:Lop;",
+      "originalName": "field_c",
+      "to": "keyboardInput",
+      "evidence": "gp.java: Global key/focus listener; key callbacks are inactive when null and snapshots synchronize on it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gr.field_a:I",
       "originalName": "field_a",
       "to": "pointerIdleTicks",
       "evidence": "gr.java: Mouse events reset to0; input snapshot increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hb.field_w:I",
+      "originalName": "field_w",
+      "to": "keyEventWriteIndex",
+      "evidence": "hb.java: Event-ring producer position; full events are dropped without changing it.",
       "confidence": "reviewed"
     },
     {
@@ -1095,6 +1207,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lo.field_b:[I",
+      "originalName": "field_b",
+      "to": "keyChangeQueue",
+      "evidence": "lo.java: 128-entry ring; presses store mapped code and releases store its bitwise complement.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lp.field_rb:Lgf;",
       "originalName": "field_rb",
       "to": "currentScreen",
@@ -1221,6 +1340,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:od.field_a:Ljava/awt/Component;",
+      "originalName": "field_a",
+      "to": "delegate",
+      "evidence": "od.java: Component receiving forwarded paint/update calls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oi.field_b:Lnc;",
       "originalName": "field_b",
       "to": "pack",
@@ -1326,6 +1452,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pe.field_l:[Z",
+      "originalName": "field_l",
+      "to": "heldKeys",
+      "evidence": "pe.java: 112 mapped-key held flags updated at frame snapshot.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pg.field_k:[Lkm;",
       "originalName": "field_k",
       "to": "menuScreens",
@@ -1351,6 +1484,13 @@
       "originalName": "field_v",
       "to": "opcodeCipher",
       "evidence": "pi.java: Seeded generator whose next integer is added to written opcodes and subtracted from received bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pl.field_d:I",
+      "originalName": "field_d",
+      "to": "keyChangeWriteIndex",
+      "evidence": "pl.java: Ring write index, or -1 after overflow/focus loss to request held-state reset.",
       "confidence": "reviewed"
     },
     {
@@ -1522,10 +1662,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:si.field_m:I",
+      "originalName": "field_m",
+      "to": "keyEventReadIndex",
+      "evidence": "si.java: Consumer position; frame snapshot skips remaining previous-frame events.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tb.field_fb:I",
       "originalName": "field_fb",
       "to": "pressX",
       "evidence": "tb.java: Frame snapshot of livePressX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tf.field_a:[I",
+      "originalName": "field_a",
+      "to": "javaKeyCodeMap",
+      "evidence": "tf.java: Java key-code translation table; bit7 suppresses press events and is stripped for releases.",
       "confidence": "reviewed"
     },
     {
@@ -1935,6 +2089,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vp.field_r:[C",
+      "originalName": "field_r",
+      "to": "keyEventCharacters",
+      "evidence": "vp.java: Character paired with event code; press events store zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vp.field_t:I",
       "originalName": "field_t",
       "to": "remainingTicks",
@@ -2009,6 +2170,13 @@
       "originalName": "field_l",
       "to": "position",
       "evidence": "wq.java: Read/write byte cursor; each primitive advances it by its encoded length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ae.next()Ljava/lang/Object;#0",
+      "originalName": "var1",
+      "to": "node",
+      "evidence": "ae.java: Returned secondary node, or null on first exhausted next call.",
       "confidence": "reviewed"
     },
     {
@@ -2278,6 +2446,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:gp.a(Z)Ltk;#0",
+      "originalName": "var2",
+      "to": "node",
+      "evidence": "gp.java: First secondary node, or sentinel while empty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:hp.a(II)V#0",
       "originalName": "fieldTemp$0",
       "to": "nextIndex",
@@ -2296,6 +2471,13 @@
       "originalName": "var5",
       "to": "powerUp",
       "evidence": "j.java: Pending effect examined for type and activation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jl.a(B)Z#1",
+      "originalName": "var1_ref",
+      "to": "keyboardMonitor",
+      "evidence": "jl.java: Global keyboard listener used while reading frozen-frame event.",
       "confidence": "reviewed"
     },
     {
@@ -2366,6 +2548,48 @@
       "originalName": "fieldTemp$1",
       "to": "nextSourceIndex",
       "evidence": "on.java: Source index before modulo wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:op.keyPressed(Ljava/awt/event/KeyEvent;)V#0",
+      "originalName": "var2_int",
+      "to": "mappedKeyCode",
+      "evidence": "op.java: Java key code translated to original input encoding, or -1 when suppressed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:op.keyPressed(Ljava/awt/event/KeyEvent;)V#1",
+      "originalName": "var3",
+      "to": "nextWriteIndex",
+      "evidence": "op.java: Candidate next event-ring producer index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:op.keyPressed(Ljava/awt/event/KeyEvent;)V#7",
+      "originalName": "var3Lifetime1",
+      "to": "modifiers",
+      "evidence": "op.java: AWT modifier mask used by original event-consumption rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:op.keyReleased(Ljava/awt/event/KeyEvent;)V#0",
+      "originalName": "var2_int",
+      "to": "mappedKeyCode",
+      "evidence": "op.java: Java key code translated with suppress-press bit removed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:op.keyTyped(Ljava/awt/event/KeyEvent;)V#0",
+      "originalName": "var2_int",
+      "to": "characterCode",
+      "evidence": "op.java: AWT typed character before legacy input filtering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:op.keyTyped(Ljava/awt/event/KeyEvent;)V#1",
+      "originalName": "var3",
+      "to": "nextWriteIndex",
+      "evidence": "op.java: Candidate next event-ring producer index.",
       "confidence": "reviewed"
     },
     {
@@ -2492,6 +2716,34 @@
       "originalName": "var4",
       "to": "targetSpeed",
       "evidence": "vn.java: Requested speed after floor reset and upper cap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b(B)V#0",
+      "originalName": "var2",
+      "to": "keyIndex",
+      "evidence": "wn.java: Index while clearing112 held-key flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b(B)V#1",
+      "originalName": "var4",
+      "to": "clientBranchFlag",
+      "evidence": "wn.java: Original client branch flag retained by generated code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b(B)V#4",
+      "originalName": "var1",
+      "to": "keyboardMonitor",
+      "evidence": "wn.java: Global keyboard input listener used as frame-snapshot monitor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.b(B)V#6",
+      "originalName": "var2Lifetime1",
+      "to": "keyChange",
+      "evidence": "wn.java: Dequeued signed press/release encoding.",
       "confidence": "reviewed"
     },
     {
@@ -2894,6 +3146,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ge.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachKeyboardInput",
+      "evidence": "ge.java: Removes global key/focus listener and invalidates held-key change writer; guard -2846.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -2971,6 +3230,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gp.a(Ltk;B)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "gp.java: Unlinks existing secondary ownership and inserts node before sentinel; guard at most -112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gp.a(Z)Ltk;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "gp.java: Returns and unlinks first secondary node, or null if empty; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hj.a(I[BBILjava/lang/CharSequence;I)I",
       "originalName": "a",
       "to": "encodeCp1252",
@@ -3034,6 +3307,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.a(B)V",
+      "originalName": "a",
+      "to": "disableKeyboardInput",
+      "evidence": "ic.java: Synchronizes on listener before clearing global reference; guard at most -63.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:il.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -3073,6 +3353,13 @@
       "originalName": "e",
       "to": "nextRandomInt",
       "evidence": "j.java: Increments randomCallCount and consumes next seeded random word; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jl.a(B)Z",
+      "originalName": "a",
+      "to": "pollKeyEvent",
+      "evidence": "jl.java: Under keyboard listener monitor reads code/character up to frozen frame end; guard5 advances read index, other guards leave it unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -3573,6 +3860,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:md.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attachKeyboardInput",
+      "evidence": "md.java: Disables component focus traversal and installs global key/focus listener; canonical guard -103.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:md.a(IZB)Z",
       "originalName": "a",
       "to": "handleMenuAction",
@@ -3661,6 +3955,13 @@
       "originalName": "a",
       "to": "computeSyncChecksum",
       "evidence": "no.java: Preserves original wrapping integer checksum and optional diagnostic text; canonical guard above79.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:od.a(CI)Z",
+      "originalName": "a",
+      "to": "isLegacyInputCharacter",
+      "evidence": "od.java: Accepts nonzero ASCII, Latin1 from160..255 and configured CP1252 extensions; guard -12.",
       "confidence": "reviewed"
     },
     {
@@ -4009,15 +4310,15 @@
     {
       "symbol": "M:re.a(I)Z",
       "originalName": "a",
-      "to": "isKey103",
-      "evidence": "re.java: Tests retained key code103; guard -1.",
+      "to": "isEndKey",
+      "evidence": "re.java: Tests retained code103, mapped from AWT End; guard -1.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:re.a(II)V",
       "originalName": "a",
-      "to": "navigateVertical",
-      "evidence": "re.java: Polls key and wraps selected index for keys96/97, with original fallback handling for98/99.",
+      "to": "navigateHorizontal",
+      "evidence": "re.java: Polls key and wraps selected index for keys96/left and97/right, with fallback handling for98/up and99/down; AWT translation table confirms axis.",
       "confidence": "reviewed"
     },
     {
@@ -4051,8 +4352,8 @@
     {
       "symbol": "M:re.b(I)Z",
       "originalName": "b",
-      "to": "isKey102",
-      "evidence": "re.java: Tests retained key code102; guard -103.",
+      "to": "isHomeKey",
+      "evidence": "re.java: Tests retained code102, mapped from AWT Home; guard -103.",
       "confidence": "reviewed"
     },
     {
@@ -4065,8 +4366,8 @@
     {
       "symbol": "M:re.c(I)Z",
       "originalName": "c",
-      "to": "isKey97",
-      "evidence": "re.java: Tests retained key code97; guard -98.",
+      "to": "isRightArrow",
+      "evidence": "re.java: Tests retained code97, mapped from AWT right arrow; guard -98.",
       "confidence": "reviewed"
     },
     {
@@ -4079,15 +4380,22 @@
     {
       "symbol": "M:re.d(I)V",
       "originalName": "d",
-      "to": "navigateHorizontal",
-      "evidence": "re.java: Polls key and wraps selected index for numeric keys98/99 while not held; canonical guard -1.",
+      "to": "navigateVertical",
+      "evidence": "re.java: Polls key and wraps selected index for keys98/up and99/down while not held; AWT translation table confirms axis; canonical guard -1.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:re.g(B)Z",
       "originalName": "g",
-      "to": "isKey96",
-      "evidence": "re.java: Tests retained key code96; guard -57.",
+      "to": "isLeftArrow",
+      "evidence": "re.java: Tests retained code96, mapped from AWT left arrow; guard -57.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(I)V",
+      "originalName": "a",
+      "to": "patchJavaKeyCodeMap",
+      "evidence": "rn.java: Applies original punctuation mapping overrides, including supplied key code mapping to57; normal argument59.",
       "confidence": "reviewed"
     },
     {
@@ -4609,6 +4917,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wn.b(B)V",
+      "originalName": "b",
+      "to": "snapshotKeyboardInput",
+      "evidence": "wn.java: Under keyboard listener monitor updates held flags, resets all112 flags after overflow/focus loss, drops unread prior-frame events and freezes new frame end; guard -97.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wq.a(B)Ljava/lang/String;",
       "originalName": "a",
       "to": "readLegacyUtf8String",
@@ -4914,6 +5229,13 @@
       "originalName": "param2",
       "to": "character",
       "evidence": "km.java: Processes original key navigation and derived key hooks; guard -120. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.<init>(Lgp;)V#0",
+      "originalName": "param0",
+      "to": "owner",
+      "evidence": "ae.java: Starts at owner sentinel next link with no eligible remove node.",
       "confidence": "reviewed"
     },
     {
@@ -5645,6 +5967,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dm.focusGained(Ljava/awt/event/FocusEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "dm.java: AWT mouse-input focus callback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dm.focusLost(Ljava/awt/event/FocusEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "dm.java: AWT mouse-input focus callback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dm.mouseClicked(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "dm.java: AWT mouse event delivered to input listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dm.mouseDragged(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "dm.java: AWT mouse event delivered to input listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dm.mouseEntered(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "dm.java: AWT mouse event delivered to input listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dm.mouseExited(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "dm.java: AWT mouse event delivered to input listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dm.mouseMoved(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "dm.java: AWT mouse event delivered to input listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dm.mousePressed(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "dm.java: AWT mouse event delivered to input listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dm.mouseReleased(Ljava/awt/event/MouseEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "dm.java: AWT mouse event delivered to input listener.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#0",
       "originalName": "param0",
       "to": "brickGroups",
@@ -5981,6 +6366,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ge.a(ILjava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ge.java: Removes global key/focus listener and invalidates held-key change writer; guard -2846.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ge.a(ILjava/awt/Component;)V#1",
+      "originalName": "param1",
+      "to": "component",
+      "evidence": "ge.java: Removes global key/focus listener and invalidates held-key change writer; guard -2846.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ge.a(ILjava/lang/StringBuilder;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -6125,6 +6524,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "km.java: Requests parent screen transition; guard -1. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gp.a(Ltk;B)V#0",
+      "originalName": "param0",
+      "to": "node",
+      "evidence": "gp.java: Unlinks existing secondary ownership and inserts node before sentinel; guard at most -112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gp.a(Ltk;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "gp.java: Unlinks existing secondary ownership and inserts node before sentinel; guard at most -112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gp.a(Z)Ltk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gp.java: Returns and unlinks first secondary node, or null if empty; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -6275,6 +6695,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ic.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Synchronizes on listener before clearing global reference; guard at most -63.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:il.a(ILjava/lang/StringBuilder;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -6405,6 +6832,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "j.java: Increments randomCallCount and consumes next seeded random word; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jl.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jl.java: Under keyboard listener monitor reads code/character up to frozen frame end; guard5 advances read index, other guards leave it unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -7675,6 +8109,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:md.a(ILjava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "md.java: Disables component focus traversal and installs global key/focus listener; canonical guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:md.a(ILjava/awt/Component;)V#1",
+      "originalName": "param1",
+      "to": "component",
+      "evidence": "md.java: Disables component focus traversal and installs global key/focus listener; canonical guard -103.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:md.a(IZB)Z#0",
       "originalName": "param0",
       "to": "buttonIndex",
@@ -7952,6 +8400,41 @@
       "originalName": "param1",
       "to": "diagnostics",
       "evidence": "no.java: Preserves original wrapping integer checksum and optional diagnostic text; canonical guard above79.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:od.<init>(Ljava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "delegate",
+      "evidence": "od.java: Retains paint/update delegate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:od.a(CI)Z#0",
+      "originalName": "param0",
+      "to": "character",
+      "evidence": "od.java: Accepts nonzero ASCII, Latin1 from160..255 and configured CP1252 extensions; guard -12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:od.a(CI)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "od.java: Accepts nonzero ASCII, Latin1 from160..255 and configured CP1252 extensions; guard -12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:od.paint(Ljava/awt/Graphics;)V#0",
+      "originalName": "param0",
+      "to": "graphics",
+      "evidence": "od.java: AWT graphics forwarded to delegate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:od.update(Ljava/awt/Graphics;)V#0",
+      "originalName": "param0",
+      "to": "graphics",
+      "evidence": "od.java: AWT graphics forwarded to delegate.",
       "confidence": "reviewed"
     },
     {
@@ -8389,6 +8872,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:op.focusGained(Ljava/awt/event/FocusEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "op.java: AWT focus callback; focus loss invalidates held-key queue writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:op.focusLost(Ljava/awt/event/FocusEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "op.java: AWT focus callback; focus loss invalidates held-key queue writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:op.keyPressed(Ljava/awt/event/KeyEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "op.java: AWT key event used for translation/character input and consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:op.keyReleased(Ljava/awt/event/KeyEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "op.java: AWT key event used for translation/character input and consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:op.keyTyped(Ljava/awt/event/KeyEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "op.java: AWT key event used for translation/character input and consumption.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oq.a(Z)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -8781,6 +9299,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qk.mouseWheelMoved(Ljava/awt/event/MouseWheelEvent;)V#0",
+      "originalName": "param0",
+      "to": "event",
+      "evidence": "qk.java: AWT wheel event whose signed rotation is accumulated.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:re.<init>(I)V#0",
       "originalName": "param0",
       "to": "itemCount",
@@ -8798,21 +9323,21 @@
       "symbol": "P:re.a(I)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "re.java: Tests retained key code103; guard -1.",
+      "evidence": "re.java: Tests retained code103, mapped from AWT End; guard -1.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:re.a(II)V#0",
       "originalName": "param0",
       "to": "fallbackIndex",
-      "evidence": "re.java: Polls key and wraps selected index for keys96/97, with original fallback handling for98/99.",
+      "evidence": "re.java: Polls key and wraps selected index for keys96/left and97/right, with fallback handling for98/up and99/down; AWT translation table confirms axis.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:re.a(II)V#1",
       "originalName": "param1",
       "to": "obfuscationGuard",
-      "evidence": "re.java: Polls key and wraps selected index for keys96/97, with original fallback handling for98/99.",
+      "evidence": "re.java: Polls key and wraps selected index for keys96/left and97/right, with fallback handling for98/up and99/down; AWT translation table confirms axis.",
       "confidence": "reviewed"
     },
     {
@@ -8889,7 +9414,7 @@
       "symbol": "P:re.b(I)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "re.java: Tests retained key code102; guard -103.",
+      "evidence": "re.java: Tests retained code102, mapped from AWT Home; guard -103.",
       "confidence": "reviewed"
     },
     {
@@ -8903,7 +9428,7 @@
       "symbol": "P:re.c(I)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "re.java: Tests retained key code97; guard -98.",
+      "evidence": "re.java: Tests retained code97, mapped from AWT right arrow; guard -98.",
       "confidence": "reviewed"
     },
     {
@@ -8917,14 +9442,21 @@
       "symbol": "P:re.d(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "re.java: Polls key and wraps selected index for numeric keys98/99 while not held; canonical guard -1.",
+      "evidence": "re.java: Polls key and wraps selected index for keys98/up and99/down while not held; AWT translation table confirms axis; canonical guard -1.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:re.g(B)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "re.java: Tests retained key code96; guard -57.",
+      "evidence": "re.java: Tests retained code96, mapped from AWT left arrow; guard -57.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rn.a(I)V#0",
+      "originalName": "param0",
+      "to": "keyCodeFor57",
+      "evidence": "rn.java: Applies original punctuation mapping overrides, including supplied key code mapping to57; normal argument59.",
       "confidence": "reviewed"
     },
     {
@@ -10076,6 +10608,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wn.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wn.java: Under keyboard listener monitor updates held flags, resets all112 flags after overflow/focus loss, drops unread prior-frame events and freezes new frame end; guard -97.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wq.<init>(I)V#0",
       "originalName": "param0",
       "to": "capacity",
@@ -10602,9 +11141,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "db858781364a16f3d3ef71ace90d5862af6bce2649f8dcc5ea280e9e0cf600f0",
+      "build-brickabrac-rules.mjs": "bfed2ae5705fcc2f118821cf8268c036a82adbbecce0ea440657dc645a96a919",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "4abf6a036ab93ee16cb354da698da65292d17d6904b5b14431c6c590b4a88a6f",
+      "tests/test-brickabrac-core.mjs": "be7aba41fe88477dd1517472e1dfe1881defbc4bf375d9aecda441bdefb3d687",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
