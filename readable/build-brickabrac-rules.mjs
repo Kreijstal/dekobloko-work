@@ -42,11 +42,83 @@ const classes={
  jp:['RgbSprite','Integer RGB sprite with zero-color transparency, cropped geometry, draw/copy and pixel transforms.'],
  fb:['ArgbSprite','RGB sprite subtype whose draw overrides blend per-pixel8-bit alpha with integer rounding.'],
  tk:['DualLinkNode','Intrusive node with an independent secondary link pair/key used by sprite/cache ownership.'],
+ km:['MenuScreen','Game screen with menu buttons, selection controller, shared geometry and entry/exit/action/navigation contracts.'],
+ q:['MenuButton','Action ID and owner, rectangular geometry, pressed and marked state; delegates drawing and hit testing.'],
+ re:['MenuSelection','Selected index/count, pointer mode and retained key/press/activation codes; numeric input encodings remain qualified.'],
+ wg:['GameCanvas','AWT canvas/focus-listener boundary with frame reference and menu-screen registration helper.'],
+ of:['BlankScreen','Screen ID -2 clears the raster and consumes no gameplay input.'],
+ de:['MembershipBenefitsScreen','Screen ID12 loads members_benefits_screenshots and routes its slideshow input.'],
+ ud:['LevelSelectScreen','Screen IDs13/15 retain selected pack/list, decoded preview brick groups, paths and integer state.'],
+ rp:['MainMenuScreen','Screen ID0 with top-level menu actions and shared menu backdrop.'],
+ vp:['TimedSplashScreen','Screen ID21 displays a splash sprite, counts250 eligible ticks and returns to screen0 on timeout/input.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
 function local(owner,signature,ordinal,expectedOriginalName,to,evidence){members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName,evidence};}
+field('gf','a','I','screenId','Constructor identity used by registration, current-screen comparison and transitions.');
+method('gf','<init>','(I)V','<init>','Retains screen ID.',['screenId']);
+for(const [original,type,to,evidence] of [
+ ['j','I','buttonLeft','Default button left coordinate.'],['l','I','buttonRight','Default button right coordinate; width is right-left.'],['p','I','buttonTop','Default first button y coordinate.'],['q','I','buttonSpacing','Default per-index y step.'],['m','[Lq;','buttons','Menu button array constructed from action IDs.'],['h','Lre;','selection','Selected index, pointer/key state and activation controller.'],
+])field('km',original,type,to,evidence);
+for(const [original,type,to,evidence] of [
+ ['c','I','x','Button rectangle left coordinate.'],['a','I','y','Button rectangle top coordinate.'],['j','I','width','Button rectangle width.'],['d','I','height','Button rectangle height.'],['f','I','actionId','Numeric menu action/label index.'],['e','Lkm;','owner','Retained owner menu screen.'],['b','Z','pressed','Pressed rendering state; special actions29/30 derive it from held input and hit test.'],['h','Z','marked','Persistent marker set exclusively among menu buttons; distinct from focus index.'],
+])field('q',original,type,to,evidence);
+for(const [original,type,to,evidence] of [
+ ['j','I','selectedIndex','Retained selected menu index; constructor starts at0.'],['r','I','itemCount','Configured menu item count used for navigation wrapping.'],['e','I','keyCode','Retained numeric keyboard event code.'],['n','I','heldCode','Nonzero held-input mode suppresses normal keyboard polling and direct selection updates.'],['l','I','pressCode','Retained numeric press code used by press-activation predicate.'],['c','I','activationCode','Retained numeric activation code used by activation predicate.'],['d','Z','pointerDriven','Selects pointer index at entry and is cleared by keyboard/direct selection updates.'],
+])field('re',original,type,to,evidence);
+method('km','<init>','(IIIII[I)V','<init>','Retains screen ID/geometry and initializes buttons, treating null action IDs as empty.',['screenId','buttonLeft','buttonRight','buttonTop','buttonSpacing','actionIds']);
+method('km','a','([II)V','initializeButtons','Creates buttons and matching selection count, resets pressed states and lays out buttons.',['actionIds','startIndex']);
+method('km','b','(Z)V','layoutButtons','Sets each rectangle through virtual left/right/top/height getters; true guard.',['obfuscationGuard']);
+method('km','a','(ZI)I','getButtonLeft','Default left coordinate; true guard.',['obfuscationGuard','buttonIndex']);
+method('km','a','(II)I','getButtonRight','Default right coordinate; guard below -71.',['obfuscationGuard','buttonIndex']);
+method('km','b','(II)I','getButtonTop','Default y=buttonTop+buttonSpacing*buttonIndex; guard1.',['buttonIndex','obfuscationGuard']);
+method('km','b','(BI)I','getButtonHeight','Default height30; original arithmetic guard retained.',['obfuscationGuard','buttonIndex']);
+method('km','a','(Z)I','getParentScreenId','Screen used by default back navigation; true guard.',['obfuscationGuard']);
+method('km','a','(IBI)I','findButtonAt','Returns first enabled button containing point, or -1; guard below -77.',['pointY','obfuscationGuard','pointX']);
+method('km','a','(BI)Z','isButtonEnabled','Default returns true with guard above80; derived screens impose availability rules.',['obfuscationGuard','buttonIndex']);
+method('km','a','(IZB)Z','handleMenuAction','Dispatches original numeric action semantics; role follows callers and derived overrides, encodings remain unchanged.',['buttonIndex','inputFlag','obfuscationGuard']);
+method('km','a','(IIC)V','handleNavigationKey','Processes original key navigation and derived key hooks; guard -120.',['obfuscationGuard','keyCode','character']);
+method('km','a','(ZII)V','onEnter','Initializes selection from current pointer hit or supplied fallback index; guard above96.',['usePointer','initialSelection','obfuscationGuard']);
+method('km','d','(B)V','onExit','Exit hook overridden by screens that clear retained state; guard79.',['obfuscationGuard']);
+method('km','d','(I)V','refreshMenu','Refresh hook overridden by screens that rebuild their menu data; guard at most -60.',['obfuscationGuard']);
+method('km','b','(ZI)V','markButton','Clears every marker and assigns requested marker state to supplied index.',['marked','buttonIndex']);
+method('km','c','(I)V','navigateBack','Requests parent screen transition; guard -1.',['obfuscationGuard']);
+method('q','<init>','(ILkm;)V','<init>','Retains action ID and owner menu.',['actionId','owner']);
+method('q','a','(III)Z','containsPoint','Tests left/top inclusive and right/bottom exclusive rectangle bounds; guard below -25.',['pointX','pointY','obfuscationGuard']);
+method('q','a','(I)V','resetPressed','Clears pressed state; guard at most -63 preserves geometry.',['obfuscationGuard']);
+method('q','a','(BZ)V','draw','Draws button using numeric action label, state and supplied focus flag; original guard retained.',['obfuscationGuard','focused']);
+method('q','b','(I)V','updatePressed','Updates special action29/30 pressed state from held input and current pointer; guard -2217.',['obfuscationGuard']);
+method('re','<init>','(I)V','<init>','Retains item count, selects0 and starts in keyboard-driven mode.',['itemCount']);
+method('re','a','(IIZB)V','initializeSelection','Clears held mode and selects pointer or fallback index from supplied mode; guard below -126.',['pointerIndex','fallbackIndex','usePointer','obfuscationGuard']);
+method('re','a','(ZI)V','setSelectedIndex','Updates index only when heldCode is0, clearing pointerDriven; false guard.',['obfuscationGuard','selectedIndex']);
+method('re','d','(B)V','pollKeyboardCode','Clears press/activation/key codes, then copies global keyboard code only when heldCode is0; guard -124.',['obfuscationGuard']);
+method('re','d','(I)V','navigateHorizontal','Polls key and wraps selected index for numeric keys98/99 while not held; canonical guard -1.',['obfuscationGuard']);
+method('re','a','(II)V','navigateVertical','Polls key and wraps selected index for keys96/97, with original fallback handling for98/99.',['fallbackIndex','obfuscationGuard']);
+method('re','a','(III)V','updatePointer','Updates selection and retained pointer codes from current global pointer state; original guarded logic retained.',['heldIndex','obfuscationGuard','pressedIndex']);
+method('re','g','(B)Z','isKey96','Tests retained key code96; guard -57.',['obfuscationGuard']);
+method('re','c','(I)Z','isKey97','Tests retained key code97; guard -98.',['obfuscationGuard']);
+method('re','b','(I)Z','isKey102','Tests retained key code102; guard -103.',['obfuscationGuard']);
+method('re','a','(I)Z','isKey103','Tests retained key code103; guard -1.',['obfuscationGuard']);
+method('re','a','(Z)Z','isHeld','Tests nonzero heldCode; false guard.',['obfuscationGuard']);
+method('re','a','(B)Z','isActivated','Tests nonzero activation code or key83/84; guard113.',['obfuscationGuard']);
+method('re','c','(B)Z','isPressActivated','Tests nonzero press code or key83/84; original arithmetic guard retained.',['obfuscationGuard']);
+method('bg','a','(IIIBIII)Z','containsRectanglePoint','Tests half-open integer rectangle bounds using original argument ordering; guard above32.',['left','rectangleHeight','rectangleWidth','obfuscationGuard','pointY','pointX','top']);
+field('pg','k','[Lkm;','menuScreens','Screen-ID-indexed registry initialized with22 slots.');
+field('ag','D','[Ljava/lang/String;','buttonLabels','Localized action-ID-indexed menu labels; action8 may be supplied by screen override.');
+field('wg','e','Z','focusLossPending','Latched volatile focus-loss flag set by focusLost; focusGained leaves it unchanged.');
+field('wg','a','Ljava/awt/Frame;','window','Retained AWT frame associated with canvas boundary.');
+field('lp','rb','Lgf;','currentScreen','Screen currently handling applet draw/update/key callbacks.');
+field('hd','d','Lgf;','pendingScreen','Screen requested by transition before installation.');
+method('wg','a','(ILkm;)V','registerMenuScreen','Installs menu by screenId if within registry bounds; guard at most -53.',['obfuscationGuard','screen']);
+method('hk','a','(BLmf;)V','initializeMenuScreens','Constructs and registers all22 menu slots with original screen identities and shared archive.',['obfuscationGuard','archive']);
+method('ng','a','(ZII)V','requestScreen','Avoids transition to current ID, resolves requested screen, invokes menu entry hook and resets transition progress; guard at least52.',['usePointer','obfuscationGuard','screenId']);
+method('de','<init>','(Lmf;)V','<init>','Retains archive for members-benefits screenshot loading.',['archive']);
+field('de','u','Lmf;','archive','Retained archive used to load membership screenshots.');field('de','r','[Ltp;','screenshots','Lazy members-benefits screenshot array.');
+field('vp','t','I','remainingTicks','Eligible splash countdown starts at250; input/timeout returns to screen0.');
+field('ud','A','Lnc;','pack','Selected pack used by level list and preview.');field('ud','F','[Lvl;','previewBrickGroups','Three decoded preview groups.');field('ud','z','Lvl;','previewPaths','Decoded preview motion paths.');field('ud','r','Lkq;','previewState','Decoded preview integer state.');field('ud','y','Luj;','levelList','Level list component retaining pack and selected level.');
+method('ud','<init>','(II)V','<init>','Selects menu identity and pack index.',['screenId','packIndex']);
+method('ud','<init>','(I[II)V','<init>','Initializes buttons, selected pack, level list and preview collections.',['screenId','actionIds','packIndex']);
 for(const [original,type,to,evidence] of [
  ['l','[I','pixels','Bound row-major destination pixel array.'],['c','I','width','Target row stride and full width.'],['d','I','height','Target full height.'],
  ['i','I','clipLeft','Inclusive horizontal clip origin.'],['b','I','clipTop','Inclusive vertical clip origin.'],['f','I','clipRight','Exclusive horizontal clip end.'],['j','I','clipBottom','Exclusive vertical clip end.'],
@@ -486,14 +558,18 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('oi')} → ${link('nc')} / ${link('wk')} / ${link('mq')} | Level order, pack payloads, metadata and archive loading. |`,
 `| ${link('dq')} / ${link('kq')} | Level versions0–5, brick groups, paths and retained integer state. |`,
 `| ${link('lb')} / ${link('mn')} / ${link('jp')} / ${link('fb')} | Pixel targets, clipping, cropped RGB/ARGB sprites and transforms. |`,
-`| ${link('tk')} | Secondary cache links/key independent of primary intrusive ownership. |`, '',
+`| ${link('tk')} | Secondary cache links/key independent of primary intrusive ownership. |`,
+`| ${link('km')} / ${link('q')} / ${link('re')} | Button geometry, selected index, input codes and menu hooks. |`,
+`| ${link('rp')} / ${link('ud')} / ${link('de')} / ${link('vp')} / ${link('of')} | Main menu, level selection, membership benefits, timed splash and blank screens. |`,
+`| ${link('wg')} | Canvas focus boundary and screen registry helper. |`, '',
 'Focused raw/named probes check body geometry, paddle sizes, player masks, deque ownership, histories, power-ups, waypoint motion, selected contacts, packet operations and body/path snapshots. ISAAC fixtures use an independent unsigned-word model anchored to [Bob Jenkins’s published vectors](https://burtleburtle.net/bob/rand/randvect.txt), then compare seeded words/state, refill/counter boundaries, bounded rejection, shuffling, board random-call accounting and opcode bytes. Audio fixtures check event construction; playback remains unverified. The client flag uses a headless Applet-compatible shim and board/match construction is bypassed. Full board snapshots, swept collision detection, gameplay, score accounting, live multiplayer and browser/phone behavior remain unverified.','',
 'Level fixtures check sequence order/repeats and caller-owned arrays, metadata labels/fields, payload-only pack appends, empty pack loading, all versions0–5, legacy regrouping, generated borders, path counts, wrapper delegation and early rejection. They retain negative-version default bricks and unchanged metadata after payload append. Metadata attribute byte/word and pack completion word remain qualified. Nonempty archive retrieval, full board initialization and rendered level selection remain unverified.','',
 'Pixel fixtures check clipped solid/alpha fills and lines, darkening/grayscale, clip save/restore/reset, clear bounds, RGB copy/zero transparency and ARGB per-pixel rounding. Sprite fixtures check crop placement, copies, mirrors, quarter-turns, hit testing and raster binding. Secondary-link fixtures keep primary ownership intact. Gradients, arbitrary lines, transparent-border trimming, image decoding and full browser presentation remain unverified.','',
+'Menu fixtures check a real base-menu subclass, button rectangles/lookup/markers, entry selection, key-code predicates, horizontal wrap/held suppression, direct selection and registry bounds. Blank/benefits/splash constructors retain their IDs; canvas focus-loss callbacks retain their latch. Other screen roles come from registration and inspected callers. Full menu startup, pointer gestures, action dispatch, transition installation and rendered menu flows remain unverified.','',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:7,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:8,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

@@ -46,7 +46,9 @@ nodes/deques, plus IntHistoryBuffer/ObjectHistoryBuffer, PowerUp, ScorePopup,
 BrickMotionPath, MotionWaypoint, PacketBuffer, BitPacketBuffer, LegacyUtf8Decoder,
 IsaacGenerator, GameplayAudioEvent, LevelSequence, LevelPack, LevelMetadata,
 IntNode, LevelDecoder, LevelPackLoader, Rasterizer2D, SpriteGeometry,
-RgbSprite, ArgbSprite and DualLinkNode.
+RgbSprite, ArgbSprite, DualLinkNode, MenuScreen, MenuButton, MenuSelection,
+GameCanvas, BlankScreen, MembershipBenefitsScreen, LevelSelectScreen,
+MainMenuScreen and TimedSplashScreen.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -171,6 +173,26 @@ nonzero-pixel hit testing, zero-word replacement and sprite raster binding.
 chain leaves the other chain intact; secondary-linked keys cannot be changed.
 Gradient/arbitrary-line rendering, transparent-border trimming, encoded image
 loading, scaling/tint modes and complete browser presentation remain unverified.
+
+Menu screens expose IDs, button arrays, selection state and left/right/top/row
+spacing. Their geometry getters, layout, hit lookup, marker updates, entry/exit,
+refresh, back-navigation and action/key hooks are named through resolved
+override families. Button labels remain indexed by original numeric action IDs.
+Screen requests name the current/pending screen and registry, with confirmed
+roles for ID0 main menu, IDs13/15 level selection, ID12 member benefits,
+ID21 timed splash and ID-2 blank screen. Other screens retain unresolved names.
+
+Native fixtures construct a base-menu subclass and check geometry, half-open
+button bounds, first-hit lookup for overlapping rows, pressed reset, exclusive
+markers, null action arrays, valid/out-of-range screen registration and the
+blank/benefits/splash constructor IDs. Selection fixtures preserve pointer versus
+fallback initialization, direct updates only when no input is held, horizontal
+key98/99 wraparound, numeric key/press/activation predicates and polling resets.
+Numeric key codes stay explicit without assuming browser key encodings.
+Canvas callbacks preserve a latched focus-loss flag; focus gain does not clear it.
+Full registered-menu construction, vertical/pointer gestures, menu action
+dispatch, transition installation, membership asset loading and rendered menus
+remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
