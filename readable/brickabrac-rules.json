@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 14,
+  "version": 15,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -423,6 +423,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ii",
+      "originalName": "ii",
+      "to": "RasterSnapshot",
+      "evidence": "ii.java: Pooled intrusive raster state retaining pixel array, dimensions and clip rectangle for nested target restoration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:j",
       "originalName": "j",
       "to": "PlayerBoard",
@@ -626,6 +633,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pb",
+      "originalName": "pb",
+      "to": "RasterCacheSurface",
+      "evidence": "pb.java: Intrusive RGB render surface with dimensions and two qualified cache keys used by background rendering.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pi",
       "originalName": "pi",
       "to": "BitPacketBuffer",
@@ -742,6 +756,13 @@
       "originalName": "ul",
       "to": "ScorePopup",
       "evidence": "ul.java: Intrusive score text with fixed8 position and a fifty-tick rising/fading lifetime.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:v",
+      "originalName": "v",
+      "to": "ClientException",
+      "evidence": "v.java: RuntimeException retaining original Throwable and diagnostic context in separate fields; also owns unrelated static helpers.",
       "confidence": "reviewed"
     },
     {
@@ -906,6 +927,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ag.field_K:[I",
+      "originalName": "field_K",
+      "to": "decodedSpriteOffsetX",
+      "evidence": "ag.java: Per-sprite unsigned-short crop offsets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ah.field_r:Ljf;",
       "originalName": "field_r",
       "to": "packSelector",
@@ -1018,6 +1046,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bj.field_S:[[B",
+      "originalName": "field_S",
+      "to": "decodedSpriteAlpha",
+      "evidence": "bj.java: Per-sprite alpha bytes; retained after materializer scratch cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bn.field_s:I",
       "originalName": "field_s",
       "to": "height256",
@@ -1039,6 +1074,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cf.field_d:I",
+      "originalName": "field_d",
+      "to": "decodedCanvasWidth",
+      "evidence": "cf.java: Shared canvas width read from metadata footer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cl.field_p:Lvl;",
       "originalName": "field_p",
       "to": "waypoints",
@@ -1057,6 +1099,13 @@
       "originalName": "field_u",
       "to": "waypointCount",
       "evidence": "cl.java: Snapshot decoder reads this many waypoint records; path checksum includes this serialized count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cn.field_a:[[B",
+      "originalName": "field_a",
+      "to": "decodedSpriteIndices",
+      "evidence": "cn.java: Per-sprite row-major indices reconstructed from row/column-major input.",
       "confidence": "reviewed"
     },
     {
@@ -1263,6 +1312,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dl.field_d:[I",
+      "originalName": "field_d",
+      "to": "decodedSpriteOffsetY",
+      "evidence": "dl.java: Per-sprite unsigned-short crop offsets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ee.field_t:I",
       "originalName": "field_t",
       "to": "durationTicks",
@@ -1281,6 +1337,13 @@
       "originalName": "field_cb",
       "to": "keyChangeReadIndex",
       "evidence": "ek.java: Read position for held-key change ring.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ek.field_db:I",
+      "originalName": "field_db",
+      "to": "decodedCanvasHeight",
+      "evidence": "ek.java: Shared canvas height read from metadata footer.",
       "confidence": "reviewed"
     },
     {
@@ -1396,6 +1459,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fr.field_M:Lvl;",
+      "originalName": "field_M",
+      "to": "rasterSnapshotPool",
+      "evidence": "fr.java: Restored snapshots reused from deque tail, with pixels released.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ge.field_w:I",
       "originalName": "field_w",
       "to": "keyboardIdleTicks",
@@ -1414,6 +1484,13 @@
       "originalName": "field_a",
       "to": "screenId",
       "evidence": "gf.java: Constructor identity used by registration, current-screen comparison and transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_t:[I",
+      "originalName": "field_t",
+      "to": "decodedSpriteHeights",
+      "evidence": "gg.java: Per-sprite cropped heights.",
       "confidence": "reviewed"
     },
     {
@@ -1463,6 +1540,13 @@
       "originalName": "field_d",
       "to": "pendingScreen",
       "evidence": "hd.java: Screen requested by transition before installation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_v:Lvl;",
+      "originalName": "field_v",
+      "to": "rasterStack",
+      "evidence": "hi.java: Active nested raster snapshots, popped from deque tail.",
       "confidence": "reviewed"
     },
     {
@@ -1568,6 +1652,55 @@
       "originalName": "field_x",
       "to": "transitionKeepMask",
       "evidence": "i.java: AND mask clearing this icon transition bit when offset is already zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ii.field_i:[I",
+      "originalName": "field_i",
+      "to": "pixels",
+      "evidence": "ii.java: Saved destination pixel array; restore releases pooled reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ii.field_k:I",
+      "originalName": "field_k",
+      "to": "clipBottom",
+      "evidence": "ii.java: Saved exclusive clip bottom.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ii.field_m:I",
+      "originalName": "field_m",
+      "to": "width",
+      "evidence": "ii.java: Saved raster row stride/width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ii.field_n:I",
+      "originalName": "field_n",
+      "to": "clipLeft",
+      "evidence": "ii.java: Saved inclusive clip left.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ii.field_o:I",
+      "originalName": "field_o",
+      "to": "clipTop",
+      "evidence": "ii.java: Saved inclusive clip top.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ii.field_p:I",
+      "originalName": "field_p",
+      "to": "height",
+      "evidence": "ii.java: Saved raster height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ii.field_t:I",
+      "originalName": "field_t",
+      "to": "clipRight",
+      "evidence": "ii.java: Saved exclusive clip right.",
       "confidence": "reviewed"
     },
     {
@@ -1757,6 +1890,13 @@
       "originalName": "field_j",
       "to": "lastPointerY",
       "evidence": "jf.java: Y captured by selection/update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jh.field_b:[I",
+      "originalName": "field_b",
+      "to": "decodedSpriteWidths",
+      "evidence": "jh.java: Per-sprite cropped index row widths.",
       "confidence": "reviewed"
     },
     {
@@ -2264,6 +2404,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nl.field_c:I",
+      "originalName": "field_c",
+      "to": "decodedSpriteCount",
+      "evidence": "nl.java: Count read from trailing unsigned short.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nm.field_b:Lnm;",
       "originalName": "field_b",
       "to": "previous",
@@ -2516,6 +2663,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pb.field_i:I",
+      "originalName": "field_i",
+      "to": "width",
+      "evidence": "pb.java: Constructor width used to allocate RGB render surface.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pb.field_k:I",
+      "originalName": "field_k",
+      "to": "cacheKeyOne",
+      "evidence": "pb.java: First qualified rendering cache key; constructor initializes -2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pb.field_m:I",
+      "originalName": "field_m",
+      "to": "cacheKeyTwo",
+      "evidence": "pb.java: Second qualified rendering cache key; constructor initializes -2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pb.field_p:Ljp;",
+      "originalName": "field_p",
+      "to": "sprite",
+      "evidence": "pb.java: Retained full-size RGB render target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pb.field_q:I",
+      "originalName": "field_q",
+      "to": "height",
+      "evidence": "pb.java: Constructor height used to allocate RGB render surface.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pe.field_l:[Z",
       "originalName": "field_l",
       "to": "heldKeys",
@@ -2730,6 +2912,13 @@
       "originalName": "field_O",
       "to": "pressY",
       "evidence": "qo.java: Frame snapshot of livePressY.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_c:[I",
+      "originalName": "field_c",
+      "to": "decodedSpritePalette",
+      "evidence": "qp.java: Shared RGB palette; entries beyond0 whose encoded color is0 become1.",
       "confidence": "reviewed"
     },
     {
@@ -2954,6 +3143,13 @@
       "originalName": "field_s",
       "to": "secondaryNext",
       "evidence": "tk.java: Next link independent of inherited primary links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tm.field_b:[Z",
+      "originalName": "field_b",
+      "to": "decodedSpriteHasAlpha",
+      "evidence": "tm.java: True if an explicit alpha plane contains any byte other than255; retained after cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -3192,6 +3388,20 @@
       "originalName": "field_q",
       "to": "remainingTicks",
       "evidence": "ul.java: Popup constructor, match lifetime update and cn drawing: integer score text, fixed8 coordinates and opacity remainingTicks/50.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_d:Ljava/lang/String;",
+      "originalName": "field_d",
+      "to": "context",
+      "evidence": "v.java: Diagnostic context extended by wrapper helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:v.field_f:Ljava/lang/Throwable;",
+      "originalName": "field_f",
+      "to": "originalCause",
+      "evidence": "v.java: Retained throwable outside standard Throwable cause chain.",
       "confidence": "reviewed"
     },
     {
@@ -3594,6 +3804,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:eh.a([BZ)V#23",
+      "originalName": "var3",
+      "to": "paletteSize",
+      "evidence": "eh.java: One plus palette-size footer byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#25",
+      "originalName": "var5",
+      "to": "spriteWidth",
+      "evidence": "eh.java: Current decoded cropped width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#26",
+      "originalName": "var6",
+      "to": "spriteHeight",
+      "evidence": "eh.java: Current decoded cropped height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#27",
+      "originalName": "var7",
+      "to": "pixelCount",
+      "evidence": "eh.java: Width times height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#28",
+      "originalName": "var8",
+      "to": "indices",
+      "evidence": "eh.java: Current decoded row-major index plane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#29",
+      "originalName": "var9",
+      "to": "alpha",
+      "evidence": "eh.java: Current alpha plane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#30",
+      "originalName": "var10",
+      "to": "hasNonopaqueAlpha",
+      "evidence": "eh.java: Accumulated flag for any alpha byte different from255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#31",
+      "originalName": "var11",
+      "to": "layoutFlags",
+      "evidence": "eh.java: Bit0 is column-major, bit1 supplies alpha plane.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#35",
+      "originalName": "var15",
+      "to": "clientBranchFlag",
+      "evidence": "eh.java: Original generated client branch flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#36",
+      "originalName": "var16",
+      "to": "packet",
+      "evidence": "eh.java: Packet cursor over input data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#37",
+      "originalName": "var17",
+      "to": "metadataPacket",
+      "evidence": "eh.java: Alias of same packet used for footer/palette and pixel cursor resets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#42",
+      "originalName": "var4Lifetime1",
+      "to": "offsetYIndex",
+      "evidence": "eh.java: Sprite index while reading y offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#43",
+      "originalName": "var4Lifetime2",
+      "to": "widthIndex",
+      "evidence": "eh.java: Sprite index while reading widths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#44",
+      "originalName": "var4Lifetime3",
+      "to": "heightIndex",
+      "evidence": "eh.java: Sprite index while reading heights.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#45",
+      "originalName": "var4Lifetime4",
+      "to": "paletteIndex",
+      "evidence": "eh.java: Palette entry index starting at1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eh.a([BZ)V#46",
+      "originalName": "var4Lifetime5",
+      "to": "spriteIndex",
+      "evidence": "eh.java: Current sprite while decoding pixel planes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:fo.<init>([I)V#0",
       "originalName": "var2_int",
       "to": "seedIndex",
@@ -3783,6 +4105,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:jf.d(I)V#0",
+      "originalName": "var1",
+      "to": "snapshot",
+      "evidence": "jf.java: Reused or new raster state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:jl.a(B)Z#1",
       "originalName": "var1_ref",
       "to": "keyboardMonitor",
@@ -3941,6 +4270,13 @@
       "originalName": "var4",
       "to": "stream",
       "evidence": "ra.java: Current child stream processed into output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sc.b(I)V#0",
+      "originalName": "var1",
+      "to": "snapshot",
+      "evidence": "sc.java: Most recent raster state restored and returned to pool.",
       "confidence": "reviewed"
     },
     {
@@ -4116,6 +4452,13 @@
       "originalName": "f",
       "to": "getResultBottom",
       "evidence": "ld.java: Subclass supplies result presentation bottom; guard -6. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(IIILmf;)[Ljp;",
+      "originalName": "a",
+      "to": "loadRgbSprites",
+      "evidence": "ae.java: Decodes archive file and constructs RGB/ARGB array; guard -23176.",
       "confidence": "reviewed"
     },
     {
@@ -4329,6 +4672,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bd.a(Ljava/lang/String;Ljava/lang/String;Lmf;B)[Ljp;",
+      "originalName": "a",
+      "to": "loadRgbSpritesByName",
+      "evidence": "bd.java: Resolves group/file names then loads RGB/ARGB array; guard -8.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bg.a(IIIBIII)Z",
       "originalName": "a",
       "to": "containsRectanglePoint",
@@ -4438,6 +4788,13 @@
       "originalName": "a",
       "to": "acquireAchievementIcon",
       "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cr.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)[Ljp;",
+      "originalName": "a",
+      "to": "loadRgbSpritesByName",
+      "evidence": "cr.java: Resolves group/file names then loads RGB/ARGB array; guard2.",
       "confidence": "reviewed"
     },
     {
@@ -4637,6 +4994,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dk.a(ILmf;II)Ljp;",
+      "originalName": "a",
+      "to": "loadRgbSprite",
+      "evidence": "dk.java: Decodes archive file and constructs first RGB sprite, ignoring alpha; guard -873.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I",
       "originalName": "a",
       "to": "decodeLevel",
@@ -4662,6 +5026,20 @@
       "originalName": "a",
       "to": "readBodySnapshot",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.d(B)V",
+      "originalName": "d",
+      "to": "clearDecodedSpriteData",
+      "evidence": "ee.java: Releases index/palette/geometry arrays; alpha/has-alpha arrays and scalar count/canvas remain retained; guard96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a([BZ)V",
+      "originalName": "a",
+      "to": "decodeSpriteData",
+      "evidence": "eh.java: Decodes footer geometry, palette and row/column index/alpha planes into shared scratch; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -4704,6 +5082,13 @@
       "originalName": "a",
       "to": "drawAlpha",
       "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(ILjp;)V",
+      "originalName": "a",
+      "to": "pushSpriteRaster",
+      "evidence": "fc.java: Pushes prior target then binds supplied RGB sprite canvas; guard at most -46.",
       "confidence": "reviewed"
     },
     {
@@ -4987,6 +5372,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ii.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "capture",
+      "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:il.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -5061,6 +5453,13 @@
       "originalName": "c",
       "to": "selectRelativeToEnd",
       "evidence": "jf.java: Selects packCount plus supplied offset and retains pointer/keyboard mode; callers use-1 for last.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jf.d(I)V",
+      "originalName": "d",
+      "to": "pushRaster",
+      "evidence": "jf.java: Reuses or allocates snapshot and captures current target/dimensions/clip; guard -99.",
       "confidence": "reviewed"
     },
     {
@@ -5159,6 +5558,13 @@
       "originalName": "a",
       "to": "addBoardBorders",
       "evidence": "kj.java: Adds type1/flag1 bricks across the top and two sides for supplied column count; rows -1..30; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(B)[Ltp;",
+      "originalName": "a",
+      "to": "buildIndexedSprites",
+      "evidence": "kk.java: Constructs indexed sprites sharing palette/individual indices, ignores alpha and clears index/palette/geometry scratch; guard -2.",
       "confidence": "reviewed"
     },
     {
@@ -5841,6 +6247,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ln.a(IILmf;I)Z",
+      "originalName": "a",
+      "to": "decodeSpritesFromArchive",
+      "evidence": "ln.java: Reads indexed archive file, returns false if absent, otherwise decodes shared sprite scratch; guard below -87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lq.a(IIILmf;)Ltp;",
+      "originalName": "a",
+      "to": "loadIndexedSprite",
+      "evidence": "lq.java: Decodes archive file and constructs first indexed sprite; guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mb.a(IIIIIIIZ)V",
       "originalName": "a",
       "to": "drawGlyphAlpha",
@@ -5936,6 +6356,13 @@
       "originalName": "a",
       "to": "loadLevelPack",
       "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(B)Ljp;",
+      "originalName": "a",
+      "to": "buildRgbSprite",
+      "evidence": "n.java: Expands first sprite to RGB only, ignoring alpha plane, then releases index/palette/geometry scratch; guard21.",
       "confidence": "reviewed"
     },
     {
@@ -6177,6 +6604,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pb.a(BII)Z",
+      "originalName": "a",
+      "to": "matchesCacheKeys",
+      "evidence": "pb.java: Tests first/second keys in original argument order; guard -84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.a(IIB)V",
+      "originalName": "a",
+      "to": "setCacheKeys",
+      "evidence": "pb.java: Retains second/first key in original argument order; guard78.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pi.a(BIIILak;I)V",
       "originalName": "a",
       "to": "drawBoard",
@@ -6261,6 +6702,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pl.a(Ljava/lang/String;Ljava/lang/String;BLmf;)Ljp;",
+      "originalName": "a",
+      "to": "loadRgbSpriteByName",
+      "evidence": "pl.java: Resolves group/file names then loads first RGB sprite; guard -110.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:q.a(BZ)V",
       "originalName": "a",
       "to": "draw",
@@ -6286,6 +6734,20 @@
       "originalName": "b",
       "to": "updatePressed",
       "evidence": "q.java: Updates special action29/30 pressed state from held input and current pointer; guard -2217.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qa.a(IILmf;Z)[Ljp;",
+      "originalName": "a",
+      "to": "loadRgbSprites",
+      "evidence": "qa.java: Decodes archive file and constructs RGB/ARGB array, returning null when absent; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qb.a(Ljava/lang/Throwable;Ljava/lang/String;)Lv;",
+      "originalName": "a",
+      "to": "addExceptionContext",
+      "evidence": "qb.java: Reuses client exception and appends space/context, or wraps another throwable.",
       "confidence": "reviewed"
     },
     {
@@ -6625,6 +7087,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sc.b(I)V",
+      "originalName": "b",
+      "to": "popRaster",
+      "evidence": "sc.java: Restores last snapshot, releases pixels and pools it; empty stack throws; guard at most -75.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sg.e(I)V",
       "originalName": "e",
       "to": "snapshotMouseInput",
@@ -6863,6 +7332,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ud.c(Z)Ltp;",
+      "originalName": "c",
+      "to": "buildIndexedSprite",
+      "evidence": "ud.java: Constructs first indexed sprite retaining palette/indices, ignoring alpha; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ud.d(I)V",
       "originalName": "d",
       "to": "refreshMenu",
@@ -6954,10 +7430,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uo.a(BLmf;Ljava/lang/String;Ljava/lang/String;)Ltp;",
+      "originalName": "a",
+      "to": "loadIndexedSpriteByName",
+      "evidence": "uo.java: Resolves group/file names then loads first indexed sprite; guard29.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uo.a(IB[I)Z",
       "originalName": "a",
       "to": "isBitClear",
       "evidence": "uo.java: Tests absent bit in32-bit word array; arithmetic guard47.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(I)[Ljp;",
+      "originalName": "a",
+      "to": "buildRgbSprites",
+      "evidence": "v.java: Expands decoded data to RGB or ARGB according to explicit nonopaque alpha and clears six scratch arrays; guard -835.",
       "confidence": "reviewed"
     },
     {
@@ -7577,6 +8067,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ae.a(IIILmf;)[Ljp;#0",
+      "originalName": "param0",
+      "to": "fileId",
+      "evidence": "ae.java: Decodes archive file and constructs RGB/ARGB array; guard -23176.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.a(IIILmf;)[Ljp;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ae.java: Decodes archive file and constructs RGB/ARGB array; guard -23176.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.a(IIILmf;)[Ljp;#2",
+      "originalName": "param2",
+      "to": "groupId",
+      "evidence": "ae.java: Decodes archive file and constructs RGB/ARGB array; guard -23176.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ae.a(IIILmf;)[Ljp;#3",
+      "originalName": "param3",
+      "to": "archive",
+      "evidence": "ae.java: Decodes archive file and constructs RGB/ARGB array; guard -23176.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:af.<init>(I[I)V#0",
       "originalName": "param0",
       "to": "screenId",
@@ -8036,6 +8554,34 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ao.java: Advances latestIndex and stores the same object reference; canonical guard -39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bd.a(Ljava/lang/String;Ljava/lang/String;Lmf;B)[Ljp;#0",
+      "originalName": "param0",
+      "to": "groupName",
+      "evidence": "bd.java: Resolves group/file names then loads RGB/ARGB array; guard -8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bd.a(Ljava/lang/String;Ljava/lang/String;Lmf;B)[Ljp;#1",
+      "originalName": "param1",
+      "to": "fileName",
+      "evidence": "bd.java: Resolves group/file names then loads RGB/ARGB array; guard -8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bd.a(Ljava/lang/String;Ljava/lang/String;Lmf;B)[Ljp;#2",
+      "originalName": "param2",
+      "to": "archive",
+      "evidence": "bd.java: Resolves group/file names then loads RGB/ARGB array; guard -8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bd.a(Ljava/lang/String;Ljava/lang/String;Lmf;B)[Ljp;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "bd.java: Resolves group/file names then loads RGB/ARGB array; guard -8.",
       "confidence": "reviewed"
     },
     {
@@ -8554,6 +9100,34 @@
       "originalName": "param8",
       "to": "transitionBit",
       "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)[Ljp;#0",
+      "originalName": "param0",
+      "to": "groupName",
+      "evidence": "cr.java: Resolves group/file names then loads RGB/ARGB array; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)[Ljp;#1",
+      "originalName": "param1",
+      "to": "archive",
+      "evidence": "cr.java: Resolves group/file names then loads RGB/ARGB array; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)[Ljp;#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "cr.java: Resolves group/file names then loads RGB/ARGB array; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)[Ljp;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "cr.java: Resolves group/file names then loads RGB/ARGB array; guard2.",
       "confidence": "reviewed"
     },
     {
@@ -9229,6 +9803,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dk.a(ILmf;II)Ljp;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dk.java: Decodes archive file and constructs first RGB sprite, ignoring alpha; guard -873.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dk.a(ILmf;II)Ljp;#1",
+      "originalName": "param1",
+      "to": "archive",
+      "evidence": "dk.java: Decodes archive file and constructs first RGB sprite, ignoring alpha; guard -873.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dk.a(ILmf;II)Ljp;#2",
+      "originalName": "param2",
+      "to": "groupId",
+      "evidence": "dk.java: Decodes archive file and constructs first RGB sprite, ignoring alpha; guard -873.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dk.a(ILmf;II)Ljp;#3",
+      "originalName": "param3",
+      "to": "fileId",
+      "evidence": "dk.java: Decodes archive file and constructs first RGB sprite, ignoring alpha; guard -873.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dm.focusGained(Ljava/awt/event/FocusEvent;)V#0",
       "originalName": "param0",
       "to": "event",
@@ -9404,6 +10006,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ee.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ee.java: Releases index/palette/geometry arrays; alpha/has-alpha arrays and scalar count/canvas remain retained; guard96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eh.a([BZ)V#0",
+      "originalName": "param0",
+      "to": "data",
+      "evidence": "eh.java: Decodes footer geometry, palette and row/column index/alpha planes into shared scratch; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eh.a([BZ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "eh.java: Decodes footer geometry, palette and row/column index/alpha planes into shared scratch; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:eo.a([IIB)Z#0",
       "originalName": "param0",
       "to": "words",
@@ -9569,6 +10192,20 @@
       "originalName": "param2",
       "to": "alpha",
       "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fc.a(ILjp;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fc.java: Pushes prior target then binds supplied RGB sprite canvas; guard at most -46.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fc.a(ILjp;)V#1",
+      "originalName": "param1",
+      "to": "sprite",
+      "evidence": "fc.java: Pushes prior target then binds supplied RGB sprite canvas; guard at most -46.",
       "confidence": "reviewed"
     },
     {
@@ -10181,6 +10818,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ii.a([IIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "pixels",
+      "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ii.a([IIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "clipLeft",
+      "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ii.a([IIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ii.a([IIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "height",
+      "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ii.a([IIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ii.a([IIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "clipRight",
+      "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ii.a([IIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "clipTop",
+      "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ii.a([IIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "clipBottom",
+      "evidence": "ii.java: Retains raster dimensions/clip; guard -161 additionally installs pixel array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:il.a(ILjava/lang/StringBuilder;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -10384,6 +11077,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jf.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jf.java: Reuses or allocates snapshot and captures current target/dimensions/clip; guard -99.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jl.a(B)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -10542,6 +11242,13 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "kj.java: Adds type1/flag1 bricks across the top and two sides for supplied column count; rows -1..30; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(B)[Ltp;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kk.java: Constructs indexed sprites sharing palette/individual indices, ignores alpha and clears index/palette/geometry scratch; guard -2.",
       "confidence": "reviewed"
     },
     {
@@ -12071,6 +12778,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ln.a(IILmf;I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ln.java: Reads indexed archive file, returns false if absent, otherwise decodes shared sprite scratch; guard below -87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(IILmf;I)Z#1",
+      "originalName": "param1",
+      "to": "fileId",
+      "evidence": "ln.java: Reads indexed archive file, returns false if absent, otherwise decodes shared sprite scratch; guard below -87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(IILmf;I)Z#2",
+      "originalName": "param2",
+      "to": "archive",
+      "evidence": "ln.java: Reads indexed archive file, returns false if absent, otherwise decodes shared sprite scratch; guard below -87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ln.a(IILmf;I)Z#3",
+      "originalName": "param3",
+      "to": "groupId",
+      "evidence": "ln.java: Reads indexed archive file, returns false if absent, otherwise decodes shared sprite scratch; guard below -87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lq.a(IIILmf;)Ltp;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "lq.java: Decodes archive file and constructs first indexed sprite; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lq.a(IIILmf;)Ltp;#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "lq.java: Decodes archive file and constructs first indexed sprite; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lq.a(IIILmf;)Ltp;#2",
+      "originalName": "param2",
+      "to": "fileId",
+      "evidence": "lq.java: Decodes archive file and constructs first indexed sprite; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lq.a(IIILmf;)Ltp;#3",
+      "originalName": "param3",
+      "to": "archive",
+      "evidence": "lq.java: Decodes archive file and constructs first indexed sprite; guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mb.<init>([B[I[I[I[I[I[[B)V#0",
       "originalName": "param0",
       "to": "metrics",
@@ -12439,6 +13202,13 @@
       "originalName": "param6",
       "to": "scoreOffset",
       "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:n.a(B)Ljp;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "n.java: Expands first sprite to RGB only, ignoring alpha plane, then releases index/palette/geometry scratch; guard21.",
       "confidence": "reviewed"
     },
     {
@@ -13233,6 +14003,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pb.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "pb.java: Allocates render sprite and initializes both keys to -2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "pb.java: Allocates render sprite and initializes both keys to -2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a(BII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pb.java: Tests first/second keys in original argument order; guard -84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a(BII)Z#1",
+      "originalName": "param1",
+      "to": "cacheKeyOne",
+      "evidence": "pb.java: Tests first/second keys in original argument order; guard -84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a(BII)Z#2",
+      "originalName": "param2",
+      "to": "cacheKeyTwo",
+      "evidence": "pb.java: Tests first/second keys in original argument order; guard -84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a(IIB)V#0",
+      "originalName": "param0",
+      "to": "cacheKeyTwo",
+      "evidence": "pb.java: Retains second/first key in original argument order; guard78.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a(IIB)V#1",
+      "originalName": "param1",
+      "to": "cacheKeyOne",
+      "evidence": "pb.java: Retains second/first key in original argument order; guard78.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pb.a(IIB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "pb.java: Retains second/first key in original argument order; guard78.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pi.<init>(I)V#0",
       "originalName": "param0",
       "to": "capacity",
@@ -13422,6 +14248,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pl.a(Ljava/lang/String;Ljava/lang/String;BLmf;)Ljp;#0",
+      "originalName": "param0",
+      "to": "groupName",
+      "evidence": "pl.java: Resolves group/file names then loads first RGB sprite; guard -110.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.a(Ljava/lang/String;Ljava/lang/String;BLmf;)Ljp;#1",
+      "originalName": "param1",
+      "to": "fileName",
+      "evidence": "pl.java: Resolves group/file names then loads first RGB sprite; guard -110.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.a(Ljava/lang/String;Ljava/lang/String;BLmf;)Ljp;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "pl.java: Resolves group/file names then loads first RGB sprite; guard -110.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.a(Ljava/lang/String;Ljava/lang/String;BLmf;)Ljp;#3",
+      "originalName": "param3",
+      "to": "archive",
+      "evidence": "pl.java: Resolves group/file names then loads first RGB sprite; guard -110.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:q.<init>(ILkm;)V#0",
       "originalName": "param0",
       "to": "actionId",
@@ -13482,6 +14336,48 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "q.java: Updates special action29/30 pressed state from held input and current pointer; guard -2217.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(IILmf;Z)[Ljp;#0",
+      "originalName": "param0",
+      "to": "fileId",
+      "evidence": "qa.java: Decodes archive file and constructs RGB/ARGB array, returning null when absent; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(IILmf;Z)[Ljp;#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "qa.java: Decodes archive file and constructs RGB/ARGB array, returning null when absent; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(IILmf;Z)[Ljp;#2",
+      "originalName": "param2",
+      "to": "archive",
+      "evidence": "qa.java: Decodes archive file and constructs RGB/ARGB array, returning null when absent; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(IILmf;Z)[Ljp;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "qa.java: Decodes archive file and constructs RGB/ARGB array, returning null when absent; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(Ljava/lang/Throwable;Ljava/lang/String;)Lv;#0",
+      "originalName": "param0",
+      "to": "cause",
+      "evidence": "qb.java: Reuses client exception and appends space/context, or wraps another throwable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qb.a(Ljava/lang/Throwable;Ljava/lang/String;)Lv;#1",
+      "originalName": "param1",
+      "to": "context",
+      "evidence": "qb.java: Reuses client exception and appends space/context, or wraps another throwable.",
       "confidence": "reviewed"
     },
     {
@@ -14014,6 +14910,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "km.java: Refresh hook overridden by screens that rebuild their menu data; guard at most -60. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sc.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sc.java: Restores last snapshot, releases pixels and pools it; empty stack throws; guard at most -75.",
       "confidence": "reviewed"
     },
     {
@@ -14556,6 +15459,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ud.c(Z)Ltp;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ud.java: Constructs first indexed sprite retaining palette/indices, ignoring alpha; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ud.d(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -14752,6 +15662,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:uo.a(BLmf;Ljava/lang/String;Ljava/lang/String;)Ltp;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uo.java: Resolves group/file names then loads first indexed sprite; guard29.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uo.a(BLmf;Ljava/lang/String;Ljava/lang/String;)Ltp;#1",
+      "originalName": "param1",
+      "to": "archive",
+      "evidence": "uo.java: Resolves group/file names then loads first indexed sprite; guard29.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uo.a(BLmf;Ljava/lang/String;Ljava/lang/String;)Ltp;#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "uo.java: Resolves group/file names then loads first indexed sprite; guard29.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uo.a(BLmf;Ljava/lang/String;Ljava/lang/String;)Ltp;#3",
+      "originalName": "param3",
+      "to": "groupName",
+      "evidence": "uo.java: Resolves group/file names then loads first indexed sprite; guard29.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:uo.a(IB[I)Z#0",
       "originalName": "param0",
       "to": "bitIndex",
@@ -14770,6 +15708,27 @@
       "originalName": "param2",
       "to": "words",
       "evidence": "uo.java: Tests absent bit in32-bit word array; arithmetic guard47.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.<init>(Ljava/lang/Throwable;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "originalCause",
+      "evidence": "v.java: Retains original throwable/context without initializing standard message/cause.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.<init>(Ljava/lang/Throwable;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "context",
+      "evidence": "v.java: Retains original throwable/context without initializing standard message/cause.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:v.a(I)[Ljp;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "v.java: Expands decoded data to RGB or ARGB according to explicit nonopaque alpha and clears six scratch arrays; guard -835.",
       "confidence": "reviewed"
     },
     {
@@ -15908,9 +16867,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "eaa8b7e9db9c7d0c5068694bcd8e2388f78d171edc6af1b8aa9c0f7379269d87",
+      "build-brickabrac-rules.mjs": "2b13d9820d2494a4bba9ed4a5caa52cb713dc5481357b4477ac74f30474ee577",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "07b0924da868672cc7fbd84b33911f92765d64520f8e57062b3a070af980379d",
+      "tests/test-brickabrac-core.mjs": "3ccc5b1361d01c92af38487c8161b359c44f5b251d9e1b19663e53999bf6ec7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

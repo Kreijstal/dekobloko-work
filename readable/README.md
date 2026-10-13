@@ -64,6 +64,8 @@ SoundPlayback and PcmPlayer expose sample storage, stream processing, scheduling
 and the device boundary.
 IndexedSpriteGeometry/IndexedSprite and TextFont/PaletteFont/AlphaFont expose
 palette image geometry, glyph data, font metrics and text layout/rendering.
+RasterSnapshot, RasterCacheSurface and ClientException expose nested raster
+restoration, cached render targets and diagnostic exception context.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -354,6 +356,31 @@ tags/entities, wrapping, inline images, alignment, palette/coverage glyphs and
 clipped alpha output, caller-array mutation and truncation boundaries. Extended
 contour/kerning metrics, shadow glyphs, justification, paragraph alignment,
 thumbnail regeneration and complete rendered menus remain unverified.
+
+Raster target pushes capture the pixel-array reference, dimensions and clip.
+Pop restores the most recent state, clears its pixel reference and pools it;
+snapshots are reused from the pool tail. RasterCacheSurface allocates an RGB
+target and retains two qualified cache keys, initially -2. Exception wrapping
+retains its original throwable/context separately from standard message/cause
+and reuses an existing wrapper when appending another context.
+
+Sprite loading names archive group/file lookup, the trailing-footer decoder and
+materializers. Shared scratch holds canvas geometry, per-image offsets/sizes,
+palette indices, optional alpha planes and nonopaque-alpha flags. Flag bits0/1
+select column-major layout and explicit alpha. Nonzero palette entries encoded
+as black become color1. Array RGB materialization chooses ARGB only when an
+explicit plane has a byte other than255; single RGB and indexed materializers
+ignore alpha. Indexed outputs retain index/palette arrays. Cleanup releases six
+index/palette/geometry arrays but leaves alpha planes/flags and scalar metadata
+retained until replacement. These are preserved source behaviors.
+
+Native fixtures test nested raster restoration, reference release/reuse, empty
+pop rejection, cache-key argument ordering and pushed sprite targets. Synthetic
+multi-image byte streams cover all four layout/alpha flag combinations, RGB/ARGB
+and indexed output, palette correction, retained/shared arrays, cleanup and
+single-RGB alpha omission. Exception fixtures check stored cause/context and
+wrapper reuse. Real archive retrieval, malformed asset recovery, thumbnail
+regeneration and complete image-backed menus remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
