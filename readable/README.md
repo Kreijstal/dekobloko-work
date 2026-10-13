@@ -62,6 +62,8 @@ main-menu tooltip rendering and intrusive keyed storage.
 AudioData, PcmSound, AudioStream, AudioMixer, AudioMixerListener, PcmStream,
 SoundPlayback and PcmPlayer expose sample storage, stream processing, scheduling
 and the device boundary.
+IndexedSpriteGeometry/IndexedSprite and TextFont/PaletteFont/AlphaFont expose
+palette image geometry, glyph data, font metrics and text layout/rendering.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -328,6 +330,30 @@ and indefinite wrapping/ping-pong loops, skip progression, gain ramp/fade remova
 volume/speed setters and playback gain associations. Listener callbacks, device
 I/O, MIDI synthesis, reverse interpolation, ramped output kernels and real audio
 playback remain unverified.
+
+Indexed sprites retain caller index/palette arrays, cropped dimensions, original
+canvas dimensions and offsets. Ordinary transparent/alpha draws skip index0;
+opaque drawing copies it. Quarter-size drawing averages4-by4 cropped blocks
+without adding crop offsets, treating zero palette colors as the existing
+destination color. RGB expansion uses unsigned indices and preserves geometry.
+
+TextFont names advances, glyph offsets/dimensions, baseline/ascent/descent,
+uppercase-X/lowercase-x heights, optional kerning and inline image baselines.
+Measurement, wrapping, alignment, tag handling, shared style/justification scratch
+and drawing hooks are named. PaletteFont interprets foreground paint as a palette
+style; AlphaFont interprets it as RGB. AlphaFont mutates palette and glyph arrays
+in place to coverage values, retaining signed-index bounds failures. Ellipsis
+truncation drops one additional prefix character and retains short-budget
+substring failures. Packed blending preserves signed high bytes and the original
+combined versus separately rounded channel products.
+
+Native fixtures check unsigned index lookup, clip/crop placement, transparent,
+opaque and alpha draws, quarter averaging and RGB conversion. Real font
+constructors use controlled simple metrics and glyphs; fixtures cover measured
+tags/entities, wrapping, inline images, alignment, palette/coverage glyphs and
+clipped alpha output, caller-array mutation and truncation boundaries. Extended
+contour/kerning metrics, shadow glyphs, justification, paragraph alignment,
+thumbnail regeneration and complete rendered menus remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 13,
+  "version": 14,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -262,6 +262,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bi",
+      "originalName": "bi",
+      "to": "PaletteFont",
+      "evidence": "bi.java: Glyph byte indices and four palette-style slots; indexed foreground and uniform-color shadow glyph drawing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bl",
       "originalName": "bl",
       "to": "AchievementsScreen",
@@ -297,6 +304,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dh",
+      "originalName": "dh",
+      "to": "TextFont",
+      "evidence": "dh.java: Glyph advances/offsets/dimensions, baseline metrics, optional kerning and inline sprites, rich-text measurement/wrapping and text drawing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dm",
       "originalName": "dm",
       "to": "MouseInput",
@@ -329,6 +343,13 @@
       "originalName": "fb",
       "to": "ArgbSprite",
       "evidence": "fb.java: RGB sprite subtype whose draw overrides blend per-pixel8-bit alpha with integer rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fc",
+      "originalName": "fc",
+      "to": "IndexedSpriteGeometry",
+      "evidence": "fc.java: Palette-sprite cropped dimensions, canvas dimensions and offsets, with draw contracts and unrelated static helpers.",
       "confidence": "reviewed"
     },
     {
@@ -483,6 +504,13 @@
       "originalName": "lh",
       "to": "FramedMenuScreen",
       "evidence": "lh.java: Menu base draws a frame around first/last button bounds; unrelated static helpers retain their roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mb",
+      "originalName": "mb",
+      "to": "AlphaFont",
+      "evidence": "mb.java: Converts palette/glyph arrays in place to coverage bytes, then blends glyphs using supplied RGB paint.",
       "confidence": "reviewed"
     },
     {
@@ -679,6 +707,13 @@
       "originalName": "tk",
       "to": "DualLinkNode",
       "evidence": "tk.java: Intrusive node with an independent secondary link pair/key used by sprite/cache ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tp",
+      "originalName": "tp",
+      "to": "IndexedSprite",
+      "evidence": "tp.java: Unsigned-byte palette indices with cropped geometry, transparent/opaque/alpha drawing, quarter-size averaging and RGB conversion.",
       "confidence": "reviewed"
     },
     {
@@ -969,6 +1004,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bi.field_M:[[I",
+      "originalName": "field_M",
+      "to": "palettes",
+      "evidence": "bi.java: Four palette style slots; constructor installs supplied palette at0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bi.field_U:[[B",
+      "originalName": "field_U",
+      "to": "glyphIndices",
+      "evidence": "bi.java: Caller glyph index arrays retained by palette font.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bn.field_s:I",
       "originalName": "field_s",
       "to": "height256",
@@ -1039,6 +1088,181 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dh.field_A:[I",
+      "originalName": "field_A",
+      "to": "inlineSpriteBaselines",
+      "evidence": "dh.java: Optional sprite-specific baseline offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_B:I",
+      "originalName": "field_B",
+      "to": "capHeight",
+      "evidence": "dh.java: Baseline height minus uppercase-X glyph y offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_C:[I",
+      "originalName": "field_C",
+      "to": "glyphHeights",
+      "evidence": "dh.java: Per-glyph cropped bitmap height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_D:I",
+      "originalName": "field_D",
+      "to": "defaultPaint",
+      "evidence": "dh.java: Default color/style argument restored by closing col tag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_E:I",
+      "originalName": "field_E",
+      "to": "defaultShadow",
+      "evidence": "dh.java: Default shadow color restored by closing shad tag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_F:I",
+      "originalName": "field_F",
+      "to": "ascent",
+      "evidence": "dh.java: Baseline height minus minimum nonempty glyph y offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_G:[B",
+      "originalName": "field_G",
+      "to": "kerning",
+      "evidence": "dh.java: Optional256-by256 signed pair adjustment table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_H:I",
+      "originalName": "field_H",
+      "to": "justifyStep256",
+      "evidence": "dh.java: Fixed8 additional spacing per plain space.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_I:I",
+      "originalName": "field_I",
+      "to": "currentPaint",
+      "evidence": "dh.java: Current color/style argument used by glyph foreground.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_J:I",
+      "originalName": "field_J",
+      "to": "currentAlpha",
+      "evidence": "dh.java: Current glyph alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_K:[Lfc;",
+      "originalName": "field_K",
+      "to": "inlineSprites",
+      "evidence": "dh.java: Inline img-tag sprite array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_L:I",
+      "originalName": "field_L",
+      "to": "xHeight",
+      "evidence": "dh.java: Baseline height minus lowercase-x glyph y offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_N:I",
+      "originalName": "field_N",
+      "to": "baselineHeight",
+      "evidence": "dh.java: Metrics height used as top-to-baseline offset and default line spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_O:I",
+      "originalName": "field_O",
+      "to": "justifyRemainder256",
+      "evidence": "dh.java: Retained fractional justification accumulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_P:I",
+      "originalName": "field_P",
+      "to": "descent",
+      "evidence": "dh.java: Maximum glyph bottom minus baseline height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_Q:I",
+      "originalName": "field_Q",
+      "to": "currentShadow",
+      "evidence": "dh.java: Current shadow color, or -1 when disabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_R:[Ljava/lang/String;",
+      "originalName": "field_R",
+      "to": "wrappedLines",
+      "evidence": "dh.java: Shared100-line scratch array used by layout helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_S:[I",
+      "originalName": "field_S",
+      "to": "glyphOffsetY",
+      "evidence": "dh.java: Glyph top offset from baseline-relative origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_T:[I",
+      "originalName": "field_T",
+      "to": "glyphAdvances",
+      "evidence": "dh.java: 256 glyph horizontal advances decoded from metrics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_u:I",
+      "originalName": "field_u",
+      "to": "underlineColor",
+      "evidence": "dh.java: Underline color, or -1 when disabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_v:[I",
+      "originalName": "field_v",
+      "to": "glyphOffsetX",
+      "evidence": "dh.java: Glyph horizontal offset from pen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_w:I",
+      "originalName": "field_w",
+      "to": "defaultAlpha",
+      "evidence": "dh.java: Default alpha restored by closing trans tag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_x:I",
+      "originalName": "field_x",
+      "to": "strikeColor",
+      "evidence": "dh.java: Strikethrough color, or -1 when disabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_y:Ljava/lang/StringBuilder;",
+      "originalName": "field_y",
+      "to": "wrapScratch",
+      "evidence": "dh.java: Shared mutable builder for line wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dh.field_z:[I",
+      "originalName": "field_z",
+      "to": "glyphWidths",
+      "evidence": "dh.java: Per-glyph cropped bitmap width.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ee.field_t:I",
       "originalName": "field_t",
       "to": "durationTicks",
@@ -1078,6 +1302,48 @@
       "originalName": "field_g",
       "to": "livePointerY",
       "evidence": "ep.java: Written by mouse move/drag/enter callbacks; exit writes -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fc.field_a:I",
+      "originalName": "field_a",
+      "to": "height",
+      "evidence": "fc.java: Cropped index height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fc.field_b:I",
+      "originalName": "field_b",
+      "to": "offsetX",
+      "evidence": "fc.java: Cropped pixel x offset for ordinary draws.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fc.field_d:I",
+      "originalName": "field_d",
+      "to": "width",
+      "evidence": "fc.java: Cropped index row stride/width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fc.field_f:I",
+      "originalName": "field_f",
+      "to": "canvasWidth",
+      "evidence": "fc.java: Original uncropped canvas width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fc.field_g:I",
+      "originalName": "field_g",
+      "to": "offsetY",
+      "evidence": "fc.java: Cropped pixel y offset for ordinary draws.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fc.field_h:I",
+      "originalName": "field_h",
+      "to": "canvasHeight",
+      "evidence": "fc.java: Original uncropped canvas height.",
       "confidence": "reviewed"
     },
     {
@@ -1862,6 +2128,13 @@
       "originalName": "field_rb",
       "to": "currentScreen",
       "evidence": "lp.java: Screen currently handling applet draw/update/key callbacks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mb.field_M:[[B",
+      "originalName": "field_M",
+      "to": "glyphCoverage",
+      "evidence": "mb.java: Caller glyph arrays after in-place indexed-to-coverage conversion.",
       "confidence": "reviewed"
     },
     {
@@ -2681,6 +2954,20 @@
       "originalName": "field_s",
       "to": "secondaryNext",
       "evidence": "tk.java: Next link independent of inherited primary links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tp.field_i:[B",
+      "originalName": "field_i",
+      "to": "indices",
+      "evidence": "tp.java: Caller-supplied palette index bytes; normal pixel lookup masks to unsigned8 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tp.field_j:[I",
+      "originalName": "field_j",
+      "to": "palette",
+      "evidence": "tp.java: Caller-supplied RGB palette.",
       "confidence": "reviewed"
     },
     {
@@ -4049,6 +4336,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bl.a(IB)Z",
       "originalName": "a",
       "to": "isAchievementExcluded",
@@ -4175,6 +4476,167 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dh.a(C)I",
+      "originalName": "a",
+      "to": "getAdvance",
+      "evidence": "dh.java: Returns CP1252-mapped glyph advance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(CIII)V",
+      "originalName": "a",
+      "to": "drawCharacter",
+      "evidence": "dh.java: Draws nonspace CP1252 glyph at baseline-relative coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(II)V",
+      "originalName": "a",
+      "to": "resetStyleOpaque",
+      "evidence": "dh.java: Resets style using alpha256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(III)V",
+      "originalName": "a",
+      "to": "resetStyle",
+      "evidence": "dh.java: Resets shared paint/shadow/alpha, decorations and justification state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(Ldh;Ljava/lang/String;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "truncateText",
+      "evidence": "dh.java: Uses character advances then drops one additional prefix character before ellipsis; retains short-budget substring bounds failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "applyTag",
+      "evidence": "dh.java: Updates foreground/shadow/alpha/decorations from rich-text tag, ignoring parse failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "countWrappedLines",
+      "evidence": "dh.java: Returns line count for single width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(Ljava/lang/String;II)V",
+      "originalName": "a",
+      "to": "drawText",
+      "evidence": "dh.java: Draws rich text using current shared style and baseline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(Ljava/lang/String;IIII)V",
+      "originalName": "a",
+      "to": "drawRight",
+      "evidence": "dh.java: Right-aligns rich text at supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(Ljava/lang/String;IIIII)V",
+      "originalName": "a",
+      "to": "drawRightAlpha",
+      "evidence": "dh.java: Right-aligns rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(Ljava/lang/String;[I[Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "wrapText",
+      "evidence": "dh.java: Wraps into caller lines using optional per-line widths, spaces/hyphens and explicit br tags; uses shared scratch builder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a([B)V",
+      "originalName": "a",
+      "to": "readMetrics",
+      "evidence": "dh.java: Reads simple257-byte advance/baseline record or extended contour/kerning metrics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a([Lfc;[I)V",
+      "originalName": "a",
+      "to": "setInlineSprites",
+      "evidence": "dh.java: Retains sprites and optional matching-length baseline array; rejects mismatched lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.b(Ljava/lang/String;)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "escapeAngles",
+      "evidence": "dh.java: Replaces literal angle brackets with lt/gt tags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.b(Ljava/lang/String;I)I",
+      "originalName": "b",
+      "to": "measureWrappedWidth",
+      "evidence": "dh.java: Returns maximum measured line width after wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.b(Ljava/lang/String;II)I",
+      "originalName": "b",
+      "to": "measureWrappedHeight",
+      "evidence": "dh.java: Uses ascent/descent and line spacing, defaulting spacing to baselineHeight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.b(Ljava/lang/String;IIII)V",
+      "originalName": "b",
+      "to": "drawCentered",
+      "evidence": "dh.java: Centers rich text on supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.b(Ljava/lang/String;IIIII)V",
+      "originalName": "b",
+      "to": "drawCenteredAlpha",
+      "evidence": "dh.java: Centers rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.c(Ljava/lang/String;)I",
+      "originalName": "c",
+      "to": "measureText",
+      "evidence": "dh.java: Measures rich text with CP1252 glyph advances, optional kerning and inline images.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.c(Ljava/lang/String;I)V",
+      "originalName": "c",
+      "to": "prepareJustification",
+      "evidence": "dh.java: Computes fixed8 extra spacing for plain spaces to fit target width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.c(Ljava/lang/String;IIII)V",
+      "originalName": "c",
+      "to": "drawLeft",
+      "evidence": "dh.java: Draws rich text at left x and baseline with supplied paint/shadow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I",
       "originalName": "a",
       "to": "decodeLevel",
@@ -4228,6 +4690,20 @@
       "originalName": "d",
       "to": "drawAt",
       "evidence": "jp.java: RGB implementation copies all pixels, including zero; ARGB override retains its own alpha blending. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(II)V",
+      "originalName": "a",
+      "to": "drawTransparent",
+      "evidence": "fc.java: Cropped draw contract; index0 is skipped.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped.",
       "confidence": "reviewed"
     },
     {
@@ -4382,6 +4858,20 @@
       "originalName": "a",
       "to": "initializeMenuScreens",
       "evidence": "hk.java: Constructs and registers all22 menu slots with original screen identities and shared archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5351,6 +5841,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mb.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a([I[[B)[[B",
+      "originalName": "a",
+      "to": "convertToCoverage",
+      "evidence": "mb.java: Mutates palette entries to weighted grayscale and nonzero signed glyph indices to coverage bytes; negative indices retain original bounds failure.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:md.a(BI)Z",
       "originalName": "a",
       "to": "isButtonEnabled",
@@ -6244,6 +6755,41 @@
       "originalName": "d",
       "to": "nextSubStream",
       "evidence": "qd.java: Returns next child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.a()Ljp;",
+      "originalName": "a",
+      "to": "toRgbSprite",
+      "evidence": "tp.java: Expands unsigned indices to RGB pixels, preserving canvas/crop geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.a(II)V",
+      "originalName": "a",
+      "to": "drawTransparent",
+      "evidence": "fc.java: Cropped draw contract; index0 is skipped. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.a(III)V",
+      "originalName": "a",
+      "to": "drawAlpha",
+      "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.b(II)V",
+      "originalName": "b",
+      "to": "drawOpaque",
+      "evidence": "tp.java: Copies every palette entry including index0 at cropped offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.c(II)V",
+      "originalName": "c",
+      "to": "drawQuarter",
+      "evidence": "tp.java: Averages cropped4-by4 blocks without applying crop offsets; zero palette colors contribute existing destination.",
       "confidence": "reviewed"
     },
     {
@@ -7542,6 +8088,160 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bi.<init>([B[I[I[I[I[I[[B)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "bi.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.<init>([B[I[I[I[I[I[[B)V#1",
+      "originalName": "param1",
+      "to": "glyphOffsetX",
+      "evidence": "bi.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.<init>([B[I[I[I[I[I[[B)V#2",
+      "originalName": "param2",
+      "to": "glyphOffsetY",
+      "evidence": "bi.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.<init>([B[I[I[I[I[I[[B)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "bi.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.<init>([B[I[I[I[I[I[[B)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "bi.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.<init>([B[I[I[I[I[I[[B)V#5",
+      "originalName": "param5",
+      "to": "palette",
+      "evidence": "bi.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.<init>([B[I[I[I[I[I[[B)V#6",
+      "originalName": "param6",
+      "to": "glyphData",
+      "evidence": "bi.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphId",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "paint",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadow",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphId",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "paint",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bi.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bl.a(IB)Z#0",
       "originalName": "param0",
       "to": "achievementId",
@@ -7962,6 +8662,573 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dh.<init>([B[I[I[I[I)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "dh.java: Retains glyph geometry, reads metrics and computes extents.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.<init>([B[I[I[I[I)V#1",
+      "originalName": "param1",
+      "to": "glyphOffsetX",
+      "evidence": "dh.java: Retains glyph geometry, reads metrics and computes extents.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.<init>([B[I[I[I[I)V#2",
+      "originalName": "param2",
+      "to": "glyphOffsetY",
+      "evidence": "dh.java: Retains glyph geometry, reads metrics and computes extents.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.<init>([B[I[I[I[I)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "dh.java: Retains glyph geometry, reads metrics and computes extents.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.<init>([B[I[I[I[I)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "dh.java: Retains glyph geometry, reads metrics and computes extents.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(C)I#0",
+      "originalName": "param0",
+      "to": "character",
+      "evidence": "dh.java: Returns CP1252-mapped glyph advance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(CIII)V#0",
+      "originalName": "param0",
+      "to": "character",
+      "evidence": "dh.java: Draws nonspace CP1252 glyph at baseline-relative coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(CIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws nonspace CP1252 glyph at baseline-relative coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(CIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "dh.java: Draws nonspace CP1252 glyph at baseline-relative coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(CIII)V#3",
+      "originalName": "param3",
+      "to": "paint",
+      "evidence": "dh.java: Draws nonspace CP1252 glyph at baseline-relative coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(II)V#0",
+      "originalName": "param0",
+      "to": "paint",
+      "evidence": "dh.java: Resets style using alpha256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(II)V#1",
+      "originalName": "param1",
+      "to": "shadow",
+      "evidence": "dh.java: Resets style using alpha256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(III)V#0",
+      "originalName": "param0",
+      "to": "paint",
+      "evidence": "dh.java: Resets shared paint/shadow/alpha, decorations and justification state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(III)V#1",
+      "originalName": "param1",
+      "to": "shadow",
+      "evidence": "dh.java: Resets shared paint/shadow/alpha, decorations and justification state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(III)V#2",
+      "originalName": "param2",
+      "to": "alpha",
+      "evidence": "dh.java: Resets shared paint/shadow/alpha, decorations and justification state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphId",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "paint",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadow",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphId",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "paint",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ldh;Ljava/lang/String;I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "font",
+      "evidence": "dh.java: Uses character advances then drops one additional prefix character before ellipsis; retains short-budget substring bounds failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ldh;Ljava/lang/String;I)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "dh.java: Uses character advances then drops one additional prefix character before ellipsis; retains short-budget substring bounds failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ldh;Ljava/lang/String;I)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "dh.java: Uses character advances then drops one additional prefix character before ellipsis; retains short-budget substring bounds failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "tag",
+      "evidence": "dh.java: Updates foreground/shadow/alpha/decorations from rich-text tag, ignoring parse failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;I)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Returns line count for single width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;I)I#1",
+      "originalName": "param1",
+      "to": "width",
+      "evidence": "dh.java: Returns line count for single width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;II)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Draws rich text using current shared style and baseline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;II)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws rich text using current shared style and baseline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;II)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "dh.java: Draws rich text using current shared style and baseline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Right-aligns rich text at supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "rightX",
+      "evidence": "dh.java: Right-aligns rich text at supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "dh.java: Right-aligns rich text at supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "paint",
+      "evidence": "dh.java: Right-aligns rich text at supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "dh.java: Right-aligns rich text at supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Right-aligns rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIIII)V#1",
+      "originalName": "param1",
+      "to": "rightX",
+      "evidence": "dh.java: Right-aligns rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "dh.java: Right-aligns rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIIII)V#3",
+      "originalName": "param3",
+      "to": "paint",
+      "evidence": "dh.java: Right-aligns rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "dh.java: Right-aligns rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;IIIII)V#5",
+      "originalName": "param5",
+      "to": "alpha",
+      "evidence": "dh.java: Right-aligns rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;[I[Ljava/lang/String;)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Wraps into caller lines using optional per-line widths, spaces/hyphens and explicit br tags; uses shared scratch builder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;[I[Ljava/lang/String;)I#1",
+      "originalName": "param1",
+      "to": "lineWidths",
+      "evidence": "dh.java: Wraps into caller lines using optional per-line widths, spaces/hyphens and explicit br tags; uses shared scratch builder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/lang/String;[I[Ljava/lang/String;)I#2",
+      "originalName": "param2",
+      "to": "lines",
+      "evidence": "dh.java: Wraps into caller lines using optional per-line widths, spaces/hyphens and explicit br tags; uses shared scratch builder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a([B)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "dh.java: Reads simple257-byte advance/baseline record or extended contour/kerning metrics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a([Lfc;[I)V#0",
+      "originalName": "param0",
+      "to": "sprites",
+      "evidence": "dh.java: Retains sprites and optional matching-length baseline array; rejects mismatched lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a([Lfc;[I)V#1",
+      "originalName": "param1",
+      "to": "baselines",
+      "evidence": "dh.java: Retains sprites and optional matching-length baseline array; rejects mismatched lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Replaces literal angle brackets with lt/gt tags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;I)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Returns maximum measured line width after wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;I)I#1",
+      "originalName": "param1",
+      "to": "width",
+      "evidence": "dh.java: Returns maximum measured line width after wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;II)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Uses ascent/descent and line spacing, defaulting spacing to baselineHeight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;II)I#1",
+      "originalName": "param1",
+      "to": "width",
+      "evidence": "dh.java: Uses ascent/descent and line spacing, defaulting spacing to baselineHeight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;II)I#2",
+      "originalName": "param2",
+      "to": "lineSpacing",
+      "evidence": "dh.java: Uses ascent/descent and line spacing, defaulting spacing to baselineHeight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Centers rich text on supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "centerX",
+      "evidence": "dh.java: Centers rich text on supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "dh.java: Centers rich text on supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "paint",
+      "evidence": "dh.java: Centers rich text on supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "dh.java: Centers rich text on supplied x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Centers rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIIII)V#1",
+      "originalName": "param1",
+      "to": "centerX",
+      "evidence": "dh.java: Centers rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "dh.java: Centers rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIIII)V#3",
+      "originalName": "param3",
+      "to": "paint",
+      "evidence": "dh.java: Centers rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "dh.java: Centers rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.b(Ljava/lang/String;IIIII)V#5",
+      "originalName": "param5",
+      "to": "alpha",
+      "evidence": "dh.java: Centers rich text with supplied alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.c(Ljava/lang/String;)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Measures rich text with CP1252 glyph advances, optional kerning and inline images.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.c(Ljava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Computes fixed8 extra spacing for plain spaces to fit target width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.c(Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "targetWidth",
+      "evidence": "dh.java: Computes fixed8 extra spacing for plain spaces to fit target width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.c(Ljava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "dh.java: Draws rich text at left x and baseline with supplied paint/shadow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.c(Ljava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws rich text at left x and baseline with supplied paint/shadow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.c(Ljava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "dh.java: Draws rich text at left x and baseline with supplied paint/shadow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.c(Ljava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "paint",
+      "evidence": "dh.java: Draws rich text at left x and baseline with supplied paint/shadow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.c(Ljava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "shadow",
+      "evidence": "dh.java: Draws rich text at left x and baseline with supplied paint/shadow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dm.focusGained(Ljava/awt/event/FocusEvent;)V#0",
       "originalName": "param0",
       "to": "event",
@@ -8267,6 +9534,41 @@
       "originalName": "param1",
       "to": "y",
       "evidence": "jp.java: RGB implementation copies all pixels, including zero; ARGB override retains its own alpha blending. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fc.a(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "fc.java: Cropped draw contract; index0 is skipped.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fc.a(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "fc.java: Cropped draw contract; index0 is skipped.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fc.a(III)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fc.a(III)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fc.a(III)V#2",
+      "originalName": "param2",
+      "to": "alpha",
+      "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped.",
       "confidence": "reviewed"
     },
     {
@@ -8624,6 +9926,111 @@
       "originalName": "param1",
       "to": "archive",
       "evidence": "hk.java: Constructs and registers all22 menu slots with original screen identities and shared archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphId",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "paint",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadow",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphId",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "paint",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -10664,6 +12071,174 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:mb.<init>([B[I[I[I[I[I[[B)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "mb.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.<init>([B[I[I[I[I[I[[B)V#1",
+      "originalName": "param1",
+      "to": "glyphOffsetX",
+      "evidence": "mb.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.<init>([B[I[I[I[I[I[[B)V#2",
+      "originalName": "param2",
+      "to": "glyphOffsetY",
+      "evidence": "mb.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.<init>([B[I[I[I[I[I[[B)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "mb.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.<init>([B[I[I[I[I[I[[B)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "mb.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.<init>([B[I[I[I[I[I[[B)V#5",
+      "originalName": "param5",
+      "to": "palette",
+      "evidence": "mb.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.<init>([B[I[I[I[I[I[[B)V#6",
+      "originalName": "param6",
+      "to": "glyphData",
+      "evidence": "mb.java: Constructs font from metrics, glyph geometry, palette and byte glyph data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphId",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "paint",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadow",
+      "evidence": "dh.java: Draws glyph with additional alpha and foreground/shadow mode. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphId",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "paint",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadow",
+      "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a([I[[B)[[B#0",
+      "originalName": "param0",
+      "to": "palette",
+      "evidence": "mb.java: Mutates palette entries to weighted grayscale and nonzero signed glyph indices to coverage bytes; negative indices retain original bounds failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a([I[[B)[[B#1",
+      "originalName": "param1",
+      "to": "glyphData",
+      "evidence": "mb.java: Mutates palette entries to weighted grayscale and nonzero signed glyph indices to coverage bytes; negative indices retain original bounds failure.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:md.a(BI)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -12652,6 +14227,146 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tp.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "tp.java: Allocates full-canvas indices and requested palette length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "tp.java: Allocates full-canvas indices and requested palette length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "paletteSize",
+      "evidence": "tp.java: Allocates full-canvas indices and requested palette length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(IIIIII[B[I)V#0",
+      "originalName": "param0",
+      "to": "canvasWidth",
+      "evidence": "tp.java: Retains caller index/palette arrays and cropped geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(IIIIII[B[I)V#1",
+      "originalName": "param1",
+      "to": "canvasHeight",
+      "evidence": "tp.java: Retains caller index/palette arrays and cropped geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(IIIIII[B[I)V#2",
+      "originalName": "param2",
+      "to": "offsetX",
+      "evidence": "tp.java: Retains caller index/palette arrays and cropped geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(IIIIII[B[I)V#3",
+      "originalName": "param3",
+      "to": "offsetY",
+      "evidence": "tp.java: Retains caller index/palette arrays and cropped geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(IIIIII[B[I)V#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "tp.java: Retains caller index/palette arrays and cropped geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(IIIIII[B[I)V#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "tp.java: Retains caller index/palette arrays and cropped geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(IIIIII[B[I)V#6",
+      "originalName": "param6",
+      "to": "indices",
+      "evidence": "tp.java: Retains caller index/palette arrays and cropped geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.<init>(IIIIII[B[I)V#7",
+      "originalName": "param7",
+      "to": "palette",
+      "evidence": "tp.java: Retains caller index/palette arrays and cropped geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.a(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "fc.java: Cropped draw contract; index0 is skipped. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.a(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "fc.java: Cropped draw contract; index0 is skipped. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.a(III)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.a(III)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.a(III)V#2",
+      "originalName": "param2",
+      "to": "alpha",
+      "evidence": "fc.java: Cropped alpha draw contract; index0 is skipped. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.b(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "tp.java: Copies every palette entry including index0 at cropped offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.b(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "tp.java: Copies every palette entry including index0 at cropped offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.c(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "tp.java: Averages cropped4-by4 blocks without applying crop offsets; zero palette colors contribute existing destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tp.c(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "tp.java: Averages cropped4-by4 blocks without applying crop offsets; zero palette colors contribute existing destination.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ud.<init>(II)V#0",
       "originalName": "param0",
       "to": "screenId",
@@ -14193,9 +15908,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "6f60457f5944e20c6ef56fd89b0e53751d058521ec08f3c42a0771e9c569de9e",
+      "build-brickabrac-rules.mjs": "eaa8b7e9db9c7d0c5068694bcd8e2388f78d171edc6af1b8aa9c0f7379269d87",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "8e66d61f357dc0a9051f941a44f7bf789d67377d77f9648a130be83ab8b9dbd9",
+      "tests/test-brickabrac-core.mjs": "07b0924da868672cc7fbd84b33911f92765d64520f8e57062b3a070af980379d",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
