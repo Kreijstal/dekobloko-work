@@ -10,6 +10,18 @@ import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} fr
 const SOURCE_COMMIT = 'f9a6dd401349b0d2b3a426a62d2ee09c32514c63';
 // Evidence below refers to this immutable Java input, not to another game's map.
 const classes = {
+  fw:["InteractiveWidget","Widget with enabled/focusable/focused/active flags, pointer press/release and activation callbacks."],
+  fn:["EditableTextWidget","Interactive text widget with caret/anchor, length limit, keyboard editing, word/double-click selection, clipboard helpers and horizontal caret scrolling."],
+  hv:["HotspotTextWidget","Interactive text widget deriving linked hit regions from hotspot markup, reporting activation IDs and optional hover labels."],
+  ct:["TextHotspotRegion","Intrusive hotspot ID and rectangle, with a separate linked continuation for spans across text lines; unrelated spell-menu globals remain separate."],
+  qo:["WidgetListener","Marker contract shared by widget focus, activation, pointer, hover and editable-text callbacks."],
+  ie:["WidgetFocusListener","Focus-state change callback carrying widget, focused flag and guard."],
+  he:["WidgetActivationListener","Activation callback carrying pointer coordinates, button, widget and guard."],
+  qe:["WidgetPointerListener","Pointer press/release callbacks extending widget activation notification."],
+  fb:["EditableTextWidgetListener","Editable text change and submit callbacks."],
+  nq:["TextHotspotListener","Hotspot activation ID/button callback; callers may separately implement WidgetListener."],
+  o:["WidgetHoverListener","Hovered-state change callback extending WidgetListener."],
+
   ju:["TextLayout","Shared line geometry with caret-index/X/line lookup, nearest-caret hit testing and text extents; unrelated numeric/bit helpers remain separate."],
   ak:["BitmapTextLayout","Caches font/text/layout inputs and computes single-line or wrapped caret geometry, retaining pinned cache/alignment quirks."],
   ts:["TextLineLayout","Line top/bottom and source-character caret X array; unrelated campaign/audio/client helpers remain separate."],
@@ -320,6 +332,88 @@ for(const [owner,signature,names] of [
  ["rk","c(I)Ljava/lang/String;",[[0,"var5","lineIndex"],[1,"var6","description"],[2,"var7","obfuscationControl"],[3,"var1","controller"],[4,"var2","descriptions"],[5,"var3","output"],[6,"var4","descriptionsAlias"]]],
  ["te","b(II)Ljava/lang/String;",[[0,"var2","guardedControllerSecondAlias"],[1,"var3","selectedTileIndex"],[2,"var5","guardedControllerAlias"],[3,"var6","guardedController"],[4,"var7","controllerAlias"],[5,"var8","controller"],[6,"var3Lifetime1","guardedSelectedTileIndex"]]],
 ])for(const [ordinal,originalName,to] of names)local(owner,signature,ordinal,originalName,to,'Reviewed console drawing/style or game-command helper local, checked against its pinned ordinal and original name.');
+// Interactive widget state, editor input and source-markup hotspots.
+for(const [owner,original,type,to] of [
+ ['fw','I','Z','enabled'],['fw','D','Z','focusable'],['fw','E','Z','focused'],['fw','G','I','lastActivationButton'],['fw','K','Z','active'],
+ ['fn','O','I','caretIndex'],['fn','L','I','selectionAnchor'],['fn','V','I','doubleClickWordEnd'],['fn','T','J','lastPointerPressMillis'],['fn','R','I','maximumLength'],['fn','U','J','lastInputMillis'],['fn','P','Z','wordDragSelection'],['fn','N','Z','autoScrollCaret'],
+ ['hv','P','Lat;','hotspotRegions'],['hv','Q','[Ljava/lang/String;','hotspotTooltips'],['hv','M','Lct;','hoveredHotspot'],
+ ['ct','n','I','hotspotId'],['ct','r','I','left'],['ct','l','I','top'],['ct','p','I','width'],['ct','q','I','height'],['ct','k','Lct;','nextRegion'],
+ ['kb','x','Lqo;','listener'],['kb','q','I','pressedButton'],['kb','t','Z','hovered'],['kb','s','Ljava/lang/String;','tooltipText'],
+])field(owner,original,type,to,'Pinned interactive widget/editor/hotspot constructors and input/rendering callbacks establish this role.');
+constructorParameters('fw','(Ljava/lang/String;Lqo;)V',{0:'text',1:'listener'},'Uses default theme button painter.');
+constructorParameters('fw','(Ljava/lang/String;Lkh;Lqo;)V',{0:'text',1:'painter',2:'listener'},'Stores inherited text/painter/listener and defaults enabled/focusable true, focused false and activation zero.');
+constructorParameters('fw','(IIIILkh;Lqo;)V',{0:'x',1:'y',2:'width',3:'height',4:'painter',5:'listener'},'Passes explicit bounds/painter/listener to Widget; same interaction defaults.');
+constructorParameters('fn','(Ljava/lang/String;Lqo;I)V',{0:'text',1:'listener',2:'maximumLength'},'Selects default editor painter, sets text without change notification, initializes selection/clock/scroll state.');
+constructorParameters('hv','(Ljava/lang/String;Lkh;)V',{0:'text',1:'painter'},'Constructs interactive widget without listener then installs supplied text painter.');
+constructorParameters('ct','(IIIII)V',{0:'hotspotId',1:'left',2:'top',3:'width',4:'height'},'Retains ID and region coordinates/dimensions.');
+method('ie','a','(Lkb;ZB)V','focusChanged','Reports focus changes after storing new widget focus state.',{0:'widget',1:'focused',2:'obfuscationGuard'});
+method('he','a','(IIIILfw;)V','widgetActivated','Reports activation coordinates/button after storing lastActivationButton.',{0:'pointerX',1:'obfuscationGuard',2:'button',3:'pointerY',4:'widget'});
+method('qe','a','(IILfw;III)V','pointerReleased','Reports pointer release before pressedButton is cleared.',{0:'obfuscationGuard',1:'pointerY',2:'widget',3:'originX',4:'originY',5:'pointerX'});
+method('qe','a','(Lfw;IIIIIB)V','pointerPressed','Reports pointer press after focus attempt and pressedButton storage.',{0:'widget',1:'originY',2:'originX',3:'pointerX',4:'pointerY',5:'button',6:'obfuscationGuard'});
+method('fb','b','(Lfn;I)V','textChanged','Receives edit notification after text/selection mutation.',{0:'widget',1:'obfuscationGuard'});
+method('fb','a','(Lfn;I)V','textSubmitted','Receives Enter submission without modifying text.',{0:'widget',1:'obfuscationGuard'});
+method('nq','a','(IIBLhv;)V','hotspotActivated','Reports matched hotspot group ID and activation button.',{0:'hotspotId',1:'button',2:'obfuscationGuard',3:'widget'});
+method('o','a','(ZZLkb;)V','hoverChanged','Reports pointer containment transitions.',{0:'hovered',1:'obfuscationGuard',2:'widget'});
+method('kb','a','(Z)Z','isFocused','Default false query, overridden by InteractiveWidget retained focus state.',{0:'obfuscationGuard'});
+method('kb','a','(ILkb;)Z','takeFocus','Virtual focus request; interactive implementation checks enabled/focusable then blurs supplied root.',{0:'obfuscationGuard',1:'rootWidget'});
+method('kb','f','(I)V','blur','Virtual focus clearing; default widget is a canonical no-op.',{0:'obfuscationGuard'});
+method('kb','a','(Lkb;ICI)Z','handleKey','Virtual key handling shared by widgets, activation and text editing.',{0:'rootWidget',1:'keyCode',2:'character',3:'obfuscationGuard'});
+method('kb','a','(IIIILkb;II)Z','pointerPressed','Virtual pointer press handling with origin/root and button context.',{0:'pointerX',1:'originX',2:'originY',3:'obfuscationGuard',4:'rootWidget',5:'pointerY',6:'button'});
+method('kb','a','(ILkb;IBII)V','pointerReleased','Virtual pointer release, clearing retained press state in the base widget.',{0:'originY',1:'rootWidget',2:'pointerX',3:'obfuscationGuard',4:'pointerY',5:'originX'});
+method('kb','a','(IIILkb;)V','updatePointer','Updates containment/hover state and widget-specific drag/release behavior.',{0:'obfuscationGuard',1:'originX',2:'originY',3:'rootWidget'});
+method('kb','a','(IIBI)V','drawWidget','Virtual widget painting, including editable selection/caret and hotspot hover decoration overrides.',{0:'originX',1:'originY',2:'obfuscationGuard',3:'renderLayer'});
+method('kb','h','(I)Ljava/lang/String;','getTooltipText','Virtual tooltip lookup for ordinary and hotspot widgets.',{0:'obfuscationGuard'});
+method('fw','a','(IIIZ)V','activate','Stores activation button, then optionally dispatches WidgetActivationListener.',{0:'button',1:'pointerX',2:'pointerY',3:'notifyListener'});
+method('fn','o','(I)Ljava/lang/String;','selectedText','Returns substring between min/max caret and anchor.',{0:'obfuscationGuard'});
+method('fn','e','(B)I','previousWordBoundary','Moves left by literal-space word boundary; preserves original handling of repeated spaces.',{0:'obfuscationGuard'});
+method('fn','p','(I)I','nextWordBoundary','Moves right until preceding character is a literal space.',{0:'obfuscationGuard'});
+method('fn','b','(Z)V','cutSelection','Copies selection to system clipboard before deleting it.',{0:'obfuscationGuard'});
+method('fn','j','(I)V','deleteSelection','Removes selected substring, collapses caret/anchor to lower boundary and emits change callback.',{0:'obfuscationGuard'});
+method('fn','n','(I)V','submitText','Emits EditableTextWidgetListener submission callback.',{0:'obfuscationGuard'});
+method('fn','a','(ZLjava/lang/String;I)V','setText','Normalizes null to empty, truncates to finite limit, collapses selection at end and optionally suppresses change callback.',{0:'suppressNotification',1:'text',2:'obfuscationGuard'});
+method('fn','k','(I)V','clearText','Clears text and selection and emits change callback even when already empty.',{0:'obfuscationGuard'});
+method('fn','l','(I)V','scrollCaretIntoView','Adjusts horizontal content offset with half-ink-height margins; disabled scrolling resets both offsets.',{0:'obfuscationGuard'});
+method('fn','d','(B)V','notifyTextChanged','Emits textChanged callback; wrong guard can corrupt maximumLength after notification.',{0:'obfuscationGuard'});
+method('fn','a','(B)V','copySelection','Writes nonempty selection to the system clipboard.',{0:'obfuscationGuard'});
+method('fn','a','(IB)V','moveCaret','Assigns requested caret, preserving anchor only when held key 81 is active.',{0:'index',1:'obfuscationGuard'});
+method('fn','f','(B)V','pasteClipboard','Reads clipboard text, removes selected text and delegates insertion; swallows clipboard/runtime exceptions in the pinned path.',{0:'obfuscationGuard'});
+method('fn','a','(Ljava/lang/String;B)V','insertText','Inserts unbounded pasted text; finite limit path retains reversed remaining-space check and negative substring failure.',{0:'text',1:'obfuscationGuard'});
+method('hv','a','(I)V','rebuildHotspots','Scans hotspot markup IDs and closing tags, deriving per-line linked rectangles from caret geometry.',{0:'obfuscationGuard'});
+method('hv','a','(IBI)Lct;','findHotspot','Tests left/top inclusive, right exclusive and bottom inclusive, returning group first region for any linked segment hit.',{0:'y',1:'obfuscationGuard',2:'x'});
+method('hv','a','(Ljava/lang/String;ZI)V','setHotspotTooltip','Grows retained sparse tooltip array and assigns one hotspot ID.',{0:'text',1:'obfuscationGuard',2:'hotspotId'});
+method('hv','a','(IIII)V','setTextBounds','Sets width/position and preferred text height, then rebuilds hotspot rectangles.',{0:'width',1:'obfuscationGuard',2:'x',3:'y'});
+for(const [owner,signature,names] of [
+ ["fw","a(IIIILkb;II)Z",[[0,"var8","failure"],[1,"var9","guardWidget"],[2,"stackIn_13_0","failureForContext"],[3,"stackIn_13_1","errorContext"],[4,"stackIn_14_2","rootDescription"],[5,"decompiledCaughtException","caughtFailure"],[6,"decompiledCaughtParameter0","caughtParameter"]]],
+ ["fw","a(IIILkb;)V",[[0,"runtimeException","failure"]]],
+ ["fw","a(ILjava/lang/StringBuilder;ILjava/util/Hashtable;)Ljava/lang/StringBuilder;",[[0,"discarded$2","activeAppendResult"],[1,"discarded$3","disabledAppendResult"],[2,"var5","failure"],[3,"stackIn_9_0","result"],[4,"stackIn_12_0","failureForContext"],[5,"stackIn_12_1","errorContext"],[6,"stackIn_13_2","builderDescription"],[7,"stackIn_15_1","errorContextWithBuilder"],[8,"stackIn_16_2","tableDescription"],[9,"decompiledCaughtException","caughtFailure"],[10,"decompiledCaughtParameter0","caughtParameter"]]],
+ ["fw","a(ILkb;)Z",[[0,"var3","failure"],[1,"stackIn_15_0","failureForContext"],[2,"stackIn_15_1","errorContext"],[3,"stackIn_16_2","rootDescription"],[4,"decompiledCaughtException","caughtFailure"],[5,"decompiledCaughtParameter0","caughtParameter"]]],
+ ["fw","a(ILkb;IBII)V",[[0,"var7_int","guardRemainder"],[1,"runtimeException","failure"]]],
+ ["fw","a(Lkb;ICI)Z",[[0,"var5","failure"],[1,"stackIn_12_0","failureForContext"],[2,"stackIn_12_1","errorContext"],[3,"stackIn_13_2","rootDescription"],[4,"decompiledCaughtException","caughtFailure"],[5,"decompiledCaughtParameter0","caughtParameter"]]],
+ ["fw","f(I)V",[[0,"var3","guardTable"],[1,"var3Lifetime1","unfocusedGuardTable"],[2,"var3Lifetime2","noListenerGuardTable"],[3,"var3Lifetime3","nonFocusListenerGuardTable"]]],
+ ["fn","<init>(Ljava/lang/String;Lqo;I)V",[[0,"runtimeException","failure"]]],
+ ["fn","a(B)V",[[0,"var2","selection"]]],
+ ["fn","a(IIBI)V",[[0,"var8","textPainter"],[1,"var6","now"]]],
+ ["fn","a(IIIILkb;II)Z",[[0,"stackIn_9_1","caretIndex"],[1,"stackIn_12_1","doubleClick"],[2,"stackIn_24_0","failureForContext"],[3,"stackIn_24_1","errorContext"],[4,"stackIn_25_2","rootDescription"],[5,"decompiledCaughtException","caughtFailure"],[6,"var8_int","hitIndex"],[7,"var8_long","now"],[8,"var8","failure"],[9,"decompiledCaughtParameter0","caughtParameter"]]],
+ ["fn","a(IIILkb;)V",[[0,"var5","textPainter"],[1,"var6","hitIndex"],[2,"runtimeException","failure"]]],
+ ["fn","a(Ljava/lang/String;B)V",[[0,"var3_int","remainingCapacity"],[1,"stackIn_15_0","failureForContext"],[2,"stackIn_15_1","errorContext"],[3,"stackIn_16_2","textDescription"],[4,"decompiledCaughtException","caughtFailure"],[5,"var3","failure"],[6,"decompiledCaughtParameter0","caughtParameter"]]],
+ ["fn","a(Lkb;ICI)Z",[[0,"dupTemp$0","endIndex"],[1,"stackIn_27_1","leftIndex"],[2,"stackIn_34_1","rightIndex"],[3,"stackIn_82_0","failureForContext"],[4,"stackIn_82_1","errorContext"],[5,"stackIn_83_2","rootDescription"],[6,"decompiledCaughtException","caughtFailure"],[7,"var5","failure"],[8,"decompiledCaughtParameter0","caughtParameter"]]],
+ ["fn","a(ZLjava/lang/String;I)V",[[0,"dupTemp$1","endIndex"],[1,"var4_int","textLength"],[2,"stackIn_14_0","failureForContext"],[3,"stackIn_14_1","errorContext"],[4,"stackIn_15_2","textDescription"],[5,"decompiledCaughtException","caughtFailure"],[6,"var4","failure"],[7,"decompiledCaughtParameter0","caughtParameter"]]],
+ ["fn","e(B)I",[[0,"var2","index"],[1,"var3","guardQuotient"],[2,"var4","obfuscationControl"]]],
+ ["fn","f(B)V",[[0,"decompiledCaughtException","caughtClipboardFailure"],[1,"var2","clipboardText"],[2,"var2_ref","clipboardFailure"],[3,"var3","guardWidget"],[4,"decompiledCaughtParameter0","caughtParameter"],[5,"decompiledUncheckedException","uncheckedFailure"],[6,"decompiledCheckedException","checkedFailure"]]],
+ ["fn","j(I)V",[[0,"var2","firstIndex"],[1,"var3","lastIndex"]]],
+ ["fn","k(I)V",[[0,"var2","guardRemainder"]]],
+ ["fn","l(I)V",[[0,"discarded$0","guardBoundary"],[1,"var3","layout"],[2,"var4","rightExtent"],[3,"var5","contentWidth"],[4,"var6","caretMargin"],[5,"var7","caretX"],[6,"var8","obfuscationControl"],[7,"var9","textPainter"]]],
+ ["fn","o(I)Ljava/lang/String;",[[0,"var2","firstIndex"],[1,"var3","lastIndex"]]],
+ ["fn","p(I)I",[[0,"var2","textLength"],[1,"var3","index"],[2,"var4","obfuscationControl"]]],
+ ["hv","<init>(Ljava/lang/String;Lkh;)V",[[0,"runtimeException","failure"]]],
+ ["hv","a(I)V",[[0,"var11","lineIndex"],[1,"stackIn_9_0","regionLeft"],[2,"stackIn_14_0","regionRight"],[3,"var2","scanIndex"],[4,"var3","textPainter"],[5,"var4","layout"],[6,"var5","openingIndex"],[7,"var6","idText"],[8,"var7","openingEnd"],[9,"var8","firstLine"],[10,"var9","lastLine"],[11,"var10","previousRegion"],[12,"var12","line"],[13,"var13","left"],[14,"var14","right"],[15,"var15","region"],[16,"var16","obfuscationControl"],[17,"var7Lifetime1","hotspotId"]]],
+ ["hv","a(IBI)Lct;",[[0,"var5","segment"],[1,"var6","obfuscationControl"],[2,"var4","group"],[3,"var7","guardWidget"]]],
+ ["hv","a(IIBI)V",[[0,"var7","textLeft"],[1,"var8","textTop"],[2,"var10","textPainter"],[3,"var9","guardWidget"],[4,"var6","region"]]],
+ ["hv","a(IIILkb;)V",[[0,"var5_int","relativeX"],[1,"var6","relativeY"],[2,"runtimeException","failure"]]],
+ ["hv","a(IIIZ)V",[[0,"var5","relativeX"],[1,"var6","relativeY"],[2,"var7","hotspot"]]],
+ ["hv","a(ILkb;)Z",[[0,"var3","failure"],[1,"var4","guardWidget"],[2,"stackIn_6_0","failureForContext"],[3,"stackIn_6_1","errorContext"],[4,"stackIn_7_2","rootDescription"],[5,"decompiledCaughtException","caughtFailure"],[6,"decompiledCaughtParameter0","caughtParameter"]]],
+ ["hv","a(Ljava/lang/String;ZI)V",[[0,"var5","tooltipIndex"],[1,"runtimeException","failure"],[2,"var4","tooltipsAlias"],[3,"var6","obfuscationControl"],[4,"var7","guardText"],[5,"var8","expandedTooltips"],[6,"var9","expandedTooltipsAlias"],[7,"stackIn_15_0","failureForContext"],[8,"stackIn_15_1","errorContext"],[9,"stackIn_16_2","textDescription"],[10,"decompiledCaughtException","caughtFailure"],[11,"decompiledCaughtParameter0","caughtParameter"]]],
+])for(const [ordinal,originalName,to] of names)local(owner,signature,ordinal,originalName,to,'Pinned interactive widget/editor/hotspot local, bound to fixed ordinal and original spelling.');
 // Font-backed text layout and widget painter contract.
 for(const [owner,original,type,to] of [
  ['ju','b','[Lts;','lines'],['ts','n','I','top'],['ts','c','I','bottom'],['ts','i','[I','caretXs'],
@@ -3415,6 +3509,7 @@ export function buildArmiesGuide(rules,mapping) {
     `| ${link('sl')} | Versioned quicksave header, snapshot chunks, stored mana and campaign damage/loss state. |`,
     `| ${link('pr')} → ${link('a')} / ${link('ru')} / ${link('si')} / ${link('qg')} | Palette region indexing, marker anchors, pixel lookup and indexed sprites. |`,
     `| ${link('cv')} → ${link('cq')} / ${link('iq')} / ${link('bg')} | Campaign selection, mission entries, buttons and intrusive lookup/traversal. |`,
+    `| ${link('fw')} → ${link('fn')} / ${link('hv')} / ${link('ct')} | Interactive focus/pointer callbacks, editable text and linked hotspot regions. ${link('ie')} / ${link('qe')} / ${link('fb')} / ${link('nq')} define listener contracts. |`,
     `| ${link('pm')} → ${link('lk')} / ${link('ju')} / ${link('ak')} / ${link('ts')} | Text-widget coordinates, cached line/caret geometry, pointer hit tests and caret/selection painting. |`,
     `| ${link('ka')} → ${link('tu')} / ${link('nc')} / ${link('d')} | Text metrics, wrapping/markup/alignment and binary, antialiased or paletted glyph drawing. |`,
     `| ${link('dv')} → ${link('ij')} / ${link('rq')} | Console panel, editor/history/suggestions and text nodes. |`,
@@ -3559,6 +3654,10 @@ export function buildArmiesGuide(rules,mapping) {
     'MusicCrossfadeStream names both background slots/tracks, selected sequencer, master gain, fixed-point fade position/step, scratch arrays and one-shot return. selectTrack reuses a matching track without restarting its reader, replaces the empty or quieter slot for a new track, and preserves direction while replacing an existing one-shot. configureSelectedSequencer applies all-channel gain and MIDI time scale. The shared musicCrossfadeStream, musicPlayer, directMusicSequencer and currentDirectMusicTrack fields now distinguish the global routes; setMusicTrack updates direct gain even when track identity is unchanged, but stops/flushes/restarts only on a change.', '',
     'AdaptiveMidiPcmStream names overallGain, fixedChannelGains, gainSteps, targetProfile and gainsSettled; ChannelGainProfile owns sixteen initially zero targets. The negative-channel setter changes only the overall multiplier, whereas a channel-specific setter updates base/fixed gain without clearing pending steps. Render temporarily multiplies the original master volume, runs the base sequencer, advances channel ramps after the block and restores master volume on normal return. Inherited final skip advances MIDI/PCM but leaves ramps unchanged. Profile identity is retained and mutable target changes are observed live.', '',
     'SoundPlaybackHandle names stream, lifetimeNode and unscaledVolume. Immediate playRawSound creates and appends a handle before adding raw playback to effectsMixer. Volume/default/pan wrappers identify external factory units, including the full-width integer guard bridge. Constructor and setEffectsGain use rounded unscaledVolume*effectsGain/256; volume changes also prune handles whose lifetime node has unlinked. primary soundHandles and optional additionalSoundHandles are distinct from the music player/crossfade route. The optional second list has only null-assignment writers in the pinned source.', '',
+    'InteractiveWidget names enabled, focusable, focused, active, lastActivationButton and the inherited pressedButton/hovered/listener/tooltipText state. WidgetListener, WidgetFocusListener, WidgetActivationListener, WidgetPointerListener and WidgetHoverListener expose the callback contracts. takeFocus checks enable/focus eligibility, blurs the supplied root and stores focus before notifying; self-refocus emits false then true. Pointer press can proceed without taking focus, and release notification precedes clearing the button. Activation stores its button even when notification is suppressed. Native callback fixtures preserve ordering, focus gates, keyboard activation and hover transitions.', '',
+    'EditableTextWidget and EditableTextWidgetListener name caret/anchor, maximumLength, word-drag end, click/input timestamps, automatic scrolling, keyboard editing, change/submission callbacks and clipboard helpers. Native vectors cover every byte character under unlimited/zero/one/four length limits, selection replacement and callback counts, left/right/home/end with Shift/Control, space-based word boundaries, deletion and unconditional clear notification. setText normalizes null, truncates finite limits and can suppress notification. Direct key handling retains its original behavior without an additional focus check; caller dispatch remains responsible for routing input.', '',
+    'The pure insertion helper preserves the pinned finite-paste bug: remaining capacity at or above zero returns without insertion, while over-limit text can fail on a negative substring bound. Unlimited insertion accepts pasted Unicode/angle brackets, unlike typed printable ASCII filtering. Native fixtures check this helper and retained selection/text on failure without accessing the system clipboard. Pointer fixtures steer timestamps far from the double-click threshold, test ordinary and word-boundary selection, word-drag clamping/reversal and horizontal caret scrolling. Real clipboard transfer, timing at the 250 ms boundary, blink timing and operating-system input remain unverified.', '',
+    'HotspotTextWidget, TextHotspotRegion and TextHotspotListener expose hotspot markup scanning, linked per-line rectangles, sparse hover labels and ID/button activation callbacks. Regions include left/top and bottom edges, exclude the right edge, and return the first group segment for a continuation hit. Native fixtures build actual single/multiline regions, check every boundary combination, hover/tooltip transitions, refusal of focus and activation callback order. Hotspot activation still notifies its listener even when the inherited activation notification flag is false. Production text links, malformed/nested markup, tooltip drawing and full widget integration remain unverified.', '',
     'TextLayout, BitmapTextLayout and TextLineLayout now expose line top/bottom/caretXs, nearest-caret midpoint lookup, inclusive vertical hit testing, global caret/line mapping, right extents and geometry caching. computeCaretPositions names source-prefix measurement, tag freezing and fixed-point space adjustment. Native fixtures cover duplicate caret positions and rightward midpoint ties, markup positions, single-line alignment, wrapped line bounds, shared end/start indices and vertical gaps. Wrapped source indices omit removed break spaces; right extent is the final absolute caret coordinate rather than a width difference.', '',
     'BitmapTextLayout retains the pinned cache behavior: single-line cache hits ignore coordinates; null text clears lines without clearing keys; centered layout does not write cachedText. Paragraph alignment preserves zero horizontal origins, bottom-baseline and distributed-gap differences from drawing, and justification applied to the last line. Distributed layout updates cachedLineHeight but still advances rows by the original input, causing repeat misses. An odd-width centered line rounds both endpoints down separately. Native fixtures inspect the geometry and cache identities for these paths. A failed paragraph build can commit cache keys before creating lines, so an identical retry returns without reconstruction.', '',
     'TextWidgetPainter and BitmapTextWidgetPainter name the public text-layout/dimension/coordinate/hit/caret/selection contract, all retained font/style/padding/alignment fields, widget text/layout/content offsets and drawing helpers. Native fixtures construct actual painters, copy every style field, query dimensions and pointer indices, and use a recording font to check drawn glyph positions. Actual software-raster pixels check caret gating, selection direction, clip restoration and the pinned second-line selection height, which uses line bottom directly. Failure fixtures preserve a pushed clip after wrapped drawing throws and explicitly restore it for subsequent checks. Full editable-widget keyboard interaction, clickable link activation, production styles and complete live widget rendering remain unverified.', '',
@@ -3614,7 +3713,7 @@ export function buildArmiesManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:62,
+    const rules={schema:1,game:'armiesofgielinor',version:63,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

@@ -237,7 +237,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 356,300 raw/named checks agree. Controlled cipher output does not constitute
+All 367,343 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -553,6 +553,25 @@ are source/fixture observations, not proof about the original gamepack. Full
 editable-widget input, clickable links and production widget rendering remain
 unverified.
 
+InteractiveWidget, EditableTextWidget, HotspotTextWidget and TextHotspotRegion
+now name focus/pointer state, caret/selection/length limits, word dragging,
+scrolling, text edits and hotspot geometry. Seven listener contracts identify
+marker, focus, activation, pointer, hover, text-edit and hotspot notifications.
+Native callback vectors check focus-transfer ordering, press without focus,
+release state, silent activation, hover transitions and keyboard activation.
+Editor vectors cover every byte character at several limits, modifier navigation,
+selection replacement/deletion, notifications, word dragging and caret scrolling.
+
+The pure insertion helper retains reversed finite-capacity handling: valid finite
+capacity rejects paste, while over-limit state can fail on a negative substring.
+Unlimited insertion accepts Unicode and markup characters. These tests never
+access the system clipboard. Click timestamps are steered far from the threshold;
+actual click/blink timing and operating-system clipboard/input remain unverified.
+Hotspot vectors check single/multiline linked regions, inclusive bottom/exclusive
+right boundaries, tooltip transitions and ID callback order. Hotspots still
+notify even when inherited activation notification is suppressed. Production
+links, malformed/nested markup and full widget integration remain unverified.
+
 Gameplay feedback now names portal summon menus/items, unit cycling, the turn
 timer dial, spell confirmations, in-battle tutorial hints and camera-backed unit
 model refresh. Fixtures verify campaign unlock filtering, the King Black Dragon
@@ -585,7 +604,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 271 reviewed classes around battlefield state, units, map
+The current pass names 282 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
