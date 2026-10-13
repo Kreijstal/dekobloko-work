@@ -98,6 +98,17 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+ArgbSprite now names the large ARGB renderer's complete declared draw/kernel
+operations and clipping, sampling, colour and alpha locals. Shared RGB operation
+names propagate through overrides. Native pixel fixtures use independent
+coordinate/block/channel expectations for clipping, flipped crops, all alpha
+values, brightness/opacity, grayscale tint/shade pivots, saturated addition,
+nearest-neighbour scaling and weighted half/quarter downsampling. RGB zero-pixel
+and signed-opacity behavior are checked separately. Fixed-point cropped edge
+rounding, 256-based alpha weights, packed tint rounding and tiny-alpha destination
+writes are preserved. Inherited rotation, invalid factors, overlapping pixel
+buffers, full game artwork and presented FPS remain unverified.
+
 GameAppletShell now names the client lifecycle hooks, separate tick/render
 bookkeeping, canvas focus, redraw/rebuild flags, loader delegation and shutdown
 deadline. GameCanvas names its retained paint/update target. GameClock and
@@ -314,7 +325,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 384,039 raw/named checks agree. Controlled cipher output does not constitute
+All 448,137 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -681,7 +692,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 347 reviewed classes around battlefield state, units, map
+The current pass names 348 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
