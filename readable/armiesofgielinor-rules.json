@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "armiesofgielinor",
-  "version": 70,
+  "version": 71,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "f9a6dd401349b0d2b3a426a62d2ee09c32514c63",
@@ -2337,6 +2337,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fj",
+      "originalName": "fj",
+      "to": "ViewportManager",
+      "evidence": "fj.java: Retains resize listener, fixed/fullscreen/container sizes, heap gate, aspect constraint and resize countdown; restores previous viewport after failed fullscreen entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fn",
       "originalName": "fn",
       "to": "EditableTextWidget",
@@ -3016,6 +3023,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ls",
+      "originalName": "ls",
+      "to": "FullscreenDisplayMode",
+      "evidence": "ls.java: Retained display width/height/bit-depth/refresh-rate tuple; unrelated terrain/packet helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lt",
       "originalName": "lt",
       "to": "BattleViewportResizeHandler",
@@ -3650,6 +3664,13 @@
       "originalName": "rc",
       "to": "PcmPlayer",
       "evidence": "rc.java: Buffered PCM output owner: priority/work scheduling, 256-frame queue filling, latency adjustment, timed recovery and shared service lifecycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rd",
+      "originalName": "rd",
+      "to": "FullscreenFocusCanvas",
+      "evidence": "rd.java: Fullscreen frame/canvas wrapper with volatile focus-loss flag, no-op paint/update and guarded fullscreen exit.",
       "confidence": "reviewed"
     },
     {
@@ -5221,6 +5242,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bn.field_b:I",
+      "originalName": "field_b",
+      "to": "viewportWidth",
+      "evidence": "bn.java: Shared current raster/viewport width saved before fullscreen and read after resize callback.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bn.field_f:Lwc;",
       "originalName": "field_f",
       "to": "draggedWidget",
@@ -6138,6 +6166,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:df.field_M:I",
+      "originalName": "field_M",
+      "to": "memberEntitlementValue",
+      "evidence": "df.java: Unsigned-short login value whose positive/nonpositive state gates member game features and viewport resizing; duration/encoding meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:df.field_N:Lfw;",
       "originalName": "field_N",
       "to": "navigationButton",
@@ -6548,6 +6583,13 @@
       "originalName": "field_c",
       "to": "chatHuffmanCodec",
       "evidence": "ds.java: Installed codebook is shared by compressed chat text read/write helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dt.field_a:I",
+      "originalName": "field_a",
+      "to": "viewportHeight",
+      "evidence": "dt.java: Shared current raster/viewport height saved before fullscreen and read after resize callback.",
       "confidence": "reviewed"
     },
     {
@@ -7178,6 +7220,132 @@
       "originalName": "field_t",
       "to": "screenY",
       "evidence": "fi.java: Unit popup constructor, draw, show/hide fade and scrolling-name animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_b:I",
+      "originalName": "field_b",
+      "to": "resizeIntervalTicks",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_e:I",
+      "originalName": "field_e",
+      "to": "savedWidth",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_f:I",
+      "originalName": "field_f",
+      "to": "fullscreenWidth",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_g:I",
+      "originalName": "field_g",
+      "to": "containerHeight",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_h:Z",
+      "originalName": "field_h",
+      "to": "resizeEnabled",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_i:I",
+      "originalName": "field_i",
+      "to": "minimumHeight",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_j:I",
+      "originalName": "field_j",
+      "to": "savedHeight",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_k:Lok;",
+      "originalName": "field_k",
+      "to": "listener",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_l:I",
+      "originalName": "field_l",
+      "to": "minimumWidth",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_m:I",
+      "originalName": "field_m",
+      "to": "containerWidth",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_n:I",
+      "originalName": "field_n",
+      "to": "fullscreenHeight",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_o:I",
+      "originalName": "field_o",
+      "to": "minimumHeapMiB",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_p:I",
+      "originalName": "field_p",
+      "to": "resizeCountdown",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_r:I",
+      "originalName": "field_r",
+      "to": "maximumWidth",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_s:I",
+      "originalName": "field_s",
+      "to": "fixedHeight",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_t:I",
+      "originalName": "field_t",
+      "to": "fixedWidth",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_v:F",
+      "originalName": "field_v",
+      "to": "aspectRatio",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_x:I",
+      "originalName": "field_x",
+      "to": "maximumHeight",
+      "evidence": "fj.java: Owned viewport bounds/gate/countdown state from constructors, eligibility checks, clamped resize and fullscreen rollback. Aspect ratio initializes to zero with no normal setter in this class.",
       "confidence": "reviewed"
     },
     {
@@ -8746,6 +8914,13 @@
       "originalName": "field_b",
       "to": "base37Alphabet",
       "evidence": "hq.java: Underscore, lowercase Latin letters and decimal digits used to decode base-37 account names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hq.field_f:I",
+      "originalName": "field_f",
+      "to": "maximumHeapMiB",
+      "evidence": "hq.java: Runtime.maxMemory reflection result divided by 1048576 plus one; compared with viewport resize memory threshold.",
       "confidence": "reviewed"
     },
     {
@@ -12368,6 +12543,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ls.field_a:I",
+      "originalName": "field_a",
+      "to": "height",
+      "evidence": "ls.java: Display-mode response tuple uses width, height, bit depth and refresh rate; fullscreen selection matches dimensions/rate and chooses highest bit depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ls.field_b:I",
+      "originalName": "field_b",
+      "to": "width",
+      "evidence": "ls.java: Display-mode response tuple uses width, height, bit depth and refresh rate; fullscreen selection matches dimensions/rate and chooses highest bit depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ls.field_e:I",
+      "originalName": "field_e",
+      "to": "refreshRate",
+      "evidence": "ls.java: Display-mode response tuple uses width, height, bit depth and refresh rate; fullscreen selection matches dimensions/rate and chooses highest bit depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ls.field_f:I",
+      "originalName": "field_f",
+      "to": "bitDepth",
+      "evidence": "ls.java: Display-mode response tuple uses width, height, bit depth and refresh rate; fullscreen selection matches dimensions/rate and chooses highest bit depth.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lt.field_g:Llw;",
       "originalName": "field_g",
       "to": "loginDialog",
@@ -15539,6 +15742,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ra.field_e:Lfj;",
+      "originalName": "field_e",
+      "to": "viewportManager",
+      "evidence": "ra.java: Shared current manager installed by PreparedAction and queried by shell/game UI.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ra.field_g:Lmn;",
       "originalName": "field_g",
       "to": "request",
@@ -15707,6 +15917,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rd.field_c:Ljava/awt/Frame;",
+      "originalName": "field_c",
+      "to": "frame",
+      "evidence": "rd.java: Fullscreen helper installs the canvas into this returned frame; exit forwards it to platform cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rd.field_d:I",
       "originalName": "field_d",
       "to": "keyEventFrameEndIndex",
@@ -15725,6 +15942,13 @@
       "originalName": "field_j",
       "to": "gameplayController",
       "evidence": "rd.java: Pinned console construction, input/history/completion paths or concrete game-command readers/writers establish this role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rd.field_k:Z",
+      "originalName": "field_k",
+      "to": "focusLost",
+      "evidence": "rd.java: Volatile flag set on focusLost; focusGained does not reset it.",
       "confidence": "reviewed"
     },
     {
@@ -16754,6 +16978,13 @@
       "originalName": "field_a",
       "to": "lastReturned",
       "evidence": "sp.java: next stores the returned node here; remove unlinks it once and clears this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_b:I",
+      "originalName": "field_b",
+      "to": "canvasOffsetX",
+      "evidence": "sp.java: Viewport centering and shell canvas placement share this horizontal offset.",
       "confidence": "reviewed"
     },
     {
@@ -18791,6 +19022,13 @@
       "originalName": "field_x",
       "to": "encodedFrames",
       "evidence": "wp.java: Frame-set constructor and readiness method retain encoded archive files until all skeleton dependencies are available, build the sparse frame-ID array and release encoded bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wq.field_a:Lrd;",
+      "originalName": "field_a",
+      "to": "fullscreenCanvas",
+      "evidence": "wq.java: Present fullscreen canvas suspends normal viewport polling and flags focus-loss exits.",
       "confidence": "reviewed"
     },
     {
@@ -23148,6 +23386,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#0",
+      "originalName": "var6",
+      "to": "frameAlias",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#1",
+      "originalName": "var6_ref",
+      "to": "failure",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#10",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#11",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#2",
+      "originalName": "var7",
+      "to": "canvas",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#3",
+      "originalName": "var8",
+      "to": "frame",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#4",
+      "originalName": "stackIn_2_0",
+      "to": "unavailableCanvas",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#5",
+      "originalName": "stackIn_5_0",
+      "to": "guardCanvas",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#6",
+      "originalName": "stackIn_7_0",
+      "to": "openedCanvas",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#7",
+      "originalName": "stackIn_10_0",
+      "to": "failureForContext",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#8",
+      "originalName": "stackIn_10_1",
+      "to": "errorContext",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dj.a(IILhd;III)Lrd;#9",
+      "originalName": "stackIn_11_2",
+      "to": "serviceDescription",
+      "evidence": "dj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:dm.a(B)V#0",
       "originalName": "var2",
       "to": "maximumId",
@@ -25084,6 +25406,153 @@
       "originalName": "var6",
       "to": "leftFraction",
       "evidence": "ev.java: Reviewed shell lifecycle, timestamp/focus bookkeeping, forwarding canvas or clock/fixed-point arithmetic; original spelling and ordinal pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.<init>(IIIIIIIILok;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(I)V#0",
+      "originalName": "fieldTemp$0",
+      "to": "remainingCountdown",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#0",
+      "originalName": "var3",
+      "to": "exitTask",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#1",
+      "originalName": "var4",
+      "to": "obfuscationControl",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#2",
+      "originalName": "stackIn_13_0",
+      "to": "failureForContext",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#3",
+      "originalName": "stackIn_13_1",
+      "to": "errorContext",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#4",
+      "originalName": "stackIn_14_2",
+      "to": "frameDescription",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#5",
+      "originalName": "stackIn_16_1",
+      "to": "contextWithFrame",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#6",
+      "originalName": "stackIn_17_2",
+      "to": "serviceDescription",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#8",
+      "originalName": "var3_ref",
+      "to": "failure",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.a(Ljava/awt/Frame;Lhd;I)V#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.c(B)V#0",
+      "originalName": "var2",
+      "to": "candidateWidth",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.c(B)V#1",
+      "originalName": "var3",
+      "to": "candidateHeight",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.c(B)V#2",
+      "originalName": "var4",
+      "to": "aspectWidth",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.c(B)V#3",
+      "originalName": "var5",
+      "to": "obfuscationControl",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.c(B)V#4",
+      "originalName": "var3Lifetime1",
+      "to": "alternateHeight",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.c(B)V#5",
+      "originalName": "var4Lifetime1",
+      "to": "upperBoundAspectWidth",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.c(B)V#6",
+      "originalName": "var4Lifetime2",
+      "to": "lowerBoundAspectWidth",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.c(I)Lrd;#0",
+      "originalName": "var2",
+      "to": "fullscreen",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fj.c(I)Lrd;#1",
+      "originalName": "var2Lifetime1",
+      "to": "canonicalFullscreen",
+      "evidence": "fj.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
       "confidence": "reviewed"
     },
     {
@@ -38639,6 +39108,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ma.a(ILhd;)[Lls;#0",
+      "originalName": "var5",
+      "to": "modeIndex",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#1",
+      "originalName": "stackIn_3_0",
+      "to": "unsupportedModes",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#10",
+      "originalName": "var4",
+      "to": "modes",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#11",
+      "originalName": "var6",
+      "to": "mode",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#12",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#13",
+      "originalName": "var8",
+      "to": "modeTask",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#14",
+      "originalName": "var9",
+      "to": "modeValuesAlias",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#15",
+      "originalName": "var10",
+      "to": "returnedModeValues",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#16",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#2",
+      "originalName": "stackIn_9_0",
+      "to": "failedModes",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#3",
+      "originalName": "stackIn_16_0",
+      "to": "decodedModes",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#4",
+      "originalName": "stackIn_19_0",
+      "to": "failureForContext",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#5",
+      "originalName": "stackIn_19_1",
+      "to": "errorContext",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#6",
+      "originalName": "stackIn_20_2",
+      "to": "serviceDescription",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#8",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ma.a(ILhd;)[Lls;#9",
+      "originalName": "var3",
+      "to": "modeValues",
+      "evidence": "ma.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:me.a(ILjava/lang/String;[IJI)Z#0",
       "originalName": "var6",
       "to": "responseMenu",
@@ -47018,6 +47606,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:rd.a(ILhd;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "rd.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:re.a(I[Lnd;)Lnd;#0",
       "originalName": "var3",
       "to": "failure",
@@ -49178,6 +49773,132 @@
       "originalName": "var6",
       "to": "dialogHeight",
       "evidence": "uf.java: Reviewed lexical declaration ordinal and summon item layout/hits, timer angles/sweep, hint animation, spell confirmation or visible unit refresh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#0",
+      "originalName": "var8",
+      "to": "modeIndex",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#1",
+      "originalName": "stackIn_10_0",
+      "to": "unavailableFrame",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#10",
+      "originalName": "var6_ref",
+      "to": "failure",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#11",
+      "originalName": "var7_int",
+      "to": "matchedMode",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#12",
+      "originalName": "var7",
+      "to": "frame",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#13",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#14",
+      "originalName": "var10",
+      "to": "guardText",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#15",
+      "originalName": "var11",
+      "to": "returnedModes",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#16",
+      "originalName": "var12",
+      "to": "enterTask",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#17",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#2",
+      "originalName": "stackIn_27_0",
+      "to": "unmatchedFrame",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#3",
+      "originalName": "stackIn_36_0",
+      "to": "failedFrame",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#4",
+      "originalName": "stackIn_38_0",
+      "to": "openedFrame",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#5",
+      "originalName": "stackIn_41_0",
+      "to": "failureForContext",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#6",
+      "originalName": "stackIn_41_1",
+      "to": "errorContext",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#7",
+      "originalName": "stackIn_42_2",
+      "to": "serviceDescription",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ug.a(IIILhd;II)Ljava/awt/Frame;#9",
+      "originalName": "var6",
+      "to": "displayModes",
+      "evidence": "ug.java: Reviewed viewport bounds/countdown, fullscreen mode selection, task polling or rollback; declaration ordinal and original spelling pinned.",
       "confidence": "reviewed"
     },
     {
@@ -55145,6 +55866,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dj.a(IILhd;III)Lrd;",
+      "originalName": "a",
+      "to": "openFullscreenCanvas",
+      "evidence": "dj.java: Requests frame then attaches focus-listening canvas with supplied width/height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.a(ILha;)V",
       "originalName": "a",
       "to": "applyToBattlefield",
@@ -56272,10 +57000,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.a(B)Z",
+      "originalName": "a",
+      "to": "canResize",
+      "evidence": "fj.java: Requires positive member entitlement and maximum heap meeting threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(I)V",
+      "originalName": "a",
+      "to": "advanceViewport",
+      "evidence": "fj.java: Skips while fullscreen, disables resizing without entitlement, decrements countdown and applies eligible bounds or fixed-size fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(III)V",
+      "originalName": "a",
+      "to": "setFullscreenSize",
+      "evidence": "fj.java: Stores requested fullscreen width/height before guard; wrong guard invokes clamped resizing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.a(Ljava/awt/Component;B)V",
       "originalName": "a",
       "to": "detachKeyboard",
       "evidence": "fj.java: Removes shared listener and marks held-state write cursor invalid for next snapshot reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(Ljava/awt/Frame;Lhd;I)V",
+      "originalName": "a",
+      "to": "exitFullscreen",
+      "evidence": "fj.java: Canonical guard retries platform exit until success, then hides and disposes frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.b(I)V",
+      "originalName": "b",
+      "to": "restoreViewport",
+      "evidence": "fj.java: Notifies saved height/width before guard; wrong guard then changes savedHeight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.b(III)V",
+      "originalName": "b",
+      "to": "setContainerSize",
+      "evidence": "fj.java: Stores container height/width before guard; wrong guard changes minimum heap threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.c(B)V",
+      "originalName": "c",
+      "to": "applyContainerSize",
+      "evidence": "fj.java: Clamps container to bounds, reduces dimensions to positive aspect ratio, notifies changed viewport and updates horizontal centering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.c(I)Lrd;",
+      "originalName": "c",
+      "to": "enterFullscreen",
+      "evidence": "fj.java: Saves viewport, notifies requested fullscreen size, clears rebuild flag and restores saved size when frame creation fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.c(III)Z",
+      "originalName": "c",
+      "to": "acceptsDimensions",
+      "evidence": "fj.java: Inclusive minimum/maximum size checks plus exact rounded aspect-ratio match when ratio is nonzero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.d(B)Z",
+      "originalName": "d",
+      "to": "isResizeBlockedByHeap",
+      "evidence": "fj.java: Requires positive member entitlement and heap below threshold.",
       "confidence": "reviewed"
     },
     {
@@ -57571,6 +58369,13 @@
       "originalName": "a",
       "to": "stopAndClose",
       "evidence": "hd.java: Stores the supplied stop flag, wakes and joins the worker, then closes retained cache/random files; false retains its existing waiting behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd.a(ZIIII)Lwo;",
+      "originalName": "a",
+      "to": "enterFullscreenAsync",
+      "evidence": "hd.java: Queues type six with packed bit-depth/refresh and width/height; false guard clears cache-index files.",
       "confidence": "reviewed"
     },
     {
@@ -60941,6 +61746,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ma.a(ILhd;)[Lls;",
+      "originalName": "a",
+      "to": "getFullscreenDisplayModes",
+      "evidence": "ma.java: Returns fresh empty array when unsupported/failed; decodes each complete four-int tuple from platform result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ma.d(B)V",
       "originalName": "d",
       "to": "notifyTextChanged",
@@ -64084,6 +64896,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rd.a(ILhd;)V",
+      "originalName": "a",
+      "to": "exitFullscreen",
+      "evidence": "rd.java: Guard bridge to manager platform/frame cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rd.b(I)V",
       "originalName": "b",
       "to": "clearChatText",
@@ -65649,6 +66468,13 @@
       "originalName": "b",
       "to": "draw",
       "evidence": "uf.java: Draws the dimmed background, prompt and two confirmation buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(IIILhd;II)Ljava/awt/Frame;",
+      "originalName": "a",
+      "to": "openFullscreenFrame",
+      "evidence": "ug.java: Checks support, optionally selects highest matching bit depth from mode list and polls frame request; failed null frame returns null.",
       "confidence": "reviewed"
     },
     {
@@ -73555,6 +74381,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dj.a(IILhd;III)Lrd;#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "dj.java: Requests frame then attaches focus-listening canvas with supplied width/height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.a(IILhd;III)Lrd;#1",
+      "originalName": "param1",
+      "to": "refreshRate",
+      "evidence": "dj.java: Requests frame then attaches focus-listening canvas with supplied width/height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.a(IILhd;III)Lrd;#2",
+      "originalName": "param2",
+      "to": "platformService",
+      "evidence": "dj.java: Requests frame then attaches focus-listening canvas with supplied width/height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.a(IILhd;III)Lrd;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "dj.java: Requests frame then attaches focus-listening canvas with supplied width/height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.a(IILhd;III)Lrd;#4",
+      "originalName": "param4",
+      "to": "bitDepth",
+      "evidence": "dj.java: Requests frame then attaches focus-listening canvas with supplied width/height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dj.a(IILhd;III)Lrd;#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "dj.java: Requests frame then attaches focus-listening canvas with supplied width/height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dk.<init>(II)V#0",
       "originalName": "param0",
       "to": "actingPlayer",
@@ -76334,6 +77202,111 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fj.<init>(IIIIIIIILok;)V#0",
+      "originalName": "param0",
+      "to": "minimumWidth",
+      "evidence": "fj.java: Explicit configuration retains bounds and gate; fullscreen request still initializes to 640x480.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.<init>(IIIIIIIILok;)V#1",
+      "originalName": "param1",
+      "to": "minimumHeight",
+      "evidence": "fj.java: Explicit configuration retains bounds and gate; fullscreen request still initializes to 640x480.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.<init>(IIIIIIIILok;)V#2",
+      "originalName": "param2",
+      "to": "maximumWidth",
+      "evidence": "fj.java: Explicit configuration retains bounds and gate; fullscreen request still initializes to 640x480.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.<init>(IIIIIIIILok;)V#3",
+      "originalName": "param3",
+      "to": "maximumHeight",
+      "evidence": "fj.java: Explicit configuration retains bounds and gate; fullscreen request still initializes to 640x480.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.<init>(IIIIIIIILok;)V#4",
+      "originalName": "param4",
+      "to": "fixedWidth",
+      "evidence": "fj.java: Explicit configuration retains bounds and gate; fullscreen request still initializes to 640x480.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.<init>(IIIIIIIILok;)V#5",
+      "originalName": "param5",
+      "to": "fixedHeight",
+      "evidence": "fj.java: Explicit configuration retains bounds and gate; fullscreen request still initializes to 640x480.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.<init>(IIIIIIIILok;)V#6",
+      "originalName": "param6",
+      "to": "minimumHeapMiB",
+      "evidence": "fj.java: Explicit configuration retains bounds and gate; fullscreen request still initializes to 640x480.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.<init>(IIIIIIIILok;)V#7",
+      "originalName": "param7",
+      "to": "resizeIntervalTicks",
+      "evidence": "fj.java: Explicit configuration retains bounds and gate; fullscreen request still initializes to 640x480.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.<init>(IIIIIIIILok;)V#8",
+      "originalName": "param8",
+      "to": "listener",
+      "evidence": "fj.java: Explicit configuration retains bounds and gate; fullscreen request still initializes to 640x480.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.<init>(Lok;)V#0",
+      "originalName": "param0",
+      "to": "listener",
+      "evidence": "fj.java: Default bounds 640x480 through 1280x1024, fixed 640x480, heap threshold 122 MiB and interval sixteen ticks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Requires positive member entitlement and maximum heap meeting threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Skips while fullscreen, disables resizing without entitlement, decrements countdown and applies eligible bounds or fixed-size fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.a(III)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "fj.java: Stores requested fullscreen width/height before guard; wrong guard invokes clamped resizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.a(III)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "fj.java: Stores requested fullscreen width/height before guard; wrong guard invokes clamped resizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.a(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Stores requested fullscreen width/height before guard; wrong guard invokes clamped resizing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fj.a(Ljava/awt/Component;B)V#0",
       "originalName": "param0",
       "to": "component",
@@ -76345,6 +77318,97 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "fj.java: Removes shared listener and marks held-state write cursor invalid for next snapshot reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.a(Ljava/awt/Frame;Lhd;I)V#0",
+      "originalName": "param0",
+      "to": "frame",
+      "evidence": "fj.java: Canonical guard retries platform exit until success, then hides and disposes frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.a(Ljava/awt/Frame;Lhd;I)V#1",
+      "originalName": "param1",
+      "to": "platformService",
+      "evidence": "fj.java: Canonical guard retries platform exit until success, then hides and disposes frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.a(Ljava/awt/Frame;Lhd;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Canonical guard retries platform exit until success, then hides and disposes frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Notifies saved height/width before guard; wrong guard then changes savedHeight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.b(III)V#0",
+      "originalName": "param0",
+      "to": "height",
+      "evidence": "fj.java: Stores container height/width before guard; wrong guard changes minimum heap threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.b(III)V#1",
+      "originalName": "param1",
+      "to": "width",
+      "evidence": "fj.java: Stores container height/width before guard; wrong guard changes minimum heap threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.b(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Stores container height/width before guard; wrong guard changes minimum heap threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Clamps container to bounds, reduces dimensions to positive aspect ratio, notifies changed viewport and updates horizontal centering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.c(I)Lrd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Saves viewport, notifies requested fullscreen size, clears rebuild flag and restores saved size when frame creation fails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.c(III)Z#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "fj.java: Inclusive minimum/maximum size checks plus exact rounded aspect-ratio match when ratio is nonzero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.c(III)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Inclusive minimum/maximum size checks plus exact rounded aspect-ratio match when ratio is nonzero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.c(III)Z#2",
+      "originalName": "param2",
+      "to": "height",
+      "evidence": "fj.java: Inclusive minimum/maximum size checks plus exact rounded aspect-ratio match when ratio is nonzero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.d(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Requires positive member entitlement and heap below threshold.",
       "confidence": "reviewed"
     },
     {
@@ -80083,6 +81147,41 @@
       "originalName": "param0",
       "to": "stopRequested",
       "evidence": "hd.java: Stores the supplied stop flag, wakes and joins the worker, then closes retained cache/random files; false retains its existing waiting behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hd.a(ZIIII)Lwo;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hd.java: Queues type six with packed bit-depth/refresh and width/height; false guard clears cache-index files.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hd.a(ZIIII)Lwo;#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "hd.java: Queues type six with packed bit-depth/refresh and width/height; false guard clears cache-index files.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hd.a(ZIIII)Lwo;#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "hd.java: Queues type six with packed bit-depth/refresh and width/height; false guard clears cache-index files.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hd.a(ZIIII)Lwo;#3",
+      "originalName": "param3",
+      "to": "refreshRate",
+      "evidence": "hd.java: Queues type six with packed bit-depth/refresh and width/height; false guard clears cache-index files.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hd.a(ZIIII)Lwo;#4",
+      "originalName": "param4",
+      "to": "bitDepth",
+      "evidence": "hd.java: Queues type six with packed bit-depth/refresh and width/height; false guard clears cache-index files.",
       "confidence": "reviewed"
     },
     {
@@ -89764,6 +90863,20 @@
       "originalName": "param3",
       "to": "rootWidget",
       "evidence": "kb.java: Updates containment/hover state and widget-specific drag/release behavior. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ma.a(ILhd;)[Lls;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ma.java: Returns fresh empty array when unsupported/failed; decodes each complete four-int tuple from platform result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ma.a(ILhd;)[Lls;#1",
+      "originalName": "param1",
+      "to": "platformService",
+      "evidence": "ma.java: Returns fresh empty array when unsupported/failed; decodes each complete four-int tuple from platform result.",
       "confidence": "reviewed"
     },
     {
@@ -99672,6 +100785,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rd.a(ILhd;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rd.java: Guard bridge to manager platform/frame cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rd.a(ILhd;)V#1",
+      "originalName": "param1",
+      "to": "platformService",
+      "evidence": "rd.java: Guard bridge to manager platform/frame cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rd.b(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -104852,6 +105979,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ug.a(IIILhd;II)Ljava/awt/Frame;#0",
+      "originalName": "param0",
+      "to": "bitDepth",
+      "evidence": "ug.java: Checks support, optionally selects highest matching bit depth from mode list and polls frame request; failed null frame returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ug.a(IIILhd;II)Ljava/awt/Frame;#1",
+      "originalName": "param1",
+      "to": "refreshRate",
+      "evidence": "ug.java: Checks support, optionally selects highest matching bit depth from mode list and polls frame request; failed null frame returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ug.a(IIILhd;II)Ljava/awt/Frame;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "ug.java: Checks support, optionally selects highest matching bit depth from mode list and polls frame request; failed null frame returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ug.a(IIILhd;II)Ljava/awt/Frame;#3",
+      "originalName": "param3",
+      "to": "platformService",
+      "evidence": "ug.java: Checks support, optionally selects highest matching bit depth from mode list and polls frame request; failed null frame returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ug.a(IIILhd;II)Ljava/awt/Frame;#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "ug.java: Checks support, optionally selects highest matching bit depth from mode list and polls frame request; failed null frame returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ug.a(IIILhd;II)Ljava/awt/Frame;#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "ug.java: Checks support, optionally selects highest matching bit depth from mode list and polls frame request; failed null frame returns null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ui.a(B)Lms;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -108976,10 +110145,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-armiesofgielinor-rules.mjs": "90b83308892023ec24fc596a1820a561aa7b4ccf08ffc2f75dc3457f7874f013",
+      "build-armiesofgielinor-rules.mjs": "e70a751b22dfb6f79e4a6708160405095ac62b590d05451c8103c332adf6d0b6",
       "reproduce-armiesofgielinor.mjs": "ef63e0d5e7aa03ab9ff3f7e93c3a47c56cdbc4ef0f37442b6ada0048e7d80890",
       "reconstruct-armies-methods.mjs": "aaba287c30fe313f89863414733d9a75e6dde8a4250c47e68db4e36989f86f4a",
-      "tests/test-armiesofgielinor-core.mjs": "1c99f1733623e4b8a38bdca4befb0e24b80885097ac5d01c7cb27f5ad6605ee0",
+      "tests/test-armiesofgielinor-core.mjs": "8538bb756c3b90c6badc1b0283ad92d68944e8f77d7448440792a3ad358dc355",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
