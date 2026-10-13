@@ -12,8 +12,8 @@ generic belongs here, and nothing game-specific belongs there — see
 
 ## Readable Java publication
 
-The [GeoBlox readable workflow](readable/README.md) owns the current naming
-manifest, export/reproduction scripts and proof fixtures here in Deko.
+The [readable Java workflow](readable/README.md) owns the current per-game naming
+manifests, export/reproduction scripts and proof fixtures here in Deko.
 `funorb-decompiled` contains the generated Java, dictionary and provenance;
 `blank-github-cloner` contains no Java exports. Run
 `node readable/reproduce-geoblox.mjs --check` against a sibling publication

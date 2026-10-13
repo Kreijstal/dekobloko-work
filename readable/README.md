@@ -19,6 +19,9 @@ env -u JAVA_TOOL_OPTIONS node readable/reproduce-dekobloko.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/build-armiesofgielinor-rules.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-armiesofgielinor.mjs --update
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-armiesofgielinor.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/build-brickabrac-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-brickabrac.mjs --update
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-brickabrac.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/build-steelsentinels-rules.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-steelsentinels.mjs --update
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-steelsentinels.mjs --check
@@ -34,6 +37,22 @@ stages Java, guide, dictionary and catalog receipt before replacing the current
 game; failed metadata installation restores the previous game and receipt.
 Checks and reverse reconstruction also use temporary storage, never `.work`.
 The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
+
+## Brick-a-brac
+
+The initial semantic pass names GameScreen/GameplayScreen, MultiplayerMatch,
+PlayerBoard, moving/circular/rectangular bodies, Ball/Brick/Paddle and intrusive
+nodes/deques. Player masks and body state words remain numbered or qualified
+where their game/server meanings are unknown. Native probes check checksums,
+constructor storage, circle-overlap boundaries, paddle size stages, player-state
+mask getters and deque transfer/order; both complete 420-file corpora compile
+and declaration/reference/override checks pass. Full gameplay, swept collision
+response, snapshot transport and live multiplayer remain unverified.
+
+The workflow pins raw Java in Git, builds source stubs temporarily, publishes
+only in `games/brickabrac` and reverses every source byte through the one current
+dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded
+separately from the gamepack and source-tree identities.
 
 ## Steel Sentinels
 
