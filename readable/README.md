@@ -80,6 +80,11 @@ loop and game callbacks. GameClock/NanoGameClock, MonotonicTime and PixelBlockEf
 expose cadence, backward wall-clock compensation and screen pixelation.
 DelayedPacket, CappedUrlRequest and GameUiLifecycle/GameUiController expose
 artificial packet delay, bounded URL input and the UI bootstrap contract.
+HuffmanCodec and NodeDequeCursor expose compressed text and independent deque
+traversal. SoftwareFramebuffer/BufferedImageFramebuffer/ProducerFramebuffer expose
+shared pixels and both AWT image backends.
+IntArrayRequest exposes queued integer data and saved-progress polling; the
+earlier pollRequiredFonts name was corrected to pollSavedProgress.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -530,6 +535,41 @@ required readiness and UI initialization. Common size/enable tables and terminal
 bootstrap readiness are checked. Applet parameter initialization, delay jitter,
 URL/task execution, JAGGRAB exchange, active UI loading and complete client/server
 interoperability remain unverified.
+
+HuffmanCodec retains caller code lengths, assigns left-aligned prefix codewords
+in symbol order and builds an unrolled MSB-first decode trie. It does not sort
+symbols by length or validate malformed/oversubscribed tables. Native fixtures
+use an independent interval-allocation model and per-bit encoder, including all
+valid four-symbol tables with lengths0..4, sparse/irregular alphabets and32-bit
+codes. Offset/padding, consumed bytes, zero-output cases and missing symbols are
+checked. Packet text uses smart byte lengths and legacy CP1252. A capped read
+consumes only the requested prefix; failed reads preserve the Cabbage fallback.
+Actual server text/codebook compatibility remains unverified.
+
+NodeDequeCursor keeps its own forward/reverse cursor and supports inclusive
+starts at supplied nodes. It retains primary ownership and does not disturb the
+deque's shared cursor. Fixtures interleave two cursors and verify ordering,
+starts/end and ownership. Calling next again after exhaustion still throws
+NullPointerException; arbitrary mutation during traversal remains unverified.
+
+SoftwareFramebuffer binds pixels/dimensions into Rasterizer2D. The BufferedImage
+implementation shares those pixels through DataBufferInt; the producer backend
+publishes to one replaceable consumer with completion status2. Both allocate
+width*height plus1 pixels. Native headless fixtures exercise the reflective
+factory, pixel-array/image/raster sharing, real Graphics drawing at y/x offsets,
+consumer pixels/completion and replacement/removal. The owned factory class-name
+literal is transformed and tested. Producer tests use a controlled Component
+and ImageConsumer; factory fallback, desktop presentation and presented FPS are
+not established by these checks.
+
+The bootstrap helper previously named pollRequiredFonts actually requests
+per-pack saved level progress; it is corrected to pollSavedProgress.
+IntArrayRequest records identifier, value storage and completion. Fixtures
+check ciphered request bytes, FIFO response completion/unlink, level metadata
+flags and released request arrays. They retain two unusual pinned-source
+behaviors: the response shift expression accumulates bytes instead of normal
+32-bit words, and progress polling resets both counts after combining metadata.
+These observations do not establish original-JAR or server semantics.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

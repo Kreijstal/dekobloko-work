@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 20,
+  "version": 21,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -402,6 +402,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fk",
+      "originalName": "fk",
+      "to": "HuffmanCodec",
+      "evidence": "fk.java: Symbol-order prefix-code construction, left-aligned codewords, MSB-first byte compression and decode trie. Unrelated static helpers retain their roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fo",
       "originalName": "fo",
       "to": "IsaacGenerator",
@@ -535,6 +542,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jo",
+      "originalName": "jo",
+      "to": "ProducerFramebuffer",
+      "evidence": "jo.java: ImageProducer/ImageObserver framebuffer publishes RGB pixels to one retained AWT image consumer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jp",
       "originalName": "jp",
       "to": "RgbSprite",
@@ -560,6 +574,13 @@
       "originalName": "kg",
       "to": "CacheIoWorker",
       "evidence": "kg.java: Runnable cache I/O queue supporting immediate reads from queued writes, asynchronous reads/writes and worker shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kh",
+      "originalName": "kh",
+      "to": "NodeDequeCursor",
+      "evidence": "kh.java: Independent forward/reverse cursor over primary intrusive links, with inclusive node-based traversal starts.",
       "confidence": "reviewed"
     },
     {
@@ -623,6 +644,13 @@
       "originalName": "ld",
       "to": "MatchResultScreen",
       "evidence": "ld.java: Shared match-result presentation and centered action-row position; subclasses supply bottom anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:le",
+      "originalName": "le",
+      "to": "BufferedImageFramebuffer",
+      "evidence": "le.java: BufferedImage and integer data buffer directly share the framebuffer pixel array.",
       "confidence": "reviewed"
     },
     {
@@ -693,6 +721,13 @@
       "originalName": "mq",
       "to": "LevelPackLoader",
       "evidence": "mq.java: Loads indexed level metadata and raw payloads from an archive; other static helpers retain their existing roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nb",
+      "originalName": "nb",
+      "to": "SoftwareFramebuffer",
+      "evidence": "nb.java: Shared pixel array, dimensions and AWT image; raster binding, initialization and drawing contract.",
       "confidence": "reviewed"
     },
     {
@@ -784,6 +819,13 @@
       "originalName": "pb",
       "to": "RasterCacheSurface",
       "evidence": "pb.java: Intrusive RGB render surface with dimensions and two qualified cache keys used by background rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pe",
+      "originalName": "pe",
+      "to": "IntArrayRequest",
+      "evidence": "pe.java: Intrusive pending integer-array request with byte-sized identifier, allocated values and completion flag; UI uses two requests for saved level progress.",
       "confidence": "reviewed"
     },
     {
@@ -1865,6 +1907,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fk.field_a:[I",
+      "originalName": "field_a",
+      "to": "codewords",
+      "evidence": "fk.java: Left-aligned32-bit prefix codes assigned in symbol order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fk.field_i:[B",
+      "originalName": "field_i",
+      "to": "codeLengths",
+      "evidence": "fk.java: Caller-supplied per-symbol bit lengths retained by reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fk.field_j:[I",
+      "originalName": "field_j",
+      "to": "decodeTrie",
+      "evidence": "fk.java: 0-bit advances one slot,1-bit follows positive link, negative leaf complements symbol.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fm.field_d:I",
       "originalName": "field_d",
       "to": "keyEventFrameEnd",
@@ -1911,6 +1974,13 @@
       "originalName": "field_m",
       "to": "accumulator",
       "evidence": "fo.java: ISAAC accumulator updated by alternating shifts and half-block memory offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fp.field_y:[Lpe;",
+      "originalName": "field_y",
+      "to": "progressRequests",
+      "evidence": "fp.java: Two per-pack saved-progress requests.",
       "confidence": "reviewed"
     },
     {
@@ -2051,6 +2121,13 @@
       "originalName": "field_d",
       "to": "pendingScreen",
       "evidence": "hd.java: Screen requested by transition before installation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hh.field_b:[I",
+      "originalName": "field_b",
+      "to": "unlockedLevelCounts",
+      "evidence": "hh.java: Per-pack level progress, also advanced by GameplayScreen; UI polling subsequently resets counts in pinned source.",
       "confidence": "reviewed"
     },
     {
@@ -2614,6 +2691,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jo.field_i:Ljava/awt/image/ColorModel;",
+      "originalName": "field_i",
+      "to": "colorModel",
+      "evidence": "jo.java: 32-bit direct RGB color model with no alpha mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jo.field_l:Ljava/awt/image/ImageConsumer;",
+      "originalName": "field_l",
+      "to": "consumer",
+      "evidence": "jo.java: Single retained consumer, replaced by addConsumer and conditionally removed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jp.field_G:[I",
       "originalName": "field_G",
       "to": "pixels",
@@ -2775,6 +2866,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kc.field_q:Lnb;",
+      "originalName": "field_q",
+      "to": "framebuffer",
+      "evidence": "kc.java: Shared screen framebuffer selected by reflective factory.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kg.field_c:I",
       "originalName": "field_c",
       "to": "queuedCount",
@@ -2807,6 +2905,20 @@
       "originalName": "field_a",
       "to": "screenTransitionTick",
       "evidence": "kh.java: 32-update pixelation transition position, reset on request/commit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kh.field_f:Lnm;",
+      "originalName": "field_f",
+      "to": "cursor",
+      "evidence": "kh.java: Next primary node in current traversal direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kh.field_g:Lvl;",
+      "originalName": "field_g",
+      "to": "deque",
+      "evidence": "kh.java: Retained deque, independent of its shared cursor.",
       "confidence": "reviewed"
     },
     {
@@ -3265,6 +3377,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:le.field_h:Ljava/awt/Component;",
+      "originalName": "field_h",
+      "to": "component",
+      "evidence": "le.java: Image observer for BufferedImage draws.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lf.field_v:I",
       "originalName": "field_v",
       "to": "sortIndex",
@@ -3440,6 +3559,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nb.field_c:Ljava/awt/Image;",
+      "originalName": "field_c",
+      "to": "image",
+      "evidence": "nb.java: AWT framebuffer image.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nb.field_d:[I",
+      "originalName": "field_d",
+      "to": "pixels",
+      "evidence": "nb.java: RGB pixels, implementations allocate width*height plus1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nb.field_f:I",
+      "originalName": "field_f",
+      "to": "height",
+      "evidence": "nb.java: Framebuffer height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nb.field_g:I",
+      "originalName": "field_g",
+      "to": "width",
+      "evidence": "nb.java: Framebuffer width/row stride.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nc.field_b:I",
       "originalName": "field_b",
       "to": "scoreOffset",
@@ -3584,6 +3731,13 @@
       "originalName": "field_s",
       "to": "sprite",
       "evidence": "nq.java: Retained image drawn and hit-tested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_F:Lvl;",
+      "originalName": "field_F",
+      "to": "pendingIntArrayRequests",
+      "evidence": "ob.java: Pending type0 requests in FIFO order.",
       "confidence": "reviewed"
     },
     {
@@ -3825,10 +3979,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pe.field_m:[I",
+      "originalName": "field_m",
+      "to": "values",
+      "evidence": "pe.java: Allocated result values filled by common response handler.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pe.field_o:Lqj;",
       "originalName": "field_o",
       "to": "gameplayScreen",
       "evidence": "pe.java: Gameplay instance rendered beneath pause/completion menus and queried by scores/instructions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_v:Z",
+      "originalName": "field_v",
+      "to": "complete",
+      "evidence": "pe.java: Marked complete before request unlinks from pending FIFO.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_w:I",
+      "originalName": "field_w",
+      "to": "requestId",
+      "evidence": "pe.java: Identifier written in type0 request payload.",
       "confidence": "reviewed"
     },
     {
@@ -4403,6 +4578,13 @@
       "originalName": "field_c",
       "to": "tickTimes",
       "evidence": "sm.java: 32-slot recent tick wall times.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:so.field_d:Lfk;",
+      "originalName": "field_d",
+      "to": "textHuffman",
+      "evidence": "so.java: Shared compressed-text codec installed from huffman archive bytes.",
       "confidence": "reviewed"
     },
     {
@@ -5589,6 +5771,216 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:fk.<init>([B)V#0",
+      "originalName": "var5",
+      "to": "symbol",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#1",
+      "originalName": "var14",
+      "to": "copyIndex",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#10",
+      "originalName": "var6",
+      "to": "codeLength",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#11",
+      "originalName": "var7",
+      "to": "carryMask",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#12",
+      "originalName": "var8",
+      "to": "codeword",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#13",
+      "originalName": "var9",
+      "to": "nextCodeword",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#17",
+      "originalName": "var13",
+      "to": "expandedTrie",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#18",
+      "originalName": "var16",
+      "to": "nextCodesAlias",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#19",
+      "originalName": "var17",
+      "to": "nextCodes",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#20",
+      "originalName": "var10Lifetime1",
+      "to": "longerLength",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#21",
+      "originalName": "var10Lifetime2",
+      "to": "trieIndex",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#22",
+      "originalName": "var11Lifetime1",
+      "to": "bitIndex",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#23",
+      "originalName": "var12Lifetime1",
+      "to": "bitMask",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#6",
+      "originalName": "var2_int",
+      "to": "symbolCount",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#8",
+      "originalName": "var3",
+      "to": "nextCodeByLength",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.<init>([B)V#9",
+      "originalName": "var4",
+      "to": "nextTrieSlot",
+      "evidence": "fk.java: Reviewed prefix-code carry and decode-trie construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(BII[BI[B)I#10",
+      "originalName": "var8",
+      "to": "bitPosition",
+      "evidence": "fk.java: Reviewed MSB-first compressor declaration and byte-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(BII[BI[B)I#11",
+      "originalName": "var9",
+      "to": "symbol",
+      "evidence": "fk.java: Reviewed MSB-first compressor declaration and byte-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(BII[BI[B)I#12",
+      "originalName": "var10",
+      "to": "codeword",
+      "evidence": "fk.java: Reviewed MSB-first compressor declaration and byte-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(BII[BI[B)I#13",
+      "originalName": "var11",
+      "to": "codeLength",
+      "evidence": "fk.java: Reviewed MSB-first compressor declaration and byte-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(BII[BI[B)I#14",
+      "originalName": "var12",
+      "to": "outputByteIndex",
+      "evidence": "fk.java: Reviewed MSB-first compressor declaration and byte-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(BII[BI[B)I#15",
+      "originalName": "var13",
+      "to": "codeShift",
+      "evidence": "fk.java: Reviewed MSB-first compressor declaration and byte-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(BII[BI[B)I#16",
+      "originalName": "var14",
+      "to": "lastOutputByte",
+      "evidence": "fk.java: Reviewed MSB-first compressor declaration and byte-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(BII[BI[B)I#17",
+      "originalName": "var15",
+      "to": "clientBranchFlag",
+      "evidence": "fk.java: Reviewed MSB-first compressor declaration and byte-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(BII[BI[B)I#8",
+      "originalName": "var7_int",
+      "to": "pendingByte",
+      "evidence": "fk.java: Reviewed MSB-first compressor declaration and byte-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(IIIZ[B[B)I#24",
+      "originalName": "var7_int",
+      "to": "trieIndex",
+      "evidence": "fk.java: Reviewed unrolled bit decoder declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(IIIZ[B[B)I#26",
+      "originalName": "var8",
+      "to": "inputByteIndex",
+      "evidence": "fk.java: Reviewed unrolled bit decoder declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(IIIZ[B[B)I#27",
+      "originalName": "var9",
+      "to": "inputByte",
+      "evidence": "fk.java: Reviewed unrolled bit decoder declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(IIIZ[B[B)I#28",
+      "originalName": "var10",
+      "to": "leaf",
+      "evidence": "fk.java: Reviewed unrolled bit decoder declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:fk.a(IIIZ[B[B)I#29",
+      "originalName": "var11",
+      "to": "clientBranchFlag",
+      "evidence": "fk.java: Reviewed unrolled bit decoder declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:fo.<init>([I)V#0",
       "originalName": "var2_int",
       "to": "seedIndex",
@@ -5943,6 +6335,27 @@
       "originalName": "var1_ref",
       "to": "keyboardMonitor",
       "evidence": "jl.java: Global keyboard listener used while reading frozen-frame event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a(Ljava/awt/Component;III)Lnb;#0",
+      "originalName": "var4",
+      "to": "implementationClass",
+      "evidence": "jm.java: Reflectively selected BufferedImage framebuffer class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a(Ljava/awt/Component;III)Lnb;#3",
+      "originalName": "var5",
+      "to": "framebuffer",
+      "evidence": "jm.java: Reflectively allocated framebuffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jm.a(Ljava/awt/Component;III)Lnb;#4",
+      "originalName": "var5_ref",
+      "to": "fallback",
+      "evidence": "jm.java: ImageProducer framebuffer fallback.",
       "confidence": "reviewed"
     },
     {
@@ -6391,6 +6804,27 @@
       "originalName": "var13Lifetime1Lifetime1",
       "to": "fileNameOrdinal",
       "evidence": "ko.java: Reviewed versioned index parser declaration and delta/name table data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:le.a(Ljava/awt/Component;IZI)V#0",
+      "originalName": "var5",
+      "to": "dataBuffer",
+      "evidence": "le.java: Reviewed shared BufferedImage storage declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:le.a(Ljava/awt/Component;IZI)V#1",
+      "originalName": "var6",
+      "to": "colorModel",
+      "evidence": "le.java: Reviewed shared BufferedImage storage declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:le.a(Ljava/awt/Component;IZI)V#2",
+      "originalName": "var7",
+      "to": "raster",
+      "evidence": "le.java: Reviewed shared BufferedImage storage declaration.",
       "confidence": "reviewed"
     },
     {
@@ -7563,6 +7997,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.a(IBLwq;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "readCompressedString",
+      "evidence": "bj.java: Reads smart length capped by supplied maximum, decompresses and decodes CP1252; failures return Cabbage; guard at least36.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bl.a(IB)Z",
       "originalName": "a",
       "to": "isAchievementExcluded",
@@ -8011,6 +8452,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fa.a(IBII)Lpe;",
+      "originalName": "a",
+      "to": "requestIntArray",
+      "evidence": "fa.java: Allocates values, appends pending request and sends type0 request; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fb.c(II)V",
       "originalName": "c",
       "to": "drawTransparent",
@@ -8043,6 +8491,20 @@
       "originalName": "a",
       "to": "pushSpriteRaster",
       "evidence": "fc.java: Pushes prior target then binds supplied RGB sprite canvas; guard at most -46.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(BII[BI[B)I",
+      "originalName": "a",
+      "to": "compress",
+      "evidence": "fk.java: MSB-first bit packing with input/output offsets; returns written bytes, zero-length symbols throw; guard below -91.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(IIIZ[B[B)I",
+      "originalName": "a",
+      "to": "decompress",
+      "evidence": "fk.java: Trie decodes requested number of output symbols, returns source bytes consumed including partial final byte; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -8298,6 +8760,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:i.a(ILpe;I)V",
+      "originalName": "a",
+      "to": "sendIntArrayRequest",
+      "evidence": "i.java: Sends ciphered opcode, byte length2, type0 and request ID; guard108.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:i.a(Z[B)[B",
       "originalName": "a",
       "to": "decompressArchiveContainer",
@@ -8434,7 +8903,7 @@
       "symbol": "M:ij.a(I)Z",
       "originalName": "a",
       "to": "pollUiReady",
-      "evidence": "wb.java: Polls three required data/font readiness flags; guard23570. Resolved override family.",
+      "evidence": "wb.java: Polls three required bootstrap readiness flags; guard23570. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8454,8 +8923,8 @@
     {
       "symbol": "M:ij.b(B)Z",
       "originalName": "b",
-      "to": "pollRequiredFonts",
-      "evidence": "ij.java: Polls two required font resources and updates glyph count maxima; guard127.",
+      "to": "pollSavedProgress",
+      "evidence": "ij.java: Polls two per-pack integer requests, accumulates metadata flags and resets saved counts in pinned source; guard127.",
       "confidence": "reviewed"
     },
     {
@@ -8634,10 +9103,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jm.a(B)V",
+      "originalName": "a",
+      "to": "handleCommonDataResponse",
+      "evidence": "jm.java: Type0 fills first pending integer-array request and unlinks; other kinds retain separate responses; guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.a(Ljava/awt/Component;III)Lnb;",
+      "originalName": "a",
+      "to": "createFramebuffer",
+      "evidence": "jm.java: Reflectively creates BufferedImage implementation, falling back to producer on failure; guard -2414.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jn.a(IIIZZ)V",
       "originalName": "a",
       "to": "pixelate",
       "evidence": "jn.java: Samples one pixel per block, blends source/tint separately with denominator256, fills whole raster without clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(IIILjava/awt/Graphics;)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(Ljava/awt/Component;IZI)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.c(I)V",
+      "originalName": "c",
+      "to": "publishPixels",
+      "evidence": "jo.java: Publishes whole array with supplied offset and reports imageComplete2; normal offset0.",
       "confidence": "reviewed"
     },
     {
@@ -8862,6 +9366,48 @@
       "originalName": "a",
       "to": "readImmediate",
       "evidence": "kg.java: Returns first matching pending write bytes without disk I/O; otherwise reads synchronously as priority request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.a(I)Lnm;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "kh.java: Starts at first primary node; guard240.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.a(ILnm;)Lnm;",
+      "originalName": "a",
+      "to": "firstFrom",
+      "evidence": "kh.java: Starts inclusively at supplied node or deque head; guard at least100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.a(Z)Lnm;",
+      "originalName": "a",
+      "to": "last",
+      "evidence": "kh.java: Starts at last primary node; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.b(I)Lnm;",
+      "originalName": "b",
+      "to": "next",
+      "evidence": "kh.java: Returns saved next and advances forward; guard7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.b(ILnm;)Lnm;",
+      "originalName": "b",
+      "to": "lastFrom",
+      "evidence": "kh.java: Starts inclusively at supplied node or deque tail; guard16802.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.d(I)Lnm;",
+      "originalName": "d",
+      "to": "previous",
+      "evidence": "kh.java: Returns saved previous and advances reverse; guard -24706.",
       "confidence": "reviewed"
     },
     {
@@ -9474,6 +10020,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:le.a(IIILjava/awt/Graphics;)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:le.a(Ljava/awt/Component;IZI)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lf.a(IIC)V",
       "originalName": "a",
       "to": "handleNavigationKey",
@@ -9681,6 +10241,13 @@
       "originalName": "a",
       "to": "attachKeyboardInput",
       "evidence": "md.java: Disables component focus traversal and installs global key/focus listener; canonical guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.a(ILjava/lang/String;Lwq;)I",
+      "originalName": "a",
+      "to": "writeCompressedString",
+      "evidence": "md.java: Writes unsigned-smart byte length then legacy CP1252 Huffman data, returns total written bytes; guard26152.",
       "confidence": "reviewed"
     },
     {
@@ -9905,6 +10472,27 @@
       "originalName": "a",
       "to": "buildRgbSprite",
       "evidence": "n.java: Expands first sprite to RGB only, ignoring alpha plane, then releases index/palette/geometry scratch; guard21.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.a(B)V",
+      "originalName": "a",
+      "to": "bindRaster",
+      "evidence": "nb.java: Binds shared framebuffer pixels and dimensions; guard at least72.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.a(IIILjava/awt/Graphics;)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.a(Ljava/awt/Component;IZI)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width.",
       "confidence": "reviewed"
     },
     {
@@ -10668,6 +11256,13 @@
       "originalName": "g",
       "to": "isLeftArrow",
       "evidence": "re.java: Tests retained code96, mapped from AWT left arrow; guard -57.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(Lfk;Z)V",
+      "originalName": "a",
+      "to": "installTextHuffman",
+      "evidence": "rj.java: Installs shared text codec; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -11598,7 +12193,7 @@
       "symbol": "M:wb.a(I)Z",
       "originalName": "a",
       "to": "pollUiReady",
-      "evidence": "wb.java: Polls three required data/font readiness flags; guard23570.",
+      "evidence": "wb.java: Polls three required bootstrap readiness flags; guard23570.",
       "confidence": "reviewed"
     },
     {
@@ -12978,6 +13573,27 @@
       "originalName": "param6",
       "to": "shadow",
       "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bj.a(IBLwq;)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "maximumLength",
+      "evidence": "bj.java: Reads smart length capped by supplied maximum, decompresses and decodes CP1252; failures return Cabbage; guard at least36.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bj.a(IBLwq;)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "bj.java: Reads smart length capped by supplied maximum, decompresses and decodes CP1252; failures return Cabbage; guard at least36.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bj.a(IBLwq;)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "bj.java: Reads smart length capped by supplied maximum, decompresses and decodes CP1252; failures return Cabbage; guard at least36.",
       "confidence": "reviewed"
     },
     {
@@ -14395,6 +15011,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fa.a(IBII)Lpe;#0",
+      "originalName": "param0",
+      "to": "valueCount",
+      "evidence": "fa.java: Allocates values, appends pending request and sends type0 request; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fa.a(IBII)Lpe;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "fa.java: Allocates values, appends pending request and sends type0 request; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fa.a(IBII)Lpe;#2",
+      "originalName": "param2",
+      "to": "requestId",
+      "evidence": "fa.java: Allocates values, appends pending request and sends type0 request; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fa.a(IBII)Lpe;#3",
+      "originalName": "param3",
+      "to": "opcode",
+      "evidence": "fa.java: Allocates values, appends pending request and sends type0 request; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fb.<init>(II)V#0",
       "originalName": "param0",
       "to": "width",
@@ -14532,6 +15176,97 @@
       "originalName": "param1",
       "to": "sprite",
       "evidence": "fc.java: Pushes prior target then binds supplied RGB sprite canvas; guard at most -46.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "codeLengths",
+      "evidence": "fk.java: Retains lengths and builds codewords/trie in symbol order; incomplete/malformed tables are not validated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(BII[BI[B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fk.java: MSB-first bit packing with input/output offsets; returns written bytes, zero-length symbols throw; guard below -91.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(BII[BI[B)I#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "fk.java: MSB-first bit packing with input/output offsets; returns written bytes, zero-length symbols throw; guard below -91.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(BII[BI[B)I#2",
+      "originalName": "param2",
+      "to": "inputOffset",
+      "evidence": "fk.java: MSB-first bit packing with input/output offsets; returns written bytes, zero-length symbols throw; guard below -91.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(BII[BI[B)I#3",
+      "originalName": "param3",
+      "to": "output",
+      "evidence": "fk.java: MSB-first bit packing with input/output offsets; returns written bytes, zero-length symbols throw; guard below -91.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(BII[BI[B)I#4",
+      "originalName": "param4",
+      "to": "outputOffset",
+      "evidence": "fk.java: MSB-first bit packing with input/output offsets; returns written bytes, zero-length symbols throw; guard below -91.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(BII[BI[B)I#5",
+      "originalName": "param5",
+      "to": "input",
+      "evidence": "fk.java: MSB-first bit packing with input/output offsets; returns written bytes, zero-length symbols throw; guard below -91.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(IIIZ[B[B)I#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "fk.java: Trie decodes requested number of output symbols, returns source bytes consumed including partial final byte; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(IIIZ[B[B)I#1",
+      "originalName": "param1",
+      "to": "outputOffset",
+      "evidence": "fk.java: Trie decodes requested number of output symbols, returns source bytes consumed including partial final byte; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(IIIZ[B[B)I#2",
+      "originalName": "param2",
+      "to": "inputOffset",
+      "evidence": "fk.java: Trie decodes requested number of output symbols, returns source bytes consumed including partial final byte; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(IIIZ[B[B)I#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "fk.java: Trie decodes requested number of output symbols, returns source bytes consumed including partial final byte; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(IIIZ[B[B)I#4",
+      "originalName": "param4",
+      "to": "output",
+      "evidence": "fk.java: Trie decodes requested number of output symbols, returns source bytes consumed including partial final byte; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fk.a(IIIZ[B[B)I#5",
+      "originalName": "param5",
+      "to": "input",
+      "evidence": "fk.java: Trie decodes requested number of output symbols, returns source bytes consumed including partial final byte; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -15123,6 +15858,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:i.a(ILpe;I)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "i.java: Sends ciphered opcode, byte length2, type0 and request ID; guard108.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(ILpe;I)V#1",
+      "originalName": "param1",
+      "to": "request",
+      "evidence": "i.java: Sends ciphered opcode, byte length2, type0 and request ID; guard108.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(ILpe;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "i.java: Sends ciphered opcode, byte length2, type0 and request ID; guard108.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:i.a(Z[B)[B#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -15350,7 +16106,7 @@
       "symbol": "P:ij.a(I)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "wb.java: Polls three required data/font readiness flags; guard23570. Resolved override parameter.",
+      "evidence": "wb.java: Polls three required bootstrap readiness flags; guard23570. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -15378,7 +16134,7 @@
       "symbol": "P:ij.b(B)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "ij.java: Polls two required font resources and updates glyph count maxima; guard127.",
+      "evidence": "ij.java: Polls two per-pack integer requests, accumulates metadata flags and resets saved counts in pinned source; guard127.",
       "confidence": "reviewed"
     },
     {
@@ -15774,6 +16530,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:jm.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "jm.java: Type0 fills first pending integer-array request and unlinks; other kinds retain separate responses; guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jm.a(Ljava/awt/Component;III)Lnb;#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "jm.java: Reflectively creates BufferedImage implementation, falling back to producer on failure; guard -2414.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jm.a(Ljava/awt/Component;III)Lnb;#1",
+      "originalName": "param1",
+      "to": "width",
+      "evidence": "jm.java: Reflectively creates BufferedImage implementation, falling back to producer on failure; guard -2414.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jm.a(Ljava/awt/Component;III)Lnb;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "jm.java: Reflectively creates BufferedImage implementation, falling back to producer on failure; guard -2414.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jm.a(Ljava/awt/Component;III)Lnb;#3",
+      "originalName": "param3",
+      "to": "height",
+      "evidence": "jm.java: Reflectively creates BufferedImage implementation, falling back to producer on failure; guard -2414.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:jn.a(IIIZZ)V#0",
       "originalName": "param0",
       "to": "blockSize",
@@ -15806,6 +16597,69 @@
       "originalName": "param4",
       "to": "alignBottom",
       "evidence": "jn.java: Samples one pixel per block, blends source/tint separately with denominator256, fills whole raster without clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jo.a(IIILjava/awt/Graphics;)V#0",
+      "originalName": "param0",
+      "to": "y",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jo.a(IIILjava/awt/Graphics;)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jo.a(IIILjava/awt/Graphics;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jo.a(IIILjava/awt/Graphics;)V#3",
+      "originalName": "param3",
+      "to": "graphics",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jo.a(Ljava/awt/Component;IZI)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jo.a(Ljava/awt/Component;IZI)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jo.a(Ljava/awt/Component;IZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jo.a(Ljava/awt/Component;IZI)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jo.c(I)V#0",
+      "originalName": "param0",
+      "to": "offset",
+      "evidence": "jo.java: Publishes whole array with supplied offset and reports imageComplete2; normal offset0.",
       "confidence": "reviewed"
     },
     {
@@ -16233,6 +17087,69 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "kg.java: Returns first matching pending write bytes without disk I/O; otherwise reads synchronously as priority request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kh.<init>(Lvl;)V#0",
+      "originalName": "param0",
+      "to": "deque",
+      "evidence": "kh.java: Retains deque without changing primary ownership or shared cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kh.a(I)Lnm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kh.java: Starts at first primary node; guard240.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kh.a(ILnm;)Lnm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kh.java: Starts inclusively at supplied node or deque head; guard at least100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kh.a(ILnm;)Lnm;#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "kh.java: Starts inclusively at supplied node or deque head; guard at least100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kh.a(Z)Lnm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kh.java: Starts at last primary node; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kh.b(I)Lnm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kh.java: Returns saved next and advances forward; guard7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kh.b(ILnm;)Lnm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kh.java: Starts inclusively at supplied node or deque tail; guard16802.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kh.b(ILnm;)Lnm;#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "kh.java: Starts inclusively at supplied node or deque tail; guard16802.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kh.d(I)Lnm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kh.java: Returns saved previous and advances reverse; guard -24706.",
       "confidence": "reviewed"
     },
     {
@@ -17636,6 +18553,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:le.a(IIILjava/awt/Graphics;)V#0",
+      "originalName": "param0",
+      "to": "y",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(IIILjava/awt/Graphics;)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(IIILjava/awt/Graphics;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(IIILjava/awt/Graphics;)V#3",
+      "originalName": "param3",
+      "to": "graphics",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(Ljava/awt/Component;IZI)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(Ljava/awt/Component;IZI)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(Ljava/awt/Component;IZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:le.a(Ljava/awt/Component;IZI)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:lf.a(IIC)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -18189,6 +19162,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:md.a(ILjava/lang/String;Lwq;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "md.java: Writes unsigned-smart byte length then legacy CP1252 Huffman data, returns total written bytes; guard26152.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:md.a(ILjava/lang/String;Lwq;)I#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "md.java: Writes unsigned-smart byte length then legacy CP1252 Huffman data, returns total written bytes; guard26152.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:md.a(ILjava/lang/String;Lwq;)I#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "md.java: Writes unsigned-smart byte length then legacy CP1252 Huffman data, returns total written bytes; guard26152.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:md.a(IZB)Z#0",
       "originalName": "param0",
       "to": "buttonIndex",
@@ -18739,6 +19733,69 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "n.java: Expands first sprite to RGB only, ignoring alpha plane, then releases index/palette/geometry scratch; guard21.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nb.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nb.java: Binds shared framebuffer pixels and dimensions; guard at least72.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nb.a(IIILjava/awt/Graphics;)V#0",
+      "originalName": "param0",
+      "to": "y",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nb.a(IIILjava/awt/Graphics;)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nb.a(IIILjava/awt/Graphics;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nb.a(IIILjava/awt/Graphics;)V#3",
+      "originalName": "param3",
+      "to": "graphics",
+      "evidence": "nb.java: Draws framebuffer at original y/x argument order; guard -17260.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nb.a(Ljava/awt/Component;IZI)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nb.a(Ljava/awt/Component;IZI)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nb.a(Ljava/awt/Component;IZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nb.a(Ljava/awt/Component;IZI)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "nb.java: Allocates framebuffer and image, binds raster; original component/height/true/width.",
       "confidence": "reviewed"
     },
     {
@@ -20517,6 +21574,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "re.java: Tests retained code96, mapped from AWT left arrow; guard -57.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rj.a(Lfk;Z)V#0",
+      "originalName": "param0",
+      "to": "codec",
+      "evidence": "rj.java: Installs shared text codec; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rj.a(Lfk;Z)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "rj.java: Installs shared text codec; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -22595,7 +23666,7 @@
       "symbol": "P:wb.a(I)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "wb.java: Polls three required data/font readiness flags; guard23570.",
+      "evidence": "wb.java: Polls three required bootstrap readiness flags; guard23570.",
       "confidence": "reviewed"
     },
     {
@@ -23315,7 +24386,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 1
+    "expectedEdits": 2
   },
   "labels": {
     "policy": "lexical-targets",
@@ -23328,9 +24399,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "cceee4d3a1b05caaf8e15d9d33aa5fd216ce9ae24cbe1f50fa57826ad1b1cfe3",
+      "build-brickabrac-rules.mjs": "b9d1d8b0602755adfa6e48b073cf69732b9d32fb8ecabe08e2ca9474a46dbaa7",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "f9db8c5a10856f965400d9b9451c7a411cb98c369b39b19ce6b332ac734ac0f7",
+      "tests/test-brickabrac-core.mjs": "d221895589890b313c917919698e42a335045518269412a45a130c44cf25db08",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
