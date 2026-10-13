@@ -105,6 +105,8 @@ field names derive from literal resource assignments in these reviewed themes.
 SoundCache, MusicTrack, MidiFileReader, MusicPatch/MusicEnvelope, MusicVoice,
 MusicVoiceMixer and MidiSynthesizer expose scene audio lookup, event parsing,
 instrument usage and per-channel/voice state. ByteArrayNode names shared byte storage.
+SoundEffect, SoundTone, SoundEnvelope and AudioFilter expose synthesized effects,
+oscillators, timed curves and filter coefficients, including their working variables.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -777,6 +779,29 @@ that vanish during shifts; these fixtures confirm expected MIDI byte extraction
 in the tested ranges, without claiming complete standards compliance. Actual patch
 decoding/preparation, envelopes over sustained playback, looping track scheduling,
 devices and audible game music remain unverified.
+
+SoundEffect decodes ten optional tone slots and mixes them in slot order into
+22050-Hz signed8 PCM, clipping after each contribution. Loop start/end are decoded
+in milliseconds and converted independently of output length. SoundTone names
+five oscillator slots, pitch/volume modulation, gating, recursive echo, filtering
+and reused scratch tables. The decoder can read ten oscillator records into five
+slots; this original overflow behavior is preserved. SoundEnvelope exposes
+normalized unsigned16 time/value pairs and truncated fixed-point interpolation.
+AudioFilter exposes two stages, endpoint pairs, gain and shared Q16 coefficients.
+Reviewed local names distinguish oscillator, gate, echo and filter loops without
+rewriting arithmetic or control flow.
+
+Native fixtures decode synthetic effects and envelopes, check repeated stepping
+at segment boundaries (including equal times), square/sine/saw/seeded-noise and
+unsupported waveforms, five oscillators and delayed contributions, short-duration
+silence, gating/echo and signed16/signed8 clipping. Filter fixtures check absent,
+fixed and changing endpoint pairs and polynomial coefficients against independent
+double-precision calculations with a two-unit Q16 tolerance. Controlled decoded
+archive files exercise effect loading, PCM-cache insertion/reuse, successful
+budget debit (including overshoot), absent-file behavior and scratch release.
+Real game assets, modulation envelopes during synthesis, the filtered-tone output
+path, malformed/oversized inputs, compressed music samples and audible playback
+remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

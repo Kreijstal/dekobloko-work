@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 27,
+  "version": 28,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -395,6 +395,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dr",
+      "originalName": "dr",
+      "to": "SoundEffect",
+      "evidence": "dr.java: Up to ten synthesized tones mixed into signed8 PCM at22050 Hz with millisecond loop endpoints.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:e",
       "originalName": "e",
       "to": "AchievementSubmission",
@@ -525,6 +532,13 @@
       "originalName": "hb",
       "to": "ResourceRequest",
       "evidence": "hb.java: Dual-linked asynchronous resource request with pending, priority and cleanup-mark state, data and progress contracts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ho",
+      "originalName": "ho",
+      "to": "AudioFilter",
+      "evidence": "ho.java: Two cascaded polynomial filter stages with interpolated frequency/attenuation pairs and shared Q16 coefficients.",
       "confidence": "reviewed"
     },
     {
@@ -1088,6 +1102,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qq",
+      "originalName": "qq",
+      "to": "SoundTone",
+      "evidence": "qq.java: Five-oscillator fixed-point synthesis with pitch/volume modulation, gating, echo and interpolated audio filtering. Shared scratch storage is reused.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ra",
       "originalName": "ra",
       "to": "AudioMixer",
@@ -1288,6 +1309,13 @@
       "originalName": "vq",
       "to": "LevelCompleteScreen",
       "evidence": "vq.java: ID18 single-player completion overlay offers continue/level-select/end-game; called when board state is8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wa",
+      "originalName": "wa",
+      "to": "SoundEnvelope",
+      "evidence": "wa.java: Decoded waveform/start/end parameters and piecewise fixed-point envelope stepping over normalized time/value segments.",
       "confidence": "reviewed"
     },
     {
@@ -2215,6 +2243,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dr.field_a:I",
+      "originalName": "field_a",
+      "to": "loopEndMillis",
+      "evidence": "dr.java: Converted to PCM loop end using22050 samples per second.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dr.field_b:[Lqq;",
+      "originalName": "field_b",
+      "to": "tones",
+      "evidence": "dr.java: Ten optional synthesized tone slots decoded in archive order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dr.field_c:I",
+      "originalName": "field_c",
+      "to": "loopStartMillis",
+      "evidence": "dr.java: Converted to PCM loop start using22050 samples per second.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:e.field_i:I",
       "originalName": "field_i",
       "to": "submissionByte",
@@ -2779,6 +2828,62 @@
       "originalName": "field_b",
       "to": "ninjaFarSprite",
       "evidence": "qa.java: Literal sprite resource ninja/ninja_far assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_a:[I",
+      "originalName": "field_a",
+      "to": "pairCounts",
+      "evidence": "ho.java: Two stage pair counts; each pair contributes two coefficients.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_b:[I",
+      "originalName": "field_b",
+      "to": "gainEndpoints",
+      "evidence": "ho.java: Two interpolated forward gain words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_c:[[F",
+      "originalName": "field_c",
+      "to": "coefficientScratch",
+      "evidence": "ho.java: Shared two-by-eight float polynomial coefficients.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_d:[[I",
+      "originalName": "field_d",
+      "to": "coefficientsQ16",
+      "evidence": "ho.java: Shared fixed-point filter coefficients consumed by tone synthesis.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_e:[[[I",
+      "originalName": "field_e",
+      "to": "attenuations",
+      "evidence": "ho.java: Stage/start-end/pair attenuation words scaled to decibels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_f:F",
+      "originalName": "field_f",
+      "to": "forwardGain",
+      "evidence": "ho.java: Shared interpolated gain applied to stage0 coefficients.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_g:[[[I",
+      "originalName": "field_g",
+      "to": "frequencies",
+      "evidence": "ho.java: Stage/start-end/pair frequency values in8192 units per octave.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ho.field_h:I",
+      "originalName": "field_h",
+      "to": "forwardGainQ16",
+      "evidence": "ho.java: Shared gain shifted by16 for input contribution.",
       "confidence": "reviewed"
     },
     {
@@ -6366,6 +6471,181 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qq.field_a:[I",
+      "originalName": "field_a",
+      "to": "oscillatorPhases",
+      "evidence": "qq.java: Shared five-oscillator phase accumulators reset before synthesis.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_b:Lwa;",
+      "originalName": "field_b",
+      "to": "volumeModulationAmplitude",
+      "evidence": "qq.java: Optional amplitude modulation depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_c:[I",
+      "originalName": "field_c",
+      "to": "noiseTable",
+      "evidence": "qq.java: Seed0 pseudorandom signs indexed by phase divided by2607.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_d:[I",
+      "originalName": "field_d",
+      "to": "oscillatorPitch",
+      "evidence": "qq.java: Five oscillator pitch shifts passed to exponential pitch scaling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_e:[I",
+      "originalName": "field_e",
+      "to": "oscillatorDelayMillis",
+      "evidence": "qq.java: Five oscillator sample delays derived from milliseconds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_f:[I",
+      "originalName": "field_f",
+      "to": "oscillatorGainQ14",
+      "evidence": "qq.java: Shared oscillator percentage gains shifted by14.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_g:I",
+      "originalName": "field_g",
+      "to": "offsetMillis",
+      "evidence": "qq.java: Tone start offset within effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_h:[I",
+      "originalName": "field_h",
+      "to": "oscillatorBaseSteps",
+      "evidence": "qq.java: Shared scaled initial pitch per oscillator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_i:I",
+      "originalName": "field_i",
+      "to": "echoDecayPercent",
+      "evidence": "qq.java: Percentage of delayed output added recursively.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_j:I",
+      "originalName": "field_j",
+      "to": "durationMillis",
+      "evidence": "qq.java: Tone duration, converted to sample count by effect mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_k:[I",
+      "originalName": "field_k",
+      "to": "oscillatorVolumePercent",
+      "evidence": "qq.java: Five oscillator amplitude percentages; zero disables oscillator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_l:Lwa;",
+      "originalName": "field_l",
+      "to": "gateOpenEnvelope",
+      "evidence": "qq.java: Gate threshold envelope while output is passed; uses the closed envelope range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_m:Lwa;",
+      "originalName": "field_m",
+      "to": "pitchModulationAmplitude",
+      "evidence": "qq.java: Optional pitch modulation depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_n:I",
+      "originalName": "field_n",
+      "to": "echoDelayMillis",
+      "evidence": "qq.java: Positive delay converted to samples for recursive echo.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_o:[I",
+      "originalName": "field_o",
+      "to": "oscillatorPitchSteps",
+      "evidence": "qq.java: Shared scaled pitch-envelope ranges per oscillator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_p:Lwa;",
+      "originalName": "field_p",
+      "to": "gateClosedEnvelope",
+      "evidence": "qq.java: Gate threshold envelope while output is suppressed; supplies shared threshold range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_q:Lwa;",
+      "originalName": "field_q",
+      "to": "volumeModulation",
+      "evidence": "qq.java: Optional amplitude modulation waveform/rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_r:[I",
+      "originalName": "field_r",
+      "to": "sampleScratch",
+      "evidence": "qq.java: Shared220500-sample output, cleared only over requested length and returned without copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_s:Lwa;",
+      "originalName": "field_s",
+      "to": "volumeEnvelope",
+      "evidence": "qq.java: Primary amplitude progression.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_t:[I",
+      "originalName": "field_t",
+      "to": "oscillatorDelaySamples",
+      "evidence": "qq.java: Shared oscillator sample delays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_u:Lwa;",
+      "originalName": "field_u",
+      "to": "pitchModulation",
+      "evidence": "qq.java: Optional pitch modulation waveform/rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_v:Lho;",
+      "originalName": "field_v",
+      "to": "filter",
+      "evidence": "qq.java: Two-stage filter used after gating and echo.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_w:Lwa;",
+      "originalName": "field_w",
+      "to": "filterEnvelope",
+      "evidence": "qq.java: Interpolates filter coefficients, advanced once per sample.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_x:Lwa;",
+      "originalName": "field_x",
+      "to": "pitchEnvelope",
+      "evidence": "qq.java: Primary oscillator waveform and pitch progression.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qq.field_y:[I",
+      "originalName": "field_y",
+      "to": "sineTable",
+      "evidence": "qq.java: 32768-entry Q14 sine cycle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:r.field_z:I",
       "originalName": "field_z",
       "to": "thirdPreviousPacketOpcode",
@@ -7472,6 +7752,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wa.field_a:I",
+      "originalName": "field_a",
+      "to": "start",
+      "evidence": "wa.java: Decoded envelope range start; interpretation depends on tone role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_b:I",
+      "originalName": "field_b",
+      "to": "amplitudeStepQ15",
+      "evidence": "wa.java: Truncated per-sample amplitude slope.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_c:I",
+      "originalName": "field_c",
+      "to": "segmentCount",
+      "evidence": "wa.java: Number of normalized time/value pairs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_d:[I",
+      "originalName": "field_d",
+      "to": "segmentTimes",
+      "evidence": "wa.java: Unsigned16 normalized segment times scaled by requested sample count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_e:I",
+      "originalName": "field_e",
+      "to": "nextSegment",
+      "evidence": "wa.java: Index loaded on next segment transition, clamped to last.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_f:[I",
+      "originalName": "field_f",
+      "to": "segmentValues",
+      "evidence": "wa.java: Unsigned16 segment amplitudes, internally shifted by15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_g:I",
+      "originalName": "field_g",
+      "to": "samplePosition",
+      "evidence": "wa.java: Count of samples returned since reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_h:I",
+      "originalName": "field_h",
+      "to": "segmentEndSample",
+      "evidence": "wa.java: Next transition sample, derived by truncation of normalized time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_i:I",
+      "originalName": "field_i",
+      "to": "end",
+      "evidence": "wa.java: Decoded envelope range end; interpretation depends on tone role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_j:I",
+      "originalName": "field_j",
+      "to": "amplitudeQ15",
+      "evidence": "wa.java: Current interpolated amplitude before integer output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wa.field_k:I",
+      "originalName": "field_k",
+      "to": "waveform",
+      "evidence": "wa.java: Waveform selector consumed by tone oscillator/modulation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wd.field_v:Lvl;",
       "originalName": "field_v",
       "to": "soundPlaybacks",
@@ -8120,6 +8477,104 @@
       "originalName": "var9Lifetime1",
       "to": "pathIndex",
       "evidence": "dq.java: Index of serialized motion path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.<init>(Lwq;)V#0",
+      "originalName": "var2",
+      "to": "toneIndex",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.<init>(Lwq;)V#1",
+      "originalName": "var3",
+      "to": "presentWaveform",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.a()Loe;#0",
+      "originalName": "var1",
+      "to": "samples",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.a(Lmf;II)Ldr;#0",
+      "originalName": "var3",
+      "to": "data",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#0",
+      "originalName": "var4",
+      "to": "mixToneIndex",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#1",
+      "originalName": "var8",
+      "to": "sampleIndex",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#2",
+      "originalName": "var1",
+      "to": "durationMillis",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#3",
+      "originalName": "var2",
+      "to": "durationToneIndex",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#4",
+      "originalName": "var3",
+      "to": "mixedSamples",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#5",
+      "originalName": "var5",
+      "to": "toneSampleCount",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#6",
+      "originalName": "var6",
+      "to": "offsetSamples",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#7",
+      "originalName": "var9",
+      "to": "mixedSample",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#8",
+      "originalName": "var13",
+      "to": "toneSamples",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dr.b()[B#9",
+      "originalName": "var2Lifetime1",
+      "to": "sampleCount",
+      "evidence": "dr.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
       "confidence": "reviewed"
     },
     {
@@ -8834,6 +9289,174 @@
       "originalName": "var2",
       "to": "node",
       "evidence": "gp.java: First secondary node, or sentinel while empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(F)F#0",
+      "originalName": "var1",
+      "to": "frequencyHz",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#0",
+      "originalName": "var5",
+      "to": "linearFactor",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#1",
+      "originalName": "var6",
+      "to": "quadraticFactor",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#10",
+      "originalName": "var3Lifetime2",
+      "to": "pairRadius",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#11",
+      "originalName": "var4Lifetime1",
+      "to": "gainIndex",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#12",
+      "originalName": "var4Lifetime2",
+      "to": "quantizeIndex",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#2",
+      "originalName": "var7",
+      "to": "coefficientIndex",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#3",
+      "originalName": "dupTemp$0",
+      "to": "cascadeCoefficients",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#4",
+      "originalName": "dupTemp$1",
+      "to": "linearCoefficients",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#5",
+      "originalName": "dupTemp$2",
+      "to": "constantCoefficients",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#6",
+      "originalName": "dupTemp$3",
+      "to": "gainCoefficients",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#7",
+      "originalName": "var3",
+      "to": "gainWord",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#8",
+      "originalName": "var4",
+      "to": "pairIndex",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IF)I#9",
+      "originalName": "var3Lifetime1",
+      "to": "firstRadius",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(IIF)F#0",
+      "originalName": "var4",
+      "to": "frequencyWord",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(Lwq;Lwa;)V#0",
+      "originalName": "var3",
+      "to": "packedPairCounts",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(Lwq;Lwa;)V#1",
+      "originalName": "var4",
+      "to": "alternateMask",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(Lwq;Lwa;)V#2",
+      "originalName": "var5",
+      "to": "initialStage",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(Lwq;Lwa;)V#3",
+      "originalName": "var6",
+      "to": "initialPair",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(Lwq;Lwa;)V#4",
+      "originalName": "var7",
+      "to": "alternatePair",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(Lwq;Lwa;)V#5",
+      "originalName": "var11",
+      "to": "gainWords",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(Lwq;Lwa;)V#6",
+      "originalName": "var5Lifetime1",
+      "to": "alternateStage",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.a(Lwq;Lwa;)V#7",
+      "originalName": "var6Lifetime1",
+      "to": "unusedPairIndex",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ho.b(IIF)F#0",
+      "originalName": "var4",
+      "to": "attenuationWord",
+      "evidence": "ho.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
       "confidence": "reviewed"
     },
     {
@@ -10356,6 +10979,349 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:qq.<initializer>()V#0",
+      "originalName": "var1",
+      "to": "noiseIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.<initializer>()V#1",
+      "originalName": "var1Lifetime1",
+      "to": "sineIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.<initializer>()V#2",
+      "originalName": "var0",
+      "to": "noiseRandom",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#0",
+      "originalName": "stackIn_41_0",
+      "to": "nextGateClosed",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#1",
+      "originalName": "var3",
+      "to": "samplesPerMillisecond",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#10",
+      "originalName": "var13",
+      "to": "volumeValue",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#11",
+      "originalName": "var14",
+      "to": "pitchModulationValue",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#12",
+      "originalName": "var15",
+      "to": "pitchModulationDepth",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#13",
+      "originalName": "var16",
+      "to": "gateOpenValue",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#14",
+      "originalName": "var17",
+      "to": "startupForwardIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#15",
+      "originalName": "var11Lifetime1",
+      "to": "oscillatorSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#16",
+      "originalName": "var11Lifetime2",
+      "to": "gateProgress",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#17",
+      "originalName": "var11Lifetime3",
+      "to": "echoDelaySamples",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#18",
+      "originalName": "var11Lifetime4",
+      "to": "filterValue",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#19",
+      "originalName": "var11Lifetime5",
+      "to": "clampSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#2",
+      "originalName": "var5",
+      "to": "pitchModulationStep",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#20",
+      "originalName": "var12Lifetime1",
+      "to": "unusedGateValue",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#21",
+      "originalName": "var12Lifetime2",
+      "to": "echoSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#22",
+      "originalName": "var12Lifetime3",
+      "to": "forwardCoefficientCount",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#23",
+      "originalName": "var13Lifetime1",
+      "to": "gateClosed",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#24",
+      "originalName": "var13Lifetime2",
+      "to": "feedbackCoefficientCount",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#25",
+      "originalName": "var14Lifetime1",
+      "to": "gateSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#26",
+      "originalName": "var14Lifetime2",
+      "to": "filterSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#27",
+      "originalName": "var15Lifetime1",
+      "to": "gateClosedValue",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#28",
+      "originalName": "var15Lifetime2",
+      "to": "startupEndSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#29",
+      "originalName": "var16Lifetime1",
+      "to": "startupFilteredSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#3",
+      "originalName": "var6",
+      "to": "pitchModulationBase",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#30",
+      "originalName": "var14Lifetime3",
+      "to": "unusedSampleIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#31",
+      "originalName": "var14Lifetime4",
+      "to": "oscillatorIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#32",
+      "originalName": "var15Lifetime3",
+      "to": "volumeModulationDepth",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#33",
+      "originalName": "var15Lifetime4",
+      "to": "delayedSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#34",
+      "originalName": "var17Lifetime1",
+      "to": "forwardIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#35",
+      "originalName": "var17Lifetime2",
+      "to": "tailForwardIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#36",
+      "originalName": "var12Lifetime1Lifetime1",
+      "to": "gateThreshold",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#37",
+      "originalName": "var15Lifetime2Lifetime1",
+      "to": "filterBlockEnd",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#38",
+      "originalName": "var16Lifetime1Lifetime1",
+      "to": "filteredSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#39",
+      "originalName": "var16Lifetime1Lifetime2",
+      "to": "tailFilteredSample",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#4",
+      "originalName": "var7",
+      "to": "pitchModulationPhase",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#40",
+      "originalName": "var17Lifetime3",
+      "to": "startupFeedbackIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#41",
+      "originalName": "var17Lifetime1Lifetime1",
+      "to": "feedbackIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#42",
+      "originalName": "var17Lifetime2Lifetime1",
+      "to": "tailFeedbackIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#5",
+      "originalName": "var8",
+      "to": "volumeModulationStep",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#6",
+      "originalName": "var9",
+      "to": "volumeModulationBase",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#7",
+      "originalName": "var10",
+      "to": "volumeModulationPhase",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#8",
+      "originalName": "var11",
+      "to": "setupOscillator",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(II)[I#9",
+      "originalName": "var12",
+      "to": "pitchValue",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(Lwq;)V#0",
+      "originalName": "var3",
+      "to": "oscillatorIndex",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(Lwq;)V#1",
+      "originalName": "var4",
+      "to": "volumePercent",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qq.a(Lwq;)V#2",
+      "originalName": "var2",
+      "to": "optionalWaveform",
+      "evidence": "qq.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ra.c(I)V#0",
       "originalName": "var2",
       "to": "stream",
@@ -10661,6 +11627,20 @@
       "originalName": "var4",
       "to": "targetSpeed",
       "evidence": "vn.java: Requested speed after floor reset and upper cap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wa.a(I)I#0",
+      "originalName": "fieldTemp$0",
+      "to": "currentSegment",
+      "evidence": "wa.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wa.a(Lwq;)V#0",
+      "originalName": "var2",
+      "to": "segmentIndex",
+      "evidence": "wa.java: Reviewed declaration and uses in pinned sound synthesis source; ordinal and original spelling checked before applying.",
       "confidence": "reviewed"
     },
     {
@@ -11630,6 +12610,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dr.a()Loe;",
+      "originalName": "a",
+      "to": "toPcmSound",
+      "evidence": "dr.java: Mixes22050-Hz signed8 output and scales millisecond loop endpoints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dr.a(Lmf;II)Ldr;",
+      "originalName": "a",
+      "to": "load",
+      "evidence": "dr.java: Returns null when archive file absent; otherwise decodes effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dr.b()[B",
+      "originalName": "b",
+      "to": "mix",
+      "evidence": "dr.java: Mixes tone outputs in slot order, saturating signed8 after each contribution.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ea.a(I)Lgk;",
       "originalName": "a",
       "to": "createMouseWheelSource",
@@ -12033,6 +13034,48 @@
       "originalName": "a",
       "to": "drawGlyph",
       "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a()V",
+      "originalName": "a",
+      "to": "releaseScratch",
+      "evidence": "ho.java: Releases shared float and fixed-point coefficient arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a(F)F",
+      "originalName": "a",
+      "to": "normalizeFrequency",
+      "evidence": "ho.java: Converts octave offset above32.703197 Hz to angular frequency at22050-Hz sampling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a(IF)I",
+      "originalName": "a",
+      "to": "computeCoefficients",
+      "evidence": "ho.java: Interpolates gain and pair roots, cascades polynomial factors and emits Q16 coefficients.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a(IIF)F",
+      "originalName": "a",
+      "to": "interpolateFrequency",
+      "evidence": "ho.java: Interpolates frequency word and converts to normalized angular frequency.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a(Lwq;Lwa;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "ho.java: Decodes packed pair counts, gains, pair endpoints and optional interpolation envelope segments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.b(IIF)F",
+      "originalName": "b",
+      "to": "interpolateRadius",
+      "evidence": "ho.java: Interpolates attenuation word and converts to pole radius.",
       "confidence": "reviewed"
     },
     {
@@ -15193,6 +16236,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qq.a()V",
+      "originalName": "a",
+      "to": "releaseScratch",
+      "evidence": "qq.java: Releases shared output, waveform and oscillator working tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qq.a(II)[I",
+      "originalName": "a",
+      "to": "synthesize",
+      "evidence": "qq.java: Returns shared cleared output; duration below10ms is silent; otherwise oscillators, gating, recursive echo, filter and signed16 clamp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qq.a(III)I",
+      "originalName": "a",
+      "to": "evaluateWaveform",
+      "evidence": "qq.java: Square1, sine2, saw3, seeded noise4; unsupported selector returns zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qq.a(Lwq;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "qq.java: Decodes mandatory/optional envelopes, up to ten encoded oscillator records into five slots, echo/duration/offset/filter. Original overflow behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ra.a()Lqd;",
       "originalName": "a",
       "to": "firstSubStream",
@@ -16429,6 +17500,34 @@
       "originalName": "c",
       "to": "navigateBack",
       "evidence": "km.java: Requests parent screen transition; guard -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a()V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "wa.java: Clears interpolation cursor/slope/amplitude and sample position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(I)I",
+      "originalName": "a",
+      "to": "nextValue",
+      "evidence": "wa.java: Advances one sample through normalized segments with truncated Q15 slope; reset before new synthesis.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.a(Lwq;)V",
+      "originalName": "a",
+      "to": "decodeSegments",
+      "evidence": "wa.java: Decodes count and unsigned16 time/value pairs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.b(Lwq;)V",
+      "originalName": "b",
+      "to": "decode",
+      "evidence": "wa.java: Decodes waveform, range endpoints and segments.",
       "confidence": "reviewed"
     },
     {
@@ -19708,6 +20807,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dr.<init>(Lwq;)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "dr.java: Decodes ten optional tones and millisecond loop endpoints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dr.a(Lmf;II)Ldr;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "dr.java: Returns null when archive file absent; otherwise decodes effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dr.a(Lmf;II)Ldr;#1",
+      "originalName": "param1",
+      "to": "groupId",
+      "evidence": "dr.java: Returns null when archive file absent; otherwise decodes effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dr.a(Lmf;II)Ldr;#2",
+      "originalName": "param2",
+      "to": "fileId",
+      "evidence": "dr.java: Returns null when archive file absent; otherwise decodes effect.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:e.<init>(IIIIII)V#0",
       "originalName": "param0",
       "to": "achievementId",
@@ -21000,6 +22127,83 @@
       "originalName": "param6",
       "to": "shadow",
       "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.a(F)F#0",
+      "originalName": "param0",
+      "to": "octaveOffset",
+      "evidence": "ho.java: Converts octave offset above32.703197 Hz to angular frequency at22050-Hz sampling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.a(IF)I#0",
+      "originalName": "param0",
+      "to": "stage",
+      "evidence": "ho.java: Interpolates gain and pair roots, cascades polynomial factors and emits Q16 coefficients.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.a(IF)I#1",
+      "originalName": "param1",
+      "to": "interpolation",
+      "evidence": "ho.java: Interpolates gain and pair roots, cascades polynomial factors and emits Q16 coefficients.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.a(IIF)F#0",
+      "originalName": "param0",
+      "to": "stage",
+      "evidence": "ho.java: Interpolates frequency word and converts to normalized angular frequency.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.a(IIF)F#1",
+      "originalName": "param1",
+      "to": "pair",
+      "evidence": "ho.java: Interpolates frequency word and converts to normalized angular frequency.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.a(IIF)F#2",
+      "originalName": "param2",
+      "to": "interpolation",
+      "evidence": "ho.java: Interpolates frequency word and converts to normalized angular frequency.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.a(Lwq;Lwa;)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ho.java: Decodes packed pair counts, gains, pair endpoints and optional interpolation envelope segments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.a(Lwq;Lwa;)V#1",
+      "originalName": "param1",
+      "to": "envelope",
+      "evidence": "ho.java: Decodes packed pair counts, gains, pair endpoints and optional interpolation envelope segments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.b(IIF)F#0",
+      "originalName": "param0",
+      "to": "stage",
+      "evidence": "ho.java: Interpolates attenuation word and converts to pole radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.b(IIF)F#1",
+      "originalName": "param1",
+      "to": "pair",
+      "evidence": "ho.java: Interpolates attenuation word and converts to pole radius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ho.b(IIF)F#2",
+      "originalName": "param2",
+      "to": "interpolation",
+      "evidence": "ho.java: Interpolates attenuation word and converts to pole radius.",
       "confidence": "reviewed"
     },
     {
@@ -28794,6 +29998,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qq.a(II)[I#0",
+      "originalName": "param0",
+      "to": "sampleCount",
+      "evidence": "qq.java: Returns shared cleared output; duration below10ms is silent; otherwise oscillators, gating, recursive echo, filter and signed16 clamp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qq.a(II)[I#1",
+      "originalName": "param1",
+      "to": "durationMillis",
+      "evidence": "qq.java: Returns shared cleared output; duration below10ms is silent; otherwise oscillators, gating, recursive echo, filter and signed16 clamp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qq.a(III)I#0",
+      "originalName": "param0",
+      "to": "phase",
+      "evidence": "qq.java: Square1, sine2, saw3, seeded noise4; unsupported selector returns zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qq.a(III)I#1",
+      "originalName": "param1",
+      "to": "amplitude",
+      "evidence": "qq.java: Square1, sine2, saw3, seeded noise4; unsupported selector returns zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qq.a(III)I#2",
+      "originalName": "param2",
+      "to": "waveform",
+      "evidence": "qq.java: Square1, sine2, saw3, seeded noise4; unsupported selector returns zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qq.a(Lwq;)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "qq.java: Decodes mandatory/optional envelopes, up to ten encoded oscillator records into five slots, echo/duration/offset/filter. Original overflow behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ra.a(I)V#0",
       "originalName": "param0",
       "to": "frames",
@@ -31643,6 +32889,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wa.a(I)I#0",
+      "originalName": "param0",
+      "to": "sampleCount",
+      "evidence": "wa.java: Advances one sample through normalized segments with truncated Q15 slope; reset before new synthesis.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.a(Lwq;)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "wa.java: Decodes count and unsigned16 time/value pairs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.b(Lwq;)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "wa.java: Decodes waveform, range endpoints and segments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wb.a(B)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -32596,9 +33863,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "49bd811183465b14899afd9ff7c4a2dc63c91209018cdf85d106e1400f4c6aa1",
+      "build-brickabrac-rules.mjs": "b440135e70f2aef101ed190a8dab6c501db372c9b98a28c3c5bc92c59fa0762a",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "8021209a4ae25c422b09a17d9d4ce0934861dcb1c933d0c547d0ffd7f8baceed",
+      "tests/test-brickabrac-core.mjs": "e924c6b75a9a3aa02baf1c45c044c6a7cdf8a4f0f3d9f06cc42a26a36415aecc",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
