@@ -98,6 +98,16 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+UnitModelViewer/UnitAnimationPreview now name model and animation dropdowns,
+selection/fallback, frame advancement/restart, yaw/tilt, projection center and
+hidden state. SpriteFramedLabel names font/frame/text bounds and colours.
+Controlled assets exercise real constructors, missing-model fallback to type24,
+variant selection, held-key rotation, exclusive control routing and inclusive
+label hits/pixels. The viewer
+retains the requested unit while the preview resolves its fallback. Full 3D
+pixels, sound cues, nonempty frame-set installation, popup interaction and live
+viewer integration remain unverified.
+
 Bzip2Decoder/Bzip2State name archive bit decoding, selectors/Huffman tables,
 move-to-front, inverse-BWT and pending output runs. Python 3 bz2 fixtures check
 level-one input with the BZh1 header stripped, multiple blocks, offsets, bounded
@@ -368,7 +378,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 454,177 raw/named checks agree. Controlled cipher output does not constitute
+All 454,294 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
