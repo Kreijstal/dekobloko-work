@@ -98,6 +98,17 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+NetworkGameShell now names applet/server configuration, packet acceptance and
+payload-length setup, shared routing, staged assets and account UI actions.
+BoundedUrlRequest names URL-stream/raw-socket fallback, worker state, retained
+response and resource cleanup. CheckBoxWidgetPainter names box/label geometry
+and colours. Native fixtures check all handler-option combinations, length-table
+partial writes, keepalive, bounded EOF/capacity/error reads, JAGGRAB header bytes,
+cleanup and checkbox core pixels. Launch/service/UI-mode flags and unknown
+opcode groups stay qualified. Full startup, nonzero packet delivery, browser
+actions, real network/thread behavior, full checkbox shadow/text pixels and live
+server compatibility remain unverified.
+
 ViewportManager now names bounds, fixed/fullscreen/container/saved sizes,
 listener, membership/heap gates and periodic resize state. FullscreenFocusCanvas
 and FullscreenDisplayMode name focus-loss retention and mode tuples. Native
@@ -336,7 +347,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 448,480 raw/named checks agree. Controlled cipher output does not constitute
+All 453,051 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -703,7 +714,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 351 reviewed classes around battlefield state, units, map
+The current pass names 354 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
