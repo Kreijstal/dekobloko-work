@@ -57,6 +57,8 @@ DualLinkDeque/DualLinkIterator expose independent secondary-link ownership.
 All22 registered menu slots now resolve to named screens, including framed/pause
 menus, highscores, rankings, instructions, achievement browsers, save prompts,
 messages, options, pack selection and level/match completion/exit presentations.
+AchievementIcon, TooltipSprite and IntrusiveHashTable expose pooled icon state,
+main-menu tooltip rendering and intrusive keyed storage.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -274,6 +276,31 @@ Achievement fixtures compare bit helpers with BitSet, test all256 storage bits,
 duplicate/no-pending behavior, notification order and all eight save-prompt cases.
 The full initializer's final client bootstrap, rendered panels, page-transition
 animation, authenticated highscore retrieval and server save flows remain unverified.
+
+Achievement icons retain rectangle geometry, achievement ID, browser owner,
+remaining horizontal displacement, transition keep-mask and earned/placeholder
+thumbnail cache state. Movement consumes a quarter of the remaining magnitude,
+rounded away from zero. Reaching zero does not clear the transition bit until
+the following stationary update. Hover uses half-open bounds; clicks use the
+saved press coordinates even after the pointer moves and toggle selected ID.
+
+Recycling moves an icon into the pool, releases its owner/thumbnail and clears
+the placeholder marker. It does not change the transition mask. Browser queue
+cleanup delegates to that same recycle path; an earlier rule's contrary evidence
+is corrected. Factory acquisition overwrites geometry/ID/owner/transition inputs.
+Tooltip sprites retain a lowercased caption and measured dimensions; hover tests
+nonzero sprite pixels. IntrusiveHashTable moves nodes between primary owners,
+supports duplicate keys, and traverses masked buckets in bucket/insertion order.
+It retains the original `key & (bucketCount-1)` indexing even for non-power-of-two
+counts and uses a shared traversal cursor.
+
+Native fixtures cover signed offset extremes and delayed mask clearing, hover
+bounds, click toggling, cached thumbnail blits, owner/cache release, pool reuse,
+browser cleanup, tooltip dimensions/pixel hits/blits, and randomized hash-table
+collisions, duplicate keys, ownership transfer and traversal. Click fixtures use
+a one-sample silent sound and a real in-memory mixer without playback. Thumbnail
+regeneration, selection/hover halos, tooltip text drawing, simultaneous page
+animations and audio playback remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

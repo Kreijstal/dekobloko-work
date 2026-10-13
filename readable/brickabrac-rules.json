@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 11,
+  "version": 12,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -388,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:i",
+      "originalName": "i",
+      "to": "AchievementIcon",
+      "evidence": "i.java: Pooled intrusive achievement icon with screen owner, animated horizontal offset, hover/selection input and earned/placeholder thumbnail cache.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:j",
       "originalName": "j",
       "to": "PlayerBoard",
@@ -507,6 +514,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nq",
+      "originalName": "nq",
+      "to": "TooltipSprite",
+      "evidence": "nq.java: Intrusive main-menu sprite with lowercased tooltip text, retained tooltip dimensions and pixel-based hover state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:od",
       "originalName": "od",
       "to": "DelegatingCanvas",
@@ -605,6 +619,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:si",
+      "originalName": "si",
+      "to": "IntrusiveHashTable",
+      "evidence": "si.java: Sentinel buckets keyed by long values, intrusive insertion/lookup and shared bucket traversal cursor. Static input/asset helpers retain their separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tk",
       "originalName": "tk",
       "to": "DualLinkNode",
@@ -700,6 +721,13 @@
       "originalName": "wq",
       "to": "PacketBuffer",
       "evidence": "wq.java: Cursor over caller-supplied or pooled bytes with big-endian primitives, compact integers, strings, checksums and block operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aa.field_a:Lvl;",
+      "originalName": "field_a",
+      "to": "achievementIconPool",
+      "evidence": "aa.java: Recycled achievement icons reused by factory in FIFO order.",
       "confidence": "reviewed"
     },
     {
@@ -1141,6 +1169,76 @@
       "originalName": "field_v",
       "to": "promptText",
       "evidence": "hq.java: Composed login/save message rendered in central panel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_i:I",
+      "originalName": "field_i",
+      "to": "x",
+      "evidence": "i.java: Current icon left coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_k:Ljp;",
+      "originalName": "field_k",
+      "to": "cachedThumbnail",
+      "evidence": "i.java: Quarter-size earned/placeholder rendering, released on recycle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_n:I",
+      "originalName": "field_n",
+      "to": "y",
+      "evidence": "i.java: Icon top coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_p:I",
+      "originalName": "field_p",
+      "to": "remainingOffset",
+      "evidence": "i.java: Signed remaining horizontal displacement consumed with rounded quarter steps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_r:I",
+      "originalName": "field_r",
+      "to": "achievementId",
+      "evidence": "i.java: Achievement index for masks, image arrays and hover/selection state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_t:Laf;",
+      "originalName": "field_t",
+      "to": "owner",
+      "evidence": "i.java: Browser supplying achievement mask; recycle releases it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_u:I",
+      "originalName": "field_u",
+      "to": "width",
+      "evidence": "i.java: Pointer-hit rectangle width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_v:Z",
+      "originalName": "field_v",
+      "to": "thumbnailIsPlaceholder",
+      "evidence": "i.java: True for locked/placeholder thumbnail, false for earned icon; controls cache replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_w:I",
+      "originalName": "field_w",
+      "to": "height",
+      "evidence": "i.java: Pointer-hit rectangle height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:i.field_x:I",
+      "originalName": "field_x",
+      "to": "transitionKeepMask",
+      "evidence": "i.java: AND mask clearing this icon transition bit when offset is already zero.",
       "confidence": "reviewed"
     },
     {
@@ -1683,6 +1781,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nf.field_P:I",
+      "originalName": "field_P",
+      "to": "selectedAchievementId",
+      "evidence": "nf.java: Click toggles retained selection, overriding hover for description rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nf.field_Y:I",
+      "originalName": "field_Y",
+      "to": "hoveredAchievementId",
+      "evidence": "nf.java: ID under pointer on stationary icon update; browser resets it before updates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nm.field_b:Lnm;",
       "originalName": "field_b",
       "to": "previous",
@@ -1708,6 +1820,55 @@
       "originalName": "field_u",
       "to": "radius256",
       "evidence": "no.java: Circle constructor radius; ball constructors use1536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nq.field_j:Z",
+      "originalName": "field_j",
+      "to": "hovered",
+      "evidence": "nq.java: Final hover state comes from sprite nonzero-pixel hit testing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nq.field_l:Ljava/lang/String;",
+      "originalName": "field_l",
+      "to": "tooltipText",
+      "evidence": "nq.java: Lowercased text retained for hover drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nq.field_m:I",
+      "originalName": "field_m",
+      "to": "x",
+      "evidence": "nq.java: Sprite draw/hit-test origin x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nq.field_o:I",
+      "originalName": "field_o",
+      "to": "tooltipHeight",
+      "evidence": "nq.java: Font extents plus vertical padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nq.field_q:I",
+      "originalName": "field_q",
+      "to": "tooltipWidth",
+      "evidence": "nq.java: Measured text width plus horizontal padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nq.field_r:I",
+      "originalName": "field_r",
+      "to": "y",
+      "evidence": "nq.java: Sprite draw/hit-test origin y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nq.field_s:Ljp;",
+      "originalName": "field_s",
+      "to": "sprite",
+      "evidence": "nq.java: Retained image drawn and hit-tested.",
       "confidence": "reviewed"
     },
     {
@@ -2079,6 +2240,62 @@
       "originalName": "field_r",
       "to": "itemCount",
       "evidence": "re.java: Configured menu item count used for navigation wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_Qb:I",
+      "originalName": "field_Qb",
+      "to": "achievementTransitionMask",
+      "evidence": "rk.java: Pending icon movement bits; blocks page actions and is cleared per stationary icon.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rp.field_v:Lvl;",
+      "originalName": "field_v",
+      "to": "tooltipSprites",
+      "evidence": "rp.java: Main-menu sprite/tooltip nodes iterated for update/drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_c:[Ltp;",
+      "originalName": "field_c",
+      "to": "achievementSourceIcons",
+      "evidence": "si.java: Earned indexed source images rendered into quarter-size thumbnail cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_e:Lnm;",
+      "originalName": "field_e",
+      "to": "traversalCursor",
+      "evidence": "si.java: Next node for shared first/next traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_f:I",
+      "originalName": "field_f",
+      "to": "traversalBucketIndex",
+      "evidence": "si.java: Next bucket index during shared traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_g:I",
+      "originalName": "field_g",
+      "to": "bucketCount",
+      "evidence": "si.java: Constructor-supplied bucket count; key index uses count-1 bit mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_h:Lnm;",
+      "originalName": "field_h",
+      "to": "lookupCursor",
+      "evidence": "si.java: Current node while scanning matching-key bucket; retained next node after a hit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:si.field_j:[Lnm;",
+      "originalName": "field_j",
+      "to": "buckets",
+      "evidence": "si.java: Circular sentinel nodes, one per configured bucket.",
       "confidence": "reviewed"
     },
     {
@@ -2600,6 +2817,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:af.a(ILvl;)V#1",
+      "originalName": "var5",
+      "to": "icon",
+      "evidence": "af.java: Icon removed from browser queue and recycled.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ak.a(BI)V#0",
       "originalName": "var3",
       "to": "board",
@@ -2632,6 +2856,13 @@
       "originalName": "fieldTemp$0",
       "to": "nextIndex",
       "evidence": "ao.java: New absolute index used for the modulo storage slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cn.a(IIILaf;IIIII)Li;#0",
+      "originalName": "var9",
+      "to": "icon",
+      "evidence": "cn.java: Pooled or newly allocated icon populated by factory.",
       "confidence": "reviewed"
     },
     {
@@ -2877,6 +3108,20 @@
       "originalName": "fieldTemp$0",
       "to": "nextIndex",
       "evidence": "hp.java: New absolute index used for the modulo storage slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:i.a(I)V#1",
+      "originalName": "var3",
+      "to": "clientBranchFlag",
+      "evidence": "i.java: Original generated client branch flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:i.a(I)V#2",
+      "originalName": "var2Lifetime1",
+      "to": "offsetStep",
+      "evidence": "i.java: Signed quarter displacement rounded away from zero.",
       "confidence": "reviewed"
     },
     {
@@ -3240,7 +3485,7 @@
       "symbol": "M:af.a(ILvl;)V",
       "originalName": "a",
       "to": "clearIcons",
-      "evidence": "af.java: Clears icon animation bits and unlinks every supplied icon; guard32367.",
+      "evidence": "af.java: Removes and recycles every supplied icon, releasing owner/cache references; transition mask is unchanged; guard32367.",
       "confidence": "reviewed"
     },
     {
@@ -3507,6 +3752,13 @@
       "originalName": "a",
       "to": "readBodySnapshot",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(IIILaf;IIIII)Li;",
+      "originalName": "a",
+      "to": "acquireAchievementIcon",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
       "confidence": "reviewed"
     },
     {
@@ -3801,6 +4053,27 @@
       "originalName": "c",
       "to": "navigateBack",
       "evidence": "km.java: Requests parent screen transition; guard -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(B)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "i.java: Draws selected/hovered halos and cached earned/placeholder thumbnail; guard at least87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(I)V",
+      "originalName": "a",
+      "to": "update",
+      "evidence": "i.java: Consumes signed rounded-quarter offset; if initially stationary clears transition bit and processes hover/click; guard at most -125.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.c(I)V",
+      "originalName": "c",
+      "to": "recycle",
+      "evidence": "i.java: Moves into pool, releases owner/thumbnail and resets placeholder marker; transition mask is unchanged; guard1.",
       "confidence": "reviewed"
     },
     {
@@ -4532,6 +4805,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nq.a(I)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "nq.java: Always draws sprite; guard2 additionally draws tooltip when hovered.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nq.c(I)V",
+      "originalName": "c",
+      "to": "updateHover",
+      "evidence": "nq.java: Replaces hover state using sprite pixel hit testing for current pointer; guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:od.a(CI)Z",
       "originalName": "a",
       "to": "isLegacyInputCharacter",
@@ -5040,6 +5327,34 @@
       "originalName": "e",
       "to": "snapshotMouseInput",
       "evidence": "sg.java: Under mouse-input monitor copies coordinates/buttons/latch, clears pending press/change and increments idle ticks; guard70.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(IJ)Lnm;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "si.java: Returns first matching key in bucket, retaining scan-next cursor, or null; guard below -23.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(ILnm;J)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "si.java: Moves node out of prior primary ownership, appends to masked bucket and retains key; guard34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(Z)Lnm;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "si.java: Scans bucket chains in index/insertion order through shared mutable cursor; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.b(I)Lnm;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "si.java: Resets shared bucket traversal then returns next node; guard -15519.",
       "confidence": "reviewed"
     },
     {
@@ -5921,14 +6236,14 @@
       "symbol": "P:af.a(ILvl;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "af.java: Clears icon animation bits and unlinks every supplied icon; guard32367.",
+      "evidence": "af.java: Removes and recycles every supplied icon, releasing owner/cache references; transition mask is unchanged; guard32367.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:af.a(ILvl;)V#1",
       "originalName": "param1",
       "to": "icons",
-      "evidence": "af.java: Clears icon animation bits and unlinks every supplied icon; guard32367.",
+      "evidence": "af.java: Removes and recycles every supplied icon, releasing owner/cache references; transition mask is unchanged; guard32367.",
       "confidence": "reviewed"
     },
     {
@@ -6594,6 +6909,69 @@
       "originalName": "param1",
       "to": "packet",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IIILaf;IIIII)Li;#0",
+      "originalName": "param0",
+      "to": "remainingOffset",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IIILaf;IIIII)Li;#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IIILaf;IIIII)Li;#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IIILaf;IIIII)Li;#3",
+      "originalName": "param3",
+      "to": "owner",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IIILaf;IIIII)Li;#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IIILaf;IIIII)Li;#5",
+      "originalName": "param5",
+      "to": "transitionBitIndex",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IIILaf;IIIII)Li;#6",
+      "originalName": "param6",
+      "to": "x",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IIILaf;IIIII)Li;#7",
+      "originalName": "param7",
+      "to": "achievementId",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(IIILaf;IIIII)Li;#8",
+      "originalName": "param8",
+      "to": "transitionBit",
+      "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
       "confidence": "reviewed"
     },
     {
@@ -7455,6 +7833,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "km.java: Requests parent screen transition; guard -1. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "i.java: Draws selected/hovered halos and cached earned/placeholder thumbnail; guard at least87.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "i.java: Consumes signed rounded-quarter offset; if initially stationary clears transition bit and processes hover/click; guard at most -125.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "i.java: Moves into pool, releases owner/thumbnail and resets placeholder marker; transition mask is unchanged; guard1.",
       "confidence": "reviewed"
     },
     {
@@ -9369,6 +9768,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nq.<init>(IILjp;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "nq.java: Retains sprite, origin and lowercased tooltip dimensions from font metrics/padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.<init>(IILjp;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "nq.java: Retains sprite, origin and lowercased tooltip dimensions from font metrics/padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.<init>(IILjp;Ljava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "sprite",
+      "evidence": "nq.java: Retains sprite, origin and lowercased tooltip dimensions from font metrics/padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.<init>(IILjp;Ljava/lang/String;)V#3",
+      "originalName": "param3",
+      "to": "tooltipText",
+      "evidence": "nq.java: Retains sprite, origin and lowercased tooltip dimensions from font metrics/padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nq.java: Always draws sprite; guard2 additionally draws tooltip when hovered.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nq.java: Replaces hover state using sprite pixel hit testing for current pointer; guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:od.<init>(Ljava/awt/Component;)V#0",
       "originalName": "param0",
       "to": "delegate",
@@ -10577,6 +11018,62 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "sg.java: Under mouse-input monitor copies coordinates/buttons/latch, clears pending press/change and increments idle ticks; guard70.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "bucketCount",
+      "evidence": "si.java: Creates circular bucket sentinels without enforcing power-of-two count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(IJ)Lnm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "si.java: Returns first matching key in bucket, retaining scan-next cursor, or null; guard below -23.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(IJ)Lnm;#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "si.java: Returns first matching key in bucket, retaining scan-next cursor, or null; guard below -23.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(ILnm;J)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "si.java: Moves node out of prior primary ownership, appends to masked bucket and retains key; guard34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(ILnm;J)V#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "si.java: Moves node out of prior primary ownership, appends to masked bucket and retains key; guard34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(ILnm;J)V#2",
+      "originalName": "param2",
+      "to": "key",
+      "evidence": "si.java: Moves node out of prior primary ownership, appends to masked bucket and retains key; guard34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.a(Z)Lnm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "si.java: Scans bucket chains in index/insertion order through shared mutable cursor; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:si.b(I)Lnm;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "si.java: Resets shared bucket traversal then returns next node; guard -15519.",
       "confidence": "reviewed"
     },
     {
@@ -12163,9 +12660,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "f970ddc763c6356e24bb0729121c785c39076037d8617f1a75941a6bcb81f774",
+      "build-brickabrac-rules.mjs": "f8338345c65aba86e594cb9117e2d8966ffb1c47c44d2a756bf2c46abd33e76f",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "091f800b700dbc81a0e6326e8c86eec3eaba4787cd4f4706abb26a7b9b363869",
+      "tests/test-brickabrac-core.mjs": "c534b66d50dcf3842cdf396e5164c42df3a892730aa91b432cd5d61487c28ef8",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
