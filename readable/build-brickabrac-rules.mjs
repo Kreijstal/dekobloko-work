@@ -59,12 +59,74 @@ const classes={
  od:['DelegatingCanvas','AWT canvas forwards paint/update to a retained component; unrelated static helpers retain their existing roles.'],
  gp:['DualLinkDeque','Sentinel deque using secondary links, with tail insertion, first removal and iterator. Static keyboard/global helpers remain separate from instance ownership.'],
  ae:['DualLinkIterator','Secondary-link deque iterator with current/next node and remove-after-next state; preserves the original nonstandard exhaustion behavior.'],
+ lh:['FramedMenuScreen','Menu base draws a frame around first/last button bounds; unrelated static helpers retain their roles.'],
+ oq:['PauseMenuScreen','IDs1–4/17 draw gameplay beneath a darkened framed menu, return to gameplay ID-1 and retain refreshed action IDs.'],
+ ah:['HighscoresScreen','ID5 renders score/name/from/to-level columns and filters scores by pack and selected score category.'],
+ lf:['RankingsScreen','ID6 renders player rating/played/won/lost/drawn columns and switches rating versus win-percentage sort.'],
+ md:['InstructionsScreen','ID7 renders numbered instruction pages and routes previous/next/tutorial actions; retains return screen ID.'],
+ af:['AchievementBrowserScreen','Shared paged achievement icons, descriptions, masks, page controls and incoming/outgoing icon transitions.'],
+ bl:['AchievementsScreen','ID8 browses earned and available achievements using accumulated earned mask and game-specific availability predicates.'],
+ cc:['NewAchievementsScreen','ID9 filters shared achievement pages to the pending mask before login/save handling.'],
+ hq:['SaveResultsPromptScreen','ID10 joins not-logged-in text with pending achievement/score prompt and offers login or discard actions.'],
+ uk:['MessageScreen','ID11 renders externally supplied message text and a return-to-menu action.'],
+ fp:['OptionsScreen','ID14 draws framed sound/music/toggle/fullscreen controls with parent-screen return.'],
+ ol:['LevelPackSelectScreen','ID16 shows two pack cards and routes action40/41 to level selection IDs13/15.'],
+ ld:['MatchResultScreen','Shared match-result presentation and centered action-row position; subclasses supply bottom anchor.'],
+ gn:['MultiplayerExitScreen','ID19 result/exit menu with return-to-lobby/resign actions; resign availability follows retained match state.'],
+ ab:['MatchCompleteScreen','ID20 completed multiplayer match menu with main-menu/rematch actions and full-height result anchor.'],
+ vq:['LevelCompleteScreen','ID18 single-player completion overlay offers continue/level-select/end-game; called when board state is8.'],
+ lc:['LevelPackCard','Pack-indexed icon/caption within owner menu button, with focus-start tick and selected-state update.'],
+ jf:['HighscorePackSelector','Highscore screen pack-icon selection with keyboard navigation, pointer hit testing and retained selection.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
 function local(owner,signature,ordinal,expectedOriginalName,to,evidence){members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName,evidence};}
 function parameter(owner,signature,ordinal,to,evidence){members[`P:${owner}.${signature}#${ordinal}`]={to,evidence};}
+field('oq','y','[I','refreshedActionIds','Retained alternate actions passed to initializeButtons by refreshMenu.');
+field('pe','o','Lqj;','gameplayScreen','Gameplay instance rendered beneath pause/completion menus and queried by scores/instructions.');
+field('md','u','I','pageIndex','Instruction text array index; previous/next actions clamp to available pages.');field('md','s','I','parentScreenId','Current screen ID retained at instruction entry and returned by parent getter.');
+field('lf','v','I','sortIndex','Action17 selects0/rating, action18 selects1/win percentage.');
+field('ah','s','I','packIndex','Selected level pack index used by highscore request and heading.');field('ah','t','I','scoreFilterIndex','Score filter0/all,1/mine,2/best-each follows action14/15/16.');field('ah','r','Ljf;','packSelector','Highscore pack-icon selection control.');
+field('hq','v','Ljava/lang/String;','promptText','Composed login/save message rendered in central panel.');field('qn','p','Ljava/lang/String;','messageText','Externally installed message rendered by screen11.');
+field('qn','u','[Ljava/lang/String;','packNames','Two pack names used by pack cards, scores and level selection.');field('hq','s','[Ljp;','packCardIcons','Pack-indexed large icons rendered by level-pack cards.');field('da','E','[Ljp;','packSelectorIcons','Pack-indexed icons rendered/hit-tested by highscore selector.');
+field('ol','u','Llc;','firstPackCard','Card for button1/pack0.');field('ol','t','Llc;','secondPackCard','Card for button2/pack1.');
+for(const [original,type,to,evidence] of [
+ ['m','I','packIndex','Pack name/icon index retained by constructor.'],['f','I','focusStartTick','Current client tick captured when focus first enters card.'],['d','Lq;','viewport','Owner button supplying card rectangle.'],['g','Z','focused','Whether owner selection points to card button.'],['h','Lkm;','owner','Owner menu supplying selected button index.'],['b','I','buttonIndex','Owner button index activating focus.'],['j','Ljp;','icon','Retained pack-indexed icon.'],['c','Ljava/lang/String;','caption','Lowercased pack name.'],
+])field('lc',original,type,to,evidence);
+for(const [original,type,to,evidence] of [
+ ['h','I','buttonIndex','Owner button whose selection activates pack control.'],['j','I','lastPointerY','Y captured by selection/update.'],['i','I','selectedPackIndex','Current pack index or -1 when control loses focus/navigation exits.'],['a','Lah;','owner','Highscores screen with viewport button.'],['e','I','lastPointerX','X captured by selection/update.'],['f','I','packCount','Configured icon/pack count and navigation bounds.'],['b','Z','keyboardSelection','Preserves chosen pack while pointer coordinates remain unchanged.'],
+])field('jf',original,type,to,evidence);
+for(const [original,type,to,evidence] of [
+ ['E','[Ljava/lang/String;','descriptionLines','Scratch lines produced by description wrapping.'],['C','Lvl;','visibleIcons','Current achievement icon nodes.'],['v','Lvl;','departingIcons','Previous page icons retained during transition.'],['t','[I','achievementMask','Subclass-supplied earned/pending bit mask.'],['y','[I','descriptionWidths','Line-width input for wrapping descriptions; constructor uses373.'],['z','[Lvl;','achievementPages','Page deques of achievement ID nodes,16 per page.'],['x','I','pageCount','Number of populated achievement pages.'],['w','I','pageIndex','Current achievement page.'],
+])field('af',original,type,to,evidence);
+field('mk','b','[I','earnedAchievementMask','Accumulated achieved bits used to avoid duplicate awards; server-received bits are merged into it.');field('pl','b','[I','pendingAchievementMask','Bits awaiting save/acknowledgment; record path sets supplied pending bit and incoming acknowledged bits clear it.');field('kp','c','Lvl;','achievementNotifications','ID nodes queued only when achievement is first recorded.');field('gn','D','[Ljava/lang/String;','savePrompts','Eight prompts indexed by achievement/score/progress bit combination.');
+method('lh','<init>','(IIIII[I)V','<init>','Delegates screen identity and menu geometry/actions.',['screenId','buttonLeft','buttonRight','buttonTop','buttonSpacing','actionIds']);
+method('lh','g','(I)V','drawMenuFrame','Frames bounds between first/last menu buttons with15-pixel margin; guard above34.',['obfuscationGuard']);
+method('oq','<init>','(I[I[I)V','<init>','Retains screen ID, initial and refreshed actions.',['screenId','initialActionIds','refreshedActionIds']);
+method('cf','a','(II)Loq;','createPauseMenu','Constructs pause menu action sets for screen IDs1/2/3/4/17; guard -2635.',['screenId','obfuscationGuard']);
+method('af','<init>','(I[I)V','<init>','Creates scratch text, icon queues and page deques based on description count.',['screenId','actionIds']);
+method('af','a','(IB)Z','isAchievementExcluded','Subclass filter: true omits achievement from pages.',['achievementId','obfuscationGuard']);
+method('af','a','(ZZZI)Ljava/lang/String;','buildSavePrompt','Selects prompt with bits4/2/1 for achievements/score/progress; guard126.',['hasAchievements','hasScore','hasProgress','obfuscationGuard']);
+method('af','g','(B)V','clearIconQueues','Clears both active/departing icon queues; guard at most -42.',['obfuscationGuard']);
+method('af','a','(ILvl;)V','clearIcons','Clears icon animation bits and unlinks every supplied icon; guard32367.',['obfuscationGuard','icons']);
+method('af','a','(IILvl;)V','showAchievementPage','Moves prior icons to departing queue and constructs new page icons using signed640-pixel transition offset.',['columnDivisor','transitionDirection','achievementIds']);
+method('kk','a','(ZLjava/lang/String;)V','setMessageText','Installs message text for screen11; true guard preserves unrelated static field.',['obfuscationGuard','text']);
+method('ld','<init>','(I[I)V','<init>','Delegates result menu identity/actions.',['screenId','actionIds']);
+method('ld','f','(I)I','getResultBottom','Subclass supplies result presentation bottom; guard -6.',['obfuscationGuard']);
+method('ld','h','(I)I','getResultButtonTop','Returns midpoint between284 and result bottom; guard6175.',['obfuscationGuard']);
+method('lc','<init>','(Lkm;Lq;II)V','<init>','Retains menu/viewport/button/pack and selects lowercased caption/icon.',['owner','viewport','buttonIndex','packIndex']);
+method('lc','a','(B)V','draw','Draws focused card border, icon and caption; guard above89.',['obfuscationGuard']);
+method('lc','b','(B)V','updateFocus','Copies owner selection and captures focus-start tick on entry; guard -75.',['obfuscationGuard']);
+method('jf','<init>','(Lah;II)V','<init>','Retains owner/button/count and starts with no selected pack.',['owner','buttonIndex','packCount']);
+method('jf','a','(ICI)Z','handleNavigationKey','Keys98/up and99/down select previous/next pack; out-of-range resets to-1 and returns true.',['keyCode','character','obfuscationGuard']);
+method('jf','b','(I)V','draw','Draws pack icons at owner button, with selected highlights.',['obfuscationGuard']);
+method('jf','a','(I)V','updatePointerSelection','Inactive control clears selection/history; active control tests icon pixels unless keyboard selection and pointer unchanged; guard above84.',['obfuscationGuard']);
+method('jf','c','(I)V','selectRelativeToEnd','Selects packCount plus supplied offset and retains pointer/keyboard mode; callers use-1 for last.',['offset']);
+method('jf','a','(B)V','selectFirst','Selects0 and retains pointer/keyboard mode; guard above32.',['obfuscationGuard']);
+method('eo','a','([IIB)Z','isBitSet','Tests bit in32-bit word array; guard -75.',['words','bitIndex','obfuscationGuard']);
+method('uo','a','(IB[I)Z','isBitClear','Tests absent bit in32-bit word array; arithmetic guard47.',['bitIndex','obfuscationGuard','words']);
+method('qj','a','(II)Z','recordAchievement','Already earned returns true without mutation; new award sets earned bit, supplied pending bit and queues ID, returning false.',['achievementId','pendingBit']);
 for(const [owner,original,type,to,evidence] of [
  ['gp','c','Lop;','keyboardInput','Global key/focus listener; key callbacks are inactive when null and snapshots synchronize on it.'],['tf','a','[I','javaKeyCodeMap','Java key-code translation table; bit7 suppresses press events and is stripped for releases.'],
  ['lo','b','[I','keyChangeQueue','128-entry ring; presses store mapped code and releases store its bitwise complement.'],['pl','d','I','keyChangeWriteIndex','Ring write index, or -1 after overflow/focus loss to request held-state reset.'],['ek','cb','I','keyChangeReadIndex','Read position for held-key change ring.'],['pe','l','[Z','heldKeys','112 mapped-key held flags updated at frame snapshot.'],
@@ -649,16 +711,25 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('rp')} / ${link('ud')} / ${link('de')} / ${link('vp')} / ${link('of')} | Main menu, level selection, membership benefits, timed splash and blank screens. |`,
 `| ${link('wg')} / ${link('od')} | Canvas focus boundary, screen registry and delegated paint/update. |`,
 `| ${link('uj')} / ${link('dm')} / ${link('gk')} / ${link('qk')} | Level-number scrolling/selection, mouse snapshots and accumulated wheel input. |`,
-`| ${link('op')} | Java key translation, held-state change ring and frame-bounded key/character events. |`, '',
+`| ${link('op')} | Java key translation, held-state change ring and frame-bounded key/character events. |`,
+`| ${link('lh')} / ${link('oq')} / ${link('fp')} | Menu framing, pause overlays, retained action sets and options. |`,
+`| ${link('ah')} / ${link('lf')} / ${link('md')} | Score/ranking filters and numbered instructions with return-screen state. |`,
+`| ${link('af')} / ${link('bl')} / ${link('cc')} | Achievement pages, displayed/departing icons and earned/pending masks. |`,
+`| ${link('hq')} / ${link('uk')} | Login/save prompt and externally supplied messages. |`,
+`| ${link('ol')} / ${link('lc')} / ${link('jf')} | Pack cards and keyboard/pointer pack selectors. |`,
+`| ${link('ld')} / ${link('gn')} / ${link('ab')} / ${link('vq')} | Match results/exit/completion and single-player completion overlay. |`, '',
+'| Registered menu ID | Screen |','| --- | --- |',
+...[[0,'rp'],['1–4,17','oq'],[5,'ah'],[6,'lf'],[7,'md'],[8,'bl'],[9,'cc'],[10,'hq'],[11,'uk'],[12,'de'],['13,15','ud'],[14,'fp'],[16,'ol'],[18,'vq'],[19,'gn'],[20,'ab'],[21,'vp']].map(([id,owner])=>`| ${id} | ${link(owner)} |`), '',
 'Focused raw/named probes check body geometry, paddle sizes, player masks, deque ownership, histories, power-ups, waypoint motion, selected contacts, packet operations and body/path snapshots. ISAAC fixtures use an independent unsigned-word model anchored to [Bob Jenkins’s published vectors](https://burtleburtle.net/bob/rand/randvect.txt), then compare seeded words/state, refill/counter boundaries, bounded rejection, shuffling, board random-call accounting and opcode bytes. Audio fixtures check event construction; playback remains unverified. The client flag uses a headless Applet-compatible shim and board/match construction is bypassed. Full board snapshots, swept collision detection, gameplay, score accounting, live multiplayer and browser/phone behavior remain unverified.','',
 'Level fixtures check sequence order/repeats and caller-owned arrays, metadata labels/fields, payload-only pack appends, empty pack loading, all versions0–5, legacy regrouping, generated borders, path counts, wrapper delegation and early rejection. They retain negative-version default bricks and unchanged metadata after payload append. Metadata attribute byte/word and pack completion word remain qualified. Nonempty archive retrieval, full board initialization and rendered level selection remain unverified.','',
 'Pixel fixtures check clipped solid/alpha fills and lines, darkening/grayscale, clip save/restore/reset, clear bounds, RGB copy/zero transparency and ARGB per-pixel rounding. Sprite fixtures check crop placement, copies, mirrors, quarter-turns, hit testing and raster binding. Secondary-link fixtures keep primary ownership intact. Gradients, arbitrary lines, transparent-border trimming, image decoding and full browser presentation remain unverified.','',
 'Menu fixtures check a real base-menu subclass, button rectangles/lookup/markers, entry selection, key-code predicates, vertical/horizontal wrap/fallback and held suppression, direct selection and registry bounds. Blank/benefits/splash constructors retain their IDs; canvas focus-loss callbacks retain their latch. Other screen roles come from registration and inspected callers. Level-list fixtures preserve row geometry, unclamped/direct and clamped/delta scrolling, first/last selection, numeric key navigation and pointer-selection sentinels. Mouse fixtures exercise AWT callbacks, frame latches, wheel polling and the reflective wheel factory (including its owned class-name literal). Preview fixtures bypass screen construction and check decoding/path attachment, fixed8 bounds, excluded/border bricks, stationary preview velocity and repeated clearing. Font metrics are controlled; OS event dispatch, list rendering, full menu startup, action dispatch, transition installation and rendered menu flows remain unverified.','',
 'Keyboard fixtures anchor the AWT arrow translations:98/up,99/down,96/left and97/right. Earlier horizontal/vertical method labels were reversed and are corrected; the96/97/102/103 predicates now name left/right/Home/End from the same translation table. Probes check held-state changes, overflow/focus reset,127-event capacity, per-frame cutoffs, callbacks, consumption, and listener attachment/detachment/disable. Legacy character filtering matches Java Windows-1252 for every UTF-16 code unit with zero excluded. OS dispatch and complete keyboard-driven gameplay remain unverified. Canvas probes verify paint/update forwarding. Secondary-deque probes cover ownership/order/iterator removal with primary links intact. Original iterator exhaustion is retained: an exhausted next returns null, hasNext becomes true and the following next throws NullPointerException.','',
+'Screen roles follow registrations and executed draw/action methods with their localized labels; unrelated static strings do not determine a class role. Native fixtures instantiate/register all22 slots with controlled fonts/labels/icons and empty packs, check pause actions before/after refresh, result anchors and instruction return state. Pack fixtures check focus timing, keyboard bounds and pixel selection, retaining the prior selection on transparent misses. Achievement fixtures cover256-bit storage, duplicate awards, optional pending bits, notification order, BitSet comparisons and all eight save prompts. The initializer’s final client bootstrap, rendered panels, page-transition animation, authenticated scores and server persistence remain unverified.','',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:10,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:11,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

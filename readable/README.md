@@ -54,6 +54,9 @@ scrolling and the AWT pointer/wheel input boundary.
 KeyboardInput exposes key translation, held-state changes and frame-bounded
 key/character events. DelegatingCanvas forwards AWT rendering to its component;
 DualLinkDeque/DualLinkIterator expose independent secondary-link ownership.
+All22 registered menu slots now resolve to named screens, including framed/pause
+menus, highscores, rankings, instructions, achievement browsers, save prompts,
+messages, options, pack selection and level/match completion/exit presentations.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -185,7 +188,8 @@ refresh, back-navigation and action/key hooks are named through resolved
 override families. Button labels remain indexed by original numeric action IDs.
 Screen requests name the current/pending screen and registry, with confirmed
 roles for ID0 main menu, IDs13/15 level selection, ID12 member benefits,
-ID21 timed splash and ID-2 blank screen. Other screens retain unresolved names.
+ID21 timed splash and ID-2 blank screen. The generated guide maps all22 menu
+slots; other UI helpers remain partially unresolved.
 
 Native fixtures construct a base-menu subclass and check geometry, half-open
 button bounds, first-hit lookup for overlapping rows, pressed reset, exclusive
@@ -245,6 +249,31 @@ The iterator's original exhaustion behavior is retained: one exhausted next
 returns null, hasNext then returns true, and another next throws NullPointerException.
 These probes invoke callbacks directly; OS dispatch and complete keyboard-driven
 gameplay remain unverified.
+
+Screen roles follow registrations, invoked drawing/action methods and the actual
+localized labels used there, rather than arbitrary static strings in the same
+class. FramedMenuScreen supplies menu framing; PauseMenuScreen retains initial
+and refreshed action arrays and renders above gameplay. Instructions retain a
+page and return-screen ID. Score/ranking controls retain pack/filter/sort state.
+LevelPackCard names its caption/icon, owner button and focus-start tick;
+HighscorePackSelector names keyboard/pointer mode and selected pack.
+
+AchievementBrowserScreen names page/index queues, displayed/departing icons,
+wrapped description scratch data and subclass achievement mask. AchievementsScreen
+uses accumulated earned bits; NewAchievementsScreen selects pending bits.
+The recording path avoids duplicate awards, optionally sets a pending bit and
+queues one notification per new ID. Save prompts index achievements/score/progress
+with bits4/2/1. Packet acknowledgment and actual persistence remain unverified.
+
+Native screen fixtures instantiate and register every slot0–21 using controlled
+fonts, labels, pack icons and empty packs. They verify pause action sets before
+and after refresh, result anchors and instruction entry/return state. Pack-widget
+fixtures check focus timing, captions/icon identity, keyboard bounds and pixel
+hits; a transparent miss preserves the previous highscore-pack selection.
+Achievement fixtures compare bit helpers with BitSet, test all256 storage bits,
+duplicate/no-pending behavior, notification order and all eight save-prompt cases.
+The full initializer's final client bootstrap, rendered panels, page-transition
+animation, authenticated highscore retrieval and server save flows remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
