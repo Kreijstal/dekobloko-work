@@ -10,6 +10,17 @@ import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} fr
 const SOURCE_COMMIT = 'f9a6dd401349b0d2b3a426a62d2ee09c32514c63';
 // Evidence below refers to this immutable Java input, not to another game's map.
 const classes = {
+  nl:['SingleChildWidgetContainer','Abstract child wrapper forwarding focus, translated pointer input, wheel input, tooltips and drawing; unrelated static asset helpers remain separate.'],
+  hs:['ArrayWidgetContainer','Abstract sparse child-array container with ordered focus/input, reverse drawing and subclass layout hook.'],
+  tj:['DequeWidgetContainer','Intrusive child-deque container with forward input/focus traversal and reverse drawing.'],
+  gw:['WidgetContainerMarker','Empty marker implemented by the single-child, array and deque container bases.'],
+  qm:['ClippedWidgetContainer','Single-child viewport clipping drawing and rejecting pointer presses outside its own bounds.'],
+  bh:['AlphaWidgetContainer','Single-child wrapper drawing layer zero directly at alpha 256 or through a temporary sprite at intermediate alpha.'],
+  wc:['DraggableWidgetContainer','Child wrapper retaining press offsets and a return position, with pointer dragging and optional eased return.'],
+  fr:['WidgetDragListener','Drag-position callback carrying wrapper and parent origin coordinates.'],
+  nv:['ScrollControlWidget','One- or two-axis scroll control with draggable thumb, track, optional directional buttons and normalized 16.16 positions.'],
+  jw:['ScrollControlListener','Separate scroll adjustment and drag callbacks; pinned callers retain their axis-argument quirks.'],
+  ai:['ScrollWidgetContainer','Clipped content plus optional horizontal/vertical controls, placement flags, wheel routing and normalized content offsets.'],
   fw:["InteractiveWidget","Widget with enabled/focusable/focused/active flags, pointer press/release and activation callbacks."],
   fn:["EditableTextWidget","Interactive text widget with caret/anchor, length limit, keyboard editing, word/double-click selection, clipboard helpers and horizontal caret scrolling."],
   hv:["HotspotTextWidget","Interactive text widget deriving linked hit regions from hotspot markup, reporting activation IDs and optional hover labels."],
@@ -314,6 +325,93 @@ function constructorParameters(owner,descriptor,names,evidence) {
 function local(owner,signature,ordinal,originalName,to,evidence) {
   members[`L:${owner}.${signature}#${ordinal}`]={to,evidence,expectedOriginalName:originalName};
 }
+field('nl','E','Lkb;','child','Single retained child; all wrapper input/focus/layout/drawing paths delegate to it.');
+field('hs','C','[Lkb;','children','Sparse indexed children; focus and input traverse forward, drawing traverses backward.');
+field('tj','D','Lat;','children','Owns primary intrusive child membership; addChild appends, input traverses forward and drawing backward.');
+field('bh','K','I','alpha','Layer-zero drawing skips zero, passes through at 256, otherwise composites a temporary sprite.');
+for(const [original,to] of [['O','returnX'],['M','returnY'],['P','returnAfterDrag'],['I','childPressPreventsDrag'],['N','pressOffsetX'],['L','pressOffsetY']])
+  field('wc',original,['P','I'].includes(original)?'Z':'I',to,'Drag press offsets are relative to parent origin and wrapper bounds; layout stores the return position; optional return halves large deltas and steps small ones.');
+field('bn','f','Lwc;','draggedWidget','Set by primary-button wrapper press; root/drop routing clears it after release callbacks.');
+field('ai','S','Lqm;','viewport','Clipped wrapper around scrollable content, retained in child slot two.');
+field('ai','K','Lnv;','verticalControl','Child slot one; wheel deltas advance its normalized vertical position.');
+field('ai','Q','Lnv;','horizontalControl','Optional horizontal control in layout and normalized content X calculations.');
+field('ai','O','Z','verticalControlOnRight','True places vertical control at right and viewport X at zero; false places it left.');
+field('ai','L','Z','horizontalControlAtBottom','True places horizontal control at bottom and viewport Y at zero; false places it top.');
+for(const [original,type,to] of [['U','Lfw;','leftButton'],['Y','Lfw;','rightButton'],['Z','Lfw;','upButton'],['ab','Lfw;','downButton'],['P','Lfw;','track'],['O','Lwc;','thumb'],['M','Z','verticalEnabled'],['V','Z','horizontalEnabled'],['N','Z','adjustmentEnabled'],['K','I','horizontalStep'],['Q','I','verticalStep'],['S','I','horizontalPageStep'],['R','I','verticalPageStep'],['T','I','horizontalPosition'],['W','I','verticalPosition'],['X','I','minimumThumbWidth'],['L','I','minimumThumbHeight']])
+  field('nv',original,type,to,'Constructor, layout, thumb-ratio sizing, keyboard/track/button routing and 16.16 position setters establish this axis-specific role.');
+method('kb','g','(I)I','getMaximumRenderLayer','Root returns zero; containers return maximum child layer; drawAllLayers visits zero through this maximum inclusively.',{0:'obfuscationGuard'});
+method('kb','e','(I)V','refreshLayout','Reapplies current bounds through virtual setBounds with canonical guard 8192.',{0:'obfuscationGuard'});
+method('kb','a','(III)V','drawAllLayers','Draws layers zero through getMaximumRenderLayer inclusively with supplied parent origin.',{0:'originX',1:'obfuscationGuard',2:'originY'});
+method('kb','a','(IIIIIILkb;)Z','handleWheel','Root input pump supplies pointer coordinates, parent origin and wheel delta; containers route only to focused children.',{0:'pointerX',1:'originX',2:'originY',3:'pointerY',4:'wheelDelta',5:'obfuscationGuard',6:'rootWidget'});
+method('nl','b','(Z)V','layoutChild','Default refreshes child bounds; drag wrapper fits child to own dimensions and records return position.',{0:'obfuscationGuard'});
+method('hs','d','(B)V','layoutChildren','Virtual layout hook called after setBounds; scroll control/container place track, thumb and viewport.',{0:'obfuscationGuard'});
+method('tj','i','(I)V','refreshChildLayouts','Refreshes every child after container bounds change.',{0:'obfuscationGuard'});
+method('tj','a','(BLkb;)V','addChild','Appends child through intrusive NodeDeque.addLast, moving existing membership.',{0:'obfuscationGuard',1:'child'});
+for(const [owner,original,descriptor] of [['nl','a','(I)Lkb;'],['hs','a','(B)Lkb;'],['tj','e','(B)Lkb;']])
+  method(owner,original,descriptor,'getFocusedChild','Returns first focused owned child or null.',{0:'obfuscationGuard'});
+method('nl','b','(ILkb;)Z','focusPreviousChild','Single-child previous traversal accepts only a nonfocused child; does not wrap a focused child.',{0:'obfuscationGuard',1:'rootWidget'});
+method('nl','a','(Lkb;B)Z','focusNextChild','Single-child next traversal accepts only a nonfocused child.',{0:'rootWidget',1:'obfuscationGuard'});
+method('hs','a','(Lkb;IZ)Z','focusForwardBy','Finds focused slot then advances by supplied positive step until a child accepts focus; no wrap.',{0:'rootWidget',1:'step',2:'obfuscationGuard'});
+method('hs','a','(BLkb;I)Z','focusBackwardBy','Finds last focused slot then retreats by supplied positive step until a child accepts focus; no wrap.',{0:'obfuscationGuard',1:'rootWidget',2:'step'});
+method('hs','b','(ILkb;)Z','focusNextChild','Forward focus traversal with step one.',{0:'obfuscationGuard',1:'rootWidget'});
+method('hs','a','(BLkb;)Z','focusPreviousChild','Backward focus traversal with step one.',{0:'obfuscationGuard',1:'rootWidget'});
+method('tj','b','(BLkb;)Z','focusNextChild','Walks forward from focused deque child to next accepting child without wrapping.',{0:'obfuscationGuard',1:'rootWidget'});
+method('tj','a','(ZLkb;)Z','focusPreviousChild','Walks backward from focused deque child without wrapping.',{0:'obfuscationGuard',1:'rootWidget'});
+method('ai','a','(BZLnv;)V','setVerticalControl','Stores control and right/left placement flag in child slot one; does not itself relayout.',{0:'obfuscationGuard',1:'onRight',2:'control'});
+method('ai','c','(II)Z','scrollVertically','Returns false without vertical control; otherwise changes normalized position by wheelDelta*verticalStep.',{0:'wheelDelta',1:'obfuscationGuard'});
+method('ai','f','(B)V','updateThumbSizes','Sizes each thumb from viewport/content extent, substituting 1/1 when content fits.',{0:'obfuscationGuard'});
+method('ai','e','(B)V','applyScrollPositions','Writes child X/Y as negative overflow times normalized 16.16 axis position.',{0:'obfuscationGuard'});
+for(const [original,descriptor,to,parameters,evidence] of [
+ ['a','(BI)V','setVerticalPosition',{0:'obfuscationGuard',1:'position'},'Clamps to zero through 65536 and updates thumb Y without callback.'],
+ ['e','(II)V','setHorizontalPosition',{0:'obfuscationGuard',1:'position'},'Clamps to zero through 65536 and updates thumb X without callback.'],
+ ['d','(II)V','adjustVerticalPosition',{0:'position',1:'obfuscationGuard'},'Sets/clamps position then invokes adjustment listener with vertical position in both integer arguments.'],
+ ['a','(IB)V','adjustHorizontalPosition',{0:'position',1:'obfuscationGuard'},'Sets/clamps position then invokes adjustment listener with vertical then horizontal positions.'],
+ ['a','(IBI)V','sizeHorizontalThumb',{0:'contentWidth',1:'obfuscationGuard',2:'viewportWidth'},'Fits thumb to track when content fits; otherwise applies proportional width and minimum, then positions it.'],
+ ['b','(III)V','sizeVerticalThumb',{0:'viewportHeight',1:'obfuscationGuard',2:'contentHeight'},'Fits thumb to track when content fits; otherwise applies proportional height and minimum, then positions it.'],
+ ['a','(BZ)V','setHorizontalOverflow',{0:'obfuscationGuard',1:'overflow'},'Enables track/thumb if overflow or other axis active, and horizontal buttons only for horizontal overflow.'],
+ ['b','(BZ)V','setVerticalOverflow',{0:'obfuscationGuard',1:'overflow'},'Enables track/thumb if overflow or other axis active, and vertical buttons only for vertical overflow.'],
+ ['b','(Z)I','getVerticalPageFraction',{0:'obfuscationGuard'},'Returns thumb height divided by track height in 16.16 units; zero track height retains division failure.'],
+ ['m','(I)V','positionThumbX',{0:'obfuscationGuard'},'Places thumb along available horizontal travel using normalized position.'],
+ ['n','(I)V','positionThumbY',{0:'obfuscationGuard'},'Places thumb along available vertical travel using normalized position.'],
+ ['k','(I)V','readThumbX',{0:'obfuscationGuard'},'Converts dragged thumb X into normalized position, or zero for nonpositive travel.'],
+ ['j','(I)V','readThumbY',{0:'obfuscationGuard'},'Converts dragged thumb Y into normalized position, or zero for nonpositive travel.']
+])method('nv',original,descriptor,to,evidence,parameters);
+method('fr','a','(Lwc;III)V','widgetDragged','Wrapper reports changed drag coordinates after storing position.',{0:'widget',1:'originY',2:'obfuscationGuard',3:'originX'});
+method('jw','a','(BLnv;II)V','scrollAdjusted','Adjustment callback; parameter order follows pinned callers, whose vertical path supplies vertical position twice.',{0:'obfuscationGuard',1:'control',2:'verticalPosition',3:'horizontalPosition'});
+method('jw','a','(IIBLnv;)V','scrollDragged','Drag callback; horizontal-only change supplies horizontal position twice, vertical change supplies both axes.',{0:'horizontalPosition',1:'verticalPosition',2:'obfuscationGuard',3:'control'});
+const containerBounds={0:'x',1:'y',2:'width',3:'height',4:'painter'};
+for(const [owner,signature,names] of [
+ ['tj','g(I)I',[[0,'var5','childLayer'],[1,'var6','obfuscationControl'],[2,'var2','maximumLayer'],[3,'var3','iterator'],[4,'var4','child']]],
+ ['tj','e(B)Lkb;',[[0,'var2','iterator'],[1,'var3','child'],[2,'var4','obfuscationControl']]],
+ ['tj','i(I)V',[[0,'var4','obfuscationControl'],[1,'var2','iterator'],[2,'var3','child']]],
+ ['tj','a(IIBI)V',[[0,'var7','obfuscationControl'],[1,'var5','iterator'],[2,'var6','child']]],
+ ['tj','a(IIIIIILkb;)Z',[[0,'var8','iterator'],[1,'var8_ref','failure'],[2,'var9','child'],[3,'var10','obfuscationControl']]],
+ ['tj','a(IIIILkb;II)Z',[[0,'var8','iterator'],[1,'var8_ref','failure'],[2,'var9','child'],[3,'var10','obfuscationControl']]],
+ ['hs','g(I)I',[[0,'var4','childIndex'],[1,'var2','maximumLayer'],[2,'var3','childArray'],[3,'var5','child'],[4,'var7','obfuscationControl'],[5,'var8','guardWidget'],[6,'var6','childLayer']]],
+ ['hs','a(IIBI)V',[[0,'var5','childIndex'],[1,'var6','child'],[2,'var7','obfuscationControl']]],
+ ['hs','a(B)Lkb;',[[0,'var3','childIndex'],[1,'var2','childArray'],[2,'var4','child'],[3,'var5','obfuscationControl'],[4,'var6','retainedChildren']]],
+ ['hs','a(IIILkb;)V',[[0,'var6','childIndex'],[1,'var7','child'],[2,'var8','obfuscationControl'],[3,'var9','guardWidget'],[4,'var10','childArray'],[9,'var5','failure']]],
+ ['hs','a(IIIIIILkb;)Z',[[0,'var9','childIndex'],[1,'var8','childArray'],[2,'var8_ref','failure'],[3,'var10','child'],[4,'var11','obfuscationControl'],[5,'var12','retainedChildren']]],
+ ['hs','a(Lkb;IZ)Z',[[0,'var4_int','childIndex'],[1,'var4','failure'],[2,'var5','child'],[3,'var6','focusedCandidate'],[4,'var7','obfuscationControl'],[10,'var6Lifetime1','scannedChild'],[11,'var6Lifetime2','nextChild']]],
+ ['hs','a(BLkb;I)Z',[[0,'var4_int','childIndex'],[1,'var4','failure'],[2,'var5','child'],[3,'var6','focusedCandidate'],[4,'var7','obfuscationControl'],[9,'var6Lifetime1','scannedChild'],[10,'var6Lifetime2','previousChild']]],
+ ['nv','n(I)V',[[0,'var3','maximumThumbY'],[1,'var2','minimumThumbY']]],
+ ['nv','m(I)V',[[0,'var2','minimumThumbX'],[1,'var3','maximumThumbX'],[2,'var2Lifetime1','guardMinimumThumbX'],[3,'var3Lifetime1','guardMaximumThumbX']]],
+ ['nv','j(I)V',[[0,'var3','maximumThumbY'],[1,'var2','minimumThumbY']]],
+ ['nv','k(I)V',[[0,'var2','minimumThumbX'],[1,'var3','maximumThumbX']]],
+ ['nv','a(IBI)V',[[0,'var4','thumbWidth']]],
+ ['nv','b(III)V',[[0,'var4','thumbHeight']]],
+ ['bh','a(IIBI)V',[[0,'var6','compositeSprite']]],
+ ['wc','a(IIILkb;)V',[[0,'stackIn_18_1','previousX'],[1,'stackIn_19_2','returnStepX'],[2,'stackIn_25_1','previousY'],[3,'stackIn_26_2','returnStepY'],[8,'var5_int','pointerXOrReturnDelta'],[9,'var5','failure'],[10,'var6','pointerY']]],
+ ['ai','<init>(IIIILkh;Lkb;Lkh;)V',[[0,'dupTemp$0','contentViewport'],[1,'runtimeException','failure']]],
+ ['ai','d(B)V',[[106,'var2','viewportX'],[107,'var3','viewportY'],[108,'var4','viewportWidth'],[109,'var5','viewportHeight']]],
+])for(const [ordinal,originalName,to] of names)local(owner,signature,ordinal,originalName,to,'Reviewed container traversal, layer reduction, viewport placement, thumb travel or drag-return calculation; original ordinal and spelling are pinned.');
+for(const owner of ['hs','tj'])constructorParameters(owner,'(IIIILkh;)V',containerBounds,'Retains explicit Widget bounds and painter with null listener.');
+constructorParameters('nl','(IIIILkh;Lqo;)V',{...containerBounds,5:'listener'},'Forwards bounds/painter/listener to Widget.');
+constructorParameters('qm','(IIIILkh;Lkb;)V',{...containerBounds,5:'child'},'Retains child for clipped drawing and translated input.');
+constructorParameters('bh','(Lkb;)V',{0:'child'},'Copies child bounds into wrapper and resets child origin to zero.');
+constructorParameters('wc','(IIIILkh;Lqo;Lkb;ZZ)V',{...containerBounds,5:'listener',6:'child',7:'returnAfterDrag',8:'childPressPreventsDrag'},'Retains child and drag policies, defaults return position to integer maximum until layout.');
+constructorParameters('ai','(IIIILkh;Lkb;Lkh;)V',{...containerBounds,5:'content',6:'viewportPainter'},'Creates three child slots, clipped content in slot two, then lays out children.');
+constructorParameters('nv','(IIIILkh;Lkh;Lkh;IIIIZZII)V',{...containerBounds,5:'trackPainter',6:'thumbPainter',7:'thumbWidth',8:'thumbHeight',9:'minimumThumbWidth',10:'minimumThumbHeight',11:'horizontalEnabled',12:'verticalEnabled',13:'horizontalPosition',14:'verticalPosition'},'Creates track and draggable thumb; retains axis flags/minima, clamps initial positions, then lays out.');
 for(const [owner,signature,names] of [
  ["dv","b(I)V",[[0,"var6","suggestionIndex"],[1,"var2","overlayOpacity"],[2,"var3","shadowY"],[3,"var4","shadowLayer"],[4,"var5","obfuscationControl"],[5,"var2Lifetime1","guardQuotient"],[6,"var3Lifetime1","suggestionY"],[7,"var4Lifetime1","initialSuggestionIndex"]]],
  ["dv","a(BI)Lje;",[[0,"var4","guardRemainder"],[1,"var3","style"]]],
@@ -3438,6 +3536,9 @@ export function buildArmiesGuide(rules,mapping) {
     `This gameplay naming pass reviews ${Object.keys(classes).length} class identities across all ${mapping.files.length} compiled classes. Other class/member names remain unresolved. Unresolved packed flags use bit-position names without guessing gameplay effects. Renamed identifiers have no opaque suffixes; the dictionary records their original identities.`, '',
     'Widget, WidgetPainter, DropdownSelector, DropdownOptionList and DropdownArrowPainter expose the shared UI bounds and dropdown flow. Controlled fixtures check half-open base hit bounds, case-insensitive first-prefix matching, option validation/selection and the arrow painter’s pixels. The option-list hit override retains its different inclusive edges; complete interactive menu behavior remains unverified.','',
     '| Start here | Follow |','| --- | --- |',
+    `| ${link('nl')} / ${link('hs')} / ${link('tj')} | Single-child, sparse-array and intrusive-deque ownership, translated input, focus traversal and render layers. |`,
+    `| ${link('qm')} / ${link('bh')} / ${link('wc')} | Clipped viewport, layer-zero alpha composition, drag capture and eased return. |`,
+    `| ${link('ai')} / ${link('nv')} / ${link('fr')} / ${link('jw')} | Scroll content, two-axis normalized thumb positions, drag and adjustment callbacks. |`,
     `| ${link('je')} / ${link('nf')} / ${link('mq')} | Client UI style/layout/input, icon/text composition and quick-chat menu navigation. |`,
     `| ${link('ll')} / ${link('dn')} | Scrollbar geometry, held-button repeat, draggable thumb and clipped scrolling content. |`,
     `| ${link('dp')} / ${link('np')} | Editable text, selection/clipboard lifecycle and popup action rows. |`,
@@ -3654,6 +3755,8 @@ export function buildArmiesGuide(rules,mapping) {
     'MusicCrossfadeStream names both background slots/tracks, selected sequencer, master gain, fixed-point fade position/step, scratch arrays and one-shot return. selectTrack reuses a matching track without restarting its reader, replaces the empty or quieter slot for a new track, and preserves direction while replacing an existing one-shot. configureSelectedSequencer applies all-channel gain and MIDI time scale. The shared musicCrossfadeStream, musicPlayer, directMusicSequencer and currentDirectMusicTrack fields now distinguish the global routes; setMusicTrack updates direct gain even when track identity is unchanged, but stops/flushes/restarts only on a change.', '',
     'AdaptiveMidiPcmStream names overallGain, fixedChannelGains, gainSteps, targetProfile and gainsSettled; ChannelGainProfile owns sixteen initially zero targets. The negative-channel setter changes only the overall multiplier, whereas a channel-specific setter updates base/fixed gain without clearing pending steps. Render temporarily multiplies the original master volume, runs the base sequencer, advances channel ramps after the block and restores master volume on normal return. Inherited final skip advances MIDI/PCM but leaves ramps unchanged. Profile identity is retained and mutable target changes are observed live.', '',
     'SoundPlaybackHandle names stream, lifetimeNode and unscaledVolume. Immediate playRawSound creates and appends a handle before adding raw playback to effectsMixer. Volume/default/pan wrappers identify external factory units, including the full-width integer guard bridge. Constructor and setEffectsGain use rounded unscaledVolume*effectsGain/256; volume changes also prune handles whose lifetime node has unlinked. primary soundHandles and optional additionalSoundHandles are distinct from the music player/crossfade route. The optional second list has only null-assignment writers in the pinned source.', '',
+    'SingleChildWidgetContainer, ArrayWidgetContainer and DequeWidgetContainer name owned children and focus routing. Focus traversal skips ineligible children without wrapping; array input skips null slots. Pointer input adds container origins, while wheel routing preserves its supplied origins and forwards container-specific guard values. Drawing visits children in reverse order for array/deque containers and layers zero through the maximum inclusively. refreshLayout reapplies bounds through the virtual layout hook. ClippedWidgetContainer bounds pointer presses and restores the raster clip after normal drawing. AlphaWidgetContainer draws only layer zero, skips zero alpha and passes through at 256; intermediate alpha uses a temporary sprite. DraggableWidgetContainer records local press offsets, captures the shared draggedWidget, emits position callbacks and optionally eases back to its layout position.', '',
+    'ScrollControlWidget supports both axes, retaining normalized positions from zero through 65536, step/page increments, track, draggable thumb, optional directional buttons and minimum thumb sizes. ScrollWidgetContainer combines clipped content and controls, sizes thumbs from viewport/content ratios and writes negative overflow times normalized position into child coordinates. Controlled fixtures cover left/right/top/bottom placement, two-axis offsets, saturation, keyboard adjustment and actual thumb dragging. Pinned callback quirks remain: vertical adjustment reports vertical position twice, while horizontal drag reports horizontal position twice. Content smaller than the viewport still receives the signed overflow offset, which may be positive. Fixtures exercise the constructor-created track and thumb; optional directional-button initialization and a full rendered scrolling session remain unverified. These names preserve bodies and guard behavior; they do not repair source quirks or establish original-JAR equivalence.', '',
     'InteractiveWidget names enabled, focusable, focused, active, lastActivationButton and the inherited pressedButton/hovered/listener/tooltipText state. WidgetListener, WidgetFocusListener, WidgetActivationListener, WidgetPointerListener and WidgetHoverListener expose the callback contracts. takeFocus checks enable/focus eligibility, blurs the supplied root and stores focus before notifying; self-refocus emits false then true. Pointer press can proceed without taking focus, and release notification precedes clearing the button. Activation stores its button even when notification is suppressed. Native callback fixtures preserve ordering, focus gates, keyboard activation and hover transitions.', '',
     'EditableTextWidget and EditableTextWidgetListener name caret/anchor, maximumLength, word-drag end, click/input timestamps, automatic scrolling, keyboard editing, change/submission callbacks and clipboard helpers. Native vectors cover every byte character under unlimited/zero/one/four length limits, selection replacement and callback counts, left/right/home/end with Shift/Control, space-based word boundaries, deletion and unconditional clear notification. setText normalizes null, truncates finite limits and can suppress notification. Direct key handling retains its original behavior without an additional focus check; caller dispatch remains responsible for routing input.', '',
     'The pure insertion helper preserves the pinned finite-paste bug: remaining capacity at or above zero returns without insertion, while over-limit text can fail on a negative substring bound. Unlimited insertion accepts pasted Unicode/angle brackets, unlike typed printable ASCII filtering. Native fixtures check this helper and retained selection/text on failure without accessing the system clipboard. Pointer fixtures steer timestamps far from the double-click threshold, test ordinary and word-boundary selection, word-drag clamping/reversal and horizontal caret scrolling. Real clipboard transfer, timing at the 250 ms boundary, blink timing and operating-system input remain unverified.', '',
@@ -3713,7 +3816,7 @@ export function buildArmiesManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:63,
+    const rules={schema:1,game:'armiesofgielinor',version:64,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

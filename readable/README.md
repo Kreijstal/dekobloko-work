@@ -98,6 +98,17 @@ If dependencies live in another checkout, set `JAVA_TOOLS_NODE_DEPS_DIR` to it.
 
 ## Armies of Gielinor
 
+Widget containers now name single-child, sparse-array and deque ownership,
+focus traversal, translated pointer routing, render-layer reduction and layout
+refresh. Clipped/alpha/drag wrappers identify viewport bounds, opacity, press
+offsets and eased return. ScrollWidgetContainer and ScrollControlWidget expose
+two-axis normalized positions, thumb ratios, placement, wheel routing and
+content offsets. Independent native fixtures check drawing order, clipping and
+alpha pixels, focus skips without wrapping, drag callbacks, both-axis placement
+and scroll saturation. The source’s duplicate-axis callback arguments and
+positive offsets for content smaller than its viewport remain unchanged.
+Full rendered scrolling and original-JAR equivalence remain unverified.
+
 Widget, WidgetPainter, DropdownSelector, DropdownOptionList and DropdownArrowPainter now name bounds, painter dispatch, option selection, keyboard-prefix search and dropdown expansion. Independent fixtures check base pointer bounds, first-prefix matching, option validation/selection and complete arrow pixels. The option-list override retains its different inclusive hit bounds; full interactive dropdown behavior remains unverified.
 
 The raw naming input reconstructs Battlefield.eliminatePlayer,
@@ -237,7 +248,7 @@ controls, waiting/cancellation and icon/label layout. Report action 17 opens thi
 dialog; action 19 uses quick-chat context for auto-response. Native constructor and
 report-frame fixtures retain NUL-name partial failure and byte narrowing. The
 current generated guide contains both incoming and outgoing payload tables.
-All 367,343 raw/named checks agree. Controlled cipher output does not constitute
+All 369,155 raw/named checks agree. Controlled cipher output does not constitute
 an independent ISAAC proof. Live request/report delivery, complete social actions,
 and a full rendered report-dialog session remain unverified.
 
@@ -604,7 +615,7 @@ name rendering roots; flat/constant-shade pixel and clip fixtures run real metho
 Matrix-backed rotation/scale, textured triangles and rendered animation remain
 unverified.
 
-The current pass names 282 reviewed classes around battlefield state, units, map
+The current pass names 293 reviewed classes around battlefield state, units, map
 tiles, teams, gameplay coordination, movement, AI, tutorial, events and packet
 decoding, including unit/action/global spells and prepared battlefield actions. This pass
 also names event presentations, combat camera/characters, per-unit AI candidates,
