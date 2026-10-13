@@ -42,7 +42,8 @@ The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
 
 The semantic passes name GameScreen/GameplayScreen, MultiplayerMatch,
 PlayerBoard, moving/circular/rectangular bodies, Ball/Brick/Paddle and intrusive
-nodes/deques, plus IntHistoryBuffer/ObjectHistoryBuffer, PowerUp and ScorePopup.
+nodes/deques, plus IntHistoryBuffer/ObjectHistoryBuffer, PowerUp, ScorePopup,
+BrickMotionPath and MotionWaypoint.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -59,6 +60,25 @@ retention adjustment retains its observed behavior rather than being renamed
 as an unused guard. Both complete 420-file corpora compile and
 declaration/reference/override checks pass. Full gameplay, swept collision
 response, score accounting, snapshot transport and live multiplayer remain unverified.
+
+Moving bricks expose copied waypoints, source/destination indices, total and
+segment-relative elapsed time, interpolation and segment advancement. Each
+destination waypoint supplies that segment's duration. Native fixtures check
+single-point and multi-point cycles, exact segment boundaries, wraparound,
+negative coordinate deltas, integer truncation, optional velocity, checksums and
+shared waypoint identity. Empty private path attachment preserves the existing
+route. Zero-duration nonempty paths and snapshot transport remain unverified.
+The board's `portalBricks` array contains only type28 teleport portals; ordinary
+bricks reside in `brickGroups`.
+
+Ball fields distinguish penetration/phase timers, contacts, brick bounces and
+destroyed-brick streaks. Fixtures check mutually exclusive timer extension,
+integer overflow, speed floor-reset/cap behavior on exact-length velocity
+vectors, the zero-speed exception, paddle placement and rebound-stage limits.
+Contact fixtures cover normal and always-reflecting bricks, all four face codes,
+both direction signs, and timer combinations. They supply collision-scratch
+coordinates and omit the randomized every-fourth-bounce perturbation; they do
+not establish swept collision detection, every brick type or whole gameplay.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

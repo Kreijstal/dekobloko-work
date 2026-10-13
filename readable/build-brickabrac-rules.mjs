@@ -24,6 +24,8 @@ const classes={
  ao:['ObjectHistoryBuffer','Fixed-capacity indexed object history; scheduled power-ups and board snapshots retain absolute sequence indices.'],
  ge:['PowerUp','Falling circle dropped by a brick, caught by a paddle and routed locally or to opponents; queued copies retain their activation tick.'],
  ul:['ScorePopup','Intrusive score text with fixed8 position and a fifty-tick rising/fading lifetime.'],
+ cl:['BrickMotionPath','Deque of timed waypoints with serialized count and total cyclic duration; moving bricks attach and interpolate along it.'],
+ ee:['MotionWaypoint','Moving-body position with destination segment duration, used by cyclic brick paths.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -32,7 +34,8 @@ function local(owner,signature,ordinal,expectedOriginalName,to,evidence){members
 for(const [name,to] of [['j','x256'],['m','y256'],['k','velocityX256'],['o','velocityY256'],['i','typeId'],['l','stateWord']])field('vi',name,'I',to,'Common body constructor, packed snapshot decoder and checksum; coordinates and brick dimensions use256 units per pixel; state word meaning remains unresolved.');
 field('bn','u','I','width256','Rectangle constructor width; bricks use8704 and paddles22528.');field('bn','s','I','height256','Rectangle constructor height; bricks use4096 and paddles3840.');field('no','u','I','radius256','Circle constructor radius; ball constructors use1536.');
 for(const [name,type,to] of [['l','[Lj;','playerBoards'],['k','I','playerCount'],['f','[Ljava/lang/String;','playerNames'],['b','Loi;','configuration'],['i','I','playerMaskOne'],['g','I','playerMaskTwo'],['a','I','playerMaskThree']])field('ak',name,type,to,'Match constructor and board iteration; player masks retain separate numbered identities rather than guessing elimination/disconnect encodings.');
-for(const [name,type,to] of [['yb','Lvo;','paddle'],['mb','I','boardWidth'],['ub','I','boardOffset'],['sb','I','randomSeed'],['s','Lfo;','seededRandom'],['O','[Lon;','bricks'],['K','Lvl;','queuedBalls'],['ob','I','score'],['F','I','simulationTick']])field('j',name,type,to,'Player board constructor, queued attack scheduling, brick/ball/paddle geometry and scoring paths; board offset participates in scrolling/progress state; finer meaning remains qualified.');
+for(const [name,type,to] of [['yb','Lvo;','paddle'],['mb','I','boardWidth'],['ub','I','boardOffset'],['sb','I','randomSeed'],['s','Lfo;','seededRandom'],['O','[Lon;','portalBricks'],['K','Lvl;','queuedBalls'],['ob','I','score'],['F','I','simulationTick']])field('j',name,type,to,'Player board constructor, queued attack scheduling, brick/ball/paddle geometry and scoring paths; board offset participates in scrolling/progress state; finer meaning remains qualified.');
+field('j','O','[Lon;','portalBricks','Board initialization populates this array only with type28 portal bricks, assigns portalIndex, and uses it to choose a different teleport destination.');
 field('qj','w','Lak;','match','Gameplay controller owns this player-board match.');
 for(const [name,to] of [['E','centerX256'],['y','boardSpan256'],['B','controlMode'],['F','sizeStage']])field('vo',name,'I',to,'Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments; control mode retains its numeric encoding.');
 field('nm','b','Lnm;','previous','Previous intrusive link; unlink patches both neighbors.');field('nm','e','Lnm;','next','Next intrusive link; forward deque traversal follows it.');field('nm','g','J','key','Retained collection key.');field('vl','e','Lnm;','sentinel','Circular list sentinel initialized with both links to itself.');field('vl','b','Lnm;','cursor','Shared mutable traversal cursor.');
@@ -104,13 +107,70 @@ for(const [owner,signature,ordinal,original,to,evidence] of [
  ['ao','a(Ljava/lang/Object;B)V',0,'fieldTemp$0','nextIndex','New absolute index used for the modulo storage slot.'],
  ['ul','b(Z)Z',0,'fieldTemp$0','nextRemainingTicks','Decremented lifetime used to test whether the popup is still alive.'],
 ])local(owner,signature,ordinal,original,to,evidence);
+for(const [original,to,evidence] of [
+ ['v','penetrationTicks','Timed power-up counter: suppresses ordinary brick reflection while contacts can still change brick type; phase counter is cleared when this counter is extended.'],
+ ['J','phaseTicks','Timed power-up counter: bypasses collision on ordinary bricks and suppresses ordinary hit mutations; penetration counter is cleared when this counter is extended.'],
+ ['I','brickBounceCount','Brick reflection increments this counter and paddle contact resets it; each fourth brick bounce perturbs velocity.'],
+ ['C','contactCount','Brick/paddle contacts increment it; special board input consumes at forty contacts and clears it.'],
+ ['B','destroyedBrickStreak','Incremented when a non-phased ball leaves a brick pending removal; reset after paddle contact and ball reset paths.'],
+ ['z','launchAngle','Retained constructor angle controls initial velocity and placement on paddle; snapshot decoder restores it.'],
+])field('vn',original,'I',to,evidence);
+method('vn','a','(BI)V','extendPenetration','Adds ticks to penetration counter and clears phase counter; guard40 leaves static resources unchanged.',['obfuscationGuard','ticks']);
+method('vn','b','(II)V','extendPhase','Adds ticks to phase counter and clears penetration counter; canonical guard at most -27 avoids velocity mutation.',['obfuscationGuard','ticks']);
+method('vn','c','(II)V','adjustSpeed','Rescales velocity using approximate fixed8 square root; speeds below supplied threshold reset to512 and speeds above3840 cap there.',['speedFloorThreshold','speedDelta']);
+method('vn','a','(II)V','redirectVelocity','Sets velocity from supplied angle at measured current speed; canonical guard6546 avoids unrelated timer mutation.',['obfuscationGuard','angle']);
+method('vn','a','(Lvo;I)V','positionOnPaddle','Positions ball above paddle with horizontal offset from retained launch angle; canonical guard0 preserves center history.',['paddle','obfuscationGuard']);
+method('vn','<init>','(II)V','<init>','Retains launch angle and sets initial velocity at supplied speed.',['launchAngle','speed']);
+method('vn','<init>','(Lvo;II)V','<init>','Creates launched ball and positions it above supplied paddle.',['paddle','launchAngle','speed']);
+field('vo','D','I','reboundSpeedStage','Starts at1, increments to8, contributes sixteen speed units per stage on top-face rebound and is packed in the snapshot size byte.');
+field('vo','z','I','catchTicks','Timed paddle effect: positive value catches contacted balls into queuedBalls; power-up14 adds150 ticks and power-up9 clears it.');
+method('vo','b','(Z)V','increaseReboundSpeed','Increments rebound stage until8; canonical true guard retains static resources.',['obfuscationGuard']);
+method('bn','a','(BLj;Lno;)V','onCircleContact','Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state.',['obfuscationGuard','board','circle']);
+for(const [original,type,to,evidence] of [
+ ['N','I','flags','Brick flags: bit2 permits power-up drops; bit4 enables waypoint motion; bit1 retains special contact behavior.'],
+ ['R','I','pendingTypeId','-1 means no scheduled type change;0 schedules removal; positive value is applied after the transition countdown.'],
+ ['B','I','transitionCode','Numeric hit/type-change animation code; its encoding remains qualified.'],
+ ['H','I','portalIndex','Index assigned only to type28 portal bricks in the board portal table; used to choose a different teleport destination.'],
+ ['P','[Lee;','waypoints','Ordered motion path waypoints copied from intrusive path nodes.'],
+ ['G','I','pathDurationTicks','Total cyclic duration copied from motion path; elapsed motion wraps modulo this duration.'],
+ ['J','I','motionElapsedTicks','Motion elapsed time from constructor/snapshot; advancing the segment wraps it modulo path duration.'],
+ ['S','I','segmentElapsedTicks','Elapsed time within current segment; interpolation scales endpoint displacement by this value.'],
+ ['C','I','destinationWaypointIndex','Current destination waypoint; advancing wraps this index modulo waypoint count.'],
+ ['v','I','sourceWaypointIndex','Current source waypoint; advancing wraps this index modulo waypoint count.'],
+])field('on',original,type,to,evidence);
+field('j','z','[Lvl;','brickGroups','Board owns deques of bricks; match scans every group for contacts, type transitions and waypoint motion.');
+field('cl','u','I','waypointCount','Snapshot decoder reads this many waypoint records; path checksum includes this serialized count.');
+field('cl','p','Lvl;','waypoints','Intrusive deque of waypoint records; attachMotionPath copies its order.');
+field('cl','t','I','durationTicks','Sum of decoded destination waypoint durations.');
+field('ee','t','I','durationTicks','Destination segment duration in ticks; interpolation divides displacement by this value.');
+method('ee','<init>','(IIIII)V','<init>','Retains moving-body waypoint coordinates/velocities/type.',['x256','y256','velocityX256','velocityY256','typeId']);
+method('on','a','(Lcl;B)V','attachMotionPath','Copies nonempty path, selects the segment from elapsed motion and initializes segment-relative time; canonical guard -105.',['path','obfuscationGuard']);
+method('on','a','(Lcl;ZI)V','setMotionPath','Attaches path then interpolates position and either segment velocity or zero; guard4.',['path','includeVelocity','obfuscationGuard']);
+method('on','a','(BZ)V','interpolateMotion','Uses source/destination positions, destination duration and segment-relative time; canonical byte guard above33.',['obfuscationGuard','includeVelocity']);
+method('on','f','(I)V','advanceMotionSegment','Wraps source/destination indices and global motion time; clears segment-relative time; guard above61.',['obfuscationGuard']);
+method('on','a','(Lj;I)V','dropPowerUp','When flag bit2 and board drop cycle permit, appends falling power-up at brick center/below bottom edge; guard15165.',['board','obfuscationGuard']);
+method('kj','a','(II)I','approximateSqrt256','Integer square-root estimate scaled by256 using normalized lookup and powers of two; negatives throw and guard2 preserves static state.',['value','obfuscationGuard']);
+for(const [owner,signature,ordinal,original,to,evidence] of [
+ ['on','a(BZ)V',0,'var6','sourceWaypoint','Current segment source position.'],
+ ['on','a(BZ)V',1,'var4','destinationWaypoint','Current segment destination position and duration.'],
+ ['on','a(BZ)V',2,'var5','durationTicks','Destination segment duration used for interpolation and velocity division.'],
+ ['on','a(Lcl;B)V',0,'var3_int','waypointIndex','Index used while copying the path node order.'],
+ ['on','a(Lcl;B)V',1,'var4_ref_ee','waypoint','Current waypoint copied from the path deque.'],
+ ['on','a(Lcl;B)V',2,'incrementValue$0','copiedIndex','Previous array index captured before increment.'],
+ ['on','a(Lcl;B)V',3,'var4','segmentStartTick','Elapsed sum at the selected segment start.'],
+ ['on','a(Lcl;B)V',5,'var3_intLifetime1','segmentEndTick','Accumulated segment duration used to select elapsed-motion segment.'],
+ ['on','f(I)V',0,'fieldTemp$0','nextDestinationIndex','Destination index before modulo wrapping.'],
+ ['on','f(I)V',1,'fieldTemp$1','nextSourceIndex','Source index before modulo wrapping.'],
+ ['vn','c(II)V',0,'var3','currentSpeed','Measured scalar speed used to rescale velocity components.'],
+ ['vn','c(II)V',1,'var4','targetSpeed','Requested speed after floor reset and upper cap.'],
+])local(owner,signature,ordinal,original,to,evidence);
 for(const [owner,desc,params,evidence] of [
  ['vi','(IIIII)V',['x256','y256','velocityX256','velocityY256','typeId'],'Retains common position/velocity/type state.'],
  ['bn','(IIIIIII)V',['x256','y256','velocityX256','velocityY256','width256','height256','typeId'],'Retains common body and rectangle dimensions.'],
  ['no','(IIIIII)V',['x256','y256','velocityX256','velocityY256','radius256','typeId'],'Retains common body and circle radius.'],
  ['vo','(IIII)V',['centerX256','y256','controlMode','boardSpan256'],'Constructs15-pixel-high paddle and resets its88-pixel width.'],
  ['vn','(IIII)V',['x256','y256','velocityX256','velocityY256'],'Constructs radius-six ball and center-coordinate histories.'],
- ['on','(IIIIIIII)V',['x256','y256','velocityX256','velocityY256','typeId','brickFlags','brickState','hitState'],'Constructs34-by16-pixel brick and retains unresolved numeric state words.'],
+ ['on','(IIIIIIII)V',['x256','y256','velocityX256','velocityY256','typeId','brickFlags','brickState','motionElapsedTicks'],'Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.'],
  ['j','(IIIII)V',['boardWidth','initialBoardOffset','paletteVariant','randomSeed','initialState'],'Constructs board geometry, paddle, deterministic random state and effect collections.'],
 ])method(owner,'<init>',desc,'<init>',evidence,params);
 export function buildBrickRules(input, rows) {
@@ -171,12 +231,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('vo')} / ${link('vn')} / ${link('on')} | Paddle size stages, balls and bricks. |`,
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
 `| ${link('hp')} / ${link('ao')} | Absolute indices, circular retention and future/erased history boundaries. |`,
-`| ${link('ge')} / ${link('ul')} | Falling/scheduled power-ups and score-popup lifetime. |`, '',
-'Focused raw/named probes check body constructors/checksums, circle overlap boundaries, paddle growth/shrink/reset, player-state mask getters, deque ownership/order, history wraparound/reference retention, popup expiry, and power-up copy/routing/due-prefix behavior. The client branch flag is supplied by a headless Applet-compatible shim; player-board/match construction is bypassed for controlled fixtures. Selected power-up effects are checked; full ball/brick collision response, score accounting, snapshots, gameplay input/rendering, live multiplayer and browser/phone behavior remain unverified.','',
+`| ${link('ge')} / ${link('ul')} | Falling/scheduled power-ups and score-popup lifetime. |`,
+`| ${link('cl')} / ${link('ee')} | Cyclic waypoint order, destination duration and integer position/velocity interpolation. |`, '',
+'Focused raw/named probes check body checksums/overlaps, paddle sizes, player masks, deque ownership, histories, popup expiry, scheduled power-up routing, timed ball effects, speed rescaling, ball placement, waypoint interpolation/wraparound and selected brick contacts. The client branch flag is supplied by a headless Applet-compatible shim; player-board/match construction is bypassed for controlled fixtures. Contact fixtures supply collision-scratch coordinates and cover two brick types; they do not validate the swept collision solver, full gameplay, score accounting, snapshots, live multiplayer or browser/phone behavior.','',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:2,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:3,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

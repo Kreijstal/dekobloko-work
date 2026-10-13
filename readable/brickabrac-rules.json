@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 2,
+  "version": 3,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -241,6 +241,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cl",
+      "originalName": "cl",
+      "to": "BrickMotionPath",
+      "evidence": "cl.java: Deque of timed waypoints with serialized count and total cyclic duration; moving bricks attach and interpolate along it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ee",
+      "originalName": "ee",
+      "to": "MotionWaypoint",
+      "evidence": "ee.java: Moving-body position with destination segment duration, used by cyclic brick paths.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ge",
       "originalName": "ge",
       "to": "PowerUp",
@@ -416,6 +430,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cl.field_p:Lvl;",
+      "originalName": "field_p",
+      "to": "waypoints",
+      "evidence": "cl.java: Intrusive deque of waypoint records; attachMotionPath copies its order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cl.field_t:I",
+      "originalName": "field_t",
+      "to": "durationTicks",
+      "evidence": "cl.java: Sum of decoded destination waypoint durations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cl.field_u:I",
+      "originalName": "field_u",
+      "to": "waypointCount",
+      "evidence": "cl.java: Snapshot decoder reads this many waypoint records; path checksum includes this serialized count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ee.field_t:I",
+      "originalName": "field_t",
+      "to": "durationTicks",
+      "evidence": "ee.java: Destination segment duration in ticks; interpolation divides displacement by this value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ge.field_y:I",
       "originalName": "field_y",
       "to": "activationTick",
@@ -460,8 +502,8 @@
     {
       "symbol": "F:j.field_O:[Lon;",
       "originalName": "field_O",
-      "to": "bricks",
-      "evidence": "j.java: Player board constructor, queued attack scheduling, brick/ball/paddle geometry and scoring paths; board offset participates in scrolling/progress state; finer meaning remains qualified.",
+      "to": "portalBricks",
+      "evidence": "j.java: Board initialization populates this array only with type28 portal bricks, assigns portalIndex, and uses it to choose a different teleport destination.",
       "confidence": "reviewed"
     },
     {
@@ -549,6 +591,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_z:[Lvl;",
+      "originalName": "field_z",
+      "to": "brickGroups",
+      "evidence": "j.java: Board owns deques of bricks; match scans every group for contacts, type transitions and waypoint motion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nm.field_b:Lnm;",
       "originalName": "field_b",
       "to": "previous",
@@ -574,6 +623,76 @@
       "originalName": "field_u",
       "to": "radius256",
       "evidence": "no.java: Circle constructor radius; ball constructors use1536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_B:I",
+      "originalName": "field_B",
+      "to": "transitionCode",
+      "evidence": "on.java: Numeric hit/type-change animation code; its encoding remains qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_C:I",
+      "originalName": "field_C",
+      "to": "destinationWaypointIndex",
+      "evidence": "on.java: Current destination waypoint; advancing wraps this index modulo waypoint count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_G:I",
+      "originalName": "field_G",
+      "to": "pathDurationTicks",
+      "evidence": "on.java: Total cyclic duration copied from motion path; elapsed motion wraps modulo this duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_H:I",
+      "originalName": "field_H",
+      "to": "portalIndex",
+      "evidence": "on.java: Index assigned only to type28 portal bricks in the board portal table; used to choose a different teleport destination.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_J:I",
+      "originalName": "field_J",
+      "to": "motionElapsedTicks",
+      "evidence": "on.java: Motion elapsed time from constructor/snapshot; advancing the segment wraps it modulo path duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_N:I",
+      "originalName": "field_N",
+      "to": "flags",
+      "evidence": "on.java: Brick flags: bit2 permits power-up drops; bit4 enables waypoint motion; bit1 retains special contact behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_P:[Lee;",
+      "originalName": "field_P",
+      "to": "waypoints",
+      "evidence": "on.java: Ordered motion path waypoints copied from intrusive path nodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_R:I",
+      "originalName": "field_R",
+      "to": "pendingTypeId",
+      "evidence": "on.java: -1 means no scheduled type change;0 schedules removal; positive value is applied after the transition countdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_S:I",
+      "originalName": "field_S",
+      "to": "segmentElapsedTicks",
+      "evidence": "on.java: Elapsed time within current segment; interpolation scales endpoint displacement by this value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_v:I",
+      "originalName": "field_v",
+      "to": "sourceWaypointIndex",
+      "evidence": "on.java: Current source waypoint; advancing wraps this index modulo waypoint count.",
       "confidence": "reviewed"
     },
     {
@@ -668,10 +787,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vn.field_B:I",
+      "originalName": "field_B",
+      "to": "destroyedBrickStreak",
+      "evidence": "vn.java: Incremented when a non-phased ball leaves a brick pending removal; reset after paddle contact and ball reset paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vn.field_C:I",
+      "originalName": "field_C",
+      "to": "contactCount",
+      "evidence": "vn.java: Brick/paddle contacts increment it; special board input consumes at forty contacts and clears it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vn.field_E:Lhp;",
       "originalName": "field_E",
       "to": "centerXHistory256",
       "evidence": "vn.java: Match tick appends x256+radius256 to this history; reset paths set its latest index to -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vn.field_I:I",
+      "originalName": "field_I",
+      "to": "brickBounceCount",
+      "evidence": "vn.java: Brick reflection increments this counter and paddle contact resets it; each fourth brick bounce perturbs velocity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vn.field_J:I",
+      "originalName": "field_J",
+      "to": "phaseTicks",
+      "evidence": "vn.java: Timed power-up counter: bypasses collision on ordinary bricks and suppresses ordinary hit mutations; penetration counter is cleared when this counter is extended.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vn.field_v:I",
+      "originalName": "field_v",
+      "to": "penetrationTicks",
+      "evidence": "vn.java: Timed power-up counter: suppresses ordinary brick reflection while contacts can still change brick type; phase counter is cleared when this counter is extended.",
       "confidence": "reviewed"
     },
     {
@@ -682,10 +836,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vn.field_z:I",
+      "originalName": "field_z",
+      "to": "launchAngle",
+      "evidence": "vn.java: Retained constructor angle controls initial velocity and placement on paddle; snapshot decoder restores it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vo.field_B:I",
       "originalName": "field_B",
       "to": "controlMode",
       "evidence": "vo.java: Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments; control mode retains its numeric encoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vo.field_D:I",
+      "originalName": "field_D",
+      "to": "reboundSpeedStage",
+      "evidence": "vo.java: Starts at1, increments to8, contributes sixteen speed units per stage on top-face rebound and is packed in the snapshot size byte.",
       "confidence": "reviewed"
     },
     {
@@ -707,6 +875,13 @@
       "originalName": "field_y",
       "to": "boardSpan256",
       "evidence": "vo.java: Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments; control mode retains its numeric encoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vo.field_z:I",
+      "originalName": "field_z",
+      "to": "catchTicks",
+      "evidence": "vo.java: Timed paddle effect: positive value catches contacted balls into queuedBalls; power-up14 adds150 ticks and power-up9 clears it.",
       "confidence": "reviewed"
     },
     {
@@ -766,10 +941,94 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:on.a(BZ)V#0",
+      "originalName": "var6",
+      "to": "sourceWaypoint",
+      "evidence": "on.java: Current segment source position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(BZ)V#1",
+      "originalName": "var4",
+      "to": "destinationWaypoint",
+      "evidence": "on.java: Current segment destination position and duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(BZ)V#2",
+      "originalName": "var5",
+      "to": "durationTicks",
+      "evidence": "on.java: Destination segment duration used for interpolation and velocity division.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lcl;B)V#0",
+      "originalName": "var3_int",
+      "to": "waypointIndex",
+      "evidence": "on.java: Index used while copying the path node order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lcl;B)V#1",
+      "originalName": "var4_ref_ee",
+      "to": "waypoint",
+      "evidence": "on.java: Current waypoint copied from the path deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lcl;B)V#2",
+      "originalName": "incrementValue$0",
+      "to": "copiedIndex",
+      "evidence": "on.java: Previous array index captured before increment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lcl;B)V#3",
+      "originalName": "var4",
+      "to": "segmentStartTick",
+      "evidence": "on.java: Elapsed sum at the selected segment start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.a(Lcl;B)V#5",
+      "originalName": "var3_intLifetime1",
+      "to": "segmentEndTick",
+      "evidence": "on.java: Accumulated segment duration used to select elapsed-motion segment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.f(I)V#0",
+      "originalName": "fieldTemp$0",
+      "to": "nextDestinationIndex",
+      "evidence": "on.java: Destination index before modulo wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:on.f(I)V#1",
+      "originalName": "fieldTemp$1",
+      "to": "nextSourceIndex",
+      "evidence": "on.java: Source index before modulo wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ul.b(Z)Z#0",
       "originalName": "fieldTemp$0",
       "to": "nextRemainingTicks",
       "evidence": "ul.java: Decremented lifetime used to test whether the popup is still alive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vn.c(II)V#0",
+      "originalName": "var3",
+      "to": "currentSpeed",
+      "evidence": "vn.java: Measured scalar speed used to rescale velocity components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vn.c(II)V#1",
+      "originalName": "var4",
+      "to": "targetSpeed",
+      "evidence": "vn.java: Requested speed after floor reset and upper cap.",
       "confidence": "reviewed"
     },
     {
@@ -840,6 +1099,13 @@
       "originalName": "a",
       "to": "append",
       "evidence": "ao.java: Advances latestIndex and stores the same object reference; canonical guard -39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.a(BLj;Lno;)V",
+      "originalName": "a",
+      "to": "onCircleContact",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state.",
       "confidence": "reviewed"
     },
     {
@@ -1011,6 +1277,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kj.a(II)I",
+      "originalName": "a",
+      "to": "approximateSqrt256",
+      "evidence": "kj.java: Integer square-root estimate scaled by256 using normalized lookup and powers of two; negatives throw and guard2 preserves static state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -1123,6 +1396,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:on.a(BLj;Lno;)V",
+      "originalName": "a",
+      "to": "onCircleContact",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:on.a(BZ)V",
+      "originalName": "a",
+      "to": "interpolateMotion",
+      "evidence": "on.java: Uses source/destination positions, destination duration and segment-relative time; canonical byte guard above33.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:on.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -1137,10 +1424,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:on.a(Lcl;B)V",
+      "originalName": "a",
+      "to": "attachMotionPath",
+      "evidence": "on.java: Copies nonempty path, selects the segment from elapsed motion and initializes segment-relative time; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:on.a(Lcl;ZI)V",
+      "originalName": "a",
+      "to": "setMotionPath",
+      "evidence": "on.java: Attaches path then interpolates position and either segment velocity or zero; guard4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:on.a(Lj;I)V",
+      "originalName": "a",
+      "to": "dropPowerUp",
+      "evidence": "on.java: When flag bit2 and board drop cycle permit, appends falling power-up at brick center/below bottom edge; guard15165.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:on.a(Lno;B)Z",
       "originalName": "a",
       "to": "resolveCircleCollision",
       "evidence": "bn.java: Swept rectangle/circle collision response with body/paddle/brick dispatch; original guards and integer rounding preserved. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:on.f(I)V",
+      "originalName": "f",
+      "to": "advanceMotionSegment",
+      "evidence": "on.java: Wraps source/destination indices and global motion time; clears segment-relative time; guard above61.",
       "confidence": "reviewed"
     },
     {
@@ -1312,6 +1627,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vn.a(BI)V",
+      "originalName": "a",
+      "to": "extendPenetration",
+      "evidence": "vn.java: Adds ticks to penetration counter and clears phase counter; guard40 leaves static resources unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.a(II)V",
+      "originalName": "a",
+      "to": "redirectVelocity",
+      "evidence": "vn.java: Sets velocity from supplied angle at measured current speed; canonical guard6546 avoids unrelated timer mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vn.a(III)V",
       "originalName": "a",
       "to": "setVelocityFromAngle",
@@ -1333,6 +1662,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vn.a(Lvo;I)V",
+      "originalName": "a",
+      "to": "positionOnPaddle",
+      "evidence": "vn.java: Positions ball above paddle with horizontal offset from retained launch angle; canonical guard0 preserves center history.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.b(II)V",
+      "originalName": "b",
+      "to": "extendPhase",
+      "evidence": "vn.java: Adds ticks to phase counter and clears penetration counter; canonical guard at most -27 avoids velocity mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.c(II)V",
+      "originalName": "c",
+      "to": "adjustSpeed",
+      "evidence": "vn.java: Rescales velocity using approximate fixed8 square root; speeds below supplied threshold reset to512 and speeds above3840 cap there.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vo.a(BLj;Lno;)V",
+      "originalName": "a",
+      "to": "onCircleContact",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vo.a(ILjava/lang/StringBuilder;)I",
       "originalName": "a",
       "to": "computeSyncChecksum",
@@ -1344,6 +1701,13 @@
       "originalName": "a",
       "to": "readBodySnapshot",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vo.b(Z)V",
+      "originalName": "b",
+      "to": "increaseReboundSpeed",
+      "evidence": "vo.java: Increments rebound stage until8; canonical true guard retains static resources.",
       "confidence": "reviewed"
     },
     {
@@ -1592,6 +1956,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bn.a(BLj;Lno;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bn.a(BLj;Lno;)V#1",
+      "originalName": "param1",
+      "to": "board",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bn.a(BLj;Lno;)V#2",
+      "originalName": "param2",
+      "to": "circle",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bn.a(ILjava/lang/StringBuilder;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -1708,6 +2093,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.<init>(IIIII)V#0",
+      "originalName": "param0",
+      "to": "x256",
+      "evidence": "ee.java: Retains moving-body waypoint coordinates/velocities/type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.<init>(IIIII)V#1",
+      "originalName": "param1",
+      "to": "y256",
+      "evidence": "ee.java: Retains moving-body waypoint coordinates/velocities/type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.<init>(IIIII)V#2",
+      "originalName": "param2",
+      "to": "velocityX256",
+      "evidence": "ee.java: Retains moving-body waypoint coordinates/velocities/type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.<init>(IIIII)V#3",
+      "originalName": "param3",
+      "to": "velocityY256",
+      "evidence": "ee.java: Retains moving-body waypoint coordinates/velocities/type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ee.<init>(IIIII)V#4",
+      "originalName": "param4",
+      "to": "typeId",
+      "evidence": "ee.java: Retains moving-body waypoint coordinates/velocities/type.",
       "confidence": "reviewed"
     },
     {
@@ -2047,6 +2467,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kj.a(II)I#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "kj.java: Integer square-root estimate scaled by256 using normalized lookup and powers of two; negatives throw and guard2 preserves static state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(II)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kj.java: Integer square-root estimate scaled by256 using normalized lookup and powers of two; negatives throw and guard2 preserves static state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:km.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
@@ -2309,56 +2743,91 @@
       "symbol": "P:on.<init>(IIIIIIII)V#0",
       "originalName": "param0",
       "to": "x256",
-      "evidence": "on.java: Constructs34-by16-pixel brick and retains unresolved numeric state words.",
+      "evidence": "on.java: Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:on.<init>(IIIIIIII)V#1",
       "originalName": "param1",
       "to": "y256",
-      "evidence": "on.java: Constructs34-by16-pixel brick and retains unresolved numeric state words.",
+      "evidence": "on.java: Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:on.<init>(IIIIIIII)V#2",
       "originalName": "param2",
       "to": "velocityX256",
-      "evidence": "on.java: Constructs34-by16-pixel brick and retains unresolved numeric state words.",
+      "evidence": "on.java: Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:on.<init>(IIIIIIII)V#3",
       "originalName": "param3",
       "to": "velocityY256",
-      "evidence": "on.java: Constructs34-by16-pixel brick and retains unresolved numeric state words.",
+      "evidence": "on.java: Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:on.<init>(IIIIIIII)V#4",
       "originalName": "param4",
       "to": "typeId",
-      "evidence": "on.java: Constructs34-by16-pixel brick and retains unresolved numeric state words.",
+      "evidence": "on.java: Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:on.<init>(IIIIIIII)V#5",
       "originalName": "param5",
       "to": "brickFlags",
-      "evidence": "on.java: Constructs34-by16-pixel brick and retains unresolved numeric state words.",
+      "evidence": "on.java: Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:on.<init>(IIIIIIII)V#6",
       "originalName": "param6",
       "to": "brickState",
-      "evidence": "on.java: Constructs34-by16-pixel brick and retains unresolved numeric state words.",
+      "evidence": "on.java: Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:on.<init>(IIIIIIII)V#7",
       "originalName": "param7",
-      "to": "hitState",
-      "evidence": "on.java: Constructs34-by16-pixel brick and retains unresolved numeric state words.",
+      "to": "motionElapsedTicks",
+      "evidence": "on.java: Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(BLj;Lno;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(BLj;Lno;)V#1",
+      "originalName": "param1",
+      "to": "board",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(BLj;Lno;)V#2",
+      "originalName": "param2",
+      "to": "circle",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(BZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "on.java: Uses source/destination positions, destination duration and segment-relative time; canonical byte guard above33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(BZ)V#1",
+      "originalName": "param1",
+      "to": "includeVelocity",
+      "evidence": "on.java: Uses source/destination positions, destination duration and segment-relative time; canonical byte guard above33.",
       "confidence": "reviewed"
     },
     {
@@ -2390,6 +2859,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:on.a(Lcl;B)V#0",
+      "originalName": "param0",
+      "to": "path",
+      "evidence": "on.java: Copies nonempty path, selects the segment from elapsed motion and initializes segment-relative time; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(Lcl;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "on.java: Copies nonempty path, selects the segment from elapsed motion and initializes segment-relative time; canonical guard -105.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(Lcl;ZI)V#0",
+      "originalName": "param0",
+      "to": "path",
+      "evidence": "on.java: Attaches path then interpolates position and either segment velocity or zero; guard4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(Lcl;ZI)V#1",
+      "originalName": "param1",
+      "to": "includeVelocity",
+      "evidence": "on.java: Attaches path then interpolates position and either segment velocity or zero; guard4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(Lcl;ZI)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "on.java: Attaches path then interpolates position and either segment velocity or zero; guard4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(Lj;I)V#0",
+      "originalName": "param0",
+      "to": "board",
+      "evidence": "on.java: When flag bit2 and board drop cycle permit, appends falling power-up at brick center/below bottom edge; guard15165.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.a(Lj;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "on.java: When flag bit2 and board drop cycle permit, appends falling power-up at brick center/below bottom edge; guard15165.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:on.a(Lno;B)Z#0",
       "originalName": "param0",
       "to": "circle",
@@ -2401,6 +2919,13 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "bn.java: Swept rectangle/circle collision response with body/paddle/brick dispatch; original guards and integer rounding preserved. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:on.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "on.java: Wraps source/destination indices and global motion time; clears segment-relative time; guard above61.",
       "confidence": "reviewed"
     },
     {
@@ -2726,6 +3251,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vn.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "launchAngle",
+      "evidence": "vn.java: Retains launch angle and sets initial velocity at supplied speed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "speed",
+      "evidence": "vn.java: Retains launch angle and sets initial velocity at supplied speed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vn.<init>(IIII)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -2751,6 +3290,55 @@
       "originalName": "param3",
       "to": "velocityY256",
       "evidence": "vn.java: Constructs radius-six ball and center-coordinate histories.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.<init>(Lvo;II)V#0",
+      "originalName": "param0",
+      "to": "paddle",
+      "evidence": "vn.java: Creates launched ball and positions it above supplied paddle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.<init>(Lvo;II)V#1",
+      "originalName": "param1",
+      "to": "launchAngle",
+      "evidence": "vn.java: Creates launched ball and positions it above supplied paddle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.<init>(Lvo;II)V#2",
+      "originalName": "param2",
+      "to": "speed",
+      "evidence": "vn.java: Creates launched ball and positions it above supplied paddle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vn.java: Adds ticks to penetration counter and clears phase counter; guard40 leaves static resources unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.a(BI)V#1",
+      "originalName": "param1",
+      "to": "ticks",
+      "evidence": "vn.java: Adds ticks to penetration counter and clears phase counter; guard40 leaves static resources unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.a(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vn.java: Sets velocity from supplied angle at measured current speed; canonical guard6546 avoids unrelated timer mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.a(II)V#1",
+      "originalName": "param1",
+      "to": "angle",
+      "evidence": "vn.java: Sets velocity from supplied angle at measured current speed; canonical guard6546 avoids unrelated timer mutation.",
       "confidence": "reviewed"
     },
     {
@@ -2803,6 +3391,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vn.a(Lvo;I)V#0",
+      "originalName": "param0",
+      "to": "paddle",
+      "evidence": "vn.java: Positions ball above paddle with horizontal offset from retained launch angle; canonical guard0 preserves center history.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.a(Lvo;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "vn.java: Positions ball above paddle with horizontal offset from retained launch angle; canonical guard0 preserves center history.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.b(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vn.java: Adds ticks to phase counter and clears penetration counter; canonical guard at most -27 avoids velocity mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.b(II)V#1",
+      "originalName": "param1",
+      "to": "ticks",
+      "evidence": "vn.java: Adds ticks to phase counter and clears penetration counter; canonical guard at most -27 avoids velocity mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.c(II)V#0",
+      "originalName": "param0",
+      "to": "speedFloorThreshold",
+      "evidence": "vn.java: Rescales velocity using approximate fixed8 square root; speeds below supplied threshold reset to512 and speeds above3840 cap there.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vn.c(II)V#1",
+      "originalName": "param1",
+      "to": "speedDelta",
+      "evidence": "vn.java: Rescales velocity using approximate fixed8 square root; speeds below supplied threshold reset to512 and speeds above3840 cap there.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vo.<init>(IIII)V#0",
       "originalName": "param0",
       "to": "centerX256",
@@ -2831,6 +3461,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vo.a(BLj;Lno;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(BLj;Lno;)V#1",
+      "originalName": "param1",
+      "to": "board",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.a(BLj;Lno;)V#2",
+      "originalName": "param2",
+      "to": "circle",
+      "evidence": "bn.java: Base contact relocates circle to collision-scratch coordinates; brick/paddle overrides update reflected velocity and game state. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vo.a(ILjava/lang/StringBuilder;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -2856,6 +3507,13 @@
       "originalName": "param1",
       "to": "packet",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vo.b(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vo.java: Increments rebound stage until8; canonical true guard retains static resources.",
       "confidence": "reviewed"
     },
     {
@@ -2951,9 +3609,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "ef63e2c3155da5c2e5773238b7b529e3693c8dd400a364f3e70c2df9b1b6f3f1",
+      "build-brickabrac-rules.mjs": "760af57df2127d2b37ad80d6c1ccf222697dbf7607eea5a78481fb926a4e488a",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "3647b2d4bc1ffa92570c5d49397166ae34e94a7a1af6d8b26c9e1a018c68e187",
+      "tests/test-brickabrac-core.mjs": "e507efd6bac00cc5c01557c10de2a01c57522dc1d18fbc8f9be70dfa18cfeff6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
