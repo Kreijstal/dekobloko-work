@@ -99,6 +99,9 @@ exposes the transient pulse generated from activated charged balls.
 AchievementSubmission and AchievementMaskRequest expose result envelopes, mask
 queries, FIFO acknowledgments and reconnect resends. Match-start locals and
 constructor parameters now distinguish seeds, character order and level sequence.
+BackgroundScene, BackgroundRegistry and twelve concrete themes expose scene
+selection, asset readiness, drawing and music/sound-effect preparation. Sprite
+field names derive from literal resource assignments in these reviewed themes.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -711,6 +714,31 @@ now identify player names, local player/mask, random seeds, repeat mode, sequenc
 background selector and character order. Full startup packet execution still
 requires asset/audio/UI setup and remains unverified; character rendering and
 original-JAR equivalence are not established by these checks.
+
+BackgroundScene owns scene ID, music name/data/readiness, sound-effect names,
+PCM slots, shuffled effect order and loaded-prefix count. Its shared methods now
+name full/split/preview drawing, sprite preparation/readiness, effect polling and
+music preparation. Arctic, Chocolate, Construction, Desert, Farm, Halloween,
+Jungle, Ninja, Paris, Space, Underwater and Volcanic classes follow their actual
+resource groups. BackgroundRegistry exposes the 12-slot table; slots1..11 are
+configured, with Farm/Halloween alternatives at5 and selector0 choosing a random
+nonzero slot without immediate repeat.
+
+Native fixtures construct all twelve themes with effect counts0/1/3/11, check
+retained names/initial state and independent ISAAC shuffle/random position. The
+literal name format is prefix plus `_0` plus index, so index10 becomes `_010`.
+Readiness fixtures test each required missing reference and preserve the original
+shallow acceptance of nonnull empty arrays. All missing-asset full/split backgrounds
+and neutral previews are compared pixel-for-pixel with an independent clipped
+solid/gradient model, retaining theme-specific dimensions and no-op previews.
+Selection fixtures exercise real registry dispatch/preparation calls with controlled
+scene callbacks, including random variant, remembered ID and repeat avoidance.
+Parallax fixtures independently place opaque far and transparent mid/near pixels
+across viewport widths, signed fixed16 scroll, scale divisors and vertical offsets.
+Theme sprite field aliases derive deterministically from literal resource files
+and resolved field declarations; ambiguous ownership/type/collisions fail the build.
+Real sprite decoding/loading, cached scene drawing, sound/music preparation and
+playback, desktop/browser/phone presentation and FPS remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
