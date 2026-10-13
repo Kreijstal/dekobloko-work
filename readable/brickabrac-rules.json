@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 37,
+  "version": 38,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -280,6 +280,13 @@
       "originalName": "al",
       "to": "AchievementMaskRequest",
       "evidence": "al.java: Intrusive pending request for eight achievement-mask words with completion flag; common type0/type2 responses. Unrelated static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:am",
+      "originalName": "am",
+      "to": "ReportAbuseDialog",
+      "evidence": "am.java: Literal report-abuse title, target name/identity, reason rows and optional mute-request control; also supports an informational-only mode. Static helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -1025,6 +1032,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oa",
+      "originalName": "oa",
+      "to": "TabbedPane",
+      "evidence": "oa.java: Tab header buttons and caller-owned content panels, moving inactive panels10000 pixels offscreen; static helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:od",
       "originalName": "od",
       "to": "DelegatingCanvas",
@@ -1043,6 +1057,13 @@
       "originalName": "of",
       "to": "BlankScreen",
       "evidence": "of.java: Screen ID -2 clears the raster and consumes no gameplay input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:og",
+      "originalName": "og",
+      "to": "QuickChatMenu",
+      "evidence": "og.java: Hierarchical shortcut/icon/text menu with selected/open submenu, expansion animation, pointer/key routing and leaf message dispatch; static resource/client helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -1813,6 +1834,83 @@
       "originalName": "field_m",
       "to": "delayedPackets",
       "evidence": "al.java: Artificial-delay packet FIFO.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_Pb:Lmh;",
+      "originalName": "field_Pb",
+      "to": "nameInstructions",
+      "evidence": "am.java: Instruction text above reported player name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_Rb:Lmh;",
+      "originalName": "field_Rb",
+      "to": "instructions",
+      "evidence": "am.java: Report instructions or informational-mode explanation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_Sb:[Lmh;",
+      "originalName": "field_Sb",
+      "to": "reasonButtons",
+      "evidence": "am.java: Sparse array indexed by report category ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_Tb:Ljava/lang/StringBuilder;",
+      "originalName": "field_Tb",
+      "to": "reportedName",
+      "evidence": "am.java: Name initialized from constructor target and returned for wire submission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_Ub:Lmh;",
+      "originalName": "field_Ub",
+      "to": "title",
+      "evidence": "am.java: Uppercase literal Report abuse header.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_Vb:Lmh;",
+      "originalName": "field_Vb",
+      "to": "closeButton",
+      "evidence": "am.java: Close control attached to title.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_Wb:J",
+      "originalName": "field_Wb",
+      "to": "reportTargetId",
+      "evidence": "am.java: Stored long identifier passed to report packet writer without reinterpretation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_Xb:Lmh;",
+      "originalName": "field_Xb",
+      "to": "body",
+      "evidence": "am.java: Framed container for instructions, target, mute and reason columns.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_Yb:Lmh;",
+      "originalName": "field_Yb",
+      "to": "nameDisplay",
+      "evidence": "am.java: Centered display of retained reported name, with cursor suffix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_ac:I",
+      "originalName": "field_ac",
+      "to": "keyboardResult",
+      "evidence": "am.java: Starts -2 pending, Escape stores -1 dismissal. Pointer reasons returned directly.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_bc:Lni;",
+      "originalName": "field_bc",
+      "to": "muteControl",
+      "evidence": "am.java: Optional selected icon/label whose flag is included in report submission.",
       "confidence": "reviewed"
     },
     {
@@ -3801,6 +3899,13 @@
       "originalName": "field_g",
       "to": "ninjaSmallSprite",
       "evidence": "qa.java: Literal sprite resource ninja/ninja_small assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hd.field_a:Log;",
+      "originalName": "field_a",
+      "to": "quickChatMenu",
+      "evidence": "hd.java: Active root Quick Chat menu.",
       "confidence": "reviewed"
     },
     {
@@ -7003,6 +7108,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:no.field_p:Lam;",
+      "originalName": "field_p",
+      "to": "reportAbuseDialog",
+      "evidence": "no.java: Active report dialog polled by Paddle client helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:no.field_r:Z",
       "originalName": "field_r",
       "to": "liveFocus",
@@ -7094,10 +7206,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oa.field_Qb:[Lmh;",
+      "originalName": "field_Qb",
+      "to": "panels",
+      "evidence": "oa.java: Caller array retained; each panel is attached to body.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oa.field_Rb:[Lmh;",
+      "originalName": "field_Rb",
+      "to": "tabButtons",
+      "evidence": "oa.java: Header components with label and selected flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oa.field_Sb:Lki;",
       "originalName": "field_Sb",
       "to": "currentBackground",
       "evidence": "oa.java: Selected background used by gameplay drawing and sound event selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oa.field_Vb:I",
+      "originalName": "field_Vb",
+      "to": "selectedTab",
+      "evidence": "oa.java: Selected header/panel index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oa.field_Yb:Lmh;",
+      "originalName": "field_Yb",
+      "to": "body",
+      "evidence": "oa.java: Framed parent of caller-supplied tab panels.",
       "confidence": "reviewed"
     },
     {
@@ -7161,6 +7301,97 @@
       "originalName": "field_n",
       "to": "loopStart",
       "evidence": "oe.java: Sample index shifted8 bits for loop boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_Pb:I",
+      "originalName": "field_Pb",
+      "to": "preferredHeight",
+      "evidence": "og.java: rowHeight times itemCount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_Qb:[Lrk;",
+      "originalName": "field_Qb",
+      "to": "items",
+      "evidence": "og.java: Aligned shortcut/icon/text row components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_Rb:I",
+      "originalName": "field_Rb",
+      "to": "contentWidth",
+      "evidence": "og.java: Maximum displayed label width plus10 and branch sprite canvas width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_Sb:I",
+      "originalName": "field_Sb",
+      "to": "animationAnchorY",
+      "evidence": "og.java: Absolute Y from which rows expand.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_Tb:I",
+      "originalName": "field_Tb",
+      "to": "selectedItem",
+      "evidence": "og.java: -1 when collapsed/no selected branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_Ub:[I",
+      "originalName": "field_Ub",
+      "to": "messageIds",
+      "evidence": "og.java: Parallel leaf message IDs; -1 opens help when no submenu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_Vb:Log;",
+      "originalName": "field_Vb",
+      "to": "openSubmenu",
+      "evidence": "og.java: Current attached submenu, unlinked when reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_Xb:I",
+      "originalName": "field_Xb",
+      "to": "menuWidth",
+      "evidence": "og.java: Content width plus twice row inset, used for chain width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_bc:[Log;",
+      "originalName": "field_bc",
+      "to": "submenus",
+      "evidence": "og.java: Parallel caller-owned submenu array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_cc:I",
+      "originalName": "field_cc",
+      "to": "itemCount",
+      "evidence": "og.java: Count derives from message ID array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_dc:I",
+      "originalName": "field_dc",
+      "to": "rowHeight",
+      "evidence": "og.java: Label font ascent plus descent plus2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_ec:I",
+      "originalName": "field_ec",
+      "to": "remainingExpansionTicks",
+      "evidence": "og.java: 12-to0 expansion countdown with squared interpolation weight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:og.field_fc:[C",
+      "originalName": "field_fc",
+      "to": "shortcuts",
+      "evidence": "og.java: Parallel character shortcuts retained from caller.",
       "confidence": "reviewed"
     },
     {
@@ -9698,6 +9929,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wd.field_w:Lmh;",
+      "originalName": "field_w",
+      "to": "quickChatMenuRoot",
+      "evidence": "wd.java: Shared UI owner to which root/submenus are attached.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:we.field_a:I",
       "originalName": "field_a",
       "to": "secondPreviousPacketOpcode",
@@ -10178,6 +10416,342 @@
       "originalName": "var10_ref_vnLifetime2",
       "to": "queuedBall",
       "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#0",
+      "originalName": "discarded$1",
+      "to": "ignoredNameAppend",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#1",
+      "originalName": "var15_int",
+      "to": "infoContentWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#10",
+      "originalName": "var23",
+      "to": "popupWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#11",
+      "originalName": "var24",
+      "to": "popupHeight",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#12",
+      "originalName": "var25",
+      "to": "popupX",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#13",
+      "originalName": "var26",
+      "to": "popupY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#14",
+      "originalName": "var28",
+      "to": "reasonColumns",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#18",
+      "originalName": "stackIn_8_3",
+      "to": "muteControlId",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#19",
+      "originalName": "stackIn_8_4",
+      "to": "muteStyleTemplate",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#2",
+      "originalName": "var15",
+      "to": "unusedColumnAlias",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#23",
+      "originalName": "stackIn_9_5",
+      "to": "muteCaption",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#24",
+      "originalName": "stackIn_15_0",
+      "to": "reasonButton",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#25",
+      "originalName": "stackIn_16_1",
+      "to": "targetKnown",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#3",
+      "originalName": "var16",
+      "to": "reasonId",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#4",
+      "originalName": "var17",
+      "to": "firstHeadingWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#49",
+      "originalName": "var16Lifetime1",
+      "to": "infoNextY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#5",
+      "originalName": "var18",
+      "to": "reasonWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#50",
+      "originalName": "var17Lifetime1",
+      "to": "infoLineCount",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#51",
+      "originalName": "var18Lifetime1",
+      "to": "infoPopupWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#52",
+      "originalName": "var19Lifetime1",
+      "to": "infoPopupHeight",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#53",
+      "originalName": "var20Lifetime1",
+      "to": "infoPopupX",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#54",
+      "originalName": "var21Lifetime1",
+      "to": "infoPopupY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#55",
+      "originalName": "var16Lifetime2",
+      "to": "columnWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#56",
+      "originalName": "var17Lifetime2",
+      "to": "secondHeadingWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#57",
+      "originalName": "var17Lifetime3",
+      "to": "thirdHeadingWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#58",
+      "originalName": "var17Lifetime4",
+      "to": "measuredReasonId",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#59",
+      "originalName": "var17Lifetime5",
+      "to": "columnHeight",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#6",
+      "originalName": "var19",
+      "to": "contentWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#60",
+      "originalName": "var18Lifetime2",
+      "to": "unusedColumnY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#61",
+      "originalName": "var18Lifetime3",
+      "to": "firstColumnY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#62",
+      "originalName": "var18Lifetime4",
+      "to": "secondColumnY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#63",
+      "originalName": "var18Lifetime5",
+      "to": "thirdColumnY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#64",
+      "originalName": "var20Lifetime2",
+      "to": "muteWidthForDialog",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#65",
+      "originalName": "var20Lifetime3",
+      "to": "muteWidthForBounds",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#7",
+      "originalName": "var20",
+      "to": "titleWidth",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#8",
+      "originalName": "var21",
+      "to": "nextY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#9",
+      "originalName": "var22",
+      "to": "columnsY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.a(ILmh;ILjava/lang/String;Lmh;B)I#0",
+      "originalName": "var7",
+      "to": "heading",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.a(ILmh;ILjava/lang/String;Lmh;B)I#2",
+      "originalName": "stackIn_3_0",
+      "to": "nextY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.a(Lmh;BILmh;I)I#0",
+      "originalName": "var6_int",
+      "to": "guardDivision",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.a(Lmh;BILmh;I)I#2",
+      "originalName": "var7",
+      "to": "buttonHeight",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.a(Lmh;BILmh;I)I#3",
+      "originalName": "stackIn_1_0",
+      "to": "nextY",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.b(ZI)I#0",
+      "originalName": "var3",
+      "to": "reasonId",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.b(ZI)I#1",
+      "originalName": "stackIn_9_0",
+      "to": "muteControl",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.b(ZI)I#2",
+      "originalName": "stackIn_10_1",
+      "to": "muteSelected",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.b(ZI)I#3",
+      "originalName": "stackIn_18_0",
+      "to": "reasonButton",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.b(ZI)I#4",
+      "originalName": "stackIn_19_1",
+      "to": "hasReportedName",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:am.b(ZI)I#5",
+      "originalName": "var4",
+      "to": "unusedGameFlag",
+      "evidence": "am.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
       "confidence": "reviewed"
     },
     {
@@ -17230,6 +17804,489 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#10",
+      "originalName": "var8_int",
+      "to": "tabIndex",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#12",
+      "originalName": "var9",
+      "to": "tab",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#13",
+      "originalName": "var11",
+      "to": "panelIndex",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#14",
+      "originalName": "var8_intLifetime1",
+      "to": "unusedPanelIndex",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.a(III)V#0",
+      "originalName": "dupTemp$0",
+      "to": "inactivePanel",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.a(III)V#1",
+      "originalName": "var4",
+      "to": "tabIndex",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.a(III)V#2",
+      "originalName": "var5",
+      "to": "tabLeft",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.a(III)V#3",
+      "originalName": "var6",
+      "to": "tabRight",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.a(III)V#4",
+      "originalName": "var7",
+      "to": "unusedGameFlag",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.a(III)V#5",
+      "originalName": "var8",
+      "to": "panelIndex",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.a(III)V#6",
+      "originalName": "var4Lifetime1",
+      "to": "guardDivision",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.a(III)V#7",
+      "originalName": "var5Lifetime1",
+      "to": "unusedPanelIndex",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.i(I)V#0",
+      "originalName": "var2",
+      "to": "tabIndex",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.i(I)V#1",
+      "originalName": "dupTemp$0",
+      "to": "previousPanel",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.i(I)V#2",
+      "originalName": "dupTemp$1",
+      "to": "selectedPanel",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oa.i(I)V#3",
+      "originalName": "var3",
+      "to": "unusedGameFlag",
+      "evidence": "oa.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#16",
+      "originalName": "var10",
+      "to": "font",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#18",
+      "originalName": "var11",
+      "to": "shortcutColorOpen",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#19",
+      "originalName": "var12",
+      "to": "shortcutColorClose",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#20",
+      "originalName": "var13",
+      "to": "itemIndex",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#21",
+      "originalName": "var14",
+      "to": "branchSprite",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#22",
+      "originalName": "var15",
+      "to": "labelWidth",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#23",
+      "originalName": "var16",
+      "to": "unusedGameFlag",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#24",
+      "originalName": "decompiledNaturalLoopExit0",
+      "to": "finishedRowCreation",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IB)V#0",
+      "originalName": "var3_int",
+      "to": "expandedY",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IB)V#1",
+      "originalName": "var4",
+      "to": "collapseWeight",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IB)V#2",
+      "originalName": "var5",
+      "to": "itemIndex",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IB)V#3",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIB)Z#0",
+      "originalName": "stackIn_5_0",
+      "to": "backspaceFlag",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIB)Z#1",
+      "originalName": "stackIn_24_0",
+      "to": "submenuHandled",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIB)Z#2",
+      "originalName": "stackIn_47_0",
+      "to": "shortcutOrResult",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIB)Z#4",
+      "originalName": "var4_int",
+      "to": "backspace",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIB)Z#6",
+      "originalName": "var5",
+      "to": "shortcutCharacter",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIB)Z#7",
+      "originalName": "var6",
+      "to": "itemIndex",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIB)Z#8",
+      "originalName": "var7",
+      "to": "unusedGameFlag",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIB)Z#9",
+      "originalName": "decompiledFrameCompleted0",
+      "to": "finishedShortcutScan",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(III)V#1",
+      "originalName": "var4_int",
+      "to": "itemIndex",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(III)V#10",
+      "originalName": "decompiledNaturalLoopExit0",
+      "to": "finishedRowScan",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(III)V#2",
+      "originalName": "var4",
+      "to": "submenu",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(III)V#3",
+      "originalName": "var5",
+      "to": "item",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(III)V#4",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(III)V#5",
+      "originalName": "stackIn_13_0",
+      "to": "selectedRow",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(III)V#6",
+      "originalName": "stackIn_14_1",
+      "to": "rowSelected",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(III)V#7",
+      "originalName": "stackIn_17_0",
+      "to": "comparisonSentinel",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(III)V#8",
+      "originalName": "stackIn_17_1",
+      "to": "pressComplementOrSelectedItem",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIII)V#1",
+      "originalName": "var5_int",
+      "to": "encodedMessageId",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIII)V#3",
+      "originalName": "var6",
+      "to": "effectiveChannel",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIII)V#4",
+      "originalName": "var7",
+      "to": "unusedGameFlag",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIII)V#5",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "openHelpBranch",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIIIII)V#1",
+      "originalName": "var7_int",
+      "to": "itemIndex",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIIIII)V#3",
+      "originalName": "var8",
+      "to": "submenuBottomY",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIIIII)V#4",
+      "originalName": "var9",
+      "to": "unusedGameFlag",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.a(IIIIII)V#5",
+      "originalName": "var7_intLifetime1",
+      "to": "submenuItemCount",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.e(B)I#1",
+      "originalName": "stackIn_6_0",
+      "to": "ownWidth",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.e(B)I#2",
+      "originalName": "stackIn_7_1",
+      "to": "submenuWidth",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.e(B)I#3",
+      "originalName": "stackIn_8_0",
+      "to": "chainWidth",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.f(B)V#1",
+      "originalName": "var2",
+      "to": "rows",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.f(B)V#2",
+      "originalName": "var3",
+      "to": "itemIndex",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.f(B)V#3",
+      "originalName": "var4",
+      "to": "item",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.f(B)V#4",
+      "originalName": "var5",
+      "to": "unusedGameFlag",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.i(I)Z#0",
+      "originalName": "var2_int",
+      "to": "anyPressed",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.i(I)Z#2",
+      "originalName": "var3",
+      "to": "rows",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.i(I)Z#3",
+      "originalName": "var4",
+      "to": "itemIndex",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.i(I)Z#4",
+      "originalName": "var5",
+      "to": "item",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.i(I)Z#5",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.i(I)Z#6",
+      "originalName": "stackIn_13_1",
+      "to": "rowPressed",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.i(I)Z#7",
+      "originalName": "stackIn_17_0",
+      "to": "pressedOrNoSelectionSentinel",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.i(I)Z#8",
+      "originalName": "stackIn_17_1",
+      "to": "pressComplementOrSelectedItem",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:og.i(I)Z#9",
+      "originalName": "stackIn_25_0",
+      "to": "result",
+      "evidence": "og.java: Reviewed dialog/tab/Quick Chat data flow and declaration; exact ordinal/spelling checked; merged roles stay qualified.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:on.a(BZ)V#0",
       "originalName": "var6",
       "to": "sourceWaypoint",
@@ -19796,6 +20853,48 @@
       "originalName": "c",
       "to": "getStateSevenPlayerMask",
       "evidence": "ak.java: Selects board state Z seven excluding maskThree; canonical guard -17566.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(ILmh;ILjava/lang/String;Lmh;B)I",
+      "originalName": "a",
+      "to": "appendReasonHeading",
+      "evidence": "am.java: Adds24-high heading at supplied Y and returns Y+32; guard -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(Lmh;BILmh;I)I",
+      "originalName": "a",
+      "to": "appendReasonButton",
+      "evidence": "am.java: Adds8-pixel gap then wrapped-height reason component and returns bottom Y; caller supplies original byte guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.b(ZI)I",
+      "originalName": "b",
+      "to": "updateAndPollReason",
+      "evidence": "am.java: Updates root/name display, toggles mute selection, enables reasons for nonempty name, returns reason index or dismissal/pending; guard8421504.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.d(B)Z",
+      "originalName": "d",
+      "to": "handleCancelKey",
+      "evidence": "am.java: While pending accepts current key; internal Escape13 stores -1; guard at least61.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.h(I)Ljava/lang/String;",
+      "originalName": "h",
+      "to": "getReportedName",
+      "evidence": "am.java: Returns retained target name; guard at least93 avoids update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.j(I)Z",
+      "originalName": "j",
+      "to": "isMuteRequested",
+      "evidence": "am.java: True only when optional mute control exists and is selected; guard72.",
       "confidence": "reviewed"
     },
     {
@@ -23866,6 +24965,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.a(III)V",
+      "originalName": "a",
+      "to": "layoutTabs",
+      "evidence": "oa.java: Divides header width proportionally, insets panels and offsets inactive panels by10000; canonical guard -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "setTabbedPaneBounds",
+      "evidence": "oa.java: Stores outer bounds then lays out header/body/panels; guard at least44.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.i(I)V",
+      "originalName": "i",
+      "to": "processTabPresses",
+      "evidence": "oa.java: Scans tabs from supplied index; switches selected flag and shifts previous/new panel by10000; multiple presses finish at last scanned tab.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(IIJIZLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeAbuseReport",
+      "evidence": "oc.java: Writes ciphered opcode and byte-length body containing target long, CP1252 name, reason byte and mute-request byte; guard1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:od.a(CI)Z",
       "originalName": "a",
       "to": "isLegacyInputCharacter",
@@ -23891,6 +25018,62 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(IB)V",
+      "originalName": "a",
+      "to": "setExpansionTicks",
+      "evidence": "og.java: Stores countdown and positions rows using squared weight/144 between animation anchor and row slots; guard -81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(IIB)Z",
+      "originalName": "a",
+      "to": "handleShortcutKey",
+      "evidence": "og.java: Routes Backspace to deepest menu/reset/root close, remaps configured shortcut to question mark and activates matching item; guard -126.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(III)V",
+      "originalName": "a",
+      "to": "processPressedItems",
+      "evidence": "og.java: Activates rows with pressedButton1, recurses selected submenu and advances expansion countdown; guard38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(IIII)V",
+      "originalName": "a",
+      "to": "activateItem",
+      "evidence": "og.java: Toggles submenu branches; leaf ID|32768 dispatches message/filter/update helpers, -1 leaf opens help; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(IIIIII)V",
+      "originalName": "a",
+      "to": "layoutMenuChain",
+      "evidence": "og.java: Bottom-anchors menu, lays out rows and recursively positions selected submenu to right, adjusting submenu bottom by row increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.e(B)I",
+      "originalName": "e",
+      "to": "getOpenChainWidth",
+      "evidence": "og.java: Adds own laid-out menu width and recursive open-submenu width; guard at most -57.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.f(B)V",
+      "originalName": "f",
+      "to": "resetSelection",
+      "evidence": "og.java: Clears row presses/selections, recursively resets/unlinks open submenu, resets selected index and expansion to12; guard41.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.i(I)Z",
+      "originalName": "i",
+      "to": "hasPressedItem",
+      "evidence": "og.java: Checks any nonzero row press, otherwise recurses selected submenu; guard28.",
       "confidence": "reviewed"
     },
     {
@@ -27433,6 +28616,209 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ak.java: Selects board state Z seven excluding maskThree; canonical guard -17566.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#0",
+      "originalName": "param0",
+      "to": "anchorX",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#1",
+      "originalName": "param1",
+      "to": "anchorY",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#10",
+      "originalName": "param10",
+      "to": "reasonStyle",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#11",
+      "originalName": "param11",
+      "to": "playerName",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#12",
+      "originalName": "param12",
+      "to": "reportTargetId",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#2",
+      "originalName": "param2",
+      "to": "anchorWidth",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#3",
+      "originalName": "param3",
+      "to": "anchorHeight",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#4",
+      "originalName": "param4",
+      "to": "unusedOption",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#5",
+      "originalName": "param5",
+      "to": "styleTemplate",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#6",
+      "originalName": "param6",
+      "to": "titleStyle",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#7",
+      "originalName": "param7",
+      "to": "closeStyle",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#8",
+      "originalName": "param8",
+      "to": "textStyle",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(IIIIILmh;Lmh;Lmh;Lmh;Lni;Lmh;Ljava/lang/String;J)V#9",
+      "originalName": "param9",
+      "to": "muteStyle",
+      "evidence": "am.java: Builds informational or target-report layout, optional mute control and three reason columns; numeric option only retained in failure context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(ILmh;ILjava/lang/String;Lmh;B)I#0",
+      "originalName": "param0",
+      "to": "y",
+      "evidence": "am.java: Adds24-high heading at supplied Y and returns Y+32; guard -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(ILmh;ILjava/lang/String;Lmh;B)I#1",
+      "originalName": "param1",
+      "to": "styleTemplate",
+      "evidence": "am.java: Adds24-high heading at supplied Y and returns Y+32; guard -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(ILmh;ILjava/lang/String;Lmh;B)I#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "am.java: Adds24-high heading at supplied Y and returns Y+32; guard -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(ILmh;ILjava/lang/String;Lmh;B)I#3",
+      "originalName": "param3",
+      "to": "text",
+      "evidence": "am.java: Adds24-high heading at supplied Y and returns Y+32; guard -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(ILmh;ILjava/lang/String;Lmh;B)I#4",
+      "originalName": "param4",
+      "to": "column",
+      "evidence": "am.java: Adds24-high heading at supplied Y and returns Y+32; guard -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(ILmh;ILjava/lang/String;Lmh;B)I#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "am.java: Adds24-high heading at supplied Y and returns Y+32; guard -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Lmh;BILmh;I)I#0",
+      "originalName": "param0",
+      "to": "column",
+      "evidence": "am.java: Adds8-pixel gap then wrapped-height reason component and returns bottom Y; caller supplies original byte guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Lmh;BILmh;I)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "am.java: Adds8-pixel gap then wrapped-height reason component and returns bottom Y; caller supplies original byte guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Lmh;BILmh;I)I#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "am.java: Adds8-pixel gap then wrapped-height reason component and returns bottom Y; caller supplies original byte guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Lmh;BILmh;I)I#3",
+      "originalName": "param3",
+      "to": "button",
+      "evidence": "am.java: Adds8-pixel gap then wrapped-height reason component and returns bottom Y; caller supplies original byte guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.a(Lmh;BILmh;I)I#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "am.java: Adds8-pixel gap then wrapped-height reason component and returns bottom Y; caller supplies original byte guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.b(ZI)I#0",
+      "originalName": "param0",
+      "to": "inputEnabled",
+      "evidence": "am.java: Updates root/name display, toggles mute selection, enables reasons for nonempty name, returns reason index or dismissal/pending; guard8421504.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.b(ZI)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "am.java: Updates root/name display, toggles mute selection, enables reasons for nonempty name, returns reason index or dismissal/pending; guard8421504.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.d(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "am.java: While pending accepts current key; internal Escape13 stores -1; guard at least61.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.h(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "am.java: Returns retained target name; guard at least93 avoids update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.j(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "am.java: True only when optional mute control exists and is selected; guard72.",
       "confidence": "reviewed"
     },
     {
@@ -38776,6 +40162,167 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#0",
+      "originalName": "param0",
+      "to": "id",
+      "evidence": "oa.java: Creates tab buttons, retains panels and attaches them to body; selects supplied initial tab.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#1",
+      "originalName": "param1",
+      "to": "tabStyle",
+      "evidence": "oa.java: Creates tab buttons, retains panels and attaches them to body; selects supplied initial tab.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#2",
+      "originalName": "param2",
+      "to": "labels",
+      "evidence": "oa.java: Creates tab buttons, retains panels and attaches them to body; selects supplied initial tab.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#3",
+      "originalName": "param3",
+      "to": "bodyStyle",
+      "evidence": "oa.java: Creates tab buttons, retains panels and attaches them to body; selects supplied initial tab.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#4",
+      "originalName": "param4",
+      "to": "panels",
+      "evidence": "oa.java: Creates tab buttons, retains panels and attaches them to body; selects supplied initial tab.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#5",
+      "originalName": "param5",
+      "to": "initialTab",
+      "evidence": "oa.java: Creates tab buttons, retains panels and attaches them to body; selects supplied initial tab.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(III)V#0",
+      "originalName": "param0",
+      "to": "tabHeight",
+      "evidence": "oa.java: Divides header width proportionally, insets panels and offsets inactive panels by10000; canonical guard -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(III)V#1",
+      "originalName": "param1",
+      "to": "panelInset",
+      "evidence": "oa.java: Divides header width proportionally, insets panels and offsets inactive panels by10000; canonical guard -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "oa.java: Divides header width proportionally, insets panels and offsets inactive panels by10000; canonical guard -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(IIIIIII)V#0",
+      "originalName": "param0",
+      "to": "panelInset",
+      "evidence": "oa.java: Stores outer bounds then lays out header/body/panels; guard at least44.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(IIIIIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "oa.java: Stores outer bounds then lays out header/body/panels; guard at least44.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(IIIIIII)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "oa.java: Stores outer bounds then lays out header/body/panels; guard at least44.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(IIIIIII)V#3",
+      "originalName": "param3",
+      "to": "tabHeight",
+      "evidence": "oa.java: Stores outer bounds then lays out header/body/panels; guard at least44.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(IIIIIII)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "oa.java: Stores outer bounds then lays out header/body/panels; guard at least44.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(IIIIIII)V#5",
+      "originalName": "param5",
+      "to": "y",
+      "evidence": "oa.java: Stores outer bounds then lays out header/body/panels; guard at least44.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(IIIIIII)V#6",
+      "originalName": "param6",
+      "to": "obfuscationGuard",
+      "evidence": "oa.java: Stores outer bounds then lays out header/body/panels; guard at least44.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.i(I)V#0",
+      "originalName": "param0",
+      "to": "firstTabIndex",
+      "evidence": "oa.java: Scans tabs from supplied index; switches selected flag and shifts previous/new panel by10000; multiple presses finish at last scanned tab.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIJIZLjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "reasonId",
+      "evidence": "oc.java: Writes ciphered opcode and byte-length body containing target long, CP1252 name, reason byte and mute-request byte; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIJIZLjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "oc.java: Writes ciphered opcode and byte-length body containing target long, CP1252 name, reason byte and mute-request byte; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIJIZLjava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "reportTargetId",
+      "evidence": "oc.java: Writes ciphered opcode and byte-length body containing target long, CP1252 name, reason byte and mute-request byte; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIJIZLjava/lang/String;)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "oc.java: Writes ciphered opcode and byte-length body containing target long, CP1252 name, reason byte and mute-request byte; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIJIZLjava/lang/String;)V#4",
+      "originalName": "param4",
+      "to": "muteRequested",
+      "evidence": "oc.java: Writes ciphered opcode and byte-length body containing target long, CP1252 name, reason byte and mute-request byte; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIJIZLjava/lang/String;)V#5",
+      "originalName": "param5",
+      "to": "playerName",
+      "evidence": "oc.java: Writes ciphered opcode and byte-length body containing target long, CP1252 name, reason byte and mute-request byte; guard1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:od.<init>(Ljava/awt/Component;)V#0",
       "originalName": "param0",
       "to": "delegate",
@@ -38920,6 +40467,209 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#0",
+      "originalName": "param0",
+      "to": "id",
+      "evidence": "og.java: Retains arrays, mutates caller labels with shortcut prefix, creates rows with optional branch/help icon and measures dimensions; starts expansion at12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#1",
+      "originalName": "param1",
+      "to": "styleTemplate",
+      "evidence": "og.java: Retains arrays, mutates caller labels with shortcut prefix, creates rows with optional branch/help icon and measures dimensions; starts expansion at12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#2",
+      "originalName": "param2",
+      "to": "itemStyle",
+      "evidence": "og.java: Retains arrays, mutates caller labels with shortcut prefix, creates rows with optional branch/help icon and measures dimensions; starts expansion at12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#3",
+      "originalName": "param3",
+      "to": "labelStyle",
+      "evidence": "og.java: Retains arrays, mutates caller labels with shortcut prefix, creates rows with optional branch/help icon and measures dimensions; starts expansion at12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#4",
+      "originalName": "param4",
+      "to": "submenus",
+      "evidence": "og.java: Retains arrays, mutates caller labels with shortcut prefix, creates rows with optional branch/help icon and measures dimensions; starts expansion at12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#5",
+      "originalName": "param5",
+      "to": "messageIds",
+      "evidence": "og.java: Retains arrays, mutates caller labels with shortcut prefix, creates rows with optional branch/help icon and measures dimensions; starts expansion at12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#6",
+      "originalName": "param6",
+      "to": "labels",
+      "evidence": "og.java: Retains arrays, mutates caller labels with shortcut prefix, creates rows with optional branch/help icon and measures dimensions; starts expansion at12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#7",
+      "originalName": "param7",
+      "to": "shortcuts",
+      "evidence": "og.java: Retains arrays, mutates caller labels with shortcut prefix, creates rows with optional branch/help icon and measures dimensions; starts expansion at12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IB)V#0",
+      "originalName": "param0",
+      "to": "remainingTicks",
+      "evidence": "og.java: Stores countdown and positions rows using squared weight/144 between animation anchor and row slots; guard -81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IB)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "og.java: Stores countdown and positions rows using squared weight/144 between animation anchor and row slots; guard -81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIB)Z#0",
+      "originalName": "param0",
+      "to": "messageOpcode",
+      "evidence": "og.java: Routes Backspace to deepest menu/reset/root close, remaps configured shortcut to question mark and activates matching item; guard -126.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIB)Z#1",
+      "originalName": "param1",
+      "to": "filterOpcode",
+      "evidence": "og.java: Routes Backspace to deepest menu/reset/root close, remaps configured shortcut to question mark and activates matching item; guard -126.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIB)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "og.java: Routes Backspace to deepest menu/reset/root close, remaps configured shortcut to question mark and activates matching item; guard -126.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(III)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "og.java: Activates rows with pressedButton1, recurses selected submenu and advances expansion countdown; guard38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(III)V#1",
+      "originalName": "param1",
+      "to": "messageOpcode",
+      "evidence": "og.java: Activates rows with pressedButton1, recurses selected submenu and advances expansion countdown; guard38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(III)V#2",
+      "originalName": "param2",
+      "to": "filterOpcode",
+      "evidence": "og.java: Activates rows with pressedButton1, recurses selected submenu and advances expansion countdown; guard38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "filterOpcode",
+      "evidence": "og.java: Toggles submenu branches; leaf ID|32768 dispatches message/filter/update helpers, -1 leaf opens help; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "itemIndex",
+      "evidence": "og.java: Toggles submenu branches; leaf ID|32768 dispatches message/filter/update helpers, -1 leaf opens help; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "og.java: Toggles submenu branches; leaf ID|32768 dispatches message/filter/update helpers, -1 leaf opens help; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "messageOpcode",
+      "evidence": "og.java: Toggles submenu branches; leaf ID|32768 dispatches message/filter/update helpers, -1 leaf opens help; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "firstItemIndex",
+      "evidence": "og.java: Bottom-anchors menu, lays out rows and recursively positions selected submenu to right, adjusting submenu bottom by row increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "og.java: Bottom-anchors menu, lays out rows and recursively positions selected submenu to right, adjusting submenu bottom by row increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "bottomY",
+      "evidence": "og.java: Bottom-anchors menu, lays out rows and recursively positions selected submenu to right, adjusting submenu bottom by row increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "iconLabelGap",
+      "evidence": "og.java: Bottom-anchors menu, lays out rows and recursively positions selected submenu to right, adjusting submenu bottom by row increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "itemInset",
+      "evidence": "og.java: Bottom-anchors menu, lays out rows and recursively positions selected submenu to right, adjusting submenu bottom by row increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.a(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "animationAnchorY",
+      "evidence": "og.java: Bottom-anchors menu, lays out rows and recursively positions selected submenu to right, adjusting submenu bottom by row increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.e(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "og.java: Adds own laid-out menu width and recursive open-submenu width; guard at most -57.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.f(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "og.java: Clears row presses/selections, recursively resets/unlinks open submenu, resets selected index and expansion to12; guard41.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:og.i(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "og.java: Checks any nonzero row press, otherwise recurses selected submenu; guard28.",
       "confidence": "reviewed"
     },
     {
@@ -45574,9 +47324,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "ca5b4dbb8fed3e76206c0e8f10538ed459ecfa7a5fe243dc8b4c9ee7ac714750",
+      "build-brickabrac-rules.mjs": "2cdc3afb5db5041cb9e06e1bf0820387813915f2e51676d1e6634f9b2f53e3f8",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "62f8f71b6b6ed419f651463a3132da56fb6a0f4336308890ced2503900c1668b",
+      "tests/test-brickabrac-core.mjs": "0ceee6e22ff88c3257449767c948b51ef2d695fe5de4c16d4b2b2ab8fcf5cf08",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

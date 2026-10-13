@@ -122,6 +122,8 @@ VerticalScrollbar, ScrollPane and ScrollPaneWithFooter expose composite scrollin
 and footer layouts. AlignedIconLabel and StateIconLabel expose their child roles.
 NameEntryPopup, ContextMenu and QuickChatHelpDialog expose popup input, action rows
 and the literal shortcut-help layout.
+ReportAbuseDialog, TabbedPane and QuickChatMenu expose report controls, tab panels
+and hierarchical shortcut menus.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -990,6 +992,24 @@ close control and shortcut rows; fixtures check geometry and close/outside press
 with either value of its unused input flag. Its unused centered-Y calculation is
 preserved: the constructor leaves local Y at100. Live focus/dispatch, actual lobby
 assets, rendered text and complete network actions remain unverified.
+
+ReportAbuseDialog names its informational and target-report layouts, three reason
+columns, target identity/name, optional mute request, close control and result state.
+Fixtures check both modes, numeric mute eligibility boundaries, empty-name disabling,
+reason clicks, mute toggling, cancellation and close/outside presses using synthetic
+fonts and captions. An independent wire writer verifies opcode ciphering, length,
+target long, CP1252 name, reason byte and mute-request byte without sending traffic.
+Reason IDs remain numeric; server interpretation and handling remain unverified.
+
+TabbedPane names tab headers, retained caller panels and selected index. Fixtures
+check proportional widths, insets, negative dimensions, inactive panels shifted by
+10000 pixels, multiple simultaneous presses and actual component hit-test routing.
+QuickChatMenu names shortcut rows, caller arrays, submenu ownership, measured bounds,
+expansion countdown and message/filter opcode arguments. Fixtures check caller label
+mutation, array retention, all thirteen expansion positions, nonzero press detection
+versus button1 activation, branch opening/toggling, Backspace reset, unlinking and
+combined chain width. Leaf message/help side effects, arbitrary nested trees, resource
+initialization, real UI text pixels and live chat/moderation services remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
