@@ -31,11 +31,73 @@ const classes={
  mj:['LegacyUtf8Decoder','Length-delimited legacy UTF-8 decoder; zero bytes and four-byte sequences become replacement characters.'],
  fo:['IsaacGenerator','ISAAC state, block mixing, reverse-order result consumption and rejection-based bounded sampling; used by board randomness and opcode cipher.'],
  qc:['GameplayAudioEvent','Intrusive numeric audio event with optional detail ID; match queues events and bm selects sound effects/music tempo changes.'],
+ oi:['LevelSequence','Retains a level pack, index order, period and repeat mode; resolves level labels and decodes selected payload into board collections.'],
+ nc:['LevelPack','Raw level payloads and per-level metadata with pack identity and qualified score/completion words.'],
+ wk:['LevelMetadata','Decoded level ID, resource index, localized number label, title and qualified numeric attributes.'],
+ kq:['IntNode','Intrusive integer holder used for board level state and UI selections; default and value constructors retain its numeric value.'],
+ dq:['LevelDecoder','Versioned level parser for brick groups, paths, flags and state; also contains an unrelated packet transform helper.'],
+ mq:['LevelPackLoader','Loads indexed level metadata and raw payloads from an archive; other static helpers retain their existing roles.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
 function local(owner,signature,ordinal,expectedOriginalName,to,evidence){members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName,evidence};}
+for(const [original,type,to,evidence] of [
+ ['b','Lnc;','pack','Retained level pack whose payload/metadata arrays are selected by sequence order.'],
+ ['f','[I','order','Caller-owned level index order; sequence uses levelIndex modulo period.'],
+ ['e','I','period','Cycle length; negative constructor input uses order length and enables repeats.'],
+ ['c','Z','repeats','Set when constructor period is negative; match completion checks this flag.'],
+])field('oi',original,type,to,evidence);
+for(const [original,type,to,evidence] of [
+ ['i','I','levelCount','Count read from pack metadata header and used for payload/metadata array allocation.'],
+ ['j','[[B','levelData','Raw level bytes indexed by level ID; append operation copies only outer payload storage.'],
+ ['c','[Lwk;','metadata','Per-level decoded metadata indexed by level ID.'],
+ ['h','I','packId','Pack identity used for completion records; only negative-ID packs may be appended as extra payloads.'],
+ ['b','I','scoreOffset','Offset used with completed-level count in score accounting; finer game mode meaning remains qualified.'],
+ ['d','I','completionWord','Numeric word passed with its65535-XOR counterpart into completion reporting; protocol meaning remains qualified.'],
+])field('nc',original,type,to,evidence);
+for(const [original,type,to,evidence] of [
+ ['n','I','levelId','Unsigned-short metadata index used to install payload and metadata into pack arrays.'],
+ ['q','I','resourceIndex','32-bit resource selector passed into archive payload lookup; archive dimension naming remains qualified.'],
+ ['o','Ljava/lang/String;','numberLabel','Localized lower-case label derived from levelId+1.'],
+ ['j','Ljava/lang/String;','title','Length-delimited legacy UTF-8 title, returned by sequence title lookup.'],
+ ['l','I','attributeByte','Unsigned-byte metadata attribute; purpose remains unresolved.'],
+ ['i','I','attributeWord','32-bit metadata attribute; purpose remains unresolved.'],
+])field('wk',original,type,to,evidence);
+field('kq','p','I','value','Integer retained by value constructor; shared between level state and UI node uses.');
+field('j','ab','Lkq;','levelState','Retained integer node decoded from version4+ level header; earlier versions reset its value to0.');
+field('j','qb','I','levelIndex','Selects current level from sequence and advances at level completion.');
+method('nc','<init>','(III)V','<init>','Retains pack ID and qualified score/completion values.',['packId','scoreOffset','completionWord']);
+method('nc','a','(Lnc;Z)V','appendLevelData','Appends shallow raw payload references only; rejects nonnegative extra pack IDs and retains original metadata array; false guard.',['extra','obfuscationGuard']);
+method('wk','a','(ILwq;)V','readMetadata','Decodes unsigned-short ID, localized number label, resource/attribute words, attribute byte and legacy UTF-8 title; guard -12988.',['obfuscationGuard','packet']);
+method('kq','<init>','(I)V','<init>','Retains integer node value.',['value']);
+method('oi','<init>','(Lnc;)V','<init>','Creates identity order covering the pack level count.',['pack']);
+method('oi','<init>','(Lnc;[II)V','<init>','Retains caller order and period; negative period uses order length and enables repeating sequence.',['pack','order','period']);
+method('oi','a','(I)I','getPeriod','Returns period; original arithmetic guard retained.',['obfuscationGuard']);
+method('oi','a','(IZ)I','getLevelId','Maps levelIndex modulo period through retained order; true guard.',['levelIndex','obfuscationGuard']);
+method('oi','a','(IB)Ljava/lang/String;','getLevelTitle','Returns selected metadata title; guard below -117.',['levelIndex','obfuscationGuard']);
+method('oi','a','(BI)Ljava/lang/String;','getLevelNumberLabel','Returns selected metadata localized number label; guard above94.',['obfuscationGuard','levelIndex']);
+method('oi','a','(Lga;Lkq;Lvl;IB[Lvl;)V','decodeLevel','Selects raw payload by sequence order and decodes into supplied groups/paths/state; guard at most -90.',['unusedContext','levelState','motionPaths','levelIndex','obfuscationGuard','brickGroups']);
+method('td','a','([Lvl;[BLkq;Lvl;Lga;I)I','decodeLevelBytes','Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.',['brickGroups','data','levelState','motionPaths','unusedContext','obfuscationGuard']);
+method('dq','a','([Lvl;ZLwq;Lvl;Lkq;Lga;)I','decodeLevel','Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.',['brickGroups','obfuscationGuard','packet','motionPaths','levelState','unusedContext']);
+method('mq','a','(BLmf;Lwq;IIII)Lnc;','loadLevelPack','Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.',['obfuscationGuard','archive','packet','archiveSelector','packId','completionWord','scoreOffset']);
+method('ai','a','(BLwq;)Lwk;','readLevelMetadata','Creates metadata node and invokes guarded field decoder; guard -12.',['obfuscationGuard','packet']);
+method('kj','a','(ILvl;I)V','addBoardBorders','Adds type1/flag1 bricks across the top and two sides for supplied column count; rows -1..30; guard16.',['columns','destination','obfuscationGuard']);
+method('kk','a','(ZILfo;)[I','createIndexOrder','Allocates0..count-1; optionally shuffles using supplied seeded generator; false guard.',['obfuscationGuard','count','random']);
+for(const [ordinal,original,to,evidence] of [
+ [0,'var11','brickIndex','Index of serialized brick within current group.'],
+ [16,'var6_int','destinationGroupIndex','Checks that every supplied destination group starts empty.'],
+ [18,'var7','flags','Decoded level flags; version4+ high bits go to levelState.'],
+ [20,'var9','entryIndex','Index of a grouped-format collection or a legacy-format brick entry.'],
+ [21,'var9_ref_on','movingBrick','Legacy brick being moved to motion group when flag4 is set.'],
+ [22,'var10','brickCount','Serialized brick count for current group.'],
+ [23,'var12','brick','New grouped-format brick read from snapshot bytes.'],
+ [26,'var15','legacyBrick','New legacy-format brick.'],
+ [27,'var16','motionPath','New path read from serialized waypoints.'],
+ [28,'var6_intLifetime1','version','Level format version selects raw/snapshot/grouped layout and optional suffixes.'],
+ [29,'var8Lifetime1','pathCount','Number of serialized motion paths.'],
+ [30,'var9Lifetime1','pathIndex','Index of serialized motion path.'],
+])local('dq','a([Lvl;ZLwq;Lvl;Lkq;Lga;)I',ordinal,original,to,evidence);
 for(const [original,type,to,evidence] of [
  ['m','I','accumulator','ISAAC accumulator updated by alternating shifts and half-block memory offsets.'],
  ['l','I','lastResult','ISAAC previous result, initially augmented by incremented block counter.'],
@@ -364,12 +426,15 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('ge')} / ${link('ul')} | Falling/scheduled power-ups and score-popup lifetime. |`,
 `| ${link('cl')} / ${link('ee')} | Cyclic waypoint order, destination duration and integer position/velocity interpolation. |`,
 `| ${link('wq')} / ${link('pi')} / ${link('mj')} | Big-endian bytes, compact integers, strings, bit streams, cipher arithmetic and body snapshots. |`,
-`| ${link('fo')} / ${link('qc')} | Deterministic board/cipher random state and queued gameplay audio codes/details. |`, '',
+`| ${link('fo')} / ${link('qc')} | Deterministic board/cipher random state and queued gameplay audio codes/details. |`,
+`| ${link('oi')} → ${link('nc')} / ${link('wk')} / ${link('mq')} | Level order, pack payloads, metadata and archive loading. |`,
+`| ${link('dq')} / ${link('kq')} | Level versions0–5, brick groups, paths and retained integer state. |`, '',
 'Focused raw/named probes check body geometry, paddle sizes, player masks, deque ownership, histories, power-ups, waypoint motion, selected contacts, packet operations and body/path snapshots. ISAAC fixtures use an independent unsigned-word model anchored to [Bob Jenkins’s published vectors](https://burtleburtle.net/bob/rand/randvect.txt), then compare seeded words/state, refill/counter boundaries, bounded rejection, shuffling, board random-call accounting and opcode bytes. Audio fixtures check event construction; playback remains unverified. The client flag uses a headless Applet-compatible shim and board/match construction is bypassed. Full board snapshots, swept collision detection, gameplay, score accounting, live multiplayer and browser/phone behavior remain unverified.','',
+'Level fixtures check sequence order/repeats and caller-owned arrays, metadata labels/fields, payload-only pack appends, empty pack loading, all versions0–5, legacy regrouping, generated borders, path counts, wrapper delegation and early rejection. They retain negative-version default bricks and unchanged metadata after payload append. Metadata attribute byte/word and pack completion word remain qualified. Nonempty archive retrieval, full board initialization and rendered level selection remain unverified.','',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:5,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:6,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

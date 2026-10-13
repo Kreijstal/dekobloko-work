@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 5,
+  "version": 6,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -248,6 +248,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dq",
+      "originalName": "dq",
+      "to": "LevelDecoder",
+      "evidence": "dq.java: Versioned level parser for brick groups, paths, flags and state; also contains an unrelated packet transform helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ee",
       "originalName": "ee",
       "to": "MotionWaypoint",
@@ -290,10 +297,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kq",
+      "originalName": "kq",
+      "to": "IntNode",
+      "evidence": "kq.java: Intrusive integer holder used for board level state and UI selections; default and value constructors retain its numeric value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mj",
       "originalName": "mj",
       "to": "LegacyUtf8Decoder",
       "evidence": "mj.java: Length-delimited legacy UTF-8 decoder; zero bytes and four-byte sequences become replacement characters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mq",
+      "originalName": "mq",
+      "to": "LevelPackLoader",
+      "evidence": "mq.java: Loads indexed level metadata and raw payloads from an archive; other static helpers retain their existing roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nc",
+      "originalName": "nc",
+      "to": "LevelPack",
+      "evidence": "nc.java: Raw level payloads and per-level metadata with pack identity and qualified score/completion words.",
       "confidence": "reviewed"
     },
     {
@@ -308,6 +336,13 @@
       "originalName": "no",
       "to": "CircleBody",
       "evidence": "no.java: Moving-body radius and extended synchronization checksum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oi",
+      "originalName": "oi",
+      "to": "LevelSequence",
+      "evidence": "oi.java: Retains a level pack, index order, period and repeat mode; resolves level labels and decodes selected payload into board collections.",
       "confidence": "reviewed"
     },
     {
@@ -371,6 +406,13 @@
       "originalName": "vo",
       "to": "Paddle",
       "evidence": "vo.java: Rectangle-backed paddle with retained center/board span/control mode and grow/shrink/reset stages.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wk",
+      "originalName": "wk",
+      "to": "LevelMetadata",
+      "evidence": "wk.java: Decoded level ID, resource index, localized number label, title and qualified numeric attributes.",
       "confidence": "reviewed"
     },
     {
@@ -612,6 +654,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_ab:Lkq;",
+      "originalName": "field_ab",
+      "to": "levelState",
+      "evidence": "j.java: Retained integer node decoded from version4+ level header; earlier versions reset its value to0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_gb:Lvl;",
       "originalName": "field_gb",
       "to": "activeBalls",
@@ -651,6 +700,13 @@
       "originalName": "field_pb",
       "to": "fallingPowerUps",
       "evidence": "j.java: Brick contact adds falling power-ups; match advances them and handles paddle pickup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_qb:I",
+      "originalName": "field_qb",
+      "to": "levelIndex",
+      "evidence": "j.java: Selects current level from sequence and advances at level completion.",
       "confidence": "reviewed"
     },
     {
@@ -696,6 +752,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kq.field_p:I",
+      "originalName": "field_p",
+      "to": "value",
+      "evidence": "kq.java: Integer retained by value constructor; shared between level state and UI node uses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nc.field_b:I",
+      "originalName": "field_b",
+      "to": "scoreOffset",
+      "evidence": "nc.java: Offset used with completed-level count in score accounting; finer game mode meaning remains qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nc.field_c:[Lwk;",
+      "originalName": "field_c",
+      "to": "metadata",
+      "evidence": "nc.java: Per-level decoded metadata indexed by level ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nc.field_d:I",
+      "originalName": "field_d",
+      "to": "completionWord",
+      "evidence": "nc.java: Numeric word passed with its65535-XOR counterpart into completion reporting; protocol meaning remains qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nc.field_h:I",
+      "originalName": "field_h",
+      "to": "packId",
+      "evidence": "nc.java: Pack identity used for completion records; only negative-ID packs may be appended as extra payloads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nc.field_i:I",
+      "originalName": "field_i",
+      "to": "levelCount",
+      "evidence": "nc.java: Count read from pack metadata header and used for payload/metadata array allocation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nc.field_j:[[B",
+      "originalName": "field_j",
+      "to": "levelData",
+      "evidence": "nc.java: Raw level bytes indexed by level ID; append operation copies only outer payload storage.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nm.field_b:Lnm;",
       "originalName": "field_b",
       "to": "previous",
@@ -721,6 +826,34 @@
       "originalName": "field_u",
       "to": "radius256",
       "evidence": "no.java: Circle constructor radius; ball constructors use1536.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oi.field_b:Lnc;",
+      "originalName": "field_b",
+      "to": "pack",
+      "evidence": "oi.java: Retained level pack whose payload/metadata arrays are selected by sequence order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oi.field_c:Z",
+      "originalName": "field_c",
+      "to": "repeats",
+      "evidence": "oi.java: Set when constructor period is negative; match completion checks this flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oi.field_e:I",
+      "originalName": "field_e",
+      "to": "period",
+      "evidence": "oi.java: Cycle length; negative constructor input uses order length and enables repeats.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oi.field_f:[I",
+      "originalName": "field_f",
+      "to": "order",
+      "evidence": "oi.java: Caller-owned level index order; sequence uses levelIndex modulo period.",
       "confidence": "reviewed"
     },
     {
@@ -1018,6 +1151,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wk.field_i:I",
+      "originalName": "field_i",
+      "to": "attributeWord",
+      "evidence": "wk.java: 32-bit metadata attribute; purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wk.field_j:Ljava/lang/String;",
+      "originalName": "field_j",
+      "to": "title",
+      "evidence": "wk.java: Length-delimited legacy UTF-8 title, returned by sequence title lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wk.field_l:I",
+      "originalName": "field_l",
+      "to": "attributeByte",
+      "evidence": "wk.java: Unsigned-byte metadata attribute; purpose remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wk.field_n:I",
+      "originalName": "field_n",
+      "to": "levelId",
+      "evidence": "wk.java: Unsigned-short metadata index used to install payload and metadata into pack arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wk.field_o:Ljava/lang/String;",
+      "originalName": "field_o",
+      "to": "numberLabel",
+      "evidence": "wk.java: Localized lower-case label derived from levelId+1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wk.field_q:I",
+      "originalName": "field_q",
+      "to": "resourceIndex",
+      "evidence": "wk.java: 32-bit resource selector passed into archive payload lookup; archive dimension naming remains qualified.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wq.field_k:[B",
       "originalName": "field_k",
       "to": "data",
@@ -1064,6 +1239,90 @@
       "originalName": "fieldTemp$0",
       "to": "nextIndex",
       "evidence": "ao.java: New absolute index used for the modulo storage slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#0",
+      "originalName": "var11",
+      "to": "brickIndex",
+      "evidence": "dq.java: Index of serialized brick within current group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#16",
+      "originalName": "var6_int",
+      "to": "destinationGroupIndex",
+      "evidence": "dq.java: Checks that every supplied destination group starts empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#18",
+      "originalName": "var7",
+      "to": "flags",
+      "evidence": "dq.java: Decoded level flags; version4+ high bits go to levelState.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#20",
+      "originalName": "var9",
+      "to": "entryIndex",
+      "evidence": "dq.java: Index of a grouped-format collection or a legacy-format brick entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#21",
+      "originalName": "var9_ref_on",
+      "to": "movingBrick",
+      "evidence": "dq.java: Legacy brick being moved to motion group when flag4 is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#22",
+      "originalName": "var10",
+      "to": "brickCount",
+      "evidence": "dq.java: Serialized brick count for current group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#23",
+      "originalName": "var12",
+      "to": "brick",
+      "evidence": "dq.java: New grouped-format brick read from snapshot bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#26",
+      "originalName": "var15",
+      "to": "legacyBrick",
+      "evidence": "dq.java: New legacy-format brick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#27",
+      "originalName": "var16",
+      "to": "motionPath",
+      "evidence": "dq.java: New path read from serialized waypoints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#28",
+      "originalName": "var6_intLifetime1",
+      "to": "version",
+      "evidence": "dq.java: Level format version selects raw/snapshot/grouped layout and optional suffixes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#29",
+      "originalName": "var8Lifetime1",
+      "to": "pathCount",
+      "evidence": "dq.java: Number of serialized motion paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#30",
+      "originalName": "var9Lifetime1",
+      "to": "pathIndex",
+      "evidence": "dq.java: Index of serialized motion path.",
       "confidence": "reviewed"
     },
     {
@@ -1424,6 +1683,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ai.a(BLwq;)Lwk;",
+      "originalName": "a",
+      "to": "readLevelMetadata",
+      "evidence": "ai.java: Creates metadata node and invokes guarded field decoder; guard -12.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ak.a(B)I",
       "originalName": "a",
       "to": "getStateZeroPlayerMask",
@@ -1540,6 +1806,13 @@
       "originalName": "a",
       "to": "decodeCp1252",
       "evidence": "df.java: Decodes byte slice, skips zero bytes and uses extension mapping with question-mark fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I",
+      "originalName": "a",
+      "to": "decodeLevel",
+      "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -1718,6 +1991,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kj.a(ILvl;I)V",
+      "originalName": "a",
+      "to": "addBoardBorders",
+      "evidence": "kj.java: Adds type1/flag1 bricks across the top and two sides for supplied column count; rows -1..30; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(ZILfo;)[I",
+      "originalName": "a",
+      "to": "createIndexOrder",
+      "evidence": "kk.java: Allocates0..count-1; optionally shuffles using supplied seeded generator; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -1788,6 +2075,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mq.a(BLmf;Lwq;IIII)Lnc;",
+      "originalName": "a",
+      "to": "loadLevelPack",
+      "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(Lnc;Z)V",
+      "originalName": "a",
+      "to": "appendLevelData",
+      "evidence": "nc.java: Appends shallow raw payload references only; rejects nonnegative extra pack IDs and retains original metadata array; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nm.b(B)V",
       "originalName": "b",
       "to": "unlink",
@@ -1827,6 +2128,41 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(BI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getLevelNumberLabel",
+      "evidence": "oi.java: Returns selected metadata localized number label; guard above94.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(I)I",
+      "originalName": "a",
+      "to": "getPeriod",
+      "evidence": "oi.java: Returns period; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(IB)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getLevelTitle",
+      "evidence": "oi.java: Returns selected metadata title; guard below -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(IZ)I",
+      "originalName": "a",
+      "to": "getLevelId",
+      "evidence": "oi.java: Maps levelIndex modulo period through retained order; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(Lga;Lkq;Lvl;IB[Lvl;)V",
+      "originalName": "a",
+      "to": "decodeLevel",
+      "evidence": "oi.java: Selects raw payload by sequence order and decodes into supplied groups/paths/state; guard at most -90.",
       "confidence": "reviewed"
     },
     {
@@ -2030,6 +2366,13 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:td.a([Lvl;[BLkq;Lvl;Lga;I)I",
+      "originalName": "a",
+      "to": "decodeLevelBytes",
+      "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
       "confidence": "reviewed"
     },
     {
@@ -2296,6 +2639,13 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wk.a(ILwq;)V",
+      "originalName": "a",
+      "to": "readMetadata",
+      "evidence": "wk.java: Decodes unsigned-short ID, localized number label, resource/attribute words, attribute byte and legacy UTF-8 title; guard -12988.",
       "confidence": "reviewed"
     },
     {
@@ -2642,6 +2992,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ai.a(BLwq;)Lwk;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ai.java: Creates metadata node and invokes guarded field decoder; guard -12.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ai.a(BLwq;)Lwk;#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "ai.java: Creates metadata node and invokes guarded field decoder; guard -12.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ak.a(B)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -2982,6 +3346,48 @@
       "originalName": "param3",
       "to": "offset",
       "evidence": "df.java: Decodes byte slice, skips zero bytes and uses extension mapping with question-mark fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#0",
+      "originalName": "param0",
+      "to": "brickGroups",
+      "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#3",
+      "originalName": "param3",
+      "to": "motionPaths",
+      "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#4",
+      "originalName": "param4",
+      "to": "levelState",
+      "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a([Lvl;ZLwq;Lvl;Lkq;Lga;)I#5",
+      "originalName": "param5",
+      "to": "unusedContext",
+      "evidence": "dq.java: Requires empty destination collections and version at most5; decodes legacy/grouped bricks, motion paths, flags and version4+ state word; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -3496,6 +3902,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kj.a(ILvl;I)V#0",
+      "originalName": "param0",
+      "to": "columns",
+      "evidence": "kj.java: Adds type1/flag1 bricks across the top and two sides for supplied column count; rows -1..30; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(ILvl;I)V#1",
+      "originalName": "param1",
+      "to": "destination",
+      "evidence": "kj.java: Adds type1/flag1 bricks across the top and two sides for supplied column count; rows -1..30; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kj.a(ILvl;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "kj.java: Adds type1/flag1 bricks across the top and two sides for supplied column count; rows -1..30; guard16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(ZILfo;)[I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kk.java: Allocates0..count-1; optionally shuffles using supplied seeded generator; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(ZILfo;)[I#1",
+      "originalName": "param1",
+      "to": "count",
+      "evidence": "kk.java: Allocates0..count-1; optionally shuffles using supplied seeded generator; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kk.a(ZILfo;)[I#2",
+      "originalName": "param2",
+      "to": "random",
+      "evidence": "kk.java: Allocates0..count-1; optionally shuffles using supplied seeded generator; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:km.a(CII)Z#0",
       "originalName": "param0",
       "to": "character",
@@ -3542,6 +3990,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "kq.java: Retains integer node value.",
       "confidence": "reviewed"
     },
     {
@@ -3640,6 +4095,90 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "mj.java: Clears owned static references; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mq.a(BLmf;Lwq;IIII)Lnc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mq.a(BLmf;Lwq;IIII)Lnc;#1",
+      "originalName": "param1",
+      "to": "archive",
+      "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mq.a(BLmf;Lwq;IIII)Lnc;#2",
+      "originalName": "param2",
+      "to": "packet",
+      "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mq.a(BLmf;Lwq;IIII)Lnc;#3",
+      "originalName": "param3",
+      "to": "archiveSelector",
+      "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mq.a(BLmf;Lwq;IIII)Lnc;#4",
+      "originalName": "param4",
+      "to": "packId",
+      "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mq.a(BLmf;Lwq;IIII)Lnc;#5",
+      "originalName": "param5",
+      "to": "completionWord",
+      "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mq.a(BLmf;Lwq;IIII)Lnc;#6",
+      "originalName": "param6",
+      "to": "scoreOffset",
+      "evidence": "mq.java: Reads metadata records, installs them by ID and resolves associated raw payloads through archive lookup; original guards and selector ordering retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "packId",
+      "evidence": "nc.java: Retains pack ID and qualified score/completion values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "scoreOffset",
+      "evidence": "nc.java: Retains pack ID and qualified score/completion values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "completionWord",
+      "evidence": "nc.java: Retains pack ID and qualified score/completion values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(Lnc;Z)V#0",
+      "originalName": "param0",
+      "to": "extra",
+      "evidence": "nc.java: Appends shallow raw payload references only; rejects nonnegative extra pack IDs and retains original metadata array; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nc.a(Lnc;Z)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "nc.java: Appends shallow raw payload references only; rejects nonnegative extra pack IDs and retains original metadata array; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -3759,6 +4298,125 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.<init>(Lnc;)V#0",
+      "originalName": "param0",
+      "to": "pack",
+      "evidence": "oi.java: Creates identity order covering the pack level count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.<init>(Lnc;[II)V#0",
+      "originalName": "param0",
+      "to": "pack",
+      "evidence": "oi.java: Retains caller order and period; negative period uses order length and enables repeating sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.<init>(Lnc;[II)V#1",
+      "originalName": "param1",
+      "to": "order",
+      "evidence": "oi.java: Retains caller order and period; negative period uses order length and enables repeating sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.<init>(Lnc;[II)V#2",
+      "originalName": "param2",
+      "to": "period",
+      "evidence": "oi.java: Retains caller order and period; negative period uses order length and enables repeating sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(BI)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "oi.java: Returns selected metadata localized number label; guard above94.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(BI)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "levelIndex",
+      "evidence": "oi.java: Returns selected metadata localized number label; guard above94.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "oi.java: Returns period; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(IB)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "levelIndex",
+      "evidence": "oi.java: Returns selected metadata title; guard below -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(IB)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "oi.java: Returns selected metadata title; guard below -117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(IZ)I#0",
+      "originalName": "param0",
+      "to": "levelIndex",
+      "evidence": "oi.java: Maps levelIndex modulo period through retained order; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(IZ)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "oi.java: Maps levelIndex modulo period through retained order; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(Lga;Lkq;Lvl;IB[Lvl;)V#0",
+      "originalName": "param0",
+      "to": "unusedContext",
+      "evidence": "oi.java: Selects raw payload by sequence order and decodes into supplied groups/paths/state; guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(Lga;Lkq;Lvl;IB[Lvl;)V#1",
+      "originalName": "param1",
+      "to": "levelState",
+      "evidence": "oi.java: Selects raw payload by sequence order and decodes into supplied groups/paths/state; guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(Lga;Lkq;Lvl;IB[Lvl;)V#2",
+      "originalName": "param2",
+      "to": "motionPaths",
+      "evidence": "oi.java: Selects raw payload by sequence order and decodes into supplied groups/paths/state; guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(Lga;Lkq;Lvl;IB[Lvl;)V#3",
+      "originalName": "param3",
+      "to": "levelIndex",
+      "evidence": "oi.java: Selects raw payload by sequence order and decodes into supplied groups/paths/state; guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(Lga;Lkq;Lvl;IB[Lvl;)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "oi.java: Selects raw payload by sequence order and decodes into supplied groups/paths/state; guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oi.a(Lga;Lkq;Lvl;IB[Lvl;)V#5",
+      "originalName": "param5",
+      "to": "brickGroups",
+      "evidence": "oi.java: Selects raw payload by sequence order and decodes into supplied groups/paths/state; guard at most -90.",
       "confidence": "reviewed"
     },
     {
@@ -4270,6 +4928,48 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:td.a([Lvl;[BLkq;Lvl;Lga;I)I#0",
+      "originalName": "param0",
+      "to": "brickGroups",
+      "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:td.a([Lvl;[BLkq;Lvl;Lga;I)I#1",
+      "originalName": "param1",
+      "to": "data",
+      "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:td.a([Lvl;[BLkq;Lvl;Lga;I)I#2",
+      "originalName": "param2",
+      "to": "levelState",
+      "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:td.a([Lvl;[BLkq;Lvl;Lga;I)I#3",
+      "originalName": "param3",
+      "to": "motionPaths",
+      "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:td.a([Lvl;[BLkq;Lvl;Lga;I)I#4",
+      "originalName": "param4",
+      "to": "unusedContext",
+      "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:td.a([Lvl;[BLkq;Lvl;Lga;I)I#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "td.java: Wraps raw bytes as PacketBuffer then delegates versioned level decode; guard10792131.",
       "confidence": "reviewed"
     },
     {
@@ -4882,6 +5582,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wk.a(ILwq;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wk.java: Decodes unsigned-short ID, localized number label, resource/attribute words, attribute byte and legacy UTF-8 title; guard -12988.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wk.a(ILwq;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "wk.java: Decodes unsigned-short ID, localized number label, resource/attribute words, attribute byte and legacy UTF-8 title; guard -12988.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wq.<init>(I)V#0",
       "originalName": "param0",
       "to": "capacity",
@@ -5408,9 +6122,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "76b3b9113c1452cb5952e3483b099097517b30fbcdb650eb10bd0181783c001d",
+      "build-brickabrac-rules.mjs": "f41b8e348377013782caa62c68e74410e316cb73bcfe16fe7e291caceaac0af1",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "6b551bcf7b3309c8857f457fbadd4b817d10399b49b60a24dfeaa5a6d04cfe14",
+      "tests/test-brickabrac-core.mjs": "cdbf2175586e085f40ad19dbff296f6baea686cb805e8ead1f8fec0eb614e872",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

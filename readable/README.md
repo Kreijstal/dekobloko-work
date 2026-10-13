@@ -44,7 +44,8 @@ The semantic passes name GameScreen/GameplayScreen, MultiplayerMatch,
 PlayerBoard, moving/circular/rectangular bodies, Ball/Brick/Paddle and intrusive
 nodes/deques, plus IntHistoryBuffer/ObjectHistoryBuffer, PowerUp, ScorePopup,
 BrickMotionPath, MotionWaypoint, PacketBuffer, BitPacketBuffer, LegacyUtf8Decoder,
-IsaacGenerator and GameplayAudioEvent.
+IsaacGenerator, GameplayAudioEvent, LevelSequence, LevelPack, LevelMetadata,
+IntNode, LevelDecoder and LevelPackLoader.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -122,6 +123,34 @@ each generator word consumed by rejection sampling. `GameplayAudioEvent` names
 its numeric code and optional detail, with constructor checks for all observed
 codes0..14. Its consumer now names effect selection and music-tempo inputs;
 actual playback and complete match-event emission remain unverified.
+
+Level sequences retain a caller-owned index order and a cycle period. Negative
+period input uses the order length and enables repetition. Pack fields expose
+raw payloads, metadata, pack ID and qualified score/completion values. Metadata
+decoding names its ID, resource index, localized number label and title; the
+remaining byte/word attributes keep explicitly unresolved meanings. `IntNode`
+is the shared integer holder used for level state and UI selections.
+
+The versioned level decoder now exposes its entry points and main locals:
+
+| Version | Payload behavior |
+| --- | --- |
+| 0 | Legacy count followed by six 32-bit brick values; flag4 moves bricks to the motion group. |
+| 1 | Legacy count followed by compact brick snapshots, with the same regrouping. |
+| 2 | Adds serialized motion paths. |
+| 3 | Adds top/side borders and a count for each supplied brick group. |
+| 4 | Splits header into low 8-bit flags and upper 24-bit integer level state. |
+| 5 | Also reads and discards a trailing legacy UTF-8 string. |
+
+Fixtures cover both 9-column and 15-column border modes, placement/order, legacy
+regrouping, decoded state, paths, cursor consumption, wrapper/sequence
+delegation and rejection before mutations for occupied destinations or versions
+above 5. Negative versions remain accepted by the original parser and create
+default bricks; the fixtures preserve that behavior. Payload appends reject
+nonnegative-ID additions, copy only the outer payload array, and retain the
+original metadata array. Native probes check direct metadata/sequence operations
+and empty archive loading; nonempty archive retrieval, full board initialization
+and rendered level selection remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
