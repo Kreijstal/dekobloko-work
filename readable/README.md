@@ -1401,6 +1401,25 @@ inset darkening and inherited border painting at clipped positions and small
 sizes. Malformed mask/span arrays, all rich-text combinations, original-JAR
 equivalence and live rendering remain unverified.
 
+PaletteFont and AlphaFont now name their foreground kernels, all clipping and
+pixel-loop locals, and in-place coverage-conversion locals. Indexed foregrounds
+use unsigned palette indices and round once after combining source/background;
+coverage foregrounds multiply unsigned coverage by opacity and round the two
+color contributions separately. Zero indices/effective coverage skip writes.
+Shadow paths use the binary-mask kernels; the paint argument selects a palette
+slot for indexed foregrounds and an RGB color for shadows or coverage fonts.
+Coverage conversion keeps the original weighted grayscale expression, mutates
+the caller's palette/glyph arrays and retains signed-index bounds failures.
+
+Native fixtures check all four palette slots, unsigned indices through 255,
+black palette colors, partial four-pixel groups, independent row skips,
+coverage/opacity endpoints and rounding, and clipped foreground/shadow dispatch.
+High red-channel backgrounds also check the archived packed-integer sign
+extension and the distinction between a skipped write and an alpha-zero write.
+The grayscale oracle uses separate channel arithmetic. Raster/UI globals are
+restored. Invalid palette slots, malformed glyph geometry, arbitrary opacity
+outside 0..256 and live rendering remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
