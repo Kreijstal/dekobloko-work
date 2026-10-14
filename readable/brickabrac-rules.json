@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 44,
+  "version": 45,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -371,6 +371,13 @@
       "originalName": "cl",
       "to": "BrickMotionPath",
       "evidence": "cl.java: Deque of timed waypoints with serialized count and total cyclic duration; moving bricks attach and interpolate along it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cq",
+      "originalName": "cq",
+      "to": "RankingsRequest",
+      "evidence": "cq.java: Pending ranking-kind/row-limit request, completion flag, local rating/results and two sorted name/statistic views. Unrelated static gameplay/UI helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -2012,6 +2019,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ao.field_p:[I",
+      "originalName": "field_p",
+      "to": "rankingDraws",
+      "evidence": "ao.java: Scratch row draws used for total games and output tuples.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ao.field_q:Ljp;",
       "originalName": "field_q",
       "to": "ninjaCharacterSprite",
@@ -2537,6 +2551,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cf.field_c:[I",
+      "originalName": "field_c",
+      "to": "rankingSourceIndices",
+      "evidence": "cf.java: Scratch original record index written by row accumulator.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cf.field_d:I",
       "originalName": "field_d",
       "to": "decodedCanvasWidth",
@@ -2597,6 +2618,13 @@
       "originalName": "field_g",
       "to": "incomingPacketLengths",
       "evidence": "ch.java: Opcode-indexed sizes, -1 byte prefix and -2 short prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ch.field_h:Lcq;",
+      "originalName": "field_h",
+      "to": "screenRankingsRequest",
+      "evidence": "ch.java: Rankings screen request reference retained after pending ownership is removed.",
       "confidence": "reviewed"
     },
     {
@@ -2684,6 +2712,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cq.field_j:I",
+      "originalName": "field_j",
+      "to": "localLosses",
+      "evidence": "cq.java: First packed record21-bit losses; Lost column displays its percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cq.field_k:I",
+      "originalName": "field_k",
+      "to": "localDraws",
+      "evidence": "cq.java: First packed record21-bit draws; Drawn column displays its percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cq.field_l:I",
+      "originalName": "field_l",
+      "to": "localWins",
+      "evidence": "cq.java: First packed record21-bit wins; Won column displays its percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cq.field_m:I",
+      "originalName": "field_m",
+      "to": "rankingKind",
+      "evidence": "cq.java: Request byte and response lookup key; pending requests are reused by this value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cq.field_n:I",
+      "originalName": "field_n",
+      "to": "localRating",
+      "evidence": "cq.java: First packed record17-bit rating; local row fallback displays it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cq.field_p:I",
       "originalName": "field_p",
       "to": "gameSettingCount",
@@ -2691,10 +2754,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cq.field_r:[[Ljava/lang/String;",
+      "originalName": "field_r",
+      "to": "namesBySort",
+      "evidence": "cq.java: Two row-limit name arrays: rating-first and win-rate-first views.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cq.field_s:I",
+      "originalName": "field_s",
+      "to": "rowLimit",
+      "evidence": "cq.java: Requested row byte, per-sort output allocation and truncation limit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cq.field_t:I",
       "originalName": "field_t",
       "to": "tickTimeCursor",
       "evidence": "cq.java: Next recent tick slot, masked31.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cq.field_u:[[I",
+      "originalName": "field_u",
+      "to": "statisticsBySort",
+      "evidence": "cq.java: Two flat arrays with four words per row: rating,wins,draws,losses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cq.field_v:Z",
+      "originalName": "field_v",
+      "to": "complete",
+      "evidence": "cq.java: Set after response decoding, followed by unlinking from pending requests.",
       "confidence": "reviewed"
     },
     {
@@ -3076,6 +3167,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ec.field_N:[I",
+      "originalName": "field_N",
+      "to": "rankingRatings",
+      "evidence": "ec.java: Scratch row ratings used by both ranking comparators.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ed.field_e:[I",
       "originalName": "field_e",
       "to": "projectedVertexY",
@@ -3412,6 +3510,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fh.field_c:I",
+      "originalName": "field_c",
+      "to": "decodedRankingDraws",
+      "evidence": "fh.java: Next21 bits of fixed ten-byte statistics record.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fh.field_d:Z",
       "originalName": "field_d",
       "to": "pendingGameOptionsReceived",
@@ -3430,6 +3535,13 @@
       "originalName": "field_w",
       "to": "faceDepthBucketCounts",
       "evidence": "fi.java: Counts for reverse depth buckets,16 faces per bucket with spill toward preceding bucket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fj.field_Pb:[I",
+      "originalName": "field_Pb",
+      "to": "rankingSortIndices",
+      "evidence": "fj.java: Rating indices at0 and win-rate indices atrowLimit.",
       "confidence": "reviewed"
     },
     {
@@ -3493,6 +3605,13 @@
       "originalName": "field_a",
       "to": "codewords",
       "evidence": "fk.java: Left-aligned32-bit prefix codes assigned in symbol order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fk.field_f:Lvl;",
+      "originalName": "field_f",
+      "to": "pendingRankingsRequests",
+      "evidence": "fk.java: Primary intrusive queue used for reuse, resend and response lookup/unlink.",
       "confidence": "reviewed"
     },
     {
@@ -4487,6 +4606,13 @@
       "originalName": "field_x",
       "to": "transitionKeepMask",
       "evidence": "i.java: AND mask clearing this icon transition bit when offset is already zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ib.field_D:[I",
+      "originalName": "field_D",
+      "to": "rankingLosses",
+      "evidence": "ib.java: Scratch row losses used for total games and output tuples.",
       "confidence": "reviewed"
     },
     {
@@ -6576,6 +6702,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lf.field_r:[I",
+      "originalName": "field_r",
+      "to": "rankingWins",
+      "evidence": "lf.java: Scratch row wins used for win-rate calculation and output tuples.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lf.field_v:I",
       "originalName": "field_v",
       "to": "sortIndex",
@@ -8550,6 +8683,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pj.field_b:[I",
+      "originalName": "field_b",
+      "to": "rankingWinRateThousandths",
+      "evidence": "pj.java: Scratch int expression1000*wins/total; zero total yields0, integer overflow is preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pk.field_a:Ljp;",
       "originalName": "field_a",
       "to": "waterSmallSprite",
@@ -9600,6 +9740,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sf.field_Z:I",
+      "originalName": "field_Z",
+      "to": "decodedRankingLosses",
+      "evidence": "sf.java: Next21 bits of fixed ten-byte statistics record.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sf.field_cb:Ljp;",
       "originalName": "field_cb",
       "to": "constructionFarSprite",
@@ -10566,6 +10713,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vh.field_U:I",
+      "originalName": "field_U",
+      "to": "decodedRankingWins",
+      "evidence": "vh.java: First21 bits of fixed ten-byte statistics record.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vi.field_i:I",
       "originalName": "field_i",
       "to": "typeId",
@@ -10605,6 +10759,13 @@
       "originalName": "field_o",
       "to": "velocityY256",
       "evidence": "vi.java: Common body constructor, packed snapshot decoder and checksum; coordinates and brick dimensions use256 units per pixel; state word meaning remains unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_c:I",
+      "originalName": "field_c",
+      "to": "decodedRankingRating",
+      "evidence": "vj.java: Final17 bits of fixed ten-byte statistics record.",
       "confidence": "reviewed"
     },
     {
@@ -10752,6 +10913,13 @@
       "originalName": "field_t",
       "to": "remainingTicks",
       "evidence": "vp.java: Eligible splash countdown starts at250; input/timeout returns to screen0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vq.field_B:[Ljava/lang/String;",
+      "originalName": "field_B",
+      "to": "receivedRankingNames",
+      "evidence": "vq.java: Local name at0 plus received names, indexed through sorted results.",
       "confidence": "reviewed"
     },
     {
@@ -11004,6 +11172,13 @@
       "originalName": "field_l",
       "to": "output",
       "evidence": "wh.java: Socket output stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wi.field_m:I",
+      "originalName": "field_m",
+      "to": "rankingRowCount",
+      "evidence": "wi.java: Scratch inserted row count, truncated to requested limit after both index sorts.",
       "confidence": "reviewed"
     },
     {
@@ -16184,6 +16359,41 @@
       "originalName": "stackIn_31_0",
       "to": "result",
       "evidence": "gb.java: Reviewed context/chat record declaration, receiver and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gf.a(IIIB)Lcq;#0",
+      "originalName": "var4",
+      "to": "pendingRequest",
+      "evidence": "gf.java: Scoped pending-request traversal or newly allocated ranking record.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gf.a(IIIB)Lcq;#1",
+      "originalName": "var5",
+      "to": "clientBranchFlag",
+      "evidence": "gf.java: Scoped pending-request traversal or newly allocated ranking record.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gf.a(IIIB)Lcq;#2",
+      "originalName": "var6",
+      "to": "newRequest",
+      "evidence": "gf.java: Scoped pending-request traversal or newly allocated ranking record.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gf.a(IIIB)Lcq;#3",
+      "originalName": "var7",
+      "to": "newRequestAfterWrongGuard",
+      "evidence": "gf.java: Scoped pending-request traversal or newly allocated ranking record.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gf.a(IIIB)Lcq;#4",
+      "originalName": "var4Lifetime1",
+      "to": "requestAlias",
+      "evidence": "gf.java: Scoped pending-request traversal or newly allocated ranking record.",
       "confidence": "reviewed"
     },
     {
@@ -22291,6 +22501,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:un.a(BLwq;)V#0",
+      "originalName": "var2_int",
+      "to": "winsDrawsBoundary",
+      "evidence": "un.java: Scoped byte joining adjacent fields in the80-bit ranking statistics record or guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:un.a(BLwq;)V#1",
+      "originalName": "var2_intLifetime1",
+      "to": "drawsLossesBoundary",
+      "evidence": "un.java: Scoped byte joining adjacent fields in the80-bit ranking statistics record or guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:un.a(BLwq;)V#2",
+      "originalName": "var2_intLifetime2",
+      "to": "lossesRatingBoundary",
+      "evidence": "un.java: Scoped byte joining adjacent fields in the80-bit ranking statistics record or guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:un.a(BLwq;)V#3",
+      "originalName": "var3",
+      "to": "guardArithmetic",
+      "evidence": "un.java: Scoped byte joining adjacent fields in the80-bit ranking statistics record or guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:vd.a(II)Z#0",
       "originalName": "var2_int",
       "to": "availableBytes",
@@ -22729,6 +22967,132 @@
       "originalName": "var2_ref",
       "to": "failure",
       "evidence": "wl.java: Scoped sorted insertion traversal, client branch flag or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#10",
+      "originalName": "var7",
+      "to": "statisticsBySort",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#11",
+      "originalName": "var8",
+      "to": "rowCount",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#12",
+      "originalName": "var9",
+      "to": "ratingRowIndex",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#13",
+      "originalName": "var10",
+      "to": "ratingOutputIndex",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#14",
+      "originalName": "var11",
+      "to": "ratingSourceIndex",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#15",
+      "originalName": "var12",
+      "to": "clientBranchFlag",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#16",
+      "originalName": "var13",
+      "to": "winRateOutputIndex",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#17",
+      "originalName": "var14",
+      "to": "packet",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#18",
+      "originalName": "var6_intLifetime1",
+      "to": "recordIndex",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#19",
+      "originalName": "var9Lifetime1",
+      "to": "winRateRowIndex",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#21",
+      "originalName": "var11Lifetime1",
+      "to": "winRateSourceIndex",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#3",
+      "originalName": "var1",
+      "to": "failure",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#4",
+      "originalName": "var2",
+      "to": "rankingKind",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#5",
+      "originalName": "var3",
+      "to": "request",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#6",
+      "originalName": "var4",
+      "to": "recordCount",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#7",
+      "originalName": "var5",
+      "to": "rowLimit",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#8",
+      "originalName": "var6_int",
+      "to": "nameIndex",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.c(Z)V#9",
+      "originalName": "var6",
+      "to": "namesBySort",
+      "evidence": "wl.java: Scoped rankings response read, local statistics, sorted output or exception context.",
       "confidence": "reviewed"
     },
     {
@@ -24489,6 +24853,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gf.a(IIIB)Lcq;",
+      "originalName": "a",
+      "to": "getOrRequestRankings",
+      "evidence": "gf.java: Reuses pending request with equal kind regardless of new row limit/opcode; otherwise enqueues and sends; guard below -102.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gf.a(ZZI)V",
       "originalName": "a",
       "to": "advanceScreen",
@@ -24573,6 +24944,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gn.a(ILcq;I)V",
+      "originalName": "a",
+      "to": "sendRankingsRequest",
+      "evidence": "gn.java: Writes ciphered opcode, ranking-kind byte and row-limit byte; guard -21167.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gn.c(I)V",
       "originalName": "c",
       "to": "navigateBack",
@@ -24612,6 +24990,13 @@
       "originalName": "h",
       "to": "handleNormalizedNameKey",
       "evidence": "gq.java: Handles current key once while pending: ASCII letters/digits, lowercase, space-to-underscore, no leading underscore,12-character bound, backspace, submit84 and supplied cancel code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(II)V",
+      "originalName": "a",
+      "to": "sortRankingViews",
+      "evidence": "gr.java: Sorts rating index segment, duplicates unsorted row IDs into win-rate segment and sorts it, then caps row count; guard12429.",
       "confidence": "reviewed"
     },
     {
@@ -24927,6 +25312,13 @@
       "originalName": "a",
       "to": "update",
       "evidence": "i.java: Consumes signed rounded-quarter offset; if initially stationary clears transition bit and processes hover/click; guard at most -125.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(IILjava/lang/String;IIIIII)V",
+      "originalName": "a",
+      "to": "drawRankingRow",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
       "confidence": "reviewed"
     },
     {
@@ -27443,6 +27835,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nd.a(ZIIZ)Z",
+      "originalName": "a",
+      "to": "comesBeforeRankingRow",
+      "evidence": "nd.java: Descending primary rating/win-rate, secondary win-rate/rating, total games, then source index; strict ties false; true guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ng.a(ZII)V",
       "originalName": "a",
       "to": "requestScreen",
@@ -28563,6 +28962,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qn.a(BI)V",
+      "originalName": "a",
+      "to": "resendPendingRankingsRequests",
+      "evidence": "qn.java: Sends each pending request in primary queue order; guard above118.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qq.a()V",
       "originalName": "a",
       "to": "releaseScratch",
@@ -29242,6 +29648,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ti.a(IIIZIII)V",
+      "originalName": "a",
+      "to": "sortRankingIndexRange",
+      "evidence": "ti.java: Partitions by overflow-safe integer midpoint when range exceeds5; comparator bubble fallback and retained-prefix cutoff preserve sorted views; guard above93.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tj.a(Lqd;)V",
       "originalName": "a",
       "to": "resetSchedulingTree",
@@ -29260,6 +29673,13 @@
       "originalName": "b",
       "to": "setRootStream",
       "evidence": "tj.java: Sets top-level audio stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.a(BII)V",
+      "originalName": "a",
+      "to": "prepareRankingScratch",
+      "evidence": "tk.java: Grows scratch arrays to twice required size, initializes bounds and row count; nonnegative guard.",
       "confidence": "reviewed"
     },
     {
@@ -29592,6 +30012,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uk.a(IIIIII)V",
+      "originalName": "a",
+      "to": "appendRankingStatistics",
+      "evidence": "uk.java: Appends rating/results, source index and int win-rate expression, maintaining existing shared sort bounds; guard -19824.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uk.a(ZII)V",
       "originalName": "a",
       "to": "onEnter",
@@ -29645,6 +30072,13 @@
       "originalName": "b",
       "to": "ensureGamePacketBody",
       "evidence": "um.java: Resolves byte/short variable length prefixes and accumulates requested body; guard at most -40.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:un.a(BLwq;)V",
+      "originalName": "a",
+      "to": "decodeRankingStatistics",
+      "evidence": "un.java: Reads contiguous MSB-first21-bit wins/draws/losses and17-bit rating from ten bytes into scratch globals; guard -122.",
       "confidence": "reviewed"
     },
     {
@@ -30191,6 +30625,13 @@
       "originalName": "a",
       "to": "insertSortedLobbyPlayer",
       "evidence": "wl.java: Unlinks primary ownership and inserts before the first row that does not strictly precede this player; guard17574.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.c(Z)V",
+      "originalName": "c",
+      "to": "handleRankingsResponse",
+      "evidence": "wl.java: Matches kind, reads names and packed records, retains local totals, builds two sorted views, removes zero-game local row, completes and unlinks; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -35731,6 +36172,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gf.a(IIIB)Lcq;#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "gf.java: Reuses pending request with equal kind regardless of new row limit/opcode; otherwise enqueues and sends; guard below -102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gf.a(IIIB)Lcq;#1",
+      "originalName": "param1",
+      "to": "rankingKind",
+      "evidence": "gf.java: Reuses pending request with equal kind regardless of new row limit/opcode; otherwise enqueues and sends; guard below -102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gf.a(IIIB)Lcq;#2",
+      "originalName": "param2",
+      "to": "rowLimit",
+      "evidence": "gf.java: Reuses pending request with equal kind regardless of new row limit/opcode; otherwise enqueues and sends; guard below -102.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gf.a(IIIB)Lcq;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "gf.java: Reuses pending request with equal kind regardless of new row limit/opcode; otherwise enqueues and sends; guard below -102.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:gf.a(ZZI)V#0",
       "originalName": "param0",
       "to": "updateFlag",
@@ -35976,6 +36445,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gn.a(ILcq;I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gn.java: Writes ciphered opcode, ranking-kind byte and row-limit byte; guard -21167.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gn.a(ILcq;I)V#1",
+      "originalName": "param1",
+      "to": "request",
+      "evidence": "gn.java: Writes ciphered opcode, ranking-kind byte and row-limit byte; guard -21167.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gn.a(ILcq;I)V#2",
+      "originalName": "param2",
+      "to": "opcode",
+      "evidence": "gn.java: Writes ciphered opcode, ranking-kind byte and row-limit byte; guard -21167.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:gn.c(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -36085,6 +36575,20 @@
       "originalName": "param0",
       "to": "cancelKeyCode",
       "evidence": "gq.java: Handles current key once while pending: ASCII letters/digits, lowercase, space-to-underscore, no leading underscore,12-character bound, backspace, submit84 and supplied cancel code.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "gr.java: Sorts rating index segment, duplicates unsorted row IDs into win-rate segment and sorts it, then caps row count; guard12429.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(II)V#1",
+      "originalName": "param1",
+      "to": "rowLimit",
+      "evidence": "gr.java: Sorts rating index segment, duplicates unsorted row IDs into win-rate segment and sorts it, then caps row count; guard12429.",
       "confidence": "reviewed"
     },
     {
@@ -36869,6 +37373,69 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "i.java: Consumes signed rounded-quarter offset; if initially stationary clears transition bit and processes hover/click; guard at most -125.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(IILjava/lang/String;IIIIII)V#0",
+      "originalName": "param0",
+      "to": "losses",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(IILjava/lang/String;IIIIII)V#1",
+      "originalName": "param1",
+      "to": "baselineY",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(IILjava/lang/String;IIIIII)V#2",
+      "originalName": "param2",
+      "to": "name",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(IILjava/lang/String;IIIIII)V#3",
+      "originalName": "param3",
+      "to": "wins",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(IILjava/lang/String;IIIIII)V#4",
+      "originalName": "param4",
+      "to": "rating",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(IILjava/lang/String;IIIIII)V#5",
+      "originalName": "param5",
+      "to": "textStyle",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(IILjava/lang/String;IIIIII)V#6",
+      "originalName": "param6",
+      "to": "winsShadowColor",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(IILjava/lang/String;IIIIII)V#7",
+      "originalName": "param7",
+      "to": "draws",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.a(IILjava/lang/String;IIIIII)V#8",
+      "originalName": "param8",
+      "to": "rankIndex",
+      "evidence": "i.java: Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.",
       "confidence": "reviewed"
     },
     {
@@ -43396,6 +43963,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nd.a(ZIIZ)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nd.java: Descending primary rating/win-rate, secondary win-rate/rating, total games, then source index; strict ties false; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nd.a(ZIIZ)Z#1",
+      "originalName": "param1",
+      "to": "leftIndex",
+      "evidence": "nd.java: Descending primary rating/win-rate, secondary win-rate/rating, total games, then source index; strict ties false; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nd.a(ZIIZ)Z#2",
+      "originalName": "param2",
+      "to": "rightIndex",
+      "evidence": "nd.java: Descending primary rating/win-rate, secondary win-rate/rating, total games, then source index; strict ties false; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nd.a(ZIIZ)Z#3",
+      "originalName": "param3",
+      "to": "sortByRating",
+      "evidence": "nd.java: Descending primary rating/win-rate, secondary win-rate/rating, total games, then source index; strict ties false; true guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ng.a(ZII)V#0",
       "originalName": "param0",
       "to": "usePointer",
@@ -46875,6 +47470,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qn.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qn.java: Sends each pending request in primary queue order; guard above118.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qn.a(BI)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "qn.java: Sends each pending request in primary queue order; guard above118.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qq.a(II)[I#0",
       "originalName": "param0",
       "to": "sampleCount",
@@ -48597,6 +49206,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ti.a(IIIZIII)V#0",
+      "originalName": "param0",
+      "to": "upperBound",
+      "evidence": "ti.java: Partitions by overflow-safe integer midpoint when range exceeds5; comparator bubble fallback and retained-prefix cutoff preserve sorted views; guard above93.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ti.a(IIIZIII)V#1",
+      "originalName": "param1",
+      "to": "lowerBound",
+      "evidence": "ti.java: Partitions by overflow-safe integer midpoint when range exceeds5; comparator bubble fallback and retained-prefix cutoff preserve sorted views; guard above93.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ti.a(IIIZIII)V#2",
+      "originalName": "param2",
+      "to": "end",
+      "evidence": "ti.java: Partitions by overflow-safe integer midpoint when range exceeds5; comparator bubble fallback and retained-prefix cutoff preserve sorted views; guard above93.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ti.a(IIIZIII)V#3",
+      "originalName": "param3",
+      "to": "sortByRating",
+      "evidence": "ti.java: Partitions by overflow-safe integer midpoint when range exceeds5; comparator bubble fallback and retained-prefix cutoff preserve sorted views; guard above93.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ti.a(IIIZIII)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "ti.java: Partitions by overflow-safe integer midpoint when range exceeds5; comparator bubble fallback and retained-prefix cutoff preserve sorted views; guard above93.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ti.a(IIIZIII)V#5",
+      "originalName": "param5",
+      "to": "retainedEnd",
+      "evidence": "ti.java: Partitions by overflow-safe integer midpoint when range exceeds5; comparator bubble fallback and retained-prefix cutoff preserve sorted views; guard above93.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ti.a(IIIZIII)V#6",
+      "originalName": "param6",
+      "to": "start",
+      "evidence": "ti.java: Partitions by overflow-safe integer midpoint when range exceeds5; comparator bubble fallback and retained-prefix cutoff preserve sorted views; guard above93.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tj.a(Lqd;)V#0",
       "originalName": "param0",
       "to": "stream",
@@ -48622,6 +49280,27 @@
       "originalName": "param0",
       "to": "stream",
       "evidence": "tj.java: Sets top-level audio stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(BII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tk.java: Grows scratch arrays to twice required size, initializes bounds and row count; nonnegative guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(BII)V#1",
+      "originalName": "param1",
+      "to": "recordCount",
+      "evidence": "tk.java: Grows scratch arrays to twice required size, initializes bounds and row count; nonnegative guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(BII)V#2",
+      "originalName": "param2",
+      "to": "rowLimit",
+      "evidence": "tk.java: Grows scratch arrays to twice required size, initializes bounds and row count; nonnegative guard.",
       "confidence": "reviewed"
     },
     {
@@ -49521,6 +50200,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:uk.a(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "rating",
+      "evidence": "uk.java: Appends rating/results, source index and int win-rate expression, maintaining existing shared sort bounds; guard -19824.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uk.a(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "draws",
+      "evidence": "uk.java: Appends rating/results, source index and int win-rate expression, maintaining existing shared sort bounds; guard -19824.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uk.a(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "sourceIndex",
+      "evidence": "uk.java: Appends rating/results, source index and int win-rate expression, maintaining existing shared sort bounds; guard -19824.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uk.a(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "uk.java: Appends rating/results, source index and int win-rate expression, maintaining existing shared sort bounds; guard -19824.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uk.a(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "losses",
+      "evidence": "uk.java: Appends rating/results, source index and int win-rate expression, maintaining existing shared sort bounds; guard -19824.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uk.a(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "wins",
+      "evidence": "uk.java: Appends rating/results, source index and int win-rate expression, maintaining existing shared sort bounds; guard -19824.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:uk.a(ZII)V#0",
       "originalName": "param0",
       "to": "usePointer",
@@ -49623,6 +50344,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "um.java: Resolves byte/short variable length prefixes and accumulates requested body; guard at most -40.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:un.a(BLwq;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "un.java: Reads contiguous MSB-first21-bit wins/draws/losses and17-bit rating from ten bytes into scratch globals; guard -122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:un.a(BLwq;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "un.java: Reads contiguous MSB-first21-bit wins/draws/losses and17-bit rating from ten bytes into scratch globals; guard -122.",
       "confidence": "reviewed"
     },
     {
@@ -50816,6 +51551,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wl.c(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wl.java: Matches kind, reads names and packed records, retains local totals, builds two sorted views, removes zero-game local row, completes and unlinks; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wn.a(II)V#0",
       "originalName": "param0",
       "to": "maximumGameFilter",
@@ -51629,9 +52371,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "75e18b2c38d28cb8953502f66c05eac755c7779a01c05dc21ae4051e2a435adc",
+      "build-brickabrac-rules.mjs": "48a810bad9fa3bba4918a25831dc1b548cccd471bb4f8de4a36e8880c959685a",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "9b4494d2adce7edd8a13a892f08d34b858ea17bcbc67f4d17aa67078563236a2",
+      "tests/test-brickabrac-core.mjs": "203eae68fcb951dea0df213e9ee041218d49ad24518f33424c1649687defb2f8",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

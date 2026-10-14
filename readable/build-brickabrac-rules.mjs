@@ -202,6 +202,7 @@ const classes={
  mp:['SocialListEntry','Shared friend/ignore record and UI row with current/previous/action names, server presence and insertion order. Static mesh/account helpers remain separate.'],
  id:['LobbyPlayer','Lobby and current-game player row with account identity, display name, membership, rating, rated-game count, invitations and join requests. Static character-order helpers remain separate.'],
  om:['LobbyGame','Lobby/current-game record with settings, player capacity, rated/spectator mode, invitations and timing. Static board rendering remains separate.'],
+ cq:['RankingsRequest','Pending ranking-kind/row-limit request, completion flag, local rating/results and two sorted name/statistic views. Unrelated static gameplay/UI helpers remain separate.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -297,6 +298,46 @@ method('jb','b','(III)V','requestJoinGame','Game action2 writes length3/action8 
 method('vg','a','(IZI)V','requestLeaveOrDeclineGame','Current-game leave and game action3 write length3/action9 and low16 game ID; false guard.',['gameId','obfuscationGuard','opcode']);
 method('dn','b','(III)V','requestSpectateGame','Game action10 writes length3/action10 and low16 game ID; caller guard86.',['gameId','obfuscationGuard','opcode']);
 method('br','a','(IBI)V','requestGamePlayerPreview','Writes action11/game ID only when preview target changes, clearing old playerNames; ID0 stops preview; canonical guard -34 or120.',['opcode','obfuscationGuard','gameId']);
+for(const [owner,original,type,to,evidence] of [
+ ['cq','m','I','rankingKind','Request byte and response lookup key; pending requests are reused by this value.'],
+ ['cq','s','I','rowLimit','Requested row byte, per-sort output allocation and truncation limit.'],
+ ['cq','v','Z','complete','Set after response decoding, followed by unlinking from pending requests.'],
+ ['cq','n','I','localRating','First packed record17-bit rating; local row fallback displays it.'],
+ ['cq','l','I','localWins','First packed record21-bit wins; Won column displays its percentage.'],
+ ['cq','j','I','localLosses','First packed record21-bit losses; Lost column displays its percentage.'],
+ ['cq','k','I','localDraws','First packed record21-bit draws; Drawn column displays its percentage.'],
+ ['cq','r','[[Ljava/lang/String;','namesBySort','Two row-limit name arrays: rating-first and win-rate-first views.'],
+ ['cq','u','[[I','statisticsBySort','Two flat arrays with four words per row: rating,wins,draws,losses.'],
+ ['fk','f','Lvl;','pendingRankingsRequests','Primary intrusive queue used for reuse, resend and response lookup/unlink.'],
+ ['ch','h','Lcq;','screenRankingsRequest','Rankings screen request reference retained after pending ownership is removed.'],
+ ['vh','U','I','decodedRankingWins','First21 bits of fixed ten-byte statistics record.'],
+ ['fh','c','I','decodedRankingDraws','Next21 bits of fixed ten-byte statistics record.'],
+ ['sf','Z','I','decodedRankingLosses','Next21 bits of fixed ten-byte statistics record.'],
+ ['vj','c','I','decodedRankingRating','Final17 bits of fixed ten-byte statistics record.'],
+ ['ec','N','[I','rankingRatings','Scratch row ratings used by both ranking comparators.'],
+ ['lf','r','[I','rankingWins','Scratch row wins used for win-rate calculation and output tuples.'],
+ ['ao','p','[I','rankingDraws','Scratch row draws used for total games and output tuples.'],
+ ['ib','D','[I','rankingLosses','Scratch row losses used for total games and output tuples.'],
+ ['pj','b','[I','rankingWinRateThousandths','Scratch int expression1000*wins/total; zero total yields0, integer overflow is preserved.'],
+ ['wi','m','I','rankingRowCount','Scratch inserted row count, truncated to requested limit after both index sorts.'],
+ ['fj','Pb','[I','rankingSortIndices','Rating indices at0 and win-rate indices atrowLimit.'],
+ ['vq','B','[Ljava/lang/String;','receivedRankingNames','Local name at0 plus received names, indexed through sorted results.'],
+ ['cf','c','[I','rankingSourceIndices','Scratch original record index written by row accumulator.'],
+])field(owner,original,type,to,evidence);
+method('gf','a','(IIIB)Lcq;','getOrRequestRankings','Reuses pending request with equal kind regardless of new row limit/opcode; otherwise enqueues and sends; guard below -102.',['opcode','rankingKind','rowLimit','obfuscationGuard']);
+method('gn','a','(ILcq;I)V','sendRankingsRequest','Writes ciphered opcode, ranking-kind byte and row-limit byte; guard -21167.',['obfuscationGuard','request','opcode']);
+method('qn','a','(BI)V','resendPendingRankingsRequests','Sends each pending request in primary queue order; guard above118.',['obfuscationGuard','opcode']);
+method('un','a','(BLwq;)V','decodeRankingStatistics','Reads contiguous MSB-first21-bit wins/draws/losses and17-bit rating from ten bytes into scratch globals; guard -122.',['obfuscationGuard','packet']);
+method('wl','c','(Z)V','handleRankingsResponse','Matches kind, reads names and packed records, retains local totals, builds two sorted views, removes zero-game local row, completes and unlinks; false guard.',['obfuscationGuard']);
+method('tk','a','(BII)V','prepareRankingScratch','Grows scratch arrays to twice required size, initializes bounds and row count; nonnegative guard.',['obfuscationGuard','recordCount','rowLimit']);
+method('uk','a','(IIIIII)V','appendRankingStatistics','Appends rating/results, source index and int win-rate expression, maintaining existing shared sort bounds; guard -19824.',['rating','draws','sourceIndex','obfuscationGuard','losses','wins']);
+method('nd','a','(ZIIZ)Z','comesBeforeRankingRow','Descending primary rating/win-rate, secondary win-rate/rating, total games, then source index; strict ties false; true guard.',['obfuscationGuard','leftIndex','rightIndex','sortByRating']);
+method('gr','a','(II)V','sortRankingViews','Sorts rating index segment, duplicates unsorted row IDs into win-rate segment and sorts it, then caps row count; guard12429.',['obfuscationGuard','rowLimit']);
+method('ti','a','(IIIZIII)V','sortRankingIndexRange','Partitions by overflow-safe integer midpoint when range exceeds5; comparator bubble fallback and retained-prefix cutoff preserve sorted views; guard above93.',['upperBound','lowerBound','end','sortByRating','obfuscationGuard','retainedEnd','start']);
+method('i','a','(IILjava/lang/String;IIIIII)V','drawRankingRow','Draws rank/name/rating, capped played count and rounded won/lost/drawn percentages; actual rendering remains unverified.',['losses','baselineY','name','wins','rating','textStyle','winsShadowColor','draws','rankIndex']);
+for(const [ordinal,original,to] of [[0,'var2_int','winsDrawsBoundary'],[1,'var2_intLifetime1','drawsLossesBoundary'],[2,'var2_intLifetime2','lossesRatingBoundary'],[3,'var3','guardArithmetic']])local('un','a(BLwq;)V',ordinal,original,to,'Scoped byte joining adjacent fields in the80-bit ranking statistics record or guard arithmetic.');
+for(const [ordinal,original,to] of [[0,'var4','pendingRequest'],[1,'var5','clientBranchFlag'],[2,'var6','newRequest'],[3,'var7','newRequestAfterWrongGuard'],[4,'var4Lifetime1','requestAlias']])local('gf','a(IIIB)Lcq;',ordinal,original,to,'Scoped pending-request traversal or newly allocated ranking record.');
+for(const [ordinal,original,to] of [[3,'var1','failure'],[4,'var2','rankingKind'],[5,'var3','request'],[6,'var4','recordCount'],[7,'var5','rowLimit'],[8,'var6_int','nameIndex'],[9,'var6','namesBySort'],[10,'var7','statisticsBySort'],[11,'var8','rowCount'],[12,'var9','ratingRowIndex'],[13,'var10','ratingOutputIndex'],[14,'var11','ratingSourceIndex'],[15,'var12','clientBranchFlag'],[16,'var13','winRateOutputIndex'],[17,'var14','packet'],[18,'var6_intLifetime1','recordIndex'],[19,'var9Lifetime1','winRateRowIndex'],[21,'var11Lifetime1','winRateSourceIndex']])local('wl','c(Z)V',ordinal,original,to,'Scoped rankings response read, local statistics, sorted output or exception context.');
 for(const [owner,signature,entries] of [
  ['ml','a(II)V',[[0,'var2','packet']]],
  ['ef','a(II)V',[[0,'var2','packet']]],
@@ -1418,6 +1459,7 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 '| Start here | Follow |','| --- | --- |',
 `| ${link('qj')} → ${link('ak')} → ${link('j')} | Gameplay screen, multiplayer match and per-player boards. |`,
 `| ${link('om')} / ${link('id')} | Lobby game settings, capacity, invitations, player membership/rating and row sorting. |`,
+`| ${link('cq')} / ${link('lf')} | Ranking request lifecycle, packed results, rating and win-rate sorted views. |`,
 `| ${link('vi')} / ${link('bn')} / ${link('no')} | Fixed8 body coordinates/velocities, rectangle/circle geometry, snapshots and checksums. |`,
 `| ${link('vo')} / ${link('vn')} / ${link('on')} | Paddle size stages, balls and bricks. |`,
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
@@ -1529,10 +1571,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 '|4|requestCreateGame|choice byte, mode word plus optional128, settings|', '|5|requestUpdateGameOptions|maxPlayers byte, packed priority/spectator byte, settings|',
 '|6|requestInviteOrAcceptPlayer|64-bit player ID|', '|7|requestRemoveOrRejectPlayer|64-bit player ID|', '|8|requestJoinGame|16-bit game ID|', '|9|requestLeaveOrDeclineGame|16-bit game ID|', '|10|requestSpectateGame|16-bit game ID|', '|11|requestGamePlayerPreview|16-bit game ID|', '',
 'Independent wire fixtures check every request action across seeded ciphers, boundary IDs/bytes, empty and nonempty arrays, option-word overlap and byte-length wrapping. They preserve source arrays and current-game identity. Preview fixtures check old-name invalidation, full input ID tracking versus low16-bit wire ID, same-ID suppression, stop/restart and subsequent cipher progression. This describes client byte production, not server acceptance of oversized payloads. Controller invocation, live transport/server responses, packet guards outside canonical call values and unresolved mode/option meanings remain unverified.', '',
+'RankingsRequest names the pending kind/row limit, completion flag, local rating/wins/draws/losses and two name/statistics views. getOrRequestRankings reuses a pending kind even if a new row limit/opcode differs. sendRankingsRequest writes encrypted opcode, kind byte and limit byte without a body-length prefix; pending requests can be resent. handleRankingsResponse reads kind/count, remote names (local name is implicit) and fixed ten-byte MSB-first statistics:21-bit wins,21-bit draws,21-bit losses,17-bit rating. Each result tuple is rating,wins,draws,losses.', '',
+'Independent BigInteger-packed fixtures check boundary/random statistics and exact cursor consumption. Lifecycle fixtures check kind reuse, wire bytes, resend order, empty completion, local fallback fields and removal from pending ownership. Response fixtures compare both views against independent descending rating/win-rate, secondary win-rate/rating, total-games and source-index order; include equal keys, counts above the partition threshold, zero row limits and zero-game local omission. Int overflow in1000*wins/total is preserved. Omission occurs after top-limit selection, does not backfill, and can leave statistics under null names. Scratch allocation, accumulation, comparison, sorting and row drawing now have names; full rendered UI, missing-kind disconnect routing, malformed packets and live rankings services remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:44,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:45,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

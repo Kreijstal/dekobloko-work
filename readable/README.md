@@ -1126,6 +1126,24 @@ Source arrays and current-game identity remain intact. This proves client byte
 production; oversized-payload acceptance, controller invocation, live services,
 noncanonical guards and unresolved option/mode meanings remain unverified.
 
+RankingsRequest names the pending request kind/limit, completion flag, local
+rating/wins/draws/losses and two sorted name/statistic views. Pending requests reuse
+the same kind despite a changed limit/opcode and can be resent. Their wire format
+is an encrypted opcode, kind byte and limit byte, with no body-length prefix.
+Responses contain kind/count, remote names with implicit local name, and fixed
+80-bit records:21-bit wins,21-bit draws,21-bit losses and17-bit rating. Output tuples
+are rating,wins,draws,losses. Scratch allocation, accumulation, comparison, index
+sorting and row rendering now have descriptive method names.
+
+Independent BigInteger encodings check boundary/random packed fields and exact
+cursor consumption. Lifecycle fixtures check reuse, independent request bytes,
+resend order, empty completion, retained local values and pending ownership removal.
+Response fixtures check rating/win-rate views against independent sorting, including
+ties, partition-sized inputs, zero limits and zero-game local omission. Win-rate
+calculation retains Java int overflow. Omission happens after top-limit selection
+and does not backfill; statistics can remain under null names. Full rendered UI,
+missing-kind disconnect routing, malformed packets and live services are unverified.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded
