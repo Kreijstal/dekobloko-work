@@ -1080,8 +1080,23 @@ and zero players, the cursor rewinds before the first name despite reading it fo
 the game caption. Timestamp checks compare monotonic bounds without hashing wall
 time. Player fixtures preserve constructor/update argument order and discarded
 normalization. Secondary ownership, game-ID truncation and seeded independent
-sorting checks cover strict ties and long timestamp extremes. The complete lobby
-response dispatcher, rendered rows and live multiplayer services remain unverified.
+sorting checks cover strict ties and long timestamp extremes. The supported dispatcher responses are covered below; rendered rows and live
+multiplayer services remain unverified.
+
+Lobby initialization, response dispatch, lookup and sorted insertion now have
+explicit names. Global names separate lobby/game player indexes and row lists,
+listed games, current/pending games, request counts and option state. The dispatcher
+handles0..4 transitions,5..7 lobby players,8..10 listed games,11..17 invitations and
+requests,18..20 game players/settings,21 option countdown,22 two status words and23
+local identity. Shared multi-role locals and unresolved packet values stay qualified.
+
+Independent packet fixtures cover every supported kind, name-update markers,
+identity-preserving updates, sorting/equal-key insertion, missing IDs, request
+idempotence, counters/status ticks, zero/nonzero removal and secondary ownership,
+list clearing, current-player count retention, transition cleanup, option payloads,
+pending-game reuse, deadline bounds and cursor consumption. Nonzero removal keeps
+the row while removing lookup ownership. Unknown-response error/disconnect routing,
+malformed packets, all option semantics and live/rendered interaction are unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current

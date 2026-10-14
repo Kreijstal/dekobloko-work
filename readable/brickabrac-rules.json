@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 42,
+  "version": 43,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -1578,6 +1578,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:BrickABrac.field_F:Lmk;",
+      "originalName": "field_F",
+      "to": "gamePlayerIndex",
+      "evidence": "BrickABrac.java: Secondary index of players in the current game.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:a.field_q:Lwh;",
       "originalName": "field_q",
       "to": "transport",
@@ -2670,6 +2677,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cq.field_p:I",
+      "originalName": "field_p",
+      "to": "gameSettingCount",
+      "evidence": "cq.java: Number of game-option bytes; derives from supplied setting-width array length.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cq.field_t:I",
       "originalName": "field_t",
       "to": "tickTimeCursor",
@@ -3244,6 +3258,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:eq.field_m:Lmk;",
+      "originalName": "field_m",
+      "to": "lobbyPlayerIndex",
+      "evidence": "eq.java: Secondary index of all lobby players keyed by64-bit player ID.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fc.field_a:I",
       "originalName": "field_a",
       "to": "height",
@@ -3381,6 +3402,13 @@
       "originalName": "field_l",
       "to": "rangeTable",
       "evidence": "fg.java: Floor ordinate ranges256/128/86/64 selected by multiplier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fh.field_d:Z",
+      "originalName": "field_d",
+      "to": "pendingGameOptionsReceived",
+      "evidence": "fh.java: Response3 supplies pending choice masks/bytes; other transition responses clear the flag.",
       "confidence": "reviewed"
     },
     {
@@ -4452,6 +4480,13 @@
       "originalName": "field_x",
       "to": "transitionKeepMask",
       "evidence": "i.java: AND mask clearing this icon transition bit when offset is already zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_b:J",
+      "originalName": "field_b",
+      "to": "optionChangeDeadlineMillis",
+      "evidence": "ic.java: Response21 supplies relative deadline; UI shows Game options changed countdown.",
       "confidence": "reviewed"
     },
     {
@@ -7346,6 +7381,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mp.field_Tb:Lvl;",
+      "originalName": "field_Tb",
+      "to": "gamePlayers",
+      "evidence": "mp.java: Primary ownership of players in the current game, attached to supplied UI content.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mp.field_Ub:Ljava/lang/String;",
       "originalName": "field_Ub",
       "to": "serverName",
@@ -7584,6 +7626,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nl.field_f:Lom;",
+      "originalName": "field_f",
+      "to": "pendingLobbyGame",
+      "evidence": "nl.java: Editable pending game retained during response2/3 preparation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nm.field_b:Lnm;",
       "originalName": "field_b",
       "to": "previous",
@@ -7763,6 +7812,13 @@
       "originalName": "field_d",
       "to": "enabledFeatureMask",
       "evidence": "o.java: Feature bits tested by card/helper; bit0 controls inclusion of final character in available order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:o.field_e:Lom;",
+      "originalName": "field_e",
+      "to": "currentLobbyGame",
+      "evidence": "o.java: Current joined game, replaced by response4 and cleared by responses0..3.",
       "confidence": "reviewed"
     },
     {
@@ -8526,6 +8582,13 @@
       "originalName": "field_d",
       "to": "keyChangeWriteIndex",
       "evidence": "pl.java: Ring write index, or -1 after overflow/focus loss to request held-state reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pn.field_i:Lmk;",
+      "originalName": "field_i",
+      "to": "lobbyGameIndex",
+      "evidence": "pn.java: Secondary index of listed games keyed by unsigned16-bit game ID.",
       "confidence": "reviewed"
     },
     {
@@ -9460,6 +9523,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rq.field_a:Lvl;",
+      "originalName": "field_a",
+      "to": "lobbyGames",
+      "evidence": "rq.java: Sorted primary ownership of listed game rows, attached to supplied UI content.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:s.field_d:Ljp;",
       "originalName": "field_d",
       "to": "arcticNearSprite",
@@ -10090,6 +10160,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ua.field_c:Lvl;",
+      "originalName": "field_c",
+      "to": "lobbyPlayers",
+      "evidence": "ua.java: Sorted primary ownership of lobby player rows, attached to supplied UI content.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ud.field_A:Lnc;",
       "originalName": "field_A",
       "to": "pack",
@@ -10178,6 +10255,13 @@
       "originalName": "field_d",
       "to": "packetDelayMillis",
       "evidence": "ue.java: Artificial incoming packet delay;0 immediate delivery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_c:I",
+      "originalName": "field_c",
+      "to": "pendingJoinRequestCount",
+      "evidence": "uf.java: Incremented/decremented only when a player join-request flag changes.",
       "confidence": "reviewed"
     },
     {
@@ -16502,6 +16586,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ic.a(ZLom;)V#0",
+      "originalName": "var2",
+      "to": "existingGame",
+      "evidence": "ic.java: Scoped sorted insertion traversal, client branch flag or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(ZLom;)V#1",
+      "originalName": "var2_ref",
+      "to": "failure",
+      "evidence": "ic.java: Scoped sorted insertion traversal, client branch flag or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ic.a(ZLom;)V#2",
+      "originalName": "var3",
+      "to": "clientBranchFlag",
+      "evidence": "ic.java: Scoped sorted insertion traversal, client branch flag or exception context.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:id.a(Lfo;Z)[I#0",
       "originalName": "var4",
       "to": "index",
@@ -20863,6 +20968,244 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:sj.a(B)V#11",
+      "originalName": "var3_ref_id",
+      "to": "resetPlayer",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#12",
+      "originalName": "var4",
+      "to": "gameStatus",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#13",
+      "originalName": "var4_ref_om",
+      "to": "updatedGame",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#14",
+      "originalName": "var5",
+      "to": "playerStatus",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#15",
+      "originalName": "var6",
+      "to": "nameUpdateMarker",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#16",
+      "originalName": "var6_ref",
+      "to": "statusGameAlias",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#17",
+      "originalName": "var7",
+      "to": "gamePlayer",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#18",
+      "originalName": "var8",
+      "to": "lobbyPlayer",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#19",
+      "originalName": "var8_int",
+      "to": "gamePackedMembershipCount",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#20",
+      "originalName": "var9",
+      "to": "hasNameUpdate",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#21",
+      "originalName": "var10",
+      "to": "lobbyPackedMembershipCount",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#22",
+      "originalName": "var11",
+      "to": "clientBranchFlag",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#23",
+      "originalName": "var14",
+      "to": "removedGamePlayer",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#24",
+      "originalName": "var15",
+      "to": "requestPlayer",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#25",
+      "originalName": "var16",
+      "to": "statusGame",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#28",
+      "originalName": "var18_ref",
+      "to": "requestGame",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#31",
+      "originalName": "var20_ref",
+      "to": "invitedGameLookup",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#32",
+      "originalName": "var21",
+      "to": "removedLobbyPlayer",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#34",
+      "originalName": "var23",
+      "to": "invitedGame",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#35",
+      "originalName": "var24",
+      "to": "pendingPlayer",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#36",
+      "originalName": "var25",
+      "to": "removedGamePlayerAlias",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#37",
+      "originalName": "var26",
+      "to": "gameAccountName",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#38",
+      "originalName": "var27",
+      "to": "gameDisplayName",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#39",
+      "originalName": "var28",
+      "to": "requestPlayerAlias",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#40",
+      "originalName": "var29",
+      "to": "lobbyAccountName",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#41",
+      "originalName": "var30",
+      "to": "lobbyDisplayName",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#42",
+      "originalName": "var31",
+      "to": "existingLobbyPlayer",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#43",
+      "originalName": "var32",
+      "to": "removedGame",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#44",
+      "originalName": "var33",
+      "to": "clearedGame",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#45",
+      "originalName": "var34",
+      "to": "clearedLobbyPlayer",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#6",
+      "originalName": "var1",
+      "to": "packet",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#7",
+      "originalName": "var1_ref",
+      "to": "failure",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#8",
+      "originalName": "var2",
+      "to": "responseKind",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sj.a(B)V#9",
+      "originalName": "var3",
+      "to": "playerId",
+      "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:te.<init>()V#0",
       "originalName": "incrementValue$0",
       "to": "orderedEntry",
@@ -22158,6 +22501,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:wl.a(Lid;I)V#0",
+      "originalName": "var2",
+      "to": "existingPlayer",
+      "evidence": "wl.java: Scoped sorted insertion traversal, client branch flag or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lid;I)V#1",
+      "originalName": "var3",
+      "to": "clientBranchFlag",
+      "evidence": "wl.java: Scoped sorted insertion traversal, client branch flag or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wl.a(Lid;I)V#7",
+      "originalName": "var2_ref",
+      "to": "failure",
+      "evidence": "wl.java: Scoped sorted insertion traversal, client branch flag or exception context.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wn.b(B)V#0",
       "originalName": "var2",
       "to": "keyIndex",
@@ -22312,6 +22676,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ab.a(BJ)Lid;",
+      "originalName": "a",
+      "to": "findLobbyPlayer",
+      "evidence": "ab.java: Looks up received player ID in the lobby secondary index; guard96.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ab.a(IIC)V",
       "originalName": "a",
       "to": "handleNavigationKey",
@@ -22323,6 +22694,13 @@
       "originalName": "f",
       "to": "getResultBottom",
       "evidence": "ld.java: Subclass supplies result presentation bottom; guard -6. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ac.a(JI)Lid;",
+      "originalName": "a",
+      "to": "findGamePlayer",
+      "evidence": "ac.java: Looks up received player ID in the current-game secondary index; guard2.",
       "confidence": "reviewed"
     },
     {
@@ -24083,6 +24461,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hm.a(Lmh;B[BLmh;IILmh;III)V",
+      "originalName": "a",
+      "to": "initializeLobby",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ho.a()V",
       "originalName": "a",
       "to": "releaseScratch",
@@ -24325,6 +24710,13 @@
       "originalName": "a",
       "to": "disableKeyboardInput",
       "evidence": "ic.java: Synchronizes on listener before clearing global reference; guard at most -63.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(ZLom;)V",
+      "originalName": "a",
+      "to": "insertSortedLobbyGame",
+      "evidence": "ic.java: Unlinks primary ownership and inserts before the first row that does not strictly precede this game; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -28402,6 +28794,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(B)V",
+      "originalName": "a",
+      "to": "handleLobbyResponse",
+      "evidence": "sj.java: Decodes kinds0..23 into lobby/current-game records, ownership, requests and option state; guard33.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sk.a(BLkl;)Ll;",
       "originalName": "a",
       "to": "queueSoundPlayback",
@@ -29494,6 +29893,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wl.a(Lid;I)V",
+      "originalName": "a",
+      "to": "insertSortedLobbyPlayer",
+      "evidence": "wl.java: Unlinks primary ownership and inserts before the first row that does not strictly precede this player; guard17574.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wn.a(II)V",
       "originalName": "a",
       "to": "applyChatFilters",
@@ -30033,6 +30439,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ab.a(BJ)Lid;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ab.java: Looks up received player ID in the lobby secondary index; guard96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ab.a(BJ)Lid;#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "ab.java: Looks up received player ID in the lobby secondary index; guard96.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ab.a(IIC)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -30058,6 +30478,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ld.java: Subclass supplies result presentation bottom; guard -6. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ac.a(JI)Lid;#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "ac.java: Looks up received player ID in the current-game secondary index; guard2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ac.a(JI)Lid;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ac.java: Looks up received player ID in the current-game secondary index; guard2.",
       "confidence": "reviewed"
     },
     {
@@ -35717,6 +36151,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#0",
+      "originalName": "param0",
+      "to": "gamePlayerContent",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#2",
+      "originalName": "param2",
+      "to": "settingBitWidths",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#3",
+      "originalName": "param3",
+      "to": "lobbyPlayerContent",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#4",
+      "originalName": "param4",
+      "to": "initialTick",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#5",
+      "originalName": "param5",
+      "to": "lobbyPlayerBuckets",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#6",
+      "originalName": "param6",
+      "to": "lobbyGameContent",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#7",
+      "originalName": "param7",
+      "to": "gamePlayerBuckets",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#8",
+      "originalName": "param8",
+      "to": "lobbyGameBuckets",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hm.a(Lmh;B[BLmh;IILmh;III)V#9",
+      "originalName": "param9",
+      "to": "choiceCount",
+      "evidence": "hm.java: Attaches and clears three row lists; replaces secondary indexes, allocates pending bit arrays and resets player/game/request state; guard86.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ho.a(F)F#0",
       "originalName": "param0",
       "to": "octaveOffset",
@@ -36029,6 +36533,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ic.java: Synchronizes on listener before clearing global reference; guard at most -63.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(ZLom;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ic.java: Unlinks primary ownership and inserts before the first row that does not strictly precede this game; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ic.a(ZLom;)V#1",
+      "originalName": "param1",
+      "to": "game",
+      "evidence": "ic.java: Unlinks primary ownership and inserts before the first row that does not strictly precede this game; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -47015,6 +47533,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sj.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sj.java: Decodes kinds0..23 into lobby/current-game records, ownership, requests and option state; guard33.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sk.a(BLkl;)Ll;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -49745,6 +50270,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wl.a(Lid;I)V#0",
+      "originalName": "param0",
+      "to": "player",
+      "evidence": "wl.java: Unlinks primary ownership and inserts before the first row that does not strictly precede this player; guard17574.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wl.a(Lid;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "wl.java: Unlinks primary ownership and inserts before the first row that does not strictly precede this player; guard17574.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wn.a(II)V#0",
       "originalName": "param0",
       "to": "maximumGameFilter",
@@ -50558,9 +51097,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "513ec958aa58e623f6c037ad8cf553f5f9bd082624a2eaa8c332e1339fe0befe",
+      "build-brickabrac-rules.mjs": "c5ad412c4dc77c8cbc30c47ea3cbc3d8517c1c8f4be092551ff4ba6f513cf71e",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "4a759a9e986e3e455e4d139b4f8c28324544336966447ae7251f410e673652d9",
+      "tests/test-brickabrac-core.mjs": "45f8d02c9d5366cd98d02b3836f355ad12836a0d54ce4f8530ff44d85ac26965",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
