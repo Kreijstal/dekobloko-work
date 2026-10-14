@@ -1160,8 +1160,24 @@ cancel and setup branches plus spectator retention. Completion fixtures cover
 zero/one/multiple remaining players, overlapping masks, unrelated high bits and
 previous completion. Result-level checks preserve mode promotion, single-player
 counter arithmetic and multi-player starting levels. Local startup screen routing,
-full network-start packet construction, single-player starting-title rendering and
+live startup with actual resource assets, single-player starting-title rendering and
 animated/gameplay presentation remain unverified.
+
+Network-start fixtures enter actual dispatcher paths64/65 and construct gameplay
+with fixture-ready background assets/audio. The wire fields are mode byte, player
+count byte, signed local-player byte, zero-prefixed CP1252 names,32-bit seed,
+signed period byte and snapshot flag. Negative local IDs become -2. Seed consumption
+is one word per board, five-pass level shuffle, background selector, then five-pass
+available-character shuffle. Background selector0 uses a separate UI generator;
+its variant and random-background draws are checked independently.
+
+Independent encodings/ISAAC expectations cover64 cases with euro names, negative
+and positive IDs, nonzero flags, repeating periods, character availability, both
+background paths and an unread packet sentinel. Packet79 fixtures then load full
+board snapshots with extension bytes, checking readiness only after all boards,
+loaded count, tick/score/position and the local input baseline. Screen-request
+identity and opcode64-only caption updates are checked. Live transport, actual
+resource loading, malformed/duplicate snapshots and sustained rendering are unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
