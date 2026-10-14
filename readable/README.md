@@ -1144,6 +1144,25 @@ calculation retains Java int overflow. Omission happens after top-limit selectio
 and does not backfill; statistics can remain under null names. Full rendered UI,
 missing-kind disconnect routing, malformed packets and live services are unverified.
 
+Gameplay startup names spectator checks, result-word mode, debug controls,
+last-reported/result levels and local-game startup. Rematch/draw offer masks,
+rematch setup mask, caption updates and the sole remaining player index now have
+names. Local result ordering applies additional rules after completion. Result-word mode
+controls displayed result words and unrated-rematch wording; full server semantics
+remain unresolved. requestRematchAction sends encrypted opcode67 without payload
+from post-result button12 or automated repeats and rejects offline screens first.
+
+Actual GameplayScreen constructors run with fixture audio queues and deterministic
+boards. Checks cover local/spectator IDs, mode/debug flags, configuration/name
+ownership, view selection including two local boards, achievement clearing and two
+sound associations. Independent rematch/draw caption matrices cover offer, accept,
+cancel and setup branches plus spectator retention. Completion fixtures cover
+zero/one/multiple remaining players, overlapping masks, unrelated high bits and
+previous completion. Result-level checks preserve mode promotion, single-player
+counter arithmetic and multi-player starting levels. Local startup screen routing,
+full network-start packet construction, single-player starting-title rendering and
+animated/gameplay presentation remain unverified.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded

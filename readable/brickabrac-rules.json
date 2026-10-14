@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 45,
+  "version": 46,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -1851,10 +1851,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ak.field_h:I",
+      "originalName": "field_h",
+      "to": "lastRemainingPlayerId",
+      "evidence": "ak.java: Starts -1; completion scan stores the sole player not in result masks. Local two-player result order has additional rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ak.field_i:I",
       "originalName": "field_i",
       "to": "playerMaskOne",
       "evidence": "ak.java: Match constructor and board iteration; player masks retain separate numbered identities rather than guessing elimination/disconnect encodings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ak.field_j:I",
+      "originalName": "field_j",
+      "to": "rematchOfferPlayerMask",
+      "evidence": "ak.java: Packet70 and rematch-caption offer/accept/cancel branches.",
       "confidence": "reviewed"
     },
     {
@@ -1876,6 +1890,13 @@
       "originalName": "field_m",
       "to": "resultOrder",
       "evidence": "ak.java: Signed byte response entries; local two-player completion assigns winner/other indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ak.field_n:I",
+      "originalName": "field_n",
+      "to": "drawOfferPlayerMask",
+      "evidence": "ak.java: Draw-caption offer/accept/cancel branches indexed by local player ID.",
       "confidence": "reviewed"
     },
     {
@@ -9138,6 +9159,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qj.field_i:I",
+      "originalName": "field_i",
+      "to": "lastReportedLevel",
+      "evidence": "qj.java: Initialized at selected level, advanced when viewed board reaches a later level; used for prior-level result submission.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qj.field_k:I",
       "originalName": "field_k",
       "to": "localPlayerId",
@@ -9149,6 +9177,13 @@
       "originalName": "field_m",
       "to": "viewedPlayerId",
       "evidence": "qj.java: Board view index cycled by gameplay viewing controls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qj.field_n:Z",
+      "originalName": "field_n",
+      "to": "resultWordMode",
+      "evidence": "qj.java: Startup flag and result-level setter gate board resultWord display; rematch captions select unrated wording when true. Full mode semantics remain qualified.",
       "confidence": "reviewed"
     },
     {
@@ -9173,6 +9208,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qj.field_r:I",
+      "originalName": "field_r",
+      "to": "resultLevel",
+      "evidence": "qj.java: Updated by private result-level setter and used in final progress/result submission.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qj.field_s:Z",
       "originalName": "field_s",
       "to": "suppressResultSubmission",
@@ -9187,6 +9229,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qj.field_v:I",
+      "originalName": "field_v",
+      "to": "rematchSetupPlayerMask",
+      "evidence": "qj.java: Packet71 mask; combined with local bit to choose offer-rematch versus setup-new-game caption.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qj.field_w:Lak;",
       "originalName": "field_w",
       "to": "match",
@@ -9198,6 +9247,13 @@
       "originalName": "field_x",
       "to": "loadedBoardSnapshots",
       "evidence": "qj.java: Next sequential board snapshot index advanced by opcode79.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qj.field_y:Z",
+      "originalName": "field_y",
+      "to": "debugControlsEnabled",
+      "evidence": "qj.java: Captured from debug level at least2; enables single-player debug/achievement keys that suppress result submission.",
       "confidence": "reviewed"
     },
     {
@@ -11448,6 +11504,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ak.<init>([Ljava/lang/String;ILoi;[I[I)V#0",
+      "originalName": "var8",
+      "to": "boardIndex",
+      "evidence": "ak.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.<init>([Ljava/lang/String;ILoi;[I[I)V#14",
+      "originalName": "var6_int",
+      "to": "boardWidth",
+      "evidence": "ak.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.<init>([Ljava/lang/String;ILoi;[I[I)V#15",
+      "originalName": "var6",
+      "to": "failure",
+      "evidence": "ak.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.<init>([Ljava/lang/String;ILoi;[I[I)V#16",
+      "originalName": "var7",
+      "to": "controlSetIndex",
+      "evidence": "ak.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ak.a(BI)V#0",
       "originalName": "var3",
       "to": "board",
@@ -11571,6 +11655,13 @@
       "originalName": "var10_ref_vnLifetime2",
       "to": "queuedBall",
       "evidence": "ak.java: Reviewed main board tick body/collection role; original control flow retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ak.b(I)Z#0",
+      "originalName": "var2",
+      "to": "remainingPlayerMask",
+      "evidence": "ak.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
       "confidence": "reviewed"
     },
     {
@@ -20611,6 +20702,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#14",
+      "originalName": "var9",
+      "to": "achievementMaskAlias",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#15",
+      "originalName": "var9_int",
+      "to": "localBoardCount",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#16",
+      "originalName": "var9_ref",
+      "to": "failure",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#17",
+      "originalName": "var10",
+      "to": "achievementWordIndex",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#18",
+      "originalName": "var12",
+      "to": "achievementMaskStorage",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#19",
+      "originalName": "var13",
+      "to": "achievementMaskReference",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#20",
+      "originalName": "var14",
+      "to": "achievementMask",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#21",
+      "originalName": "var10Lifetime1",
+      "to": "playerIndex",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.a(BI)V#0",
+      "originalName": "var3",
+      "to": "boardIndex",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.a(BI)V#1",
+      "originalName": "var4",
+      "to": "clientBranchFlag",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.a(BI)V#2",
+      "originalName": "var3Lifetime1",
+      "to": "counterLevelAdjustment",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:qj.a(BLpi;Z)V#0",
       "originalName": "var6_int",
       "to": "maskIndex",
@@ -20643,6 +20811,13 @@
       "originalName": "var7",
       "to": "clientBranchFlag",
       "evidence": "qj.java: Reviewed incoming control-batch parser declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.a(IZ)V#0",
+      "originalName": "var3",
+      "to": "counterLevelAdjustment",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
       "confidence": "reviewed"
     },
     {
@@ -20727,6 +20902,13 @@
       "originalName": "var4_int",
       "to": "advancedLocalTick",
       "evidence": "qj.java: Reviewed remote/local simulation and input-batch consumption declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.f(I)V#0",
+      "originalName": "var2",
+      "to": "guardArithmetic",
+      "evidence": "qj.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
       "confidence": "reviewed"
     },
     {
@@ -21609,6 +21791,62 @@
       "originalName": "var3",
       "to": "playerId",
       "evidence": "sj.java: Scoped response dispatcher local verified against packet reads, lookups and state consumers; shared integer and unused erased locals remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sk.a([Ljava/lang/String;ILoi;IZI)V#0",
+      "originalName": "var8",
+      "to": "playerIndex",
+      "evidence": "sk.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sk.a([Ljava/lang/String;ILoi;IZI)V#10",
+      "originalName": "var6_int",
+      "to": "localPlayerMask",
+      "evidence": "sk.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sk.a([Ljava/lang/String;ILoi;IZI)V#11",
+      "originalName": "var6",
+      "to": "failure",
+      "evidence": "sk.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sk.a([Ljava/lang/String;ILoi;IZI)V#12",
+      "originalName": "var7",
+      "to": "seedWords",
+      "evidence": "sk.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sk.a([Ljava/lang/String;ILoi;IZI)V#13",
+      "originalName": "var9",
+      "to": "clientBranchFlag",
+      "evidence": "sk.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sk.a([Ljava/lang/String;ILoi;IZI)V#14",
+      "originalName": "var10",
+      "to": "seedStorage",
+      "evidence": "sk.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sk.a([Ljava/lang/String;ILoi;IZI)V#15",
+      "originalName": "var12",
+      "to": "randomSeeds",
+      "evidence": "sk.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sk.a([Ljava/lang/String;ILoi;IZI)V#16",
+      "originalName": "var15",
+      "to": "characterOrder",
+      "evidence": "sk.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
       "confidence": "reviewed"
     },
     {
@@ -23551,6 +23789,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.b(I)Z",
+      "originalName": "b",
+      "to": "checkMatchCompletion",
+      "evidence": "ak.java: Zero unmasked players finalizes; exactly one records its index and maskThree bit then finalizes; multiple unmasked players keep prior completion state; guard82.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ak.c(I)I",
       "originalName": "c",
       "to": "getStateSevenPlayerMask",
@@ -24762,6 +25007,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fr.a(I)V",
+      "originalName": "a",
+      "to": "updateRematchCaption",
+      "evidence": "fr.java: Spectators retain caption; offer/setup masks and resultWordMode select literal rematch labels at button12; guard1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fr.a(IIII)V",
       "originalName": "a",
       "to": "translateVerticesFrom",
@@ -25333,6 +25585,13 @@
       "originalName": "a",
       "to": "decompressArchiveContainer",
       "evidence": "i.java: Type0 copies,1 bzip,other types shared fixed-header gzip; preserves length limits; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.c(B)V",
+      "originalName": "c",
+      "to": "updateDrawCaption",
+      "evidence": "i.java: Spectators retain caption; local/other/no draw offers select Cancel/Accept/Offer draw at button10; guard32.",
       "confidence": "reviewed"
     },
     {
@@ -28815,6 +29074,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qj.a(BI)V",
+      "originalName": "a",
+      "to": "setStartingLevel",
+      "evidence": "qj.java: Sets every board level; single-player also captures progress baseline/report level, changes result counter and level title; guard119.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.a(BII)V",
       "originalName": "a",
       "to": "queueOffsetAchievement",
@@ -28878,6 +29144,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qj.a(IZ)V",
+      "originalName": "a",
+      "to": "setResultLevel",
+      "evidence": "qj.java: Optional mode promotion, single-player result-counter subtraction, then result-level retention.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.a(Lnc;IBI)V",
       "originalName": "a",
       "to": "queueLevelResult",
@@ -28938,6 +29211,20 @@
       "originalName": "b",
       "to": "queueMappedBitAchievement",
       "evidence": "qj.java: Checks complement byte and mapped bit, toggles qualified bit word and captures adjusted companion word; guard above81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.c(I)Z",
+      "originalName": "c",
+      "to": "isSpectator",
+      "evidence": "qj.java: True exactly for localPlayerId -2; offline -1 is not spectator; guard at least93.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.f(I)V",
+      "originalName": "f",
+      "to": "requestRematchAction",
+      "evidence": "qj.java: Post-result button12 and automated repeat path write ciphered opcode67 with no body; offline screen throws before output; guard69/87.",
       "confidence": "reviewed"
     },
     {
@@ -29491,6 +29778,13 @@
       "originalName": "a",
       "to": "queueSoundPlayback",
       "evidence": "sk.java: Creates association, queues it and adds stream to sound mixer; canonical guard117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.a([Ljava/lang/String;ILoi;IZI)V",
+      "originalName": "a",
+      "to": "startLocalGame",
+      "evidence": "sk.java: Generates local masks/seeds/character order, constructs offline screen, sets level/snapshot state and requests gameplay screen; guard -12665.",
       "confidence": "reviewed"
     },
     {
@@ -31955,6 +32249,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ak.java: Marks result-order data ready; false avoids unused guard branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ak.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ak.java: Zero unmasked players finalizes; exactly one records its index and maskThree bit then finalizes; multiple unmasked players keep prior completion state; guard82.",
       "confidence": "reviewed"
     },
     {
@@ -35864,6 +36165,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fr.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "fr.java: Spectators retain caption; offer/setup masks and resultWordMode select literal rematch labels at button12; guard1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fr.a(IIII)V#0",
       "originalName": "param0",
       "to": "deltaZ",
@@ -37471,6 +37779,13 @@
       "originalName": "param1",
       "to": "data",
       "evidence": "i.java: Type0 copies,1 bzip,other types shared fixed-header gzip; preserves length limits; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:i.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "i.java: Spectators retain caption; local/other/no draw offers select Cancel/Accept/Offer draw at button10; guard32.",
       "confidence": "reviewed"
     },
     {
@@ -47015,6 +47330,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#1",
+      "originalName": "param1",
+      "to": "resultWordMode",
+      "evidence": "qj.java: Retained startup flag gates result-word rendering and unrated-rematch captions; full server mode semantics remain unresolved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qj.<init>(ZZ[Ljava/lang/String;IILoi;[I[I)V#2",
       "originalName": "param2",
       "to": "playerNames",
@@ -47096,6 +47418,20 @@
       "originalName": "param5",
       "to": "characterOrder",
       "evidence": "qj.java: Delegates to offline gameplay construction with supplied seeded boards and character order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qj.java: Sets every board level; single-player also captures progress baseline/report level, changes result counter and level title; guard119.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(BI)V#1",
+      "originalName": "param1",
+      "to": "levelIndex",
+      "evidence": "qj.java: Sets every board level; single-player also captures progress baseline/report level, changes result counter and level title; guard119.",
       "confidence": "reviewed"
     },
     {
@@ -47257,6 +47593,20 @@
       "originalName": "param1",
       "to": "packet",
       "evidence": "qj.java: Reads player and signed24-bit result then ORs player into maskOne; guard18504.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "levelIndex",
+      "evidence": "qj.java: Optional mode promotion, single-player result-counter subtraction, then result-level retention.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "enableResultWordMode",
+      "evidence": "qj.java: Optional mode promotion, single-player result-counter subtraction, then result-level retention.",
       "confidence": "reviewed"
     },
     {
@@ -47425,6 +47775,20 @@
       "originalName": "param2",
       "to": "submissionByte",
       "evidence": "qj.java: Checks complement byte and mapped bit, toggles qualified bit word and captures adjusted companion word; guard above81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.c(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qj.java: True exactly for localPlayerId -2; offline -1 is not spectator; guard at least93.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qj.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qj.java: Post-result button12 and automated repeat path write ciphered opcode67 with no body; offline screen throws before output; guard69/87.",
       "confidence": "reviewed"
     },
     {
@@ -48657,6 +49021,48 @@
       "originalName": "param1",
       "to": "stream",
       "evidence": "sk.java: Creates association, queues it and adds stream to sound mixer; canonical guard117.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a([Ljava/lang/String;ILoi;IZI)V#0",
+      "originalName": "args",
+      "to": "playerNames",
+      "evidence": "sk.java: Generates local masks/seeds/character order, constructs offline screen, sets level/snapshot state and requests gameplay screen; guard -12665.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a([Ljava/lang/String;ILoi;IZI)V#1",
+      "originalName": "param1",
+      "to": "startingLevel",
+      "evidence": "sk.java: Generates local masks/seeds/character order, constructs offline screen, sets level/snapshot state and requests gameplay screen; guard -12665.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a([Ljava/lang/String;ILoi;IZI)V#2",
+      "originalName": "param2",
+      "to": "configuration",
+      "evidence": "sk.java: Generates local masks/seeds/character order, constructs offline screen, sets level/snapshot state and requests gameplay screen; guard -12665.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a([Ljava/lang/String;ILoi;IZI)V#3",
+      "originalName": "param3",
+      "to": "localPlayerCount",
+      "evidence": "sk.java: Generates local masks/seeds/character order, constructs offline screen, sets level/snapshot state and requests gameplay screen; guard -12665.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a([Ljava/lang/String;ILoi;IZI)V#4",
+      "originalName": "param4",
+      "to": "inputFlag",
+      "evidence": "sk.java: Generates local masks/seeds/character order, constructs offline screen, sets level/snapshot state and requests gameplay screen; guard -12665.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sk.a([Ljava/lang/String;ILoi;IZI)V#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "sk.java: Generates local masks/seeds/character order, constructs offline screen, sets level/snapshot state and requests gameplay screen; guard -12665.",
       "confidence": "reviewed"
     },
     {
@@ -52371,9 +52777,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "48a810bad9fa3bba4918a25831dc1b548cccd471bb4f8de4a36e8880c959685a",
+      "build-brickabrac-rules.mjs": "ae6031596e04d98dcfcaabf2f25ff6159830cdada8ecb9ac8a0b8b3659e1fb91",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "203eae68fcb951dea0df213e9ee041218d49ad24518f33424c1649687defb2f8",
+      "tests/test-brickabrac-core.mjs": "c85a152c7543e5e112704dce1ef143c8f7a712aec5dabc1bec66bc9420569411",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
