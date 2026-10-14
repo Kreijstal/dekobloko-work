@@ -234,6 +234,25 @@ const classes={
  ml:['TextLineLayout','One line with top/bottom bounds and a caret-position array indexed by UTF16 source offsets, including rich-text tags.'],
  gg:['TextHotspotRegion','Intrusive hotspot rectangle with integer ID and a link to its next line segment. Unrelated static assets remain separate.'],
  ha:['TextHotspotListener','Older hotspot-widget action callback receiving button, hotspot ID and source widget.'],
+ ia:['ValidationSource','Form-validation contract for message, status, incomplete input and edit-time reset.'],
+ pj:['DebouncedValidationSource','Defers validation status/message for350 milliseconds after edits; incomplete input gets a distinct empty token. Static helpers retain separate roles.'],
+ k:['TextFieldValidator','Debounced source bound to a text field, with text-specific status/message contracts and change callbacks.'],
+ qh:['ValidationStatus','Identity-only validation tokens: empty, debouncing, pending, valid and invalid. Unrelated static game/UI helpers remain separate.'],
+ kf:['AgeValidator','Checks signed decimal syntax and inclusive age range1..130; static helpers remain separate.'],
+ sg:['EmailValidator','Maps archived email syntax errors to invalid status; other static input helpers remain separate.'],
+ cb:['MatchingTextValidator','Exact matching-field validation, requiring a valid source validator when one is attached. Static input helpers remain separate.'],
+ g:['PasswordValidator','Password policy uses name/email fields, case-folding and archived length/character/repetition/similarity predicates. Static result submission remains separate.'],
+ uc:['EmailConfirmationValidator','Requires matching email fields and polls/caches server availability status for the confirmed address.'],
+ fl:['UsernameAvailabilityValidator','Checks username syntax and polls/caches availability responses; static numeric/audio helpers remain separate.'],
+ je:['ValidatableWidget','Widget contract exposing an attached ValidationSource.'],
+ sf:['ValidatedTextFieldWidget','Text field with an attached validation source and edit-time reset; tooltip positioning remains separate.'],
+ wl:['ValidationIconWidget','Nonfocusable validation status icon with rotating waiting indicator and validation-message tooltip. Static ranking/lobby helpers remain separate.'],
+ nf:['ValidationMessageWidget','Hotspot text showing validation message, default prompt or waiting text with a status icon. Static achievement helpers remain separate.'],
+ ug:['DateInputWidget','Abstract date-field group exposing day, zero-based month, year, incomplete input and attached birth-date validator.'],
+ na:['DateFieldsWidget','Three editable day/month/year fields with optional month-first ordering, parsing and validation callbacks. Static gameplay/UI helpers remain separate.'],
+ an:['BirthDateValidator','Validates Gregorian date and year range1890..currentYear-3, bound to DateInputWidget. Static chat helpers remain separate.'],
+ ac:['EmailAvailabilityRequest','Email string with completion/availability flags, created pending and completed by a response. Static lobby/graphics helpers remain separate.'],
+ oh:['UsernameAvailabilityResult','Availability response with accepted flag and additional response/suggestion words. Unrelated static helpers remain separate.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -512,6 +531,85 @@ field('lg','N','Lgg;','hoveredHotspot','First matching region retained by pointe
 method('lg','b','(III)Lgg;','findHotspot','Scans deque and linked segments; inclusive top/bottom and exclusive right; returns deque root of first matching chain; guard0.',['y','obfuscationGuard','x']);
 method('lg','a','(Ljava/lang/String;IB)V','setHotspotTooltip','Grows sparse tooltip array while preserving old entries, then stores by hotspot ID; guard -98.',['tooltip','hotspotId','obfuscationGuard']);
 method('ha','a','(IIILlg;)V','onHotspotAction','Action callback receives original button and matched hotspot ID; guard -526.',['button','obfuscationGuard','hotspotId','widget']);
+method('ia','a','(I)Ljava/lang/String;','getValidationMessage','Returns null for incomplete/recently edited input; otherwise computes the current message.',['obfuscationGuard']);
+method('ia','b','(B)Lqh;','getValidationStatus','Returns empty for incomplete input, debouncing before350ms, then computes status; guard -31.',['obfuscationGuard']);
+method('ia','a','(B)Z','isIncomplete','Text validator checks null/empty text; date validator checks any missing field; guard below -27.',['obfuscationGuard']);
+method('ia','a','(Z)V','markEdited','Resets debounce origin to current monotonic time; false guard.',['obfuscationGuard']);
+method('pj','c','(I)Lqh;','computeValidationStatus','Runs validation after debounce; text and date subclasses implement; guard4.',['obfuscationGuard']);
+method('pj','b','(I)Ljava/lang/String;','computeValidationMessage','Runs current text/date message policy after debounce; guard28600.',['obfuscationGuard']);
+field('pj','f','J','lastEditMillis','Monotonic edit timestamp compared against350ms debounce delay.');
+field('k','g','Lvb;','textField','Bound field read for incomplete input and status/message validation.');
+method('k','a','(Ljava/lang/String;B)Lqh;','validateText','Concrete text policy returns valid/invalid or pending status; guard106.',['text','obfuscationGuard']);
+method('k','a','(ILjava/lang/String;)Ljava/lang/String;','describeTextValidation','Concrete current-text message policy; normal base call uses guard56.',['obfuscationGuard','text']);
+method('k','<init>','(Lvb;)V','<init>','Binds field used for status/message validation.',['textField']);
+for(const [owner,original,to,evidence] of [
+ ['uo','f','validationEmpty','Incomplete text/date input returns this token; icon draws no status.'],
+ ['m','c','validationDebouncing','Returned before350ms after edit; message widget displays waiting text and icon spins.'],
+ ['hq','z','validationPending','Availability requests not yet completed return this token; waiting indicator spins.'],
+ ['ae','c','validationValid','Accepted text/date input; matching validators require this token and icon selects check sprite.'],
+ ['lp','xb','validationInvalid','Rejected text/date input; icon selects error sprite.'],
+])field(owner,original,'Lqh;',to,evidence);
+method('je','a','(I)Lia;','getValidationSource','Returns attached validator; guard -11011.',['obfuscationGuard']);
+field('sf','W','Lia;','validationSource','Attached source is marked edited after text-change notification.');
+method('sf','a','(Lia;B)V','setValidationSource','Attaches source; guard -68.',['validationSource','obfuscationGuard']);
+method('sf','<init>','(Ljava/lang/String;Luh;I)V','<init>','Text field constructor with validation attachment initially absent.',['text','listener','maxLength']);
+field('cb','m','Lvb;','matchingField','Compared exactly and optionally consulted through ValidatableWidget for source validation.');
+method('cb','<init>','(Lvb;Lvb;)V','<init>','Binds current and matching source fields.',['textField','matchingField']);
+field('g','p','Lvb;','usernameField','Lowercased player name used by password similarity policy.');
+field('g','k','Lvb;','emailField','Email local/domain substrings are rejected when present in password.');
+method('g','<init>','(Lvb;Lvb;Lvb;)V','<init>','Binds password, username and email fields.',['textField','usernameField','emailField']);
+method('g','b','(ILjava/lang/String;)Z','containsEmailPart','Case-folds email/password and rejects either local/domain substring when email contains @ and a trailing domain; guard0.',['obfuscationGuard','password']);
+field('uc','n','Ljava/lang/String;','checkedEmail','Last email whose availability request completed.');
+field('uc','o','Z','emailAvailable','Cached completed availability result.');
+field('uc','p','Lcb;','matchingValidator','Checks confirmation equals the source email before polling availability.');
+method('uc','<init>','(Lvb;Lvb;)V','<init>','Binds confirmation field and constructs matching validator against source email.',['textField','emailField']);
+field('fl','k','Ljava/lang/String;','checkedUsername','Last username whose availability response completed without its auxiliary word.');
+field('fl','n','Z','usernameAvailable','Cached response acceptance flag used for status and message.');
+method('fl','e','(B)V','clearAvailabilityCache','Clears checked username to force later polling; guard -22.',['obfuscationGuard']);
+for(const owner of ['kf','sg','fl'])method(owner,'<init>','(Lvb;)V','<init>','Binds input text field to validator.',['textField']);
+field('wl','M','Lia;','validationSource','Queried for status while painting and message while hovered.');
+field('wl','P','I','spinnerTicks','Incremented by pointer update and negated/shifted for waiting-icon rotation.');
+method('wl','<init>','(Lia;)V','<init>','Binds status icon to source.',['validationSource']);
+for(const [original,type,to,evidence] of [['R','Lia;','validationSource','Queried for status and message each draw.'],['S','Ljava/lang/String;','defaultPrompt','Original prompt used when source message is absent.'],['Q','I','spinnerTicks','Pointer updates increment rotation counter.'],['X','Ljp;','spinnerSurface','Cached raster target for rotating pending/debounce icon.']])field('nf',original,type,to,evidence);
+method('nf','<init>','(Lia;Ljava/lang/String;IIII)V','<init>','Binds source/default prompt and initializes display bounds.',['validationSource','defaultPrompt','x','y','width','height']);
+field('ug','H','Lan;','validator','Attached birth-date source; linking also sets its dateInput owner.');
+field('an','l','Lug;','dateInput','Source for day/month/year parsing and incomplete-input predicate.');
+method('ug','a','(Lan;B)V','setBirthDateValidator','Attaches validator and binds its owner; concrete widget also attaches it to child listeners; guard -12.',['validator','obfuscationGuard']);
+method('ug','a','(B)I','getDay','Parses day field, returning -1 on malformed number; guard below -79.',['obfuscationGuard']);
+method('ug','i','(B)I','getMonthIndex','Parses displayed month and subtracts one, returning -1 on malformed number; guard -117.',['obfuscationGuard']);
+method('ug','i','(I)I','getYear','Parses year field, returning -1 on malformed number; guard5390.',['obfuscationGuard']);
+method('ug','h','(B)Z','isDateIncomplete','True if any day/month/year field text is null/empty; guard -124.',['obfuscationGuard']);
+for(const [original,type,to,evidence] of [['R','Lvb;','dayField','Parsed by getDay.'],['M','Lvb;','monthField','Parsed and decremented by getMonthIndex.'],['O','Lvb;','yearField','Parsed by getYear.'],['P','Z','monthFirst','Controls child order and horizontal positions of month versus day.']])field('na',original,type,to,evidence);
+method('ug','<init>','(IIIILub;)V','<init>','Initializes date-input group geometry/renderer.',['x','y','width','height','renderer']);
+method('na','<init>','(Lub;Z)V','<init>','Creates day/month/year fields with capacities2/2/4 and ordered child ownership.',['renderer','monthFirst']);
+method('na','<init>','(Lub;ZIIII)V','<init>','Initializes date fields then lays out supplied bounds.',['renderer','monthFirst','x','y','width','height']);
+field('ac','g','Ljava/lang/String;','email','Requested address retained by pending/completed request.');
+field('ac','a','Z','completed','Initially false; response setter marks true.');
+field('ac','c','Z','available','Availability response flag, meaningful after completion.');
+method('ac','<init>','(Ljava/lang/String;)V','<init>','Creates uncompleted request for address.',['email']);
+method('ac','b','(I)Z','isCompleted','Returns response completion flag; guard96.',['obfuscationGuard']);
+method('ac','a','(ZI)V','complete','Stores response availability and marks completion; guard20892.',['available','obfuscationGuard']);
+method('ac','a','(I)Ljava/lang/String;','getEmail','Returns requested address; guard0.',['obfuscationGuard']);
+method('ac','a','(Z)Z','isAvailable','Returns stored response acceptance; false guard.',['obfuscationGuard']);
+method('hg','a','(ILjava/lang/String;)Lac;','pollEmailAvailability','Reuses pending request; replaces completed request only when address changes; guard0.',['obfuscationGuard','email']);
+method('rm','a','(Ljava/lang/String;I)Lac;','createEmailAvailabilityRequest','Creates pending availability record; guard16711935.',['email','obfuscationGuard']);
+field('ma','I','Lac;','emailAvailabilityRequest','Shared pending/completed email availability request reused by poll helper.');
+field('oh','c','Z','available','Constructor acceptance flag read by username availability validator.');
+method('oh','<init>','(Z)V','<init>','Retains username acceptance flag.',['available']);
+method('qc','a','(Ljava/lang/String;I)Loh;','pollUsernameAvailability','Returns completed matching response or null while pending; other branch schedules shared request state; guard0.',['username','obfuscationGuard']);
+method('pp','a','(Ljava/lang/String;Z)Z','hasInvalidPasswordLength','Rejects null or length outside configured password minimum/maximum; true guard.',['password','obfuscationGuard']);
+method('ab','a','(Ljava/lang/String;I)Z','containsNonAlphanumeric','Checks ASCII letter/digit policy from supplied offset; password call uses0.',['text','startOffset']);
+method('gp','a','(BLjava/lang/String;)Z','consistsOfRepeatedCharacter','True when every character equals the first; input must be nonempty; guard above28.',['obfuscationGuard','text']);
+method('ab','a','(BLjava/lang/String;Ljava/lang/String;)Z','isAcceptablePassword','Checks character/length/repetition and configured name-similarity predicates; caller lowercases both strings; guard below -38.',['obfuscationGuard','password','username']);
+for(const [owner,signature,entries] of [
+ ['g','b(ILjava/lang/String;)Z',[[0,'var3','normalizedEmail'],[2,'var4','normalizedPassword'],[3,'var5','atSignIndex'],[4,'var6','emailLocalPart'],[5,'var7','emailDomain']]],
+ ['g','a(Ljava/lang/String;B)Lqh;',[[0,'var3','normalizedUsername'],[2,'var4','normalizedPassword']]],
+ ['an','c(I)Lqh;',[[0,'var2_int','day'],[2,'var3','monthIndex'],[3,'var4','year'],[4,'var5','currentYear']]],
+ ['an','b(I)Ljava/lang/String;',[[0,'var2_int','day'],[2,'var3','monthIndex'],[3,'var4','year'],[4,'var5','currentYear']]],
+ ['kf','a(Ljava/lang/String;B)Lqh;',[[0,'var3_int','age'],[3,'var5','syntaxInput'],[4,'var6','parseInput']]],
+ ['cb','a(Ljava/lang/String;B)Lqh;',[[0,'var3','sourceValidation']]],
+ ['cb','a(ILjava/lang/String;)Ljava/lang/String;',[[0,'var3','sourceValidation']]],
+])for(const [ordinal,original,to] of entries)local(owner,signature,ordinal,original,to,'Reviewed validation input, parsed value or dependent validation source; lexical identity preserves source behavior.');
 for(const [owner,signature,names] of [
  ['lg','i(I)V',[
   ['var11','lineIndex'],['stackIn_10_0','selectedLeftX'],['stackIn_15_0','selectedRightX'],
@@ -1685,6 +1783,11 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('cp')} / ${link('jc')} / ${link('eh')} | Layer stack, layer visibility/opacity and widget theme. |`,
 `| ${link('ep')} / ${link('oj')} / ${link('ml')} | Text layout, aligned/wrapped font preparation and source-offset caret geometry. |`,
 `| ${link('gg')} / ${link('ha')} | Linked hotspot rectangles and ID action callback. |`,
+`| ${link('ia')} / ${link('pj')} / ${link('k')} / ${link('qh')} | Validation message/status contracts, edit debounce and identity tokens. |`,
+`| ${link('kf')} / ${link('sg')} / ${link('cb')} / ${link('g')} | Age, email syntax, matching fields and password policies. |`,
+`| ${link('uc')} / ${link('fl')} / ${link('ac')} / ${link('oh')} | Email confirmation/availability and username availability state. |`,
+`| ${link('je')} / ${link('sf')} / ${link('wl')} / ${link('nf')} | Validation attachment, editable fields, icon and message displays. |`,
+`| ${link('ug')} / ${link('na')} / ${link('an')} | Date input contract, day/month/year fields and birth-date validation. |`,
 `| ${link('vi')} / ${link('bn')} / ${link('no')} | Fixed8 body coordinates/velocities, rectangle/circle geometry, snapshots and checksums. |`,
 `| ${link('vo')} / ${link('vn')} / ${link('on')} | Paddle size stages, balls and bricks. |`,
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
@@ -1808,10 +1911,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Native fixtures cover constructor text truncation/null handling, UTF16 selection/deletion and space-based word boundaries, ASCII typing filters/capacity, callback suppression/change/submit, unbounded clipboard insertion and bounded early return. No system clipboard is accessed. Archived bounded clipboard insertion returns while capacity is nonnegative; the overfull negative-substring path remains unverified and is preserved. Typed-character insertion uses a separate working bound check. Toggle activation, drag offsets/movement/global source, drop dispatch/clearing, top visible layer/hiding/removal and opacity reset are checked. Layer removal forces target opacity before its hidden test. Independent pixels verify opacity0/64/128/256 and raster restoration; label constructor fixtures check child bounds for left/right labels. Radial axis selection uses a manually initialized instance because its retained constructor throws. Full rendering of text/hotspots/layers, clipboard integration, drag return animation, all layout providers and live form behavior remain unverified.', '',
 'WidgetTextLayout/RichTextLayout/TextLineLayout now expose line bounds, source-offset caret positions, aligned single-line and wrapped preparation, cache inputs and text-layout provider methods. TextHotspotRegion/TextHotspotListener expose linked rectangles, IDs, sparse tooltips and callback arguments. The maximum final caret coordinate is named getRightEdge because it is an extent rather than a width. Rich-text tag offsets intentionally repeat caret coordinates.', '',
 'Independent native fixtures cover midpoint ties, duplicate positions, null/empty line arrays, multiline source-offset boundaries, vertical gaps and outside hits; real fixture fonts cover left/center/right preparation and source offsets inside markup. Single-line and wrapped hotspot parsing is exercised with controlled providers, including linked segment ownership, inclusive bottom/exclusive right boundaries, tooltip array growth and callback button/guard/ID. Alignment/cache quirks are preserved; complete provider alignment/justification, highlight pixels and live form integration remain unverified.', '',
+'ValidationSource/DebouncedValidationSource/TextFieldValidator expose edit-time reset,350ms debounce, current messages, incomplete input and computed status. ValidationStatus tokens distinguish empty input, debounce waiting, asynchronous pending, valid and invalid. ValidatableWidget/ValidatedTextFieldWidget attach sources; ValidationIconWidget/ValidationMessageWidget expose source, prompts and spinner state. Concrete validators name age1..130, email syntax, exact matching with source-validation dependency, archived password policy, email confirmation/availability and username availability. BirthDateValidator/DateInputWidget/DateFieldsWidget expose day, zero-based month, year, field order and year bounds1890..currentYear-3. EmailAvailabilityRequest and UsernameAvailabilityResult name request/response ownership; unrelated static game helpers retain separate roles.', '',
+'Native fixtures verify debounce suppression/call counts and edit-time bounds without sleeping or tracing clock values; null/empty input, signed age boundaries, email examples, case-sensitive matching and invalid-source message forwarding. Password fixtures preserve archived length/ASCII/repetition/name/email checks and messages. Synthetic pending/completed email records and username replies cover status/message/cache outcomes, request reuse/replacement and explicit cache clearing. Real date-field constructors check field order, listener/owner attachment, missing/malformed values and Gregorian validity against LocalDate, including leap-century and year-boundary cases. Relative-year trace labels keep clock values out of trace identity. Icon fixtures verify hover messages, valid/invalid pixels and blank empty state. These are local Java fixtures; live account requests, server policy, rotating waiting pixels, full validation-message rendering and all password similarity cases remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:50,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:51,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

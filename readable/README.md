@@ -1228,6 +1228,27 @@ button/guard/ID callback delivery. These use controlled fonts/providers. Complet
 provider alignment/justification, cache edge cases, highlight pixels and live forms
 remain unverified; archived alignment/cache behavior is preserved.
 
+The form family now names ValidationSource, DebouncedValidationSource,
+TextFieldValidator and ValidationStatus, including separate empty, debouncing,
+pending, valid and invalid tokens. Concrete validators expose age, email syntax,
+matching-field dependencies, archived password rules, confirmed-email availability,
+username availability and birth dates. ValidatableWidget/ValidatedTextFieldWidget
+attach sources; ValidationIconWidget/ValidationMessageWidget expose display state.
+DateInputWidget/DateFieldsWidget expose parsed day, zero-based month, year and field
+order. EmailAvailabilityRequest/UsernameAvailabilityResult identify async ownership.
+
+Native fixtures check debounce suppression/call counts and edit-time bounds
+without sleeping or tracing wall-clock values; missing input, signed ages1..130,
+email examples, exact matching and invalid-source messages. Password cases preserve
+length/ASCII/repetition/name/email rules and messages. Synthetic pending/completed
+records/replies check availability caches, explicit clearing and email request
+reuse/replacement. Real date-field constructors check order/listener/owner wiring,
+missing/malformed input and Gregorian dates against LocalDate, including century
+leap years and year bounds1890..currentYear-3. Relative-year labels keep traces
+independent of the current year. Icon checks verify hover messages, valid/invalid
+pixels and empty state. Live account requests/server policy, rotating waiting
+pixels, full message rendering and all password similarity cases remain unverified.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded
