@@ -128,6 +128,7 @@ QuickChatPhraseDefinition, QuickChatPhraseRegistry and QuickChatParameterType ex
 phrase metadata, archive lookup and command-word counts.
 ContextActionController and ChatMessage expose menu routing, received message state,
 formatting and retained-history relationships.
+SocialListEntry exposes shared friend/ignore names, presence and intrusive ownership.
 Ball history fields identify recorded center coordinates. Board collections
 distinguish active/queued balls, falling power-ups, score popups, scheduled
 power-up history and its next unapplied index. Player masks and body state words remain numbered or qualified
@@ -1038,7 +1039,7 @@ unverified; the shared Huffman codec has separate fixtures described above.
 ContextActionController names the selected anchor, target identity/names, game/chat
 context, menu builders and four dispatch groups. Fixtures check constructor/caption
 storage, self-report suppression, message-filter action lists, pending results and
-pointer-driven filter dispatch through the real menu. Game invitations, friend/ignore
+pointer-driven filter dispatch through the real menu. Game invitations, controller-routed friend/ignore
 mutations, report-dialog dispatch and localized resource loading remain unverified;
 action IDs stay numeric where their full server behavior has not been reviewed.
 
@@ -1051,9 +1052,24 @@ source-length checks, accent folding and the unusual sharp-s-to-b mapping. Contr
 prefix/color fixtures check badges, private direction, channel labels and local/other
 colors. History fixtures verify chronological retention by channel/category, duplicate
 suppression and null-text rejection. At zero limit, old messages of the incoming
-channel are removed but the new message is still appended. Friend-category lookup,
-malformed receiving, arbitrary packet flags, live dispatch/receiving and rendered
+channel are removed but the new message is still appended. Malformed receiving, arbitrary packet flags, live dispatch/receiving and rendered
 message text remain unverified.
+
+SocialListEntry names the shared friend/ignore row, current/previous/action names,
+server presence, insertion index and three friend-row UI controls. Lookup fixtures
+check normalized equality across real an/c0 hash collisions and ignore raw-name
+fallback. Friend sorting retains reference identity for interned server strings and
+its200-point presence weights. Social-response fixtures check lazy indexes, inserts,
+rename rekeying with stable object identity, friend ordering, stage transitions and
+server/filter updates. Friend presence is checked in the logged-in chat category.
+
+Independent request-wire fixtures check add/remove friend/ignore operation bytes,
+name payloads, both intrusive ownerships after removal and later friend index changes.
+They verify login/invalid-name/self/conflict rejection,100/200 friend capacity and100
+ignore capacity with no packet on refusal. Add requests emit a packet and await the
+server update; removals mutate local ownership immediately. Controller routing for
+these actions, actual list-row rendering, rename collisions between existing players,
+all localized error strings and live social services remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
