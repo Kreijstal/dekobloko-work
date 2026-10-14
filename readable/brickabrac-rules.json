@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 57,
+  "version": 58,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -315,6 +315,13 @@
       "originalName": "ao",
       "to": "ObjectHistoryBuffer",
       "evidence": "ao.java: Fixed-capacity indexed object history; scheduled power-ups and board snapshots retain absolute sequence indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:aq",
+      "originalName": "aq",
+      "to": "PcmPlayerService",
+      "evidence": "aq.java: Runnable owning two players, running/stop flags and platform event pumping. Unrelated static UI data remains separate.",
       "confidence": "reviewed"
     },
     {
@@ -1634,6 +1641,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pd",
+      "originalName": "pd",
+      "to": "JavaSoundPcmPlayer",
+      "evidence": "pd.java: Java Sound format/line ownership, signed24 accumulator clipping to little-endian PCM16, frame accounting and device flush/open/close.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pe",
       "originalName": "pe",
       "to": "IntArrayRequest",
@@ -1994,7 +2008,7 @@
       "symbol": "C:tj",
       "originalName": "tj",
       "to": "PcmPlayer",
-      "evidence": "tj.java: PCM device boundary with output buffer, root stream, scheduling queues and shared sample-rate/stereo configuration.",
+      "evidence": "tj.java: PCM output owner with priority/work scheduling,256-frame mixing, queue-drain latency adjustment, timed reopen and shared two-player service lifecycle.",
       "confidence": "reviewed"
     },
     {
@@ -2814,6 +2828,41 @@
       "originalName": "field_f",
       "to": "ninjaMidSprite",
       "evidence": "qa.java: Literal sprite resource ninja/ninja_mid assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aq.field_a:Z",
+      "originalName": "field_a",
+      "to": "stopRequested",
+      "evidence": "aq.java: Two-player worker lifecycle, event pumping or retained diagnostic context; unrelated static UI integer remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aq.field_b:Z",
+      "originalName": "field_b",
+      "to": "running",
+      "evidence": "aq.java: Two-player worker lifecycle, event pumping or retained diagnostic context; unrelated static UI integer remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aq.field_c:Ltg;",
+      "originalName": "field_c",
+      "to": "platformServices",
+      "evidence": "aq.java: Two-player worker lifecycle, event pumping or retained diagnostic context; unrelated static UI integer remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aq.field_d:[Ltj;",
+      "originalName": "field_d",
+      "to": "players",
+      "evidence": "aq.java: Two-player worker lifecycle, event pumping or retained diagnostic context; unrelated static UI integer remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aq.field_z:Ljava/lang/String;",
+      "originalName": "field_z",
+      "to": "failureContext",
+      "evidence": "aq.java: Two-player worker lifecycle, event pumping or retained diagnostic context; unrelated static UI integer remains separate.",
       "confidence": "reviewed"
     },
     {
@@ -10902,6 +10951,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pd.field_A:Ljava/lang/String;",
+      "originalName": "field_A",
+      "to": "mixerNameMarker",
+      "evidence": "pd.java: Java Sound ownership, PCM packing/frame accounting and soundmax flush workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_v:Ljavax/sound/sampled/AudioFormat;",
+      "originalName": "field_v",
+      "to": "format",
+      "evidence": "pd.java: Java Sound ownership, PCM packing/frame accounting and soundmax flush workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_w:[B",
+      "originalName": "field_w",
+      "to": "encodedSamples",
+      "evidence": "pd.java: Java Sound ownership, PCM packing/frame accounting and soundmax flush workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_x:Z",
+      "originalName": "field_x",
+      "to": "reopenOnFlush",
+      "evidence": "pd.java: Java Sound ownership, PCM packing/frame accounting and soundmax flush workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_y:I",
+      "originalName": "field_y",
+      "to": "lineCapacityFrames",
+      "evidence": "pd.java: Java Sound ownership, PCM packing/frame accounting and soundmax flush workaround.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_z:Ljavax/sound/sampled/SourceDataLine;",
+      "originalName": "field_z",
+      "to": "line",
+      "evidence": "pd.java: Java Sound ownership, PCM packing/frame accounting and soundmax flush workaround.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pe.field_l:[Z",
       "originalName": "field_l",
       "to": "heldKeys",
@@ -12897,10 +12988,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tj.field_a:I",
+      "originalName": "field_a",
+      "to": "capacityFrames",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_b:J",
+      "originalName": "field_b",
+      "to": "nextCheckMillis",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_c:Laq;",
+      "originalName": "field_c",
+      "to": "service",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_d:Z",
+      "originalName": "field_d",
+      "to": "closed",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tj.field_e:Lqd;",
       "originalName": "field_e",
       "to": "rootStream",
       "evidence": "tj.java: Top-level stream filled by player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_f:I",
+      "originalName": "field_f",
+      "to": "previousMaximumDrainFrames",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
       "confidence": "reviewed"
     },
     {
@@ -12911,10 +13037,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tj.field_h:I",
+      "originalName": "field_h",
+      "to": "lastQueuedFrames",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_i:I",
+      "originalName": "field_i",
+      "to": "framesUntilScheduling",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_j:I",
+      "originalName": "field_j",
+      "to": "workLimit",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_k:Z",
+      "originalName": "field_k",
+      "to": "justOpened",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_l:I",
+      "originalName": "field_l",
+      "to": "serviceThreadPriority",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_m:J",
+      "originalName": "field_m",
+      "to": "lastMixTimeMillis",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tj.field_n:[I",
       "originalName": "field_n",
       "to": "samples",
       "evidence": "tj.java: Player output mixing buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_o:I",
+      "originalName": "field_o",
+      "to": "latencyAdjustmentFrames",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
       "confidence": "reviewed"
     },
     {
@@ -12929,6 +13104,27 @@
       "originalName": "field_q",
       "to": "sampleRate",
       "evidence": "tj.java: Shared output sample rate used by stream rate conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_r:J",
+      "originalName": "field_r",
+      "to": "reopenAtMillis",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_s:I",
+      "originalName": "field_s",
+      "to": "requestedLatencyFrames",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_t:I",
+      "originalName": "field_t",
+      "to": "maximumDrainFrames",
+      "evidence": "tj.java: Observed priority/work scheduling,256-frame output filling, queue-drain adaptation, timed recovery or service lifecycle state.",
       "confidence": "reviewed"
     },
     {
@@ -15512,6 +15708,104 @@
       "originalName": "fieldTemp$0",
       "to": "nextIndex",
       "evidence": "ao.java: New absolute index used for the modulo storage slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#0",
+      "originalName": "var1_int",
+      "to": "playerIndex",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#1",
+      "originalName": "var2",
+      "to": "player",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#10",
+      "originalName": "var6",
+      "to": "unusedReportMessage",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#11",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtWorkerFailure",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#12",
+      "originalName": "decompiledCaughtParameter1",
+      "to": "caughtFatalFailure",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#13",
+      "originalName": "decompiledCaughtParameter2",
+      "to": "caughtRuntimeFailure",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#2",
+      "originalName": "var4",
+      "to": "unusedGameFlag",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#3",
+      "originalName": "var5",
+      "to": "unusedEventSource",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#4",
+      "originalName": "decompiledRegionSelector0",
+      "to": "exitRoute",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#5",
+      "originalName": "decompiledRegionSelector1",
+      "to": "completionRoute",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#7",
+      "originalName": "var1",
+      "to": "workerFailure",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#8",
+      "originalName": "var1_ref",
+      "to": "runtimeFailure",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aq.run()V#9",
+      "originalName": "var3",
+      "to": "fatalFailure",
+      "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
       "confidence": "reviewed"
     },
     {
@@ -24846,6 +25140,153 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#0",
+      "originalName": "var4",
+      "to": "mixerIndex",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#1",
+      "originalName": "var2",
+      "to": "mixerInfos",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#10",
+      "originalName": "stackIn_17_2",
+      "to": "unusedChannelFormatAlias",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#11",
+      "originalName": "stackIn_17_5",
+      "to": "channels",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#12",
+      "originalName": "stackIn_19_1",
+      "to": "blockFrames",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#13",
+      "originalName": "stackIn_20_2",
+      "to": "bytesPerFrameShift",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#14",
+      "originalName": "var6",
+      "to": "mixerName",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#2",
+      "originalName": "var3",
+      "to": "mixerInfosAlias",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#3",
+      "originalName": "var5",
+      "to": "mixerInfo",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#4",
+      "originalName": "stackIn_16_0",
+      "to": "unusedFormatOwner",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#5",
+      "originalName": "stackIn_16_1",
+      "to": "unusedFormatReference",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#6",
+      "originalName": "stackIn_16_2",
+      "to": "unusedFormatAlias",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#7",
+      "originalName": "stackIn_16_3",
+      "to": "configuredSampleRate",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#8",
+      "originalName": "stackIn_16_4",
+      "to": "sampleBits",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.a(Ljava/awt/Component;)V#9",
+      "originalName": "stackIn_17_1",
+      "to": "unusedChannelFormat",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.b(I)V#0",
+      "originalName": "var2",
+      "to": "lineInfo",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.b(I)V#1",
+      "originalName": "lineUnavailableException",
+      "to": "lineFailure",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.e()V#0",
+      "originalName": "var2",
+      "to": "sampleIndex",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.e()V#1",
+      "originalName": "var3",
+      "to": "accumulator",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.e()V#2",
+      "originalName": "var1",
+      "to": "sampleCount",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pd.h()V#0",
+      "originalName": "var1",
+      "to": "lineInfo",
+      "evidence": "pd.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:pf.a(ZLjava/lang/String;)Lmp;#0",
       "originalName": "var2",
       "to": "nameKey",
@@ -27223,6 +27664,342 @@
       "originalName": "var1",
       "to": "child",
       "evidence": "tj.java: Current child stream during recursive scheduling reset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Lqd;I)V#0",
+      "originalName": "var3",
+      "to": "bucket",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Lqd;I)V#1",
+      "originalName": "var4",
+      "to": "tail",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#0",
+      "originalName": "var4",
+      "to": "player",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#1",
+      "originalName": "var4_ref",
+      "to": "backendFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#10",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#2",
+      "originalName": "var5",
+      "to": "createdPlayer",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#3",
+      "originalName": "stackIn_10_0",
+      "to": "sampleBufferOwner",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#4",
+      "originalName": "stackIn_10_1",
+      "to": "blockFrames",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#5",
+      "originalName": "stackIn_11_2",
+      "to": "channels",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#6",
+      "originalName": "stackIn_21_0",
+      "to": "resultPlayer",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#8",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "creationFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#9",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#0",
+      "originalName": "var3",
+      "to": "sampleCount",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#1",
+      "originalName": "var4",
+      "to": "scheduledWork",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#10",
+      "originalName": "var11",
+      "to": "stream",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#11",
+      "originalName": "var12",
+      "to": "sound",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#12",
+      "originalName": "var13",
+      "to": "streamCost",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#13",
+      "originalName": "var14",
+      "to": "initialStream",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#14",
+      "originalName": "var15_int",
+      "to": "parentPriority",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#15",
+      "originalName": "var15",
+      "to": "nextStream",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#16",
+      "originalName": "var6Lifetime1",
+      "to": "cleanupBucket",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#17",
+      "originalName": "var9Lifetime1",
+      "to": "cleanupIndex",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#18",
+      "originalName": "var10Lifetime1",
+      "to": "nextRemainingStream",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#19",
+      "originalName": "var14Lifetime1",
+      "to": "initialStreamAlias",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#2",
+      "originalName": "var5",
+      "to": "bucketMask",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#20",
+      "originalName": "var14Lifetime2",
+      "to": "child",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#3",
+      "originalName": "var6",
+      "to": "scanPass",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#4",
+      "originalName": "var7_int",
+      "to": "bucket",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#5",
+      "originalName": "var7",
+      "to": "remainingStream",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#6",
+      "originalName": "var8_int",
+      "to": "soundWorkThreshold",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#7",
+      "originalName": "var8",
+      "to": "headArray",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#8",
+      "originalName": "var9",
+      "to": "bucketFlags",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.a([II)V#9",
+      "originalName": "var10",
+      "to": "previousStream",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.b()V#0",
+      "originalName": "exception",
+      "to": "flushFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.b()V#1",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.b()V#2",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.c()V#0",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.c()V#1",
+      "originalName": "var1",
+      "to": "nowMillis",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.c()V#2",
+      "originalName": "var3",
+      "to": "deviceOrClockFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.c()V#3",
+      "originalName": "var3_int",
+      "to": "queuedFrames",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.c()V#4",
+      "originalName": "var4",
+      "to": "targetFrames",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.c()V#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "clockFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.c()V#6",
+      "originalName": "decompiledCaughtParameter1",
+      "to": "deviceFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.c()V#7",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.c()V#8",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.f()V#0",
+      "originalName": "var2",
+      "to": "playerIndex",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tj.f()V#1",
+      "originalName": "var1",
+      "to": "serviceEmpty",
+      "evidence": "tj.java: Priority/work traversal, frame buffering, device encoding/recovery and service lifecycle data flow at this exact declaration.",
       "confidence": "reviewed"
     },
     {
@@ -31237,6 +32014,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.a(IB)I",
+      "originalName": "a",
+      "to": "roundUpPowerOfTwo",
+      "evidence": "fj.java: Decrement/bit-spread/increment retains signed overflow and nonpositive-input behavior; guard -64.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.a(IIBZ)I",
       "originalName": "a",
       "to": "getDraggedScrollOffset",
@@ -33988,6 +34772,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kq.a(ILtg;Ljava/lang/Object;)V",
+      "originalName": "a",
+      "to": "pumpPlatformEvents",
+      "evidence": "kq.java: Waits up to50 one-millisecond polls for a pending event queue to empty, then posts a dummy event for nonnull source; guard -4317.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kq.a(Lgb;B)Ljava/lang/String;",
       "originalName": "a",
       "to": "formatChatPrefix",
@@ -35458,6 +36249,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ob.b(BI)I",
+      "originalName": "b",
+      "to": "countSetBits",
+      "evidence": "ob.java: Parallel32-bit population count; canonical guard -94.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oc.a(IBLoc;C)Z",
       "originalName": "a",
       "to": "handleWidgetKey",
@@ -35931,6 +36729,48 @@
       "originalName": "a",
       "to": "setCacheKeys",
       "evidence": "pb.java: Retains second/first key in original argument order; guard78.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.a()I",
+      "originalName": "a",
+      "to": "getQueuedFrames",
+      "evidence": "tj.java: Returns queued device frames; base returns capacityFrames. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.a(Ljava/awt/Component;)V",
+      "originalName": "a",
+      "to": "initDevice",
+      "evidence": "tj.java: Device format/buffer initialization hook; base is empty. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.b(I)V",
+      "originalName": "b",
+      "to": "openDevice",
+      "evidence": "tj.java: Device-capacity hook; Java Sound failure may retry rounded power of two. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.d()V",
+      "originalName": "d",
+      "to": "closeDevice",
+      "evidence": "tj.java: Closes/releases device; base hook is empty. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.e()V",
+      "originalName": "e",
+      "to": "writeDevice",
+      "evidence": "tj.java: One256-frame output block hook; base is empty. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.h()V",
+      "originalName": "h",
+      "to": "flushDevice",
+      "evidence": "tj.java: Device flush hook; base is empty and Java Sound may reopen its line. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -37656,6 +38496,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tj.a()I",
+      "originalName": "a",
+      "to": "getQueuedFrames",
+      "evidence": "tj.java: Returns queued device frames; base returns capacityFrames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(I)V",
+      "originalName": "a",
+      "to": "skipFrames",
+      "evidence": "tj.java: Reduces scheduling countdown, clamps zero and advances root without mixing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(IZI)V",
+      "originalName": "a",
+      "to": "configureOutput",
+      "evidence": "tj.java: Accepts8000..48000 sample rates and retains stereo/service priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(Ljava/awt/Component;)V",
+      "originalName": "a",
+      "to": "initDevice",
+      "evidence": "tj.java: Device format/buffer initialization hook; base is empty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tj.a(Lqd;)V",
       "originalName": "a",
       "to": "resetSchedulingTree",
@@ -37670,10 +38538,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tj.a(Ltg;Ljava/awt/Component;II)Ltj;",
+      "originalName": "a",
+      "to": "create",
+      "evidence": "tj.java: Constructs Java Sound player/slot after configuration; backend failure returns base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a([II)V",
+      "originalName": "a",
+      "to": "fillSamples",
+      "evidence": "tj.java: Clears prefix, periodically selects stream tree under priority/work limits, clears scheduling chains and renders root.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.b()V",
+      "originalName": "b",
+      "to": "flush",
+      "evidence": "tj.java: Marks output newly opened, flushes device and schedules two-second reopen after failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.b(I)V",
+      "originalName": "b",
+      "to": "openDevice",
+      "evidence": "tj.java: Device-capacity hook; Java Sound failure may retry rounded power of two.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tj.b(Lqd;)V",
       "originalName": "b",
       "to": "setRootStream",
       "evidence": "tj.java: Sets top-level audio stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.c()V",
+      "originalName": "c",
+      "to": "pump",
+      "evidence": "tj.java: Catches up missed stream time, reopens when due, fills256-frame chunks and adapts latency from observed drain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.d()V",
+      "originalName": "d",
+      "to": "closeDevice",
+      "evidence": "tj.java: Closes/releases device; base hook is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.e()V",
+      "originalName": "e",
+      "to": "writeDevice",
+      "evidence": "tj.java: One256-frame output block hook; base is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.f()V",
+      "originalName": "f",
+      "to": "shutdown",
+      "evidence": "tj.java: Unregisters player, stops last worker, closes device, releases samples and marks closed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.g()V",
+      "originalName": "g",
+      "to": "clearServiceReference",
+      "evidence": "tj.java: Clears shared service reference without requesting worker shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.h()V",
+      "originalName": "h",
+      "to": "flushDevice",
+      "evidence": "tj.java: Device flush hook; base is empty and Java Sound may reopen its line.",
       "confidence": "reviewed"
     },
     {
@@ -46777,6 +47715,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fj.a(IB)I#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "fj.java: Decrement/bit-spread/increment retains signed overflow and nonpositive-input behavior; guard -64.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fj.a(IB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "fj.java: Decrement/bit-spread/increment retains signed overflow and nonpositive-input behavior; guard -64.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:fj.a(IIBZ)I#0",
       "originalName": "param0",
       "to": "contentHeight",
@@ -54008,6 +54960,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kq.a(ILtg;Ljava/lang/Object;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kq.java: Waits up to50 one-millisecond polls for a pending event queue to empty, then posts a dummy event for nonnull source; guard -4317.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(ILtg;Ljava/lang/Object;)V#1",
+      "originalName": "param1",
+      "to": "services",
+      "evidence": "kq.java: Waits up to50 one-millisecond polls for a pending event queue to empty, then posts a dummy event for nonnull source; guard -4317.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kq.a(ILtg;Ljava/lang/Object;)V#2",
+      "originalName": "param2",
+      "to": "source",
+      "evidence": "kq.java: Waits up to50 one-millisecond polls for a pending event queue to empty, then posts a dummy event for nonnull source; guard -4317.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kq.a(Lgb;B)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "message",
@@ -58775,6 +59748,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ob.b(BI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ob.java: Parallel32-bit population count; canonical guard -94.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.b(BI)I#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "ob.java: Parallel32-bit population count; canonical guard -94.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oc.<init>(IIIILub;Luh;)V#0",
       "originalName": "param0",
       "to": "x",
@@ -60508,6 +61495,20 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "pb.java: Retains second/first key in original argument order; guard78.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pd.a(Ljava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "tj.java: Device format/buffer initialization hook; base is empty. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pd.b(I)V#0",
+      "originalName": "param0",
+      "to": "capacityFrames",
+      "evidence": "tj.java: Device-capacity hook; Java Sound failure may retry rounded power of two. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -65208,6 +66209,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tj.a(I)V#0",
+      "originalName": "param0",
+      "to": "frameCount",
+      "evidence": "tj.java: Reduces scheduling countdown, clamps zero and advances root without mixing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IZI)V#0",
+      "originalName": "param0",
+      "to": "requestedSampleRate",
+      "evidence": "tj.java: Accepts8000..48000 sample rates and retains stereo/service priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IZI)V#1",
+      "originalName": "param1",
+      "to": "stereoEnabled",
+      "evidence": "tj.java: Accepts8000..48000 sample rates and retains stereo/service priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IZI)V#2",
+      "originalName": "param2",
+      "to": "workerPriority",
+      "evidence": "tj.java: Accepts8000..48000 sample rates and retains stereo/service priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(Ljava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "tj.java: Device format/buffer initialization hook; base is empty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tj.a(Lqd;)V#0",
       "originalName": "param0",
       "to": "stream",
@@ -65226,6 +66262,55 @@
       "originalName": "param1",
       "to": "priority",
       "evidence": "tj.java: Adds stream at scheduling tier priority shifted5, retaining priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#0",
+      "originalName": "param0",
+      "to": "services",
+      "evidence": "tj.java: Constructs Java Sound player/slot after configuration; backend failure returns base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#1",
+      "originalName": "param1",
+      "to": "component",
+      "evidence": "tj.java: Constructs Java Sound player/slot after configuration; backend failure returns base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#2",
+      "originalName": "param2",
+      "to": "playerIndex",
+      "evidence": "tj.java: Constructs Java Sound player/slot after configuration; backend failure returns base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(Ltg;Ljava/awt/Component;II)Ltj;#3",
+      "originalName": "param3",
+      "to": "requestedLatencyFrames",
+      "evidence": "tj.java: Constructs Java Sound player/slot after configuration; backend failure returns base player with no sample buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a([II)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "tj.java: Clears prefix, periodically selects stream tree under priority/work limits, clears scheduling chains and renders root.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a([II)V#1",
+      "originalName": "param1",
+      "to": "frameCount",
+      "evidence": "tj.java: Clears prefix, periodically selects stream tree under priority/work limits, clears scheduling chains and renders root.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.b(I)V#0",
+      "originalName": "param0",
+      "to": "capacityFrames",
+      "evidence": "tj.java: Device-capacity hook; Java Sound failure may retry rounded power of two.",
       "confidence": "reviewed"
     },
     {
@@ -69801,9 +70886,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "e127afa7002c57e6322eeef561e24a91cf3fdf41afdd36097f8424949a58106a",
+      "build-brickabrac-rules.mjs": "18e53f3ab43991aec5c7e08c3a1afc506d45cdd545d7fa50f61dbdf3523536b2",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "36ba307be7ae5f1b6fe789f04fb61a0119ca57709c44873521eeaa3af5f26f1a",
+      "tests/test-brickabrac-core.mjs": "208c5febe218d66d259bfadb40098b4e764a3cb0ca297b57290f376319267781",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

@@ -1358,6 +1358,17 @@ supported except `V`; `void` also remains unsupported. Cache/bootstrap setup,
 arbitrary serialized classes, all error codes, races, live server checks and
 original-JAR equivalence remain unverified.
 
+PcmPlayer, JavaSoundPcmPlayer and PcmPlayerService now expose the complete
+output lifecycle: scheduling/work state, queue depth and latency adjustment,
+256-frame writes, timed reopen, device hooks and two-player registration.
+Native fixtures check configuration bounds, capacity/target limits, idle
+closure, write/flush recovery, root fill/skip and worker normal/fatal exit.
+A proxy SourceDataLine verifies independent signed24-to-PCM16 clipping and
+little-endian packing, mono/stereo frame accounting, buffer reuse and close.
+First/last-player shutdown and signed capacity helpers are also checked.
+Real devices, vendor reopening, all scheduling combinations, ordinary worker
+error reporting, shutdown races and audible playback remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
