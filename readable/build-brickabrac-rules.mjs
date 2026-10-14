@@ -253,6 +253,17 @@ const classes={
  an:['BirthDateValidator','Validates Gregorian date and year range1890..currentYear-3, bound to DateInputWidget. Static chat helpers remain separate.'],
  ac:['EmailAvailabilityRequest','Email string with completion/availability flags, created pending and completed by a response. Static lobby/graphics helpers remain separate.'],
  oh:['UsernameAvailabilityResult','Availability response with accepted flag and additional response/suggestion words. Unrelated static helpers remain separate.'],
+ um:['TextWidgetRenderer','Older-widget font renderer and text-layout provider with insets, alignment, wrapping, selection and caret painting. Static helpers retain separate roles.'],
+ r:['TextFieldRenderer','Text renderer with inset field frame and default editable-field padding. Static client helpers remain separate.'],
+ ob:['PasswordFieldRenderer','Text-field renderer replacing each UTF16 source character with an asterisk for display/layout. Static helpers remain separate.'],
+ hi:['ButtonWidgetRenderer','Sprite-backed form button renderer selecting normal/hover/disabled tint and centered text. Static helpers remain separate.'],
+ bb:['LinkWidgetRenderer','Underlined text action renderer with hover/focus colors and aligned focus outline. Static helpers remain separate.'],
+ bd:['CheckboxWidgetRenderer','Inset checkbox painter with active check sprite and focused outline. Static name/asset/submission helpers remain separate.'],
+ ag:['ArrayWidgetGroup','Older widget container with nullable array children, layout callback, focus/input traversal and layer painting. Static helpers remain separate.'],
+ dk:['AccountRegistrationPanel','Email/confirmation, password/confirmation, username, age and newsletter controls with validation gates and account submission.'],
+ qo:['PlayerNameChooserPanel','Validated player-name input, submit/cancel controls and username suggestions for an existing account. Static helpers remain separate.'],
+ ri:['UsernameSuggestionPanel','Normalizes returned suggestions into action rows plus refresh action, delivering choices to its listener. Static helpers remain separate.'],
+ vf:['UsernameSuggestionListener','Suggestion choice and refresh callback contract implemented by registration/name-choice panels.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -597,6 +608,70 @@ field('ma','I','Lac;','emailAvailabilityRequest','Shared pending/completed email
 field('oh','c','Z','available','Constructor acceptance flag read by username availability validator.');
 method('oh','<init>','(Z)V','<init>','Retains username acceptance flag.',['available']);
 method('qc','a','(Ljava/lang/String;I)Loh;','pollUsernameAvailability','Returns completed matching response or null while pending; other branch schedules shared request state; guard0.',['username','obfuscationGuard']);
+for(const [original,type,to,evidence] of [
+ ['d','I','leftInset','Added to text origin and subtracted from available width.'],['i','I','rightInset','Subtracted from available width and added to preferred extent.'],
+ ['q','I','topInset','Added to text origin and subtracted from available height.'],['a','I','bottomInset','Subtracted from available height and added to preferred height.'],
+ ['k','Ldh;','font','Font used for display, metrics and layout preparation.'],['h','I','lineSpacing','Passed to wrapped paragraph drawing/layout.'],
+ ['r','I','textColor','Default foreground paint passed to the font: PaletteFont slot or AlphaFont RGB.'],['g','I','shadowColor','Default shadow color; -1 suppresses shadow.'],
+ ['f','I','horizontalAlignment','0/3 left,1 center,2 right for unwrapped text; passed through for wrapped text.'],['m','I','verticalAlignment','0 top,1/3 center,2 bottom for unwrapped text; passed through for wrapped text.'],
+ ['s','I','caretColor','Passed to theme caret-line painter.'],['c','I','selectionArgb','ARGB selection word supplies alpha by unsigned shift24.'],['n','Z','wrapText','Selects wrapped layout/drawing instead of aligned single line.'],
+])field('um',original,type,to,evidence);
+field('oc','r','I','textOffsetX','Widget-specific text translation added to renderer origin; editor uses it for scrolling.');
+field('oc','B','I','textOffsetY','Widget-specific text translation added to renderer origin.');
+method('um','<init>','(Ldh;'+'I'.repeat(11)+'Z)V','<init>','Retains complete font/inset/color/alignment/wrapping style.',['font','leftInset','rightInset','topInset','bottomInset','textColor','shadowColor','horizontalAlignment','verticalAlignment','lineSpacing','caretColor','selectionArgb','wrapText']);
+method('um','<init>','(Ldh;'+'I'.repeat(7)+')V','<init>','Sets symmetric horizontal/vertical insets, default caret/selection colors and unwrapped mode.',['font','horizontalInset','verticalInset','textColor','shadowColor','horizontalAlignment','verticalAlignment','lineSpacing']);
+method('um','a','(ILum;)V','copyStyleTo','Copies all retained style fields including font reference; guard below -7.',['obfuscationGuard','target']);
+method('um','a','(Loc;Z)Ljava/lang/String;','getDisplayText','Base returns widget text; password subtype returns one asterisk per UTF16 code unit; true guard.',['widget','obfuscationGuard']);
+method('um','a','(BLoc;)V','layoutSingleLine','Prepares aligned line using display text, available area and font bounds; guard6.',['obfuscationGuard','widget']);
+method('um','a','(IIILoc;)V','paintText','Paints display text with default text/shadow colors and zero extra local offset; guard -94.',['obfuscationGuard','parentX','parentY','widget']);
+method('um','a','(IIIIIBILoc;)V','paintTextRun','Clips to widget bounds and draws aligned or wrapped display text, preserving raster stack.',['localX','localY','shadowColor','parentY','textColor','obfuscationGuard','parentX','widget']);
+method('um','a','(ILoc;II)I','computeTextX','Combines local x, widget text offset, parent x, widget x and left inset; guard65263.',['localX','widget','obfuscationGuard','parentX']);
+method('um','a','(BIILoc;)I','computeTextY','Combines parent/local y, widget y/text offset and top inset; guard at least103.',['obfuscationGuard','parentY','localY','widget']);
+method('um','b','(ILoc;)I','getTextAreaHeight','Widget height minus top/bottom insets; guard16265.',['obfuscationGuard','widget']);
+method('qe','a','(Loc;BI)I','getTextOriginX','Parent-relative text x including widget x, inset and textOffsetX; byte guard above40.',['widget','obfuscationGuard','parentX']);
+method('qe','a','(IBLoc;)I','getTextOriginY','Parent-relative text y including widget y, inset and textOffsetY; byte guard below -92.',['parentY','obfuscationGuard','widget']);
+method('qe','a','(ILoc;)I','getTextAreaWidth','Widget width minus left/right insets; guard61823.',['obfuscationGuard','widget']);
+method('qe','a','(Loc;IZIII)I','findTextSourceOffset','Converts parent/pointer coordinates to layout-local hit test; true guard.',['widget','pointerX','obfuscationGuard','parentY','pointerY','parentX']);
+method('qe','a','(IIIIILoc;)V','paintTextSelection','Paints min/max source-offset selection across focused widget lines; guard -15964.',['obfuscationGuard','parentY','parentX','selectionAnchor','caretIndex','widget']);
+method('qe','a','(Loc;IIIB)V','paintTextCaret','Paints focused caret at source offset, clipped vertically to text area and adjacent line bounds; byte guard above118.',['widget','parentX','caretIndex','parentY','obfuscationGuard']);
+for(const owner of ['r','ob']){
+ method(owner,'<init>','(I)V','<init>','Uses shared form font and requested text color.',['textColor']);
+ method(owner,'<init>','(Ldh;I)V','<init>','Uses supplied font and text color with editable-field frame/style.',['font','textColor']);
+}
+for(const [original,type,to,evidence] of [['z','I','normalTint','Used for enabled button without hover/focus.'],['y','I','hoverTint','Used for enabled hovered/focused button.'],['x','I','disabledTint','Used when paint flag or FocusableWidget.enabled is false.'],['B','[Ljp;','buttonSprites','Sprite strip used to paint button background.']])field('hi',original,type,to,evidence);
+method('hi','<init>','(III)V','<init>','Retains normal/hover/disabled tint, shared button font and sprites.',['normalTint','hoverTint','disabledTint']);
+for(const [original,type,to,evidence] of [['b','Ldh;','font','Font for underlined action text and focus metrics.'],['d','I','horizontalAlignment','0 left,1 center,2 right for focus outline/text.'],['f','I','verticalAlignment','0 top,1 center,2 bottom for focus outline/text.']])field('bb',original,type,to,evidence);
+method('bb','<init>','(Ldh;II)V','<init>','Retains font and alignment for action text.',['font','horizontalAlignment','verticalAlignment']);
+field('ag','H','[Loc;','children','Nullable child slots scanned for focus, input, draw and layout.');
+method('ag','<init>','(IIIILub;)V','<init>','Initializes array container geometry/renderer.',['x','y','width','height','renderer']);
+method('ag','a','(I)V','layoutChildren','Abstract layout callback invoked after setBounds; canonical guard140.',['obfuscationGuard']);
+method('ag','a','(B)Loc;','getFocusedChild','Returns first focused nonnull child; guard -78.',['obfuscationGuard']);
+for(const [original,type,to,evidence] of [
+ ['J','Lsf;','usernameField','Username availability validator and suggestion target.'],['M','Lsf;','emailField','Email syntax validator and registration address.'],['H','Lsf;','emailConfirmationField','Matching and availability confirmation validator.'],
+ ['O','Lsf;','passwordField','Password validator referencing username/email.'],['L','Lsf;','passwordConfirmationField','Matching validator bound to password field.'],['S','Lsf;','ageField','Age1..130 validator; parsed during submission.'],
+ ['N','Lbf;','newsletterToggle','News/updates opt-in passed as registration boolean; not a terms-acceptance gate.'],['I','Llg;','termsLinks','Terms/privacy/conduct hotspot text.'],
+ ['Q','Ld;','registerButton','Enabled by submission gates and triggers registration.'],['P','Ld;','backButton','Routes return/back action.'],['K','Lri;','suggestionPanel','Shared username suggestions.'],
+])field('dk',original,type,to,evidence);
+method('dk','h','(I)Z','canSubmitRegistration','Requires all six field submission gates; archived gate permits pending availability; guard10000536.',['obfuscationGuard']);
+method('dk','a','(ILje;)Z','passesSubmissionGate','Allows absent source, valid and pending; rejects empty/invalid/debouncing; guard60.',['obfuscationGuard','widget']);
+method('dk','i','(I)Z','submitRegistration','Checks gates, parses age and invokes account-registration helper with username/password/email/newsletter flag; guard -1.',['obfuscationGuard']);
+for(const [original,type,to,evidence] of [['L','Lsf;','usernameField','Validated player name and suggestion target.'],['Q','Ld;','submitButton','Enabled only after valid username source, triggers submission.'],['K','Ld;','cancelButton','Routes chooser cancellation.'],['R','Lri;','suggestionPanel','Shared username suggestions.']])field('qo',original,type,to,evidence);
+method('qo','a','(ILje;)Z','passesSubmissionGate','Allows absent source, otherwise requires valid token; guard below -64.',['obfuscationGuard','widget']);
+method('qo','h','(B)Z','canSubmitPlayerName','Checks player-name field submission gate; guard92.',['obfuscationGuard']);
+method('qo','a','(I)V','submitPlayerName','Checks gate then invokes player-name submission helper; guard28462.',['obfuscationGuard']);
+method('vf','a','(Ljava/lang/String;B)V','onUsernameSuggestionChosen','Copies chosen suggestion into username field and notifies edit; guard56.',['username','obfuscationGuard']);
+method('vf','a','(B)V','onRefreshUsernameSuggestions','Clears username availability cache so subsequent polling can request new suggestions; guard at least96.',['obfuscationGuard']);
+field('ri','K','Lvf;','listener','Receives chosen suggestion or refresh action.');
+field('ri','J','[Ljava/lang/String;','suggestions','Normalized display suggestions used in action rows and choice callbacks.');
+field('ri','H','[Ld;','buttons','Suggestion rows followed by refresh row; old array is retained after clearing suggestions.');
+method('ri','<init>','(Lvf;)V','<init>','Binds suggestion panel listener.',['listener']);
+method('ri','a','(B[Ljava/lang/String;)V','setSuggestions','Clears children, normalizes names and adds choice/refresh controls; empty input clears suggestions but preserves old buttons array.',['obfuscationGuard','suggestions']);
+for(const [owner,signature,entries] of [
+ ['dk','a(ILje;)Z',[[0,'var3','validationSource'],[2,'var4','status']]],
+ ['qo','a(ILje;)Z',[[0,'var3','validationSource'],[2,'var4','status']]],
+ ['ri','a(B[Ljava/lang/String;)V',[[0,'var4_int','suggestionIndex'],[5,'var3_int','suggestionCount'],[7,'var4','rowRenderer'],[8,'var5','buttonIndex'],[9,'var6','unusedGameFlag'],[10,'var5Lifetime1','guardComputation']]],
+ ['um','a(BLoc;)V',[[4,'var3_int','textAreaWidth'],[6,'var4','textAreaHeight'],[7,'var5','baselineY'],[8,'var6','verticalAlignment'],[11,'var6Lifetime1','horizontalAlignment']]],
+])for(const [ordinal,original,to] of entries)local(owner,signature,ordinal,original,to,'Reviewed submission gate, suggestion-row construction or single-line text-layout temporary; lexical identity preserves behavior.');
 method('pp','a','(Ljava/lang/String;Z)Z','hasInvalidPasswordLength','Rejects null or length outside configured password minimum/maximum; true guard.',['password','obfuscationGuard']);
 method('ab','a','(Ljava/lang/String;I)Z','containsNonAlphanumeric','Checks ASCII letter/digit policy from supplied offset; password call uses0.',['text','startOffset']);
 method('gp','a','(BLjava/lang/String;)Z','consistsOfRepeatedCharacter','True when every character equals the first; input must be nonempty; guard above28.',['obfuscationGuard','text']);
@@ -1788,6 +1863,10 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('uc')} / ${link('fl')} / ${link('ac')} / ${link('oh')} | Email confirmation/availability and username availability state. |`,
 `| ${link('je')} / ${link('sf')} / ${link('wl')} / ${link('nf')} | Validation attachment, editable fields, icon and message displays. |`,
 `| ${link('ug')} / ${link('na')} / ${link('an')} | Date input contract, day/month/year fields and birth-date validation. |`,
+`| ${link('um')} / ${link('r')} / ${link('ob')} | Text layout/painting style, framed field and password masking. |`,
+`| ${link('hi')} / ${link('bb')} / ${link('bd')} | Form button, link and checkbox renderers. |`,
+`| ${link('ag')} | Array children with focus/input traversal and layout callback. |`,
+`| ${link('dk')} / ${link('qo')} / ${link('ri')} / ${link('vf')} | Registration, player-name choice and suggestion callbacks. |`,
 `| ${link('vi')} / ${link('bn')} / ${link('no')} | Fixed8 body coordinates/velocities, rectangle/circle geometry, snapshots and checksums. |`,
 `| ${link('vo')} / ${link('vn')} / ${link('on')} | Paddle size stages, balls and bricks. |`,
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
@@ -1913,10 +1992,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Independent native fixtures cover midpoint ties, duplicate positions, null/empty line arrays, multiline source-offset boundaries, vertical gaps and outside hits; real fixture fonts cover left/center/right preparation and source offsets inside markup. Single-line and wrapped hotspot parsing is exercised with controlled providers, including linked segment ownership, inclusive bottom/exclusive right boundaries, tooltip array growth and callback button/guard/ID. Alignment/cache quirks are preserved; complete provider alignment/justification, highlight pixels and live form integration remain unverified.', '',
 'ValidationSource/DebouncedValidationSource/TextFieldValidator expose edit-time reset,350ms debounce, current messages, incomplete input and computed status. ValidationStatus tokens distinguish empty input, debounce waiting, asynchronous pending, valid and invalid. ValidatableWidget/ValidatedTextFieldWidget attach sources; ValidationIconWidget/ValidationMessageWidget expose source, prompts and spinner state. Concrete validators name age1..130, email syntax, exact matching with source-validation dependency, archived password policy, email confirmation/availability and username availability. BirthDateValidator/DateInputWidget/DateFieldsWidget expose day, zero-based month, year, field order and year bounds1890..currentYear-3. EmailAvailabilityRequest and UsernameAvailabilityResult name request/response ownership; unrelated static game helpers retain separate roles.', '',
 'Native fixtures verify debounce suppression/call counts and edit-time bounds without sleeping or tracing clock values; null/empty input, signed age boundaries, email examples, case-sensitive matching and invalid-source message forwarding. Password fixtures preserve archived length/ASCII/repetition/name/email checks and messages. Synthetic pending/completed email records and username replies cover status/message/cache outcomes, request reuse/replacement and explicit cache clearing. Real date-field constructors check field order, listener/owner attachment, missing/malformed values and Gregorian validity against LocalDate, including leap-century and year-boundary cases. Relative-year trace labels keep clock values out of trace identity. Icon fixtures verify hover messages, valid/invalid pixels and blank empty state. These are local Java fixtures; live account requests, server policy, rotating waiting pixels, full validation-message rendering and all password similarity cases remain unverified.', '',
+'TextWidgetRenderer exposes font, four insets, alignment, wrapping, text/shadow paint, caret/selection styles and display-text/layout helpers. WidgetLayoutProvider now names text origin, available width, source-offset hit testing and selection/caret painting. TextFieldRenderer adds a frame; PasswordFieldRenderer masks UTF16 code units; ButtonWidgetRenderer, LinkWidgetRenderer and CheckboxWidgetRenderer expose their concrete roles. PaletteFont paint values select slots; AlphaFont paint values supply RGB. ArrayWidgetGroup exposes array children, focused-child lookup and layout callback, including override-family names.', '',
+'AccountRegistrationPanel and PlayerNameChooserPanel now expose their fields/buttons, submission gates and chosen-name/refresh callbacks. UsernameSuggestionPanel/UsernameSuggestionListener expose normalized suggestions, choice/refresh rows and callbacks. The newsletter toggle is news opt-in. Registration permits pending availability while rejecting empty/invalid/debouncing sources; the player-name chooser requires a valid token. These archived gates are preserved. Empty suggestion updates clear children/names while retaining the old button array.', '',
+'Native fixtures compare renderer geometry, text hits, style copy and aligned/wrapped pixels against the previously checked font API, with clipping and parent/text translations; password display checks source-length masking. Archived wrapped layout leaves caret arrays unshifted for center/right alignment and uses different vertical spacing formulas from paragraph painting; fixtures cover both separately. Gate fixtures cover all five tokens and each registration field; callbacks check bounded chosen-name copying and cache clearing. Real suggestion-panel construction checks normalization, row geometry, callback order and clearing. Array-child fixtures cover nullable slots, focus gates/clearing, reverse paint order, parent translation and layout dispatch. Full frame/button/link/checkbox, caret/selection, wrapped multiline form pixels, complete panel construction and live account submission remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:51,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:52,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

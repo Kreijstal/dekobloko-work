@@ -1249,6 +1249,31 @@ independent of the current year. Icon checks verify hover messages, valid/invali
 pixels and empty state. Live account requests/server policy, rotating waiting
 pixels, full message rendering and all password similarity cases remain unverified.
 
+TextWidgetRenderer now exposes font, four insets, wrapping/alignment, text/shadow
+paint and caret/selection style; WidgetLayoutProvider names origin, available width,
+source-offset hit testing and caret/selection painting. Concrete identities include
+TextFieldRenderer, PasswordFieldRenderer, ButtonWidgetRenderer, LinkWidgetRenderer
+and CheckboxWidgetRenderer. PaletteFont paint selects a slot; AlphaFont paint uses
+RGB. ArrayWidgetGroup exposes child slots, focused-child lookup and layout callback.
+
+AccountRegistrationPanel/PlayerNameChooserPanel now expose fields, buttons,
+submission gates and suggestion callbacks. UsernameSuggestionPanel/Listener name
+normalized choice rows and refresh behavior. The newsletter toggle is news opt-in.
+Registration accepts pending availability; the name chooser requires a valid token.
+Both archived gates are preserved. Empty suggestion updates clear children/names
+while retaining the old button array. Native fixtures check all gate tokens, each
+registration field, bounded name copying, cache clearing, normalized suggestion
+rows and callback order. Array fixtures check null slots, focus, reverse paint
+order, parent translation and layout dispatch.
+
+Renderer fixtures compare geometry, text hits, style copy and aligned/wrapped
+pixels with the previously checked font API, including clipping and translations.
+Password masking follows UTF16 source length. Archived wrapped layout leaves caret
+arrays unshifted for center/right alignment and uses different vertical spacing
+formulas from paragraph painting; fixtures check both separately. These formulas
+are preserved. Full frame/button/link/checkbox, caret/selection, wrapped multiline
+form pixels, complete panel construction and live account submission remain unverified.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded
