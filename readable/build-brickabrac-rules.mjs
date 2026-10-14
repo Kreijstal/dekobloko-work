@@ -277,6 +277,19 @@ const classes={
  ek:['FullscreenFailureDialog','Popup explaining unsupported, focus-problem or timeout fullscreen failures, with dismiss action.'],
  tf:['FullscreenFailureKind','Identity-only unsupported, focus-problem and timeout fullscreen failure kinds. Unrelated static helpers remain separate.'],
  cr:['ActivityIndicatorWidget','Cached-sprite activity bar with optional phase animation, configurable colors and bounds-triggered cache rebuild. Static helpers remain separate.'],
+ be:['WidgetPaintStyle','Sparse paint-state overrides for nine-slice sprites, icon, text/shadow paint, alpha and offsets; sentinel values retain prior style.'],
+ up:['StatefulWidgetRenderer','Text renderer combining normal/active/hover/pressed/focused/disabled paint styles, including separate paint layers. Static helpers remain separate.'],
+ ta:['NineSliceFrame','Retained nine-slice sprite array delegated to tiled frame painting. Static helpers remain separate.'],
+ ei:['LabeledToggleRenderer','Toggle painter with background, checkbox rectangle/cross and optional text label. Static helpers remain separate.'],
+ pf:['RadialSelectorRenderer','Draws selector circle, marked/selected sector positions and optional label. Static social/resource helpers remain separate.'],
+ dg:['MultiValueSliderRenderer','Draws slider track, each value marker and optional label. Static lobby/graphics helpers remain separate.'],
+ qi:['MultiValueSliderWidget','Focusable point slider adding values with button1 and removing nearest value with button2; retained constructor is unsupported. Static helpers remain separate.'],
+ c:['GrowableIntList','Indexed integers with last-used index, additive/multiplicative growth, append/get/removal; retained constructor is unsupported. Static helpers remain separate.'],
+ ji:['IterableIntrusiveHashTable','Sentinel hash buckets with intrusive insertion/lookup and Iterator view; unrelated static helpers remain separate.'],
+ ik:['IntrusiveHashIterator','Hash-bucket iterator with cursor and last-returned node removal; exhaustion returns null. Static chat/UI helpers remain separate.'],
+ w:['ScreenshotViewer','Indexed screenshot/caption viewer used by membership-benefits presentation; includes input, drawing and applet-derived configuration. Static helpers remain separate.'],
+ vc:['GameLayerController','Render/key/update and qualified readiness contract used by the interactive client.'],
+ sb:['BrickGameLayerController','Concrete Brick rendering/input/update coordination across menus, gameplay and multiplayer status. Static helpers remain separate.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -736,6 +749,72 @@ field('cr','K','I','phaseTick','Advances and wraps after twice phaseSpan.');
 field('cr','H','I','phaseSpan','Constructor animation span used to wrap phase.');
 method('cr','b','(III)V','setActivityColors','Changes foreground/background colors, derives half colors and rebuilds sprite cache; guard2.',['foregroundColor','backgroundColor','obfuscationGuard']);
 method('cr','g','(I)V','rebuildActivitySprites','Rebuilds active/inactive bar sprites and cap/work surfaces; guard -1847795903.',['obfuscationGuard']);
+for(const [original,type,to,evidence] of [['f','[Ljp;','frameSprites','Nine-slice sprites; null retains inherited frame when merging.'],['k','Ljp;','icon','Optional aligned icon.'],['i','I','offsetX','Horizontal icon/text offset; MIN_VALUE inherits.'],['m','I','offsetY','Vertical icon/text offset; MIN_VALUE inherits.'],['h','I','textPaint','Font paint value; -2 inherits and -1 suppresses text.'],['l','I','shadowPaint','Shadow paint; -2 inherits and -1 suppresses shadow.'],['b','I','textAlpha256','Text opacity; MIN_VALUE inherits256.'],['p','Z','paintPreviousStyle','When merging, paints accumulated style and resets it before applying overrides.']])field('be',original,type,to,evidence);
+method('be','a','(I)V','resetPaintStyle','Sets concrete offsets0/alpha256/text paint0/shadow -1 and clears frame/icon; guard MIN_VALUE.',['obfuscationGuard']);
+method('be','b','(IB)Lbe;','setOffsetX','Sets horizontal override and returns same style; guard -50.',['offsetX','obfuscationGuard']);
+method('be','a','(II)Lbe;','setOffsetY','Sets vertical override and returns same style; guard0.',['obfuscationGuard','offsetY']);
+method('be','a','(ZI)Lbe;','setTextPaint','Sets text paint and returns same style; false guard.',['obfuscationGuard','paint']);
+method('be','a','(IB)Lbe;','setShadowPaint','Sets shadow paint and returns same style; guard -69.',['paint','obfuscationGuard']);
+method('be','a','(ZZ)Lbe;','setPaintPreviousStyle','Controls accumulated-style paint/reset before merge; false guard.',['paintPreviousStyle','obfuscationGuard']);
+method('be','a','([Ljp;I)Lbe;','setFrameSprites','Retains caller sprite array and returns same style; guard MIN_VALUE.',['sprites','obfuscationGuard']);
+method('be','a','(ZLbe;)V','copyPaintStyleTo','Copies every override and retains shared sprite/icon references; false guard.',['obfuscationGuard','target']);
+method('be','a','(ILup;Loc;BI)V','paintStyle','Draws frame/icon and optional alpha paragraph with renderer alignment/insets; guard below -30.',['parentY','renderer','widget','obfuscationGuard','parentX']);
+method('be','a','(Lbe;ILup;Loc;II)V','mergeInto','Optionally paints/resets accumulated style, then applies non-sentinel/non-null overrides; guard MAX_VALUE.',['target','obfuscationGuard','renderer','widget','parentX','parentY']);
+field('up','B','Lbe;','mergedStyle','Mutable per-paint accumulator reset before combining state styles.');
+field('up','y','[Lbe;','stylesByState','Slots0 normal,1 active,2 hover,3 pressed,4 disabled,5 focused; focused merges before disabled.');
+method('up','<init>','(Lup;Z)V','<init>','Copies text style and either clones state records or shares them; sprite/icon references stay shared.',['source','copyStateStyles']);
+method('up','b','(II)Lbe;','replaceStateStyle','Always creates a fresh style in requested slot; guard above102.',['stateIndex','obfuscationGuard']);
+method('up','a','(ZLup;Z)V','copyStatefulRendererTo','Copies text fields and state styles with optional record cloning; true guard.',['obfuscationGuard','target','copyStateStyles']);
+method('up','a','(ZI[Ljp;)V','setStateFrameSprites','Creates slot if absent then retains sprite array; true guard.',['obfuscationGuard','stateIndex','sprites']);
+method('up','a','([Ljp;Z)V','setAllFrameSprites','Sets sprite array on each existing style; false guard.',['sprites','obfuscationGuard']);
+method('up','a','(ILjp;)V','setAllIcons','Sets icon reference on each existing style; guard -1553.',['obfuscationGuard','icon']);
+field('ta','b','[Ljp;','sprites','Caller-owned nine-slice frame sprite array.');
+method('ta','<init>','([Ljp;)V','<init>','Retains frame sprite array.',['sprites']);
+method('ta','a','(IIIZI)V','paintFrame','Delegates tiled nine-slice rendering; false guard.',['width','height','x','obfuscationGuard','y']);
+method('nh','a','(IIII[Ljp;I)V','paintNineSliceFrame','Tiles corners/edges/center with proportional clipping when frame is smaller than border extents; guard -40.',['width','height','obfuscationGuard','x','sprites','y']);
+for(const [original,type,to,evidence] of [['n','Ldh;','font','Optional label font.'],['f','I','labelGap','Gap after checkbox plus label horizontal inset.'],['c','I','labelOffsetY','Label top offset.'],['e','I','textPaint','Label foreground paint.'],['j','I','shadowPaint','Label shadow paint.'],['m','I','boxX','Checkbox offset x.'],['h','I','boxY','Checkbox offset y.'],['l','I','boxWidth','Checkbox rectangle width.'],['d','I','boxHeight','Checkbox rectangle height.'],['b','I','backgroundColor','Whole-widget fill.'],['i','I','horizontalAlignment','Retained label alignment; defaults0 in constructor.'],['k','I','verticalAlignment','Retained label alignment; defaults0 in constructor.']])field('ei',original,type,to,evidence);
+method('ei','<init>','(Ldh;'+'I'.repeat(9)+')V','<init>','Retains checkbox/label geometry, paints and background.',['font','labelGap','labelOffsetY','textPaint','shadowPaint','boxX','boxY','boxHeight','boxWidth','backgroundColor']);
+for(const [original,type,to,evidence] of [['l','Ldh;','font','Optional selector label font.'],['n','I','labelGap','Horizontal gap and vertical inset for label.'],['g','I','labelOffsetY','Label top offset.'],['k','I','textPaint','Label foreground paint.'],['j','I','shadowPaint','Label shadow paint.'],['e','I','circleColor','Selector circle paint.'],['m','I','markedSectorColor','Point for marked sector, distinct from selected sector.'],['o','I','backgroundColor','Whole-widget background fill.']])field('pf',original,type,to,evidence);
+method('pf','<init>','(Ldh;'+'I'.repeat(7)+')V','<init>','Retains selector label/shape paints and geometry.',['font','labelGap','labelOffsetY','textPaint','shadowPaint','circleColor','markedSectorColor','backgroundColor']);
+field('vh','Q','I','markedSector','Renderer draws optional marked-sector point when not -1.');
+for(const [original,type,to,evidence] of [['j','Ldh;','font','Optional centered slider label font.'],['h','I','textPaint','Label foreground paint.'],['f','I','shadowPaint','Label shadow paint.'],['l','I','trackColor','Horizontal track line.'],['i','I','backgroundColor','Whole-widget background fill.'],['c','I','markerRadius','Value-marker circle radius.'],['a','I','markerColor','Value-marker circle paint.']])field('dg',original,type,to,evidence);
+method('dg','<init>','(Ldh;'+'I'.repeat(6)+')V','<init>','Retains slider shape and label paints.',['font','textPaint','shadowPaint','trackColor','backgroundColor','markerRadius','markerColor']);
+field('qi','O','Lc;','values','Backing growable integer values.');
+field('qi','P','I','maximumValue','Coordinate scale denominator for slider track values.');
+field('qi','L','I','horizontalInset','Track inset subtracted twice from width.');
+field('qi','M','I','trackY','Vertical track offset.');
+method('qi','c','(Z)I','getValueCount','Returns backing count; false guard.',['obfuscationGuard']);
+method('qi','a','(IZ)I','getValue','Returns -1 outside retained index range; false guard.',['index','obfuscationGuard']);
+method('qi','h','(I)I','getMaximumValue','Returns coordinate scale; guard below -81.',['obfuscationGuard']);
+for(const [original,type,to,evidence] of [['k','[I','values','Backing integer array.'],['h','I','lastIndex','Last used index; count is lastIndex plus1.'],['b','I','growthStep','Additive increment or multiplicative factor.'],['f','Z','multiplyGrowth','Chooses multiplication versus addition for capacity growth.']])field('c',original,type,to,evidence);
+method('c','a','(ZI)V','append','Writes value at lastIndex plus1, growing capacity if needed; false guard.',['obfuscationGuard','value']);
+method('c','a','(BI)V','removeAt','Shifts following values and decrements lastIndex; guard46.',['obfuscationGuard','index']);
+method('c','b','(Z)I','size','Returns lastIndex plus1; true guard.',['obfuscationGuard']);
+method('c','a','(IB)I','get','Returns retained value; guard64.',['index','obfuscationGuard']);
+method('c','a','(III)V','setAt','Writes indexed value and extends lastIndex/capacity; guard0.',['value','obfuscationGuard','index']);
+method('c','b','(II)I','capacityForIndex','Grows until capacity is strictly greater than index; growth policies must make progress; guard1.',['obfuscationGuard','index']);
+method('c','a','(II)V','growForIndex','Copies full backing array into grown capacity; guard -7877.',['index','obfuscationGuard']);
+field('ji','d','[Lnm;','buckets','Circular sentinel buckets indexed by key and bucketCount minus1 mask.');
+field('ji','c','I','bucketCount','Caller-supplied bucket count, normally a power of two.');
+field('ji','h','Lnm;','lookupCursor','Next matching-bucket node retained during lookup.');
+method('ji','<init>','(I)V','<init>','Allocates circular sentinel bucket nodes.',['bucketCount']);
+method('ji','a','(JI)Lnm;','get','Returns first node with matching key in masked bucket; guard above85.',['key','obfuscationGuard']);
+method('ji','a','(BJLnm;)V','put','Unlinks existing ownership, appends to masked bucket and stores key; normal guard113.',['obfuscationGuard','key','node']);
+for(const [original,type,to,evidence] of [['e','Lji;','table','Owning iterable hash table.'],['d','I','bucketIndex','Next bucket index; starts1 after bucket0 cursor.'],['h','Lnm;','nextNode','Next bucket node or sentinel.'],['k','Lnm;','lastReturned','Node permitted for one remove after next.']])field('ik',original,type,to,evidence);
+method('ik','<init>','(Lji;)V','<init>','Binds table and initializes bucket cursor.',['table']);
+method('ik','b','(I)V','resetIterator','Starts from bucket0 and clears removal state; guard below -71.',['obfuscationGuard']);
+field('w','q','[Ltp;','screenshots','Caller indexed screenshots used by membership-benefits viewer.');
+field('w','d','[Ljava/lang/String;','captions','Caller screenshot captions.');
+field('w','f','Ljava/lang/String;','title','Retained viewer title.');
+field('w','h','I','selectedScreenshot','Index used to access current screenshot.');
+field('w','g','Lre;','selection','Viewer screenshot/menu selection state.');
+method('w','<init>','(Ljava/applet/Applet;Ljava/lang/String;[Ltp;Z[Ljava/lang/String;)V','<init>','Retains viewer configuration; boolean presentation mode remains qualified.',{0:'applet',1:'title',2:'screenshots',4:'captions'});
+for(const [owner,signature,entries] of [
+ ['up','a(ZI[Ljp;)V',[[0,'var4_int','slotIndex']]],
+ ['up','a([Ljp;Z)V',[[0,'var4','stateIndex'],[2,'var5','style']]],
+ ['up','a(ZIILoc;I)V',[[6,'var7','normalStyle'],[7,'var9','hoverStyle'],[8,'var10','focusableWidget'],[9,'var11','activeStyle'],[10,'var12','pressedStyle'],[11,'var13','focusedStyle'],[12,'var14','disabledStyle']]],
+ ['ji','a(JI)Lnm;',[[0,'var5','match'],[1,'var6','unusedGameFlag'],[2,'var4','bucket'],[3,'var5Lifetime1','guardedMatch']]],
+])for(const [ordinal,original,to] of entries)local(owner,signature,ordinal,original,to,'Reviewed state-style selection or hash lookup local; lexical identity preserves source behavior.');
 for(const [owner,signature,entries] of [
  ['bj','h(I)Z',[[0,'var2','nextWidth'],[1,'var3','nextHeight'],[2,'fieldTemp$0','nextTick'],[3,'var5','easeDenominator'],[4,'var4','easeNumerator']]],
  ['qf','a(ILoh;Z)V',[[4,'var4','message'],[6,'var5','messagePanel'],[7,'var6','unusedGameFlag']]],
@@ -1946,6 +2025,10 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('bj')} / ${link('fe')} / ${link('mi')} | Popup resize and content fade/resize/fade transition. |`,
 `| ${link('ec')} / ${link('lp')} / ${link('qf')} / ${link('cr')} | Message/action panel, account response dialogs and activity indicator. |`,
 `| ${link('ek')} / ${link('tf')} | Fullscreen failure dialog and failure kind. |`,
+`| ${link('be')} / ${link('up')} / ${link('ta')} | Sparse state styles, state composition and tiled nine-slice frames. |`,
+`| ${link('ei')} / ${link('pf')} / ${link('dg')} / ${link('qi')} / ${link('c')} | Labeled toggle/radial/point-slider painting and growable integer values. |`,
+`| ${link('ji')} / ${link('ik')} | Iterable intrusive hash buckets and iterator removal. |`,
+`| ${link('w')} / ${link('vc')} / ${link('sb')} | Screenshot presentation and client game-layer coordination. |`,
 `| ${link('vi')} / ${link('bn')} / ${link('no')} | Fixed8 body coordinates/velocities, rectangle/circle geometry, snapshots and checksums. |`,
 `| ${link('vo')} / ${link('vn')} / ${link('on')} | Paddle size stages, balls and bricks. |`,
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
@@ -2077,10 +2160,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'The earlier AccountResponse identity was corrected from a username-only name: response factories and registration dialogs prove the record is shared. Its fields now distinguish success, underThirteen, suggestedUsernames, responseCode and message. Availability validators interpret success as name acceptance; registration uses it as account-creation success. The underThirteen factory flag is derived from age<13. LoginPanel, AccountIntroductionPanel, Under13RegistrationNoticePanel and BirthDateEntryPanel expose their controls and routing roles. Login retry/create/guest modes follow concrete captions and constructor constraints; their full live construction remains unverified.', '',
 'PopupWidgetLayer exposes start/target dimensions, resize tick/duration, centered sizing and completion hook. ContentTransitionLayer/ContentTransitionPhase expose pending content, wrapper ownership and fade-out/resize/fade-in states. DialogMessagePanel/AccountMessageDialog/RegistrationResponseDialog expose message, action IDs, one-response guards and qualified close/response modes; FullscreenFailureDialog/Kind name unsupported, focus-problem and timeout cases. ActivityIndicatorWidget names animation and color/cache operations. Static helpers remain separate from instance roles.', '',
 'Native fixtures verify eased resize dimensions/centering and hook timing, immediate/forced resizing, full content fade/resize/fade sequence and wrapper replacement/unlinking. Resize advances on the fade-out completion tick. Forced completion during active resize re-enters the completion hook, installs an empty wrapper and resumes fade-in; the archived behavior is preserved and tested. Login fixtures check account getter/null handling, account replacement/password clearing and account-submit focus transfer without submitting credentials. Real registration-response dialogs check success, under-thirteen notice and response codes0/3/5/6/248 with message/action choices; code248 fixtures suppress its unrelated side-effect helper. Message actions check route IDs and owner hiding. Shared-response correction changes names only; raw/named traces and source-byte recovery remain required. Live login/registration, fullscreen rendering, full login construction, all response codes and original-JAR equivalence remain unverified.', '',
+'WidgetPaintStyle/StatefulWidgetRenderer expose sparse frame/icon/text/alpha/offset overrides, paint-before-merge layering and six state slots. Normal combines with active, hover or pressed, then focused, then disabled; sentinel values retain earlier properties. Replacing a slot creates a fresh style. Renderer copy can clone state records or share them; sprite/icon references stay shared. NineSliceFrame/paintNineSliceFrame expose tiled corners/edges/center and proportional border clipping for small rectangles. LabeledToggleRenderer/RadialSelectorRenderer/MultiValueSliderRenderer identify compatible control painting. MultiValueSliderWidget/GrowableIntList expose point values, capacity policy, append/get/removal and scale geometry. Their retained constructors throw, so fixtures initialize legal field state explicitly. ScreenshotViewer and GameLayerController/BrickGameLayerController name their roles; broad presentation and readiness behavior remains unresolved.', '',
+'Native fixtures check per-pixel nine-slice borders at zero/small/normal dimensions, all64 state-bit combinations, transparent paint layers and shallow/deep style-copy ownership. List fixtures compare append/removal/read results against an independent list for progressing additive/multiplicative policies. IterableIntrusiveHashTable/IntrusiveHashIterator fixtures model bucket/insertion order, collisions, duplicate-key lookup, ownership transfer, repeated hasNext, null-on-exhaustion next and one-use remove. Slider fixtures check add/remove-nearest and scale boundaries, preserving the archived omission of widget x from pointer-to-value conversion. Compatible-control full pixels, all sparse override combinations, invalid growth policies, live screenshot/app-mode presentation and complete game-layer readiness logic remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:53,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:54,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

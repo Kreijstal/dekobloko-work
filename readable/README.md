@@ -1295,6 +1295,27 @@ in fixtures. Message actions check route IDs and owner hiding. Full login
 construction, live account requests, fullscreen rendering, all response codes and
 original-JAR equivalence remain unverified.
 
+WidgetPaintStyle/StatefulWidgetRenderer expose sparse state overrides and
+paint-before-merge layers. Six slots combine normal/active/hover-or-pressed, then
+focused and disabled. Sentinel values inherit earlier properties; fresh slot
+replacement and shallow/deep record copying retain explicit ownership semantics.
+NineSliceFrame and paintNineSliceFrame expose tiled borders/center and small-frame
+clipping. LabeledToggleRenderer/RadialSelectorRenderer/MultiValueSliderRenderer
+name compatible control painters; MultiValueSliderWidget/GrowableIntList name
+point values and growing storage. ScreenshotViewer and GameLayerController/
+BrickGameLayerController expose their presentation/coordination roles.
+
+Native fixtures check nine-slice pixels for zero/small/normal rectangles, all64
+state-bit combinations, transparent layers and copy ownership. List operations
+are checked against an independent list for progressing growth policies. Hash
+fixtures model bucket/insertion order, collisions, duplicate-key lookup, ownership
+transfer, repeated hasNext, null-on-exhaustion next and one-use removal. Slider
+fixtures check add/remove-nearest and scale boundaries, preserving the archived
+omission of widget x from pointer-to-value conversion. List/slider fixtures
+initialize legal fields because retained constructors throw. Complete control
+pixels, all sparse combinations, invalid growth policies, live screenshot/app
+modes and full game-layer readiness logic remain unverified.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded
