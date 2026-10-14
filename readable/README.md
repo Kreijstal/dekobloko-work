@@ -1380,6 +1380,27 @@ prefix accepts 2000 and is preserved. Global state and fixture threads are
 restored. External proxies, cached credentials, malformed URIs, complete tunnel
 buffering and failed-client socket cleanup remain unverified.
 
+BinaryMaskFont names the retained glyph masks, rectangular clipping, unrolled
+solid copy, constant-alpha blend and optional per-row span intersection. The
+shared kernels also serve PaletteFont and AlphaFont shadow drawing. Nonzero
+bytes are solid regardless of magnitude or sign. Opaque drawing observes row
+spans; alpha drawing ignores them, and the span kernel writes the global raster
+rather than its first argument. No non-null span installation path is present
+in the archived client. Numeric and named archive loaders now describe the
+sprite/metrics pairing and factory cleanup. Successful construction clears six
+decoded arrays; absent metrics and construction failure retain them.
+TranslucentNineSliceFrame names the subclass that fills the inset rectangle
+with half-opacity black before drawing the inherited frame.
+
+Native pixel fixtures check kernel widths across the four-pixel unroll boundary,
+independent source/destination row skips, signed mask bytes, opacity endpoints,
+clipped virtual glyph dispatch, both shadow values and row-span intersections.
+Controlled archives exercise numeric/named loading, unavailable sprite/metrics
+groups and the factory's retained-array behavior. Popup-frame fixtures check
+inset darkening and inherited border painting at clipped positions and small
+sizes. Malformed mask/span arrays, all rich-text combinations, original-JAR
+equivalence and live rendering remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

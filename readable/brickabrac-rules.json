@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 59,
+  "version": 60,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -948,6 +948,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hl",
+      "originalName": "hl",
+      "to": "BinaryMaskFont",
+      "evidence": "hl.java: Retains caller glyph masks; every nonzero byte paints one uniform RGB color, with rectangular clipping, optional row spans and constant-alpha blending. Shared kernels also serve other font shadows.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ho",
       "originalName": "ho",
       "to": "AudioFilter",
@@ -1645,6 +1652,13 @@
       "originalName": "p",
       "to": "PlayerInputBatch",
       "evidence": "p.java: Intrusive five-control-mask batch with consumption cursor, position word and optional random-masked board checksum; queued by multiplayer packets. Unrelated static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pa",
+      "originalName": "pa",
+      "to": "TranslucentNineSliceFrame",
+      "evidence": "pa.java: NineSliceFrame subclass fills the inset rectangle with half-opacity black before drawing the inherited frame. Unrelated static UI configuration remains separate.",
       "confidence": "reviewed"
     },
     {
@@ -6247,6 +6261,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hl.field_M:[[B",
+      "originalName": "field_M",
+      "to": "glyphMasks",
+      "evidence": "hl.java: Caller masks retained without conversion; zero is transparent and all other byte values are solid.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hn.field_b:Ljp;",
       "originalName": "field_b",
       "to": "ninjaFarSprite",
@@ -8571,10 +8592,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lb.field_e:[I",
+      "originalName": "field_e",
+      "to": "scanlineMaskOffsets",
+      "evidence": "lb.java: Optional row-span start relative to clipLeft, indexed relative to clipTop by binary glyph drawing. No non-null installation path is present in the archived client.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lb.field_f:I",
       "originalName": "field_f",
       "to": "clipRight",
       "evidence": "lb.java: Exclusive horizontal clip end.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lb.field_h:[I",
+      "originalName": "field_h",
+      "to": "scanlineMaskWidths",
+      "evidence": "lb.java: Optional row-span lengths paired with scanlineMaskOffsets. Only opaque binary glyph drawing observes them.",
       "confidence": "reviewed"
     },
     {
@@ -21206,6 +21241,237 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:hl.a(IIIIIIIZ)V#0",
+      "originalName": "var13",
+      "to": "clippedTopRows",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIIZ)V#1",
+      "originalName": "var9",
+      "to": "destinationIndex",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIIZ)V#2",
+      "originalName": "var10",
+      "to": "destinationRowSkip",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIIZ)V#3",
+      "originalName": "var11",
+      "to": "sourceRowSkip",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIIZ)V#4",
+      "originalName": "var12",
+      "to": "sourceIndex",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIIZ)V#5",
+      "originalName": "var13Lifetime1",
+      "to": "clippedLeftColumns",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIIZ)V#6",
+      "originalName": "var13Lifetime2",
+      "to": "clippedRightColumns",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIZ)V#0",
+      "originalName": "var8",
+      "to": "destinationIndex",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIZ)V#1",
+      "originalName": "var9",
+      "to": "destinationRowSkip",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIZ)V#2",
+      "originalName": "var10",
+      "to": "sourceRowSkip",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIZ)V#3",
+      "originalName": "var11",
+      "to": "sourceIndex",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIZ)V#4",
+      "originalName": "var12",
+      "to": "clippedTopRows",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIZ)V#5",
+      "originalName": "var12Lifetime1",
+      "to": "clippedLeftColumns",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a(IIIIIIZ)V#6",
+      "originalName": "var12Lifetime2",
+      "to": "clippedRightColumns",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIII)V#0",
+      "originalName": "var10",
+      "to": "negativeRow",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIII)V#1",
+      "originalName": "var9",
+      "to": "negativeFourPixelGroups",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIII)V#2",
+      "originalName": "var11",
+      "to": "negativeGroup",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIII)V#3",
+      "originalName": "var11Lifetime1",
+      "to": "negativeTailPixel",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIII)V#0",
+      "originalName": "var10",
+      "to": "negativeRow",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIII)V#1",
+      "originalName": "var11",
+      "to": "negativeColumn",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIII)V#2",
+      "originalName": "incrementValue$12",
+      "to": "pixelIndex",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIII)V#3",
+      "originalName": "var12",
+      "to": "background",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#0",
+      "originalName": "var15",
+      "to": "maskRow",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#1",
+      "originalName": "var20",
+      "to": "negativeColumn",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#10",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "rowIntersectsSpan",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#2",
+      "originalName": "incrementValue$1",
+      "to": "pixelIndex",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#3",
+      "originalName": "var13",
+      "to": "relativeX",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#4",
+      "originalName": "var14",
+      "to": "relativeY",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#5",
+      "originalName": "var16",
+      "to": "spanStart",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#6",
+      "originalName": "var17",
+      "to": "spanWidth",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#7",
+      "originalName": "var18",
+      "to": "remainingGlyphWidth",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#8",
+      "originalName": "var19",
+      "to": "leftTrim",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hl.a([I[BIIIIIIIII[I[I)V#9",
+      "originalName": "var19Lifetime1",
+      "to": "rightTrim",
+      "evidence": "hl.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ho.a(F)F#0",
       "originalName": "var1",
       "to": "frequencyHz",
@@ -24524,6 +24790,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#0",
+      "originalName": "var5_int",
+      "to": "groupId",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#1",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#10",
+      "originalName": "stackIn_13_1",
+      "to": "metricsContextBuilder",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#11",
+      "originalName": "stackIn_14_2",
+      "to": "metricsArchiveSummary",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#12",
+      "originalName": "stackIn_16_1",
+      "to": "fileContextBuilder",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#13",
+      "originalName": "stackIn_17_2",
+      "to": "fileSummary",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#14",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#15",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#2",
+      "originalName": "var6",
+      "to": "fileId",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#3",
+      "originalName": "stackIn_2_0",
+      "to": "guardRejectedFont",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#4",
+      "originalName": "stackIn_4_0",
+      "to": "font",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#5",
+      "originalName": "stackIn_7_0",
+      "to": "failureContext",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#6",
+      "originalName": "stackIn_7_1",
+      "to": "contextBuilder",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#7",
+      "originalName": "stackIn_8_2",
+      "to": "groupSummary",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#8",
+      "originalName": "stackIn_10_1",
+      "to": "spriteContextBuilder",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#9",
+      "originalName": "stackIn_11_2",
+      "to": "spriteArchiveSummary",
+      "evidence": "nq.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:oa.<init>(JLmh;[Ljava/lang/String;Lmh;[Lmh;I)V#10",
       "originalName": "var8_int",
       "to": "tabIndex",
@@ -26614,6 +26992,76 @@
       "originalName": "var7",
       "to": "guardDivision",
       "evidence": "rk.java: Reviewed component layout/scroll declaration, field consumer and arithmetic; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#0",
+      "originalName": "var2",
+      "to": "font",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#1",
+      "originalName": "var2_ref",
+      "to": "failure",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#2",
+      "originalName": "stackIn_2_0",
+      "to": "guardRejectedFont",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#3",
+      "originalName": "stackIn_5_0",
+      "to": "missingMetricsFont",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#4",
+      "originalName": "stackIn_7_0",
+      "to": "result",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#5",
+      "originalName": "stackIn_10_0",
+      "to": "failureContext",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#6",
+      "originalName": "stackIn_10_1",
+      "to": "contextBuilder",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#7",
+      "originalName": "stackIn_11_2",
+      "to": "metricsSummary",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:rm.a(I[B)Lhl;#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "rm.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
       "confidence": "reviewed"
     },
     {
@@ -30299,6 +30747,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#0",
+      "originalName": "var5_int",
+      "to": "unusedGuardQuotient",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#1",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#10",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#2",
+      "originalName": "stackIn_4_0",
+      "to": "unavailableFont",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#3",
+      "originalName": "stackIn_6_0",
+      "to": "font",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#4",
+      "originalName": "stackIn_10_0",
+      "to": "failureContext",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#5",
+      "originalName": "stackIn_10_1",
+      "to": "contextBuilder",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#6",
+      "originalName": "stackIn_11_2",
+      "to": "metricsArchiveSummary",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#7",
+      "originalName": "stackIn_14_1",
+      "to": "spriteContextBuilder",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#8",
+      "originalName": "stackIn_15_2",
+      "to": "spriteArchiveSummary",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wn.a(ILmf;Lmf;IB)Lhl;#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wn.java: Reviewed binary glyph clipping, mask kernel, row-span intersection or decoded-font construction declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wn.b(B)V#0",
       "originalName": "var2",
       "to": "keyIndex",
@@ -33435,6 +33960,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hl.a([I[BIIIIIII)V",
+      "originalName": "a",
+      "to": "blitMask",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a([I[BIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitMaskAlpha",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a([I[BIIIIIIIII[I[I)V",
+      "originalName": "a",
+      "to": "blitMaskWithinScanlines",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hm.a(ILoe;I)Ll;",
       "originalName": "a",
       "to": "playSoundAtVolume",
@@ -35556,6 +36102,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lb.b()V",
+      "originalName": "b",
+      "to": "clearScanlineMask",
+      "evidence": "lb.java: Clears both optional row-span arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lb.b(IIII)V",
       "originalName": "b",
       "to": "darkenRectangle",
@@ -36925,6 +37478,13 @@
       "originalName": "a",
       "to": "computeSyncChecksum",
       "evidence": "no.java: Preserves original wrapping integer checksum and optional diagnostic text; canonical guard above79.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;",
+      "originalName": "a",
+      "to": "loadBinaryMaskFontByName",
+      "evidence": "nq.java: Resolves group/file names through sprite archive before loading matching metrics; canonical guard -37.",
       "confidence": "reviewed"
     },
     {
@@ -38647,6 +39207,13 @@
       "originalName": "b",
       "to": "layoutIconLabel",
       "evidence": "rk.java: Measures optional children, constrains label, aligns combined inset/gap width and forwards vertical alignment; canonical guard -111.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rm.a(I[B)Lhl;",
+      "originalName": "a",
+      "to": "createBinaryMaskFont",
+      "evidence": "rm.java: Uses current decoded sprite geometry/masks then clears decoded globals only after successful construction; canonical guard12658477.",
       "confidence": "reviewed"
     },
     {
@@ -40761,6 +41328,13 @@
       "originalName": "a",
       "to": "applyChatFilters",
       "evidence": "wn.java: Extracts three2-bit states and caps them at2; game cap comparison uses caller-supplied maximum, canonically2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wn.a(ILmf;Lmf;IB)Lhl;",
+      "originalName": "a",
+      "to": "loadBinaryMaskFont",
+      "evidence": "wn.java: Decodes sprite group/file, takes metrics from the matching archive IDs and constructs mask font; canonical guard -112.",
       "confidence": "reviewed"
     },
     {
@@ -50781,6 +51355,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:hl.<init>([B[I[I[I[I[[B)V#0",
+      "originalName": "param0",
+      "to": "metrics",
+      "evidence": "hl.java: Loads inherited metrics and retains caller mask arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.<init>([B[I[I[I[I[[B)V#1",
+      "originalName": "param1",
+      "to": "glyphOffsetX",
+      "evidence": "hl.java: Loads inherited metrics and retains caller mask arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.<init>([B[I[I[I[I[[B)V#2",
+      "originalName": "param2",
+      "to": "glyphOffsetY",
+      "evidence": "hl.java: Loads inherited metrics and retains caller mask arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.<init>([B[I[I[I[I[[B)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "hl.java: Loads inherited metrics and retains caller mask arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.<init>([B[I[I[I[I[[B)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "hl.java: Loads inherited metrics and retains caller mask arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.<init>([B[I[I[I[I[[B)V#5",
+      "originalName": "param5",
+      "to": "glyphMasks",
+      "evidence": "hl.java: Loads inherited metrics and retains caller mask arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hl.a(IIIIIIIZ)V#0",
       "originalName": "param0",
       "to": "glyphId",
@@ -50883,6 +51499,230 @@
       "originalName": "param6",
       "to": "shadow",
       "evidence": "dh.java: Draws glyph foreground or uniform shadow; paint is palette style for PaletteFont, RGB for AlphaFont. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "destination",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "mask",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "paint",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "sourceIndex",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "destinationIndex",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "width",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "height",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "destinationRowSkip",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIII)V#8",
+      "originalName": "param8",
+      "to": "sourceRowSkip",
+      "evidence": "hl.java: Four-pixel unrolled binary-mask copy with independent source/destination offsets and row skips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "destination",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "mask",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "paint",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "sourceIndex",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "destinationIndex",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "width",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "height",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "destinationRowSkip",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#8",
+      "originalName": "param8",
+      "to": "sourceRowSkip",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIII)V#9",
+      "originalName": "param9",
+      "to": "alpha",
+      "evidence": "hl.java: Binary-mask constant-alpha blend using separate rounded source/destination contributions; alpha scale256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#0",
+      "originalName": "param0",
+      "to": "unusedDestination",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#1",
+      "originalName": "param1",
+      "to": "mask",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#10",
+      "originalName": "param10",
+      "to": "sourceRowSkip",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#11",
+      "originalName": "param11",
+      "to": "rowOffsets",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#12",
+      "originalName": "param12",
+      "to": "rowWidths",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#6",
+      "originalName": "param6",
+      "to": "paint",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#7",
+      "originalName": "param7",
+      "to": "sourceIndex",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#8",
+      "originalName": "param8",
+      "to": "destinationIndex",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hl.a([I[BIIIIIIIII[I[I)V#9",
+      "originalName": "param9",
+      "to": "destinationRowSkip",
+      "evidence": "hl.java: Intersects each glyph row with the optional span. Archived body writes global raster pixels rather than its first argument.",
       "confidence": "reviewed"
     },
     {
@@ -60364,6 +61204,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nq.java: Resolves group/file names through sprite archive before loading matching metrics; canonical guard -37.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#1",
+      "originalName": "param1",
+      "to": "groupName",
+      "evidence": "nq.java: Resolves group/file names through sprite archive before loading matching metrics; canonical guard -37.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#2",
+      "originalName": "param2",
+      "to": "spriteArchive",
+      "evidence": "nq.java: Resolves group/file names through sprite archive before loading matching metrics; canonical guard -37.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#3",
+      "originalName": "param3",
+      "to": "metricsArchive",
+      "evidence": "nq.java: Resolves group/file names through sprite archive before loading matching metrics; canonical guard -37.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nq.a(BLjava/lang/String;Lmf;Lmf;Ljava/lang/String;)Lhl;#4",
+      "originalName": "param4",
+      "to": "fileName",
+      "evidence": "nq.java: Resolves group/file names through sprite archive before loading matching metrics; canonical guard -37.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nq.a(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -62202,6 +63077,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "p.java: Exact cursor/array-length equality; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pa.<init>([Ljp;)V#0",
+      "originalName": "param0",
+      "to": "sprites",
+      "evidence": "pa.java: Retains inherited nine-slice sprites.",
       "confidence": "reviewed"
     },
     {
@@ -65366,6 +66248,20 @@
       "originalName": "param2",
       "to": "gap",
       "evidence": "rk.java: Measures optional children, constrains label, aligns combined inset/gap width and forwards vertical alignment; canonical guard -111.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rm.a(I[B)Lhl;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rm.java: Uses current decoded sprite geometry/masks then clears decoded globals only after successful construction; canonical guard12658477.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rm.a(I[B)Lhl;#1",
+      "originalName": "param1",
+      "to": "metrics",
+      "evidence": "rm.java: Uses current decoded sprite geometry/masks then clears decoded globals only after successful construction; canonical guard12658477.",
       "confidence": "reviewed"
     },
     {
@@ -70948,6 +71844,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wn.a(ILmf;Lmf;IB)Lhl;#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "wn.java: Decodes sprite group/file, takes metrics from the matching archive IDs and constructs mask font; canonical guard -112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ILmf;Lmf;IB)Lhl;#1",
+      "originalName": "param1",
+      "to": "metricsArchive",
+      "evidence": "wn.java: Decodes sprite group/file, takes metrics from the matching archive IDs and constructs mask font; canonical guard -112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ILmf;Lmf;IB)Lhl;#2",
+      "originalName": "param2",
+      "to": "spriteArchive",
+      "evidence": "wn.java: Decodes sprite group/file, takes metrics from the matching archive IDs and constructs mask font; canonical guard -112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ILmf;Lmf;IB)Lhl;#3",
+      "originalName": "param3",
+      "to": "fileId",
+      "evidence": "wn.java: Decodes sprite group/file, takes metrics from the matching archive IDs and constructs mask font; canonical guard -112.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wn.a(ILmf;Lmf;IB)Lhl;#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "wn.java: Decodes sprite group/file, takes metrics from the matching archive IDs and constructs mask font; canonical guard -112.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wn.b(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -71747,9 +72678,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "a363bb4040320b31b2661dee7d58efe93a2ab77936253e2464c56963fca55b52",
+      "build-brickabrac-rules.mjs": "8ee8158fc587daf6e6918d31a5676dde5dc97d9320490c0f3e5984f0b2cecc44",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "1f36d25f2021cc468d99cd1a9a77238d9a5f7de17d0c060ca4e168e728e06cc0",
+      "tests/test-brickabrac-core.mjs": "374ff9f54af4274a1797a7608183ae92b9496b242e8705ff3457865bc58cd6cf",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
