@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 58,
+  "version": 59,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -563,6 +563,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dl",
+      "originalName": "dl",
+      "to": "SocketConnector",
+      "evidence": "dl.java: Target host/port and direct socket helper under an abstract connection policy. Unrelated static sprite/UI counters remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dm",
       "originalName": "dm",
       "to": "MouseInput",
@@ -623,6 +630,13 @@
       "originalName": "ee",
       "to": "MotionWaypoint",
       "evidence": "ee.java: Moving-body position with destination segment duration, used by cyclic brick paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ef",
+      "originalName": "ef",
+      "to": "ProxyAuthenticationRequiredException",
+      "evidence": "ef.java: IOException carrying the authentication scheme parsed from HTTP407, propagated through proxy selection and platform-task failure. Unrelated static game helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -2268,6 +2282,13 @@
       "originalName": "wh",
       "to": "BufferedSocket",
       "evidence": "wh.java: Socket input plus asynchronous circular-buffer output; tracks pending writer task, closure and deferred write failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wi",
+      "originalName": "wi",
+      "to": "ProxySocketConnector",
+      "evidence": "wi.java: Caches ProxySelector, tries HTTP/HTTPS candidates, DIRECT/SOCKS/HTTP CONNECT paths and qualified authentication-header reflection. Static game helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -4347,6 +4368,20 @@
       "originalName": "field_S",
       "to": "ageField",
       "evidence": "dk.java: Age1..130 validator; parsed during submission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dl.field_a:Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "targetHost",
+      "evidence": "dl.java: Retained connection destination, used by direct/SOCKS paths and HTTP CONNECT request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dl.field_c:I",
+      "originalName": "field_c",
+      "to": "targetPort",
+      "evidence": "dl.java: Retained target port, also selects primary HTTPS scheme when443.",
       "confidence": "reviewed"
     },
     {
@@ -14465,6 +14500,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wi.field_l:Ljava/net/ProxySelector;",
+      "originalName": "field_l",
+      "to": "proxySelector",
+      "evidence": "wi.java: Default selector captured by constructor, queried for primary and secondary scheme candidates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wi.field_m:I",
       "originalName": "field_m",
       "to": "rankingRowCount",
@@ -24216,6 +24258,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#0",
+      "originalName": "var3",
+      "to": "connector",
+      "evidence": "nd.java: Reviewed connector construction, destination fields and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#1",
+      "originalName": "var3_ref",
+      "to": "failure",
+      "evidence": "nd.java: Reviewed connector construction, destination fields and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#2",
+      "originalName": "var4",
+      "to": "unusedHost",
+      "evidence": "nd.java: Reviewed connector construction, destination fields and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#3",
+      "originalName": "stackIn_3_0",
+      "to": "result",
+      "evidence": "nd.java: Reviewed connector construction, destination fields and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#4",
+      "originalName": "stackIn_6_0",
+      "to": "failureContext",
+      "evidence": "nd.java: Reviewed connector construction, destination fields and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#5",
+      "originalName": "stackIn_6_1",
+      "to": "contextBuilder",
+      "evidence": "nd.java: Reviewed connector construction, destination fields and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#6",
+      "originalName": "stackIn_7_2",
+      "to": "hostSummary",
+      "evidence": "nd.java: Reviewed connector construction, destination fields and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "nd.java: Reviewed connector construction, destination fields and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#8",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "nd.java: Reviewed connector construction, destination fields and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ni.b(II)V#0",
       "originalName": "var3",
       "to": "labelX",
@@ -29445,6 +29550,608 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:wi.a(BI)I#0",
+      "originalName": "var3",
+      "to": "alignedValue",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(BI)I#1",
+      "originalName": "var2",
+      "to": "padding",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(BI)I#2",
+      "originalName": "var3Lifetime1",
+      "to": "guardedAlignedValue",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#0",
+      "originalName": "var9",
+      "to": "candidateIndex",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#1",
+      "originalName": "stackIn_5_0",
+      "to": "httpsPortFlag",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#10",
+      "originalName": "stackIn_11_1",
+      "to": "unusedSecondaryUri",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#11",
+      "originalName": "stackIn_11_2",
+      "to": "unusedSecondaryUriAlias",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#12",
+      "originalName": "stackIn_11_3",
+      "to": "secondaryUriBuilder",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#13",
+      "originalName": "stackIn_12_1",
+      "to": "unusedFallbackUri",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#14",
+      "originalName": "stackIn_12_2",
+      "to": "unusedFallbackUriAlias",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#15",
+      "originalName": "stackIn_12_4",
+      "to": "secondaryScheme",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#16",
+      "originalName": "stackIn_22_0",
+      "to": "connectedSocket",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#17",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#18",
+      "originalName": "var3",
+      "to": "primaryCandidates",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#19",
+      "originalName": "var4",
+      "to": "secondaryCandidates",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#2",
+      "originalName": "stackIn_8_0",
+      "to": "primarySelector",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#20",
+      "originalName": "var5",
+      "to": "isHttpsPort",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#21",
+      "originalName": "var6",
+      "to": "invalidTargetUri",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#22",
+      "originalName": "var6_array",
+      "to": "candidateArray",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#23",
+      "originalName": "var7",
+      "to": "authenticationFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#24",
+      "originalName": "var8",
+      "to": "candidates",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#25",
+      "originalName": "var10",
+      "to": "candidateObject",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#26",
+      "originalName": "var11",
+      "to": "candidateProxy",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#27",
+      "originalName": "var12",
+      "to": "candidateSocket",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#28",
+      "originalName": "var12_ref",
+      "to": "proxyAuthenticationFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#29",
+      "originalName": "var12_ref2",
+      "to": "proxyIoFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#3",
+      "originalName": "stackIn_8_1",
+      "to": "unusedPrimaryUri",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#30",
+      "originalName": "var13",
+      "to": "unusedGameFlag",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#31",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtInvalidTargetUri",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#32",
+      "originalName": "decompiledCaughtParameter1",
+      "to": "caughtAuthenticationFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#33",
+      "originalName": "decompiledCaughtParameter2",
+      "to": "caughtProxyIoFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#4",
+      "originalName": "stackIn_8_2",
+      "to": "unusedPrimaryUriAlias",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#5",
+      "originalName": "stackIn_8_3",
+      "to": "primaryUriBuilder",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#6",
+      "originalName": "stackIn_9_1",
+      "to": "unusedSchemeUri",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#7",
+      "originalName": "stackIn_9_2",
+      "to": "unusedSchemeUriAlias",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#8",
+      "originalName": "stackIn_9_4",
+      "to": "primaryScheme",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(I)Ljava/net/Socket;#9",
+      "originalName": "stackIn_11_0",
+      "to": "secondarySelector",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#0",
+      "originalName": "stackIn_11_0",
+      "to": "connectedSocket",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#1",
+      "originalName": "stackIn_25_0",
+      "to": "failedConnection",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#10",
+      "originalName": "var7",
+      "to": "proxyReader",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#11",
+      "originalName": "var8",
+      "to": "unusedStatusReference",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#12",
+      "originalName": "var9",
+      "to": "headerLinesSearched",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#13",
+      "originalName": "var10",
+      "to": "authenticationHeaderPrefix",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#14",
+      "originalName": "var11",
+      "to": "schemeSeparator",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#15",
+      "originalName": "var12",
+      "to": "unusedGameFlag",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#16",
+      "originalName": "var13",
+      "to": "proxySocket",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#17",
+      "originalName": "var14",
+      "to": "statusLine",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#18",
+      "originalName": "var15",
+      "to": "authenticationValue",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#19",
+      "originalName": "var8Lifetime1",
+      "to": "unusedStatusAlias",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#2",
+      "originalName": "stackIn_28_0",
+      "to": "failureContext",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#20",
+      "originalName": "var8Lifetime2",
+      "to": "unusedHeaderPrefix",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#21",
+      "originalName": "var8Lifetime2Lifetime1",
+      "to": "unusedHeaderPrefixAlias",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#22",
+      "originalName": "var8Lifetime2Lifetime2",
+      "to": "headerOrAuthenticationScheme",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#23",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "acceptedOrAuthenticationStatus",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#24",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#3",
+      "originalName": "stackIn_28_1",
+      "to": "contextBuilder",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#4",
+      "originalName": "stackIn_29_2",
+      "to": "proxyHostSummary",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#5",
+      "originalName": "stackIn_31_1",
+      "to": "headerContextBuilder",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#6",
+      "originalName": "stackIn_32_2",
+      "to": "authorizationSummary",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#8",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#9",
+      "originalName": "var6",
+      "to": "proxyOutput",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#0",
+      "originalName": "var3",
+      "to": "proxyAddress",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#1",
+      "originalName": "var3_ref",
+      "to": "failure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#10",
+      "originalName": "var12",
+      "to": "authorizationHeaderName",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#11",
+      "originalName": "var13",
+      "to": "authorizationHeaderValue",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#12",
+      "originalName": "var14",
+      "to": "loadedAuthenticationClass",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#13",
+      "originalName": "stackIn_2_0",
+      "to": "directSocket",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#14",
+      "originalName": "stackIn_5_0",
+      "to": "disabledProxyResult",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#15",
+      "originalName": "stackIn_18_0",
+      "to": "httpSocket",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#16",
+      "originalName": "stackIn_22_0",
+      "to": "socksSocket",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#17",
+      "originalName": "stackIn_26_0",
+      "to": "failureContext",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#18",
+      "originalName": "stackIn_26_1",
+      "to": "contextBuilder",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#19",
+      "originalName": "stackIn_27_2",
+      "to": "proxySummary",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#2",
+      "originalName": "var4",
+      "to": "proxyEndpoint",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#20",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#21",
+      "originalName": "var6_ref",
+      "to": "authenticationLookupFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#22",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtAuthenticationLookupFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#23",
+      "originalName": "decompiledCaughtParameter1",
+      "to": "caughtProxyFailure",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#3",
+      "originalName": "var5",
+      "to": "socketOrAuthorizationHeader",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#4",
+      "originalName": "var6",
+      "to": "authenticationInfoClass",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#5",
+      "originalName": "var7",
+      "to": "cachedAuthenticationLookup",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#6",
+      "originalName": "var8",
+      "to": "cachedAuthentication",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#7",
+      "originalName": "var9",
+      "to": "preemptiveAuthorizationQuery",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#8",
+      "originalName": "var10",
+      "to": "headerNameQuery",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#9",
+      "originalName": "var11",
+      "to": "headerValueQuery",
+      "evidence": "wi.java: Reviewed proxy selection, HTTP status/header parsing, SOCKS transport, authentication lookup or alignment local.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wl.a(Lid;I)V#0",
       "originalName": "var2",
       "to": "existingPlayer",
@@ -31416,6 +32123,20 @@
       "originalName": "i",
       "to": "submitRegistration",
       "evidence": "dk.java: Checks gates, parses age and invokes account-registration helper with username/password/email/newsletter flag; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.a(B)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "connectDirect",
+      "evidence": "dl.java: Creates socket to retained target without proxy negotiation; guard -76.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.a(I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "connect",
+      "evidence": "dl.java: Connection policy contract; proxy implementation uses canonical integer guard0.",
       "confidence": "reviewed"
     },
     {
@@ -35990,6 +36711,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nd.a(IILjava/lang/String;)Ldl;",
+      "originalName": "a",
+      "to": "createSocketConnector",
+      "evidence": "nd.java: Creates proxy-aware connector retaining target host/port and current default selector; guard at least17.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nd.a(ZIIZ)Z",
       "originalName": "a",
       "to": "comesBeforeRankingRow",
@@ -39942,6 +40670,34 @@
       "originalName": "e",
       "to": "readByte",
       "evidence": "wh.java: Single stream byte or0 after close; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.a(BI)I",
+      "originalName": "a",
+      "to": "roundUpToEight",
+      "evidence": "wi.java: Adds low-three-bit padding; preserves signed wrapping; guard at most -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.a(I)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "connect",
+      "evidence": "dl.java: Connection policy contract; proxy implementation uses canonical integer guard0. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "connectHttpProxy",
+      "evidence": "wi.java: Connects proxy endpoint, writes LF-terminated HTTP1.0 CONNECT, accepts HTTP1.0/1.1 status prefixes200, parses407 auth scheme or returns null for other/EOF status; guard below -61.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;",
+      "originalName": "a",
+      "to": "connectViaProxy",
+      "evidence": "wi.java: DIRECT ignores guard; SOCKS connects Java proxy socket; HTTP probes cached auth then CONNECT; canonical guard8.",
       "confidence": "reviewed"
     },
     {
@@ -45650,6 +46406,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dl.a(B)Ljava/net/Socket;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dl.java: Creates socket to retained target without proxy negotiation; guard -76.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dl.a(I)Ljava/net/Socket;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dl.java: Connection policy contract; proxy implementation uses canonical integer guard0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dm.focusGained(Ljava/awt/event/FocusEvent;)V#0",
       "originalName": "param0",
       "to": "event",
@@ -46529,6 +47299,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ee.java: Releases index/palette/geometry arrays; alpha/has-alpha arrays and scalar count/canvas remain retained; guard96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ef.<init>(Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "authenticationScheme",
+      "evidence": "ef.java: Retains407 authentication scheme as IOException message.",
       "confidence": "reviewed"
     },
     {
@@ -58775,6 +59552,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nd.a(IILjava/lang/String;)Ldl;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nd.java: Creates proxy-aware connector retaining target host/port and current default selector; guard at least17.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nd.a(IILjava/lang/String;)Ldl;#1",
+      "originalName": "param1",
+      "to": "port",
+      "evidence": "nd.java: Creates proxy-aware connector retaining target host/port and current default selector; guard at least17.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nd.a(IILjava/lang/String;)Ldl;#2",
+      "originalName": "param2",
+      "to": "host",
+      "evidence": "nd.java: Creates proxy-aware connector retaining target host/port and current default selector; guard at least17.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nd.a(ZIIZ)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -69940,6 +70738,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wi.a(BI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wi.java: Adds low-three-bit padding; preserves signed wrapping; guard at most -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wi.a(BI)I#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "wi.java: Adds low-three-bit padding; preserves signed wrapping; guard at most -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wi.a(I)Ljava/net/Socket;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dl.java: Connection policy contract; proxy implementation uses canonical integer guard0. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wi.java: Connects proxy endpoint, writes LF-terminated HTTP1.0 CONNECT, accepts HTTP1.0/1.1 status prefixes200, parses407 auth scheme or returns null for other/EOF status; guard below -61.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#1",
+      "originalName": "param1",
+      "to": "proxyPort",
+      "evidence": "wi.java: Connects proxy endpoint, writes LF-terminated HTTP1.0 CONNECT, accepts HTTP1.0/1.1 status prefixes200, parses407 auth scheme or returns null for other/EOF status; guard below -61.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#2",
+      "originalName": "param2",
+      "to": "proxyHost",
+      "evidence": "wi.java: Connects proxy endpoint, writes LF-terminated HTTP1.0 CONNECT, accepts HTTP1.0/1.1 status prefixes200, parses407 auth scheme or returns null for other/EOF status; guard below -61.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wi.a(IILjava/lang/String;Ljava/lang/String;)Ljava/net/Socket;#3",
+      "originalName": "param3",
+      "to": "authorizationHeader",
+      "evidence": "wi.java: Connects proxy endpoint, writes LF-terminated HTTP1.0 CONNECT, accepts HTTP1.0/1.1 status prefixes200, parses407 auth scheme or returns null for other/EOF status; guard below -61.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wi.java: DIRECT ignores guard; SOCKS connects Java proxy socket; HTTP probes cached auth then CONNECT; canonical guard8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wi.a(ILjava/net/Proxy;)Ljava/net/Socket;#1",
+      "originalName": "param1",
+      "to": "proxy",
+      "evidence": "wi.java: DIRECT ignores guard; SOCKS connects Java proxy socket; HTTP probes cached auth then CONNECT; canonical guard8.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wj.a(IJ)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -70886,9 +71747,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "18e53f3ab43991aec5c7e08c3a1afc506d45cdd545d7fa50f61dbdf3523536b2",
+      "build-brickabrac-rules.mjs": "a363bb4040320b31b2661dee7d58efe93a2ab77936253e2464c56963fca55b52",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "208c5febe218d66d259bfadb40098b4e764a3cb0ca297b57290f376319267781",
+      "tests/test-brickabrac-core.mjs": "1f36d25f2021cc468d99cd1a9a77238d9a5f7de17d0c060ca4e168e728e06cc0",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

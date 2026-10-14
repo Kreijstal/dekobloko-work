@@ -1369,6 +1369,17 @@ First/last-player shutdown and signed capacity helpers are also checked.
 Real devices, vendor reopening, all scheduling combinations, ordinary worker
 error reporting, shutdown races and audible playback remain unverified.
 
+SocketConnector, ProxySocketConnector and ProxyAuthenticationRequiredException
+now name destination/selector state, candidate ordering, direct/SOCKS/HTTP
+connection stages and authentication propagation. Loopback fixtures verify
+exact LF CONNECT bytes, optional synthetic authorization, status prefixes,
+407 scheme extraction and the 50-line search bound, direct fallback and later
+candidate success. A local SOCKS5 handshake verifies target bytes; a real
+platform task retains the authentication scheme on failure. The archived 200
+prefix accepts 2000 and is preserved. Global state and fixture threads are
+restored. External proxies, cached credentials, malformed URIs, complete tunnel
+buffering and failed-client socket cleanup remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
