@@ -1098,6 +1098,34 @@ pending-game reuse, deadline bounds and cursor consumption. Nonzero removal keep
 the row while removing lookup ownership. Unknown-response error/disconnect routing,
 malformed packets, all option semantics and live/rendered interaction are unverified.
 
+Outgoing lobby actions0..11 now have request names grounded in button/context
+captions. The wire layout is a caller-supplied ISAAC-encrypted opcode, byte body
+length, action byte and big-endian payload. Named choice/setting masks and two
+qualified option bytes connect response3 to the find-opponents request.
+
+| Action | Request | Payload after action byte |
+| --- | --- | --- |
+|0|requestMatchmakingOptions|empty|
+|1|requestReturnToLobby|empty|
+|2|requestFindOpponents|choice mask, two option bytes, setting mask|
+|3|requestCancelOpponentSearch|empty|
+|4|requestCreateGame|choice byte, mode word plus optional128, settings|
+|5|requestUpdateGameOptions|maxPlayers, priority plus spectatorMode shifted6, settings|
+|6|requestInviteOrAcceptPlayer|64-bit player ID|
+|7|requestRemoveOrRejectPlayer|64-bit player ID|
+|8|requestJoinGame|16-bit game ID|
+|9|requestLeaveOrDeclineGame|16-bit game ID|
+|10|requestSpectateGame|16-bit game ID|
+|11|requestGamePlayerPreview|16-bit game ID|
+
+Independent wire fixtures verify each action, encrypted opcodes and subsequent
+cipher progression, empty/nonempty payloads, boundary byte/ID values, option-word
+addition and body-length byte wrapping. Preview checks cover old-name invalidation,
+full input ID tracking versus low16-bit wire IDs, same-ID suppression and stop/restart.
+Source arrays and current-game identity remain intact. This proves client byte
+production; oversized-payload acceptance, controller invocation, live services,
+noncanonical guards and unresolved option/mode meanings remain unverified.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded
