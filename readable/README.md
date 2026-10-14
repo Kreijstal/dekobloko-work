@@ -464,7 +464,7 @@ Native synthetic fixtures exercise version5/6/7 metadata, sparse/large IDs,
 name/digest flags, bad CRC rejection, progress/unavailable data, two-chunk group
 retrieval, all cache-policy/discard combinations, raw/gzip input, byte ownership,
 duplicate/colliding keys and sprite loading through ResourceArchive. Live
-network providers, XTEA archive retrieval, bzip decoding, index digest
+network providers, XTEA archive retrieval, index digest
 authentication, malformed recovery and full image-backed menus remain unverified.
 
 CachedArchiveSource checks group CRCs, optional digests and cached revision
@@ -1333,6 +1333,18 @@ lengths, reset/reuse, slice offsets and right-aligned bit chunks against
 [OpenSSL Whirlpool](https://docs.openssl.org/3.6/man7/EVP_MD-WHIRLPOOL/).
 These fixtures compare frozen raw Java and named Java; they do not establish
 original-JAR equivalence or live game/server performance.
+
+Bzip2Decoder/Bzip2State expose the headerless archive codec: bit input,
+alphabet, selectors, canonical Huffman tables, move-to-front lists, inverse
+BWT and pending output runs. Independent Python bz2 fixtures cover repeated
+runs, the byte alphabet, varied messages and multiple100k blocks, including
+input offsets, output quotas, untouched sentinels and the real type1 archive
+container wrapper. Internal bit/alphabet/Huffman probes and standard-library
+CRC32 slice checks verify the named helpers. Successful calls release arrays;
+truncation retains them until a subsequent success. Explicit release does not
+recreate the shared state. Naming preserves these behaviors. Checksums,
+randomized blocks, complete malformed-input handling, real assets and
+original-JAR equivalence remain unverified.
 
 ## Steel Sentinels
 

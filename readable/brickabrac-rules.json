@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 55,
+  "version": 56,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -1844,6 +1844,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ro",
+      "originalName": "ro",
+      "to": "Bzip2State",
+      "evidence": "ro.java: Input/output cursors, bit reader, alphabet/selector/Huffman/MTF tables and inverse-BWT/output-run state. Unrelated static chat/terrain helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rp",
       "originalName": "rp",
       "to": "MainMenuScreen",
@@ -1932,6 +1939,13 @@
       "originalName": "ta",
       "to": "NineSliceFrame",
       "evidence": "ta.java: Retained nine-slice sprite array delegated to tiled frame painting. Static helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tc",
+      "originalName": "tc",
+      "to": "Bzip2Decoder",
+      "evidence": "tc.java: Shared synchronized headerless BZIP2 archive decoder with100k workspace, selectors/Huffman/MTF, inverse BWT and output-run expansion; checksums and randomized blocks are not validated.",
       "confidence": "reviewed"
     },
     {
@@ -2513,6 +2527,13 @@
       "originalName": "field_t",
       "to": "scoreFilterIndex",
       "evidence": "ah.java: Score filter0/all,1/mine,2/best-each follows action14/15/16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ah.field_u:[I",
+      "originalName": "field_u",
+      "to": "bzip2TraversalTable",
+      "evidence": "ah.java: Shared100k inverse-BWT workspace: symbol in low byte and traversal link in higher bits.",
       "confidence": "reviewed"
     },
     {
@@ -12120,10 +12141,234 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ro.field_A:[Z",
+      "originalName": "field_A",
+      "to": "inUse",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_B:I",
+      "originalName": "field_B",
+      "to": "outputRemaining",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_C:[I",
+      "originalName": "field_C",
+      "to": "mtfBases",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_D:I",
+      "originalName": "field_D",
+      "to": "originalPointer",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_E:[[B",
+      "originalName": "field_E",
+      "to": "codeLengths",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_F:[[I",
+      "originalName": "field_F",
+      "to": "huffmanPermutation",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_G:I",
+      "originalName": "field_G",
+      "to": "blockUsed",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_I:[B",
+      "originalName": "field_I",
+      "to": "sequenceToByte",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_K:[B",
+      "originalName": "field_K",
+      "to": "output",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_L:B",
+      "originalName": "field_L",
+      "to": "pendingRunByte",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_a:[Z",
+      "originalName": "field_a",
+      "to": "inUseGroups",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_b:I",
+      "originalName": "field_b",
+      "to": "totalInputBytes",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_c:[I",
+      "originalName": "field_c",
+      "to": "byteFrequencies",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_d:[I",
+      "originalName": "field_d",
+      "to": "minimumCodeLengths",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_e:[B",
+      "originalName": "field_e",
+      "to": "input",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_f:[B",
+      "originalName": "field_f",
+      "to": "selectorMtf",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_g:I",
+      "originalName": "field_g",
+      "to": "traversalIndex",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_h:I",
+      "originalName": "field_h",
+      "to": "inUseCount",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_i:[I",
+      "originalName": "field_i",
+      "to": "cumulativeFrequencies",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_j:I",
+      "originalName": "field_j",
+      "to": "outputIndex",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_k:I",
+      "originalName": "field_k",
+      "to": "currentByte",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_l:[B",
+      "originalName": "field_l",
+      "to": "selectors",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_n:[[I",
+      "originalName": "field_n",
+      "to": "huffmanBase",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_o:[B",
+      "originalName": "field_o",
+      "to": "mtfSymbols",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_p:I",
+      "originalName": "field_p",
+      "to": "pendingRunLength",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_q:I",
+      "originalName": "field_q",
+      "to": "bitsAvailable",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_s:I",
+      "originalName": "field_s",
+      "to": "bitBuffer",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_t:I",
+      "originalName": "field_t",
+      "to": "totalOutputBytes",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_u:I",
+      "originalName": "field_u",
+      "to": "blockSize100k",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_w:[[I",
+      "originalName": "field_w",
+      "to": "huffmanLimits",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ro.field_x:[I",
       "originalName": "field_x",
       "to": "jungleBackgroundColors",
       "evidence": "ro.java: Indexed color at top of named theme fallback gradient; bottom color is retained by scene rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_y:I",
+      "originalName": "field_y",
+      "to": "inputIndex",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ro.field_z:I",
+      "originalName": "field_z",
+      "to": "blockLength",
+      "evidence": "ro.java: Owned BZIP2 bit, alphabet, Huffman, move-to-front, inverse-BWT or run workspace.",
       "confidence": "reviewed"
     },
     {
@@ -12397,6 +12642,13 @@
       "originalName": "field_fb",
       "to": "pressX",
       "evidence": "tb.java: Frame snapshot of livePressX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tc.field_a:Lro;",
+      "originalName": "field_a",
+      "to": "sharedState",
+      "evidence": "tc.java: Synchronized decoder state. Success releases arrays; exceptions retain them. Explicit release has no automatic recreation.",
       "confidence": "reviewed"
     },
     {
@@ -13653,6 +13905,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vq.field_D:[I",
+      "originalName": "field_D",
+      "to": "crc32Table",
+      "evidence": "vq.java: 256-entry reflected CRC32 table consumed by slice checksum.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vq.field_G:[I",
       "originalName": "field_G",
       "to": "viewFacePointTwoZ",
@@ -14819,6 +15078,76 @@
       "originalName": "fieldTemp$0",
       "to": "nextIndex",
       "evidence": "ao.java: New absolute index used for the modulo storage slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#0",
+      "originalName": "var5",
+      "to": "inputIndex",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#1",
+      "originalName": "var4_int",
+      "to": "crc",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#2",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#3",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#4",
+      "originalName": "stackIn_7_0",
+      "to": "checksum",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#5",
+      "originalName": "stackIn_10_0",
+      "to": "failureContext",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#6",
+      "originalName": "stackIn_10_1",
+      "to": "contextBuilder",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#7",
+      "originalName": "stackIn_11_2",
+      "to": "inputSummary",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ba.a([BIII)I#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ba.java: Reviewed slice CRC32 accumulator, cursor and diagnostic path.",
       "confidence": "reviewed"
     },
     {
@@ -25448,6 +25777,503 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:tc.a(ILro;)I#0",
+      "originalName": "var2",
+      "to": "value",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([BI[BII)I#0",
+      "originalName": "stackIn_2_0",
+      "to": "writtenBytes",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([BI[BII)I#2",
+      "originalName": "var5",
+      "to": "stateMonitor",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#0",
+      "originalName": "var9",
+      "to": "symbolIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#1",
+      "originalName": "dupTemp$0",
+      "to": "lengthCountIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#10",
+      "originalName": "var8Lifetime6",
+      "to": "baseCodeLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#2",
+      "originalName": "var7",
+      "to": "permutationIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#3",
+      "originalName": "var8",
+      "to": "codeLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#4",
+      "originalName": "var10",
+      "to": "canonicalCode",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#5",
+      "originalName": "var8Lifetime1",
+      "to": "baseClearIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#6",
+      "originalName": "var8Lifetime2",
+      "to": "lengthSymbolIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#7",
+      "originalName": "var8Lifetime3",
+      "to": "cumulativeLengthIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#8",
+      "originalName": "var8Lifetime4",
+      "to": "limitClearIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.a([I[I[I[BIII)V#9",
+      "originalName": "var8Lifetime5",
+      "to": "limitCodeLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#0",
+      "originalName": "dupTemp$1",
+      "to": "cumulativePosition",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#1",
+      "originalName": "dupTemp$0",
+      "to": "frequencyByte",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#10",
+      "originalName": "var9",
+      "to": "selectorCount",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#11",
+      "originalName": "var10",
+      "to": "endOfBlockSymbol",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#12",
+      "originalName": "var11",
+      "to": "selectorIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#13",
+      "originalName": "var12",
+      "to": "selectorSymbolsRemaining",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#14",
+      "originalName": "var13",
+      "to": "decodedSymbol",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#15",
+      "originalName": "var14",
+      "to": "blockLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#16",
+      "originalName": "var15",
+      "to": "runLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#17",
+      "originalName": "var16",
+      "to": "runWeight",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#18",
+      "originalName": "var17",
+      "to": "currentCodeLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#19",
+      "originalName": "var18",
+      "to": "decodeLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#2",
+      "originalName": "var1",
+      "to": "decodedByteOrBit",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#20",
+      "originalName": "var19",
+      "to": "decodeBits",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#21",
+      "originalName": "var20",
+      "to": "nextDecodeBit",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#22",
+      "originalName": "var21",
+      "to": "selectedGroup",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#23",
+      "originalName": "var22",
+      "to": "selectedMinimumLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#24",
+      "originalName": "var23",
+      "to": "selectedLimits",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#25",
+      "originalName": "var24",
+      "to": "selectedBase",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#26",
+      "originalName": "var25",
+      "to": "selectedPermutation",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#27",
+      "originalName": "var26",
+      "to": "continueBlocks",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#28",
+      "originalName": "var27_ref_byte__",
+      "to": "selectorMtfList",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#29",
+      "originalName": "var27",
+      "to": "mtfBlockIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#3",
+      "originalName": "var2",
+      "to": "minimumLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#30",
+      "originalName": "var28",
+      "to": "mtfByteOrSlot",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#31",
+      "originalName": "var29",
+      "to": "mtfIndexOrPosition",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#32",
+      "originalName": "var30",
+      "to": "mtfBaseOrPosition",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#33",
+      "originalName": "var31",
+      "to": "mtfBlock",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#34",
+      "originalName": "var32",
+      "to": "mtfSlot",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#35",
+      "originalName": "var33",
+      "to": "mtfRank",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#36",
+      "originalName": "var34",
+      "to": "shiftPosition",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#37",
+      "originalName": "var35",
+      "to": "mtfPosition",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#38",
+      "originalName": "var36",
+      "to": "selectorListReference",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#39",
+      "originalName": "var37",
+      "to": "selectorList",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#4",
+      "originalName": "var3",
+      "to": "maximumLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#5",
+      "originalName": "var4",
+      "to": "symbolOrSelectorIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#6",
+      "originalName": "var5",
+      "to": "groupBitOrUnaryCount",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#7",
+      "originalName": "var6",
+      "to": "huffmanGroupIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#8",
+      "originalName": "var7",
+      "to": "alphabetSize",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.b(Lro;)V#9",
+      "originalName": "var8",
+      "to": "huffmanGroupCount",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#0",
+      "originalName": "var1",
+      "to": "nextByte",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#1",
+      "originalName": "var2",
+      "to": "pendingRunByte",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#10",
+      "originalName": "var11",
+      "to": "initialOutputRemaining",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#11",
+      "originalName": "var12",
+      "to": "blockEnd",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#12",
+      "originalName": "var13",
+      "to": "previousTotalOutput",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#13",
+      "originalName": "var14",
+      "to": "tableReference",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#14",
+      "originalName": "var15",
+      "to": "sharedTable",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#15",
+      "originalName": "var15Lifetime1",
+      "to": "activeTable",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#2",
+      "originalName": "var3",
+      "to": "pendingRunLength",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#3",
+      "originalName": "var4",
+      "to": "blockUsed",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#4",
+      "originalName": "var5",
+      "to": "currentByte",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#5",
+      "originalName": "var6",
+      "to": "traversalTable",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#6",
+      "originalName": "var7",
+      "to": "traversalIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#7",
+      "originalName": "var8",
+      "to": "output",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#8",
+      "originalName": "var9",
+      "to": "outputIndex",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.d(Lro;)V#9",
+      "originalName": "var10",
+      "to": "outputRemaining",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tc.e(Lro;)V#0",
+      "originalName": "var1",
+      "to": "byteValue",
+      "evidence": "tc.java: Reviewed BZIP2 alphabet, Huffman, MTF, run, traversal or cursor local; original identity pinned.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:te.<init>()V#0",
       "originalName": "incrementValue$0",
       "to": "orderedEntry",
@@ -27776,6 +28602,13 @@
       "originalName": "a",
       "to": "append",
       "evidence": "ao.java: Advances latestIndex and stores the same object reference; canonical guard -39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.a([BIII)I",
+      "originalName": "a",
+      "to": "computeCrc32",
+      "evidence": "ba.java: Reflected CRC32 over supplied half-open slice with initial/final complement; guard9.",
       "confidence": "reviewed"
     },
     {
@@ -35724,6 +36557,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tc.a()V",
+      "originalName": "a",
+      "to": "releaseSharedState",
+      "evidence": "tc.java: Nulls shared workspace; later decompression does not recreate it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tc.a(ILro;)I",
+      "originalName": "a",
+      "to": "readBits",
+      "evidence": "tc.java: Refills MSB-first bits, advances input counter/cursor and consumes requested width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tc.a(Lro;)B",
+      "originalName": "a",
+      "to": "readBit",
+      "evidence": "tc.java: One-bit wrapper around readBits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tc.a([BI[BII)I",
+      "originalName": "a",
+      "to": "decompress",
+      "evidence": "tc.java: Writes output from zero, starts input at given offset; compressed-length parameter unused; returns written count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tc.a([I[I[I[BIII)V",
+      "originalName": "a",
+      "to": "buildHuffmanTables",
+      "evidence": "tc.java: Canonical code permutation, cumulative length counts and limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tc.b(Lro;)V",
+      "originalName": "b",
+      "to": "decodeBlocks",
+      "evidence": "tc.java: Headerless100k blocks: alphabet, selectors, canonical Huffman codes, move-to-front, RUNA/RUNB and inverse BWT.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tc.c(Lro;)B",
+      "originalName": "c",
+      "to": "readByte",
+      "evidence": "tc.java: Eight-bit wrapper around readBits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tc.d(Lro;)V",
+      "originalName": "d",
+      "to": "emitBlock",
+      "evidence": "tc.java: Traverses inverse BWT, expands output runs and saves pending state when output quota is exhausted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tc.e(Lro;)V",
+      "originalName": "e",
+      "to": "buildSymbolMap",
+      "evidence": "tc.java: Compacts in-use bytes in ascending order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:td.a(BIII)V",
       "originalName": "a",
       "to": "drawPreview",
@@ -39235,6 +40131,34 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ao.java: Advances latestIndex and stores the same object reference; canonical guard -39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ba.a([BIII)I#0",
+      "originalName": "param0",
+      "to": "input",
+      "evidence": "ba.java: Reflected CRC32 over supplied half-open slice with initial/final complement; guard9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ba.a([BIII)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ba.java: Reflected CRC32 over supplied half-open slice with initial/final complement; guard9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ba.a([BIII)I#2",
+      "originalName": "param2",
+      "to": "start",
+      "evidence": "ba.java: Reflected CRC32 over supplied half-open slice with initial/final complement; guard9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ba.a([BIII)I#3",
+      "originalName": "param3",
+      "to": "end",
+      "evidence": "ba.java: Reflected CRC32 over supplied half-open slice with initial/final complement; guard9.",
       "confidence": "reviewed"
     },
     {
@@ -62793,6 +63717,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tc.a(ILro;)I#0",
+      "originalName": "param0",
+      "to": "bitCount",
+      "evidence": "tc.java: Refills MSB-first bits, advances input counter/cursor and consumes requested width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a(ILro;)I#1",
+      "originalName": "param1",
+      "to": "state",
+      "evidence": "tc.java: Refills MSB-first bits, advances input counter/cursor and consumes requested width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a(Lro;)B#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "tc.java: One-bit wrapper around readBits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([BI[BII)I#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "tc.java: Writes output from zero, starts input at given offset; compressed-length parameter unused; returns written count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([BI[BII)I#1",
+      "originalName": "param1",
+      "to": "outputQuota",
+      "evidence": "tc.java: Writes output from zero, starts input at given offset; compressed-length parameter unused; returns written count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([BI[BII)I#2",
+      "originalName": "param2",
+      "to": "input",
+      "evidence": "tc.java: Writes output from zero, starts input at given offset; compressed-length parameter unused; returns written count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([BI[BII)I#3",
+      "originalName": "param3",
+      "to": "unusedCompressedLength",
+      "evidence": "tc.java: Writes output from zero, starts input at given offset; compressed-length parameter unused; returns written count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([BI[BII)I#4",
+      "originalName": "param4",
+      "to": "inputOffset",
+      "evidence": "tc.java: Writes output from zero, starts input at given offset; compressed-length parameter unused; returns written count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([I[I[I[BIII)V#0",
+      "originalName": "param0",
+      "to": "limits",
+      "evidence": "tc.java: Canonical code permutation, cumulative length counts and limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([I[I[I[BIII)V#1",
+      "originalName": "param1",
+      "to": "base",
+      "evidence": "tc.java: Canonical code permutation, cumulative length counts and limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([I[I[I[BIII)V#2",
+      "originalName": "param2",
+      "to": "permutation",
+      "evidence": "tc.java: Canonical code permutation, cumulative length counts and limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([I[I[I[BIII)V#3",
+      "originalName": "param3",
+      "to": "lengths",
+      "evidence": "tc.java: Canonical code permutation, cumulative length counts and limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([I[I[I[BIII)V#4",
+      "originalName": "param4",
+      "to": "minimumLength",
+      "evidence": "tc.java: Canonical code permutation, cumulative length counts and limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([I[I[I[BIII)V#5",
+      "originalName": "param5",
+      "to": "maximumLength",
+      "evidence": "tc.java: Canonical code permutation, cumulative length counts and limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.a([I[I[I[BIII)V#6",
+      "originalName": "param6",
+      "to": "alphabetSize",
+      "evidence": "tc.java: Canonical code permutation, cumulative length counts and limit/base tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.b(Lro;)V#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "tc.java: Headerless100k blocks: alphabet, selectors, canonical Huffman codes, move-to-front, RUNA/RUNB and inverse BWT.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.c(Lro;)B#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "tc.java: Eight-bit wrapper around readBits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.d(Lro;)V#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "tc.java: Traverses inverse BWT, expands output runs and saves pending state when output quota is exhausted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tc.e(Lro;)V#0",
+      "originalName": "param0",
+      "to": "state",
+      "evidence": "tc.java: Compacts in-use bytes in ascending order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:td.<init>(ILjava/lang/String;Ljava/lang/String;I)V#0",
       "originalName": "param0",
       "to": "sceneId",
@@ -67757,9 +68814,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "9a12f6e8d54814760548da8d923990ca07eb392bb5501844226818020a023922",
+      "build-brickabrac-rules.mjs": "b7e32f35a4d6dc792984829521ab8a53ac5edb6693e5fcbfcfec6bb1d918b01c",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "a4e9167da990dca86314c4bc5beb9c1f4bf607b1e07752eb3a0753ce447804e2",
+      "tests/test-brickabrac-core.mjs": "62f59acf7f4b9930e29193f1419fd055b0b6d39cc5e33d716efba326131430e8",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
