@@ -1443,6 +1443,27 @@ arbitrary locale behavior, malformed extended metrics, concurrent use of
 shared scratch buffers, all rich-text combinations and live rendering remain
 unverified.
 
+QuickChatCategoryDefinition and QuickChatCategoryRegistry now name category
+titles, child/phrase IDs, CP1252 shortcuts, the root marker, the two group 0
+archives and the 64-entry cache. Extended definitions mark both ID arrays with
+32768 in place. Missing files produce cached empty definitions. Root discovery
+scans upward until a marked category is found; no explicit exhaustion bound is
+present. buildQuickChatCategoryMenu recursively emits child branches before
+phrase previews, generates missing phrase shortcuts beginning at `'2'`, and
+retains the -1/question-mark help entry installed by setQuickChatHelpEntry.
+Unrelated static client/resource helpers keep their existing roles.
+
+Native fixtures cover 255-entry tag records/all 256 shortcut bytes, unknown
+tags, repeated decoding, sticky markers, array replacement and extended-link
+idempotence. Controlled group 0 archives check standard/extended selection,
+original cache keys, missing-file retention, later availability, root discovery
+and cache eviction; group 1 phrase fixtures verify the resulting nested menu
+IDs, labels and generated shortcuts. Help insertion preserves child links.
+The archived lookup also permits noncanonical ID 65536 to address extended
+file 0 under a distinct cache key. Static client/UI state is restored. Cyclic
+category graphs, root searches without a marker, arbitrary malformed records,
+real catalog completeness and live server/menu behavior remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

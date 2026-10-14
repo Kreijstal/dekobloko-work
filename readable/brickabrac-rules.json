@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 62,
+  "version": 63,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -1249,6 +1249,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kn",
+      "originalName": "kn",
+      "to": "QuickChatCategoryDefinition",
+      "evidence": "kn.java: Tagged category title, child categories, phrase IDs, CP1252 shortcuts and root marker; extended links are marked in place. Unrelated static client data/helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ko",
       "originalName": "ko",
       "to": "ArchiveIndex",
@@ -1974,6 +1981,13 @@
       "originalName": "sn",
       "to": "ConstructionBackground",
       "evidence": "sn.java: Construct asset group, smoke/layered background and frame sprites. Unrelated static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:so",
+      "originalName": "so",
+      "to": "QuickChatCategoryRegistry",
+      "evidence": "so.java: Instance owner of standard/extended group0 category archives and64-entry weighted cache; returns cached definitions including missing-file placeholders. Unrelated static resource/UI helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -8389,10 +8403,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kn.field_A:Z",
+      "originalName": "field_A",
+      "to": "rootMarker",
+      "evidence": "kn.java: Tag4 marker; initial-root lookup scans until a marked category is found.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kn.field_C:Z",
       "originalName": "field_C",
       "to": "livePointerChanged",
       "evidence": "kn.java: Mouse callbacks latch pointer/button event; snapshot copies and clears it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kn.field_D:Ljava/lang/String;",
+      "originalName": "field_D",
+      "to": "title",
+      "evidence": "kn.java: Tag1 CP1252 category caption, shown for a submenu branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kn.field_u:[C",
+      "originalName": "field_u",
+      "to": "phraseShortcuts",
+      "evidence": "kn.java: Tag3 CP1252 shortcuts; menu construction supplies sequential defaults for missing phrase shortcuts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kn.field_v:[I",
+      "originalName": "field_v",
+      "to": "phraseIds",
+      "evidence": "kn.java: Tag3 unsigned-short phrase IDs; help insertion replaces them with singleton -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kn.field_w:[C",
+      "originalName": "field_w",
+      "to": "subcategoryShortcuts",
+      "evidence": "kn.java: Tag2 byte shortcuts decoded as CP1252, with zero retained as no shortcut.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kn.field_x:[I",
+      "originalName": "field_x",
+      "to": "subcategoryIds",
+      "evidence": "kn.java: Tag2 unsigned-short child-category IDs, marked with32768 for extended definitions.",
       "confidence": "reviewed"
     },
     {
@@ -11224,6 +11280,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pj.field_c:Lso;",
+      "originalName": "field_c",
+      "to": "quickChatCategories",
+      "evidence": "pj.java: Shared category registry used by root scan and recursive menu builder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pj.field_f:J",
       "originalName": "field_f",
       "to": "lastEditMillis",
@@ -12778,10 +12841,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:so.field_a:Lto;",
+      "originalName": "field_a",
+      "to": "definitions",
+      "evidence": "so.java: 64-entry weighted LRU cache keyed by original category ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:so.field_c:Lmf;",
+      "originalName": "field_c",
+      "to": "extendedArchive",
+      "evidence": "so.java: Group0 category files indexed by ID&32767 when ID>=32768.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:so.field_d:Lfk;",
       "originalName": "field_d",
       "to": "textHuffman",
       "evidence": "so.java: Shared compressed-text codec installed from huffman archive bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:so.field_g:Lmf;",
+      "originalName": "field_g",
+      "to": "standardArchive",
+      "evidence": "so.java: Group0 category files below ID32768.",
       "confidence": "reviewed"
     },
     {
@@ -18609,6 +18693,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:cq.a(BB)C#0",
+      "originalName": "var3",
+      "to": "extensionCharacter",
+      "evidence": "cq.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cq.a(BB)C#1",
+      "originalName": "var2",
+      "to": "unsignedValue",
+      "evidence": "cq.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:dh.<init>([B[I[I[I[I)V#0",
       "originalName": "var8",
       "to": "glyphIndex",
@@ -19880,6 +19978,258 @@
       "originalName": "var8",
       "to": "sinPitchCosYaw",
       "evidence": "e.java: Reviewed pose construction or depth/winding/group sorting; qualified names preserve scratch-local lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#0",
+      "originalName": "var14",
+      "to": "phraseIndex",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#1",
+      "originalName": "stackIn_3_0",
+      "to": "missingMenu",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#10",
+      "originalName": "stackIn_37_1",
+      "to": "categoryContextBuilder",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#11",
+      "originalName": "stackIn_38_2",
+      "to": "categorySummary",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#12",
+      "originalName": "stackIn_40_1",
+      "to": "styleContextBuilder",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#13",
+      "originalName": "stackIn_41_2",
+      "to": "styleTemplateSummary",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#14",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#15",
+      "originalName": "var5_int",
+      "to": "childCount",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#16",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#17",
+      "originalName": "var6",
+      "to": "phraseCount",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#18",
+      "originalName": "var7",
+      "to": "itemCount",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#19",
+      "originalName": "var8",
+      "to": "labels",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#2",
+      "originalName": "stackIn_7_0",
+      "to": "childCountValue",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#20",
+      "originalName": "var9",
+      "to": "shortcuts",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#21",
+      "originalName": "var10",
+      "to": "messageIds",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#22",
+      "originalName": "var11",
+      "to": "submenus",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#23",
+      "originalName": "var12",
+      "to": "childIndex",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#24",
+      "originalName": "var13_ref_kn",
+      "to": "childCategory",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#25",
+      "originalName": "var13",
+      "to": "defaultShortcut",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#26",
+      "originalName": "var15",
+      "to": "phraseId",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#27",
+      "originalName": "var16",
+      "to": "phrase",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#28",
+      "originalName": "var17",
+      "to": "unusedGameFlag",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#29",
+      "originalName": "var18",
+      "to": "unusedArchive",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#3",
+      "originalName": "stackIn_10_0",
+      "to": "phraseCountValue",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#30",
+      "originalName": "var19",
+      "to": "messageIdsAlias",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#31",
+      "originalName": "var20",
+      "to": "shortcutsAlias",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#32",
+      "originalName": "var21",
+      "to": "newMessageIds",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#33",
+      "originalName": "var22",
+      "to": "newShortcuts",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#34",
+      "originalName": "var12Lifetime1",
+      "to": "phraseOffset",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#35",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#4",
+      "originalName": "stackIn_28_0",
+      "to": "menu",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#5",
+      "originalName": "stackIn_31_0",
+      "to": "failureContext",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#6",
+      "originalName": "stackIn_31_1",
+      "to": "contextBuilder",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#7",
+      "originalName": "stackIn_32_2",
+      "to": "labelStyleSummary",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#8",
+      "originalName": "stackIn_34_1",
+      "to": "itemContextBuilder",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#9",
+      "originalName": "stackIn_35_2",
+      "to": "itemStyleSummary",
+      "evidence": "e.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
       "confidence": "reviewed"
     },
     {
@@ -22193,6 +22543,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:gj.b(I)Lkn;#0",
+      "originalName": "var1_int",
+      "to": "categoryId",
+      "evidence": "gj.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gj.b(I)Lkn;#1",
+      "originalName": "var2",
+      "to": "definition",
+      "evidence": "gj.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gj.b(I)Lkn;#2",
+      "originalName": "var3",
+      "to": "unusedGameFlag",
+      "evidence": "gj.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gj.b(I)Lkn;#3",
+      "originalName": "stackIn_4_0",
+      "to": "result",
+      "evidence": "gj.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gj.b(I)Lkn;#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "gj.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gj.b(I)Lkn;#5",
+      "originalName": "var1",
+      "to": "ignoredInvalidCategory",
+      "evidence": "gj.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:gj.b(I)Lkn;#6",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "gj.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:gp.a(Z)Ltk;#0",
       "originalName": "var2",
       "to": "node",
@@ -22351,6 +22750,13 @@
       "originalName": "var2",
       "to": "normalizedCharacter",
       "evidence": "gq.java: Reviewed popup input/layout declaration and consumers; exact ordinal/spelling checked; mixed roles remain qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:hb.a(Lkn;Z)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "hb.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
       "confidence": "reviewed"
     },
     {
@@ -24423,6 +24829,209 @@
       "originalName": "var8",
       "to": "guardQuotient",
       "evidence": "ki.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#0",
+      "originalName": "stackIn_9_0",
+      "to": "childShortcutTarget",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#1",
+      "originalName": "stackIn_9_1",
+      "to": "childShortcutIndex",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#10",
+      "originalName": "var4_int",
+      "to": "entryCount",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#11",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#12",
+      "originalName": "var5",
+      "to": "entryIndex",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#13",
+      "originalName": "var6",
+      "to": "shortcutByte",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#14",
+      "originalName": "var7",
+      "to": "unusedGameFlag",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#15",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#2",
+      "originalName": "stackIn_10_2",
+      "to": "childShortcut",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#3",
+      "originalName": "stackIn_16_0",
+      "to": "phraseShortcutTarget",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#4",
+      "originalName": "stackIn_16_1",
+      "to": "phraseShortcutIndex",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#5",
+      "originalName": "stackIn_17_2",
+      "to": "phraseShortcut",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#6",
+      "originalName": "stackIn_24_0",
+      "to": "failureContext",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#7",
+      "originalName": "stackIn_24_1",
+      "to": "contextBuilder",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#8",
+      "originalName": "stackIn_25_2",
+      "to": "packetSummary",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(ILwq;I)V#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(Lwq;I)V#0",
+      "originalName": "var3_int",
+      "to": "tag",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(Lwq;I)V#1",
+      "originalName": "var4",
+      "to": "unusedGameFlag",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(Lwq;I)V#2",
+      "originalName": "stackIn_9_0",
+      "to": "failureContext",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(Lwq;I)V#3",
+      "originalName": "stackIn_9_1",
+      "to": "contextBuilder",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(Lwq;I)V#4",
+      "originalName": "stackIn_10_2",
+      "to": "packetSummary",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(Lwq;I)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(Lwq;I)V#6",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.a(Lwq;I)V#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.c(B)V#0",
+      "originalName": "var5",
+      "to": "childIndex",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.c(B)V#1",
+      "originalName": "var2",
+      "to": "phraseIndex",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.c(B)V#2",
+      "originalName": "var3",
+      "to": "unusedGameFlag",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.c(B)V#3",
+      "originalName": "var2Lifetime1",
+      "to": "unusedChildIndex",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kn.c(B)V#4",
+      "originalName": "var4",
+      "to": "unusedCanvas",
+      "evidence": "kn.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
       "confidence": "reviewed"
     },
     {
@@ -28910,6 +29519,83 @@
       "originalName": "var15",
       "to": "characterOrder",
       "evidence": "sk.java: Scoped gameplay startup/level-selection/completion variable verified against local-mask, seeded-board and result consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.<init>(ILmf;Lmf;)V#0",
+      "originalName": "stackIn_8_0",
+      "to": "failureContext",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.<init>(ILmf;Lmf;)V#1",
+      "originalName": "stackIn_8_1",
+      "to": "contextBuilder",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.<init>(ILmf;Lmf;)V#2",
+      "originalName": "stackIn_9_2",
+      "to": "standardArchiveSummary",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.<init>(ILmf;Lmf;)V#3",
+      "originalName": "stackIn_11_1",
+      "to": "extendedContextBuilder",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.<init>(ILmf;Lmf;)V#4",
+      "originalName": "stackIn_12_2",
+      "to": "extendedArchiveSummary",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.<init>(ILmf;Lmf;)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.<init>(ILmf;Lmf;)V#6",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.<init>(ILmf;Lmf;)V#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.a(IB)Lkn;#0",
+      "originalName": "var4",
+      "to": "data",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.a(IB)Lkn;#1",
+      "originalName": "var3",
+      "to": "definition",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:so.a(IB)Lkn;#2",
+      "originalName": "var5",
+      "to": "unusedGuardRemainder",
+      "evidence": "so.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
       "confidence": "reviewed"
     },
     {
@@ -33785,6 +34471,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cq.a(BB)C",
+      "originalName": "a",
+      "to": "decodeCp1252Byte",
+      "evidence": "cq.java: Negative guard decodes unsigned CP1252 byte with undefined extension entries mapped to question mark; zero throws. Category parser bypasses zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cr.a(IIIB)V",
       "originalName": "a",
       "to": "drawLayer",
@@ -34363,6 +35056,13 @@
       "originalName": "a",
       "to": "createPitchYawPose",
       "evidence": "e.java: Returns twelve-int pose with zero translation and three Q16 basis columns; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:e.a(Lmh;Lmh;Lkn;ILmh;)Log;",
+      "originalName": "a",
+      "to": "buildQuickChatCategoryMenu",
+      "evidence": "e.java: Recursively places category branches before phrases, derives phrase previews, preserves help leaf -1 and supplies missing shortcuts beginning at2; guard4.",
       "confidence": "reviewed"
     },
     {
@@ -35178,6 +35878,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gj.b(I)Lkn;",
+      "originalName": "b",
+      "to": "findRootQuickChatCategory",
+      "evidence": "gj.java: Scans upward from supplied ID until rootMarker; catches IllegalArgumentException only, with no explicit exhaustion bound.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.a(BLjava/awt/Component;)V",
       "originalName": "a",
       "to": "attach",
@@ -35357,6 +36064,13 @@
       "originalName": "a",
       "to": "onHotspotAction",
       "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(Lkn;Z)V",
+      "originalName": "a",
+      "to": "setQuickChatHelpEntry",
+      "evidence": "hb.java: Replaces category phrase IDs/shortcuts with singleton -1/question mark, used for the root help entry; canonical false.",
       "confidence": "reviewed"
     },
     {
@@ -37618,6 +38332,27 @@
       "originalName": "d",
       "to": "refreshMenu",
       "evidence": "km.java: Refresh hook overridden by screens that rebuild their menu data; guard at most -60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kn.a(ILwq;I)V",
+      "originalName": "a",
+      "to": "decodeTag",
+      "evidence": "kn.java: Tag1 title,2 children/shortcuts,3 phrases/shortcuts,4 root marker. Unknown tags consume no payload; guard104.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kn.a(Lwq;I)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "kn.java: Consumes category tags until zero; reusing the definition does not reset prior state; guard -29539.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kn.c(B)V",
+      "originalName": "c",
+      "to": "markExtendedLinks",
+      "evidence": "kn.java: OR32768 into both category and phrase ID arrays in place; canonical guard -124.",
       "confidence": "reviewed"
     },
     {
@@ -41202,6 +41937,13 @@
       "originalName": "b",
       "to": "hasSprites",
       "evidence": "ki.java: Checks theme-required asset references; canonical guard below -91. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:so.a(IB)Lkn;",
+      "originalName": "a",
+      "to": "getDefinition",
+      "evidence": "so.java: Uses original ID as cache key, chooses standard/extended group0 file, decodes if present, marks extended links and caches even missing definitions; guard124 or -97.",
       "confidence": "reviewed"
     },
     {
@@ -47274,6 +48016,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cq.a(BB)C#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cq.java: Negative guard decodes unsigned CP1252 byte with undefined extension entries mapped to question mark; zero throws. Category parser bypasses zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cq.a(BB)C#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "cq.java: Negative guard decodes unsigned CP1252 byte with undefined extension entries mapped to question mark; zero throws. Category parser bypasses zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cr.<init>(IIIIIII)V#0",
       "originalName": "param0",
       "to": "x",
@@ -49560,6 +50316,41 @@
       "originalName": "param2",
       "to": "yaw",
       "evidence": "e.java: Returns twelve-int pose with zero translation and three Q16 basis columns; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#0",
+      "originalName": "param0",
+      "to": "labelStyle",
+      "evidence": "e.java: Recursively places category branches before phrases, derives phrase previews, preserves help leaf -1 and supplies missing shortcuts beginning at2; guard4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#1",
+      "originalName": "param1",
+      "to": "itemStyle",
+      "evidence": "e.java: Recursively places category branches before phrases, derives phrase previews, preserves help leaf -1 and supplies missing shortcuts beginning at2; guard4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#2",
+      "originalName": "param2",
+      "to": "category",
+      "evidence": "e.java: Recursively places category branches before phrases, derives phrase previews, preserves help leaf -1 and supplies missing shortcuts beginning at2; guard4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "e.java: Recursively places category branches before phrases, derives phrase previews, preserves help leaf -1 and supplies missing shortcuts beginning at2; guard4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:e.a(Lmh;Lmh;Lkn;ILmh;)Log;#4",
+      "originalName": "param4",
+      "to": "styleTemplate",
+      "evidence": "e.java: Recursively places category branches before phrases, derives phrase previews, preserves help leaf -1 and supplies missing shortcuts beginning at2; guard4.",
       "confidence": "reviewed"
     },
     {
@@ -52069,6 +52860,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gj.b(I)Lkn;#0",
+      "originalName": "param0",
+      "to": "startingCategoryId",
+      "evidence": "gj.java: Scans upward from supplied ID until rootMarker; catches IllegalArgumentException only, with no explicit exhaustion bound.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:gk.a(BLjava/awt/Component;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -52647,6 +53445,20 @@
       "originalName": "param3",
       "to": "widget",
       "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hb.a(Lkn;Z)V#0",
+      "originalName": "param0",
+      "to": "category",
+      "evidence": "hb.java: Replaces category phrase IDs/shortcuts with singleton -1/question mark, used for the root help entry; canonical false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hb.a(Lkn;Z)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "hb.java: Replaces category phrase IDs/shortcuts with singleton -1/question mark, used for the root help entry; canonical false.",
       "confidence": "reviewed"
     },
     {
@@ -58506,6 +59318,48 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "km.java: Refresh hook overridden by screens that rebuild their menu data; guard at most -60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kn.a(ILwq;I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kn.java: Tag1 title,2 children/shortcuts,3 phrases/shortcuts,4 root marker. Unknown tags consume no payload; guard104.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kn.a(ILwq;I)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "kn.java: Tag1 title,2 children/shortcuts,3 phrases/shortcuts,4 root marker. Unknown tags consume no payload; guard104.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kn.a(ILwq;I)V#2",
+      "originalName": "param2",
+      "to": "tag",
+      "evidence": "kn.java: Tag1 title,2 children/shortcuts,3 phrases/shortcuts,4 root marker. Unknown tags consume no payload; guard104.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kn.a(Lwq;I)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "kn.java: Consumes category tags until zero; reusing the definition does not reset prior state; guard -29539.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kn.a(Lwq;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "kn.java: Consumes category tags until zero; reusing the definition does not reset prior state; guard -29539.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kn.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "kn.java: OR32768 into both category and phrase ID arrays in place; canonical guard -124.",
       "confidence": "reviewed"
     },
     {
@@ -69387,6 +70241,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:so.<init>(ILmf;Lmf;)V#0",
+      "originalName": "param0",
+      "to": "unusedOption",
+      "evidence": "so.java: Retains both archives, queries group0 capacities and constructs64-entry cache; option unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:so.<init>(ILmf;Lmf;)V#1",
+      "originalName": "param1",
+      "to": "standardArchive",
+      "evidence": "so.java: Retains both archives, queries group0 capacities and constructs64-entry cache; option unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:so.<init>(ILmf;Lmf;)V#2",
+      "originalName": "param2",
+      "to": "extendedArchive",
+      "evidence": "so.java: Retains both archives, queries group0 capacities and constructs64-entry cache; option unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:so.a(IB)Lkn;#0",
+      "originalName": "param0",
+      "to": "categoryId",
+      "evidence": "so.java: Uses original ID as cache key, chooses standard/extended group0 file, decodes if present, marks extended links and caches even missing definitions; guard124 or -97.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:so.a(IB)Lkn;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "so.java: Uses original ID as cache key, chooses standard/extended group0 file, decodes if present, marks extended links and caches even missing definitions; guard124 or -97.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sp.<init>(IIIIII[I)V#0",
       "originalName": "param0",
       "to": "tableId",
@@ -74806,9 +75695,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "6256b6367202674e8cbc328840fdc4ee1ec6749c0fa67d451980d0acaf6b6149",
+      "build-brickabrac-rules.mjs": "3c8b253aee019b937469acbf288585537500713279e1e4f5fbe2eaaddb8ce6ff",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "f451a0ed88743e3b4b95c48f9b47c751790792dd7a6bb999578db4014c6a6816",
+      "tests/test-brickabrac-core.mjs": "8aea5f4be21cab77ce8e38705ff0f9c468808f568b151bd4a3cca69d55115d9b",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
