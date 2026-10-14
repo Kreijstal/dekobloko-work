@@ -1321,6 +1321,19 @@ only in `games/brickabrac` and reverses every source byte through the one curren
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded
 separately from the gamepack and source-tree identities.
 
+Brick a Brac also names CacheEntry, StrongCacheEntry and WeightedLruCache,
+with independent access-ordered eviction fixtures, null-value refunds and
+synthetic soft-style promotion checks. Login credentials expose numeric/email
+payloads, factory precedence and wire discriminators; independent byte fixtures
+cover the compact base38 password encoding. LoginMethodPreference preserves
+exact cookie identities, including the archived `usename` spelling, without
+exercising browser persistence or live authentication. WhirlpoolHasher names
+its block, length, hash and round workspaces; digest fixtures compare boundary
+lengths, reset/reuse, slice offsets and right-aligned bit chunks against
+[OpenSSL Whirlpool](https://docs.openssl.org/3.6/man7/EVP_MD-WHIRLPOOL/).
+These fixtures compare frozen raw Java and named Java; they do not establish
+original-JAR equivalence or live game/server performance.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

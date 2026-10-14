@@ -290,6 +290,16 @@ const classes={
  w:['ScreenshotViewer','Indexed screenshot/caption viewer used by membership-benefits presentation; includes input, drawing and applet-derived configuration. Static helpers remain separate.'],
  vc:['GameLayerController','Render/key/update and qualified readiness contract used by the interactive client.'],
  sb:['BrickGameLayerController','Concrete Brick rendering/input/update coordination across menus, gameplay and multiplayer status. Static helpers remain separate.'],
+ sl:['CacheEntry','Weighted dual-linked value contract with strong/soft-style lookup behavior. Unrelated static archive/client helpers remain separate.'],
+ ej:['StrongCacheEntry','Cache entry retaining an Object reference and weight; canonical isSoft call returns false. Static helpers remain separate.'],
+ to:['WeightedLruCache','Hash index and dual-link LRU with capacity accounting, replacement, eviction, null-value removal and soft-style promotion. Static helpers remain separate.'],
+ ff:['LoginCredentials','Abstract login payload serialization and credential-kind contract. Unrelated static canvas/chat helpers remain separate.'],
+ bo:['NumericLoginCredentials','Long identifier plus encoded password login payload with wire kind2. Identifier may be encoded username or supplied account value.'],
+ cm:['AlternateNumericLoginCredentials','Same numeric payload with distinct wire kind0 selected by factory flag; exact server interpretation remains qualified.'],
+ eb:['EmailLoginCredentials','Prefixed email string and encoded password payload with wire kind3. Static lobby/graphics helpers remain separate.'],
+ cd:['LoginCredentialKind','Retained numeric wire discriminator for login credential variants. Unrelated static account/UI helpers remain separate.'],
+ me:['LoginMethodPreference','Cookie-value identity for last login method, matching and persistence. Static social/audio helpers remain separate.'],
+ eq:['WhirlpoolHasher','512-bit Whirlpool engine with256-bit length,64-byte blocks and ten-round key/cipher workspaces. Static game transport helpers remain separate.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -809,6 +819,56 @@ field('w','f','Ljava/lang/String;','title','Retained viewer title.');
 field('w','h','I','selectedScreenshot','Index used to access current screenshot.');
 field('w','g','Lre;','selection','Viewer screenshot/menu selection state.');
 method('w','<init>','(Ljava/applet/Applet;Ljava/lang/String;[Ltp;Z[Ljava/lang/String;)V','<init>','Retains viewer configuration; boolean presentation mode remains qualified.',{0:'applet',1:'title',2:'screenshots',4:'captions'});
+field('sl','u','I','weight','Capacity cost retained by constructor and credited on removal.');
+method('sl','<init>','(I)V','<init>','Retains entry weight.',['weight']);
+method('sl','g','(I)Ljava/lang/Object;','getValue','Returns referenced value or null if unavailable; guard1.',['obfuscationGuard']);
+method('sl','b','(Z)Z','isSoft','Predicate for cache promotion behavior; canonical true guard.',['obfuscationGuard']);
+field('ej','N','Ljava/lang/Object;','value','Strongly retained object returned by getValue.');
+method('ej','<init>','(Ljava/lang/Object;I)V','<init>','Retains object and weight.',['value','weight']);
+for(const [original,type,to,evidence] of [['m','I','capacity','Maximum retained weight.'],['d','I','remainingCapacity','Capacity credited on removal and debited on insertion.'],['c','Lji;','index','Key-to-entry hash index.'],['j','Lgp;','lruEntries','Secondary links ordered oldest to most recently accessed.']])field('to',original,type,to,evidence);
+method('to','<init>','(I)V','<init>','Creates positive-capacity cache with bounded power-of-two bucket count.',['capacity']);
+method('to','<init>','(II)V','<init>','Capacity and upper bound for bucket selection.',['capacity','bucketLimit']);
+method('to','a','(JZ)Ljava/lang/Object;','get','Removes null-value entries, touches strong values or promotes soft-style entries to strong; true guard.',['key','obfuscationGuard']);
+method('to','a','(ILjava/lang/Object;J)V','put','Inserts weight-one value; guard at least60.',['obfuscationGuard','value','key']);
+method('to','a','(IJILjava/lang/Object;)V','putWeighted','Rejects weight above capacity, replaces same key, evicts oldest until weight fits and adds strong entry; guard -1.',['obfuscationGuard','key','weight','value']);
+method('to','a','(JI)V','removeKey','Looks up and removes existing key; guard38.',['key','obfuscationGuard']);
+method('to','a','(ZLsl;)V','removeEntry','Unlinks both ownership chains and credits weight; false guard.',['obfuscationGuard','entry']);
+method('ff','a','(ILwq;)V','writeCredentials','Serializes identifier/email and encoded password; guard0.',['obfuscationGuard','packet']);
+method('ff','a','(I)Lcd;','getCredentialKind','Returns variant wire discriminator; guard13.',['obfuscationGuard']);
+field('bo','m','J','identifier','Serialized64-bit numeric/encoded-name identifier.');
+field('bo','k','Ljava/lang/String;','password','Encoded through packet compact base38 string writer.');
+method('bo','<init>','(JLjava/lang/String;)V','<init>','Retains identifier/password.',['identifier','password']);
+method('cm','<init>','(JLjava/lang/String;)V','<init>','Same payload as numeric variant with different discriminator.',['identifier','password']);
+field('eb','k','Ljava/lang/String;','email','Serialized prefixed CP1252 address.');
+field('eb','o','Ljava/lang/String;','password','Encoded through compact base38 string writer.');
+method('eb','<init>','(Ljava/lang/String;Ljava/lang/String;)V','<init>','Retains email/password.',['email','password']);
+field('cd','a','I','wireCode','Credential discriminator retained by constructor.');
+method('cd','<init>','(I)V','<init>','Retains credential wire code.',['wireCode']);
+method('he','a','(JIZLjava/lang/String;Ljava/lang/String;)Lff;','createLoginCredentials','Zero identifier plus email selects email kind; otherwise flag selects numeric kind0 versus2; guard20.',['identifier','obfuscationGuard','alternateNumericKind','password','email']);
+method('ih','a','(Ljava/lang/String;ZLjava/lang/String;B)Lff;','createCredentialsForAccount','Email addresses retained as strings; other account names encoded to long before credentials factory; guard -109.',['account','alternateNumericKind','password','obfuscationGuard']);
+for(const [owner,original,to,evidence] of [['de','v','numericLoginKind','Numeric credentials return wire code2.'],['vh','X','emailLoginKind','Email credentials return wire code3.'],['bj','Y','alternateNumericLoginKind','Alternate numeric credentials return wire code0.']])field(owner,original,'Lcd;',to,evidence);
+field('me','c','Ljava/lang/String;','cookieValue','Value persisted under last-login-method cookie name.');
+method('me','<init>','(Ljava/lang/String;)V','<init>','Retains cookie identity.',['cookieValue']);
+method('me','b','(Ljava/lang/String;I)Z','matchesCookieValue','Compares retained value exactly; guard at least56.',['value','obfuscationGuard']);
+method('me','a','(ILjava/applet/Applet;)V','persistLoginMethod','Writes one-year last-login-method preference through existing cookie helper; guard at least92.',['obfuscationGuard','applet']);
+for(const [original,type,to] of [['a','[J','hashState'],['j','I','bufferedBits'],['c','I','bufferPosition'],['d','[B','bitLength'],['f','[J','roundKey'],['e','[J','blockWords'],['l','[J','roundTemporary'],['h','[B','inputBlock'],['k','[J','cipherState']])field('eq',original,type,to,'Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.');
+method('eq','b','(B)V','reset','Clears bit length, hash and buffer cursors; guard99.',['obfuscationGuard']);
+method('eq','a','(B)V','compressBlock','Loads big-endian words, performs ten table-driven rounds and feed-forward; guard above19.',['obfuscationGuard']);
+method('eq','a','([BIJ)V','updateBits','Adds bit count and packs input into512-bit compression blocks; guard540.',['input','obfuscationGuard','bitCount']);
+method('eq','a','([BII)V','finishDigest','Pads with one bit and256-bit length, writes64 digest bytes at offset without resetting; guard114.',['output','obfuscationGuard','outputOffset']);
+field('oa','Wb','[[J','whirlpoolRoundTables','Eight rotated Whirlpool substitution/mixing tables.');
+field('oa','Xb','[J','whirlpoolRoundConstants','Zero sentinel and ten round constants.');
+method('jd','a','([BIII)[B','computeWhirlpoolDigest','Hashes caller-specified byte slice into64 bytes; guard -14970.',['input','offset','obfuscationGuard','length']);
+for(const [owner,signature,entries] of [
+ ['to','a(JZ)Ljava/lang/Object;',[[0,'var4','entry'],[1,'var5','value'],[2,'var6','promotedEntry']]],
+ ['to','<init>(II)V',[[0,'var3','bucketCount']]],
+ ['to','a(IJILjava/lang/Object;)V',[[0,'var6','evictedEntry'],[1,'var7','unusedGameFlag'],[2,'var6_ref','newEntry'],[3,'runtimeException','failure']]],
+ ['eq','a(B)V',[[0,'dupTemp$0','hashWord'],[1,'arrayValue$1','blockWord'],[2,'var2','blockWordIndex'],[3,'var3','inputOffset'],[4,'var4','keyTableIndex'],[5,'var5','keyByteShift'],[6,'var6','unusedGameFlag'],[7,'var7','cipherTableIndex'],[8,'var2Lifetime1','initialWordIndex'],[9,'var2Lifetime2','round'],[10,'var2Lifetime3','feedForwardIndex'],[11,'var3Lifetime1','keyWordIndex'],[12,'var4Lifetime1','unusedCipherIndex'],[13,'var5Lifetime1','cipherByteShift'],[14,'var3Lifetime1Lifetime1','keyCopyIndex'],[15,'var3Lifetime1Lifetime2','cipherWordIndex'],[16,'var3Lifetime1Lifetime3','cipherCopyIndex']]],
+ ['eq','a([BIJ)V',[[4,'var5_int','inputByteIndex'],[6,'var6','inputPaddingBits'],[7,'var7','bufferBitOffset'],[8,'var8','alignedByte'],[9,'var9','remainingLengthBits'],[10,'var11','lengthByteIndex'],[11,'var12','lengthCarry'],[12,'var13','unusedGameFlag'],[13,'var8Lifetime1','finalAlignedByte']]],
+ ['eq','a([BII)V',[[8,'var5','digestWordIndex'],[9,'var6','digestByteOffset'],[10,'var7','digestWord'],[11,'var9','unusedGameFlag']]],
+ ['ih','a(Ljava/lang/String;ZLjava/lang/String;B)Lff;',[[0,'var4_long','identifier'],[2,'var6','email'],[3,'var7','guardArithmetic'],[4,'var8','accountCharacters'],[5,'stackIn_4_0','credentials']]],
+])for(const [ordinal,original,to] of entries)local(owner,signature,ordinal,original,to,'Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.');
+
 for(const [owner,signature,entries] of [
  ['up','a(ZI[Ljp;)V',[[0,'var4_int','slotIndex']]],
  ['up','a([Ljp;Z)V',[[0,'var4','stateIndex'],[2,'var5','style']]],
@@ -2162,10 +2222,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Native fixtures verify eased resize dimensions/centering and hook timing, immediate/forced resizing, full content fade/resize/fade sequence and wrapper replacement/unlinking. Resize advances on the fade-out completion tick. Forced completion during active resize re-enters the completion hook, installs an empty wrapper and resumes fade-in; the archived behavior is preserved and tested. Login fixtures check account getter/null handling, account replacement/password clearing and account-submit focus transfer without submitting credentials. Real registration-response dialogs check success, under-thirteen notice and response codes0/3/5/6/248 with message/action choices; code248 fixtures suppress its unrelated side-effect helper. Message actions check route IDs and owner hiding. Shared-response correction changes names only; raw/named traces and source-byte recovery remain required. Live login/registration, fullscreen rendering, full login construction, all response codes and original-JAR equivalence remain unverified.', '',
 'WidgetPaintStyle/StatefulWidgetRenderer expose sparse frame/icon/text/alpha/offset overrides, paint-before-merge layering and six state slots. Normal combines with active, hover or pressed, then focused, then disabled; sentinel values retain earlier properties. Replacing a slot creates a fresh style. Renderer copy can clone state records or share them; sprite/icon references stay shared. NineSliceFrame/paintNineSliceFrame expose tiled corners/edges/center and proportional border clipping for small rectangles. LabeledToggleRenderer/RadialSelectorRenderer/MultiValueSliderRenderer identify compatible control painting. MultiValueSliderWidget/GrowableIntList expose point values, capacity policy, append/get/removal and scale geometry. Their retained constructors throw, so fixtures initialize legal field state explicitly. ScreenshotViewer and GameLayerController/BrickGameLayerController name their roles; broad presentation and readiness behavior remains unresolved.', '',
 'Native fixtures check per-pixel nine-slice borders at zero/small/normal dimensions, all64 state-bit combinations, transparent paint layers and shallow/deep style-copy ownership. List fixtures compare append/removal/read results against an independent list for progressing additive/multiplicative policies. IterableIntrusiveHashTable/IntrusiveHashIterator fixtures model bucket/insertion order, collisions, duplicate-key lookup, ownership transfer, repeated hasNext, null-on-exhaustion next and one-use remove. Slider fixtures check add/remove-nearest and scale boundaries, preserving the archived omission of widget x from pointer-to-value conversion. Compatible-control full pixels, all sparse override combinations, invalid growth policies, live screenshot/app-mode presentation and complete game-layer readiness logic remain unverified.', '',
+'CacheEntry/StrongCacheEntry/WeightedLruCache expose weights, remaining capacity, keyed lookup and LRU ownership. Native fixtures compare deterministic positive-weight operations with an independent access-ordered model, including replacement, eviction, hits, misses, oversize rejection and null-value refunds. Synthetic abstract entries check soft-style promotion and cleared-value cleanup; no actual GC or soft-reference lifetime is claimed.', '',
+'LoginCredentials/NumericLoginCredentials/AlternateNumericLoginCredentials/EmailLoginCredentials expose numeric or prefixed CP1252 email payloads and compact base38 passwords. LoginCredentialKind names wire discriminators2/0/3; their server interpretation remains qualified. Native fixtures check factory precedence, null versus empty email, signed long extremes, account-name conversion, independent positional wire bytes and untouched buffer sentinels. LoginMethodPreference matches exact cookie values, preserving the archived usename spelling. Live authentication and browser cookie persistence are not exercised.', '',
+'WhirlpoolHasher exposes block/hash/round state, input bit count, reset, bit updates and digest output. Native fixtures compare boundary lengths and output offsets with OpenSSL Whirlpool from its legacy provider, including reuse and right-aligned nonbyte chunks that reconstruct the same byte message. The static slice helper preserves caller input. OpenSSL provider reference: https://docs.openssl.org/3.6/man7/EVP_MD-WHIRLPOOL/. Arbitrary nonbyte final-message digests, malformed input, live archive authentication and original-JAR equivalence remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:54,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:55,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

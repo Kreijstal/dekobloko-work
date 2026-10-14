@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 54,
+  "version": 55,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -388,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bo",
+      "originalName": "bo",
+      "to": "NumericLoginCredentials",
+      "evidence": "bo.java: Long identifier plus encoded password login payload with wire kind2. Identifier may be encoded username or supplied account value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:br",
       "originalName": "br",
       "to": "ContextMenu",
@@ -423,6 +430,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cd",
+      "originalName": "cd",
+      "to": "LoginCredentialKind",
+      "evidence": "cd.java: Retained numeric wire discriminator for login credential variants. Unrelated static account/UI helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cg",
       "originalName": "cg",
       "to": "NanoGameClock",
@@ -448,6 +462,13 @@
       "originalName": "cl",
       "to": "BrickMotionPath",
       "evidence": "cl.java: Deque of timed waypoints with serialized count and total cyclic duration; moving bricks attach and interpolate along it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cm",
+      "originalName": "cm",
+      "to": "AlternateNumericLoginCredentials",
+      "evidence": "cm.java: Same numeric payload with distinct wire kind0 selected by factory flag; exact server interpretation remains qualified.",
       "confidence": "reviewed"
     },
     {
@@ -570,6 +591,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eb",
+      "originalName": "eb",
+      "to": "EmailLoginCredentials",
+      "evidence": "eb.java: Prefixed email string and encoded password payload with wire kind3. Static lobby/graphics helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ec",
       "originalName": "ec",
       "to": "DialogMessagePanel",
@@ -602,6 +630,13 @@
       "originalName": "ei",
       "to": "LabeledToggleRenderer",
       "evidence": "ei.java: Toggle painter with background, checkbox rectangle/cross and optional text label. Static helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ej",
+      "originalName": "ej",
+      "to": "StrongCacheEntry",
+      "evidence": "ej.java: Cache entry retaining an Object reference and weight; canonical isSoft call returns false. Static helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -647,6 +682,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eq",
+      "originalName": "eq",
+      "to": "WhirlpoolHasher",
+      "evidence": "eq.java: 512-bit Whirlpool engine with256-bit length,64-byte blocks and ten-round key/cipher workspaces. Static game transport helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fb",
       "originalName": "fb",
       "to": "ArgbSprite",
@@ -672,6 +714,13 @@
       "originalName": "fe",
       "to": "ContentTransitionLayer",
       "evidence": "fe.java: Popup layer swapping opacity-wrapped content through fade-out, resize and fade-in phases. Static helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ff",
+      "originalName": "ff",
+      "to": "LoginCredentials",
+      "evidence": "ff.java: Abstract login payload serialization and credential-kind contract. Unrelated static canvas/chat helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -1298,6 +1347,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:me",
+      "originalName": "me",
+      "to": "LoginMethodPreference",
+      "evidence": "me.java: Cookie-value identity for last login method, matching and persistence. Static social/audio helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mf",
       "originalName": "mf",
       "to": "ResourceArchive",
@@ -1851,6 +1907,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sl",
+      "originalName": "sl",
+      "to": "CacheEntry",
+      "evidence": "sl.java: Weighted dual-linked value contract with strong/soft-style lookup behavior. Unrelated static archive/client helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sn",
       "originalName": "sn",
       "to": "ConstructionBackground",
@@ -1932,6 +1995,13 @@
       "originalName": "tn",
       "to": "MusicCrossfadeStream",
       "evidence": "tn.java: Three-synthesizer audio stream with two crossfaded track slots and an overlay. Original private throwing constructor and unrelated static helpers/data are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:to",
+      "originalName": "to",
+      "to": "WeightedLruCache",
+      "evidence": "to.java: Hash index and dual-link LRU with capacity accounting, replacement, eviction, null-value removal and soft-style promotion. Static helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -2936,6 +3006,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bj.field_Y:Lcd;",
+      "originalName": "field_Y",
+      "to": "alternateNumericLoginKind",
+      "evidence": "bj.java: Alternate numeric credentials return wire code0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bj.field_Z:I",
       "originalName": "field_Z",
       "to": "resizeDuration",
@@ -3202,10 +3279,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bo.field_k:Ljava/lang/String;",
+      "originalName": "field_k",
+      "to": "password",
+      "evidence": "bo.java: Encoded through packet compact base38 string writer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bo.field_l:Z",
       "originalName": "field_l",
       "to": "repeatMessageAvailable",
       "evidence": "bo.java: Checked by repeat helper before resending stored message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bo.field_m:J",
+      "originalName": "field_m",
+      "to": "identifier",
+      "evidence": "bo.java: Serialized64-bit numeric/encoded-name identifier.",
       "confidence": "reviewed"
     },
     {
@@ -3360,6 +3451,13 @@
       "originalName": "field_I",
       "to": "viewFacePointThreeY",
       "evidence": "cc.java: Transformed third auxiliary point Y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cd.field_a:I",
+      "originalName": "field_a",
+      "to": "wireCode",
+      "evidence": "cd.java: Credential discriminator retained by constructor.",
       "confidence": "reviewed"
     },
     {
@@ -3773,6 +3871,13 @@
       "originalName": "field_u",
       "to": "archive",
       "evidence": "de.java: Retained archive used to load membership screenshots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:de.field_v:Lcd;",
+      "originalName": "field_v",
+      "to": "numericLoginKind",
+      "evidence": "de.java: Numeric credentials return wire code2.",
       "confidence": "reviewed"
     },
     {
@@ -4245,6 +4350,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:eb.field_k:Ljava/lang/String;",
+      "originalName": "field_k",
+      "to": "email",
+      "evidence": "eb.java: Serialized prefixed CP1252 address.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eb.field_o:Ljava/lang/String;",
+      "originalName": "field_o",
+      "to": "password",
+      "evidence": "eb.java: Encoded through compact base38 string writer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ec.field_H:Ldh;",
       "originalName": "field_H",
       "to": "font",
@@ -4518,6 +4637,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ej.field_N:Ljava/lang/Object;",
+      "originalName": "field_N",
+      "to": "value",
+      "evidence": "ej.java: Strongly retained object returned by getValue.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ek.field_cb:I",
       "originalName": "field_cb",
       "to": "keyChangeReadIndex",
@@ -4609,10 +4735,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:eq.field_a:[J",
+      "originalName": "field_a",
+      "to": "hashState",
+      "evidence": "eq.java: Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_c:I",
+      "originalName": "field_c",
+      "to": "bufferPosition",
+      "evidence": "eq.java: Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_d:[B",
+      "originalName": "field_d",
+      "to": "bitLength",
+      "evidence": "eq.java: Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_e:[J",
+      "originalName": "field_e",
+      "to": "blockWords",
+      "evidence": "eq.java: Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_f:[J",
+      "originalName": "field_f",
+      "to": "roundKey",
+      "evidence": "eq.java: Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:eq.field_g:Lwh;",
       "originalName": "field_g",
       "to": "gameTransport",
       "evidence": "eq.java: Game-session byte stream, distinct from archive transport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_h:[B",
+      "originalName": "field_h",
+      "to": "inputBlock",
+      "evidence": "eq.java: Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_j:I",
+      "originalName": "field_j",
+      "to": "bufferedBits",
+      "evidence": "eq.java: Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_k:[J",
+      "originalName": "field_k",
+      "to": "cipherState",
+      "evidence": "eq.java: Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_l:[J",
+      "originalName": "field_l",
+      "to": "roundTemporary",
+      "evidence": "eq.java: Owned Whirlpool state: eight64-bit words,64-byte block and32-byte big-endian input bit count.",
       "confidence": "reviewed"
     },
     {
@@ -8613,6 +8802,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:me.field_c:Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "cookieValue",
+      "evidence": "me.java: Value persisted under last-login-method cookie name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:me.field_d:Lkl;",
       "originalName": "field_d",
       "to": "alternateActivityLoop",
@@ -9842,6 +10038,20 @@
       "originalName": "field_Vb",
       "to": "selectedTab",
       "evidence": "oa.java: Selected header/panel index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oa.field_Wb:[[J",
+      "originalName": "field_Wb",
+      "to": "whirlpoolRoundTables",
+      "evidence": "oa.java: Eight rotated Whirlpool substitution/mixing tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oa.field_Xb:[J",
+      "originalName": "field_Xb",
+      "to": "whirlpoolRoundConstants",
+      "evidence": "oa.java: Zero sentinel and ten round constants.",
       "confidence": "reviewed"
     },
     {
@@ -12064,6 +12274,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sl.field_u:I",
+      "originalName": "field_u",
+      "to": "weight",
+      "evidence": "sl.java: Capacity cost retained by constructor and credited on removal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sl.field_y:Ljava/lang/String;",
       "originalName": "field_y",
       "to": "receivedChatContextLabel",
@@ -12561,10 +12778,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:to.field_c:Lji;",
+      "originalName": "field_c",
+      "to": "index",
+      "evidence": "to.java: Key-to-entry hash index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:to.field_d:I",
+      "originalName": "field_d",
+      "to": "remainingCapacity",
+      "evidence": "to.java: Capacity credited on removal and debited on insertion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:to.field_j:Lgp;",
+      "originalName": "field_j",
+      "to": "lruEntries",
+      "evidence": "to.java: Secondary links ordered oldest to most recently accessed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:to.field_k:Lkl;",
       "originalName": "field_k",
       "to": "primaryActivityLoop",
       "evidence": "to.java: Gameplay creates uiSounds2 loop and adjusts volume from first event queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:to.field_m:I",
+      "originalName": "field_m",
+      "to": "capacity",
+      "evidence": "to.java: Maximum retained weight.",
       "confidence": "reviewed"
     },
     {
@@ -13188,6 +13433,13 @@
       "originalName": "field_W",
       "to": "radius",
       "evidence": "vh.java: Strict circular hit test excludes radius boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_X:Lcd;",
+      "originalName": "field_X",
+      "to": "emailLoginKind",
+      "evidence": "vh.java: Email credentials return wire code3.",
       "confidence": "reviewed"
     },
     {
@@ -17552,6 +17804,216 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:eq.a(B)V#0",
+      "originalName": "dupTemp$0",
+      "to": "hashWord",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#1",
+      "originalName": "arrayValue$1",
+      "to": "blockWord",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#10",
+      "originalName": "var2Lifetime3",
+      "to": "feedForwardIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#11",
+      "originalName": "var3Lifetime1",
+      "to": "keyWordIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#12",
+      "originalName": "var4Lifetime1",
+      "to": "unusedCipherIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#13",
+      "originalName": "var5Lifetime1",
+      "to": "cipherByteShift",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#14",
+      "originalName": "var3Lifetime1Lifetime1",
+      "to": "keyCopyIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#15",
+      "originalName": "var3Lifetime1Lifetime2",
+      "to": "cipherWordIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#16",
+      "originalName": "var3Lifetime1Lifetime3",
+      "to": "cipherCopyIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#2",
+      "originalName": "var2",
+      "to": "blockWordIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#3",
+      "originalName": "var3",
+      "to": "inputOffset",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#4",
+      "originalName": "var4",
+      "to": "keyTableIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#5",
+      "originalName": "var5",
+      "to": "keyByteShift",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#6",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#7",
+      "originalName": "var7",
+      "to": "cipherTableIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#8",
+      "originalName": "var2Lifetime1",
+      "to": "initialWordIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a(B)V#9",
+      "originalName": "var2Lifetime2",
+      "to": "round",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BII)V#10",
+      "originalName": "var7",
+      "to": "digestWord",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BII)V#11",
+      "originalName": "var9",
+      "to": "unusedGameFlag",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BII)V#8",
+      "originalName": "var5",
+      "to": "digestWordIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BII)V#9",
+      "originalName": "var6",
+      "to": "digestByteOffset",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BIJ)V#10",
+      "originalName": "var11",
+      "to": "lengthByteIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BIJ)V#11",
+      "originalName": "var12",
+      "to": "lengthCarry",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BIJ)V#12",
+      "originalName": "var13",
+      "to": "unusedGameFlag",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BIJ)V#13",
+      "originalName": "var8Lifetime1",
+      "to": "finalAlignedByte",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BIJ)V#4",
+      "originalName": "var5_int",
+      "to": "inputByteIndex",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BIJ)V#6",
+      "originalName": "var6",
+      "to": "inputPaddingBits",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BIJ)V#7",
+      "originalName": "var7",
+      "to": "bufferBitOffset",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BIJ)V#8",
+      "originalName": "var8",
+      "to": "alignedByte",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eq.a([BIJ)V#9",
+      "originalName": "var9",
+      "to": "remainingLengthBits",
+      "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:f.a(B)V#0",
       "originalName": "var8_int",
       "to": "dictionaryIndex",
@@ -19894,6 +20356,41 @@
       "originalName": "var8",
       "to": "request",
       "evidence": "ih.java: New request queued by priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;#0",
+      "originalName": "var4_long",
+      "to": "identifier",
+      "evidence": "ih.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;#2",
+      "originalName": "var6",
+      "to": "email",
+      "evidence": "ih.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;#3",
+      "originalName": "var7",
+      "to": "guardArithmetic",
+      "evidence": "ih.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;#4",
+      "originalName": "var8",
+      "to": "accountCharacters",
+      "evidence": "ih.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;#5",
+      "originalName": "stackIn_4_0",
+      "to": "credentials",
+      "evidence": "ih.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
       "confidence": "reviewed"
     },
     {
@@ -25595,6 +26092,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:to.<init>(II)V#0",
+      "originalName": "var3",
+      "to": "bucketCount",
+      "evidence": "to.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:to.a(IJILjava/lang/Object;)V#0",
+      "originalName": "var6",
+      "to": "evictedEntry",
+      "evidence": "to.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:to.a(IJILjava/lang/Object;)V#1",
+      "originalName": "var7",
+      "to": "unusedGameFlag",
+      "evidence": "to.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:to.a(IJILjava/lang/Object;)V#2",
+      "originalName": "var6_ref",
+      "to": "newEntry",
+      "evidence": "to.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:to.a(IJILjava/lang/Object;)V#3",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "to.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:to.a(JZ)Ljava/lang/Object;#0",
+      "originalName": "var4",
+      "to": "entry",
+      "evidence": "to.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:to.a(JZ)Ljava/lang/Object;#1",
+      "originalName": "var5",
+      "to": "value",
+      "evidence": "to.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:to.a(JZ)Ljava/lang/Object;#2",
+      "originalName": "var6",
+      "to": "promotedEntry",
+      "evidence": "to.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ud.a(ILe;B)V#0",
       "originalName": "var6",
       "to": "packet",
@@ -27604,6 +28157,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bo.a(I)Lcd;",
+      "originalName": "a",
+      "to": "getCredentialKind",
+      "evidence": "ff.java: Returns variant wire discriminator; guard13. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bo.a(ILwq;)V",
+      "originalName": "a",
+      "to": "writeCredentials",
+      "evidence": "ff.java: Serializes identifier/email and encoded password; guard0. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:br.a(BZ)I",
       "originalName": "a",
       "to": "updateAndPollAction",
@@ -27853,6 +28420,13 @@
       "originalName": "a",
       "to": "readBodySnapshot",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(I)Lcd;",
+      "originalName": "a",
+      "to": "getCredentialKind",
+      "evidence": "ff.java: Returns variant wire discriminator; guard13. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -28451,6 +29025,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eb.a(I)Lcd;",
+      "originalName": "a",
+      "to": "getCredentialKind",
+      "evidence": "ff.java: Returns variant wire discriminator; guard13. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eb.a(ILwq;)V",
+      "originalName": "a",
+      "to": "writeCredentials",
+      "evidence": "ff.java: Serializes identifier/email and encoded password; guard0. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eb.a(Lom;Lwq;IZ)V",
       "originalName": "a",
       "to": "decodeLobbyGame",
@@ -28563,6 +29151,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.b(Z)Z",
+      "originalName": "b",
+      "to": "isSoft",
+      "evidence": "sl.java: Predicate for cache promotion behavior; canonical true guard. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.g(I)Ljava/lang/Object;",
+      "originalName": "g",
+      "to": "getValue",
+      "evidence": "sl.java: Returns referenced value or null if unavailable; guard1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ek.a(IIBILd;)V",
       "originalName": "a",
       "to": "onAction",
@@ -28658,6 +29260,34 @@
       "originalName": "b",
       "to": "getRightEdge",
       "evidence": "ep.java: Maximum line final caret x, or -1 for null/empty lines; this is an extent, not width; guard31458.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.a(B)V",
+      "originalName": "a",
+      "to": "compressBlock",
+      "evidence": "eq.java: Loads big-endian words, performs ten table-driven rounds and feed-forward; guard above19.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.a([BII)V",
+      "originalName": "a",
+      "to": "finishDigest",
+      "evidence": "eq.java: Pads with one bit and256-bit length, writes64 digest bytes at offset without resetting; guard114.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.a([BIJ)V",
+      "originalName": "a",
+      "to": "updateBits",
+      "evidence": "eq.java: Adds bit count and packs input into512-bit compression blocks; guard540.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.b(B)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "eq.java: Clears bit length, hash and buffer cursors; guard99.",
       "confidence": "reviewed"
     },
     {
@@ -28763,6 +29393,20 @@
       "originalName": "k",
       "to": "onResizeCompleted",
       "evidence": "bj.java: Completion hook; content subclass installs new content and starts fade-in; guard -13717. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ff.a(I)Lcd;",
+      "originalName": "a",
+      "to": "getCredentialKind",
+      "evidence": "ff.java: Returns variant wire discriminator; guard13.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ff.a(ILwq;)V",
+      "originalName": "a",
+      "to": "writeCredentials",
+      "evidence": "ff.java: Serializes identifier/email and encoded password; guard0.",
       "confidence": "reviewed"
     },
     {
@@ -29400,6 +30044,13 @@
       "originalName": "a",
       "to": "drawLayer",
       "evidence": "oc.java: Layer0 dispatches renderer; other layers or null renderer skip it; guard -11. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:he.a(JIZLjava/lang/String;Ljava/lang/String;)Lff;",
+      "originalName": "a",
+      "to": "createLoginCredentials",
+      "evidence": "he.java: Zero identifier plus email selects email kind; otherwise flag selects numeric kind0 versus2; guard20.",
       "confidence": "reviewed"
     },
     {
@@ -30145,6 +30796,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;",
+      "originalName": "a",
+      "to": "createCredentialsForAccount",
+      "evidence": "ih.java: Email addresses retained as strings; other account names encoded to long before credentials factory; guard -109.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ih.b(B)V",
       "originalName": "b",
       "to": "closeTransport",
@@ -30471,6 +31129,13 @@
       "originalName": "h",
       "to": "tickLayerAndCheckHidden",
       "evidence": "jc.java: Approaches target opacity and reports zero target/opacity while invisible; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.a([BIII)[B",
+      "originalName": "a",
+      "to": "computeWhirlpoolDigest",
+      "evidence": "jd.java: Hashes caller-specified byte slice into64 bytes; guard -14970.",
       "confidence": "reviewed"
     },
     {
@@ -32231,10 +32896,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:me.a(ILjava/applet/Applet;)V",
+      "originalName": "a",
+      "to": "persistLoginMethod",
+      "evidence": "me.java: Writes one-year last-login-method preference through existing cookie helper; guard at least92.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:me.a(Ljava/lang/String;II)Ljava/lang/String;",
       "originalName": "a",
       "to": "requestAddIgnoredPlayer",
       "evidence": "me.java: Validates name/self/login/existing/capacity/friend conflicts, emits operation2; canonical expected login-stage2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.b(Ljava/lang/String;I)Z",
+      "originalName": "b",
+      "to": "matchesCookieValue",
+      "evidence": "me.java: Compares retained value exactly; guard at least56.",
       "confidence": "reviewed"
     },
     {
@@ -34982,6 +35661,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sl.b(Z)Z",
+      "originalName": "b",
+      "to": "isSoft",
+      "evidence": "sl.java: Predicate for cache promotion behavior; canonical true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.g(I)Ljava/lang/Object;",
+      "originalName": "g",
+      "to": "getValue",
+      "evidence": "sl.java: Returns referenced value or null if unavailable; guard1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sn.a(BIII)V",
       "originalName": "a",
       "to": "drawPreview",
@@ -35287,6 +35980,41 @@
       "originalName": "d",
       "to": "nextSubStream",
       "evidence": "qd.java: Returns next child stream for player traversal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:to.a(IJILjava/lang/Object;)V",
+      "originalName": "a",
+      "to": "putWeighted",
+      "evidence": "to.java: Rejects weight above capacity, replaces same key, evicts oldest until weight fits and adds strong entry; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:to.a(ILjava/lang/Object;J)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "to.java: Inserts weight-one value; guard at least60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:to.a(JI)V",
+      "originalName": "a",
+      "to": "removeKey",
+      "evidence": "to.java: Looks up and removes existing key; guard38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:to.a(JZ)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "to.java: Removes null-value entries, touches strong values or promotes soft-style entries to strong; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:to.a(ZLsl;)V",
+      "originalName": "a",
+      "to": "removeEntry",
+      "evidence": "to.java: Unlinks both ownership chains and credits weight; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -39637,6 +40365,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bo.<init>(JLjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "identifier",
+      "evidence": "bo.java: Retains identifier/password.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bo.<init>(JLjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "password",
+      "evidence": "bo.java: Retains identifier/password.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bo.a(I)Lcd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ff.java: Returns variant wire discriminator; guard13. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bo.a(ILwq;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ff.java: Serializes identifier/email and encoded password; guard0. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bo.a(ILwq;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "ff.java: Serializes identifier/email and encoded password; guard0. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:br.<init>(Lbr;)V#0",
       "originalName": "param0",
       "to": "styleTemplate",
@@ -40148,6 +40911,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cd.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "wireCode",
+      "evidence": "cd.java: Retains credential wire code.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cf.a(II)Loq;#0",
       "originalName": "param0",
       "to": "screenId",
@@ -40432,6 +41202,27 @@
       "originalName": "param1",
       "to": "packet",
       "evidence": "vi.java: Decodes grid/packed fixed8 position and optional signed velocities/state/type fields. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.<init>(JLjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "identifier",
+      "evidence": "cm.java: Same payload as numeric variant with different discriminator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.<init>(JLjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "password",
+      "evidence": "cm.java: Same payload as numeric variant with different discriminator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cm.a(I)Lcd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ff.java: Returns variant wire discriminator; guard13. Resolved override parameter. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -42654,6 +43445,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:eb.<init>(Ljava/lang/String;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "email",
+      "evidence": "eb.java: Retains email/password.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.<init>(Ljava/lang/String;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "password",
+      "evidence": "eb.java: Retains email/password.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.a(I)Lcd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ff.java: Returns variant wire discriminator; guard13. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.a(ILwq;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ff.java: Serializes identifier/email and encoded password; guard0. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.a(ILwq;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "ff.java: Serializes identifier/email and encoded password; guard0. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:eb.a(Lom;Lwq;IZ)V#0",
       "originalName": "param0",
       "to": "game",
@@ -43088,6 +43914,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ej.<init>(Ljava/lang/Object;I)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "ej.java: Retains object and weight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.<init>(Ljava/lang/Object;I)V#1",
+      "originalName": "param1",
+      "to": "weight",
+      "evidence": "ej.java: Retains object and weight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.b(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sl.java: Predicate for cache promotion behavior; canonical true guard. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ej.g(I)Ljava/lang/Object;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sl.java: Returns referenced value or null if unavailable; guard1. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ek.<init>(Lcp;Ltf;)V#0",
       "originalName": "param0",
       "to": "layerStack",
@@ -43344,6 +44198,62 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ep.java: Maximum line final caret x, or -1 for null/empty lines; this is an extent, not width; guard31458.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eq.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eq.java: Loads big-endian words, performs ten table-driven rounds and feed-forward; guard above19.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eq.a([BII)V#0",
+      "originalName": "param0",
+      "to": "output",
+      "evidence": "eq.java: Pads with one bit and256-bit length, writes64 digest bytes at offset without resetting; guard114.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eq.a([BII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "eq.java: Pads with one bit and256-bit length, writes64 digest bytes at offset without resetting; guard114.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eq.a([BII)V#2",
+      "originalName": "param2",
+      "to": "outputOffset",
+      "evidence": "eq.java: Pads with one bit and256-bit length, writes64 digest bytes at offset without resetting; guard114.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eq.a([BIJ)V#0",
+      "originalName": "param0",
+      "to": "input",
+      "evidence": "eq.java: Adds bit count and packs input into512-bit compression blocks; guard540.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eq.a([BIJ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "eq.java: Adds bit count and packs input into512-bit compression blocks; guard540.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eq.a([BIJ)V#2",
+      "originalName": "param2",
+      "to": "bitCount",
+      "evidence": "eq.java: Adds bit count and packs input into512-bit compression blocks; guard540.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eq.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "eq.java: Clears bit length, hash and buffer cursors; guard99.",
       "confidence": "reviewed"
     },
     {
@@ -43659,6 +44569,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "bj.java: Completion hook; content subclass installs new content and starts fade-in; guard -13717. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ff.a(I)Lcd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ff.java: Returns variant wire discriminator; guard13.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ff.a(ILwq;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ff.java: Serializes identifier/email and encoded password; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ff.a(ILwq;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "ff.java: Serializes identifier/email and encoded password; guard0.",
       "confidence": "reviewed"
     },
     {
@@ -45699,6 +46630,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:he.a(JIZLjava/lang/String;Ljava/lang/String;)Lff;#0",
+      "originalName": "param0",
+      "to": "identifier",
+      "evidence": "he.java: Zero identifier plus email selects email kind; otherwise flag selects numeric kind0 versus2; guard20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:he.a(JIZLjava/lang/String;Ljava/lang/String;)Lff;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "he.java: Zero identifier plus email selects email kind; otherwise flag selects numeric kind0 versus2; guard20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:he.a(JIZLjava/lang/String;Ljava/lang/String;)Lff;#2",
+      "originalName": "param2",
+      "to": "alternateNumericKind",
+      "evidence": "he.java: Zero identifier plus email selects email kind; otherwise flag selects numeric kind0 versus2; guard20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:he.a(JIZLjava/lang/String;Ljava/lang/String;)Lff;#3",
+      "originalName": "param3",
+      "to": "password",
+      "evidence": "he.java: Zero identifier plus email selects email kind; otherwise flag selects numeric kind0 versus2; guard20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:he.a(JIZLjava/lang/String;Ljava/lang/String;)Lff;#4",
+      "originalName": "param4",
+      "to": "email",
+      "evidence": "he.java: Zero identifier plus email selects email kind; otherwise flag selects numeric kind0 versus2; guard20.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:hf.a(Lvb;B)V#0",
       "originalName": "param0",
       "to": "textField",
@@ -47673,6 +48639,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;#0",
+      "originalName": "param0",
+      "to": "account",
+      "evidence": "ih.java: Email addresses retained as strings; other account names encoded to long before credentials factory; guard -109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;#1",
+      "originalName": "param1",
+      "to": "alternateNumericKind",
+      "evidence": "ih.java: Email addresses retained as strings; other account names encoded to long before credentials factory; guard -109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;#2",
+      "originalName": "param2",
+      "to": "password",
+      "evidence": "ih.java: Email addresses retained as strings; other account names encoded to long before credentials factory; guard -109.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ih.a(Ljava/lang/String;ZLjava/lang/String;B)Lff;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ih.java: Email addresses retained as strings; other account names encoded to long before credentials factory; guard -109.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ih.b(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -48580,6 +49574,34 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "jc.java: Approaches target opacity and reports zero target/opacity while invisible; canonical guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.a([BIII)[B#0",
+      "originalName": "param0",
+      "to": "input",
+      "evidence": "jd.java: Hashes caller-specified byte slice into64 bytes; guard -14970.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.a([BIII)[B#1",
+      "originalName": "param1",
+      "to": "offset",
+      "evidence": "jd.java: Hashes caller-specified byte slice into64 bytes; guard -14970.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.a([BIII)[B#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "jd.java: Hashes caller-specified byte slice into64 bytes; guard -14970.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jd.a([BIII)[B#3",
+      "originalName": "param3",
+      "to": "length",
+      "evidence": "jd.java: Hashes caller-specified byte slice into64 bytes; guard -14970.",
       "confidence": "reviewed"
     },
     {
@@ -53105,6 +54127,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:me.<init>(Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "cookieValue",
+      "evidence": "me.java: Retains cookie identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.a(ILjava/applet/Applet;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "me.java: Writes one-year last-login-method preference through existing cookie helper; guard at least92.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.a(ILjava/applet/Applet;)V#1",
+      "originalName": "param1",
+      "to": "applet",
+      "evidence": "me.java: Writes one-year last-login-method preference through existing cookie helper; guard at least92.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:me.a(Ljava/lang/String;II)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "name",
@@ -53123,6 +54166,20 @@
       "originalName": "param2",
       "to": "expectedLoginStage",
       "evidence": "me.java: Validates name/self/login/existing/capacity/friend conflicts, emits operation2; canonical expected login-stage2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.b(Ljava/lang/String;I)Z#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "me.java: Compares retained value exactly; guard at least56.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.b(Ljava/lang/String;I)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "me.java: Compares retained value exactly; guard at least56.",
       "confidence": "reviewed"
     },
     {
@@ -61463,6 +62520,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sl.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "weight",
+      "evidence": "sl.java: Retains entry weight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.b(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sl.java: Predicate for cache promotion behavior; canonical true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sl.g(I)Ljava/lang/Object;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "sl.java: Returns referenced value or null if unavailable; guard1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sn.<init>(ILjava/lang/String;Ljava/lang/String;I)V#0",
       "originalName": "param0",
       "to": "sceneId",
@@ -62356,6 +63434,118 @@
       "originalName": "param2",
       "to": "frames",
       "evidence": "qd.java: Mixes requested frames into caller output buffer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "capacity",
+      "evidence": "to.java: Creates positive-capacity cache with bounded power-of-two bucket count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.<init>(II)V#0",
+      "originalName": "param0",
+      "to": "capacity",
+      "evidence": "to.java: Capacity and upper bound for bucket selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.<init>(II)V#1",
+      "originalName": "param1",
+      "to": "bucketLimit",
+      "evidence": "to.java: Capacity and upper bound for bucket selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(IJILjava/lang/Object;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "to.java: Rejects weight above capacity, replaces same key, evicts oldest until weight fits and adds strong entry; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(IJILjava/lang/Object;)V#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "to.java: Rejects weight above capacity, replaces same key, evicts oldest until weight fits and adds strong entry; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(IJILjava/lang/Object;)V#2",
+      "originalName": "param2",
+      "to": "weight",
+      "evidence": "to.java: Rejects weight above capacity, replaces same key, evicts oldest until weight fits and adds strong entry; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(IJILjava/lang/Object;)V#3",
+      "originalName": "param3",
+      "to": "value",
+      "evidence": "to.java: Rejects weight above capacity, replaces same key, evicts oldest until weight fits and adds strong entry; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(ILjava/lang/Object;J)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "to.java: Inserts weight-one value; guard at least60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(ILjava/lang/Object;J)V#1",
+      "originalName": "param1",
+      "to": "value",
+      "evidence": "to.java: Inserts weight-one value; guard at least60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(ILjava/lang/Object;J)V#2",
+      "originalName": "param2",
+      "to": "key",
+      "evidence": "to.java: Inserts weight-one value; guard at least60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(JI)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "to.java: Looks up and removes existing key; guard38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(JI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "to.java: Looks up and removes existing key; guard38.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(JZ)Ljava/lang/Object;#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "to.java: Removes null-value entries, touches strong values or promotes soft-style entries to strong; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(JZ)Ljava/lang/Object;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "to.java: Removes null-value entries, touches strong values or promotes soft-style entries to strong; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(ZLsl;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "to.java: Unlinks both ownership chains and credits weight; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(ZLsl;)V#1",
+      "originalName": "param1",
+      "to": "entry",
+      "evidence": "to.java: Unlinks both ownership chains and credits weight; false guard.",
       "confidence": "reviewed"
     },
     {
@@ -66567,9 +67757,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "557a8760d85d2a917bca7dd24b363865138993956d5e36818dc0a8cf14cb7bd6",
+      "build-brickabrac-rules.mjs": "9a12f6e8d54814760548da8d923990ca07eb392bb5501844226818020a023922",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "27517dbe72149de754ce64ad1105e744cca7c24251fbab00e5c7d2321c0a9ab7",
+      "tests/test-brickabrac-core.mjs": "a4e9167da990dca86314c4bc5beb9c1f4bf607b1e07752eb3a0753ce447804e2",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
