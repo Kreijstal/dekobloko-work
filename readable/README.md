@@ -1506,6 +1506,28 @@ and zero/negative scales are covered. Static UI state is restored. Invalid
 selectors, archive exceptions, concurrency, wrong guards, live startup timing
 and original-JAR equivalence remain unverified.
 
+The remaining PlayerBoard instance actions now name message selection, eye
+expressions, defeat entry, portal teleportation, score anchors, drop cadence
+and the qualified type-26/27 toggle. Eye state indexes the `basic/eyes_game`
+sheet; numeric expressions remain qualified. Presentation messages use a
+separate java.util.Random, with unsigned power-of-two sampling or rejection
+and nonnegative remainder. They do not consume the synchronized ISAAC stream.
+Portals consume two bounded ISAAC calls, exclude the source destination, place
+the ball above the target and quantize a new angle; negative incoming X negates
+the angle, while zero follows the nonnegative branch.
+
+Native fixtures independently check scripted message sampling/rejection,
+unchanged ISAAC state for captions, eye-state setters, defeat state, score
+popup coordinates/accounting and portal position/velocity/random state. The
+drop counter converts to signed byte before modulo: periods above 128 can
+cycle at 256 increments, and nonpositive periods leave the counter unchanged.
+Closed-form cadence fixtures cover those cases. Type-26/27 fixtures cover all
+groups, reversal outside the nominal age range, unchanged unrelated types and
+the invalid current27/pending27 exception after earlier mutations. These
+behaviors are preserved. Static UI/accounting state is restored. Arbitrary
+malformed portal indices, all velocities, full match/timer advancement, actual
+eye artwork, live play and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 65,
+  "version": 66,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -7178,6 +7178,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_B:Ljava/util/Random;",
+      "originalName": "field_B",
+      "to": "messageRandom",
+      "evidence": "j.java: Separate java.util.Random used only to choose presentation messages; excluded from ISAAC call accounting.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_C:Lvl;",
       "originalName": "field_C",
       "to": "bubbles",
@@ -7353,6 +7360,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_ib:I",
+      "originalName": "field_ib",
+      "to": "eyeExpressionTicks",
+      "evidence": "j.java: Decrements during board advancement; expiry selects neutral state0 for50 ticks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_j:I",
       "originalName": "field_j",
       "to": "rightKeyCode",
@@ -7392,6 +7406,13 @@
       "originalName": "field_nb",
       "to": "scorePopups",
       "evidence": "j.java: addScore appends score text; match tick advances its rising/fading lifetime.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_o:[B",
+      "originalName": "field_o",
+      "to": "powerUpDropCounters",
+      "evidence": "j.java: Per-brick-type signed byte counters incremented before modulo by the corresponding drop period.",
       "confidence": "reviewed"
     },
     {
@@ -7483,6 +7504,13 @@
       "originalName": "field_x",
       "to": "ballPulses",
       "evidence": "j.java: Transient BallPulseEffect collection aged/unlinked by match and drawn by board renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_y:I",
+      "originalName": "field_y",
+      "to": "eyeExpression",
+      "evidence": "j.java: Indexes the eyes_game sprite table; timed changes include ball-loss states. Numeric state meanings remain qualified.",
       "confidence": "reviewed"
     },
     {
@@ -10199,6 +10227,13 @@
       "originalName": "field_e",
       "to": "next",
       "evidence": "nm.java: Next intrusive link; forward deque traversal follows it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nm.field_f:[Ljp;",
+      "originalName": "field_f",
+      "to": "gameEyeSprites",
+      "evidence": "nm.java: Loaded from basic/eyes_game and indexed by the board eye-expression state.",
       "confidence": "reviewed"
     },
     {
@@ -13688,6 +13723,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:to.field_f:[I",
+      "originalName": "field_f",
+      "to": "powerUpDropPeriods",
+      "evidence": "to.java: Shared per-type positive modulo period; nonpositive values leave the stored counter unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:to.field_j:Lgp;",
       "originalName": "field_j",
       "to": "lruEntries",
@@ -15141,6 +15183,76 @@
       "originalName": "var4",
       "to": "unusedGameFlag",
       "evidence": "a.java: Reviewed social update/lookup/request declaration and intrusive ownership; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#0",
+      "originalName": "var3_int",
+      "to": "rejectionThreshold",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#1",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#2",
+      "originalName": "var4",
+      "to": "word",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#3",
+      "originalName": "stackIn_7_0",
+      "to": "powerOfTwoResult",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#4",
+      "originalName": "stackIn_12_0",
+      "to": "remainderResult",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#5",
+      "originalName": "stackIn_15_0",
+      "to": "failureContext",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#6",
+      "originalName": "stackIn_15_1",
+      "to": "contextBuilder",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#7",
+      "originalName": "stackIn_16_2",
+      "to": "randomSummary",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:aa.a(ILjava/util/Random;Z)I#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "aa.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
       "confidence": "reviewed"
     },
     {
@@ -24020,6 +24132,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:j.a(BLon;Lvn;)V#0",
+      "originalName": "stackIn_11_0",
+      "to": "failureContext",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#1",
+      "originalName": "stackIn_11_1",
+      "to": "contextBuilder",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#10",
+      "originalName": "var7",
+      "to": "outgoingAngle",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#11",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#2",
+      "originalName": "stackIn_12_2",
+      "to": "sourceSummary",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#3",
+      "originalName": "stackIn_14_1",
+      "to": "ballContextBuilder",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#4",
+      "originalName": "stackIn_15_2",
+      "to": "ballSummary",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#6",
+      "originalName": "var4_int",
+      "to": "destinationIndex",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#7",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#8",
+      "originalName": "var5",
+      "to": "destinationPortal",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(BLon;Lvn;)V#9",
+      "originalName": "var6",
+      "to": "angleSample",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(I)V#0",
+      "originalName": "var2",
+      "to": "groupIndex",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(I)V#1",
+      "originalName": "var3",
+      "to": "brick",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(I)V#2",
+      "originalName": "var4",
+      "to": "unusedGameFlag",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(I)V#3",
+      "originalName": "var5",
+      "to": "unusedDiagnosticBuilder",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(II)Z#0",
+      "originalName": "dupTemp$0",
+      "to": "incrementedCounter",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:j.a(III)I#0",
       "originalName": "var4",
       "to": "historyIndex",
@@ -24031,6 +24262,34 @@
       "originalName": "var5",
       "to": "powerUp",
       "evidence": "j.java: Pending effect examined for type and activation tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(ILon;I)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a(ILvo;I)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.a([Ljava/lang/String;B)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:j.b(II)V#0",
+      "originalName": "var4",
+      "to": "unusedPaddle",
+      "evidence": "j.java: Reviewed board action, signed drop cadence, portal destination/angle selection or Java Random declaration.",
       "confidence": "reviewed"
     },
     {
@@ -33932,6 +34191,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aa.a(ILjava/util/Random;Z)I",
+      "originalName": "a",
+      "to": "nextBoundedJavaRandom",
+      "evidence": "aa.java: Uses unsigned multiply for powers of two, otherwise signed-range rejection then nonnegative remainder; true guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ab.a(BJ)Lid;",
       "originalName": "a",
       "to": "findLobbyPlayer",
@@ -37831,10 +38097,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.a(B)V",
+      "originalName": "a",
+      "to": "beginDefeatTransition",
+      "evidence": "j.java: Enters board state3 and resets state ticks after loss of final life; guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(BLon;Lvn;)V",
+      "originalName": "a",
+      "to": "teleportBall",
+      "evidence": "j.java: Chooses another portal with one bounded ISAAC call, positions ball above its center, then selects outgoing angle with a second call and preserves horizontal sign; guard -63.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.a(BZI)V",
       "originalName": "a",
       "to": "resetServe",
       "evidence": "j.java: Resets paddle size, queued/active balls and falling effects; optional accounting reset and explicit launch angle; guard85.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(I)V",
+      "originalName": "a",
+      "to": "toggleBrickTypes26And27",
+      "evidence": "j.java: Walks all brick groups and reverses/schedules numeric type26/27 transitions; rejects current27/pending27; guard -27.",
       "confidence": "reviewed"
     },
     {
@@ -37845,6 +38132,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.a(II)Z",
+      "originalName": "a",
+      "to": "advancePowerUpDropCounter",
+      "evidence": "j.java: Positive periods increment through signed byte conversion before modulo; returns whether retained counter is zero; guard26.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.a(III)I",
       "originalName": "a",
       "to": "ticksUntilPendingPowerUp",
@@ -37852,10 +38146,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.a(ILon;I)V",
+      "originalName": "a",
+      "to": "addBrickScore",
+      "evidence": "j.java: Scores at brick horizontal center and caller-divided height offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(ILvo;I)V",
+      "originalName": "a",
+      "to": "addPaddleScore",
+      "evidence": "j.java: Scores at caller-divided paddle width offset and50 pixels above paddle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.a(IZ)V",
       "originalName": "a",
       "to": "resetServeWithRandomAngle",
       "evidence": "j.java: Consumes one bounded board random sample, then resets serve; guard26496.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(IZI)V",
+      "originalName": "a",
+      "to": "setEyeExpression",
+      "evidence": "j.java: Stores eyes_game sprite state and duration; canonical true avoids unrelated warning update.",
       "confidence": "reviewed"
     },
     {
@@ -37891,6 +38206,20 @@
       "originalName": "a",
       "to": "readBoardSnapshot",
       "evidence": "j.java: Restores lifecycle, tick/history, score/lives, random position, brick/path/body collections, paddle and deterministic bubbles; true skips final extension.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a([Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "choosePendingMessage",
+      "evidence": "j.java: Chooses caption with separate Java Random helper, preserving synchronized ISAAC state/call count; guard75.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.b(II)V",
+      "originalName": "b",
+      "to": "setBriefEyeExpression",
+      "evidence": "j.java: Delegates eye-expression state with50-tick duration; guard16387.",
       "confidence": "reviewed"
     },
     {
@@ -45010,6 +45339,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "a.java: Moves depth bucket IDs to contiguous prefix in ascending bucket order; canonical guard94.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:aa.a(ILjava/util/Random;Z)I#0",
+      "originalName": "param0",
+      "to": "bound",
+      "evidence": "aa.java: Uses unsigned multiply for powers of two, otherwise signed-range rejection then nonnegative remainder; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:aa.a(ILjava/util/Random;Z)I#1",
+      "originalName": "param1",
+      "to": "random",
+      "evidence": "aa.java: Uses unsigned multiply for powers of two, otherwise signed-range rejection then nonnegative remainder; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:aa.a(ILjava/util/Random;Z)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "aa.java: Uses unsigned multiply for powers of two, otherwise signed-range rejection then nonnegative remainder; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -57319,6 +57669,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:j.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Enters board state3 and resets state ticks after loss of final life; guard22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(BLon;Lvn;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Chooses another portal with one bounded ISAAC call, positions ball above its center, then selects outgoing angle with a second call and preserves horizontal sign; guard -63.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(BLon;Lvn;)V#1",
+      "originalName": "param1",
+      "to": "sourcePortal",
+      "evidence": "j.java: Chooses another portal with one bounded ISAAC call, positions ball above its center, then selects outgoing angle with a second call and preserves horizontal sign; guard -63.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(BLon;Lvn;)V#2",
+      "originalName": "param2",
+      "to": "ball",
+      "evidence": "j.java: Chooses another portal with one bounded ISAAC call, positions ball above its center, then selects outgoing angle with a second call and preserves horizontal sign; guard -63.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:j.a(BZI)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -57340,6 +57718,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:j.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Walks all brick groups and reverses/schedules numeric type26/27 transitions; rejects current27/pending27; guard -27.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:j.a(IB)I#0",
       "originalName": "param0",
       "to": "bound",
@@ -57351,6 +57736,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "j.java: Increments randomCallCount before delegating bounded sampling; guard62.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(II)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Positive periods increment through signed byte conversion before modulo; returns whether retained counter is zero; guard26.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(II)Z#1",
+      "originalName": "param1",
+      "to": "typeId",
+      "evidence": "j.java: Positive periods increment through signed byte conversion before modulo; returns whether retained counter is zero; guard26.",
       "confidence": "reviewed"
     },
     {
@@ -57375,6 +57774,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:j.a(ILon;I)V#0",
+      "originalName": "param0",
+      "to": "points",
+      "evidence": "j.java: Scores at brick horizontal center and caller-divided height offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ILon;I)V#1",
+      "originalName": "param1",
+      "to": "brick",
+      "evidence": "j.java: Scores at brick horizontal center and caller-divided height offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ILon;I)V#2",
+      "originalName": "param2",
+      "to": "heightDivisor",
+      "evidence": "j.java: Scores at brick horizontal center and caller-divided height offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ILvo;I)V#0",
+      "originalName": "param0",
+      "to": "points",
+      "evidence": "j.java: Scores at caller-divided paddle width offset and50 pixels above paddle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ILvo;I)V#1",
+      "originalName": "param1",
+      "to": "paddle",
+      "evidence": "j.java: Scores at caller-divided paddle width offset and50 pixels above paddle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(ILvo;I)V#2",
+      "originalName": "param2",
+      "to": "widthDivisor",
+      "evidence": "j.java: Scores at caller-divided paddle width offset and50 pixels above paddle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:j.a(IZ)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -57386,6 +57827,27 @@
       "originalName": "param1",
       "to": "resetAccounting",
       "evidence": "j.java: Consumes one bounded board random sample, then resets serve; guard26496.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(IZI)V#0",
+      "originalName": "param0",
+      "to": "eyeExpression",
+      "evidence": "j.java: Stores eyes_game sprite state and duration; canonical true avoids unrelated warning update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(IZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Stores eyes_game sprite state and duration; canonical true avoids unrelated warning update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a(IZI)V#2",
+      "originalName": "param2",
+      "to": "ticks",
+      "evidence": "j.java: Stores eyes_game sprite state and duration; canonical true avoids unrelated warning update.",
       "confidence": "reviewed"
     },
     {
@@ -57491,6 +57953,34 @@
       "originalName": "param2",
       "to": "boardMode",
       "evidence": "j.java: Restores lifecycle, tick/history, score/lives, random position, brick/path/body collections, paddle and deterministic bubbles; true skips final extension.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a([Ljava/lang/String;B)V#0",
+      "originalName": "param0",
+      "to": "messages",
+      "evidence": "j.java: Chooses caption with separate Java Random helper, preserving synchronized ISAAC state/call count; guard75.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.a([Ljava/lang/String;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Chooses caption with separate Java Random helper, preserving synchronized ISAAC state/call count; guard75.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.b(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "j.java: Delegates eye-expression state with50-tick duration; guard16387.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:j.b(II)V#1",
+      "originalName": "param1",
+      "to": "eyeExpression",
+      "evidence": "j.java: Delegates eye-expression state with50-tick duration; guard16387.",
       "confidence": "reviewed"
     },
     {
@@ -76808,9 +77298,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "83d633c885a578d3383728df3ac0637608ad1d8114dfb08ea59a9c1d371648da",
+      "build-brickabrac-rules.mjs": "1580e71995a8f1d7337454a92a6f8f05dafbedd237c5bc1a19c6b33bd484497c",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "136dbf1cc4865c564575e17bf34bfbc6b9bea787cc245f6dd3b0538642ee96bd",
+      "tests/test-brickabrac-core.mjs": "b53ea5a3b124a4ecb9145dcc58693aa20da3507f15d143c514e1c472c37eafa2",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
