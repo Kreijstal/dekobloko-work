@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 56,
+  "version": 57,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -350,6 +350,13 @@
       "originalName": "bf",
       "to": "ToggleButtonWidget",
       "evidence": "bf.java: Older focusable button toggling inherited active state before action dispatch; static helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bg",
+      "originalName": "bg",
+      "to": "ReflectionCheck",
+      "evidence": "bg.java: Queued request ID, field/method lookup tasks, serialized invocation arguments, operation IDs, field-set values and per-operation errors. Unrelated static UI/terrain/random helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -2947,6 +2954,62 @@
       "originalName": "field_N",
       "to": "friendEntries",
       "evidence": "bf.java: Primary intrusive list sorted by presence/index after received friend updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bg.field_i:I",
+      "originalName": "field_i",
+      "to": "requestId",
+      "evidence": "bg.java: Reviewed queued reflection-check request record consumed by readiness and response dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bg.field_j:[Lql;",
+      "originalName": "field_j",
+      "to": "fieldTasks",
+      "evidence": "bg.java: Reviewed queued reflection-check request record consumed by readiness and response dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bg.field_k:[I",
+      "originalName": "field_k",
+      "to": "operationErrors",
+      "evidence": "bg.java: Reviewed queued reflection-check request record consumed by readiness and response dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bg.field_l:[Lql;",
+      "originalName": "field_l",
+      "to": "methodTasks",
+      "evidence": "bg.java: Reviewed queued reflection-check request record consumed by readiness and response dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bg.field_m:[[[B",
+      "originalName": "field_m",
+      "to": "serializedArguments",
+      "evidence": "bg.java: Reviewed queued reflection-check request record consumed by readiness and response dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bg.field_q:[I",
+      "originalName": "field_q",
+      "to": "fieldSetValues",
+      "evidence": "bg.java: Reviewed queued reflection-check request record consumed by readiness and response dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bg.field_s:I",
+      "originalName": "field_s",
+      "to": "operationCount",
+      "evidence": "bg.java: Reviewed queued reflection-check request record consumed by readiness and response dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bg.field_t:[I",
+      "originalName": "field_t",
+      "to": "operations",
+      "evidence": "bg.java: Reviewed queued reflection-check request record consumed by readiness and response dispatch.",
       "confidence": "reviewed"
     },
     {
@@ -8865,6 +8928,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mf.field_i:Lvl;",
+      "originalName": "field_i",
+      "to": "pendingReflectionChecks",
+      "evidence": "mf.java: Intrusive FIFO of reflection-check requests: parser appends, readiness/response inspect the head, completed response unlinks it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mf.field_j:[Ljava/lang/Object;",
       "originalName": "field_j",
       "to": "packedGroups",
@@ -14518,6 +14588,370 @@
       "originalName": "var5",
       "to": "icon",
       "evidence": "af.java: Icon removed from browser queue and recycled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#0",
+      "originalName": "var5",
+      "to": "operationIndex",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#1",
+      "originalName": "var10_int",
+      "to": "argumentIndex",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#10",
+      "originalName": "var6",
+      "to": "missingArgumentType",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#11",
+      "originalName": "var6_ref",
+      "to": "incompatibleArgumentClass",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#12",
+      "originalName": "var6_ref2",
+      "to": "corruptArgumentStream",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#13",
+      "originalName": "var6_ref3",
+      "to": "unexpectedPrimitiveData",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#14",
+      "originalName": "var6_ref4",
+      "to": "memberAccessDenied",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#15",
+      "originalName": "var6_ref5",
+      "to": "invalidArguments",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#16",
+      "originalName": "var6_ref6",
+      "to": "invocationFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#17",
+      "originalName": "var6_ref7",
+      "to": "securityFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#18",
+      "originalName": "var6_ref8",
+      "to": "argumentIoFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#19",
+      "originalName": "var6_ref9",
+      "to": "nullReference",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#2",
+      "originalName": "stackIn_66_0",
+      "to": "failureContext",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#20",
+      "originalName": "var6_ref10",
+      "to": "operationFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#21",
+      "originalName": "var6_ref11",
+      "to": "operationThrowable",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#22",
+      "originalName": "var8",
+      "to": "fieldValueOrModifiers",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#23",
+      "originalName": "var9",
+      "to": "arguments",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#24",
+      "originalName": "var10",
+      "to": "result",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#25",
+      "originalName": "var11",
+      "to": "argumentStream",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#26",
+      "originalName": "var12",
+      "to": "unusedGameFlag",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#27",
+      "originalName": "var13",
+      "to": "queuedRequest",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#28",
+      "originalName": "var15",
+      "to": "readField",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#3",
+      "originalName": "stackIn_66_1",
+      "to": "contextBuilder",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#30",
+      "originalName": "var16_ref",
+      "to": "writeFieldReference",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#31",
+      "originalName": "var17",
+      "to": "request",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#33",
+      "originalName": "var19",
+      "to": "writeField",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#36",
+      "originalName": "var25",
+      "to": "serializedArguments",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#37",
+      "originalName": "var26",
+      "to": "modifierField",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#38",
+      "originalName": "var27",
+      "to": "modifierMethod",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#39",
+      "originalName": "var28",
+      "to": "invokedMethod",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#4",
+      "originalName": "stackIn_67_2",
+      "to": "packetSummary",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#40",
+      "originalName": "var8Lifetime1",
+      "to": "methodModifiers",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#41",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtMissingArgumentType",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#42",
+      "originalName": "decompiledCaughtParameter1",
+      "to": "caughtIncompatibleArgumentClass",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#43",
+      "originalName": "decompiledCaughtParameter2",
+      "to": "caughtCorruptArgumentStream",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#44",
+      "originalName": "decompiledCaughtParameter3",
+      "to": "caughtUnexpectedPrimitiveData",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#45",
+      "originalName": "decompiledCaughtParameter4",
+      "to": "caughtMemberAccessDenied",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#46",
+      "originalName": "decompiledCaughtParameter5",
+      "to": "caughtInvalidArguments",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#47",
+      "originalName": "decompiledCaughtParameter6",
+      "to": "caughtInvocationFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#48",
+      "originalName": "decompiledCaughtParameter7",
+      "to": "caughtSecurityFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#49",
+      "originalName": "decompiledCaughtParameter8",
+      "to": "caughtArgumentIoFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#50",
+      "originalName": "decompiledCaughtParameter9",
+      "to": "caughtNullReference",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#51",
+      "originalName": "decompiledCaughtParameter10",
+      "to": "caughtOperationFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#52",
+      "originalName": "decompiledCaughtParameter11",
+      "to": "caughtOperationThrowable",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#53",
+      "originalName": "decompiledCaughtParameter12",
+      "to": "caughtResponseFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#54",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#55",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#6",
+      "originalName": "var2",
+      "to": "responseFailure",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#7",
+      "originalName": "var3",
+      "to": "lookupPending",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#8",
+      "originalName": "var4",
+      "to": "lookupIndexOrResponseStart",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ah.a(Lpi;B)V#9",
+      "originalName": "var6_int",
+      "to": "operation",
+      "evidence": "ah.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
       "confidence": "reviewed"
     },
     {
@@ -20723,6 +21157,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ik.a(I)Z#0",
+      "originalName": "var1",
+      "to": "request",
+      "evidence": "ik.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ik.a(I)Z#1",
+      "originalName": "var1_ref",
+      "to": "failure",
+      "evidence": "ik.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ik.a(I)Z#2",
+      "originalName": "var2",
+      "to": "operationIndex",
+      "evidence": "ik.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ik.a(I)Z#3",
+      "originalName": "var3",
+      "to": "guardArithmetic",
+      "evidence": "ik.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ik.a(I)Z#4",
+      "originalName": "var4",
+      "to": "unusedGameFlag",
+      "evidence": "ik.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ik.a(I)Z#5",
+      "originalName": "var5",
+      "to": "queuedRequest",
+      "evidence": "ik.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ik.a(I)Z#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ik.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ik.a(I)Z#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ik.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:j.a(III)I#0",
       "originalName": "var4",
       "to": "historyIndex",
@@ -24440,6 +24930,111 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#0",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#1",
+      "originalName": "stackIn_3_0",
+      "to": "byteType",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#10",
+      "originalName": "stackIn_36_0",
+      "to": "failureContext",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#11",
+      "originalName": "stackIn_36_1",
+      "to": "contextBuilder",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#12",
+      "originalName": "stackIn_37_2",
+      "to": "typeSummary",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#13",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#14",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#2",
+      "originalName": "stackIn_7_0",
+      "to": "intType",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#3",
+      "originalName": "stackIn_11_0",
+      "to": "shortType",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#4",
+      "originalName": "stackIn_15_0",
+      "to": "longType",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#5",
+      "originalName": "stackIn_18_0",
+      "to": "disabledResult",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#6",
+      "originalName": "stackIn_22_0",
+      "to": "booleanType",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#7",
+      "originalName": "stackIn_25_0",
+      "to": "floatType",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#8",
+      "originalName": "stackIn_29_0",
+      "to": "doubleType",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#9",
+      "originalName": "stackIn_33_0",
+      "to": "charType",
+      "evidence": "pj.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:pl.a(I[BIZIB)V#0",
       "originalName": "var6",
       "to": "packet",
@@ -27254,6 +27849,307 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:um.a(ILwq;BLtg;)V#0",
+      "originalName": "var6",
+      "to": "operationIndex",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#1",
+      "originalName": "var12_int",
+      "to": "parameterIndex",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#10",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#11",
+      "originalName": "var5",
+      "to": "guardArithmetic",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#12",
+      "originalName": "var7_int",
+      "to": "operation",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#13",
+      "originalName": "var7",
+      "to": "missingType",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#14",
+      "originalName": "var7_ref",
+      "to": "lookupDenied",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#15",
+      "originalName": "var7_ref2",
+      "to": "missingReference",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#16",
+      "originalName": "var7_ref3",
+      "to": "lookupFailure",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#17",
+      "originalName": "var7_ref4",
+      "to": "lookupThrowable",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#18",
+      "originalName": "var8",
+      "to": "fieldOwnerName",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#19",
+      "originalName": "var9",
+      "to": "fieldName",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#2",
+      "originalName": "var13_int",
+      "to": "argumentIndex",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#20",
+      "originalName": "var10",
+      "to": "parameterCountOrFieldValue",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#21",
+      "originalName": "var11",
+      "to": "parameterTypeNames",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#22",
+      "originalName": "var12",
+      "to": "serializedArguments",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#23",
+      "originalName": "var13",
+      "to": "parameterTypes",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#24",
+      "originalName": "var14",
+      "to": "argumentLength",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#25",
+      "originalName": "var15",
+      "to": "unusedGameFlag",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#26",
+      "originalName": "var16",
+      "to": "parsedFieldOwner",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#27",
+      "originalName": "var17",
+      "to": "parsedFieldName",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#28",
+      "originalName": "var18",
+      "to": "typeIndex",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#29",
+      "originalName": "var19",
+      "to": "request",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#3",
+      "originalName": "array$0",
+      "to": "argumentBytes",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#30",
+      "originalName": "var20",
+      "to": "argumentArrayReference",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#31",
+      "originalName": "var21",
+      "to": "methodOwnerName",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#32",
+      "originalName": "var22",
+      "to": "methodName",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#33",
+      "originalName": "var23",
+      "to": "argumentArrays",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#34",
+      "originalName": "var14Lifetime1",
+      "to": "unusedTypeIndex",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#35",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtMissingType",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#36",
+      "originalName": "decompiledCaughtParameter1",
+      "to": "caughtLookupDenied",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#37",
+      "originalName": "decompiledCaughtParameter2",
+      "to": "caughtMissingReference",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#38",
+      "originalName": "decompiledCaughtParameter3",
+      "to": "caughtLookupFailure",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#39",
+      "originalName": "decompiledCaughtParameter4",
+      "to": "caughtLookupThrowable",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#4",
+      "originalName": "stackIn_36_0",
+      "to": "failureContext",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#40",
+      "originalName": "decompiledCaughtParameter5",
+      "to": "caughtRequestFailure",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#41",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#42",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#5",
+      "originalName": "stackIn_36_1",
+      "to": "contextBuilder",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#6",
+      "originalName": "stackIn_37_2",
+      "to": "packetSummary",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#7",
+      "originalName": "stackIn_39_1",
+      "to": "serviceContextBuilder",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#8",
+      "originalName": "stackIn_40_2",
+      "to": "serviceSummary",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:um.a(ILwq;BLtg;)V#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "um.java: Reviewed reflection request parsing, asynchronous readiness, typed response/error or primitive-type resolution local.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:un.a(BLwq;)V#0",
       "originalName": "var2_int",
       "to": "winsDrawsBoundary",
@@ -28371,6 +29267,13 @@
       "originalName": "a",
       "to": "handleMenuAction",
       "evidence": "km.java: Dispatches original numeric action semantics; role follows callers and derived overrides, encodings remain unchanged. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(Lpi;B)V",
+      "originalName": "a",
+      "to": "writeReflectionCheckResponse",
+      "evidence": "ah.java: Defers pending lookups, records failed tasks as -5/-6, executes fields/methods, encodes typed results/errors, appends response CRC and unlinks one request; guard9.",
       "confidence": "reviewed"
     },
     {
@@ -31731,6 +32634,13 @@
       "originalName": "a",
       "to": "isNameSeparator",
       "evidence": "ik.java: Space, nonbreaking space, underscore or hyphen; canonical guard -9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(I)Z",
+      "originalName": "a",
+      "to": "isReflectionCheckReady",
+      "evidence": "ik.java: False for empty queue or pending field/method tasks, true once every lookup at the head is terminal; canonical guard100.",
       "confidence": "reviewed"
     },
     {
@@ -35129,6 +36039,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;",
+      "originalName": "a",
+      "to": "resolveReflectionType",
+      "evidence": "pj.java: Maps B/I/S/J/Z/F/D/C to primitive classes and otherwise uses Class.forName; true guard; V/void are not special-cased.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pj.a(Z)V",
       "originalName": "a",
       "to": "markEdited",
@@ -37320,6 +38237,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:um.a(ILwq;BLtg;)V",
+      "originalName": "a",
+      "to": "readReflectionCheckRequest",
+      "evidence": "um.java: Decodes request ID and operations0..4, queues field/method resolution tasks and retains serialized invocation arguments; guard byte -59; first integer unused.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:um.a(Loc;BI)I",
       "originalName": "a",
       "to": "getTextOriginX",
@@ -39473,6 +40397,20 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "km.java: Dispatches original numeric action semantics; role follows callers and derived overrides, encodings remain unchanged. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ah.a(Lpi;B)V#0",
+      "originalName": "param0",
+      "to": "packet",
+      "evidence": "ah.java: Defers pending lookups, records failed tasks as -5/-6, executes fields/methods, encodes typed results/errors, appends response CRC and unlinks one request; guard9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ah.a(Lpi;B)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ah.java: Defers pending lookups, records failed tasks as -5/-6, executes fields/methods, encodes typed results/errors, appends response CRC and unlinks one request; guard9.",
       "confidence": "reviewed"
     },
     {
@@ -49759,6 +50697,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ik.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ik.java: False for empty queue or pending field/method tasks, true once every lookup at the head is terminal; canonical guard100.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ik.a(ILgb;)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -59888,6 +60833,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#0",
+      "originalName": "param0",
+      "to": "typeName",
+      "evidence": "pj.java: Maps B/I/S/J/Z/F/D/C to primitive classes and otherwise uses Class.forName; true guard; V/void are not special-cased.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(Ljava/lang/String;Z)Ljava/lang/Class;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pj.java: Maps B/I/S/J/Z/F/D/C to primitive classes and otherwise uses Class.forName; true guard; V/void are not special-cased.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pj.a(Z)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -66006,6 +66965,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:um.a(ILwq;BLtg;)V#0",
+      "originalName": "param0",
+      "to": "unusedRequestContext",
+      "evidence": "um.java: Decodes request ID and operations0..4, queues field/method resolution tasks and retains serialized invocation arguments; guard byte -59; first integer unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:um.a(ILwq;BLtg;)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "um.java: Decodes request ID and operations0..4, queues field/method resolution tasks and retains serialized invocation arguments; guard byte -59; first integer unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:um.a(ILwq;BLtg;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "um.java: Decodes request ID and operations0..4, queues field/method resolution tasks and retains serialized invocation arguments; guard byte -59; first integer unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:um.a(ILwq;BLtg;)V#3",
+      "originalName": "param3",
+      "to": "services",
+      "evidence": "um.java: Decodes request ID and operations0..4, queues field/method resolution tasks and retains serialized invocation arguments; guard byte -59; first integer unused.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:um.a(Loc;BI)I#0",
       "originalName": "param0",
       "to": "widget",
@@ -68814,9 +69801,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "b7e32f35a4d6dc792984829521ab8a53ac5edb6693e5fcbfcfec6bb1d918b01c",
+      "build-brickabrac-rules.mjs": "e127afa7002c57e6322eeef561e24a91cf3fdf41afdd36097f8424949a58106a",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "62f59acf7f4b9930e29193f1419fd055b0b6d39cc5e33d716efba326131430e8",
+      "tests/test-brickabrac-core.mjs": "36ba307be7ae5f1b6fe789f04fb61a0119ca57709c44873521eeaa3af5f26f1a",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

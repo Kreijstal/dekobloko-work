@@ -1346,6 +1346,18 @@ recreate the shared state. Naming preserves these behaviors. Checksums,
 randomized blocks, complete malformed-input handling, real assets and
 original-JAR equivalence remain unverified.
 
+ReflectionCheck names queued field/method checks and their operation IDs,
+serialized arguments, set values and errors. The parser, readiness helper,
+response writer and primitive-type resolver now describe their roles. Native
+fixtures use a controlled class and the real PlatformServices dispatcher to
+verify pending deferral, reads/writes/modifiers, typed invocation results,
+selected failure codes, independent response bytes/CRC and one-request FIFO
+removal.
+Privileged lookup rejects bootstrap-owned members. Primitive descriptors are
+supported except `V`; `void` also remains unsupported. Cache/bootstrap setup,
+arbitrary serialized classes, all error codes, races, live server checks and
+original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
