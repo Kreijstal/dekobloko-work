@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 49,
+  "version": 50,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -535,6 +535,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ep",
+      "originalName": "ep",
+      "to": "WidgetTextLayout",
+      "evidence": "ep.java: Older-widget line layout with source-offset caret coordinates, line selection, height and hit testing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fb",
       "originalName": "fb",
       "to": "ArgbSprite",
@@ -633,6 +640,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gg",
+      "originalName": "gg",
+      "to": "TextHotspotRegion",
+      "evidence": "gg.java: Intrusive hotspot rectangle with integer ID and a link to its next line segment. Unrelated static assets remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gi",
       "originalName": "gi",
       "to": "DesertBackground",
@@ -679,6 +693,13 @@
       "originalName": "h",
       "to": "SingleChildWidget",
       "evidence": "h.java: Older widget wrapper forwarding layout, focus, input and tooltip behavior to one child. Static helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ha",
+      "originalName": "ha",
+      "to": "TextHotspotListener",
+      "evidence": "ha.java: Older hotspot-widget action callback receiving button, hotspot ID and source widget.",
       "confidence": "reviewed"
     },
     {
@@ -1109,6 +1130,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ml",
+      "originalName": "ml",
+      "to": "TextLineLayout",
+      "evidence": "ml.java: One line with top/bottom bounds and a caret-position array indexed by UTF16 source offsets, including rich-text tags.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mm",
       "originalName": "mm",
       "to": "ScrollPane",
@@ -1232,6 +1260,13 @@
       "originalName": "oi",
       "to": "LevelSequence",
       "evidence": "oi.java: Retains a level pack, index order, period and repeat mode; resolves level labels and decodes selected payload into board collections.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oj",
+      "originalName": "oj",
+      "to": "RichTextLayout",
+      "evidence": "oj.java: TextFont-backed older-widget layout for aligned single lines and wrapped rich text, with cached text/font/layout parameters.",
       "confidence": "reviewed"
     },
     {
@@ -3643,6 +3678,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ep.field_c:[Lml;",
+      "originalName": "field_c",
+      "to": "lines",
+      "evidence": "ep.java: Ordered line layouts used for source-offset lookup, extents and coordinate hit testing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ep.field_f:[I",
       "originalName": "field_f",
       "to": "viewVertexY",
@@ -4469,10 +4511,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gg.field_j:I",
+      "originalName": "field_j",
+      "to": "x",
+      "evidence": "gg.java: Constructor second argument and rectangle left edge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_k:Lgg;",
+      "originalName": "field_k",
+      "to": "nextSegment",
+      "evidence": "gg.java: Links same hotspot across successive line rectangles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_n:I",
+      "originalName": "field_n",
+      "to": "height",
+      "evidence": "gg.java: Inclusive bottom edge is y plus height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_r:I",
+      "originalName": "field_r",
+      "to": "width",
+      "evidence": "gg.java: Exclusive right edge is x plus width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_s:I",
+      "originalName": "field_s",
+      "to": "y",
+      "evidence": "gg.java: Constructor third argument and inclusive rectangle top edge.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gg.field_t:[I",
       "originalName": "field_t",
       "to": "decodedSpriteHeights",
       "evidence": "gg.java: Per-sprite cropped heights.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_u:I",
+      "originalName": "field_u",
+      "to": "hotspotId",
+      "evidence": "gg.java: Parsed hotspot integer ID delivered to callback and tooltip lookup.",
       "confidence": "reviewed"
     },
     {
@@ -7080,6 +7164,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lg.field_K:[Ljava/lang/String;",
+      "originalName": "field_K",
+      "to": "hotspotTooltips",
+      "evidence": "lg.java: Sparse growable array indexed by hotspot ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lg.field_N:Lgg;",
+      "originalName": "field_N",
+      "to": "hoveredHotspot",
+      "evidence": "lg.java: First matching region retained by pointer update, tooltip and highlight paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lg.field_O:Lvl;",
+      "originalName": "field_O",
+      "to": "hotspotRegions",
+      "evidence": "lg.java: Intrusive per-line rectangles created from parsed hotspot spans.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lj.field_j:Ldm;",
       "originalName": "field_j",
       "to": "mouseInput",
@@ -7850,10 +7955,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ml.field_a:I",
+      "originalName": "field_a",
+      "to": "bottom",
+      "evidence": "ml.java: Line baseline plus font descent; y hit testing includes this boundary.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ml.field_c:[I",
       "originalName": "field_c",
       "to": "viewVertexZ",
       "evidence": "ml.java: Optional view depth retained including clipped vertices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ml.field_d:I",
+      "originalName": "field_d",
+      "to": "top",
+      "evidence": "ml.java: Line baseline minus font ascent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ml.field_g:[I",
+      "originalName": "field_g",
+      "to": "caretX",
+      "evidence": "ml.java: Source length plus one caret coordinates; rich-text tag offsets repeat the same x.",
       "confidence": "reviewed"
     },
     {
@@ -8459,6 +8585,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oc.field_j:Lep;",
+      "originalName": "field_j",
+      "to": "textLayout",
+      "evidence": "oc.java: Renderer creates/caches RichTextLayout here; editor and hotspot paths query its coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oc.field_l:Lub;",
       "originalName": "field_l",
       "to": "renderer",
@@ -8690,10 +8823,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oj.field_l:I",
+      "originalName": "field_l",
+      "to": "horizontalAlignment",
+      "evidence": "oj.java: Retained layout-cache key and input used by aligned single-line or wrapped layout preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_n:I",
+      "originalName": "field_n",
+      "to": "wrapWidth",
+      "evidence": "oj.java: Retained layout-cache key and input used by aligned single-line or wrapped layout preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_p:I",
+      "originalName": "field_p",
+      "to": "lineSpacing",
+      "evidence": "oj.java: Retained layout-cache key and input used by aligned single-line or wrapped layout preparation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oj.field_t:J",
       "originalName": "field_t",
       "to": "lastGameReadMillis",
       "evidence": "oj.java: Last successful game transport byte read, used for timeout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_u:Ldh;",
+      "originalName": "field_u",
+      "to": "font",
+      "evidence": "oj.java: Retained layout-cache key and input used by aligned single-line or wrapped layout preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_v:I",
+      "originalName": "field_v",
+      "to": "verticalAlignment",
+      "evidence": "oj.java: Retained layout-cache key and input used by aligned single-line or wrapped layout preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_w:Ljava/lang/String;",
+      "originalName": "field_w",
+      "to": "cachedText",
+      "evidence": "oj.java: Retained layout-cache key and input used by aligned single-line or wrapped layout preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_x:Z",
+      "originalName": "field_x",
+      "to": "singleLine",
+      "evidence": "oj.java: Retained layout-cache key and input used by aligned single-line or wrapped layout preparation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_y:I",
+      "originalName": "field_y",
+      "to": "layoutHeight",
+      "evidence": "oj.java: Retained layout-cache key and input used by aligned single-line or wrapped layout preparation.",
       "confidence": "reviewed"
     },
     {
@@ -15375,6 +15564,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ep.a(IB)I#0",
+      "originalName": "var4",
+      "to": "lineIndex",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IB)I#1",
+      "originalName": "var5",
+      "to": "line",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IB)I#2",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IB)I#3",
+      "originalName": "var7",
+      "to": "lineArray",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IB)I#4",
+      "originalName": "var3",
+      "to": "traversalLines",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IZ)I#0",
+      "originalName": "var3",
+      "to": "lineIndex",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IZ)I#1",
+      "originalName": "var4",
+      "to": "line",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IZ)I#2",
+      "originalName": "var5",
+      "to": "unusedGameFlag",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IZI)I#0",
+      "originalName": "var5",
+      "to": "lineIndex",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IZI)I#1",
+      "originalName": "var4",
+      "to": "priorSourceLength",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IZI)I#2",
+      "originalName": "var6",
+      "to": "line",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IZI)I#3",
+      "originalName": "var7",
+      "to": "caretIndex",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.a(IZI)I#4",
+      "originalName": "var8",
+      "to": "unusedGameFlag",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.b(I)I#0",
+      "originalName": "var4",
+      "to": "lineIndex",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.b(I)I#1",
+      "originalName": "var2",
+      "to": "rightEdge",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.b(I)I#2",
+      "originalName": "var3",
+      "to": "lineArray",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.b(I)I#3",
+      "originalName": "var5",
+      "to": "line",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.b(I)I#4",
+      "originalName": "var7",
+      "to": "unusedGameFlag",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ep.b(I)I#5",
+      "originalName": "var6",
+      "to": "lineRightEdge",
+      "evidence": "ep.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:f.a(B)V#0",
       "originalName": "var8_int",
       "to": "dictionaryIndex",
@@ -19162,6 +19484,153 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:lg.b(III)Lgg;#0",
+      "originalName": "var4",
+      "to": "firstSegment",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.b(III)Lgg;#1",
+      "originalName": "var5",
+      "to": "segment",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.b(III)Lgg;#2",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#0",
+      "originalName": "var11",
+      "to": "lineIndex",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#1",
+      "originalName": "stackIn_10_0",
+      "to": "selectedLeftX",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#10",
+      "originalName": "var9",
+      "to": "lastLineIndex",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#11",
+      "originalName": "var10",
+      "to": "previousSegment",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#12",
+      "originalName": "var12",
+      "to": "line",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#13",
+      "originalName": "var13",
+      "to": "leftX",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#14",
+      "originalName": "var14",
+      "to": "rightX",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#15",
+      "originalName": "var15",
+      "to": "segment",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#16",
+      "originalName": "var16",
+      "to": "unusedGameFlag",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#17",
+      "originalName": "var7Lifetime1",
+      "to": "hotspotId",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#2",
+      "originalName": "stackIn_15_0",
+      "to": "selectedRightX",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#3",
+      "originalName": "var2",
+      "to": "searchOffset",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#4",
+      "originalName": "var3",
+      "to": "layoutProvider",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#5",
+      "originalName": "var4",
+      "to": "layout",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#6",
+      "originalName": "var5",
+      "to": "openingTagOffset",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#7",
+      "originalName": "var6",
+      "to": "hotspotIdText",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#8",
+      "originalName": "var7",
+      "to": "openingTagEnd",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:lg.i(I)V#9",
+      "originalName": "var8",
+      "to": "firstLineIndex",
+      "evidence": "lg.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:lm.a(IB)I#0",
       "originalName": "var3",
       "to": "bucketMask",
@@ -19726,6 +20195,20 @@
       "originalName": "var5",
       "to": "bucket",
       "evidence": "mk.java: Masked destination secondary bucket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ml.a(BI)I#0",
+      "originalName": "var3",
+      "to": "caretIndex",
+      "evidence": "ml.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ml.a(BI)I#1",
+      "originalName": "var4",
+      "to": "unusedGameFlag",
+      "evidence": "ml.java: Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.",
       "confidence": "reviewed"
     },
     {
@@ -25392,6 +25875,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dk.a(IIILlg;)V",
+      "originalName": "a",
+      "to": "onHotspotAction",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.a(ILmf;II)Ljp;",
       "originalName": "a",
       "to": "loadRgbSprite",
@@ -25410,6 +25900,13 @@
       "originalName": "a",
       "to": "handlePointerRelease",
       "evidence": "oc.java: Resets press state; interactive override notifies pointer listener; guard19223. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(ILjava/lang/String;Lml;ILdh;)V",
+      "originalName": "a",
+      "to": "populateCaretPositions",
+      "evidence": "dn.java: Preserves source offsets inside rich-text tags and accumulates Q8 extra space advance; guard25293.",
       "confidence": "reviewed"
     },
     {
@@ -25662,6 +26159,41 @@
       "originalName": "b",
       "to": "toByteArray",
       "evidence": "tl.java: Returns fresh bytes; direct guard16616. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(I)I",
+      "originalName": "a",
+      "to": "getHeight",
+      "evidence": "ep.java: Last line bottom minus first line top, or zero for null/empty lines; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(IB)I",
+      "originalName": "a",
+      "to": "getCaretX",
+      "evidence": "ep.java: Finds x for a source offset across lines; unmatched offset returns zero; guard below -33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(IZ)I",
+      "originalName": "a",
+      "to": "findLineIndex",
+      "evidence": "ep.java: Maps UTF16 source offset to line index, sharing adjacent line endpoints; out-of-range returns line count; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(IZI)I",
+      "originalName": "a",
+      "to": "findSourceOffset",
+      "evidence": "ep.java: Hit-tests inclusive vertical bounds and resolves nearest caret plus prior line source lengths; outside returns -1; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.b(I)I",
+      "originalName": "b",
+      "to": "getRightEdge",
+      "evidence": "ep.java: Maximum line final caret x, or -1 for null/empty lines; this is an extent, not width; guard31458.",
       "confidence": "reviewed"
     },
     {
@@ -26264,6 +26796,13 @@
       "originalName": "f",
       "to": "isFocused",
       "evidence": "oc.java: Base false; focusable and container overrides report retained/delegated focus; guard below -49. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(IIILlg;)V",
+      "originalName": "a",
+      "to": "onHotspotAction",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526.",
       "confidence": "reviewed"
     },
     {
@@ -26957,6 +27496,13 @@
       "originalName": "a",
       "to": "onAction",
       "evidence": "en.java: Action callback also reached from keyboard codes83/84 with coordinates -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.a(IIILlg;)V",
+      "originalName": "a",
+      "to": "onHotspotAction",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -28654,6 +29200,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lg.a(Ljava/lang/String;IB)V",
+      "originalName": "a",
+      "to": "setHotspotTooltip",
+      "evidence": "lg.java: Grows sparse tooltip array while preserving old entries, then stores by hotspot ID; guard -98.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lg.a(Loc;BII)V",
       "originalName": "a",
       "to": "updatePointer",
@@ -28665,6 +29218,13 @@
       "originalName": "a",
       "to": "tryFocus",
       "evidence": "oc.java: Focusable implementation clears root focus then acquires focus when enabled/focusable; true guard; containers delegate. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lg.b(III)Lgg;",
+      "originalName": "b",
+      "to": "findHotspot",
+      "evidence": "lg.java: Scans deque and linked segments; inclusive top/bottom and exclusive right; returns deque root of first matching chain; guard0.",
       "confidence": "reviewed"
     },
     {
@@ -29270,10 +29830,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ml.a(BI)I",
+      "originalName": "a",
+      "to": "findCaretIndex",
+      "evidence": "ml.java: Selects nearest caret using midpoint thresholds, choosing the later caret on an exact midpoint; guard -95.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ml.a(II)V",
       "originalName": "a",
       "to": "requestMatchmakingOptions",
       "evidence": "ml.java: Writes length1/action0 when opening opponent-finding options; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.b(B)I",
+      "originalName": "b",
+      "to": "getRightEdge",
+      "evidence": "ml.java: Returns last caret x, or zero for null/empty caret array; guard56.",
       "confidence": "reviewed"
     },
     {
@@ -29886,6 +30460,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oj.a(Ldh;IILjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "layoutLeftAligned",
+      "evidence": "oj.java: Single line begins at leftX, fills source caret positions and retains text/font cache; alignment0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a(Ljava/lang/String;IIIIIILdh;)V",
+      "originalName": "a",
+      "to": "layoutWrapped",
+      "evidence": "oj.java: Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a(Ljava/lang/String;ILdh;II)V",
+      "originalName": "a",
+      "to": "layoutCentered",
+      "evidence": "oj.java: Single line begins at centerX minus half measured advance; preserves archived cache handling; alignment1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a(Ljava/lang/String;Ldh;BI)Lml;",
+      "originalName": "a",
+      "to": "createSingleLine",
+      "evidence": "oj.java: Allocates one line with baseline-relative font bounds and source-length caret array; guard below -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a(Ljava/lang/String;Ldh;IBI)V",
+      "originalName": "a",
+      "to": "layoutRightAligned",
+      "evidence": "oj.java: Single line ends at rightX; alignment2 and guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ol.a(IIC)V",
       "originalName": "a",
       "to": "handleNavigationKey",
@@ -30418,6 +31027,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qe.a(B)I",
+      "originalName": "a",
+      "to": "getLineHeight",
+      "evidence": "qe.java: Font ascent plus descent used as minimum hotspot rectangle height; guard at least64.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qe.a(Loc;I)I",
       "originalName": "a",
       "to": "getPreferredHeight",
@@ -30429,6 +31045,13 @@
       "originalName": "b",
       "to": "getPreferredWidth",
       "evidence": "qe.java: Text constructor assigns result to Widget.width; guard31.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.c(Loc;I)Lep;",
+      "originalName": "c",
+      "to": "getTextLayout",
+      "evidence": "qe.java: Returns widget cached layout after renderer prepares text and font metrics; guard -7.",
       "confidence": "reviewed"
     },
     {
@@ -31923,6 +32546,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:um.a(B)I",
+      "originalName": "a",
+      "to": "getLineHeight",
+      "evidence": "qe.java: Font ascent plus descent used as minimum hotspot rectangle height; guard at least64. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:um.a(II)V",
       "originalName": "a",
       "to": "requestCancelOpponentSearch",
@@ -31955,6 +32585,13 @@
       "originalName": "b",
       "to": "getPreferredWidth",
       "evidence": "qe.java: Text constructor assigns result to Widget.width; guard31. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.c(Loc;I)Lep;",
+      "originalName": "c",
+      "to": "getTextLayout",
+      "evidence": "qe.java: Returns widget cached layout after renderer prepares text and font metrics; guard -7. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -37348,6 +37985,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dk.a(IIILlg;)V#0",
+      "originalName": "param0",
+      "to": "button",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dk.a(IIILlg;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dk.a(IIILlg;)V#2",
+      "originalName": "param2",
+      "to": "hotspotId",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dk.a(IIILlg;)V#3",
+      "originalName": "param3",
+      "to": "widget",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dk.a(ILmf;II)Ljp;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -37569,6 +38234,41 @@
       "originalName": "param5",
       "to": "parentX",
       "evidence": "oc.java: Resets press state; interactive override notifies pointer listener; guard19223. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ILjava/lang/String;Lml;ILdh;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "dn.java: Preserves source offsets inside rich-text tags and accumulates Q8 extra space advance; guard25293.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ILjava/lang/String;Lml;ILdh;)V#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "dn.java: Preserves source offsets inside rich-text tags and accumulates Q8 extra space advance; guard25293.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ILjava/lang/String;Lml;ILdh;)V#2",
+      "originalName": "param2",
+      "to": "line",
+      "evidence": "dn.java: Preserves source offsets inside rich-text tags and accumulates Q8 extra space advance; guard25293.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ILjava/lang/String;Lml;ILdh;)V#3",
+      "originalName": "param3",
+      "to": "extraSpaceAdvanceQ8",
+      "evidence": "dn.java: Preserves source offsets inside rich-text tags and accumulates Q8 extra space advance; guard25293.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dn.a(ILjava/lang/String;Lml;ILdh;)V#4",
+      "originalName": "param4",
+      "to": "font",
+      "evidence": "dn.java: Preserves source offsets inside rich-text tags and accumulates Q8 extra space advance; guard25293.",
       "confidence": "reviewed"
     },
     {
@@ -38423,6 +39123,69 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "tl.java: Returns fresh bytes; direct guard16616. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ep.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ep.java: Last line bottom minus first line top, or zero for null/empty lines; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ep.a(IB)I#0",
+      "originalName": "param0",
+      "to": "sourceOffset",
+      "evidence": "ep.java: Finds x for a source offset across lines; unmatched offset returns zero; guard below -33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ep.a(IB)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ep.java: Finds x for a source offset across lines; unmatched offset returns zero; guard below -33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ep.a(IZ)I#0",
+      "originalName": "param0",
+      "to": "sourceOffset",
+      "evidence": "ep.java: Maps UTF16 source offset to line index, sharing adjacent line endpoints; out-of-range returns line count; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ep.a(IZ)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ep.java: Maps UTF16 source offset to line index, sharing adjacent line endpoints; out-of-range returns line count; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ep.a(IZI)I#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "ep.java: Hit-tests inclusive vertical bounds and resolves nearest caret plus prior line source lengths; outside returns -1; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ep.a(IZI)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ep.java: Hit-tests inclusive vertical bounds and resolves nearest caret plus prior line source lengths; outside returns -1; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ep.a(IZI)I#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "ep.java: Hit-tests inclusive vertical bounds and resolves nearest caret plus prior line source lengths; outside returns -1; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ep.b(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ep.java: Maximum line final caret x, or -1 for null/empty lines; this is an extent, not width; guard31458.",
       "confidence": "reviewed"
     },
     {
@@ -39665,6 +40428,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:gg.<init>(IIIII)V#0",
+      "originalName": "param0",
+      "to": "hotspotId",
+      "evidence": "gg.java: Retains hotspot ID and rectangle; links supplied separately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gg.<init>(IIIII)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "gg.java: Retains hotspot ID and rectangle; links supplied separately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gg.<init>(IIIII)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "gg.java: Retains hotspot ID and rectangle; links supplied separately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gg.<init>(IIIII)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "gg.java: Retains hotspot ID and rectangle; links supplied separately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gg.<init>(IIIII)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "gg.java: Retains hotspot ID and rectangle; links supplied separately.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:gi.<init>(ILjava/lang/String;Ljava/lang/String;I)V#0",
       "originalName": "param0",
       "to": "sceneId",
@@ -40369,6 +41167,34 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "oc.java: Base false; focusable and container overrides report retained/delegated focus; guard below -49. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIILlg;)V#0",
+      "originalName": "param0",
+      "to": "button",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIILlg;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIILlg;)V#2",
+      "originalName": "param2",
+      "to": "hotspotId",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ha.a(IIILlg;)V#3",
+      "originalName": "param3",
+      "to": "widget",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526.",
       "confidence": "reviewed"
     },
     {
@@ -42245,6 +43071,34 @@
       "originalName": "param4",
       "to": "widget",
       "evidence": "en.java: Action callback also reached from keyboard codes83/84 with coordinates -1. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ig.a(IIILlg;)V#0",
+      "originalName": "param0",
+      "to": "button",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ig.a(IIILlg;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ig.a(IIILlg;)V#2",
+      "originalName": "param2",
+      "to": "hotspotId",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ig.a(IIILlg;)V#3",
+      "originalName": "param3",
+      "to": "widget",
+      "evidence": "ha.java: Action callback receives original button and matched hotspot ID; guard -526. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -46588,6 +47442,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:lg.a(Ljava/lang/String;IB)V#0",
+      "originalName": "param0",
+      "to": "tooltip",
+      "evidence": "lg.java: Grows sparse tooltip array while preserving old entries, then stores by hotspot ID; guard -98.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lg.a(Ljava/lang/String;IB)V#1",
+      "originalName": "param1",
+      "to": "hotspotId",
+      "evidence": "lg.java: Grows sparse tooltip array while preserving old entries, then stores by hotspot ID; guard -98.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lg.a(Ljava/lang/String;IB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "lg.java: Grows sparse tooltip array while preserving old entries, then stores by hotspot ID; guard -98.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:lg.a(Loc;BII)V#0",
       "originalName": "param0",
       "to": "focusRoot",
@@ -46627,6 +47502,27 @@
       "originalName": "param1",
       "to": "focusRoot",
       "evidence": "oc.java: Focusable implementation clears root focus then acquires focus when enabled/focusable; true guard; containers delegate. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lg.b(III)Lgg;#0",
+      "originalName": "param0",
+      "to": "y",
+      "evidence": "lg.java: Scans deque and linked segments; inclusive top/bottom and exclusive right; returns deque root of first matching chain; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lg.b(III)Lgg;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "lg.java: Scans deque and linked segments; inclusive top/bottom and exclusive right; returns deque root of first matching chain; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lg.b(III)Lgg;#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "lg.java: Scans deque and linked segments; inclusive top/bottom and exclusive right; returns deque root of first matching chain; guard0.",
       "confidence": "reviewed"
     },
     {
@@ -48366,6 +49262,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ml.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "top",
+      "evidence": "ml.java: Stores vertical bounds and allocates sourceLength plus one caret positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ml.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "bottom",
+      "evidence": "ml.java: Stores vertical bounds and allocates sourceLength plus one caret positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ml.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "sourceLength",
+      "evidence": "ml.java: Stores vertical bounds and allocates sourceLength plus one caret positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ml.a(BI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ml.java: Selects nearest caret using midpoint thresholds, choosing the later caret on an exact midpoint; guard -95.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ml.a(BI)I#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "ml.java: Selects nearest caret using midpoint thresholds, choosing the later caret on an exact midpoint; guard -95.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ml.a(II)V#0",
       "originalName": "param0",
       "to": "opcode",
@@ -48377,6 +49308,13 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ml.java: Writes length1/action0 when opening opponent-finding options; guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ml.b(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ml.java: Returns last caret x, or zero for null/empty caret array; guard56.",
       "confidence": "reviewed"
     },
     {
@@ -50760,6 +51698,195 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oj.a(Ldh;IILjava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "font",
+      "evidence": "oj.java: Single line begins at leftX, fills source caret positions and retains text/font cache; alignment0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ldh;IILjava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "baselineY",
+      "evidence": "oj.java: Single line begins at leftX, fills source caret positions and retains text/font cache; alignment0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ldh;IILjava/lang/String;I)V#2",
+      "originalName": "param2",
+      "to": "leftX",
+      "evidence": "oj.java: Single line begins at leftX, fills source caret positions and retains text/font cache; alignment0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ldh;IILjava/lang/String;I)V#3",
+      "originalName": "param3",
+      "to": "text",
+      "evidence": "oj.java: Single line begins at leftX, fills source caret positions and retains text/font cache; alignment0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ldh;IILjava/lang/String;I)V#4",
+      "originalName": "param4",
+      "to": "horizontalAlignment",
+      "evidence": "oj.java: Single line begins at leftX, fills source caret positions and retains text/font cache; alignment0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;IIIIIILdh;)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "oj.java: Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;IIIIIILdh;)V#1",
+      "originalName": "param1",
+      "to": "horizontalAlignment",
+      "evidence": "oj.java: Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;IIIIIILdh;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "oj.java: Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;IIIIIILdh;)V#3",
+      "originalName": "param3",
+      "to": "layoutHeight",
+      "evidence": "oj.java: Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;IIIIIILdh;)V#4",
+      "originalName": "param4",
+      "to": "lineSpacing",
+      "evidence": "oj.java: Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;IIIIIILdh;)V#5",
+      "originalName": "param5",
+      "to": "wrapWidth",
+      "evidence": "oj.java: Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;IIIIIILdh;)V#6",
+      "originalName": "param6",
+      "to": "verticalAlignment",
+      "evidence": "oj.java: Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;IIIIIILdh;)V#7",
+      "originalName": "param7",
+      "to": "font",
+      "evidence": "oj.java: Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;ILdh;II)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "oj.java: Single line begins at centerX minus half measured advance; preserves archived cache handling; alignment1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;ILdh;II)V#1",
+      "originalName": "param1",
+      "to": "baselineY",
+      "evidence": "oj.java: Single line begins at centerX minus half measured advance; preserves archived cache handling; alignment1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;ILdh;II)V#2",
+      "originalName": "param2",
+      "to": "font",
+      "evidence": "oj.java: Single line begins at centerX minus half measured advance; preserves archived cache handling; alignment1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;ILdh;II)V#3",
+      "originalName": "param3",
+      "to": "centerX",
+      "evidence": "oj.java: Single line begins at centerX minus half measured advance; preserves archived cache handling; alignment1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;ILdh;II)V#4",
+      "originalName": "param4",
+      "to": "horizontalAlignment",
+      "evidence": "oj.java: Single line begins at centerX minus half measured advance; preserves archived cache handling; alignment1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;Ldh;BI)Lml;#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "oj.java: Allocates one line with baseline-relative font bounds and source-length caret array; guard below -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;Ldh;BI)Lml;#1",
+      "originalName": "param1",
+      "to": "font",
+      "evidence": "oj.java: Allocates one line with baseline-relative font bounds and source-length caret array; guard below -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;Ldh;BI)Lml;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "oj.java: Allocates one line with baseline-relative font bounds and source-length caret array; guard below -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;Ldh;BI)Lml;#3",
+      "originalName": "param3",
+      "to": "baselineY",
+      "evidence": "oj.java: Allocates one line with baseline-relative font bounds and source-length caret array; guard below -71.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;Ldh;IBI)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "oj.java: Single line ends at rightX; alignment2 and guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;Ldh;IBI)V#1",
+      "originalName": "param1",
+      "to": "font",
+      "evidence": "oj.java: Single line ends at rightX; alignment2 and guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;Ldh;IBI)V#2",
+      "originalName": "param2",
+      "to": "rightX",
+      "evidence": "oj.java: Single line ends at rightX; alignment2 and guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;Ldh;IBI)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "oj.java: Single line ends at rightX; alignment2 and guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oj.a(Ljava/lang/String;Ldh;IBI)V#4",
+      "originalName": "param4",
+      "to": "baselineY",
+      "evidence": "oj.java: Single line ends at rightX; alignment2 and guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ol.a(IIC)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -52384,6 +53511,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qe.a(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qe.java: Font ascent plus descent used as minimum hotspot rectangle height; guard at least64.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qe.a(Loc;I)I#0",
       "originalName": "param0",
       "to": "widget",
@@ -52409,6 +53543,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "qe.java: Text constructor assigns result to Widget.width; guard31.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.c(Loc;I)Lep;#0",
+      "originalName": "param0",
+      "to": "widget",
+      "evidence": "qe.java: Returns widget cached layout after renderer prepares text and font metrics; guard -7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.c(Loc;I)Lep;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "qe.java: Returns widget cached layout after renderer prepares text and font metrics; guard -7.",
       "confidence": "reviewed"
     },
     {
@@ -56402,6 +57550,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:um.a(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "qe.java: Font ascent plus descent used as minimum hotspot rectangle height; guard at least64. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:um.a(II)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -56483,6 +57638,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "qe.java: Text constructor assigns result to Widget.width; guard31. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:um.c(Loc;I)Lep;#0",
+      "originalName": "param0",
+      "to": "widget",
+      "evidence": "qe.java: Returns widget cached layout after renderer prepares text and font metrics; guard -7. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:um.c(Loc;I)Lep;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "qe.java: Returns widget cached layout after renderer prepares text and font metrics; guard -7. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -58930,9 +60099,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "501270da007334125db377e1d2ba63c0dc4d9f495d2d0dd1e6836c16d7d65718",
+      "build-brickabrac-rules.mjs": "26d57d69333d2dac6579132289e03e1286540e45a49753946eeb807a708007d7",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "6b6d0f09057cf8689b5506632d6090cabc3d5b690ae3bc4966ebcde375a38b24",
+      "tests/test-brickabrac-core.mjs": "9a3d935f7b3738493a0f6ebc96add08f3bfdf49504b5eac04b01356a2173ad8f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

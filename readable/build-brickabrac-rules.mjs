@@ -229,6 +229,11 @@ const classes={
  jc:['WidgetLayer','Abstract widget group linked to its layer stack, with visible flag and opacity animation.'],
  vh:['RadialSelectorWidget','Focusable circular sector selector; pointer angle selects a wrapped sector index. Constructor is unsupported in the retained export.'],
  eh:['WidgetTheme','Shared older-widget renderer/font/metric bundle used by control constructors.'],
+ ep:['WidgetTextLayout','Older-widget line layout with source-offset caret coordinates, line selection, height and hit testing.'],
+ oj:['RichTextLayout','TextFont-backed older-widget layout for aligned single lines and wrapped rich text, with cached text/font/layout parameters.'],
+ ml:['TextLineLayout','One line with top/bottom bounds and a caret-position array indexed by UTF16 source offsets, including rich-text tags.'],
+ gg:['TextHotspotRegion','Intrusive hotspot rectangle with integer ID and a link to its next line segment. Unrelated static assets remain separate.'],
+ ha:['TextHotspotListener','Older hotspot-widget action callback receiving button, hotspot ID and source widget.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -472,6 +477,56 @@ method('oc','a','(IBLoc;C)Z','handleWidgetKey','Virtual widget key contract; tex
 method('li','a','(BIILdn;)V','onDragged','Called after drag updates x/y; parent coordinates retained; guard -68.',['obfuscationGuard','parentY','parentX','widget']);
 method('em','a','(ILdn;Ljb;)V','onDrop','Target listener is preferred, otherwise source listener; accepted delivery clears draggedWidget; guard -24178.',['obfuscationGuard','draggedWidget','dropTarget']);
 method('lg','i','(I)V','rebuildHotspots','Parses hotspot integer IDs and linked per-line rectangles through layout provider; guard -1.',['obfuscationGuard']);
+field('ep','c','[Lml;','lines','Ordered line layouts used for source-offset lookup, extents and coordinate hit testing.');
+field('oc','j','Lep;','textLayout','Renderer creates/caches RichTextLayout here; editor and hotspot paths query its coordinates.');
+for(const [original,type,to,evidence] of [
+ ['d','I','top','Line baseline minus font ascent.'],['a','I','bottom','Line baseline plus font descent; y hit testing includes this boundary.'],
+ ['g','[I','caretX','Source length plus one caret coordinates; rich-text tag offsets repeat the same x.'],
+])field('ml',original,type,to,evidence);
+method('ml','<init>','(III)V','<init>','Stores vertical bounds and allocates sourceLength plus one caret positions.',['top','bottom','sourceLength']);
+method('ml','a','(BI)I','findCaretIndex','Selects nearest caret using midpoint thresholds, choosing the later caret on an exact midpoint; guard -95.',['obfuscationGuard','x']);
+method('ml','b','(B)I','getRightEdge','Returns last caret x, or zero for null/empty caret array; guard56.',['obfuscationGuard']);
+method('ep','a','(IZ)I','findLineIndex','Maps UTF16 source offset to line index, sharing adjacent line endpoints; out-of-range returns line count; true guard.',['sourceOffset','obfuscationGuard']);
+method('ep','a','(I)I','getHeight','Last line bottom minus first line top, or zero for null/empty lines; guard0.',['obfuscationGuard']);
+method('ep','a','(IB)I','getCaretX','Finds x for a source offset across lines; unmatched offset returns zero; guard below -33.',['sourceOffset','obfuscationGuard']);
+method('ep','a','(IZI)I','findSourceOffset','Hit-tests inclusive vertical bounds and resolves nearest caret plus prior line source lengths; outside returns -1; false guard.',['x','obfuscationGuard','y']);
+method('ep','b','(I)I','getRightEdge','Maximum line final caret x, or -1 for null/empty lines; this is an extent, not width; guard31458.',['obfuscationGuard']);
+method('dn','a','(ILjava/lang/String;Lml;ILdh;)V','populateCaretPositions','Preserves source offsets inside rich-text tags and accumulates Q8 extra space advance; guard25293.',['obfuscationGuard','text','line','extraSpaceAdvanceQ8','font']);
+for(const [original,type,to] of [['w','Ljava/lang/String;','cachedText'],['u','Ldh;','font'],['x','Z','singleLine'],['l','I','horizontalAlignment'],['v','I','verticalAlignment'],['n','I','wrapWidth'],['y','I','layoutHeight'],['p','I','lineSpacing']])field('oj',original,type,to,'Retained layout-cache key and input used by aligned single-line or wrapped layout preparation.');
+method('oj','a','(Ljava/lang/String;Ldh;BI)Lml;','createSingleLine','Allocates one line with baseline-relative font bounds and source-length caret array; guard below -71.',['text','font','obfuscationGuard','baselineY']);
+method('oj','a','(Ldh;IILjava/lang/String;I)V','layoutLeftAligned','Single line begins at leftX, fills source caret positions and retains text/font cache; alignment0.',['font','baselineY','leftX','text','horizontalAlignment']);
+method('oj','a','(Ljava/lang/String;ILdh;II)V','layoutCentered','Single line begins at centerX minus half measured advance; preserves archived cache handling; alignment1.',['text','baselineY','font','centerX','horizontalAlignment']);
+method('oj','a','(Ljava/lang/String;Ldh;IBI)V','layoutRightAligned','Single line ends at rightX; alignment2 and guard at most -90.',['text','font','rightX','obfuscationGuard','baselineY']);
+method('oj','a','(Ljava/lang/String;IIIIIILdh;)V','layoutWrapped','Wraps rich text to width, calculates vertical bounds and source caret positions; retains original cache/spacing/alignment behavior; guard122.',['text','horizontalAlignment','obfuscationGuard','layoutHeight','lineSpacing','wrapWidth','verticalAlignment','font']);
+method('qe','c','(Loc;I)Lep;','getTextLayout','Returns widget cached layout after renderer prepares text and font metrics; guard -7.',['widget','obfuscationGuard']);
+method('qe','a','(B)I','getLineHeight','Font ascent plus descent used as minimum hotspot rectangle height; guard at least64.',['obfuscationGuard']);
+for(const [original,type,to,evidence] of [
+ ['u','I','hotspotId','Parsed hotspot integer ID delivered to callback and tooltip lookup.'],['j','I','x','Constructor second argument and rectangle left edge.'],
+ ['s','I','y','Constructor third argument and inclusive rectangle top edge.'],['r','I','width','Exclusive right edge is x plus width.'],['n','I','height','Inclusive bottom edge is y plus height.'],
+ ['k','Lgg;','nextSegment','Links same hotspot across successive line rectangles.'],
+])field('gg',original,type,to,evidence);
+method('gg','<init>','(IIIII)V','<init>','Retains hotspot ID and rectangle; links supplied separately.',['hotspotId','x','y','width','height']);
+field('lg','K','[Ljava/lang/String;','hotspotTooltips','Sparse growable array indexed by hotspot ID.');
+field('lg','O','Lvl;','hotspotRegions','Intrusive per-line rectangles created from parsed hotspot spans.');
+field('lg','N','Lgg;','hoveredHotspot','First matching region retained by pointer update, tooltip and highlight paths.');
+method('lg','b','(III)Lgg;','findHotspot','Scans deque and linked segments; inclusive top/bottom and exclusive right; returns deque root of first matching chain; guard0.',['y','obfuscationGuard','x']);
+method('lg','a','(Ljava/lang/String;IB)V','setHotspotTooltip','Grows sparse tooltip array while preserving old entries, then stores by hotspot ID; guard -98.',['tooltip','hotspotId','obfuscationGuard']);
+method('ha','a','(IIILlg;)V','onHotspotAction','Action callback receives original button and matched hotspot ID; guard -526.',['button','obfuscationGuard','hotspotId','widget']);
+for(const [owner,signature,names] of [
+ ['lg','i(I)V',[
+  ['var11','lineIndex'],['stackIn_10_0','selectedLeftX'],['stackIn_15_0','selectedRightX'],
+  ['var2','searchOffset'],['var3','layoutProvider'],['var4','layout'],['var5','openingTagOffset'],
+  ['var6','hotspotIdText'],['var7','openingTagEnd'],['var8','firstLineIndex'],['var9','lastLineIndex'],
+  ['var10','previousSegment'],['var12','line'],['var13','leftX'],['var14','rightX'],
+  ['var15','segment'],['var16','unusedGameFlag'],['var7Lifetime1','hotspotId'],
+ ]],
+ ['lg','b(III)Lgg;',[['var4','firstSegment'],['var5','segment'],['var6','unusedGameFlag']]],
+ ['ep','a(IZ)I',[['var3','lineIndex'],['var4','line'],['var5','unusedGameFlag']]],
+ ['ep','a(IB)I',[['var4','lineIndex'],['var5','line'],['var6','unusedGameFlag'],['var7','lineArray'],['var3','traversalLines']]],
+ ['ep','a(IZI)I',[['var5','lineIndex'],['var4','priorSourceLength'],['var6','line'],['var7','caretIndex'],['var8','unusedGameFlag']]],
+ ['ep','b(I)I',[['var4','lineIndex'],['var2','rightEdge'],['var3','lineArray'],['var5','line'],['var7','unusedGameFlag'],['var6','lineRightEdge']]],
+ ['ml','a(BI)I',[['var3','caretIndex'],['var4','unusedGameFlag']]],
+])for(const [ordinal,[original,to]] of names.entries())local(owner,signature,ordinal,original,to,'Reviewed line/caret traversal or hotspot parsing temporary; lexical local identity preserves all source behavior.');
 method('cp','a','(ILoc;)V','pushLayer','Requires WidgetLayer, adds it at front, sets visible and requests focus; guard below -63.',['obfuscationGuard','layer']);
 method('cp','a','(I)V','hideLayers','Clears visible on all layers and clears child pointer; guard below -119.',['obfuscationGuard']);
 method('cp','i','(B)V','removeHiddenLayers','Forces layer opacity to target and unlinks invisible layers; guard -36.',['obfuscationGuard']);
@@ -1628,6 +1683,8 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('vb')} / ${link('bf')} / ${link('lg')} | Text editing, toggle activation and hotspot text. |`,
 `| ${link('dn')} / ${link('jb')} / ${link('ma')} / ${link('sk')} | Drag/drop, label placement and opacity wrappers. |`,
 `| ${link('cp')} / ${link('jc')} / ${link('eh')} | Layer stack, layer visibility/opacity and widget theme. |`,
+`| ${link('ep')} / ${link('oj')} / ${link('ml')} | Text layout, aligned/wrapped font preparation and source-offset caret geometry. |`,
+`| ${link('gg')} / ${link('ha')} | Linked hotspot rectangles and ID action callback. |`,
 `| ${link('vi')} / ${link('bn')} / ${link('no')} | Fixed8 body coordinates/velocities, rectangle/circle geometry, snapshots and checksums. |`,
 `| ${link('vo')} / ${link('vn')} / ${link('on')} | Paddle size stages, balls and bricks. |`,
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
@@ -1747,12 +1804,14 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Independent encodings and ISAAC/shuffle expectations check64 startup cases, including euro names, positive/negative local IDs, nonzero mode flags, repeating periods, character availability, both background-selection paths and exact cursor consumption with an unread sentinel. For pending snapshots, real packet79 dispatch loads every board with full extension bytes, checking count/readiness progression, score/tick/position and local input baseline after the last board. Screen request identity and opcode64-only draw/rematch captions are checked. These fixtures prove source dispatch and construction with controlled assets; live server transport, real resource loading, malformed/duplicate snapshots and rendered sustained gameplay remain unverified.', '',
 'The older widget hierarchy now names Widget, FocusableWidget, SingleChildWidget and WidgetGroup, plus renderer/layout/listener contracts and focus/action/pointer/hover callbacks. Fields name x,y,width,height, text/tooltip, mouse-over/press, renderer/listener, focusable/enabled/focused state and child ownership. Bounds setters retain the original height,x,y,guard,width argument order. containsPoint retains pointerY,parentY,parentX,guard,pointerX order. Resolved override families receive the same names automatically; broader layout-provider members and active-state meaning remain unresolved.', '',
 'Independent fixtures cover half-open parent-translated geometry with zero/negative sizes and int-wrap boundaries, retained relayout, preferred dimensions through provider callbacks, layer0-only painter dispatch and instance identity. Focus fixtures cover acquisition/notification, enabled/focusable gates, explicit clearing and disabled focused-state retention. Pointer fixtures check focus-before-press, hover/action/release ordering, parent-relative activation coordinates, release idempotence and outside rejection. Wrapper fixtures check child paint offsets and tooltip forwarding; group fixtures check primary ownership transfer and focus clearing. These use fixture painters/listeners; full rendered legacy controls, all container traversal and remaining provider/listener interfaces are unverified.', '',
-'Concrete widget identities now include TextFieldWidget/TextFieldListener, ToggleButtonWidget, HotspotTextWidget, DraggableWidget/WidgetDragListener, DropTargetWidget/WidgetDropListener, LabeledWidget, OpacityWidget, WidgetLayerStack/WidgetLayer, RadialSelectorWidget and WidgetTheme. Fields/constructor parameters expose editor selection/caret/length/timestamps, drag offsets/origin/policies, label metrics, opacity and layer ownership. Shared renderer defaults and text/drag/drop callbacks have names. Source hotspot/layout-provider behavior remains only partly reviewed.', '',
+'Concrete widget identities now include TextFieldWidget/TextFieldListener, ToggleButtonWidget, HotspotTextWidget, DraggableWidget/WidgetDragListener, DropTargetWidget/WidgetDropListener, LabeledWidget, OpacityWidget, WidgetLayerStack/WidgetLayer, RadialSelectorWidget and WidgetTheme. Fields/constructor parameters expose editor selection/caret/length/timestamps, drag offsets/origin/policies, label metrics, opacity and layer ownership. Shared renderer defaults and text/drag/drop callbacks have names. Text layout and hotspot geometry are reviewed separately below.', '',
 'Native fixtures cover constructor text truncation/null handling, UTF16 selection/deletion and space-based word boundaries, ASCII typing filters/capacity, callback suppression/change/submit, unbounded clipboard insertion and bounded early return. No system clipboard is accessed. Archived bounded clipboard insertion returns while capacity is nonnegative; the overfull negative-substring path remains unverified and is preserved. Typed-character insertion uses a separate working bound check. Toggle activation, drag offsets/movement/global source, drop dispatch/clearing, top visible layer/hiding/removal and opacity reset are checked. Layer removal forces target opacity before its hidden test. Independent pixels verify opacity0/64/128/256 and raster restoration; label constructor fixtures check child bounds for left/right labels. Radial axis selection uses a manually initialized instance because its retained constructor throws. Full rendering of text/hotspots/layers, clipboard integration, drag return animation, all layout providers and live form behavior remain unverified.', '',
+'WidgetTextLayout/RichTextLayout/TextLineLayout now expose line bounds, source-offset caret positions, aligned single-line and wrapped preparation, cache inputs and text-layout provider methods. TextHotspotRegion/TextHotspotListener expose linked rectangles, IDs, sparse tooltips and callback arguments. The maximum final caret coordinate is named getRightEdge because it is an extent rather than a width. Rich-text tag offsets intentionally repeat caret coordinates.', '',
+'Independent native fixtures cover midpoint ties, duplicate positions, null/empty line arrays, multiline source-offset boundaries, vertical gaps and outside hits; real fixture fonts cover left/center/right preparation and source offsets inside markup. Single-line and wrapped hotspot parsing is exercised with controlled providers, including linked segment ownership, inclusive bottom/exclusive right boundaries, tooltip array growth and callback button/guard/ID. Alignment/cache quirks are preserved; complete provider alignment/justification, highlight pixels and live form integration remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:49,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:50,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

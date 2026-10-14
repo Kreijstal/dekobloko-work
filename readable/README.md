@@ -1216,6 +1216,18 @@ radial fixture initializes fields directly because its retained constructor thro
 Full text/hotspot/layer rendering, clipboard integration, drag return animation,
 all layout providers and live form behavior remain unverified.
 
+WidgetTextLayout, RichTextLayout and TextLineLayout now expose line bounds,
+source-offset caret coordinates, aligned/wrapped font preparation and cached layout
+inputs. TextHotspotRegion/TextHotspotListener name linked rectangles, IDs, sparse
+tooltips and callback arguments. `getRightEdge` is a coordinate extent, not a width;
+markup offsets intentionally share caret positions. Native fixtures check midpoint
+ties/duplicate positions, empty layouts, multiline offset endpoints, vertical gaps,
+left/center/right rich text and wrapped hotspot parsing. Hotspot vectors check linked
+segment identity, inclusive bottom/exclusive right boundaries, tooltip growth and
+button/guard/ID callback delivery. These use controlled fonts/providers. Complete
+provider alignment/justification, cache edge cases, highlight pixels and live forms
+remain unverified; archived alignment/cache behavior is preserved.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded
