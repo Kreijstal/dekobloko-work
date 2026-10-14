@@ -203,6 +203,18 @@ const classes={
  id:['LobbyPlayer','Lobby and current-game player row with account identity, display name, membership, rating, rated-game count, invitations and join requests. Static character-order helpers remain separate.'],
  om:['LobbyGame','Lobby/current-game record with settings, player capacity, rated/spectator mode, invitations and timing. Static board rendering remains separate.'],
  cq:['RankingsRequest','Pending ranking-kind/row-limit request, completion flag, local rating/results and two sorted name/statistic views. Unrelated static gameplay/UI helpers remain separate.'],
+ oc:['Widget','Older intrusive widget framework: geometry, renderer/listener, hover, pointer/key dispatch and diagnostic traversal. Separate from UiComponent.'],
+ d:['FocusableWidget','Older widget with enabled/focusable/focused state and action/pointer/focus listener dispatch.'],
+ h:['SingleChildWidget','Older widget wrapper forwarding layout, focus, input and tooltip behavior to one child. Static helpers remain separate.'],
+ ib:['WidgetGroup','Older widget container with intrusive children, focus traversal and input/render forwarding. Static helpers remain separate.'],
+ ub:['WidgetRenderer','Older-widget painting contract receiving parent coordinates and widget state.'],
+ uh:['WidgetListener','Marker shared by older-widget callback interfaces; renderer diagnostics explicitly label this field listener.'],
+ gm:['WidgetFocusListener','Older-widget focused/unfocused callback.'],
+ en:['WidgetActionListener','Older focusable-widget action callback for pointer and keyboard activation.'],
+ ca:['WidgetPointerListener','Older-widget pointer press/release callbacks, extending the action contract.'],
+ vk:['WidgetHoverListener','Older-widget mouse-over change callback.'],
+ sd:['WidgetContainer','Marker implemented by single-child, intrusive-group and array-child widgets.'],
+ qe:['WidgetLayoutProvider','Older-widget size/text-layout/position contract; preferred width/height are reviewed, remaining members unresolved.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -354,6 +366,50 @@ method('ak','b','(I)Z','checkMatchCompletion','Zero unmasked players finalizes; 
 method('fr','a','(I)V','updateRematchCaption','Spectators retain caption; offer/setup masks and resultWordMode select literal rematch labels at button12; guard1.',['obfuscationGuard']);
 method('i','c','(B)V','updateDrawCaption','Spectators retain caption; local/other/no draw offers select Cancel/Accept/Offer draw at button10; guard32.',['obfuscationGuard']);
 method('sk','a','([Ljava/lang/String;ILoi;IZI)V','startLocalGame','Generates local masks/seeds/character order, constructs offline screen, sets level/snapshot state and requests gameplay screen; guard -12665.',['playerNames','startingLevel','configuration','localPlayerCount','inputFlag','obfuscationGuard']);
+for(const [owner,original,type,to,evidence] of [
+ ['oc','o','I','x','Local horizontal origin; sprite renderers add it to parentX and hit test compares pointerX.'],
+ ['oc','w','I','y','Local vertical origin; sprite renderers add it to parentY and hit test compares pointerY.'],
+ ['oc','t','I','width','Horizontal span used by hit test and renderer, printed first in dimensions.'],
+ ['oc','s','I','height','Vertical span used by hit test and renderer, printed second in dimensions.'],
+ ['oc','A','Ljava/lang/String;','text','Constructor text and diagnostic text label.'],
+ ['oc','z','Ljava/lang/String;','tooltip','Returned by tooltip query when mouseOver is true.'],
+ ['oc','q','Z','mouseOver','Pointer-update hit-test state; diagnostic mouseover label.'],
+ ['oc','n','I','pressedButton','Stored on pointer press, retained until release callback resets it.'],
+ ['oc','l','Lub;','renderer','Painting contract; optionally also supplies layout metrics.'],
+ ['oc','i','Luh;','listener','Marker callback object tested for focus, action, pointer and hover subinterfaces.'],
+ ['d','I','Z','focusable','Focus acceptance requires this flag and enabled; constructor sets true.'],
+ ['d','E','Z','focused','Focus getter, acquisition/clear and focus-change callback state.'],
+ ['d','J','Z','enabled','Focus and pointer press gate; diagnostic disabled label when false.'],
+ ['d','F','Z','active','Diagnostic active label and toggle-style subclass state; broader semantics unresolved.'],
+ ['h','E','Loc;','child','Single child used for layout/focus/input forwarding.'],
+ ['ib','G','Lvl;','children','Primary intrusive ownership of group widgets.'],
+])field(owner,original,type,to,evidence);
+method('oc','<init>','(IIIILub;Luh;)V','<init>','Stores geometry and supplied renderer/listener without metrics lookup.',['x','y','width','height','renderer','listener']);
+method('oc','<init>','(Ljava/lang/String;Lub;Luh;)V','<init>','Stores text/renderer/listener; layout-provider width/height getters initialize dimensions.',['text','renderer','listener']);
+method('d','<init>','(Ljava/lang/String;Lub;Luh;)V','<init>','Text widget constructor plus focusable/enabled true, focused false.',['text','renderer','listener']);
+method('ib','<init>','(IIIILub;)V','<init>','Stores geometry/renderer and creates an empty child deque.',['x','y','width','height','renderer']);
+method('h','<init>','(IIIILub;Luh;)V','<init>','Delegates geometry/renderer/listener to Widget.',['x','y','width','height','renderer','listener']);
+method('oc','a','(IIIBI)V','setBounds','Stores height,x,y,width in original argument order; guard -119; wrapper also lays out its child.',['height','x','y','obfuscationGuard','width']);
+method('oc','a','(IIIII)Z','containsPoint','Half-open hit test after parent translation; nonpositive dimensions and int overflow retain source behavior; guard3.',['pointerY','parentY','parentX','obfuscationGuard','pointerX']);
+method('oc','e','(I)V','relayout','Reapplies retained bounds through virtual setter; guard1.',['obfuscationGuard']);
+method('oc','a','(IIIB)V','drawLayer','Layer0 dispatches renderer; other layers or null renderer skip it; guard -11.',['parentY','parentX','layer','obfuscationGuard']);
+method('ub','a','(ZIILoc;I)V','paintWidget','Rendering contract: parentX/widget/parentY with caller guards.',['obfuscationGuard','callbackGuard','parentX','widget','parentY']);
+method('qe','b','(Loc;I)I','getPreferredWidth','Text constructor assigns result to Widget.width; guard31.',['widget','obfuscationGuard']);
+method('qe','a','(Loc;I)I','getPreferredHeight','Text constructor assigns result to Widget.height; guard46695.',['widget','obfuscationGuard']);
+method('oc','f','(I)Z','isFocused','Base false; focusable and container overrides report retained/delegated focus; guard below -49.',['obfuscationGuard']);
+method('oc','a','(ZLoc;)Z','tryFocus','Focusable implementation clears root focus then acquires focus when enabled/focusable; true guard; containers delegate.',['obfuscationGuard','focusRoot']);
+method('oc','b','(Z)V','clearFocus','False guard clears focus in interactive/container overrides and notifies listeners.',['obfuscationGuard']);
+method('gm','a','(ZLoc;I)V','onFocusChanged','Callback after focused state changes; guard19365.',['focused','widget','obfuscationGuard']);
+method('vk','a','(ILoc;Z)V','onMouseOverChanged','Callback when translated pointer containment changes mouseOver; guard -6932.',['obfuscationGuard','widget','mouseOver']);
+method('oc','d','(I)Ljava/lang/String;','getTooltip','Base returns hover tooltip or null; wrappers/groups query children; guard above6.',['obfuscationGuard']);
+method('oc','a','(Loc;BII)V','updatePointer','Base hover hit test; interactive overrides dispatch release/action and containers forward; guard0.',['focusRoot','obfuscationGuard','parentX','parentY']);
+method('oc','a','(Loc;IIIIII)Z','handlePointerPress','Translated hit test, press retention and interactive focus/pointer callback; guard0.',['focusRoot','pointerX','parentX','parentY','button','pointerY','obfuscationGuard']);
+method('oc','a','(IIILoc;II)V','handlePointerRelease','Resets press state; interactive override notifies pointer listener; guard19223.',['pointerY','pointerX','parentY','focusRoot','obfuscationGuard','parentX']);
+method('d','a','(IIII)V','dispatchAction','Notifies action listener with coordinates/button and this widget; guard below -8.',['pointerY','button','obfuscationGuard','pointerX']);
+method('en','a','(IIBILd;)V','onAction','Action callback also reached from keyboard codes83/84 with coordinates -1.',['pointerY','button','obfuscationGuard','pointerX','widget']);
+method('ca','a','(IILd;IIII)V','onPointerPress','Pointer-down callback retaining parent coordinates and button.',['parentX','button','widget','pointerY','pointerX','parentY','obfuscationGuard']);
+method('ca','a','(BIILd;II)V','onPointerRelease','Pointer-up callback retaining parent and pointer coordinates.',['obfuscationGuard','parentY','pointerY','widget','parentX','pointerX']);
+method('ib','a','(Loc;Z)V','addChild','Adds primary intrusive child; transfer from another deque occurs through addLast; true guard.',['child','obfuscationGuard']);
 for(const [ordinal,original,to] of [[17,'var4_int','resultWordFlag'],[19,'var4_ref','failure'],[20,'var5','playerNameStorage'],[42,'var32','randomSeedStorage'],[51,'var49','levelOrder']])local('BrickABrac','a(Lpi;BI)Z',ordinal,original,to,'Scoped network-start flag, player-name/seed storage, shuffled level order or exception context, checked through actual packet dispatch.');
 for(const [owner,signature,entries] of [
  ['ak','<init>([Ljava/lang/String;ILoi;[I[I)V',[[0,'var8','boardIndex'],[14,'var6_int','boardWidth'],[15,'var6','failure'],[16,'var7','controlSetIndex']]],
@@ -1489,6 +1545,8 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('qj')} → ${link('ak')} → ${link('j')} | Gameplay screen, multiplayer match and per-player boards. |`,
 `| ${link('om')} / ${link('id')} | Lobby game settings, capacity, invitations, player membership/rating and row sorting. |`,
 `| ${link('cq')} / ${link('lf')} | Ranking request lifecycle, packed results, rating and win-rate sorted views. |`,
+`| ${link('oc')} / ${link('d')} / ${link('h')} / ${link('ib')} | Widget geometry, focus, wrapper and intrusive-group contracts. |`,
+`| ${link('ub')} / ${link('qe')} / ${link('uh')} | Widget painting, layout metrics and listener contracts. |`,
 `| ${link('vi')} / ${link('bn')} / ${link('no')} | Fixed8 body coordinates/velocities, rectangle/circle geometry, snapshots and checksums. |`,
 `| ${link('vo')} / ${link('vn')} / ${link('on')} | Paddle size stages, balls and bricks. |`,
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
@@ -1606,10 +1664,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Actual GameplayScreen constructors run with fixture audio queues, caller-owned configuration/names, deterministic boards and local/spectator IDs. Checks cover flags, debug capture, view selection including two local boards, achievement clearing, two sound associations and rematch wire/rejection behavior. Independent caption matrices check offer/accept/cancel/setup choices across player masks and mode flags, with spectator retention. Completion fixtures check zero/one/multiple remaining players, overlapping masks, high unrelated bits and previously ready state. Result-level fixtures preserve mode promotion, single-player counter arithmetic (including int wrap) and multi-player starting-level assignment. Local startup screen routing, live startup with actual resource assets, single-player starting-title rendering and animated/gameplay presentation remain unverified.', '',
 'Network startup fixtures now enter actual handleGamePacket paths64/65 and instantiate GameplayScreen/MultiplayerMatch with fixture-ready background assets and audio. Wire fields are mode byte, player-count byte, signed local-player byte, zero-prefixed CP1252 names,32-bit seed, signed period byte and snapshot flag byte. Negative local IDs normalize to -2. The seed produces one seed word per board, five-pass level shuffle, background selector0..10 and five-pass available-character shuffle in that order. Selector0 uses a separate UI random generator to choose a background, with its variant draw accounted independently.', '',
 'Independent encodings and ISAAC/shuffle expectations check64 startup cases, including euro names, positive/negative local IDs, nonzero mode flags, repeating periods, character availability, both background-selection paths and exact cursor consumption with an unread sentinel. For pending snapshots, real packet79 dispatch loads every board with full extension bytes, checking count/readiness progression, score/tick/position and local input baseline after the last board. Screen request identity and opcode64-only draw/rematch captions are checked. These fixtures prove source dispatch and construction with controlled assets; live server transport, real resource loading, malformed/duplicate snapshots and rendered sustained gameplay remain unverified.', '',
+'The older widget hierarchy now names Widget, FocusableWidget, SingleChildWidget and WidgetGroup, plus renderer/layout/listener contracts and focus/action/pointer/hover callbacks. Fields name x,y,width,height, text/tooltip, mouse-over/press, renderer/listener, focusable/enabled/focused state and child ownership. Bounds setters retain the original height,x,y,guard,width argument order. containsPoint retains pointerY,parentY,parentX,guard,pointerX order. Resolved override families receive the same names automatically; broader layout-provider members and active-state meaning remain unresolved.', '',
+'Independent fixtures cover half-open parent-translated geometry with zero/negative sizes and int-wrap boundaries, retained relayout, preferred dimensions through provider callbacks, layer0-only painter dispatch and instance identity. Focus fixtures cover acquisition/notification, enabled/focusable gates, explicit clearing and disabled focused-state retention. Pointer fixtures check focus-before-press, hover/action/release ordering, parent-relative activation coordinates, release idempotence and outside rejection. Wrapper fixtures check child paint offsets and tooltip forwarding; group fixtures check primary ownership transfer and focus clearing. These use fixture painters/listeners; full rendered legacy controls, all container traversal and remaining provider/listener interfaces are unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:47,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:48,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

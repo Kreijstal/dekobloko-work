@@ -1179,6 +1179,23 @@ loaded count, tick/score/position and the local input baseline. Screen-request
 identity and opcode64-only caption updates are checked. Live transport, actual
 resource loading, malformed/duplicate snapshots and sustained rendering are unverified.
 
+The older widget hierarchy now names Widget, FocusableWidget, SingleChildWidget
+and WidgetGroup, renderer/layout contracts and focus/action/pointer/hover listeners.
+Fields expose x/y/width/height, text/tooltip, renderer/listener, hover/press, focusable,
+enabled/focused state and child ownership. Bounds retain the original argument order
+height,x,y,guard,width; hit testing retains pointerY,parentY,parentX,guard,pointerX.
+Resolved override families and parameters receive matching names automatically.
+
+Independent fixtures cover half-open parent-translated geometry, zero/negative
+sizes and int-wrap boundaries, relayout, layout-provider dimensions, layer0 painting,
+focus gates and callback order. Disabled widgets retain existing focus until explicit
+clearing. Pointer tests check focus-before-press, hover/action/release order,
+parent-relative action coordinates, repeated release and outside rejection. Wrappers
+check translated child painting and tooltip forwarding; groups check intrusive
+ownership transfer and focus clearing. Fixture painters/listeners validate these
+contracts; full rendered controls, all traversal, remaining provider/listener members
+and the broader active-state meaning remain unverified.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded
