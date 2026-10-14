@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 64,
+  "version": 65,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -1746,6 +1746,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:po",
+      "originalName": "po",
+      "to": "ResourcePreparationEntry",
+      "evidence": "po.java: Archive plus optional numeric/named group and index/loading captions consumed by ResourcePreparationQueue. Unrelated static pointer/game/result helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pq",
       "originalName": "pq",
       "to": "MusicPatch",
@@ -1918,6 +1925,13 @@
       "originalName": "rp",
       "to": "MainMenuScreen",
       "evidence": "rp.java: Screen ID0 with top-level menu actions and shared menu backdrop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:s",
+      "originalName": "s",
+      "to": "ResourcePreparationQueue",
+      "evidence": "s.java: Ordered archive-index/group readiness checks with scaled loading percentage/caption and retained preparation entries. Static UI/background helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -3136,6 +3150,13 @@
       "originalName": "field_qb",
       "to": "contentFadingOut",
       "evidence": "bh.java: Current wrapper fades before target resize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bh.field_tb:Ls;",
+      "originalName": "field_tb",
+      "to": "startupResources",
+      "evidence": "bh.java: Startup queue of named groups/archives created with scale82 and polled by the client connection shell.",
       "confidence": "reviewed"
     },
     {
@@ -11497,10 +11518,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:po.field_b:Lmf;",
+      "originalName": "field_b",
+      "to": "archive",
+      "evidence": "po.java: Archive whose index/group availability is polled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:po.field_d:Ljava/lang/String;",
+      "originalName": "field_d",
+      "to": "groupName",
+      "evidence": "po.java: Optional named group, checked after any numeric group.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:po.field_e:Lad;",
       "originalName": "field_e",
       "to": "countryListRequest",
       "evidence": "po.java: Temporary countrylist.ws request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:po.field_f:Ljava/lang/String;",
+      "originalName": "field_f",
+      "to": "waitingCaption",
+      "evidence": "po.java: Caption used whenever a blocked entry reports zero percent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:po.field_g:Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "loadingCaption",
+      "evidence": "po.java: Caption used for nonzero progress; when nonnull with no selectors, requests all archive groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:po.field_h:I",
+      "originalName": "field_h",
+      "to": "groupId",
+      "evidence": "po.java: Nonnegative selects a numeric group; inserted entries default to -1.",
       "confidence": "reviewed"
     },
     {
@@ -12764,10 +12820,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:s.field_b:I",
+      "originalName": "field_b",
+      "to": "entryCount",
+      "evidence": "s.java: Used prefix of retained entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:s.field_c:I",
+      "originalName": "field_c",
+      "to": "completedEntries",
+      "evidence": "s.java: Monotonic cursor advanced by readiness polling; appending does not reset it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:s.field_d:Ljp;",
       "originalName": "field_d",
       "to": "arcticNearSprite",
       "evidence": "fi.java: Literal sprite resource arctic/arctic_near assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:s.field_e:F",
+      "originalName": "field_e",
+      "to": "scaledProgress",
+      "evidence": "s.java: Last reported progressScale*(completedEntries+1+entryPercent/100)/(entryCount+1).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:s.field_f:[Lpo;",
+      "originalName": "field_f",
+      "to": "entries",
+      "evidence": "s.java: Initial16-slot array doubles when full; completed entries/archives remain retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:s.field_g:Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "statusText",
+      "evidence": "s.java: Last blocked entry caption; successful polling leaves this unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:s.field_h:I",
+      "originalName": "field_h",
+      "to": "progressScale",
+      "evidence": "s.java: Caller scale,82 for startup resource preparation; no clamping.",
       "confidence": "reviewed"
     },
     {
@@ -29627,6 +29725,146 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:s.a(IILpo;)V#0",
+      "originalName": "var4_float",
+      "to": "completedUnits",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(IILpo;)V#1",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(IILpo;)V#2",
+      "originalName": "stackIn_8_0",
+      "to": "failureContext",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(IILpo;)V#3",
+      "originalName": "stackIn_8_1",
+      "to": "contextBuilder",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(IILpo;)V#4",
+      "originalName": "stackIn_9_2",
+      "to": "entrySummary",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(IILpo;)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(IILpo;)V#6",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lmf;)V#0",
+      "originalName": "var6_int",
+      "to": "unusedGuardQuotient",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lmf;)V#1",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#0",
+      "originalName": "var10",
+      "to": "expandedEntries",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#1",
+      "originalName": "var9",
+      "to": "entry",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#2",
+      "originalName": "var11",
+      "to": "entryAlias",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#3",
+      "originalName": "fieldTemp$0",
+      "to": "appendIndex",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#4",
+      "originalName": "var7",
+      "to": "expandedEntriesAlias",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#5",
+      "originalName": "var7_ref",
+      "to": "entryReference",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#6",
+      "originalName": "var8",
+      "to": "unusedGuardQuotient",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#7",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.a(Lmf;ZLjava/lang/String;Ljava/lang/String;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.d(I)Z#0",
+      "originalName": "var3",
+      "to": "unusedGameFlag",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:s.d(I)Z#1",
+      "originalName": "var4",
+      "to": "entry",
+      "evidence": "s.java: Reviewed resource preparation append/growth, readiness order, progress formula or diagnostic declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:sc.b(I)V#0",
       "originalName": "var1",
       "to": "snapshot",
@@ -42175,6 +42413,41 @@
       "originalName": "d",
       "to": "refreshMenu",
       "evidence": "km.java: Refresh hook overridden by screens that rebuild their menu data; guard at most -60. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:s.a(IILpo;)V",
+      "originalName": "a",
+      "to": "reportBlockedEntry",
+      "evidence": "s.java: Computes scaled fractional progress and zero/nonzero caption, preserving null-caption concatenation and floating rounding; guard -22269.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:s.a(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lmf;)V",
+      "originalName": "a",
+      "to": "addNamedGroup",
+      "evidence": "s.java: Adds named group with index/loading captions; canonical guards125/126/124/-126/127.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V",
+      "originalName": "a",
+      "to": "addEntry",
+      "evidence": "s.java: Retains selectors/captions/archive, doubles full backing array and appends; canonical guards99/-90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:s.a(Lmf;ZLjava/lang/String;Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "addArchive",
+      "evidence": "s.java: Adds index-only preparation if loadingCaption null, otherwise all-groups preparation; canonical false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:s.d(I)Z",
+      "originalName": "d",
+      "to": "pollReady",
+      "evidence": "s.java: Consumes ready entries until first unavailable index/numeric group/named group/all-groups request; success does not refresh percentage/caption; guard at most -94.",
       "confidence": "reviewed"
     },
     {
@@ -70206,6 +70479,146 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:s.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "progressScale",
+      "evidence": "s.java: Starts with16 retained entry slots and caller progress scale.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(IILpo;)V#0",
+      "originalName": "param0",
+      "to": "entryPercent",
+      "evidence": "s.java: Computes scaled fractional progress and zero/nonzero caption, preserving null-caption concatenation and floating rounding; guard -22269.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(IILpo;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "s.java: Computes scaled fractional progress and zero/nonzero caption, preserving null-caption concatenation and floating rounding; guard -22269.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(IILpo;)V#2",
+      "originalName": "param2",
+      "to": "entry",
+      "evidence": "s.java: Computes scaled fractional progress and zero/nonzero caption, preserving null-caption concatenation and floating rounding; guard -22269.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lmf;)V#0",
+      "originalName": "param0",
+      "to": "waitingCaption",
+      "evidence": "s.java: Adds named group with index/loading captions; canonical guards125/126/124/-126/127.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lmf;)V#1",
+      "originalName": "param1",
+      "to": "groupName",
+      "evidence": "s.java: Adds named group with index/loading captions; canonical guards125/126/124/-126/127.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lmf;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "s.java: Adds named group with index/loading captions; canonical guards125/126/124/-126/127.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lmf;)V#3",
+      "originalName": "param3",
+      "to": "loadingCaption",
+      "evidence": "s.java: Adds named group with index/loading captions; canonical guards125/126/124/-126/127.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lmf;)V#4",
+      "originalName": "param4",
+      "to": "archive",
+      "evidence": "s.java: Adds named group with index/loading captions; canonical guards125/126/124/-126/127.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#0",
+      "originalName": "param0",
+      "to": "groupName",
+      "evidence": "s.java: Retains selectors/captions/archive, doubles full backing array and appends; canonical guards99/-90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#1",
+      "originalName": "param1",
+      "to": "waitingCaption",
+      "evidence": "s.java: Retains selectors/captions/archive, doubles full backing array and appends; canonical guards99/-90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#2",
+      "originalName": "param2",
+      "to": "loadingCaption",
+      "evidence": "s.java: Retains selectors/captions/archive, doubles full backing array and appends; canonical guards99/-90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#3",
+      "originalName": "param3",
+      "to": "archive",
+      "evidence": "s.java: Retains selectors/captions/archive, doubles full backing array and appends; canonical guards99/-90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#4",
+      "originalName": "param4",
+      "to": "groupId",
+      "evidence": "s.java: Retains selectors/captions/archive, doubles full backing array and appends; canonical guards99/-90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmf;II)V#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "s.java: Retains selectors/captions/archive, doubles full backing array and appends; canonical guards99/-90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Lmf;ZLjava/lang/String;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "s.java: Adds index-only preparation if loadingCaption null, otherwise all-groups preparation; canonical false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Lmf;ZLjava/lang/String;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "s.java: Adds index-only preparation if loadingCaption null, otherwise all-groups preparation; canonical false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Lmf;ZLjava/lang/String;Ljava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "waitingCaption",
+      "evidence": "s.java: Adds index-only preparation if loadingCaption null, otherwise all-groups preparation; canonical false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Lmf;ZLjava/lang/String;Ljava/lang/String;)V#3",
+      "originalName": "param3",
+      "to": "loadingCaption",
+      "evidence": "s.java: Adds index-only preparation if loadingCaption null, otherwise all-groups preparation; canonical false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.d(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "s.java: Consumes ready entries until first unavailable index/numeric group/named group/all-groups request; success does not refresh percentage/caption; guard at most -94.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sa.a(BLjp;IILjp;Ljp;IIII)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -76395,9 +76808,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "d8f7302929a3472bcef44b7299b37dbbeee430ef239c44aae6809b8d95562fde",
+      "build-brickabrac-rules.mjs": "83d633c885a578d3383728df3ac0637608ad1d8114dfb08ea59a9c1d371648da",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "12bb8a3c6e96f3e454c10b9fa2aa4020d02a72e17aae583eb3fac4ff741d12a6",
+      "tests/test-brickabrac-core.mjs": "136dbf1cc4865c564575e17bf34bfbc6b9bea787cc245f6dd3b0538642ee96bd",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

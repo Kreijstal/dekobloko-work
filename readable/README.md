@@ -1485,6 +1485,27 @@ Arbitrary invalid geometry/colors, wrong obfuscation guards, complete popup
 frame rendering, every interrupted transition and live animation remain
 unverified.
 
+ResourcePreparationQueue and ResourcePreparationEntry now expose ordered
+archive/index/group readiness, retained selectors/captions and scaled progress.
+The queue waits for the index, then any numeric and named groups; an entry with
+no selectors waits for all groups only when its loading caption is nonnull.
+Otherwise it is index-only. Startup uses scale 82. Blocked progress is
+`scale * (completed + 1 + entryPercent / 100) / (entries + 1)`; zero progress
+uses the waiting caption, nonzero progress adds a percentage to the loading
+caption, including the archived null-string concatenation behavior.
+
+Controlled ArchiveSource fixtures verify index/group blocking order, named and
+numeric selectors together, all-group polling after an unavailable group,
+scaled progress, array growth from 16 to 64 slots and ordered entry retention.
+Completion leaves the last caption/percentage unchanged and retains entries
+and archive references. Appending after completion keeps the cursor and can
+lower the displayed progress. Float comparisons use an independent rational
+expectation with a small rounding tolerance; raw float bits also enter the
+raw/named trace comparison. Empty queues, index-only entries, nullable captions
+and zero/negative scales are covered. Static UI state is restored. Invalid
+selectors, archive exceptions, concurrency, wrong guards, live startup timing
+and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
