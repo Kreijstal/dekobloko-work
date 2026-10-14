@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 63,
+  "version": 64,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -364,6 +364,13 @@
       "originalName": "bg",
       "to": "ReflectionCheck",
       "evidence": "bg.java: Queued request ID, field/method lookup tasks, serialized invocation arguments, operation IDs, field-set values and per-operation errors. Unrelated static UI/terrain/random helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bh",
+      "originalName": "bh",
+      "to": "AccountContentTransitionLayer",
+      "evidence": "bh.java: Concrete account-form popup with33-pixel header,20-tick fades,30-tick resize and guarded delegation to the shared content-transition machine. Static game/UI helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -2002,6 +2009,13 @@
       "originalName": "ta",
       "to": "NineSliceFrame",
       "evidence": "ta.java: Retained nine-slice sprite array delegated to tiled frame painting. Static helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tb",
+      "originalName": "tb",
+      "to": "LoadingProgressDialog",
+      "evidence": "tb.java: 300-pixel loading popup with percentage fraction, status text, optional detail paragraph and a highlighted/stoppable activity bar; unrelated static helpers remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -3923,10 +3937,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cr.field_C:Ljp;",
+      "originalName": "field_C",
+      "to": "capWorkSurface",
+      "evidence": "cr.java: Half-height-width scratch sprite used to combine stripes and cap masks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cr.field_E:I",
+      "originalName": "field_E",
+      "to": "backgroundColor",
+      "evidence": "cr.java: Active stripe background.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cr.field_F:I",
+      "originalName": "field_F",
+      "to": "foregroundColor",
+      "evidence": "cr.java: Active stripe foreground.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cr.field_G:Ljp;",
+      "originalName": "field_G",
+      "to": "rightCapMask",
+      "evidence": "cr.java: Grayscale curved cap used at the right end of the striped bar.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cr.field_H:I",
       "originalName": "field_H",
       "to": "phaseSpan",
       "evidence": "cr.java: Constructor animation span used to wrap phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cr.field_I:I",
+      "originalName": "field_I",
+      "to": "inactiveBackgroundColor",
+      "evidence": "cr.java: Half-intensity background retained for incomplete suffix.",
       "confidence": "reviewed"
     },
     {
@@ -3941,6 +3990,34 @@
       "originalName": "field_K",
       "to": "phaseTick",
       "evidence": "cr.java: Advances and wraps after twice phaseSpan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cr.field_L:I",
+      "originalName": "field_L",
+      "to": "progressFraction65536",
+      "evidence": "cr.java: Draws active prefix and inactive suffix with signed width*fraction>>16, without clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cr.field_M:I",
+      "originalName": "field_M",
+      "to": "inactiveForegroundColor",
+      "evidence": "cr.java: Half-intensity foreground retained for incomplete suffix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cr.field_O:Ljp;",
+      "originalName": "field_O",
+      "to": "leftCapMask",
+      "evidence": "cr.java: Horizontally flipped right-cap mask used at the left end.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cr.field_P:[Ljp;",
+      "originalName": "field_P",
+      "to": "stripeSprites",
+      "evidence": "cr.java: Active/inactive two-phase stripe textures rebuilt from colors and height.",
       "confidence": "reviewed"
     },
     {
@@ -12358,6 +12435,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rj.field_c:Lbh;",
+      "originalName": "field_c",
+      "to": "accountContentLayer",
+      "evidence": "rj.java: Shared account-form transition popup used by login/registration navigation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rk.field_Pb:Lmh;",
       "originalName": "field_Pb",
       "to": "icon",
@@ -12792,6 +12876,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sj.field_b:Ltb;",
+      "originalName": "field_b",
+      "to": "loadingProgressDialog",
+      "evidence": "sj.java: Retained loading popup created/reused by loading UI helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sk.field_H:I",
       "originalName": "field_H",
       "to": "pendingMusicLoads",
@@ -12953,10 +13044,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tb.field_bb:Lcr;",
+      "originalName": "field_bb",
+      "to": "activityBar",
+      "evidence": "tb.java: Child activity indicator at13,50 with274-by30 bounds and phase span15.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tb.field_fb:I",
       "originalName": "field_fb",
       "to": "pressX",
       "evidence": "tb.java: Frame snapshot of livePressX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_gb:Z",
+      "originalName": "field_gb",
+      "to": "stopAnimationRequested",
+      "evidence": "tb.java: Stop call freezes immediately; a later return to unhighlighted mode honors the retained request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_hb:Z",
+      "originalName": "field_hb",
+      "to": "highlighted",
+      "evidence": "tb.java: Selects orange rather than blue activity colors, forcing animation on mode entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_ib:Ljava/lang/String;",
+      "originalName": "field_ib",
+      "to": "details",
+      "evidence": "tb.java: Optional wrapped detail text increases initial popup height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tb.field_jb:Ljava/lang/String;",
+      "originalName": "field_jb",
+      "to": "statusText",
+      "evidence": "tb.java: Current progress caption painted centered below the activity bar.",
       "confidence": "reviewed"
     },
     {
@@ -16040,6 +16166,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:bh.b(BLoc;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "bh.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:bi.a(IIIIIIIZ)V#0",
       "originalName": "var9",
       "to": "destinationIndex",
@@ -18704,6 +18837,279 @@
       "originalName": "var2",
       "to": "unsignedValue",
       "evidence": "cq.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(I)Ljp;#0",
+      "originalName": "var4",
+      "to": "row",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(I)Ljp;#1",
+      "originalName": "var5",
+      "to": "column",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(I)Ljp;#2",
+      "originalName": "var6",
+      "to": "radiusRatioOrCoverage",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(I)Ljp;#3",
+      "originalName": "var8",
+      "to": "intensity",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(I)Ljp;#4",
+      "originalName": "var9",
+      "to": "unusedGameFlag",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(I)Ljp;#5",
+      "originalName": "var2",
+      "to": "halfHeight",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(I)Ljp;#6",
+      "originalName": "var3",
+      "to": "mask",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#0",
+      "originalName": "var7",
+      "to": "row",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#1",
+      "originalName": "var8",
+      "to": "stripeOffset",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#10",
+      "originalName": "var9Lifetime1",
+      "to": "backgroundRedBlue",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#11",
+      "originalName": "var10Lifetime1",
+      "to": "backgroundGreen",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#12",
+      "originalName": "var13Lifetime1",
+      "to": "litBackground",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#13",
+      "originalName": "var6",
+      "to": "halfHeight",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#2",
+      "originalName": "var9",
+      "to": "foregroundRedBlue",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#3",
+      "originalName": "var10",
+      "to": "foregroundGreen",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#4",
+      "originalName": "var11",
+      "to": "relativeY",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#5",
+      "originalName": "var12",
+      "to": "brightness256",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#6",
+      "originalName": "var13",
+      "to": "litForeground",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#7",
+      "originalName": "var14",
+      "to": "unusedGameFlag",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#8",
+      "originalName": "var4",
+      "to": "unusedGuardRemainder",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IBI)Ljp;#9",
+      "originalName": "var5",
+      "to": "stripes",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IIIB)V#0",
+      "originalName": "var5",
+      "to": "destinationX",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IIIB)V#1",
+      "originalName": "var6",
+      "to": "destinationY",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#0",
+      "originalName": "stackIn_16_0",
+      "to": "failureContext",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#1",
+      "originalName": "stackIn_16_1",
+      "to": "contextBuilder",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#2",
+      "originalName": "stackIn_17_2",
+      "to": "stripesSummary",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#3",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#4",
+      "originalName": "var5_int",
+      "to": "rightEdge",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#5",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#6",
+      "originalName": "var6",
+      "to": "tileX",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#7",
+      "originalName": "var7",
+      "to": "rightCapPhase",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#8",
+      "originalName": "var8",
+      "to": "unusedGameFlag",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(IILjp;I)V#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(Loc;BII)V#0",
+      "originalName": "stackIn_9_0",
+      "to": "failureContext",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(Loc;BII)V#1",
+      "originalName": "stackIn_9_1",
+      "to": "contextBuilder",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(Loc;BII)V#2",
+      "originalName": "stackIn_10_2",
+      "to": "focusSummary",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(Loc;BII)V#3",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(Loc;BII)V#4",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(Loc;BII)V#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "cr.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
       "confidence": "reviewed"
     },
     {
@@ -29599,6 +30005,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:tb.<init>(Lcp;Ljava/lang/String;)V#0",
+      "originalName": "var3_int",
+      "to": "detailHeight",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.<init>(Lcp;Ljava/lang/String;)V#1",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.a(FLjava/lang/String;ZB)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.a(FLjava/lang/String;ZB)V#1",
+      "originalName": "stackIn_2_0",
+      "to": "previousHighlight",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.a(FLjava/lang/String;ZB)V#2",
+      "originalName": "stackIn_3_1",
+      "to": "oppositeHighlightValue",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.a(FLjava/lang/String;ZB)V#3",
+      "originalName": "stackIn_8_1",
+      "to": "nextHighlight",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.a(FLjava/lang/String;ZB)V#4",
+      "originalName": "stackIn_18_0",
+      "to": "failureContext",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.a(FLjava/lang/String;ZB)V#5",
+      "originalName": "stackIn_18_1",
+      "to": "contextBuilder",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.a(FLjava/lang/String;ZB)V#6",
+      "originalName": "stackIn_19_2",
+      "to": "statusSummary",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.a(FLjava/lang/String;ZB)V#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tb.a(FLjava/lang/String;ZB)V#8",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "tb.java: Reviewed progress/highlight state, curved-cap/stripe generation, animation or guarded account transition declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:tc.a(ILro;)I#0",
       "originalName": "var2",
       "to": "value",
@@ -34478,6 +34961,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cr.a(I)Ljp;",
+      "originalName": "a",
+      "to": "buildRightCapMask",
+      "evidence": "cr.java: Grayscale curved mask of width floor(height/2), including nonzero minimum1 edge/NaN pixels; guard16711422.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cr.a(IBI)Ljp;",
+      "originalName": "a",
+      "to": "buildStripeSprite",
+      "evidence": "cr.java: Two phaseSpan-wide alternating foreground/background stripes with row brightness from128 to256; canonical guards -41/107.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cr.a(IIIB)V",
       "originalName": "a",
       "to": "drawLayer",
@@ -34489,6 +34986,13 @@
       "originalName": "a",
       "to": "setBounds",
       "evidence": "oc.java: Stores height,x,y,width in original argument order; guard -119; wrapper also lays out its child. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cr.a(IILjp;I)V",
+      "originalName": "a",
+      "to": "drawStripedBar",
+      "evidence": "cr.java: Tiles phase-shifted stripe texture and composites both curved caps through a reusable surface; guard at most -56.",
       "confidence": "reviewed"
     },
     {
@@ -41954,10 +42458,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tb.a(FLjava/lang/String;ZB)V",
+      "originalName": "a",
+      "to": "setProgress",
+      "evidence": "tb.java: Changes palette only when highlight mode changes, writes unclamped percent/100*65536 fraction and canonical-guard status caption; guard86.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tb.b(III)V",
       "originalName": "b",
       "to": "paintLayerFrame",
       "evidence": "jc.java: Frame painting contract with parent-translated x/y and guard274. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.l(I)V",
+      "originalName": "l",
+      "to": "stopActivityAnimation",
+      "evidence": "tb.java: Stops phase animation and records stop request; guard6457.",
       "confidence": "reviewed"
     },
     {
@@ -46231,6 +46749,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bh.<init>(Lcp;Loc;)V#0",
+      "originalName": "param0",
+      "to": "layerStack",
+      "evidence": "bh.java: Shared transition policy: header33, fade20, resize30.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bh.<init>(Lcp;Loc;)V#1",
+      "originalName": "param1",
+      "to": "content",
+      "evidence": "bh.java: Shared transition policy: header33, fade20, resize30.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bh.b(BLoc;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -48079,6 +48611,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cr.<init>(IIIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "cr.java: Retains active/inactive colors and phase span, then installs bounds and builds sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.<init>(IIIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "cr.java: Retains active/inactive colors and phase span, then installs bounds and builds sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.<init>(IIIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "cr.java: Retains active/inactive colors and phase span, then installs bounds and builds sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.<init>(IIIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "height",
+      "evidence": "cr.java: Retains active/inactive colors and phase span, then installs bounds and builds sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.<init>(IIIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "phaseSpan",
+      "evidence": "cr.java: Retains active/inactive colors and phase span, then installs bounds and builds sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.<init>(IIIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "foregroundColor",
+      "evidence": "cr.java: Retains active/inactive colors and phase span, then installs bounds and builds sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.<init>(IIIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "backgroundColor",
+      "evidence": "cr.java: Retains active/inactive colors and phase span, then installs bounds and builds sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.<init>(IIIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "inactiveForegroundColor",
+      "evidence": "cr.java: Retains active/inactive colors and phase span, then installs bounds and builds sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.<init>(IIIIIIIII)V#8",
+      "originalName": "param8",
+      "to": "inactiveBackgroundColor",
+      "evidence": "cr.java: Retains active/inactive colors and phase span, then installs bounds and builds sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(I)Ljp;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "cr.java: Grayscale curved mask of width floor(height/2), including nonzero minimum1 edge/NaN pixels; guard16711422.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(IBI)Ljp;#0",
+      "originalName": "param0",
+      "to": "backgroundColor",
+      "evidence": "cr.java: Two phaseSpan-wide alternating foreground/background stripes with row brightness from128 to256; canonical guards -41/107.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(IBI)Ljp;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "cr.java: Two phaseSpan-wide alternating foreground/background stripes with row brightness from128 to256; canonical guards -41/107.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(IBI)Ljp;#2",
+      "originalName": "param2",
+      "to": "foregroundColor",
+      "evidence": "cr.java: Two phaseSpan-wide alternating foreground/background stripes with row brightness from128 to256; canonical guards -41/107.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cr.a(IIIB)V#0",
       "originalName": "param0",
       "to": "parentY",
@@ -48139,6 +48762,34 @@
       "originalName": "param4",
       "to": "width",
       "evidence": "oc.java: Stores height,x,y,width in original argument order; guard -119; wrapper also lays out its child. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(IILjp;I)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "cr.java: Tiles phase-shifted stripe texture and composites both curved caps through a reusable surface; guard at most -56.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(IILjp;I)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "cr.java: Tiles phase-shifted stripe texture and composites both curved caps through a reusable surface; guard at most -56.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(IILjp;I)V#2",
+      "originalName": "param2",
+      "to": "stripes",
+      "evidence": "cr.java: Tiles phase-shifted stripe texture and composites both curved caps through a reusable surface; guard at most -56.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(IILjp;I)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "cr.java: Tiles phase-shifted stripe texture and composites both curved caps through a reusable surface; guard at most -56.",
       "confidence": "reviewed"
     },
     {
@@ -70367,6 +71018,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tb.<init>(Lcp;Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "layerStack",
+      "evidence": "tb.java: Creates centered300-by120 popup or150 plus measured detail height, with animated activity bar.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.<init>(Lcp;Ljava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "details",
+      "evidence": "tb.java: Creates centered300-by120 popup or150 plus measured detail height, with animated activity bar.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a(FLjava/lang/String;ZB)V#0",
+      "originalName": "param0",
+      "to": "percent",
+      "evidence": "tb.java: Changes palette only when highlight mode changes, writes unclamped percent/100*65536 fraction and canonical-guard status caption; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a(FLjava/lang/String;ZB)V#1",
+      "originalName": "param1",
+      "to": "statusText",
+      "evidence": "tb.java: Changes palette only when highlight mode changes, writes unclamped percent/100*65536 fraction and canonical-guard status caption; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a(FLjava/lang/String;ZB)V#2",
+      "originalName": "param2",
+      "to": "highlighted",
+      "evidence": "tb.java: Changes palette only when highlight mode changes, writes unclamped percent/100*65536 fraction and canonical-guard status caption; guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.a(FLjava/lang/String;ZB)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "tb.java: Changes palette only when highlight mode changes, writes unclamped percent/100*65536 fraction and canonical-guard status caption; guard86.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tb.b(III)V#0",
       "originalName": "param0",
       "to": "x",
@@ -70385,6 +71078,13 @@
       "originalName": "param2",
       "to": "y",
       "evidence": "jc.java: Frame painting contract with parent-translated x/y and guard274. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tb.l(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tb.java: Stops phase animation and records stop request; guard6457.",
       "confidence": "reviewed"
     },
     {
@@ -75695,9 +76395,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "3c8b253aee019b937469acbf288585537500713279e1e4f5fbe2eaaddb8ce6ff",
+      "build-brickabrac-rules.mjs": "d8f7302929a3472bcef44b7299b37dbbeee430ef239c44aae6809b8d95562fde",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "8aea5f4be21cab77ce8e38705ff0f9c468808f568b151bd4a3cca69d55115d9b",
+      "tests/test-brickabrac-core.mjs": "12bb8a3c6e96f3e454c10b9fa2aa4020d02a72e17aae583eb3fac4ff741d12a6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

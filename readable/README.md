@@ -1464,6 +1464,27 @@ file 0 under a distinct cache key. Static client/UI state is restored. Cyclic
 category graphs, root searches without a marker, arbitrary malformed records,
 real catalog completeness and live server/menu behavior remain unverified.
 
+LoadingProgressDialog now names its activity bar, status/detail text, highlight
+palette and retained stop request. Percentages become an unclamped 65536-scale
+fraction. Entering highlighted mode selects orange stripes and restarts phase
+animation; returning to normal blue honors the stop request. Repeating the
+current mode changes neither palette nor animation. Optional detail text adds
+its wrapped height to the popup. AccountContentTransitionLayer names the
+account-form policy with a 33-pixel header, 20-tick fades and 30-tick resize.
+
+ActivityIndicatorWidget now exposes active/inactive colors, cached stripe
+textures, curved cap masks, work surface and progress fraction. Scalar pixel
+fixtures verify row shading/stripe placement and both cap masks. Progress
+splits are checked against separate full-active/full-inactive renders; this is
+a compositing consistency check, not an independent oracle for the entire
+renderer. State fixtures cover percentage endpoints/NaN/infinities, highlight
+changes, cache reuse, stop/restart behavior, phase wrapping and ignored layers.
+The account-form fixture checks all 69 transition ticks and the guarded entry
+point. Raster/UI globals and shared text scratch contents are restored.
+Arbitrary invalid geometry/colors, wrong obfuscation guards, complete popup
+frame rendering, every interrupted transition and live animation remain
+unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
