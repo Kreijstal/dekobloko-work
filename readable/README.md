@@ -1071,6 +1071,18 @@ server update; removals mutate local ownership immediately. Controller routing f
 these actions, actual list-row rendering, rename collisions between existing players,
 all localized error strings and live social services remain unverified.
 
+LobbyGame and LobbyPlayer name game settings and capacity, identity/display names,
+player membership/rating/rated-game count, invitations and join requests, rated and
+spectator modes, and timing. Game bit8 and two unresolved packet words retain
+qualified protocol names. Native fixtures cover all256 game flags, optional count,
+in-place settings, optional duration/names and exact cursor consumption. With bit2
+and zero players, the cursor rewinds before the first name despite reading it for
+the game caption. Timestamp checks compare monotonic bounds without hashing wall
+time. Player fixtures preserve constructor/update argument order and discarded
+normalization. Secondary ownership, game-ID truncation and seeded independent
+sorting checks cover strict ties and long timestamp extremes. The complete lobby
+response dispatcher, rendered rows and live multiplayer services remain unverified.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded

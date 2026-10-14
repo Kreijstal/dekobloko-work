@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 41,
+  "version": 42,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -654,6 +654,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:id",
+      "originalName": "id",
+      "to": "LobbyPlayer",
+      "evidence": "id.java: Lobby and current-game player row with account identity, display name, membership, rating, rated-game count, invitations and join requests. Static character-order helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ie",
       "originalName": "ie",
       "to": "MidiSynthesizer",
@@ -1099,6 +1106,13 @@
       "originalName": "ol",
       "to": "LevelPackSelectScreen",
       "evidence": "ol.java: ID16 shows two pack cards and routes action40/41 to level selection IDs13/15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:om",
+      "originalName": "om",
+      "to": "LobbyGame",
+      "evidence": "om.java: Lobby/current-game record with settings, player capacity, rated/spectator mode, invitations and timing. Static board rendering remains separate.",
       "confidence": "reviewed"
     },
     {
@@ -4438,6 +4452,125 @@
       "originalName": "field_x",
       "to": "transitionKeepMask",
       "evidence": "i.java: AND mask clearing this icon transition bit when offset is already zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_Qb:Z",
+      "originalName": "field_Qb",
+      "to": "invitationPending",
+      "evidence": "id.java: Packet kinds14/15 toggle the invitation and context actions offer withdrawal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_Rb:Lmh;",
+      "originalName": "field_Rb",
+      "to": "nameLabel",
+      "evidence": "id.java: Player-row display name and badge text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_Ub:I",
+      "originalName": "field_Ub",
+      "to": "optionEligibilityMask",
+      "evidence": "id.java: Required option mask is checked against the complement of this received byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_Vb:Lmh;",
+      "originalName": "field_Vb",
+      "to": "statusLabel",
+      "evidence": "id.java: Player-row invitation/join-request status text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_Wb:I",
+      "originalName": "field_Wb",
+      "to": "rating",
+      "evidence": "id.java: Unsigned16-bit value displayed on the row and compared against the option-required rating.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_Xb:J",
+      "originalName": "field_Xb",
+      "to": "arrivalTimeMillis",
+      "evidence": "id.java: Received monotonic time minus packet age; final ascending player-sort key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_Yb:Ljava/lang/String;",
+      "originalName": "field_Yb",
+      "to": "displayName",
+      "evidence": "id.java: Player row and hover text use the second received name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_Zb:I",
+      "originalName": "field_Zb",
+      "to": "badgeId",
+      "evidence": "id.java: Unsigned badge byte selects name sprite and hover text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_ac:I",
+      "originalName": "field_ac",
+      "to": "ratedGameCount",
+      "evidence": "id.java: Packed count shifted right1; tooltip names missing rated games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_cc:Lmh;",
+      "originalName": "field_cc",
+      "to": "actionLabel",
+      "evidence": "id.java: Player-row kick, withdraw or reject action text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_dc:Lmh;",
+      "originalName": "field_dc",
+      "to": "ratingLabel",
+      "evidence": "id.java: Player-row rating text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_ec:Z",
+      "originalName": "field_ec",
+      "to": "member",
+      "evidence": "id.java: Packed count low bit; row tooltip explicitly identifies non-members.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_fc:Z",
+      "originalName": "field_fc",
+      "to": "joinRequestPending",
+      "evidence": "id.java: Packet kinds16/17 toggle the request and context actions offer accept/reject.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_gc:J",
+      "originalName": "field_gc",
+      "to": "playerId",
+      "evidence": "id.java: Player lookup and context actions use the received64-bit account identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_hc:Ljava/lang/String;",
+      "originalName": "field_hc",
+      "to": "accountName",
+      "evidence": "id.java: First constructor name, retained unchanged when passed to normalization; rendered name uses the second string.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_ic:I",
+      "originalName": "field_ic",
+      "to": "statusChangeTick",
+      "evidence": "id.java: Client tick stored with nonzero removal/request status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:id.field_kc:I",
+      "originalName": "field_kc",
+      "to": "removalStatus",
+      "evidence": "id.java: Nonzero player removal/request status retained by packet handler.",
       "confidence": "reviewed"
     },
     {
@@ -7899,10 +8032,150 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:om.field_Dc:Z",
+      "originalName": "field_Dc",
+      "to": "protocolFlag8",
+      "evidence": "om.java: Packet bit8 gates request/invitation actions; full server semantics unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_Fc:Ljava/lang/String;",
+      "originalName": "field_Fc",
+      "to": "displayName",
+      "evidence": "om.java: First received player name used by game context captions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_Pb:Z",
+      "originalName": "field_Pb",
+      "to": "invitationPending",
+      "evidence": "om.java: Packet kind11 sets and kind13 clears; menu offers accept/decline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_Qb:[Ljava/lang/String;",
+      "originalName": "field_Qb",
+      "to": "playerNames",
+      "evidence": "om.java: Optional bit2 list of playerCount strings, reread from the first name position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_Rb:Z",
+      "originalName": "field_Rb",
+      "to": "started",
+      "evidence": "om.java: Packet bit64; running/concluded rows display elapsed duration, and waiting games allow kicks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_Tb:[B",
+      "originalName": "field_Tb",
+      "to": "settings",
+      "evidence": "om.java: Constructor-sized game-option bytes overwritten in place by the decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_Wb:I",
+      "originalName": "field_Wb",
+      "to": "statusChangeTick",
+      "evidence": "om.java: Client tick stored with a nonzero game status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_Zb:I",
+      "originalName": "field_Zb",
+      "to": "removalStatus",
+      "evidence": "om.java: Nonzero game-removal/status code;6 receives invitation sorting priority.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_ac:Z",
+      "originalName": "field_ac",
+      "to": "rated",
+      "evidence": "om.java: Packet bit32 selects literal Rated game or Unrated game tooltip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_bc:Z",
+      "originalName": "field_bc",
+      "to": "directJoinEnabled",
+      "evidence": "om.java: Packet bit128 gates direct joining together with capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_cc:I",
+      "originalName": "field_cc",
+      "to": "playerCount",
+      "evidence": "om.java: Received count or maintained by current-game player additions/removals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_dc:Z",
+      "originalName": "field_dc",
+      "to": "joinRequestPending",
+      "evidence": "om.java: Packet kind12 sets and kind13 clears; menu offers withdrawal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:om.field_fc:Ljp;",
       "originalName": "field_fc",
       "to": "spaceNearSprite",
       "evidence": "ci.java: Literal sprite resource space/space_near assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_jc:I",
+      "originalName": "field_jc",
+      "to": "maxPlayers",
+      "evidence": "om.java: Received capacity displayed after the count and used by join/invite checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_kc:I",
+      "originalName": "field_kc",
+      "to": "joinSortPriority",
+      "evidence": "om.java: Received byte sorted ascending when direct joining is available; other meaning unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_qc:J",
+      "originalName": "field_qc",
+      "to": "activityTimeMillis",
+      "evidence": "om.java: Monotonic time minus received age; waiting rows sort ascending, started rows descending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_uc:Z",
+      "originalName": "field_uc",
+      "to": "directJoinAvailable",
+      "evidence": "om.java: Derived from directJoinEnabled and playerCount below maxPlayers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_vc:I",
+      "originalName": "field_vc",
+      "to": "protocolWord16",
+      "evidence": "om.java: Received unsigned16-bit word displayed in a numeric row column; meaning unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_wc:I",
+      "originalName": "field_wc",
+      "to": "spectatorMode",
+      "evidence": "om.java: Packet bit16 maps to2, otherwise1; tooltip is Can spectate or No spectators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_xc:J",
+      "originalName": "field_xc",
+      "to": "protocolId64",
+      "evidence": "om.java: Received64-bit word; ownership meaning unresolved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:om.field_yc:I",
+      "originalName": "field_yc",
+      "to": "concludedDurationMillis",
+      "evidence": "om.java: Optional bit4 word or -1; nonnegative values mark Concluded and provide final displayed duration.",
       "confidence": "reviewed"
     },
     {
@@ -13870,6 +14143,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:eb.a(Lom;Lwq;IZ)V#0",
+      "originalName": "var8",
+      "to": "playerIndex",
+      "evidence": "eb.java: Scoped decoder local: packet flags, optional fields, cursor rewind, player iteration or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eb.a(Lom;Lwq;IZ)V#21",
+      "originalName": "var4_int",
+      "to": "flags",
+      "evidence": "eb.java: Scoped decoder local: packet flags, optional fields, cursor rewind, player iteration or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eb.a(Lom;Lwq;IZ)V#22",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "eb.java: Scoped decoder local: packet flags, optional fields, cursor rewind, player iteration or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eb.a(Lom;Lwq;IZ)V#23",
+      "originalName": "var5",
+      "to": "hasConcludedDuration",
+      "evidence": "eb.java: Scoped decoder local: packet flags, optional fields, cursor rewind, player iteration or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eb.a(Lom;Lwq;IZ)V#24",
+      "originalName": "var6",
+      "to": "hasPlayerNames",
+      "evidence": "eb.java: Scoped decoder local: packet flags, optional fields, cursor rewind, player iteration or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eb.a(Lom;Lwq;IZ)V#25",
+      "originalName": "var7",
+      "to": "firstNamePosition",
+      "evidence": "eb.java: Scoped decoder local: packet flags, optional fields, cursor rewind, player iteration or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:eb.a(Lom;Lwq;IZ)V#26",
+      "originalName": "var9",
+      "to": "clientBranchFlag",
+      "evidence": "eb.java: Scoped decoder local: packet flags, optional fields, cursor rewind, player iteration or exception context.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ed.b(II)I#0",
       "originalName": "var2",
       "to": "shiftCount",
@@ -19379,6 +19701,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:om.a(Lom;Z)Z#18",
+      "originalName": "var3_int",
+      "to": "thisInvitationPriority",
+      "evidence": "om.java: Scoped game comparator local: invitation/status6 and flag8/spectator priorities or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(Lom;Z)Z#19",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "om.java: Scoped game comparator local: invitation/status6 and flag8/spectator priorities or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(Lom;Z)Z#20",
+      "originalName": "var4",
+      "to": "otherInvitationPriority",
+      "evidence": "om.java: Scoped game comparator local: invitation/status6 and flag8/spectator priorities or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(Lom;Z)Z#21",
+      "originalName": "var5",
+      "to": "thisStartedPriority",
+      "evidence": "om.java: Scoped game comparator local: invitation/status6 and flag8/spectator priorities or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(Lom;Z)Z#22",
+      "originalName": "var6",
+      "to": "otherStartedPriority",
+      "evidence": "om.java: Scoped game comparator local: invitation/status6 and flag8/spectator priorities or exception context.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:on.a(BZ)V#0",
       "originalName": "var6",
       "to": "sourceWaypoint",
@@ -22788,6 +23145,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.a(IB)Lom;",
+      "originalName": "a",
+      "to": "findLobbyGame",
+      "evidence": "dg.java: Looks up game ID in the secondary game index; null index yields null; guard61.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dh.a(C)I",
       "originalName": "a",
       "to": "getAdvance",
@@ -23058,6 +23422,13 @@
       "originalName": "a",
       "to": "createMouseWheelSource",
       "evidence": "ea.java: Reflectively creates owned wheel implementation and returns null if creation fails; canonical guard60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eb.a(Lom;Lwq;IZ)V",
+      "originalName": "a",
+      "to": "decodeLobbyGame",
+      "evidence": "eb.java: Reads count/capacity/flags/settings/timing and optional player names; guard0; bit2 rewinds to first name.",
       "confidence": "reviewed"
     },
     {
@@ -23961,6 +24332,27 @@
       "originalName": "a",
       "to": "createCharacterOrder",
       "evidence": "id.java: Builds sequential character IDs, excludes final ID without feature0 and shuffles using supplied generator; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(Lid;I)Z",
+      "originalName": "a",
+      "to": "comesBeforePlayer",
+      "evidence": "id.java: Join requests first, then invitations, then ascending arrival time; strict ties return false; guard -755.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.a(Ljava/lang/String;Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "updateNames",
+      "evidence": "id.java: Updates display/account names in reversed constructor order; normalization result is discarded; guard -121.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.i(I)Z",
+      "originalName": "i",
+      "to": "isUnindexed",
+      "evidence": "id.java: Negates secondary ownership at guard0.",
       "confidence": "reviewed"
     },
     {
@@ -26761,6 +27153,27 @@
       "originalName": "b",
       "to": "layoutButtons",
       "evidence": "km.java: Sets each rectangle through virtual left/right/top/height getters; true guard. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.a(Lom;Z)Z",
+      "originalName": "a",
+      "to": "comesBeforeGame",
+      "evidence": "om.java: Invitation/status6 priority, direct join and byte priority, waiting/started, flag8/spectator and activity time; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.e(B)I",
+      "originalName": "e",
+      "to": "getGameId",
+      "evidence": "om.java: Returns the low32 bits of the secondary collection key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.h(I)Z",
+      "originalName": "h",
+      "to": "isUnindexed",
+      "evidence": "om.java: Negates secondary ownership; caller guard109.",
       "confidence": "reviewed"
     },
     {
@@ -32126,6 +32539,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:dg.a(IB)Lom;#0",
+      "originalName": "param0",
+      "to": "gameId",
+      "evidence": "dg.java: Looks up game ID in the secondary game index; null index yields null; guard61.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dg.a(IB)Lom;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "dg.java: Looks up game ID in the secondary game index; null index yields null; guard61.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:dh.<init>([B[I[I[I[I)V#0",
       "originalName": "param0",
       "to": "metrics",
@@ -33103,6 +33530,34 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ea.java: Reflectively creates owned wheel implementation and returns null if creation fails; canonical guard60.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.a(Lom;Lwq;IZ)V#0",
+      "originalName": "param0",
+      "to": "game",
+      "evidence": "eb.java: Reads count/capacity/flags/settings/timing and optional player names; guard0; bit2 rewinds to first name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.a(Lom;Lwq;IZ)V#1",
+      "originalName": "param1",
+      "to": "packet",
+      "evidence": "eb.java: Reads count/capacity/flags/settings/timing and optional player names; guard0; bit2 rewinds to first name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.a(Lom;Lwq;IZ)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "eb.java: Reads count/capacity/flags/settings/timing and optional player names; guard0; bit2 rewinds to first name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eb.a(Lom;Lwq;IZ)V#3",
+      "originalName": "param3",
+      "to": "includePlayerCount",
+      "evidence": "eb.java: Reads count/capacity/flags/settings/timing and optional player names; guard0; bit2 rewinds to first name.",
       "confidence": "reviewed"
     },
     {
@@ -35577,6 +36032,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:id.<init>(Ljava/lang/String;Ljava/lang/String;J)V#0",
+      "originalName": "param0",
+      "to": "accountName",
+      "evidence": "id.java: Retains both received names and player identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:id.<init>(Ljava/lang/String;Ljava/lang/String;J)V#1",
+      "originalName": "param1",
+      "to": "displayName",
+      "evidence": "id.java: Retains both received names and player identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:id.<init>(Ljava/lang/String;Ljava/lang/String;J)V#2",
+      "originalName": "param2",
+      "to": "playerId",
+      "evidence": "id.java: Retains both received names and player identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:id.a(Lfo;Z)[I#0",
       "originalName": "param0",
       "to": "random",
@@ -35588,6 +36064,48 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "id.java: Builds sequential character IDs, excludes final ID without feature0 and shuffles using supplied generator; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:id.a(Lid;I)Z#0",
+      "originalName": "param0",
+      "to": "other",
+      "evidence": "id.java: Join requests first, then invitations, then ascending arrival time; strict ties return false; guard -755.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:id.a(Lid;I)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "id.java: Join requests first, then invitations, then ascending arrival time; strict ties return false; guard -755.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:id.a(Ljava/lang/String;Ljava/lang/String;B)V#0",
+      "originalName": "param0",
+      "to": "displayName",
+      "evidence": "id.java: Updates display/account names in reversed constructor order; normalization result is discarded; guard -121.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:id.a(Ljava/lang/String;Ljava/lang/String;B)V#1",
+      "originalName": "param1",
+      "to": "accountName",
+      "evidence": "id.java: Updates display/account names in reversed constructor order; normalization result is discarded; guard -121.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:id.a(Ljava/lang/String;Ljava/lang/String;B)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "id.java: Updates display/account names in reversed constructor order; normalization result is discarded; guard -121.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:id.i(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "id.java: Negates secondary ownership at guard0.",
       "confidence": "reviewed"
     },
     {
@@ -43263,6 +43781,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:om.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "settingCount",
+      "evidence": "om.java: Allocates the game-option byte array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(Lom;Z)Z#0",
+      "originalName": "param0",
+      "to": "other",
+      "evidence": "om.java: Invitation/status6 priority, direct join and byte priority, waiting/started, flag8/spectator and activity time; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(Lom;Z)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Invitation/status6 priority, direct join and byte priority, waiting/started, flag8/spectator and activity time; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.e(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Returns the low32 bits of the secondary collection key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.h(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Negates secondary ownership; caller guard109.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:on.<init>(IIIIIIII)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -50005,9 +50558,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "7aefff23822489184ccdd1c658e2ebeb01523d5be3014fab95b9b2ace9dd35aa",
+      "build-brickabrac-rules.mjs": "513ec958aa58e623f6c037ad8cf553f5f9bd082624a2eaa8c332e1339fe0befe",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "8aeabefa2a20ec182235b8fefdbad754769500529bb09841c7fd0b75840d49d6",
+      "tests/test-brickabrac-core.mjs": "4a759a9e986e3e455e4d139b4f8c28324544336966447ae7251f410e673652d9",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

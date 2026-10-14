@@ -200,12 +200,65 @@ const classes={
  nn:['ContextActionController','Component/target/game/chat context, menu builders and routing for game/social/filter/report actions. Large static resource loading remains a separate role.'],
  gb:['ChatMessage','Sender/display names, channel/context/text, optional linked phrases, system flag and40-bit duplicate key split into16/24-bit words; static name canonicalization remains separate.'],
  mp:['SocialListEntry','Shared friend/ignore record and UI row with current/previous/action names, server presence and insertion order. Static mesh/account helpers remain separate.'],
+ id:['LobbyPlayer','Lobby and current-game player row with account identity, display name, membership, rating, rated-game count, invitations and join requests. Static character-order helpers remain separate.'],
+ om:['LobbyGame','Lobby/current-game record with settings, player capacity, rated/spectator mode, invitations and timing. Static board rendering remains separate.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
 function local(owner,signature,ordinal,expectedOriginalName,to,evidence){members[`L:${owner}.${signature}#${ordinal}`]={to,expectedOriginalName,evidence};}
 function parameter(owner,signature,ordinal,to,evidence){members[`P:${owner}.${signature}#${ordinal}`]={to,evidence};}
+for(const [owner,original,type,to,evidence] of [
+ ['id','gc','J','playerId','Player lookup and context actions use the received64-bit account identity.'],
+ ['id','hc','Ljava/lang/String;','accountName','First constructor name, retained unchanged when passed to normalization; rendered name uses the second string.'],
+ ['id','Yb','Ljava/lang/String;','displayName','Player row and hover text use the second received name.'],
+ ['id','Xb','J','arrivalTimeMillis','Received monotonic time minus packet age; final ascending player-sort key.'],
+ ['id','Qb','Z','invitationPending','Packet kinds14/15 toggle the invitation and context actions offer withdrawal.'],
+ ['id','fc','Z','joinRequestPending','Packet kinds16/17 toggle the request and context actions offer accept/reject.'],
+ ['id','ec','Z','member','Packed count low bit; row tooltip explicitly identifies non-members.'],
+ ['id','Wb','I','rating','Unsigned16-bit value displayed on the row and compared against the option-required rating.'],
+ ['id','ac','I','ratedGameCount','Packed count shifted right1; tooltip names missing rated games.'],
+ ['id','Zb','I','badgeId','Unsigned badge byte selects name sprite and hover text.'],
+ ['id','Ub','I','optionEligibilityMask','Required option mask is checked against the complement of this received byte.'],
+ ['id','kc','I','removalStatus','Nonzero player removal/request status retained by packet handler.'],
+ ['id','ic','I','statusChangeTick','Client tick stored with nonzero removal/request status.'],
+ ['id','Rb','Lmh;','nameLabel','Player-row display name and badge text.'],
+ ['id','dc','Lmh;','ratingLabel','Player-row rating text.'],
+ ['id','Vb','Lmh;','statusLabel','Player-row invitation/join-request status text.'],
+ ['id','cc','Lmh;','actionLabel','Player-row kick, withdraw or reject action text.'],
+ ['om','Tb','[B','settings','Constructor-sized game-option bytes overwritten in place by the decoder.'],
+ ['om','cc','I','playerCount','Received count or maintained by current-game player additions/removals.'],
+ ['om','jc','I','maxPlayers','Received capacity displayed after the count and used by join/invite checks.'],
+ ['om','kc','I','joinSortPriority','Received byte sorted ascending when direct joining is available; other meaning unresolved.'],
+ ['om','bc','Z','directJoinEnabled','Packet bit128 gates direct joining together with capacity.'],
+ ['om','uc','Z','directJoinAvailable','Derived from directJoinEnabled and playerCount below maxPlayers.'],
+ ['om','Rb','Z','started','Packet bit64; running/concluded rows display elapsed duration, and waiting games allow kicks.'],
+ ['om','ac','Z','rated','Packet bit32 selects literal Rated game or Unrated game tooltip.'],
+ ['om','Dc','Z','protocolFlag8','Packet bit8 gates request/invitation actions; full server semantics unresolved.'],
+ ['om','wc','I','spectatorMode','Packet bit16 maps to2, otherwise1; tooltip is Can spectate or No spectators.'],
+ ['om','dc','Z','joinRequestPending','Packet kind12 sets and kind13 clears; menu offers withdrawal.'],
+ ['om','Pb','Z','invitationPending','Packet kind11 sets and kind13 clears; menu offers accept/decline.'],
+ ['om','Zb','I','removalStatus','Nonzero game-removal/status code;6 receives invitation sorting priority.'],
+ ['om','Wb','I','statusChangeTick','Client tick stored with a nonzero game status.'],
+ ['om','vc','I','protocolWord16','Received unsigned16-bit word displayed in a numeric row column; meaning unresolved.'],
+ ['om','qc','J','activityTimeMillis','Monotonic time minus received age; waiting rows sort ascending, started rows descending.'],
+ ['om','yc','I','concludedDurationMillis','Optional bit4 word or -1; nonnegative values mark Concluded and provide final displayed duration.'],
+ ['om','xc','J','protocolId64','Received64-bit word; ownership meaning unresolved.'],
+ ['om','Fc','Ljava/lang/String;','displayName','First received player name used by game context captions.'],
+ ['om','Qb','[Ljava/lang/String;','playerNames','Optional bit2 list of playerCount strings, reread from the first name position.'],
+])field(owner,original,type,to,evidence);
+method('id','<init>','(Ljava/lang/String;Ljava/lang/String;J)V','<init>','Retains both received names and player identity.',['accountName','displayName','playerId']);
+method('id','a','(Ljava/lang/String;Ljava/lang/String;B)V','updateNames','Updates display/account names in reversed constructor order; normalization result is discarded; guard -121.',['displayName','accountName','obfuscationGuard']);
+method('id','a','(Lid;I)Z','comesBeforePlayer','Join requests first, then invitations, then ascending arrival time; strict ties return false; guard -755.',['other','obfuscationGuard']);
+method('id','i','(I)Z','isUnindexed','Negates secondary ownership at guard0.',['obfuscationGuard']);
+method('om','<init>','(I)V','<init>','Allocates the game-option byte array.',['settingCount']);
+method('om','a','(Lom;Z)Z','comesBeforeGame','Invitation/status6 priority, direct join and byte priority, waiting/started, flag8/spectator and activity time; true guard.',['other','obfuscationGuard']);
+method('om','e','(B)I','getGameId','Returns the low32 bits of the secondary collection key.',['obfuscationGuard']);
+method('om','h','(I)Z','isUnindexed','Negates secondary ownership; caller guard109.',['obfuscationGuard']);
+method('eb','a','(Lom;Lwq;IZ)V','decodeLobbyGame','Reads count/capacity/flags/settings/timing and optional player names; guard0; bit2 rewinds to first name.',['game','packet','obfuscationGuard','includePlayerCount']);
+method('dg','a','(IB)Lom;','findLobbyGame','Looks up game ID in the secondary game index; null index yields null; guard61.',['gameId','obfuscationGuard']);
+for(const [ordinal,original,to] of [[0,'var8','playerIndex'],[21,'var4_int','flags'],[22,'var4','failure'],[23,'var5','hasConcludedDuration'],[24,'var6','hasPlayerNames'],[25,'var7','firstNamePosition'],[26,'var9','clientBranchFlag']])local('eb','a(Lom;Lwq;IZ)V',ordinal,original,to,'Scoped decoder local: packet flags, optional fields, cursor rewind, player iteration or exception context.');
+for(const [ordinal,original,to] of [[18,'var3_int','thisInvitationPriority'],[19,'var3','failure'],[20,'var4','otherInvitationPriority'],[21,'var5','thisStartedPriority'],[22,'var6','otherStartedPriority']])local('om','a(Lom;Z)Z',ordinal,original,to,'Scoped game comparator local: invitation/status6 and flag8/spectator priorities or exception context.');
 for(const [owner,original,type,to,evidence] of [
  ['mp','Rb','Ljava/lang/String;','name','Current name used by normalized hash lookups and friend name label.'],['mp','Qb','Ljava/lang/String;','previousName','Previous name used to rekey updates and displayed by rename indicator.'],['mp','ac','Ljava/lang/String;','actionName','Alternate name from ignore update passed to context action handlers; row display and lookup use name.'],['mp','Ub','Ljava/lang/String;','serverName','Interned friend presence string; null means offline and current-server identity is prioritized.'],['mp','Sb','I','insertionIndex','Sequential index assigned on creation and decremented after friend removal.'],['mp','Xb','Lmh;','nameLabel','Friend UI text for current name.'],['mp','Wb','Lmh;','serverLabel','Right-aligned online-server/offline label.'],['mp','Yb','Lmh;','renameIndicator','Previous-name sprite/hover control.'],
  ['of','i','Lmk;','friendIndex','Secondary hash index of friend rows by normalized name hash.'],['tf','d','Lmk;','ignoreIndex','Secondary hash index of ignored rows, with raw-name fallback.'],['bf','N','Lvl;','friendEntries','Primary intrusive list sorted by presence/index after received friend updates.'],['jq','n','Lvl;','ignoreEntries','Primary intrusive list in received insertion order.'],['ol','w','I','friendCount','Friend insertion counter and100/200 request capacity check.'],['fo','h','I','ignoreCount','Ignore insertion counter and100 request capacity check.'],['rk','Tb','Ljava/lang/String;','currentSocialServer','Interned social-server string from response kind4; compared by reference to friend presence.'],['ih','d','Ljava/lang/String;','localPlayerNameKey','Normalized local name used to reject self additions.'],
@@ -1306,6 +1359,7 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `This pass reviews ${Object.keys(classes).length} class identities across ${mapping.files.length} compiled classes. Other names remain unresolved. Numbered state masks/words identify observed storage without guessing server semantics. Identifiers have no opaque suffixes; reversal recovers original bytes.`, '',
 '| Start here | Follow |','| --- | --- |',
 `| ${link('qj')} → ${link('ak')} → ${link('j')} | Gameplay screen, multiplayer match and per-player boards. |`,
+`| ${link('om')} / ${link('id')} | Lobby game settings, capacity, invitations, player membership/rating and row sorting. |`,
 `| ${link('vi')} / ${link('bn')} / ${link('no')} | Fixed8 body coordinates/velocities, rectangle/circle geometry, snapshots and checksums. |`,
 `| ${link('vo')} / ${link('vn')} / ${link('on')} | Paddle size stages, balls and bricks. |`,
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
@@ -1408,10 +1462,11 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Phrase fixtures check14 known command types, unknown defaults, tag consumption, empty/consecutive/trailing fragments, ellipsis previews, extended-link marking and two-archive lookup through synthetic containers. Missing/unavailable definitions stay cached as empty objects; unknown tags consume no payload. Wire fixtures independently verify opcode cipher, byte length, channel2 recipient, truncated16-bit message words, CP1252 Huffman text and128-byte smart length with an8-bit code table. Filters cover all0..2 states, unchanged suppression, packed bytes and changed flag. Controlled leaf dispatch checks channels0..2, channel0 game-context filtering, conditional filter packet order, repeat state and menu/channel cleanup without traffic. Dynamic parameter substitution, malformed/future formats, arbitrary Huffman tables in dispatch, cache eviction, actual phrase assets and live service interoperability remain unverified; the shared codec has separate fixtures above.', '',
 'ContextActionController fixtures check anchor/caption storage, self-report suppression, filter action lists, pending result and pointer-driven filter dispatch. Controller-routed game/social mutations, report-dialog dispatch and resource loading remain unverified; unresolved action meanings retain numeric IDs. ChatMessage fixtures receive channels0..4 with system/badge flags, alternate names, context fields, compressed text/phrase previews, self-name suggestion suppression and exact cursor consumption. Name rules preserve trimming, source-length bounds, accent folding and sharp-s-to-b. Prefix/color fixtures check badges, private direction and configured channel/local colors. History checks chronological retention, duplicate suppression and null-text rejection. Zero limit removes old messages in the incoming channel but appends the new one. Malformed packets, arbitrary flags, live services and rendered text remain unverified.', '',
 'SocialListEntry fixtures check normalized lookup across an/c0 hash collisions, ignore raw-name fallback, interned-server identity sorting and200-point presence weights. Response fixtures check lazy indexes, inserts, rename rekeying with stable object identity, friend ordering, stage and server/filter updates. Friend lookup is checked in logged-in chat retention. Independent request bytes verify add/remove operations and names, ownership unlinking and later friend index changes. Refusal checks cover login, invalid/self/conflicting names,100/200 friend and100 ignore capacities without output. Add requests await server updates; removals mutate local lists immediately. Controller routing, actual row rendering, rename collisions between existing players, all error strings and live social services remain unverified.', '',
+'LobbyGame and LobbyPlayer expose received identity/display names, settings/capacity, membership, rating, rated-game count, invitation/request flags, rated/spectator modes and timing. Game bit8, unsigned16-bit word and64-bit word keep qualified protocol names because their full meanings remain unresolved. Fixtures cover all256 game flags, optional/current player counts, in-place settings, stale player-name replacement, optional duration, cursor consumption including zero players with bit2, monotonic timestamp bounds, both player-name update orders and secondary ownership/ID truncation. Seeded sort fixtures check request/invitation priority, strict ties and long timestamp extremes against independent lexicographic expectations. This does not validate the whole lobby response dispatcher, rendered rows or live multiplayer services.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:41,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:42,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
