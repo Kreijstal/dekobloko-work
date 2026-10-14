@@ -1420,6 +1420,29 @@ The grayscale oracle uses separate channel arithmetic. Raster/UI globals are
 restored. Invalid palette slots, malformed glyph geometry, arbitrary opacity
 outside 0..256 and live rendering remain unverified.
 
+TextFont now names every local declaration and its remaining metric/layout
+entry points. readMetrics exposes simple advances or extended profile lengths,
+starts, signed delta accumulators and the 256-by-256 kerning table.
+computePairKerning takes the minimum advance/overlapping contour sum, negates
+it, and the metrics reader stores the result as a byte; space/NBSP pairs remain
+zero. Measurement, wrapping, image/tag handling, styles, justification and
+paragraph alignment now have explicit cursor/state names.
+
+Three independently encoded metric fixtures check complete kerning tables,
+signed profile arithmetic, byte wrapping, space exclusions, extents and scalar
+rich-text widths. Explicit wrapping vectors cover width-list reuse, hyphens,
+NBSP, normalized tags, images, explicit breaks and malformed tag boundaries.
+Glyph-call fixtures check both paragraph entry points across horizontal and
+vertical alignments, short-box wrapping bypass, spacing/opacity, justification,
+style restoration and shadows. An existing wrapping bug is preserved: an
+extended-metrics font stores 8364 after an `<euro>` tag, so the next kerning
+lookup can throw; ordinary measurement maps the euro correctly. Empty width
+lists and undersized output arrays also retain bounds failures. Locale and
+font/raster/UI globals are restored. The tests use controlled ROOT locale;
+arbitrary locale behavior, malformed extended metrics, concurrent use of
+shared scratch buffers, all rich-text combinations and live rendering remain
+unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
