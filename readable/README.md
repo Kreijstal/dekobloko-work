@@ -1235,7 +1235,7 @@ matching-field dependencies, archived password rules, confirmed-email availabili
 username availability and birth dates. ValidatableWidget/ValidatedTextFieldWidget
 attach sources; ValidationIconWidget/ValidationMessageWidget expose display state.
 DateInputWidget/DateFieldsWidget expose parsed day, zero-based month, year and field
-order. EmailAvailabilityRequest/UsernameAvailabilityResult identify async ownership.
+order. EmailAvailabilityRequest/AccountResponse identify async ownership.
 
 Native fixtures check debounce suppression/call counts and edit-time bounds
 without sleeping or tracing wall-clock values; missing input, signed ages1..130,
@@ -1273,6 +1273,27 @@ arrays unshifted for center/right alignment and uses different vertical spacing
 formulas from paragraph painting; fixtures check both separately. These formulas
 are preserved. Full frame/button/link/checkbox, caret/selection, wrapped multiline
 form pixels, complete panel construction and live account submission remain unverified.
+
+AccountResponse corrects the earlier username-only identity: the same record
+serves availability checks and registration. Fields now name success, underThirteen,
+suggestedUsernames, responseCode and message; the under-thirteen flag is derived
+from age<13. LoginPanel/AccountIntroductionPanel/Under13RegistrationNoticePanel
+and BirthDateEntryPanel expose their control roles. PopupWidgetLayer exposes
+centered resize state and hooks; ContentTransitionLayer/Phase expose pending
+content and fade-out/resize/fade-in ownership. Message panels/account dialogs name
+actions and response guards; fullscreen failure dialog/kind name three failures.
+ActivityIndicatorWidget exposes animation and color/cache operations.
+
+Native fixtures check resize dimensions/centering/hooks, full fade/resize/fade
+sequence and wrapper unlink/replacement. Resize starts on the fade-out completion
+tick. Forced completion during active resize installs an empty wrapper and resumes
+fade-in through the completion hook; this archived behavior is preserved and checked.
+Login field fixtures check getters, password clearing and focus transfer without
+submitting credentials. Real response dialogs check success, under-thirteen notice
+and codes0/3/5/6/248 with message/action choices; code248 side effects are suppressed
+in fixtures. Message actions check route IDs and owner hiding. Full login
+construction, live account requests, fullscreen rendering, all response codes and
+original-JAR equivalence remain unverified.
 
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
