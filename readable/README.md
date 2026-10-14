@@ -1196,6 +1196,26 @@ ownership transfer and focus clearing. Fixture painters/listeners validate these
 contracts; full rendered controls, all traversal, remaining provider/listener members
 and the broader active-state meaning remain unverified.
 
+Concrete controls now name TextFieldWidget/TextFieldListener, ToggleButtonWidget,
+HotspotTextWidget, DraggableWidget/WidgetDragListener, DropTargetWidget/WidgetDropListener,
+LabeledWidget, OpacityWidget, WidgetLayerStack/WidgetLayer, RadialSelectorWidget and
+WidgetTheme. Fields/parameters expose selection, caret, capacity, timestamps, drag
+offsets/origin/policies, label metrics, opacity and ownership. Renderer defaults and
+text/drag/drop callbacks have descriptive names.
+
+Native fixtures cover initial/set text bounds/nulls, UTF16 selection/deletion,
+space-based word navigation, typed ASCII/filter/capacity, change/submit callbacks
+and unbounded clipboard insertion without accessing a system clipboard. Bounded
+clipboard insertion preserves the archived early return when capacity is nonnegative;
+its overfull negative-substring path remains unverified. Typed characters use a
+separate working bound check. Toggle activation, drag movement, drop delivery,
+layer order/hiding/removal, left/right label layout and radial axis selection are
+checked. Removal forces layer opacity to its target before testing hidden state.
+Independent pixel checks verify opacity0/64/128/256 and raster restoration. The
+radial fixture initializes fields directly because its retained constructor throws.
+Full text/hotspot/layer rendering, clipboard integration, drag return animation,
+all layout providers and live form behavior remain unverified.
+
 The workflow pins raw Java in Git, builds source stubs temporarily, publishes
 only in `games/brickabrac` and reverses every source byte through the one current
 dictionary. Decompiler Git commit and tracked-source tar SHA-256 are recorded

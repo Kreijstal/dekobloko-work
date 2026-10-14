@@ -215,6 +215,20 @@ const classes={
  vk:['WidgetHoverListener','Older-widget mouse-over change callback.'],
  sd:['WidgetContainer','Marker implemented by single-child, intrusive-group and array-child widgets.'],
  qe:['WidgetLayoutProvider','Older-widget size/text-layout/position contract; preferred width/height are reviewed, remaining members unresolved.'],
+ vb:['TextFieldWidget','Older focusable text editor with caret/selection, maximum length, clipboard helpers, word navigation and change/submit callbacks.'],
+ hf:['TextFieldListener','Text-field change and submit callback contract.'],
+ bf:['ToggleButtonWidget','Older focusable button toggling inherited active state before action dispatch; static helpers remain separate.'],
+ lg:['HotspotTextWidget','Older focusable rich text with parsed hotspot spans and per-line hit regions; static helpers remain separate.'],
+ dn:['DraggableWidget','Single-child pointer-drag wrapper retaining press offsets and optional return-to-origin animation.'],
+ li:['WidgetDragListener','Draggable-widget movement callback with parent coordinates.'],
+ jb:['DropTargetWidget','Single-child wrapper dispatching accepted drops to target listener or dragged-widget listener.'],
+ em:['WidgetDropListener','Dragged-widget/drop-target callback contract.'],
+ sk:['OpacityWidget','Single-child wrapper retaining Q8 opacity and painting directly at256 or through a cache surface otherwise; static gameplay/audio helpers remain separate.'],
+ ma:['LabeledWidget','Single-child control with wrapped left/right text label, font, inset, label width and text color.'],
+ cp:['WidgetLayerStack','Intrusive stack of WidgetLayer objects, reverse painting and top-layer focus/visibility.'],
+ jc:['WidgetLayer','Abstract widget group linked to its layer stack, with visible flag and opacity animation.'],
+ vh:['RadialSelectorWidget','Focusable circular sector selector; pointer angle selects a wrapped sector index. Constructor is unsupported in the retained export.'],
+ eh:['WidgetTheme','Shared older-widget renderer/font/metric bundle used by control constructors.'],
 };
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
@@ -410,6 +424,70 @@ method('en','a','(IIBILd;)V','onAction','Action callback also reached from keybo
 method('ca','a','(IILd;IIII)V','onPointerPress','Pointer-down callback retaining parent coordinates and button.',['parentX','button','widget','pointerY','pointerX','parentY','obfuscationGuard']);
 method('ca','a','(BIILd;II)V','onPointerRelease','Pointer-up callback retaining parent and pointer coordinates.',['obfuscationGuard','parentY','pointerY','widget','parentX','pointerX']);
 method('ib','a','(Loc;Z)V','addChild','Adds primary intrusive child; transfer from another deque occurs through addLast; true guard.',['child','obfuscationGuard']);
+for(const [owner,original,type,to,evidence] of [
+ ['vb','Q','I','maxLength','Text setter and typed-character bound; -1 is unlimited. Clipboard insertion has separately preserved archived behavior.'],
+ ['vb','L','I','selectionAnchor','Paired with caretIndex for selected substring; selection deletion collapses both to lower endpoint.'],
+ ['vb','T','I','caretIndex','Current text insertion/navigation index; typed input collapses selection here.'],
+ ['vb','P','J','lastPressMillis','Pointer click time used by250ms double-click test.'],
+ ['vb','O','J','caretBlinkStartMillis','Monotonic timestamp for500ms visible part of1000ms caret blink.'],
+ ['vb','M','Z','doubleClickSelection','Pointer double-click flag selecting word boundaries.'],
+ ['vb','R','I','wordSelectionEnd','End index retained by double-click selection and pointer drag expansion.'],
+ ['vb','N','Z','autoScrollCaret','Caret visibility scroll gate; false resets scroll offsets.'],
+ ['dn','G','I','dragOffsetX','Pointer offset within wrapper captured on button1 press.'],
+ ['dn','H','I','dragOffsetY','Vertical pointer offset captured on button1 press.'],
+ ['dn','I','I','originX','Retained wrapper x after child layout, used by return animation.'],
+ ['dn','O','I','originY','Retained wrapper y after child layout, used by return animation.'],
+ ['dn','L','Z','returnToOrigin','When not dragging, approaches retained origin coordinate by coordinate.'],
+ ['dn','M','Z','childPressTakesPriority','An accepted child press stops wrapper drag when this flag is set.'],
+ ['gd','c','Ldn;','draggedWidget','Current drag source used by drop-target release callback and cleared after delivery.'],
+ ['sk','K','I','opacity256','Zero skips drawing,256 paints child directly, intermediate values draw a cached surface with this opacity.'],
+ ['ma','M','Ljava/lang/String;','labelText','Wrapped caption painted beside child.'],
+ ['ma','J','Z','labelOnRight','Chooses right-side label placement and child horizontal offset.'],
+ ['ma','H','Ldh;','labelFont','Measures wrapped label height and draws label.'],
+ ['ma','L','I','inset','Label padding and child vertical/horizontal spacing.'],
+ ['ma','K','I','labelColor','Text RGB supplied to label drawing.'],
+ ['ma','N','I','labelWidth','Reserved label span used in measuring and child width.'],
+ ['cp','J','Lvl;','layers','Primary intrusive layer stack; new layers added at front and painted in reverse.'],
+ ['jc','I','Lcp;','layerStack','Owning stack queried for top layer and focus operations.'],
+ ['jc','N','Z','visible','Visibility state controls target opacity and removal eligibility.'],
+ ['jc','L','I','opacity256','Animated layer opacity; zero plus invisible permits removal.'],
+ ['vh','Z','I','centerX','Local x subtracted before radial hit and atan2.'],
+ ['vh','R','I','centerY','Local y subtracted before radial hit and atan2.'],
+ ['vh','W','I','radius','Strict circular hit test excludes radius boundary.'],
+ ['vh','K','I','sectorCount','Positive sector count used in angle rounding/wrapping.'],
+ ['vh','O','I','selectedSector','Angle-derived index wrapped into sectorCount.'],
+])field(owner,original,type,to,evidence);
+method('vb','a','(Ljava/lang/String;IZ)V','setText','Null becomes empty; truncates to maxLength unless -1, places anchor/caret at end, optionally suppresses change callback; guard -12592.',['text','obfuscationGuard','suppressChangeCallback']);
+method('vb','c','(Z)V','clearText','Clears text/caret/anchor and notifies change; false guard.',['obfuscationGuard']);
+method('vb','h','(I)V','deleteSelection','Deletes min/max endpoint substring and collapses caret/anchor; no change callback for empty selection; guard -118.',['obfuscationGuard']);
+method('vb','a','(B)Ljava/lang/String;','getSelectedText','Returns substring between min/max endpoints; guard below -97.',['obfuscationGuard']);
+method('vb','h','(B)I','nextWordBoundary','Scans after caret until the previous character is space or text ends; guard at least93.',['obfuscationGuard']);
+method('vb','d','(Z)I','previousWordBoundary','Scans backward until prior character is space; false guard.',['obfuscationGuard']);
+method('vb','a','(ZLjava/lang/String;)V','insertClipboardText','Retains archived bounded-insertion early return/negative substring behavior; unbounded path inserts at caret, collapses selection and notifies; false avoids clipboard write.',['copyToClipboard','text']);
+method('vb','n','(I)V','notifyTextChanged','Dispatches TextFieldListener byte callback; guard above7.',['obfuscationGuard']);
+method('vb','j','(I)V','notifySubmitted','Dispatches TextFieldListener int callback; guard -66.',['obfuscationGuard']);
+method('hf','a','(Lvb;B)V','onTextChanged','Text-field change callback with byte guard -100.',['textField','obfuscationGuard']);
+method('hf','a','(Lvb;I)V','onSubmitted','Text-field submit callback with int guard -40.',['textField','obfuscationGuard']);
+method('oc','a','(IBLoc;C)Z','handleWidgetKey','Virtual widget key contract; text field routes typed ASCII and original numeric editing codes; guard110.',['keyCode','obfuscationGuard','focusRoot','character']);
+method('li','a','(BIILdn;)V','onDragged','Called after drag updates x/y; parent coordinates retained; guard -68.',['obfuscationGuard','parentY','parentX','widget']);
+method('em','a','(ILdn;Ljb;)V','onDrop','Target listener is preferred, otherwise source listener; accepted delivery clears draggedWidget; guard -24178.',['obfuscationGuard','draggedWidget','dropTarget']);
+method('lg','i','(I)V','rebuildHotspots','Parses hotspot integer IDs and linked per-line rectangles through layout provider; guard -1.',['obfuscationGuard']);
+method('cp','a','(ILoc;)V','pushLayer','Requires WidgetLayer, adds it at front, sets visible and requests focus; guard below -63.',['obfuscationGuard','layer']);
+method('cp','a','(I)V','hideLayers','Clears visible on all layers and clears child pointer; guard below -119.',['obfuscationGuard']);
+method('cp','i','(B)V','removeHiddenLayers','Forces layer opacity to target and unlinks invisible layers; guard -36.',['obfuscationGuard']);
+method('jc','a','(I)Z','updateOpacityAndCheckHidden','Sets opacity to target (256 for visible top layer, otherwise0), then reports zero/invisible; guard -94.',['obfuscationGuard']);
+method('cp','g','(I)Ljc;','getTopVisibleLayer','Returns first visible layer in primary stack order; guard below -96.',['obfuscationGuard']);
+for(const [original,to,evidence] of [['q','defaultFocusableRenderer','Used by text/label FocusableWidget constructor.'],['o','toggleButtonRenderer','ToggleButtonWidget replaces its renderer with this value.'],['b','textFieldRenderer','TextFieldWidget replaces its renderer with this value.'],['r','emptyFocusableRenderer','Protected no-argument FocusableWidget constructor uses this renderer.']])field('eh',original,'Lub;',to,evidence);
+field('eh','l','Ldh;','font','Font retained by theme initialization and used by derived renderer setup.');
+field('bj','T','Leh;','widgetTheme','Shared theme supplying renderer defaults to older widget constructors.');
+method('vb','<init>','(Ljava/lang/String;Luh;I)V','<init>','Theme text-field renderer, bounded initial text with callback suppression, caret/anchor at end and blink timestamp.',['text','listener','maxLength']);
+method('bf','<init>','(Ljava/lang/String;Luh;Z)V','<init>','Theme toggle renderer and initial active state.',['text','listener','active']);
+method('lg','<init>','(Ljava/lang/String;Lub;)V','<init>','Retains hotspot text and supplied renderer.',['text','renderer']);
+method('sk','<init>','(Loc;)V','<init>','Copies child bounds, normalizes child x/y to0 and sets opacity256.',['child']);
+method('dn','<init>','(IIIILub;Luh;Loc;ZZ)V','<init>','Retains geometry, renderer/listener, child and drag policy flags.',['x','y','width','height','renderer','listener','child','returnToOrigin','childPressTakesPriority']);
+method('jb','<init>','(IIIILub;Luh;Loc;)V','<init>','Retains geometry, renderer/listener and drop-target child.',['x','y','width','height','renderer','listener','child']);
+method('jc','<init>','(Lcp;II)V','<init>','Centers layer in current frame, retains stack, initializes invisible/zero opacity.',['layerStack','width','height']);
+method('ma','<init>','(IIIILoc;ZIILdh;ILjava/lang/String;)V','<init>','Measures wrapped label height, increases wrapper height if needed, and lays out child beside label.',['x','y','width','height','child','labelOnRight','labelWidth','inset','labelFont','labelColor','labelText']);
 for(const [ordinal,original,to] of [[17,'var4_int','resultWordFlag'],[19,'var4_ref','failure'],[20,'var5','playerNameStorage'],[42,'var32','randomSeedStorage'],[51,'var49','levelOrder']])local('BrickABrac','a(Lpi;BI)Z',ordinal,original,to,'Scoped network-start flag, player-name/seed storage, shuffled level order or exception context, checked through actual packet dispatch.');
 for(const [owner,signature,entries] of [
  ['ak','<init>([Ljava/lang/String;ILoi;[I[I)V',[[0,'var8','boardIndex'],[14,'var6_int','boardWidth'],[15,'var6','failure'],[16,'var7','controlSetIndex']]],
@@ -1547,6 +1625,9 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 `| ${link('cq')} / ${link('lf')} | Ranking request lifecycle, packed results, rating and win-rate sorted views. |`,
 `| ${link('oc')} / ${link('d')} / ${link('h')} / ${link('ib')} | Widget geometry, focus, wrapper and intrusive-group contracts. |`,
 `| ${link('ub')} / ${link('qe')} / ${link('uh')} | Widget painting, layout metrics and listener contracts. |`,
+`| ${link('vb')} / ${link('bf')} / ${link('lg')} | Text editing, toggle activation and hotspot text. |`,
+`| ${link('dn')} / ${link('jb')} / ${link('ma')} / ${link('sk')} | Drag/drop, label placement and opacity wrappers. |`,
+`| ${link('cp')} / ${link('jc')} / ${link('eh')} | Layer stack, layer visibility/opacity and widget theme. |`,
 `| ${link('vi')} / ${link('bn')} / ${link('no')} | Fixed8 body coordinates/velocities, rectangle/circle geometry, snapshots and checksums. |`,
 `| ${link('vo')} / ${link('vn')} / ${link('on')} | Paddle size stages, balls and bricks. |`,
 `| ${link('nm')} / ${link('vl')} | Intrusive ownership and deque traversal/transfer. |`,
@@ -1666,10 +1747,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Independent encodings and ISAAC/shuffle expectations check64 startup cases, including euro names, positive/negative local IDs, nonzero mode flags, repeating periods, character availability, both background-selection paths and exact cursor consumption with an unread sentinel. For pending snapshots, real packet79 dispatch loads every board with full extension bytes, checking count/readiness progression, score/tick/position and local input baseline after the last board. Screen request identity and opcode64-only draw/rematch captions are checked. These fixtures prove source dispatch and construction with controlled assets; live server transport, real resource loading, malformed/duplicate snapshots and rendered sustained gameplay remain unverified.', '',
 'The older widget hierarchy now names Widget, FocusableWidget, SingleChildWidget and WidgetGroup, plus renderer/layout/listener contracts and focus/action/pointer/hover callbacks. Fields name x,y,width,height, text/tooltip, mouse-over/press, renderer/listener, focusable/enabled/focused state and child ownership. Bounds setters retain the original height,x,y,guard,width argument order. containsPoint retains pointerY,parentY,parentX,guard,pointerX order. Resolved override families receive the same names automatically; broader layout-provider members and active-state meaning remain unresolved.', '',
 'Independent fixtures cover half-open parent-translated geometry with zero/negative sizes and int-wrap boundaries, retained relayout, preferred dimensions through provider callbacks, layer0-only painter dispatch and instance identity. Focus fixtures cover acquisition/notification, enabled/focusable gates, explicit clearing and disabled focused-state retention. Pointer fixtures check focus-before-press, hover/action/release ordering, parent-relative activation coordinates, release idempotence and outside rejection. Wrapper fixtures check child paint offsets and tooltip forwarding; group fixtures check primary ownership transfer and focus clearing. These use fixture painters/listeners; full rendered legacy controls, all container traversal and remaining provider/listener interfaces are unverified.', '',
+'Concrete widget identities now include TextFieldWidget/TextFieldListener, ToggleButtonWidget, HotspotTextWidget, DraggableWidget/WidgetDragListener, DropTargetWidget/WidgetDropListener, LabeledWidget, OpacityWidget, WidgetLayerStack/WidgetLayer, RadialSelectorWidget and WidgetTheme. Fields/constructor parameters expose editor selection/caret/length/timestamps, drag offsets/origin/policies, label metrics, opacity and layer ownership. Shared renderer defaults and text/drag/drop callbacks have names. Source hotspot/layout-provider behavior remains only partly reviewed.', '',
+'Native fixtures cover constructor text truncation/null handling, UTF16 selection/deletion and space-based word boundaries, ASCII typing filters/capacity, callback suppression/change/submit, unbounded clipboard insertion and bounded early return. No system clipboard is accessed. Archived bounded clipboard insertion returns while capacity is nonnegative; the overfull negative-substring path remains unverified and is preserved. Typed-character insertion uses a separate working bound check. Toggle activation, drag offsets/movement/global source, drop dispatch/clearing, top visible layer/hiding/removal and opacity reset are checked. Layer removal forces target opacity before its hidden test. Independent pixels verify opacity0/64/128/256 and raster restoration; label constructor fixtures check child bounds for left/right labels. Radial axis selection uses a manually initialized instance because its retained constructor throws. Full rendering of text/hotspots/layers, clipboard integration, drag return animation, all layout providers and live form behavior remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:48,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:49,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
