@@ -381,6 +381,8 @@ classes.gl=["LauncherCacheFiles", "Patched cache-file lookup delegates to the la
 classes.nk=["AppletFlowHelpers", "Applet quit-page navigation, transition polling, bounded name input and archive/trigonometry helpers; unrelated UI/sprite globals retain distinct roles."];
 classes.uo=["AppletResourceHelpers", "Applet marker lookup, indexed-sprite loading and table-request helpers, with independent bitset and presentation globals."];
 classes.ui=["AppletSettingsUiHelpers", "Settings-cookie storage, table request resending and UI text/presentation helpers, with unrelated globals kept distinct."];
+classes.gr=["GameplaySpriteHelpers", "Board-scale sprite-set selection plus separately named ranking and archive helpers; retained menu/pointer globals keep distinct roles."];
+classes.di=["QuickChatSineHelpers", "Default quick-chat activation and guarded 2048-angle Q16 sine lookup, alongside independent UI labels."];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -5122,6 +5124,60 @@ local('na','a(IIIBI)V',0,'var6','fieldStartX','Centered date-field origin shared
  local("nk","a(ILjava/applet/Applet;)V",10,"decompiledCheckedException","checkedFailure",evidence);
 }
 
+{
+ const evidence="Asset archive names, half-size construction and ball/paddle draw sites identify full/half and active sprite roles. Identity fixtures verify scale selection, null/shared/empty arrays, source retention and guard effects; normal/steel ball pixels verify draw-site use. Independent trigonometric references verify atan table rounding, piecewise Q16 quantization, reciprocal boundaries, sine accuracy and wrapped custom-table lookup. Real intrusive quick-chat fixtures verify installation/reparenting, default activation, recursive close/reset and partial failure state.";
+ field("gr","c","Ljp;","activeBallSprite",evidence);
+ field("gr","d","[Ljp;","menuLeverSprites",evidence);
+ field("tn","C","I","activeGameplayScaleDivisor",evidence);
+ field("si","d","[I","atanRatio2048Table",evidence);
+ field("fe","kb","Log;","defaultQuickChatMenu",evidence);
+ field("nq","p","Z","quickChatMenuOpen",evidence);
+ field("ah","v","I","quickChatScrollX",evidence);
+ field("a","s","[Ljp;","activeRosetteSprites",evidence);
+ field("jc","J","Ljp;","activeSteelBallSprite",evidence);
+ field("tf","c","[Ljp;","activePaddleCapSprites",evidence);
+ field("we","b","[Ljp;","activePowerUpSprites",evidence);
+ field("bq","e","[[Ljp;","activePaddleFlameSprites",evidence);
+ field("gg","o","Ljp;","activePaddleCenterSprite",evidence);
+ field("fq","d","[Ljp;","activePaddleSegmentSprites",evidence);
+ field("hp","l","[Ljp;","largeRosetteSprites",evidence);
+ field("mh","ib","Ljp;","halfSteelBallSprite",evidence);
+ field("vn","D","Ljp;","fullSteelBallSprite",evidence);
+ field("dg","b","[Ljp;","fullPaddleCapSprites",evidence);
+ field("kp","e","[Ljp;","halfPaddleCapSprites",evidence);
+ field("re","k","Ljp;","fullBallSprite",evidence);
+ field("p","i","Ljp;","halfBallSprite",evidence);
+ field("dg","e","Ljp;","fullBoardMaskSprite",evidence);
+ field("cq","o","Ljp;","halfBoardMaskSprite",evidence);
+ field("ch","k","[Ljp;","halfPowerUpSprites",evidence);
+ field("ip","v","[[Ljp;","fullPaddleFlameSprites",evidence);
+ field("hc","a","[[Ljp;","halfPaddleFlameSprites",evidence);
+ field("dk","R","Ljp;","fullPaddleCenterSprite",evidence);
+ field("ep","j","Ljp;","halfPaddleCenterSprite",evidence);
+ field("pa","m","[Ljp;","fullBrickSprites",evidence);
+ field("mf","a","[Ljp;","halfBrickSprites",evidence);
+ field("qg","D","[Ljp;","fullPaddleSegmentSprites",evidence);
+ field("ol","z","[Ljp;","halfPaddleSegmentSprites",evidence);
+ method("gr","b","(II)V","selectGameplaySpriteScale",evidence,["scaleDivisor", "obfuscationGuard"]);
+ method("nk","a","(II)I","atan8192FromQ16",evidence,["tangentQ16", "obfuscationGuard"]);
+ method("di","a","(BI)I","lookupSine2048Q16",evidence,["obfuscationGuard", "angle"]);
+ method("di","a","(B)V","activateDefaultQuickChatMenu",evidence,["obfuscationGuard"]);
+ method("fk","a","(ILog;)V","installQuickChatMenu",evidence,["obfuscationGuard", "menu"]);
+ method("rd","a","(I)V","closeQuickChatMenu",evidence,["obfuscationGuard"]);
+ method("kq","a","(Lvn;BIII)V","drawBall",evidence,["ball", "obfuscationGuard", "scaleDivisor", "destinationX", "destinationY"]);
+ local("di","a(BI)I",0,"var2","unusedGuardRemainder",evidence);
+ local("fk","a(ILog;)V",0,"var3","unusedCookieValue",evidence);
+ local("fk","a(ILog;)V",1,"runtimeException","failure",evidence);
+ local("kq","a(Lvn;BIII)V",0,"stackIn_11_0","failureContext",evidence);
+ local("kq","a(Lvn;BIII)V",1,"stackIn_11_1","contextBuilder",evidence);
+ local("kq","a(Lvn;BIII)V",2,"stackIn_12_2","ballSummary",evidence);
+ local("kq","a(Lvn;BIII)V",3,"decompiledCaughtException","caughtFailure",evidence);
+ local("kq","a(Lvn;BIII)V",4,"var5","failure",evidence);
+ local("kq","a(Lvn;BIII)V",5,"var6","unusedGameFlag",evidence);
+ local("kq","a(Lvn;BIII)V",6,"var7","unusedEventPayload",evidence);
+ local("kq","a(Lvn;BIII)V",7,"decompiledCaughtParameter0","caughtParameter",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -5442,10 +5498,14 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "AppletFlowHelpers, AppletResourceHelpers and AppletSettingsUiHelpers expose quit navigation, the literal tuhstatbut marker and settings-cookie storage alongside their separately retained static helper roles. DisplayModeInfo.applyChangedAppletParameters and FramedMenuScreen.rewriteAppletPath name leading language, affiliate, settings and session path handling. clientSettings, clientSession and tuhstatbutMarkerSet expose the shared state. GameClock.readSettingsCookie, ArchiveNetworkRequest.setSessionCookie, MatchingTextValidator.setTuhstatbutMarker and VolcanicBackground.refreshAppletLinks connect the browser flow.", '',
 "Path rewriting scans only leading recognized, slash-terminated segments. Language/settings/session overrides remove matching segments before insertion; affiliate segments survive, empty overrides remove without adding, and values remain unescaped. Settings reads prefer the exact prefixed cookie name, then retained state, then the applet parameter. The noncanonical read guard can still reach cookies when retained state exists. The marker accepts cookie-name presence regardless of value, an applet parameter or the installed flag. Settings writes use a94608000-second lifetime; nonempty session writes have no explicit expiry, and empty writes delete. Both retain values before browser work and refresh six links in order. Quit navigation requests quit.ws in _top.", '',
 "Independent prefix-list fixtures cover repeated/mixed prefixes, replacement/removal, boundaries, raw values and URL reconstruction fallback. Recording applets and the isolated JavaScript fixture verify parameter comparison/order, cookie duplicates/trim/no-decode behavior, retained-state precedence, marker guards/fallbacks, cookie scripts, bounded expiry dates, ordered links and partial failures. Quit fixtures distinguish printed/swallowed Exceptions from propagated Errors. The published stubs and dependency hash are unchanged; temporary recording classes are removed after validation. Real browser persistence, external navigation, server acceptance, noncanonical destructive cleanup branches and original-gamepack equivalence remain unverified.", '',
+"GameplaySpriteHelpers.selectGameplaySpriteScale exposes the board-scale asset switch: divisor1 selects full-size sources and every other value selects half-size sources while retaining the supplied divisor. Named assets distinguish active/full/half normal balls, steel balls, paddle caps/segments/centres/flames, board masks, bricks and power-ups; rosette sizes and menu lever sprites are also identified. IntNode.drawBall names normal/phase/penetration sprite dispatch and coordinate division. Asset archive names, half-size construction and render sites support these roles.", '',
+"AppletFlowHelpers.atan8192FromQ16 and IntrusiveHashTable.atanRatio2048Table expose the paddle rebound angle lookup. The table rounds atan(index/2048) into 8192 units per turn; small Q16 ratios quantize by32, and larger magnitudes use reciprocal quantization against134217728. QuickChatSineHelpers.lookupSine2048Q16 identifies wrapped2048-angle Q16 lookup. Independent fixtures check all2049 atan entries, a dense signed tangent range, every reciprocal boundary and integer extremes; custom tables prove lookup indices and reference retention. Sine values are checked within one Q16 unit of the ideal wave, with exact custom-table wrapping and guard/null/short-array failures.", '',
+"QuickChatSineHelpers.activateDefaultQuickChatMenu, HuffmanCodec.installQuickChatMenu and GamePresentationHelpers.closeQuickChatMenu expose menu installation and closure. defaultQuickChatMenu, quickChatMenuOpen and quickChatScrollX name their shared state. Real menu/component/deque fixtures verify replacement, reparenting, repeated installation, null/default behavior, recursive row/submenu reset, scroll reset and closed-state timing. Broken roots and null/partial row arrays check the exact state retained when an exception interrupts installation or closure.", '',
+"Sprite fixtures verify all ten active asset roles by identity, source pixel retention, null/shared/empty arrays, arbitrary divisors and guard side effects. Independent pixels exercise normal and steel balls at both supported scales, negative coordinates and clipping. The export is still a reproducible naming pass over pinned decompiled sources. Original asset loading, phased-ball alpha drawing, live quick-chat interaction and original-gamepack equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:94,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:95,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
