@@ -350,6 +350,8 @@ classes.uq=['RunLengthSpriteCodec','Converts positive RGB/zero-transparent sprit
 classes.wo=['ParallaxMusicHelpers','Paris background composition with two encoded parallax layers plus staged loading/preparation of title, panic, completion and podium music; unrelated UI-layer and firework globals retain separate roles.'];
 classes.bq=['FullscreenDialogHelpers','Builds six fullscreen prompt types, row/button-action tables, confirmation countdown text and centered hit geometry. Unrelated menu lookup, archive creation and diagnostics/artwork globals retain separate roles.'];
 classes.rd=['GamePresentationHelpers','Static indexed-text formatting, diagnostic drawing, background selection and decoded RGB sprite construction helper bag; unrelated UI/artwork globals retain separate roles.'];
+classes.o=['ClientResourceHelpers','Static archive master-index polling, gameplay sound setup and shared fullscreen-frame drawing; unrelated account/lobby state and tutorial globals retain separate roles.'];
+classes.ng=['ScreenNavigationHelpers','Requests game-screen transitions and polls/clears quick-chat help dialogs; unrelated quick-chat channel, labels and sprite globals retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -4258,6 +4260,88 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("qb","a([Ljava/lang/String;IILdh;Ljava/lang/String;)I",24,"decompiledCaughtParameter0","caughtParameter",evidence);
 }
 
+
+{
+ const evidence="Fullscreen construction, frame configuration, row drawing, hit testing and input polling share the reviewed state tables. Countdown rows switch singular wording only at1; close clears countdown arrays; timeout builds prompt5 and returns action2. Native controlled-font/frame, rectangle, keyboard/pointer and clock-interval fixtures verify these paths without requesting an OS display transition. Screen/help navigation and sound asset names are traced from callers.";
+ method("cp","h","(I)V","drawFullscreenDialogRows",evidence,["obfuscationGuard"]);
+ method("qo","b","(III)I","hitTestFullscreenDialogButton",evidence,["obfuscationGuard", "y", "x"]);
+ method("md","f","(B)I","pollFullscreenDialogAction",evidence,["obfuscationGuard"]);
+ method("w","c","(B)V","closeFullscreenDialog",evidence,["obfuscationGuard"]);
+ method("cp","a","(IILta;ILta;I)V","configureFullscreenDialogButtons",evidence,["paddingY", "gapY", "selectedFrame", "obfuscationGuard", "normalFrame", "paddingX"]);
+ method("tn","a","(IIIII)V","configureFullscreenDialogMetrics",evidence,["buttonBaseline", "buttonLineHeight", "obfuscationGuard", "bodyBaseline", "bodyLineHeight"]);
+ method("pp","a","(IIB)V","setFullscreenDialogCenter",evidence,["x", "y", "obfuscationGuard"]);
+ method("fr","a","(ILdh;Ldh;Z)V","configureFullscreenDialogFonts",evidence,["maximumWrapWidth", "buttonFont", "bodyFont", "obfuscationGuard"]);
+ method("hd","a","(ILta;II)V","configureFullscreenDialogFrame",evidence,["obfuscationGuard", "frame", "paddingX", "paddingY"]);
+ method("pe","a","(B)I","getFullscreenDialogWidth",evidence,["obfuscationGuard"]);
+ method("v","b","(I)I","getFullscreenDialogHeight",evidence,["obfuscationGuard"]);
+ method("o","a","(I)V","drawFullscreenDialog",evidence,["obfuscationGuard"]);
+ method("o","c","(I)V","loadGameplaySoundAssets",evidence,["obfuscationGuard"]);
+ method("ng","a","(BZ)V","pollQuickChatHelpDialog",evidence,["obfuscationGuard", "inputEnabled"]);
+ field("cc","H","I","fullscreenDialogBodyPaint",evidence);
+ field("eb","n","I","fullscreenDialogButtonPaint",evidence);
+ field("vq","A","I","fullscreenDialogSelectedPaint",evidence);
+ field("cd","c","Lta;","fullscreenDialogButtonFrame",evidence);
+ field("c","l","Lta;","fullscreenDialogSelectedFrame",evidence);
+ field("so","b","I","fullscreenDialogButtonBaseline",evidence);
+ field("ae","f","I","fullscreenDialogBodyBaseline",evidence);
+ field("lm","c","Lta;","fullscreenDialogFrame",evidence);
+ field("hn","a","I","fullscreenDialogPaddingX",evidence);
+ field("bh","vb","I","fullscreenDialogPaddingY",evidence);
+ field("ng","c","Ljava/lang/String;","quickChatHelpTitle",evidence);
+ local("cp","h(I)V",0,"var3","rowIndex",evidence);
+ local("cp","h(I)V",1,"stackIn_19_0","maximumPrefixLines",evidence);
+ local("cp","h(I)V",2,"stackIn_22_0","maximumSuffixLines",evidence);
+ local("cp","h(I)V",3,"stackIn_27_0","singularPrefixText",evidence);
+ local("cp","h(I)V",4,"stackIn_33_0","singularSuffixText",evidence);
+ local("cp","h(I)V",5,"stackIn_44_0","selectedFrame",evidence);
+ local("cp","h(I)V",6,"decompiledCaughtException","caughtFailure",evidence);
+ local("cp","h(I)V",7,"var1_int","rowY",evidence);
+ local("cp","h(I)V",8,"var1","failure",evidence);
+ local("cp","h(I)V",9,"var2","secondsRemaining",evidence);
+ local("cp","h(I)V",10,"var3_long","elapsedMillis",evidence);
+ local("cp","h(I)V",11,"var4","buttonIndex",evidence);
+ local("cp","h(I)V",12,"var5","paint",evidence);
+ local("cp","h(I)V",13,"var6","text",evidence);
+ local("cp","h(I)V",14,"var7","prefixLineCount",evidence);
+ local("cp","h(I)V",15,"var8","suffixLineCount",evidence);
+ local("cp","h(I)V",16,"var9","frame",evidence);
+ local("cp","h(I)V",17,"var10","unusedGameFlag",evidence);
+ local("cp","h(I)V",18,"var11","unusedBoard",evidence);
+ local("cp","h(I)V",19,"var7Lifetime1","textWidth",evidence);
+ local("cp","h(I)V",20,"var8Lifetime1","textX",evidence);
+ local("cp","h(I)V",21,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("qo","b(III)I",0,"var3_int","rowIndex",evidence);
+ local("qo","b(III)I",1,"var4","rowY",evidence);
+ local("qo","b(III)I",2,"var5","buttonIndex",evidence);
+ local("qo","b(III)I",3,"var6","textWidth",evidence);
+ local("qo","b(III)I",4,"var7","textX",evidence);
+ local("qo","b(III)I",5,"var8","unusedGameFlag",evidence);
+ local("qo","b(III)I",6,"stackIn_7_0","hitButton",evidence);
+ local("qo","b(III)I",7,"stackIn_13_0","missResult",evidence);
+ local("qo","b(III)I",8,"decompiledCaughtException","caughtFailure",evidence);
+ local("qo","b(III)I",9,"var3","failure",evidence);
+ local("qo","b(III)I",10,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("md","f(B)I",0,"stackIn_32_0","resultAction",evidence);
+ local("md","f(B)I",1,"decompiledCaughtException","caughtFailure",evidence);
+ local("md","f(B)I",2,"var1_int","activatedFlag",evidence);
+ local("md","f(B)I",3,"var1","failure",evidence);
+ local("md","f(B)I",4,"var2","escapeFlag",evidence);
+ local("md","f(B)I",5,"var3","action",evidence);
+ local("md","f(B)I",6,"var4","elapsedMillis",evidence);
+ local("md","f(B)I",7,"var6","secondsRemaining",evidence);
+ local("md","f(B)I",8,"var7","unusedGameFlag",evidence);
+ local("md","f(B)I",9,"var8","unusedComponent",evidence);
+ local("md","f(B)I",10,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("w","c(B)V",0,"runtimeException","failure",evidence);
+ local("cp","a(IILta;ILta;I)V",0,"runtimeException","failure",evidence);
+ local("fr","a(ILdh;Ldh;Z)V",0,"runtimeException","failure",evidence);
+ local("hd","a(ILta;II)V",0,"var4_int","guardCalculation",evidence);
+ local("hd","a(ILta;II)V",1,"runtimeException","failure",evidence);
+ local("pe","a(B)I",0,"var1","guardCalculation",evidence);
+ local("o","a(I)V",0,"var1","contentWidth",evidence);
+ local("o","a(I)V",1,"var2","contentHeight",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -4557,10 +4641,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Independent fixtures construct command words from forward runs, expand row offsets, check original-array mutation and compare drawing against immutable source pixels across patterns, cropped geometry and clip edges. Paris composition checks opaque far pixels, transparent near/mid layers, fixed16 scroll, integer scale offsets and the near layer anchored at480 minus canvas height. The existing fully-left draw bounds failure is preserved and tested; normal pixel fixtures cover horizontal overlap or positions to the right. Controlled archives contain four named empty MIDI files in one unnamed group, with distinct divisions to verify file selection, testing each blocked/successful load, missing-patch retries, usage retention/release, completion timing and invalid-stage/guard behavior. Original statics are restored. Negative literal pixels, malformed/re-encoded command streams, all offscreen failures, real artwork/audio playback, live performance and original-JAR equivalence remain unverified.", '',
 "FullscreenDialogHelpers names the six fullscreen prompt builders plus menu lookup and configured archive creation. Reviewed fields expose prompt kind/open state, rows, row-to-button indices, button actions/bounds, singular/plural countdown lines, selection, geometry, fonts and spacing. GamePresentationHelpers names the mixed indexed-text/diagnostic/background/sprite-construction helper bag. Indexed formatting, literal character replacement, balanced wrapping and fullscreen text measurement now have descriptive methods, parameters and locals.", '',
 "Independent fixtures check all six prompt kinds with privileged/unprivileged platform state, pointer/keyboard selection, two centers and two wrap widths. Reference rows, button actions, countdown alignment, widths, heights and rectangles use controlled font metrics; timestamp checks verify bounds without hashing wall time. Template fixtures use regular-expression tokenization and standard integer parsing, including malformed/overflow tokens, leading zeroes, repeated and nonrecursive replacements. Character replacement covers every UTF16 unit, surrogate halves, literal replacement syntax and capacity hints. Balanced wrapping uses independent separator tokenization and font-width references; menu lookup checks registry identity and its guard. Original static references and scratch arrays are restored. Actual fullscreen transitions, countdown rendering/action dispatch, real archive creation, malformed layout dimensions/guards, all wrapping failures and original-JAR equivalence remain unverified.", '',
+"ClientResourceHelpers names the mixed archive polling, gameplay sound setup and fullscreen-frame drawing helper bag. ScreenNavigationHelpers names screen requests and quick-chat help polling. Fullscreen row/frame drawing, live button hit testing, input action polling, close cleanup, font/metric/frame/center configuration and size accessors now have descriptive methods and locals. Reviewed fields identify paints, selected/normal frames, baselines and outer padding.", '',
+"Native fixtures compare row glyph events and frame geometry against independent controlled-font models, including singular/plural countdown alignment, selection paints and absent button frames. Clock bounds allow deterministic assertions across countdown boundaries. A coordinate-grid oracle checks hit rectangles; keyboard and pointer fixtures cover action IDs0 through5, Escape handling, timeout rebuilding prompt5 with action2, and explicit countdown-array cleanup. Closing retains row data. Font/frame configuration and size getters are exercised. Quick-chat help polling covers retained/dismissed/null dialogs. Original static references are restored. Actual OS fullscreen changes, caller action dispatch, sound asset loading/playback, malformed guards and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:84,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:85,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

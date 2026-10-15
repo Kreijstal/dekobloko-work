@@ -1958,6 +1958,24 @@ static references and scratch arrays are restored. Actual fullscreen transitions
 countdown rendering/action dispatch, real archive creation, malformed layout
 dimensions/guards, all wrapping failures and original-JAR equivalence remain unverified.
 
+ClientResourceHelpers names the mixed archive polling, gameplay sound setup and
+fullscreen-frame drawing helper bag. ScreenNavigationHelpers names screen requests and
+quick-chat help polling. Fullscreen row/frame drawing, live button hit testing, input
+action polling, close cleanup, font/metric/frame/center configuration and size accessors
+now have descriptive methods and locals. Reviewed fields identify paints,
+selected/normal frames, baselines and outer padding.
+
+Native fixtures compare row glyph events and frame geometry against independent
+controlled-font models, including singular/plural countdown alignment, selection paints
+and absent button frames. Clock bounds allow deterministic assertions across countdown
+boundaries. A coordinate-grid oracle checks hit rectangles; keyboard and pointer
+fixtures cover action IDs0 through5, Escape handling, timeout rebuilding prompt5 with
+action2, and explicit countdown-array cleanup. Closing retains row data. Font/frame
+configuration and size getters are exercised. Quick-chat help polling covers
+retained/dismissed/null dialogs. Original static references are restored. Actual OS
+fullscreen changes, caller action dispatch, sound asset loading/playback, malformed
+guards and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
