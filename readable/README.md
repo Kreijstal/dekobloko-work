@@ -2219,11 +2219,37 @@ array failure and the noncanonical cleanup path. Native source fixtures and
 binding/reverse checks verify this naming pass; live-server and whole-game
 equivalence remain unverified.
 
+MultiplayerMatch.advanceBoard now names 79 more locals across message/eye and
+lifecycle counters, charged-ball hit selection, build clearance/row creation,
+brick transitions/motion, queued/active effect timers, pickup scoring/messages,
+collision/interpolation scans and exception context. Unused reference copies,
+the statistic carrier and the unused completion flag are identified explicitly.
+
+Four integer locals still span unrelated phases: var8 combines action/build
+flags with intro iteration/timing; var9_int combines group iteration, row width
+and substep iteration; var10 combines group iteration, a ball statistic and the
+previous background ID; var11 combines hit counts, row/group iteration, pickup
+classification, collision retries and a second ball statistic. Their source
+identities remain stable until the generic compiler can split their lifetimes.
+The generic primitive lifetime recovery selects one block containing all uses,
+then groups that block's direct statements. Here the outer active-state
+conditional contains all those uses and is treated as one phase. A reduced
+protected-body diagnostic at java-tools d88bc5c confirms this: two sequential
+assign/use phases add one declaration, while the same independently assigned
+phases in opposite if/else arms remain one local after both
+splitInitializedPrimitiveLocalLifetimes and
+splitNestedInitializedPrimitiveLocalLifetimes. This isolates conditional grouping
+from scalar initialization and exception-wrapper support. Independent
+conditional branches need safe separate analysis, including joins, loop-carried
+values, exception handlers and abrupt exits. This is generic compiler work;
+application-specific names remain in Deko. Existing native/binding/reverse checks
+verify the current naming export; whole-game equivalence remains unverified.
+
 The current readable Brick export uses a Git-only raw-source snapshot from the
 verified 44-game catalog refresh. The snapshot remains an ancestor of the named
 export; reproduction reads it directly from Git. Its raw Java tree SHA-256 is
 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`.
-All 420 class identities are retained. The current manifest has 15,138 rules.
+All 420 class identities are retained. The current manifest has 15,217 rules.
 Only `jh.java` differs from the former raw input: list traversal now updates
 currentChild, the variable tested by the loop. firstChildAlias and nextChildAlias
 identify the unused retained references. No generated Java is hand-patched.

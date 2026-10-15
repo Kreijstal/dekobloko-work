@@ -5502,6 +5502,92 @@ local('na','a(IIIBI)V',0,'var6','fieldStartX','Centered date-field origin shared
  ])local('qj','a(Lvl;ZLvl;)Z',ordinal,original,to,advanceEvidence);
 }
 
+
+{
+ const advanceEvidence='Reviewed board advancement separates message/eye/lifecycle counter values, charged activation and hit selection, build clearance/rows, brick transitions, effect timers, pickup scoring/messages, collision and interpolation scans, and exception context. Retained unused references are labeled explicitly. Four shared integer slots still span unrelated phases and remain pending generic lifetime reconstruction.';
+ for(const[ordinal,original,to]of [
+  [0,'fieldTemp$0','remainingMessageTicks'],
+  [1,'fieldTemp$1','remainingEyeTicks'],
+  [2,'fieldTemp$2','nextChargedActivationCount'],
+  [3,'fieldTemp$6','nextTransitionTicks'],
+  [4,'fieldTemp$3','remainingBuildTicks'],
+  [5,'dupTemp$4','newRowBrick'],
+  [6,'fieldTemp$5','nextLevelIndex'],
+  [7,'fieldTemp$7','nextIntroTransitionTicks'],
+  [8,'fieldTemp$8','nextIntroTicks'],
+  [9,'fieldTemp$11','nextServeDelayTicks'],
+  [10,'fieldTemp$9','nextDefeatTicks'],
+  [11,'fieldTemp$10','nextVictoryTicks'],
+  [12,'stackIn_55_0','messageBoard'],
+  [13,'stackIn_56_1','clippedMessageTicks'],
+  [14,'stackIn_132_0','chargeHitEligibility'],
+  [15,'stackIn_142_0','pendingRemovalValue'],
+  [16,'stackIn_155_0','chargeExpressionBoard'],
+  [17,'stackIn_155_1','chargeExpressionGuard'],
+  [18,'stackIn_156_2','chargeExpression'],
+  [19,'stackIn_158_0','chargeMessageBoard'],
+  [20,'stackIn_159_1','chargeMessages'],
+  [21,'stackIn_245_0','buildRowColumns'],
+  [22,'stackIn_270_0','missedPowerUpBoard'],
+  [23,'stackIn_270_1','missedPowerUpExpressionGuard'],
+  [24,'stackIn_271_2','missedPowerUpExpression'],
+  [25,'stackIn_279_0','selfTargetedValue'],
+  [26,'stackIn_284_0','beneficialBaseValue'],
+  [27,'stackIn_285_1','slowDownValue'],
+  [28,'stackIn_287_0','pickupScoreBoard'],
+  [29,'stackIn_288_1','pickupPoints'],
+  [30,'stackIn_300_0','pickupMessageBoard'],
+  [31,'stackIn_302_1','pickupMessages'],
+  [32,'stackIn_388_0','failureContext'],
+  [33,'stackIn_388_1','contextBuilder'],
+  [34,'stackIn_389_2','boardSummary'],
+  [35,'stackIn_391_1','audioContextBuilder'],
+  [36,'stackIn_392_2','audioSummary'],
+  [37,'stackIn_394_1','collectedContextBuilder'],
+  [38,'stackIn_395_2','collectedSummary'],
+  [39,'decompiledCaughtException','caughtFailure'],
+  [40,'var5','pulse'],
+  [41,'var5_ref','failure'],
+  [46,'var9','chargeCandidate'],
+  [48,'var9_ref','shiftedPath'],
+  [50,'var9_ref3','stoppedPaddle'],
+  [51,'var9_ref4','introBrick'],
+  [52,'var10_ref','unusedBuildReference'],
+  [53,'var10_ref_on','builtBrick'],
+  [57,'var11_ref','unusedReferenceOne'],
+  [59,'var11_ref_on','clearanceBrick'],
+  [61,'var12_ref','unusedReferenceTwo'],
+  [62,'var12','chargeGroupIndex'],
+  [66,'var15','chargeHitEligible'],
+  [67,'var16','wasPendingRemoval'],
+  [70,'var19','chargeGroup'],
+  [71,'var20','chargeArea'],
+  [72,'var21','unusedChargeGroupAlias'],
+  [73,'var22','unusedChargeGroupReference'],
+  [74,'var23','transitionGroup'],
+  [75,'var24','destinationWaypoint'],
+  [76,'var25','overflowGroup'],
+  [77,'var26','unusedOverflowGroupAlias'],
+  [78,'var9Lifetime1','queuedEffectBall'],
+  [79,'var9Lifetime2','activeEffectBall'],
+  [80,'var10_ref_onLifetime1','overflowBrick'],
+  [83,'var11_ref_onLifetime1','transitionBrick'],
+  [84,'var11_ref_onLifetime2','interpolatedBrick'],
+  [85,'var21Lifetime1','clearanceGroup'],
+  [86,'var22Lifetime1','unusedClearanceGroupAlias'],
+  [87,'var22Lifetime2','pathWaypoints'],
+  [88,'var26Lifetime1','movingGroup'],
+  [89,'var21Lifetime2','unusedChargeGroupLifetimeAlias'],
+  [90,'var26Lifetime2','unusedOverflowGroupReference'],
+  [91,'var22Lifetime1Lifetime1','unusedClearanceGroupReference'],
+  [92,'var12Lifetime1','unusedStatisticValue'],
+  [93,'var12Lifetime1Lifetime1','ballStatistic'],
+  [94,'decompiledSharedTail0','promotePendingMessage'],
+  [95,'decompiledFrameRemainder0','unusedLevelCompletionFlag'],
+  [96,'decompiledCaughtParameter0','caughtParameter'],
+ ])local('ak','a(Lj;Lvl;Lvl;I)V',ordinal,original,to,advanceEvidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -5845,13 +5931,14 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "PlayerBoard now names the remaining instance counters, build timer, height, initial paddle center, eased position and pending background change. lifeBrickClears/lifeLevelClears retain accounting and tutorial exclusions; progressBrickClears remains the separate local progress source. Beneficial/harmful streak names follow the actual single-player classification, including the type13 exception. brickSequenceStep and brickSequenceStepsByType expose ordered-hit tracking without changing its resets. Paddle now correctly names leftBound256/rightBound256: the former controlMode was the lower X clamp, and the former boardSpan256 is the upper right edge. reversedControlTicks and aftertouchTicks identify the timed effects. A shared independent motion model checks nonzero/negative bounds, narrow/full-width paddles, out-of-range starts, direction masks, reversal expiry and timer retention over five frames. It runs against the fixed original gamepack and both complete raw/named builds. These checks isolate paddle motion; collisions, active aftertouch steering and whole-game equivalence are not established by this model.", '',
 "PlayerBoard.installLevelBricks now exposes its count/flag scan and separate portal-index pass through named groups, bricks, counts and indices. readBoardSnapshot names random-call replay, partial-build displacement, each decoded collection and its count/index, and extension border selection. Paddle.onCircleContact names incoming/target/reflected speeds, rebound-curve components, candidate velocities, slope threshold and exception carriers. ScreenshotViewer.multiplyQ8 names its fixed8 product helper and the signed high/unsigned low-byte decomposition. These are reviewed local names over the same fixed input; the fixed-point operations and random draws remain visible. Score-counter weights, snapshot failures and the shrink guard also have local names. The existing native models and binding checks cover the export; no new original-gamepack equivalence claim is made for these complete methods.", '',
 "GameplayScreen input send/receive/correction and local-key paths now name their remaining cursor, board and exception carriers. advanceMatch distinguishes remote catch-up/local throttling, effect-player and display-player loops, target meter/position values, inversion masks and offline winner selection. MultiplayerMatch queued attack routing names its count and failure carriers; applyPendingPowerUps retains FIFO prefix semantics. getExpiredPositionTimerMask corrects the earlier getStateZeroPlayerMask name: it tests positionOrderTicks==0, not boardState==0. The existing independent mask fixture distinguishes the two fields. PlayerInputBatch exposes the consumed/fallback indices while retaining increment-before-read failure order. These source-reviewed names add no live-server or whole-game equivalence claim.", '',
+"MultiplayerMatch.advanceBoard now names 79 remaining locals for message/eye/lifecycle counters, charged-ball hit selection, build clearance and row creation, transition/motion scans, timed ball effects, pickup scoring/messages, and exception carriers. Unused reference copies and the unused completion flag remain explicit. Four integer locals still serve unrelated phases; the generic lifetime pass currently sees their outer conditional as one phase. Those shared slots require branch-aware lifetime reconstruction before each role can receive an accurate independent name. Existing native, binding and exact-reversal checks verify the lexical export; complete original-gamepack equivalence remains unverified.", '',
 "A bytecode audit found a correctness defect in the former frozen input for `jh.a(boolean,mh)`, the list-layout reset helper used by friend/ignore list updates. The original JAR stores both the first child and each next child into slot 2, and its backedge reloads slot 2. That former transformed class seeded slot 4, read slot 4 at the loop header, and wrote each next child into slot 5 followed by a self-assignment. Its Java faithfully reflected the corrupted bytecode and failed to advance a nonempty list. Direct decompilation of the original class retains the update; this is a bytecode transformation defect, not a naming-rule defect. The audited original gamepack JAR SHA-256 is `91284c0ec25fa4f8913876c78be9d80d273d8dd567d5b92950f1795f37b3c95d`.", '',
 "The generic fix is java-tools commit `00c1c12fb58cdbd6be065e604ee5e9acbcebeff7`. Its tracked Git source tar SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`; this second hash identifies decompiler source, not the game JAR. The typed-alias splitter now proves that each moved definition reaches exactly the moved loads across backedges, joins, switches and exception edges. It refuses incomplete lifetimes and overlapping rewrites automatically, without a new application flag. A bounded, two-state traversal per definition avoids path enumeration. `node test/splitTypedAliasCopyLocals.test.js` in java-tools passes 35 assertions, including native comparisons of original bytecode, transformed bytecode and rebuilt readable Java across 30 cursor/reset/failure cases. The old pass fails the cursor comparison. The adjacent array, concrete-object, shared-store and typed-reuse tests also pass. A fresh pipeline output for the real helper now writes the next child back into the slot read by its loop condition.", '',
 "The full 44-game catalog has been rebuilt, verified and published while preserving the five named previews. Brick now names a Git-only snapshot of the corrected raw export, retained as an ancestor of this readable version. Only jh.java changes in the raw Brick input. The default reset gate rejects the former frozen input at the canonical one-child case (NullPointerException versus success), and checks 5449 assertions against both complete raw and named builds, with original-contract trace 7c82f2de56199b3eb7b567dcb5bfca1414abd16664293b40c1c76231e1a6a729. Ordinary reproduction needs no original JAR or new flag. These helper checks do not establish whole-game equivalence.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
-  const rules={schema:1,game:'brickabrac',version:109,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+  const rules={schema:1,game:'brickabrac',version:110,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
