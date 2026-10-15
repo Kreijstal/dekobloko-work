@@ -2076,6 +2076,21 @@ power-up text fields are named, alongside the independent long bitwiseAnd
 helper and its operands/result/exception locals. No new live-server or original
 packet-equivalence claim is made by these source-only names.
 
+The remaining owners with established primary methods are now named as well:
+JavaRandomHelpers, IntegerBitLengthHelpers, IntegerRemainderHelpers,
+IntegerPowerHelpers and WhirlpoolDigestHelpers expose the reviewed numeric and
+digest entry points. UiComponentNode is the direct DualLinkNode-derived base
+of UiComponent; its separate static CRC32, sprite and text-choice helpers remain
+on that owner. PauseMenuHelpers,
+InputOptionsHelpers, TableQuickChatHelpers, InvitationDialogHelpers,
+LobbySetupHelpers, GameTransportHelpers and LobbyInputHelpers expose menu,
+settings, lookup and lobby/transport hooks. BackgroundSurfaceHelpers,
+IndexedSpriteHelpers, TextValidationHelpers, TextHuffmanHelpers and
+HalfRgbBlendHelpers expose the reviewed surface, sprite, validation, codec and
+RGB-span routines. These are shared static owners, often holding unrelated
+methods and globals; their names do not imply a reconstructed original module
+boundary. The UiComponentNode base and constructor are unchanged.
+
 A subsequent bytecode audit found a correctness defect in the frozen input for
 `jh.a(boolean,mh)`, the list-layout reset helper used by friend/ignore list updates.
 The original JAR stores both the first child and each next child into slot 2, and
@@ -2129,7 +2144,7 @@ The same model also passes against all classes compiled from the corrected
 whole-game batch, with the same assertion count and trace. That raw Java tree
 has SHA-256 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`;
 only `jh.java` differs from the frozen input. This is a generated-Java tree
-identity, separate from the compiler-source tar hash above. All existing 14,853
+identity, separate from the compiler-source tar hash above. All existing 14,871
 naming rules still resolve with their expected original names in that input.
 An unpublished full naming round using the pass 100 map over the corrected
 input passes the
