@@ -2181,11 +2181,32 @@ whole-game equivalence. Its assertions are reported separately from the existing
 core, header and list-reset counts. The original-contract CLI runs all three
 shared contracts; ordinary reproduction needs no original JAR or new flag.
 
+The gameplay-local review now names both passes in
+PlayerBoard.installLevelBricks: eligible-brick/type-mask/portal counting, then
+stable portal indexing. The current scan and portal groups, indices, bricks,
+conditional carrier and retained unused references have distinct names.
+readBoardSnapshot now distinguishes random-call replay, partial-build pixels,
+brick groups, motion paths, queued/active balls, falling power-ups and each
+count/index. The extension's drop-counter type and border-column selection are
+also explicit.
+
+Paddle.onCircleContact now names side-relative normal motion, incoming/target/
+reflected speeds, rebound-curve components, doubled normal projection, jittered
+candidate velocities and the slope threshold. ScreenshotViewer.multiplyQ8
+names the shared product helper: splitting each operand into a signed high part
+and unsigned low byte computes the low 32 bits of `(long)left * right >> 8`.
+Its guard retains the unrelated fullscreen center write. The two speed lifetimes and
+exception-context carriers have separate names. Score-counter weighting,
+body-snapshot failures and the shrink arithmetic guard also have reviewed local
+names. Existing binding/native/reverse checks verify this lexical pass. They do
+not establish complete original-gamepack equivalence for these methods; all
+fixed-point arithmetic and random draws remain visible in the generated code.
+
 The current readable Brick export uses a Git-only raw-source snapshot from the
 verified 44-game catalog refresh. The snapshot remains an ancestor of the named
 export; reproduction reads it directly from Git. Its raw Java tree SHA-256 is
 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`.
-All 420 class identities are retained. The current manifest has 14,982 rules.
+All 420 class identities are retained. The current manifest has 15,074 rules.
 Only `jh.java` differs from the former raw input: list traversal now updates
 currentChild, the variable tested by the loop. firstChildAlias and nextChildAlias
 identify the unused retained references. No generated Java is hand-patched.
