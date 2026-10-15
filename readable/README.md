@@ -1550,6 +1550,23 @@ corner/diagonal sweep correctness, all special brick responses, tutorial
 callbacks, full-frame substep scheduling, live play and original-JAR
 equivalence remain unverified.
 
+GameplayScreen now names its remaining instance methods: spectator selection,
+score-table submission, offline completion, post-match routing, progress
+updates, network leave requests and frame drawing. Frame locals describe
+cyclic player/slot selection, player-count layouts, background scroll/fade,
+HUD arguments and portrait strips. These remain binding-aware naming changes.
+
+Controlled fixtures verify spectator eligibility, key latching, direction
+precedence and wraparound. Packet expectations cover opcode16, pack/level
+packing, intermediate flags, int-before-rounding overflow and short
+truncation, plus both suppression paths. Leave fixtures verify opcode66,
+local mask mutation and offline rejection before mutation/output. Deferred
+score-table fixtures verify positive-score gating, existing-row preservation
+and packed start/end ranges. Canonical guards and divisor1000 are used, and
+static state is restored. Complete post-match screen/audio routing, live
+server interpretation, full asset-dependent painting and original-JAR
+equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

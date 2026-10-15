@@ -2302,6 +2302,91 @@ for(const [owner,desc,params,evidence] of [
  ['on','(IIIIIIII)V',['x256','y256','velocityX256','velocityY256','typeId','brickFlags','brickState','motionElapsedTicks'],'Constructs34-by16-pixel brick, retains flags/qualified state and initializes elapsed cyclic motion.'],
  ['j','(IIIII)V',['boardWidth','initialBoardOffset','controlSet','randomSeed','characterIndex'],'Constructs board geometry, paddle, deterministic random state and effect collections.'],
 ])method(owner,'<init>',desc,'<init>',evidence,params);
+// Gameplay controller completion, spectator selection and frame layout.
+method("qj","a","(I)V","updateViewedPlayerSelection","Cycles the viewed board once per held-key press when overlays, local masks and maskedTicks permit; forward takes precedence; guard -1.",["obfuscationGuard"]);
+method("qj","e","(I)V","queueScoreTableSubmission","Captures positive board-zero score and packed progress range once unless suppressed; mode flag defers immediate submission; guard0.",["obfuscationGuard"]);
+method("qj","a","(BZ)V","finishOfflineMatch","Captures single-player results and sends progress, then selects completion or post-match screen; guard40 also retains background ID.",["obfuscationGuard", "usePointer"]);
+method("qj","a","(ZB)V","showPostMatchScreen","Stops activity loops and selects menu0, table5, awards9 or combined10 from mode, pending awards and table row; guard69.",["usePointer", "obfuscationGuard"]);
+method("qj","a","(IIJZI)V","sendProgressUpdate","Sends opcode16 with packed pack/level, intermediate flag and rounded elapsed time unless suppressed or mode flag set; caller divisor1000.",["packId", "levelIndex", "elapsedMillis", "intermediate", "timeDivisor"]);
+method("qj","b","(I)V","requestLeaveMatch","Requires networked match, sets local player bit in maskOne and writes ciphered opcode66 without a body; guard60.",["obfuscationGuard"]);
+method("qj","g","(I)V","drawMatchFrame","Draws selected/cyclic board views, backgrounds, HUDs, messages and preview portraits from player-count layout; guard41.",["obfuscationGuard"]);
+local("qj","a(I)V",0,"fieldTemp$0","previousViewedPlayer","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",1,"fieldTemp$1","nextViewedPlayer","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",2,"stackIn_6_0","freshKeyValue","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",3,"stackIn_10_0","freshKeyAlias","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",4,"stackIn_11_1","allLocalPlayersMasked","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",5,"stackIn_16_0","maskedEligibilityValue","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",6,"stackIn_17_1","spectatingAllowedValue","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",7,"stackIn_30_0","viewKeyHeld","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",8,"var2","freshKey","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",9,"var3","unusedBoard","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",10,"var2Lifetime1","maskedEligibility","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",11,"var2Lifetime2","canCycleView","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",12,"decompiledFrameRemainder0","unusedEligibilityRemainder","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(I)V",13,"decompiledFrameRemainder1","unusedDirectionRemainder","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","a(IIJZI)V",0,"var7","intermediateFlag","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","b(I)V",0,"var2","unusedGuardRemainder","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",0,"stackIn_44_0","offlineValue","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",1,"stackIn_50_0","showAllDetailsValue","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",2,"stackIn_53_0","firstHudPlayerValue","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",3,"stackIn_56_0","firstHudLocalValue","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",4,"stackIn_59_0","firstHudResultMode","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",5,"stackIn_59_1","firstHudGuard","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",6,"stackIn_59_2","firstHudX","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",7,"stackIn_61_3","showFirstHudDetails","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",8,"stackIn_64_4","firstHudBoard","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",9,"stackIn_64_5","firstHudY","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",10,"stackIn_64_6","firstHudPlayerId","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",11,"stackIn_66_7","firstHudLocalOrOffline","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",12,"stackIn_69_0","secondHudLocalValue","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",13,"stackIn_72_0","secondHudResultMode","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",14,"stackIn_72_1","secondHudGuard","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",15,"stackIn_72_2","secondHudX","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",16,"stackIn_74_3","showSecondHudDetails","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",17,"stackIn_77_4","secondHudBoard","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",18,"stackIn_77_5","secondHudY","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",19,"stackIn_77_6","secondHudPlayerId","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",20,"stackIn_79_7","secondHudLocalOrOffline","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",21,"stackIn_83_0","viewedLocalValue","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",22,"stackIn_86_0","viewedHudResultMode","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",23,"stackIn_86_1","viewedHudGuard","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",24,"stackIn_86_2","viewedHudX","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",25,"stackIn_88_3","showViewedHudDetails","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",26,"var2","layoutX","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",27,"var3","layoutY","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",28,"var4","unusedGuardQuotient","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",29,"var5","layoutModes","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",30,"var6","backgroundPlayerId","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",31,"var7","backgroundSlot","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",32,"var7_ref_j","singleBoard","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",33,"var8_int","showAllPlayerDetails","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",34,"var8","headSpriteAlias","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",35,"var9","singleBoardScroll","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",36,"var10","backgroundFadeAlpha","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",37,"var11","unusedClientFlag","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",38,"var12","unusedInlineSprites","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",39,"var13","paddle","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",40,"var14","layoutXAlias","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",41,"var15","layoutYAlias","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",42,"var16","fixedLayoutXAlias","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",43,"var17","fixedLayoutYAlias","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",44,"var18","portraitLayoutX","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",45,"var19","portraitLayoutY","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",46,"var20","headSprite","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",47,"var21","fixedLayoutX","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",48,"var22","fixedLayoutY","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",49,"var6Lifetime1","boardPlayerId","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",50,"var6Lifetime2","portraitPlayerId","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",51,"var7Lifetime1","unusedPreviewSlot","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",52,"var7Lifetime2","boardSlot","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",53,"var7Lifetime3","localOrOfflineFlag","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",54,"var7Lifetime4","portraitSlot","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",55,"var9Lifetime1","hudPlayerId","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",56,"var9Lifetime2","nameStripHeight","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",57,"var10Lifetime1","firstHudLocalFlag","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",58,"var9Lifetime3","splitBoardScroll","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+local("qj","g(I)V",59,"var10Lifetime1Lifetime1","secondHudLocalFlag","Reviewed gameplay controller declaration and its call/field data flow; no source transformation beyond binding-aware naming.");
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -2561,10 +2646,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'MultiplayerMatch now names scanBallCollisions, advanceBallSubstep and getWrappedPositionInversionMask. Shared collision storage names selected body, signed Q8 time, face, stored normals and circle contact coordinates. Rectangle sweep locals describe centers, closest points, relative velocities, boundary distances/times and selected contact. resetCollisionSelection clears selection/time/normals/face but retains contact coordinates. Scans prioritize reverse group order, stop after a group selects a candidate, traverse that group tail-to-head, then check the paddle. Smaller signed times win and equal-time candidates replace earlier selection.', '',
 'Controlled axis fixtures verify top/bottom/right/left faces 1/2/4/8 and inward-pointing stored normals, relative moving-body velocities, signed times/contact coordinates, candidate ties, group priority and paddle ties. Ball-step fixtures exercise free motion, phase/penetration behavior, audio, second-scan remaining-contact predicates, paddle catch ownership/history reset and bottom loss with single/multiple players or other active/queued balls. The wrapped-position mask is compared with an independent cyclic live-neighbor list across exclusion masks and signed overflow inputs; its 500-tick gameplay policy remains qualified.', '',
 'Tutorial mode is disabled in these native fixtures. Static collision/UI state is restored. General corner/diagonal sweep correctness, all special brick responses, tutorial callbacks, full-frame substep scheduling, live gameplay and original-JAR equivalence remain unverified.', '',
+"GameplayScreen now names its remaining instance methods: updateViewedPlayerSelection, queueScoreTableSubmission, finishOfflineMatch, showPostMatchScreen, sendProgressUpdate, requestLeaveMatch and drawMatchFrame. Frame locals describe cyclic player/slot selection, player-count layouts, background scroll/fade, HUD arguments and portrait strips. These are binding-aware naming changes; full asset-dependent frame painting is not exercised by this pass.", '',
+"Spectator fixtures verify count/local-player/masked-tick/overlay eligibility, edge-triggered key latching, direction precedence and wraparound. Progress fixtures check opcode16, pack*1000+level packing, intermediate flag, int-before-rounding overflow and short truncation, plus both suppression paths. Network-leave fixtures verify opcode66, mask mutation and offline rejection before mutation/output. Deferred score-table fixtures verify positive-score gating, existing-row preservation and packed start/end range. Canonical guards and divisor1000 are used. Static state is restored. Complete post-match screen/audio routing, live network/server interpretation, asset rendering and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:67,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:68,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
