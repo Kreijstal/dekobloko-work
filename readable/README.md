@@ -1528,6 +1528,28 @@ behaviors are preserved. Static UI/accounting state is restored. Arbitrary
 malformed portal indices, all velocities, full match/timer advancement, actual
 eye artwork, live play and original-JAR equivalence remain unverified.
 
+MultiplayerMatch now names collision scanning, ball substeps and the wrapped
+position-inversion mask. Shared collision fields expose the selected body,
+signed Q8 time, stored normal, face and circle contact coordinates. Rectangle
+sweep locals now describe centers, closest points, relative velocities, face
+distances/times and selected contact. The reset helper clears selection data
+but retains contact coordinates. Scanning visits brick groups in reverse,
+stops after a group selects a candidate, visits that group tail-to-head, and
+then checks the paddle. Smaller signed times win; equal times replace the
+selection. Controlled axis fixtures identify faces 1/2/4/8 as top/bottom/right/
+left, with stored normals pointing into the rectangle.
+
+Native fixtures verify all four faces, moving rectangles, time/tie priority,
+group order, paddle ties, free motion, phase/penetration responses, audio,
+remaining contacts, paddle catch ownership/history reset and ball loss with
+single/multiple players or other active/queued balls. The wrapped-order mask
+is checked against an independent live-neighbor list across masks and signed
+overflow inputs; its numeric gameplay policy remains qualified. Tutorial mode
+is disabled in these fixtures. Static collision/UI state is restored. General
+corner/diagonal sweep correctness, all special brick responses, tutorial
+callbacks, full-frame substep scheduling, live play and original-JAR
+equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
