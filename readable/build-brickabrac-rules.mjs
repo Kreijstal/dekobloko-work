@@ -365,6 +365,8 @@ classes.pc=["DirectSoundInitializerMarker", "Empty marker interface implemented 
 classes.ph=["BirthDateValidationMarker", "Empty marker interface implemented only by the birth-date validator; it adds no callable contract."];
 classes.bp=["QuickChatContextMarker", "Empty interface implemented by FontRequestHelpers and used only as an unused QuickChatPhraseRegistry constructor context."];
 classes.rm=["FontRequestHelpers", "Binary-mask font construction and email-availability request construction, plus an otherwise unused Quick Chat context marker and unrelated farm/UI globals."];
+classes.jl=['LogoRenderHelpers','Depth-orders and renders posed logo pieces with animated/pointer lighting; separately named input, social and network/time globals retain distinct roles.'];
+classes.ja=['BoardPresentationHelpers','Bouncing board-end logo/message presentation, level-sequence attribute aggregation and sprite-backed fullscreen-dialog style configuration; clock/archive/theme globals retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -4608,6 +4610,115 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("rm","a(Ljava/lang/String;I)Lac;",6,"decompiledCaughtParameter0","caughtParameter",evidence);
 }
 
+{
+ const evidence="Logo fixtures check per-piece pitch/yaw timing, guarded pose replacement, depth ordering, projected final-piece state, pointer/default lighting and a real shaded triangle against independent pose/projection/pixel references. Board-end fixtures check fade/bounce/message pixels at clip and timing boundaries. Fullscreen style wrappers are checked by semantic field/array identity, and sequence aggregation retains the exclusive end range and guard sentinel. The logo renderer preserves draw-ordinal center lookup even when depth order differs.";
+ method("jl","b","(I)V","drawLogoPieces",evidence,["obfuscationGuard"]);
+ method("fk","a","(IB)V","updateLogoPiecePose",evidence,["pieceIndex", "obfuscationGuard"]);
+ method("ja","a","(BLjp;IILj;)V","drawBoardEndOverlay",evidence,["obfuscationGuard", "messageSprite", "boardWidth", "boardHeight", "board"]);
+ method("ja","a","(ILoi;IZ)I","combineSequenceLevelAttributes",evidence,["startIndex", "sequence", "endIndex", "obfuscationGuard"]);
+ method("ja","a","(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V","configureFullscreenDialogFromSprites",evidence,["buttonPaint", "bodyPaint", "buttonLineHeight", "centerY", "bodyFont", "centerX", "bodyLineHeight", "obfuscationGuard", "buttonPaddingY", "buttonBaseline", "outerSprites", "buttonFont", "outerPaddingX", "maximumWrapWidth", "selectedPaint", "buttonGapY", "bodyBaseline", "buttonPaddingX", "outerPaddingY", "selectedSprites", "normalSprites"]);
+ method("pa","a","(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V","configureFullscreenDialog",evidence,["bodyLineHeight", "outerPaddingY", "buttonGapY", "bodyFont", "centerY", "centerX", "maximumWrapWidth", "outerFrame", "bodyPaint", "selectedPaint", "outerPaddingX", "buttonBaseline", "buttonPaint", "selectedFrame", "buttonLineHeight", "buttonPaddingY", "buttonFont", "normalFrame", "bodyBaseline", "buttonPaddingX", "obfuscationGuard"]);
+ method("mj","a","(IIZI)V","configureFullscreenDialogPaints",evidence,["buttonPaint", "selectedPaint", "obfuscationGuard", "bodyPaint"]);
+ field("ld","t","I","logoAnimationTicks",evidence);
+ field("ld","w","[I","logoPiecePose",evidence);
+ field("kk","e","[I","logoCameraPose",evidence);
+ field("nl","b","Ljp;","gameLogoSprite",evidence);
+ field("v","b","Ljp;","gameOverMessageSprite",evidence);
+ field("jk","u","Ljp;","gameCompletedMessageSprite",evidence);
+ local("jl","b(I)V",0,"var15","drawOrdinal",evidence);
+ local("jl","b(I)V",1,"var17_int","depthCandidate",evidence);
+ local("jl","b(I)V",2,"var18","centerAxis",evidence);
+ local("jl","b(I)V",3,"var1_int","pieceCount",evidence);
+ local("jl","b(I)V",4,"var2","depthKeysAlias",evidence);
+ local("jl","b(I)V",5,"var3","depthPieceIndex",evidence);
+ local("jl","b(I)V",6,"var4_ref_fr","depthMesh",evidence);
+ local("jl","b(I)V",7,"var4","cameraForwardY",evidence);
+ local("jl","b(I)V",8,"var5","centerX",evidence);
+ local("jl","b(I)V",9,"var6","centerY",evidence);
+ local("jl","b(I)V",10,"var7","centerZ",evidence);
+ local("jl","b(I)V",11,"var8","cameraForwardXQ14",evidence);
+ local("jl","b(I)V",12,"var9","cameraForwardYQ14",evidence);
+ local("jl","b(I)V",13,"var10_int","cameraForwardZQ14",evidence);
+ local("jl","b(I)V",14,"var10","diffuseNormalizeScale",evidence);
+ local("jl","b(I)V",15,"var11","localForwardXQ16",evidence);
+ local("jl","b(I)V",16,"var12","localForwardYQ16",evidence);
+ local("jl","b(I)V",17,"var13","localForwardZQ16",evidence);
+ local("jl","b(I)V",18,"var14","highlightZ",evidence);
+ local("jl","b(I)V",19,"var16","selectedPieceIndex",evidence);
+ local("jl","b(I)V",20,"var17","selectedMesh",evidence);
+ local("jl","b(I)V",21,"var19","unusedGameFlag",evidence);
+ local("jl","b(I)V",22,"var20","depthKeysInitialAlias",evidence);
+ local("jl","b(I)V",23,"var21","depthKeys",evidence);
+ local("jl","b(I)V",24,"decompiledCaughtException","caughtFailure",evidence);
+ local("jl","b(I)V",25,"var1","failure",evidence);
+ local("jl","b(I)V",26,"var3Lifetime1","cameraForwardX",evidence);
+ local("jl","b(I)V",27,"var5Lifetime1","cameraForwardZ",evidence);
+ local("jl","b(I)V",28,"var6Lifetime1","lightingAngle8192",evidence);
+ local("jl","b(I)V",29,"var7Lifetime1","diffuseX",evidence);
+ local("jl","b(I)V",30,"var8Lifetime1","diffuseY",evidence);
+ local("jl","b(I)V",31,"var9Lifetime1","diffuseZ",evidence);
+ local("jl","b(I)V",32,"var10Lifetime1","highlightNormalizeScale",evidence);
+ local("jl","b(I)V",33,"var12Lifetime1","highlightX",evidence);
+ local("jl","b(I)V",34,"var13Lifetime1","highlightY",evidence);
+ local("jl","b(I)V",35,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("fk","a(IB)V",0,"var2","rotationAngle8192",evidence);
+ local("fk","a(IB)V",1,"var3","animationTicks",evidence);
+ local("fk","a(IB)V",2,"var4","pitchSign",evidence);
+ local("fk","a(IB)V",3,"var5","yawSign",evidence);
+ local("fk","a(IB)V",4,"var6","unusedGameFlag",evidence);
+ local("ja","a(BLjp;IILj;)V",0,"stackIn_5_0","clampedFade",evidence);
+ local("ja","a(BLjp;IILj;)V",1,"stackIn_16_0","failureContext",evidence);
+ local("ja","a(BLjp;IILj;)V",2,"stackIn_16_1","contextBuilder",evidence);
+ local("ja","a(BLjp;IILj;)V",3,"stackIn_17_2","messageSummary",evidence);
+ local("ja","a(BLjp;IILj;)V",4,"stackIn_19_1","boardContextBuilder",evidence);
+ local("ja","a(BLjp;IILj;)V",5,"stackIn_20_2","boardSummary",evidence);
+ local("ja","a(BLjp;IILj;)V",6,"decompiledCaughtException","caughtFailure",evidence);
+ local("ja","a(BLjp;IILj;)V",7,"var5_int","elapsedTicks",evidence);
+ local("ja","a(BLjp;IILj;)V",8,"var5","failure",evidence);
+ local("ja","a(BLjp;IILj;)V",9,"var6","fade96",evidence);
+ local("ja","a(BLjp;IILj;)V",10,"var7","bounceDistance",evidence);
+ local("ja","a(BLjp;IILj;)V",11,"var9","logoSprite",evidence);
+ local("ja","a(BLjp;IILj;)V",12,"var10","messageFade96",evidence);
+ local("ja","a(BLjp;IILj;)V",13,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("ja","a(ILoi;IZ)I",0,"var4","failure",evidence);
+ local("ja","a(ILoi;IZ)I",1,"stackIn_2_0","guardRejectedResult",evidence);
+ local("ja","a(ILoi;IZ)I",2,"stackIn_4_0","combinedAttributes",evidence);
+ local("ja","a(ILoi;IZ)I",3,"stackIn_7_0","failureContext",evidence);
+ local("ja","a(ILoi;IZ)I",4,"stackIn_7_1","contextBuilder",evidence);
+ local("ja","a(ILoi;IZ)I",5,"stackIn_8_2","sequenceSummary",evidence);
+ local("ja","a(ILoi;IZ)I",6,"decompiledCaughtException","caughtFailure",evidence);
+ local("ja","a(ILoi;IZ)I",7,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",0,"stackIn_6_0","failureContext",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",1,"stackIn_6_1","contextBuilder",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",2,"stackIn_7_2","bodyFontSummary",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",3,"stackIn_9_1","outerSpritesContextBuilder",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",4,"stackIn_10_2","outerSpritesSummary",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",5,"stackIn_12_1","buttonFontContextBuilder",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",6,"stackIn_13_2","buttonFontSummary",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",7,"stackIn_15_1","selectedSpritesContextBuilder",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",8,"stackIn_16_2","selectedSpritesSummary",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",9,"stackIn_18_1","normalSpritesContextBuilder",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",10,"stackIn_19_2","normalSpritesSummary",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",11,"decompiledCaughtException","caughtFailure",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",12,"var21","failure",evidence);
+ local("ja","a(IIIILdh;IIIII[Ljp;Ldh;IIIIIII[Ljp;[Ljp;)V",13,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",0,"stackIn_5_0","failureContext",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",1,"stackIn_5_1","contextBuilder",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",2,"stackIn_6_2","bodyFontSummary",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",3,"stackIn_8_1","outerFrameContextBuilder",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",4,"stackIn_9_2","outerFrameSummary",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",5,"stackIn_11_1","selectedFrameContextBuilder",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",6,"stackIn_12_2","selectedFrameSummary",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",7,"stackIn_14_1","buttonFontContextBuilder",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",8,"stackIn_15_2","buttonFontSummary",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",9,"stackIn_17_1","normalFrameContextBuilder",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",10,"stackIn_18_2","normalFrameSummary",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",11,"decompiledCaughtException","caughtFailure",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",12,"var21","failure",evidence);
+ local("pa","a(IIILdh;IIILta;IIIIILta;IILdh;Lta;III)V",13,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("mj","a(IIZI)V",0,"var5","unusedBytes",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -4917,10 +5028,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Controlled InputStream fixtures verify already-buffered cursor preservation, newly completed cursor reset, clipped byte requests, repeated short reads, partial-read continuation, absent transports, no-data waiting, timeout closure, negative availability, IO failures and partial EOF. Incoming-delay fixtures verify copied FIFO payloads, clamped Gaussian jitter, future-head blocking, phase gates, pending-frame priority, single-entry delivery and opcode-history shifts. String/BigInteger references verify grouped scaled decimals, signed long limits, large scales, locale IDs and archive-clearing guard behavior. The existing Long.MIN_VALUE negation-overflow spelling is explicitly preserved. These checks use no live sockets; exact timeout-boundary timing, live server compatibility and original-JAR equivalence remain unverified.', '',
 'AppletJavaScriptBridge names guarded script evaluation and function calls with or without argument arrays. BrowserResizeNotificationHelpers names the resizing callback and its guarded failure swallowing. MicrosoftDirectSoundInitializer exposes per-instance buffer descriptors/cursors and follows its owned reflected startup literal. DirectSoundInitializerMarker and BirthDateValidationMarker identify their sole implementers; QuickChatContextMarker describes an unused QuickChatPhraseRegistry constructor argument implemented by FontRequestHelpers. These empty interfaces add no callable contract. FontRequestHelpers also names its email-request construction locals.', '',
 'A temporary recording JavaScript class is loaded with isolated game classes through a child-first loader; published signature stubs and their dependency hash remain unchanged. Fixtures verify all bridge guard boundaries, null and nonnull applet/function/argument inputs, caller argument identity, result identity, exact thrown-failure propagation and resize callback boxing/swallowing. Guard arithmetic outside the resize callback catch remains observable. DirectSound fixtures verify two distinct descriptor/cursor records per instance against signature stubs; marker interfaces are checked for empty contracts and implementer relationships. The owned reflective initializer name is included in binding/literal checks. No applet host, browser JavaScript engine, real DirectSound device or original-gamepack equivalence is verified.', '',
+'LogoRenderHelpers names logo piece depth ordering, camera and object poses, piece selection, original-center restoration and diffuse/highlight lighting. HuffmanCodec.updateLogoPiecePose exposes the per-piece pitch/yaw schedule; logoAnimationTicks, logoPiecePose and logoCameraPose identify shared presentation state. BoardPresentationHelpers names the bouncing board-end logo/message overlay and level-sequence attribute wrapper. Shared logo/game-over/game-completed sprites now have resource-backed names. Fullscreen style coordinators name their 21 arguments, frame/sprite roles and paint setter.', '',
+'Independent pose fixtures cover all piece sign cases and animation boundaries; no-face meshes verify depth-selected final pose/projection state, including the existing draw-ordinal original-center lookup. A real one-face triangle checks complete shaded pixels for default and pointer lighting. Board-end pixel references cover every tick0 through260, odd/even widths, clipping, fade/bounce cutoffs, delayed message opacity and signed high bytes from alpha blending. Additional checks cover sequence attribute ranges/guard sentinel and frame/sprite style parameter forwarding by values and array identity. Whole original logo imagery, multi-piece shaded overlap, original asset/browser rendering and original-gamepack equivalence remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:89,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:90,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
